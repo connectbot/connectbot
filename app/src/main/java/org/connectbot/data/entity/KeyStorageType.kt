@@ -34,5 +34,14 @@ enum class KeyStorageType {
      * Private key material never leaves the secure hardware.
      * Cannot be backed up or exported.
      */
-    ANDROID_KEYSTORE
+    ANDROID_KEYSTORE,
+
+    /**
+     * FIDO2 resident key stored on an external security key (YubiKey, SoloKey, etc.).
+     * Only the credential ID and public key are stored in the database.
+     * Private key material never leaves the security key hardware.
+     * Signing operations require the security key to be connected via USB or NFC.
+     * Cannot be backed up or exported.
+     */
+    FIDO2_RESIDENT_KEY
 }

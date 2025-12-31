@@ -1364,4 +1364,43 @@
 	<string name="auth_prompt_title">Unlock ConnectBot</string>
 	<!-- Subtitle shown in the biometric/device credential authentication prompt -->
 	<string name="auth_prompt_subtitle">Verify your identity to continue</string>
+	<!-- FIDO2 Security Key strings -->
+	<!-- Title for FIDO2 connect prompt asking user to connect their security key -->
+	<string name="fido2_connect_title">Connect Security Key</string>
+	<!-- Message instructing user to connect their FIDO2 security key via USB or NFC -->
+	<string name="fido2_connect_message">Connect your security key via USB or tap it on the back of your device (NFC) to authenticate with \'%1$s\'</string>
+	<!-- Title for FIDO2 PIN prompt asking user to enter their security key PIN -->
+	<string name="fido2_pin_title">Security Key PIN</string>
+	<!-- Message for FIDO2 PIN prompt -->
+	<string name="fido2_pin_message">Enter the PIN for your security key to authenticate with \'%1$s\'</string>
+	<!-- Message for FIDO2 PIN prompt when retries remaining is shown -->
+	<string name="fido2_pin_message_retries">Enter the PIN for your security key (%1$d attempts remaining)</string>
+	<!-- Hint for FIDO2 PIN input field -->
+	<string name="fido2_pin_hint">Security key PIN</string>
+	<!-- Title for FIDO2 touch prompt asking user to touch their security key -->
+	<string name="fido2_touch_title">Touch Security Key</string>
+	<!-- Message instructing user to touch their FIDO2 security key to confirm authentication -->
+	<string name="fido2_touch_message">Touch your security key to confirm authentication with \'%1$s\'</string>
+	<!-- Button to cancel FIDO2 authentication -->
+	<string name="fido2_cancel">Cancel</string>
+	<!-- Description for FIDO2 security key icon in pubkey list -->
+	<string name="pubkey_fido2_description_icon">FIDO2 security key</string>
+	<!-- Menu item to import a FIDO2 security key -->
+	<string name="pubkey_import_fido2">Import from security key</string>
+	<!-- Title for FIDO2 import screen -->
+	<string name="fido2_import_title">Import Security Key</string>
+	<!-- Status message when scanning for FIDO2 credentials -->
+	<string name="fido2_scanning">Scanning for SSH credentials…</string>
+	<!-- Status message when waiting for FIDO2 device connection -->
+	<string name="fido2_waiting_connection">Waiting for security key connection…</string>
+	<!-- Status message when FIDO2 device is connected -->
+	<string name="fido2_connected">Security key connected</string>
+	<!-- Error message when no SSH credentials found on security key -->
+	<string name="fido2_no_credentials">No SSH credentials found on security key</string>
+	<!-- Label for credential user name in FIDO2 import list -->
+	<string name="fido2_credential_user">User: %s</string>
+	<!-- Button to import selected FIDO2 credential -->
+	<string name="fido2_import_credential">Import</string>
+	<!-- Message shown in terminal when requesting FIDO2 authentication to unlock a key. Parameter is the key nickname. -->
+	<string name="terminal_auth_fido2">"Requesting security key authentication for \'%1$s\'"</string>
 </resources>
