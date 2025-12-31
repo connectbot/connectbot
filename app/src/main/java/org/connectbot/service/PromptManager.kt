@@ -105,6 +105,73 @@ class PromptManager {
     }
 
     /**
+     * Request FIDO2 security key connection for authentication
+     */
+    suspend fun requestFido2Connect(
+        keyNickname: String,
+        credentialId: ByteArray
+    ): Boolean {
+        val deferred = CompletableDeferred<PromptResponse>()
+        currentDeferred = deferred
+
+        _promptState.update {
+            PromptRequest.Fido2ConnectPrompt(
+                keyNickname = keyNickname,
+                credentialId = credentialId
+            )
+        }
+
+        val response = deferred.await()
+        _promptState.update { null }
+
+        return (response as? PromptResponse.Fido2Response)?.success ?: false
+    }
+
+    /**
+     * Request FIDO2 PIN entry
+     */
+    suspend fun requestFido2Pin(
+        keyNickname: String,
+        attemptsRemaining: Int? = null
+    ): String? {
+        val deferred = CompletableDeferred<PromptResponse>()
+        currentDeferred = deferred
+
+        _promptState.update {
+            PromptRequest.Fido2PinPrompt(
+                keyNickname = keyNickname,
+                attemptsRemaining = attemptsRemaining
+            )
+        }
+
+        val response = deferred.await()
+        _promptState.update { null }
+
+        return (response as? PromptResponse.Fido2PinResponse)?.pin
+    }
+
+    /**
+     * Request user to touch FIDO2 security key for confirmation
+     */
+    suspend fun requestFido2Touch(
+        keyNickname: String
+    ): Boolean {
+        val deferred = CompletableDeferred<PromptResponse>()
+        currentDeferred = deferred
+
+        _promptState.update {
+            PromptRequest.Fido2TouchPrompt(
+                keyNickname = keyNickname
+            )
+        }
+
+        val response = deferred.await()
+        _promptState.update { null }
+
+        return (response as? PromptResponse.Fido2Response)?.success ?: false
+    }
+
+    /**
      * Request host key fingerprint verification prompt
      */
     suspend fun requestHostKeyFingerprintPrompt(
@@ -177,6 +244,36 @@ sealed class PromptRequest {
         val keystoreAlias: String
     ) : PromptRequest()
 
+    /** Prompt to connect a FIDO2 security key */
+    data class Fido2ConnectPrompt(
+        val keyNickname: String,
+        val credentialId: ByteArray
+    ) : PromptRequest() {
+        override fun equals(other: Any?): Boolean {
+            if (this === other) return true
+            if (other !is Fido2ConnectPrompt) return false
+            return keyNickname == other.keyNickname &&
+                credentialId.contentEquals(other.credentialId)
+        }
+
+        override fun hashCode(): Int {
+            var result = keyNickname.hashCode()
+            result = 31 * result + credentialId.contentHashCode()
+            return result
+        }
+    }
+
+    /** Prompt for FIDO2 PIN entry */
+    data class Fido2PinPrompt(
+        val keyNickname: String,
+        val attemptsRemaining: Int?
+    ) : PromptRequest()
+
+    /** Prompt to touch FIDO2 security key */
+    data class Fido2TouchPrompt(
+        val keyNickname: String
+    ) : PromptRequest()
+
     data class HostKeyFingerprintPrompt(
         val hostname: String,
         val keyType: String,
@@ -221,4 +318,10 @@ sealed class PromptResponse {
     data class BooleanResponse(val value: Boolean) : PromptResponse()
     data class StringResponse(val value: String?) : PromptResponse()
     data class BiometricResponse(val success: Boolean) : PromptResponse()
+
+    /** Response for FIDO2 connect/touch prompts */
+    data class Fido2Response(val success: Boolean) : PromptResponse()
+
+    /** Response for FIDO2 PIN prompt */
+    data class Fido2PinResponse(val pin: String?) : PromptResponse()
 }
