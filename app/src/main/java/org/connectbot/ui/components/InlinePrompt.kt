@@ -29,13 +29,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.TouchApp
+import androidx.compose.material.icons.filled.Usb
 import androidx.compose.material3.Button
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
@@ -138,6 +143,29 @@ fun InlinePrompt(
                     prompt = promptRequest,
                     onAccept = { onResponse(PromptResponse.BooleanResponse(true)) },
                     onReject = { onResponse(PromptResponse.BooleanResponse(false)) }
+                )
+            }
+
+            is PromptRequest.Fido2ConnectPrompt -> {
+                Fido2ConnectPromptContent(
+                    keyNickname = promptRequest.keyNickname,
+                    onCancel = onCancel
+                )
+            }
+
+            is PromptRequest.Fido2PinPrompt -> {
+                Fido2PinPromptContent(
+                    keyNickname = promptRequest.keyNickname,
+                    attemptsRemaining = promptRequest.attemptsRemaining,
+                    onSubmit = { pin -> onResponse(PromptResponse.Fido2PinResponse(pin)) },
+                    onCancel = onCancel
+                )
+            }
+
+            is PromptRequest.Fido2TouchPrompt -> {
+                Fido2TouchPromptContent(
+                    keyNickname = promptRequest.keyNickname,
+                    onCancel = onCancel
                 )
             }
 
@@ -446,5 +474,229 @@ private fun HostKeyFingerprintPromptPreview() {
         ),
         onAccept = { },
         onReject = { },
+    )
+}
+
+@Composable
+private fun Fido2ConnectPromptContent(
+    keyNickname: String,
+    onCancel: () -> Unit
+) {
+    val terminalColors = MaterialTheme.colorScheme.terminal
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(terminalColors.overlayBackground)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Usb,
+            contentDescription = null,
+            tint = terminalColors.overlayText,
+            modifier = Modifier
+                .size(48.dp)
+                .padding(bottom = 8.dp)
+        )
+
+        Text(
+            text = stringResource(R.string.fido2_connect_title),
+            style = MaterialTheme.typography.titleMedium,
+            color = terminalColors.overlayText,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        Text(
+            text = stringResource(R.string.fido2_connect_message, keyNickname),
+            style = MaterialTheme.typography.bodyMedium,
+            color = terminalColors.overlayTextSecondary,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        CircularProgressIndicator(
+            color = terminalColors.overlayText,
+            modifier = Modifier
+                .size(32.dp)
+                .padding(bottom = 16.dp)
+        )
+
+        TextButton(onClick = onCancel) {
+            Text(stringResource(R.string.fido2_cancel), color = terminalColors.overlayText)
+        }
+    }
+}
+
+@Composable
+private fun Fido2PinPromptContent(
+    keyNickname: String,
+    attemptsRemaining: Int?,
+    onSubmit: (String) -> Unit,
+    onCancel: () -> Unit
+) {
+    var pin by remember { mutableStateOf("") }
+    val focusRequester = remember { FocusRequester() }
+    val terminalColors = MaterialTheme.colorScheme.terminal
+
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(terminalColors.overlayBackground)
+            .padding(16.dp)
+    ) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(bottom = 8.dp)
+        ) {
+            Icon(
+                imageVector = Icons.Filled.Key,
+                contentDescription = null,
+                tint = terminalColors.overlayText,
+                modifier = Modifier
+                    .size(24.dp)
+                    .padding(end = 8.dp)
+            )
+            Text(
+                text = stringResource(R.string.fido2_pin_title),
+                style = MaterialTheme.typography.titleMedium,
+                color = terminalColors.overlayText
+            )
+        }
+
+        Text(
+            text = if (attemptsRemaining != null) {
+                stringResource(R.string.fido2_pin_message_retries, attemptsRemaining)
+            } else {
+                stringResource(R.string.fido2_pin_message, keyNickname)
+            },
+            style = MaterialTheme.typography.bodyMedium,
+            color = if (attemptsRemaining != null && attemptsRemaining <= 3) {
+                MaterialTheme.colorScheme.error
+            } else {
+                terminalColors.overlayTextSecondary
+            },
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        OutlinedTextField(
+            value = pin,
+            onValueChange = { pin = it },
+            label = { Text(stringResource(R.string.fido2_pin_hint), color = terminalColors.overlayTextSecondary) },
+            visualTransformation = PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(
+                imeAction = ImeAction.Done,
+                keyboardType = KeyboardType.NumberPassword
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = { onSubmit(pin) }
+            ),
+            singleLine = true,
+            colors = TextFieldDefaults.colors(
+                focusedTextColor = terminalColors.overlayText,
+                unfocusedTextColor = terminalColors.overlayText,
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent,
+                cursorColor = terminalColors.overlayText,
+                focusedIndicatorColor = terminalColors.overlayTextSecondary,
+                unfocusedIndicatorColor = terminalColors.overlayTextSecondary.copy(alpha = 0.5f)
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .focusRequester(focusRequester)
+        )
+
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 8.dp),
+            horizontalArrangement = Arrangement.End
+        ) {
+            TextButton(onClick = onCancel) {
+                Text(stringResource(R.string.fido2_cancel), color = terminalColors.overlayText)
+            }
+            Button(
+                onClick = { onSubmit(pin) },
+                enabled = pin.isNotEmpty(),
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
+                Text(stringResource(R.string.button_ok))
+            }
+        }
+    }
+}
+
+@Composable
+private fun Fido2TouchPromptContent(
+    keyNickname: String,
+    onCancel: () -> Unit
+) {
+    val terminalColors = MaterialTheme.colorScheme.terminal
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(terminalColors.overlayBackground)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            imageVector = Icons.Filled.TouchApp,
+            contentDescription = null,
+            tint = terminalColors.overlayText,
+            modifier = Modifier
+                .size(48.dp)
+                .padding(bottom = 8.dp)
+        )
+
+        Text(
+            text = stringResource(R.string.fido2_touch_title),
+            style = MaterialTheme.typography.titleMedium,
+            color = terminalColors.overlayText,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        Text(
+            text = stringResource(R.string.fido2_touch_message, keyNickname),
+            style = MaterialTheme.typography.bodyMedium,
+            color = terminalColors.overlayTextSecondary,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        TextButton(onClick = onCancel) {
+            Text(stringResource(R.string.fido2_cancel), color = terminalColors.overlayText)
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun Fido2ConnectPromptPreview() {
+    Fido2ConnectPromptContent(
+        keyNickname = "My YubiKey",
+        onCancel = { }
+    )
+}
+
+@Preview
+@Composable
+private fun Fido2PinPromptPreview() {
+    Fido2PinPromptContent(
+        keyNickname = "My YubiKey",
+        attemptsRemaining = 3,
+        onSubmit = { },
+        onCancel = { }
+    )
+}
+
+@Preview
+@Composable
+private fun Fido2TouchPromptPreview() {
+    Fido2TouchPromptContent(
+        keyNickname = "My YubiKey",
+        onCancel = { }
     )
 }

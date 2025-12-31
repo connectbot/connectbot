@@ -34,6 +34,7 @@ import org.connectbot.ui.screens.colors.PaletteEditorScreen
 import org.connectbot.ui.screens.console.ConsoleScreen
 import org.connectbot.ui.screens.contact.ContactScreen
 import org.connectbot.ui.screens.eula.EulaScreen
+import org.connectbot.ui.screens.fido2.ImportFido2Screen
 import org.connectbot.ui.screens.generatepubkey.GeneratePubkeyScreen
 import org.connectbot.ui.screens.help.HelpScreen
 import org.connectbot.ui.screens.hints.HintsScreen
@@ -124,6 +125,7 @@ fun ConnectBotNavHost(
             PubkeyListScreen(
                 onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToGenerate = { navController.navigateSafely(NavDestinations.GENERATE_PUBKEY) },
+                onNavigateToImportFido2 = { navController.navigateSafely(NavDestinations.IMPORT_FIDO2) },
                 onNavigateToEdit = { pubkey ->
                     navController.navigateSafely("${NavDestinations.PUBKEY_EDITOR}/${pubkey.id}")
                 }
@@ -132,6 +134,12 @@ fun ConnectBotNavHost(
 
         composable(NavDestinations.GENERATE_PUBKEY) {
             GeneratePubkeyScreen(
+                onNavigateBack = { navController.safePopBackStack() }
+            )
+        }
+
+        composable(NavDestinations.IMPORT_FIDO2) {
+            ImportFido2Screen(
                 onNavigateBack = { navController.safePopBackStack() }
             )
         }

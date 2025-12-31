@@ -28,7 +28,14 @@
 	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING" />
 
+	<!-- FIDO2 security key support -->
+	<uses-permission android:name="android.permission.NFC" />
+
 	<uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
+	<!-- USB host mode for FIDO2 security keys (optional) -->
+	<uses-feature android:name="android.hardware.usb.host" android:required="false"/>
+	<!-- NFC for FIDO2 security keys (optional) -->
+	<uses-feature android:name="android.hardware.nfc" android:required="false"/>
 
 	<supports-screens
 		android:anyDensity="true"
