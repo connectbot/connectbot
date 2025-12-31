@@ -521,4 +521,23 @@ class PubkeyListViewModelTest {
             pendingImport = PendingImport(keyData, nickname, keyType),
         )
     }
+
+    @Test
+    fun copyingHardwareKeyUsesOpenSshAlgorithmAndOriginalWireBlob() = runTest {
+        val application = org.robolectric.RuntimeEnvironment.getApplication()
+        val clipboard = application.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+        org.mockito.Mockito.`when`(context.getSystemService(Context.CLIPBOARD_SERVICE)).thenReturn(clipboard)
+        val vm = createViewModel()
+        for ((type, algorithm) in listOf("SK-Ed25519" to "sk-ssh-ed25519@openssh.com", "SK-ECDSA" to "sk-ecdsa-sha2-nistp256@openssh.com", "sk-ssh-ed25519@openssh.com" to "sk-ssh-ed25519@openssh.com")) {
+            val key = Pubkey(
+                nickname = "hardware", type = type, privateKey = null,
+                publicKey = byteArrayOf(1, 2, 3), encrypted = false, startup = false, confirmation = false,
+                createdDate = 0, storageType = org.connectbot.data.entity.KeyStorageType.FIDO2_RESIDENT_KEY,
+                credentialId = byteArrayOf(4), fido2RpId = "ssh:",
+            )
+            vm.copyPublicKey(key)
+            advanceUntilIdle()
+            assertEquals("$algorithm AQID hardware", clipboard.primaryClip!!.getItemAt(0).text.toString())
+        }
+    }
 }

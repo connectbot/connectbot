@@ -60,7 +60,13 @@ class RoomIdentityTest {
             assertUuidPrimaryKey(entity, definition)
             // Also preserve the previous guard on identity references.
             generateSequence(entity) { it.superclass }.flatMap { it.declaredFields.asSequence() }
-                .filter { it.name == "id" || it.name.endsWith("Id") }.forEach { field ->
+                .filter { it.name == "id" || it.name.endsWith("Id") }
+                // FIDO2 protocol identifiers are opaque credential bytes and relying-party names,
+                // rather than references to entities in this database.
+                .filterNot {
+                    entity == org.connectbot.data.entity.Pubkey::class.java &&
+                        it.name in setOf("credentialId", "fido2RpId")
+                }.forEach { field ->
                     assertEquals("${entity.name}.${field.name} must use UUID", UUID::class.java, field.type)
                 }
             table

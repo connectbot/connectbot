@@ -19,8 +19,11 @@ package org.connectbot.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Looper
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.flow.MutableStateFlow
+import org.connectbot.fido2.Fido2Manager
 import org.connectbot.service.ConnectionNotifier
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -28,8 +31,13 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.times
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.Shadows.shadowOf
 
 @HiltAndroidTest
 @RunWith(RobolectricTestRunner::class)
@@ -40,6 +48,34 @@ class MainActivityIntentTest {
     @Before
     fun setUp() {
         hiltRule.inject()
+    }
+
+    @Test
+    fun pendingNfcSigningUsesReaderModeOnlyWhileActivityIsResumed() {
+        val controller = Robolectric.buildActivity(MainActivity::class.java).create()
+        val activity = controller.get()
+        val manager = mock(Fido2Manager::class.java)
+        val waiting = MutableStateFlow(false)
+        `when`(manager.waitingForNfcSigning).thenReturn(waiting)
+        activity.fido2Manager = manager
+        try {
+            controller.start().resume()
+            shadowOf(Looper.getMainLooper()).idle()
+            waiting.value = true
+            shadowOf(Looper.getMainLooper()).idle()
+            verify(manager, times(1)).startNfcDiscovery(activity)
+            controller.pause()
+            shadowOf(Looper.getMainLooper()).idle()
+            verify(manager, times(1)).stopNfcDiscovery(activity)
+            controller.resume()
+            shadowOf(Looper.getMainLooper()).idle()
+            verify(manager, times(2)).startNfcDiscovery(activity)
+            waiting.value = false
+            shadowOf(Looper.getMainLooper()).idle()
+            verify(manager, times(2)).stopNfcDiscovery(activity)
+        } finally {
+            controller.pause().stop().destroy()
+        }
     }
 
     @Test

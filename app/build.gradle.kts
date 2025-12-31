@@ -590,6 +590,10 @@ dependencies {
     implementation(libs.androidx.biometric)
     implementation(libs.androidx.core)
 
+    // FIDO2/CTAP2 support via YubiKit
+    implementation(libs.yubikit.android)
+    implementation(libs.yubikit.fido)
+
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 

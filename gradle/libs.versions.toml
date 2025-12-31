@@ -65,6 +65,7 @@ navigationTesting = "2.10.2"
 ui = "1.11.4"
 biometric = "1.4.0-alpha02"
 core = "1.19.1"
+yubikit = "3.0.0"
 
 [libraries]
 gradle-download = { module = "de.undercouch:gradle-download-task", version.ref = "gradleDownload" }
@@ -132,6 +133,9 @@ androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-
 androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 androidx-biometric = { module = "androidx.biometric:biometric-ktx", version.ref = "biometric" }
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "core" }
+
+yubikit-android = { module = "com.yubico.yubikit:android", version.ref = "yubikit" }
+yubikit-fido = { module = "com.yubico.yubikit:fido", version.ref = "yubikit" }
 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }

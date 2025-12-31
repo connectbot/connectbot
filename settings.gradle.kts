@@ -1,3 +1,5 @@
+@file:Suppress("ktlint:standard:property-naming")
+
 pluginManagement {
     includeBuild("build-logic")
     repositories {
@@ -6,7 +8,6 @@ pluginManagement {
     }
 }
 
-@file:Suppress("ktlint:standard:property-naming")
 val TRANSLATIONS_ONLY: String? by settings
 
 if (TRANSLATIONS_ONLY.isNullOrBlank()) {
