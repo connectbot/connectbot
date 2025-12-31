@@ -31,6 +31,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
 import org.connectbot.R
+import timber.log.Timber
 import java.util.concurrent.ConcurrentHashMap
 import kotlin.coroutines.resume
 
@@ -88,14 +89,14 @@ class TerminalFontProvider(private val context: Context) {
 
                 val fontCallback = object : FontsContractCompat.FontRequestCallback() {
                     override fun onTypefaceRetrieved(typeface: Typeface) {
-                        Log.d(TAG, "Font loaded: $googleFontName")
+                        Timber.d("Font loaded: $googleFontName")
                         if (continuation.isActive) {
                             continuation.resume(typeface)
                         }
                     }
 
                     override fun onTypefaceRequestFailed(reason: Int) {
-                        Log.w(TAG, "Font request failed for $googleFontName: $reason")
+                        Timber.w("Font request failed for $googleFontName: $reason")
                         if (continuation.isActive) {
                             continuation.resume(Typeface.MONOSPACE)
                         }
@@ -255,8 +256,8 @@ class TerminalFontProvider(private val context: Context) {
             val pm = context.packageManager
             pm.getPackageInfo("com.google.android.gms", 0)
             true
-        } catch (e: Exception) {
-            Log.w(TAG, "Google Play Services not available for fonts")
+        } catch (_: Exception) {
+            Timber.w("Google Play Services not available for fonts")
             false
         }
     }

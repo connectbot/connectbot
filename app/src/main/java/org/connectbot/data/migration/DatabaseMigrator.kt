@@ -18,8 +18,8 @@
 package org.connectbot.data.migration
 
 import android.content.Context
-import timber.log.Timber
 import androidx.room.withTransaction
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -34,7 +34,10 @@ import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import timber.log.Timber
 import java.io.File
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Migrates data from legacy SQLite databases (HostDatabase, PubkeyDatabase)
@@ -49,23 +52,19 @@ import java.io.File
  *
  * @param context Application context
  */
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import javax.inject.Singleton
-
 @Singleton
 class DatabaseMigrator @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val roomDatabase: ConnectBotDatabase,
     private val legacyHostReader: LegacyHostDatabaseReader,
     private val legacyPubkeyReader: LegacyPubkeyDatabaseReader,
     private val dispatchers: CoroutineDispatchers
 ) {
     companion object {
-        private const val TAG = "DatabaseMigrator"
         private const val LEGACY_HOSTS_DB = "hosts"
         private const val LEGACY_PUBKEYS_DB = "pubkeys"
         private const val MIGRATED_SUFFIX = ".migrated"
+
         // Must match DATABASE_NAME in DatabaseModule.kt
         private const val ROOM_DATABASE_NAME = "connectbot.db"
     }
@@ -92,7 +91,7 @@ class DatabaseMigrator @Inject constructor(
 
     private fun logError(message: String, throwable: Throwable? = null) {
         if (throwable != null) {
-            Timber.e(message, throwable)
+            Timber.e(throwable, message)
         } else {
             Timber.e(message)
         }
@@ -117,7 +116,7 @@ class DatabaseMigrator @Inject constructor(
         val legacyPubkeysExists = getLegacyDatabaseFile(LEGACY_PUBKEYS_DB).exists()
 
         val alreadyMigrated = getLegacyDatabaseFile("$LEGACY_HOSTS_DB$MIGRATED_SUFFIX").exists() &&
-                              getLegacyDatabaseFile("$LEGACY_PUBKEYS_DB$MIGRATED_SUFFIX").exists()
+            getLegacyDatabaseFile("$LEGACY_PUBKEYS_DB$MIGRATED_SUFFIX").exists()
 
         // If legacy DBs don't exist or already migrated, no migration needed
         if (!legacyHostsExists && !legacyPubkeysExists) {
@@ -166,7 +165,7 @@ class DatabaseMigrator @Inject constructor(
         // We don't check profiles here because DatabaseModule.onCreate() always creates
         // a default profile, so profiles table is never empty after Room initialization.
         val roomHasUserData = roomDatabase.hostDao().getAll().isNotEmpty() ||
-                              roomDatabase.pubkeyDao().getAll().isNotEmpty()
+            roomDatabase.pubkeyDao().getAll().isNotEmpty()
 
         if (roomHasUserData) {
             logDebug("Room database already has user data, skipping migration")
@@ -265,7 +264,6 @@ class DatabaseMigrator @Inject constructor(
                 knownHostsMigrated = legacyData.knownHosts.size,
                 colorSchemesMigrated = legacyData.colorSchemes.size
             )
-
         } catch (e: Exception) {
             logError("Migration failed", e)
             _migrationState.update {
@@ -279,7 +277,7 @@ class DatabaseMigrator @Inject constructor(
         }
     }
 
-    private suspend fun readLegacyData(): LegacyData {
+    private fun readLegacyData(): LegacyData {
         val hosts = if (getLegacyDatabaseFile(LEGACY_HOSTS_DB).exists()) {
             legacyHostReader.readHosts()
         } else {
@@ -743,9 +741,7 @@ class DatabaseMigrator @Inject constructor(
         }
     }
 
-    private fun getLegacyDatabaseFile(name: String): File {
-        return context.getDatabasePath(name)
-    }
+    private fun getLegacyDatabaseFile(name: String): File = context.getDatabasePath(name)
 
     /**
      * Resets migration state (for testing purposes).
@@ -759,9 +755,7 @@ class DatabaseMigrator @Inject constructor(
      * This allows unit tests to verify duplicate nickname handling.
      */
     @Suppress("unused")
-    internal fun transformToRoomEntitiesForTesting(legacy: LegacyData): TransformedData {
-        return transformToRoomEntities(legacy)
-    }
+    internal fun transformToRoomEntitiesForTesting(legacy: LegacyData): TransformedData = transformToRoomEntities(legacy)
 }
 
 /**

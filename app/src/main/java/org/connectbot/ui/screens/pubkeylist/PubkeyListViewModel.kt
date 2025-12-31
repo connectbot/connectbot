@@ -31,7 +31,6 @@ import com.trilead.ssh2.crypto.PEMEncoder
 import com.trilead.ssh2.crypto.PublicKeyUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -59,14 +58,17 @@ enum class ExportFormat {
 data class PendingExport(
     val pubkey: Pubkey,
     val format: ExportFormat,
-    val password: String? = null,  // Password to decrypt the key (if encrypted)
-    val exportPassphrase: String? = null  // Passphrase to encrypt the exported file
+    // Password to decrypt the key (if encrypted)
+    val password: String? = null,
+    // Passphrase to encrypt the exported file
+    val exportPassphrase: String? = null
 )
 
 data class PendingImport(
     val keyData: ByteArray,
     val nickname: String,
-    val keyType: String  // Extracted key type (RSA, Ed25519, etc.)
+    // Extracted key type (RSA, Ed25519, etc.)
+    val keyType: String
 )
 
 data class PendingPublicKeyExport(
@@ -96,7 +98,7 @@ data class PubkeyListUiState(
 
 @HiltViewModel
 class PubkeyListViewModel @Inject constructor(
-    @ApplicationContext private val context: Context,
+    @param:ApplicationContext private val context: Context,
     private val repository: PubkeyRepository,
     private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
@@ -484,12 +486,14 @@ class PubkeyListViewModel @Inject constructor(
             onPasswordRequired(pubkey) { password ->
                 onExportPassphraseRequired(pubkey) { exportPassphrase ->
                     _uiState.update {
-                        it.copy(pendingExport = PendingExport(
-                            pubkey = pubkey,
-                            format = ExportFormat.OPENSSH,
-                            password = password,
-                            exportPassphrase = exportPassphrase
-                        ))
+                        it.copy(
+                            pendingExport = PendingExport(
+                                pubkey = pubkey,
+                                format = ExportFormat.OPENSSH,
+                                password = password,
+                                exportPassphrase = exportPassphrase
+                            )
+                        )
                     }
                 }
             }
@@ -499,12 +503,14 @@ class PubkeyListViewModel @Inject constructor(
         // Not encrypted - just need export passphrase
         onExportPassphraseRequired(pubkey) { exportPassphrase ->
             _uiState.update {
-                it.copy(pendingExport = PendingExport(
-                    pubkey = pubkey,
-                    format = ExportFormat.OPENSSH,
-                    password = null,
-                    exportPassphrase = exportPassphrase
-                ))
+                it.copy(
+                    pendingExport = PendingExport(
+                        pubkey = pubkey,
+                        format = ExportFormat.OPENSSH,
+                        password = null,
+                        exportPassphrase = exportPassphrase
+                    )
+                )
             }
         }
     }
@@ -539,7 +545,7 @@ class PubkeyListViewModel @Inject constructor(
     fun getPublicKeyExportFilename(): String {
         val pending = _uiState.value.pendingPublicKeyExport ?: return "id_key.pub"
         val nickname = pending.pubkey.nickname.replace(Regex("[^a-zA-Z0-9_-]"), "_")
-        return "${nickname}.pub"
+        return "$nickname.pub"
     }
 
     /**
@@ -628,6 +634,7 @@ class PubkeyListViewModel @Inject constructor(
                                 val pub = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
                                 pk?.let { OpenSSHKeyEncoder.exportOpenSSH(it, pub, pubkey.nickname, exportPassphrase) }
                             }
+
                             ExportFormat.PEM -> {
                                 val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
                                 pk?.let { PEMEncoder.encodePrivateKey(it, null) }
@@ -683,16 +690,20 @@ class PubkeyListViewModel @Inject constructor(
                     is ImportResult.Success -> {
                         repository.save(result.pubkey)
                     }
+
                     is ImportResult.NeedsPassword -> {
                         // Set pending import - UI will show password dialog
                         _uiState.update {
-                            it.copy(pendingImport = PendingImport(
-                                keyData = result.keyData,
-                                nickname = result.nickname,
-                                keyType = result.keyType
-                            ))
+                            it.copy(
+                                pendingImport = PendingImport(
+                                    keyData = result.keyData,
+                                    nickname = result.nickname,
+                                    keyType = result.keyType
+                                )
+                            )
                         }
                     }
+
                     is ImportResult.Failed -> {
                         _uiState.update {
                             it.copy(error = "Failed to parse key file")
@@ -835,17 +846,19 @@ class PubkeyListViewModel @Inject constructor(
                 // Unencrypted PEM - decode and convert to internal format
                 val kp = PEMDecoder.decode(struct, null)
                 val algorithm = convertAlgorithmName(kp.private.algorithm)
-                return ImportResult.Success(Pubkey(
-                    id = 0,
-                    nickname = nickname,
-                    type = algorithm,
-                    encrypted = false,
-                    startup = false,
-                    confirmation = false,
-                    createdDate = System.currentTimeMillis(),
-                    privateKey = kp.private.encoded,
-                    publicKey = kp.public.encoded
-                ))
+                return ImportResult.Success(
+                    Pubkey(
+                        id = 0,
+                        nickname = nickname,
+                        type = algorithm,
+                        encrypted = false,
+                        startup = false,
+                        confirmation = false,
+                        createdDate = System.currentTimeMillis(),
+                        privateKey = kp.private.encoded,
+                        publicKey = kp.public.encoded
+                    )
+                )
             } else {
                 // Encrypted key - need password to decrypt
                 val keyType = PublicKeyUtils.detectKeyType(keyString) ?: "IMPORTED"
@@ -860,17 +873,19 @@ class PubkeyListViewModel @Inject constructor(
         val keyPair = parsePKCS8Key(keyData)
         if (keyPair != null) {
             val algorithm = convertAlgorithmName(keyPair.private.algorithm)
-            return ImportResult.Success(Pubkey(
-                id = 0,
-                nickname = nickname,
-                type = algorithm,
-                encrypted = false,
-                startup = false,
-                confirmation = false,
-                createdDate = System.currentTimeMillis(),
-                privateKey = keyPair.private.encoded,
-                publicKey = keyPair.public.encoded
-            ))
+            return ImportResult.Success(
+                Pubkey(
+                    id = 0,
+                    nickname = nickname,
+                    type = algorithm,
+                    encrypted = false,
+                    startup = false,
+                    confirmation = false,
+                    createdDate = System.currentTimeMillis(),
+                    privateKey = keyPair.private.encoded,
+                    publicKey = keyPair.public.encoded
+                )
+            )
         }
 
         Timber.e("Failed to parse key in any supported format")
@@ -936,11 +951,9 @@ class PubkeyListViewModel @Inject constructor(
      * Convert algorithm name from Java format to ConnectBot internal format.
      * EdDSA -> Ed25519
      */
-    private fun convertAlgorithmName(algorithm: String): String {
-        return if (algorithm == "EdDSA") {
-            "Ed25519"
-        } else {
-            algorithm
-        }
+    private fun convertAlgorithmName(algorithm: String): String = if (algorithm == "EdDSA") {
+        "Ed25519"
+    } else {
+        algorithm
     }
 }
