@@ -37,6 +37,8 @@ import androidx.room.PrimaryKey
  * @property delKey DEL key behavior ("del" or "backspace")
  * @property encoding Character encoding (e.g., "UTF-8")
  * @property emulation Terminal emulation mode (e.g., "xterm-256color")
+ * @property forceSizeRows Forced terminal rows (null = auto-size based on screen)
+ * @property forceSizeColumns Forced terminal columns (null = auto-size based on screen)
  */
 @Entity(
     tableName = "profiles",
@@ -71,7 +73,13 @@ data class Profile(
     val encoding: String = "UTF-8",
 
     @ColumnInfo(defaultValue = "'xterm-256color'")
-    val emulation: String = "xterm-256color"
+    val emulation: String = "xterm-256color",
+
+    @ColumnInfo(name = "force_size_rows")
+    val forceSizeRows: Int? = null,
+
+    @ColumnInfo(name = "force_size_columns")
+    val forceSizeColumns: Int? = null
 ) {
     companion object {
         /**

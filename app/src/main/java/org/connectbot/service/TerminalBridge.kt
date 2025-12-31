@@ -109,6 +109,14 @@ class TerminalBridge {
     /** Font family from profile for terminal display */
     val fontFamily: String?
 
+    /** Force size rows from profile (null = auto-size) */
+    var profileForceSizeRows: Int? = null
+        private set
+
+    /** Force size columns from profile (null = auto-size) */
+    var profileForceSizeColumns: Int? = null
+        private set
+
     // Terminal emulator from ConnectBot Terminal library
     val terminalEmulator: TerminalEmulator
 
@@ -190,6 +198,10 @@ class TerminalBridge {
         // Store encoding and font family from profile for later use
         encoding = profile.encoding
         fontFamily = profile.fontFamily
+
+        // Store force size from profile
+        profileForceSizeRows = profile.forceSizeRows
+        profileForceSizeColumns = profile.forceSizeColumns
 
         // Use settings from profile
         var fontSizeSp = profile.fontSize
@@ -361,6 +373,10 @@ class TerminalBridge {
             val ansiColors = fullColorPalette.sliceArray(0 until 16)
             terminalEmulator.applyColorScheme(ansiColors, defaultFgColor, defaultBgColor)
         }
+
+        // Update force size from profile
+        profileForceSizeRows = profile.forceSizeRows
+        profileForceSizeColumns = profile.forceSizeColumns
 
         // Note: encoding and fontFamily changes require reconnection to take effect
         // as they are deeply integrated into the terminal initialization
