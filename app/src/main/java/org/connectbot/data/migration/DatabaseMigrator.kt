@@ -66,6 +66,8 @@ class DatabaseMigrator @Inject constructor(
         private const val LEGACY_HOSTS_DB = "hosts"
         private const val LEGACY_PUBKEYS_DB = "pubkeys"
         private const val MIGRATED_SUFFIX = ".migrated"
+        // Must match DATABASE_NAME in DatabaseModule.kt
+        private const val ROOM_DATABASE_NAME = "connectbot.db"
     }
 
     private val _migrationState = MutableStateFlow(MigrationState())
@@ -128,20 +130,50 @@ class DatabaseMigrator @Inject constructor(
             return@withContext false
         }
 
-        // Check if Room database has any data
-        // Note: We must check profiles table too, not just hosts/pubkeys.
-        // The profiles table may already have a default profile from DatabaseModule.onCreate()
-        // or MIGRATION_4_5, even if hosts/pubkeys are empty. (Fixes #1806)
-        val roomHasData = roomDatabase.hostDao().getAll().isNotEmpty() ||
-                         roomDatabase.pubkeyDao().getAll().isNotEmpty() ||
-                         roomDatabase.profileDao().getAll().isNotEmpty()
-
-        if (roomHasData) {
-            logDebug("Room database already has data, skipping migration")
+        // Check if legacy databases have any actual data to migrate.
+        // If legacy DBs exist but are empty, skip migration to avoid inserting
+        // a duplicate default profile (fixes #1806).
+        // Wrap in try-catch to handle malformed legacy databases gracefully.
+        val legacyHostsHaveData = legacyHostsExists && try {
+            legacyHostReader.readHosts().isNotEmpty()
+        } catch (e: Exception) {
+            logDebug("Failed to read legacy hosts database: ${e.message}")
+            false
+        }
+        val legacyPubkeysHaveData = legacyPubkeysExists && try {
+            legacyPubkeyReader.readPubkeys().isNotEmpty()
+        } catch (e: Exception) {
+            logDebug("Failed to read legacy pubkeys database: ${e.message}")
+            false
+        }
+        if (!legacyHostsHaveData && !legacyPubkeysHaveData) {
+            logDebug("Legacy databases exist but are empty or unreadable, no migration needed")
             return@withContext false
         }
 
-        logDebug("Migration needed: legacy databases exist and Room is empty")
+        // IMPORTANT: Check if Room database FILE exists BEFORE accessing Room.
+        // This prevents a race condition where accessing Room triggers lazy initialization,
+        // which fires the onCreate callback that inserts a default profile. If we query
+        // Room first, the profiles table will never be empty, causing migration to be
+        // incorrectly skipped. (Fixes #1623)
+        val roomDbFile = context.getDatabasePath(ROOM_DATABASE_NAME)
+        if (!roomDbFile.exists()) {
+            logDebug("Migration needed: legacy databases exist and Room database file does not exist")
+            return@withContext true
+        }
+
+        // Room database file exists - check if it has actual user data (hosts or pubkeys).
+        // We don't check profiles here because DatabaseModule.onCreate() always creates
+        // a default profile, so profiles table is never empty after Room initialization.
+        val roomHasUserData = roomDatabase.hostDao().getAll().isNotEmpty() ||
+                              roomDatabase.pubkeyDao().getAll().isNotEmpty()
+
+        if (roomHasUserData) {
+            logDebug("Room database already has user data, skipping migration")
+            return@withContext false
+        }
+
+        logDebug("Migration needed: legacy databases exist and Room has no user data")
         return@withContext true
     }
 
