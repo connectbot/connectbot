@@ -44,6 +44,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.FileOpen
+import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Fingerprint
@@ -104,6 +105,7 @@ import org.connectbot.ui.theme.ConnectBotTheme
 fun PubkeyListScreen(
     onNavigateBack: () -> Unit,
     onNavigateToGenerate: () -> Unit,
+    onNavigateToImportFido2: () -> Unit,
     onNavigateToEdit: (Pubkey) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PubkeyListViewModel = hiltViewModel()
@@ -227,6 +229,7 @@ fun PubkeyListScreen(
         snackbarHostState = snackbarHostState,
         onNavigateBack = onNavigateBack,
         onNavigateToGenerate = onNavigateToGenerate,
+        onNavigateToImportFido2 = onNavigateToImportFido2,
         onNavigateToEdit = onNavigateToEdit,
         onDeletePubkey = viewModel::deletePubkey,
         onToggleKeyLoad = viewModel::toggleKeyLoaded,
@@ -264,6 +267,7 @@ fun PubkeyListScreenContent(
     snackbarHostState: SnackbarHostState,
     onNavigateBack: () -> Unit,
     onNavigateToGenerate: () -> Unit,
+    onNavigateToImportFido2: () -> Unit,
     onNavigateToEdit: (Pubkey) -> Unit,
     onDeletePubkey: (Pubkey) -> Unit,
     onToggleKeyLoad: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
@@ -330,6 +334,14 @@ fun PubkeyListScreenContent(
                     },
                     icon = { Icon(Icons.Default.FileOpen, contentDescription = null) },
                     text = { Text(stringResource(R.string.pubkey_import_existing)) }
+                )
+                FloatingActionButtonMenuItem(
+                    onClick = {
+                        fabMenuExpanded = false
+                        onNavigateToImportFido2()
+                    },
+                    icon = { Icon(Icons.Default.Key, contentDescription = null) },
+                    text = { Text(stringResource(R.string.pubkey_import_fido2)) }
                 )
             }
         },
@@ -1020,6 +1032,7 @@ private fun PubkeyListScreenEmptyPreview() {
             snackbarHostState = remember { SnackbarHostState() },
             onNavigateBack = {},
             onNavigateToGenerate = {},
+            onNavigateToImportFido2 = {},
             onNavigateToEdit = {},
             onDeletePubkey = {},
             onToggleKeyLoad = { _, _ -> },
@@ -1048,6 +1061,7 @@ private fun PubkeyListScreenLoadingPreview() {
             snackbarHostState = remember { SnackbarHostState() },
             onNavigateBack = {},
             onNavigateToGenerate = {},
+            onNavigateToImportFido2 = {},
             onNavigateToEdit = {},
             onDeletePubkey = {},
             onToggleKeyLoad = { _, _ -> },
@@ -1111,6 +1125,7 @@ private fun PubkeyListScreenPopulatedPreview() {
             snackbarHostState = remember { SnackbarHostState() },
             onNavigateBack = {},
             onNavigateToGenerate = {},
+            onNavigateToImportFido2 = {},
             onNavigateToEdit = {},
             onDeletePubkey = {},
             onToggleKeyLoad = { _, _ -> },
