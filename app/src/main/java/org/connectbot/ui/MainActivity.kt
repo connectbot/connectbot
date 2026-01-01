@@ -19,10 +19,15 @@ package org.connectbot.ui
 
 import android.Manifest
 import android.app.Activity
+import android.app.PendingIntent
 import android.content.ComponentName
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.ServiceConnection
 import android.net.Uri
+import android.nfc.NfcAdapter
+import android.nfc.Tag
+import android.nfc.tech.IsoDep
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
@@ -54,6 +59,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.fido2.Fido2Manager
 import org.connectbot.service.TerminalManager
 import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.navigation.NavDestinations
@@ -63,6 +69,7 @@ import org.connectbot.util.NotificationPermissionHelper
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.ShortcutIconGenerator
 import timber.log.Timber
+import javax.inject.Inject
 
 // TODO: Move back to ComponentActivity when https://issuetracker.google.com/issues/178855209 is fixed.
 //       FragmentActivity subclass is required for BiometricPrompt to find the FragmentManager
@@ -74,12 +81,22 @@ class MainActivity : AppCompatActivity() {
         const val DISCONNECT_ACTION = "org.connectbot.action.DISCONNECT"
     }
 
+    @Inject
+    lateinit var fido2Manager: Fido2Manager
+
     internal lateinit var appViewModel: AppViewModel
     private var bound = false
     private var requestedUri: Uri? by mutableStateOf(null)
     private var pendingHostConnection: Host? by mutableStateOf(null)
     internal var makingShortcut by mutableStateOf(false)
     private var showDisconnectAllDialog by mutableStateOf(false)
+
+    // NFC foreground dispatch for FIDO2 security keys
+    private var nfcAdapter: NfcAdapter? = null
+    private var nfcPendingIntent: PendingIntent? = null
+    private var nfcIntentFilters: Array<IntentFilter>? = null
+    private var nfcTechLists: Array<Array<String>>? = null
+    private var nfcForegroundDispatchEnabled by mutableStateOf(false)
 
     private val requestNotificationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -137,6 +154,9 @@ class MainActivity : AppCompatActivity() {
 
         val serviceIntent = Intent(this, TerminalManager::class.java)
         bindService(serviceIntent, connection, BIND_AUTO_CREATE)
+
+        // Set up NFC foreground dispatch for FIDO2 security keys
+        setupNfcForegroundDispatch()
 
         setContent {
             val appUiState by appViewModel.uiState.collectAsState()
@@ -305,9 +325,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        enableNfcForegroundDispatch()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        disableNfcForegroundDispatch()
+    }
+
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
         setIntent(intent)
+
+        // Check for NFC tag
+        if (handleNfcIntent(intent)) {
+            return
+        }
 
         handleIntent(intent)
 
@@ -316,10 +351,86 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun handleNfcIntent(intent: Intent): Boolean {
+        if (intent.action != NfcAdapter.ACTION_TECH_DISCOVERED &&
+            intent.action != NfcAdapter.ACTION_TAG_DISCOVERED) {
+            return false
+        }
+
+        val tag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getParcelableExtra(NfcAdapter.EXTRA_TAG, Tag::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)
+        }
+
+        if (tag != null) {
+            Timber.d("NFC tag discovered, connecting to FIDO2 device")
+            lifecycleScope.launch {
+                fido2Manager.connectToNfcTag(tag)
+            }
+            return true
+        }
+        return false
+    }
+
     private fun handleIntent(intent: Intent?) {
         if (intent?.action == DISCONNECT_ACTION) {
             Timber.d("handleIntent: DISCONNECT_ACTION, showing disconnect dialog")
             showDisconnectAllDialog = true
+        }
+    }
+
+    private fun setupNfcForegroundDispatch() {
+        nfcAdapter = NfcAdapter.getDefaultAdapter(this)
+        if (nfcAdapter == null) {
+            Timber.d("NFC not available on this device")
+            return
+        }
+
+        // Create pending intent for foreground dispatch
+        val intent = Intent(this, javaClass).apply {
+            addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        }
+        nfcPendingIntent = PendingIntent.getActivity(
+            this, 0, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
+        )
+
+        // Filter for IsoDep (ISO 14443-4) which is used by FIDO2 NFC
+        val techFilter = IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED)
+        nfcIntentFilters = arrayOf(techFilter)
+        nfcTechLists = arrayOf(arrayOf(IsoDep::class.java.name))
+    }
+
+    private fun enableNfcForegroundDispatch() {
+        val adapter = nfcAdapter ?: return
+        val pendingIntent = nfcPendingIntent ?: return
+
+        try {
+            adapter.enableForegroundDispatch(
+                this,
+                pendingIntent,
+                nfcIntentFilters,
+                nfcTechLists
+            )
+            nfcForegroundDispatchEnabled = true
+            Timber.d("NFC foreground dispatch enabled")
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to enable NFC foreground dispatch")
+        }
+    }
+
+    private fun disableNfcForegroundDispatch() {
+        if (!nfcForegroundDispatchEnabled) return
+        val adapter = nfcAdapter ?: return
+
+        try {
+            adapter.disableForegroundDispatch(this)
+            nfcForegroundDispatchEnabled = false
+            Timber.d("NFC foreground dispatch disabled")
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to disable NFC foreground dispatch")
         }
     }
 
