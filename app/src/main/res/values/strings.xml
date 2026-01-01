@@ -1417,4 +1417,12 @@
 	<string name="fido2_transport_usb">USB</string>
 	<!-- NFC transport option -->
 	<string name="fido2_transport_nfc">NFC</string>
+	<!-- Title for transport selection screen -->
+	<string name="fido2_select_transport_title">Select Connection Method</string>
+	<!-- Hint for transport selection screen -->
+	<string name="fido2_select_transport_hint">Choose how you\'ll connect your security key</string>
+	<!-- Instruction to connect USB security key -->
+	<string name="fido2_connect_usb">Connect your USB security key</string>
+	<!-- Continue button -->
+	<string name="fido2_continue">Continue</string>
 </resources>
