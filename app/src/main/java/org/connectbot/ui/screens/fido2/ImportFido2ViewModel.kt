@@ -55,6 +55,7 @@ data class ImportFido2UiState(
     val selectedCredential: Fido2Credential? = null,
     val nickname: String = "",
     val selectedTransport: Fido2Transport = Fido2Transport.USB,
+    val transportSelected: Boolean = false, // True when transport has been selected
     val isScanning: Boolean = false,
     val needsPin: Boolean = false,
     val waitingForNfcTap: Boolean = false, // True when PIN entered and waiting for NFC tap
@@ -77,9 +78,7 @@ class ImportFido2ViewModel @Inject constructor(
 
     init {
         observeConnectionState()
-        // For NFC, we need PIN upfront since connection is transient
-        // Show PIN prompt immediately
-        _uiState.update { it.copy(needsPin = true) }
+        // Start with transport selection - user picks USB or NFC first
     }
 
     private fun observeConnectionState() {
@@ -328,6 +327,28 @@ class ImportFido2ViewModel @Inject constructor(
 
     fun updateTransport(transport: Fido2Transport) {
         _uiState.update { it.copy(selectedTransport = transport) }
+    }
+
+    /**
+     * Confirm transport selection and start the connection flow.
+     * For USB: Start discovery and wait for connection
+     * For NFC: Show PIN prompt first (connection is transient)
+     */
+    fun confirmTransportSelection() {
+        val transport = _uiState.value.selectedTransport
+        _uiState.update { it.copy(transportSelected = true) }
+
+        when (transport) {
+            Fido2Transport.USB -> {
+                // USB: Start discovery and wait for connection
+                // PIN prompt will show after device is detected
+                fido2Manager.startUsbDiscovery()
+            }
+            Fido2Transport.NFC -> {
+                // NFC: Need PIN upfront since connection is transient
+                _uiState.update { it.copy(needsPin = true) }
+            }
+        }
     }
 
     fun clearSelection() {
