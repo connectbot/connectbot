@@ -1411,4 +1411,10 @@
 	<string name="fido2_nfc_tap_title">Tap and Hold Security Key</string>
 	<!-- Message for NFC tap prompt during SSH signing -->
 	<string name="fido2_nfc_tap_message">Tap your NFC security key and hold until signing completes</string>
+	<!-- Label for transport selection -->
+	<string name="fido2_transport_label">Connection method</string>
+	<!-- USB transport option -->
+	<string name="fido2_transport_usb">USB</string>
+	<!-- NFC transport option -->
+	<string name="fido2_transport_nfc">NFC</string>
 </resources>
