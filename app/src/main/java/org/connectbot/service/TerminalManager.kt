@@ -93,8 +93,10 @@ class TerminalManager :
 
     // Maps for multi-session support: hostId -> list of bridges
     private val hostBridgesMap: MutableMap<Long, MutableList<WeakReference<TerminalBridge>>> = HashMap()
+
     // Quick lookup by session ID
     private val bridgesBySessionId: MutableMap<Long, WeakReference<TerminalBridge>> = HashMap()
+
     // Track last-used session per host for navigation
     private val lastUsedSessionByHost: MutableMap<Long, Long> = HashMap()
 
@@ -104,6 +106,7 @@ class TerminalManager :
     // Legacy maps for backwards compatibility (deprecated)
     @Deprecated("Use hostBridgesMap instead")
     private val hostBridgeMap: MutableMap<Host, WeakReference<TerminalBridge>> = HashMap()
+
     @Deprecated("Use getConnectedBridges instead")
     private val nicknameBridgeMap: MutableMap<String, WeakReference<TerminalBridge>> = HashMap()
 
@@ -128,12 +131,10 @@ class TerminalManager :
     private val _hostStatusChanged = MutableSharedFlow<Unit>(replay = 0, extraBufferCapacity = 10)
     val hostStatusChangedFlow: SharedFlow<Unit> = _hostStatusChanged.asSharedFlow()
 
-    private val _serviceErrors =
-        MutableSharedFlow<ServiceError>(replay = 0, extraBufferCapacity = 10)
+    private val _serviceErrors = MutableSharedFlow<ServiceError>(replay = 0, extraBufferCapacity = 10)
     val serviceErrors: SharedFlow<ServiceError> = _serviceErrors.asSharedFlow()
 
-    private val _loadedKeysChanged =
-        MutableSharedFlow<Set<String>>(replay = 1, extraBufferCapacity = 1)
+    private val _loadedKeysChanged = MutableSharedFlow<Set<String>>(replay = 1, extraBufferCapacity = 1)
     val loadedKeysChangedFlow: SharedFlow<Set<String>> = _loadedKeysChanged.asSharedFlow()
 
     // Encrypted keys marked "unlock at startup" that still need a passphrase from the user.
@@ -552,9 +553,7 @@ class TerminalManager :
      * @param hostId the database ID of the host
      * @return true if at least one session is connected
      */
-    fun isHostConnected(hostId: Long): Boolean {
-        return getSessionCount(hostId) > 0
-    }
+    fun isHostConnected(hostId: Long): Boolean = getSessionCount(hostId) > 0
 
     /**
      * Called by child bridge when somehow it's been disconnected.
@@ -621,8 +620,7 @@ class TerminalManager :
 
     private fun emitLoadedKeysChanged() {
         scope.launch {
-            val keys = HashSet(loadedKeypairs.keys)
-            _loadedKeysChanged.emit(keys)
+            _loadedKeysChanged.emit(loadedKeypairs.keys.toSet())
         }
     }
 
@@ -771,11 +769,7 @@ class TerminalManager :
 
         loadedKeypairs[pubkey.nickname] = keyHolder
 
-        Timber.d(
-            "Added biometric key '%s' to in-memory cache (expires in %d seconds)",
-            pubkey.nickname,
-            BIOMETRIC_AUTH_VALIDITY_SECONDS,
-        )
+        Timber.d("Added biometric key '%s' to in-memory cache (expires in %d seconds)", pubkey.nickname, BIOMETRIC_AUTH_VALIDITY_SECONDS)
         emitLoadedKeysChanged()
         return BiometricKeyResult.Success
     }
@@ -884,29 +878,23 @@ class TerminalManager :
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        /*
-         * We want this service to continue running until it is explicitly
-         * stopped, so return sticky.
-         */
+		/*
+		 * We want this service to continue running until it is explicitly
+		 * stopped, so return sticky.
+		 */
         return START_STICKY
     }
 
     override fun onRebind(intent: Intent) {
         super.onRebind(intent)
-        Timber.i(
-            "Someone rebound to TerminalManager with %d bridges active",
-            bridgesFlow.value.size,
-        )
+        Timber.i("Someone rebound to TerminalManager with %d bridges active", bridgesFlow.value.size)
         isUiBound = true
         keepServiceAlive()
         setResizeAllowed(true)
     }
 
     override fun onUnbind(intent: Intent): Boolean {
-        Timber.i(
-            "Someone unbound from TerminalManager with %d bridges active",
-            bridgesFlow.value.size,
-        )
+        Timber.i("Someone unbound from TerminalManager with %d bridges active", bridgesFlow.value.size)
 
         isUiBound = false
         setResizeAllowed(true)

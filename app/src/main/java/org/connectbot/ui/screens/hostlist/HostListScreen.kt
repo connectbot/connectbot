@@ -562,7 +562,7 @@ private fun HostListItem(
         ConnectionState.UNKNOWN -> Color.Transparent
     }
 
-    Box {
+    Box(modifier = modifier) {
         ListItem(
             headlineContent = {
                 Text(
