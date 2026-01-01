@@ -646,17 +646,17 @@ class SSH :
 
         bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_fido2, pubkey.nickname))
 
+        // Prompt for PIN first (before connecting key)
+        val pin = bridge?.requestFido2Pin(pubkey.nickname)
+        if (pin == null) {
+            bridge?.outputLine("FIDO2 PIN entry cancelled")
+            return null
+        }
+
         // Prompt user to connect their security key
         val connected = bridge?.requestFido2Connect(pubkey.nickname, credentialId) ?: false
         if (!connected) {
             bridge?.outputLine("FIDO2 security key connection cancelled or failed")
-            return null
-        }
-
-        // Prompt for PIN
-        val pin = bridge?.requestFido2Pin(pubkey.nickname)
-        if (pin == null) {
-            bridge?.outputLine("FIDO2 PIN entry cancelled")
             return null
         }
 

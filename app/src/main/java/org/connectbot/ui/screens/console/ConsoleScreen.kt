@@ -99,16 +99,21 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.preference.PreferenceManager
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.fido2.Fido2ConnectionState
 import org.connectbot.service.PromptRequest
+import org.connectbot.service.PromptResponse
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.SelectionController
 import org.connectbot.terminal.Terminal
 import org.connectbot.ui.LoadingScreen
 import org.connectbot.ui.LocalTerminalManager
+import org.connectbot.ui.components.Fido2NfcTapOverlay
 import org.connectbot.ui.components.FloatingTextInputDialog
 import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
@@ -529,6 +534,52 @@ fun ConsoleScreen(
                         // Show inline prompts from the current bridge (non-modal at bottom)
                         // Must be AFTER keyboard so prompts appear on top (z-order)
                         val promptState by bridge.promptManager.promptState.collectAsState()
+
+                        // Handle FIDO2 connect prompt - wait for USB connection or proceed with NFC
+                        // USB has priority; for NFC, just proceed (tap happens during signing)
+                        LaunchedEffect(promptState) {
+                            val fido2Prompt = promptState as? PromptRequest.Fido2ConnectPrompt
+                            if (fido2Prompt != null) {
+                                val fido2Manager = bridge.fido2Manager
+
+                                // If device already connected, complete immediately
+                                if (fido2Manager.isDeviceConnected()) {
+                                    bridge.promptManager.respond(PromptResponse.Fido2Response(true))
+                                    return@LaunchedEffect
+                                }
+
+                                fido2Manager.startUsbDiscovery()
+                                try {
+                                    // Wait for USB connection with timeout, then fall back to NFC
+                                    val connected = kotlinx.coroutines.withTimeoutOrNull(3000) {
+                                        var result = false
+                                        fido2Manager.connectionState.collect { state ->
+                                            if (state is Fido2ConnectionState.Connected) {
+                                                result = true
+                                                // Break collection
+                                                throw kotlinx.coroutines.CancellationException("Connected")
+                                            }
+                                        }
+                                        result
+                                    }
+                                    // Whether USB connected or timeout (NFC flow), proceed
+                                    bridge.promptManager.respond(PromptResponse.Fido2Response(true))
+                                } finally {
+                                    fido2Manager.stopUsbDiscovery()
+                                }
+                            }
+                        }
+
+                        // Show NFC tap prompt when waiting for NFC signing
+                        val waitingForNfc by bridge.fido2Manager.waitingForNfcSigning.collectAsState()
+                        if (waitingForNfc) {
+                            Fido2NfcTapOverlay(
+                                onCancel = {
+                                    bridge.fido2Manager.cancelNfcSigning()
+                                },
+                                modifier = Modifier.align(Alignment.BottomCenter)
+                            )
+                        }
 
                         InlinePrompt(
                             promptRequest = promptState,

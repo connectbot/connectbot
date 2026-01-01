@@ -292,7 +292,13 @@ class PubkeyListViewModel @Inject constructor(
                             publicKeyBytes,
                             android.util.Base64.NO_WRAP
                         )
-                        "${pubkey.type} $base64Key ${pubkey.nickname}"
+                        // Use the correct SSH key type string for authorized_keys format
+                        val sshKeyType = when (pubkey.type) {
+                            "SK-Ed25519" -> "sk-ssh-ed25519@openssh.com"
+                            "SK-ECDSA" -> "sk-ecdsa-sha2-nistp256@openssh.com"
+                            else -> pubkey.type
+                        }
+                        "$sshKeyType $base64Key ${pubkey.nickname}"
                     } else {
                         val pk = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
                         PublicKeyUtils.toAuthorizedKeysFormat(pk, pubkey.nickname)

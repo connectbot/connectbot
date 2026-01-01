@@ -365,9 +365,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         if (tag != null) {
-            Timber.d("NFC tag discovered, connecting to FIDO2 device")
-            lifecycleScope.launch {
-                fido2Manager.connectToNfcTag(tag)
+            // Check if we're waiting for NFC signing (SSH authentication)
+            if (fido2Manager.waitingForNfcSigning.value) {
+                Timber.d("NFC tag discovered for SSH signing")
+                lifecycleScope.launch {
+                    fido2Manager.handleNfcTagForSigning(tag)
+                }
+            } else {
+                Timber.d("NFC tag discovered, connecting to FIDO2 device")
+                lifecycleScope.launch {
+                    fido2Manager.connectToNfcTag(tag)
+                }
             }
             return true
         }
