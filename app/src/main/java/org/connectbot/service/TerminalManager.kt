@@ -57,6 +57,7 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.fido2.Fido2Manager
 import org.connectbot.transport.TransportFactory
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.ProviderLoader
@@ -139,6 +140,9 @@ class TerminalManager :
 
     @Inject
     internal lateinit var connectionNotifier: ConnectionNotifier
+
+    @Inject
+    internal lateinit var fido2Manager: Fido2Manager
 
     @Inject
     internal lateinit var dispatchers: CoroutineDispatchers

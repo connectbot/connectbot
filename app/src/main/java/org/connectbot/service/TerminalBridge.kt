@@ -93,6 +93,9 @@ class TerminalBridge {
 
     val manager: TerminalManager
 
+    /** FIDO2 manager for security key operations (delegated from TerminalManager) */
+    val fido2Manager get() = manager.fido2Manager
+
     var host: Host
 
     private val dispatchers: CoroutineDispatchers
