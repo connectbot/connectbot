@@ -64,7 +64,7 @@ import java.util.UUID
  * - Version 9: Added inline_images to profiles, defaulting to Ask (AutoMigration)
  * - Version 10: Added mosh_port, mosh_server, and locale columns to hosts for Mosh support (AutoMigration)
  * - Version 11: UUID automation actions and port-forward startup preference (manual migration)
- * - Version 12: Added FIDO2 fields to pubkeys (credential_id, fido2_rp_id) (AutoMigration)
+ * - Version 12: Added FIDO2 fields to pubkeys (credential_id, fido2_rp_id, fido2_transport) (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
