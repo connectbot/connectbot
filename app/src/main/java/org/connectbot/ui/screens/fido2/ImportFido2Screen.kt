@@ -60,6 +60,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -83,11 +87,33 @@ fun ImportFido2Screen(
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val activity = context as? android.app.Activity
+
     // Start USB device discovery when screen is shown
     DisposableEffect(Unit) {
         viewModel.startUsbDiscovery()
         onDispose {
             viewModel.stopUsbDiscovery()
+        }
+    }
+
+    // Handle NFC discovery lifecycle (must be started in onResume, stopped in onPause)
+    DisposableEffect(lifecycleOwner, activity) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (activity != null) {
+                when (event) {
+                    Lifecycle.Event.ON_RESUME -> viewModel.startNfcDiscovery(activity)
+                    Lifecycle.Event.ON_PAUSE -> viewModel.stopNfcDiscovery(activity)
+                    else -> {}
+                }
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+            activity?.let { viewModel.stopNfcDiscovery(it) }
         }
     }
 
@@ -137,12 +163,16 @@ fun ImportFido2Screen(
                     )
                 }
                 uiState.needsPin -> {
-                    // Show PIN entry
+                    // Show PIN entry (for NFC, this is shown before tapping)
                     PinEntryContent(
                         pinError = uiState.pinError,
                         onSubmitPin = viewModel::submitPin,
                         onCancel = onNavigateBack
                     )
+                }
+                uiState.waitingForNfcTap -> {
+                    // PIN entered, waiting for NFC tap
+                    WaitingForNfcTapContent()
                 }
                 uiState.credentials.isNotEmpty() -> {
                     // Show credential list
@@ -202,6 +232,41 @@ private fun ConnectionStatusContent(
             Spacer(modifier = Modifier.height(24.dp))
             CircularProgressIndicator()
         }
+    }
+}
+
+@Composable
+private fun WaitingForNfcTapContent() {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Key,
+            contentDescription = null,
+            modifier = Modifier.size(64.dp),
+            tint = MaterialTheme.colorScheme.primary
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text(
+            text = stringResource(R.string.fido2_tap_and_hold),
+            style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = stringResource(R.string.fido2_tap_and_hold_hint),
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
     }
 }
 
