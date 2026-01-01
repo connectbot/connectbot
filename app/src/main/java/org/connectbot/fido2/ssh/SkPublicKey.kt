@@ -17,22 +17,23 @@
 
 package org.connectbot.fido2.ssh
 
-import java.security.PublicKey
-
 /**
  * Common interface for FIDO2 security key SSH public keys.
  *
  * These keys follow the OpenSSH sk-* format introduced in OpenSSH 8.2.
+ *
+ * This interface extends the sshlib SkPublicKey interface to enable
+ * SK key authentication in the SSH library.
  */
-interface SkPublicKey : PublicKey {
+interface SkPublicKey : com.trilead.ssh2.signature.SkPublicKey {
     /** The application ID, typically "ssh:" for SSH keys */
-    val application: String
+    override fun getApplication(): String
 
     /** The underlying public key bytes (format depends on algorithm) */
-    val keyData: ByteArray
+    override fun getKeyData(): ByteArray
 
     /** The SSH key type identifier */
-    val sshKeyType: String
+    override fun getSshKeyType(): String
 }
 
 /**
@@ -45,17 +46,19 @@ interface SkPublicKey : PublicKey {
  * - string application (e.g., "ssh:")
  */
 data class SkEcdsaPublicKey(
-    override val application: String,
+    /** The application ID, typically "ssh:" for SSH keys */
+    private val application: String,
     /** EC point in uncompressed format (0x04 || x || y) */
     val ecPoint: ByteArray,
     /** Curve identifier, typically "nistp256" */
     val curve: String = "nistp256"
 ) : SkPublicKey {
 
-    override val sshKeyType: String = KEY_TYPE
+    override fun getSshKeyType(): String = KEY_TYPE
 
-    override val keyData: ByteArray
-        get() = ecPoint
+    override fun getApplication(): String = application
+
+    override fun getKeyData(): ByteArray = ecPoint
 
     override fun getAlgorithm(): String = "EC"
 
@@ -100,15 +103,17 @@ data class SkEcdsaPublicKey(
  * - string application (e.g., "ssh:")
  */
 data class SkEd25519PublicKey(
-    override val application: String,
+    /** The application ID, typically "ssh:" for SSH keys */
+    private val application: String,
     /** Ed25519 public key (32 bytes) */
     val ed25519Key: ByteArray
 ) : SkPublicKey {
 
-    override val sshKeyType: String = KEY_TYPE
+    override fun getSshKeyType(): String = KEY_TYPE
 
-    override val keyData: ByteArray
-        get() = ed25519Key
+    override fun getApplication(): String = application
+
+    override fun getKeyData(): ByteArray = ed25519Key
 
     override fun getAlgorithm(): String = "Ed25519"
 
