@@ -17,6 +17,7 @@
 
 package org.connectbot.ui.screens.fido2
 
+import android.app.Activity
 import android.nfc.Tag
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -54,6 +55,7 @@ data class ImportFido2UiState(
     val nickname: String = "",
     val isScanning: Boolean = false,
     val needsPin: Boolean = false,
+    val waitingForNfcTap: Boolean = false, // True when PIN entered and waiting for NFC tap
     val pinError: String? = null,
     val error: String? = null,
     val importSuccess: Boolean = false
@@ -73,6 +75,9 @@ class ImportFido2ViewModel @Inject constructor(
 
     init {
         observeConnectionState()
+        // For NFC, we need PIN upfront since connection is transient
+        // Show PIN prompt immediately
+        _uiState.update { it.copy(needsPin = true) }
     }
 
     private fun observeConnectionState() {
@@ -82,14 +87,23 @@ class ImportFido2ViewModel @Inject constructor(
 
                 when (state) {
                     is Fido2ConnectionState.Connected -> {
-                        // Device connected, start scanning for credentials
-                        scanForCredentials()
+                        // Both USB and NFC now use callback-based credential delivery
+                        // When USB connects for the first time (without PIN), just show PIN prompt
+                        // When PIN is submitted, retryUsbWithPin is called and results come via callback
+                        if (state.transport == "USB" && _uiState.value.credentials.isEmpty() && !_uiState.value.isScanning) {
+                            // First USB connection - show PIN prompt
+                            _uiState.update {
+                                it.copy(needsPin = true)
+                            }
+                        }
+                        // NFC: Results delivered via callback, nothing to do here
                     }
                     is Fido2ConnectionState.Error -> {
                         _uiState.update {
                             it.copy(
                                 error = state.message,
-                                isScanning = false
+                                isScanning = false,
+                                waitingForNfcTap = false
                             )
                         }
                     }
@@ -115,6 +129,22 @@ class ImportFido2ViewModel @Inject constructor(
     }
 
     /**
+     * Start NFC device discovery.
+     * Call this in Activity.onResume().
+     */
+    fun startNfcDiscovery(activity: Activity) {
+        fido2Manager.startNfcDiscovery(activity)
+    }
+
+    /**
+     * Stop NFC device discovery.
+     * Call this in Activity.onPause().
+     */
+    fun stopNfcDiscovery(activity: Activity) {
+        fido2Manager.stopNfcDiscovery(activity)
+    }
+
+    /**
      * Handle an NFC tag discovery.
      * Call this when the Activity receives an NFC tag intent.
      */
@@ -124,12 +154,16 @@ class ImportFido2ViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Scan for credentials on USB-connected device.
+     * NFC credentials are handled via callback in connectToDevice.
+     */
     private fun scanForCredentials() {
         viewModelScope.launch(dispatchers.io) {
-            _uiState.update { it.copy(isScanning = true, error = null, credentials = emptyList()) }
+            _uiState.update { it.copy(isScanning = true, error = null, credentials = emptyList(), waitingForNfcTap = false) }
 
             try {
-                // First check if PIN is required
+                // Check if PIN is required for USB
                 val infoResult = fido2Manager.getAuthenticatorInfo()
                 if (infoResult is Fido2Result.Success) {
                     val info = infoResult.value
@@ -145,55 +179,9 @@ class ImportFido2ViewModel @Inject constructor(
                     }
                 }
 
-                // Discover SSH credentials
+                // Discover SSH credentials via USB
                 val result = fido2Manager.discoverSshCredentials(currentPin)
-                when (result) {
-                    is Fido2Result.Success -> {
-                        val credentials = result.value
-                        _uiState.update {
-                            it.copy(
-                                credentials = credentials,
-                                isScanning = false,
-                                needsPin = false,
-                                error = if (credentials.isEmpty()) "No SSH credentials found on security key" else null
-                            )
-                        }
-                    }
-                    is Fido2Result.PinRequired -> {
-                        _uiState.update {
-                            it.copy(
-                                isScanning = false,
-                                needsPin = true
-                            )
-                        }
-                    }
-                    is Fido2Result.PinInvalid -> {
-                        currentPin = null
-                        _uiState.update {
-                            it.copy(
-                                isScanning = false,
-                                needsPin = true,
-                                pinError = "Invalid PIN. ${result.attemptsRemaining ?: "Unknown"} attempts remaining."
-                            )
-                        }
-                    }
-                    is Fido2Result.Error -> {
-                        _uiState.update {
-                            it.copy(
-                                isScanning = false,
-                                error = result.message
-                            )
-                        }
-                    }
-                    else -> {
-                        _uiState.update {
-                            it.copy(
-                                isScanning = false,
-                                error = "Unexpected result"
-                            )
-                        }
-                    }
-                }
+                handleCredentialResult(result)
             } catch (e: Exception) {
                 Timber.e(e, "Failed to scan for FIDO2 credentials")
                 _uiState.update {
@@ -208,12 +196,120 @@ class ImportFido2ViewModel @Inject constructor(
 
     fun submitPin(pin: String) {
         currentPin = pin
-        _uiState.update { it.copy(pinError = null) }
-        scanForCredentials()
+
+        // Check if we're already connected via USB
+        val currentState = _uiState.value.connectionState
+        val isUsbConnected = currentState is Fido2ConnectionState.Connected &&
+                currentState.transport == "USB"
+
+        // Set the PIN for both USB and NFC
+        fido2Manager.setPendingPin(pin)
+
+        if (isUsbConnected) {
+            // USB: Set callback and retry with PIN
+            fido2Manager.setUsbCredentialCallback { result ->
+                viewModelScope.launch {
+                    handleCredentialResult(result)
+                }
+            }
+
+            _uiState.update {
+                it.copy(
+                    pinError = null,
+                    needsPin = false,
+                    isScanning = true
+                )
+            }
+
+            // Retry USB connection with PIN - all operations happen in callback
+            fido2Manager.retryUsbWithPin()
+        } else {
+            // NFC mode: Set up for NFC tap
+            fido2Manager.setNfcCredentialCallback { result ->
+                viewModelScope.launch {
+                    handleCredentialResult(result)
+                }
+            }
+
+            _uiState.update {
+                it.copy(
+                    pinError = null,
+                    needsPin = false,
+                    waitingForNfcTap = true // Now waiting for user to tap NFC
+                )
+            }
+            // Wait for NFC tap which will trigger connection
+            // Fido2Manager will do all operations in the NFC callback and deliver results
+        }
+    }
+
+    private fun handleCredentialResult(result: Fido2Result<List<Fido2Credential>>) {
+        when (result) {
+            is Fido2Result.Success -> {
+                val credentials = result.value
+                _uiState.update {
+                    it.copy(
+                        credentials = credentials,
+                        isScanning = false,
+                        needsPin = false,
+                        waitingForNfcTap = false,
+                        error = if (credentials.isEmpty()) "No SSH credentials found on security key" else null
+                    )
+                }
+            }
+            is Fido2Result.PinRequired -> {
+                _uiState.update {
+                    it.copy(
+                        isScanning = false,
+                        needsPin = true,
+                        waitingForNfcTap = false
+                    )
+                }
+            }
+            is Fido2Result.PinInvalid -> {
+                currentPin = null
+                _uiState.update {
+                    it.copy(
+                        isScanning = false,
+                        needsPin = true,
+                        waitingForNfcTap = false,
+                        pinError = "Invalid PIN. ${result.attemptsRemaining ?: "Unknown"} attempts remaining."
+                    )
+                }
+            }
+            is Fido2Result.PinLocked -> {
+                currentPin = null
+                _uiState.update {
+                    it.copy(
+                        isScanning = false,
+                        needsPin = false,
+                        waitingForNfcTap = false,
+                        error = "PIN is locked. Please reset your security key."
+                    )
+                }
+            }
+            is Fido2Result.Error -> {
+                _uiState.update {
+                    it.copy(
+                        isScanning = false,
+                        waitingForNfcTap = false,
+                        error = result.message
+                    )
+                }
+            }
+            is Fido2Result.Cancelled -> {
+                _uiState.update {
+                    it.copy(
+                        isScanning = false,
+                        waitingForNfcTap = false
+                    )
+                }
+            }
+        }
     }
 
     fun selectCredential(credential: Fido2Credential) {
-        // Generate a default nickname based on user info
+        // Use the username from the credential as default nickname
         val defaultNickname = credential.userName ?: "FIDO2 Key"
 
         _uiState.update {
