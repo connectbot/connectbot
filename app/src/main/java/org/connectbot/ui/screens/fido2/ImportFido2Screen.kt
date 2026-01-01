@@ -94,18 +94,21 @@ fun ImportFido2Screen(
     val lifecycleOwner = LocalLifecycleOwner.current
     val activity = context as? android.app.Activity
 
-    // Start USB device discovery when screen is shown
-    DisposableEffect(Unit) {
-        viewModel.startUsbDiscovery()
+    // Handle USB discovery lifecycle only when USB transport is selected
+    DisposableEffect(uiState.transportSelected, uiState.selectedTransport) {
+        if (uiState.transportSelected && uiState.selectedTransport == Fido2Transport.USB) {
+            viewModel.startUsbDiscovery()
+        }
         onDispose {
             viewModel.stopUsbDiscovery()
         }
     }
 
-    // Handle NFC discovery lifecycle (must be started in onResume, stopped in onPause)
-    DisposableEffect(lifecycleOwner, activity) {
+    // Handle NFC discovery lifecycle only when NFC transport is selected
+    DisposableEffect(lifecycleOwner, activity, uiState.transportSelected, uiState.selectedTransport) {
+        val shouldUseNfc = uiState.transportSelected && uiState.selectedTransport == Fido2Transport.NFC
         val observer = LifecycleEventObserver { _, event ->
-            if (activity != null) {
+            if (activity != null && shouldUseNfc) {
                 when (event) {
                     Lifecycle.Event.ON_RESUME -> viewModel.startNfcDiscovery(activity)
                     Lifecycle.Event.ON_PAUSE -> viewModel.stopNfcDiscovery(activity)
@@ -114,6 +117,10 @@ fun ImportFido2Screen(
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
+        // Also start immediately if we're already resumed
+        if (shouldUseNfc) {
+            activity?.let { viewModel.startNfcDiscovery(it) }
+        }
         onDispose {
             lifecycleOwner.lifecycle.removeObserver(observer)
             activity?.let { viewModel.stopNfcDiscovery(it) }
@@ -155,6 +162,15 @@ fun ImportFido2Screen(
                 .fillMaxSize()
         ) {
             when {
+                !uiState.transportSelected -> {
+                    // First step: Select transport type (USB or NFC)
+                    TransportSelectionContent(
+                        selectedTransport = uiState.selectedTransport,
+                        onTransportChange = viewModel::updateTransport,
+                        onConfirm = viewModel::confirmTransportSelection,
+                        onCancel = onNavigateBack
+                    )
+                }
                 uiState.selectedCredential != null -> {
                     // Show import confirmation with nickname input
                     ImportConfirmationContent(
@@ -187,10 +203,11 @@ fun ImportFido2Screen(
                     )
                 }
                 else -> {
-                    // Show connection status
+                    // Show connection status (USB waiting or scanning)
                     ConnectionStatusContent(
                         connectionState = uiState.connectionState,
-                        isScanning = uiState.isScanning
+                        isScanning = uiState.isScanning,
+                        transport = uiState.selectedTransport
                     )
                 }
             }
@@ -199,9 +216,11 @@ fun ImportFido2Screen(
 }
 
 @Composable
-private fun ConnectionStatusContent(
-    connectionState: Fido2ConnectionState,
-    isScanning: Boolean
+private fun TransportSelectionContent(
+    selectedTransport: Fido2Transport,
+    onTransportChange: (Fido2Transport) -> Unit,
+    onConfirm: () -> Unit,
+    onCancel: () -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -211,7 +230,97 @@ private fun ConnectionStatusContent(
         verticalArrangement = Arrangement.Center
     ) {
         Icon(
-            imageVector = Icons.Filled.Usb,
+            imageVector = Icons.Filled.Key,
+            contentDescription = null,
+            modifier = Modifier.size(64.dp),
+            tint = MaterialTheme.colorScheme.primary
+        )
+
+        Spacer(modifier = Modifier.height(24.dp))
+
+        Text(
+            text = stringResource(R.string.fido2_select_transport_title),
+            style = MaterialTheme.typography.headlineSmall,
+            textAlign = TextAlign.Center
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Text(
+            text = stringResource(R.string.fido2_select_transport_hint),
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            FilterChip(
+                selected = selectedTransport == Fido2Transport.USB,
+                onClick = { onTransportChange(Fido2Transport.USB) },
+                label = { Text(stringResource(R.string.fido2_transport_usb)) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Usb,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                },
+                modifier = Modifier.weight(1f)
+            )
+            FilterChip(
+                selected = selectedTransport == Fido2Transport.NFC,
+                onClick = { onTransportChange(Fido2Transport.NFC) },
+                label = { Text(stringResource(R.string.fido2_transport_nfc)) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Nfc,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                },
+                modifier = Modifier.weight(1f)
+            )
+        }
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+        ) {
+            TextButton(onClick = onCancel) {
+                Text(stringResource(R.string.fido2_cancel))
+            }
+            Button(
+                onClick = onConfirm,
+                modifier = Modifier.padding(start = 8.dp)
+            ) {
+                Text(stringResource(R.string.fido2_continue))
+            }
+        }
+    }
+}
+
+@Composable
+private fun ConnectionStatusContent(
+    connectionState: Fido2ConnectionState,
+    isScanning: Boolean,
+    transport: Fido2Transport
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Icon(
+            imageVector = if (transport == Fido2Transport.USB) Icons.Filled.Usb else Icons.Filled.Nfc,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
             tint = MaterialTheme.colorScheme.primary
@@ -221,7 +330,10 @@ private fun ConnectionStatusContent(
 
         Text(
             text = when (connectionState) {
-                is Fido2ConnectionState.Disconnected -> stringResource(R.string.fido2_waiting_connection)
+                is Fido2ConnectionState.Disconnected -> {
+                    if (transport == Fido2Transport.USB) stringResource(R.string.fido2_connect_usb)
+                    else stringResource(R.string.fido2_waiting_connection)
+                }
                 is Fido2ConnectionState.Connecting -> stringResource(R.string.fido2_waiting_connection)
                 is Fido2ConnectionState.Connected -> {
                     if (isScanning) stringResource(R.string.fido2_scanning)
