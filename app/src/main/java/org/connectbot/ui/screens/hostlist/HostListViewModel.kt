@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,7 +32,6 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.R
@@ -238,23 +238,17 @@ class HostListViewModel @Inject constructor(
      * Get the session ID of the last-used session for a host.
      * Returns null if no sessions exist.
      */
-    fun getLastUsedSessionId(hostId: Long): Long? {
-        return terminalManager?.getLastUsedBridge(hostId)?.sessionId
-    }
+    fun getLastUsedSessionId(hostId: Long): Long? = terminalManager?.getLastUsedBridge(hostId)?.sessionId
 
     /**
      * Check if a host has any connected sessions.
      */
-    fun isHostConnected(hostId: Long): Boolean {
-        return terminalManager?.isHostConnected(hostId) ?: false
-    }
+    fun isHostConnected(hostId: Long): Boolean = terminalManager?.isHostConnected(hostId) ?: false
 
     /**
      * Get the number of sessions for a host.
      */
-    fun getSessionCount(hostId: Long): Int {
-        return terminalManager?.getSessionCount(hostId) ?: 0
-    }
+    fun getSessionCount(hostId: Long): Int = terminalManager?.getSessionCount(hostId) ?: 0
 
     fun deleteHost(host: Host) {
         viewModelScope.launch {
