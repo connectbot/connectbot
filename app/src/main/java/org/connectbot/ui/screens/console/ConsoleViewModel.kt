@@ -29,7 +29,6 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -342,9 +341,7 @@ class ConsoleViewModel @Inject constructor(
     /**
      * Get the current bridge (if any).
      */
-    fun getCurrentBridge(): TerminalBridge? {
-        return _uiState.value.bridges.getOrNull(_uiState.value.currentBridgeIndex)
-    }
+    fun getCurrentBridge(): TerminalBridge? = _uiState.value.bridges.getOrNull(_uiState.value.currentBridgeIndex)
 
     /**
      * Open a new session to the current host and navigate to it.
