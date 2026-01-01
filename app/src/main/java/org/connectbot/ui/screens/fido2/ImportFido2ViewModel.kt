@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.connectbot.data.PubkeyRepository
+import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
@@ -53,6 +54,7 @@ data class ImportFido2UiState(
     val credentials: List<Fido2Credential> = emptyList(),
     val selectedCredential: Fido2Credential? = null,
     val nickname: String = "",
+    val selectedTransport: Fido2Transport = Fido2Transport.USB,
     val isScanning: Boolean = false,
     val needsPin: Boolean = false,
     val waitingForNfcTap: Boolean = false, // True when PIN entered and waiting for NFC tap
@@ -324,6 +326,10 @@ class ImportFido2ViewModel @Inject constructor(
         _uiState.update { it.copy(nickname = nickname) }
     }
 
+    fun updateTransport(transport: Fido2Transport) {
+        _uiState.update { it.copy(selectedTransport = transport) }
+    }
+
     fun clearSelection() {
         _uiState.update {
             it.copy(
@@ -337,11 +343,12 @@ class ImportFido2ViewModel @Inject constructor(
         val state = _uiState.value
         val credential = state.selectedCredential ?: return
         val nickname = state.nickname.ifBlank { "FIDO2 Key" }
+        val transport = state.selectedTransport
 
         viewModelScope.launch(dispatchers.io) {
             try {
                 // Convert FIDO2 credential to Pubkey entity
-                val pubkey = createPubkeyFromCredential(credential, nickname)
+                val pubkey = createPubkeyFromCredential(credential, nickname, transport)
                 repository.save(pubkey)
 
                 _uiState.update {
@@ -356,7 +363,7 @@ class ImportFido2ViewModel @Inject constructor(
         }
     }
 
-    private fun createPubkeyFromCredential(credential: Fido2Credential, nickname: String): Pubkey {
+    private fun createPubkeyFromCredential(credential: Fido2Credential, nickname: String, transport: Fido2Transport): Pubkey {
         // Determine key type and encode public key in SSH format
         // The credential contains COSE-encoded key, we need to decode it to raw bytes first
         val (keyType, publicKeyBytes) = when (credential.algorithm) {
@@ -393,7 +400,8 @@ class ImportFido2ViewModel @Inject constructor(
             publicKey = publicKeyBytes,
             storageType = KeyStorageType.FIDO2_RESIDENT_KEY,
             credentialId = credential.credentialId,
-            fido2RpId = credential.rpId
+            fido2RpId = credential.rpId,
+            fido2Transport = transport
         )
     }
 

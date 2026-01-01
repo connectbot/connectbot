@@ -59,7 +59,7 @@ import org.connectbot.data.entity.Pubkey
  * - Version 7: Added ip_version column to hosts for IP version preference (AutoMigration)
  * - Version 8: Added source_addr to port_forwards (AutoMigration)
  * - Version 9: Added mosh_port, mosh_server, and locale columns to hosts for Mosh support (AutoMigration)
- * - Version 10: Added FIDO2 fields to pubkeys (credential_id, fido2_rp_id) (AutoMigration)
+ * - Version 10: Added FIDO2 fields to pubkeys (credential_id, fido2_rp_id, fido2_transport) (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
