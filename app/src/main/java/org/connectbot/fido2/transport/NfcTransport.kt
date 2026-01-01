@@ -178,6 +178,7 @@ class NfcTransport(private val tag: Tag) : Ctap2Transport {
 
     /**
      * Build an NFCTAP_MSG APDU for sending CTAP2 commands.
+     * Format: [CLA][INS][P1][P2][Lc][Data] (Case 3 short APDU, no Le byte)
      */
     private fun buildNfcTapApdu(cla: Byte, data: ByteArray): ByteArray {
         return byteArrayOf(
@@ -185,9 +186,9 @@ class NfcTransport(private val tag: Tag) : Ctap2Transport {
             INS_NFCTAP_MSG,
             0x00, // P1
             0x00, // P2
-            data.size.toByte(),
-            *data,
-            0x00 // Le = 0 (accept any length response)
+            data.size.toByte(), // Lc
+            *data
+            // No Le byte - CTAP2 NFC doesn't use it for NFCTAP_MSG
         )
     }
 
