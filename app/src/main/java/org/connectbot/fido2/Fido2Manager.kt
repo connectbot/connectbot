@@ -40,8 +40,11 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.asCoroutineDispatcher
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
@@ -75,6 +78,10 @@ class Fido2Manager @Inject constructor(
 
     private val _connectionState = MutableStateFlow<Fido2ConnectionState>(Fido2ConnectionState.Disconnected)
     val connectionState: StateFlow<Fido2ConnectionState> = _connectionState.asStateFlow()
+
+    // Signal when NFC tag is detected (for connect prompt to detect NFC availability)
+    private val _nfcTagDetected = MutableSharedFlow<Tag>(replay = 0, extraBufferCapacity = 1)
+    val nfcTagDetected: SharedFlow<Tag> = _nfcTagDetected.asSharedFlow()
 
     private var currentDevice: YubiKeyDevice? = null
     private var currentSession: Ctap2Session? = null
@@ -509,6 +516,9 @@ class Fido2Manager @Inject constructor(
      * Use this when receiving an NFC intent in the activity.
      */
     suspend fun connectToNfcTag(tag: Tag) {
+        // Emit tag detected signal for connect prompt to observe
+        _nfcTagDetected.tryEmit(tag)
+
         try {
             // Create NfcYubiKeyDevice using the sessionExecutor for thread safety
             val device = NfcYubiKeyDevice(tag, 30000, sessionExecutor)
@@ -729,9 +739,16 @@ class Fido2Manager @Inject constructor(
             }
         }
 
+        val token = pinUvToken
+            ?: return Fido2Result.PinRequired(attemptsRemaining = null)
+
         return withContext(sessionDispatcher) {
             try {
                 val clientDataHash = sha256(challenge)
+
+                // Calculate pinUvAuth = HMAC(pinToken, clientDataHash)
+                // For getAssertion, the message is just clientDataHash (no 0x02 prefix)
+                val pinUvAuth = protocol.authenticate(token, clientDataHash)
 
                 // Build allow list with the specific credential
                 val allowList = listOf(
@@ -748,7 +765,7 @@ class Fido2Manager @Inject constructor(
                     allowList,
                     null, // extensions
                     null, // options
-                    pinUvToken,
+                    pinUvAuth,
                     protocol.version,
                     null // CommandState
                 )
@@ -796,7 +813,7 @@ class Fido2Manager @Inject constructor(
      * Check if a FIDO2 device is currently connected.
      */
     fun isDeviceConnected(): Boolean {
-        return currentSession != null
+        return currentDevice != null
     }
 
     // ==================== SSH Authentication Support ====================
@@ -805,6 +822,11 @@ class Fido2Manager @Inject constructor(
     private var sshSigningCallback: ((Fido2Result<Fido2SignatureResult>) -> Unit)? = null
     private var sshCredentialId: ByteArray? = null
     private var sshChallenge: ByteArray? = null
+    private var sshPin: String? = null
+
+    // State flow to signal when waiting for NFC tap for SSH signing
+    private val _waitingForNfcSigning = MutableStateFlow(false)
+    val waitingForNfcSigning: StateFlow<Boolean> = _waitingForNfcSigning.asStateFlow()
 
     /**
      * Set up for SSH signing operation.
@@ -818,6 +840,49 @@ class Fido2Manager @Inject constructor(
         sshCredentialId = credentialId
         sshChallenge = challenge
         sshSigningCallback = callback
+    }
+
+    /**
+     * Request NFC tap for SSH signing.
+     * UI should observe waitingForNfcSigning and start NFC discovery when true.
+     */
+    fun requestNfcSigning(pin: String) {
+        sshPin = pin
+        _waitingForNfcSigning.value = true
+    }
+
+    /**
+     * Cancel pending NFC signing request.
+     */
+    fun cancelNfcSigning() {
+        _waitingForNfcSigning.value = false
+        sshPin = null
+        val callback = sshSigningCallback
+        sshSigningCallback = null
+        callback?.invoke(Fido2Result.Error("NFC signing cancelled"))
+    }
+
+    /**
+     * Handle NFC tag detection for SSH signing.
+     * Call this when an NFC tag is detected while waitingForNfcSigning is true.
+     */
+    suspend fun handleNfcTagForSigning(tag: Tag) {
+        val credId = sshCredentialId ?: return
+        val challenge = sshChallenge ?: return
+        val pin = sshPin ?: return
+        val callback = sshSigningCallback ?: return
+
+        _waitingForNfcSigning.value = false
+
+        val result = connectAndSignNfc(tag, pin, credId, challenge)
+
+        // Clear state
+        sshCredentialId = null
+        sshChallenge = null
+        sshPin = null
+        sshSigningCallback = null
+
+        callback(result)
     }
 
     /**
@@ -864,6 +929,10 @@ class Fido2Manager @Inject constructor(
                         Log.d(TAG, "Getting assertion for SSH signing")
                         val clientDataHash = sha256(challenge)
 
+                        // Calculate pinUvAuth = HMAC(pinToken, clientDataHash)
+                        // For getAssertion, the message is just clientDataHash (no 0x02 prefix)
+                        val pinUvAuth = protocol.authenticate(token, clientDataHash)
+
                         val allowList = listOf(
                             mapOf(
                                 "type" to "public-key",
@@ -877,7 +946,7 @@ class Fido2Manager @Inject constructor(
                             allowList,
                             null, // extensions
                             null, // options
-                            token,
+                            pinUvAuth,
                             protocol.version,
                             null // CommandState
                         )
@@ -986,6 +1055,10 @@ class Fido2Manager @Inject constructor(
                         Log.d(TAG, "Getting assertion for NFC SSH signing")
                         val clientDataHash = sha256(challenge)
 
+                        // Calculate pinUvAuth = HMAC(pinToken, clientDataHash)
+                        // For getAssertion, the message is just clientDataHash (no 0x02 prefix)
+                        val pinUvAuth = protocol.authenticate(token, clientDataHash)
+
                         val allowList = listOf(
                             mapOf(
                                 "type" to "public-key",
@@ -999,7 +1072,7 @@ class Fido2Manager @Inject constructor(
                             allowList,
                             null,
                             null,
-                            token,
+                            pinUvAuth,
                             protocol.version,
                             null
                         )
