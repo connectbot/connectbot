@@ -535,13 +535,20 @@ fun ConsoleScreen(
                         // Must be AFTER keyboard so prompts appear on top (z-order)
                         val promptState by bridge.promptManager.promptState.collectAsState()
 
-                        // Handle FIDO2 connect prompt - wait for USB connection or proceed with NFC
-                        // USB has priority; for NFC, just proceed (tap happens during signing)
+                        // Handle FIDO2 connect prompt based on transport preference
                         LaunchedEffect(promptState) {
                             val fido2Prompt = promptState as? PromptRequest.Fido2ConnectPrompt
                             if (fido2Prompt != null) {
                                 val fido2Manager = bridge.fido2Manager
 
+                                // For NFC transport, skip USB wait - proceed immediately
+                                // NFC tap will happen during the signing phase
+                                if (fido2Prompt.transport == org.connectbot.data.entity.Fido2Transport.NFC) {
+                                    bridge.promptManager.respond(PromptResponse.Fido2Response(true))
+                                    return@LaunchedEffect
+                                }
+
+                                // For USB transport, wait for device connection
                                 // If device already connected, complete immediately
                                 if (fido2Manager.isDeviceConnected()) {
                                     bridge.promptManager.respond(PromptResponse.Fido2Response(true))
@@ -550,20 +557,13 @@ fun ConsoleScreen(
 
                                 fido2Manager.startUsbDiscovery()
                                 try {
-                                    // Wait for USB connection with timeout, then fall back to NFC
-                                    val connected = kotlinx.coroutines.withTimeoutOrNull(3000) {
-                                        var result = false
-                                        fido2Manager.connectionState.collect { state ->
-                                            if (state is Fido2ConnectionState.Connected) {
-                                                result = true
-                                                // Break collection
-                                                throw kotlinx.coroutines.CancellationException("Connected")
-                                            }
+                                    // Wait for USB connection
+                                    fido2Manager.connectionState.collect { state ->
+                                        if (state is Fido2ConnectionState.Connected) {
+                                            bridge.promptManager.respond(PromptResponse.Fido2Response(true))
+                                            return@collect
                                         }
-                                        result
                                     }
-                                    // Whether USB connected or timeout (NFC flow), proceed
-                                    bridge.promptManager.respond(PromptResponse.Fido2Response(true))
                                 } finally {
                                     fido2Manager.stopUsbDiscovery()
                                 }
