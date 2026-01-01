@@ -647,21 +647,40 @@ class SSH :
 
         bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_fido2, pubkey.nickname))
 
-        // Prompt for PIN first (before connecting key)
-        val pin = bridge?.requestFido2Pin(pubkey.nickname)
-        if (pin == null) {
-            bridge?.outputLine("FIDO2 PIN entry cancelled")
-            return null
-        }
-
         // Get the preferred transport (default to USB for legacy keys)
         val transport = pubkey.fido2Transport ?: Fido2Transport.USB
 
-        // Prompt user to connect their security key (skipped for NFC, handled during signing)
-        val connected = bridge?.requestFido2Connect(pubkey.nickname, credentialId, transport) ?: false
-        if (!connected) {
-            bridge?.outputLine("FIDO2 security key connection cancelled or failed")
-            return null
+        // For USB: connect device first, then request PIN
+        // For NFC: request PIN first (NFC connection is transient, happens during signing)
+        val pin: String?
+        if (transport == Fido2Transport.USB) {
+            // USB: Prompt user to connect their security key first
+            val connected = bridge?.requestFido2Connect(pubkey.nickname, credentialId, transport) ?: false
+            if (!connected) {
+                bridge?.outputLine("FIDO2 security key connection cancelled or failed")
+                return null
+            }
+
+            // Then prompt for PIN
+            pin = bridge?.requestFido2Pin(pubkey.nickname)
+            if (pin == null) {
+                bridge?.outputLine("FIDO2 PIN entry cancelled")
+                return null
+            }
+        } else {
+            // NFC: Prompt for PIN first (connection happens during signing)
+            pin = bridge?.requestFido2Pin(pubkey.nickname)
+            if (pin == null) {
+                bridge?.outputLine("FIDO2 PIN entry cancelled")
+                return null
+            }
+
+            // Then notify that we're ready for NFC (skipped in ConsoleScreen for NFC)
+            val connected = bridge?.requestFido2Connect(pubkey.nickname, credentialId, transport) ?: false
+            if (!connected) {
+                bridge?.outputLine("FIDO2 security key connection cancelled or failed")
+                return null
+            }
         }
 
         // Create the public key from stored data
