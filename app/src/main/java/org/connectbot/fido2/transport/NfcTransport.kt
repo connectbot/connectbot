@@ -40,7 +40,8 @@ class NfcTransport(private val tag: Tag) : Ctap2Transport {
 
         // ISO 7816-4 instruction bytes
         private const val CLA_ISO7816 = 0x00.toByte()
-        private const val CLA_CHAINING = 0x10.toByte()
+        private const val CLA_NFCTAP = 0x80.toByte()  // CTAP2 over NFC uses CLA=0x80
+        private const val CLA_NFCTAP_CHAINING = 0x90.toByte()  // Chaining with CLA=0x90
         private const val INS_SELECT = 0xA4.toByte()
         private const val INS_NFCTAP_MSG = 0x10.toByte()
         private const val P1_SELECT_BY_DF_NAME = 0x04.toByte()
@@ -149,8 +150,8 @@ class NfcTransport(private val tag: Tag) : Ctap2Transport {
             val chunkSize = minOf(remaining, MAX_APDU_SIZE)
             val isLastChunk = (offset + chunkSize) >= data.size
 
-            // Build APDU
-            val cla = if (isLastChunk) CLA_ISO7816 else CLA_CHAINING
+            // Build APDU - use NFCTAP CLA (0x80/0x90) not ISO7816 CLA (0x00/0x10)
+            val cla = if (isLastChunk) CLA_NFCTAP else CLA_NFCTAP_CHAINING
             val chunk = data.copyOfRange(offset, offset + chunkSize)
             val apdu = buildNfcTapApdu(cla, chunk)
 
