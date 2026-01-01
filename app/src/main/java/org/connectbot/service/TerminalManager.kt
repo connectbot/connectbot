@@ -63,6 +63,7 @@ import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.sshlib.SshSigning
+import org.connectbot.fido2.Fido2Manager
 import org.connectbot.transport.TransportFactory
 import org.connectbot.util.CryptoProviderState
 import org.connectbot.util.PreferenceConstants
@@ -152,6 +153,9 @@ class TerminalManager :
 
     @Inject
     internal lateinit var connectionNotifier: ConnectionNotifier
+
+    @Inject
+    internal lateinit var fido2Manager: Fido2Manager
 
     @Inject
     internal lateinit var dispatchers: CoroutineDispatchers

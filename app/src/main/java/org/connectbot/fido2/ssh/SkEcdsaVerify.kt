@@ -59,7 +59,7 @@ object SkEcdsaVerify {
         // EC point
         writeBytes(baos, key.ecPoint)
         // Application
-        writeString(baos, key.application)
+        writeString(baos, key.getApplication())
 
         return baos.toByteArray()
     }
