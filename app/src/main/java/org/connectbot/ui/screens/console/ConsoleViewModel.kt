@@ -22,13 +22,13 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -230,7 +230,6 @@ class ConsoleViewModel @Inject constructor(
         val sessionCounts = allBridges.groupBy { it.host.id }
             .mapValues { it.value.size }
 
-
         _uiState.update {
             val newBridges = filteredBridges.ifEmpty { allBridges }
 
@@ -241,6 +240,7 @@ class ConsoleViewModel @Inject constructor(
                     newBridges.indexOfFirst { bridge -> bridge.sessionId == initialSessionId }
                         .takeIf { idx -> idx >= 0 } ?: 0
                 }
+
                 // First time loading - try to find last-used session
                 it.bridges.isEmpty() && hostId != -1L -> {
                     val lastUsed = terminalManager?.getLastUsedBridge(hostId)
@@ -251,10 +251,12 @@ class ConsoleViewModel @Inject constructor(
                         0
                     }
                 }
+
                 // Adjust index if it's now out of range
                 it.currentBridgeIndex >= newBridges.size -> {
                     (newBridges.size - 1).coerceAtLeast(0)
                 }
+
                 else -> it.currentBridgeIndex
             }
 
@@ -302,9 +304,7 @@ class ConsoleViewModel @Inject constructor(
     /**
      * Get the current bridge (if any).
      */
-    fun getCurrentBridge(): TerminalBridge? {
-        return _uiState.value.bridges.getOrNull(_uiState.value.currentBridgeIndex)
-    }
+    fun getCurrentBridge(): TerminalBridge? = _uiState.value.bridges.getOrNull(_uiState.value.currentBridgeIndex)
 
     /**
      * Open a new session to the current host and navigate to it.

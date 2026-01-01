@@ -108,7 +108,8 @@ class TerminalBridge {
      */
     val sessionId: Long
 
-    /* package */ var transport: AbsTransport? = null
+    /* package */
+    var transport: AbsTransport? = null
 
     val defaultPaint: Paint
 
