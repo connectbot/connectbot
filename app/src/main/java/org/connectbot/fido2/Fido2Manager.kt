@@ -27,6 +27,7 @@ import com.yubico.yubikit.android.transport.nfc.NfcNotAvailable
 import com.yubico.yubikit.android.transport.nfc.NfcYubiKeyDevice
 import com.yubico.yubikit.android.transport.usb.UsbConfiguration
 import com.yubico.yubikit.core.YubiKeyDevice
+import com.yubico.yubikit.core.fido.FidoConnection
 import com.yubico.yubikit.core.smartcard.SmartCardConnection
 import com.yubico.yubikit.fido.ctap.ClientPin
 import com.yubico.yubikit.fido.ctap.CredentialManagement
@@ -141,6 +142,7 @@ class Fido2Manager @Inject constructor(
 
     /**
      * Connect to a YubiKey device and establish a CTAP2 session.
+     * Uses FidoConnection for USB (CTAPHID protocol) and SmartCardConnection for NFC (APDU).
      */
     private suspend fun connectToDevice(device: YubiKeyDevice, transport: String, deviceName: String?) {
         try {
@@ -149,16 +151,30 @@ class Fido2Manager @Inject constructor(
 
             _connectionState.value = Fido2ConnectionState.Connecting
 
-            // Open a SmartCard connection and create CTAP2 session
+            // Open appropriate connection type based on transport
             val session = withContext(Dispatchers.IO) {
                 suspendCancellableCoroutine { continuation ->
-                    device.requestConnection(SmartCardConnection::class.java) { result ->
-                        try {
-                            val connection = result.value
-                            val ctap2Session = Ctap2Session(connection)
-                            continuation.resume(ctap2Session)
-                        } catch (e: Exception) {
-                            continuation.resumeWithException(e)
+                    if (transport == "USB") {
+                        // USB uses FidoConnection (CTAPHID protocol)
+                        device.requestConnection(FidoConnection::class.java) { result ->
+                            try {
+                                val connection = result.value
+                                val ctap2Session = Ctap2Session(connection)
+                                continuation.resume(ctap2Session)
+                            } catch (e: Exception) {
+                                continuation.resumeWithException(e)
+                            }
+                        }
+                    } else {
+                        // NFC uses SmartCardConnection (APDU protocol)
+                        device.requestConnection(SmartCardConnection::class.java) { result ->
+                            try {
+                                val connection = result.value
+                                val ctap2Session = Ctap2Session(connection)
+                                continuation.resume(ctap2Session)
+                            } catch (e: Exception) {
+                                continuation.resumeWithException(e)
+                            }
                         }
                     }
                 }
