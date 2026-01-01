@@ -157,7 +157,7 @@ class NfcTransport(private val tag: Tag) : Ctap2Transport {
             // Build APDU - use NFCTAP CLA (0x80/0x90) not ISO7816 CLA (0x00/0x10)
             val cla = if (isLastChunk) CLA_NFCTAP else CLA_NFCTAP_CHAINING
             val chunk = data.copyOfRange(offset, offset + chunkSize)
-            val apdu = buildNfcTapApdu(cla, chunk)
+            val apdu = buildNfcTapApdu(cla, chunk, isLastChunk)
 
             response = iso.transceive(apdu)
             val sw = getStatusWord(response)
@@ -178,18 +178,32 @@ class NfcTransport(private val tag: Tag) : Ctap2Transport {
 
     /**
      * Build an NFCTAP_MSG APDU for sending CTAP2 commands.
-     * Format: [CLA][INS][P1][P2][Lc][Data] (Case 3 short APDU, no Le byte)
+     * Format for chaining: [CLA][INS][P1][P2][Lc][Data] (Case 3 short APDU, no Le)
+     * Format for final chunk: [CLA][INS][P1][P2][Lc][Data][Le] (Case 4 short APDU)
      */
-    private fun buildNfcTapApdu(cla: Byte, data: ByteArray): ByteArray {
-        return byteArrayOf(
-            cla,
-            INS_NFCTAP_MSG,
-            0x00, // P1
-            0x00, // P2
-            data.size.toByte(), // Lc
-            *data
-            // No Le byte - CTAP2 NFC doesn't use it for NFCTAP_MSG
-        )
+    private fun buildNfcTapApdu(cla: Byte, data: ByteArray, isLastChunk: Boolean): ByteArray {
+        return if (isLastChunk) {
+            // Final chunk: include Le=0x00 to request response
+            byteArrayOf(
+                cla,
+                INS_NFCTAP_MSG,
+                0x00, // P1
+                0x00, // P2
+                data.size.toByte(), // Lc
+                *data,
+                0x00 // Le = 0 (accept any length response)
+            )
+        } else {
+            // Chaining: no Le byte
+            byteArrayOf(
+                cla,
+                INS_NFCTAP_MSG,
+                0x00, // P1
+                0x00, // P2
+                data.size.toByte(), // Lc
+                *data
+            )
+        }
     }
 
     /**
