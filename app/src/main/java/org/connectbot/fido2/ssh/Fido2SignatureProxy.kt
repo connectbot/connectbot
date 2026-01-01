@@ -19,6 +19,7 @@ package org.connectbot.fido2.ssh
 
 import com.trilead.ssh2.auth.SignatureProxy
 import kotlinx.coroutines.runBlocking
+import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.fido2.Fido2Algorithm
 import org.connectbot.fido2.Fido2Manager
 import org.connectbot.fido2.Fido2Result
@@ -38,6 +39,7 @@ import java.io.IOException
  * @param rpId The relying party ID (typically "ssh:")
  * @param algorithm The cryptographic algorithm used by this credential
  * @param pin The PIN for the security key
+ * @param transport The preferred transport (USB or NFC)
  * @param fido2Manager The FIDO2 manager for device communication
  */
 class Fido2SignatureProxy(
@@ -46,6 +48,7 @@ class Fido2SignatureProxy(
     private val rpId: String,
     private val algorithm: Fido2Algorithm,
     private val pin: String,
+    private val transport: Fido2Transport,
     private val fido2Manager: Fido2Manager
 ) : SignatureProxy(publicKey) {
 
@@ -94,19 +97,18 @@ class Fido2SignatureProxy(
     /**
      * Perform the actual FIDO2 signing operation.
      *
-     * For USB devices, this uses the already-connected device.
-     * For NFC, this requests a tap from the user.
+     * Uses the configured transport preference (USB or NFC).
      */
     private suspend fun performFido2Signing(challenge: ByteArray): Fido2Result<Fido2SignatureResult> {
-        // Check if USB device is connected
-        if (fido2Manager.isDeviceConnected()) {
-            // Use USB signing flow
-            Timber.d("USB device connected, using USB signing")
-            return performUsbSigning(challenge)
-        } else {
-            // Use NFC signing flow - request user to tap their key
-            Timber.d("No USB device, using NFC signing")
-            return performNfcSigning(challenge)
+        return when (transport) {
+            Fido2Transport.USB -> {
+                Timber.d("Using USB signing (preferred transport)")
+                performUsbSigning(challenge)
+            }
+            Fido2Transport.NFC -> {
+                Timber.d("Using NFC signing (preferred transport)")
+                performNfcSigning(challenge)
+            }
         }
     }
 

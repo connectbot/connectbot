@@ -80,7 +80,11 @@ data class Pubkey(
 
     /** FIDO2 relying party ID, typically "ssh:" for SSH keys */
     @ColumnInfo(name = "fido2_rp_id")
-    val fido2RpId: String? = null
+    val fido2RpId: String? = null,
+
+    /** Preferred transport for FIDO2 security key (USB or NFC) */
+    @ColumnInfo(name = "fido2_transport")
+    val fido2Transport: Fido2Transport? = null
 ) {
     /** Whether this key is stored in Android Keystore with biometric protection */
     val isBiometric: Boolean
@@ -116,6 +120,7 @@ data class Pubkey(
             if (!credentialId.contentEquals(other.credentialId)) return false
         } else if (other.credentialId != null) return false
         if (fido2RpId != other.fido2RpId) return false
+        if (fido2Transport != other.fido2Transport) return false
 
         return true
     }
@@ -135,6 +140,7 @@ data class Pubkey(
         result = 31 * result + (keystoreAlias?.hashCode() ?: 0)
         result = 31 * result + (credentialId?.contentHashCode() ?: 0)
         result = 31 * result + (fido2RpId?.hashCode() ?: 0)
+        result = 31 * result + (fido2Transport?.hashCode() ?: 0)
         return result
     }
 }
