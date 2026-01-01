@@ -505,6 +505,16 @@
 	<string name="profile_editor_font_family_title">Font Family</string>
 	<!-- Subsection title showing current font size. Parameter is the font size in points. -->
 	<string name="profile_editor_font_size_title">Font Size: %d</string>
+	<!-- Subsection title for force size settings -->
+	<string name="profile_editor_force_size_title">Force Size</string>
+	<!-- Summary text explaining what force size does -->
+	<string name="profile_editor_force_size_summary">Force the terminal to a specific size (columns x rows) instead of auto-sizing to fit the screen.</string>
+	<!-- Label for the enable force size switch -->
+	<string name="profile_editor_force_size_enable">Enable force size</string>
+	<!-- Label for the force size columns input field -->
+	<string name="profile_editor_force_size_columns">Columns</string>
+	<!-- Label for the force size rows input field -->
+	<string name="profile_editor_force_size_rows">Rows</string>
 	<!-- Dropdown option to not override host color with profile color -->
 	<string name="profile_icon_color_none">None (use host color)</string>
 
@@ -976,6 +986,8 @@
 	<string name="resize_width_label">Width (columns)</string>
 	<!-- Label for height input field in terminal resize dialog -->
 	<string name="resize_height_label">Height (rows)</string>
+	<!-- Button to disable force size and return to auto-sizing -->
+	<string name="resize_disable_force_size">Disable force size</string>
 
 	<!-- Public key editor labels -->
 	<!-- Label for key type field in the SSH pubkey editor -->

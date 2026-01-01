@@ -41,8 +41,10 @@ import org.connectbot.service.TerminalBridge
 @Composable
 fun ResizeDialog(
     currentBridge: TerminalBridge,
+    isForced: Boolean,
     onDismiss: () -> Unit,
-    onResize: (Int, Int) -> Unit
+    onResize: (Int, Int) -> Unit,
+    onDisableForceSize: () -> Unit
 ) {
     val dimensions = currentBridge.terminalEmulator.dimensions
 
@@ -84,6 +86,18 @@ fun ResizeDialog(
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth()
                 )
+
+                if (isForced) {
+                    TextButton(
+                        onClick = {
+                            onDisableForceSize()
+                            onDismiss()
+                        },
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Text(stringResource(R.string.resize_disable_force_size))
+                    }
+                }
             }
         },
         confirmButton = {
