@@ -55,7 +55,7 @@ import org.connectbot.data.entity.Pubkey
  * - Version 3: Added unique index on known_hosts (hostname, port) (AutoMigration)
  * - Version 4: Changed known_hosts index to (host_id, host_key) (AutoMigration)
  * - Version 5: Added profiles table and profile_id column to hosts (manual migration)
- * - Version 6: Added FIDO2 fields to pubkeys (credential_id, fido2_rp_id) (AutoMigration)
+ * - Version 6: Added FIDO2 fields to pubkeys (credential_id, fido2_rp_id, fido2_transport) (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -72,14 +72,13 @@ import org.connectbot.data.entity.Pubkey
         ColorPalette::class,
         Profile::class
     ],
-    version = 7,
+    version = 6,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 2, to = 4),
         AutoMigration(from = 3, to = 4),
-        AutoMigration(from = 5, to = 6),
-        AutoMigration(from = 6, to = 7)
+        AutoMigration(from = 5, to = 6)
     ]
 )
 @TypeConverters(Converters::class)
@@ -96,7 +95,7 @@ abstract class ConnectBotDatabase : RoomDatabase() {
          * Current database schema version.
          * This is also used for JSON export/import versioning.
          */
-        const val SCHEMA_VERSION = 7
+        const val SCHEMA_VERSION = 6
 
         /**
          * Migration from version 4 to 5: Add profiles table and profile_id to hosts.
