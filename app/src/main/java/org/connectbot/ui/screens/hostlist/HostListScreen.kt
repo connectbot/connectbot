@@ -567,7 +567,7 @@ private fun HostListItem(
         ConnectionState.UNKNOWN -> Color.Transparent
     }
 
-    Box {
+    Box(modifier = modifier) {
         ListItem(
             supportingContent = {
                 Text("${host.protocol}://${host.hostname}:${host.port}")
