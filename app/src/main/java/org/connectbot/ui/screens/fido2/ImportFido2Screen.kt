@@ -83,9 +83,12 @@ fun ImportFido2Screen(
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
-    // Check for connected USB devices when screen is shown
-    LaunchedEffect(Unit) {
-        viewModel.checkForConnectedDevices()
+    // Start USB device discovery when screen is shown
+    DisposableEffect(Unit) {
+        viewModel.startUsbDiscovery()
+        onDispose {
+            viewModel.stopUsbDiscovery()
+        }
     }
 
     // Show error in snackbar
