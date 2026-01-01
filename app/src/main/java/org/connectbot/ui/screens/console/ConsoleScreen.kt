@@ -155,13 +155,11 @@ fun ConsoleScreen(
     modifier: Modifier = Modifier,
     viewModel: ConsoleViewModel = hiltViewModel()
 ) {
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
     val context = LocalContext.current
     val terminalManager = LocalTerminalManager.current
     val uiState by viewModel.uiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
-
-    // Capture latest callback for use in effects
-    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
 
     LaunchedEffect(terminalManager) {
         terminalManager?.let { viewModel.setTerminalManager(it) }

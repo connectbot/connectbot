@@ -523,7 +523,7 @@ private fun HostListItem(
         ConnectionState.UNKNOWN -> Color.Transparent
     }
 
-    Box {
+    Box(modifier = modifier) {
         ListItem(
             headlineContent = {
                 Text(
@@ -632,7 +632,6 @@ private fun HostListItem(
                                     }
                                 )
                             }
-                            }
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.list_host_edit)) },
                                 onClick = {
@@ -700,7 +699,7 @@ private fun HostListItem(
                     }
                 }
             },
-            modifier = modifier.combinedClickable(
+            modifier = Modifier.combinedClickable(
                 onClick = onClick,
                 onLongClick = {
                     // Show context menu on long press for connected hosts (when not making shortcut)
