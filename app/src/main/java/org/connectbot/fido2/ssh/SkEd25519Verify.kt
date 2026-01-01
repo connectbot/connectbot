@@ -57,7 +57,7 @@ object SkEd25519Verify {
         // Ed25519 public key
         writeBytes(baos, key.ed25519Key)
         // Application
-        writeString(baos, key.application)
+        writeString(baos, key.getApplication())
 
         return baos.toByteArray()
     }
