@@ -30,6 +30,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.data.EntityIds
 import org.connectbot.data.PubkeyRepository
+import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.PubkeyUtils
@@ -46,6 +47,8 @@ data class PubkeyEditorUiState(
     val newPassword2: String = "",
     val unlockAtStartup: Boolean = false,
     val confirmUse: Boolean = false,
+    val isFido2: Boolean = false,
+    val fido2Transport: Fido2Transport = Fido2Transport.USB,
     val isLoading: Boolean = true,
     val error: String? = null,
     val saveSuccess: Boolean = false,
@@ -99,6 +102,8 @@ class PubkeyEditorViewModel @Inject constructor(
                             isEncrypted = pubkey.encrypted,
                             unlockAtStartup = pubkey.startup,
                             confirmUse = pubkey.confirmation,
+                            isFido2 = pubkey.isFido2,
+                            fido2Transport = pubkey.fido2Transport ?: Fido2Transport.USB,
                             isLoading = false,
                             hasUnsavedChanges = false,
                         )
@@ -169,6 +174,10 @@ class PubkeyEditorViewModel @Inject constructor(
         _uiState.update { it.copy(confirmUse = checked, hasUnsavedChanges = true) }
     }
 
+    fun updateFido2Transport(transport: Fido2Transport) {
+        _uiState.update { it.copy(fido2Transport = transport) }
+    }
+
     fun save() {
         val pubkey = originalPubkey ?: return
         val state = _uiState.value
@@ -231,8 +240,9 @@ class PubkeyEditorViewModel @Inject constructor(
                         nickname = state.nickname,
                         privateKey = newPrivateKey,
                         encrypted = newEncrypted,
-                        startup = state.unlockAtStartup,
+                        startup = state.unlockAtStartup && !newEncrypted,
                         confirmation = state.confirmUse,
+                        fido2Transport = if (state.isFido2) state.fido2Transport else pubkey.fido2Transport,
                     )
 
                     // Save to database
