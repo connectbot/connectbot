@@ -35,8 +35,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Nfc
 import androidx.compose.material.icons.filled.Usb
 import androidx.compose.material3.Button
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -73,6 +75,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.connectbot.R
+import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.fido2.Fido2Algorithm
 import org.connectbot.fido2.Fido2ConnectionState
 import org.connectbot.fido2.Fido2Credential
@@ -157,7 +160,9 @@ fun ImportFido2Screen(
                     ImportConfirmationContent(
                         credential = uiState.selectedCredential!!,
                         nickname = uiState.nickname,
+                        selectedTransport = uiState.selectedTransport,
                         onNicknameChange = viewModel::updateNickname,
+                        onTransportChange = viewModel::updateTransport,
                         onConfirm = viewModel::importSelectedCredential,
                         onCancel = viewModel::clearSelection
                     )
@@ -418,7 +423,9 @@ private fun CredentialCard(
 private fun ImportConfirmationContent(
     credential: Fido2Credential,
     nickname: String,
+    selectedTransport: Fido2Transport,
     onNicknameChange: (String) -> Unit,
+    onTransportChange: (Fido2Transport) -> Unit,
     onConfirm: () -> Unit,
     onCancel: () -> Unit
 ) {
@@ -462,6 +469,49 @@ private fun ImportConfirmationContent(
             singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Transport selection
+        Text(
+            text = stringResource(R.string.fido2_transport_label),
+            style = MaterialTheme.typography.labelMedium,
+            modifier = Modifier.fillMaxWidth()
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
+            FilterChip(
+                selected = selectedTransport == Fido2Transport.USB,
+                onClick = { onTransportChange(Fido2Transport.USB) },
+                label = { Text(stringResource(R.string.fido2_transport_usb)) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Usb,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                },
+                modifier = Modifier.weight(1f)
+            )
+            FilterChip(
+                selected = selectedTransport == Fido2Transport.NFC,
+                onClick = { onTransportChange(Fido2Transport.NFC) },
+                label = { Text(stringResource(R.string.fido2_transport_nfc)) },
+                leadingIcon = {
+                    Icon(
+                        imageVector = Icons.Filled.Nfc,
+                        contentDescription = null,
+                        modifier = Modifier.size(18.dp)
+                    )
+                },
+                modifier = Modifier.weight(1f)
+            )
+        }
 
         Spacer(modifier = Modifier.height(32.dp))
 
