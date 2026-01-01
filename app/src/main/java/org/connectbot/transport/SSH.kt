@@ -45,6 +45,7 @@ import com.trilead.ssh2.signature.RSASHA1Verify
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
+import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.fido2.Fido2Algorithm
@@ -653,8 +654,11 @@ class SSH :
             return null
         }
 
-        // Prompt user to connect their security key
-        val connected = bridge?.requestFido2Connect(pubkey.nickname, credentialId) ?: false
+        // Get the preferred transport (default to USB for legacy keys)
+        val transport = pubkey.fido2Transport ?: Fido2Transport.USB
+
+        // Prompt user to connect their security key (skipped for NFC, handled during signing)
+        val connected = bridge?.requestFido2Connect(pubkey.nickname, credentialId, transport) ?: false
         if (!connected) {
             bridge?.outputLine("FIDO2 security key connection cancelled or failed")
             return null
@@ -684,6 +688,7 @@ class SSH :
             rpId = rpId,
             algorithm = algorithm,
             pin = pin,
+            transport = transport,
             fido2Manager = fido2Manager
         )
 
