@@ -47,9 +47,13 @@ class NfcTransport(private val tag: Tag) : Ctap2Transport {
         private const val P1_SELECT_BY_DF_NAME = 0x04.toByte()
         private const val P2_NO_RESPONSE = 0x00.toByte()
 
+        // NFCCTAP_GETRESPONSE instruction (not ISO7816 GET RESPONSE)
+        private const val INS_NFCCTAP_GETRESPONSE = 0x11.toByte()
+
         // Status words
         private const val SW_SUCCESS = 0x9000
-        private const val SW_MORE_DATA_PREFIX = 0x61
+        private const val SW_UPDATE = 0x9100  // CTAP2 NFC: more data available
+        private const val SW_MORE_DATA_PREFIX = 0x61  // ISO7816: more data available
 
         // Maximum APDU data size (conservative estimate)
         private const val MAX_APDU_SIZE = 255
@@ -188,7 +192,7 @@ class NfcTransport(private val tag: Tag) : Ctap2Transport {
     }
 
     /**
-     * Handle response, fetching additional data if indicated by SW=61XX.
+     * Handle response, fetching additional data if indicated by SW=9100 or SW=61XX.
      */
     private fun handleResponse(iso: IsoDep, initialResponse: ByteArray): ByteArray {
         val outputStream = ByteArrayOutputStream()
@@ -209,11 +213,22 @@ class NfcTransport(private val tag: Tag) : Ctap2Transport {
                     // All data received
                     break
                 }
-                sw1 == SW_MORE_DATA_PREFIX -> {
-                    // More data available, fetch it with GET RESPONSE
+                sw == SW_UPDATE -> {
+                    // CTAP2 NFC: More data available, fetch with NFCCTAP_GETRESPONSE
                     val getResponseApdu = byteArrayOf(
-                        CLA_ISO7816,
-                        0xC0.toByte(), // INS: GET RESPONSE
+                        CLA_NFCTAP,
+                        INS_NFCCTAP_GETRESPONSE,
+                        0x00,
+                        0x00,
+                        0x00 // Le = 0 (accept any length)
+                    )
+                    response = iso.transceive(getResponseApdu)
+                }
+                sw1 == SW_MORE_DATA_PREFIX -> {
+                    // ISO7816 style: More data available, fetch with NFCCTAP_GETRESPONSE
+                    val getResponseApdu = byteArrayOf(
+                        CLA_NFCTAP,
+                        INS_NFCCTAP_GETRESPONSE,
                         0x00,
                         0x00,
                         sw2.toByte() // Le = number of bytes available
