@@ -157,10 +157,8 @@ class SftpConnectionManager @Inject constructor(
      * @param hostId The ID of the host
      * @return SftpOperations if a session exists, null otherwise
      */
-    suspend fun getOperations(hostId: Long): SftpOperations? {
-        return sessionMutex.withLock {
-            activeSessions[hostId]?.operations
-        }
+    suspend fun getOperations(hostId: Long): SftpOperations? = sessionMutex.withLock {
+        activeSessions[hostId]?.operations
     }
 
     /**
@@ -169,10 +167,8 @@ class SftpConnectionManager @Inject constructor(
      * @param hostId The ID of the host
      * @return True if a session is active
      */
-    suspend fun isConnected(hostId: Long): Boolean {
-        return sessionMutex.withLock {
-            activeSessions.containsKey(hostId)
-        }
+    suspend fun isConnected(hostId: Long): Boolean = sessionMutex.withLock {
+        activeSessions.containsKey(hostId)
     }
 
     /**
@@ -472,10 +468,8 @@ class SftpConnectionManager @Inject constructor(
             }
         }
 
-        override fun getKnownKeyAlgorithmsForHost(hostname: String, port: Int): List<String>? {
-            return kotlinx.coroutines.runBlocking {
-                hostRepository.getHostKeyAlgorithmsForHost(host.id).ifEmpty { null }
-            }
+        override fun getKnownKeyAlgorithmsForHost(hostname: String, port: Int): List<String>? = kotlinx.coroutines.runBlocking {
+            hostRepository.getHostKeyAlgorithmsForHost(host.id).ifEmpty { null }
         }
 
         override fun removeServerHostKey(hostname: String, port: Int, algorithm: String, hostKey: ByteArray) {
@@ -490,14 +484,12 @@ class SftpConnectionManager @Inject constructor(
             }
         }
 
-        private fun getKeyType(openSshKeyType: String): String? {
-            return when {
-                openSshKeyType == "ssh-rsa" -> "RSA"
-                openSshKeyType == "ssh-dss" -> "DSA"
-                openSshKeyType == "ssh-ed25519" -> "Ed25519"
-                openSshKeyType.startsWith("ecdsa-sha2-") -> "EC"
-                else -> null
-            }
+        private fun getKeyType(openSshKeyType: String): String? = when {
+            openSshKeyType == "ssh-rsa" -> "RSA"
+            openSshKeyType == "ssh-dss" -> "DSA"
+            openSshKeyType == "ssh-ed25519" -> "Ed25519"
+            openSshKeyType.startsWith("ecdsa-sha2-") -> "EC"
+            else -> null
         }
     }
 }

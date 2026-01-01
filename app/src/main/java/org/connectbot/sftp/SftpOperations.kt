@@ -75,7 +75,8 @@ class SftpOperations(private val client: SFTPv3Client) {
      * @param path The path of the directory to create
      * @param permissions POSIX permissions (default 0755)
      */
-    suspend fun mkdir(path: String, permissions: Int = 493) = withContext(Dispatchers.IO) { // 0755 octal = 493 decimal
+    suspend fun mkdir(path: String, permissions: Int = 493) = withContext(Dispatchers.IO) {
+        // 0755 octal = 493 decimal
         client.mkdir(path, permissions)
     }
 

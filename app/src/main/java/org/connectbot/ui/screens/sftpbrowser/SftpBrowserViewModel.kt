@@ -202,7 +202,9 @@ class SftpBrowserViewModel @Inject constructor(
                 // Resolve the path
                 val resolvedPath = when {
                     path == "~" -> operations.canonicalPath(".")
+
                     path.startsWith("/") -> path
+
                     else -> {
                         val current = _uiState.value.currentPath
                         if (current.endsWith("/")) "$current$path" else "$current/$path"
@@ -495,28 +497,24 @@ class SftpBrowserViewModel @Inject constructor(
 
     private fun createPromptHandler(): SftpPromptHandler {
         return object : SftpPromptHandler {
-            override suspend fun requestPassword(message: String): String? {
-                return kotlinx.coroutines.suspendCancellableCoroutine { cont ->
-                    pendingPasswordCallback = { password ->
-                        cont.resumeWith(Result.success(password))
-                    }
-                    _uiState.update {
-                        it.copy(showPasswordDialog = true, passwordPrompt = message)
-                    }
+            override suspend fun requestPassword(message: String): String? = kotlinx.coroutines.suspendCancellableCoroutine { cont ->
+                pendingPasswordCallback = { password ->
+                    cont.resumeWith(Result.success(password))
+                }
+                _uiState.update {
+                    it.copy(showPasswordDialog = true, passwordPrompt = message)
                 }
             }
 
-            override suspend fun requestKeyPassphrase(keyName: String): String? {
-                return kotlinx.coroutines.suspendCancellableCoroutine { cont ->
-                    pendingKeyPassphraseCallback = { passphrase ->
-                        cont.resumeWith(Result.success(passphrase))
-                    }
-                    _uiState.update {
-                        it.copy(
-                            showKeyPassphraseDialog = true,
-                            keyPassphrasePrompt = "Enter passphrase for key '$keyName'"
-                        )
-                    }
+            override suspend fun requestKeyPassphrase(keyName: String): String? = kotlinx.coroutines.suspendCancellableCoroutine { cont ->
+                pendingKeyPassphraseCallback = { passphrase ->
+                    cont.resumeWith(Result.success(passphrase))
+                }
+                _uiState.update {
+                    it.copy(
+                        showKeyPassphraseDialog = true,
+                        keyPassphrasePrompt = "Enter passphrase for key '$keyName'"
+                    )
                 }
             }
 
@@ -525,31 +523,27 @@ class SftpBrowserViewModel @Inject constructor(
                 keyType: String,
                 fingerprint: String,
                 isNewKey: Boolean
-            ): Boolean {
-                return kotlinx.coroutines.suspendCancellableCoroutine { cont ->
-                    pendingHostKeyCallback = { accepted ->
-                        cont.resumeWith(Result.success(accepted))
-                    }
-                    _uiState.update {
-                        it.copy(
-                            showHostKeyDialog = true,
-                            hostKeyInfo = HostKeyInfo(hostname, keyType, fingerprint, isNewKey)
-                        )
-                    }
+            ): Boolean = kotlinx.coroutines.suspendCancellableCoroutine { cont ->
+                pendingHostKeyCallback = { accepted ->
+                    cont.resumeWith(Result.success(accepted))
+                }
+                _uiState.update {
+                    it.copy(
+                        showHostKeyDialog = true,
+                        hostKeyInfo = HostKeyInfo(hostname, keyType, fingerprint, isNewKey)
+                    )
                 }
             }
 
-            override suspend fun requestBiometricAuth(keyName: String, keystoreAlias: String): Boolean {
-                return kotlinx.coroutines.suspendCancellableCoroutine { cont ->
-                    pendingBiometricCallback = { success ->
-                        cont.resumeWith(Result.success(success))
-                    }
-                    _uiState.update {
-                        it.copy(
-                            showBiometricDialog = true,
-                            biometricKeyInfo = BiometricKeyInfo(keyName, keystoreAlias)
-                        )
-                    }
+            override suspend fun requestBiometricAuth(keyName: String, keystoreAlias: String): Boolean = kotlinx.coroutines.suspendCancellableCoroutine { cont ->
+                pendingBiometricCallback = { success ->
+                    cont.resumeWith(Result.success(success))
+                }
+                _uiState.update {
+                    it.copy(
+                        showBiometricDialog = true,
+                        biometricKeyInfo = BiometricKeyInfo(keyName, keystoreAlias)
+                    )
                 }
             }
 
