@@ -100,14 +100,18 @@ class ImportFido2ViewModel @Inject constructor(
     }
 
     /**
-     * Check for already-connected USB devices and connect if available.
+     * Start USB device discovery.
+     * YubiKit will automatically connect when a device is detected.
      */
-    fun checkForConnectedDevices() {
-        val devices = fido2Manager.findConnectedDevices()
-        if (devices.isNotEmpty()) {
-            // Request permission for the first device found
-            fido2Manager.requestDevicePermission(devices.first())
-        }
+    fun startUsbDiscovery() {
+        fido2Manager.startUsbDiscovery()
+    }
+
+    /**
+     * Stop USB device discovery.
+     */
+    fun stopUsbDiscovery() {
+        fido2Manager.stopUsbDiscovery()
     }
 
     /**
