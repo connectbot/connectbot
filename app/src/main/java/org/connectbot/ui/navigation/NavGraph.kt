@@ -55,7 +55,7 @@ fun ConnectBotNavHost(
     modifier: Modifier = Modifier,
     startDestination: String = NavDestinations.HOST_LIST,
     makingShortcut: Boolean = false,
-    onShortcutSelected: (Host) -> Unit = {},
+    onSelectShortcut: (Host) -> Unit = {}
 ) {
     NavHost(
         navController = navController,
@@ -66,7 +66,7 @@ fun ConnectBotNavHost(
             HostListScreen(
                 makingShortcut = makingShortcut,
                 onNavigateToConsole = onNavigateToConsole,
-                onShortcutSelected = onShortcutSelected,
+                onSelectShortcut = onSelectShortcut,
                 onNavigateToEditHost = { host ->
                     if (host != null) {
                         navController.navigateSafely("${NavDestinations.HOST_EDITOR}?${NavArgs.HOST_ID}=${host.id}")
@@ -255,16 +255,14 @@ fun ConnectBotNavHost(
  *
  * This is used to de-duplicate navigation events.
  */
-private fun NavBackStackEntry?.lifecycleIsResumed() =
-    this?.lifecycle?.currentState == Lifecycle.State.RESUMED
+private fun NavBackStackEntry?.lifecycleIsResumed() = this?.lifecycle?.currentState == Lifecycle.State.RESUMED
 
 /**
  * Safely pops the back stack, preventing double navigation when the user rapidly taps
  * the back button. This checks if the current destination's lifecycle state is RESUMED
  * before allowing the navigation to proceed.
  */
-private fun NavHostController.safePopBackStack() =
-    if (currentBackStackEntry.lifecycleIsResumed()) popBackStack() else false
+private fun NavHostController.safePopBackStack() = if (currentBackStackEntry.lifecycleIsResumed()) popBackStack() else false
 
 /**
  * A more robust navigate function that avoids navigating to the
