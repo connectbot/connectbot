@@ -572,7 +572,7 @@ private fun HostListItem(
         )
     }
 
-    Box {
+    Box(modifier = modifier) {
         ListItem(
             supportingContent = {
                 Text("${host.protocol}://${host.hostname}:${host.port}")
