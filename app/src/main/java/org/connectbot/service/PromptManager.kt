@@ -18,6 +18,7 @@
 package org.connectbot.service
 
 import kotlinx.coroutines.CompletableDeferred
+import org.connectbot.data.entity.Fido2Transport
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -109,7 +110,8 @@ class PromptManager {
      */
     suspend fun requestFido2Connect(
         keyNickname: String,
-        credentialId: ByteArray
+        credentialId: ByteArray,
+        transport: Fido2Transport
     ): Boolean {
         val deferred = CompletableDeferred<PromptResponse>()
         currentDeferred = deferred
@@ -117,7 +119,8 @@ class PromptManager {
         _promptState.update {
             PromptRequest.Fido2ConnectPrompt(
                 keyNickname = keyNickname,
-                credentialId = credentialId
+                credentialId = credentialId,
+                transport = transport
             )
         }
 
@@ -247,18 +250,21 @@ sealed class PromptRequest {
     /** Prompt to connect a FIDO2 security key */
     data class Fido2ConnectPrompt(
         val keyNickname: String,
-        val credentialId: ByteArray
+        val credentialId: ByteArray,
+        val transport: Fido2Transport
     ) : PromptRequest() {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
             if (other !is Fido2ConnectPrompt) return false
             return keyNickname == other.keyNickname &&
-                credentialId.contentEquals(other.credentialId)
+                credentialId.contentEquals(other.credentialId) &&
+                transport == other.transport
         }
 
         override fun hashCode(): Int {
             var result = keyNickname.hashCode()
             result = 31 * result + credentialId.contentHashCode()
+            result = 31 * result + transport.hashCode()
             return result
         }
     }
