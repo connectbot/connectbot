@@ -35,7 +35,5 @@ object SftpModule {
     fun provideSftpConnectionManager(
         hostRepository: HostRepository,
         pubkeyRepository: PubkeyRepository
-    ): SftpConnectionManager {
-        return SftpConnectionManager(hostRepository, pubkeyRepository)
-    }
+    ): SftpConnectionManager = SftpConnectionManager(hostRepository, pubkeyRepository)
 }

@@ -22,11 +22,9 @@ import android.content.ContextWrapper
 import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.activity.compose.BackHandler
-import androidx.biometric.BiometricPrompt
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.FragmentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.biometric.BiometricPrompt
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -71,6 +69,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -80,6 +79,8 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import org.connectbot.R
 import timber.log.Timber
@@ -88,10 +89,10 @@ import timber.log.Timber
 @Composable
 fun SftpBrowserScreen(
     onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SftpBrowserViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
-    val viewModel: SftpBrowserViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
     var fabExpanded by rememberSaveable { mutableStateOf(false) }
@@ -413,11 +414,13 @@ private fun SftpBiometricPromptHandler(
 ) {
     val context = LocalContext.current
     val activity = remember(context) { context.findFragmentActivity() }
+    val currentOnSuccess by rememberUpdatedState(onSuccess)
+    val currentOnFailure by rememberUpdatedState(onFailure)
 
     LaunchedEffect(keyName) {
         if (activity == null) {
             Timber.e("Cannot show BiometricPrompt: FragmentActivity not found")
-            onFailure()
+            currentOnFailure()
             return@LaunchedEffect
         }
 
@@ -426,12 +429,12 @@ private fun SftpBiometricPromptHandler(
         val callback = object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                 Timber.d("Biometric authentication succeeded for SFTP")
-                onSuccess()
+                currentOnSuccess()
             }
 
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                 Timber.e("Biometric authentication error: $errorCode - $errString")
-                onFailure()
+                currentOnFailure()
             }
 
             override fun onAuthenticationFailed() {
