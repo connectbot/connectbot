@@ -102,6 +102,7 @@ import androidx.preference.PreferenceManager
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
@@ -555,18 +556,13 @@ fun ConsoleScreen(
                                     return@LaunchedEffect
                                 }
 
+                                // Start USB discovery and wait for connection
                                 fido2Manager.startUsbDiscovery()
-                                try {
-                                    // Wait for USB connection
-                                    fido2Manager.connectionState.collect { state ->
-                                        if (state is Fido2ConnectionState.Connected) {
-                                            bridge.promptManager.respond(PromptResponse.Fido2Response(true))
-                                            return@collect
-                                        }
-                                    }
-                                } finally {
-                                    fido2Manager.stopUsbDiscovery()
+                                fido2Manager.connectionState.first { state ->
+                                    state is Fido2ConnectionState.Connected
                                 }
+                                // Don't stop USB discovery - device needs to stay connected for signing
+                                bridge.promptManager.respond(PromptResponse.Fido2Response(true))
                             }
                         }
 
