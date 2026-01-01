@@ -1051,6 +1051,8 @@
 	<string name="pubkey_encrypted_description">Encrypted</string>
 	<!-- Accessibility description for unencrypted key icon -->
 	<string name="pubkey_not_encrypted_description">Not encrypted</string>
+	<!-- Accessibility description for FIDO2 key icon -->
+	<string name="pubkey_fido2_description">FIDO2 hardware key</string>
 
 	<!-- Biometric authentication strings -->
 	<!-- Label for biometric protection toggle in key generation -->
