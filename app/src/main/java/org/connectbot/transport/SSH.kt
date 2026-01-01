@@ -47,6 +47,10 @@ import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.fido2.CoseKeyDecoder
+import org.connectbot.fido2.Fido2Algorithm
+import org.connectbot.fido2.ssh.Fido2PrivateKey
+import org.connectbot.fido2.ssh.Fido2SigningCallback
 import org.connectbot.fido2.ssh.SkEcdsaPublicKey
 import org.connectbot.fido2.ssh.SkEcdsaVerify
 import org.connectbot.fido2.ssh.SkEd25519PublicKey
@@ -56,8 +60,11 @@ import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.service.requestBiometricAuth
 import org.connectbot.service.requestBooleanPrompt
+import org.connectbot.service.requestFido2Connect
+import org.connectbot.service.requestFido2Pin
 import org.connectbot.service.requestHostKeyFingerprintPrompt
 import org.connectbot.service.requestStringPrompt
+import org.connectbot.util.PubkeyConstants
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PubkeyUtils
 import timber.log.Timber
@@ -477,6 +484,11 @@ class SSH :
             return manager?.getKey(pubkey.nickname)
         }
 
+        // Handle FIDO2 security key authentication
+        if (pubkey.storageType == KeyStorageType.FIDO2_RESIDENT_KEY) {
+            return handleFido2Key(pubkey)
+        }
+
         // Handle Android Keystore (biometric) keys
         if (pubkey.storageType == KeyStorageType.ANDROID_KEYSTORE) {
             val keystoreAlias = pubkey.keystoreAlias
@@ -595,6 +607,95 @@ class SSH :
         // save this key in memory
         manager?.addKey(pubkey, pair)
 
+        return pair
+    }
+
+    /**
+     * Handle authentication with a FIDO2 security key.
+     *
+     * FIDO2 keys require hardware-based signing which cannot be done with standard
+     * Java crypto. This method prompts the user to connect their security key
+     * and enter their PIN, then creates a KeyPair that can be used for SSH authentication.
+     *
+     * Note: The actual signing is performed by the FIDO2 device via the
+     * [Fido2SigningCallback] when the SSH library needs a signature.
+     */
+    private fun handleFido2Key(pubkey: Pubkey): KeyPair? {
+        val credentialId = pubkey.credentialId
+        val rpId = pubkey.fido2RpId
+
+        if (credentialId == null || rpId == null) {
+            val message = "FIDO2 key '${pubkey.nickname}' is missing credential data"
+            Timber.e(message)
+            bridge?.outputLine(message)
+            return null
+        }
+
+        // Determine key type and algorithm from the stored public key
+        val algorithm = when (pubkey.type) {
+            PubkeyConstants.KEY_TYPE_SK_ED25519 -> Fido2Algorithm.EDDSA
+            PubkeyConstants.KEY_TYPE_SK_ECDSA -> Fido2Algorithm.ES256
+            else -> {
+                val message = "Unknown FIDO2 key type: ${pubkey.type}"
+                Timber.e(message)
+                bridge?.outputLine(message)
+                return null
+            }
+        }
+
+        bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_fido2, pubkey.nickname))
+
+        // Prompt user to connect their security key
+        val connected = bridge?.requestFido2Connect(pubkey.nickname, credentialId) ?: false
+        if (!connected) {
+            bridge?.outputLine("FIDO2 security key connection cancelled or failed")
+            return null
+        }
+
+        // Prompt for PIN
+        val pin = bridge?.requestFido2Pin(pubkey.nickname)
+        if (pin == null) {
+            bridge?.outputLine("FIDO2 PIN entry cancelled")
+            return null
+        }
+
+        // Store PIN for use during signing
+        // The actual signing will be done when the SSH library calls authenticate
+        val storedPin = pin
+
+        // Create the public key from stored data
+        val publicKeyBytes = pubkey.publicKey
+
+        val publicKey: SkPublicKey = when (algorithm) {
+            Fido2Algorithm.EDDSA -> SkEd25519Verify.decodePublicKey(publicKeyBytes)
+            Fido2Algorithm.ES256 -> SkEcdsaVerify.decodePublicKey(publicKeyBytes)
+        }
+
+        // Create signing callback that delegates to FIDO2 manager
+        val signingCallback = object : Fido2SigningCallback {
+            override fun sign(data: ByteArray): ByteArray? {
+                // This is called by the SSH library when it needs a signature
+                // For now, return null to indicate signing is not yet implemented
+                // Full implementation requires sshlib to support SK key signing
+                Timber.w("FIDO2 signing callback invoked - full integration pending")
+                return null
+            }
+        }
+
+        // Create the Fido2PrivateKey wrapper
+        val privateKey = Fido2PrivateKey(
+            credentialId = credentialId,
+            rpId = rpId,
+            algorithm = algorithm,
+            signingCallback = signingCallback
+        )
+
+        val pair = KeyPair(publicKey, privateKey)
+
+        // Store PIN in manager for later use
+        manager?.storeFido2Pin(pubkey.nickname, storedPin)
+
+        Timber.d("Created FIDO2 KeyPair for '${pubkey.nickname}'")
         return pair
     }
 

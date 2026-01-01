@@ -133,3 +133,64 @@ fun TerminalBridge.requestHostKeyFingerprintPrompt(
         return null
     }
 }
+
+/**
+ * Request FIDO2 security key connection for authentication.
+ *
+ * @param keyNickname The nickname of the key for display
+ * @param credentialId The credential ID on the security key
+ * @return true if security key connected successfully, false otherwise
+ */
+fun TerminalBridge.requestFido2Connect(
+    keyNickname: String,
+    credentialId: ByteArray
+): Boolean {
+    return try {
+        runBlocking {
+            promptManager.requestFido2Connect(keyNickname, credentialId)
+        }
+    } catch (e: CancellationException) {
+        Timber.w("Attempted prompt on a closed stream.")
+        return false
+    }
+}
+
+/**
+ * Request FIDO2 PIN entry.
+ *
+ * @param keyNickname The nickname of the key for display
+ * @param attemptsRemaining Number of PIN attempts remaining, or null if unknown
+ * @return The PIN entered by user, or null if cancelled
+ */
+fun TerminalBridge.requestFido2Pin(
+    keyNickname: String,
+    attemptsRemaining: Int? = null
+): String? {
+    return try {
+        runBlocking {
+            promptManager.requestFido2Pin(keyNickname, attemptsRemaining)
+        }
+    } catch (e: CancellationException) {
+        Timber.w("Attempted prompt on a closed stream.")
+        return null
+    }
+}
+
+/**
+ * Request user to touch FIDO2 security key for confirmation.
+ *
+ * @param keyNickname The nickname of the key for display
+ * @return true if touch confirmed, false otherwise
+ */
+fun TerminalBridge.requestFido2Touch(
+    keyNickname: String
+): Boolean {
+    return try {
+        runBlocking {
+            promptManager.requestFido2Touch(keyNickname)
+        }
+    } catch (e: CancellationException) {
+        Timber.w("Attempted prompt on a closed stream.")
+        return false
+    }
+}

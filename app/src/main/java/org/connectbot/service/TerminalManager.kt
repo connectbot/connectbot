@@ -634,6 +634,38 @@ class TerminalManager :
         return null
     }
 
+    // FIDO2 PIN storage for SSH authentication
+    private val fido2Pins: MutableMap<String, String> = HashMap()
+
+    /**
+     * Store a FIDO2 PIN for later use during SSH signing.
+     * The PIN is stored temporarily and should be cleared after use.
+     */
+    fun storeFido2Pin(keyNickname: String, pin: String) {
+        fido2Pins[keyNickname] = pin
+        Timber.d("Stored FIDO2 PIN for key '%s'", keyNickname)
+    }
+
+    /**
+     * Retrieve and consume a stored FIDO2 PIN.
+     * The PIN is removed after retrieval for security.
+     */
+    fun consumeFido2Pin(keyNickname: String): String? {
+        val pin = fido2Pins.remove(keyNickname)
+        if (pin != null) {
+            Timber.d("Consumed FIDO2 PIN for key '%s'", keyNickname)
+        }
+        return pin
+    }
+
+    /**
+     * Clear all stored FIDO2 PINs.
+     */
+    fun clearFido2Pins() {
+        fido2Pins.clear()
+        Timber.d("Cleared all FIDO2 PINs")
+    }
+
     private fun stopWithDelay() {
         // TODO add in a way to check whether keys loaded are encrypted and only
         // set timer when we have an encrypted key loaded
