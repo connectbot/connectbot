@@ -510,13 +510,15 @@ private fun PubkeyListItem(
             },
             leadingContent = {
                 val icon = when {
+                    pubkey.isFido2 -> Icons.Outlined.Lock
                     pubkey.isBiometric -> Icons.Outlined.Fingerprint
                     pubkey.encrypted -> Icons.Outlined.Lock
                     else -> Icons.Outlined.LockOpen
                 }
 
+                val showLoaded = isLoaded && !pubkey.isFido2
                 val iconModifier = when {
-                    isLoaded ->
+                    showLoaded ->
                         Modifier
                             .padding(2.dp)
                             .border(
@@ -536,6 +538,7 @@ private fun PubkeyListItem(
                     Icon(
                         imageVector = icon,
                         contentDescription = when {
+                            pubkey.isFido2 -> stringResource(R.string.pubkey_fido2_description)
                             pubkey.isBiometric -> stringResource(R.string.pubkey_biometric_description_icon)
                             pubkey.encrypted -> stringResource(R.string.pubkey_encrypted_description)
                             else -> stringResource(R.string.pubkey_not_encrypted_description)
@@ -619,7 +622,7 @@ private fun PubkeyListItem(
                             leadingIcon = {
                                 Icon(Icons.Default.ContentCopy, null)
                             },
-                            enabled = !pubkey.isBiometric,
+                            enabled = !pubkey.isBiometric && !pubkey.isFido2,
                         )
 
                         // Copy private key in PEM format (for non-imported keys)
@@ -636,7 +639,7 @@ private fun PubkeyListItem(
                                 leadingIcon = {
                                     Icon(Icons.Default.ContentCopy, null)
                                 },
-                                enabled = !pubkey.isBiometric,
+                                enabled = !pubkey.isBiometric && !pubkey.isFido2,
                             )
                         }
 
@@ -660,7 +663,7 @@ private fun PubkeyListItem(
                                 leadingIcon = {
                                     Icon(Icons.Default.Lock, null)
                                 },
-                                enabled = !pubkey.isBiometric,
+                                enabled = !pubkey.isBiometric && !pubkey.isFido2,
                             )
                         }
 
@@ -687,7 +690,7 @@ private fun PubkeyListItem(
                             leadingIcon = {
                                 Icon(Icons.Default.FileDownload, null)
                             },
-                            enabled = !pubkey.isBiometric,
+                            enabled = !pubkey.isBiometric && !pubkey.isFido2,
                         )
 
                         // Export private key to file in PEM format (for non-imported keys)
@@ -704,7 +707,7 @@ private fun PubkeyListItem(
                                 leadingIcon = {
                                     Icon(Icons.Default.FileDownload, null)
                                 },
-                                enabled = !pubkey.isBiometric,
+                                enabled = !pubkey.isBiometric && !pubkey.isFido2,
                             )
                         }
 
@@ -728,7 +731,7 @@ private fun PubkeyListItem(
                                 leadingIcon = {
                                     Icon(Icons.Default.Lock, null)
                                 },
-                                enabled = !pubkey.isBiometric,
+                                enabled = !pubkey.isBiometric && !pubkey.isFido2,
                             )
                         }
 
@@ -746,11 +749,15 @@ private fun PubkeyListItem(
                     }
                 }
             },
-            modifier = Modifier.clickable {
-                onClick { _, callback ->
-                    // Show password dialog if needed
-                    passwordCallback = callback
-                    showPasswordDialog = true
+            modifier = if (pubkey.isFido2) {
+                Modifier
+            } else {
+                Modifier.clickable {
+                    onClick { _, callback ->
+                        // Show password dialog if needed
+                        passwordCallback = callback
+                        showPasswordDialog = true
+                    }
                 }
             }.testTag(PubkeyListTestTags.itemRow(pubkey.id)),
         )
