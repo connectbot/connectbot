@@ -40,6 +40,7 @@ import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
@@ -90,21 +91,22 @@ import org.connectbot.ui.theme.ConnectBotTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HostListScreen(
-    makingShortcut: Boolean = false,
     onNavigateToConsole: (Host) -> Unit,
-    onShortcutSelected: (Host) -> Unit = {},
     onNavigateToEditHost: (Host?) -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToPubkeys: () -> Unit,
     onNavigateToPortForwards: (Host) -> Unit,
+    onNavigateToSftp: (Host) -> Unit,
     onNavigateToColors: () -> Unit,
     onNavigateToProfiles: () -> Unit,
     onNavigateToHelp: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    makingShortcut: Boolean = false,
+    onSelectShortcut: (Host) -> Unit = {},
+    viewModel: HostListViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val terminalManager = LocalTerminalManager.current
-    val viewModel: HostListViewModel = hiltViewModel()
 
     LaunchedEffect(terminalManager) {
         terminalManager?.let { viewModel.setTerminalManager(it) }
@@ -208,11 +210,12 @@ fun HostListScreen(
         uiState = uiState,
         makingShortcut = makingShortcut,
         onNavigateToConsole = onNavigateToConsole,
-        onShortcutSelected = onShortcutSelected,
+        onSelectShortcut = onSelectShortcut,
         onNavigateToEditHost = onNavigateToEditHost,
         onNavigateToSettings = onNavigateToSettings,
         onNavigateToPubkeys = onNavigateToPubkeys,
         onNavigateToPortForwards = onNavigateToPortForwards,
+        onNavigateToSftp = onNavigateToSftp,
         onNavigateToColors = onNavigateToColors,
         onNavigateToProfiles = onNavigateToProfiles,
         onNavigateToHelp = onNavigateToHelp,
@@ -233,11 +236,12 @@ fun HostListScreenContent(
     uiState: HostListUiState,
     makingShortcut: Boolean = false,
     onNavigateToConsole: (Host) -> Unit,
-    onShortcutSelected: (Host) -> Unit = {},
+    onSelectShortcut: (Host) -> Unit = {},
     onNavigateToEditHost: (Host?) -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToPubkeys: () -> Unit,
     onNavigateToPortForwards: (Host) -> Unit,
+    onNavigateToSftp: (Host) -> Unit,
     onNavigateToColors: () -> Unit,
     onNavigateToProfiles: () -> Unit,
     onNavigateToHelp: () -> Unit,
@@ -280,10 +284,15 @@ fun HostListScreenContent(
                         ) {
                             DropdownMenuItem(
                                 text = {
-                                    Text(stringResource(
-                                        if (uiState.sortedByColor) R.string.list_menu_sortname
-                                        else R.string.list_menu_sortcolor
-                                    ))
+                                    Text(
+                                        stringResource(
+                                            if (uiState.sortedByColor) {
+                                                R.string.list_menu_sortname
+                                            } else {
+                                                R.string.list_menu_sortcolor
+                                            }
+                                        )
+                                    )
                                 },
                                 onClick = {
                                     showMenu = false
@@ -356,7 +365,7 @@ fun HostListScreenContent(
                 FloatingActionButton(
                     onClick = { onNavigateToEditHost(null) },
                     // This matches the FloatingActionButtonMenu padding
-                    modifier = Modifier.padding(end = 16.dp, bottom = 16.dp),
+                    modifier = Modifier.padding(end = 16.dp, bottom = 16.dp)
                 ) {
                     Icon(Icons.Default.Add, contentDescription = stringResource(R.string.hostpref_add_host))
                 }
@@ -375,6 +384,7 @@ fun HostListScreenContent(
                         modifier = Modifier.align(Alignment.Center)
                     )
                 }
+
                 uiState.hosts.isEmpty() -> {
                     Column(
                         modifier = Modifier.align(Alignment.Center),
@@ -399,7 +409,7 @@ fun HostListScreenContent(
                             start = 16.dp,
                             end = 16.dp,
                             top = 16.dp,
-                            bottom = 104.dp, // Extra padding to avoid FAB menu overlap (88dp + 16dp for menu padding)
+                            bottom = 104.dp // Extra padding to avoid FAB menu overlap (88dp + 16dp for menu padding)
                         ),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
@@ -410,10 +420,9 @@ fun HostListScreenContent(
                             HostListItem(
                                 host = host,
                                 connectionState = uiState.connectionStates[host.id] ?: ConnectionState.UNKNOWN,
-                                makingShortcut = makingShortcut,
                                 onClick = {
                                     if (makingShortcut) {
-                                        onShortcutSelected(host)
+                                        onSelectShortcut(host)
                                     } else {
                                         onNavigateToConsole(host)
                                     }
@@ -421,8 +430,10 @@ fun HostListScreenContent(
                                 onEdit = { onNavigateToEditHost(host) },
                                 onPortForwards = { onNavigateToPortForwards(host) },
                                 onForgetHostKeys = { onForgetHostKeys(host) },
+                                onSftp = { onNavigateToSftp(host) },
                                 onDisconnect = { onDisconnectHost(host) },
-                                onDelete = { onDeleteHost(host) }
+                                onDelete = { onDeleteHost(host) },
+                                makingShortcut = makingShortcut
                             )
                         }
                     }
@@ -446,14 +457,15 @@ fun HostListScreenContent(
 private fun HostListItem(
     host: Host,
     connectionState: ConnectionState,
-    makingShortcut: Boolean = false,
     onClick: () -> Unit,
     onEdit: () -> Unit,
     onPortForwards: () -> Unit,
     onForgetHostKeys: () -> Unit,
+    onSftp: () -> Unit,
     onDisconnect: () -> Unit,
     onDelete: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    makingShortcut: Boolean = false
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
@@ -462,8 +474,12 @@ private fun HostListItem(
 
     // Determine border color based on connection state
     val borderColor = when (connectionState) {
-        ConnectionState.CONNECTED -> colorResource(R.color.host_green) // Green
-        ConnectionState.DISCONNECTED -> colorResource(R.color.host_red) // Red
+        ConnectionState.CONNECTED -> colorResource(R.color.host_green)
+
+        // Green
+        ConnectionState.DISCONNECTED -> colorResource(R.color.host_red)
+
+        // Red
         ConnectionState.UNKNOWN -> Color.Transparent
     }
 
@@ -583,6 +599,17 @@ private fun HostListItem(
                                 }
                             )
                         }
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.list_host_sftp)) },
+                            onClick = {
+                                showMenu = false
+                                onSftp()
+                            },
+                            enabled = host.protocol == "ssh",
+                            leadingIcon = {
+                                Icon(Icons.Default.Folder, null)
+                            }
+                        )
                         DropdownMenuItem(
                             text = { Text(stringResource(R.string.list_host_disconnect)) },
                             onClick = {
@@ -751,6 +778,7 @@ private fun HostListScreenEmptyPreview() {
             onNavigateToSettings = {},
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
+            onNavigateToSftp = {},
             onNavigateToColors = {},
             onNavigateToProfiles = {},
             onNavigateToHelp = {},
@@ -777,6 +805,7 @@ private fun HostListScreenLoadingPreview() {
             onNavigateToSettings = {},
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
+            onNavigateToSftp = {},
             onNavigateToColors = {},
             onNavigateToProfiles = {},
             onNavigateToHelp = {},
@@ -804,6 +833,7 @@ private fun HostListScreenErrorPreview() {
             onNavigateToSettings = {},
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
+            onNavigateToSftp = {},
             onNavigateToColors = {},
             onNavigateToProfiles = {},
             onNavigateToHelp = {},
@@ -863,6 +893,7 @@ private fun HostListScreenPopulatedPreview() {
             onNavigateToSettings = {},
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
+            onNavigateToSftp = {},
             onNavigateToColors = {},
             onNavigateToProfiles = {},
             onNavigateToHelp = {},

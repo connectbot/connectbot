@@ -125,7 +125,7 @@ class MainActivity : AppCompatActivity() {
         if (savedInstanceState == null) {
             requestedUri = intent?.data
             makingShortcut = Intent.ACTION_CREATE_SHORTCUT == intent?.action ||
-                             Intent.ACTION_PICK == intent?.action
+                Intent.ACTION_PICK == intent?.action
             Timber.d("onCreate: requestedUri=$requestedUri, makingShortcut=$makingShortcut")
             handleIntent(intent)
         } else {
@@ -291,7 +291,7 @@ class MainActivity : AppCompatActivity() {
                 navController = navController,
                 makingShortcut = makingShortcut,
                 onRetryMigration = { appViewModel.retryMigration() },
-                onShortcutSelected = { host ->
+                onSelectShortcut = { host ->
                     createShortcutAndFinish(host)
                 },
                 onNavigateToConsole = onNavigateToConsole
