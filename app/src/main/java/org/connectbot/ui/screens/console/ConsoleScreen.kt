@@ -73,6 +73,7 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -121,13 +122,13 @@ import timber.log.Timber
  */
 @Composable
 private fun rememberHasHardwareKeyboard(): Boolean {
-	val configuration = LocalConfiguration.current
+    val configuration = LocalConfiguration.current
 
-	return remember(configuration) {
-		val keyboardType = configuration.keyboard
-		keyboardType == android.content.res.Configuration.KEYBOARD_QWERTY ||
-				keyboardType == android.content.res.Configuration.KEYBOARD_12KEY
-	}
+    return remember(configuration) {
+        val keyboardType = configuration.keyboard
+        keyboardType == android.content.res.Configuration.KEYBOARD_QWERTY ||
+            keyboardType == android.content.res.Configuration.KEYBOARD_12KEY
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -135,10 +136,12 @@ private fun rememberHasHardwareKeyboard(): Boolean {
 fun ConsoleScreen(
     onNavigateBack: () -> Unit,
     onNavigateToPortForwards: (Long) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: ConsoleViewModel = hiltViewModel()
 ) {
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
     val context = LocalContext.current
     val terminalManager = LocalTerminalManager.current
-    val viewModel: ConsoleViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
 
     LaunchedEffect(terminalManager) {
@@ -198,7 +201,7 @@ fun ConsoleScreen(
     // Navigate back if all bridges are closed (after initial loading)
     LaunchedEffect(uiState.bridges.size, uiState.isLoading) {
         if (uiState.bridges.isEmpty() && !uiState.isLoading) {
-            onNavigateBack()
+            currentOnNavigateBack()
         }
     }
 
@@ -291,7 +294,7 @@ fun ConsoleScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = Modifier.fillMaxSize(),
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets
-            .union(WindowInsets.imeAnimationTarget),
+            .union(WindowInsets.imeAnimationTarget)
     ) { innerPadding ->
         // Show tabs if multiple terminals
         if (uiState.bridges.size > 1) {
@@ -353,10 +356,12 @@ fun ConsoleScreen(
                                 currentBridge?.increaseFontSize()
                                 true
                             }
+
                             Key.VolumeDown -> {
                                 currentBridge?.decreaseFontSize()
                                 true
                             }
+
                             else -> false
                         }
                     } else {
@@ -420,7 +425,7 @@ fun ConsoleScreen(
                             onTerminalTap = { handleTerminalInteraction() },
                             onImeVisibilityChanged = { visible ->
                                 imeVisible = visible
-                            },
+                            }
                         )
 
                         // Set up text input request callback from bridge (for camera button)
@@ -694,10 +699,11 @@ fun ConsoleScreen(
                             DropdownMenuItem(
                                 text = {
                                     Text(
-                                        if (!sessionOpen && disconnected)
+                                        if (!sessionOpen && disconnected) {
                                             stringResource(R.string.console_menu_close)
-                                        else
+                                        } else {
                                             stringResource(R.string.list_host_disconnect)
+                                        }
                                     )
                                 },
                                 onClick = {
