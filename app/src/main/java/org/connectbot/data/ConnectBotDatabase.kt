@@ -56,7 +56,7 @@ import org.connectbot.data.entity.Pubkey
  * - Version 4: Changed known_hosts index to (host_id, host_key) (AutoMigration)
  * - Version 5: Added profiles table and profile_id column to hosts (manual migration)
  * - Version 6: Added force_size_rows and force_size_columns to profiles (AutoMigration)
- * - Version 7: Added FIDO2 fields to pubkeys (credential_id, fido2_rp_id) (AutoMigration)
+ * - Version 7: Added FIDO2 fields to pubkeys (credential_id, fido2_rp_id, fido2_transport) (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
