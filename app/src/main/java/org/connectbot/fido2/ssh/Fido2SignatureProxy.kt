@@ -95,17 +95,18 @@ class Fido2SignatureProxy(
      * Perform the actual FIDO2 signing operation.
      *
      * For USB devices, this uses the already-connected device.
-     * For NFC, this would need a tap from the user.
+     * For NFC, this requests a tap from the user.
      */
     private suspend fun performFido2Signing(challenge: ByteArray): Fido2Result<Fido2SignatureResult> {
         // Check if USB device is connected
         if (fido2Manager.isDeviceConnected()) {
             // Use USB signing flow
+            Timber.d("USB device connected, using USB signing")
             return performUsbSigning(challenge)
         } else {
-            // NFC signing would require user interaction to tap
-            // For now, return an error indicating NFC signing needs special handling
-            return Fido2Result.Error("No security key connected. Please connect your USB security key.")
+            // Use NFC signing flow - request user to tap their key
+            Timber.d("No USB device, using NFC signing")
+            return performNfcSigning(challenge)
         }
     }
 
@@ -118,6 +119,24 @@ class Fido2SignatureProxy(
                 continuation.resumeWith(Result.success(result))
             }
             fido2Manager.connectAndSignUsb(pin)
+        }
+    }
+
+    /**
+     * Perform signing via NFC tap.
+     * This sets up the signing request and waits for the user to tap their NFC key.
+     */
+    private suspend fun performNfcSigning(challenge: ByteArray): Fido2Result<Fido2SignatureResult> {
+        return kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
+            fido2Manager.prepareSshSigning(credentialId, challenge) { result ->
+                continuation.resumeWith(Result.success(result))
+            }
+            // Request NFC tap - UI will observe waitingForNfcSigning and start NFC discovery
+            fido2Manager.requestNfcSigning(pin)
+
+            continuation.invokeOnCancellation {
+                fido2Manager.cancelNfcSigning()
+            }
         }
     }
 
