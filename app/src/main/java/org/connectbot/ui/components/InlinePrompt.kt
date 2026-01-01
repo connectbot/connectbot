@@ -37,6 +37,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Key
+import androidx.compose.material.icons.filled.Nfc
 import androidx.compose.material.icons.filled.TouchApp
 import androidx.compose.material.icons.filled.Usb
 import androidx.compose.material3.Button
@@ -509,6 +510,59 @@ private fun Fido2ConnectPromptContent(
 
         Text(
             text = stringResource(R.string.fido2_connect_message, keyNickname),
+            style = MaterialTheme.typography.bodyMedium,
+            color = terminalColors.overlayTextSecondary,
+            modifier = Modifier.padding(bottom = 16.dp)
+        )
+
+        CircularProgressIndicator(
+            color = terminalColors.overlayText,
+            modifier = Modifier
+                .size(32.dp)
+                .padding(bottom = 16.dp)
+        )
+
+        TextButton(onClick = onCancel) {
+            Text(stringResource(R.string.fido2_cancel), color = terminalColors.overlayText)
+        }
+    }
+}
+
+/**
+ * Overlay shown when waiting for NFC tap during SSH signing.
+ */
+@Composable
+fun Fido2NfcTapOverlay(
+    onCancel: () -> Unit,
+    modifier: Modifier = Modifier
+) {
+    val terminalColors = MaterialTheme.colorScheme.terminal
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .background(terminalColors.overlayBackground)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        Icon(
+            imageVector = Icons.Filled.Nfc,
+            contentDescription = null,
+            tint = terminalColors.overlayText,
+            modifier = Modifier
+                .size(48.dp)
+                .padding(bottom = 8.dp)
+        )
+
+        Text(
+            text = stringResource(R.string.fido2_nfc_tap_title),
+            style = MaterialTheme.typography.titleMedium,
+            color = terminalColors.overlayText,
+            modifier = Modifier.padding(bottom = 8.dp)
+        )
+
+        Text(
+            text = stringResource(R.string.fido2_nfc_tap_message),
             style = MaterialTheme.typography.bodyMedium,
             color = terminalColors.overlayTextSecondary,
             modifier = Modifier.padding(bottom = 16.dp)
