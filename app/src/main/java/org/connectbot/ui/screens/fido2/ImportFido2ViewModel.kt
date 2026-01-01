@@ -30,6 +30,7 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.fido2.CoseKeyDecoder
 import org.connectbot.fido2.Fido2Algorithm
 import org.connectbot.fido2.Fido2ConnectionState
 import org.connectbot.fido2.Fido2Credential
@@ -257,18 +258,23 @@ class ImportFido2ViewModel @Inject constructor(
 
     private fun createPubkeyFromCredential(credential: Fido2Credential, nickname: String): Pubkey {
         // Determine key type and encode public key in SSH format
+        // The credential contains COSE-encoded key, we need to decode it to raw bytes first
         val (keyType, publicKeyBytes) = when (credential.algorithm) {
             Fido2Algorithm.EDDSA -> {
+                // Decode COSE key to get raw 32-byte Ed25519 public key
+                val ed25519Key = CoseKeyDecoder.decodeEd25519PublicKey(credential.publicKeyCose)
                 val skPubKey = SkEd25519PublicKey(
                     application = credential.rpId,
-                    ed25519Key = credential.publicKeyCose
+                    ed25519Key = ed25519Key
                 )
                 PubkeyConstants.KEY_TYPE_SK_ED25519 to SkEd25519Verify.encodePublicKey(skPubKey)
             }
             Fido2Algorithm.ES256 -> {
+                // Decode COSE key to get uncompressed EC point (0x04 || x || y)
+                val ecPoint = CoseKeyDecoder.decodeEcdsaP256PublicKey(credential.publicKeyCose)
                 val skPubKey = SkEcdsaPublicKey(
                     application = credential.rpId,
-                    ecPoint = credential.publicKeyCose,
+                    ecPoint = ecPoint,
                     curve = "nistp256"
                 )
                 PubkeyConstants.KEY_TYPE_SK_ECDSA to SkEcdsaVerify.encodePublicKey(skPubKey)
