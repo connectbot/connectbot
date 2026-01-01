@@ -19,6 +19,7 @@ package org.connectbot.service
 
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.runBlocking
+import org.connectbot.data.entity.Fido2Transport
 import timber.log.Timber
 
 /**
@@ -139,15 +140,17 @@ fun TerminalBridge.requestHostKeyFingerprintPrompt(
  *
  * @param keyNickname The nickname of the key for display
  * @param credentialId The credential ID on the security key
+ * @param transport The preferred transport (USB or NFC)
  * @return true if security key connected successfully, false otherwise
  */
 fun TerminalBridge.requestFido2Connect(
     keyNickname: String,
-    credentialId: ByteArray
+    credentialId: ByteArray,
+    transport: Fido2Transport
 ): Boolean {
     return try {
         runBlocking {
-            promptManager.requestFido2Connect(keyNickname, credentialId)
+            promptManager.requestFido2Connect(keyNickname, credentialId, transport)
         }
     } catch (e: CancellationException) {
         Timber.w("Attempted prompt on a closed stream.")
