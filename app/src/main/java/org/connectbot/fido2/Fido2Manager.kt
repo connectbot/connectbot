@@ -20,6 +20,7 @@ package org.connectbot.fido2
 import android.app.Activity
 import android.content.Context
 import android.hardware.usb.UsbDevice
+import android.hardware.usb.UsbManager
 import android.nfc.Tag
 import android.util.Log
 import com.yubico.yubikit.android.YubiKitManager
@@ -27,6 +28,7 @@ import com.yubico.yubikit.android.transport.nfc.NfcConfiguration
 import com.yubico.yubikit.android.transport.nfc.NfcNotAvailable
 import com.yubico.yubikit.android.transport.nfc.NfcYubiKeyDevice
 import com.yubico.yubikit.android.transport.usb.UsbConfiguration
+import com.yubico.yubikit.android.transport.usb.UsbYubiKeyDevice
 import com.yubico.yubikit.core.YubiKeyDevice
 import com.yubico.yubikit.core.fido.FidoConnection
 import com.yubico.yubikit.core.smartcard.SmartCardConnection
@@ -91,6 +93,7 @@ class Fido2Manager @Inject constructor(
     /**
      * Start USB device discovery.
      * Call this when the activity becomes visible.
+     * Also checks for already-connected USB devices.
      */
     fun startUsbDiscovery() {
         try {
@@ -100,8 +103,48 @@ class Fido2Manager @Inject constructor(
                     connectToDevice(device, "USB", device.usbDevice.productName)
                 }
             }
+
+            // Also check for already-connected USB devices
+            checkForConnectedUsbDevices()
         } catch (e: Exception) {
             Timber.e(e, "Failed to start USB discovery")
+        }
+    }
+
+    /**
+     * Check for already-connected USB devices.
+     * YubiKit's startUsbDiscovery may not immediately detect devices that were
+     * connected before discovery started.
+     */
+    private fun checkForConnectedUsbDevices() {
+        try {
+            val usbManager = context.getSystemService(Context.USB_SERVICE) as? UsbManager ?: return
+            val deviceList = usbManager.deviceList
+
+            for ((_, usbDevice) in deviceList) {
+                // Check if this looks like a YubiKey (vendor ID 0x1050)
+                if (usbDevice.vendorId == YUBICO_VENDOR_ID) {
+                    Timber.d("Found already-connected YubiKey: ${usbDevice.productName}")
+
+                    if (usbManager.hasPermission(usbDevice)) {
+                        Timber.d("Already have permission for device, connecting...")
+                        scope.launch {
+                            try {
+                                val device = UsbYubiKeyDevice(usbManager, usbDevice)
+                                connectToDevice(device, "USB", usbDevice.productName)
+                            } catch (e: Exception) {
+                                Timber.e(e, "Failed to connect to USB device")
+                            }
+                        }
+                    } else {
+                        Timber.d("Need permission for device, will be requested by YubiKit")
+                        // YubiKit will request permission via its discovery mechanism
+                    }
+                    break // Only handle the first YubiKey found
+                }
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to check for connected USB devices")
         }
     }
 
@@ -1200,5 +1243,7 @@ class Fido2Manager @Inject constructor(
         private const val TAG = "Fido2Manager"
         /** SSH relying party ID used by OpenSSH for FIDO2 keys */
         const val SSH_RP_ID = "ssh:"
+        /** Yubico vendor ID for USB devices */
+        private const val YUBICO_VENDOR_ID = 0x1050
     }
 }
