@@ -1403,4 +1403,8 @@
 	<string name="fido2_import_credential">Import</string>
 	<!-- Message shown in terminal when requesting FIDO2 authentication to unlock a key. Parameter is the key nickname. -->
 	<string name="terminal_auth_fido2">"Requesting security key authentication for \'%1$s\'"</string>
+	<!-- Title shown when waiting for NFC tap after PIN entry -->
+	<string name="fido2_tap_and_hold">Tap and hold your security key</string>
+	<!-- Hint shown below tap and hold title -->
+	<string name="fido2_tap_and_hold_hint">Hold your phone against the key until the operation completes</string>
 </resources>
