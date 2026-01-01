@@ -799,6 +799,274 @@ class Fido2Manager @Inject constructor(
         return currentSession != null
     }
 
+    // ==================== SSH Authentication Support ====================
+
+    // Callback for SSH signing operations
+    private var sshSigningCallback: ((Fido2Result<Fido2SignatureResult>) -> Unit)? = null
+    private var sshCredentialId: ByteArray? = null
+    private var sshChallenge: ByteArray? = null
+
+    /**
+     * Set up for SSH signing operation.
+     * Call this before connecting to prepare for signing.
+     */
+    fun prepareSshSigning(
+        credentialId: ByteArray,
+        challenge: ByteArray,
+        callback: (Fido2Result<Fido2SignatureResult>) -> Unit
+    ) {
+        sshCredentialId = credentialId
+        sshChallenge = challenge
+        sshSigningCallback = callback
+    }
+
+    /**
+     * Connect to USB device and perform SSH signing.
+     * This handles the full flow: connect -> PIN auth -> sign -> return result via callback.
+     */
+    fun connectAndSignUsb(pin: String) {
+        val credId = sshCredentialId ?: return
+        val challenge = sshChallenge ?: return
+        val callback = sshSigningCallback ?: return
+
+        val device = currentDevice
+        if (device == null) {
+            callback(Fido2Result.Error("No device connected"))
+            return
+        }
+
+        scope.launch {
+            val result = suspendCancellableCoroutine<Fido2Result<Fido2SignatureResult>> { continuation ->
+                device.requestConnection(FidoConnection::class.java) { connectionResult ->
+                    val threadName = Thread.currentThread().name
+                    Log.d(TAG, "SSH signing USB callback on thread $threadName")
+
+                    try {
+                        val connection = connectionResult.value
+                        Log.d(TAG, "USB FidoConnection established for signing")
+
+                        val session = Ctap2Session(connection)
+                        Log.d(TAG, "Ctap2Session created for signing")
+
+                        val protocol = PinUvAuthProtocolV2()
+
+                        // Authenticate with PIN
+                        Log.d(TAG, "Authenticating with PIN for SSH signing")
+                        val clientPin = ClientPin(session, protocol)
+                        val token = clientPin.getPinToken(
+                            pin.toCharArray(),
+                            ClientPin.PIN_PERMISSION_GA, // Get Assertion permission for signing
+                            SSH_RP_ID // Specify the RP ID
+                        )
+                        Log.d(TAG, "PIN authentication successful for SSH signing")
+
+                        // Perform signing
+                        Log.d(TAG, "Getting assertion for SSH signing")
+                        val clientDataHash = sha256(challenge)
+
+                        val allowList = listOf(
+                            mapOf(
+                                "type" to "public-key",
+                                "id" to credId
+                            )
+                        )
+
+                        val assertions = session.getAssertions(
+                            SSH_RP_ID,
+                            clientDataHash,
+                            allowList,
+                            null, // extensions
+                            null, // options
+                            token,
+                            protocol.version,
+                            null // CommandState
+                        )
+
+                        if (assertions.isEmpty()) {
+                            session.close()
+                            continuation.resume(Fido2Result.Error("No assertion returned"))
+                            return@requestConnection
+                        }
+
+                        val assertion = assertions[0]
+                        val authData = assertion.authenticatorData
+                        val signature = assertion.signature
+
+                        // Parse counter from authenticator data (bytes 33-36 are the counter)
+                        val counter = if (authData.size >= 37) {
+                            ((authData[33].toInt() and 0xFF) shl 24) or
+                            ((authData[34].toInt() and 0xFF) shl 16) or
+                            ((authData[35].toInt() and 0xFF) shl 8) or
+                            (authData[36].toInt() and 0xFF)
+                        } else {
+                            0
+                        }
+
+                        // Parse flags byte (byte 32)
+                        val flags = if (authData.size >= 33) authData[32] else 0
+
+                        session.close()
+                        Log.i(TAG, "SSH signing successful")
+
+                        continuation.resume(
+                            Fido2Result.Success(
+                                Fido2SignatureResult(
+                                    authenticatorData = authData,
+                                    signature = signature,
+                                    userPresenceVerified = (flags.toInt() and 0x01) != 0,
+                                    userVerified = (flags.toInt() and 0x04) != 0,
+                                    counter = counter
+                                )
+                            )
+                        )
+                    } catch (e: Exception) {
+                        Log.e(TAG, "SSH signing failed: ${e.message}", e)
+                        val message = e.message ?: ""
+
+                        val error = when {
+                            message.contains("PIN_INVALID", ignoreCase = true) ||
+                            message.contains("CTAP2_ERR_PIN_INVALID", ignoreCase = true) -> {
+                                Fido2Result.PinInvalid(attemptsRemaining = null)
+                            }
+                            message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) ||
+                            message.contains("PIN_BLOCKED", ignoreCase = true) -> {
+                                Fido2Result.PinLocked("PIN is locked")
+                            }
+                            message.contains("NO_CREDENTIALS", ignoreCase = true) -> {
+                                Fido2Result.Error("Credential not found on security key")
+                            }
+                            else -> Fido2Result.Error(e.message ?: "SSH signing failed")
+                        }
+                        continuation.resume(error)
+                    }
+                }
+            }
+
+            // Clear state and deliver result
+            sshCredentialId = null
+            sshChallenge = null
+            sshSigningCallback = null
+            callback(result)
+        }
+    }
+
+    /**
+     * Connect to NFC device and perform SSH signing.
+     * This handles the full flow: connect -> PIN auth -> sign in a single NFC tap.
+     */
+    suspend fun connectAndSignNfc(tag: Tag, pin: String, credentialId: ByteArray, challenge: ByteArray): Fido2Result<Fido2SignatureResult> {
+        return suspendCancellableCoroutine { continuation ->
+            try {
+                val device = NfcYubiKeyDevice(tag, 30000, sessionExecutor)
+
+                device.requestConnection(SmartCardConnection::class.java) { connectionResult ->
+                    val threadName = Thread.currentThread().name
+                    Log.d(TAG, "SSH signing NFC callback on thread $threadName")
+
+                    try {
+                        val connection = connectionResult.value
+                        Log.d(TAG, "NFC SmartCardConnection established for signing")
+
+                        val session = Ctap2Session(connection)
+                        Log.d(TAG, "Ctap2Session created for NFC signing")
+
+                        val protocol = PinUvAuthProtocolV2()
+
+                        // Authenticate with PIN
+                        Log.d(TAG, "Authenticating with PIN for NFC SSH signing")
+                        val clientPin = ClientPin(session, protocol)
+                        val token = clientPin.getPinToken(
+                            pin.toCharArray(),
+                            ClientPin.PIN_PERMISSION_GA,
+                            SSH_RP_ID
+                        )
+                        Log.d(TAG, "NFC PIN authentication successful")
+
+                        // Perform signing
+                        Log.d(TAG, "Getting assertion for NFC SSH signing")
+                        val clientDataHash = sha256(challenge)
+
+                        val allowList = listOf(
+                            mapOf(
+                                "type" to "public-key",
+                                "id" to credentialId
+                            )
+                        )
+
+                        val assertions = session.getAssertions(
+                            SSH_RP_ID,
+                            clientDataHash,
+                            allowList,
+                            null,
+                            null,
+                            token,
+                            protocol.version,
+                            null
+                        )
+
+                        if (assertions.isEmpty()) {
+                            session.close()
+                            continuation.resume(Fido2Result.Error("No assertion returned"))
+                            return@requestConnection
+                        }
+
+                        val assertion = assertions[0]
+                        val authData = assertion.authenticatorData
+                        val signature = assertion.signature
+
+                        val counter = if (authData.size >= 37) {
+                            ((authData[33].toInt() and 0xFF) shl 24) or
+                            ((authData[34].toInt() and 0xFF) shl 16) or
+                            ((authData[35].toInt() and 0xFF) shl 8) or
+                            (authData[36].toInt() and 0xFF)
+                        } else {
+                            0
+                        }
+
+                        val flags = if (authData.size >= 33) authData[32] else 0
+
+                        session.close()
+                        Log.i(TAG, "NFC SSH signing successful")
+
+                        continuation.resume(
+                            Fido2Result.Success(
+                                Fido2SignatureResult(
+                                    authenticatorData = authData,
+                                    signature = signature,
+                                    userPresenceVerified = (flags.toInt() and 0x01) != 0,
+                                    userVerified = (flags.toInt() and 0x04) != 0,
+                                    counter = counter
+                                )
+                            )
+                        )
+                    } catch (e: Exception) {
+                        Log.e(TAG, "NFC SSH signing failed: ${e.message}", e)
+                        val message = e.message ?: ""
+
+                        val error = when {
+                            message.contains("PIN_INVALID", ignoreCase = true) ||
+                            message.contains("CTAP2_ERR_PIN_INVALID", ignoreCase = true) -> {
+                                Fido2Result.PinInvalid(attemptsRemaining = null)
+                            }
+                            message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) ||
+                            message.contains("PIN_BLOCKED", ignoreCase = true) -> {
+                                Fido2Result.PinLocked("PIN is locked")
+                            }
+                            message.contains("NO_CREDENTIALS", ignoreCase = true) -> {
+                                Fido2Result.Error("Credential not found on security key")
+                            }
+                            else -> Fido2Result.Error(e.message ?: "NFC SSH signing failed")
+                        }
+                        continuation.resume(error)
+                    }
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "Failed to connect to NFC tag for signing: ${e.message}", e)
+                continuation.resume(Fido2Result.Error(e.message ?: "NFC connection failed"))
+            }
+        }
+    }
+
     /**
      * Find connected USB devices (for backwards compatibility).
      */
