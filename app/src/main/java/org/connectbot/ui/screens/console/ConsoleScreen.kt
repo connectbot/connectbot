@@ -449,12 +449,17 @@ private fun ConsoleTerminalPage(
 
             val promptState by bridge.promptManager.promptState.collectAsState()
 
-            // Handle FIDO2 connect prompt - wait for USB connection or proceed with NFC
-            // USB has priority; for NFC, just proceed (tap happens during signing)
+            // Handle FIDO2 connect prompt based on transport preference
             LaunchedEffect(promptState) {
                 val fido2Prompt = promptState as? PromptRequest.Fido2ConnectPrompt
                 if (fido2Prompt != null) {
                     val fido2Manager = bridge.fido2Manager
+
+                    // NFC tap happens during the signing phase, so no USB discovery is needed.
+                    if (fido2Prompt.transport == org.connectbot.data.entity.Fido2Transport.NFC) {
+                        bridge.promptManager.respond(PromptResponse.Fido2Response(true))
+                        return@LaunchedEffect
+                    }
 
                     if (fido2Manager.isDeviceConnected()) {
                         bridge.promptManager.respond(PromptResponse.Fido2Response(true))
@@ -463,14 +468,12 @@ private fun ConsoleTerminalPage(
 
                     fido2Manager.startUsbDiscovery()
                     try {
-                        kotlinx.coroutines.withTimeoutOrNull(3000) {
-                            fido2Manager.connectionState.collect { state ->
-                                if (state is Fido2ConnectionState.Connected) {
-                                    throw kotlinx.coroutines.CancellationException("Connected")
-                                }
+                        fido2Manager.connectionState.collect { state ->
+                            if (state is Fido2ConnectionState.Connected) {
+                                bridge.promptManager.respond(PromptResponse.Fido2Response(true))
+                                return@collect
                             }
                         }
-                        bridge.promptManager.respond(PromptResponse.Fido2Response(true))
                     } finally {
                         fido2Manager.stopUsbDiscovery()
                     }
