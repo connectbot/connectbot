@@ -56,7 +56,7 @@ ui = "1.10.3"
 biometric = "1.4.0-alpha02"
 core = "1.17.0"
 cbor = "0.9"
-yubikit = "2.9.0"
+yubikit = "3.0.0"
 
 [libraries]
 sshlib = { module = "org.connectbot:sshlib", version.ref = "sshlib" }
