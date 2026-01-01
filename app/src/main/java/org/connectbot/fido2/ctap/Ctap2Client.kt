@@ -511,17 +511,17 @@ class Ctap2Client(private val transport: Ctap2Transport) {
 
         val coseKey = Map()
         coseKey.put(UnsignedInteger(1), UnsignedInteger(2)) // kty: EC2
-        coseKey.put(UnsignedInteger(3), NegativeInteger(-7L - 1)) // alg: ES256 (-7)
-        coseKey.put(NegativeInteger(-1L - 1), UnsignedInteger(1)) // crv: P-256
-        coseKey.put(NegativeInteger(-2L - 1), ByteString(xBytes)) // x
-        coseKey.put(NegativeInteger(-3L - 1), ByteString(yBytes)) // y
+        coseKey.put(UnsignedInteger(3), NegativeInteger(-7)) // alg: ES256 (-7)
+        coseKey.put(NegativeInteger(-1), UnsignedInteger(1)) // crv: P-256
+        coseKey.put(NegativeInteger(-2), ByteString(xBytes)) // x
+        coseKey.put(NegativeInteger(-3), ByteString(yBytes)) // y
 
         return coseKey
     }
 
     private fun decodeCosePublicKey(coseKey: Map): java.security.PublicKey {
-        val xBytes = (coseKey.get(NegativeInteger(-2L - 1)) as ByteString).bytes
-        val yBytes = (coseKey.get(NegativeInteger(-3L - 1)) as ByteString).bytes
+        val xBytes = (coseKey.get(NegativeInteger(-2)) as ByteString).bytes
+        val yBytes = (coseKey.get(NegativeInteger(-3)) as ByteString).bytes
 
         val x = java.math.BigInteger(1, xBytes)
         val y = java.math.BigInteger(1, yBytes)
