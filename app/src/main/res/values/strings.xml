@@ -708,6 +708,8 @@
 	<string name="terminal_auth_biometric">"Requesting biometric authentication for key '%1$s'"</string>
 	<!-- Message shown when a biometric key has been invalidated due to new fingerprint enrollment. Parameter is the key nickname. -->
 	<string name="terminal_auth_biometric_invalidated">"Biometric key '%1$s' has been invalidated. This can happen when new fingerprints are enrolled on the device. Please generate a new key."</string>
+	<!-- Message shown in terminal when requesting FIDO2 security key authentication. Parameter is the key nickname. -->
+	<string name="terminal_auth_fido2">"Requesting FIDO2 security key authentication for key '%1$s'"</string>
 	<!-- Message shown in terminal when public key authentication fails. Parameter is the key nickname. -->
 	<string name="terminal_auth_pubkey_fail">"Authentication method 'publickey' with key '%1$s' failed"</string>
 
@@ -1401,8 +1403,6 @@
 	<string name="fido2_credential_user">User: %s</string>
 	<!-- Button to import selected FIDO2 credential -->
 	<string name="fido2_import_credential">Import</string>
-	<!-- Message shown in terminal when requesting FIDO2 authentication to unlock a key. Parameter is the key nickname. -->
-	<string name="terminal_auth_fido2">"Requesting security key authentication for \'%1$s\'"</string>
 	<!-- Title shown when waiting for NFC tap after PIN entry -->
 	<string name="fido2_tap_and_hold">Tap and hold your security key</string>
 	<!-- Hint shown below tap and hold title -->
