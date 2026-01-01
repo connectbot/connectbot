@@ -1407,4 +1407,8 @@
 	<string name="fido2_tap_and_hold">Tap and hold your security key</string>
 	<!-- Hint shown below tap and hold title -->
 	<string name="fido2_tap_and_hold_hint">Hold your phone against the key until the operation completes</string>
+	<!-- Title for NFC tap prompt during SSH signing -->
+	<string name="fido2_nfc_tap_title">Tap and Hold Security Key</string>
+	<!-- Message for NFC tap prompt during SSH signing -->
+	<string name="fido2_nfc_tap_message">Tap your NFC security key and hold until signing completes</string>
 </resources>
