@@ -64,6 +64,7 @@ import timber.log.Timber
 import java.io.IOException
 import java.lang.ref.WeakReference
 import java.security.KeyPair
+import java.util.concurrent.ConcurrentHashMap
 import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
@@ -110,7 +111,7 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 	private val _loadedKeysChanged = MutableSharedFlow<Set<String>>(replay = 1, extraBufferCapacity = 1)
 	val loadedKeysChangedFlow: SharedFlow<Set<String>> = _loadedKeysChanged.asSharedFlow()
 
-	internal val loadedKeypairs: MutableMap<String, KeyHolder> = HashMap()
+	internal val loadedKeypairs: MutableMap<String, KeyHolder> = ConcurrentHashMap()
 
 	internal lateinit var res: Resources
 
@@ -451,7 +452,8 @@ class TerminalManager : Service(), BridgeDisconnectedListener, OnSharedPreferenc
 
 	private fun emitLoadedKeysChanged() {
 		scope.launch {
-			_loadedKeysChanged.emit(loadedKeypairs.keys.toSet())
+			val keys = HashSet(loadedKeypairs.keys)
+			_loadedKeysChanged.emit(keys)
 		}
 	}
 
