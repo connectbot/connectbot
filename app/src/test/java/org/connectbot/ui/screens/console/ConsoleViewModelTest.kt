@@ -32,7 +32,10 @@ import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.junit.After
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.any
@@ -318,7 +321,8 @@ class ConsoleViewModelTest {
             port = 22,
             username = "test"
         )
-        bridge.host = host
+        whenever(bridge.host).thenReturn(host)
+        whenever(bridge.sessionId).thenReturn(id)
         whenever(bridge.isSessionOpen).thenReturn(true)
         whenever(bridge.isDisconnected).thenReturn(false)
         whenever(bridge.bellEvents).thenReturn(MutableSharedFlow())
