@@ -313,6 +313,20 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
     }
 
     private fun authenticate() {
+        // Prompt for username if not configured
+        if (host?.username.isNullOrEmpty()) {
+            val username = bridge?.requestStringPrompt(
+                null,
+                manager?.res?.getString(R.string.prompt_username),
+                false
+            )
+            if (username.isNullOrEmpty()) {
+                bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_fail))
+                return
+            }
+            host = host?.copy(username = username)
+        }
+
         try {
             val currentHost = host ?: return
             if (connection?.authenticateWithNone(currentHost.username) == true) {
