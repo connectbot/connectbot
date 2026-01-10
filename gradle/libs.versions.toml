@@ -24,7 +24,7 @@ lifecycleViewModel = "2.10.0"
 navigationCompose = "2.9.6"
 activityCompose = "1.12.2"
 
-sshlib = "2.2.37"
+sshlib = "2.2.37-SNAPSHOT"
 termlib = "0.0.16"
 playServicesBasement = "18.9.0"
 conscrypt = "2.5.3"
@@ -55,6 +55,8 @@ navigationTesting = "2.9.6"
 ui = "1.10.0"
 biometric = "1.4.0-alpha02"
 core = "1.17.0"
+cbor = "0.9"
+yubikit = "3.0.0"
 
 [libraries]
 sshlib = { module = "org.connectbot:sshlib", version.ref = "sshlib" }
@@ -109,6 +111,11 @@ androidx-media3-common-ktx = { group = "androidx.media3", name = "media3-common-
 androidx-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 androidx-biometric = { module = "androidx.biometric:biometric-ktx", version.ref = "biometric" }
 androidx-core = { module = "androidx.core:core-ktx", version.ref = "core" }
+
+cbor = { module = "co.nstant.in:cbor", version.ref = "cbor" }
+
+yubikit-android = { module = "com.yubico.yubikit:android", version.ref = "yubikit" }
+yubikit-fido = { module = "com.yubico.yubikit:fido", version.ref = "yubikit" }
 
 hilt-android = { group = "com.google.dagger", name = "hilt-android", version.ref = "hilt" }
 hilt-android-compiler = { group = "com.google.dagger", name = "hilt-android-compiler", version.ref = "hilt" }
