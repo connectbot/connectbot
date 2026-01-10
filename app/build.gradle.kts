@@ -220,7 +220,7 @@ tasks.withType<Test>().configureEach {
 // Generate filtered export schema from Room schema
 // Only includes tables needed for export/import (profiles, hosts, port_forwards)
 val generateExportSchema by tasks.registering {
-    val schemaVersion = 6 // Must match ConnectBotDatabase.SCHEMA_VERSION
+    val schemaVersion = 7 // Must match ConnectBotDatabase.SCHEMA_VERSION
     val exportTables = setOf("profiles", "hosts", "port_forwards")
     val excludedFields = setOf("last_connect", "host_key_algo")
 
