@@ -226,15 +226,115 @@ class Fido2Manager @Inject constructor(
     }
 
     /**
-     * Trigger USB reconnection with PIN.
-     * Call this after setting the PIN to retry USB credential enumeration.
+     * Perform USB credential enumeration with PIN using existing session.
+     * Call this after setting the PIN to enumerate credentials.
+     * Uses the session that was kept open from the initial connection.
      */
     fun retryUsbWithPin() {
-        val device = currentDevice
-        if (device != null) {
-            scope.launch {
-                connectToDevice(device, "USB", null)
+        val session = currentSession
+        val protocol = pinUvAuthProtocol
+        val pin = pendingPin
+        val callback = usbCredentialCallback
+
+        if (session == null || protocol == null) {
+            Log.e(TAG, "retryUsbWithPin: No session or protocol available")
+            callback?.invoke(Fido2Result.Error("No device connection"))
+            usbCredentialCallback = null
+            pendingPin = null
+            return
+        }
+
+        if (pin == null) {
+            Log.e(TAG, "retryUsbWithPin: No PIN provided")
+            callback?.invoke(Fido2Result.PinRequired(null))
+            usbCredentialCallback = null
+            return
+        }
+
+        scope.launch {
+            val result = try {
+                Log.d(TAG, "USB authenticating with PIN using existing session")
+
+                // Authenticate with PIN on existing session
+                val clientPin = ClientPin(session, protocol)
+                val token = clientPin.getPinToken(
+                    pin.toCharArray(),
+                    ClientPin.PIN_PERMISSION_CM,
+                    null
+                )
+                Log.d(TAG, "USB PIN authentication successful")
+
+                // Enumerate credentials
+                Log.d(TAG, "USB enumerating credentials")
+                val credMgmt = CredentialManagement(session, protocol, token)
+
+                val rps = credMgmt.enumerateRps()
+                Log.d(TAG, "USB found ${rps.size} RPs")
+
+                val sshRp = rps.find { rpData ->
+                    val rpId = rpData.rp?.get("id") as? String
+                    rpId == SSH_RP_ID || rpId?.startsWith("ssh:") == true
+                }
+
+                if (sshRp == null) {
+                    Log.d(TAG, "USB no SSH RP found")
+                    Fido2Result.Success(emptyList())
+                } else {
+                    val rpHash = sshRp.rpIdHash ?: sha256((sshRp.rp?.get("id") as String).toByteArray())
+                    val credentials = credMgmt.enumerateCredentials(rpHash)
+                    Log.d(TAG, "USB found ${credentials.size} credentials")
+
+                    val credentialList = credentials.map { credData ->
+                        val user = credData.user
+                        val credentialId = credData.credentialId?.get("id") as? ByteArray
+                            ?: throw IllegalStateException("Missing credential ID")
+
+                        val publicKey = credData.publicKey
+                        @Suppress("UNCHECKED_CAST")
+                        val pubKeyMap = publicKey as? Map<Int, Any>
+                        val algValue = pubKeyMap?.get(3)
+                        val algorithm = when (algValue) {
+                            -7, -7L -> Fido2Algorithm.ES256
+                            -8, -8L -> Fido2Algorithm.EDDSA
+                            else -> throw IllegalStateException("Unsupported algorithm: $algValue")
+                        }
+
+                        val publicKeyCose = encodeCoseKey(publicKey ?: emptyMap<Any, Any>())
+
+                        Fido2Credential(
+                            credentialId = credentialId,
+                            rpId = sshRp.rp?.get("id") as? String ?: SSH_RP_ID,
+                            userHandle = user?.get("id") as? ByteArray,
+                            userName = user?.get("name") as? String,
+                            publicKeyCose = publicKeyCose,
+                            algorithm = algorithm
+                        )
+                    }
+
+                    Log.i(TAG, "USB credential enumeration complete: ${credentialList.size} credentials")
+                    Fido2Result.Success(credentialList)
+                }
+            } catch (e: Exception) {
+                Log.e(TAG, "USB operation failed: ${e.message}", e)
+                val message = e.message ?: ""
+
+                when {
+                    message.contains("PIN_INVALID", ignoreCase = true) ||
+                    message.contains("CTAP2_ERR_PIN_INVALID", ignoreCase = true) -> {
+                        Fido2Result.PinInvalid(attemptsRemaining = null)
+                    }
+                    message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) ||
+                    message.contains("PIN_BLOCKED", ignoreCase = true) -> {
+                        Fido2Result.PinLocked("PIN is locked")
+                    }
+                    else -> Fido2Result.Error(e.message ?: "USB operation failed")
+                }
             }
+
+            // Deliver result via callback
+            pendingPin = null
+            callback?.invoke(result)
+            usbCredentialCallback = null
         }
     }
 
@@ -276,14 +376,11 @@ class Fido2Manager @Inject constructor(
                                 // Always store the device for retry
                                 currentDevice = device
 
-                                if (!pinRequired) {
-                                    // Store session for later if PIN not required
-                                    currentSession = session
-                                    pinUvAuthProtocol = selectPinProtocol(session)
-                                } else {
-                                    // PIN required - close session, will reconnect after PIN
-                                    session.close()
-                                }
+                                // Always store session - we'll reuse it for PIN auth
+                                // Closing the session also closes the USB connection,
+                                // and some devices (like SoloKey) don't handle reconnection well
+                                currentSession = session
+                                pinUvAuthProtocol = selectPinProtocol(session)
                                 continuation.resume(pinRequired)
                             } catch (e: Exception) {
                                 Log.e(TAG, "USB connection failed: ${e.message}", e)
@@ -307,121 +404,9 @@ class Fido2Manager @Inject constructor(
                     return
                 }
 
-                // Have PIN - do everything in callback
-                val result = suspendCancellableCoroutine<Fido2Result<List<Fido2Credential>>> { continuation ->
-                    device.requestConnection(FidoConnection::class.java) { connectionResult ->
-                        val threadName = Thread.currentThread().name
-                        Log.d(TAG, "USB callback with PIN on thread $threadName")
-
-                        try {
-                            val connection = connectionResult.value
-                            Log.d(TAG, "USB FidoConnection established")
-
-                            val session = Ctap2Session(connection)
-                            Log.d(TAG, "USB Ctap2Session created")
-
-                            val protocol = selectPinProtocol(session)
-
-                            // Authenticate with PIN
-                            Log.d(TAG, "USB authenticating with PIN")
-                            val clientPin = ClientPin(session, protocol)
-                            val token = clientPin.getPinToken(
-                                pin.toCharArray(),
-                                ClientPin.PIN_PERMISSION_CM,
-                                null
-                            )
-                            Log.d(TAG, "USB PIN authentication successful")
-
-                            // Enumerate credentials
-                            Log.d(TAG, "USB enumerating credentials")
-                            val credMgmt = CredentialManagement(session, protocol, token)
-
-                            val rps = credMgmt.enumerateRps()
-                            Log.d(TAG, "USB found ${rps.size} RPs")
-
-                            val sshRp = rps.find { rpData ->
-                                val rpId = rpData.rp?.get("id") as? String
-                                rpId == SSH_RP_ID || rpId?.startsWith("ssh:") == true
-                            }
-
-                            if (sshRp == null) {
-                                Log.d(TAG, "USB no SSH RP found")
-                                session.close()
-                                continuation.resume(Fido2Result.Success(emptyList()))
-                                return@requestConnection
-                            }
-
-                            val rpHash = sshRp.rpIdHash ?: sha256((sshRp.rp?.get("id") as String).toByteArray())
-                            val credentials = credMgmt.enumerateCredentials(rpHash)
-                            Log.d(TAG, "USB found ${credentials.size} credentials")
-
-                            val credentialList = credentials.map { credData ->
-                                val user = credData.user
-                                val credentialId = credData.credentialId?.get("id") as? ByteArray
-                                    ?: throw IllegalStateException("Missing credential ID")
-
-                                val publicKey = credData.publicKey
-                                @Suppress("UNCHECKED_CAST")
-                                val pubKeyMap = publicKey as? Map<Int, Any>
-                                val algValue = pubKeyMap?.get(3)
-                                val algorithm = when (algValue) {
-                                    -7, -7L -> Fido2Algorithm.ES256
-                                    -8, -8L -> Fido2Algorithm.EDDSA
-                                    else -> throw IllegalStateException("Unsupported algorithm: $algValue")
-                                }
-
-                                val publicKeyCose = encodeCoseKey(publicKey ?: emptyMap<Any, Any>())
-
-                                Fido2Credential(
-                                    credentialId = credentialId,
-                                    rpId = sshRp.rp?.get("id") as? String ?: SSH_RP_ID,
-                                    userHandle = user?.get("id") as? ByteArray,
-                                    userName = user?.get("name") as? String,
-                                    publicKeyCose = publicKeyCose,
-                                    algorithm = algorithm
-                                )
-                            }
-
-                            session.close()
-                            Log.i(TAG, "USB credential enumeration complete: ${credentialList.size} credentials")
-                            continuation.resume(Fido2Result.Success(credentialList))
-
-                        } catch (e: Exception) {
-                            Log.e(TAG, "USB operation failed: ${e.message}", e)
-                            val message = e.message ?: ""
-
-                            val error = when {
-                                message.contains("PIN_INVALID", ignoreCase = true) ||
-                                message.contains("CTAP2_ERR_PIN_INVALID", ignoreCase = true) -> {
-                                    Fido2Result.PinInvalid(attemptsRemaining = null)
-                                }
-                                message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) ||
-                                message.contains("PIN_BLOCKED", ignoreCase = true) -> {
-                                    Fido2Result.PinLocked("PIN is locked")
-                                }
-                                else -> Fido2Result.Error(e.message ?: "USB operation failed")
-                            }
-                            continuation.resume(error)
-                        }
-                    }
-                }
-
-                // Deliver result via callback
-                pendingPin = null
-                callback?.invoke(result)
-                usbCredentialCallback = null
-
-                when (result) {
-                    is Fido2Result.Success -> {
-                        _connectionState.value = Fido2ConnectionState.Connected(
-                            transport = "USB",
-                            deviceName = deviceName
-                        )
-                    }
-                    else -> {
-                        _connectionState.value = Fido2ConnectionState.Disconnected
-                    }
-                }
+                // USB with PIN is handled by retryUsbWithPin() using the existing session
+                // This branch should not be reached for USB
+                Log.w(TAG, "Unexpected: connectToDevice called for USB with PIN set")
                 return
             } else {
                 // NFC: Do ALL operations synchronously in the callback
