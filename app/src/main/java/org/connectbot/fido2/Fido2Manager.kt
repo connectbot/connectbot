@@ -37,6 +37,7 @@ import com.yubico.yubikit.fido.ctap.ClientPin
 import com.yubico.yubikit.fido.ctap.CredentialManagement
 import com.yubico.yubikit.fido.ctap.Ctap2Session
 import com.yubico.yubikit.fido.ctap.PinUvAuthProtocol
+import com.yubico.yubikit.fido.ctap.PinUvAuthProtocolV1
 import com.yubico.yubikit.fido.ctap.PinUvAuthProtocolV2
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.CoroutineScope
@@ -278,7 +279,7 @@ class Fido2Manager @Inject constructor(
                                 if (!pinRequired) {
                                     // Store session for later if PIN not required
                                     currentSession = session
-                                    pinUvAuthProtocol = PinUvAuthProtocolV2()
+                                    pinUvAuthProtocol = selectPinProtocol(session)
                                 } else {
                                     // PIN required - close session, will reconnect after PIN
                                     session.close()
@@ -319,7 +320,7 @@ class Fido2Manager @Inject constructor(
                             val session = Ctap2Session(connection)
                             Log.d(TAG, "USB Ctap2Session created")
 
-                            val protocol = PinUvAuthProtocolV2()
+                            val protocol = selectPinProtocol(session)
 
                             // Authenticate with PIN
                             Log.d(TAG, "USB authenticating with PIN")
@@ -446,8 +447,8 @@ class Fido2Manager @Inject constructor(
                             val session = Ctap2Session(connection)
                             Timber.d("NFC Ctap2Session created")
 
-                            // Create PIN protocol
-                            val protocol = PinUvAuthProtocolV2()
+                            // Create PIN protocol based on authenticator support
+                            val protocol = selectPinProtocol(session)
 
                             // Authenticate with PIN - ALL on the same thread
                             Timber.d("NFC authenticating with PIN on thread $threadName")
@@ -958,7 +959,7 @@ class Fido2Manager @Inject constructor(
                         val session = Ctap2Session(connection)
                         Log.d(TAG, "Ctap2Session created for signing")
 
-                        val protocol = PinUvAuthProtocolV2()
+                        val protocol = selectPinProtocol(session)
 
                         // Authenticate with PIN
                         Log.d(TAG, "Authenticating with PIN for SSH signing")
@@ -1084,7 +1085,7 @@ class Fido2Manager @Inject constructor(
                         val session = Ctap2Session(connection)
                         Log.d(TAG, "Ctap2Session created for NFC signing")
 
-                        val protocol = PinUvAuthProtocolV2()
+                        val protocol = selectPinProtocol(session)
 
                         // Authenticate with PIN
                         Log.d(TAG, "Authenticating with PIN for NFC SSH signing")
@@ -1205,6 +1206,20 @@ class Fido2Manager @Inject constructor(
 
     private fun sha256(data: ByteArray): ByteArray {
         return MessageDigest.getInstance("SHA-256").digest(data)
+    }
+
+    /**
+     * Select the appropriate PIN/UV auth protocol based on authenticator support.
+     * SoloKey1 and other older authenticators only support protocol V1,
+     * while newer authenticators (YubiKey 5+) support V2.
+     */
+    private fun selectPinProtocol(session: Ctap2Session): PinUvAuthProtocol {
+        val supportedProtocols = session.cachedInfo.pinUvAuthProtocols
+        return if (supportedProtocols != null && 2 in supportedProtocols) {
+            PinUvAuthProtocolV2()
+        } else {
+            PinUvAuthProtocolV1()
+        }
     }
 
     /**
