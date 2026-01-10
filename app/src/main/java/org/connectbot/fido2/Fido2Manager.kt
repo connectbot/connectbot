@@ -27,6 +27,7 @@ import com.yubico.yubikit.android.YubiKitManager
 import com.yubico.yubikit.android.transport.nfc.NfcConfiguration
 import com.yubico.yubikit.android.transport.nfc.NfcNotAvailable
 import com.yubico.yubikit.android.transport.nfc.NfcYubiKeyDevice
+import com.yubico.yubikit.android.transport.usb.DeviceFilter
 import com.yubico.yubikit.android.transport.usb.UsbConfiguration
 import com.yubico.yubikit.android.transport.usb.UsbYubiKeyDevice
 import com.yubico.yubikit.core.YubiKeyDevice
@@ -97,8 +98,9 @@ class Fido2Manager @Inject constructor(
      */
     fun startUsbDiscovery() {
         try {
-            yubiKitManager.startUsbDiscovery(UsbConfiguration()) { device ->
-                Timber.d("USB YubiKey detected: ${device.usbDevice.productName}")
+            val usbConfig = UsbConfiguration().setDeviceFilter(FIDO2_DEVICE_FILTER)
+            yubiKitManager.startUsbDiscovery(usbConfig) { device ->
+                Timber.d("USB FIDO2 device detected: ${device.usbDevice.productName}")
                 scope.launch {
                     connectToDevice(device, "USB", device.usbDevice.productName)
                 }
@@ -122,9 +124,9 @@ class Fido2Manager @Inject constructor(
             val deviceList = usbManager.deviceList
 
             for ((_, usbDevice) in deviceList) {
-                // Check if this looks like a YubiKey (vendor ID 0x1050)
-                if (usbDevice.vendorId == YUBICO_VENDOR_ID) {
-                    Timber.d("Found already-connected YubiKey: ${usbDevice.productName}")
+                // Check if this is a supported FIDO2 security key
+                if (usbDevice.vendorId in SUPPORTED_VENDOR_IDS) {
+                    Timber.d("Found already-connected FIDO2 device: ${usbDevice.productName}")
 
                     if (usbManager.hasPermission(usbDevice)) {
                         Timber.d("Already have permission for device, connecting...")
@@ -140,7 +142,7 @@ class Fido2Manager @Inject constructor(
                         Timber.d("Need permission for device, will be requested by YubiKit")
                         // YubiKit will request permission via its discovery mechanism
                     }
-                    break // Only handle the first YubiKey found
+                    break // Only handle the first FIDO2 device found
                 }
             }
         } catch (e: Exception) {
@@ -1245,5 +1247,17 @@ class Fido2Manager @Inject constructor(
         const val SSH_RP_ID = "ssh:"
         /** Yubico vendor ID for USB devices */
         private const val YUBICO_VENDOR_ID = 0x1050
+        /** SoloKey vendor ID for USB devices (pid.codes open source hardware) */
+        private const val SOLOKEY_VENDOR_ID = 0x1209
+
+        /** Set of supported FIDO2 security key vendor IDs */
+        private val SUPPORTED_VENDOR_IDS = setOf(YUBICO_VENDOR_ID, SOLOKEY_VENDOR_ID)
+
+        /**
+         * DeviceFilter that accepts all FIDO2 security keys.
+         * The base DeviceFilter class allows all devices by default (returns true).
+         * We use this instead of the default YubicoVendorFilter which only accepts Yubico devices.
+         */
+        private val FIDO2_DEVICE_FILTER = DeviceFilter()
     }
 }
