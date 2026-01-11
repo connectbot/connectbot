@@ -284,9 +284,7 @@ class PortForwardListViewModel @Inject constructor(
         }
     }
 
-    private fun findBridgeForHost(): TerminalBridge? {
-        return _terminalManager.value?.bridgesFlow?.value?.find { it.host.id == hostId }
-    }
+    private fun findBridgeForHost(): TerminalBridge? = _terminalManager.value?.bridgesFlow?.value?.find { it.host.id == hostId }
 
     private fun validatePort(portString: String, portType: String): Int {
         val port = portString.toIntOrNull()
