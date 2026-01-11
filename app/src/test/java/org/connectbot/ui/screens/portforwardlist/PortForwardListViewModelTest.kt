@@ -121,17 +121,15 @@ class PortForwardListViewModelTest {
         sourcePort: Int = 8080,
         destAddr: String = "localhost",
         destPort: Int = 80
-    ): PortForward {
-        return PortForward(
-            id = id,
-            hostId = testHostId,
-            nickname = nickname,
-            type = type,
-            sourcePort = sourcePort,
-            destAddr = destAddr,
-            destPort = destPort
-        )
-    }
+    ): PortForward = PortForward(
+        id = id,
+        hostId = testHostId,
+        nickname = nickname,
+        type = type,
+        sourcePort = sourcePort,
+        destAddr = destAddr,
+        destPort = destPort
+    )
 
     @Test
     fun initialState_LoadsSuccessfully() = runTest {
@@ -508,7 +506,7 @@ class PortForwardListViewModelTest {
             nickname = "socks-proxy",
             type = HostConstants.PORTFORWARD_DYNAMIC5,
             sourcePort = "1080",
-            destination = ""  // Empty destination should be accepted for SOCKS5
+            destination = "" // Empty destination should be accepted for SOCKS5
         )
         advanceUntilIdle()
 
@@ -542,7 +540,7 @@ class PortForwardListViewModelTest {
             nickname = "updated-socks",
             type = HostConstants.PORTFORWARD_DYNAMIC5,
             sourcePort = "8080",
-            destination = ""  // Empty destination should be accepted for SOCKS5
+            destination = "" // Empty destination should be accepted for SOCKS5
         )
         advanceUntilIdle()
 
