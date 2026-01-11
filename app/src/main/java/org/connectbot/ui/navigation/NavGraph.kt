@@ -33,6 +33,7 @@ import org.connectbot.ui.screens.colors.ColorSchemeManagerScreen
 import org.connectbot.ui.screens.colors.ColorsScreen
 import org.connectbot.ui.screens.colors.PaletteEditorScreen
 import org.connectbot.ui.screens.console.ConsoleScreen
+import org.connectbot.ui.screens.contact.ContactScreen
 import org.connectbot.ui.screens.eula.EulaScreen
 import org.connectbot.ui.screens.generatepubkey.GeneratePubkeyScreen
 import org.connectbot.ui.screens.help.HelpScreen
@@ -54,7 +55,7 @@ fun ConnectBotNavHost(
     modifier: Modifier = Modifier,
     startDestination: String = NavDestinations.HOST_LIST,
     makingShortcut: Boolean = false,
-    onShortcutSelected: (Host) -> Unit = {},
+    onSelectShortcut: (Host) -> Unit = {}
 ) {
     NavHost(
         navController = navController,
@@ -65,7 +66,7 @@ fun ConnectBotNavHost(
             HostListScreen(
                 makingShortcut = makingShortcut,
                 onNavigateToConsole = onNavigateToConsole,
-                onShortcutSelected = onShortcutSelected,
+                onSelectShortcut = onSelectShortcut,
                 onNavigateToEditHost = { host ->
                     if (host != null) {
                         navController.navigateSafely("${NavDestinations.HOST_EDITOR}?${NavArgs.HOST_ID}=${host.id}")
@@ -217,7 +218,14 @@ fun ConnectBotNavHost(
             HelpScreen(
                 onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToHints = { navController.navigateSafely(NavDestinations.HINTS) },
-                onNavigateToEula = { navController.navigateSafely(NavDestinations.EULA) }
+                onNavigateToEula = { navController.navigateSafely(NavDestinations.EULA) },
+                onNavigateToContact = { navController.navigateSafely(NavDestinations.CONTACT) }
+            )
+        }
+
+        composable(NavDestinations.CONTACT) {
+            ContactScreen(
+                onNavigateBack = { navController.safePopBackStack() }
             )
         }
 
@@ -240,16 +248,14 @@ fun ConnectBotNavHost(
  *
  * This is used to de-duplicate navigation events.
  */
-private fun NavBackStackEntry?.lifecycleIsResumed() =
-    this?.lifecycle?.currentState == Lifecycle.State.RESUMED
+private fun NavBackStackEntry?.lifecycleIsResumed() = this?.lifecycle?.currentState == Lifecycle.State.RESUMED
 
 /**
  * Safely pops the back stack, preventing double navigation when the user rapidly taps
  * the back button. This checks if the current destination's lifecycle state is RESUMED
  * before allowing the navigation to proceed.
  */
-private fun NavHostController.safePopBackStack() =
-    if (currentBackStackEntry.lifecycleIsResumed()) popBackStack() else false
+private fun NavHostController.safePopBackStack() = if (currentBackStackEntry.lifecycleIsResumed()) popBackStack() else false
 
 /**
  * A more robust navigate function that avoids navigating to the
