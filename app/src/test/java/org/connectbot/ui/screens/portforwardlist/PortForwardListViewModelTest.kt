@@ -33,6 +33,7 @@ import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.transport.AbsTransport
+import org.connectbot.util.HostConstants
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -496,5 +497,66 @@ class PortForwardListViewModelTest {
 
         val state = viewModel.uiState.value
         assertTrue("Should have error for out of range port", state.error?.contains("must be between 1 and 65535") == true)
+    }
+
+    @Test
+    fun addPortForward_WithDynamic5Type_SkipsDestinationValidation() = runTest {
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.addPortForward(
+            nickname = "socks-proxy",
+            type = HostConstants.PORTFORWARD_DYNAMIC5,
+            sourcePort = "1080",
+            destination = ""  // Empty destination should be accepted for SOCKS5
+        )
+        advanceUntilIdle()
+
+        val captor = argumentCaptor<PortForward>()
+        verify(repository).savePortForward(captor.capture())
+
+        val saved = captor.firstValue
+        assertEquals("socks-proxy", saved.nickname)
+        assertEquals(HostConstants.PORTFORWARD_DYNAMIC5, saved.type)
+        assertEquals(1080, saved.sourcePort)
+        assertNull("destAddr should be null for dynamic5", saved.destAddr)
+        assertEquals(0, saved.destPort)
+
+        val state = viewModel.uiState.value
+        assertNull("Should not have error for dynamic5 with empty destination", state.error)
+    }
+
+    @Test
+    fun updatePortForward_WithDynamic5Type_SkipsDestinationValidation() = runTest {
+        val existingPortForward = createTestPortForward(
+            type = HostConstants.PORTFORWARD_DYNAMIC5,
+            destAddr = "",
+            destPort = 0
+        )
+
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.updatePortForward(
+            portForward = existingPortForward,
+            nickname = "updated-socks",
+            type = HostConstants.PORTFORWARD_DYNAMIC5,
+            sourcePort = "8080",
+            destination = ""  // Empty destination should be accepted for SOCKS5
+        )
+        advanceUntilIdle()
+
+        val captor = argumentCaptor<PortForward>()
+        verify(repository).savePortForward(captor.capture())
+
+        val updated = captor.firstValue
+        assertEquals("updated-socks", updated.nickname)
+        assertEquals(HostConstants.PORTFORWARD_DYNAMIC5, updated.type)
+        assertEquals(8080, updated.sourcePort)
+        assertNull("destAddr should be null for dynamic5", updated.destAddr)
+        assertEquals(0, updated.destPort)
+
+        val state = viewModel.uiState.value
+        assertNull("Should not have error for dynamic5 with empty destination", state.error)
     }
 }

@@ -33,6 +33,7 @@ import org.connectbot.data.entity.PortForward
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
+import org.connectbot.util.HostConstants
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -121,7 +122,11 @@ class PortForwardListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val srcPort = validatePort(sourcePort, "source")
-                val parsed = parseDestination(destination)
+                val parsed = if (type == HostConstants.PORTFORWARD_DYNAMIC5) {
+                    ParsedDestination(null, 0)
+                } else {
+                    parseDestination(destination)
+                }
 
                 val newPortForward = withContext(dispatchers.io) {
                     val portForward = PortForward(
@@ -161,7 +166,11 @@ class PortForwardListViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 val srcPort = validatePort(sourcePort, "source")
-                val parsed = parseDestination(destination)
+                val parsed = if (type == HostConstants.PORTFORWARD_DYNAMIC5) {
+                    ParsedDestination(null, 0)
+                } else {
+                    parseDestination(destination)
+                }
 
                 val updated = withContext(dispatchers.io) {
                     val updatedPf = portForward.copy(
