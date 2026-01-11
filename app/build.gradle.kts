@@ -323,6 +323,7 @@ tasks.withType<DependencyUpdatesTask>().configureEach {
 
 dependencies {
     implementation(libs.sshlib)
+    // Using local termlib via composite build (see settings.gradle.kts)
     implementation(libs.termlib)
     implementation(libs.androidx.media3.common.ktx)
     implementation(libs.androidx.navigation.testing)
