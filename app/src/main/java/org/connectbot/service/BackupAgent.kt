@@ -113,7 +113,8 @@ class BackupAgent : BackupAgentHelper() {
             DATABASE_NAME
         ).build()
         val dispatchers = CoroutineDispatchers(default = Dispatchers.Default, io = Dispatchers.IO, main = Dispatchers.Main)
-        val hostRepository = HostRepository(applicationContext, database, database.hostDao(), database.portForwardDao(), database.knownHostDao())
+        val securePasswordStorage = org.connectbot.util.SecurePasswordStorage(applicationContext)
+        val hostRepository = HostRepository(applicationContext, database, database.hostDao(), database.portForwardDao(), database.knownHostDao(), securePasswordStorage)
         val colorSchemeRepository = ColorSchemeRepository(database.colorSchemeDao(), dispatchers = dispatchers)
         val pubkeyRepository = PubkeyRepository(database.pubkeyDao())
 
@@ -128,7 +129,6 @@ class BackupAgent : BackupAgentHelper() {
             // Step 2: Back up the filtered database
             Timber.d("Backing up filtered database")
             backupFile(tempDbFile, DATABASE_NAME, data)
-
         } catch (e: Exception) {
             Timber.e(e, "Error during database backup with filtering")
             throw e
