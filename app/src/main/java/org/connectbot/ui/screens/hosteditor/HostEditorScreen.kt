@@ -49,8 +49,6 @@ import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -61,6 +59,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.BuildConfig
@@ -81,9 +81,9 @@ import org.connectbot.util.TerminalFont
 @Composable
 fun HostEditorScreen(
     onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: HostEditorViewModel = hiltViewModel()
 ) {
-    val viewModel: HostEditorViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
 
     HostEditorScreenContent(
@@ -149,8 +149,11 @@ fun HostEditorScreenContent(
             TopAppBar(
                 title = {
                     Text(
-                        if (hostId == -1L) stringResource(R.string.hostpref_add_host)
-                        else stringResource(R.string.hostpref_setting_title)
+                        if (hostId == -1L) {
+                            stringResource(R.string.hostpref_add_host)
+                        } else {
+                            stringResource(R.string.hostpref_setting_title)
+                        }
                     )
                 },
                 navigationIcon = {
@@ -368,7 +371,7 @@ fun HostEditorScreenContent(
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
             ColorSelector(
                 selectedColor = uiState.color,
-                onColorSelected = onColorChange
+                onSelectColor = onColorChange
             )
 
             // Pubkey selector
@@ -376,7 +379,7 @@ fun HostEditorScreenContent(
             PubkeySelector(
                 pubkeyId = uiState.pubkeyId,
                 availablePubkeys = uiState.availablePubkeys,
-                onPubkeySelected = onPubkeyChange
+                onSelectPubkey = onPubkeyChange
             )
 
             // Profile selector
@@ -384,7 +387,7 @@ fun HostEditorScreenContent(
             ProfileSelector(
                 profileId = uiState.profileId,
                 availableProfiles = uiState.availableProfiles,
-                onProfileSelected = onProfileChange
+                onSelectProfile = onProfileChange
             )
 
             // Jump host selector (only for SSH protocol)
@@ -393,7 +396,7 @@ fun HostEditorScreenContent(
                 JumpHostSelector(
                     jumpHostId = uiState.jumpHostId,
                     availableJumpHosts = uiState.availableJumpHosts,
-                    onJumpHostSelected = onJumpHostChange
+                    onSelectJumpHost = onJumpHostChange
                 )
             }
 
@@ -474,7 +477,7 @@ fun HostEditorScreenContent(
 @Composable
 private fun ColorSelector(
     selectedColor: String,
-    onColorSelected: (String) -> Unit,
+    onSelectColor: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -520,7 +523,7 @@ private fun ColorSelector(
                         text = { Text(color.localizedName) },
                         onClick = {
                             // Always store hex value in database (language-independent)
-                            onColorSelected(color.hexValue)
+                            onSelectColor(color.hexValue)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -581,7 +584,7 @@ private fun FontFamilySelector(
     fontFamily: String?,
     customFonts: List<String>,
     localFonts: List<Pair<String, String>>,
-    onFontFamilySelected: (String?) -> Unit,
+    onSelectFontFamily: (String?) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true
 ) {
@@ -652,7 +655,7 @@ private fun FontFamilySelector(
                     DropdownMenuItem(
                         text = { Text(label) },
                         onClick = {
-                            onFontFamilySelected(value)
+                            onSelectFontFamily(value)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -668,7 +671,7 @@ private fun FontFamilySelector(
 private fun ColorSchemeSelector(
     colorSchemeId: Long,
     availableSchemes: List<ColorScheme>,
-    onColorSchemeSelected: (Long) -> Unit,
+    onSelectColorScheme: (Long) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true
 ) {
@@ -729,7 +732,7 @@ private fun ColorSchemeSelector(
                             }
                         },
                         onClick = {
-                            onColorSchemeSelected(scheme.id)
+                            onSelectColorScheme(scheme.id)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -745,7 +748,7 @@ private fun ColorSchemeSelector(
 private fun PubkeySelector(
     pubkeyId: Long,
     availablePubkeys: List<Pubkey>,
-    onPubkeySelected: (Long) -> Unit,
+    onSelectPubkey: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -776,7 +779,9 @@ private fun PubkeySelector(
             OutlinedTextField(
                 value = when (pubkeyId) {
                     -1L -> stringResource(R.string.list_pubkeyids_any)
+
                     -2L -> stringResource(R.string.list_pubkeyids_none)
+
                     else -> {
                         val selectedPubkey = availablePubkeys.find { it.id == pubkeyId }
                         selectedPubkey?.nickname ?: stringResource(R.string.pubkey_unknown)
@@ -802,7 +807,7 @@ private fun PubkeySelector(
                     DropdownMenuItem(
                         text = { Text(label) },
                         onClick = {
-                            onPubkeySelected(id)
+                            onSelectPubkey(id)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -818,7 +823,7 @@ private fun PubkeySelector(
 private fun ProfileSelector(
     profileId: Long?,
     availableProfiles: List<Profile>,
-    onProfileSelected: (Long?) -> Unit,
+    onSelectProfile: (Long?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -843,6 +848,7 @@ private fun ProfileSelector(
             OutlinedTextField(
                 value = when {
                     profileId == null -> stringResource(R.string.hostpref_profile_none)
+
                     else -> {
                         val selectedProfile = availableProfiles.find { it.id == profileId }
                         selectedProfile?.name ?: stringResource(R.string.hostpref_profile_none)
@@ -868,7 +874,7 @@ private fun ProfileSelector(
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.hostpref_profile_none)) },
                     onClick = {
-                        onProfileSelected(null)
+                        onSelectProfile(null)
                         expanded = false
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -879,7 +885,7 @@ private fun ProfileSelector(
                     DropdownMenuItem(
                         text = { Text(profile.name) },
                         onClick = {
-                            onProfileSelected(profile.id)
+                            onSelectProfile(profile.id)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -895,7 +901,7 @@ private fun ProfileSelector(
 private fun JumpHostSelector(
     jumpHostId: Long?,
     availableJumpHosts: List<Host>,
-    onJumpHostSelected: (Long?) -> Unit,
+    onSelectJumpHost: (Long?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -920,6 +926,7 @@ private fun JumpHostSelector(
             OutlinedTextField(
                 value = when {
                     jumpHostId == null || jumpHostId <= 0 -> stringResource(R.string.list_jumphost_none)
+
                     else -> {
                         val selectedHost = availableJumpHosts.find { it.id == jumpHostId }
                         selectedHost?.nickname ?: stringResource(R.string.list_jumphost_none)
@@ -945,7 +952,7 @@ private fun JumpHostSelector(
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.list_jumphost_none)) },
                     onClick = {
-                        onJumpHostSelected(null)
+                        onSelectJumpHost(null)
                         expanded = false
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -956,7 +963,7 @@ private fun JumpHostSelector(
                     DropdownMenuItem(
                         text = { Text(host.nickname) },
                         onClick = {
-                            onJumpHostSelected(host.id)
+                            onSelectJumpHost(host.id)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -971,7 +978,7 @@ private fun JumpHostSelector(
 @Composable
 private fun DelKeySelector(
     delKey: String,
-    onDelKeySelected: (String) -> Unit,
+    onSelectDelKey: (String) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true
 ) {
@@ -1021,7 +1028,7 @@ private fun DelKeySelector(
                     DropdownMenuItem(
                         text = { Text(option) },
                         onClick = {
-                            onDelKeySelected(option)
+                            onSelectDelKey(option)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -1036,7 +1043,7 @@ private fun DelKeySelector(
 @Composable
 private fun EncodingSelector(
     encoding: String,
-    onEncodingSelected: (String) -> Unit,
+    onSelectEncoding: (String) -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true
 ) {
@@ -1086,7 +1093,7 @@ private fun EncodingSelector(
                     DropdownMenuItem(
                         text = { Text(enc) },
                         onClick = {
-                            onEncodingSelected(enc)
+                            onSelectEncoding(enc)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
