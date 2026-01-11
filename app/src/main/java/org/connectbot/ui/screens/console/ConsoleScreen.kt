@@ -438,6 +438,14 @@ fun ConsoleScreen(
                             onTerminalTap = { handleTerminalInteraction() },
                             onImeVisibilityChanged = { visible ->
                                 imeVisible = visible
+                            },
+                            onHyperlinkClick = { url ->
+                                // Open OSC8 hyperlink in browser
+                                val intent = android.content.Intent(
+                                    android.content.Intent.ACTION_VIEW,
+                                    url.toUri()
+                                )
+                                context.startActivity(intent)
                             }
                         )
 
