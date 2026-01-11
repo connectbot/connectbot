@@ -32,6 +32,7 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.util.SecurePasswordStorage
 import javax.inject.Inject
 
 data class HostEditorUiState(
@@ -56,6 +57,8 @@ data class HostEditorUiState(
     val jumpHostId: Long? = null,
     val availableJumpHosts: List<Host> = emptyList(),
     val ipVersion: String = "IPV4_AND_IPV6",
+    val password: String = "",
+    val hasExistingPassword: Boolean = false,
     val isLoading: Boolean = false,
     val error: String? = null
 )
@@ -66,7 +69,8 @@ class HostEditorViewModel @Inject constructor(
     private val repository: HostRepository,
     private val pubkeyRepository: PubkeyRepository,
     private val profileRepository: ProfileRepository,
-    private val prefs: android.content.SharedPreferences
+    private val prefs: android.content.SharedPreferences,
+    private val securePasswordStorage: SecurePasswordStorage
 ) : ViewModel() {
 
     private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
@@ -133,6 +137,7 @@ class HostEditorViewModel @Inject constructor(
             try {
                 val host = repository.findHostById(hostId)
                 if (host != null) {
+                    val hasPassword = securePasswordStorage.hasPassword(hostId)
                     _uiState.update {
                         it.copy(
                             nickname = host.nickname,
@@ -151,6 +156,7 @@ class HostEditorViewModel @Inject constructor(
                             postLogin = host.postLogin ?: "",
                             jumpHostId = host.jumpHostId,
                             ipVersion = host.ipVersion,
+                            hasExistingPassword = hasPassword,
                             isLoading = false
                         )
                     }
@@ -253,6 +259,14 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(ipVersion = value) }
     }
 
+    fun updatePassword(value: String) {
+        _uiState.update { it.copy(password = value) }
+    }
+
+    fun clearSavedPassword() {
+        _uiState.update { it.copy(password = "", hasExistingPassword = false) }
+    }
+
     fun saveHost(useExpandedMode: Boolean) {
         viewModelScope.launch {
             try {
@@ -298,7 +312,19 @@ class HostEditorViewModel @Inject constructor(
                     ipVersion = state.ipVersion
                 )
 
-                repository.saveHost(host)
+                val savedHost = repository.saveHost(host)
+
+                // Handle password storage (only for SSH protocol)
+                if (state.protocol == "ssh") {
+                    if (state.password.isNotEmpty()) {
+                        // Save or update the password
+                        securePasswordStorage.savePassword(savedHost.id, state.password)
+                    } else if (!state.hasExistingPassword) {
+                        // No password entered and no existing password - ensure it's cleared
+                        securePasswordStorage.deletePassword(savedHost.id)
+                    }
+                    // If password is empty but hasExistingPassword is true, keep existing
+                }
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(error = e.message ?: "Failed to save host")

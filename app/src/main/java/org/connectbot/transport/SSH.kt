@@ -98,6 +98,7 @@ class SSH :
 
     private var pubkeysExhausted = false
     private var interactiveCanContinue = true
+    private var savedPasswordTried = false
 
     private var connection: Connection? = null
     private val jumpConnections: MutableList<Connection> = mutableListOf()
@@ -393,6 +394,18 @@ class SSH :
                     bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_ki_fail))
                 }
             } else if (connection?.isAuthMethodAvailable(currentHost.username, AUTH_PASSWORD) == true) {
+                // Try saved password first
+                val savedPassword = manager?.securePasswordStorage?.getPassword(currentHost.id)
+                if (savedPassword != null) {
+                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_saved_password))
+                    if (connection?.authenticateWithPassword(currentHost.username, savedPassword) == true) {
+                        finishConnection()
+                        return
+                    }
+                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_saved_password_fail))
+                }
+
+                // Fall back to password prompt
                 bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pass))
                 val password = bridge?.requestStringPrompt(
                     null,
@@ -778,6 +791,19 @@ class SSH :
 
             // Try password authentication
             if (jc.isAuthMethodAvailable(jumpHost.username, AUTH_PASSWORD)) {
+                // Try saved password first
+                val savedPassword = manager?.securePasswordStorage?.getPassword(jumpHost.id)
+                if (savedPassword != null) {
+                    try {
+                        if (jc.authenticateWithPassword(jumpHost.username, savedPassword)) {
+                            return true
+                        }
+                    } catch (e: Exception) {
+                        Timber.d(e, "Jump host saved password auth failed")
+                    }
+                }
+
+                // Fall back to prompting
                 val passwordPrompt = manager?.res?.getString(R.string.terminal_jump_password, jumpHost.nickname)
                 val password = bridge?.requestStringPrompt(null, passwordPrompt, true)
                 if (password != null) {
@@ -1173,6 +1199,20 @@ class SSH :
         val responses = Array(numPrompts) { i ->
             // request response from user for each prompt
             val isPassword = i < echo.size && !echo[i]
+
+            // Try saved password for password prompts (only on first attempt)
+            if (isPassword && !savedPasswordTried) {
+                val currentHost = host
+                if (currentHost != null) {
+                    val savedPassword = manager?.securePasswordStorage?.getPassword(currentHost.id)
+                    if (savedPassword != null) {
+                        savedPasswordTried = true
+                        bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_saved_password))
+                        return@Array savedPassword
+                    }
+                }
+            }
+
             bridge?.requestStringPrompt(instruction, prompt[i], isPassword) ?: ""
         }
         return responses
