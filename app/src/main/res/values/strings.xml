@@ -463,6 +463,15 @@
 	<!-- Username field title for host editor preference -->
 	<string name="hostpref_username_title">"Username"</string>
 
+	<!-- Password field supporting text in host editor -->
+	<string name="hostpref_save_password_summary">"Store login password securely for automatic authentication"</string>
+	<!-- Password field title in host editor -->
+	<string name="hostpref_password_title">"Password"</string>
+	<!-- Password field label when there is an existing password saved -->
+	<string name="hostpref_password_unchanged">"Password (unchanged)"</string>
+	<!-- Button to clear a saved password -->
+	<string name="hostpref_clear_password">"Clear saved password"</string>
+
 	<!-- Hostname field title for host editor preference -->
 	<string name="hostpref_hostname_title">"Host"</string>
 
@@ -679,6 +688,10 @@
 	<string name="terminal_auth_pass">"Attempting 'password' authentication"</string>
 	<!-- Message shown in terminal when password authentication fails -->
 	<string name="terminal_auth_pass_fail">"Authentication method 'password' failed"</string>
+	<!-- Message shown in terminal when attempting saved password authentication -->
+	<string name="terminal_auth_saved_password">"Trying saved password…"</string>
+	<!-- Message shown in terminal when saved password authentication fails -->
+	<string name="terminal_auth_saved_password_fail">"Saved password authentication failed"</string>
 
 	<!-- Message shown in terminal when trying public key authentication with any available key -->
 	<string name="terminal_auth_pubkey_any">"Attempting 'publickey' authentication with any in-memory public keys"</string>
