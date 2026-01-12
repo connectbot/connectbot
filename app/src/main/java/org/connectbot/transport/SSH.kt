@@ -19,7 +19,7 @@ package org.connectbot.transport
 
 import android.content.Context
 import android.net.Uri
-import android.security.keystore.KeyPermanentlyInvalidatedException
+import android.security.keystore.UserNotAuthenticatedException
 import androidx.core.net.toUri
 import com.trilead.ssh2.AuthAgentCallback
 import com.trilead.ssh2.ChannelCondition
@@ -485,7 +485,7 @@ class SSH :
                 manager?.addBiometricKey(pubkey, keystoreAlias, publicKey)
                 Timber.d(String.format("Unlocked biometric key '%s'", pubkey.nickname))
                 pair
-            } catch (e: KeyPermanentlyInvalidatedException) {
+            } catch (e: UserNotAuthenticatedException) {
                 val message = manager?.res?.getString(R.string.terminal_auth_biometric_invalidated, pubkey.nickname)
                     ?: String.format("Biometric key '%s' has been invalidated. Please generate a new key.", pubkey.nickname)
                 Timber.e(e, message)
