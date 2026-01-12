@@ -19,7 +19,8 @@ package org.connectbot.transport
 
 import android.content.Context
 import android.net.Uri
-import timber.log.Timber
+import android.security.keystore.KeyPermanentlyInvalidatedException
+import androidx.core.net.toUri
 import com.trilead.ssh2.AuthAgentCallback
 import com.trilead.ssh2.ChannelCondition
 import com.trilead.ssh2.Connection
@@ -52,6 +53,7 @@ import org.connectbot.service.requestHostKeyFingerprintPrompt
 import org.connectbot.service.requestStringPrompt
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PubkeyUtils
+import timber.log.Timber
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
@@ -71,18 +73,24 @@ import java.security.interfaces.RSAPublicKey
 import java.security.spec.InvalidKeySpecException
 import java.util.Locale
 import java.util.regex.Pattern
-import androidx.core.net.toUri
 
 /**
  * @author Kenny Root
  */
-class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallback {
+class SSH :
+    AbsTransport,
+    ConnectionMonitor,
+    InteractiveCallback,
+    AuthAgentCallback {
 
     private var compression = false
+
     @Volatile
     private var authenticated = false
+
     @Volatile
     private var connected = false
+
     @Volatile
     private var sessionOpen = false
 
@@ -112,45 +120,39 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
 
     constructor(host: Host?, bridge: TerminalBridge?, manager: TerminalManager?) : super(host, bridge, manager)
 
-    private fun decodePublicKey(algorithm: String, keyBlob: ByteArray): PublicKey? {
-        return try {
-            when (algorithm) {
-                "ssh-rsa" -> RSASHA1Verify.get().decodePublicKey(keyBlob)
-                "ssh-dss" -> DSASHA1Verify.get().decodePublicKey(keyBlob)
-                "ssh-ed25519" -> Ed25519Verify.get().decodePublicKey(keyBlob)
-                "ecdsa-sha2-nistp256" -> ECDSASHA2Verify.ECDSASHA2NISTP256Verify.get().decodePublicKey(keyBlob)
-                "ecdsa-sha2-nistp384" -> ECDSASHA2Verify.ECDSASHA2NISTP384Verify.get().decodePublicKey(keyBlob)
-                "ecdsa-sha2-nistp521" -> ECDSASHA2Verify.ECDSASHA2NISTP521Verify.get().decodePublicKey(keyBlob)
-                else -> null
-            }
-        } catch (e: IOException) {
-            Timber.e(e, "Failed to decode public key")
-            null
+    private fun decodePublicKey(algorithm: String, keyBlob: ByteArray): PublicKey? = try {
+        when (algorithm) {
+            "ssh-rsa" -> RSASHA1Verify.get().decodePublicKey(keyBlob)
+            "ssh-dss" -> DSASHA1Verify.get().decodePublicKey(keyBlob)
+            "ssh-ed25519" -> Ed25519Verify.get().decodePublicKey(keyBlob)
+            "ecdsa-sha2-nistp256" -> ECDSASHA2Verify.ECDSASHA2NISTP256Verify.get().decodePublicKey(keyBlob)
+            "ecdsa-sha2-nistp384" -> ECDSASHA2Verify.ECDSASHA2NISTP384Verify.get().decodePublicKey(keyBlob)
+            "ecdsa-sha2-nistp521" -> ECDSASHA2Verify.ECDSASHA2NISTP521Verify.get().decodePublicKey(keyBlob)
+            else -> null
         }
+    } catch (e: IOException) {
+        Timber.e(e, "Failed to decode public key")
+        null
     }
 
-    private fun getKeySize(publicKey: PublicKey?): Int {
-        return when (publicKey) {
-            is RSAPublicKey -> publicKey.modulus.bitLength()
-            is DSAPublicKey -> publicKey.params.p.bitLength()
-            is ECPublicKey -> publicKey.params.curve.field.fieldSize
-            is Ed25519PublicKey -> 256
-            else -> 0
-        }
+    private fun getKeySize(publicKey: PublicKey?): Int = when (publicKey) {
+        is RSAPublicKey -> publicKey.modulus.bitLength()
+        is DSAPublicKey -> publicKey.params.p.bitLength()
+        is ECPublicKey -> publicKey.params.curve.field.fieldSize
+        is Ed25519PublicKey -> 256
+        else -> 0
     }
 
-    private fun getKeyType(openSshKeyType: String): String? {
-        return if (openSshKeyType == "ssh-rsa") {
-            "RSA"
-        } else if (openSshKeyType == "ssh-dss") {
-            "DSA"
-        } else if (openSshKeyType == "ssh-ed25519") {
-            "Ed25519"
-        } else if (openSshKeyType.startsWith("ecdsa-sha2-")) {
-            "EC"
-        } else {
-            null
-        }
+    private fun getKeyType(openSshKeyType: String): String? = if (openSshKeyType == "ssh-rsa") {
+        "RSA"
+    } else if (openSshKeyType == "ssh-dss") {
+        "DSA"
+    } else if (openSshKeyType == "ssh-ed25519") {
+        "Ed25519"
+    } else if (openSshKeyType.startsWith("ecdsa-sha2-")) {
+        "EC"
+    } else {
+        null
     }
 
     inner class HostKeyVerifier : ExtendedServerHostKeyVerifier() {
@@ -293,10 +295,8 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             }
         }
 
-        override fun getKnownKeyAlgorithmsForHost(host: String, port: Int): List<String>? {
-            return this@SSH.host?.id?.let { hostId ->
-                manager?.hostRepository?.getHostKeyAlgorithmsForHostBlocking(hostId)
-            }
+        override fun getKnownKeyAlgorithmsForHost(host: String, port: Int): List<String>? = this@SSH.host?.id?.let { hostId ->
+            manager?.hostRepository?.getHostKeyAlgorithmsForHostBlocking(hostId)
         }
 
         override fun removeServerHostKey(host: String, port: Int, algorithm: String, hostKey: ByteArray) {
@@ -347,7 +347,6 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                 pubkeyId != HostConstants.PUBKEYID_NEVER &&
                 connection?.isAuthMethodAvailable(currentHost.username, AUTH_PUBLICKEY) == true
             ) {
-
                 // if explicit pubkey defined for this host, then prompt for password as needed
                 // otherwise just try all in-memory keys held in terminalmanager
 
@@ -355,8 +354,9 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                     // try each of the in-memory keys
                     bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_any))
                     manager?.loadedKeypairs?.entries?.forEach { entry ->
-                        if (entry.value.pubkey?.confirmation == true && !promptForPubkeyUse(entry.key))
+                        if (entry.value.pubkey?.confirmation == true && !promptForPubkeyUse(entry.key)) {
                             return@forEach
+                        }
 
                         val keyPair = entry.value.pair ?: return@forEach
 
@@ -370,10 +370,11 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                     // use a specific key for this host, as requested
                     val pubkey = manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)
 
-                    if (pubkey == null)
+                    if (pubkey == null) {
                         bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_invalid))
-                    else if (tryPublicKey(pubkey))
+                    } else if (tryPublicKey(pubkey)) {
                         finishConnection()
+                    }
                 }
 
                 pubkeysExhausted = true
@@ -421,8 +422,9 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
     @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class, IOException::class)
     private fun tryPublicKey(pubkey: Pubkey): Boolean {
         if (pubkey.confirmation && manager?.isKeyLoaded(pubkey.nickname) == true) {
-            if (!promptForPubkeyUse(pubkey.nickname))
+            if (!promptForPubkeyUse(pubkey.nickname)) {
                 return false
+            }
         }
 
         val pair = getOrUnlockKey(pubkey) ?: return false
@@ -483,6 +485,12 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                 manager?.addBiometricKey(pubkey, keystoreAlias, publicKey)
                 Timber.d(String.format("Unlocked biometric key '%s'", pubkey.nickname))
                 pair
+            } catch (e: KeyPermanentlyInvalidatedException) {
+                val message = manager?.res?.getString(R.string.terminal_auth_biometric_invalidated, pubkey.nickname)
+                    ?: String.format("Biometric key '%s' has been invalidated. Please generate a new key.", pubkey.nickname)
+                Timber.e(e, message)
+                bridge?.outputLine(message)
+                null
             } catch (e: Exception) {
                 val message = String.format("Failed to load biometric key '%s': %s", pubkey.nickname, e.message)
                 Timber.e(e, message)
@@ -501,8 +509,9 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             )
 
             // Something must have interrupted the prompt.
-            if (password == null)
+            if (password == null) {
                 return null
+            }
         }
 
         val pair = if (pubkey.type == "IMPORTED") {
@@ -547,8 +556,9 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
     @Throws(IOException::class)
     private fun tryPublicKey(username: String, keyNickname: String, pair: KeyPair): Boolean {
         val success = connection?.authenticateWithPublicKey(username, pair) == true
-        if (!success)
+        if (!success) {
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, keyNickname))
+        }
         return success
     }
 
@@ -578,8 +588,9 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         try {
             session = connection?.openSession()
 
-            if (useAuthAgent != HostConstants.AUTHAGENT_NO)
+            if (useAuthAgent != HostConstants.AUTHAGENT_NO) {
                 session?.requestAuthAgentForwarding(this)
+            }
 
             session?.requestPTY(getEmulation(), columns, rows, width, height, null)
             session?.startShell()
@@ -834,8 +845,9 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                 val message = t.message
                 if (message != null) {
                     bridge?.outputLine(message)
-                    if (t is NoRouteToHostException)
+                    if (t is NoRouteToHostException) {
                         bridge?.outputLine(manager?.res?.getString(R.string.terminal_no_route))
+                    }
                 }
                 t = t.cause
             }
@@ -931,13 +943,12 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         stdin?.write(c)
     }
 
-    override fun getOptions(): Map<String, String> {
-        return mapOf("compression" to compression.toString())
-    }
+    override fun getOptions(): Map<String, String> = mapOf("compression" to compression.toString())
 
     override fun setOptions(options: Map<String, String>) {
-        if (options.containsKey("compression"))
+        if (options.containsKey("compression")) {
             compression = options["compression"]?.toBoolean() ?: false
+        }
     }
 
     override fun isSessionOpen(): Boolean = sessionOpen
@@ -961,9 +972,7 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
 
     override fun getPortForwards(): List<PortForward> = portForwards
 
-    override fun addPortForward(portForward: PortForward): Boolean {
-        return portForwards.add(portForward)
-    }
+    override fun addPortForward(portForward: PortForward): Boolean = portForwards.add(portForward)
 
     override fun removePortForward(portForward: PortForward): Boolean {
         // Make sure we don't have a phantom forwarder.
@@ -977,8 +986,9 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             return false
         }
 
-        if (!authenticated)
+        if (!authenticated) {
             return false
+        }
 
         return when (portForward.type) {
             HostConstants.PORTFORWARD_LOCAL -> {
@@ -1044,8 +1054,9 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             return false
         }
 
-        if (!authenticated)
+        if (!authenticated) {
             return false
+        }
 
         return when (portForward.type) {
             HostConstants.PORTFORWARD_LOCAL -> {
@@ -1109,12 +1120,10 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
 
     override fun getDefaultPort(): Int = DEFAULT_PORT
 
-    override fun getDefaultNickname(username: String?, hostname: String?, port: Int): String {
-        return if (port == DEFAULT_PORT) {
-            String.format(Locale.US, "%s@%s", username, hostname)
-        } else {
-            String.format(Locale.US, "%s@%s:%d", username, hostname, port)
-        }
+    override fun getDefaultNickname(username: String?, hostname: String?, port: Int): String = if (port == DEFAULT_PORT) {
+        String.format(Locale.US, "%s@%s", username, hostname)
+    } else {
+        String.format(Locale.US, "%s@%s:%d", username, hostname, port)
     }
 
     /**
@@ -1140,8 +1149,9 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         val hostname = uri.host
         val username = uri.userInfo
         var port = uri.port
-        if (port < 0)
+        if (port < 0) {
             port = DEFAULT_PORT
+        }
         val nickname = getDefaultNickname(username, hostname, port)
 
         return Host.createSshHost(
@@ -1158,8 +1168,9 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         selection[HostConstants.FIELD_HOST_HOSTNAME] = uri.host ?: ""
 
         var port = uri.port
-        if (port < 0)
+        if (port < 0) {
             port = DEFAULT_PORT
+        }
         selection[HostConstants.FIELD_HOST_PORT] = port.toString()
         selection[HostConstants.FIELD_HOST_USERNAME] = uri.userInfo ?: ""
     }
@@ -1184,14 +1195,17 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
                         val pubkey = pair.public as RSAPublicKey
                         pubKeys[entry.key] = RSASHA1Verify.get().encodePublicKey(pubkey)
                     }
+
                     is DSAPrivateKey -> {
                         val pubkey = pair.public as DSAPublicKey
                         pubKeys[entry.key] = DSASHA1Verify.get().encodePublicKey(pubkey)
                     }
+
                     is ECPrivateKey -> {
                         val pubkey = pair.public as ECPublicKey
                         pubKeys[entry.key] = ECDSASHA2Verify.getVerifierForKey(pubkey).encodePublicKey(pubkey)
                     }
+
                     is Ed25519PrivateKey -> {
                         val pubkey = pair.public as Ed25519PublicKey
                         pubKeys[entry.key] = Ed25519Verify.get().encodePublicKey(pubkey)
@@ -1213,8 +1227,9 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         }
         if (useAuthAgent == HostConstants.AUTHAGENT_CONFIRM) {
             val holder = manager?.loadedKeypairs?.get(nickname)
-            if (holder != null && holder.pubkey?.confirmation == true && !promptForPubkeyUse(nickname))
+            if (holder != null && holder.pubkey?.confirmation == true && !promptForPubkeyUse(nickname)) {
                 return null
+            }
         }
         return manager?.getKey(nickname)
     }
@@ -1253,25 +1268,26 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         return true
     }
 
-    override fun removeIdentity(publicKey: ByteArray): Boolean {
-        return manager?.removeKey(publicKey) ?: false
-    }
+    override fun removeIdentity(publicKey: ByteArray): Boolean = manager?.removeKey(publicKey) ?: false
 
     override fun isAgentLocked(): Boolean = agentLockPassphrase != null
 
     override fun requestAgentUnlock(unlockPassphrase: String): Boolean {
-        if (agentLockPassphrase == null)
+        if (agentLockPassphrase == null) {
             return false
+        }
 
-        if (agentLockPassphrase == unlockPassphrase)
+        if (agentLockPassphrase == unlockPassphrase) {
             agentLockPassphrase = null
+        }
 
         return agentLockPassphrase == null
     }
 
     override fun setAgentLock(lockPassphrase: String): Boolean {
-        if (agentLockPassphrase != null)
+        if (agentLockPassphrase != null) {
             return false
+        }
 
         agentLockPassphrase = lockPassphrase
         return true
@@ -1299,10 +1315,12 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
             Pattern.CASE_INSENSITIVE
         )
 
-        private const val conditions = (ChannelCondition.STDOUT_DATA
+        private const val conditions = (
+            ChannelCondition.STDOUT_DATA
                 or ChannelCondition.STDERR_DATA
                 or ChannelCondition.CLOSED
-                or ChannelCondition.EOF)
+                or ChannelCondition.EOF
+            )
 
         @JvmStatic
         fun getProtocolName(): String = PROTOCOL
@@ -1311,8 +1329,9 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         fun getUri(input: String): Uri? {
             val matcher = hostmask.matcher(input)
 
-            if (!matcher.matches())
+            if (!matcher.matches()) {
                 return null
+            }
 
             val sb = StringBuilder()
 
@@ -1347,13 +1366,11 @@ class SSH : AbsTransport, ConnectionMonitor, InteractiveCallback, AuthAgentCallb
         }
 
         @JvmStatic
-        fun getFormatHint(context: Context): String {
-            return String.format(
-                "%s@%s:%s",
-                context.getString(R.string.format_username),
-                context.getString(R.string.format_hostname),
-                context.getString(R.string.format_port)
-            )
-        }
+        fun getFormatHint(context: Context): String = String.format(
+            "%s@%s:%s",
+            context.getString(R.string.format_username),
+            context.getString(R.string.format_hostname),
+            context.getString(R.string.format_port)
+        )
     }
 }
