@@ -47,4 +47,7 @@
 
 	<!-- Default filename for exported hosts JSON file -->
 	<string name="export_hosts_filename">connectbot_hosts.json</string>
+
+	<!-- Default filename for exported SSH config file -->
+	<string name="export_ssh_config_filename">connectbot_config</string>
 </resources>

@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.R
 import org.connectbot.data.HostRepository
+import org.connectbot.data.SshConfigImportResult
 import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.ServiceError
@@ -53,7 +54,15 @@ data class HostListUiState(
     val sortedByColor: Boolean = false,
     val exportedJson: String? = null,
     val exportResult: ExportResult? = null,
-    val importResult: ImportResult? = null
+    val importResult: ImportResult? = null,
+    val exportedSshConfig: String? = null,
+    val sshConfigExportResult: SshConfigExportResult? = null,
+    val sshConfigImportResult: SshConfigImportResult? = null
+)
+
+data class SshConfigExportResult(
+    val hostCount: Int,
+    val skippedCount: Int
 )
 
 data class ImportResult(
@@ -278,5 +287,52 @@ class HostListViewModel @Inject constructor(
 
     fun clearImportResult() {
         _uiState.update { it.copy(importResult = null) }
+    }
+
+    fun exportSshConfig() {
+        viewModelScope.launch {
+            try {
+                val result = withContext(dispatchers.io) {
+                    repository.exportToSshConfig()
+                }
+                val exportResult = SshConfigExportResult(
+                    hostCount = result.hostCount,
+                    skippedCount = result.skippedCount
+                )
+                _uiState.update {
+                    it.copy(
+                        exportedSshConfig = result.configText,
+                        sshConfigExportResult = exportResult
+                    )
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(error = e.message ?: "Failed to export SSH config")
+                }
+            }
+        }
+    }
+
+    fun clearExportedSshConfig() {
+        _uiState.update { it.copy(exportedSshConfig = null, sshConfigExportResult = null) }
+    }
+
+    fun importSshConfig(configText: String) {
+        viewModelScope.launch {
+            try {
+                val result = withContext(dispatchers.io) {
+                    repository.importFromSshConfig(configText)
+                }
+                _uiState.update { it.copy(sshConfigImportResult = result) }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(error = e.message ?: "Failed to import SSH config")
+                }
+            }
+        }
+    }
+
+    fun clearSshConfigImportResult() {
+        _uiState.update { it.copy(sshConfigImportResult = null) }
     }
 }

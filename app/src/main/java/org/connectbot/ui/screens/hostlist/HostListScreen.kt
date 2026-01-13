@@ -27,7 +27,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -81,6 +84,7 @@ import androidx.core.graphics.toColorInt
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import org.connectbot.R
+import org.connectbot.data.SshConfigImportResult
 import org.connectbot.data.entity.Host
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.ScreenPreviews
@@ -171,6 +175,68 @@ fun HostListScreen(
         }
     }
 
+    // File picker for SSH config export
+    val sshConfigExportLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("text/plain")
+    ) { uri ->
+        if (uri != null && uiState.exportedSshConfig != null) {
+            scope.launch {
+                try {
+                    context.contentResolver.openOutputStream(uri)?.use { outputStream ->
+                        outputStream.write(uiState.exportedSshConfig!!.toByteArray())
+                    }
+                    val exportResult = uiState.sshConfigExportResult
+                    if (exportResult != null) {
+                        Toast.makeText(
+                            context,
+                            context.getString(
+                                R.string.export_ssh_config_success,
+                                exportResult.hostCount,
+                                exportResult.skippedCount
+                            ),
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.export_ssh_config_failed, e.message),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+                viewModel.clearExportedSshConfig()
+            }
+        }
+    }
+
+    // File picker for SSH config import
+    val sshConfigImportLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocument()
+    ) { uri ->
+        if (uri != null) {
+            scope.launch {
+                try {
+                    val configText = context.contentResolver.openInputStream(uri)?.use { inputStream ->
+                        inputStream.bufferedReader().readText()
+                    }
+                    if (configText != null) {
+                        viewModel.importSshConfig(configText)
+                    }
+                } catch (e: Exception) {
+                    Toast.makeText(
+                        context,
+                        context.getString(R.string.import_ssh_config_failed, e.message),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
+
+    // State for SSH config import warnings dialog
+    var showSshConfigImportWarningsDialog by remember { mutableStateOf(false) }
+    var sshConfigImportResultForDialog by remember { mutableStateOf<SshConfigImportResult?>(null) }
+
     // Show errors as Toast notifications
     LaunchedEffect(uiState.error) {
         uiState.error?.let { errorMessage ->
@@ -204,6 +270,47 @@ fun HostListScreen(
         }
     }
 
+    // Handle SSH config export result - launch file picker when config is ready
+    LaunchedEffect(uiState.exportedSshConfig) {
+        if (uiState.exportedSshConfig != null) {
+            sshConfigExportLauncher.launch(context.getString(R.string.export_ssh_config_filename))
+        }
+    }
+
+    // Handle SSH config import result
+    LaunchedEffect(uiState.sshConfigImportResult) {
+        uiState.sshConfigImportResult?.let { result ->
+            if (result.warnings.isNotEmpty()) {
+                // Show dialog with warnings
+                sshConfigImportResultForDialog = result
+                showSshConfigImportWarningsDialog = true
+            } else {
+                // Just show toast without warnings
+                Toast.makeText(
+                    context,
+                    context.getString(
+                        R.string.import_ssh_config_success,
+                        result.hostsImported,
+                        result.hostsSkipped
+                    ),
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+            viewModel.clearSshConfigImportResult()
+        }
+    }
+
+    // SSH config import warnings dialog
+    if (showSshConfigImportWarningsDialog && sshConfigImportResultForDialog != null) {
+        SshConfigImportResultDialog(
+            result = sshConfigImportResultForDialog!!,
+            onDismiss = {
+                showSshConfigImportWarningsDialog = false
+                sshConfigImportResultForDialog = null
+            }
+        )
+    }
+
     HostListScreenContent(
         uiState = uiState,
         makingShortcut = makingShortcut,
@@ -223,6 +330,8 @@ fun HostListScreen(
         onDisconnectAll = viewModel::disconnectAll,
         onExportHosts = viewModel::exportHosts,
         onImportHosts = { importLauncher.launch(arrayOf("application/json")) },
+        onExportSshConfig = viewModel::exportSshConfig,
+        onImportSshConfig = { sshConfigImportLauncher.launch(arrayOf("text/plain", "*/*")) },
         modifier = modifier
     )
 }
@@ -248,6 +357,8 @@ fun HostListScreenContent(
     onDisconnectAll: () -> Unit,
     onExportHosts: () -> Unit = {},
     onImportHosts: () -> Unit = {},
+    onExportSshConfig: () -> Unit = {},
+    onImportSshConfig: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var showMenu by remember { mutableStateOf(false) }
@@ -330,6 +441,20 @@ fun HostListScreenContent(
                                 onClick = {
                                     showMenu = false
                                     onImportHosts()
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.list_menu_export_ssh_config)) },
+                                onClick = {
+                                    showMenu = false
+                                    onExportSshConfig()
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.list_menu_import_ssh_config)) },
+                                onClick = {
+                                    showMenu = false
+                                    onImportSshConfig()
                                 }
                             )
                             DropdownMenuItem(
@@ -735,6 +860,55 @@ private fun parseColor(colorString: String?): Color {
         val colorInt = colorString.toColorInt()
         return Color(colorInt)
     }
+}
+
+@Composable
+private fun SshConfigImportResultDialog(
+    result: SshConfigImportResult,
+    onDismiss: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.import_ssh_config_result_title)) },
+        text = {
+            Column {
+                Text(
+                    stringResource(
+                        R.string.import_ssh_config_result_summary,
+                        result.hostsImported,
+                        result.hostsSkipped
+                    )
+                )
+
+                if (result.warnings.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = stringResource(R.string.import_ssh_config_warnings),
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                    LazyColumn(
+                        modifier = Modifier.heightIn(max = 200.dp)
+                    ) {
+                        items(result.warnings) { warning ->
+                            Text(
+                                text = buildString {
+                                    warning.hostPattern?.let { append("[$it] ") }
+                                    append("${warning.directive}: ${warning.message}")
+                                },
+                                style = MaterialTheme.typography.bodySmall,
+                                modifier = Modifier.padding(vertical = 4.dp)
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.button_ok))
+            }
+        }
+    )
 }
 
 @ScreenPreviews

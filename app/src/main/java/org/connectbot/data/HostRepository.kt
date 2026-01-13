@@ -24,6 +24,7 @@ import kotlinx.coroutines.runBlocking
 import org.connectbot.data.dao.HostDao
 import org.connectbot.data.dao.KnownHostDao
 import org.connectbot.data.dao.PortForwardDao
+import org.connectbot.data.dao.PubkeyDao
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KnownHost
 import org.connectbot.data.entity.PortForward
@@ -39,6 +40,7 @@ import javax.inject.Singleton
  * @param hostDao The DAO for accessing host data
  * @param portForwardDao The DAO for accessing port forward data
  * @param knownHostDao The DAO for accessing known host data
+ * @param pubkeyDao The DAO for accessing pubkey data (for SSH config export)
  */
 @Singleton
 class HostRepository @Inject constructor(
@@ -46,7 +48,8 @@ class HostRepository @Inject constructor(
     private val database: ConnectBotDatabase,
     private val hostDao: HostDao,
     private val portForwardDao: PortForwardDao,
-    private val knownHostDao: KnownHostDao
+    private val knownHostDao: KnownHostDao,
+    private val pubkeyDao: PubkeyDao
 ) {
 
     // ============================================================================
@@ -327,6 +330,180 @@ class HostRepository @Inject constructor(
      */
     suspend fun importHostsFromJson(jsonString: String): ImportCounts {
         return HostConfigJson.importFromJson(context, database, jsonString)
+    }
+
+    /**
+     * Export all SSH hosts to OpenSSH config format.
+     * Only exports hosts with protocol="ssh", skipping telnet and local.
+     *
+     * @return SshConfigExportResult with config text and counts
+     */
+    suspend fun exportToSshConfig(): SshConfigExportResult {
+        val hosts = hostDao.getAll()
+        val allPortForwards = mutableMapOf<Long, List<PortForward>>()
+
+        for (host in hosts) {
+            allPortForwards[host.id] = portForwardDao.getByHost(host.id)
+        }
+
+        val pubkeys = pubkeyDao.getAll().associateBy { it.id }
+        val hostMap = hosts.associateBy { it.id }
+
+        val exporter = SshConfigExporter()
+        return exporter.export(
+            hosts = hosts.map { it to (allPortForwards[it.id] ?: emptyList()) },
+            pubkeys = pubkeys,
+            jumpHosts = hostMap
+        )
+    }
+
+    /**
+     * Import hosts from OpenSSH config format.
+     * Uses Default profile (profileId=1) for all imported hosts.
+     *
+     * @param configText The SSH config file contents
+     * @return SshConfigImportResult with counts and warnings
+     */
+    suspend fun importFromSshConfig(configText: String): SshConfigImportResult {
+        val parser = SshConfigParser()
+        val (parsedHosts, parseWarnings) = parser.parse(configText)
+
+        val warnings = parseWarnings.toMutableList()
+        var imported = 0
+        var skipped = 0
+
+        // Build pubkey lookup by nickname
+        val pubkeyByNickname = pubkeyDao.getAll().associateBy { it.nickname }
+
+        // Build existing hosts lookup by nickname
+        val existingHosts = hostDao.getAll().associateBy { it.nickname }
+
+        // First pass: import hosts (without ProxyJump resolution for new hosts)
+        val importedHostIds = mutableMapOf<String, Long>()
+
+        for (parsed in parsedHosts) {
+            // Check if host already exists
+            if (existingHosts.containsKey(parsed.hostPattern)) {
+                skipped++
+                continue
+            }
+
+            // Resolve pubkey ID from IdentityFile
+            var pubkeyId = -1L
+            parsed.identityFile?.let { keyName ->
+                val pubkey = pubkeyByNickname[keyName]
+                if (pubkey != null) {
+                    pubkeyId = pubkey.id
+                } else {
+                    warnings.add(
+                        SshConfigWarning(
+                            hostPattern = parsed.hostPattern,
+                            directive = "IdentityFile",
+                            message = "Key '$keyName' not found in ConnectBot",
+                            type = SshConfigWarningType.PUBKEY_NOT_FOUND
+                        )
+                    )
+                }
+            }
+
+            // Resolve jump host ID from ProxyJump (existing hosts only in first pass)
+            var jumpHostId: Long? = null
+            parsed.proxyJump?.let { jumpHostName ->
+                val jumpHost = existingHosts[jumpHostName]
+                if (jumpHost != null) {
+                    jumpHostId = jumpHost.id
+                }
+                // If not found in existing, will be resolved in second pass
+            }
+
+            // Create the host entity
+            val host = Host(
+                nickname = parsed.hostPattern,
+                protocol = "ssh",
+                hostname = parsed.hostname ?: parsed.hostPattern,
+                username = parsed.user ?: "",
+                port = parsed.port ?: 22,
+                pubkeyId = pubkeyId,
+                useKeys = parsed.pubkeyAuthentication ?: true,
+                useAuthAgent = parsed.addKeysToAgent ?: "no",
+                compression = parsed.compression ?: false,
+                wantSession = parsed.requestTty ?: true,
+                postLogin = parsed.remoteCommand,
+                jumpHostId = jumpHostId,
+                profileId = 1L // Default profile
+            )
+
+            // Insert host
+            val newId = hostDao.insert(host)
+            imported++
+            importedHostIds[parsed.hostPattern] = newId
+
+            // Insert port forwards
+            for (lf in parsed.localForwards) {
+                portForwardDao.insert(
+                    PortForward(
+                        hostId = newId,
+                        nickname = "Local ${lf.sourcePort}",
+                        type = "local",
+                        sourcePort = lf.sourcePort,
+                        destAddr = lf.destHost,
+                        destPort = lf.destPort
+                    )
+                )
+            }
+            for (rf in parsed.remoteForwards) {
+                portForwardDao.insert(
+                    PortForward(
+                        hostId = newId,
+                        nickname = "Remote ${rf.sourcePort}",
+                        type = "remote",
+                        sourcePort = rf.sourcePort,
+                        destAddr = rf.destHost,
+                        destPort = rf.destPort
+                    )
+                )
+            }
+            for (df in parsed.dynamicForwards) {
+                portForwardDao.insert(
+                    PortForward(
+                        hostId = newId,
+                        nickname = "Dynamic $df",
+                        type = "dynamic5", // Default to SOCKS5
+                        sourcePort = df,
+                        destAddr = null,
+                        destPort = 0
+                    )
+                )
+            }
+        }
+
+        // Second pass: resolve ProxyJump references to newly imported hosts
+        for (parsed in parsedHosts) {
+            val jumpHostName = parsed.proxyJump ?: continue
+            val hostId = importedHostIds[parsed.hostPattern] ?: continue
+
+            // Skip if already resolved to an existing host
+            if (existingHosts.containsKey(jumpHostName)) continue
+
+            // Check if the jump host was also imported
+            val jumpHostId = importedHostIds[jumpHostName]
+            if (jumpHostId != null) {
+                // Update the host with the jump host ID
+                val host = hostDao.getById(hostId)
+                if (host != null) {
+                    hostDao.update(host.copy(jumpHostId = jumpHostId))
+                }
+            }
+        }
+
+        // Notify Room's InvalidationTracker
+        database.invalidationTracker.refreshVersionsAsync()
+
+        return SshConfigImportResult(
+            hostsImported = imported,
+            hostsSkipped = skipped,
+            warnings = warnings
+        )
     }
 
     // ============================================================================
