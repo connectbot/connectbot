@@ -84,14 +84,12 @@ class HostRepository @Inject constructor(
      * @param sortedByColor If true, hosts will be grouped by color
      * @return List of all hosts
      */
-    suspend fun getHosts(sortedByColor: Boolean = false): List<Host> {
-        return if (sortedByColor) {
-            // For now, sort by color in memory
-            // TODO: Add a proper DAO query for this
-            hostDao.getAll().sortedBy { it.color }
-        } else {
-            hostDao.getAll()
-        }
+    suspend fun getHosts(sortedByColor: Boolean = false): List<Host> = if (sortedByColor) {
+        // For now, sort by color in memory
+        // TODO: Add a proper DAO query for this
+        hostDao.getAll().sortedBy { it.color }
+    } else {
+        hostDao.getAll()
     }
 
     /**
@@ -132,16 +130,14 @@ class HostRepository @Inject constructor(
      * @param host The host to save
      * @return The saved host with updated ID
      */
-    suspend fun saveHost(host: Host): Host {
-        return if (host.id <= 0L) {
-            // New or temporary host - insert (assigns new positive ID)
-            val newId = hostDao.insert(host)
-            host.copy(id = newId)
-        } else {
-            // Existing host - update
-            hostDao.update(host)
-            host
-        }
+    suspend fun saveHost(host: Host): Host = if (host.id <= 0L) {
+        // New or temporary host - insert (assigns new positive ID)
+        val newId = hostDao.insert(host)
+        host.copy(id = newId)
+    } else {
+        // Existing host - update
+        hostDao.update(host)
+        host
     }
 
     /**
@@ -177,8 +173,7 @@ class HostRepository @Inject constructor(
      * @param hostId The host ID
      * @return Flow of port forwards that updates automatically
      */
-    fun observePortForwardsForHost(hostId: Long): Flow<List<PortForward>> =
-        portForwardDao.observeByHost(hostId)
+    fun observePortForwardsForHost(hostId: Long): Flow<List<PortForward>> = portForwardDao.observeByHost(hostId)
 
     /**
      * Get all port forwards for a host.
@@ -186,8 +181,7 @@ class HostRepository @Inject constructor(
      * @param hostId The host ID
      * @return List of port forwards
      */
-    suspend fun getPortForwardsForHost(hostId: Long): List<PortForward> =
-        portForwardDao.getByHost(hostId)
+    suspend fun getPortForwardsForHost(hostId: Long): List<PortForward> = portForwardDao.getByHost(hostId)
 
     /**
      * Save a port forward (insert or update).
@@ -195,16 +189,14 @@ class HostRepository @Inject constructor(
      * @param portForward The port forward to save
      * @return The saved port forward with updated ID
      */
-    suspend fun savePortForward(portForward: PortForward): PortForward {
-        return if (portForward.id == 0L) {
-            // New port forward - insert
-            val newId = portForwardDao.insert(portForward)
-            portForward.copy(id = newId)
-        } else {
-            // Existing port forward - update
-            portForwardDao.update(portForward)
-            portForward
-        }
+    suspend fun savePortForward(portForward: PortForward): PortForward = if (portForward.id == 0L) {
+        // New port forward - insert
+        val newId = portForwardDao.insert(portForward)
+        portForward.copy(id = newId)
+    } else {
+        // Existing port forward - update
+        portForwardDao.update(portForward)
+        portForward
     }
 
     /**
@@ -220,9 +212,7 @@ class HostRepository @Inject constructor(
     // Known Host Operations
     // ============================================================================
 
-    suspend fun getKnownHostsForHost(hostId: Long): List<KnownHost> {
-        return knownHostDao.getByHostId(hostId)
-    }
+    suspend fun getKnownHostsForHost(hostId: Long): List<KnownHost> = knownHostDao.getByHostId(hostId)
 
     /**
      * Get the list of host key algorithms known for a specific host.
@@ -253,7 +243,9 @@ class HostRepository @Inject constructor(
     ) {
         // Check if this exact key already exists for this host
         val existing = knownHostDao.getByHostIdAlgoAndKey(
-            host.id, serverHostKeyAlgorithm, serverHostKey
+            host.id,
+            serverHostKeyAlgorithm,
+            serverHostKey
         )
         // If it does not exist or exists but has a different hostname and port, add it.
         if (existing == null || existing.hostname != hostname || existing.port != port) {
@@ -283,7 +275,9 @@ class HostRepository @Inject constructor(
     ) {
         // Find the exact key to remove
         val knownHost = knownHostDao.getByHostIdAlgoAndKey(
-            hostId, serverHostKeyAlgorithm, serverHostKey
+            hostId,
+            serverHostKeyAlgorithm,
+            serverHostKey
         )
         if (knownHost != null) {
             knownHostDao.delete(knownHost)
@@ -312,9 +306,7 @@ class HostRepository @Inject constructor(
      * @param pretty If true, format JSON with indentation
      * @return Pair of JSON string and export counts (hosts and profiles)
      */
-    suspend fun exportHostsToJson(pretty: Boolean = true): Pair<String, ExportCounts> {
-        return HostConfigJson.exportToJson(context, database, pretty)
-    }
+    suspend fun exportHostsToJson(pretty: Boolean = true): Pair<String, ExportCounts> = HostConfigJson.exportToJson(context, database, pretty)
 
     /**
      * Import hosts from JSON string.
@@ -328,9 +320,7 @@ class HostRepository @Inject constructor(
      * @throws org.json.JSONException if JSON is invalid
      * @throws IllegalArgumentException if schema version is incompatible
      */
-    suspend fun importHostsFromJson(jsonString: String): ImportCounts {
-        return HostConfigJson.importFromJson(context, database, jsonString)
-    }
+    suspend fun importHostsFromJson(jsonString: String): ImportCounts = HostConfigJson.importFromJson(context, database, jsonString)
 
     /**
      * Export all SSH hosts to OpenSSH config format.
@@ -577,9 +567,9 @@ class HostRepository @Inject constructor(
             val allHosts = hostDao.getAll()
             allHosts.find { host ->
                 host.protocol == protocol &&
-                host.hostname == hostname &&
-                (username == null || host.username == username) &&
-                (port == null || host.port == port)
+                    host.hostname == hostname &&
+                    (username == null || host.username == username) &&
+                    (port == null || host.port == port)
             }?.let { return it }
         }
 

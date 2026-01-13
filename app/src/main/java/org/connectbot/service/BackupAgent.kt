@@ -128,7 +128,6 @@ class BackupAgent : BackupAgentHelper() {
             // Step 2: Back up the filtered database
             Timber.d("Backing up filtered database")
             backupFile(tempDbFile, DATABASE_NAME, data)
-
         } catch (e: Exception) {
             Timber.e(e, "Error during database backup with filtering")
             throw e

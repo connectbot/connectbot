@@ -54,6 +54,8 @@ spotless {
                     "ktlint_standard_discouraged-comment-location" to "disabled",
                     "ktlint_standard_max-line-length" to "disabled",
                     "ktlint_standard_kdoc" to "disabled",
+                    "ktlint_compose_compositionlocal-allowlist" to "disabled",
+                    "ktlint_compose_param-order-check" to "disabled",
                 ),
             ).customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.5.3"))
     }

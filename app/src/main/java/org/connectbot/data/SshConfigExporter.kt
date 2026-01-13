@@ -145,9 +145,11 @@ class SshConfigExporter {
                 "local" -> {
                     builder.appendLine("    LocalForward ${pf.sourcePort} ${pf.destAddr ?: "localhost"}:${pf.destPort}")
                 }
+
                 "remote" -> {
                     builder.appendLine("    RemoteForward ${pf.sourcePort} ${pf.destAddr ?: "localhost"}:${pf.destPort}")
                 }
+
                 "dynamic4", "dynamic5" -> {
                     builder.appendLine("    DynamicForward ${pf.sourcePort}")
                 }
@@ -175,11 +177,9 @@ class SshConfigExporter {
     /**
      * Escape host pattern if it contains spaces or special characters.
      */
-    private fun escapeHostPattern(pattern: String): String {
-        return if (pattern.contains(" ") || pattern.contains("\t")) {
-            "\"$pattern\""
-        } else {
-            pattern
-        }
+    private fun escapeHostPattern(pattern: String): String = if (pattern.contains(" ") || pattern.contains("\t")) {
+        "\"$pattern\""
+    } else {
+        pattern
     }
 }

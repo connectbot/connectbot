@@ -81,6 +81,7 @@ class SshConfigParser {
                     currentHost?.build()?.let { hosts.add(it) }
                     currentHost = HostBuilder(value)
                 }
+
                 "match" -> {
                     // Save previous host if exists
                     currentHost?.build()?.let { hosts.add(it) }
@@ -95,6 +96,7 @@ class SshConfigParser {
                         )
                     )
                 }
+
                 "include" -> {
                     warnings.add(
                         SshConfigWarning(
@@ -105,6 +107,7 @@ class SshConfigParser {
                         )
                     )
                 }
+
                 else -> {
                     if (inMatchBlock) {
                         // Skip directives inside Match blocks
@@ -179,7 +182,9 @@ class SshConfigParser {
         fun setDirective(directive: String, value: String): SshConfigWarning? {
             when (directive.lowercase()) {
                 "hostname" -> hostname = value
+
                 "user" -> user = value
+
                 "port" -> {
                     val parsed = value.toIntOrNull()
                     if (parsed != null && parsed in 1..65535) {
@@ -193,21 +198,32 @@ class SshConfigParser {
                         )
                     }
                 }
+
                 "identityfile" -> identityFile = extractKeyName(value)
+
                 "proxyjump" -> proxyJump = value
+
                 "compression" -> compression = parseYesNo(value)
+
                 "requesttty" -> requestTty = parseYesNoAuto(value)
+
                 "pubkeyauthentication" -> pubkeyAuthentication = parseYesNo(value)
+
                 "addkeystoagent" -> addKeysToAgent = value.lowercase()
+
                 "remotecommand" -> remoteCommand = value
+
                 "localforward" -> parsePortForward(value)?.let { localForwards.add(it) }
+
                 "remoteforward" -> parsePortForward(value)?.let { remoteForwards.add(it) }
+
                 "dynamicforward" -> {
                     val parsed = value.toIntOrNull()
                     if (parsed != null && parsed in 1..65535) {
                         dynamicForwards.add(parsed)
                     }
                 }
+
                 else -> {
                     if (directive.lowercase() in UNSUPPORTED_WITH_WARNING) {
                         return SshConfigWarning(
@@ -247,21 +263,17 @@ class SshConfigParser {
             )
         }
 
-        private fun parseYesNo(value: String): Boolean? {
-            return when (value.lowercase()) {
-                "yes", "true" -> true
-                "no", "false" -> false
-                else -> null
-            }
+        private fun parseYesNo(value: String): Boolean? = when (value.lowercase()) {
+            "yes", "true" -> true
+            "no", "false" -> false
+            else -> null
         }
 
-        private fun parseYesNoAuto(value: String): Boolean? {
-            return when (value.lowercase()) {
-                "yes", "true", "force" -> true
-                "no", "false" -> false
-                "auto" -> null
-                else -> null
-            }
+        private fun parseYesNoAuto(value: String): Boolean? = when (value.lowercase()) {
+            "yes", "true", "force" -> true
+            "no", "false" -> false
+            "auto" -> null
+            else -> null
         }
 
         /**
@@ -269,10 +281,8 @@ class SshConfigParser {
          * ~/.ssh/id_rsa -> id_rsa
          * /path/to/mykey -> mykey
          */
-        private fun extractKeyName(path: String): String {
-            return path.substringAfterLast("/")
-                .substringAfterLast("\\")
-        }
+        private fun extractKeyName(path: String): String = path.substringAfterLast("/")
+            .substringAfterLast("\\")
 
         /**
          * Parse port forward in format: "localport host:remoteport" or "localport remotehost remoteport"
@@ -290,6 +300,7 @@ class SshConfigParser {
                     val destPort = destParts[1].toIntOrNull() ?: return null
                     ParsedPortForward(sourcePort, destParts[0], destPort)
                 }
+
                 parts.size == 3 -> {
                     // Format: "8080 localhost 80"
                     val sourcePort = parseSourcePort(parts[0])
@@ -297,6 +308,7 @@ class SshConfigParser {
                     if (sourcePort == null || destPort == null) return null
                     ParsedPortForward(sourcePort, parts[1], destPort)
                 }
+
                 else -> null
             }
         }

@@ -64,12 +64,16 @@ data class SshConfigWarning(
 enum class SshConfigWarningType {
     /** Directive is not supported (e.g., ProxyCommand) */
     UNSUPPORTED_DIRECTIVE,
+
     /** Match blocks are not supported */
     MATCH_BLOCK_IGNORED,
+
     /** Include directive is ignored */
     INCLUDE_IGNORED,
+
     /** Value could not be parsed */
     INVALID_VALUE,
+
     /** IdentityFile references unknown key */
     PUBKEY_NOT_FOUND
 }
