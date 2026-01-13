@@ -19,6 +19,7 @@ package org.connectbot.transport
 
 import android.content.Context
 import android.net.Uri
+import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.UserNotAuthenticatedException
 import androidx.core.net.toUri
 import com.trilead.ssh2.AuthAgentCallback
@@ -482,15 +483,29 @@ class SSH :
                 }
 
                 val pair = KeyPair(publicKey, privateKey)
-                manager?.addBiometricKey(pubkey, keystoreAlias, publicKey)
-                Timber.d(String.format("Unlocked biometric key '%s'", pubkey.nickname))
-                pair
-            } catch (e: UserNotAuthenticatedException) {
-                val message = manager?.res?.getString(R.string.terminal_auth_biometric_invalidated, pubkey.nickname)
-                    ?: String.format("Biometric key '%s' has been invalidated. Please generate a new key.", pubkey.nickname)
-                Timber.e(e, message)
-                bridge?.outputLine(message)
-                null
+                when (val result = manager?.addBiometricKey(pubkey, keystoreAlias, publicKey)) {
+                    is TerminalManager.BiometricKeyResult.Success -> {
+                        Timber.d(String.format("Unlocked biometric key '%s'", pubkey.nickname))
+                        pair
+                    }
+
+                    is TerminalManager.BiometricKeyResult.KeyInvalidated -> {
+                        bridge?.outputLine(result.message)
+                        null
+                    }
+
+                    is TerminalManager.BiometricKeyResult.Error -> {
+                        bridge?.outputLine(result.message)
+                        null
+                    }
+
+                    null -> {
+                        val message = String.format("Failed to add biometric key '%s' to cache.", pubkey.nickname)
+                        Timber.e(message)
+                        bridge?.outputLine(message)
+                        null
+                    }
+                }
             } catch (e: Exception) {
                 val message = String.format("Failed to load biometric key '%s': %s", pubkey.nickname, e.message)
                 Timber.e(e, message)
@@ -554,12 +569,29 @@ class SSH :
     }
 
     @Throws(IOException::class)
-    private fun tryPublicKey(username: String, keyNickname: String, pair: KeyPair): Boolean {
+    private fun tryPublicKey(username: String, keyNickname: String, pair: KeyPair): Boolean = try {
         val success = connection?.authenticateWithPublicKey(username, pair) == true
         if (!success) {
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, keyNickname))
         }
-        return success
+        success
+    } catch (e: Exception) {
+        // Check if this is a biometric key error (may be wrapped in IOException)
+        val cause = e.cause ?: e
+        val isKeyInvalidated = cause is KeyPermanentlyInvalidatedException ||
+            cause is UserNotAuthenticatedException ||
+            e is KeyPermanentlyInvalidatedException ||
+            e is UserNotAuthenticatedException
+        if (isKeyInvalidated) {
+            val message = manager?.res?.getString(R.string.terminal_auth_biometric_invalidated, keyNickname)
+                ?: String.format("Biometric key '%s' has been invalidated. Please generate a new key.", keyNickname)
+            Timber.e(e, message)
+            bridge?.outputLine(message)
+        } else {
+            Timber.e(e, "Public key authentication failed for '%s'", keyNickname)
+            bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, keyNickname))
+        }
+        false
     }
 
     /**

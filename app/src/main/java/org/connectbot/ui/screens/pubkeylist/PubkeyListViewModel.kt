@@ -209,10 +209,39 @@ class PubkeyListViewModel @Inject constructor(
                     ?: throw IllegalStateException("Could not retrieve public key from keystore")
 
                 // Add the biometric key to TerminalManager
-                terminalManager?.addBiometricKey(pubkey, alias, publicKey)
+                when (val result = terminalManager?.addBiometricKey(pubkey, alias, publicKey)) {
+                    is TerminalManager.BiometricKeyResult.Success -> {
+                        // Clear the biometric key to unlock
+                        _uiState.update { it.copy(biometricKeyToUnlock = null) }
+                    }
 
-                // Clear the biometric key to unlock
-                _uiState.update { it.copy(biometricKeyToUnlock = null) }
+                    is TerminalManager.BiometricKeyResult.KeyInvalidated -> {
+                        _uiState.update {
+                            it.copy(
+                                error = result.message,
+                                biometricKeyToUnlock = null
+                            )
+                        }
+                    }
+
+                    is TerminalManager.BiometricKeyResult.Error -> {
+                        _uiState.update {
+                            it.copy(
+                                error = result.message,
+                                biometricKeyToUnlock = null
+                            )
+                        }
+                    }
+
+                    null -> {
+                        _uiState.update {
+                            it.copy(
+                                error = "Failed to load biometric key: TerminalManager not available",
+                                biometricKeyToUnlock = null
+                            )
+                        }
+                    }
+                }
             } catch (e: Exception) {
                 Timber.e(e, "Failed to load biometric key")
                 _uiState.update {
