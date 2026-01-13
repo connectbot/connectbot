@@ -416,6 +416,14 @@ fun ConsoleScreen(
                             onImeVisibilityChanged = { visible ->
                                 imeVisible = visible
                             },
+                            onHyperlinkClick = { url ->
+                                // Open OSC8 hyperlink in browser
+                                val intent = android.content.Intent(
+                                    android.content.Intent.ACTION_VIEW,
+                                    url.toUri()
+                                )
+                                context.startActivity(intent)
+                            },
                         )
 
                         // Set up text input request callback from bridge (for camera button)
