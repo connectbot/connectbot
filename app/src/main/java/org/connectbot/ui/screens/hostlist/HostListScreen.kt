@@ -94,9 +94,7 @@ import org.connectbot.ui.theme.ConnectBotTheme
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HostListScreen(
-    makingShortcut: Boolean = false,
     onNavigateToConsole: (Host) -> Unit,
-    onSelectShortcut: (Host) -> Unit = {},
     onNavigateToEditHost: (Host?) -> Unit,
     onNavigateToSettings: () -> Unit,
     onNavigateToPubkeys: () -> Unit,
@@ -105,6 +103,8 @@ fun HostListScreen(
     onNavigateToProfiles: () -> Unit,
     onNavigateToHelp: () -> Unit,
     modifier: Modifier = Modifier,
+    makingShortcut: Boolean = false,
+    onSelectShortcut: (Host) -> Unit = {},
     viewModel: HostListViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
