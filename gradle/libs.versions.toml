@@ -52,7 +52,7 @@ robolectric = "4.16"
 errorproneCore = "2.46.0"
 media3CommonKtx = "1.9.0"
 navigationTesting = "2.9.6"
-ui = "1.10.0"
+ui = "1.10.1"
 biometric = "1.4.0-alpha02"
 core = "1.17.0"
 
