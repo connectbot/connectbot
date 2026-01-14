@@ -32,6 +32,8 @@ import android.os.IBinder
 import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
+import android.security.keystore.KeyPermanentlyInvalidatedException
+import android.security.keystore.UserNotAuthenticatedException
 import com.trilead.ssh2.crypto.PublicKeyUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -498,12 +500,23 @@ class TerminalManager :
     }
 
     /**
+     * Result of adding a biometric key to the cache.
+     */
+    sealed class BiometricKeyResult {
+        data object Success : BiometricKeyResult()
+        data class KeyInvalidated(val message: String) : BiometricKeyResult()
+        data class Error(val message: String) : BiometricKeyResult()
+    }
+
+    /**
      * Add a biometric key from Android Keystore to in-memory cache.
      * The PrivateKey from Keystore is a proxy that delegates signing to secure hardware.
      * Since biometric auth was just completed, the 30-second signing window is active.
      * The key will be automatically removed when the auth window expires.
+     *
+     * @return BiometricKeyResult indicating success or failure with reason
      */
-    fun addBiometricKey(pubkey: Pubkey, keystoreAlias: String, publicKey: java.security.PublicKey) {
+    fun addBiometricKey(pubkey: Pubkey, keystoreAlias: String, publicKey: java.security.PublicKey): BiometricKeyResult {
         removeKey(pubkey.nickname)
 
         // Get the private key reference from Keystore
@@ -513,8 +526,39 @@ class TerminalManager :
         val privateKey = keyStore.getKey(keystoreAlias, null) as? java.security.PrivateKey
 
         if (privateKey == null) {
-            Timber.e("Failed to get private key from Keystore for alias: $keystoreAlias")
-            return
+            val message = "Failed to get private key from Keystore for alias: $keystoreAlias"
+            Timber.e(message)
+            return BiometricKeyResult.Error(message)
+        }
+
+        // Validate the key by trying to initialize a Signature
+        // This will throw if the key is invalidated (e.g., new fingerprint enrolled)
+        try {
+            val algorithm = when (publicKey) {
+                is java.security.interfaces.RSAPublicKey -> "SHA256withRSA"
+                is java.security.interfaces.ECPublicKey -> "SHA256withECDSA"
+                else -> null
+            }
+            if (algorithm != null) {
+                val signature = java.security.Signature.getInstance(algorithm)
+                signature.initSign(privateKey)
+            }
+        } catch (e: Exception) {
+            val cause = e.cause ?: e
+            val isKeyInvalidated = cause is KeyPermanentlyInvalidatedException ||
+                cause is UserNotAuthenticatedException ||
+                e is KeyPermanentlyInvalidatedException ||
+                e is UserNotAuthenticatedException
+            if (isKeyInvalidated) {
+                val message = res?.getString(R.string.terminal_auth_biometric_invalidated, pubkey.nickname)
+                    ?: "Biometric key '${pubkey.nickname}' has been invalidated. Please generate a new key."
+                Timber.e(e, message)
+                return BiometricKeyResult.KeyInvalidated(message)
+            } else {
+                val message = "Failed to validate biometric key '${pubkey.nickname}': ${e.message}"
+                Timber.e(e, message)
+                return BiometricKeyResult.Error(message)
+            }
         }
 
         // Create a KeyPair that the SSH library can use
@@ -545,6 +589,7 @@ class TerminalManager :
             BIOMETRIC_AUTH_VALIDITY_SECONDS
         )
         emitLoadedKeysChanged()
+        return BiometricKeyResult.Success
     }
 
     fun removeKey(nickname: String): Boolean {
