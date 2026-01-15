@@ -1247,4 +1247,26 @@
 	<string name="import_hosts_failed">Failed to import hosts: %s</string>
 	<!-- Title for the export hosts file picker dialog -->
 	<string name="export_hosts_title">Export Hosts</string>
+
+	<!-- SSH config export/import menu items -->
+	<!-- Menu item to export hosts to OpenSSH config format -->
+	<string name="list_menu_export_ssh_config">Export SSH Config</string>
+	<!-- Menu item to import hosts from OpenSSH config format -->
+	<string name="list_menu_import_ssh_config">Import SSH Config</string>
+
+	<!-- SSH config export/import messages -->
+	<!-- Success message shown after exporting to SSH config. Parameters: %1$d = hosts exported, %2$d = non-SSH hosts skipped -->
+	<string name="export_ssh_config_success">Exported %1$d hosts (%2$d non-SSH skipped)</string>
+	<!-- Success message shown after importing from SSH config. Parameters: %1$d = hosts imported, %2$d = hosts skipped -->
+	<string name="import_ssh_config_success">Imported %1$d hosts (%2$d skipped)</string>
+	<!-- Error message when SSH config export fails -->
+	<string name="export_ssh_config_failed">Failed to export SSH config: %s</string>
+	<!-- Error message when SSH config import fails -->
+	<string name="import_ssh_config_failed">Failed to import SSH config: %s</string>
+	<!-- Title for SSH config import result dialog -->
+	<string name="import_ssh_config_result_title">SSH Config Import</string>
+	<!-- Summary message in SSH config import result dialog. Parameters: %1$d = hosts imported, %2$d = hosts skipped -->
+	<string name="import_ssh_config_result_summary">Imported %1$d hosts, %2$d skipped (duplicates)</string>
+	<!-- Label for warnings section in SSH config import result dialog -->
+	<string name="import_ssh_config_warnings">Warnings:</string>
 </resources>
