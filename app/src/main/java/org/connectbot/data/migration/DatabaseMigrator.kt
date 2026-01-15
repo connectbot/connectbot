@@ -637,14 +637,38 @@ class DatabaseMigrator @Inject constructor(
             }
 
             // Insert profiles (referenced by hosts) with remapped colorSchemeId
+            // Create ID mapping since Room auto-generates IDs
+            // This fixes issue #1839: if Room's onCreate callback already inserted a
+            // default profile with ID=1, we must let Room auto-generate new IDs to
+            // avoid "UNIQUE constraint failed: profiles.id" error
+            val profileIdMap = mutableMapOf<Long, Long>()
+
+            // Get existing profiles to check for name conflicts (e.g., "Default" from onCreate)
+            val existingProfiles = roomDatabase.profileDao().getAll()
+            val existingProfilesByName = existingProfiles.associateBy { it.name.lowercase() }
+
             data.profiles.forEach { profile ->
+                val oldId = profile.id
                 // Remap colorSchemeId if it exists in colorSchemeIdMap (custom scheme)
                 // Built-in schemes (negative IDs) and the default scheme (ID 1) are not in
                 // the database and should be kept as-is
                 val newColorSchemeId = colorSchemeIdMap[profile.colorSchemeId]
                     ?: profile.colorSchemeId
-                val remappedProfile = profile.copy(colorSchemeId = newColorSchemeId)
-                roomDatabase.profileDao().insert(remappedProfile)
+
+                // Check if a profile with the same name already exists (case-insensitive)
+                val existingProfile = existingProfilesByName[profile.name.lowercase()]
+                val newId = if (existingProfile != null) {
+                    // Profile with this name already exists (e.g., "Default" from onCreate)
+                    // Use the existing profile's ID to avoid UNIQUE constraint violation
+                    logDebug("Using existing profile '${existingProfile.name}' (ID=${existingProfile.id}) instead of creating duplicate")
+                    existingProfile.id
+                } else {
+                    // Set id = 0 to let Room auto-generate the ID, avoiding conflicts with
+                    // any existing profiles (e.g., from DatabaseModule.onCreate callback)
+                    val remappedProfile = profile.copy(id = 0, colorSchemeId = newColorSchemeId)
+                    roomDatabase.profileDao().insert(remappedProfile)
+                }
+                profileIdMap[oldId] = newId
             }
 
             // Insert pubkeys (referenced by hosts)
@@ -669,8 +693,13 @@ class DatabaseMigrator @Inject constructor(
                     host.pubkeyId // Keep special values like -1 (any key), -2 (same as last), etc.
                 }
 
+                // Remap profileId to the new auto-generated ID (fixes #1839)
+                val newProfileId = profileIdMap[host.profileId]
+                    ?: throw MigrationException("Host references unknown profile ID: ${host.profileId}")
+
                 val remappedHost = host.copy(
-                    pubkeyId = newPubkeyId
+                    pubkeyId = newPubkeyId,
+                    profileId = newProfileId
                 )
                 val newId = roomDatabase.hostDao().insert(remappedHost)
                 hostIdMap[oldId] = newId
