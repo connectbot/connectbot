@@ -129,10 +129,12 @@ class Issue1839MigrationTest {
                     // This is the exact same code from DatabaseModule.kt
                     // It creates a default profile when the database is first created
                     Timber.d("Room onCreate callback - inserting default profile")
-                    db.execSQL("""
+                    db.execSQL(
+                        """
                         INSERT INTO profiles (name, color_scheme_id, font_size, del_key, encoding, emulation)
                         VALUES ('Default', -1, 10, 'del', 'UTF-8', 'xterm-256color')
-                    """.trimIndent())
+                        """.trimIndent()
+                    )
                 }
             })
             .allowMainThreadQueries()
@@ -159,8 +161,8 @@ class Issue1839MigrationTest {
             assertThat(result)
                 .describedAs(
                     "Migration should succeed without UNIQUE constraint violation on profiles.id. " +
-                    "Bug #1839 causes this to fail because Room's onCreate callback inserts " +
-                    "a default profile with ID=1 before migration inserts its profile with ID=1."
+                        "Bug #1839 causes this to fail because Room's onCreate callback inserts " +
+                        "a default profile with ID=1 before migration inserts its profile with ID=1."
                 )
                 .isInstanceOf(MigrationResult.Success::class.java)
 
@@ -176,7 +178,6 @@ class Issue1839MigrationTest {
             // Verify the host was migrated
             val hosts = database.hostDao().getAll()
             assertThat(hosts).hasSize(1)
-
         } finally {
             database.close()
         }
@@ -208,10 +209,12 @@ class Issue1839MigrationTest {
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
-                    db.execSQL("""
+                    db.execSQL(
+                        """
                         INSERT INTO profiles (name, color_scheme_id, font_size, del_key, encoding, emulation)
                         VALUES ('Default', -1, 10, 'del', 'UTF-8', 'xterm-256color')
-                    """.trimIndent())
+                        """.trimIndent()
+                    )
                 }
             })
             .allowMainThreadQueries()
@@ -233,7 +236,6 @@ class Issue1839MigrationTest {
             assertThat(result)
                 .describedAs("Migration should succeed even when Room onCreate creates a default profile")
                 .isInstanceOf(MigrationResult.Success::class.java)
-
         } finally {
             database.close()
         }
@@ -256,7 +258,8 @@ class Issue1839MigrationTest {
         try {
             // Create the hosts table with the legacy schema (version 27)
             // Note: Column names must match what LegacyHostDatabaseReader expects
-            db.execSQL("""
+            db.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS hosts (
                     _id INTEGER PRIMARY KEY AUTOINCREMENT,
                     nickname TEXT NOT NULL,
@@ -282,24 +285,28 @@ class Issue1839MigrationTest {
                     scrollbacklines INTEGER DEFAULT 140,
                     usectrlaltasmeta TEXT DEFAULT 'false'
                 )
-            """.trimIndent())
+                """.trimIndent()
+            )
 
             // Insert a host with CUSTOM terminal settings (fontSize=12 instead of default 10)
             // This causes migration to create a second profile for these non-default settings
-            db.execSQL("""
+            db.execSQL(
+                """
                 INSERT INTO hosts (nickname, protocol, username, hostname, port, usekeys, fontsize, encoding, delkey, scheme, wantsession, compression, stayconnected)
                 VALUES ('ubuntu-server', 'ssh', 'user', 'server.example.com', 22, 'true', 12, 'UTF-8', 'del', -1, 'true', 'false', 'false')
-            """.trimIndent())
+                """.trimIndent()
+            )
 
             // Create other required tables
             createSupportingTables(db)
 
             // Create a known host entry (as mentioned in issue: 1 known host)
-            db.execSQL("""
+            db.execSQL(
+                """
                 INSERT INTO knownhosts (hostid, hostname, port, hostkeyalgo, hostkey)
                 VALUES (1, 'server.example.com', 22, 'ssh-ed25519', X'00000000')
-            """.trimIndent())
-
+                """.trimIndent()
+            )
         } finally {
             db.close()
         }
@@ -316,7 +323,8 @@ class Issue1839MigrationTest {
         try {
             // Create the hosts table with the legacy schema (version 27)
             // Note: Column names must match what LegacyHostDatabaseReader expects
-            db.execSQL("""
+            db.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS hosts (
                     _id INTEGER PRIMARY KEY AUTOINCREMENT,
                     nickname TEXT NOT NULL,
@@ -342,17 +350,19 @@ class Issue1839MigrationTest {
                     scrollbacklines INTEGER DEFAULT 140,
                     usectrlaltasmeta TEXT DEFAULT 'false'
                 )
-            """.trimIndent())
+                """.trimIndent()
+            )
 
             // Insert a host with DEFAULT terminal settings (fontSize=10)
             // Migration will only create 1 profile (the Default profile)
-            db.execSQL("""
+            db.execSQL(
+                """
                 INSERT INTO hosts (nickname, protocol, username, hostname, port, usekeys, fontsize, encoding, delkey, scheme, wantsession, compression, stayconnected)
                 VALUES ('test-server', 'ssh', 'testuser', 'test.example.com', 22, 'true', 10, 'UTF-8', 'del', -1, 'true', 'false', 'false')
-            """.trimIndent())
+                """.trimIndent()
+            )
 
             createSupportingTables(db)
-
         } finally {
             db.close()
         }
@@ -363,7 +373,8 @@ class Issue1839MigrationTest {
      * Table and column names must match what LegacyHostDatabaseReader expects.
      */
     private fun createSupportingTables(db: android.database.sqlite.SQLiteDatabase) {
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE IF NOT EXISTS portforwards (
                 _id INTEGER PRIMARY KEY AUTOINCREMENT,
                 hostid INTEGER NOT NULL,
@@ -373,9 +384,11 @@ class Issue1839MigrationTest {
                 destaddr TEXT NOT NULL,
                 destport INTEGER NOT NULL
             )
-        """.trimIndent())
+            """.trimIndent()
+        )
 
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE IF NOT EXISTS knownhosts (
                 _id INTEGER PRIMARY KEY AUTOINCREMENT,
                 hostid INTEGER,
@@ -384,27 +397,32 @@ class Issue1839MigrationTest {
                 hostkeyalgo TEXT NOT NULL,
                 hostkey BLOB NOT NULL
             )
-        """.trimIndent())
+            """.trimIndent()
+        )
 
         // colorSchemes table (legacy name, used by LegacyHostDatabaseReader.readColorSchemes())
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE IF NOT EXISTS colorSchemes (
                 _id INTEGER PRIMARY KEY AUTOINCREMENT,
                 name TEXT NOT NULL,
                 description TEXT
             )
-        """.trimIndent())
+            """.trimIndent()
+        )
 
         // colors table (legacy name, used by LegacyHostDatabaseReader.readColorPalettes())
         // Columns: scheme, number, value
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE IF NOT EXISTS colors (
                 _id INTEGER PRIMARY KEY AUTOINCREMENT,
                 scheme INTEGER NOT NULL,
                 number INTEGER NOT NULL,
                 value INTEGER NOT NULL
             )
-        """.trimIndent())
+            """.trimIndent()
+        )
     }
 
     /**
@@ -418,7 +436,8 @@ class Issue1839MigrationTest {
         val db = android.database.sqlite.SQLiteDatabase.openOrCreateDatabase(dbFile, null)
         try {
             // Create the pubkeys table with the legacy schema (version 2)
-            db.execSQL("""
+            db.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS pubkeys (
                     _id INTEGER PRIMARY KEY AUTOINCREMENT,
                     nickname TEXT NOT NULL,
@@ -430,14 +449,16 @@ class Issue1839MigrationTest {
                     confirmuse INTEGER DEFAULT 0,
                     lifetime INTEGER DEFAULT 0
                 )
-            """.trimIndent())
+                """.trimIndent()
+            )
 
             // Insert one Ed25519 pubkey (as mentioned in issue: Ed25519 public keys)
-            db.execSQL("""
+            db.execSQL(
+                """
                 INSERT INTO pubkeys (nickname, type, private, public, encrypted, startup, confirmuse)
                 VALUES ('my-ed25519-key', 'ED25519', X'010203', X'040506', 0, 1, 0)
-            """.trimIndent())
-
+                """.trimIndent()
+            )
         } finally {
             db.close()
         }
