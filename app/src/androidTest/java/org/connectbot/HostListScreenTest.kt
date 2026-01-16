@@ -58,7 +58,8 @@ class HostListScreenTest {
                     onNavigateToPubkeys = {},
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
-                    onNavigateToHelp = {}
+                    onNavigateToHelp = {},
+                    onNavigateToSftp = {}
                 )
             }
         }
@@ -80,7 +81,8 @@ class HostListScreenTest {
                     onNavigateToPubkeys = {},
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
-                    onNavigateToHelp = {}
+                    onNavigateToHelp = {},
+                    onNavigateToSftp = {}
                 )
             }
         }
@@ -102,7 +104,8 @@ class HostListScreenTest {
                     onNavigateToPubkeys = {},
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
-                    onNavigateToHelp = {}
+                    onNavigateToHelp = {},
+                    onNavigateToSftp = {}
                 )
             }
         }
@@ -132,7 +135,8 @@ class HostListScreenTest {
                     onNavigateToPubkeys = {},
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
-                    onNavigateToHelp = {}
+                    onNavigateToHelp = {},
+                    onNavigateToSftp = {}
                 )
             }
         }

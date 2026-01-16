@@ -25,6 +25,7 @@ object NavDestinations {
     const val GENERATE_PUBKEY = "generate_pubkey"
     const val PUBKEY_EDITOR = "pubkey_editor"
     const val PORT_FORWARD_LIST = "port_forward_list"
+    const val SFTP_BROWSER = "sftp_browser"
     const val SETTINGS = "settings"
     const val COLORS = "colors"
     const val SCHEME_MANAGER = "scheme_manager"
