@@ -18,6 +18,8 @@
 package org.connectbot.ui.screens.hostlist
 
 import android.content.Context
+import android.content.SharedPreferences
+import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -37,6 +39,7 @@ import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.ServiceError
 import org.connectbot.service.TerminalManager
+import org.connectbot.util.PreferenceConstants
 import javax.inject.Inject
 
 enum class ConnectionState {
@@ -72,11 +75,17 @@ data class ExportResult(
 class HostListViewModel @Inject constructor(
     @param:ApplicationContext private val context: Context,
     private val repository: HostRepository,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
+    private val sharedPreferences: SharedPreferences
 ) : ViewModel() {
 
     private var terminalManager: TerminalManager? = null
-    private val _uiState = MutableStateFlow(HostListUiState(isLoading = true))
+    private val _uiState = MutableStateFlow(
+        HostListUiState(
+            isLoading = true,
+            sortedByColor = sharedPreferences.getBoolean(PreferenceConstants.SORT_BY_COLOR, false)
+        )
+    )
     val uiState: StateFlow<HostListUiState> = _uiState.asStateFlow()
 
     init {
@@ -192,7 +201,9 @@ class HostListViewModel @Inject constructor(
     }
 
     fun toggleSortOrder() {
-        _uiState.update { it.copy(sortedByColor = !it.sortedByColor) }
+        val newSortedByColor = !_uiState.value.sortedByColor
+        sharedPreferences.edit { putBoolean(PreferenceConstants.SORT_BY_COLOR, newSortedByColor) }
+        _uiState.update { it.copy(sortedByColor = newSortedByColor) }
     }
 
     fun deleteHost(host: Host) {
