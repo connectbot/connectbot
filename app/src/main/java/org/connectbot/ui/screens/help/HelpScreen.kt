@@ -70,6 +70,7 @@ fun HelpScreen(
     onNavigateBack: () -> Unit,
     onNavigateToHints: () -> Unit,
     onNavigateToEula: () -> Unit,
+    onNavigateToContact: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var showKeyboardShortcuts by remember { mutableStateOf(false) }
@@ -153,6 +154,17 @@ fun HelpScreen(
                         .padding(vertical = 8.dp)
                 ) {
                     Text(stringResource(R.string.view_logs))
+                }
+            }
+
+            item {
+                Button(
+                    onClick = onNavigateToContact,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp)
+                ) {
+                    Text(stringResource(R.string.title_contact))
                 }
             }
 
@@ -315,7 +327,8 @@ private fun HelpScreenPreview() {
         HelpScreen(
             onNavigateBack = {},
             onNavigateToHints = {},
-            onNavigateToEula = {}
+            onNavigateToEula = {},
+            onNavigateToContact = {}
         )
     }
 }

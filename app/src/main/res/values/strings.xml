@@ -1174,6 +1174,34 @@
 	<!-- Section title for the "Help" screen showing information about the program itself. -->
 	<string name="help_section_about">About</string>
 
+	<!-- Window title for the Contact &amp; Support screen, also used as button text in Help screen. -->
+	<string name="title_contact">Contact &amp; Support</string>
+
+	<!-- Section title for the "Help" screen showing contact and support information. -->
+	<string name="help_section_contact">Contact &amp; Support</string>
+	<!-- Label for the official website link in the Help screen. -->
+	<string name="help_website">Website</string>
+	<!-- URL for the official ConnectBot website. -->
+	<string name="help_website_url" translatable="false">https://connectbot.org/</string>
+	<!-- Label for the GitHub repository link in the Help screen. -->
+	<string name="help_github">Source Code</string>
+	<!-- URL for the ConnectBot GitHub repository. -->
+	<string name="help_github_url" translatable="false">https://github.com/connectbot/connectbot</string>
+	<!-- Label for the bug report/issue tracker link in the Help screen. -->
+	<string name="help_report_bug">Report a Bug</string>
+	<!-- URL for the ConnectBot issue tracker. -->
+	<string name="help_report_bug_url" translatable="false">https://connectbot.org/bug</string>
+	<!-- Section title for the "Help" screen showing donation options. -->
+	<string name="help_section_donate">Support Development</string>
+	<!-- Label for the GitHub Sponsors donation link in the Help screen. -->
+	<string name="help_donate_github">GitHub Sponsors</string>
+	<!-- URL for the GitHub Sponsors page. -->
+	<string name="help_donate_github_url" translatable="false">https://github.com/sponsors/kruton</string>
+	<!-- Label for the Buy Me a Coffee donation link in the Help screen. -->
+	<string name="help_donate_coffee">Buy Me a Coffee</string>
+	<!-- URL for the Buy Me a Coffee page. -->
+	<string name="help_donate_coffee_url" translatable="false">https://buymeacoffee.com/kruton</string>
+
 	<!-- Built-in color scheme descriptions for terminal display -->
 	<!-- Description of the default terminal color scheme -->
 	<string name="colorscheme_default_description">Default terminal colors</string>

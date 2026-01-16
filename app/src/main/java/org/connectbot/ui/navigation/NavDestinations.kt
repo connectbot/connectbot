@@ -34,6 +34,7 @@ object NavDestinations {
     const val HELP = "help"
     const val EULA = "eula"
     const val HINTS = "hints"
+    const val CONTACT = "contact"
 }
 
 object NavArgs {
