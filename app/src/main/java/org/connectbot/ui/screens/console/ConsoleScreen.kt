@@ -71,6 +71,7 @@ import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -119,13 +120,13 @@ import timber.log.Timber
  */
 @Composable
 private fun rememberHasHardwareKeyboard(): Boolean {
-	val configuration = LocalConfiguration.current
+    val configuration = LocalConfiguration.current
 
-	return remember(configuration) {
-		val keyboardType = configuration.keyboard
-		keyboardType == android.content.res.Configuration.KEYBOARD_QWERTY ||
-				keyboardType == android.content.res.Configuration.KEYBOARD_12KEY
-	}
+    return remember(configuration) {
+        val keyboardType = configuration.keyboard
+        keyboardType == android.content.res.Configuration.KEYBOARD_QWERTY ||
+            keyboardType == android.content.res.Configuration.KEYBOARD_12KEY
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -133,11 +134,15 @@ private fun rememberHasHardwareKeyboard(): Boolean {
 fun ConsoleScreen(
     onNavigateBack: () -> Unit,
     onNavigateToPortForwards: (Long) -> Unit,
+    modifier: Modifier = Modifier,
+    viewModel: ConsoleViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val terminalManager = LocalTerminalManager.current
-    val viewModel: ConsoleViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
+
+    // Capture latest callback for use in effects
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
 
     LaunchedEffect(terminalManager) {
         terminalManager?.let { viewModel.setTerminalManager(it) }
@@ -196,7 +201,7 @@ fun ConsoleScreen(
     // Navigate back if all bridges are closed (after initial loading)
     LaunchedEffect(uiState.bridges.size, uiState.isLoading) {
         if (uiState.bridges.isEmpty() && !uiState.isLoading) {
-            onNavigateBack()
+            currentOnNavigateBack()
         }
     }
 
@@ -210,11 +215,16 @@ fun ConsoleScreen(
     val density = LocalDensity.current
     val imeHeight = with(density) { imeInsets.getBottom(density).toDp() }
     val systemImeVisible = imeHeight > 0.dp
+    var hasImeBeenVisible by remember { mutableStateOf(false) }
 
     // Sync our state when user dismisses IME externally (back button)
     LaunchedEffect(systemImeVisible) {
-        // If system says IME is hidden but we think we should show it, update our state
-        if (!systemImeVisible && showSoftwareKeyboard) {
+        if (systemImeVisible) {
+            hasImeBeenVisible = true
+        }
+        // Only sync to hidden state after IME has been visible at least once.
+        // This prevents canceling the keyboard before it has a chance to show.
+        if (hasImeBeenVisible && !systemImeVisible && showSoftwareKeyboard) {
             showSoftwareKeyboard = false
         }
         imeVisible = systemImeVisible
@@ -260,6 +270,15 @@ fun ConsoleScreen(
     val canForwardPorts = currentBridge?.canFowardPorts() == true
     val snackbarHostState = remember { SnackbarHostState() }
 
+    // Show software keyboard when session becomes open (if no hardware keyboard)
+    var previousSessionOpen by remember { mutableStateOf(false) }
+    LaunchedEffect(sessionOpen, hasHardwareKeyboard) {
+        if (!previousSessionOpen && sessionOpen && !hasHardwareKeyboard) {
+            showSoftwareKeyboard = true
+        }
+        previousSessionOpen = sessionOpen
+    }
+
     // Initialize forceSize from profile when bridge changes
     LaunchedEffect(currentBridge) {
         currentBridge?.let { bridge ->
@@ -300,9 +319,9 @@ fun ConsoleScreen(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        modifier = Modifier.fillMaxSize(),
+        modifier = modifier.fillMaxSize(),
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets
-            .union(WindowInsets.imeAnimationTarget),
+            .union(WindowInsets.imeAnimationTarget)
     ) { innerPadding ->
         // Show tabs if multiple terminals
         if (uiState.bridges.size > 1) {
@@ -348,10 +367,12 @@ fun ConsoleScreen(
                                 currentBridge?.increaseFontSize()
                                 true
                             }
+
                             Key.VolumeDown -> {
                                 currentBridge?.decreaseFontSize()
                                 true
                             }
+
                             else -> false
                         }
                     } else {
@@ -415,7 +436,7 @@ fun ConsoleScreen(
                             onTerminalTap = { handleTerminalInteraction() },
                             onImeVisibilityChanged = { visible ->
                                 imeVisible = visible
-                            },
+                            }
                         )
 
                         // Set up text input request callback from bridge (for camera button)
@@ -623,10 +644,11 @@ fun ConsoleScreen(
                             DropdownMenuItem(
                                 text = {
                                     Text(
-                                        if (!sessionOpen && disconnected)
+                                        if (!sessionOpen && disconnected) {
                                             stringResource(R.string.console_menu_close)
-                                        else
+                                        } else {
                                             stringResource(R.string.list_host_disconnect)
+                                        }
                                     )
                                 },
                                 onClick = {
