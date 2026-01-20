@@ -271,12 +271,11 @@ fun ConsoleScreen(
     val snackbarHostState = remember { SnackbarHostState() }
 
     // Show software keyboard when session becomes open (if no hardware keyboard)
-    var previousSessionOpen by remember { mutableStateOf(false) }
-    LaunchedEffect(sessionOpen, hasHardwareKeyboard) {
-        if (!previousSessionOpen && sessionOpen && !hasHardwareKeyboard) {
+    // Also show when switching to a different bridge that's already open
+    LaunchedEffect(currentBridge, sessionOpen, hasHardwareKeyboard) {
+        if (sessionOpen && !hasHardwareKeyboard) {
             showSoftwareKeyboard = true
         }
-        previousSessionOpen = sessionOpen
     }
 
     // Initialize forceSize from profile when bridge changes
