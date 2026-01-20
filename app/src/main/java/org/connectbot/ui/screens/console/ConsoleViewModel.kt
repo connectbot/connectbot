@@ -30,6 +30,7 @@ import kotlinx.coroutines.withContext
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
+import org.connectbot.terminal.ProgressState
 import javax.inject.Inject
 
 data class ConsoleUiState(
@@ -38,7 +39,10 @@ data class ConsoleUiState(
     val isLoading: Boolean = true,
     val error: String? = null,
     // Add a revision counter to force recomposition when bridge state changes
-    val revision: Int = 0
+    val revision: Int = 0,
+    // Progress state from OSC 9;4 escape sequences
+    val progressState: ProgressState? = null,
+    val progressValue: Int = 0
 )
 
 @HiltViewModel
@@ -60,6 +64,7 @@ class ConsoleViewModel @Inject constructor(
                 manager.bridgesFlow.collect { bridges ->
                     updateBridges(bridges)
                     subscribeToActiveBridgeBells(bridges)
+                    subscribeToActiveBridgeProgress(bridges)
                 }
             }
 
@@ -87,6 +92,33 @@ class ConsoleViewModel @Inject constructor(
                             // The bridge is not visible, send a notification
                             currentBridge?.host?.let {
                                 terminalManager?.sendActivityNotification(it)
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun subscribeToActiveBridgeProgress(bridges: List<TerminalBridge>) {
+        viewModelScope.launch {
+            bridges.forEach { bridge ->
+                launch {
+                    bridge.progressState.collect { progressInfo ->
+                        val currentIndex = _uiState.value.currentBridgeIndex
+                        val currentBridge = _uiState.value.bridges.getOrNull(currentIndex)
+
+                        if (currentBridge == bridge) {
+                            // Update progress state for the visible bridge
+                            _uiState.update {
+                                if (progressInfo == null || progressInfo.state == ProgressState.HIDDEN) {
+                                    it.copy(progressState = null, progressValue = 0)
+                                } else {
+                                    it.copy(
+                                        progressState = progressInfo.state,
+                                        progressValue = progressInfo.progress
+                                    )
+                                }
                             }
                         }
                     }

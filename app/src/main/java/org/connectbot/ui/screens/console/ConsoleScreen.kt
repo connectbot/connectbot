@@ -51,6 +51,7 @@ import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
@@ -101,6 +102,7 @@ import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.service.PromptRequest
+import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.Terminal
 import org.connectbot.ui.LoadingScreen
 import org.connectbot.ui.LocalTerminalManager
@@ -739,6 +741,33 @@ fun ConsoleScreen(
                     }
                 }
             )
+
+            // Progress indicator for OSC 9;4 progress reporting
+            val progressState = uiState.progressState
+            if (progressState != null && progressState != ProgressState.HIDDEN) {
+                val progressColor = when (progressState) {
+                    ProgressState.ERROR -> MaterialTheme.colorScheme.error
+                    ProgressState.WARNING -> MaterialTheme.colorScheme.tertiary
+                    else -> MaterialTheme.colorScheme.primary
+                }
+
+                if (progressState == ProgressState.INDETERMINATE) {
+                    LinearProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = titleBarHeight),
+                        color = progressColor
+                    )
+                } else {
+                    LinearProgressIndicator(
+                        progress = { uiState.progressValue / 100f },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = titleBarHeight),
+                        color = progressColor
+                    )
+                }
+            }
         }
     }
 }
