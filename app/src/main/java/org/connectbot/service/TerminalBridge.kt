@@ -45,6 +45,7 @@ import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.TerminalEmulatorFactory
 import org.connectbot.transport.AbsTransport
@@ -127,6 +128,11 @@ class TerminalBridge {
 
     private val _bellEvents = MutableSharedFlow<Unit>(replay = 0, extraBufferCapacity = 10)
     val bellEvents: SharedFlow<Unit> = _bellEvents.asSharedFlow()
+
+    // Progress state for OSC 9;4 progress reporting
+    data class ProgressInfo(val state: ProgressState, val progress: Int)
+    private val _progressState = MutableStateFlow<ProgressInfo?>(null)
+    val progressState: StateFlow<ProgressInfo?> = _progressState.asStateFlow()
 
     private var disconnected = false
     private var awaitingClose = false
@@ -247,6 +253,11 @@ class TerminalBridge {
                 Timber.i("OSC 52 clipboard copy: ${text.length} chars")
                 val clipboard = manager.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
                 clipboard?.setPrimaryClip(ClipData.newPlainText("terminal", text))
+            },
+            onProgressChange = { state, progress ->
+                // OSC 9;4 progress reporting - update progress state
+                Timber.d("OSC 9;4 progress: state=$state, progress=$progress")
+                _progressState.value = ProgressInfo(state, progress)
             }
         )
 
