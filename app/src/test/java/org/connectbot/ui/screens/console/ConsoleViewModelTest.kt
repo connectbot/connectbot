@@ -31,6 +31,7 @@ import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
+import org.connectbot.terminal.ProgressState
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
@@ -308,7 +309,149 @@ class ConsoleViewModelTest {
         assertEquals("Index should remain 0", 0, state.currentBridgeIndex)
     }
 
-    private fun createMockBridge(id: Long, hostname: String): TerminalBridge {
+    @Test
+    fun progressState_UpdatesWhenBridgeEmitsProgress() = runTest {
+        val progressFlow = MutableStateFlow<TerminalBridge.ProgressInfo?>(null)
+        val mockBridge = createMockBridge(1L, "test-host", progressFlow)
+        bridgesFlow.value = listOf(mockBridge)
+        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
+        viewModel.setTerminalManager(terminalManager)
+
+        advanceUntilIdle()
+
+        // Initially no progress
+        assertNull("Initial progress state should be null", viewModel.uiState.value.progressState)
+        assertEquals("Initial progress value should be 0", 0, viewModel.uiState.value.progressValue)
+
+        // Emit progress update
+        progressFlow.value = TerminalBridge.ProgressInfo(ProgressState.DEFAULT, 50)
+        advanceUntilIdle()
+
+        assertEquals("Progress state should be DEFAULT", ProgressState.DEFAULT, viewModel.uiState.value.progressState)
+        assertEquals("Progress value should be 50", 50, viewModel.uiState.value.progressValue)
+    }
+
+    @Test
+    fun progressState_ClearsWhenHidden() = runTest {
+        val progressFlow = MutableStateFlow<TerminalBridge.ProgressInfo?>(null)
+        val mockBridge = createMockBridge(1L, "test-host", progressFlow)
+        bridgesFlow.value = listOf(mockBridge)
+        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
+        viewModel.setTerminalManager(terminalManager)
+
+        advanceUntilIdle()
+
+        // Set progress
+        progressFlow.value = TerminalBridge.ProgressInfo(ProgressState.DEFAULT, 75)
+        advanceUntilIdle()
+
+        assertEquals("Progress should be set", ProgressState.DEFAULT, viewModel.uiState.value.progressState)
+
+        // Hide progress
+        progressFlow.value = TerminalBridge.ProgressInfo(ProgressState.HIDDEN, 0)
+        advanceUntilIdle()
+
+        assertNull("Progress state should be null when hidden", viewModel.uiState.value.progressState)
+        assertEquals("Progress value should be 0 when hidden", 0, viewModel.uiState.value.progressValue)
+    }
+
+    @Test
+    fun progressState_ClearsWhenNull() = runTest {
+        val progressFlow = MutableStateFlow<TerminalBridge.ProgressInfo?>(null)
+        val mockBridge = createMockBridge(1L, "test-host", progressFlow)
+        bridgesFlow.value = listOf(mockBridge)
+        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
+        viewModel.setTerminalManager(terminalManager)
+
+        advanceUntilIdle()
+
+        // Set progress
+        progressFlow.value = TerminalBridge.ProgressInfo(ProgressState.ERROR, 25)
+        advanceUntilIdle()
+
+        assertEquals("Progress should be ERROR", ProgressState.ERROR, viewModel.uiState.value.progressState)
+
+        // Clear progress
+        progressFlow.value = null
+        advanceUntilIdle()
+
+        assertNull("Progress state should be null", viewModel.uiState.value.progressState)
+    }
+
+    @Test
+    fun progressState_ShowsCorrectStateTypes() = runTest {
+        val progressFlow = MutableStateFlow<TerminalBridge.ProgressInfo?>(null)
+        val mockBridge = createMockBridge(1L, "test-host", progressFlow)
+        bridgesFlow.value = listOf(mockBridge)
+        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
+        viewModel.setTerminalManager(terminalManager)
+
+        advanceUntilIdle()
+
+        // Test ERROR state
+        progressFlow.value = TerminalBridge.ProgressInfo(ProgressState.ERROR, 50)
+        advanceUntilIdle()
+        assertEquals("Should show ERROR state", ProgressState.ERROR, viewModel.uiState.value.progressState)
+
+        // Test WARNING state
+        progressFlow.value = TerminalBridge.ProgressInfo(ProgressState.WARNING, 75)
+        advanceUntilIdle()
+        assertEquals("Should show WARNING state", ProgressState.WARNING, viewModel.uiState.value.progressState)
+
+        // Test INDETERMINATE state
+        progressFlow.value = TerminalBridge.ProgressInfo(ProgressState.INDETERMINATE, 0)
+        advanceUntilIdle()
+        assertEquals("Should show INDETERMINATE state", ProgressState.INDETERMINATE, viewModel.uiState.value.progressState)
+    }
+
+    @Test
+    fun progressState_OnlyShowsForCurrentBridge() = runTest {
+        val progressFlow1 = MutableStateFlow<TerminalBridge.ProgressInfo?>(null)
+        val progressFlow2 = MutableStateFlow<TerminalBridge.ProgressInfo?>(null)
+        val mockBridge1 = createMockBridge(1L, "host1", progressFlow1)
+        val mockBridge2 = createMockBridge(2L, "host2", progressFlow2)
+        bridgesFlow.value = listOf(mockBridge1, mockBridge2)
+        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
+        viewModel.setTerminalManager(terminalManager)
+
+        advanceUntilIdle()
+
+        // Current bridge is index 0 (mockBridge1)
+        assertEquals("Current bridge should be 0", 0, viewModel.uiState.value.currentBridgeIndex)
+
+        // Emit progress on bridge 1 (current)
+        progressFlow1.value = TerminalBridge.ProgressInfo(ProgressState.DEFAULT, 50)
+        advanceUntilIdle()
+
+        assertEquals("Should show progress from current bridge", 50, viewModel.uiState.value.progressValue)
+
+        // Switch to bridge 2
+        viewModel.selectBridge(1)
+        advanceUntilIdle()
+
+        // Emit progress on bridge 2 (now current)
+        progressFlow2.value = TerminalBridge.ProgressInfo(ProgressState.ERROR, 75)
+        advanceUntilIdle()
+
+        assertEquals("Should show progress from new current bridge", ProgressState.ERROR, viewModel.uiState.value.progressState)
+        assertEquals("Should show progress value from new current bridge", 75, viewModel.uiState.value.progressValue)
+    }
+
+    private fun createMockBridge(
+        id: Long,
+        hostname: String,
+        progressFlow: MutableStateFlow<TerminalBridge.ProgressInfo?> = MutableStateFlow(null)
+    ): TerminalBridge {
         val bridge = mock<TerminalBridge>()
         val host = Host(
             id = id,
@@ -322,6 +465,7 @@ class ConsoleViewModelTest {
         whenever(bridge.isSessionOpen).thenReturn(true)
         whenever(bridge.isDisconnected).thenReturn(false)
         whenever(bridge.bellEvents).thenReturn(MutableSharedFlow())
+        whenever(bridge.progressState).thenReturn(progressFlow)
         return bridge
     }
 }
