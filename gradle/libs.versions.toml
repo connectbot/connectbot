@@ -47,7 +47,7 @@ junitClassic = "4.13.2"
 mockito = "5.21.0"
 mockitoKotlin = "6.2.2"
 assertj = "3.27.6"
-robolectric = "4.16"
+robolectric = "4.16.1"
 
 errorproneCore = "2.46.0"
 media3CommonKtx = "1.9.0"
