@@ -1,0 +1,70 @@
+name: Support question
+description: Ask a question about how to use ConnectBot
+labels: ["question"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reaching out! Please provide details about your environment and question so we can help you effectively.
+
+  - type: input
+    id: connectbot-version
+    attributes:
+      label: ConnectBot version
+      description: You can find this in the app under Menu > Help > About.
+      placeholder: "1.9.10"
+    validations:
+      required: true
+
+  - type: input
+    id: device
+    attributes:
+      label: Android device
+      placeholder: "Google Pixel 8"
+    validations:
+      required: true
+
+  - type: input
+    id: android-version
+    attributes:
+      label: Android version
+      placeholder: "Android 14"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: install-source
+    attributes:
+      label: Installed from
+      options:
+        - Google Play
+        - F-Droid
+        - GitHub releases
+        - Built from source
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Your question
+      description: Please describe what you're trying to accomplish and what you need help with.
+    validations:
+      required: true
+
+  - type: textarea
+    id: tried
+    attributes:
+      label: What have you tried?
+      description: Describe any steps you've already taken to solve this problem.
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add any other context, screenshots, or error messages that might help.
+    validations:
+      required: false
