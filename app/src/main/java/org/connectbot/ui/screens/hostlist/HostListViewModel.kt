@@ -218,6 +218,31 @@ class HostListViewModel @Inject constructor(
         }
     }
 
+    fun duplicateHost(host: Host) {
+        viewModelScope.launch {
+            try {
+                // Create new host with reset fields
+                val newHost = host.copy(
+                    id = 0L,
+                    nickname = "${host.nickname} (copy)",
+                    lastConnect = 0,
+                    hostKeyAlgo = null
+                )
+                val savedHost = repository.saveHost(newHost)
+
+                // Copy port forwards
+                val portForwards = repository.getPortForwardsForHost(host.id)
+                for (pf in portForwards) {
+                    repository.savePortForward(pf.copy(id = 0L, hostId = savedHost.id))
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(error = e.message ?: "Failed to duplicate host")
+                }
+            }
+        }
+    }
+
     fun forgetHostKeys(host: Host) {
         viewModelScope.launch {
             try {
