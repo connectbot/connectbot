@@ -37,6 +37,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Computer
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Error
@@ -233,6 +234,7 @@ fun HostListScreen(
         onNavigateToHelp = onNavigateToHelp,
         onToggleSortOrder = viewModel::toggleSortOrder,
         onDeleteHost = viewModel::deleteHost,
+        onDuplicateHost = viewModel::duplicateHost,
         onForgetHostKeys = viewModel::forgetHostKeys,
         onDisconnectHost = viewModel::disconnectHost,
         onDisconnectAll = viewModel::disconnectAll,
@@ -258,6 +260,7 @@ fun HostListScreenContent(
     onNavigateToHelp: () -> Unit,
     onToggleSortOrder: () -> Unit,
     onDeleteHost: (Host) -> Unit,
+    onDuplicateHost: (Host) -> Unit,
     onForgetHostKeys: (Host) -> Unit,
     onDisconnectHost: (Host) -> Unit,
     onDisconnectAll: () -> Unit,
@@ -440,6 +443,7 @@ fun HostListScreenContent(
                                 },
                                 onEdit = { onNavigateToEditHost(host) },
                                 onPortForwards = { onNavigateToPortForwards(host) },
+                                onDuplicate = { onDuplicateHost(host) },
                                 onForgetHostKeys = { onForgetHostKeys(host) },
                                 onDisconnect = { onDisconnectHost(host) },
                                 onDelete = { onDeleteHost(host) },
@@ -470,6 +474,7 @@ private fun HostListItem(
     onClick: () -> Unit,
     onEdit: () -> Unit,
     onPortForwards: () -> Unit,
+    onDuplicate: () -> Unit,
     onForgetHostKeys: () -> Unit,
     onDisconnect: () -> Unit,
     onDelete: () -> Unit,
@@ -594,6 +599,16 @@ private fun HostListItem(
                             },
                             leadingIcon = {
                                 Icon(Icons.Default.Link, null)
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.list_host_duplicate)) },
+                            onClick = {
+                                showMenu = false
+                                onDuplicate()
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.ContentCopy, null)
                             }
                         )
                         if (host.protocol == "ssh") {
@@ -781,6 +796,7 @@ private fun HostListScreenEmptyPreview() {
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
+            onDuplicateHost = {},
             onForgetHostKeys = {},
             onDisconnectHost = {},
             onDisconnectAll = {}
@@ -807,6 +823,7 @@ private fun HostListScreenLoadingPreview() {
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
+            onDuplicateHost = {},
             onForgetHostKeys = {},
             onDisconnectHost = {},
             onDisconnectAll = {}
@@ -834,6 +851,7 @@ private fun HostListScreenErrorPreview() {
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
+            onDuplicateHost = {},
             onForgetHostKeys = {},
             onDisconnectHost = {},
             onDisconnectAll = {}
@@ -893,6 +911,7 @@ private fun HostListScreenPopulatedPreview() {
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
+            onDuplicateHost = {},
             onForgetHostKeys = {},
             onDisconnectHost = {},
             onDisconnectAll = {}

@@ -610,6 +610,8 @@
 	<string name="list_host_portforwards">"Edit port forwards"</string>
 	<!-- Context menu action to delete the selected host -->
 	<string name="list_host_delete">"Delete host"</string>
+	<!-- Context menu action to duplicate the selected host -->
+	<string name="list_host_duplicate">"Duplicate host"</string>
 	<!-- Context menu action to forget stored host keys for the selected host -->
 	<string name="list_host_forget_keys">"Forget host keys"</string>
 
