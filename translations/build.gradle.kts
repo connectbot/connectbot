@@ -23,7 +23,7 @@ plugins {
  */
 
 pythonUvPlugin {
-    installDir.set(buildDir.resolve("uv"))
+    installDir.set(layout.buildDirectory.dir("uv"))
 }
 
 val appDir = "../app/"
@@ -31,28 +31,33 @@ val localeDir = file(appDir + "locale")
 val launchpadImportFile = "launchpad-import.tar.gz"
 val launchpadExportFile = rootProject.file("launchpad-export.tar.gz")
 
-val android2poArgs = listOf(
-    "--groups",
-    "strings",
-    "--android",
-    file(appDir + "src/main/res").toString(),
-    "--gettext",
-    localeDir.toString(),
-    "--template",
-    "fortune/fortune.pot",
-    "--layout",
-    "fortune/%(locale)s.po"
-)
+val android2poArgs =
+    listOf(
+        "--groups",
+        "strings",
+        "--android",
+        file(appDir + "src/main/res").toString(),
+        "--gettext",
+        localeDir.toString(),
+        "--template",
+        "fortune/fortune.pot",
+        "--layout",
+        "fortune/%(locale)s.po",
+    )
 
-val a2poArgs = listOf(
-    "--python", "3.9",
-    "--from", "git+https://github.com/miracle2k/android2po.git#egg=android2po",
-    "a2po",
-)
+val a2poArgs =
+    listOf(
+        "--python",
+        "3.9",
+        "--from",
+        "git+https://github.com/miracle2k/android2po.git#egg=android2po",
+        "a2po",
+    )
 
-val a2poTask = tasks.register<UvxTask>("a2po") {
-    args = a2poArgs
-}
+val a2poTask =
+    tasks.register<UvxTask>("a2po") {
+        args = a2poArgs
+    }
 
 tasks.register<Copy>("untarTranslations") {
     from(tarTree(resources.gzip(launchpadExportFile)))
@@ -91,7 +96,7 @@ tasks.register<Tar>("translationsExport") {
     destinationDirectory.set(file("$rootDir"))
     archiveFileName.set(launchpadImportFile)
     from(localeDir)
-    compression = org.gradle.api.tasks.bundling.Compression.GZIP
+    compression = Compression.GZIP
     doLast {
         println()
         println("Import file into Launchpad:")
