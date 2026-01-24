@@ -156,7 +156,7 @@ android {
 
     sourceSets {
         getByName("main") {
-            assets.srcDirs("build/generated/exportSchema")
+            assets.directories.add("build/generated/exportSchema")
         }
     }
 
