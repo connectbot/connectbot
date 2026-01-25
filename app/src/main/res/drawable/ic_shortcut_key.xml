@@ -1,0 +1,42 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+  <!-- Key icon shadow -->
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="M48,42C48,47.5 43.5,52 38,52C32.5,52 28,47.5 28,42C28,36.5 32.5,32 38,32C43.5,32 48,36.5 48,42ZM46,42L78,42L78,52L72,52L72,48L66,48L66,52L60,52L60,48L46,48Z"
+      android:strokeAlpha="0.103"
+      android:fillAlpha="0.103"/>
+  <!-- Key head (circle) -->
+  <path
+      android:pathData="M46,54C46,59.5 41.5,64 36,64C30.5,64 26,59.5 26,54C26,48.5 30.5,44 36,44C41.5,44 46,48.5 46,54Z"
+      android:strokeWidth="3"
+      android:fillColor="#00000000"
+      android:strokeColor="#fff"/>
+  <!-- Key hole -->
+  <path
+      android:pathData="M36,51A3,3 0,0 1,36 57A3,3 0,0 1,36 51Z"
+      android:fillColor="#fff"/>
+  <!-- Key shaft -->
+  <path
+      android:pathData="M44,54L76,54"
+      android:strokeWidth="3"
+      android:fillColor="#00000000"
+      android:strokeColor="#fff"
+      android:strokeLineCap="round"/>
+  <!-- Key teeth -->
+  <path
+      android:pathData="M70,54L70,64"
+      android:strokeWidth="3"
+      android:fillColor="#00000000"
+      android:strokeColor="#fff"
+      android:strokeLineCap="round"/>
+  <path
+      android:pathData="M62,54L62,60"
+      android:strokeWidth="3"
+      android:fillColor="#00000000"
+      android:strokeColor="#fff"
+      android:strokeLineCap="round"/>
+</vector>

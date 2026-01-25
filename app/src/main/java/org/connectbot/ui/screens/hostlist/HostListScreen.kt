@@ -85,7 +85,9 @@ import org.connectbot.data.entity.Host
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.components.DisconnectAllDialog
+import org.connectbot.ui.components.ShortcutCustomizationDialog
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.IconStyle
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -100,7 +102,7 @@ fun HostListScreen(
     onNavigateToHelp: () -> Unit,
     modifier: Modifier = Modifier,
     makingShortcut: Boolean = false,
-    onSelectShortcut: (Host) -> Unit = {},
+    onSelectShortcut: (Host, String?, IconStyle) -> Unit = { _, _, _ -> },
     viewModel: HostListViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -204,11 +206,24 @@ fun HostListScreen(
         }
     }
 
+    var shortcutHost by remember { mutableStateOf<Host?>(null) }
+
+    if (shortcutHost != null) {
+        ShortcutCustomizationDialog(
+            host = shortcutHost!!,
+            onDismiss = { shortcutHost = null },
+            onConfirm = { color, iconStyle ->
+                onSelectShortcut(shortcutHost!!, color, iconStyle)
+                shortcutHost = null
+            }
+        )
+    }
+
     HostListScreenContent(
         uiState = uiState,
         makingShortcut = makingShortcut,
         onNavigateToConsole = onNavigateToConsole,
-        onSelectShortcut = onSelectShortcut,
+        onSelectShortcut = { host -> shortcutHost = host },
         onNavigateToEditHost = onNavigateToEditHost,
         onNavigateToSettings = onNavigateToSettings,
         onNavigateToPubkeys = onNavigateToPubkeys,

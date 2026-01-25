@@ -1275,4 +1275,24 @@
 	<string name="import_hosts_failed">Failed to import hosts: %s</string>
 	<!-- Title for the export hosts file picker dialog -->
 	<string name="export_hosts_title">Export Hosts</string>
+
+	<!-- Shortcut customization dialog strings -->
+	<!-- Dialog title when customizing a shortcut icon -->
+	<string name="shortcut_customize_title">Customize Shortcut</string>
+	<!-- Label for the shortcut icon color selection dropdown -->
+	<string name="shortcut_icon_color">Icon Color</string>
+	<!-- Label for the shortcut icon style selection dropdown -->
+	<string name="shortcut_icon_style">Icon Style</string>
+	<!-- Checkbox label to use the host\'s configured color for the shortcut -->
+	<string name="shortcut_use_host_color">Use host color</string>
+	<!-- Button to create the customized shortcut -->
+	<string name="shortcut_create">Create Shortcut</string>
+	<!-- Icon style option: terminal prompt icon -->
+	<string name="icon_style_terminal">Terminal</string>
+	<!-- Icon style option: server/computer icon -->
+	<string name="icon_style_server">Server</string>
+	<!-- Icon style option: cloud icon -->
+	<string name="icon_style_cloud">Cloud</string>
+	<!-- Icon style option: key/security icon -->
+	<string name="icon_style_key">Key</string>
 </resources>
