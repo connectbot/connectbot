@@ -533,6 +533,7 @@ fun ConsoleScreen(
                 host = currentBridge.host,
                 onDismiss = { showDisconnectDialog = false },
                 onConfirm = {
+                    showDisconnectDialog = false
                     currentBridge.dispatchDisconnect(true)
                 }
             )
