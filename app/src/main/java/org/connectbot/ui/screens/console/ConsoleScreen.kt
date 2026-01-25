@@ -174,6 +174,7 @@ fun ConsoleScreen(
     var lastInteractionTime by remember { mutableLongStateOf(System.currentTimeMillis()) }
     var scannedUrls by remember { mutableStateOf<List<String>>(emptyList()) }
     var imeVisible by remember { mutableStateOf(false) }
+    var keyboardScrollInProgress by remember { mutableStateOf(false) }
 
     // Apply fullscreen mode and display cutout settings
     LaunchedEffect(fullscreen) {
@@ -246,9 +247,9 @@ fun ConsoleScreen(
     }
 
     // Unified auto-hide timer for both keyboard and title bar
-    LaunchedEffect(lastInteractionTime, keyboardAlwaysVisible, titleBarHide) {
-        // Only run the timer if there's something to auto-hide
-        if (!keyboardAlwaysVisible || titleBarHide) {
+    LaunchedEffect(lastInteractionTime, keyboardAlwaysVisible, titleBarHide, keyboardScrollInProgress) {
+        // Only run the timer if there's something to auto-hide and not actively scrolling
+        if ((!keyboardAlwaysVisible || titleBarHide) && !keyboardScrollInProgress) {
             delay(3000)
             // Hide keyboard if not always visible
             if (!keyboardAlwaysVisible) {
@@ -465,8 +466,10 @@ fun ConsoleScreen(
                                     showSoftwareKeyboard = true
                                 },
                                 onOpenTextInput = {
-                                    // Open floating text input dialog
                                     showTextInputDialog = true
+                                },
+                                onScrollInProgressChange = { inProgress ->
+                                    keyboardScrollInProgress = inProgress
                                 },
                                 imeVisible = imeVisible,
                                 playAnimation = !hasPlayedKeyboardAnimation
