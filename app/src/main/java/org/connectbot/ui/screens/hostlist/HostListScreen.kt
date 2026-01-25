@@ -40,6 +40,7 @@ import androidx.compose.material.icons.filled.Computer
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
@@ -95,6 +96,7 @@ fun HostListScreen(
     onNavigateToSettings: () -> Unit,
     onNavigateToPubkeys: () -> Unit,
     onNavigateToPortForwards: (Host) -> Unit,
+    onNavigateToSftp: (Host) -> Unit,
     onNavigateToColors: () -> Unit,
     onNavigateToProfiles: () -> Unit,
     onNavigateToHelp: () -> Unit,
@@ -213,6 +215,7 @@ fun HostListScreen(
         onNavigateToSettings = onNavigateToSettings,
         onNavigateToPubkeys = onNavigateToPubkeys,
         onNavigateToPortForwards = onNavigateToPortForwards,
+        onNavigateToSftp = onNavigateToSftp,
         onNavigateToColors = onNavigateToColors,
         onNavigateToProfiles = onNavigateToProfiles,
         onNavigateToHelp = onNavigateToHelp,
@@ -238,6 +241,7 @@ fun HostListScreenContent(
     onNavigateToSettings: () -> Unit,
     onNavigateToPubkeys: () -> Unit,
     onNavigateToPortForwards: (Host) -> Unit,
+    onNavigateToSftp: (Host) -> Unit,
     onNavigateToColors: () -> Unit,
     onNavigateToProfiles: () -> Unit,
     onNavigateToHelp: () -> Unit,
@@ -426,6 +430,7 @@ fun HostListScreenContent(
                                 onEdit = { onNavigateToEditHost(host) },
                                 onPortForwards = { onNavigateToPortForwards(host) },
                                 onForgetHostKeys = { onForgetHostKeys(host) },
+                                onSftp = { onNavigateToSftp(host) },
                                 onDisconnect = { onDisconnectHost(host) },
                                 onDelete = { onDeleteHost(host) },
                                 makingShortcut = makingShortcut
@@ -456,6 +461,7 @@ private fun HostListItem(
     onEdit: () -> Unit,
     onPortForwards: () -> Unit,
     onForgetHostKeys: () -> Unit,
+    onSftp: () -> Unit,
     onDisconnect: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
@@ -593,6 +599,17 @@ private fun HostListItem(
                                 }
                             )
                         }
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.list_host_sftp)) },
+                            onClick = {
+                                showMenu = false
+                                onSftp()
+                            },
+                            enabled = host.protocol == "ssh",
+                            leadingIcon = {
+                                Icon(Icons.Default.Folder, null)
+                            }
+                        )
                         DropdownMenuItem(
                             text = { Text(stringResource(R.string.list_host_disconnect)) },
                             onClick = {
@@ -761,6 +778,7 @@ private fun HostListScreenEmptyPreview() {
             onNavigateToSettings = {},
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
+            onNavigateToSftp = {},
             onNavigateToColors = {},
             onNavigateToProfiles = {},
             onNavigateToHelp = {},
@@ -787,6 +805,7 @@ private fun HostListScreenLoadingPreview() {
             onNavigateToSettings = {},
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
+            onNavigateToSftp = {},
             onNavigateToColors = {},
             onNavigateToProfiles = {},
             onNavigateToHelp = {},
@@ -814,6 +833,7 @@ private fun HostListScreenErrorPreview() {
             onNavigateToSettings = {},
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
+            onNavigateToSftp = {},
             onNavigateToColors = {},
             onNavigateToProfiles = {},
             onNavigateToHelp = {},
@@ -873,6 +893,7 @@ private fun HostListScreenPopulatedPreview() {
             onNavigateToSettings = {},
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
+            onNavigateToSftp = {},
             onNavigateToColors = {},
             onNavigateToProfiles = {},
             onNavigateToHelp = {},
