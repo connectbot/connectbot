@@ -1,0 +1,20 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+  <!-- Cloud icon shadow -->
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="M72,67C72,67 73,68 73,69C73,73 70,76 66,76L40,76C35,76 31,72 31,67C31,63 34,60 38,59C38,53 43,48 49,48C53,48 56,50 58,53C60,51 63,50 66,50C72,50 77,55 77,61C77,62 77,63 76,64"
+      android:strokeAlpha="0.103"
+      android:fillAlpha="0.103"/>
+  <!-- Cloud shape -->
+  <path
+      android:pathData="M70,65C70,65 71,66 71,67C71,71 68,74 64,74L38,74C33,74 29,70 29,65C29,61 32,58 36,57C36,51 41,46 47,46C51,46 54,48 56,51C58,49 61,48 64,48C70,48 75,53 75,59C75,60 75,61 74,62"
+      android:strokeWidth="3"
+      android:fillColor="#00000000"
+      android:strokeColor="#fff"
+      android:strokeLineCap="round"
+      android:strokeLineJoin="round"/>
+</vector>

@@ -44,7 +44,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.core.content.pm.ShortcutInfoCompat
 import androidx.core.content.pm.ShortcutManagerCompat
-import androidx.core.graphics.drawable.IconCompat
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -59,8 +58,10 @@ import org.connectbot.service.TerminalManager
 import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.navigation.NavDestinations
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.IconStyle
 import org.connectbot.util.NotificationPermissionHelper
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.ShortcutIconGenerator
 import timber.log.Timber
 
 // TODO: Move back to ComponentActivity when https://issuetracker.google.com/issues/178855209 is fixed.
@@ -291,8 +292,8 @@ class MainActivity : AppCompatActivity() {
                 navController = navController,
                 makingShortcut = makingShortcut,
                 onRetryMigration = { appViewModel.retryMigration() },
-                onSelectShortcut = { host ->
-                    createShortcutAndFinish(host)
+                onSelectShortcut = { host, color, iconStyle ->
+                    createShortcutAndFinish(host, color, iconStyle)
                 },
                 onNavigateToConsole = onNavigateToConsole
             )
@@ -363,16 +364,18 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun createShortcutAndFinish(host: Host) {
+    private fun createShortcutAndFinish(host: Host, color: String?, iconStyle: IconStyle) {
         val uri = host.getUri()
         val intent = Intent(Intent.ACTION_VIEW, uri).apply {
             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         }
 
+        val icon = ShortcutIconGenerator.generateShortcutIcon(this, color, iconStyle)
+
         val shortcut = ShortcutInfoCompat.Builder(this, "host-${host.id}")
             .setShortLabel(host.nickname)
             .setLongLabel(host.nickname)
-            .setIcon(IconCompat.createWithResource(this, R.mipmap.icon))
+            .setIcon(icon)
             .setIntent(intent)
             .build()
 

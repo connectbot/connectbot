@@ -46,6 +46,7 @@ import org.connectbot.ui.screens.profiles.ProfileListScreen
 import org.connectbot.ui.screens.pubkeyeditor.PubkeyEditorScreen
 import org.connectbot.ui.screens.pubkeylist.PubkeyListScreen
 import org.connectbot.ui.screens.settings.SettingsScreen
+import org.connectbot.util.IconStyle
 import timber.log.Timber
 
 @Composable
@@ -55,7 +56,7 @@ fun ConnectBotNavHost(
     modifier: Modifier = Modifier,
     startDestination: String = NavDestinations.HOST_LIST,
     makingShortcut: Boolean = false,
-    onSelectShortcut: (Host) -> Unit = {}
+    onSelectShortcut: (Host, String?, IconStyle) -> Unit = { _, _, _ -> }
 ) {
     NavHost(
         navController = navController,

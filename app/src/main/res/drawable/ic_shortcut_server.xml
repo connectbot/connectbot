@@ -1,0 +1,31 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+  <!-- Server icon - computer/monitor style -->
+  <path
+      android:fillColor="#FF000000"
+      android:pathData="M72,72L36,72L36,68L72,68Z"
+      android:strokeAlpha="0.103"
+      android:fillAlpha="0.103"/>
+  <!-- Monitor body -->
+  <path
+      android:pathData="M34,38L74,38A4,4 0,0 1,78 42L78,62A4,4 0,0 1,74 66L34,66A4,4 0,0 1,30 62L30,42A4,4 0,0 1,34 38Z"
+      android:strokeWidth="3"
+      android:fillColor="#00000000"
+      android:strokeColor="#fff"/>
+  <!-- Monitor screen -->
+  <path
+      android:pathData="M36,42L72,42L72,60L36,60Z"
+      android:fillColor="#fff"
+      android:fillAlpha="0.3"/>
+  <!-- Monitor stand -->
+  <path
+      android:pathData="M50,66L58,66L58,72L50,72Z"
+      android:fillColor="#fff"/>
+  <!-- Monitor base -->
+  <path
+      android:pathData="M44,72L64,72L64,74L44,74Z"
+      android:fillColor="#fff"/>
+</vector>
