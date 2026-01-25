@@ -17,6 +17,7 @@
 
 package org.connectbot.ui.components
 
+import android.view.ViewConfiguration
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -33,9 +34,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-// NOTE: Using Icons.Default (non-mirrored) for arrow keys is intentional.
-// AutoMirrored variants would flip the arrows in RTL languages, but terminal
-// cursor movement should always be absolute (left = left, right = right).
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -52,13 +50,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
-import android.view.ViewConfiguration
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -103,8 +101,9 @@ fun TerminalKeyboard(
     onHideIme: () -> Unit = {},
     onShowIme: () -> Unit = {},
     onOpenTextInput: () -> Unit = {},
+    onScrollInProgressChange: (Boolean) -> Unit = {},
     imeVisible: Boolean = false,
-    playAnimation: Boolean = false,
+    playAnimation: Boolean = false
 ) {
     val keyHandler = bridge.keyHandler
     val modifierState by keyHandler.modifierState.collectAsState()
@@ -131,6 +130,7 @@ fun TerminalKeyboard(
         onHideIme = onHideIme,
         onShowIme = onShowIme,
         onOpenTextInput = onOpenTextInput,
+        onScrollInProgressChange = onScrollInProgressChange,
         imeVisible = imeVisible,
         playAnimation = playAnimation,
         modifier = modifier
@@ -152,11 +152,18 @@ private fun TerminalKeyboardContent(
     onHideIme: () -> Unit,
     onShowIme: () -> Unit,
     onOpenTextInput: () -> Unit,
+    onScrollInProgressChange: (Boolean) -> Unit,
     imeVisible: Boolean,
     playAnimation: Boolean,
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
+    val currentOnScrollInProgressChange by rememberUpdatedState(onScrollInProgressChange)
+
+    // Notify parent when scroll state changes
+    LaunchedEffect(scrollState.isScrollInProgress) {
+        currentOnScrollInProgressChange(scrollState.isScrollInProgress)
+    }
 
     // Auto-scroll animation on first appearance (only if playAnimation is true)
     LaunchedEffect(playAnimation) {
@@ -374,7 +381,7 @@ private fun TerminalKeyboardContent(
                     Icon(
                         Icons.Default.Edit,
                         contentDescription = stringResource(R.string.terminal_keyboard_text_input_button),
-                        modifier = Modifier.height(TERMINAL_KEYBOARD_CONTENT_SIZE_DP.dp),
+                        modifier = Modifier.height(TERMINAL_KEYBOARD_CONTENT_SIZE_DP.dp)
                     )
                 }
             }
@@ -404,10 +411,11 @@ private fun TerminalKeyboardContent(
                     Icon(
                         if (imeVisible) Icons.Default.KeyboardHide else Icons.Default.Keyboard,
                         contentDescription = stringResource(
-                            if (imeVisible)
+                            if (imeVisible) {
                                 R.string.image_description_hide_keyboard
-                            else
+                            } else {
                                 R.string.image_description_show_keyboard
+                            }
                         ),
                         modifier = Modifier.height(TERMINAL_KEYBOARD_CONTENT_SIZE_DP.dp)
                     )
@@ -423,10 +431,10 @@ private fun TerminalKeyboardContent(
  */
 @Composable
 private fun KeyButton(
+    contentDescription: String?,
     modifier: Modifier = Modifier,
     text: String? = null,
     icon: ImageVector? = null,
-    contentDescription: String?,
     onClick: (() -> Unit)? = null,
     backgroundColor: Color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
     tint: Color = MaterialTheme.colorScheme.onSurface
@@ -450,7 +458,7 @@ private fun KeyButton(
                     imageVector = icon,
                     contentDescription = contentDescription,
                     tint = tint,
-                    modifier = Modifier.height(TERMINAL_KEYBOARD_CONTENT_SIZE_DP.dp),
+                    modifier = Modifier.height(TERMINAL_KEYBOARD_CONTENT_SIZE_DP.dp)
                 )
             }
         }
@@ -500,8 +508,11 @@ private fun RepeatableKeyButton(
     }
 
     val backgroundColor =
-        if (isPressed) MaterialTheme.colorScheme.primaryContainer.copy(alpha = UI_OPACITY)
-        else MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY)
+        if (isPressed) {
+            MaterialTheme.colorScheme.primaryContainer.copy(alpha = UI_OPACITY)
+        } else {
+            MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY)
+        }
 
     KeyButton(
         icon = icon,
@@ -589,6 +600,7 @@ private fun TerminalKeyboardPreview() {
             onHideIme = {},
             onShowIme = {},
             onOpenTextInput = {},
+            onScrollInProgressChange = {},
             imeVisible = false,
             playAnimation = false
         )
@@ -613,6 +625,7 @@ private fun TerminalKeyboardCtrlPressedPreview() {
             onHideIme = {},
             onShowIme = {},
             onOpenTextInput = {},
+            onScrollInProgressChange = {},
             imeVisible = false,
             playAnimation = false
         )
@@ -637,6 +650,7 @@ private fun TerminalKeyboardCtrlLockedPreview() {
             onHideIme = {},
             onShowIme = {},
             onOpenTextInput = {},
+            onScrollInProgressChange = {},
             imeVisible = false,
             playAnimation = false
         )
@@ -661,6 +675,7 @@ private fun TerminalKeyboardImeVisiblePreview() {
             onHideIme = {},
             onShowIme = {},
             onOpenTextInput = {},
+            onScrollInProgressChange = {},
             imeVisible = true,
             playAnimation = false
         )
