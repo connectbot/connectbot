@@ -58,6 +58,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
+import android.view.ViewConfiguration
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -510,12 +511,19 @@ private fun RepeatableKeyButton(
             detectTapGestures(
                 onPress = {
                     isPressed = true
-                    // Single press
-                    onPress()
 
-                    // Start repeat after initial delay
+                    // Start a job that handles initial delay, first press, and repeat
+                    val tapTimeout = ViewConfiguration.getTapTimeout().toLong()
                     repeatJob = coroutineScope.launch {
-                        delay(500) // Initial delay before repeat
+                        // Delay before first press to allow scroll gestures to steal touch
+                        delay(tapTimeout)
+                        if (!isPressed) return@launch
+
+                        // First press after initial tap delay
+                        onPress()
+
+                        // Wait before starting repeat
+                        delay(500 - tapTimeout)
                         while (isPressed) {
                             onPress()
                             delay(50) // Repeat interval
