@@ -108,7 +108,8 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                 // Create profiles table
                 // Note: No foreign key to color_schemes because built-in color schemes use negative IDs
                 // and are virtual (not stored in the database). Only custom schemes have positive IDs.
-                db.execSQL("""
+                db.execSQL(
+                    """
                     CREATE TABLE IF NOT EXISTS `profiles` (
                         `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                         `name` TEXT NOT NULL,
@@ -120,28 +121,34 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                         `encoding` TEXT NOT NULL DEFAULT 'UTF-8',
                         `emulation` TEXT NOT NULL DEFAULT 'xterm-256color'
                     )
-                """.trimIndent())
+                    """.trimIndent()
+                )
 
                 // Create index on profile name
                 db.execSQL("CREATE UNIQUE INDEX IF NOT EXISTS `index_profiles_name` ON `profiles` (`name`)")
 
                 // Insert default profile with color_scheme_id = -1 (Default built-in scheme)
-                db.execSQL("""
+                db.execSQL(
+                    """
                     INSERT INTO `profiles` (`id`, `name`, `color_scheme_id`, `font_family`, `font_size`, `del_key`, `encoding`, `emulation`)
                     VALUES (1, 'Default', -1, NULL, 10, 'del', 'UTF-8', 'xterm-256color')
-                """.trimIndent())
+                    """.trimIndent()
+                )
 
                 // Create profiles from unique host settings combinations
                 // Use a data class key: (color_scheme_id, font_size, del_key, encoding)
                 // This groups hosts with identical terminal settings into shared profiles
-                db.execSQL("""
+                db.execSQL(
+                    """
                     CREATE TEMP TABLE temp_profile_settings AS
                     SELECT DISTINCT color_scheme_id, font_size, del_key, encoding
                     FROM hosts
                     WHERE NOT (color_scheme_id = 1 AND font_size = 10 AND del_key = 'DEL' AND encoding = 'UTF-8')
-                """.trimIndent())
+                    """.trimIndent()
+                )
 
-                db.execSQL("""
+                db.execSQL(
+                    """
                     INSERT INTO `profiles` (`name`, `color_scheme_id`, `font_size`, `del_key`, `encoding`)
                     SELECT
                         'Migrated Profile ' || ROWID,
@@ -150,7 +157,8 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                         del_key,
                         encoding
                     FROM temp_profile_settings
-                """.trimIndent())
+                    """.trimIndent()
+                )
 
                 db.execSQL("DROP TABLE temp_profile_settings")
 
@@ -159,7 +167,8 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                 // so we need to recreate the table.
 
                 // Create new hosts table with correct schema
-                db.execSQL("""
+                db.execSQL(
+                    """
                     CREATE TABLE IF NOT EXISTS `hosts_new` (
                         `id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                         `nickname` TEXT NOT NULL,
@@ -183,10 +192,12 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                         `jump_host_id` INTEGER,
                         `profile_id` INTEGER
                     )
-                """.trimIndent())
+                    """.trimIndent()
+                )
 
                 // Copy data from old table to new table, mapping old columns to profile_id
-                db.execSQL("""
+                db.execSQL(
+                    """
                     INSERT INTO `hosts_new` (
                         `id`, `nickname`, `protocol`, `username`, `hostname`, `port`,
                         `host_key_algo`, `last_connect`, `color`, `use_keys`, `use_auth_agent`,
@@ -209,7 +220,8 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                             LIMIT 1
                         ), 1) as profile_id
                     FROM hosts h
-                """.trimIndent())
+                    """.trimIndent()
+                )
 
                 // Drop old table
                 db.execSQL("DROP TABLE `hosts`")
@@ -222,6 +234,5 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                 db.execSQL("CREATE INDEX IF NOT EXISTS `index_hosts_protocol_username_hostname_port` ON `hosts` (`protocol`, `username`, `hostname`, `port`)")
             }
         }
-
     }
 }

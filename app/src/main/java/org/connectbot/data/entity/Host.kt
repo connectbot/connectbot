@@ -125,6 +125,7 @@ data class Host(
             "local" -> {
                 builder.fragment(nickname)
             }
+
             "ssh", "telnet" -> {
                 // Build authority with hostname and port
                 val authority = buildString {
@@ -140,7 +141,6 @@ data class Host(
                 }
                 builder.authority(authority)
                 builder.fragment(nickname)
-
             }
         }
 
@@ -152,45 +152,39 @@ data class Host(
          * Create a new SSH host with default values (Java interop helper).
          */
         @JvmStatic
-        fun createSshHost(nickname: String, hostname: String, port: Int, username: String): Host {
-            return Host(
-                id = 0L,
-                nickname = nickname,
-                protocol = "ssh",
-                username = username,
-                hostname = hostname,
-                port = port
-            )
-        }
+        fun createSshHost(nickname: String, hostname: String, port: Int, username: String): Host = Host(
+            id = 0L,
+            nickname = nickname,
+            protocol = "ssh",
+            username = username,
+            hostname = hostname,
+            port = port
+        )
 
         /**
          * Create a new Telnet host with default values (Java interop helper).
          */
         @JvmStatic
-        fun createTelnetHost(nickname: String, hostname: String, port: Int): Host {
-            return Host(
-                id = 0L,
-                nickname = nickname,
-                protocol = "telnet",
-                username = "",
-                hostname = hostname,
-                port = port
-            )
-        }
+        fun createTelnetHost(nickname: String, hostname: String, port: Int): Host = Host(
+            id = 0L,
+            nickname = nickname,
+            protocol = "telnet",
+            username = "",
+            hostname = hostname,
+            port = port
+        )
 
         /**
          * Create a new Local host with default values (Java interop helper).
          */
         @JvmStatic
-        fun createLocalHost(nickname: String): Host {
-            return Host(
-                id = 0L,
-                nickname = nickname,
-                protocol = "local",
-                username = "",
-                hostname = "",
-                port = 0
-            )
-        }
+        fun createLocalHost(nickname: String): Host = Host(
+            id = 0L,
+            nickname = nickname,
+            protocol = "local",
+            username = "",
+            hostname = "",
+            port = 0
+        )
     }
 }
