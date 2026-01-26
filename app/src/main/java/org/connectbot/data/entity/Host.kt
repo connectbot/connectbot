@@ -97,7 +97,14 @@ data class Host(
      * Defaults to 1 (the Default profile).
      */
     @ColumnInfo(name = "profile_id")
-    val profileId: Long? = 1L
+    val profileId: Long? = 1L,
+
+    /**
+     * IP version preference for connections.
+     * Values: "IPV4_AND_IPV6" (default), "IPV4_ONLY", "IPV6_ONLY"
+     */
+    @ColumnInfo(name = "ip_version", defaultValue = "IPV4_AND_IPV6")
+    val ipVersion: String = "IPV4_AND_IPV6"
 ) {
     /**
      * Check if this host is temporary (not saved to database).

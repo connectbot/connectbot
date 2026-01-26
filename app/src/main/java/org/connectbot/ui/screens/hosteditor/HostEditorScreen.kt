@@ -71,6 +71,7 @@ import org.connectbot.ui.common.getIconColors
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.common.getLocalizedFontDisplayName
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.HostConstants
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
 
@@ -103,6 +104,7 @@ fun HostEditorScreen(
         onQuickDisconnectChange = viewModel::updateQuickDisconnect,
         onPostLoginChange = viewModel::updatePostLogin,
         onJumpHostChange = viewModel::updateJumpHostId,
+        onIpVersionChange = viewModel::updateIpVersion,
         onSaveHost = { expandedMode -> viewModel.saveHost(expandedMode) },
         modifier = modifier
     )
@@ -130,6 +132,7 @@ fun HostEditorScreenContent(
     onQuickDisconnectChange: (Boolean) -> Unit,
     onPostLoginChange: (String) -> Unit,
     onJumpHostChange: (Long?) -> Unit,
+    onIpVersionChange: (String) -> Unit,
     onSaveHost: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -319,6 +322,14 @@ fun HostEditorScreenContent(
                             .fillMaxWidth()
                             .padding(top = 8.dp),
                         singleLine = true
+                    )
+
+                    // IP version selector (disabled for literal IP addresses)
+                    IpVersionSelector(
+                        ipVersion = uiState.ipVersion,
+                        hostname = uiState.hostname,
+                        onIpVersionSelected = onIpVersionChange,
+                        modifier = Modifier.padding(top = 8.dp)
                     )
                 }
             }
@@ -851,6 +862,74 @@ private fun ProfileSelector(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+private fun IpVersionSelector(
+    ipVersion: String,
+    hostname: String,
+    onIpVersionSelected: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    val isLiteralIp = HostConstants.isIpAddress(hostname)
+    val isIpv4 = HostConstants.isIpv4Address(hostname)
+    val isIpv6 = HostConstants.isIpv6Address(hostname)
+
+    val options = listOf(
+        HostConstants.IPVERSION_IPV4_AND_IPV6 to stringResource(R.string.ipversion_auto),
+        HostConstants.IPVERSION_IPV4_ONLY to stringResource(R.string.ipversion_ipv4),
+        HostConstants.IPVERSION_IPV6_ONLY to stringResource(R.string.ipversion_ipv6)
+    )
+
+    val displayLabel = when {
+        isIpv4 -> stringResource(R.string.ipversion_ipv4)
+        isIpv6 -> stringResource(R.string.ipversion_ipv6)
+        else -> options.find { it.first == ipVersion }?.second
+            ?: stringResource(R.string.ipversion_auto)
+    }
+
+    ExposedDropdownMenuBox(
+        expanded = expanded && !isLiteralIp,
+        onExpandedChange = { if (!isLiteralIp) expanded = it },
+        modifier = modifier.fillMaxWidth()
+    ) {
+        OutlinedTextField(
+            value = displayLabel,
+            onValueChange = {},
+            label = { Text(stringResource(R.string.hostpref_ipversion_title)) },
+            readOnly = true,
+            enabled = !isLiteralIp,
+            singleLine = true,
+            trailingIcon = {
+                if (!isLiteralIp) {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                }
+            },
+            colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+            modifier = Modifier
+                .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                .fillMaxWidth()
+        )
+
+        ExposedDropdownMenu(
+            expanded = expanded && !isLiteralIp,
+            onDismissRequest = { expanded = false }
+        ) {
+            options.forEach { (value, label) ->
+                DropdownMenuItem(
+                    text = { Text(label) },
+                    onClick = {
+                        onIpVersionSelected(value)
+                        expanded = false
+                    },
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                )
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 private fun JumpHostSelector(
     jumpHostId: Long?,
     availableJumpHosts: List<Host>,
@@ -1143,6 +1222,7 @@ private fun HostEditorScreenPreview() {
             onQuickDisconnectChange = {},
             onPostLoginChange = {},
             onJumpHostChange = {},
+            onIpVersionChange = {},
             onSaveHost = {}
         )
     }

@@ -1136,6 +1136,18 @@
 	<!-- Menu selection to edit a pubkey details (e.g., nickname) -->
 	<string name="list_pubkey_edit">Edit pubkey</string>
 
+	<!-- IP Version selection for host connections -->
+	<!-- Title for IP version preference in host editor -->
+	<string name="hostpref_ipversion_title">IP version</string>
+	<!-- Summary text explaining what the IP version setting controls -->
+	<string name="hostpref_ipversion_summary">Select which IP address version to use when connecting</string>
+	<!-- Option for automatic IP version selection (try both IPv4 and IPv6) -->
+	<string name="ipversion_auto">Automatic</string>
+	<!-- Option to force IPv4-only connections -->
+	<string name="ipversion_ipv4">IPv4 only</string>
+	<!-- Option to force IPv6-only connections -->
+	<string name="ipversion_ipv6">IPv6 only</string>
+
 	<!-- ProxyJump / Jump Host support -->
 	<!-- Title for jump host selector in host editor -->
 	<string name="hostpref_jumphost_title">Jump host (ProxyJump)</string>

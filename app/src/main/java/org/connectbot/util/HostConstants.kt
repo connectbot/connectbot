@@ -16,10 +16,49 @@
  */
 package org.connectbot.util
 
+import java.net.Inet4Address
+import java.net.Inet6Address
+import java.net.InetAddress
+
 /**
  * Constants for Host management.
  */
 object HostConstants {
+    /*
+     * IP version preferences for connections
+     */
+    const val IPVERSION_IPV4_AND_IPV6: String = "IPV4_AND_IPV6"
+    const val IPVERSION_IPV4_ONLY: String = "IPV4_ONLY"
+    const val IPVERSION_IPV6_ONLY: String = "IPV6_ONLY"
+
+    /**
+     * Checks if the given hostname is an IPv4 address.
+     */
+    @JvmStatic
+    fun isIpv4Address(hostname: String): Boolean = try {
+        val trimmed = hostname.trim()
+        trimmed.matches(Regex("^\\d+\\.\\d+\\.\\d+\\.\\d+$")) &&
+            InetAddress.getByName(trimmed) is Inet4Address
+    } catch (_: Exception) {
+        false
+    }
+
+    /**
+     * Checks if the given hostname is an IPv6 address.
+     */
+    @JvmStatic
+    fun isIpv6Address(hostname: String): Boolean = try {
+        val cleanHostname = hostname.trim().trim('[', ']')
+        cleanHostname.contains(':') && InetAddress.getByName(cleanHostname) is Inet6Address
+    } catch (_: Exception) {
+        false
+    }
+
+    /**
+     * Checks if the given hostname is an IP address (either IPv4 or IPv6).
+     */
+    @JvmStatic
+    fun isIpAddress(hostname: String): Boolean = isIpv4Address(hostname) || isIpv6Address(hostname)
     /**
      * Legacy database names for backup purposes.
      * Note: The actual database is now managed by Room as ConnectBot.db,

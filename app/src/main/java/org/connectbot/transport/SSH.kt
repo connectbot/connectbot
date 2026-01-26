@@ -29,6 +29,7 @@ import com.trilead.ssh2.ConnectionMonitor
 import com.trilead.ssh2.DynamicPortForwarder
 import com.trilead.ssh2.ExtendedServerHostKeyVerifier
 import com.trilead.ssh2.InteractiveCallback
+import com.trilead.ssh2.IpVersion
 import com.trilead.ssh2.KnownHosts
 import com.trilead.ssh2.LocalPortForwarder
 import com.trilead.ssh2.Session
@@ -672,7 +673,7 @@ class SSH :
             }
 
             // Connect to jump host
-            jc.connect(HostKeyVerifier())
+            jc.connect(HostKeyVerifier(), parseIpVersion(jumpHost.ipVersion, jumpHost.hostname))
 
             // Track this connection for cleanup
             jumpConnections.add(jc)
@@ -833,7 +834,7 @@ class SSH :
         }
 
         try {
-            val connectionInfo = connection?.connect(HostKeyVerifier())
+            val connectionInfo = connection?.connect(HostKeyVerifier(), parseIpVersion(currentHost.ipVersion, currentHost.hostname))
             connected = true
 
             connectionInfo?.let { info ->
@@ -1331,6 +1332,18 @@ class SSH :
         init {
             // Since this class deals with Ed25519 keys, we need to make sure this is available.
             Ed25519Provider.insertIfNeeded()
+        }
+
+        private fun parseIpVersion(value: String, hostname: String): IpVersion {
+            // If hostname is a literal IP address, use automatic (the address type is already determined)
+            if (HostConstants.isIpAddress(hostname)) {
+                return IpVersion.IPV4_AND_IPV6
+            }
+            return when (value) {
+                HostConstants.IPVERSION_IPV4_ONLY -> IpVersion.IPV4_ONLY
+                HostConstants.IPVERSION_IPV6_ONLY -> IpVersion.IPV6_ONLY
+                else -> IpVersion.IPV4_AND_IPV6
+            }
         }
 
         private const val PROTOCOL = "ssh"
