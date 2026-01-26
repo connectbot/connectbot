@@ -29,6 +29,8 @@ import org.connectbot.service.TerminalManager
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
+import java.net.Inet4Address
+import java.net.Inet6Address
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
@@ -37,6 +39,7 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.regex.Pattern
 import androidx.core.net.toUri
+import org.connectbot.util.HostConstants
 
 /**
  * Telnet transport implementation.
@@ -113,7 +116,7 @@ class Telnet : AbsTransport {
             socket = Socket()
 
             val currentHost = host ?: return
-            tryAllAddresses(socket!!, currentHost.hostname, currentHost.port)
+            tryAllAddresses(socket!!, currentHost.hostname, currentHost.port, currentHost.ipVersion)
 
             connected = true
 
@@ -258,8 +261,18 @@ class Telnet : AbsTransport {
         fun getProtocolName(): String = PROTOCOL
 
         @JvmStatic
-        private fun tryAllAddresses(sock: Socket, host: String, port: Int) {
-            val addresses = InetAddress.getAllByName(host)
+        private fun tryAllAddresses(sock: Socket, host: String, port: Int, ipVersion: String) {
+            val allAddresses = InetAddress.getAllByName(host)
+            // Filter addresses based on IP version preference (unless hostname is a literal IP)
+            val addresses = if (HostConstants.isIpAddress(host)) {
+                allAddresses.toList()
+            } else {
+                when (ipVersion) {
+                    HostConstants.IPVERSION_IPV4_ONLY -> allAddresses.filter { it is Inet4Address }
+                    HostConstants.IPVERSION_IPV6_ONLY -> allAddresses.filter { it is Inet6Address }
+                    else -> allAddresses.toList()
+                }
+            }
             for (addr in addresses) {
                 try {
                     sock.connect(InetSocketAddress(addr, port))
