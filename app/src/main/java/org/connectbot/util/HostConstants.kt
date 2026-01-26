@@ -59,6 +59,7 @@ object HostConstants {
      */
     @JvmStatic
     fun isIpAddress(hostname: String): Boolean = isIpv4Address(hostname) || isIpv6Address(hostname)
+
     /**
      * Legacy database names for backup purposes.
      * Note: The actual database is now managed by Room as ConnectBot.db,
@@ -67,16 +68,16 @@ object HostConstants {
     const val LEGACY_DB_NAME: String = "hosts"
 
     /*
-	 * Possible colors for hosts in the list.
-	 */
+     * Possible colors for hosts in the list.
+     */
     const val COLOR_RED: String = "red"
     const val COLOR_GREEN: String = "green"
     const val COLOR_BLUE: String = "blue"
     const val COLOR_GRAY: String = "gray"
 
     /*
-	 * Possible keys for what is send when backspace is pressed.
-	 */
+     * Possible keys for what is send when backspace is pressed.
+     */
     const val DELKEY_DEL: String = "del"
     const val DELKEY_BACKSPACE: String = "backspace"
 
@@ -84,23 +85,23 @@ object HostConstants {
     const val DEFAULT_BG_COLOR: Int = 0
 
     /*
-	 * Port forward types
-	 */
+     * Port forward types
+     */
     const val PORTFORWARD_LOCAL: String = "local"
     const val PORTFORWARD_REMOTE: String = "remote"
     const val PORTFORWARD_DYNAMIC4: String = "dynamic4"
     const val PORTFORWARD_DYNAMIC5: String = "dynamic5"
 
     /*
-	 * Auth agent usage
-	 */
+     * Auth agent usage
+     */
     const val AUTHAGENT_NO: String = "no"
     const val AUTHAGENT_CONFIRM: String = "confirm"
     const val AUTHAGENT_YES: String = "yes"
 
     /*
-	 * Old database field names
-	 */
+     * Old database field names
+     */
     const val FIELD_HOST_PROTOCOL: String = "protocol"
     const val FIELD_HOST_HOSTNAME: String = "hostname"
     const val FIELD_HOST_PORT: String = "port"
@@ -108,8 +109,8 @@ object HostConstants {
     const val FIELD_HOST_NICKNAME: String = "nickname"
 
     /*
-	 * Magic pubkey IDs
-	 */
+     * Magic pubkey IDs
+     */
     val PUBKEYID_NEVER: Long = -2
     val PUBKEYID_ANY: Long = -1
 }

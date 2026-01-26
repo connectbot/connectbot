@@ -20,12 +20,14 @@ package org.connectbot.transport
 import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
-import timber.log.Timber
+import androidx.core.net.toUri
 import de.mud.telnet.TelnetProtocolHandler
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
+import org.connectbot.util.HostConstants
+import timber.log.Timber
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
@@ -38,8 +40,6 @@ import java.net.SocketException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.util.regex.Pattern
-import androidx.core.net.toUri
-import org.connectbot.util.HostConstants
 
 /**
  * Telnet transport implementation.
@@ -99,6 +99,7 @@ class Telnet : AbsTransport {
             override fun getTerminalType(): String? = getEmulation()
             override fun getWindowSize(): IntArray = intArrayOf(width, height)
             override fun setLocalEcho(echo: Boolean) {}
+
             @Throws(IOException::class)
             override fun write(b: ByteArray) {
                 os?.write(b)
@@ -163,15 +164,17 @@ class Telnet : AbsTransport {
 
         do {
             n = handler.negotiate(buffer, offset)
-            if (n > 0)
+            if (n > 0) {
                 return n
+            }
         } while (n == 0)
 
         while (n <= 0) {
             do {
                 n = handler.negotiate(buffer, offset)
-                if (n > 0)
+                if (n > 0) {
                     return n
+                }
             } while (n == 0)
             n = `is`!!.read(buffer, offset, length)
             if (n < 0) {
@@ -212,18 +215,17 @@ class Telnet : AbsTransport {
     }
 
     @SuppressLint("DefaultLocale")
-    override fun getDefaultNickname(username: String?, hostname: String?, port: Int): String {
-        return if (port == DEFAULT_PORT) {
-            String.format("%s", hostname)
-        } else {
-            String.format("%s:%d", hostname, port)
-        }
+    override fun getDefaultNickname(username: String?, hostname: String?, port: Int): String = if (port == DEFAULT_PORT) {
+        String.format("%s", hostname)
+    } else {
+        String.format("%s:%d", hostname, port)
     }
 
     override fun createHost(uri: Uri): Host {
         var port = uri.port
-        if (port < 0 || port > 65535)
+        if (port < 0 || port > 65535) {
             port = DEFAULT_PORT
+        }
 
         val hostname = uri.host ?: ""
 
@@ -241,8 +243,9 @@ class Telnet : AbsTransport {
         selection["hostname"] = uri.host ?: ""
 
         var port = uri.port
-        if (port < 0 || port > 65535)
+        if (port < 0 || port > 65535) {
             port = DEFAULT_PORT
+        }
         selection["port"] = port.toString()
     }
 
@@ -287,8 +290,9 @@ class Telnet : AbsTransport {
         fun getUri(input: String): Uri? {
             val matcher = hostmask.matcher(input)
 
-            if (!matcher.matches())
+            if (!matcher.matches()) {
                 return null
+            }
 
             val sb = StringBuilder()
 
@@ -321,12 +325,10 @@ class Telnet : AbsTransport {
         }
 
         @JvmStatic
-        fun getFormatHint(context: Context): String {
-            return String.format(
-                "%s:%s",
-                context.getString(R.string.format_hostname),
-                context.getString(R.string.format_port)
-            )
-        }
+        fun getFormatHint(context: Context): String = String.format(
+            "%s:%s",
+            context.getString(R.string.format_hostname),
+            context.getString(R.string.format_port)
+        )
     }
 }
