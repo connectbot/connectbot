@@ -59,7 +59,7 @@ spotless {
                     "ktlint_standard_max-line-length" to "disabled",
                     "ktlint_standard_kdoc" to "disabled",
                 ),
-            ).customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.5.5"))
+            ).customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.5.6"))
     }
 
     groovyGradle {
