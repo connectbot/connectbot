@@ -541,10 +541,17 @@ private fun RepeatableKeyButton(
                         }
                     }
 
-                    // Wait for release
-                    tryAwaitRelease()
+                    // Wait for release - returns true if normal release, false if gesture stolen
+                    val released = tryAwaitRelease()
                     isPressed = false
-                    repeatJob?.cancel()
+
+                    if (released && repeatJob?.isActive == true) {
+                        // User released but key hasn't been sent yet (quick tap) - send it now
+                        repeatJob?.cancel()
+                        onPress()
+                    } else {
+                        repeatJob?.cancel()
+                    }
                 }
             )
         },
