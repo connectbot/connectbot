@@ -21,7 +21,7 @@ targetSdk = "35"
 composeBom = "2026.01.00"
 material3 = "1.5.0-alpha12"
 lifecycleViewModel = "2.10.0"
-navigationCompose = "2.9.6"
+navigationCompose = "2.9.7"
 activityCompose = "1.12.2"
 
 sshlib = "2.2.40"
