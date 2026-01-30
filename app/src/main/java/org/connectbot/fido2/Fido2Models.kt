@@ -33,11 +33,9 @@ enum class Fido2Algorithm(
     EDDSA(-8, "sk-ssh-ed25519@openssh.com", "Ed25519-SK");
 
     companion object {
-        fun fromCoseId(coseId: Int): Fido2Algorithm? =
-            entries.find { it.coseId == coseId }
+        fun fromCoseId(coseId: Int): Fido2Algorithm? = entries.find { it.coseId == coseId }
 
-        fun fromSshKeyType(sshKeyType: String): Fido2Algorithm? =
-            entries.find { it.sshKeyType == sshKeyType }
+        fun fromSshKeyType(sshKeyType: String): Fido2Algorithm? = entries.find { it.sshKeyType == sshKeyType }
     }
 }
 
@@ -74,7 +72,9 @@ data class Fido2Credential(
         if (userHandle != null) {
             if (other.userHandle == null) return false
             if (!userHandle.contentEquals(other.userHandle)) return false
-        } else if (other.userHandle != null) return false
+        } else if (other.userHandle != null) {
+            return false
+        }
         if (userName != other.userName) return false
         if (!publicKeyCose.contentEquals(other.publicKeyCose)) return false
         if (algorithm != other.algorithm) return false
@@ -211,7 +211,9 @@ data class Fido2AuthenticatorInfo(
         if (aaguid != null) {
             if (other.aaguid == null) return false
             if (!aaguid.contentEquals(other.aaguid)) return false
-        } else if (other.aaguid != null) return false
+        } else if (other.aaguid != null) {
+            return false
+        }
         if (pinConfigured != other.pinConfigured) return false
         if (credentialManagementSupported != other.credentialManagementSupported) return false
         if (residentKeySupported != other.residentKeySupported) return false
