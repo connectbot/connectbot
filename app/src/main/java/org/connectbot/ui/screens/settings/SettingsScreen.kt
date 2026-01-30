@@ -75,9 +75,9 @@ import org.connectbot.util.TerminalFont
 @Composable
 fun SettingsScreen(
     onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val viewModel: SettingsViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
@@ -145,6 +145,7 @@ fun SettingsScreen(
     SettingsScreenContent(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
+        onAuthOnLaunchChange = viewModel::updateAuthOnLaunch,
         onMemkeysChange = viewModel::updateMemkeys,
         onConnPersistChange = viewModel::updateConnPersist,
         onWifilockChange = viewModel::updateWifilock,
@@ -186,6 +187,7 @@ fun SettingsScreen(
 fun SettingsScreenContent(
     uiState: SettingsUiState,
     onNavigateBack: () -> Unit,
+    onAuthOnLaunchChange: (Boolean) -> Unit,
     onMemkeysChange: (Boolean) -> Unit,
     onConnPersistChange: (Boolean) -> Unit,
     onWifilockChange: (Boolean) -> Unit,
@@ -234,6 +236,21 @@ fun SettingsScreenContent(
         modifier = modifier
     ) { padding ->
         LazyColumn(modifier = Modifier.padding(padding)) {
+            if (uiState.canAuthenticate) {
+                item {
+                    PreferenceCategory(title = stringResource(R.string.pref_security_category))
+                }
+
+                item {
+                    SwitchPreference(
+                        title = stringResource(R.string.pref_auth_on_launch_title),
+                        summary = stringResource(R.string.pref_auth_on_launch_summary),
+                        checked = uiState.authOnLaunch,
+                        onCheckedChange = onAuthOnLaunchChange
+                    )
+                }
+            }
+
             item {
                 SwitchPreference(
                     title = stringResource(R.string.pref_memkeys_title),
@@ -1058,7 +1075,9 @@ private fun AddCustomFontPreference(
                             { Text(validationError, color = MaterialTheme.colorScheme.error) }
                         } else if (validationInProgress) {
                             { Text(stringResource(R.string.font_validating)) }
-                        } else null,
+                        } else {
+                            null
+                        },
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -1130,8 +1149,11 @@ private fun LocalFontPreference(
             headlineContent = { Text(stringResource(R.string.pref_localfont_title)) },
             supportingContent = {
                 Text(
-                    if (importInProgress) stringResource(R.string.font_importing)
-                    else stringResource(R.string.pref_localfont_summary)
+                    if (importInProgress) {
+                        stringResource(R.string.font_importing)
+                    } else {
+                        stringResource(R.string.pref_localfont_summary)
+                    }
                 )
             },
             modifier = Modifier.clickable(enabled = !importInProgress) {
@@ -1193,7 +1215,9 @@ private fun LocalFontPreference(
                             { Text(importError, color = MaterialTheme.colorScheme.error) }
                         } else if (importInProgress) {
                             { Text(stringResource(R.string.font_importing)) }
-                        } else null,
+                        } else {
+                            null
+                        },
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -1244,6 +1268,8 @@ private fun SettingsScreenPreview() {
     ConnectBotTheme {
         SettingsScreenContent(
             uiState = SettingsUiState(
+                authOnLaunch = false,
+                canAuthenticate = true,
                 memkeys = true,
                 connPersist = true,
                 wifilock = false,
@@ -1276,6 +1302,7 @@ private fun SettingsScreenPreview() {
                 fontImportError = null
             ),
             onNavigateBack = {},
+            onAuthOnLaunchChange = {},
             onMemkeysChange = {},
             onConnPersistChange = {},
             onWifilockChange = {},
