@@ -99,6 +99,7 @@ class ImportFido2ViewModel @Inject constructor(
                         }
                         // NFC: Results delivered via callback, nothing to do here
                     }
+
                     is Fido2ConnectionState.Error -> {
                         _uiState.update {
                             it.copy(
@@ -108,6 +109,7 @@ class ImportFido2ViewModel @Inject constructor(
                             )
                         }
                     }
+
                     else -> { /* No action needed */ }
                 }
             }
@@ -201,7 +203,7 @@ class ImportFido2ViewModel @Inject constructor(
         // Check if we're already connected via USB
         val currentState = _uiState.value.connectionState
         val isUsbConnected = currentState is Fido2ConnectionState.Connected &&
-                currentState.transport == "USB"
+            currentState.transport == "USB"
 
         // Set the PIN for both USB and NFC
         fido2Manager.setPendingPin(pin)
@@ -258,6 +260,7 @@ class ImportFido2ViewModel @Inject constructor(
                     )
                 }
             }
+
             is Fido2Result.PinRequired -> {
                 _uiState.update {
                     it.copy(
@@ -267,6 +270,7 @@ class ImportFido2ViewModel @Inject constructor(
                     )
                 }
             }
+
             is Fido2Result.PinInvalid -> {
                 currentPin = null
                 _uiState.update {
@@ -278,6 +282,7 @@ class ImportFido2ViewModel @Inject constructor(
                     )
                 }
             }
+
             is Fido2Result.PinLocked -> {
                 currentPin = null
                 _uiState.update {
@@ -289,6 +294,7 @@ class ImportFido2ViewModel @Inject constructor(
                     )
                 }
             }
+
             is Fido2Result.Error -> {
                 _uiState.update {
                     it.copy(
@@ -298,6 +304,7 @@ class ImportFido2ViewModel @Inject constructor(
                     )
                 }
             }
+
             is Fido2Result.Cancelled -> {
                 _uiState.update {
                     it.copy(
@@ -344,6 +351,7 @@ class ImportFido2ViewModel @Inject constructor(
                 // PIN prompt will show after device is detected
                 fido2Manager.startUsbDiscovery()
             }
+
             Fido2Transport.NFC -> {
                 // NFC: Need PIN upfront since connection is transient
                 _uiState.update { it.copy(needsPin = true) }
@@ -397,6 +405,7 @@ class ImportFido2ViewModel @Inject constructor(
                 )
                 PubkeyConstants.KEY_TYPE_SK_ED25519 to SkEd25519Verify.encodePublicKey(skPubKey)
             }
+
             Fido2Algorithm.ES256 -> {
                 // Decode COSE key to get uncompressed EC point (0x04 || x || y)
                 val ecPoint = CoseKeyDecoder.decodeEcdsaP256PublicKey(credential.publicKeyCose)
