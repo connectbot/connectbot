@@ -77,44 +77,40 @@ class SecurePasswordStorage @Inject constructor(
         return keyGenerator.generateKey()
     }
 
-    private fun encrypt(plaintext: String): String? {
-        return try {
-            val secretKey = getOrCreateSecretKey()
-            val cipher = Cipher.getInstance(TRANSFORMATION)
-            cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+    private fun encrypt(plaintext: String): String? = try {
+        val secretKey = getOrCreateSecretKey()
+        val cipher = Cipher.getInstance(TRANSFORMATION)
+        cipher.init(Cipher.ENCRYPT_MODE, secretKey)
 
-            val iv = cipher.iv
-            val encryptedBytes = cipher.doFinal(plaintext.toByteArray(Charsets.UTF_8))
+        val iv = cipher.iv
+        val encryptedBytes = cipher.doFinal(plaintext.toByteArray(Charsets.UTF_8))
 
-            // Combine IV and encrypted data
-            val combined = ByteArray(iv.size + encryptedBytes.size)
-            System.arraycopy(iv, 0, combined, 0, iv.size)
-            System.arraycopy(encryptedBytes, 0, combined, iv.size, encryptedBytes.size)
+        // Combine IV and encrypted data
+        val combined = ByteArray(iv.size + encryptedBytes.size)
+        System.arraycopy(iv, 0, combined, 0, iv.size)
+        System.arraycopy(encryptedBytes, 0, combined, iv.size, encryptedBytes.size)
 
-            Base64.encodeToString(combined, Base64.NO_WRAP)
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to encrypt password")
-            null
-        }
+        Base64.encodeToString(combined, Base64.NO_WRAP)
+    } catch (e: Exception) {
+        Timber.e(e, "Failed to encrypt password")
+        null
     }
 
-    private fun decrypt(encryptedData: String): String? {
-        return try {
-            val secretKey = getOrCreateSecretKey()
-            val combined = Base64.decode(encryptedData, Base64.NO_WRAP)
+    private fun decrypt(encryptedData: String): String? = try {
+        val secretKey = getOrCreateSecretKey()
+        val combined = Base64.decode(encryptedData, Base64.NO_WRAP)
 
-            // Extract IV and encrypted data
-            val iv = combined.copyOfRange(0, GCM_IV_LENGTH)
-            val encryptedBytes = combined.copyOfRange(GCM_IV_LENGTH, combined.size)
+        // Extract IV and encrypted data
+        val iv = combined.copyOfRange(0, GCM_IV_LENGTH)
+        val encryptedBytes = combined.copyOfRange(GCM_IV_LENGTH, combined.size)
 
-            val cipher = Cipher.getInstance(TRANSFORMATION)
-            cipher.init(Cipher.DECRYPT_MODE, secretKey, GCMParameterSpec(GCM_TAG_LENGTH, iv))
+        val cipher = Cipher.getInstance(TRANSFORMATION)
+        cipher.init(Cipher.DECRYPT_MODE, secretKey, GCMParameterSpec(GCM_TAG_LENGTH, iv))
 
-            String(cipher.doFinal(encryptedBytes), Charsets.UTF_8)
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to decrypt password")
-            null
-        }
+        String(cipher.doFinal(encryptedBytes), Charsets.UTF_8)
+    } catch (e: Exception) {
+        Timber.e(e, "Failed to decrypt password")
+        null
     }
 
     /**
