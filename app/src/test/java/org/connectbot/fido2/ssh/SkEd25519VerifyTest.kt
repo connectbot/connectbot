@@ -242,8 +242,8 @@ class SkEd25519VerifyTest {
 
         val buffer = ByteBuffer.allocate(
             4 + keyTypeBytes.size +
-            4 + key.size +
-            4 + appBytes.size
+                4 + key.size +
+                4 + appBytes.size
         ).order(ByteOrder.BIG_ENDIAN)
 
         buffer.putInt(keyTypeBytes.size)
