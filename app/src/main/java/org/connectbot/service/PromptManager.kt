@@ -18,11 +18,11 @@
 package org.connectbot.service
 
 import kotlinx.coroutines.CompletableDeferred
-import org.connectbot.data.entity.Fido2Transport
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import org.connectbot.data.entity.Fido2Transport
 
 /**
  * Modern prompt manager using Kotlin coroutines instead of semaphores and blocking.

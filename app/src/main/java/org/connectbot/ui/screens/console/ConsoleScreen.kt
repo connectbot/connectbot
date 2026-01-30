@@ -585,7 +585,7 @@ fun ConsoleScreen(
                             onCancel = {
                                 bridge.promptManager.cancelPrompt()
                             },
-                            onDismissed = {
+                            onDismiss = {
                                 termFocusRequester.requestFocus()
                             },
                             modifier = Modifier

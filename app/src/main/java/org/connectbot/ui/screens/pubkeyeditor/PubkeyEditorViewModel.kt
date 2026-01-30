@@ -61,7 +61,7 @@ data class PubkeyEditorUiState(
 
     val canSave: Boolean
         get() = nickname.isNotEmpty() && !passwordMismatch && !wrongPassword &&
-                !(willBeEncrypted && unlockAtStartup) && !nicknameExists
+            !(willBeEncrypted && unlockAtStartup) && !nicknameExists
 }
 
 @HiltViewModel
@@ -185,7 +185,7 @@ class PubkeyEditorViewModel @Inject constructor(
                     // 1. Key is encrypted and user provided old password (removing or changing password)
                     // 2. Key is not encrypted but user provided new password (adding password)
                     val needsPasswordChange = (state.isEncrypted && state.oldPassword.isNotEmpty()) ||
-                                             (!state.isEncrypted && state.newPassword1.isNotEmpty())
+                        (!state.isEncrypted && state.newPassword1.isNotEmpty())
 
                     var newPrivateKey = pubkey.privateKey
                     var newEncrypted = pubkey.encrypted

@@ -53,7 +53,9 @@ object Fido2TestData {
     // Sample ECDSA P-256 public key as uncompressed point (65 bytes: 0x04 || x || y)
     val ECDSA_P256_PUBLIC_KEY = ByteArray(65) { index ->
         when (index) {
-            0 -> 0x04.toByte() // Uncompressed point marker
+            0 -> 0x04.toByte()
+
+            // Uncompressed point marker
             else -> (index - 1).toByte()
         }
     }

@@ -106,7 +106,9 @@ data class Pubkey(
         if (privateKey != null) {
             if (other.privateKey == null) return false
             if (!privateKey.contentEquals(other.privateKey)) return false
-        } else if (other.privateKey != null) return false
+        } else if (other.privateKey != null) {
+            return false
+        }
         if (!publicKey.contentEquals(other.publicKey)) return false
         if (encrypted != other.encrypted) return false
         if (startup != other.startup) return false
@@ -118,7 +120,9 @@ data class Pubkey(
         if (credentialId != null) {
             if (other.credentialId == null) return false
             if (!credentialId.contentEquals(other.credentialId)) return false
-        } else if (other.credentialId != null) return false
+        } else if (other.credentialId != null) {
+            return false
+        }
         if (fido2RpId != other.fido2RpId) return false
         if (fido2Transport != other.fido2Transport) return false
 
