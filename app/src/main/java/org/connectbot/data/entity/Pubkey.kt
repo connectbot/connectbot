@@ -120,7 +120,9 @@ data class Pubkey(
         if (credentialId != null) {
             if (other.credentialId == null) return false
             if (!credentialId.contentEquals(other.credentialId)) return false
-        } else if (other.credentialId != null) return false
+        } else if (other.credentialId != null) {
+            return false
+        }
         if (fido2RpId != other.fido2RpId) return false
         if (fido2Transport != other.fido2Transport) return false
 
