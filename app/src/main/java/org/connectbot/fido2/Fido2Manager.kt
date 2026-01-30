@@ -76,6 +76,7 @@ class Fido2Manager @Inject constructor(
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private val yubiKitManager = YubiKitManager(context)
+
     // Single-thread executor for all YubiKey operations - ensures thread safety
     private val sessionExecutor = Executors.newSingleThreadExecutor()
     private val sessionDispatcher = sessionExecutor.asCoroutineDispatcher()
@@ -290,6 +291,7 @@ class Fido2Manager @Inject constructor(
                             ?: throw IllegalStateException("Missing credential ID")
 
                         val publicKey = credData.publicKey
+
                         @Suppress("UNCHECKED_CAST")
                         val pubKeyMap = publicKey as? Map<Int, Any>
                         val algValue = pubKeyMap?.get(3)
@@ -320,13 +322,15 @@ class Fido2Manager @Inject constructor(
 
                 when {
                     message.contains("PIN_INVALID", ignoreCase = true) ||
-                    message.contains("CTAP2_ERR_PIN_INVALID", ignoreCase = true) -> {
+                        message.contains("CTAP2_ERR_PIN_INVALID", ignoreCase = true) -> {
                         Fido2Result.PinInvalid(attemptsRemaining = null)
                     }
+
                     message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) ||
-                    message.contains("PIN_BLOCKED", ignoreCase = true) -> {
+                        message.contains("PIN_BLOCKED", ignoreCase = true) -> {
                         Fido2Result.PinLocked("PIN is locked")
                     }
+
                     else -> Fido2Result.Error(e.message ?: "USB operation failed")
                 }
             }
@@ -474,6 +478,7 @@ class Fido2Manager @Inject constructor(
                                     ?: throw IllegalStateException("Missing credential ID")
 
                                 val publicKey = credData.publicKey
+
                                 @Suppress("UNCHECKED_CAST")
                                 val pubKeyMap = publicKey as? Map<Int, Any>
                                 val algValue = pubKeyMap?.get(3)
@@ -498,20 +503,21 @@ class Fido2Manager @Inject constructor(
                             session.close()
                             Timber.i("NFC credential enumeration complete: ${credentialList.size} credentials")
                             continuation.resume(Fido2Result.Success(credentialList))
-
                         } catch (e: Exception) {
                             Timber.e(e, "NFC operation failed")
                             val message = e.message ?: ""
 
                             val error = when {
                                 message.contains("PIN_INVALID", ignoreCase = true) ||
-                                message.contains("CTAP2_ERR_PIN_INVALID", ignoreCase = true) -> {
+                                    message.contains("CTAP2_ERR_PIN_INVALID", ignoreCase = true) -> {
                                     Fido2Result.PinInvalid(attemptsRemaining = null)
                                 }
+
                                 message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) ||
-                                message.contains("PIN_BLOCKED", ignoreCase = true) -> {
+                                    message.contains("PIN_BLOCKED", ignoreCase = true) -> {
                                     Fido2Result.PinLocked("PIN is locked")
                                 }
+
                                 else -> Fido2Result.Error(e.message ?: "NFC operation failed")
                             }
                             continuation.resume(error)
@@ -531,6 +537,7 @@ class Fido2Manager @Inject constructor(
                             deviceName = deviceName
                         )
                     }
+
                     else -> {
                         _connectionState.value = Fido2ConnectionState.Disconnected
                     }
@@ -597,7 +604,7 @@ class Fido2Manager @Inject constructor(
                         aaguid = info.aaguid,
                         pinConfigured = options?.get("clientPin") == true,
                         credentialManagementSupported = options?.get("credMgmt") == true ||
-                                options?.get("credentialMgmtPreview") == true,
+                            options?.get("credentialMgmtPreview") == true,
                         residentKeySupported = options?.get("rk") == true,
                         maxCredentialCount = info.maxCredentialCountInList,
                         remainingCredentialCount = info.remainingDiscoverableCredentials
@@ -647,13 +654,15 @@ class Fido2Manager @Inject constructor(
 
             when {
                 message.contains("PIN_INVALID", ignoreCase = true) ||
-                message.contains("CTAP2_ERR_PIN_INVALID", ignoreCase = true) -> {
+                    message.contains("CTAP2_ERR_PIN_INVALID", ignoreCase = true) -> {
                     Fido2Result.PinInvalid(attemptsRemaining = null)
                 }
+
                 message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) ||
-                message.contains("PIN_BLOCKED", ignoreCase = true) -> {
+                    message.contains("PIN_BLOCKED", ignoreCase = true) -> {
                     Fido2Result.PinLocked("PIN is locked")
                 }
+
                 else -> Fido2Result.Error(e.message ?: "PIN authentication failed")
             }
         }
@@ -812,9 +821,9 @@ class Fido2Manager @Inject constructor(
                 // Parse counter from authenticator data (bytes 33-36 are the counter)
                 val counter = if (authData.size >= 37) {
                     ((authData[33].toInt() and 0xFF) shl 24) or
-                    ((authData[34].toInt() and 0xFF) shl 16) or
-                    ((authData[35].toInt() and 0xFF) shl 8) or
-                    (authData[36].toInt() and 0xFF)
+                        ((authData[34].toInt() and 0xFF) shl 16) or
+                        ((authData[35].toInt() and 0xFF) shl 8) or
+                        (authData[36].toInt() and 0xFF)
                 } else {
                     0
                 }
@@ -843,9 +852,7 @@ class Fido2Manager @Inject constructor(
     /**
      * Check if a FIDO2 device is currently connected.
      */
-    fun isDeviceConnected(): Boolean {
-        return currentDevice != null
-    }
+    fun isDeviceConnected(): Boolean = currentDevice != null
 
     // ==================== SSH Authentication Support ====================
 
@@ -995,9 +1002,9 @@ class Fido2Manager @Inject constructor(
                         // Parse counter from authenticator data (bytes 33-36 are the counter)
                         val counter = if (authData.size >= 37) {
                             ((authData[33].toInt() and 0xFF) shl 24) or
-                            ((authData[34].toInt() and 0xFF) shl 16) or
-                            ((authData[35].toInt() and 0xFF) shl 8) or
-                            (authData[36].toInt() and 0xFF)
+                                ((authData[34].toInt() and 0xFF) shl 16) or
+                                ((authData[35].toInt() and 0xFF) shl 8) or
+                                (authData[36].toInt() and 0xFF)
                         } else {
                             0
                         }
@@ -1025,16 +1032,19 @@ class Fido2Manager @Inject constructor(
 
                         val error = when {
                             message.contains("PIN_INVALID", ignoreCase = true) ||
-                            message.contains("CTAP2_ERR_PIN_INVALID", ignoreCase = true) -> {
+                                message.contains("CTAP2_ERR_PIN_INVALID", ignoreCase = true) -> {
                                 Fido2Result.PinInvalid(attemptsRemaining = null)
                             }
+
                             message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) ||
-                            message.contains("PIN_BLOCKED", ignoreCase = true) -> {
+                                message.contains("PIN_BLOCKED", ignoreCase = true) -> {
                                 Fido2Result.PinLocked("PIN is locked")
                             }
+
                             message.contains("NO_CREDENTIALS", ignoreCase = true) -> {
                                 Fido2Result.Error("Credential not found on security key")
                             }
+
                             else -> Fido2Result.Error(e.message ?: "SSH signing failed")
                         }
                         continuation.resume(error)
@@ -1120,9 +1130,9 @@ class Fido2Manager @Inject constructor(
 
                         val counter = if (authData.size >= 37) {
                             ((authData[33].toInt() and 0xFF) shl 24) or
-                            ((authData[34].toInt() and 0xFF) shl 16) or
-                            ((authData[35].toInt() and 0xFF) shl 8) or
-                            (authData[36].toInt() and 0xFF)
+                                ((authData[34].toInt() and 0xFF) shl 16) or
+                                ((authData[35].toInt() and 0xFF) shl 8) or
+                                (authData[36].toInt() and 0xFF)
                         } else {
                             0
                         }
@@ -1149,16 +1159,19 @@ class Fido2Manager @Inject constructor(
 
                         val error = when {
                             message.contains("PIN_INVALID", ignoreCase = true) ||
-                            message.contains("CTAP2_ERR_PIN_INVALID", ignoreCase = true) -> {
+                                message.contains("CTAP2_ERR_PIN_INVALID", ignoreCase = true) -> {
                                 Fido2Result.PinInvalid(attemptsRemaining = null)
                             }
+
                             message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) ||
-                            message.contains("PIN_BLOCKED", ignoreCase = true) -> {
+                                message.contains("PIN_BLOCKED", ignoreCase = true) -> {
                                 Fido2Result.PinLocked("PIN is locked")
                             }
+
                             message.contains("NO_CREDENTIALS", ignoreCase = true) -> {
                                 Fido2Result.Error("Credential not found on security key")
                             }
+
                             else -> Fido2Result.Error(e.message ?: "NFC SSH signing failed")
                         }
                         continuation.resume(error)
@@ -1189,9 +1202,7 @@ class Fido2Manager @Inject constructor(
         startUsbDiscovery()
     }
 
-    private fun sha256(data: ByteArray): ByteArray {
-        return MessageDigest.getInstance("SHA-256").digest(data)
-    }
+    private fun sha256(data: ByteArray): ByteArray = MessageDigest.getInstance("SHA-256").digest(data)
 
     /**
      * Select the appropriate PIN/UV auth protocol based on authenticator support.
@@ -1218,19 +1229,36 @@ class Fido2Manager @Inject constructor(
         val cborMap = co.nstant.`in`.cbor.model.Map()
         for ((key, value) in publicKey) {
             val cborKey = when (key) {
-                is Long -> if (key >= 0) co.nstant.`in`.cbor.model.UnsignedInteger(key)
-                          else co.nstant.`in`.cbor.model.NegativeInteger(key)
-                is Int -> if (key >= 0) co.nstant.`in`.cbor.model.UnsignedInteger(key.toLong())
-                          else co.nstant.`in`.cbor.model.NegativeInteger(key.toLong())
+                is Long -> if (key >= 0) {
+                    co.nstant.`in`.cbor.model.UnsignedInteger(key)
+                } else {
+                    co.nstant.`in`.cbor.model.NegativeInteger(key)
+                }
+
+                is Int -> if (key >= 0) {
+                    co.nstant.`in`.cbor.model.UnsignedInteger(key.toLong())
+                } else {
+                    co.nstant.`in`.cbor.model.NegativeInteger(key.toLong())
+                }
+
                 else -> continue
             }
 
             val cborValue = when (value) {
                 is ByteArray -> co.nstant.`in`.cbor.model.ByteString(value)
-                is Long -> if (value >= 0) co.nstant.`in`.cbor.model.UnsignedInteger(value)
-                           else co.nstant.`in`.cbor.model.NegativeInteger(value)
-                is Int -> if (value >= 0) co.nstant.`in`.cbor.model.UnsignedInteger(value.toLong())
-                          else co.nstant.`in`.cbor.model.NegativeInteger(value.toLong())
+
+                is Long -> if (value >= 0) {
+                    co.nstant.`in`.cbor.model.UnsignedInteger(value)
+                } else {
+                    co.nstant.`in`.cbor.model.NegativeInteger(value)
+                }
+
+                is Int -> if (value >= 0) {
+                    co.nstant.`in`.cbor.model.UnsignedInteger(value.toLong())
+                } else {
+                    co.nstant.`in`.cbor.model.NegativeInteger(value.toLong())
+                }
+
                 else -> continue
             }
 
@@ -1243,10 +1271,13 @@ class Fido2Manager @Inject constructor(
 
     companion object {
         private const val TAG = "Fido2Manager"
+
         /** SSH relying party ID used by OpenSSH for FIDO2 keys */
         const val SSH_RP_ID = "ssh:"
+
         /** Yubico vendor ID for USB devices */
         private const val YUBICO_VENDOR_ID = 0x1050
+
         /** SoloKey vendor ID for USB devices (pid.codes open source hardware) */
         private const val SOLOKEY_VENDOR_ID = 0x1209
 

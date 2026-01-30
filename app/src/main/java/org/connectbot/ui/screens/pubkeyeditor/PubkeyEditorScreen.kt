@@ -74,6 +74,7 @@ fun PubkeyEditorScreen(
     val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
 
     // Navigate back on successful save
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
     LaunchedEffect(uiState.saveSuccess) {
         if (uiState.saveSuccess) {
             currentOnNavigateBack()

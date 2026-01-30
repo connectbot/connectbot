@@ -168,7 +168,7 @@
       },
       {
         "tableName": "pubkeys",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nickname` TEXT NOT NULL, `type` TEXT NOT NULL, `private_key` BLOB, `public_key` BLOB NOT NULL, `encrypted` INTEGER NOT NULL, `startup` INTEGER NOT NULL, `confirmation` INTEGER NOT NULL, `created_date` INTEGER NOT NULL, `storage_type` TEXT NOT NULL, `allow_backup` INTEGER NOT NULL, `keystore_alias` TEXT)",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `nickname` TEXT NOT NULL, `type` TEXT NOT NULL, `private_key` BLOB, `public_key` BLOB NOT NULL, `encrypted` INTEGER NOT NULL, `startup` INTEGER NOT NULL, `confirmation` INTEGER NOT NULL, `created_date` INTEGER NOT NULL, `storage_type` TEXT NOT NULL, `allow_backup` INTEGER NOT NULL, `keystore_alias` TEXT, `credential_id` BLOB, `fido2_rp_id` TEXT, `fido2_transport` TEXT)",
         "fields": [
           {
             "fieldPath": "id",
@@ -238,6 +238,21 @@
           {
             "fieldPath": "keystoreAlias",
             "columnName": "keystore_alias",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "credentialId",
+            "columnName": "credential_id",
+            "affinity": "BLOB"
+          },
+          {
+            "fieldPath": "fido2RpId",
+            "columnName": "fido2_rp_id",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "fido2Transport",
+            "columnName": "fido2_transport",
             "affinity": "TEXT"
           }
         ],
