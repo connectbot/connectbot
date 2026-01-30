@@ -79,15 +79,19 @@ class Fido2SignatureProxy(
                 Timber.d("FIDO2 signing successful, encoding signature")
                 encodeSignature(signatureResult)
             }
+
             is Fido2Result.PinInvalid -> {
                 throw IOException("FIDO2 PIN is invalid. ${result.attemptsRemaining ?: "Unknown"} attempts remaining.")
             }
+
             is Fido2Result.PinLocked -> {
                 throw IOException("FIDO2 PIN is locked. Please reset your security key.")
             }
+
             is Fido2Result.Error -> {
                 throw IOException("FIDO2 signing failed: ${result.message}")
             }
+
             else -> {
                 throw IOException("FIDO2 signing failed with unexpected result")
             }
@@ -99,56 +103,49 @@ class Fido2SignatureProxy(
      *
      * Uses the configured transport preference (USB or NFC).
      */
-    private suspend fun performFido2Signing(challenge: ByteArray): Fido2Result<Fido2SignatureResult> {
-        return when (transport) {
-            Fido2Transport.USB -> {
-                Timber.d("Using USB signing (preferred transport)")
-                performUsbSigning(challenge)
-            }
-            Fido2Transport.NFC -> {
-                Timber.d("Using NFC signing (preferred transport)")
-                performNfcSigning(challenge)
-            }
+    private suspend fun performFido2Signing(challenge: ByteArray): Fido2Result<Fido2SignatureResult> = when (transport) {
+        Fido2Transport.USB -> {
+            Timber.d("Using USB signing (preferred transport)")
+            performUsbSigning(challenge)
+        }
+
+        Fido2Transport.NFC -> {
+            Timber.d("Using NFC signing (preferred transport)")
+            performNfcSigning(challenge)
         }
     }
 
     /**
      * Perform signing via USB-connected device.
      */
-    private suspend fun performUsbSigning(challenge: ByteArray): Fido2Result<Fido2SignatureResult> {
-        return kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
-            fido2Manager.prepareSshSigning(credentialId, challenge) { result ->
-                continuation.resumeWith(Result.success(result))
-            }
-            fido2Manager.connectAndSignUsb(pin)
+    private suspend fun performUsbSigning(challenge: ByteArray): Fido2Result<Fido2SignatureResult> = kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
+        fido2Manager.prepareSshSigning(credentialId, challenge) { result ->
+            continuation.resumeWith(Result.success(result))
         }
+        fido2Manager.connectAndSignUsb(pin)
     }
 
     /**
      * Perform signing via NFC tap.
      * This sets up the signing request and waits for the user to tap their NFC key.
      */
-    private suspend fun performNfcSigning(challenge: ByteArray): Fido2Result<Fido2SignatureResult> {
-        return kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
-            fido2Manager.prepareSshSigning(credentialId, challenge) { result ->
-                continuation.resumeWith(Result.success(result))
-            }
-            // Request NFC tap - UI will observe waitingForNfcSigning and start NFC discovery
-            fido2Manager.requestNfcSigning(pin)
+    private suspend fun performNfcSigning(challenge: ByteArray): Fido2Result<Fido2SignatureResult> = kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
+        fido2Manager.prepareSshSigning(credentialId, challenge) { result ->
+            continuation.resumeWith(Result.success(result))
+        }
+        // Request NFC tap - UI will observe waitingForNfcSigning and start NFC discovery
+        fido2Manager.requestNfcSigning(pin)
 
-            continuation.invokeOnCancellation {
-                fido2Manager.cancelNfcSigning()
-            }
+        continuation.invokeOnCancellation {
+            fido2Manager.cancelNfcSigning()
         }
     }
 
     /**
      * Encode the FIDO2 signature result to SSH SK signature format.
      */
-    private fun encodeSignature(result: Fido2SignatureResult): ByteArray {
-        return when (algorithm) {
-            Fido2Algorithm.EDDSA -> SkEd25519Verify.encodeSignature(result)
-            Fido2Algorithm.ES256 -> SkEcdsaVerify.encodeSignature(result)
-        }
+    private fun encodeSignature(result: Fido2SignatureResult): ByteArray = when (algorithm) {
+        Fido2Algorithm.EDDSA -> SkEd25519Verify.encodeSignature(result)
+        Fido2Algorithm.ES256 -> SkEcdsaVerify.encodeSignature(result)
     }
 }

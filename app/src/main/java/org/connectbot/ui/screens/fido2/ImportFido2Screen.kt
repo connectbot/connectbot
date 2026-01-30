@@ -38,11 +38,11 @@ import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Nfc
 import androidx.compose.material.icons.filled.Usb
 import androidx.compose.material3.Button
-import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -60,13 +60,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -74,6 +72,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import org.connectbot.R
 import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.fido2.Fido2Algorithm
@@ -84,9 +85,9 @@ import org.connectbot.fido2.Fido2Credential
 @Composable
 fun ImportFido2Screen(
     onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ImportFido2ViewModel = hiltViewModel()
 ) {
-    val viewModel: ImportFido2ViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -136,9 +137,10 @@ fun ImportFido2Screen(
     }
 
     // Navigate back on successful import
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
     LaunchedEffect(uiState.importSuccess) {
         if (uiState.importSuccess) {
-            onNavigateBack()
+            currentOnNavigateBack()
         }
     }
 
@@ -171,6 +173,7 @@ fun ImportFido2Screen(
                         onCancel = onNavigateBack
                     )
                 }
+
                 uiState.selectedCredential != null -> {
                     // Show import confirmation with nickname input
                     ImportConfirmationContent(
@@ -183,6 +186,7 @@ fun ImportFido2Screen(
                         onCancel = viewModel::clearSelection
                     )
                 }
+
                 uiState.needsPin -> {
                     // Show PIN entry (for NFC, this is shown before tapping)
                     PinEntryContent(
@@ -191,10 +195,12 @@ fun ImportFido2Screen(
                         onCancel = onNavigateBack
                     )
                 }
+
                 uiState.waitingForNfcTap -> {
                     // PIN entered, waiting for NFC tap
                     WaitingForNfcTapContent()
                 }
+
                 uiState.credentials.isNotEmpty() -> {
                     // Show credential list
                     CredentialListContent(
@@ -202,6 +208,7 @@ fun ImportFido2Screen(
                         onSelectCredential = viewModel::selectCredential
                     )
                 }
+
                 else -> {
                     // Show connection status (USB waiting or scanning)
                     ConnectionStatusContent(
@@ -331,14 +338,23 @@ private fun ConnectionStatusContent(
         Text(
             text = when (connectionState) {
                 is Fido2ConnectionState.Disconnected -> {
-                    if (transport == Fido2Transport.USB) stringResource(R.string.fido2_connect_usb)
-                    else stringResource(R.string.fido2_waiting_connection)
+                    if (transport == Fido2Transport.USB) {
+                        stringResource(R.string.fido2_connect_usb)
+                    } else {
+                        stringResource(R.string.fido2_waiting_connection)
+                    }
                 }
+
                 is Fido2ConnectionState.Connecting -> stringResource(R.string.fido2_waiting_connection)
+
                 is Fido2ConnectionState.Connected -> {
-                    if (isScanning) stringResource(R.string.fido2_scanning)
-                    else stringResource(R.string.fido2_connected)
+                    if (isScanning) {
+                        stringResource(R.string.fido2_scanning)
+                    } else {
+                        stringResource(R.string.fido2_connected)
+                    }
                 }
+
                 is Fido2ConnectionState.Error -> connectionState.message
             },
             style = MaterialTheme.typography.bodyLarge,

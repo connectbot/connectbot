@@ -23,6 +23,7 @@ package org.connectbot.data.entity
 enum class Fido2Transport {
     /** Use USB transport */
     USB,
+
     /** Use NFC transport */
     NFC
 }
