@@ -240,7 +240,7 @@ fun PubkeyListScreen(
         onCopyPrivateKeyPem = { pubkey, onPasswordRequired ->
             viewModel.copyPrivateKeyPem(pubkey, onPasswordRequired)
         },
-        onCopyPrivateKeyEncrypt = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
+        onCopyEncryptedPrivateKey = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
             viewModel.copyPrivateKeyEncrypted(pubkey, onPasswordRequired, onExportPassphraseRequired)
         },
         onExportPublicKey = viewModel::requestExportPublicKey,
@@ -250,7 +250,7 @@ fun PubkeyListScreen(
         onExportPrivateKeyPem = { pubkey, onPasswordRequired ->
             viewModel.requestExportPrivateKeyPem(pubkey, onPasswordRequired)
         },
-        onExportPrivateKeyEncrypt = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
+        onExportEncryptedPrivateKey = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
             viewModel.requestExportPrivateKeyEncrypted(pubkey, onPasswordRequired, onExportPassphraseRequired)
         },
         onImportKey = {
@@ -274,11 +274,11 @@ fun PubkeyListScreenContent(
     onCopyPublicKey: (Pubkey) -> Unit,
     onCopyPrivateKeyOpenSSH: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPrivateKeyPem: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
-    onCopyPrivateKeyEncrypt: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onCopyEncryptedPrivateKey: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPublicKey: (Pubkey) -> Unit,
     onExportPrivateKeyOpenSSH: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyPem: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
-    onExportPrivateKeyEncrypt: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onExportEncryptedPrivateKey: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onImportKey: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -398,8 +398,8 @@ fun PubkeyListScreenContent(
                                 onCopyPrivateKeyPem = { onPasswordRequired ->
                                     onCopyPrivateKeyPem(pubkey, onPasswordRequired)
                                 },
-                                onCopyPrivateKeyEncrypt = { onPasswordRequired, onExportPassphraseRequired ->
-                                    onCopyPrivateKeyEncrypt(pubkey, onPasswordRequired, onExportPassphraseRequired)
+                                onCopyEncryptedPrivateKey = { onPasswordRequired, onExportPassphraseRequired ->
+                                    onCopyEncryptedPrivateKey(pubkey, onPasswordRequired, onExportPassphraseRequired)
                                 },
                                 onExportPublicKey = { onExportPublicKey(pubkey) },
                                 onExportPrivateKeyOpenSSH = { onPasswordRequired ->
@@ -408,8 +408,8 @@ fun PubkeyListScreenContent(
                                 onExportPrivateKeyPem = { onPasswordRequired ->
                                     onExportPrivateKeyPem(pubkey, onPasswordRequired)
                                 },
-                                onExportPrivateKeyEncrypt = { onPasswordRequired, onExportPassphraseRequired ->
-                                    onExportPrivateKeyEncrypt(pubkey, onPasswordRequired, onExportPassphraseRequired)
+                                onExportEncryptedPrivateKey = { onPasswordRequired, onExportPassphraseRequired ->
+                                    onExportEncryptedPrivateKey(pubkey, onPasswordRequired, onExportPassphraseRequired)
                                 },
                                 onEdit = { onNavigateToEdit(pubkey) },
                                 onClick = { onToggleKeyLoad(pubkey, it) }
@@ -431,11 +431,11 @@ private fun PubkeyListItem(
     onCopyPublicKey: () -> Unit,
     onCopyPrivateKeyOpenSSH: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPrivateKeyPem: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
-    onCopyPrivateKeyEncrypt: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onCopyEncryptedPrivateKey: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPublicKey: () -> Unit,
     onExportPrivateKeyOpenSSH: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyPem: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
-    onExportPrivateKeyEncrypt: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onExportEncryptedPrivateKey: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onEdit: () -> Unit,
     onClick: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     modifier: Modifier = Modifier
@@ -474,15 +474,17 @@ private fun PubkeyListItem(
             // FIDO2 keys never show loaded state (they're always "locked" on hardware)
             val showLoaded = isLoaded && !pubkey.isFido2
             val iconModifier = when {
-                showLoaded -> Modifier
-                    .padding(2.dp)
-                    .border(
-                        width = 2.dp, // Border thickness
-                        color = Color.Green, // Border color
-                        shape = CircleShape // Makes the border a circle
-                    )
-                    .clip(CircleShape)
-                    .padding(4.dp)
+                showLoaded ->
+                    Modifier
+                        .padding(2.dp)
+                        .border(
+                            width = 2.dp, // Border thickness
+                            color = Color.Green, // Border color
+                            shape = CircleShape // Makes the border a circle
+                        )
+                        .clip(CircleShape)
+                        .padding(4.dp)
+
                 else -> Modifier.padding(2.dp).clip(CircleShape).padding(4.dp)
             }
 
@@ -600,7 +602,7 @@ private fun PubkeyListItem(
                             text = { Text(stringResource(R.string.pubkey_copy_private_encrypted)) },
                             onClick = {
                                 showMenu = false
-                                onCopyPrivateKeyEncrypt(
+                                onCopyEncryptedPrivateKey(
                                     { _, callback ->
                                         passwordCallback = callback
                                         showPasswordDialog = true
@@ -668,7 +670,7 @@ private fun PubkeyListItem(
                             text = { Text(stringResource(R.string.pubkey_export_private_encrypted)) },
                             onClick = {
                                 showMenu = false
-                                onExportPrivateKeyEncrypt(
+                                onExportEncryptedPrivateKey(
                                     { _, callback ->
                                         passwordCallback = callback
                                         showPasswordDialog = true
@@ -723,7 +725,7 @@ private fun PubkeyListItem(
                 showPasswordDialog = false
                 passwordCallback = null
             },
-            onProvidePassword = { password ->
+            onPasswordSubmit = { password ->
                 passwordCallback?.invoke(password)
                 showPasswordDialog = false
                 passwordCallback = null
@@ -752,7 +754,7 @@ private fun PubkeyListItem(
                 showExportPassphraseDialog = false
                 exportPassphraseCallback = null
             },
-            onProvidePassphrase = { passphrase ->
+            onPassphraseSubmit = { passphrase ->
                 exportPassphraseCallback?.invoke(passphrase)
                 showExportPassphraseDialog = false
                 exportPassphraseCallback = null
@@ -765,7 +767,7 @@ private fun PubkeyListItem(
 private fun PubkeyPasswordDialog(
     pubkey: Pubkey,
     onDismiss: () -> Unit,
-    onProvidePassword: (String) -> Unit
+    onPasswordSubmit: (String) -> Unit
 ) {
     var password by remember { mutableStateOf("") }
 
@@ -792,7 +794,7 @@ private fun PubkeyPasswordDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = { onProvidePassword(password) }
+                onClick = { onPasswordSubmit(password) }
             ) {
                 Text(stringResource(R.string.pubkey_unlock))
             }
@@ -954,7 +956,7 @@ private fun ImportPasswordDialog(
 @Composable
 private fun ExportPassphraseDialog(
     onDismiss: () -> Unit,
-    onProvidePassphrase: (String) -> Unit
+    onPassphraseSubmit: (String) -> Unit
 ) {
     var passphrase by remember { mutableStateOf("") }
     var confirmPassphrase by remember { mutableStateOf("") }
@@ -1011,7 +1013,7 @@ private fun ExportPassphraseDialog(
             TextButton(
                 onClick = {
                     if (passphrase == confirmPassphrase && passphrase.isNotEmpty()) {
-                        onProvidePassphrase(passphrase)
+                        onPassphraseSubmit(passphrase)
                     } else {
                         showError = true
                     }
@@ -1047,11 +1049,11 @@ private fun PubkeyListScreenEmptyPreview() {
             onCopyPublicKey = {},
             onCopyPrivateKeyOpenSSH = { _, _ -> },
             onCopyPrivateKeyPem = { _, _ -> },
-            onCopyPrivateKeyEncrypt = { _, _, _ -> },
+            onCopyEncryptedPrivateKey = { _, _, _ -> },
             onExportPublicKey = {},
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
-            onExportPrivateKeyEncrypt = { _, _, _ -> },
+            onExportEncryptedPrivateKey = { _, _, _ -> },
             onImportKey = {}
         )
     }
@@ -1076,11 +1078,11 @@ private fun PubkeyListScreenLoadingPreview() {
             onCopyPublicKey = {},
             onCopyPrivateKeyOpenSSH = { _, _ -> },
             onCopyPrivateKeyPem = { _, _ -> },
-            onCopyPrivateKeyEncrypt = { _, _, _ -> },
+            onCopyEncryptedPrivateKey = { _, _, _ -> },
             onExportPublicKey = {},
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
-            onExportPrivateKeyEncrypt = { _, _, _ -> },
+            onExportEncryptedPrivateKey = { _, _, _ -> },
             onImportKey = {}
         )
     }
@@ -1140,11 +1142,11 @@ private fun PubkeyListScreenPopulatedPreview() {
             onCopyPublicKey = {},
             onCopyPrivateKeyOpenSSH = { _, _ -> },
             onCopyPrivateKeyPem = { _, _ -> },
-            onCopyPrivateKeyEncrypt = { _, _, _ -> },
+            onCopyEncryptedPrivateKey = { _, _, _ -> },
             onExportPublicKey = {},
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
-            onExportPrivateKeyEncrypt = { _, _, _ -> },
+            onExportEncryptedPrivateKey = { _, _, _ -> },
             onImportKey = {}
         )
     }
