@@ -104,6 +104,7 @@ android {
 
     buildTypes {
         release {
+            manifestPlaceholders["memtagMode"] = "async"
             isShrinkResources = true
             isMinifyEnabled = true
 
@@ -116,6 +117,7 @@ android {
         }
 
         debug {
+            manifestPlaceholders["memtagMode"] = "sync"
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg", "proguard-debug.cfg")
             testProguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg", "proguard-tests.cfg")
 
