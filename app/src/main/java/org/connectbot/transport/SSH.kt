@@ -157,7 +157,7 @@ class SSH :
         null
     }
 
-    inner class HostKeyVerifier : ExtendedServerHostKeyVerifier() {
+    inner class HostKeyVerifier(private val verifyHost: Host? = host) : ExtendedServerHostKeyVerifier() {
         @Throws(IOException::class)
         override fun verifyServerHostKey(
             hostname: String,
@@ -166,7 +166,7 @@ class SSH :
             serverHostKey: ByteArray
         ): Boolean {
             // Get known hosts for this specific host entry
-            val hostId = host?.id ?: return false
+            val hostId = verifyHost?.id ?: return false
             val knownHostsList = manager?.hostRepository?.getKnownHostsForHostBlocking(hostId) ?: emptyList()
 
             // Convert to KnownHosts format, grouping by (algo, key) to handle renamed hosts
@@ -244,7 +244,7 @@ class SSH :
                     }
                     if (result) {
                         // save this key in known database
-                        host?.let {
+                        verifyHost?.let {
                             manager?.hostRepository?.saveKnownHostBlocking(it, hostname, port, serverHostKeyAlgorithm, serverHostKey)
                         }
                     }
@@ -281,7 +281,7 @@ class SSH :
                     )
                     if (result != null && result) {
                         // save this key in known database
-                        host?.let {
+                        verifyHost?.let {
                             manager?.hostRepository?.saveKnownHostBlocking(it, hostname, port, serverHostKeyAlgorithm, serverHostKey)
                         }
                         true
@@ -297,18 +297,18 @@ class SSH :
             }
         }
 
-        override fun getKnownKeyAlgorithmsForHost(host: String, port: Int): List<String>? = this@SSH.host?.id?.let { hostId ->
+        override fun getKnownKeyAlgorithmsForHost(host: String, port: Int): List<String>? = verifyHost?.id?.let { hostId ->
             manager?.hostRepository?.getHostKeyAlgorithmsForHostBlocking(hostId)
         }
 
         override fun removeServerHostKey(host: String, port: Int, algorithm: String, hostKey: ByteArray) {
-            this@SSH.host?.id?.let { hostId ->
+            verifyHost?.id?.let { hostId ->
                 manager?.hostRepository?.removeKnownHostBlocking(hostId, algorithm, hostKey)
             }
         }
 
         override fun addServerHostKey(hostname: String, port: Int, algorithm: String, hostKey: ByteArray) {
-            this@SSH.host?.let {
+            verifyHost?.let {
                 manager?.hostRepository?.saveKnownHostBlocking(it, hostname, port, algorithm, hostKey)
             }
         }
@@ -673,7 +673,7 @@ class SSH :
             }
 
             // Connect to jump host
-            jc.connect(HostKeyVerifier(), parseIpVersion(jumpHost.ipVersion, jumpHost.hostname))
+            jc.connect(HostKeyVerifier(jumpHost), parseIpVersion(jumpHost.ipVersion, jumpHost.hostname))
 
             // Track this connection for cleanup
             jumpConnections.add(jc)
