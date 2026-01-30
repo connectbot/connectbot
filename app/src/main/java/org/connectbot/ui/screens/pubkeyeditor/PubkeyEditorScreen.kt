@@ -28,6 +28,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
@@ -41,7 +42,6 @@ import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
-import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -56,6 +56,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -72,15 +73,16 @@ import org.connectbot.ui.theme.ConnectBotTheme
 @Composable
 fun PubkeyEditorScreen(
     onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: PubkeyEditorViewModel = hiltViewModel()
 ) {
-    val viewModel: PubkeyEditorViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
 
     // Navigate back on successful save
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
     LaunchedEffect(uiState.saveSuccess) {
         if (uiState.saveSuccess) {
-            onNavigateBack()
+            currentOnNavigateBack()
         }
     }
 
@@ -174,7 +176,9 @@ fun PubkeyEditorScreenContent(
                         isError = uiState.nicknameExists,
                         supportingText = if (uiState.nicknameExists) {
                             { Text(stringResource(R.string.pubkey_nickname_exists)) }
-                        } else null
+                        } else {
+                            null
+                        }
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))

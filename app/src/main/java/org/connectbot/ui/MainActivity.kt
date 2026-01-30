@@ -348,7 +348,8 @@ class MainActivity : AppCompatActivity() {
 
     private fun handleNfcIntent(intent: Intent): Boolean {
         if (intent.action != NfcAdapter.ACTION_TECH_DISCOVERED &&
-            intent.action != NfcAdapter.ACTION_TAG_DISCOVERED) {
+            intent.action != NfcAdapter.ACTION_TAG_DISCOVERED
+        ) {
             return false
         }
 
@@ -396,7 +397,9 @@ class MainActivity : AppCompatActivity() {
             addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP)
         }
         nfcPendingIntent = PendingIntent.getActivity(
-            this, 0, intent,
+            this,
+            0,
+            intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_MUTABLE
         )
 
