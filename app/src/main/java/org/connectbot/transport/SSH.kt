@@ -43,9 +43,9 @@ import com.trilead.ssh2.signature.ECDSASHA2Verify
 import com.trilead.ssh2.signature.Ed25519Verify
 import com.trilead.ssh2.signature.RSASHA1Verify
 import org.connectbot.R
+import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
-import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.fido2.Fido2Algorithm
@@ -63,8 +63,8 @@ import org.connectbot.service.requestFido2Connect
 import org.connectbot.service.requestFido2Pin
 import org.connectbot.service.requestHostKeyFingerprintPrompt
 import org.connectbot.service.requestStringPrompt
-import org.connectbot.util.PubkeyConstants
 import org.connectbot.util.HostConstants
+import org.connectbot.util.PubkeyConstants
 import org.connectbot.util.PubkeyUtils
 import timber.log.Timber
 import java.io.IOException
@@ -156,11 +156,19 @@ class SSH :
 
     private fun getKeySize(publicKey: PublicKey?): Int = when (publicKey) {
         is RSAPublicKey -> publicKey.modulus.bitLength()
+
         is DSAPublicKey -> publicKey.params.p.bitLength()
+
         is ECPublicKey -> publicKey.params.curve.field.fieldSize
+
         is Ed25519PublicKey -> 256
-        is SkEcdsaPublicKey -> 256 // P-256 curve
-        is SkEd25519PublicKey -> 256 // Ed25519
+
+        is SkEcdsaPublicKey -> 256
+
+        // P-256 curve
+        is SkEd25519PublicKey -> 256
+
+        // Ed25519
         else -> 0
     }
 
@@ -636,7 +644,9 @@ class SSH :
         // Determine key type and algorithm from the stored public key
         val algorithm = when (pubkey.type) {
             PubkeyConstants.KEY_TYPE_SK_ED25519 -> Fido2Algorithm.EDDSA
+
             PubkeyConstants.KEY_TYPE_SK_ECDSA -> Fido2Algorithm.ES256
+
             else -> {
                 val message = "Unknown FIDO2 key type: ${pubkey.type}"
                 Timber.e(message)
@@ -747,8 +757,9 @@ class SSH :
     @Throws(IOException::class)
     private fun tryFido2PublicKey(username: String, keyNickname: String, signatureProxy: Fido2SignatureProxy): Boolean {
         val success = connection?.authenticateWithPublicKey(username, signatureProxy) == true
-        if (!success)
+        if (!success) {
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, keyNickname))
+        }
         return success
     }
 

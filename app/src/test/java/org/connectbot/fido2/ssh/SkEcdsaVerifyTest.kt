@@ -112,8 +112,8 @@ class SkEcdsaVerifyTest {
         val appBytes = application.toByteArray()
         val buffer = ByteBuffer.allocate(
             4 + curveBytes.size +
-            4 + ecPoint.size +
-            4 + appBytes.size
+                4 + ecPoint.size +
+                4 + appBytes.size
         ).order(ByteOrder.BIG_ENDIAN)
 
         buffer.putInt(curveBytes.size)
@@ -325,9 +325,9 @@ class SkEcdsaVerifyTest {
 
         val buffer = ByteBuffer.allocate(
             4 + keyTypeBytes.size +
-            4 + curveBytes.size +
-            4 + ecPoint.size +
-            4 + appBytes.size
+                4 + curveBytes.size +
+                4 + ecPoint.size +
+                4 + appBytes.size
         ).order(ByteOrder.BIG_ENDIAN)
 
         buffer.putInt(keyTypeBytes.size)
