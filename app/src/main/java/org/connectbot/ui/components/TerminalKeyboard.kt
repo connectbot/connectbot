@@ -194,6 +194,7 @@ internal fun TerminalKeyboardContent(
 ) {
     val scrollState = rememberScrollState()
     val currentOnScrollInProgressChange by rememberUpdatedState(onScrollInProgressChange)
+    val currentOnInteraction by rememberUpdatedState(onInteraction)
     val view = LocalView.current
 
     fun withHapticFeedback(action: () -> Unit): () -> Unit = {
@@ -235,7 +236,7 @@ internal fun TerminalKeyboardContent(
                 // Reset timer on any touch interaction
                 detectTapGestures(
                     onPress = {
-                        onInteraction()
+                        currentOnInteraction()
                         tryAwaitRelease()
                     },
                 )
@@ -549,6 +550,7 @@ private fun RepeatableKeyButton(
     val coroutineScope = rememberCoroutineScope()
     var isPressed by remember { mutableStateOf(false) }
     var repeatJob by remember { mutableStateOf<Job?>(null) }
+    val currentOnPress by rememberUpdatedState(onPress)
 
     // Cleanup on unmount
     DisposableEffect(Unit) {
