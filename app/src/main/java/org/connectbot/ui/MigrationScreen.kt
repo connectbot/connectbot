@@ -75,7 +75,7 @@ fun MigrationScreen(
         color = MaterialTheme.colorScheme.background // Surface uses this by default
     ) {
         Column(
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
                 .padding(32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -108,19 +108,21 @@ fun MigrationScreen(
 
 @Composable
 private fun CheckingMigrationContent() {
-    CircularProgressIndicator(
-        modifier = Modifier
-            .size(48.dp)
-            .semantics {
-                contentDescription = "Checking database migration status"
-            }
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    Text(
-        text = stringResource(R.string.migration_checking),
-        style = MaterialTheme.typography.bodyLarge,
-        textAlign = TextAlign.Center
-    )
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        CircularProgressIndicator(
+            modifier = Modifier
+                .size(48.dp)
+                .semantics {
+                    contentDescription = "Checking database migration status"
+                }
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = stringResource(R.string.migration_checking),
+            style = MaterialTheme.typography.bodyLarge,
+            textAlign = TextAlign.Center
+        )
+    }
 }
 
 @Composable
@@ -357,21 +359,21 @@ private fun MigrationFailedContent(
 
         val annotatedString = buildAnnotatedString {
             val url = "https://github.com/connectbot/connectbot/issues"
-			val fullText = stringResource(id = R.string.migration_failed_help)
-			val startIndex = fullText.indexOf($$"%1$s")
-			if (startIndex != -1) {
-				append(fullText.take(startIndex))
+            val fullText = stringResource(id = R.string.migration_failed_help)
+            val startIndex = fullText.indexOf($$"%1$s")
+            if (startIndex != -1) {
+                append(fullText.take(startIndex))
                 withLink(LinkAnnotation.Url(url)) { append(url) }
-				append(fullText.substring(startIndex + $$"%1$s".length))
-			} else {
-				append(fullText)
-			}
-		}
+                append(fullText.substring(startIndex + $$"%1$s".length))
+            } else {
+                append(fullText)
+            }
+        }
         Text(
             text = annotatedString,
             style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = MaterialTheme.colorScheme.onSurfaceVariant
         )
     }
 }
