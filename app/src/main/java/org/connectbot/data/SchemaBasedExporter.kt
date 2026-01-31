@@ -367,15 +367,7 @@ class SchemaBasedExporter(
             }
 
             when (field.affinity) {
-                "INTEGER" -> {
-                    val value = row.get(field.fieldPath)
-                    val longValue = when (value) {
-                        is Boolean -> if (value) 1L else 0L
-                        is Number -> value.toLong()
-                        else -> row.getLong(field.fieldPath)
-                    }
-                    values.put(field.columnName, longValue)
-                }
+                "INTEGER" -> values.put(field.columnName, row.getLong(field.fieldPath))
                 "TEXT" -> values.put(field.columnName, row.getString(field.fieldPath))
                 "REAL" -> values.put(field.columnName, row.getDouble(field.fieldPath))
                 "BLOB" -> {
