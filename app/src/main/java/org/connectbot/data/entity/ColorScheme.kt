@@ -42,5 +42,5 @@ data class ColorScheme(
     val isBuiltIn: Boolean,
     val description: String = "",
     val foreground: Int = 7,
-    val background: Int = 0,
+    val background: Int = 0
 )

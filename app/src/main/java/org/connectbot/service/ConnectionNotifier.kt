@@ -33,7 +33,6 @@ import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.ui.MainActivity
 import org.connectbot.util.HostConstants
-
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -52,8 +51,7 @@ class ConnectionNotifier @Inject constructor() {
         PendingIntent.FLAG_UPDATE_CURRENT
     }
 
-    private fun getNotificationManager(context: Context): NotificationManager =
-        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    private fun getNotificationManager(context: Context): NotificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
     private fun newNotificationBuilder(context: Context, id: String): NotificationCompat.Builder {
         val builder = NotificationCompat.Builder(context, id)

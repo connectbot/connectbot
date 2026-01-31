@@ -75,7 +75,7 @@ import kotlin.math.roundToInt
 private const val PREF_FLOATING_INPUT_X = "floating_input_x"
 private const val PREF_FLOATING_INPUT_Y = "floating_input_y"
 private const val DEFAULT_X_RATIO = 0.05f // 5% from left
-private const val DEFAULT_Y_RATIO = 0.3f  // 30% from top
+private const val DEFAULT_Y_RATIO = 0.3f // 30% from top
 
 /**
  * Floating, draggable text input dialog with Compose TextField for full IME support.
@@ -88,176 +88,176 @@ private const val DEFAULT_Y_RATIO = 0.3f  // 30% from top
  */
 @Composable
 fun FloatingTextInputDialog(
-	bridge: TerminalBridge,
-	initialText: String = "",
-	onDismiss: () -> Unit
+    bridge: TerminalBridge,
+    initialText: String = "",
+    onDismiss: () -> Unit
 ) {
-	val context = LocalContext.current
-	val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
-	val configuration = LocalConfiguration.current
-	val density = LocalDensity.current
+    val context = LocalContext.current
+    val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
+    val configuration = LocalConfiguration.current
+    val density = LocalDensity.current
 
-	// Calculate screen dimensions
-	val screenWidthPx = with(density) { configuration.screenWidthDp.dp.toPx() }
-	val screenHeightPx = with(density) { configuration.screenHeightDp.dp.toPx() }
+    // Calculate screen dimensions
+    val screenWidthPx = with(density) { configuration.screenWidthDp.dp.toPx() }
+    val screenHeightPx = with(density) { configuration.screenHeightDp.dp.toPx() }
 
-	// Window dimensions (90% of screen width)
-	val windowWidthDp = configuration.screenWidthDp * 0.9f
-	val windowWidthPx = with(density) { windowWidthDp.dp.toPx() }
+    // Window dimensions (90% of screen width)
+    val windowWidthDp = configuration.screenWidthDp * 0.9f
+    val windowWidthPx = with(density) { windowWidthDp.dp.toPx() }
 
-	// Load saved position or use defaults
-	val savedX = prefs.getFloat(PREF_FLOATING_INPUT_X, DEFAULT_X_RATIO)
-	val savedY = prefs.getFloat(PREF_FLOATING_INPUT_Y, DEFAULT_Y_RATIO)
+    // Load saved position or use defaults
+    val savedX = prefs.getFloat(PREF_FLOATING_INPUT_X, DEFAULT_X_RATIO)
+    val savedY = prefs.getFloat(PREF_FLOATING_INPUT_Y, DEFAULT_Y_RATIO)
 
-	// Current position in pixels
-	var offsetX by remember { mutableFloatStateOf(screenWidthPx * savedX) }
-	var offsetY by remember { mutableFloatStateOf(screenHeightPx * savedY) }
+    // Current position in pixels
+    var offsetX by remember { mutableFloatStateOf(screenWidthPx * savedX) }
+    var offsetY by remember { mutableFloatStateOf(screenHeightPx * savedY) }
 
-	// Text state and focus
-	var text by remember { mutableStateOf(initialText) }
-	val focusRequester = remember { FocusRequester() }
+    // Text state and focus
+    var text by remember { mutableStateOf(initialText) }
+    val focusRequester = remember { FocusRequester() }
 
-	// Request focus when shown
-	LaunchedEffect(Unit) {
-		focusRequester.requestFocus()
-	}
+    // Request focus when shown
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+    }
 
-	// Save position when dialog closes
-	DisposableEffect(Unit) {
-		onDispose {
-			// Save position as ratio of screen size for orientation change support
-			prefs.edit {
-				putFloat(PREF_FLOATING_INPUT_X, offsetX / screenWidthPx)
-				putFloat(PREF_FLOATING_INPUT_Y, offsetY / screenHeightPx)
-			}
-		}
-	}
+    // Save position when dialog closes
+    DisposableEffect(Unit) {
+        onDispose {
+            // Save position as ratio of screen size for orientation change support
+            prefs.edit {
+                putFloat(PREF_FLOATING_INPUT_X, offsetX / screenWidthPx)
+                putFloat(PREF_FLOATING_INPUT_Y, offsetY / screenHeightPx)
+            }
+        }
+    }
 
-	// Send text helper function
-	fun sendText() {
-		if (text.isNotEmpty()) {
-			bridge.injectString(text + "\n")
-			onDismiss()
-		}
-	}
+    // Send text helper function
+    fun sendText() {
+        if (text.isNotEmpty()) {
+            bridge.injectString(text + "\n")
+            onDismiss()
+        }
+    }
 
-	Dialog(
-		onDismissRequest = onDismiss,
-		properties = DialogProperties(
-			usePlatformDefaultWidth = false,
-			decorFitsSystemWindows = false
-		)
-	) {
-		Box(
-			modifier = Modifier
-				.fillMaxSize()
-				.pointerInput(Unit) {
-					// Dismiss when clicking outside
-					detectDragGestures { _, _ -> }
-				}
-		) {
-			Column(
-				modifier = Modifier
-					.offset { IntOffset(offsetX.roundToInt(), offsetY.roundToInt()) }
-					.width(windowWidthDp.dp)
-					.background(
-						MaterialTheme.colorScheme.surface,
-						RoundedCornerShape(12.dp)
-					)
-			) {
-				// Draggable header
-				Row(
-					modifier = Modifier
-						.fillMaxWidth()
-						.height(36.dp)
-						.background(
-							MaterialTheme.colorScheme.primary,
-							RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)
-						)
-						.pointerInput(Unit) {
-							detectDragGestures { change, dragAmount ->
-								change.consume()
-								offsetX = (offsetX + dragAmount.x).coerceIn(
-									0f,
-									screenWidthPx - windowWidthPx
-								)
-								offsetY = (offsetY + dragAmount.y).coerceIn(
-									0f,
-									screenHeightPx - with(density) { 200.dp.toPx() }
-								)
-							}
-						}
-						.padding(horizontal = 12.dp),
-					verticalAlignment = Alignment.CenterVertically,
-					horizontalArrangement = Arrangement.SpaceBetween
-				) {
-					Text(
-						text = stringResource(R.string.terminal_text_input_dialog_title),
-						style = MaterialTheme.typography.titleSmall,
-						color = MaterialTheme.colorScheme.onPrimary
-					)
+    Dialog(
+        onDismissRequest = onDismiss,
+        properties = DialogProperties(
+            usePlatformDefaultWidth = false,
+            decorFitsSystemWindows = false
+        )
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    // Dismiss when clicking outside
+                    detectDragGestures { _, _ -> }
+                }
+        ) {
+            Column(
+                modifier = Modifier
+                    .offset { IntOffset(offsetX.roundToInt(), offsetY.roundToInt()) }
+                    .width(windowWidthDp.dp)
+                    .background(
+                        MaterialTheme.colorScheme.surface,
+                        RoundedCornerShape(12.dp)
+                    )
+            ) {
+                // Draggable header
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(36.dp)
+                        .background(
+                            MaterialTheme.colorScheme.primary,
+                            RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)
+                        )
+                        .pointerInput(Unit) {
+                            detectDragGestures { change, dragAmount ->
+                                change.consume()
+                                offsetX = (offsetX + dragAmount.x).coerceIn(
+                                    0f,
+                                    screenWidthPx - windowWidthPx
+                                )
+                                offsetY = (offsetY + dragAmount.y).coerceIn(
+                                    0f,
+                                    screenHeightPx - with(density) { 200.dp.toPx() }
+                                )
+                            }
+                        }
+                        .padding(horizontal = 12.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = stringResource(R.string.terminal_text_input_dialog_title),
+                        style = MaterialTheme.typography.titleSmall,
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
 
-					IconButton(
-						onClick = onDismiss,
-						modifier = Modifier.size(24.dp)
-					) {
-						Icon(
-							Icons.Default.Close,
-							contentDescription = stringResource(R.string.button_close),
-							tint = MaterialTheme.colorScheme.onPrimary,
-							modifier = Modifier.size(18.dp)
-						)
-					}
-				}
+                    IconButton(
+                        onClick = onDismiss,
+                        modifier = Modifier.size(24.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Close,
+                            contentDescription = stringResource(R.string.button_close),
+                            tint = MaterialTheme.colorScheme.onPrimary,
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
+                }
 
-				// TextField container
-				Row(
-					modifier = Modifier
-						.fillMaxWidth()
-						.padding(12.dp),
-					verticalAlignment = Alignment.Bottom,
-					horizontalArrangement = Arrangement.spacedBy(8.dp)
-				) {
-					// Compose TextField for full IME support
-					TextField(
-						value = text,
-						onValueChange = { text = it },
-						placeholder = {
-							Text(stringResource(R.string.terminal_text_input_dialog_label))
-						},
-						keyboardOptions = KeyboardOptions(
-							imeAction = ImeAction.Send
-						),
-						keyboardActions = KeyboardActions(
-							onSend = { sendText() }
-						),
-						colors = TextFieldDefaults.colors(
-							focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-							unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-							focusedIndicatorColor = Color.Transparent,
-							unfocusedIndicatorColor = Color.Transparent
-						),
-						shape = RoundedCornerShape(8.dp),
-						modifier = Modifier
-							.weight(1f)
-							.height(90.dp)
-							.focusRequester(focusRequester)
-					)
+                // TextField container
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(12.dp),
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    // Compose TextField for full IME support
+                    TextField(
+                        value = text,
+                        onValueChange = { text = it },
+                        placeholder = {
+                            Text(stringResource(R.string.terminal_text_input_dialog_label))
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = ImeAction.Send
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onSend = { sendText() }
+                        ),
+                        colors = TextFieldDefaults.colors(
+                            focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                            unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
+                            focusedIndicatorColor = Color.Transparent,
+                            unfocusedIndicatorColor = Color.Transparent
+                        ),
+                        shape = RoundedCornerShape(8.dp),
+                        modifier = Modifier
+                            .weight(1f)
+                            .height(90.dp)
+                            .focusRequester(focusRequester)
+                    )
 
-					// Send button
-					FloatingActionButton(
-						onClick = { sendText() },
-						containerColor = MaterialTheme.colorScheme.primary,
-						contentColor = MaterialTheme.colorScheme.onPrimary,
-						modifier = Modifier.size(48.dp)
-					) {
-						Icon(
+                    // Send button
+                    FloatingActionButton(
+                        onClick = { sendText() },
+                        containerColor = MaterialTheme.colorScheme.primary,
+                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.size(48.dp)
+                    ) {
+                        Icon(
                             Icons.AutoMirrored.Filled.Send,
-							contentDescription = stringResource(R.string.button_send)
-						)
-					}
-				}
-			}
-		}
-	}
+                            contentDescription = stringResource(R.string.button_send)
+                        )
+                    }
+                }
+            }
+        }
+    }
 }

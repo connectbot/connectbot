@@ -130,10 +130,9 @@ class ProfileRepository @Inject constructor(
      * @param excludeProfileId Optional profile ID to exclude from the check (for renames)
      * @return true if the name exists, false otherwise
      */
-    suspend fun nameExists(name: String, excludeProfileId: Long? = null): Boolean =
-        withContext(dispatchers.io) {
-            profileDao.nameExists(name, excludeProfileId)
-        }
+    suspend fun nameExists(name: String, excludeProfileId: Long? = null): Boolean = withContext(dispatchers.io) {
+        profileDao.nameExists(name, excludeProfileId)
+    }
 
     /**
      * Get the count of hosts using a specific profile.
@@ -168,13 +167,12 @@ class ProfileRepository @Inject constructor(
      * @param newName The name for the duplicated profile
      * @return The ID of the newly created profile
      */
-    suspend fun duplicate(sourceProfileId: Long, newName: String): Long =
-        withContext(dispatchers.io) {
-            val source = profileDao.getById(sourceProfileId) ?: Profile.createDefault()
-            val newProfile = source.copy(
-                id = 0,
-                name = newName
-            )
-            profileDao.insert(newProfile)
-        }
+    suspend fun duplicate(sourceProfileId: Long, newName: String): Long = withContext(dispatchers.io) {
+        val source = profileDao.getById(sourceProfileId) ?: Profile.createDefault()
+        val newProfile = source.copy(
+            id = 0,
+            name = newName
+        )
+        profileDao.insert(newProfile)
+    }
 }

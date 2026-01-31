@@ -165,27 +165,27 @@ class ConnectivityMonitor(
     /**
      * Extract IP addresses from LinkProperties.
      */
-    private fun extractIpAddresses(linkProperties: LinkProperties): Set<String> {
-        return linkProperties.linkAddresses
-            .mapNotNull { it.address.hostAddress }
-            .toSet()
-    }
+    private fun extractIpAddresses(linkProperties: LinkProperties): Set<String> = linkProperties.linkAddresses
+        .mapNotNull { it.address.hostAddress }
+        .toSet()
 
     /**
      * Determine network type from NetworkCapabilities.
      */
-    private fun getNetworkType(capabilities: NetworkCapabilities): Int {
-        return when {
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ->
-                NetworkCapabilities.TRANSPORT_WIFI
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ->
-                NetworkCapabilities.TRANSPORT_CELLULAR
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ->
-                NetworkCapabilities.TRANSPORT_ETHERNET
-            capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN) ->
-                NetworkCapabilities.TRANSPORT_VPN
-            else -> -1
-        }
+    private fun getNetworkType(capabilities: NetworkCapabilities): Int = when {
+        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ->
+            NetworkCapabilities.TRANSPORT_WIFI
+
+        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) ->
+            NetworkCapabilities.TRANSPORT_CELLULAR
+
+        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ->
+            NetworkCapabilities.TRANSPORT_ETHERNET
+
+        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN) ->
+            NetworkCapabilities.TRANSPORT_VPN
+
+        else -> -1
     }
 
     /**

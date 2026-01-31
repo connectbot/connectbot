@@ -96,11 +96,13 @@ interface HostDao {
     /**
      * Find host associated with a known host entry.
      */
-    @Query("""
+    @Query(
+        """
         SELECT h.* FROM hosts h
         JOIN known_hosts kh ON h.id = kh.host_id
         WHERE kh.hostname = :hostname AND kh.port = :port
-    """)
+    """
+    )
     suspend fun findByKnownHost(hostname: String, port: Int): Host?
 
     /**

@@ -37,7 +37,7 @@ import timber.log.Timber
  */
 fun TerminalBridge.requestBooleanPrompt(
     instructions: String?,
-    message: String,
+    message: String
 ): Boolean? {
     return try {
         runBlocking {
@@ -62,7 +62,7 @@ fun TerminalBridge.requestBooleanPrompt(
 fun TerminalBridge.requestStringPrompt(
     instructions: String?,
     hint: String?,
-    isPassword: Boolean = false,
+    isPassword: Boolean = false
 ): String? {
     return try {
         runBlocking {
@@ -123,8 +123,14 @@ fun TerminalBridge.requestHostKeyFingerprintPrompt(
     return try {
         runBlocking {
             promptManager.requestHostKeyFingerprintPrompt(
-                hostname, keyType, keySize, serverHostKey,
-                randomArt, bubblebabble, sha256, md5
+                hostname,
+                keyType,
+                keySize,
+                serverHostKey,
+                randomArt,
+                bubblebabble,
+                sha256,
+                md5
             )
         }
     } catch (e: CancellationException) {
