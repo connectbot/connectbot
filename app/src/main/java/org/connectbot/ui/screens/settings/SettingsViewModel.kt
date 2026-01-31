@@ -74,6 +74,7 @@ data class SettingsUiState(
     val fontValidationError: String? = null,
     val fontImportInProgress: Boolean = false,
     val fontImportError: String? = null,
+    val fontDownloadInProgress: Boolean = false,
     val defaultProfileId: Long = 0L,
     val availableProfiles: List<Profile> = emptyList(),
 )
@@ -85,7 +86,7 @@ class SettingsViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
-    private val fontProvider = TerminalFontProvider(context)
+    private val fontProvider = TerminalFontProvider(context, dispatchers.io)
     private val localFontProvider = LocalFontProvider(context)
     private val _uiState = MutableStateFlow(loadSettings())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
@@ -323,13 +324,15 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun preloadFont(storedValue: String) {
-        // Skip if it's a local font (already on device) or system default
         if (LocalFontProvider.isLocalFont(storedValue)) return
         val googleFontName = org.connectbot.util.TerminalFont.getGoogleFontName(storedValue)
         if (googleFontName.isBlank()) return
 
-        // Trigger font download/caching in background
-        fontProvider.loadFontByName(googleFontName) { /* just cache it */ }
+        viewModelScope.launch {
+            _uiState.update { it.copy(fontDownloadInProgress = true) }
+            fontProvider.loadFontByNameSuspend(googleFontName)
+            _uiState.update { it.copy(fontDownloadInProgress = false) }
+        }
     }
 
     fun addCustomFont(fontName: String) {
