@@ -64,9 +64,9 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.BuildConfig
 import org.connectbot.R
 import org.connectbot.ui.ObservePermissionOnResume
-import org.connectbot.ui.components.FontDownloadProgressDialog
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.common.getLocalizedFontDisplayName
+import org.connectbot.ui.components.FontDownloadProgressDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.NotificationPermissionHelper
@@ -76,9 +76,9 @@ import org.connectbot.util.TerminalFont
 @Composable
 fun SettingsScreen(
     onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: SettingsViewModel = hiltViewModel()
 ) {
-    val viewModel: SettingsViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
@@ -1063,7 +1063,9 @@ private fun AddCustomFontPreference(
                             { Text(validationError, color = MaterialTheme.colorScheme.error) }
                         } else if (validationInProgress) {
                             { Text(stringResource(R.string.font_validating)) }
-                        } else null,
+                        } else {
+                            null
+                        },
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
@@ -1135,8 +1137,11 @@ private fun LocalFontPreference(
             headlineContent = { Text(stringResource(R.string.pref_localfont_title)) },
             supportingContent = {
                 Text(
-                    if (importInProgress) stringResource(R.string.font_importing)
-                    else stringResource(R.string.pref_localfont_summary)
+                    if (importInProgress) {
+                        stringResource(R.string.font_importing)
+                    } else {
+                        stringResource(R.string.pref_localfont_summary)
+                    }
                 )
             },
             modifier = Modifier.clickable(enabled = !importInProgress) {
@@ -1198,7 +1203,9 @@ private fun LocalFontPreference(
                             { Text(importError, color = MaterialTheme.colorScheme.error) }
                         } else if (importInProgress) {
                             { Text(stringResource(R.string.font_importing)) }
-                        } else null,
+                        } else {
+                            null
+                        },
                         modifier = Modifier.fillMaxWidth()
                     )
                 }
