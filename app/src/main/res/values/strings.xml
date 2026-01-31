@@ -963,6 +963,9 @@
 	<!-- Error message shown when loading a color scheme fails -->
 	<string name="error_color_scheme_load_failed">Failed to load color scheme: %s</string>
 
+	<!-- Format string for the nickname of a duplicated host -->
+	<string name="host_duplicate_nickname">%1$s (copy)</string>
+
 	<!-- Empty state messages -->
 	<!-- Message shown when no hosts have been configured yet -->
 	<string name="empty_hosts_message">No hosts configured</string>
