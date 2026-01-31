@@ -76,7 +76,7 @@ data class SettingsUiState(
     val fontImportError: String? = null,
     val fontDownloadInProgress: Boolean = false,
     val defaultProfileId: Long = 0L,
-    val availableProfiles: List<Profile> = emptyList(),
+    val availableProfiles: List<Profile> = emptyList()
 )
 
 @HiltViewModel
@@ -157,7 +157,7 @@ class SettingsViewModel @Inject constructor(
             customFonts = customFonts,
             customTerminalTypes = customTerminalTypes,
             localFonts = localFonts,
-            defaultProfileId = prefs.getLong("defaultProfileId", 0L),
+            defaultProfileId = prefs.getLong("defaultProfileId", 0L)
         )
     }
 
