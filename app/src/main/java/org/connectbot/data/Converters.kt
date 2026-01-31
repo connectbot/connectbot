@@ -25,12 +25,8 @@ import org.connectbot.data.entity.KeyStorageType
  */
 class Converters {
     @TypeConverter
-    fun fromKeyStorageType(value: KeyStorageType): String {
-        return value.name
-    }
+    fun fromKeyStorageType(value: KeyStorageType): String = value.name
 
     @TypeConverter
-    fun toKeyStorageType(value: String): KeyStorageType {
-        return KeyStorageType.valueOf(value)
-    }
+    fun toKeyStorageType(value: String): KeyStorageType = KeyStorageType.valueOf(value)
 }

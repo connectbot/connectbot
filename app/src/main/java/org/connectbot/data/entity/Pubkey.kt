@@ -89,7 +89,9 @@ data class Pubkey(
         if (privateKey != null) {
             if (other.privateKey == null) return false
             if (!privateKey.contentEquals(other.privateKey)) return false
-        } else if (other.privateKey != null) return false
+        } else if (other.privateKey != null) {
+            return false
+        }
         if (!publicKey.contentEquals(other.publicKey)) return false
         if (encrypted != other.encrypted) return false
         if (startup != other.startup) return false

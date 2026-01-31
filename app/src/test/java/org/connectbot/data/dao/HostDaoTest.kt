@@ -298,27 +298,25 @@ class HostDaoTest {
         useCtrlAltAsMetaKey: Boolean = false,
         jumpHostId: Long? = null,
         profileId: Long? = 1L
-    ): Host {
-        return Host(
-            nickname = nickname,
-            protocol = protocol,
-            username = username,
-            hostname = hostname,
-            port = port,
-            hostKeyAlgo = hostKeyAlgo,
-            lastConnect = lastConnect,
-            color = color,
-            useKeys = useKeys,
-            useAuthAgent = useAuthAgent,
-            stayConnected = stayConnected,
-            postLogin = postLogin,
-            pubkeyId = pubkeyId,
-            wantSession = wantSession,
-            compression = compression,
-            scrollbackLines = scrollbackLines,
-            useCtrlAltAsMetaKey = useCtrlAltAsMetaKey,
-            jumpHostId = jumpHostId,
-            profileId = profileId
-        )
-    }
+    ): Host = Host(
+        nickname = nickname,
+        protocol = protocol,
+        username = username,
+        hostname = hostname,
+        port = port,
+        hostKeyAlgo = hostKeyAlgo,
+        lastConnect = lastConnect,
+        color = color,
+        useKeys = useKeys,
+        useAuthAgent = useAuthAgent,
+        stayConnected = stayConnected,
+        postLogin = postLogin,
+        pubkeyId = pubkeyId,
+        wantSession = wantSession,
+        compression = compression,
+        scrollbackLines = scrollbackLines,
+        useCtrlAltAsMetaKey = useCtrlAltAsMetaKey,
+        jumpHostId = jumpHostId,
+        profileId = profileId
+    )
 }

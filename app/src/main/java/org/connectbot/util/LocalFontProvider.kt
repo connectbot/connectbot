@@ -47,32 +47,30 @@ class LocalFontProvider(private val context: Context) {
      * @param displayName The display name for the font
      * @return The internal path if successful, null otherwise
      */
-    fun importFont(uri: Uri, displayName: String): String? {
-        return try {
-            val fileName = sanitizeFileName(displayName)
-            val destFile = File(fontsDir, fileName)
+    fun importFont(uri: Uri, displayName: String): String? = try {
+        val fileName = sanitizeFileName(displayName)
+        val destFile = File(fontsDir, fileName)
 
-            context.contentResolver.openInputStream(uri)?.use { input ->
-                FileOutputStream(destFile).use { output ->
-                    input.copyTo(output)
-                }
+        context.contentResolver.openInputStream(uri)?.use { input ->
+            FileOutputStream(destFile).use { output ->
+                input.copyTo(output)
             }
+        }
 
-            // Validate the font can be loaded
-            val typeface = Typeface.createFromFile(destFile)
-            if (typeface != null) {
-                fontCache[fileName] = typeface
-                Log.d(TAG, "Imported font: $displayName -> $fileName")
-                fileName
-            } else {
-                destFile.delete()
-                Log.w(TAG, "Failed to create typeface from: $displayName")
-                null
-            }
-        } catch (e: Exception) {
-            Log.e(TAG, "Failed to import font: $displayName", e)
+        // Validate the font can be loaded
+        val typeface = Typeface.createFromFile(destFile)
+        if (typeface != null) {
+            fontCache[fileName] = typeface
+            Log.d(TAG, "Imported font: $displayName -> $fileName")
+            fileName
+        } else {
+            destFile.delete()
+            Log.w(TAG, "Failed to create typeface from: $displayName")
             null
         }
+    } catch (e: Exception) {
+        Log.e(TAG, "Failed to import font: $displayName", e)
+        null
     }
 
     /**
@@ -104,12 +102,10 @@ class LocalFontProvider(private val context: Context) {
      * Get all imported local fonts.
      * Returns a list of (displayName, fileName) pairs.
      */
-    fun getImportedFonts(): List<Pair<String, String>> {
-        return fontsDir.listFiles()
-            ?.filter { it.isFile && isFontFile(it.name) }
-            ?.map { getDisplayName(it.name) to it.name }
-            ?: emptyList()
-    }
+    fun getImportedFonts(): List<Pair<String, String>> = fontsDir.listFiles()
+        ?.filter { it.isFile && isFontFile(it.name) }
+        ?.map { getDisplayName(it.name) to it.name }
+        ?: emptyList()
 
     /**
      * Delete a local font.
@@ -127,16 +123,12 @@ class LocalFontProvider(private val context: Context) {
     /**
      * Check if a font file exists.
      */
-    fun fontExists(fileName: String): Boolean {
-        return File(fontsDir, fileName).exists()
-    }
+    fun fontExists(fileName: String): Boolean = File(fontsDir, fileName).exists()
 
     /**
      * Get typeface for a local font, with fallback.
      */
-    fun getTypeface(fileName: String, fallback: Typeface = Typeface.MONOSPACE): Typeface {
-        return loadFont(fileName) ?: fallback
-    }
+    fun getTypeface(fileName: String, fallback: Typeface = Typeface.MONOSPACE): Typeface = loadFont(fileName) ?: fallback
 
     private fun sanitizeFileName(name: String): String {
         // Remove path separators and other problematic characters
@@ -172,9 +164,7 @@ class LocalFontProvider(private val context: Context) {
         /**
          * Check if a stored value represents a local font.
          */
-        fun isLocalFont(storedValue: String?): Boolean {
-            return storedValue?.startsWith(LOCAL_PREFIX) == true
-        }
+        fun isLocalFont(storedValue: String?): Boolean = storedValue?.startsWith(LOCAL_PREFIX) == true
 
         /**
          * Get the filename from a local font stored value.
@@ -187,8 +177,6 @@ class LocalFontProvider(private val context: Context) {
         /**
          * Create a stored value for a local font.
          */
-        fun createLocalFontValue(fileName: String): String {
-            return "$LOCAL_PREFIX$fileName"
-        }
+        fun createLocalFontValue(fileName: String): String = "$LOCAL_PREFIX$fileName"
     }
 }

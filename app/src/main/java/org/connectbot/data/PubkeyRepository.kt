@@ -54,8 +54,7 @@ class PubkeyRepository @Inject constructor(
      * @param type The storage type (EXPORTABLE or ANDROID_KEYSTORE)
      * @return Flow of pubkey list filtered by type
      */
-    fun observeByStorageType(type: KeyStorageType): Flow<List<Pubkey>> =
-        pubkeyDao.observeByStorageType(type)
+    fun observeByStorageType(type: KeyStorageType): Flow<List<Pubkey>> = pubkeyDao.observeByStorageType(type)
 
     /**
      * Observe a specific pubkey reactively.
@@ -97,8 +96,7 @@ class PubkeyRepository @Inject constructor(
      * @param nickname The pubkey nickname
      * @return The pubkey, or null if not found
      */
-    suspend fun getByNickname(nickname: String): Pubkey? =
-        pubkeyDao.getByNickname(nickname)
+    suspend fun getByNickname(nickname: String): Pubkey? = pubkeyDao.getByNickname(nickname)
 
     /**
      * Get all pubkeys that allow backup.
@@ -137,16 +135,14 @@ class PubkeyRepository @Inject constructor(
      * @param pubkey The pubkey to save
      * @return The saved pubkey with updated ID
      */
-    suspend fun save(pubkey: Pubkey): Pubkey {
-        return if (pubkey.id == 0L) {
-            // New pubkey - insert
-            val newId = pubkeyDao.insert(pubkey)
-            pubkey.copy(id = newId)
-        } else {
-            // Existing pubkey - update
-            pubkeyDao.update(pubkey)
-            pubkey
-        }
+    suspend fun save(pubkey: Pubkey): Pubkey = if (pubkey.id == 0L) {
+        // New pubkey - insert
+        val newId = pubkeyDao.insert(pubkey)
+        pubkey.copy(id = newId)
+    } else {
+        // Existing pubkey - update
+        pubkeyDao.update(pubkey)
+        pubkey
     }
 
     /**

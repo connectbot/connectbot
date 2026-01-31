@@ -120,18 +120,17 @@ class BackupFilter(
      * @param pubkeys The list of pubkeys to filter
      * @return The list of backupable pubkeys
      */
-    fun filterBackupablePubkeys(pubkeys: List<org.connectbot.data.entity.Pubkey>):
-            List<org.connectbot.data.entity.Pubkey> {
-        return pubkeys.filter { pubkey ->
-            val isBackupable = pubkey.allowBackup && pubkey.storageType != KeyStorageType.ANDROID_KEYSTORE
+    fun filterBackupablePubkeys(pubkeys: List<org.connectbot.data.entity.Pubkey>): List<org.connectbot.data.entity.Pubkey> = pubkeys.filter { pubkey ->
+        val isBackupable = pubkey.allowBackup && pubkey.storageType != KeyStorageType.ANDROID_KEYSTORE
 
-            if (!isBackupable) {
-                Timber.d("Filtering out pubkey: ${pubkey.nickname} " +
-                        "(allowBackup=${pubkey.allowBackup}, storageType=${pubkey.storageType})")
-            }
-
-            isBackupable
+        if (!isBackupable) {
+            Timber.d(
+                "Filtering out pubkey: ${pubkey.nickname} " +
+                    "(allowBackup=${pubkey.allowBackup}, storageType=${pubkey.storageType})"
+            )
         }
+
+        isBackupable
     }
 
     /**

@@ -47,7 +47,7 @@ object ColorSchemePresets {
             0xff4444ff.toInt(), // light blue
             0xffff44ff.toInt(), // light purple
             0xff44ffff.toInt(), // light cyan
-            0xffffffff.toInt(), // white
+            0xffffffff.toInt() // white
         )
     )
 
@@ -59,7 +59,7 @@ object ColorSchemePresets {
         name = "Solarized Dark",
         description = "Precision colors for machines and people",
         defaultFg = 12, // base0 (#839496)
-        defaultBg = 8,  // base03 (#002b36)
+        defaultBg = 8, // base03 (#002b36)
         colors = intArrayOf(
             // ANSI colors (0-15) - Official Solarized Dark mapping
             0xff073642.toInt(), // black: base02
@@ -77,7 +77,7 @@ object ColorSchemePresets {
             0xff839496.toInt(), // bright blue: base0
             0xff6c71c4.toInt(), // bright magenta: violet
             0xff93a1a1.toInt(), // bright cyan: base1
-            0xfffdf6e3.toInt()  // bright white: base3
+            0xfffdf6e3.toInt() // bright white: base3
         )
     )
 
@@ -108,7 +108,7 @@ object ColorSchemePresets {
             0xff839496.toInt(), // bright blue: base0
             0xff6c71c4.toInt(), // bright magenta: violet
             0xff93a1a1.toInt(), // bright cyan: base1
-            0xfffdf6e3.toInt()  // bright white: base3
+            0xfffdf6e3.toInt() // bright white: base3
         )
     )
 
@@ -136,7 +136,7 @@ object ColorSchemePresets {
             0xffd6acff.toInt(), // bright purple
             0xffff92df.toInt(), // bright pink
             0xffa4ffff.toInt(), // bright cyan
-            0xffffffff.toInt()  // bright white
+            0xffffffff.toInt() // bright white
         )
     )
 
@@ -164,7 +164,7 @@ object ColorSchemePresets {
             0xff81a1c1.toInt(), // bright blue
             0xffb48ead.toInt(), // bright purple
             0xff8fbcbb.toInt(), // bright cyan
-            0xffeceff4.toInt()  // bright white
+            0xffeceff4.toInt() // bright white
         )
     )
 
@@ -192,7 +192,7 @@ object ColorSchemePresets {
             0xff83a598.toInt(), // bright blue
             0xffd3869b.toInt(), // bright purple
             0xff8ec07c.toInt(), // bright aqua
-            0xffebdbb2.toInt()  // light
+            0xffebdbb2.toInt() // light
         )
     )
 
@@ -220,7 +220,7 @@ object ColorSchemePresets {
             0xff66d9ef.toInt(), // bright blue
             0xffae81ff.toInt(), // bright purple
             0xffa1efe4.toInt(), // bright cyan
-            0xfff9f8f5.toInt()  // bright white
+            0xfff9f8f5.toInt() // bright white
         )
     )
 
@@ -248,7 +248,7 @@ object ColorSchemePresets {
             0xff81a2be.toInt(), // bright blue
             0xffb294bb.toInt(), // bright purple
             0xff8abeb7.toInt(), // bright cyan
-            0xffffffff.toInt()  // bright white
+            0xffffffff.toInt() // bright white
         )
     )
 
@@ -274,7 +274,7 @@ object ColorSchemePresets {
         val description: String,
         val defaultFg: Int,
         val defaultBg: Int,
-        val colors: IntArray,
+        val colors: IntArray
     ) {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true

@@ -16,10 +16,10 @@
  */
 package org.connectbot.util
 
-import timber.log.Timber
 import com.trilead.ssh2.crypto.PEMDecoder
 import com.trilead.ssh2.crypto.keys.Ed25519Provider
 import org.connectbot.data.entity.Pubkey
+import timber.log.Timber
 import java.security.Key
 import java.security.KeyFactory
 import java.security.KeyPair
@@ -52,7 +52,7 @@ object PubkeyUtils {
         val fmt = key.format
         val encoded = key.encoded
         return "Key[algorithm=" + algo + ", format=" + fmt +
-                ", bytes=" + encoded.size + "]"
+            ", bytes=" + encoded.size + "]"
     }
 
     @Throws(Exception::class)
@@ -101,12 +101,13 @@ object PubkeyUtils {
     }
 
     @Throws(Exception::class)
-    fun decodePrivate(encoded: ByteArray, keyType: String?, secret: String?): PrivateKey? {
-        return if (secret != null && secret.isNotEmpty()) decodePrivate(
+    fun decodePrivate(encoded: ByteArray, keyType: String?, secret: String?): PrivateKey? = if (secret != null && secret.isNotEmpty()) {
+        decodePrivate(
             decrypt(encoded, secret),
             keyType
         )
-        else decodePrivate(encoded, keyType)
+    } else {
+        decodePrivate(encoded, keyType)
     }
 
     @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class)

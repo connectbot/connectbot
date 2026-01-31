@@ -98,7 +98,6 @@ class LegacyDatabasePreservationTest {
         assertThat(pubkeysMigratedFile.exists()).isFalse()
     }
 
-
     @Test
     fun `legacy databases can be read again after failed migration`() = runTest {
         // Create a legacy database with some data
@@ -118,9 +117,6 @@ class LegacyDatabasePreservationTest {
         assertThat(hosts).isNotEmpty()
         assertThat(hostsDbFile.exists()).isTrue()
     }
-
-
-
 
     @Test
     fun `partial write failure leaves legacy files intact`() = runTest {
@@ -159,7 +155,8 @@ class LegacyDatabasePreservationTest {
         val db = SQLiteDatabase.openOrCreateDatabase(file, null)
 
         // Create hosts table with basic structure
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE hosts (
                 _id INTEGER PRIMARY KEY,
                 nickname TEXT UNIQUE,
@@ -185,10 +182,12 @@ class LegacyDatabasePreservationTest {
                 usectrlaltasmeta TEXT,
                 quickdisconnect TEXT
             )
-        """)
+        """
+        )
 
         // Insert test data
-        db.execSQL("""
+        db.execSQL(
+            """
             INSERT INTO hosts (nickname, protocol, username, hostname, port,
                              hostkeyalgo, lastconnect, color, usekeys, useauthagent,
                              postlogin, pubkeyid, wantsession, compression, encoding,
@@ -198,7 +197,8 @@ class LegacyDatabasePreservationTest {
                     NULL, 0, 'gray', 'false', NULL,
                     NULL, 0, 'true', 'false', 'UTF-8',
                     'false', 10, 1, 'BACKSPACE', 140, 'false', 'false')
-        """)
+        """
+        )
 
         db.close()
     }
@@ -207,7 +207,8 @@ class LegacyDatabasePreservationTest {
         val db = SQLiteDatabase.openOrCreateDatabase(file, null)
 
         // Create hosts table
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE hosts (
                 _id INTEGER PRIMARY KEY,
                 nickname TEXT,
@@ -233,10 +234,12 @@ class LegacyDatabasePreservationTest {
                 usectrlaltasmeta TEXT,
                 quickdisconnect TEXT
             )
-        """)
+        """
+        )
 
         // Insert duplicate nicknames (no unique constraint in legacy DB)
-        db.execSQL("""
+        db.execSQL(
+            """
             INSERT INTO hosts (nickname, protocol, username, hostname, port,
                              hostkeyalgo, lastconnect, color, usekeys, useauthagent,
                              postlogin, pubkeyid, wantsession, compression, encoding,
@@ -246,9 +249,11 @@ class LegacyDatabasePreservationTest {
                     NULL, 0, 'gray', 'false', NULL,
                     NULL, 0, 'true', 'false', 'UTF-8',
                     'false', 10, 1, 'BACKSPACE', 140, 'false', 'false')
-        """)
+        """
+        )
 
-        db.execSQL("""
+        db.execSQL(
+            """
             INSERT INTO hosts (nickname, protocol, username, hostname, port,
                              hostkeyalgo, lastconnect, color, usekeys, useauthagent,
                              postlogin, pubkeyid, wantsession, compression, encoding,
@@ -258,7 +263,8 @@ class LegacyDatabasePreservationTest {
                     NULL, 0, 'gray', 'false', NULL,
                     NULL, 0, 'true', 'false', 'UTF-8',
                     'false', 10, 1, 'BACKSPACE', 140, 'false', 'false')
-        """)
+        """
+        )
 
         db.close()
     }
@@ -267,7 +273,8 @@ class LegacyDatabasePreservationTest {
         val db = SQLiteDatabase.openOrCreateDatabase(file, null)
 
         // Create pubkeys table
-        db.execSQL("""
+        db.execSQL(
+            """
             CREATE TABLE pubkeys (
                 _id INTEGER PRIMARY KEY,
                 nickname TEXT UNIQUE,
@@ -279,13 +286,16 @@ class LegacyDatabasePreservationTest {
                 confirmuse INTEGER,
                 lifetime INTEGER
             )
-        """)
+        """
+        )
 
         // Insert test pubkey
-        db.execSQL("""
+        db.execSQL(
+            """
             INSERT INTO pubkeys (nickname, type, private, public, encrypted, startup, confirmuse, lifetime)
             VALUES ('test-key', 'ssh-rsa', X'010203', X'040506', 0, 0, 0, 0)
-        """)
+        """
+        )
 
         db.close()
     }

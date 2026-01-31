@@ -76,12 +76,10 @@ class StreamSocket(
 
     override fun isOutputShutdown(): Boolean = closed
 
-    override fun getInetAddress(): InetAddress? {
-        return try {
-            InetAddress.getByName(remoteHost)
-        } catch (e: Exception) {
-            null
-        }
+    override fun getInetAddress(): InetAddress? = try {
+        InetAddress.getByName(remoteHost)
+    } catch (e: Exception) {
+        null
     }
 
     override fun getPort(): Int = remotePort

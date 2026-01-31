@@ -54,16 +54,14 @@ enum class TerminalFont(
             if (name.startsWith(CUSTOM_PREFIX)) return null
             return entries.find {
                 it.name.equals(name, ignoreCase = true) ||
-                it.displayName.equals(name, ignoreCase = true)
+                    it.displayName.equals(name, ignoreCase = true)
             } ?: SYSTEM_DEFAULT
         }
 
         /**
          * Check if a font name represents a custom font.
          */
-        fun isCustomFont(name: String?): Boolean {
-            return name?.startsWith(CUSTOM_PREFIX) == true
-        }
+        fun isCustomFont(name: String?): Boolean = name?.startsWith(CUSTOM_PREFIX) == true
 
         /**
          * Extract the Google Fonts name from a custom font string.
@@ -77,9 +75,7 @@ enum class TerminalFont(
         /**
          * Create a custom font storage string from a Google Fonts name.
          */
-        fun createCustomFontValue(googleFontName: String): String {
-            return "$CUSTOM_PREFIX$googleFontName"
-        }
+        fun createCustomFontValue(googleFontName: String): String = "$CUSTOM_PREFIX$googleFontName"
 
         /**
          * Get the Google Fonts name for a given stored value.
@@ -119,15 +115,13 @@ enum class TerminalFont(
             if (storedValue.startsWith(LocalFontProvider.LOCAL_PREFIX)) return false
             return entries.any {
                 it.name.equals(storedValue, ignoreCase = true) ||
-                it.displayName.equals(storedValue, ignoreCase = true)
+                    it.displayName.equals(storedValue, ignoreCase = true)
             }
         }
 
         /**
          * Check if a stored value is a local font.
          */
-        fun isLocalFont(storedValue: String?): Boolean {
-            return LocalFontProvider.isLocalFont(storedValue)
-        }
+        fun isLocalFont(storedValue: String?): Boolean = LocalFontProvider.isLocalFont(storedValue)
     }
 }
