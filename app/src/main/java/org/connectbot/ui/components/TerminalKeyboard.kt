@@ -159,6 +159,7 @@ private fun TerminalKeyboardContent(
 ) {
     val scrollState = rememberScrollState()
     val currentOnScrollInProgressChange by rememberUpdatedState(onScrollInProgressChange)
+    val currentOnInteraction by rememberUpdatedState(onInteraction)
 
     // Notify parent when scroll state changes
     LaunchedEffect(scrollState.isScrollInProgress) {
@@ -192,7 +193,7 @@ private fun TerminalKeyboardContent(
                 // Reset timer on any touch interaction
                 detectTapGestures(
                     onPress = {
-                        onInteraction()
+                        currentOnInteraction()
                         tryAwaitRelease()
                     }
                 )
@@ -499,6 +500,7 @@ private fun RepeatableKeyButton(
     val coroutineScope = rememberCoroutineScope()
     var isPressed by remember { mutableStateOf(false) }
     var repeatJob by remember { mutableStateOf<Job?>(null) }
+    val currentOnPress by rememberUpdatedState(onPress)
 
     // Cleanup on unmount
     DisposableEffect(Unit) {
@@ -531,12 +533,12 @@ private fun RepeatableKeyButton(
                         if (!isPressed) return@launch
 
                         // First press after initial tap delay
-                        onPress()
+                        currentOnPress()
 
                         // Wait before starting repeat
                         delay(500 - tapTimeout)
                         while (isPressed) {
-                            onPress()
+                            currentOnPress()
                             delay(50) // Repeat interval
                         }
                     }
@@ -548,7 +550,7 @@ private fun RepeatableKeyButton(
                     if (released && repeatJob?.isActive == true) {
                         // User released but key hasn't been sent yet (quick tap) - send it now
                         repeatJob?.cancel()
-                        onPress()
+                        currentOnPress()
                     } else {
                         repeatJob?.cancel()
                     }
