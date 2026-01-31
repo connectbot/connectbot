@@ -41,14 +41,14 @@ fun ObservePermissionOnResume(onPermissionChange: (Boolean) -> Unit) {
 
     // Use rememberUpdatedState to ensure the effect always uses the latest callback
     // without restarting the effect when the callback changes.
-    val currentOnPermissionChanged by rememberUpdatedState(onPermissionChanged)
+    val currentOnPermissionChange by rememberUpdatedState(onPermissionChange)
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
                 // Check current permission status - may have changed while user was away
                 val isGranted = NotificationPermissionHelper.isNotificationPermissionGranted(context)
-                currentOnPermissionChanged(isGranted)
+                currentOnPermissionChange(isGranted)
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)

@@ -183,7 +183,7 @@ fun FloatingTextInputDialog(
                 putFloat(PREF_FLOATING_INPUT_X, offsetX / screenWidthPx)
                 putFloat(PREF_FLOATING_INPUT_Y, offsetY / screenHeightPx)
                 putFloat(PREF_FLOATING_INPUT_WIDTH, windowWidthPx / screenWidthPx)
-                putFloat(PREF_FLOATING_INPUT_HEIGHT, windowHeightPx / screenHeightPx)
+                putFloat(PREF_FLOATING_INPUT_HEIGHT, windowHeightPx /screenHeightPx)
             }
         }
     }
@@ -217,7 +217,7 @@ fun FloatingTextInputDialog(
                         RoundedCornerShape(12.dp)
                     )
             ) {
-                // Draggable header with send and close buttons
+                // Draggable headerwith send and close buttons
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -247,7 +247,7 @@ fun FloatingTextInputDialog(
                         text = stringResource(R.string.terminal_text_input_dialog_title),
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f)
                     )
 
                     IconButton(
@@ -268,7 +268,7 @@ fun FloatingTextInputDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(with(density) { (windowHeightPx - 36.dp.toPx()).coerceAtLeast(minHeightPx).toDp() })
-                ) {
+                    ) {
                     TextField(
                         value = text,
                         onValueChange = { text = it },
@@ -277,7 +277,7 @@ fun FloatingTextInputDialog(
                         },
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text
-                        ),
+                            ),
                         visualTransformation = SpecialCharVisualTransformation,
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -294,9 +294,9 @@ fun FloatingTextInputDialog(
 
                     Column(
                         modifier = Modifier
-                            .fillMaxHeight()
-                            .background(
-                                MaterialTheme.colorScheme.surfaceVariant,
+                    .fillMaxHeight()
+                        .background(
+                         MaterialTheme.colorScheme.surfaceVariant,
                                 RoundedCornerShape(bottomEnd = 12.dp)
                             ),
                         verticalArrangement = Arrangement.SpaceBetween,
@@ -304,11 +304,11 @@ fun FloatingTextInputDialog(
                     ) {
                         IconButton(
                             onClick = { sendText() },
-                            modifier = Modifier.size(48.dp)
-                        ) {
-                            Icon(
-                                Icons.AutoMirrored.Filled.Send,
-                                contentDescription = stringResource(R.string.button_send),
+                        modifier = Modifier.size(48.dp)
+                    ) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.Send,
+                            contentDescription = stringResource(R.string.button_send),
                                 tint = MaterialTheme.colorScheme.primary
                             )
                         }
