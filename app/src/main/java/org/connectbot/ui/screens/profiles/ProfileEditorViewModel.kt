@@ -33,6 +33,7 @@ import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Profile
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
 import org.connectbot.util.TerminalFontProvider
@@ -57,7 +58,8 @@ data class ProfileEditorUiState(
     val localFonts: List<Pair<String, String>> = emptyList(),
     val isLoading: Boolean = true,
     val isSaving: Boolean = false,
-    val saveError: String? = null
+    val saveError: String? = null,
+    val fontDownloadInProgress: Boolean = false
 )
 
 @HiltViewModel
@@ -66,12 +68,13 @@ class ProfileEditorViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
     private val colorSchemeRepository: ColorSchemeRepository,
     private val prefs: SharedPreferences,
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
     private val profileId: Long = savedStateHandle.get<Long>("profileId") ?: -1L
     private val localFontProvider = LocalFontProvider(context)
-    private val fontProvider = TerminalFontProvider(context)
+    private val fontProvider = TerminalFontProvider(context, dispatchers.io)
 
     private val _uiState = MutableStateFlow(ProfileEditorUiState(profileId = profileId))
     val uiState: StateFlow<ProfileEditorUiState> = _uiState.asStateFlow()
@@ -175,7 +178,11 @@ class ProfileEditorViewModel @Inject constructor(
         if (LocalFontProvider.isLocalFont(storedValue)) return
         val googleFontName = TerminalFont.getGoogleFontName(storedValue)
         if (googleFontName.isBlank()) return
-        fontProvider.loadFontByName(googleFontName) { /* just cache it */ }
+        viewModelScope.launch {
+            _uiState.update { it.copy(fontDownloadInProgress = true) }
+            fontProvider.loadFontByNameSuspend(googleFontName)
+            _uiState.update { it.copy(fontDownloadInProgress = false) }
+        }
     }
 
     fun updateFontSize(value: Int) {

@@ -241,6 +241,8 @@
 	<string name="button_remove">"Remove"</string>
 	<!-- Message shown when validating font -->
 	<string name="font_validating">"Validating font…"</string>
+	<!-- Message shown while downloading a font from Google Fonts -->
+	<string name="font_downloading">"Downloading font…"</string>
 
 	<!-- Title for importing local font -->
 	<string name="pref_localfont_title">"Import local font"</string>

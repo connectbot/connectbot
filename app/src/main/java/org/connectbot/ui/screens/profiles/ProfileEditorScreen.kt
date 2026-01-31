@@ -71,6 +71,7 @@ import org.connectbot.data.entity.ColorScheme
 import org.connectbot.ui.common.getIconColors
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.common.getLocalizedFontDisplayName
+import org.connectbot.ui.components.FontDownloadProgressDialog
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
 
@@ -87,6 +88,10 @@ fun ProfileEditorScreen(
         uiState.saveError?.let {
             snackbarHostState.showSnackbar(it)
         }
+    }
+
+    if (uiState.fontDownloadInProgress) {
+        FontDownloadProgressDialog()
     }
 
     Scaffold(

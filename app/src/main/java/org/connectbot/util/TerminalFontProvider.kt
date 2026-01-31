@@ -19,14 +19,14 @@ package org.connectbot.util
 
 import android.content.Context
 import android.graphics.Typeface
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
 import androidx.core.provider.FontRequest
 import androidx.core.provider.FontsContractCompat
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.asExecutor
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlinx.coroutines.withContext
@@ -42,11 +42,14 @@ import kotlin.coroutines.resume
  *
  * All font loading operations run on Dispatchers.IO to avoid blocking the main thread.
  */
-class TerminalFontProvider(private val context: Context) {
+class TerminalFontProvider(
+    private val context: Context,
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+) {
     private val fontCache = ConcurrentHashMap<String, Typeface>()
     private val loadingFonts = ConcurrentHashMap<String, Boolean>()
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
-    private val mainHandler = Handler(Looper.getMainLooper())
+    private val scope = CoroutineScope(SupervisorJob() + ioDispatcher)
+    private val ioExecutor = ioDispatcher.asExecutor()
 
     /**
      * Load a font by its Google Fonts name using coroutines.
@@ -55,7 +58,7 @@ class TerminalFontProvider(private val context: Context) {
      * @param googleFontName The exact name as it appears on Google Fonts (e.g., "JetBrains Mono")
      * @return The loaded Typeface, or Typeface.MONOSPACE on failure
      */
-    suspend fun loadFontByNameSuspend(googleFontName: String): Typeface = withContext(Dispatchers.IO) {
+    suspend fun loadFontByNameSuspend(googleFontName: String): Typeface = withContext(ioDispatcher) {
         // Empty name returns monospace immediately
         if (googleFontName.isBlank()) {
             return@withContext Typeface.MONOSPACE
@@ -103,8 +106,14 @@ class TerminalFontProvider(private val context: Context) {
                     }
                 }
 
-                // FontsContractCompat requires a Handler for callbacks
-                FontsContractCompat.requestFont(context, request, fontCallback, mainHandler)
+                FontsContractCompat.requestFont(
+                    context,
+                    request,
+                    Typeface.NORMAL,
+                    ioExecutor,
+                    ioExecutor,
+                    fontCallback
+                )
             }
 
             // Cache the loaded font
@@ -251,7 +260,7 @@ class TerminalFontProvider(private val context: Context) {
     /**
      * Check if the font provider is available on this device.
      */
-    suspend fun isProviderAvailable(): Boolean = withContext(Dispatchers.IO) {
+    suspend fun isProviderAvailable(): Boolean = withContext(ioDispatcher) {
         try {
             val pm = context.packageManager
             pm.getPackageInfo("com.google.android.gms", 0)
@@ -265,7 +274,7 @@ class TerminalFontProvider(private val context: Context) {
     /**
      * Preload a list of fonts in the background using coroutines.
      */
-    suspend fun preloadFontsSuspend(fonts: List<TerminalFont>) = withContext(Dispatchers.IO) {
+    suspend fun preloadFontsSuspend(fonts: List<TerminalFont>) = withContext(ioDispatcher) {
         fonts.forEach { font ->
             loadFontSuspend(font)
         }
