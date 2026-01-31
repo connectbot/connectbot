@@ -386,18 +386,16 @@ class BackupFilterTest {
         nickname: String,
         allowBackup: Boolean,
         storageType: KeyStorageType
-    ): Pubkey {
-        return Pubkey(
-            nickname = nickname,
-            type = "RSA",
-            privateKey = ByteArray(16),
-            publicKey = ByteArray(16),
-            encrypted = false,
-            startup = false,
-            confirmation = false,
-            createdDate = System.currentTimeMillis(),
-            storageType = storageType,
-            allowBackup = allowBackup
-        )
-    }
+    ): Pubkey = Pubkey(
+        nickname = nickname,
+        type = "RSA",
+        privateKey = ByteArray(16),
+        publicKey = ByteArray(16),
+        encrypted = false,
+        startup = false,
+        confirmation = false,
+        createdDate = System.currentTimeMillis(),
+        storageType = storageType,
+        allowBackup = allowBackup
+    )
 }

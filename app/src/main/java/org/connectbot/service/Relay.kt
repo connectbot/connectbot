@@ -151,7 +151,9 @@ class Relay(
                                 destBuffer.flip()
                                 if (destBuffer.hasRemaining()) {
                                     bridge.terminalEmulator.writeInput(
-                                        destBuffer.array(), 0, destBuffer.limit()
+                                        destBuffer.array(),
+                                        0,
+                                        destBuffer.limit()
                                     )
                                 }
                                 destBuffer.clear()

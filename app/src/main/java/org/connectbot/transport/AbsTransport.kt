@@ -31,8 +31,10 @@ import java.io.IOException
 abstract class AbsTransport {
     @JvmField
     var host: Host? = null
+
     @JvmField
     var bridge: TerminalBridge? = null
+
     @JvmField
     var manager: TerminalManager? = null
 

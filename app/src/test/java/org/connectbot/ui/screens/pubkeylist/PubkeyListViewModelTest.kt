@@ -104,9 +104,7 @@ class PubkeyListViewModelTest {
         Timber.uprootAll()
     }
 
-    private fun createViewModel(): PubkeyListViewModel {
-        return PubkeyListViewModel(context, repository, dispatchers)
-    }
+    private fun createViewModel(): PubkeyListViewModel = PubkeyListViewModel(context, repository, dispatchers)
 
     // ========== Tests for encrypted key import with re-encryption ==========
 
@@ -197,7 +195,7 @@ class PubkeyListViewModelTest {
         viewModel.completeImportWithPassword(
             decryptPassword = "testpass",
             encrypt = true,
-            encryptPassword = "testpass"  // Same as decrypt password
+            encryptPassword = "testpass" // Same as decrypt password
         )
         advanceUntilIdle()
 
@@ -256,7 +254,7 @@ class PubkeyListViewModelTest {
 
         // Import unencrypted key without re-encrypting
         viewModel.completeImportWithPassword(
-            decryptPassword = "",  // No password needed for unencrypted key
+            decryptPassword = "", // No password needed for unencrypted key
             encrypt = false,
             encryptPassword = null
         )

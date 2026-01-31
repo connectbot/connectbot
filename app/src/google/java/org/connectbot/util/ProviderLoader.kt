@@ -30,8 +30,7 @@ object ProviderLoader {
         ProviderInstaller.installIfNeededAsync(context, ProviderInstallListenerWrapper(listener))
     }
 
-    private class ProviderInstallListenerWrapper(private val mListener: ProviderLoaderListener) :
-        ProviderInstallListener {
+    private class ProviderInstallListenerWrapper(private val mListener: ProviderLoaderListener) : ProviderInstallListener {
         override fun onProviderInstalled() {
             mListener.onProviderLoaderSuccess()
         }

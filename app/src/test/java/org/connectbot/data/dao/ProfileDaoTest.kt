@@ -353,30 +353,26 @@ class ProfileDaoTest {
         delKey: String = "del",
         encoding: String = "UTF-8",
         emulation: String = "xterm-256color"
-    ): Profile {
-        return Profile(
-            name = name,
-            iconColor = iconColor,
-            colorSchemeId = colorSchemeId,
-            fontFamily = fontFamily,
-            fontSize = fontSize,
-            delKey = delKey,
-            encoding = encoding,
-            emulation = emulation
-        )
-    }
+    ): Profile = Profile(
+        name = name,
+        iconColor = iconColor,
+        colorSchemeId = colorSchemeId,
+        fontFamily = fontFamily,
+        fontSize = fontSize,
+        delKey = delKey,
+        encoding = encoding,
+        emulation = emulation
+    )
 
     private fun createTestHost(
         nickname: String,
         profileId: Long?
-    ): Host {
-        return Host(
-            nickname = nickname,
-            protocol = "ssh",
-            username = "user",
-            hostname = "example.com",
-            port = 22,
-            profileId = profileId
-        )
-    }
+    ): Host = Host(
+        nickname = nickname,
+        protocol = "ssh",
+        username = "user",
+        hostname = "example.com",
+        port = 22,
+        profileId = profileId
+    )
 }
