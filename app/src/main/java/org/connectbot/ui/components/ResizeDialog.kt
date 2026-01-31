@@ -112,7 +112,7 @@ fun ResizeDialog(
                     }
                 },
                 enabled = !widthError && !heightError &&
-                        widthText.isNotEmpty() && heightText.isNotEmpty()
+                    widthText.isNotEmpty() && heightText.isNotEmpty()
             ) {
                 Text(stringResource(R.string.button_resize))
             }

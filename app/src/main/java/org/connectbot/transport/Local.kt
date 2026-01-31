@@ -19,16 +19,16 @@ package org.connectbot.transport
 
 import android.content.Context
 import android.net.Uri
-import timber.log.Timber
 import androidx.annotation.VisibleForTesting
+import androidx.core.net.toUri
 import com.google.ase.Exec
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import timber.log.Timber
 import java.io.FileDescriptor
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
-import androidx.core.net.toUri
 
 /**
  * @author Kenny Root
@@ -88,8 +88,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
         os?.flush()
     }
 
-    override fun getDefaultNickname(username: String?, hostname: String?, port: Int): String =
-        DEFAULT_URI
+    override fun getDefaultNickname(username: String?, hostname: String?, port: Int): String = DEFAULT_URI
 
     override fun getDefaultPort(): Int = 0
 
@@ -172,7 +171,6 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
         }
 
         @JvmStatic
-        fun getFormatHint(context: Context): String =
-            context.getString(R.string.hostpref_nickname_title)
+        fun getFormatHint(context: Context): String = context.getString(R.string.hostpref_nickname_title)
     }
 }

@@ -99,7 +99,7 @@ data class ColorSchemeJson(
         private fun isValidHexColor(hex: String): Boolean {
             val cleaned = hex.removePrefix("#")
             return cleaned.length in listOf(3, 6) &&
-                   cleaned.all { it in "0123456789ABCDEFabcdef" }
+                cleaned.all { it in "0123456789ABCDEFabcdef" }
         }
     }
 
@@ -158,7 +158,9 @@ data class ColorSchemeJson(
                 val b = cleaned[2].toString().repeat(2)
                 (r + g + b).toInt(16)
             }
+
             6 -> cleaned.toInt(16)
+
             else -> throw IllegalArgumentException("Invalid hex color: $hex")
         }
 

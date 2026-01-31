@@ -282,19 +282,17 @@ class PubkeyDaoTest {
         storageType: KeyStorageType = KeyStorageType.EXPORTABLE,
         allowBackup: Boolean = true,
         keystoreAlias: String? = null
-    ): Pubkey {
-        return Pubkey(
-            nickname = nickname,
-            type = type,
-            privateKey = privateKey,
-            publicKey = publicKey,
-            encrypted = encrypted,
-            startup = startup,
-            confirmation = confirmation,
-            createdDate = createdDate,
-            storageType = storageType,
-            allowBackup = allowBackup,
-            keystoreAlias = keystoreAlias
-        )
-    }
+    ): Pubkey = Pubkey(
+        nickname = nickname,
+        type = type,
+        privateKey = privateKey,
+        publicKey = publicKey,
+        encrypted = encrypted,
+        startup = startup,
+        confirmation = confirmation,
+        createdDate = createdDate,
+        storageType = storageType,
+        allowBackup = allowBackup,
+        keystoreAlias = keystoreAlias
+    )
 }
