@@ -25,9 +25,10 @@ import androidx.room.PrimaryKey
 /**
  * SSH public/private key pair entity with security-conscious backup controls.
  *
- * This entity supports two storage types:
+ * This entity supports three storage types:
  * - EXPORTABLE: Traditional encrypted keys stored in database (current implementation)
  * - ANDROID_KEYSTORE: Keys stored in Android Keystore (future Phase 2)
+ * - FIDO2_RESIDENT_KEY: Keys stored on external FIDO2 security keys (YubiKey, SoloKey, etc.)
  *
  * The allowBackup field gives users granular control over which keys are included
  * in Android backups. Keys marked with allowBackup=false will be excluded from
@@ -71,11 +72,27 @@ data class Pubkey(
     val allowBackup: Boolean = true,
 
     @ColumnInfo(name = "keystore_alias")
-    val keystoreAlias: String? = null
+    val keystoreAlias: String? = null,
+
+    /** FIDO2 credential ID (key handle) for resident keys stored on security keys */
+    @ColumnInfo(name = "credential_id", typeAffinity = ColumnInfo.BLOB)
+    val credentialId: ByteArray? = null,
+
+    /** FIDO2 relying party ID, typically "ssh:" for SSH keys */
+    @ColumnInfo(name = "fido2_rp_id")
+    val fido2RpId: String? = null,
+
+    /** Preferred transport for FIDO2 security key (USB or NFC) */
+    @ColumnInfo(name = "fido2_transport")
+    val fido2Transport: Fido2Transport? = null
 ) {
     /** Whether this key is stored in Android Keystore with biometric protection */
     val isBiometric: Boolean
         get() = storageType == KeyStorageType.ANDROID_KEYSTORE
+
+    /** Whether this key is stored on an external FIDO2 security key */
+    val isFido2: Boolean
+        get() = storageType == KeyStorageType.FIDO2_RESIDENT_KEY
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -89,7 +106,9 @@ data class Pubkey(
         if (privateKey != null) {
             if (other.privateKey == null) return false
             if (!privateKey.contentEquals(other.privateKey)) return false
-        } else if (other.privateKey != null) return false
+        } else if (other.privateKey != null) {
+            return false
+        }
         if (!publicKey.contentEquals(other.publicKey)) return false
         if (encrypted != other.encrypted) return false
         if (startup != other.startup) return false
@@ -98,6 +117,14 @@ data class Pubkey(
         if (storageType != other.storageType) return false
         if (allowBackup != other.allowBackup) return false
         if (keystoreAlias != other.keystoreAlias) return false
+        if (credentialId != null) {
+            if (other.credentialId == null) return false
+            if (!credentialId.contentEquals(other.credentialId)) return false
+        } else if (other.credentialId != null) {
+            return false
+        }
+        if (fido2RpId != other.fido2RpId) return false
+        if (fido2Transport != other.fido2Transport) return false
 
         return true
     }
@@ -115,6 +142,9 @@ data class Pubkey(
         result = 31 * result + storageType.hashCode()
         result = 31 * result + allowBackup.hashCode()
         result = 31 * result + (keystoreAlias?.hashCode() ?: 0)
+        result = 31 * result + (credentialId?.contentHashCode() ?: 0)
+        result = 31 * result + (fido2RpId?.hashCode() ?: 0)
+        result = 31 * result + (fido2Transport?.hashCode() ?: 0)
         return result
     }
 }
