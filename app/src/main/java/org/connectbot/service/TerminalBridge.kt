@@ -850,6 +850,14 @@ class TerminalBridge {
     }
 
     /**
+     * Get the text output of the last completed command.
+     * Delegates to the terminal emulator's semantic analysis.
+     *
+     * @return The command output text, or null if no completed command is found
+     */
+    fun getLastCommandOutput(): String? = terminalEmulator.getLastCommandOutput()
+
+    /**
      * @return whether the TerminalBridge should close
      */
     fun isAwaitingClose(): Boolean = awaitingClose
