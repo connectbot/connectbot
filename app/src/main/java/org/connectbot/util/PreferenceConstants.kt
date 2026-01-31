@@ -79,6 +79,9 @@ object PreferenceConstants {
     /* Backup identifiers */
     const val BACKUP_PREF_KEY: String = "prefs"
 
+    /* Security */
+    const val AUTH_ON_LAUNCH: String = "authOnLaunch"
+
     /* Font settings */
     const val FONT_FAMILY: String = "fontFamily"
     const val FONT_FAMILY_DEFAULT: String = "SYSTEM_DEFAULT"

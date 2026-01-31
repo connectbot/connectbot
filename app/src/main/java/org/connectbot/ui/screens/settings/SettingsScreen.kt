@@ -146,6 +146,7 @@ fun SettingsScreen(
     SettingsScreenContent(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
+        onAuthOnLaunchChange = viewModel::updateAuthOnLaunch,
         onMemkeysChange = viewModel::updateMemkeys,
         onConnPersistChange = viewModel::updateConnPersist,
         onWifilockChange = viewModel::updateWifilock,
@@ -187,6 +188,7 @@ fun SettingsScreen(
 fun SettingsScreenContent(
     uiState: SettingsUiState,
     onNavigateBack: () -> Unit,
+    onAuthOnLaunchChange: (Boolean) -> Unit,
     onMemkeysChange: (Boolean) -> Unit,
     onConnPersistChange: (Boolean) -> Unit,
     onWifilockChange: (Boolean) -> Unit,
@@ -235,6 +237,21 @@ fun SettingsScreenContent(
         modifier = modifier
     ) { padding ->
         LazyColumn(modifier = Modifier.padding(padding)) {
+            if (uiState.canAuthenticate) {
+                item {
+                    PreferenceCategory(title = stringResource(R.string.pref_security_category))
+                }
+
+                item {
+                    SwitchPreference(
+                        title = stringResource(R.string.pref_auth_on_launch_title),
+                        summary = stringResource(R.string.pref_auth_on_launch_summary),
+                        checked = uiState.authOnLaunch,
+                        onCheckedChange = onAuthOnLaunchChange
+                    )
+                }
+            }
+
             item {
                 SwitchPreference(
                     title = stringResource(R.string.pref_memkeys_title),
@@ -1256,6 +1273,8 @@ private fun SettingsScreenPreview() {
     ConnectBotTheme {
         SettingsScreenContent(
             uiState = SettingsUiState(
+                authOnLaunch = false,
+                canAuthenticate = true,
                 memkeys = true,
                 connPersist = true,
                 wifilock = false,
@@ -1288,6 +1307,7 @@ private fun SettingsScreenPreview() {
                 fontImportError = null
             ),
             onNavigateBack = {},
+            onAuthOnLaunchChange = {},
             onMemkeysChange = {},
             onConnPersistChange = {},
             onWifilockChange = {},
