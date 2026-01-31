@@ -224,7 +224,7 @@ class HostListViewModel @Inject constructor(
                 // Create new host with reset fields
                 val newHost = host.copy(
                     id = 0L,
-                    nickname = "${host.nickname} (copy)",
+                    nickname = context.getString(R.string.host_duplicate_nickname, host.nickname),
                     lastConnect = 0,
                     hostKeyAlgo = null
                 )
