@@ -18,6 +18,7 @@
 package org.connectbot.ui.screens.console
 
 import android.app.Activity
+import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import androidx.compose.animation.AnimatedVisibility
@@ -37,6 +38,9 @@ import androidx.compose.foundation.layout.imeAnimationTarget
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.selection.SelectionContainer
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentPaste
@@ -88,6 +92,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -175,6 +182,8 @@ fun ConsoleScreen(
     var showTitleBar by remember { mutableStateOf(!titleBarHide) }
     var lastInteractionTime by remember { mutableLongStateOf(System.currentTimeMillis()) }
     var scannedUrls by remember { mutableStateOf<List<String>>(emptyList()) }
+    var showLastOutputDialog by remember { mutableStateOf(false) }
+    var lastOutputText by remember { mutableStateOf<String?>(null) }
     var imeVisible by remember { mutableStateOf(false) }
     var keyboardScrollInProgress by remember { mutableStateOf(false) }
 
@@ -272,6 +281,7 @@ fun ConsoleScreen(
     val disconnected = currentBridge?.isDisconnected == true
     val canForwardPorts = currentBridge?.canFowardPorts() == true
     val snackbarHostState = remember { SnackbarHostState() }
+    val scope = rememberCoroutineScope()
 
     // Show software keyboard when session becomes open (if no hardware keyboard)
     // Also show when switching to a different bridge that's already open
@@ -566,6 +576,27 @@ fun ConsoleScreen(
             )
         }
 
+        if (showLastOutputDialog) {
+            LastCommandOutputDialog(
+                outputText = lastOutputText,
+                onDismiss = {
+                    showLastOutputDialog = false
+                    termFocusRequester.requestFocus()
+                },
+                onCopy = { text ->
+                    val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    clipboard.setPrimaryClip(
+                        ClipData.newPlainText("terminal output", text)
+                    )
+                    scope.launch {
+                        snackbarHostState.showSnackbar(
+                            context.getString(R.string.console_read_last_output_copied)
+                        )
+                    }
+                }
+            )
+        }
+
         // Overlay TopAppBar - always visible when titleBarHide is false,
         // or temporarily visible when titleBarHide is true and showTitleBar is true
         if (!titleBarHide || showTitleBar) {
@@ -690,6 +721,19 @@ fun ConsoleScreen(
                                 enabled = currentBridge != null
                             )
 
+                            // Read last output
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.console_menu_read_last_output)) },
+                                onClick = {
+                                    showMenu = false
+                                    currentBridge?.let { bridge ->
+                                        lastOutputText = bridge.getLastCommandOutput()
+                                        showLastOutputDialog = true
+                                    }
+                                },
+                                enabled = currentBridge != null
+                            )
+
                             // Resize
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.console_menu_resize)) },
@@ -801,6 +845,51 @@ private fun HostDisconnectDialog(
         dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.button_no))
+            }
+        }
+    )
+}
+
+@Composable
+private fun LastCommandOutputDialog(
+    outputText: String?,
+    onDismiss: () -> Unit,
+    onCopy: (String) -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(stringResource(R.string.console_read_last_output_title))
+        },
+        text = {
+            if (outputText.isNullOrEmpty()) {
+                Text(
+                    stringResource(R.string.console_read_last_output_empty),
+                    modifier = Modifier.semantics { liveRegion = LiveRegionMode.Polite }
+                )
+            } else {
+                SelectionContainer {
+                    Text(
+                        text = outputText,
+                        modifier = Modifier
+                            .verticalScroll(rememberScrollState())
+                            .semantics { liveRegion = LiveRegionMode.Polite },
+                        fontFamily = androidx.compose.ui.text.font.FontFamily.Monospace,
+                        fontSize = 13.sp
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            if (!outputText.isNullOrEmpty()) {
+                TextButton(onClick = {
+                    onCopy(outputText)
+                }) {
+                    Text(stringResource(R.string.button_copy))
+                }
+            }
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.button_close))
             }
         }
     )
