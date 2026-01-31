@@ -21,7 +21,9 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.net.Uri
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -75,6 +77,7 @@ data class SettingsUiState(
     val fontImportInProgress: Boolean = false,
     val fontImportError: String? = null,
     val fontDownloadInProgress: Boolean = false,
+    val language: String = "",
     val defaultProfileId: Long = 0L,
     val availableProfiles: List<Profile> = emptyList()
 )
@@ -130,6 +133,9 @@ class SettingsViewModel @Inject constructor(
         }
         val localFonts = localFontProvider.getImportedFonts()
 
+        val appLocales = AppCompatDelegate.getApplicationLocales()
+        val currentLanguage = if (appLocales.isEmpty) "" else appLocales.toLanguageTags()
+
         return SettingsUiState(
             memkeys = prefs.getBoolean("memkeys", true),
             connPersist = prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true),
@@ -157,6 +163,7 @@ class SettingsViewModel @Inject constructor(
             customFonts = customFonts,
             customTerminalTypes = customTerminalTypes,
             localFonts = localFonts,
+            language = currentLanguage,
             defaultProfileId = prefs.getLong("defaultProfileId", 0L)
         )
     }
@@ -280,6 +287,16 @@ class SettingsViewModel @Inject constructor(
 
     fun updateRotation(value: String) {
         updateStringPref("rotation", value) { copy(rotation = value) }
+    }
+
+    fun updateLanguage(languageTag: String) {
+        val localeList = if (languageTag.isEmpty()) {
+            LocaleListCompat.getEmptyLocaleList()
+        } else {
+            LocaleListCompat.forLanguageTags(languageTag)
+        }
+        AppCompatDelegate.setApplicationLocales(localeList)
+        _uiState.update { it.copy(language = languageTag) }
     }
 
     fun updateBellVolume(value: Float) {
