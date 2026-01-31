@@ -265,6 +265,11 @@
 	<!-- The category title for user interface preferences -->
 	<string name="pref_ui_category">"User interface"</string>
 
+	<!-- Name for the language preference -->
+	<string name="pref_language_title">Language</string>
+	<!-- Default option for language preference that uses the system locale -->
+	<string name="pref_language_system_default">System default</string>
+
 	<!-- Name for the rotation mode preference -->
 	<string name="pref_rotation_title">"Rotation mode"</string>
 
