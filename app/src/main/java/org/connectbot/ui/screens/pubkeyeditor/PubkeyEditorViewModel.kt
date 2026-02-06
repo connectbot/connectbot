@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.data.PubkeyRepository
+import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.PubkeyUtils
@@ -44,6 +45,8 @@ data class PubkeyEditorUiState(
     val newPassword2: String = "",
     val unlockAtStartup: Boolean = false,
     val confirmUse: Boolean = false,
+    val isFido2: Boolean = false,
+    val fido2Transport: Fido2Transport = Fido2Transport.USB,
     val isLoading: Boolean = true,
     val error: String? = null,
     val saveSuccess: Boolean = false,
@@ -58,7 +61,7 @@ data class PubkeyEditorUiState(
 
     val canSave: Boolean
         get() = nickname.isNotEmpty() && !passwordMismatch && !wrongPassword &&
-                !(willBeEncrypted && unlockAtStartup) && !nicknameExists
+            !(willBeEncrypted && unlockAtStartup) && !nicknameExists
 }
 
 @HiltViewModel
@@ -95,6 +98,8 @@ class PubkeyEditorViewModel @Inject constructor(
                             isEncrypted = pubkey.encrypted,
                             unlockAtStartup = pubkey.startup,
                             confirmUse = pubkey.confirmation,
+                            isFido2 = pubkey.isFido2,
+                            fido2Transport = pubkey.fido2Transport ?: Fido2Transport.USB,
                             isLoading = false
                         )
                     }
@@ -164,6 +169,10 @@ class PubkeyEditorViewModel @Inject constructor(
         _uiState.update { it.copy(confirmUse = checked) }
     }
 
+    fun updateFido2Transport(transport: Fido2Transport) {
+        _uiState.update { it.copy(fido2Transport = transport) }
+    }
+
     fun save() {
         val pubkey = originalPubkey ?: return
         val state = _uiState.value
@@ -176,7 +185,7 @@ class PubkeyEditorViewModel @Inject constructor(
                     // 1. Key is encrypted and user provided old password (removing or changing password)
                     // 2. Key is not encrypted but user provided new password (adding password)
                     val needsPasswordChange = (state.isEncrypted && state.oldPassword.isNotEmpty()) ||
-                                             (!state.isEncrypted && state.newPassword1.isNotEmpty())
+                        (!state.isEncrypted && state.newPassword1.isNotEmpty())
 
                     var newPrivateKey = pubkey.privateKey
                     var newEncrypted = pubkey.encrypted
@@ -225,7 +234,8 @@ class PubkeyEditorViewModel @Inject constructor(
                         privateKey = newPrivateKey,
                         encrypted = newEncrypted,
                         startup = state.unlockAtStartup && !newEncrypted,
-                        confirmation = state.confirmUse
+                        confirmation = state.confirmUse,
+                        fido2Transport = if (state.isFido2) state.fido2Transport else pubkey.fido2Transport
                     )
 
                     // Save to database
