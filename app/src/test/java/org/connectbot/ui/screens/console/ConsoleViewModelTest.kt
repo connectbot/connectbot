@@ -463,7 +463,8 @@ class ConsoleViewModelTest {
             port = 22,
             username = "test"
         )
-        bridge.host = host
+        whenever(bridge.host).thenReturn(host)
+        whenever(bridge.sessionId).thenReturn(id)
         whenever(bridge.isSessionOpen).thenReturn(true)
         whenever(bridge.isDisconnected).thenReturn(false)
         whenever(bridge.bellEvents).thenReturn(MutableSharedFlow())
