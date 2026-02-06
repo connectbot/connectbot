@@ -33,13 +33,9 @@ object MigrationModule {
 
     @Provides
     @Singleton
-    fun provideLegacyHostDatabaseReader(@ApplicationContext context: Context): LegacyHostDatabaseReader {
-        return LegacyHostDatabaseReader(context)
-    }
+    fun provideLegacyHostDatabaseReader(@ApplicationContext context: Context): LegacyHostDatabaseReader = LegacyHostDatabaseReader(context)
 
     @Provides
     @Singleton
-    fun provideLegacyPubkeyDatabaseReader(@ApplicationContext context: Context): LegacyPubkeyDatabaseReader {
-        return LegacyPubkeyDatabaseReader(context)
-    }
+    fun provideLegacyPubkeyDatabaseReader(@ApplicationContext context: Context): LegacyPubkeyDatabaseReader = LegacyPubkeyDatabaseReader(context)
 }

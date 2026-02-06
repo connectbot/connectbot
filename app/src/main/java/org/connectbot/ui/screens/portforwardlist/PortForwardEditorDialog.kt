@@ -160,7 +160,9 @@ fun PortForwardEditorDialog(
                     isError = sourcePort.isNotEmpty() && !isSourcePortValid,
                     supportingText = if (sourcePort.isNotEmpty() && !isSourcePortValid) {
                         { Text(stringResource(R.string.portforward_port_range_error)) }
-                    } else null
+                    } else {
+                        null
+                    }
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -176,7 +178,9 @@ fun PortForwardEditorDialog(
                     isError = needsDestination && destination.isNotEmpty() && !isDestinationValid,
                     supportingText = if (needsDestination && destination.isNotEmpty() && !isDestinationValid) {
                         { Text(stringResource(R.string.portforward_destination_format_error)) }
-                    } else null
+                    } else {
+                        null
+                    }
                 )
             }
         },

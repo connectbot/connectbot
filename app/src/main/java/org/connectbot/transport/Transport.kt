@@ -66,8 +66,7 @@ sealed class Transport {
         override val defaultPort = 22
         override val usesNetwork = true
 
-        override fun getFormatHint(context: Context): String =
-            SSH.getFormatHint(context)
+        override fun getFormatHint(context: Context): String = SSH.getFormatHint(context)
 
         override fun createInstance(): AbsTransport = SSH()
 
@@ -82,13 +81,11 @@ sealed class Transport {
         override val defaultPort = 23
         override val usesNetwork = true
 
-        override fun getFormatHint(context: Context): String =
-            org.connectbot.transport.Telnet.getFormatHint(context)
+        override fun getFormatHint(context: Context): String = org.connectbot.transport.Telnet.getFormatHint(context)
 
         override fun createInstance(): AbsTransport = org.connectbot.transport.Telnet()
 
-        override fun parseUri(input: String): Uri? =
-            org.connectbot.transport.Telnet.getUri(input)
+        override fun parseUri(input: String): Uri? = org.connectbot.transport.Telnet.getUri(input)
     }
 
     /**
@@ -99,13 +96,11 @@ sealed class Transport {
         override val defaultPort = 0
         override val usesNetwork = false
 
-        override fun getFormatHint(context: Context): String =
-            org.connectbot.transport.Local.getFormatHint(context)
+        override fun getFormatHint(context: Context): String = org.connectbot.transport.Local.getFormatHint(context)
 
         override fun createInstance(): AbsTransport = org.connectbot.transport.Local()
 
-        override fun parseUri(input: String): Uri? =
-            org.connectbot.transport.Local.getUri(input)
+        override fun parseUri(input: String): Uri? = org.connectbot.transport.Local.getUri(input)
     }
 
     companion object {

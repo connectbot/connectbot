@@ -26,13 +26,12 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import timber.log.Timber
-
-private const val TAG = "BiometricPromptHelper"
 
 /**
  * State holder for BiometricPrompt interactions.
@@ -42,7 +41,7 @@ class BiometricPromptState(
     private val activity: FragmentActivity,
     private val onSuccess: (BiometricPrompt.AuthenticationResult) -> Unit,
     private val onError: (Int, CharSequence) -> Unit,
-    private val onFailed: () -> Unit
+    private val onFailure: () -> Unit
 ) {
     private var biometricPrompt: BiometricPrompt? = null
     var isAuthenticating by mutableStateOf(false)
@@ -64,7 +63,7 @@ class BiometricPromptState(
         override fun onAuthenticationFailed() {
             Timber.w("Authentication failed")
             // Don't set isAuthenticating to false here - user can retry
-            onFailed()
+            onFailure()
         }
     }
 
@@ -123,7 +122,7 @@ class BiometricPromptState(
  *                  the CryptoObject (if provided) with an authenticated Signature.
  * @param onError Called when authentication fails with an error.
  *                The error code can be one of BiometricPrompt.ERROR_* constants.
- * @param onFailed Called when a biometric is recognized but not valid (wrong finger).
+ * @param onFailure Called when a biometric is recognized but not valid (wrong finger).
  *                 The prompt remains visible for retry.
  * @return BiometricPromptState, or null if FragmentActivity context is not available
  */
@@ -131,7 +130,7 @@ class BiometricPromptState(
 fun rememberBiometricPromptState(
     onSuccess: (BiometricPrompt.AuthenticationResult) -> Unit,
     onError: (Int, CharSequence) -> Unit,
-    onFailed: () -> Unit = {}
+    onFailure: () -> Unit = {}
 ): BiometricPromptState? {
     val context = LocalContext.current
     val activity = context.findFragmentActivity()
@@ -141,12 +140,18 @@ fun rememberBiometricPromptState(
         return null
     }
 
+    // Use rememberUpdatedState to ensure the BiometricPromptState always uses the latest callbacks
+    // even though it's remembered across recompositions.
+    val currentOnSuccess by rememberUpdatedState(onSuccess)
+    val currentOnError by rememberUpdatedState(onError)
+    val currentOnFailure by rememberUpdatedState(onFailure)
+
     val state = remember(activity) {
         BiometricPromptState(
             activity = activity,
-            onSuccess = onSuccess,
-            onError = onError,
-            onFailed = onFailed
+            onSuccess = { currentOnSuccess(it) },
+            onError = { code, msg -> currentOnError(code, msg) },
+            onFailure = { currentOnFailure() }
         )
     }
 

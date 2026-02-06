@@ -75,7 +75,6 @@ class ColorSchemeRepository @Inject constructor(
      */
     suspend fun getSchemeColors(schemeId: Long): IntArray = withContext(dispatchers.io) {
         return@withContext when {
-
             // A negative ID signifies a built-in, preset color scheme
             schemeId < 0 -> {
                 val presetIndexUnbounded = -(schemeId + 1).toInt()
@@ -99,7 +98,6 @@ class ColorSchemeRepository @Inject constructor(
      */
     suspend fun getSchemeDefaults(schemeId: Long): Pair<Int, Int> = withContext(dispatchers.io) {
         return@withContext when {
-
             // A negative ID signifies a built-in, preset color scheme
             schemeId < 0 -> {
                 val presetIndexUnbounded = -(schemeId + 1).toInt()
@@ -126,15 +124,14 @@ class ColorSchemeRepository @Inject constructor(
      * @param colorIndex The index in the color palette (0-15)
      * @param colorValue The RGB color value
      */
-    suspend fun setColorForScheme(schemeId: Long, colorIndex: Int, colorValue: Int) =
-        withContext(dispatchers.io) {
-            val colorEntry = ColorPalette(
-                schemeId = schemeId,
-                colorIndex = colorIndex,
-                color = colorValue
-            )
-            colorSchemeDao.insertOrUpdateColor(colorEntry)
-        }
+    suspend fun setColorForScheme(schemeId: Long, colorIndex: Int, colorValue: Int) = withContext(dispatchers.io) {
+        val colorEntry = ColorPalette(
+            schemeId = schemeId,
+            colorIndex = colorIndex,
+            color = colorValue
+        )
+        colorSchemeDao.insertOrUpdateColor(colorEntry)
+    }
 
     /**
      * Set the default foreground and background color indices for a scheme.
@@ -231,14 +228,13 @@ class ColorSchemeRepository @Inject constructor(
      * @param newName The name for the duplicated scheme
      * @return The ID of the newly created scheme
      */
-    suspend fun duplicateScheme(sourceSchemeId: Long, newName: String): Long =
-        withContext(dispatchers.io) {
-            createCustomScheme(
-                name = newName,
-                description = "",
-                basedOnSchemeId = sourceSchemeId
-            )
-        }
+    suspend fun duplicateScheme(sourceSchemeId: Long, newName: String): Long = withContext(dispatchers.io) {
+        createCustomScheme(
+            name = newName,
+            description = "",
+            basedOnSchemeId = sourceSchemeId
+        )
+    }
 
     /**
      * Rename a custom color scheme.
@@ -292,19 +288,18 @@ class ColorSchemeRepository @Inject constructor(
      * @param excludeSchemeId Optional scheme ID to exclude from the check (for renames)
      * @return true if the name exists, false otherwise
      */
-    suspend fun schemeNameExists(name: String, excludeSchemeId: Long? = null): Boolean =
-        withContext(dispatchers.io) {
-            // Check against built-in schemes
-            val builtInSchemes = ColorSchemePresets.builtInSchemes.map { it.name }
-            if (builtInSchemes.any { it.equals(name, ignoreCase = true) }) {
-                // If checking for a rename and the name matches a built-in scheme,
-                // only allow if we're renaming from a negative ID (which shouldn't happen)
-                return@withContext !(excludeSchemeId != null && excludeSchemeId < 0)
-            }
-
-            // Check against custom schemes in database
-            colorSchemeDao.nameExists(name, excludeSchemeId)
+    suspend fun schemeNameExists(name: String, excludeSchemeId: Long? = null): Boolean = withContext(dispatchers.io) {
+        // Check against built-in schemes
+        val builtInSchemes = ColorSchemePresets.builtInSchemes.map { it.name }
+        if (builtInSchemes.any { it.equals(name, ignoreCase = true) }) {
+            // If checking for a rename and the name matches a built-in scheme,
+            // only allow if we're renaming from a negative ID (which shouldn't happen)
+            return@withContext !(excludeSchemeId != null && excludeSchemeId < 0)
         }
+
+        // Check against custom schemes in database
+        colorSchemeDao.nameExists(name, excludeSchemeId)
+    }
 
     /**
      * Export a color scheme to JSON.
@@ -335,52 +330,50 @@ class ColorSchemeRepository @Inject constructor(
      * @throws org.json.JSONException if JSON is invalid
      * @throws IllegalArgumentException if schema is invalid
      */
-    suspend fun importScheme(jsonString: String, allowOverwrite: Boolean = false): Long =
-        withContext(dispatchers.io) {
-            // Parse JSON
-            val schemeJson = ColorSchemeJson.fromJson(jsonString)
+    suspend fun importScheme(jsonString: String, allowOverwrite: Boolean = false): Long = withContext(dispatchers.io) {
+        // Parse JSON
+        val schemeJson = ColorSchemeJson.fromJson(jsonString)
 
-            // Check for name conflicts
-            var finalName = schemeJson.name
-            if (schemeNameExists(finalName)) {
-                if (!allowOverwrite) {
-                    // Auto-rename by appending number
-                    var counter = 1
-                    while (schemeNameExists("$finalName ($counter)")) {
-                        counter++
-                    }
-                    finalName = "$finalName ($counter)"
+        // Check for name conflicts
+        var finalName = schemeJson.name
+        if (schemeNameExists(finalName)) {
+            if (!allowOverwrite) {
+                // Auto-rename by appending number
+                var counter = 1
+                while (schemeNameExists("$finalName ($counter)")) {
+                    counter++
                 }
+                finalName = "$finalName ($counter)"
             }
-
-            // Create new scheme (based on Default -1)
-            val newSchemeId = createCustomScheme(
-                name = finalName,
-                description = schemeJson.description,
-                basedOnSchemeId = -1
-            )
-
-            // Import colors (note: createCustomScheme already copies from base scheme,
-            // so we need to override with the imported colors)
-            val palette = schemeJson.toPalette()
-            palette.forEachIndexed { index, color ->
-                val colorEntry = ColorPalette(
-                    schemeId = newSchemeId,
-                    colorIndex = index,
-                    color = color
-                )
-                colorSchemeDao.insertOrUpdateColor(colorEntry)
-            }
-
-            newSchemeId
         }
+
+        // Create new scheme (based on Default -1)
+        val newSchemeId = createCustomScheme(
+            name = finalName,
+            description = schemeJson.description,
+            basedOnSchemeId = -1
+        )
+
+        // Import colors (note: createCustomScheme already copies from base scheme,
+        // so we need to override with the imported colors)
+        val palette = schemeJson.toPalette()
+        palette.forEachIndexed { index, color ->
+            val colorEntry = ColorPalette(
+                schemeId = newSchemeId,
+                colorIndex = index,
+                color = color
+            )
+            colorSchemeDao.insertOrUpdateColor(colorEntry)
+        }
+
+        newSchemeId
+    }
 
     /**
      * Blocking wrapper for getSchemeColors - for use from non-coroutine code.
      * Returns the color palette for a scheme as an IntArray.
      */
-    fun getColorsForSchemeBlocking(schemeId: Long): IntArray =
-        runBlocking { getSchemeColors(schemeId) }
+    fun getColorsForSchemeBlocking(schemeId: Long): IntArray = runBlocking { getSchemeColors(schemeId) }
 
     /**
      * Blocking wrapper for getSchemeDefaults - for use from non-coroutine code.

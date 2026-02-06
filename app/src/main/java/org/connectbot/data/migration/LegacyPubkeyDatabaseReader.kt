@@ -20,9 +20,9 @@ package org.connectbot.data.migration
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import timber.log.Timber
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
+import timber.log.Timber
 
 /**
  * Reads data from the legacy PubkeyDatabase (version 2).

@@ -19,9 +19,9 @@ package org.connectbot.transport
 
 import android.content.Context
 import android.net.Uri
-import timber.log.Timber
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
+import timber.log.Timber
 
 /**
  * Factory for creating and managing transport instances.
@@ -36,9 +36,7 @@ object TransportFactory {
      * @param protocol The protocol name (e.g., "ssh", "telnet", "local")
      * @return Transport instance or null if protocol is not recognized
      */
-    fun getTransport(protocol: String?): AbsTransport? {
-        return Transport.fromProtocol(protocol)?.createInstance()
-    }
+    fun getTransport(protocol: String?): AbsTransport? = Transport.fromProtocol(protocol)?.createInstance()
 
     /**
      * Parse a URI string for a given scheme.
@@ -59,9 +57,7 @@ object TransportFactory {
      * Get all available transport protocol names.
      * @return Array of protocol names
      */
-    fun getTransportNames(): Array<String> {
-        return Transport.allTransports().map { it.protocolName }.toTypedArray()
-    }
+    fun getTransportNames(): Array<String> = Transport.allTransports().map { it.protocolName }.toTypedArray()
 
     /**
      * Check if two transports are of the same type.
@@ -91,9 +87,7 @@ object TransportFactory {
      * @param context Android context for accessing resources
      * @return Format hint string
      */
-    fun getFormatHint(protocol: String, context: Context): String {
-        return Transport.fromProtocol(protocol)?.getFormatHint(context) ?: "???"
-    }
+    fun getFormatHint(protocol: String, context: Context): String = Transport.fromProtocol(protocol)?.getFormatHint(context) ?: "???"
 
     /**
      * Find a host in the repository that matches the given URI.

@@ -85,7 +85,6 @@ class DatabaseMigratorTest {
         assertThat(needed).isFalse()
     }
 
-
     @Test
     fun resetMigrationStateWorks() = runTest {
         migrator.resetMigrationState()

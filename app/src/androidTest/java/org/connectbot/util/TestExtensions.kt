@@ -49,15 +49,13 @@ suspend fun MainActivity.waitUntilServiceBound(
 suspend fun TerminalManager.waitForBridge(
     predicate: (TerminalBridge) -> Boolean,
     timeoutMillis: Long = 5000
-): TerminalBridge {
-    return withTimeout(timeoutMillis) {
-        var foundBridge: TerminalBridge? = null
-        while (foundBridge == null) {
-            foundBridge = bridgesFlow.value.firstOrNull(predicate)
-            if (foundBridge == null) delay(100)
-        }
-        foundBridge
+): TerminalBridge = withTimeout(timeoutMillis) {
+    var foundBridge: TerminalBridge? = null
+    while (foundBridge == null) {
+        foundBridge = bridgesFlow.value.firstOrNull(predicate)
+        if (foundBridge == null) delay(100)
     }
+    foundBridge
 }
 
 /**
@@ -66,6 +64,4 @@ suspend fun TerminalManager.waitForBridge(
 suspend fun TerminalManager.waitForBridgeByNickname(
     nickname: String,
     timeoutMillis: Long = 5000
-): TerminalBridge {
-    return waitForBridge({ it.host.nickname == nickname }, timeoutMillis)
-}
+): TerminalBridge = waitForBridge({ it.host.nickname == nickname }, timeoutMillis)

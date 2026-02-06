@@ -155,7 +155,6 @@ class ProfileConflictMigrationTest {
                 assertThat(success.hostsMigrated).isEqualTo(0)
                 assertThat(success.pubkeysMigrated).isEqualTo(0)
                 Timber.d("Migration correctly skipped - 0 items migrated")
-
             } catch (e: Exception) {
                 Timber.e(e, "Test failed with exception")
                 e.printStackTrace()
@@ -175,7 +174,8 @@ class ProfileConflictMigrationTest {
         val db = SQLiteDatabase.openOrCreateDatabase(dbFile, null)
         try {
             // Create hosts table with legacy schema
-            db.execSQL("""
+            db.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS hosts (
                     _id INTEGER PRIMARY KEY AUTOINCREMENT,
                     nickname TEXT NOT NULL,
@@ -201,10 +201,12 @@ class ProfileConflictMigrationTest {
                     scrollbacklines INTEGER DEFAULT 140,
                     usectrlaltasmeta TEXT DEFAULT 'false'
                 )
-            """.trimIndent())
+                """.trimIndent()
+            )
 
             // Create portforwards table
-            db.execSQL("""
+            db.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS portforwards (
                     _id INTEGER PRIMARY KEY AUTOINCREMENT,
                     hostid INTEGER NOT NULL,
@@ -214,36 +216,43 @@ class ProfileConflictMigrationTest {
                     destaddr TEXT NOT NULL,
                     destport INTEGER NOT NULL
                 )
-            """.trimIndent())
+                """.trimIndent()
+            )
 
             // Create knownhosts table
-            db.execSQL("""
+            db.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS knownhosts (
                     _id INTEGER PRIMARY KEY AUTOINCREMENT,
                     hostid INTEGER NOT NULL,
                     hostkeyalgo TEXT NOT NULL,
                     hostkey BLOB NOT NULL
                 )
-            """.trimIndent())
+                """.trimIndent()
+            )
 
             // Create colorSchemes table
-            db.execSQL("""
+            db.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS colorSchemes (
                     _id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT NOT NULL,
                     description TEXT
                 )
-            """.trimIndent())
+                """.trimIndent()
+            )
 
             // Create colors table (color palette)
-            db.execSQL("""
+            db.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS colors (
                     _id INTEGER PRIMARY KEY AUTOINCREMENT,
                     scheme INTEGER NOT NULL,
                     number INTEGER NOT NULL,
                     value INTEGER NOT NULL
                 )
-            """.trimIndent())
+                """.trimIndent()
+            )
 
             Timber.d("Created empty legacy hosts database at: ${dbFile.absolutePath}")
         } finally {
@@ -262,7 +271,8 @@ class ProfileConflictMigrationTest {
         val db = SQLiteDatabase.openOrCreateDatabase(dbFile, null)
         try {
             // Create pubkeys table with legacy schema
-            db.execSQL("""
+            db.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS pubkeys (
                     _id INTEGER PRIMARY KEY AUTOINCREMENT,
                     nickname TEXT NOT NULL,
@@ -274,7 +284,8 @@ class ProfileConflictMigrationTest {
                     confirmuse INTEGER NOT NULL DEFAULT 0,
                     lifetime INTEGER NOT NULL DEFAULT 0
                 )
-            """.trimIndent())
+                """.trimIndent()
+            )
 
             Timber.d("Created empty legacy pubkeys database at: ${dbFile.absolutePath}")
         } finally {

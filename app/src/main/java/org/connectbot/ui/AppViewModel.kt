@@ -98,11 +98,14 @@ class AppViewModel @Inject constructor(
             ) { migrationState, terminalMgr ->
                 when (migrationState) {
                     is MigrationUiState.Checking -> AppUiState.Loading
+
                     is MigrationUiState.InProgress -> AppUiState.MigrationInProgress(migrationState.state)
+
                     is MigrationUiState.Failed -> AppUiState.MigrationFailed(
                         migrationState.error,
                         migrationState.debugLog
                     )
+
                     is MigrationUiState.Completed -> {
                         if (terminalMgr != null) {
                             AppUiState.Ready(terminalMgr)
@@ -246,6 +249,7 @@ class AppViewModel @Inject constructor(
                 Timber.d("Permission already granted, proceeding")
                 true
             }
+
             shouldShowRationale -> {
                 Timber.d("Showing rationale dialog")
                 _pendingConnectionUri.value = uri
@@ -254,6 +258,7 @@ class AppViewModel @Inject constructor(
                 }
                 false
             }
+
             else -> {
                 Timber.d("Requesting permission")
                 _pendingConnectionUri.value = uri
