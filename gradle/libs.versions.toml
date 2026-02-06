@@ -50,7 +50,7 @@ assertj = "3.27.7"
 robolectric = "4.16.1"
 
 errorproneCore = "2.47.0"
-media3CommonKtx = "1.9.1"
+media3CommonKtx = "1.9.2"
 navigationTesting = "2.9.7"
 ui = "1.10.2"
 biometric = "1.4.0-alpha02"
