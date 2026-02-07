@@ -73,6 +73,7 @@ import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.NotificationPermissionHelper
 import org.connectbot.util.TerminalFont
+import org.xmlpull.v1.XmlPullParser
 import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -377,9 +378,10 @@ fun SettingsScreenContent(
             }
 
             item {
+                val context = LocalContext.current
                 val systemDefaultLabel = stringResource(R.string.pref_language_system_default)
                 val languageEntries = remember {
-                    listOf("" to systemDefaultLabel) + buildAvailableLanguageList()
+                    listOf("" to systemDefaultLabel) + buildAvailableLanguageList(context)
                 }
                 val currentLabel = if (uiState.language.isEmpty()) {
                     systemDefaultLabel
@@ -612,15 +614,21 @@ fun SettingsScreenContent(
     }
 }
 
-private fun buildAvailableLanguageList(): List<Pair<String, String>> {
-    val localeTags = listOf(
-        "af", "ar", "be", "bg", "ca", "cs", "da", "de", "el",
-        "en", "en-CA", "en-GB", "es", "eu", "fa", "fi", "fr", "gl",
-        "he", "hr", "hu", "id", "is", "it", "ja", "ka", "ko",
-        "lo", "lt", "lv", "mk", "nb", "ne", "nl", "pl", "pt",
-        "pt-BR", "ro", "ru", "sk", "sl", "sr", "sv", "ta", "th",
-        "tk", "tr", "uk", "vi", "zh-CN", "zh-HK", "zh-TW"
-    )
+private fun buildAvailableLanguageList(context: android.content.Context): List<Pair<String, String>> {
+    val localeTags = mutableListOf<String>()
+    val parser = context.resources.getXml(R.xml.locales_config)
+    while (parser.next() != XmlPullParser.END_DOCUMENT) {
+        if (parser.eventType == XmlPullParser.START_TAG && parser.name == "locale") {
+            val tag = parser.getAttributeValue(
+                "http://schemas.android.com/apk/res/android",
+                "name"
+            )
+            if (tag != null) {
+                localeTags.add(tag)
+            }
+        }
+    }
+    parser.close()
     return localeTags.map { tag ->
         val locale = Locale.forLanguageTag(tag)
         val nativeName = locale.getDisplayName(locale)
