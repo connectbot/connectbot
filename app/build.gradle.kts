@@ -77,7 +77,7 @@ android {
     }
 
     androidResources {
-        generateLocaleConfig = false
+        generateLocaleConfig = true
     }
 
     bundle {

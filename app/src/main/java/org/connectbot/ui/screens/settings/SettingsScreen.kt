@@ -616,7 +616,7 @@ fun SettingsScreenContent(
 
 private fun buildAvailableLanguageList(context: android.content.Context): List<Pair<String, String>> {
     val localeTags = mutableListOf<String>()
-    val parser = context.resources.getXml(R.xml.locales_config)
+    val parser = context.resources.getXml(R.xml._generated_res_locale_config)
     while (parser.next() != XmlPullParser.END_DOCUMENT) {
         if (parser.eventType == XmlPullParser.START_TAG && parser.name == "locale") {
             val tag = parser.getAttributeValue(
@@ -629,12 +629,16 @@ private fun buildAvailableLanguageList(context: android.content.Context): List<P
         }
     }
     parser.close()
-    return localeTags.map { tag ->
-        val locale = Locale.forLanguageTag(tag)
-        val nativeName = locale.getDisplayName(locale)
-            .replaceFirstChar { it.titlecase(locale) }
-        tag to nativeName
-    }.sortedBy { it.second.lowercase() }
+    return localeTags
+        .map { tag ->
+            val locale = Locale.forLanguageTag(tag)
+            val canonicalTag = locale.toLanguageTag()
+            val nativeName = locale.getDisplayName(locale)
+                .replaceFirstChar { it.titlecase(locale) }
+            canonicalTag to nativeName
+        }
+        .distinctBy { it.first }
+        .sortedBy { it.second.lowercase() }
 }
 
 @Composable
