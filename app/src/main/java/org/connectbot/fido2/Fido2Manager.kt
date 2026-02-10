@@ -92,6 +92,8 @@ class Fido2Manager @Inject constructor(
     private var currentSession: Ctap2Session? = null
     private var pinUvAuthProtocol: PinUvAuthProtocol? = null
     private var pinUvToken: ByteArray? = null
+    private var usbDiscoveryActive = false
+    private var usbConnectInProgress = false
 
     /**
      * Start USB device discovery.
@@ -99,14 +101,18 @@ class Fido2Manager @Inject constructor(
      * Also checks for already-connected USB devices.
      */
     fun startUsbDiscovery() {
+        if (usbDiscoveryActive) {
+            Timber.d("USB discovery already active, skipping duplicate start")
+            return
+        }
+
         try {
             val usbConfig = UsbConfiguration().setDeviceFilter(FIDO2_DEVICE_FILTER)
             yubiKitManager.startUsbDiscovery(usbConfig) { device ->
                 Timber.d("USB FIDO2 device detected: ${device.usbDevice.productName}")
-                scope.launch {
-                    connectToDevice(device, "USB", device.usbDevice.productName)
-                }
+                launchUsbConnect(device, device.usbDevice.productName)
             }
+            usbDiscoveryActive = true
 
             // Also check for already-connected USB devices
             checkForConnectedUsbDevices()
@@ -132,13 +138,11 @@ class Fido2Manager @Inject constructor(
 
                     if (usbManager.hasPermission(usbDevice)) {
                         Timber.d("Already have permission for device, connecting...")
-                        scope.launch {
-                            try {
-                                val device = UsbYubiKeyDevice(usbManager, usbDevice)
-                                connectToDevice(device, "USB", usbDevice.productName)
-                            } catch (e: Exception) {
-                                Timber.e(e, "Failed to connect to USB device")
-                            }
+                        try {
+                            val device = UsbYubiKeyDevice(usbManager, usbDevice)
+                            launchUsbConnect(device, usbDevice.productName)
+                        } catch (e: Exception) {
+                            Timber.e(e, "Failed to connect to USB device")
                         }
                     } else {
                         Timber.d("Need permission for device, will be requested by YubiKit")
@@ -159,8 +163,28 @@ class Fido2Manager @Inject constructor(
     fun stopUsbDiscovery() {
         try {
             yubiKitManager.stopUsbDiscovery()
+            usbDiscoveryActive = false
         } catch (e: Exception) {
             Timber.e(e, "Failed to stop USB discovery")
+        }
+    }
+
+    /**
+     * Launch a USB connection attempt while preventing duplicate concurrent attempts.
+     */
+    private fun launchUsbConnect(device: YubiKeyDevice, deviceName: String?) {
+        if (usbConnectInProgress) {
+            Timber.d("USB connect already in progress, ignoring duplicate callback")
+            return
+        }
+
+        usbConnectInProgress = true
+        scope.launch {
+            try {
+                connectToDevice(device, "USB", deviceName)
+            } finally {
+                usbConnectInProgress = false
+            }
         }
     }
 
