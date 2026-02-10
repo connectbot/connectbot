@@ -285,7 +285,7 @@ class Fido2Manager @Inject constructor(
                     Log.w(TAG, "USB session appears stale, retrying with fresh connection")
                     reconnectAndEnumerateUsbCredentials(pin)
                 } else {
-                    mapPinOrCredentialError(e)
+                    mapPinOrCredentialError(e, session = session, protocol = protocol)
                 }
             }
 
@@ -405,10 +405,19 @@ class Fido2Manager @Inject constructor(
                                     closeSessionAfter = false
                                 )
                             } catch (fallbackError: Exception) {
-                                mapPinOrCredentialError(fallbackError, v1FallbackAttempted = true)
+                                mapPinOrCredentialError(
+                                    fallbackError,
+                                    v1FallbackAttempted = true,
+                                    session = reconnectSession,
+                                    protocol = PinUvAuthProtocolV1()
+                                )
                             }
                         } else {
-                            mapPinOrCredentialError(e)
+                            mapPinOrCredentialError(
+                                e,
+                                session = reconnectSession,
+                                protocol = reconnectProtocol
+                            )
                         }
                     } finally {
                         try {
@@ -442,7 +451,9 @@ class Fido2Manager @Inject constructor(
 
     private fun mapPinOrCredentialError(
         e: Exception,
-        v1FallbackAttempted: Boolean = false
+        v1FallbackAttempted: Boolean = false,
+        session: Ctap2Session? = null,
+        protocol: PinUvAuthProtocol? = null
     ): Fido2Result<List<Fido2Credential>> {
         Log.e(TAG, "USB operation failed: ${e.message}", e)
         val message = e.message ?: ""
@@ -463,7 +474,23 @@ class Fido2Manager @Inject constructor(
             }
 
             message.contains("PIN_BLOCKED", ignoreCase = true) -> {
-                if (v1FallbackAttempted) {
+                val retries = getPinRetriesSafely(session, protocol)
+                if (retries != null && retries.count > 0) {
+                    val retryHint = if (v1FallbackAttempted) {
+                        "Retried with PIN protocol V1."
+                    } else {
+                        "Using current PIN protocol."
+                    }
+                    val powerCycleHint = if (retries.powerCycleState == true) {
+                        "Power-cycle or reinsert the key, then retry."
+                    } else {
+                        "Reinsert the key and retry."
+                    }
+                    Fido2Result.PinLocked(
+                        "Authenticator reported PIN_BLOCKED, but $retryHint Remaining retries: ${retries.count}. " +
+                            "This may be a device firmware quirk. $powerCycleHint"
+                    )
+                } else if (v1FallbackAttempted) {
                     Fido2Result.PinLocked("PIN is locked. Retried with PIN protocol V1. Please reset your security key.")
                 } else {
                     Fido2Result.PinLocked("PIN is locked. Please reset your security key.")
@@ -471,6 +498,24 @@ class Fido2Manager @Inject constructor(
             }
 
             else -> Fido2Result.Error(e.message ?: "USB operation failed")
+        }
+    }
+
+    private data class PinRetryInfo(
+        val count: Int,
+        val powerCycleState: Boolean?
+    )
+
+    private fun getPinRetriesSafely(session: Ctap2Session?, protocol: PinUvAuthProtocol?): PinRetryInfo? {
+        if (session == null || protocol == null) return null
+        return try {
+            val retries = ClientPin(session, protocol).getPinRetries()
+            PinRetryInfo(
+                count = retries.count,
+                powerCycleState = retries.powerCycleState
+            )
+        } catch (_: Exception) {
+            null
         }
     }
 
