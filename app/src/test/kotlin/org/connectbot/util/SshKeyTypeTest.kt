@@ -63,8 +63,8 @@ class SshKeyTypeTest {
     }
 
     @Test
-    fun ed25519_hasNoGenericKeyFactoryAlgorithm() {
-        assertThat(SshKeyType.ED25519.keyFactoryAlgorithm).isNull()
+    fun ed25519_usesStandardKeyFactoryAlgorithm() {
+        assertThat(SshKeyType.ED25519.keyFactoryAlgorithm).isEqualTo("Ed25519")
     }
 
     @Test

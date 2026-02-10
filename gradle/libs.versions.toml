@@ -22,7 +22,7 @@ lifecycleViewModel = "2.11.0"
 navigationCompose = "2.10.1"
 activityCompose = "1.13.0"
 
-sshlib = "2.2.48"
+sshlib = "0.4.2"
 termlib = "0.3.1"
 playServicesBasement = "18.12.0"
 playFeatureDelivery = "2.1.0"
@@ -56,7 +56,7 @@ biometric = "1.4.0-alpha02"
 core = "1.19.0"
 
 [libraries]
-sshlib = { module = "org.connectbot:sshlib", version.ref = "sshlib" }
+sshlib = { module = "org.connectbot.sshlib:sshlib", version.ref = "sshlib" }
 termlib = { module = "org.connectbot:termlib", version.ref = "termlib" }
 play-services-basement = { module = "com.google.android.gms:play-services-basement", version.ref = "playServicesBasement" }
 play-feature-delivery = { module = "com.google.android.play:feature-delivery-ktx", version.ref = "playFeatureDelivery" }
