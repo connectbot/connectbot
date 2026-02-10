@@ -17,7 +17,13 @@
 
 package org.connectbot.service
 
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import org.apache.harmony.niochar.charset.additional.IBM437
 import org.connectbot.di.CoroutineDispatchers
@@ -32,6 +38,7 @@ import java.nio.charset.CharsetEncoder
 import java.nio.charset.CoderMalfunctionError
 import java.nio.charset.CodingErrorAction
 import java.nio.charset.StandardCharsets
+import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicBoolean
 
 /**
@@ -40,18 +47,35 @@ import java.util.concurrent.atomic.AtomicBoolean
  *
  * @author Kenny Root
  */
-class Relay(
+class Relay private constructor(
     private val bridge: TerminalBridge,
     private val transport: AbsTransport,
     private val dispatchers: CoroutineDispatchers,
     encoding: String,
+    private val streamRead: (suspend (ByteArray, Int, Int) -> Int)?,
+    private val manageAutomation: Boolean,
+    private val outputLock: Mutex,
 ) {
 
     private val running = AtomicBoolean()
 
-    @Volatile private var currentCharset: Charset? = null
+    constructor(
+        bridge: TerminalBridge,
+        transport: AbsTransport,
+        dispatchers: CoroutineDispatchers,
+        encoding: String,
+    ) : this(bridge, transport, dispatchers, encoding, null, true, Mutex())
 
-    @Volatile private var decoder: CharsetDecoder? = null
+    private val streamRelays = CopyOnWriteArrayList<Relay>()
+
+    @Volatile
+    private var currentEncoding = encoding
+
+    @Volatile
+    private var currentCharset: Charset? = null
+
+    @Volatile
+    private var decoder: CharsetDecoder? = null
 
     private val encoder: CharsetEncoder = StandardCharsets.UTF_8.newEncoder().apply {
         onMalformedInput(CodingErrorAction.REPLACE)
@@ -90,7 +114,9 @@ class Relay(
         }
 
         currentCharset = charset
+        currentEncoding = encoding
         decoder = newCd
+        streamRelays.forEach { it.setCharset(encoding) }
     }
 
     /**
@@ -104,8 +130,52 @@ class Relay(
      * Start relaying data from transport to terminal buffer.
      * This is a suspend function that runs on IO dispatcher.
      */
-    suspend fun start() = withContext(dispatchers.io) {
+    suspend fun start(): Unit = withContext(dispatchers.io) {
         if (!running.compareAndSet(false, true)) return@withContext
+        val streams = if (streamRead == null) transport.getOutputStreams() else null
+        if (streams != null) {
+            try {
+                coroutineScope {
+                    streams.forEach { stream ->
+                        var packet: ByteArray? = null
+                        var packetOffset = 0
+                        val relay = Relay(
+                            bridge,
+                            transport,
+                            dispatchers,
+                            currentEncoding,
+                            streamRead = { buffer, offset, length ->
+                                while (packet == null || packetOffset == packet!!.size) {
+                                    val received = stream.receiveCatching()
+                                    received.exceptionOrNull()?.let { throw it }
+                                    packet = received.getOrNull() ?: return@Relay -1
+                                    packetOffset = 0
+                                }
+                                val currentPacket = checkNotNull(packet)
+                                val count = minOf(length, currentPacket.size - packetOffset)
+                                currentPacket.copyInto(buffer, offset, packetOffset, packetOffset + count)
+                                packetOffset += count
+                                count
+                            },
+                            manageAutomation = false,
+                            outputLock = outputLock,
+                        )
+                        streamRelays.add(relay)
+                        launch { relay.start() }
+                    }
+                }
+                transport.onOutputComplete()
+            } catch (e: Exception) {
+                currentCoroutineContext().ensureActive()
+                transport.onOutputFailure(e)
+                Timber.e(e, "Problem while handling SSH output streams")
+            } finally {
+                streamRelays.clear()
+                bridge.cancelAutomation()
+                running.set(false)
+            }
+            return@withContext
+        }
 
         try {
             decoder?.reset()
@@ -115,17 +185,17 @@ class Relay(
             destBuffer.clear()
             var endOfInput = false
             while (isActive && !endOfInput) {
-                val currentDecoder = decoder ?: continue
-
                 val offset = sourceBuffer.position()
                 val length = sourceBuffer.remaining()
 
                 val bytesRead = if (length > 0) {
-                    transport.read(sourceBuffer.array(), offset, length)
+                    streamRead?.invoke(sourceBuffer.array(), offset, length)
+                        ?: transport.read(sourceBuffer.array(), offset, length)
                 } else {
                     0
                 }
 
+                val currentDecoder = decoder ?: continue
                 endOfInput = sourceBuffer.advanceAfterRead(bytesRead, length)
 
                 sourceBuffer.flip()
@@ -133,42 +203,22 @@ class Relay(
                 while (sourceBuffer.hasRemaining() || endOfInput) {
                     val decodeResult = currentDecoder.decode(sourceBuffer, charBuffer, endOfInput)
 
-                    charBuffer.flip()
-
-                    val automationChars = charBuffer.asReadOnlyBuffer()
-                    encoder.encode(charBuffer, destBuffer, endOfInput)
-                    automationChars.limit(charBuffer.position())
-                    bridge.onAutomationOutput(automationChars)
-                    destBuffer.flip()
-
-                    if (destBuffer.hasRemaining()) {
-                        bridge.onOutputReceived()
-                        bridge.terminalEmulator.writeInput(destBuffer.array(), 0, destBuffer.limit())
-                    }
-                    destBuffer.clear()
-                    charBuffer.compact()
+                    publishCharacters(endOfInput = false)
 
                     if (decodeResult.isUnderflow) {
                         if (endOfInput) {
                             while (true) {
+                                val flushResult = currentDecoder.flush(charBuffer)
+                                publishCharacters(endOfInput = flushResult.isUnderflow)
+                                if (flushResult.isUnderflow) break
+                            }
+                            while (true) {
                                 val flushResult = encoder.flush(destBuffer)
-                                destBuffer.flip()
-                                if (destBuffer.hasRemaining()) {
-                                    bridge.onOutputReceived()
-                                    bridge.terminalEmulator.writeInput(
-                                        destBuffer.array(),
-                                        0,
-                                        destBuffer.limit(),
-                                    )
-                                }
-                                destBuffer.clear()
-
+                                publishBytes()
                                 if (flushResult.isUnderflow) break
                             }
                             return@withContext
                         }
-
-                        // Need more data to continue decoding
                         break
                     }
 
@@ -182,14 +232,41 @@ class Relay(
                 sourceBuffer.compact()
             }
         } catch (e: IOException) {
+            if (!manageAutomation) throw e
             Timber.e(e, "Problem while handling incoming data in relay")
         } catch (e: CoderMalfunctionError) {
             Timber.e(e, "Charset decoder failed while handling incoming data")
             bridge.dispatchDisconnect(DisconnectReason.IO_ERROR)
         } finally {
-            bridge.cancelAutomation()
+            if (manageAutomation) bridge.cancelAutomation()
             running.set(false)
         }
+    }
+
+    private suspend fun publishCharacters(endOfInput: Boolean) {
+        charBuffer.flip()
+        do {
+            val automationChars = charBuffer.asReadOnlyBuffer()
+            val result = encoder.encode(charBuffer, destBuffer, endOfInput)
+            automationChars.limit(charBuffer.position())
+            outputLock.withLock {
+                bridge.onAutomationOutput(automationChars)
+                publishBytesLocked()
+            }
+            if (result.isUnderflow) break
+        } while (true)
+        charBuffer.compact()
+    }
+
+    private suspend fun publishBytes() = outputLock.withLock { publishBytesLocked() }
+
+    private fun publishBytesLocked() {
+        destBuffer.flip()
+        if (destBuffer.hasRemaining()) {
+            bridge.onOutputReceived()
+            bridge.terminalEmulator.writeInput(destBuffer.array(), 0, destBuffer.limit())
+        }
+        destBuffer.clear()
     }
 
     companion object {

@@ -17,21 +17,31 @@
 
 package org.connectbot.transport
 
-import com.trilead.ssh2.Connection
+import kotlinx.coroutines.async
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runCurrent
+import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.service.PromptManager
+import org.connectbot.service.PromptResponse
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
+import org.connectbot.sshlib.AuthHandler
+import org.connectbot.sshlib.AuthPublicKey
+import org.connectbot.sshlib.AuthResult
+import org.connectbot.sshlib.SshClient
+import org.connectbot.sshlib.SshSigning
 import org.connectbot.util.HostConstants
 import org.junit.Test
+import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyLong
+import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.atLeastOnce
-import org.mockito.Mockito.inOrder
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
-import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import java.security.KeyPair
@@ -40,79 +50,122 @@ import java.security.KeyPairGenerator
 class SSHAuthenticationTest {
     private val manager = mock(TerminalManager::class.java)
     private val bridge = mock(TerminalBridge::class.java)
-    private val connection = mock(Connection::class.java)
+    private val client = mock(SshClient::class.java)
     private val repository = mock(PubkeyRepository::class.java)
     private val loadedKeys = linkedMapOf<String, TerminalManager.KeyHolder>()
+    private lateinit var handler: AuthHandler
+    private val offered = mutableListOf<List<AuthPublicKey>>()
+    private var beforeKeyRequest: () -> Unit = {}
 
-    private fun ssh(pubkeyId: Long = HostConstants.PUBKEYID_ANY): SSH {
+    private suspend fun ssh(pubkeyId: Long = HostConstants.PUBKEYID_ANY): SSH {
         `when`(manager.loadedKeypairs).thenReturn(loadedKeys)
         `when`(manager.pubkeyRepository).thenReturn(repository)
-        `when`(connection.getRemainingAuthMethods("alice")).thenReturn(arrayOf("publickey"))
+        val fallback = mock(AuthHandler::class.java)
+        `when`(client.authenticate(eq("alice") ?: "alice", any(AuthHandler::class.java) ?: fallback)).thenAnswer {
+            handler = it.getArgument(1)
+            beforeKeyRequest()
+            offered.add(runBlocking { it.getArgument<AuthHandler>(1).onPublicKeysNeeded() })
+            AuthResult.Failure(emptySet())
+        }
         return SSH(Host(username = "alice", nickname = "target", pubkeyId = pubkeyId), bridge, manager).apply {
-            setConnectionForTesting(connection)
+            SSH::class.java.getDeclaredField("client").apply { isAccessible = true }.set(this, this@SSHAuthenticationTest.client)
         }
     }
 
+    private fun assertOffered(vararg pairs: KeyPair) {
+        assertThat(offered.last().map { it.publicKeyBlob.toList() })
+            .containsExactlyElementsOf(pairs.map { SshSigning.encodePublicKey(it).publicKeyBlob.toList() })
+    }
+
     @Test
-    fun anyKey_offersUnlockedKeysInNicknameOrder() {
+    fun anyKey_offersUnlockedKeysInNicknameOrder() = runTest {
         load("zulu", secondKey)
         load("alpha", firstKey)
-
-        assertThat(ssh().authenticate()).isEqualTo(AuthenticationOutcome.Exhausted)
-
-        val order = inOrder(connection)
-        order.verify(connection).probePublicKey("alice", firstKey.public)
-        order.verify(connection).probePublicKey("alice", secondKey.public)
+        ssh().authenticate()
+        assertOffered(firstKey, secondKey)
         verify(repository, never()).getByIdBlocking(anyLong())
     }
 
     @Test
-    fun specificKey_doesNotOfferOtherUnlockedKeys() {
+    fun specificKey_doesNotOfferOtherUnlockedKeys() = runTest {
         val selected = load("selected", firstKey)
         load("other", secondKey)
         `when`(repository.getByIdBlocking(42)).thenReturn(selected)
         `when`(manager.isKeyLoaded("selected")).thenReturn(true)
         `when`(manager.getKey("selected")).thenReturn(firstKey)
-
-        assertThat(ssh(42).authenticate()).isEqualTo(AuthenticationOutcome.Exhausted)
-
-        verify(connection).probePublicKey("alice", firstKey.public)
-        verify(connection, never()).probePublicKey("alice", secondKey.public)
+        ssh(42).authenticate()
+        assertOffered(firstKey)
     }
 
     @Test
-    fun neverKey_doesNotOfferAnyUnlockedKeys() {
+    fun neverKey_doesNotOfferAnyUnlockedKeys() = runTest {
         load("first", firstKey)
-        assertThat(ssh(HostConstants.PUBKEYID_NEVER).authenticate()).isEqualTo(AuthenticationOutcome.Exhausted)
-        verify(connection, never()).probePublicKey("alice", firstKey.public)
+        ssh(HostConstants.PUBKEYID_NEVER).authenticate()
+        assertOffered()
         verify(repository, never()).getByIdBlocking(anyLong())
     }
 
     @Test
-    fun keyUnlockedDuringAuthentication_isNotAddedToSnapshot() {
+    fun keyUnlockedDuringAuthentication_isNotAddedToSnapshot() = runTest {
         load("first", firstKey)
-        `when`(connection.authenticateWithNone("alice")).thenAnswer {
-            load("second", secondKey)
-            false
-        }
-        assertThat(ssh().authenticate()).isEqualTo(AuthenticationOutcome.Exhausted)
-        verify(connection).probePublicKey("alice", firstKey.public)
-        verify(connection, never()).probePublicKey("alice", secondKey.public)
+        beforeKeyRequest = { load("second", secondKey) }
+        ssh().authenticate()
+        assertOffered(firstKey)
     }
 
     @Test
-    fun jumpHostAndTarget_haveIndependentKeyAttempts() {
+    fun jumpHostAndTarget_haveIndependentKeyAttempts() = runTest {
         load("first", firstKey)
         val transport = ssh()
-        assertThat(transport.authenticateJumpHost(connection, Host(username = "alice", nickname = "jump"))).isFalse()
-        assertThat(transport.authenticate()).isEqualTo(AuthenticationOutcome.Exhausted)
-        verify(connection, times(2)).probePublicKey("alice", firstKey.public)
-        verify(connection, times(2)).authenticateWithNone("alice")
+        assertThat(transport.authenticateJumpHost(client, Host(username = "alice", nickname = "jump"))).isFalse()
+        assertOffered(firstKey)
+        transport.authenticate()
+        assertOffered(firstKey)
+        assertThat(offered).hasSize(2)
         verify(bridge).dismissAuthBannersFrom("jump")
         verify(bridge, atLeastOnce()).dismissAuthBannersFrom("target")
     }
 
-    private fun load(nickname: String, pair: KeyPair): Pubkey {
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @Test
+    fun jumpAndTarget_requireApprovalOnlyWhenSigning() = runTest {
+        load("first", firstKey, confirmation = true)
+        val prompts = PromptManager()
+        `when`(bridge.promptManager).thenReturn(prompts)
+        val transport = ssh()
+        transport.authenticateJumpHost(client, Host(username = "alice", nickname = "jump"))
+        assertThat(prompts.promptState.value).isNull()
+        val key = offered.last().single()
+        val signature = async { handler.onSignatureRequest(key, byteArrayOf(1)) }
+        runCurrent()
+        assertThat(prompts.promptState.value).isNotNull()
+        prompts.respond(PromptResponse.BooleanResponse(false))
+        assertThat(signature.await()).isNull()
+        // Refusal survives another callback instead of asking on every retry.
+        assertThat(handler.onSignatureRequest(key, byteArrayOf(1))).isNull()
+        assertThat(prompts.promptState.value).isNull()
+    }
+
+    @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
+    @Test
+    fun approvedKey_isNotPromptedAgainAndUnloadedKeyCannotSign() = runTest {
+        load("first", firstKey, confirmation = true)
+        val prompts = PromptManager()
+        `when`(bridge.promptManager).thenReturn(prompts)
+        ssh().authenticate()
+        val key = offered.last().single()
+        assertThat(prompts.promptState.value).isNull()
+        val signature = async { handler.onSignatureRequest(key, byteArrayOf(1)) }
+        runCurrent()
+        prompts.respond(PromptResponse.BooleanResponse(true))
+        assertThat(signature.await()).isNotNull()
+        assertThat(handler.onSignatureRequest(key, byteArrayOf(2))).isNotNull()
+        assertThat(prompts.promptState.value).isNull()
+        loadedKeys.clear()
+        assertThat(handler.onSignatureRequest(key, byteArrayOf(3))).isNull()
+    }
+
+    private fun load(nickname: String, pair: KeyPair, confirmation: Boolean = false): Pubkey {
         val pubkey = Pubkey(
             id = 42,
             nickname = nickname,
@@ -121,7 +174,7 @@ class SSHAuthenticationTest {
             privateKey = pair.private.encoded,
             encrypted = false,
             startup = false,
-            confirmation = false,
+            confirmation = confirmation,
             createdDate = 0,
         )
         loadedKeys[nickname] = TerminalManager.KeyHolder().apply {

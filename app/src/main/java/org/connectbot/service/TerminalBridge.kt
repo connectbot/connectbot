@@ -665,21 +665,21 @@ class TerminalBridge {
             host.useAuthAgent?.let { newTransport.setUseAuthAgent(it) }
         }
         newTransport.setEmulation(emulation)
-        // A retained terminal may not emit another resize when reconnecting.
-        // Seed the new transport before SSH requests its PTY.
-        terminalEmulator.dimensions.let { dimensions ->
-            newTransport.setDimensions(
-                dimensions.columns,
-                dimensions.rows,
-                dimensions.widthPixels,
-                dimensions.heightPixels,
-            )
-        }
 
         outputLine(manager.res.getString(R.string.terminal_connecting, host.hostname, host.port, host.protocol))
 
         scope.launch(dispatchers.io) {
             try {
+                // A retained terminal may not emit another resize when reconnecting.
+                // Seed the new transport before SSH requests its PTY.
+                terminalEmulator.dimensions.let { dimensions ->
+                    newTransport.setDimensions(
+                        dimensions.columns,
+                        dimensions.rows,
+                        dimensions.widthPixels,
+                        dimensions.heightPixels,
+                    )
+                }
                 if (newTransport.canForwardPorts()) {
                     try {
                         for (portForward in manager.hostRepository.getPortForwardsForHost(host.id)) {
@@ -773,6 +773,14 @@ class TerminalBridge {
         transportOperations.trySend(
             TransportOperation.WriteData(string.toByteArray(charset(encoding))),
         )
+    }
+
+    fun writeToTransport(data: ByteArray) {
+        transportOperations.trySend(TransportOperation.WriteData(data))
+    }
+
+    fun writeToTransport(c: Int) {
+        transportOperations.trySend(TransportOperation.WriteData(byteArrayOf(c.toByte())))
     }
 
     /**
@@ -1128,7 +1136,7 @@ class TerminalBridge {
      * @param portForward the port forward bean to remove
      * @return true on successful removal
      */
-    fun removePortForward(portForward: PortForward): Boolean = transport?.removePortForward(portForward) ?: false
+    suspend fun removePortForward(portForward: PortForward): Boolean = transport?.removePortForward(portForward) ?: false
 
     /**
      * @return the list of port forwards
@@ -1142,7 +1150,7 @@ class TerminalBridge {
      * @param portForward member of our current port forwards list to enable
      * @return true on successful port forward setup
      */
-    fun enablePortForward(portForward: PortForward): Boolean {
+    suspend fun enablePortForward(portForward: PortForward): Boolean {
         return transport?.let {
             if (!it.isConnected()) {
                 Timber.i("Attempt to enable port forward while not connected")
@@ -1158,7 +1166,7 @@ class TerminalBridge {
      * @param portForward member of our current port forwards list to enable
      * @return true on successful port forward tear-down
      */
-    fun disablePortForward(portForward: PortForward): Boolean {
+    suspend fun disablePortForward(portForward: PortForward): Boolean {
         return transport?.let {
             if (!it.isConnected()) {
                 Timber.i("Attempt to disable port forward while not connected")

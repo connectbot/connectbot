@@ -18,7 +18,6 @@
 package org.connectbot.ui.screens.knownhostlist
 
 import androidx.lifecycle.SavedStateHandle
-import com.trilead.ssh2.crypto.fingerprint.KeyFingerprint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,6 +30,7 @@ import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KnownHost
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.sshlib.KeyFingerprint
 import org.junit.After
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
@@ -76,7 +76,7 @@ class KnownHostListViewModelTest {
         assertEquals(1, state.knownHosts.size)
         assertEquals("example.com:22", state.knownHosts.single().endpoint)
         assertEquals(
-            KeyFingerprint.createSHA256Fingerprint(knownHost.hostKey),
+            KeyFingerprint.sha256(knownHost.hostKey),
             state.knownHosts.single().fingerprint,
         )
     }

@@ -647,16 +647,18 @@ private fun HostListItem(
                                     Icon(Icons.Default.Edit, null)
                                 },
                             )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.list_host_portforwards)) },
-                                onClick = {
-                                    showMenu = false
-                                    onPortForwards()
-                                },
-                                leadingIcon = {
-                                    Icon(Icons.Default.Link, null)
-                                },
-                            )
+                            if (host.protocol == "ssh") {
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.list_host_portforwards)) },
+                                    onClick = {
+                                        showMenu = false
+                                        onPortForwards()
+                                    },
+                                    leadingIcon = {
+                                        Icon(Icons.Default.Link, null)
+                                    },
+                                )
+                            }
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.list_host_duplicate)) },
                                 onClick = {

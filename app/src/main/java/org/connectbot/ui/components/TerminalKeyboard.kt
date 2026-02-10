@@ -550,7 +550,6 @@ private fun RepeatableKeyButton(
     val coroutineScope = rememberCoroutineScope()
     var isPressed by remember { mutableStateOf(false) }
     var repeatJob by remember { mutableStateOf<Job?>(null) }
-    val currentOnPress by rememberUpdatedState(onPress)
 
     // Cleanup on unmount
     DisposableEffect(Unit) {
