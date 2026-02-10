@@ -19,7 +19,6 @@ package org.connectbot.ui.screens.pubkeylist
 
 import android.database.sqlite.SQLiteConstraintException
 import androidx.lifecycle.viewModelScope
-import com.trilead.ssh2.crypto.PEMEncoder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.cancel
@@ -32,6 +31,7 @@ import kotlinx.coroutines.test.setMain
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.sshlib.SshKeys
 import org.connectbot.util.BiometricKeyManager
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -123,8 +123,8 @@ class PubkeyNicknameImportTest {
     }
 
     companion object {
-        private val privateKey = PEMEncoder.encodePrivateKey(
-            KeyPairGenerator.getInstance("RSA").apply { initialize(1024) }.generateKeyPair().private,
+        private val privateKey = SshKeys.encodePemPrivateKey(
+            KeyPairGenerator.getInstance("RSA").apply { initialize(1024) }.generateKeyPair(),
             null,
         )
     }

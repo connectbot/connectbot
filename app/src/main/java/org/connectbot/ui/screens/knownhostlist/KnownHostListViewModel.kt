@@ -20,8 +20,6 @@ package org.connectbot.ui.screens.knownhostlist
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.trilead.ssh2.crypto.Base64
-import com.trilead.ssh2.crypto.fingerprint.KeyFingerprint
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -35,7 +33,9 @@ import kotlinx.coroutines.withContext
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.KnownHost
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.sshlib.KeyFingerprint
 import javax.inject.Inject
+import kotlin.io.encoding.Base64
 
 data class KnownHostListItem(
     val knownHost: KnownHost,
@@ -69,7 +69,7 @@ internal fun parseOpenSshHostKey(value: String): ParsedHostKey? {
         if (!algorithm.startsWith("ssh-") && !algorithm.startsWith("ecdsa-") && !algorithm.startsWith("sk-")) continue
 
         val keyBlob = try {
-            Base64.decode(parts[algorithmIndex + 1].toCharArray())
+            Base64.decode(parts[algorithmIndex + 1])
         } catch (_: Exception) {
             continue
         }
@@ -108,7 +108,7 @@ class KnownHostListViewModel @Inject constructor(
                     knownHosts.map { knownHost ->
                         KnownHostListItem(
                             knownHost = knownHost,
-                            fingerprint = KeyFingerprint.createSHA256Fingerprint(knownHost.hostKey),
+                            fingerprint = KeyFingerprint.sha256(knownHost.hostKey),
                         )
                     }
                 }

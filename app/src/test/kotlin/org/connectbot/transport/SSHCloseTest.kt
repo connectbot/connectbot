@@ -17,7 +17,9 @@
 
 package org.connectbot.transport
 
-import com.trilead.ssh2.Connection
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
+import org.connectbot.sshlib.SshClient
 import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.Mockito.doAnswer
@@ -28,42 +30,42 @@ import java.util.concurrent.atomic.AtomicBoolean
 
 class SSHCloseTest {
     @Test
-    fun reentrantCloseDrainsJumpHostsOnlyOnce() {
+    fun reentrantCloseDrainsJumpHostsOnlyOnce() = runTest {
         val ssh = SSH()
-        val first = mock(Connection::class.java)
-        val second = mock(Connection::class.java)
+        val first = mock(SshClient::class.java)
+        val second = mock(SshClient::class.java)
         val reenter = AtomicBoolean(true)
         doAnswer {
-            if (reenter.getAndSet(false)) ssh.close()
+            if (reenter.getAndSet(false)) runBlocking { ssh.close() }
             null
-        }.`when`(second).close()
+        }.`when`(second).disconnect()
         jumps(ssh).addAll(listOf(first, second))
 
         ssh.close()
 
-        verify(first, times(1)).close()
-        verify(second, times(1)).close()
+        verify(first, times(1)).disconnect()
+        verify(second, times(1)).disconnect()
         assertEquals(0, jumps(ssh).size)
     }
 
     @Test
-    fun reentrantTargetCloseDoesNotCloseTargetTwice() {
+    fun reentrantTargetCloseDoesNotCloseTargetTwice() = runTest {
         val ssh = SSH()
-        val target = mock(Connection::class.java)
+        val target = mock(SshClient::class.java)
         val reenter = AtomicBoolean(true)
         doAnswer {
-            if (reenter.getAndSet(false)) ssh.close()
+            if (reenter.getAndSet(false)) runBlocking { ssh.close() }
             null
-        }.`when`(target).close()
-        ssh.setConnectionForTesting(target)
+        }.`when`(target).disconnect()
+        SSH::class.java.getDeclaredField("client").apply { isAccessible = true }.set(ssh, target)
 
         ssh.close()
 
-        verify(target, times(1)).close()
+        verify(target, times(1)).disconnect()
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun jumps(ssh: SSH): MutableList<Connection> = SSH::class.java.getDeclaredField("jumpConnections").apply {
+    private fun jumps(ssh: SSH): MutableList<SshClient> = SSH::class.java.getDeclaredField("jumpClients").apply {
         isAccessible = true
-    }.get(ssh) as MutableList<Connection>
+    }.get(ssh) as MutableList<SshClient>
 }

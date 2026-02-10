@@ -19,9 +19,7 @@ package org.connectbot.ui.screens.generatepubkey
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.trilead.ssh2.crypto.keys.Ed25519Provider
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,6 +30,7 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.sshlib.SshKeys
 import org.connectbot.util.BiometricAvailability
 import org.connectbot.util.BiometricKeyManager
 import org.connectbot.util.PubkeyUtils
@@ -99,7 +98,7 @@ class GeneratePubkeyViewModel @Inject constructor(
 
     init {
         // Ensure Ed25519 provider is available
-        Ed25519Provider.insertIfNeeded()
+        SshKeys.ensureEd25519Support()
     }
 
     private val _uiState = MutableStateFlow(

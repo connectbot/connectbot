@@ -17,18 +17,22 @@
 
 package org.connectbot.transport
 
-import com.trilead.ssh2.Connection
-import com.trilead.ssh2.ConnectionInfo
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.runTest
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
+import org.connectbot.sshlib.AuthHandler
+import org.connectbot.sshlib.AuthResult
+import org.connectbot.sshlib.ConnectResult
+import org.connectbot.sshlib.SshClient
+import org.connectbot.sshlib.transport.TransportFactory
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertSame
 import org.junit.Assert.assertTrue
 import org.junit.Test
-import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.inOrder
@@ -39,17 +43,18 @@ import org.mockito.Mockito.`when`
 import java.io.IOException
 
 class SSHJumpHostTest {
+    private val fallbackHandler = mock(AuthHandler::class.java)
     private val manager = mock(TerminalManager::class.java)
     private val bridge = mock(TerminalBridge::class.java)
     private val repository = mock(HostRepository::class.java)
 
     @Test
-    fun selfReferencingJumpHostDisconnectsWithoutOverflow() {
+    fun selfReferencingJumpHostDisconnectsWithoutOverflow() = runTest {
         connectInvalidChain(Host(id = 2, nickname = "jump", jumpHostId = 2))
     }
 
     @Test
-    fun cyclicJumpHostsDisconnectWithoutOverflow() {
+    fun cyclicJumpHostsDisconnectWithoutOverflow() = runTest {
         connectInvalidChain(
             Host(id = 2, nickname = "first", jumpHostId = 3),
             Host(id = 3, nickname = "second", jumpHostId = 2),
@@ -57,64 +62,69 @@ class SSHJumpHostTest {
     }
 
     @Test
-    fun jumpChainReturningToTargetDisconnectsWithoutOverflow() {
+    fun jumpChainReturningToTargetDisconnectsWithoutOverflow() = runTest {
         connectInvalidChain(Host(id = 2, nickname = "jump", jumpHostId = 1))
     }
 
     @Test
-    fun validChainConnectsAndAuthenticatesOutermostFirst() {
+    fun validChainConnectsAndAuthenticatesOutermostFirst() = runTest {
         val outer = Host(id = 3, nickname = "outer", hostname = "outer.example", username = "alice")
         val inner = Host(id = 2, nickname = "inner", hostname = "inner.example", username = "alice", jumpHostId = 3)
         val target = Host(id = 1, nickname = "target", hostname = "target.example", username = "alice", jumpHostId = 2, wantSession = false)
         stubHosts(inner, outer)
-        val hostnames = mutableListOf<String>()
-        mockConstruction(Connection::class.java) { connection, context ->
-            hostnames.add(context.arguments()[0] as String)
-            `when`(connection.connect(any(), any())).thenReturn(ConnectionInfo())
-            `when`(connection.authenticateWithNone("alice")).thenReturn(true)
-        }.use { connections ->
+        val tunnels = mutableListOf<TransportFactory>()
+        mockConstruction(SshClient::class.java) { client, _ ->
+            runBlocking {
+                `when`(client.connect()).thenReturn(ConnectResult.Success)
+                `when`(client.authenticate(anyString() ?: "", any(AuthHandler::class.java) ?: fallbackHandler))
+                    .thenReturn(AuthResult.Success)
+                val tunnel = mock(TransportFactory::class.java)
+                tunnels.add(tunnel)
+                `when`(client.openDirectTcpipTransport(anyString() ?: "", org.mockito.ArgumentMatchers.anyInt(), anyString() ?: "", org.mockito.ArgumentMatchers.anyInt()))
+                    .thenReturn(tunnel)
+                `when`(client.disconnectedFlow).thenReturn(MutableSharedFlow())
+            }
+        }.use { clients ->
             val ssh = SSH(target, bridge, manager)
             ssh.connect()
-            val opened = connections.constructed()
-            assertEquals(listOf("outer.example", "inner.example", "target.example"), hostnames)
+            val opened = clients.constructed()
             assertEquals(3, opened.size)
             val order = inOrder(*opened.toTypedArray())
-            order.verify(opened[0]).connect(any(), any())
-            order.verify(opened[0]).authenticateWithNone("alice")
-            order.verify(opened[1]).setProxyData(any(JumpHostProxyData::class.java))
-            order.verify(opened[1]).connect(any(), any())
-            order.verify(opened[1]).authenticateWithNone("alice")
-            order.verify(opened[2]).setProxyData(any(JumpHostProxyData::class.java))
-            order.verify(opened[2]).connect(any(), any())
-            order.verify(opened[2]).authenticateWithNone("alice")
-            val proxy = ArgumentCaptor.forClass(JumpHostProxyData::class.java)
-            verify(opened[1]).setProxyData(proxy.capture())
-            assertSame(opened[0], proxy.value.jumpConnection)
-            verify(opened[2]).setProxyData(proxy.capture())
-            assertSame(opened[1], proxy.value.jumpConnection)
+            order.verify(opened[0]).connect()
+            order.verify(opened[0]).authenticate(anyString() ?: "", any(AuthHandler::class.java) ?: fallbackHandler)
+            order.verify(opened[0]).openDirectTcpipTransport(inner.hostname, inner.port)
+            order.verify(opened[1]).connect()
+            order.verify(opened[1]).authenticate(anyString() ?: "", any(AuthHandler::class.java) ?: fallbackHandler)
+            order.verify(opened[1]).openDirectTcpipTransport(target.hostname, target.port)
+            order.verify(opened[2]).connect()
+            order.verify(opened[2]).authenticate(anyString() ?: "", any(AuthHandler::class.java) ?: fallbackHandler)
             verify(bridge).onConnected()
             ssh.close()
-            opened.forEach { verify(it).close() }
+            opened.forEach { verify(it).disconnect() }
         }
     }
 
     @Test
-    fun failedInnerHopClosesPreviouslyConnectedOuterHop() {
+    fun failedInnerHopClosesPreviouslyConnectedOuterHop() = runTest {
         stubHosts(
-            Host(id = 2, nickname = "inner", username = "alice", jumpHostId = 3),
-            Host(id = 3, nickname = "outer", username = "alice"),
+            Host(id = 2, nickname = "inner", hostname = "inner.example", username = "alice", jumpHostId = 3),
+            Host(id = 3, nickname = "outer", hostname = "outer.example", username = "alice"),
         )
-        mockConstruction(Connection::class.java) { connection, context ->
-            if (context.count == 2) {
-                `when`(connection.connect(any(), any())).thenThrow(IOException("Cannot reach inner hop"))
-            } else {
-                `when`(connection.connect(any(), any())).thenReturn(ConnectionInfo())
-                `when`(connection.authenticateWithNone(anyString())).thenReturn(true)
+        mockConstruction(SshClient::class.java) { client, context ->
+            val tunnel = mock(TransportFactory::class.java)
+            runBlocking {
+                `when`(client.connect()).thenReturn(
+                    if (context.count == 2) ConnectResult.TransportError(IOException("Cannot reach inner hop")) else ConnectResult.Success,
+                )
+                `when`(client.authenticate(anyString() ?: "", any(AuthHandler::class.java) ?: fallbackHandler))
+                    .thenReturn(AuthResult.Success)
+                `when`(client.openDirectTcpipTransport(anyString() ?: "", org.mockito.ArgumentMatchers.anyInt(), anyString() ?: "", org.mockito.ArgumentMatchers.anyInt()))
+                    .thenReturn(tunnel)
             }
-        }.use { connections ->
+        }.use { clients ->
             SSH(Host(id = 1, jumpHostId = 2), bridge, manager).connect()
-            assertEquals(2, connections.constructed().size)
-            connections.constructed().forEach { verify(it).close() }
+            assertEquals(2, clients.constructed().size)
+            clients.constructed().forEach { verify(it).disconnect() }
             verify(bridge).dispatchDisconnect(DisconnectReason.IO_ERROR)
         }
     }
@@ -124,10 +134,10 @@ class SSHJumpHostTest {
         hosts.forEach { `when`(repository.findHostByIdBlocking(it.id)).thenReturn(it) }
     }
 
-    private fun connectInvalidChain(vararg jumps: Host) {
+    private suspend fun connectInvalidChain(vararg jumps: Host) {
         val target = Host(id = 1, nickname = "target", jumpHostId = 2)
         stubHosts(*(jumps.toList() + target).toTypedArray())
-        mockConstruction(Connection::class.java).use { connections ->
+        mockConstruction(SshClient::class.java).use { connections ->
             SSH(target, bridge, manager).connect()
             assertTrue(connections.constructed().isEmpty())
         }
