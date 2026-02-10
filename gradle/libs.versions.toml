@@ -24,7 +24,7 @@ lifecycleViewModel = "2.10.0"
 navigationCompose = "2.9.7"
 activityCompose = "1.12.4"
 
-sshlib = "2.2.42"
+sshlib = "0.1.2"
 termlib = "0.0.18"
 playServicesBasement = "18.10.0"
 conscrypt = "2.5.3"
@@ -57,7 +57,7 @@ biometric = "1.4.0-alpha02"
 core = "1.17.0"
 
 [libraries]
-sshlib = { module = "org.connectbot:sshlib", version.ref = "sshlib" }
+sshlib = { module = "org.connectbot.sshlib:sshlib", version.ref = "sshlib" }
 termlib = { module = "org.connectbot:termlib", version.ref = "termlib" }
 play-services-basement = { module = "com.google.android.gms:play-services-basement", version.ref = "playServicesBasement" }
 conscrypt-android = { module = "org.conscrypt:conscrypt-android", version.ref = "conscrypt" }

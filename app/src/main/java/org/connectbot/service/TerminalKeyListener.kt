@@ -19,9 +19,6 @@ package org.connectbot.service
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.res.Configuration
-// NOTE: Using deprecated android.text.ClipboardManager is intentional.
-// Migration to android.content.ClipboardManager requires careful testing
-// as there were issues with clipboard access in certain scenarios.
 import android.text.ClipboardManager
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
@@ -74,10 +71,8 @@ class TerminalKeyListener(
     }
 
     override fun onKey(v: View, keyCode: Int, event: KeyEvent): Boolean {
-        val transport = bridge.transport
-
         try {
-            if (bridge.isDisconnected || transport == null)
+            if (bridge.isDisconnected || bridge.transport == null)
                 return false
 
             val interpretAsHardKeyboard = deviceHasHardKeyboard &&
@@ -97,13 +92,13 @@ class TerminalKeyListener(
                             (ourMetaState and OUR_SLASH) != 0) {
                         ourMetaState = ourMetaState and OUR_TRANSIENT.inv()
                         _modifierState.value = getModifierState()
-                        transport.write('/'.code)
+                        bridge.writeToTransport('/'.code)
                         return true
                     } else if (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT &&
                             (ourMetaState and OUR_TAB) != 0) {
                         ourMetaState = ourMetaState and OUR_TRANSIENT.inv()
                         _modifierState.value = getModifierState()
-                        transport.write(0x09)
+                        bridge.writeToTransport(0x09)
                         return true
                     }
                 } else if (leftModifiersAreSlashAndTab) {
@@ -111,13 +106,13 @@ class TerminalKeyListener(
                             (ourMetaState and OUR_SLASH) != 0) {
                         ourMetaState = ourMetaState and OUR_TRANSIENT.inv()
                         _modifierState.value = getModifierState()
-                        transport.write('/'.code)
+                        bridge.writeToTransport('/'.code)
                         return true
                     } else if (keyCode == KeyEvent.KEYCODE_SHIFT_LEFT &&
                             (ourMetaState and OUR_TAB) != 0) {
                         ourMetaState = ourMetaState and OUR_TRANSIENT.inv()
                         _modifierState.value = getModifierState()
-                        transport.write(0x09)
+                        bridge.writeToTransport(0x09)
                         return true
                     }
                 }
@@ -144,7 +139,7 @@ class TerminalKeyListener(
             if (keyCode == KeyEvent.KEYCODE_UNKNOWN &&
                     event.action == KeyEvent.ACTION_MULTIPLE) {
                 val input = encoding?.let { event.characters.toByteArray(charset(it)) }
-                input?.let { transport.write(it) }
+                input?.let { bridge.writeToTransport(it) }
                 return true
             }
 
@@ -314,10 +309,10 @@ class TerminalKeyListener(
                 if ((derivedMetaState and KeyEvent.META_ALT_ON) != 0)
                     sendEscape()
                 if (finalChar < 0x80)
-                    transport.write(finalChar)
+                    bridge.writeToTransport(finalChar)
                 else
                     encoding?.let {
-                        transport.write(String(Character.toChars(finalChar))
+                        bridge.writeToTransport(String(Character.toChars(finalChar))
                             .toByteArray(charset(it)))
                     }
                 return true
@@ -329,7 +324,7 @@ class TerminalKeyListener(
                     return true
                 }
                 KeyEvent.KEYCODE_TAB -> {
-                    transport.write(0x09)
+                    bridge.writeToTransport(0x09)
                     return true
                 }
                 KeyEvent.KEYCODE_CAMERA -> {
@@ -338,18 +333,18 @@ class TerminalKeyListener(
                         PreferenceConstants.CAMERA_CTRLA_SPACE)
                     when (camera) {
                         PreferenceConstants.CAMERA_CTRLA_SPACE -> {
-                            transport.write(0x01)
-                            transport.write(' '.code)
+                            bridge.writeToTransport(0x01)
+                            bridge.writeToTransport(' '.code)
                         }
                         PreferenceConstants.CAMERA_CTRLA -> {
-                            transport.write(0x01)
+                            bridge.writeToTransport(0x01)
                         }
                         PreferenceConstants.CAMERA_ESC -> {
                             bridge.terminalEmulator.dispatchKey(0, VTermKey.ESCAPE)
                         }
                         PreferenceConstants.CAMERA_ESC_A -> {
                             bridge.terminalEmulator.dispatchKey(0, VTermKey.ESCAPE)
-                            transport.write('a'.code)
+                            bridge.writeToTransport('a'.code)
                         }
                         "text_input" -> {
                             // Request floating text input dialog
@@ -434,12 +429,7 @@ class TerminalKeyListener(
 
         } catch (e: IOException) {
             Timber.e(e, "Problem while trying to handle an onKey() event")
-            try {
-                transport?.flush()
-            } catch (_: IOException) {
-                Timber.d("Our transport was closed, dispatching disconnect event")
-                bridge.dispatchDisconnect(false)
-            }
+            bridge.dispatchDisconnect(false)
         } catch (_: NullPointerException) {
             Timber.d("Input before connection established ignored.")
             return true

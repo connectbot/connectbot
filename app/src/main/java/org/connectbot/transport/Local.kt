@@ -43,7 +43,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
 
     constructor() : this(AndroidKiller())
 
-    override fun close() {
+    override suspend fun close() {
         try {
             os?.close()
             os = null
@@ -55,7 +55,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
         }
     }
 
-    override fun connect() {
+    override suspend fun connect() {
         val pids = IntArray(1)
 
         try {
@@ -84,7 +84,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
     }
 
     @Throws(IOException::class)
-    override fun flush() {
+    override suspend fun flush() {
         os?.flush()
     }
 
@@ -97,7 +97,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
     override fun isSessionOpen(): Boolean = `is` != null && os != null
 
     @Throws(IOException::class)
-    override fun read(buffer: ByteArray, offset: Int, length: Int): Int {
+    override suspend fun read(buffer: ByteArray, offset: Int, length: Int): Int {
         val inputStream = `is` ?: run {
             bridge?.dispatchDisconnect(false)
             throw IOException("session closed")
@@ -105,7 +105,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
         return inputStream.read(buffer, offset, length)
     }
 
-    override fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) {
+    override suspend fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) {
         // We are not connected yet.
         val fd = shellFd ?: return
 
@@ -117,12 +117,12 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
     }
 
     @Throws(IOException::class)
-    override fun write(buffer: ByteArray) {
+    override suspend fun write(buffer: ByteArray) {
         os?.write(buffer)
     }
 
     @Throws(IOException::class)
-    override fun write(c: Int) {
+    override suspend fun write(c: Int) {
         os?.write(c)
     }
 

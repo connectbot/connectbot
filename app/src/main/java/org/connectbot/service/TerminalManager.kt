@@ -34,7 +34,6 @@ import android.os.Vibrator
 import android.os.VibratorManager
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.UserNotAuthenticatedException
-import com.trilead.ssh2.crypto.PublicKeyUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -57,6 +56,7 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.sshlib.SshSigning
 import org.connectbot.transport.TransportFactory
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.ProviderLoader
@@ -486,7 +486,7 @@ class TerminalManager :
 
         removeKey(pubkey.nickname)
 
-        val sshPubKey = PublicKeyUtils.extractPublicKeyBlob(pair.public)
+        val sshPubKey = SshSigning.encodePublicKeyBlob(pair.public)
 
         val keyHolder = KeyHolder()
         keyHolder.pubkey = pubkey
@@ -568,7 +568,7 @@ class TerminalManager :
         val keyPair = KeyPair(publicKey, privateKey)
 
         // Extract OpenSSH format public key for SSH authentication
-        val sshPubKey = PublicKeyUtils.extractPublicKeyBlob(keyPair.public)
+        val sshPubKey = SshSigning.encodePublicKeyBlob(keyPair.public)
 
         val keyHolder = KeyHolder()
         keyHolder.pubkey = pubkey
