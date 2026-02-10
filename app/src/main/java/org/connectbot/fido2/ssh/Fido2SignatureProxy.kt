@@ -85,7 +85,7 @@ class Fido2SignatureProxy(
             }
 
             is Fido2Result.PinLocked -> {
-                throw IOException("FIDO2 PIN is locked. Please reset your security key.")
+                throw IOException("FIDO2 ${result.message}")
             }
 
             is Fido2Result.Error -> {
