@@ -132,7 +132,7 @@ class BiometricPromptState(
 fun rememberBiometricPromptState(
     onSuccess: (BiometricPrompt.AuthenticationResult) -> Unit,
     onError: (Int, CharSequence) -> Unit,
-    onFailed: () -> Unit = {}
+    onFailure: () -> Unit = {}
 ): BiometricPromptState? {
     val context = LocalContext.current
     val activity = context.findFragmentActivity()
@@ -146,14 +146,14 @@ fun rememberBiometricPromptState(
     // even though it's remembered across recompositions.
     val currentOnSuccess by rememberUpdatedState(onSuccess)
     val currentOnError by rememberUpdatedState(onError)
-    val currentOnFailed by rememberUpdatedState(onFailed)
+    val currentOnFailure by rememberUpdatedState(onFailure)
 
     val state = remember(activity) {
         BiometricPromptState(
             activity = activity,
             onSuccess = { currentOnSuccess(it) },
             onError = { code, msg -> currentOnError(code, msg) },
-            onFailed = { currentOnFailed() }
+            onFailed = { currentOnFailure() }
         )
     }
 
