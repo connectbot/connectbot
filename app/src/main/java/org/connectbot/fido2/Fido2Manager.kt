@@ -387,12 +387,37 @@ class Fido2Manager @Inject constructor(
                     val connection = connectionResult.value
                     val reconnectSession = Ctap2Session(connection)
                     val reconnectProtocol = selectPinProtocol(reconnectSession)
-                    val result = enumerateCredentialsWithPin(
-                        session = reconnectSession,
-                        protocol = reconnectProtocol,
-                        pin = pin,
-                        closeSessionAfter = true
-                    )
+                    val result = try {
+                        enumerateCredentialsWithPin(
+                            session = reconnectSession,
+                            protocol = reconnectProtocol,
+                            pin = pin,
+                            closeSessionAfter = false
+                        )
+                    } catch (e: Exception) {
+                        if (shouldRetryPinBlockedWithV1(e, reconnectProtocol)) {
+                            Timber.w(e, "USB PIN blocked on protocol V2, retrying with PIN protocol V1")
+                            try {
+                                enumerateCredentialsWithPin(
+                                    session = reconnectSession,
+                                    protocol = PinUvAuthProtocolV1(),
+                                    pin = pin,
+                                    closeSessionAfter = false
+                                )
+                            } catch (fallbackError: Exception) {
+                                mapPinOrCredentialError(fallbackError, v1FallbackAttempted = true)
+                            }
+                        } else {
+                            mapPinOrCredentialError(e)
+                        }
+                    } finally {
+                        try {
+                            reconnectSession.close()
+                        } catch (closeError: Exception) {
+                            Timber.w(closeError, "Failed to close reconnect USB session")
+                        }
+                    }
+
                     continuation.resume(result)
                 } catch (e: Exception) {
                     Log.e(TAG, "USB reconnect operation failed: ${e.message}", e)
@@ -409,7 +434,16 @@ class Fido2Manager @Inject constructor(
             message.contains("connection reset", ignoreCase = true)
     }
 
-    private fun mapPinOrCredentialError(e: Exception): Fido2Result<List<Fido2Credential>> {
+    private fun shouldRetryPinBlockedWithV1(e: Exception, protocol: PinUvAuthProtocol): Boolean {
+        if (protocol !is PinUvAuthProtocolV2) return false
+        val message = e.message ?: return false
+        return message.contains("PIN_BLOCKED", ignoreCase = true)
+    }
+
+    private fun mapPinOrCredentialError(
+        e: Exception,
+        v1FallbackAttempted: Boolean = false
+    ): Fido2Result<List<Fido2Credential>> {
         Log.e(TAG, "USB operation failed: ${e.message}", e)
         val message = e.message ?: ""
         return when {
@@ -419,11 +453,21 @@ class Fido2Manager @Inject constructor(
             }
 
             message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) -> {
-                Fido2Result.PinLocked("PIN is temporarily blocked. Reinsert the security key and try again.")
+                if (v1FallbackAttempted) {
+                    Fido2Result.PinLocked(
+                        "PIN is temporarily blocked. Retried with PIN protocol V1; reinsert the security key and try again."
+                    )
+                } else {
+                    Fido2Result.PinLocked("PIN is temporarily blocked. Reinsert the security key and try again.")
+                }
             }
 
             message.contains("PIN_BLOCKED", ignoreCase = true) -> {
-                Fido2Result.PinLocked("PIN is locked. Please reset your security key.")
+                if (v1FallbackAttempted) {
+                    Fido2Result.PinLocked("PIN is locked. Retried with PIN protocol V1. Please reset your security key.")
+                } else {
+                    Fido2Result.PinLocked("PIN is locked. Please reset your security key.")
+                }
             }
 
             else -> Fido2Result.Error(e.message ?: "USB operation failed")
