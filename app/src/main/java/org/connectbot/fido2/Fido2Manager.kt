@@ -474,7 +474,7 @@ class Fido2Manager @Inject constructor(
             }
 
             message.contains("PIN_BLOCKED", ignoreCase = true) -> {
-                val retries = getPinRetriesSafely(session, protocol)
+                val retries = getPinRetriesWithFallback(session, protocol)
                 if (retries != null && retries.count > 0) {
                     val retryHint = if (v1FallbackAttempted) {
                         "Retried with PIN protocol V1."
@@ -506,17 +506,47 @@ class Fido2Manager @Inject constructor(
         val powerCycleState: Boolean?
     )
 
-    private fun getPinRetriesSafely(session: Ctap2Session?, protocol: PinUvAuthProtocol?): PinRetryInfo? {
-        if (session == null || protocol == null) return null
-        return try {
-            val retries = ClientPin(session, protocol).getPinRetries()
-            PinRetryInfo(
-                count = retries.count,
-                powerCycleState = retries.powerCycleState
-            )
-        } catch (_: Exception) {
-            null
+    private fun getPinRetriesWithFallback(
+        session: Ctap2Session?,
+        protocol: PinUvAuthProtocol?
+    ): PinRetryInfo? {
+        if (session == null || protocol == null) {
+            Timber.w("PIN retries probe skipped: session or protocol is null")
+            return null
         }
+
+        val primaryName = "primary(${protocol.javaClass.simpleName})"
+        getPinRetriesSafely(session, protocol, primaryName)?.let { return it }
+
+        if (protocol !is PinUvAuthProtocolV1) {
+            val fallbackProtocol = PinUvAuthProtocolV1()
+            val fallbackName = "fallback(${fallbackProtocol.javaClass.simpleName})"
+            return getPinRetriesSafely(session, fallbackProtocol, fallbackName)
+        }
+
+        return null
+    }
+
+    private fun getPinRetriesSafely(
+        session: Ctap2Session,
+        protocol: PinUvAuthProtocol,
+        probeName: String
+    ): PinRetryInfo? = try {
+        val retries = ClientPin(session, protocol).getPinRetries()
+        val result = PinRetryInfo(
+            count = retries.count,
+            powerCycleState = retries.powerCycleState
+        )
+        Timber.i(
+            "PIN retries probe %s succeeded: count=%d, powerCycleState=%s",
+            probeName,
+            result.count,
+            result.powerCycleState
+        )
+        result
+    } catch (e: Exception) {
+        Timber.w(e, "PIN retries probe %s failed: %s", probeName, e.message)
+        null
     }
 
     /**
