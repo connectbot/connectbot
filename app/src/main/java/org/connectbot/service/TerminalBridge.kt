@@ -518,6 +518,14 @@ class TerminalBridge {
         )
     }
 
+    fun writeToTransport(data: ByteArray) {
+        transportOperations.trySend(TransportOperation.WriteData(data))
+    }
+
+    fun writeToTransport(c: Int) {
+        transportOperations.trySend(TransportOperation.WriteData(byteArrayOf(c.toByte())))
+    }
+
     /**
      * Request the parent ConsoleScreen to open the floating text input dialog.
      * Called from hardware camera button or other triggers.
@@ -808,7 +816,7 @@ class TerminalBridge {
      * @param portForward the port forward bean to remove
      * @return true on successful removal
      */
-    fun removePortForward(portForward: PortForward): Boolean = transport?.removePortForward(portForward) ?: false
+    suspend fun removePortForward(portForward: PortForward): Boolean = transport?.removePortForward(portForward) ?: false
 
     /**
      * @return the list of port forwards
@@ -822,7 +830,7 @@ class TerminalBridge {
      * @param portForward member of our current port forwards list to enable
      * @return true on successful port forward setup
      */
-    fun enablePortForward(portForward: PortForward): Boolean {
+    suspend fun enablePortForward(portForward: PortForward): Boolean {
         return transport?.let {
             if (!it.isConnected()) {
                 Timber.i("Attempt to enable port forward while not connected")
@@ -838,7 +846,7 @@ class TerminalBridge {
      * @param portForward member of our current port forwards list to enable
      * @return true on successful port forward tear-down
      */
-    fun disablePortForward(portForward: PortForward): Boolean {
+    suspend fun disablePortForward(portForward: PortForward): Boolean {
         return transport?.let {
             if (!it.isConnected()) {
                 Timber.i("Attempt to disable port forward while not connected")
