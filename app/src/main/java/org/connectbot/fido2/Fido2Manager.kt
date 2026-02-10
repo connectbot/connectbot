@@ -394,9 +394,12 @@ class Fido2Manager @Inject constructor(
                 Fido2Result.PinInvalid(attemptsRemaining = null)
             }
 
-            message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) ||
-                message.contains("PIN_BLOCKED", ignoreCase = true) -> {
-                Fido2Result.PinLocked("PIN is locked")
+            message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) -> {
+                Fido2Result.PinLocked("PIN is temporarily blocked. Reinsert the security key and try again.")
+            }
+
+            message.contains("PIN_BLOCKED", ignoreCase = true) -> {
+                Fido2Result.PinLocked("PIN is locked. Please reset your security key.")
             }
 
             else -> Fido2Result.Error(e.message ?: "USB operation failed")
@@ -574,9 +577,12 @@ class Fido2Manager @Inject constructor(
                                     Fido2Result.PinInvalid(attemptsRemaining = null)
                                 }
 
-                                message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) ||
-                                    message.contains("PIN_BLOCKED", ignoreCase = true) -> {
-                                    Fido2Result.PinLocked("PIN is locked")
+                                message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) -> {
+                                    Fido2Result.PinLocked("PIN is temporarily blocked. Reinsert the security key and try again.")
+                                }
+
+                                message.contains("PIN_BLOCKED", ignoreCase = true) -> {
+                                    Fido2Result.PinLocked("PIN is locked. Please reset your security key.")
                                 }
 
                                 else -> Fido2Result.Error(e.message ?: "NFC operation failed")
@@ -719,9 +725,12 @@ class Fido2Manager @Inject constructor(
                     Fido2Result.PinInvalid(attemptsRemaining = null)
                 }
 
-                message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) ||
-                    message.contains("PIN_BLOCKED", ignoreCase = true) -> {
-                    Fido2Result.PinLocked("PIN is locked")
+                message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) -> {
+                    Fido2Result.PinLocked("PIN is temporarily blocked. Reinsert the security key and try again.")
+                }
+
+                message.contains("PIN_BLOCKED", ignoreCase = true) -> {
+                    Fido2Result.PinLocked("PIN is locked. Please reset your security key.")
                 }
 
                 else -> Fido2Result.Error(e.message ?: "PIN authentication failed")
@@ -1097,9 +1106,12 @@ class Fido2Manager @Inject constructor(
                                 Fido2Result.PinInvalid(attemptsRemaining = null)
                             }
 
-                            message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) ||
-                                message.contains("PIN_BLOCKED", ignoreCase = true) -> {
-                                Fido2Result.PinLocked("PIN is locked")
+                            message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) -> {
+                                Fido2Result.PinLocked("PIN is temporarily blocked. Reinsert the security key and try again.")
+                            }
+
+                            message.contains("PIN_BLOCKED", ignoreCase = true) -> {
+                                Fido2Result.PinLocked("PIN is locked. Please reset your security key.")
                             }
 
                             message.contains("NO_CREDENTIALS", ignoreCase = true) -> {
@@ -1224,9 +1236,12 @@ class Fido2Manager @Inject constructor(
                                 Fido2Result.PinInvalid(attemptsRemaining = null)
                             }
 
-                            message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) ||
-                                message.contains("PIN_BLOCKED", ignoreCase = true) -> {
-                                Fido2Result.PinLocked("PIN is locked")
+                            message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) -> {
+                                Fido2Result.PinLocked("PIN is temporarily blocked. Reinsert the security key and try again.")
+                            }
+
+                            message.contains("PIN_BLOCKED", ignoreCase = true) -> {
+                                Fido2Result.PinLocked("PIN is locked. Please reset your security key.")
                             }
 
                             message.contains("NO_CREDENTIALS", ignoreCase = true) -> {
