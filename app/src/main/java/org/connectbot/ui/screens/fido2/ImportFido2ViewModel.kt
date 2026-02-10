@@ -290,7 +290,7 @@ class ImportFido2ViewModel @Inject constructor(
                         isScanning = false,
                         needsPin = false,
                         waitingForNfcTap = false,
-                        error = "PIN is locked. Please reset your security key."
+                        error = result.message
                     )
                 }
             }
