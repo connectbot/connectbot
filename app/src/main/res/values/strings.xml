@@ -721,6 +721,10 @@
 	<string name="terminal_sucess">"Verified host '%1$s' key: %2$s"</string>
 	<!-- Error message shown in terminal when host key verification fails -->
 	<string name="terminal_failed">"Host key verification failed."</string>
+	<!-- Error message shown in terminal when an SSH connection attempt fails without a more specific message -->
+	<string name="terminal_connection_failed">"Connection failed."</string>
+	<!-- Message shown in terminal when an SSH connection succeeds -->
+	<string name="terminal_connected">"Connected."</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
 	<string name="terminal_using_s2c_algorithm">"Server-to-client algorithm: %1$s %2$s"</string>
@@ -736,6 +740,8 @@
 
 	<!-- Message shown in terminal when starting authentication process -->
 	<string name="terminal_auth">"Trying to authenticate"</string>
+	<!-- Message shown in the terminal after the SSH server confirms authentication succeeded. -->
+	<string name="terminal_auth_success">Authentication successful.</string>
 	<!-- Header shown before an SSH authentication banner in the terminal. Parameter is the host or jump host name. -->
 	<string name="terminal_auth_banner_header">"[%1$s] Authentication message:"</string>
 
@@ -769,6 +775,12 @@
 	<!-- Error message shown when server doesn't support any of the authentication methods we can use -->
 	<string name="terminal_auth_fail">"[Your host doesn't support 'password' or 'keyboard-interactive' authentication.]"</string>
 
+	<!-- Terminal diagnostic when the SSH server cannot open a session channel. -->
+	<string name="terminal_session_failed">Unable to open an SSH session.</string>
+	<!-- Terminal diagnostic when the SSH server rejects the requested terminal. -->
+	<string name="terminal_pty_rejected">The SSH server rejected the terminal request.</string>
+	<!-- Terminal diagnostic when the SSH server rejects starting an interactive shell. -->
+	<string name="terminal_shell_rejected">The SSH server rejected the shell request.</string>
 	<!-- Message shown in terminal when shell session is not started because user disabled it in host settings -->
 	<string name="terminal_no_session">"Session will not be started due to host preference."</string>
 	<!-- Message shown in terminal when a port forward is enabled. Parameter is the port forward description. -->

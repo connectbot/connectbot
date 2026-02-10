@@ -113,7 +113,7 @@ class Telnet : AbsTransport {
         }
     }
 
-    override fun connect() {
+    override suspend fun connect() {
         try {
             socket = Socket()
 
@@ -135,7 +135,7 @@ class Telnet : AbsTransport {
         }
     }
 
-    override fun close() {
+    override suspend fun close() {
         connected = false
         socket?.let {
             try {
@@ -148,7 +148,7 @@ class Telnet : AbsTransport {
     }
 
     @Throws(IOException::class)
-    override fun flush() {
+    override suspend fun flush() {
         os?.flush()
     }
 
@@ -159,7 +159,7 @@ class Telnet : AbsTransport {
     override fun isSessionOpen(): Boolean = connected
 
     @Throws(IOException::class)
-    override fun read(buffer: ByteArray, offset: Int, length: Int): Int {
+    override suspend fun read(buffer: ByteArray, offset: Int, length: Int): Int {
         /* process all already read bytes */
         var n: Int
 
@@ -190,7 +190,7 @@ class Telnet : AbsTransport {
     }
 
     @Throws(IOException::class)
-    override fun write(buffer: ByteArray) {
+    override suspend fun write(buffer: ByteArray) {
         try {
             os?.write(buffer)
         } catch (_: SocketException) {
@@ -199,7 +199,7 @@ class Telnet : AbsTransport {
     }
 
     @Throws(IOException::class)
-    override fun write(c: Int) {
+    override suspend fun write(c: Int) {
         try {
             os?.write(c)
         } catch (_: SocketException) {
@@ -207,7 +207,7 @@ class Telnet : AbsTransport {
         }
     }
 
-    override fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) {
+    override suspend fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) {
         try {
             handler.setWindowSize(columns, rows)
         } catch (e: IOException) {

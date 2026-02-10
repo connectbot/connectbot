@@ -54,10 +54,12 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.connectbot.data.entity.Host
+import org.connectbot.service.DisconnectReason
 import org.connectbot.service.ModifierLevel
 import org.connectbot.service.ModifierState
 import org.connectbot.service.PromptManager
 import org.connectbot.service.TerminalBridge
+import org.connectbot.service.TerminalEmulatorKeyDispatcher
 import org.connectbot.service.TerminalKeyListener
 import org.connectbot.service.TerminalManager
 import org.connectbot.terminal.DelKeyMode
@@ -159,6 +161,43 @@ class ConsoleScreenTest {
         composeTestRule.runOnUiThread {
             navController.navigate("console/$hostId")
         }
+    }
+
+    @Test
+    fun consoleScreen_remoteDisconnect_showsReconnectAfterBridgeStateChanges() {
+        val bridge = mock(TerminalBridge::class.java)
+        val host = Host(id = 1L, nickname = "test-host")
+        val emulator = TerminalEmulatorFactory.create()
+        `when`(bridge.host).thenReturn(host)
+        `when`(bridge.terminalEmulator).thenReturn(emulator)
+        `when`(bridge.fontSizeFlow).thenReturn(MutableStateFlow(14f))
+        `when`(bridge.delKeyModeFlow).thenReturn(MutableStateFlow(DelKeyMode.Backspace))
+        `when`(bridge.promptManager).thenReturn(PromptManager())
+        val keyHandler = TerminalKeyListener(TerminalEmulatorKeyDispatcher(emulator))
+        `when`(bridge.keyHandler).thenReturn(keyHandler)
+        `when`(bridge.isDisconnected).thenReturn(false)
+        `when`(bridge.isConnecting).thenReturn(false)
+        val states = MutableStateFlow(ConsoleUiState(bridges = listOf(bridge), isLoading = false))
+        val viewModel = mock(ConsoleViewModel::class.java)
+        `when`(viewModel.uiState).thenReturn(states)
+        `when`(viewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+        setContent(mockConsoleViewModel = viewModel)
+        navigateToConsoleScreen(1L)
+
+        val reconnect = composeTestRule.activity.getString(R.string.console_menu_reconnect)
+        composeTestRule.onNodeWithText(reconnect).assertDoesNotExist()
+        composeTestRule.runOnUiThread {
+            `when`(bridge.isDisconnected).thenReturn(true)
+            `when`(bridge.disconnectReason).thenReturn(DisconnectReason.REMOTE_EOF)
+            states.value = states.value.copy(revision = states.value.revision + 1)
+        }
+        composeTestRule.onNodeWithText(reconnect).assertIsDisplayed()
+
+        composeTestRule.runOnUiThread {
+            `when`(bridge.isConnecting).thenReturn(true)
+            states.value = states.value.copy(revision = states.value.revision + 1)
+        }
+        composeTestRule.onNodeWithText(reconnect).assertDoesNotExist()
     }
 
     @Test

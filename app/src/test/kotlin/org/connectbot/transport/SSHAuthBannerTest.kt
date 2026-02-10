@@ -17,74 +17,17 @@
 
 package org.connectbot.transport
 
-import com.trilead.ssh2.Connection
-import org.connectbot.data.entity.Host
 import org.connectbot.service.TerminalBridge
-import org.connectbot.util.HostConstants
 import org.junit.Test
+import org.mockito.ArgumentMatchers.any
+import org.mockito.ArgumentMatchers.anyList
+import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoInteractions
-import org.mockito.Mockito.`when`
-import java.io.IOException
 
 class SSHAuthBannerTest {
-    @Test
-    fun authenticate_whenNoneAuthSucceeds_dismissesAuthBanner() {
-        val bridge = mock(TerminalBridge::class.java)
-        val connection = mock(Connection::class.java)
-        `when`(connection.authenticateWithNone("alice")).thenReturn(true)
-        val ssh = sshWithConnection(bridge, connection)
-
-        ssh.authenticate()
-
-        verify(bridge).dismissAuthBannersFrom("target")
-    }
-
-    @Test
-    fun authenticate_whenNoneAuthFails_dismissesAuthBannerBeforeContinuing() {
-        val bridge = mock(TerminalBridge::class.java)
-        val connection = mock(Connection::class.java)
-        `when`(connection.authenticateWithNone("alice")).thenReturn(false)
-        val ssh = sshWithConnection(bridge, connection)
-
-        ssh.authenticate()
-
-        verify(bridge).dismissAuthBannersFrom("target")
-    }
-
-    @Test
-    fun authenticate_whenNoneAuthThrows_dismissesAuthBannerBeforeContinuing() {
-        val bridge = mock(TerminalBridge::class.java)
-        val connection = mock(Connection::class.java)
-        `when`(connection.authenticateWithNone("alice")).thenThrow(IOException("none failed"))
-        val ssh = sshWithConnection(bridge, connection)
-
-        ssh.authenticate()
-
-        verify(bridge).dismissAuthBannersFrom("target")
-    }
-
-    @Test
-    fun authenticateJumpHost_whenNoneAuthThrows_dismissesAuthBanner() {
-        val bridge = mock(TerminalBridge::class.java)
-        val connection = mock(Connection::class.java)
-        val jumpHost = Host(
-            nickname = "jump",
-            username = "alice",
-            hostname = "jump.example.com",
-        )
-        `when`(connection.authenticateWithNone("alice")).thenThrow(IOException("none failed"))
-        val ssh = SSH().apply {
-            setBridge(bridge)
-        }
-
-        ssh.authenticateJumpHost(connection, jumpHost)
-
-        verify(bridge).dismissAuthBannersFrom("jump")
-    }
-
     @Test
     fun handleAuthBanner_outputsSourceAndBanner() {
         val bridge = mock(TerminalBridge::class.java)
@@ -137,23 +80,10 @@ class SSHAuthBannerTest {
         ssh.handleAuthBanner("target", "Authentication will continue.", null)
 
         verify(bridge, never()).enqueueAuthBanner(
-            org.mockito.ArgumentMatchers.anyString(),
-            org.mockito.ArgumentMatchers.anyString(),
-            org.mockito.ArgumentMatchers.anyList(),
-            org.mockito.ArgumentMatchers.any(),
+            anyString(),
+            anyString(),
+            anyList(),
+            any(),
         )
-    }
-
-    private fun sshWithConnection(bridge: TerminalBridge, connection: Connection): SSH = SSH().apply {
-        setHost(
-            Host(
-                nickname = "target",
-                username = "alice",
-                hostname = "example.com",
-                pubkeyId = HostConstants.PUBKEYID_NEVER,
-            ),
-        )
-        setBridge(bridge)
-        setConnectionForTesting(connection)
     }
 }

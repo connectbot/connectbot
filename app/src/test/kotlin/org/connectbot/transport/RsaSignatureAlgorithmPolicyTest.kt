@@ -17,12 +17,12 @@
 
 package org.connectbot.transport
 
-import com.trilead.ssh2.Connection
-import com.trilead.ssh2.ExtensionInfo
-import com.trilead.ssh2.packets.PacketExtInfo
-import com.trilead.ssh2.transport.TransportManager
 import org.assertj.core.api.Assertions.assertThat
+import org.connectbot.sshlib.HostKeyVerifier
+import org.connectbot.sshlib.SshClient
+import org.connectbot.sshlib.SshClientConfig
 import org.junit.Test
+import org.mockito.Mockito.mock
 
 class RsaSignatureAlgorithmPolicyTest {
     @Test
@@ -57,39 +57,44 @@ class RsaSignatureAlgorithmPolicyTest {
     @Test
     fun prepareForAuthentication_connectionIsNotInitialized_returnsFalse() {
         assertThat(
-            RsaSignatureAlgorithmPolicy.prepareForAuthentication(Connection("example.com")),
+            RsaSignatureAlgorithmPolicy.prepareForAuthentication(
+                SshClient(
+                    SshClientConfig {
+                        host = "example.com"
+                        hostKeyVerifier = mock(HostKeyVerifier::class.java)
+                    },
+                ),
+            ),
         ).isFalse()
     }
 
-    private fun connectionWithAcceptedAlgorithms(vararg algorithms: String): Connection {
-        val transportManager = TransportManager("example.com", 22)
-        transportManager.setAcceptedSignatureAlgorithms(*algorithms)
-        return Connection("example.com").apply {
-            Connection::class.java.getDeclaredField("tm").run {
+    private fun connectionWithAcceptedAlgorithms(vararg algorithms: String): SshClient {
+        val connection = mock(Class.forName("org.connectbot.sshlib.client.SshConnection"))
+        connection.javaClass.getDeclaredField("serverSigAlgs").apply {
+            isAccessible = true
+            set(connection, algorithms.toSet().takeIf { it.isNotEmpty() })
+        }
+        return SshClient(
+            SshClientConfig {
+                host = "example.com"
+                hostKeyVerifier = mock(HostKeyVerifier::class.java)
+            },
+        ).apply client@{
+            SshClient::class.java.getDeclaredField("connection").apply {
                 isAccessible = true
-                set(this@apply, transportManager)
+                set(this@client, connection)
             }
         }
     }
 
-    private fun Connection.acceptedSignatureAlgorithms(): Set<String> = transportManager().extensionInfo.signatureAlgorithmsAccepted
-
-    private fun Connection.transportManager(): TransportManager = Connection::class.java.getDeclaredField("tm").run {
-        isAccessible = true
-        get(this@transportManager) as TransportManager
-    }
-
-    private fun TransportManager.setAcceptedSignatureAlgorithms(vararg algorithms: String) {
-        val extensionInfo = if (algorithms.isEmpty()) {
-            ExtensionInfo.noExtInfoSeen()
-        } else {
-            ExtensionInfo.fromPacketExtInfo(
-                PacketExtInfo(mapOf("server-sig-algs" to algorithms.joinToString(","))),
-            )
-        }
-        TransportManager::class.java.getDeclaredField("extensionInfo").run {
+    private fun SshClient.acceptedSignatureAlgorithms(): Set<String> {
+        val connection = SshClient::class.java.getDeclaredField("connection").run {
             isAccessible = true
-            set(this@setAcceptedSignatureAlgorithms, extensionInfo)
+            get(this@acceptedSignatureAlgorithms)
+        }
+        return connection.javaClass.getDeclaredField("serverSigAlgs").run {
+            isAccessible = true
+            get(connection) as Set<String>
         }
     }
 }

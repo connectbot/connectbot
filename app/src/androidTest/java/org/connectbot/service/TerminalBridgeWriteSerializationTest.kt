@@ -112,10 +112,10 @@ class TerminalBridgeWriteSerializationTest {
 
         fun receivedBytes(): Int = data.size
 
-        override fun connect() = Unit
-        override fun read(buffer: ByteArray, offset: Int, length: Int) = 0
+        override suspend fun connect() = Unit
+        override suspend fun read(buffer: ByteArray, offset: Int, length: Int) = 0
 
-        override fun write(buffer: ByteArray) {
+        override suspend fun write(buffer: ByteArray) {
             attemptedBytes.addAndGet(buffer.size)
             val current = data
             val next = ByteArray(current.size + buffer.size)
@@ -128,13 +128,13 @@ class TerminalBridgeWriteSerializationTest {
             data = next
         }
 
-        override fun write(c: Int) {
+        override suspend fun write(c: Int) {
             write(byteArrayOf(c.toByte()))
         }
 
-        override fun flush() = Unit
-        override fun close() = Unit
-        override fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) = Unit
+        override suspend fun flush() = Unit
+        override suspend fun close() = Unit
+        override suspend fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) = Unit
         override fun isConnected() = true
         override fun isSessionOpen() = true
         override fun getDefaultPort() = 22

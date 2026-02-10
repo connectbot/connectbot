@@ -17,11 +17,8 @@
 
 package org.connectbot.util
 
-import com.trilead.ssh2.crypto.PEMDecoder
-import com.trilead.ssh2.crypto.keys.Ed25519PrivateKey
-import com.trilead.ssh2.crypto.keys.Ed25519Provider
-import com.trilead.ssh2.crypto.keys.Ed25519PublicKey
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.sshlib.SshKeys
 import timber.log.Timber
 import java.security.Key
 import java.security.KeyFactory
@@ -36,13 +33,10 @@ import java.util.Arrays
 
 object PubkeyUtils {
     init {
-        Ed25519Provider.insertIfNeeded()
+        SshKeys.ensureEd25519Support()
     }
 
     private const val TAG = "CB.PubkeyUtils"
-
-    const val PKCS8_START: String = "-----BEGIN PRIVATE KEY-----"
-    const val PKCS8_END: String = "-----END PRIVATE KEY-----"
 
     // Size in bytes of salt to use.
     private const val SALT_SIZE = 8
@@ -101,10 +95,6 @@ object PubkeyUtils {
         val privateKeyBytes = encoded ?: throw InvalidKeySpecException("Missing private key data")
         val sshKeyType = SshKeyType.fromStoredType(keyType)
             ?: throw NoSuchAlgorithmException("Unsupported key type: $keyType")
-        if (sshKeyType == SshKeyType.ED25519) {
-            return Ed25519PrivateKey(PKCS8EncodedKeySpec(privateKeyBytes))
-        }
-
         val algorithm = sshKeyType.keyFactoryAlgorithm
             ?: throw NoSuchAlgorithmException("Unsupported key type: $keyType")
         val privKeySpec = PKCS8EncodedKeySpec(privateKeyBytes)
@@ -127,10 +117,6 @@ object PubkeyUtils {
         val publicKeyBytes = encoded ?: throw InvalidKeySpecException("Missing public key data")
         val sshKeyType = SshKeyType.fromStoredType(keyType)
             ?: throw NoSuchAlgorithmException("Unsupported key type: $keyType")
-        if (sshKeyType == SshKeyType.ED25519) {
-            return Ed25519PublicKey(X509EncodedKeySpec(publicKeyBytes))
-        }
-
         val algorithm = sshKeyType.keyFactoryAlgorithm
             ?: throw NoSuchAlgorithmException("Unsupported key type: $keyType")
         val pubKeySpec = X509EncodedKeySpec(publicKeyBytes)
@@ -143,8 +129,8 @@ object PubkeyUtils {
         if ("IMPORTED" == pubkey.type) {
             // load specific key using pem format
             try {
-                return PEMDecoder.decode(
-                    String(pubkey.privateKey!!, charset("UTF-8")).toCharArray(),
+                return SshKeys.decodePemPrivateKey(
+                    String(pubkey.privateKey!!, charset("UTF-8")),
                     password,
                 )
             } catch (e: Exception) {
