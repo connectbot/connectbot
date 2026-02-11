@@ -22,7 +22,7 @@ composeBom = "2026.02.00"
 material3 = "1.5.0-alpha13"
 lifecycleViewModel = "2.10.0"
 navigationCompose = "2.9.7"
-activityCompose = "1.12.3"
+activityCompose = "1.12.4"
 
 sshlib = "2.2.40"
 termlib = "0.0.18"
