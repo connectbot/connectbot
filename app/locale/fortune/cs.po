@@ -2,22 +2,23 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-26 16:58-0800\n"
-"PO-Revision-Date: 2025-12-26 16:58-0800\n"
+"POT-Creation-Date: 2026-02-12 10:47+0800\n"
+"PO-Revision-Date: 2026-02-12 11:56+0800\n"
 "Last-Translator: Pavel Borecki <Unknown>\n"
 "Language: cs\n"
 "Language-Team: cs <LL@li.org>\n"
-"Plural-Forms: nplurals=4; plural=((((n >= 2 && n <= 4)) && ((0 == 0))) ? "
-"1 : (!((0 == 0))) ? 2 : (((n == 1)) && ((0 == 0))) ? 0 : 3);\n"
+"Plural-Forms: nplurals=4; plural=((((n >= 2 && n <= 4)) && ((0 == 0))) ? 1 : "
+"(!((0 == 0))) ? 2 : (((n == 1)) && ((0 == 0))) ? 0 : 3);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
+"X-Generator: Autopo v1.0.8\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -140,11 +141,11 @@ msgstr "Dotkněte se plochy pro získání náhodnosti: %1$d%% hotovo"
 #. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger"
-" randomly over the box below."
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
 msgstr ""
-"Pro zajištění náhodnosti během vytváření klíče pohybujte prstem náhodně "
-"po ploše níže."
+"Pro zajištění náhodnosti během vytváření klíče pohybujte prstem náhodně po "
+"ploše níže."
 
 #. Progress message shown while generating a new SSH key pair
 msgctxt "pubkey_generating"
@@ -241,6 +242,42 @@ msgctxt "pubkey_import_button"
 msgid "Import"
 msgstr "Importovat"
 
+#. Checkbox label in the import encrypted key dialog. When checked, the
+#. imported key will be encrypted for storage on the device.
+msgctxt "pubkey_import_encrypt_key"
+msgid "Encrypt key for storage"
+msgstr "Zašifrujte klíč pro uložení"
+
+#. Checkbox label that appears when 'Encrypt key for storage' is checked. When
+#. checked, the same password used to decrypt the imported key will be used to
+#. encrypt it for storage.
+msgctxt "pubkey_import_reuse_password"
+msgid "Use same password for encryption"
+msgstr "Použijte stejné heslo pro šifrování"
+
+#. Label for the password field when entering a new password to encrypt the
+#. imported key for storage.
+msgctxt "pubkey_import_new_password"
+msgid "New password"
+msgstr "Nové heslo"
+
+#. Label for the password confirmation field when setting a new password to
+#. encrypt the imported key.
+msgctxt "pubkey_import_confirm_password"
+msgid "Confirm password"
+msgstr "Potvrďte heslo"
+
+#. Note that the '\n' just splits lines, so it's actually "create or import"
+msgctxt "pubkey_list_empty"
+msgid "Tap \"Menu\" to create\n"
+"or import key pairs."
+msgstr "Klepněte na „Menu“ a vytvořte\n"
+"nebo importujte páry klíčů."
+
+msgctxt "pubkey_unknown_format"
+msgid "Unknown format"
+msgstr "Neznámý formát"
+
 #. Context menu action to change the password protecting a private key
 msgctxt "pubkey_change_password"
 msgid "Change password"
@@ -309,6 +346,12 @@ msgctxt "prompt_old_password"
 msgid "Old password:"
 msgstr "Původní heslo:"
 
+#. Prompt for user to enter their username when the host has no username
+#. configured.
+msgctxt "prompt_username"
+msgid "Username:"
+msgstr "Uživatelské jméno:"
+
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
 msgctxt "prompt_password"
@@ -347,11 +390,9 @@ msgstr "Heslo pro klíč „%1$s“"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid ""
-"Allow remote host to\n"
+msgid "Allow remote host to\n"
 "use key '%1$s'?"
-msgstr ""
-"Umožnit vzdálenému počítači\n"
+msgstr "Umožnit vzdálenému počítači\n"
 "použít klíč „%1$s“?"
 
 #. The header of the warning a user gets when the host key has changed. Note
@@ -367,8 +408,7 @@ msgstr "VAROVÁNÍ: IDENTIFIKACE VZDÁLENÉHO HOSTITELE SE ZMĚNILA!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle "
-"attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "JE MOŽNÉ ŽE NĚKDO PROVÁDÍ NĚCO NEKALÉHO!\n"
@@ -377,11 +417,9 @@ msgstr ""
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid ""
-"Host has disconnected.\n"
+msgid "Host has disconnected.\n"
 "Close session?"
-msgstr ""
-"Hostitel se odpojil.\n"
+msgstr "Hostitel se odpojil.\n"
 "Ukončit sezení?"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -389,8 +427,7 @@ msgstr ""
 #, fuzzy
 msgctxt "prompt_continue_connecting"
 msgid "Are you sure you want to continue connecting?"
-msgstr ""
-"Opravdu chcete\n"
+msgstr "Opravdu chcete\n"
 "pokračovat v připojování?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
@@ -544,6 +581,11 @@ msgctxt "font_validating"
 msgid "Validating font…"
 msgstr "Ověřuji písmo…"
 
+#. Message shown while downloading a font from Google Fonts
+msgctxt "font_downloading"
+msgid "Downloading font…"
+msgstr "Stahuji písmo…"
+
 #. Title for importing local font
 msgctxt "pref_localfont_title"
 msgid "Import local font"
@@ -583,12 +625,23 @@ msgstr "Zálohovat veřejné klíče"
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
-msgstr "Udržovat zálohy privátních klíčů pomocí Android zálohovacího mechanismu"
+msgstr ""
+"Udržovat zálohy privátních klíčů pomocí Android zálohovacího mechanismu"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
 msgid "User interface"
 msgstr "Uživatelské rozhraní"
+
+#. Name for the language preference
+msgctxt "pref_language_title"
+msgid "Language"
+msgstr "Jazyk"
+
+#. Default option for language preference that uses the system locale
+msgctxt "pref_language_system_default"
+msgid "System default"
+msgstr "Výchozí nastavení systému"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
@@ -644,8 +697,8 @@ msgstr "Shift+číslo jsou F-klávesy"
 msgctxt "pref_shiftfkeys_summary"
 msgid "On hardware keyboards, number keys send F1-F10 with shift"
 msgstr ""
-"Na fyzické klávesnici posílají klávesy s číslicemi stisk kláves Shift + "
-"F1-10"
+"Na fyzické klávesnici posílají klávesy s číslicemi stisk kláves Shift + F1-"
+"10"
 
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
@@ -656,8 +709,8 @@ msgstr "Ctrl+číslo jsou F-klávesy"
 msgctxt "pref_ctrlfkeys_summary"
 msgid "On software keyboards, number keys send F1-F10 with ctrl"
 msgstr ""
-"Na softwarové klávesnici posílají klávesy s číslicemi stisk kláves Ctrl +"
-" F1-10"
+"Na softwarové klávesnici posílají klávesy s číslicemi stisk kláves Ctrl + F1-"
+"10"
 
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
@@ -665,8 +718,9 @@ msgid "Volume keys change font size"
 msgstr "Tlačítka ovládání hlasitosti mění velikost písma"
 
 #. Summary for the volume keys control font size preference
+#, fuzzy
 msgctxt "pref_volumefont_summary"
-msgid "Font size can also be changed in per-host settings"
+msgid "Font size can also be changed in profile settings"
 msgstr "Velikost písma lze upravit v nastavení pro jednotlivé hostitele"
 
 #. Name for the memorize keys preference
@@ -741,8 +795,8 @@ msgstr "Hmatová odezva šipek"
 msgctxt "pref_bumpyarrows_summary"
 msgid "Vibrate when sending arrow keys; useful for laggy connections"
 msgstr ""
-"Při odeslání stisku kláves směrových šipek vibrovat; hodí se pro "
-"nestabilní připojení"
+"Při odeslání stisku kláves směrových šipek vibrovat; hodí se pro nestabilní "
+"připojení"
 
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
@@ -785,7 +839,8 @@ msgstr "Upozornění na pozadí"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid "Send notification when a terminal running in the background sounds a bell."
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
 msgstr "Zobrazit upozornění když terminál běžící v pozadí zazvoní zvonkem"
 
 #. Preference selection to indicate use of right side of keyboard for special
@@ -1002,6 +1057,26 @@ msgctxt "hostpref_username_title"
 msgid "Username"
 msgstr "Uživatelské jméno"
 
+#. Password field supporting text in host editor
+msgctxt "hostpref_save_password_summary"
+msgid "Store login password securely for automatic authentication"
+msgstr "Bezpečně uložte přihlašovací heslo pro automatické ověření"
+
+#. Password field title in host editor
+msgctxt "hostpref_password_title"
+msgid "Password"
+msgstr "Heslo"
+
+#. Password field label when there is an existing password saved
+msgctxt "hostpref_password_unchanged"
+msgid "Password (unchanged)"
+msgstr "Heslo (nezměněno)"
+
+#. Button to clear a saved password
+msgctxt "hostpref_clear_password"
+msgid "Clear saved password"
+msgstr "Vymazat uložené heslo"
+
 #. Hostname field title for host editor preference
 msgctxt "hostpref_hostname_title"
 msgid "Host"
@@ -1111,6 +1186,35 @@ msgstr "Rodina písma"
 msgctxt "profile_editor_font_size_title"
 msgid "Font Size: %d"
 msgstr "Velikost písma: %d"
+
+#. Subsection title for force size settings
+msgctxt "profile_editor_force_size_title"
+msgid "Force Size"
+msgstr "Nastavit velikost"
+
+#. Summary text explaining what force size does
+msgctxt "profile_editor_force_size_summary"
+msgid ""
+"Force the terminal to a specific size (columns x rows) instead of auto-"
+"sizing to fit the screen."
+msgstr ""
+"Nastavte terminálu pevnou velikost (počet sloupců x počet řádků) namísto "
+"automatického přizpůsobení velikosti obrazovky."
+
+#. Label for the enable force size switch
+msgctxt "profile_editor_force_size_enable"
+msgid "Enable force size"
+msgstr "Povolit vynucené nastavení velikosti"
+
+#. Label for the force size columns input field
+msgctxt "profile_editor_force_size_columns"
+msgid "Columns"
+msgstr "Sloupce"
+
+#. Label for the force size rows input field
+msgctxt "profile_editor_force_size_rows"
+msgid "Rows"
+msgstr "Řádky"
 
 #. Dropdown option to not override host color with profile color
 msgctxt "profile_icon_color_none"
@@ -1338,6 +1442,16 @@ msgctxt "list_host_delete"
 msgid "Delete host"
 msgstr "Smazat hosta"
 
+#. Context menu action to duplicate the selected host
+msgctxt "list_host_duplicate"
+msgid "Duplicate host"
+msgstr "Duplicitní hostitel"
+
+#. Context menu action to forget stored host keys for the selected host
+msgctxt "list_host_forget_keys"
+msgid "Forget host keys"
+msgstr "Zapomenout klíče hostitelů"
+
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
 msgid "Default"
@@ -1484,6 +1598,16 @@ msgctxt "terminal_auth_pass_fail"
 msgid "Authentication method 'password' failed"
 msgstr "Pokus o autentizaci heslem selhal"
 
+#. Message shown in terminal when attempting saved password authentication
+msgctxt "terminal_auth_saved_password"
+msgid "Trying saved password…"
+msgstr "Zkouším uložené heslo…"
+
+#. Message shown in terminal when saved password authentication fails
+msgctxt "terminal_auth_saved_password_fail"
+msgid "Saved password authentication failed"
+msgstr "Ukládání hesla pro ověření selhalo"
+
 #. Message shown in terminal when trying public key authentication with any
 #. available key
 msgctxt "terminal_auth_pubkey_any"
@@ -1493,7 +1617,8 @@ msgstr "Pokus o autentizaci jakýmkoliv veřejným klíčem v paměti …"
 #. Error message shown when the selected public key is corrupted or invalid
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
-msgstr "Vybraný veřejný klič je neplatný, zkuste jej znovu vybrat při úpravě hosta"
+msgstr ""
+"Vybraný veřejný klič je neplatný, zkuste jej znovu vybrat při úpravě hosta"
 
 #. Message shown in terminal when attempting public key authentication with a
 #. specific key
@@ -1507,6 +1632,17 @@ msgstr "Pokus o autentizaci zvoleným veřejným klíčem …"
 msgctxt "terminal_auth_biometric"
 msgid "Requesting biometric authentication for key '%1$s'"
 msgstr "Žádost o biometrické ověření pro klíč „%1$s“"
+
+#. Message shown when a biometric key has been invalidated due to new
+#. fingerprint enrollment. Parameter is the key nickname.
+#, c-format
+msgctxt "terminal_auth_biometric_invalidated"
+msgid ""
+"Biometric key '%1$s' has been invalidated. This can happen when new "
+"fingerprints are enrolled on the device. Please generate a new key."
+msgstr ""
+"Biometrický klíč '%1$s' byl zneplatněn. K tomu může dojít, když jsou na "
+"zařízení zaregistrovány nové otisky prstů. Vygenerujte prosím nový klíč."
 
 #. Message shown in terminal when public key authentication fails. Parameter
 #. is the key nickname.
@@ -1739,11 +1875,11 @@ msgstr "Resetovat všechny barvy?"
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action "
-"cannot be undone."
+"This will reset all 256 colors to their default values. This action cannot "
+"be undone."
 msgstr ""
-"Tohle resetuje všechny 256 barev na jejich výchozí hodnoty. Tento krok "
-"nelze vrátit zpět."
+"Tohle resetuje všechny 256 barev na jejich výchozí hodnoty. Tento krok nelze "
+"vrátit zpět."
 
 #. Displayed in the notification bar that connections are active
 msgctxt "app_is_running"
@@ -2037,6 +2173,12 @@ msgctxt "error_color_scheme_load_failed"
 msgid "Failed to load color scheme: %s"
 msgstr "Selhalo načtení barevného schématu: %s"
 
+#. Format string for the nickname of a duplicated host
+#, c-format
+msgctxt "host_duplicate_nickname"
+msgid "%1$s (copy)"
+msgstr "%1$s (kopie)"
+
 #. Empty state messages
 #. Message shown when no hosts have been configured yet
 msgctxt "empty_hosts_message"
@@ -2101,6 +2243,11 @@ msgctxt "resize_height_label"
 msgid "Height (rows)"
 msgstr "Výška (řádky)"
 
+#. Button to disable force size and return to auto-sizing
+msgctxt "resize_disable_force_size"
+msgid "Disable force size"
+msgstr "Zakázat vynucené nastavení velikosti"
+
 #. Public key editor labels
 #. Label for key type field in the SSH pubkey editor
 msgctxt "pubkey_editor_key_type_label"
@@ -2148,8 +2295,8 @@ msgstr "Chraňte tento klíč svým otiskem prstu"
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use "
-"this feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use this "
+"feature."
 msgstr ""
 "Není zaregistrován žádný otisk prstu. Chcete-li tuto funkci používat, "
 "nastavte otisk prstu v nastavení zařízení."
@@ -2256,6 +2403,11 @@ msgctxt "hostpref_save_host"
 msgid "Save host"
 msgstr "Uložit hostitele"
 
+#. Title shown in the app bar when editing an existing host's settings.
+msgctxt "hostpref_setting_title"
+msgid "Host setting"
+msgstr "Nastavení hostitele"
+
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
@@ -2275,8 +2427,7 @@ msgstr "Udržet spojení aktivní"
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch "
-"apps."
+"background. Without permission, connections may close when you switch apps."
 msgstr ""
 "Zobrazení oznámení je vyžadováno pro udržování spojení na pozadí. Bez "
 "povolení se mohou spojení ukončit při přepnutí mezi aplikacemi."
@@ -2305,8 +2456,8 @@ msgstr "Požadováno oprávnění"
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification"
-" permission in app settings."
+"To keep connections alive in the background, you must enable notification "
+"permission in app settings."
 msgstr ""
 "Abyste udrželi spojení aktivní na pozadí, musíte povolit oprávnění k "
 "oznámením v nastavení aplikace."
@@ -2320,10 +2471,10 @@ msgstr "Otevřít nastavení"
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid "Are you trying to access a local host? Grant local network permissions."
+msgid ""
+"Are you trying to access a local host? Grant local network permissions."
 msgstr ""
-"Zkoušíte se připojit k místnímu hostiteli? Udělte oprávnění pro místní "
-"síť."
+"Zkoušíte se připojit k místnímu hostiteli? Udělte oprávnění pro místní síť."
 
 #. Loading message shown during app initialization
 msgctxt "loading_message"
@@ -2391,11 +2542,11 @@ msgstr "Zkusit znovu"
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug "
-"log copied above"
+"If the problem persists, please report this issue at %1$s with the debug log "
+"copied above"
 msgstr ""
-"Pokud problém přetrvává, prosím nahláste tuto chybu na %1$s s kopií "
-"ladícího protokolu výše"
+"Pokud problém přetrvává, prosím nahláste tuto chybu na %1$s s kopií ladícího "
+"protokolu výše"
 
 #. Title for warnings section shown during database migration
 msgctxt "migration_warnings_title"
@@ -2431,10 +2582,46 @@ msgctxt "delete_host_confirm"
 msgid "Are you sure you want to delete host '%1$s'?"
 msgstr "Jste si jistí že chcete smazat hostitele '%1$s'?"
 
+#. Shown in the alert dialog when a user chooses the 'forget host keys' item.
+#, c-format
+msgctxt "forget_host_keys_confirm"
+msgid ""
+"Are you sure you want to forget the stored host keys for '%1$s'? You will be "
+"prompted to verify the host key on the next connection."
+msgstr ""
+"Jste si jisti, že chcete zapomenout uložené klíče hostitele pro '%1$s'? Při "
+"příštím připojení budete vyzváni k ověření klíče hostitele."
+
 #. Menu selection to edit a pubkey details (e.g., nickname)
 msgctxt "list_pubkey_edit"
 msgid "Edit pubkey"
 msgstr "Upravit veřejný klíč"
+
+#. IP Version selection for host connections
+#. Title for IP version preference in host editor
+msgctxt "hostpref_ipversion_title"
+msgid "IP version"
+msgstr "Verze IP"
+
+#. Summary text explaining what the IP version setting controls
+msgctxt "hostpref_ipversion_summary"
+msgid "Select which IP address version to use when connecting"
+msgstr "Vyberte, kterou verzi IP adresy chcete použít při připojování"
+
+#. Option for automatic IP version selection (try both IPv4 and IPv6)
+msgctxt "ipversion_auto"
+msgid "Automatic"
+msgstr "Automatický"
+
+#. Option to force IPv4-only connections
+msgctxt "ipversion_ipv4"
+msgid "IPv4 only"
+msgstr "Pouze IPv4"
+
+#. Option to force IPv6-only connections
+msgctxt "ipversion_ipv6"
+msgid "IPv6 only"
+msgstr "Pouze IPv6"
 
 #. ProxyJump / Jump Host support
 #. Title for jump host selector in host editor
@@ -2516,11 +2703,11 @@ msgstr "Protokoly zkopírovány do schránky"
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at "
-"https://connectbot.org/bug"
+"To report a bug, copy these logs and open a new issue at https://connectbot."
+"org/bug"
 msgstr ""
-"Chcete-li nahlásit chybu, zkopírujte tyto protokoly a otevřete nový "
-"problém na adrese https://connectbot.org/bug"
+"Chcete-li nahlásit chybu, zkopírujte tyto protokoly a otevřete nový problém "
+"na adrese https://connectbot.org/bug"
 
 #. Message shown when no logs are available
 msgctxt "no_logs_available"
@@ -2532,6 +2719,48 @@ msgstr "Žádné záznamy nejsou k dispozici"
 msgctxt "help_section_about"
 msgid "About"
 msgstr "O aplikaci"
+
+#. Window title for the Contact &amp; Support screen, also used as button text
+#. in Help screen.
+msgctxt "title_contact"
+msgid "Contact & Support"
+msgstr "Kontakt a podpora"
+
+#. Section title for the "Help" screen showing contact and support
+#. information.
+msgctxt "help_section_contact"
+msgid "Contact & Support"
+msgstr "Kontakt a podpora"
+
+#. Label for the official website link in the Help screen.
+msgctxt "help_website"
+msgid "Website"
+msgstr "Webové stránky"
+
+#. Label for the GitHub repository link in the Help screen.
+msgctxt "help_github"
+msgid "Source Code"
+msgstr "Zdrojový kód"
+
+#. Label for the bug report/issue tracker link in the Help screen.
+msgctxt "help_report_bug"
+msgid "Report a Bug"
+msgstr "Nahlaste chybu"
+
+#. Section title for the "Help" screen showing donation options.
+msgctxt "help_section_donate"
+msgid "Support Development"
+msgstr "Podpořte vývoj"
+
+#. Label for the GitHub Sponsors donation link in the Help screen.
+msgctxt "help_donate_github"
+msgid "GitHub Sponsors"
+msgstr "GitHub Sponsors"
+
+#. Label for the Buy Me a Coffee donation link in the Help screen.
+msgctxt "help_donate_coffee"
+msgid "Buy Me a Coffee"
+msgstr "Kupte mi kávu"
 
 #. Built-in color scheme descriptions for terminal display
 #. Description of the default terminal color scheme
@@ -2615,6 +2844,21 @@ msgctxt "dialog_customterminal_hint"
 msgid "Terminal type (e.g., rxvt-unicode)"
 msgstr "Typ terminálu (například rxvt-unicode)"
 
+#. Dialog title for managing custom terminal types
+msgctxt "dialog_manage_customterminal_title"
+msgid "Manage Custom Terminal Types"
+msgstr "Spravujte vlastní typy terminálů"
+
+#. Button to add a custom item
+msgctxt "button_add_custom"
+msgid "Add custom…"
+msgstr "Přidat vlastní…"
+
+#. Button to manage custom items
+msgctxt "button_manage_custom"
+msgid "Manage custom…"
+msgstr "Spravujte vlastní…"
+
 #. Label for custom value input in list preference dialogs
 msgctxt "dialog_custom_value_label"
 msgid "Enter custom value"
@@ -2650,3 +2894,132 @@ msgctxt "list_camera_text_input_description"
 msgid "Text input"
 msgstr "Vstup textu"
 
+#. Host export/import menu items
+#. Menu item to export all hosts to a JSON file
+msgctxt "list_menu_export_hosts"
+msgid "Export Hosts"
+msgstr "Exportovat hostitele"
+
+#. Menu item to import hosts from a JSON file
+msgctxt "list_menu_import_hosts"
+msgid "Import Hosts"
+msgstr "Importovat hostitele"
+
+#. Host export/import messages
+#. Success message shown after exporting hosts to a file. Parameters: %1$d =
+#. host count, %2$d = profile count
+#, c-format
+msgctxt "export_hosts_success"
+msgid "Exported %1$d hosts and %2$d profiles"
+msgstr "Exportováno %1$d hostitelů a %2$d profilů"
+
+#. Success message shown after importing hosts from a file. Parameters: %1$d =
+#. hosts imported, %2$d = hosts skipped, %3$d = profiles imported, %4$d =
+#. profiles skipped
+#, c-format
+msgctxt "import_hosts_success"
+msgid "Imported %1$d hosts (%2$d skipped) and %3$d profiles (%4$d skipped)"
+msgstr ""
+"Importováno %1$d hostitelů (%2$d přeskoceno) a %3$d profilů (%4$d "
+"přeskoceno)"
+
+#. Error message when host export fails
+#, c-format
+msgctxt "export_hosts_failed"
+msgid "Failed to export hosts: %s"
+msgstr "Nepodařilo se exportovat seznam hostitelů: %s"
+
+#. Error message when host import fails
+#, c-format
+msgctxt "import_hosts_failed"
+msgid "Failed to import hosts: %s"
+msgstr "Nepodařilo se importovat seznam hostitelů: %s"
+
+#. Title for the export hosts file picker dialog
+msgctxt "export_hosts_title"
+msgid "Export Hosts"
+msgstr "Exportovat hostitele"
+
+#. Shortcut customization dialog strings
+#. Dialog title when customizing a shortcut icon
+msgctxt "shortcut_customize_title"
+msgid "Customize Shortcut"
+msgstr "Přizpůsobte si zkratku"
+
+#. Label for the shortcut icon color selection dropdown
+msgctxt "shortcut_icon_color"
+msgid "Icon Color"
+msgstr "Barva ikony"
+
+#. Label for the shortcut icon style selection dropdown
+msgctxt "shortcut_icon_style"
+msgid "Icon Style"
+msgstr "Styl ikony"
+
+#. Checkbox label to use the host\'s configured color for the shortcut
+msgctxt "shortcut_use_host_color"
+msgid "Use host color"
+msgstr "Použít barvu pro název hostitele"
+
+#. Button to create the customized shortcut
+msgctxt "shortcut_create"
+msgid "Create Shortcut"
+msgstr "Vytvořit zkratku"
+
+#. Icon style option: terminal prompt icon
+msgctxt "icon_style_terminal"
+msgid "Terminal"
+msgstr "Terminál"
+
+#. Icon style option: server/computer icon
+msgctxt "icon_style_server"
+msgid "Server"
+msgstr "Server"
+
+#. Icon style option: cloud icon
+msgctxt "icon_style_cloud"
+msgid "Cloud"
+msgstr "Cloud"
+
+#. Icon style option: key/security icon
+msgctxt "icon_style_key"
+msgid "Key"
+msgstr "Klíč"
+
+#. Authentication on launch
+#. Title for the authentication on launch preference in settings
+msgctxt "pref_auth_on_launch_title"
+msgid "Authentication on launch"
+msgstr "Ověření při spuštění"
+
+#. Summary for the authentication on launch preference
+msgctxt "pref_auth_on_launch_summary"
+msgid "Require fingerprint, face, or device PIN when opening the app"
+msgstr ""
+"Při spuštění aplikace vyžadujte ověření pomocí otisku prstu, rozpoznávání "
+"obličeje nebo PIN kódu zařízení"
+
+#. Category title for security preferences in settings
+msgctxt "pref_security_category"
+msgid "Security"
+msgstr "Bezpečnost"
+
+#. Title shown on the authentication lock screen
+msgctxt "auth_screen_title"
+msgid "ConnectBot is locked"
+msgstr "ConnectBot je uzamčen"
+
+#. Button text to trigger authentication on the lock screen
+msgctxt "auth_screen_unlock_button"
+msgid "Tap to unlock"
+msgstr "Klepnutím odemkněte"
+
+#. Title shown in the biometric/device credential authentication prompt
+msgctxt "auth_prompt_title"
+msgid "Unlock ConnectBot"
+msgstr "Odemkněte ConnectBot"
+
+#. Subtitle shown in the biometric/device credential authentication prompt
+msgctxt "auth_prompt_subtitle"
+msgid "Verify your identity to continue"
+msgstr "Ověřte svou identitu a pokračujte"

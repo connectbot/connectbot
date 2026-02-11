@@ -2,26 +2,26 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-26 16:01-0800\n"
-"PO-Revision-Date: 2025-05-26 19:51+0000\n"
+"POT-Creation-Date: 2026-02-12 10:47+0800\n"
+"PO-Revision-Date: 2026-02-12 11:14+0800\n"
 "Last-Translator: Sergey Ponomarev <stokito@gmail.com>\n"
 "Language: ru\n"
 "Language-Team: ru <LL@li.org>\n"
-"Plural-Forms: nplurals=4; plural=(((((0 == 0)) && (((n % 10) >= 2 && (n %"
-" 10) <= 4))) && (!(((n % 100) >= 12 && (n % 100) <= 14)))) ? 1 : (((((0 "
-"== 0)) && (((n % 10) == 0))) || (((0 == 0)) && (((n % 10) >= 5 && (n % "
-"10) <= 9)))) || (((0 == 0)) && (((n % 100) >= 11 && (n % 100) <= 14)))) ?"
-" 2 : ((((0 == 0)) && (((n % 10) == 1))) && (!(((n % 100) == 11)))) ? 0 : "
-"3);\n"
+"Plural-Forms: nplurals=4; plural=(((((0 == 0)) && (((n % 10) >= 2 && (n % "
+"10) <= 4))) && (!(((n % 100) >= 12 && (n % 100) <= 14)))) ? 1 : (((((0 == "
+"0)) && (((n % 10) == 0))) || (((0 == 0)) && (((n % 10) >= 5 && (n % 10) <= "
+"9)))) || (((0 == 0)) && (((n % 100) >= 11 && (n % 100) <= 14)))) ? 2 : ((((0 "
+"== 0)) && (((n % 10) == 1))) && (!(((n % 100) == 11)))) ? 0 : 3);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
+"X-Generator: Autopo v1.0.8\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -138,14 +138,15 @@ msgstr "Сбор энтропии"
 #, c-format
 msgctxt "pubkey_touch_prompt"
 msgid "Touch this box to gather randomness: %1$d%% done"
-msgstr "Касайтесь поля, чтобы генерировать случайную информацию: %1$d%% завершено"
+msgstr ""
+"Касайтесь поля, чтобы генерировать случайную информацию: %1$d%% завершено"
 
 #. Instructions to user on how to provide randomness by moving their finger
 #. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger"
-" randomly over the box below."
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
 msgstr ""
 "Чтобы обеспечить случайную выборку, при генерации ключа, водите пальцем "
 "случайным образом по полю ниже."
@@ -245,6 +246,41 @@ msgctxt "pubkey_import_button"
 msgid "Import"
 msgstr "Импорт"
 
+#. Checkbox label in the import encrypted key dialog. When checked, the
+#. imported key will be encrypted for storage on the device.
+msgctxt "pubkey_import_encrypt_key"
+msgid "Encrypt key for storage"
+msgstr "Зашифровать ключ для хранения"
+
+#. Checkbox label that appears when 'Encrypt key for storage' is checked. When
+#. checked, the same password used to decrypt the imported key will be used to
+#. encrypt it for storage.
+msgctxt "pubkey_import_reuse_password"
+msgid "Use same password for encryption"
+msgstr "Используйте один и тот же пароль для шифрования"
+
+#. Label for the password field when entering a new password to encrypt the
+#. imported key for storage.
+msgctxt "pubkey_import_new_password"
+msgid "New password"
+msgstr "Новый пароль"
+
+#. Label for the password confirmation field when setting a new password to
+#. encrypt the imported key.
+msgctxt "pubkey_import_confirm_password"
+msgid "Confirm password"
+msgstr "Подтвердите пароль"
+
+#. Note that the '\n' just splits lines, so it's actually "create or import"
+msgctxt "pubkey_list_empty"
+msgid "Tap \"Menu\" to create\n"
+"or import key pairs."
+msgstr "Нажмите «Меню», чтобы создать или импортировать пары ключей."
+
+msgctxt "pubkey_unknown_format"
+msgid "Unknown format"
+msgstr "Неизвестный формат"
+
 #. Context menu action to change the password protecting a private key
 msgctxt "pubkey_change_password"
 msgid "Change password"
@@ -313,6 +349,12 @@ msgctxt "prompt_old_password"
 msgid "Old password:"
 msgstr "Старый пароль:"
 
+#. Prompt for user to enter their username when the host has no username
+#. configured.
+msgctxt "prompt_username"
+msgid "Username:"
+msgstr "Имя пользователя:"
+
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
 msgctxt "prompt_password"
@@ -351,11 +393,9 @@ msgstr "Пароль для ключа '%1$s'"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid ""
-"Allow remote host to\n"
+msgid "Allow remote host to\n"
 "use key '%1$s'?"
-msgstr ""
-"Разрешить удалённому\n"
+msgstr "Разрешить удалённому\n"
 "серверу использовать ключ '%1$s'?"
 
 #. The header of the warning a user gets when the host key has changed. Note
@@ -371,20 +411,17 @@ msgstr "ВНИМАНИЕ! ИДЕНТИФИКАЦИЯ УДАЛЕННОГО СЕР
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle "
-"attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
-"Похоже есть возможность что вас ломают. Или кто-то изменил ключ на "
-"удаленном сервере."
+"Похоже есть возможность что вас ломают. Или кто-то изменил ключ на удаленном "
+"сервере."
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid ""
-"Host has disconnected.\n"
+msgid "Host has disconnected.\n"
 "Close session?"
-msgstr ""
-"Сервер отключился.\n"
+msgstr "Сервер отключился.\n"
 "Закрыть сессию ?"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -392,8 +429,7 @@ msgstr ""
 #, fuzzy
 msgctxt "prompt_continue_connecting"
 msgid "Are you sure you want to continue connecting?"
-msgstr ""
-"Хотите продолжить\n"
+msgstr "Хотите продолжить\n"
 "попытки соединения?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
@@ -547,6 +583,11 @@ msgctxt "font_validating"
 msgid "Validating font…"
 msgstr "Проверка шрифта…"
 
+#. Message shown while downloading a font from Google Fonts
+msgctxt "font_downloading"
+msgid "Downloading font…"
+msgstr "Загрузка шрифта…"
+
 #. Title for importing local font
 msgctxt "pref_localfont_title"
 msgid "Import local font"
@@ -595,6 +636,16 @@ msgctxt "pref_ui_category"
 msgid "User interface"
 msgstr "Пользовательский интерфейс"
 
+#. Name for the language preference
+msgctxt "pref_language_title"
+msgid "Language"
+msgstr "Язык"
+
+#. Default option for language preference that uses the system locale
+msgctxt "pref_language_system_default"
+msgid "System default"
+msgstr "Системные настройки по умолчанию"
+
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
 msgid "Rotation mode"
@@ -623,7 +674,8 @@ msgstr "Жест для Page Up/Down"
 #. Summary for the full screen preference
 msgctxt "pref_pg_updn_gesture_summary"
 msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
-msgstr "Проведите по левой трети экрана, чтобы послать в терминал Page Up/Down"
+msgstr ""
+"Проведите по левой трети экрана, чтобы послать в терминал Page Up/Down"
 
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
@@ -649,8 +701,8 @@ msgstr "Shift+Num как F-клавиши"
 msgctxt "pref_shiftfkeys_summary"
 msgid "On hardware keyboards, number keys send F1-F10 with shift"
 msgstr ""
-"На аппаратной клавиатуре цифровые клавиши при нажатии Shift будут "
-"посылать F1-F10"
+"На аппаратной клавиатуре цифровые клавиши при нажатии Shift будут посылать "
+"F1-F10"
 
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
@@ -661,8 +713,8 @@ msgstr "Ctrl+Num как F-клавиши"
 msgctxt "pref_ctrlfkeys_summary"
 msgid "On software keyboards, number keys send F1-F10 with ctrl"
 msgstr ""
-"На экранной клавиатуре цифровые клавиши при нажатии Ctrl будут посылать "
-"F1-F10"
+"На экранной клавиатуре цифровые клавиши при нажатии Ctrl будут посылать F1-"
+"F10"
 
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
@@ -670,8 +722,9 @@ msgid "Volume keys change font size"
 msgstr "Клавиши громкости меняют размер шрифта"
 
 #. Summary for the volume keys control font size preference
+#, fuzzy
 msgctxt "pref_volumefont_summary"
-msgid "Font size can also be changed in per-host settings"
+msgid "Font size can also be changed in profile settings"
 msgstr "Размер шрифта также может быть настроен для каждого сервера отдельно"
 
 #. Name for the memorize keys preference
@@ -790,7 +843,8 @@ msgstr "Фоновые уведомления"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid "Send notification when a terminal running in the background sounds a bell."
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
 msgstr "Включить уведомления для терминала работающего в фоновом процессе"
 
 #. Preference selection to indicate use of right side of keyboard for special
@@ -967,7 +1021,8 @@ msgstr "Начать сеанс оболочки"
 #. connection or not
 msgctxt "hostpref_wantsession_summary"
 msgid "Disable this preference to only use port forwards"
-msgstr "Отключите эту настройку, чтобы использовать только переадресацию портов"
+msgstr ""
+"Отключите эту настройку, чтобы использовать только переадресацию портов"
 
 #. Setting for whether the host should be reconnected to automatically upon
 #. disconnect
@@ -1006,6 +1061,26 @@ msgstr "Кодировка"
 msgctxt "hostpref_username_title"
 msgid "Username"
 msgstr "Имя пользователя"
+
+#. Password field supporting text in host editor
+msgctxt "hostpref_save_password_summary"
+msgid "Store login password securely for automatic authentication"
+msgstr "Безопасно сохраняйте пароль для автоматической аутентификации"
+
+#. Password field title in host editor
+msgctxt "hostpref_password_title"
+msgid "Password"
+msgstr "Пароль"
+
+#. Password field label when there is an existing password saved
+msgctxt "hostpref_password_unchanged"
+msgid "Password (unchanged)"
+msgstr "Пароль (не изменен)"
+
+#. Button to clear a saved password
+msgctxt "hostpref_clear_password"
+msgid "Clear saved password"
+msgstr "Очистить сохраненный пароль"
 
 #. Hostname field title for host editor preference
 msgctxt "hostpref_hostname_title"
@@ -1116,6 +1191,36 @@ msgstr "Семейство шрифтов"
 msgctxt "profile_editor_font_size_title"
 msgid "Font Size: %d"
 msgstr "Размер шрифта: %d"
+
+#. Subsection title for force size settings
+msgctxt "profile_editor_force_size_title"
+msgid "Force Size"
+msgstr "Принудительный размер"
+
+#. Summary text explaining what force size does
+msgctxt "profile_editor_force_size_summary"
+msgid ""
+"Force the terminal to a specific size (columns x rows) instead of auto-"
+"sizing to fit the screen."
+msgstr ""
+"Принудительно установите для терминала определенный размер (количество "
+"столбцов x количество строк) вместо автоматической подстройки под размер "
+"экрана."
+
+#. Label for the enable force size switch
+msgctxt "profile_editor_force_size_enable"
+msgid "Enable force size"
+msgstr "Включить принудительное задание размера"
+
+#. Label for the force size columns input field
+msgctxt "profile_editor_force_size_columns"
+msgid "Columns"
+msgstr "Колонки"
+
+#. Label for the force size rows input field
+msgctxt "profile_editor_force_size_rows"
+msgid "Rows"
+msgstr "Строки"
 
 #. Dropdown option to not override host color with profile color
 msgctxt "profile_icon_color_none"
@@ -1341,6 +1446,16 @@ msgctxt "list_host_delete"
 msgid "Delete host"
 msgstr "Удалить сервер"
 
+#. Context menu action to duplicate the selected host
+msgctxt "list_host_duplicate"
+msgid "Duplicate host"
+msgstr "Дублирующийся хост"
+
+#. Context menu action to forget stored host keys for the selected host
+msgctxt "list_host_forget_keys"
+msgid "Forget host keys"
+msgstr "Забыть ключи хоста"
+
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
 msgid "Default"
@@ -1487,6 +1602,16 @@ msgctxt "terminal_auth_pass_fail"
 msgid "Authentication method 'password' failed"
 msgstr "Авторизация 'по паролю' не удалась"
 
+#. Message shown in terminal when attempting saved password authentication
+msgctxt "terminal_auth_saved_password"
+msgid "Trying saved password…"
+msgstr "Попытка использования сохраненного пароля…"
+
+#. Message shown in terminal when saved password authentication fails
+msgctxt "terminal_auth_saved_password_fail"
+msgid "Saved password authentication failed"
+msgstr "Сохраненная аутентификация по паролю не удалась"
+
 #. Message shown in terminal when trying public key authentication with any
 #. available key
 msgctxt "terminal_auth_pubkey_any"
@@ -1510,6 +1635,18 @@ msgstr "Попытка авторизации с определённым отк
 msgctxt "terminal_auth_biometric"
 msgid "Requesting biometric authentication for key '%1$s'"
 msgstr "Запрос биометрической аутентификации для ключа «%1$s»"
+
+#. Message shown when a biometric key has been invalidated due to new
+#. fingerprint enrollment. Parameter is the key nickname.
+#, c-format
+msgctxt "terminal_auth_biometric_invalidated"
+msgid ""
+"Biometric key '%1$s' has been invalidated. This can happen when new "
+"fingerprints are enrolled on the device. Please generate a new key."
+msgstr ""
+"Биометрический ключ «%1$s» был аннулирован. Это может произойти, когда на "
+"устройстве регистрируются новые отпечатки пальцев. Пожалуйста, сгенерируйте "
+"новый ключ."
 
 #. Message shown in terminal when public key authentication fails. Parameter
 #. is the key nickname.
@@ -1563,7 +1700,7 @@ msgstr "Ошибка! На данном устройстве отсутству�
 #, c-format
 msgctxt "notification_text"
 msgid "%1$s wants your attention."
-msgstr "%1$s требует Вашего внимания"
+msgstr "%1$s требует Вашего внимания."
 
 #. Preference selection for SSH Authentication Agent to never use pubkeys
 msgctxt "no"
@@ -1669,7 +1806,8 @@ msgstr "Настройка"
 #. Empty state message when no custom schemes exist
 msgctxt "empty_custom_schemes"
 msgid "No custom schemes. Tap \"New Scheme\" to create one."
-msgstr "Нет пользовательских схем. Нажмите «Новая схема», чтобы создать новую."
+msgstr ""
+"Нет пользовательских схем. Нажмите «Новая схема», чтобы создать новую."
 
 #. Button text to edit full color palette
 msgctxt "button_edit_palette"
@@ -1744,8 +1882,8 @@ msgstr "Сбросить все цвета?"
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action "
-"cannot be undone."
+"This will reset all 256 colors to their default values. This action cannot "
+"be undone."
 msgstr ""
 "Это приведет к сбросу всех 256 цветов к их значениям по умолчанию. Это "
 "действие нельзя отменить."
@@ -2042,6 +2180,12 @@ msgctxt "error_color_scheme_load_failed"
 msgid "Failed to load color scheme: %s"
 msgstr "Не удалось загрузить цветовую схему: %s"
 
+#. Format string for the nickname of a duplicated host
+#, c-format
+msgctxt "host_duplicate_nickname"
+msgid "%1$s (copy)"
+msgstr "«%1$s» (копия)"
+
 #. Empty state messages
 #. Message shown when no hosts have been configured yet
 msgctxt "empty_hosts_message"
@@ -2106,6 +2250,11 @@ msgctxt "resize_height_label"
 msgid "Height (rows)"
 msgstr "Высота (ряды)"
 
+#. Button to disable force size and return to auto-sizing
+msgctxt "resize_disable_force_size"
+msgid "Disable force size"
+msgstr "Отключить принудительное изменение размера"
+
 #. Public key editor labels
 #. Label for key type field in the SSH pubkey editor
 msgctxt "pubkey_editor_key_type_label"
@@ -2153,11 +2302,11 @@ msgstr "Защитите этот ключ отпечатком пальца"
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use "
-"this feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use this "
+"feature."
 msgstr ""
-"Отпечаток пальца не зарегистрирован. Настройте отпечаток пальца в "
-"настройках устройства, чтобы использовать эту функцию."
+"Отпечаток пальца не зарегистрирован. Настройте отпечаток пальца в настройках "
+"устройства, чтобы использовать эту функцию."
 
 #. Warning shown when key type doesn\'t support biometric protection
 msgctxt "pubkey_biometric_key_type_warning"
@@ -2261,6 +2410,11 @@ msgctxt "hostpref_save_host"
 msgid "Save host"
 msgstr "Сохранить сервер"
 
+#. Title shown in the app bar when editing an existing host's settings.
+msgctxt "hostpref_setting_title"
+msgid "Host setting"
+msgstr "Настройка хоста"
+
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
@@ -2280,12 +2434,11 @@ msgstr "Поддерживать соединения активными"
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch "
-"apps."
+"background. Without permission, connections may close when you switch apps."
 msgstr ""
 "Отображение уведомления необходимо для поддержания соединений в фоновом "
-"режиме. Без разрешения соединения могут закрываться при переключении "
-"между приложениями."
+"режиме. Без разрешения соединения могут закрываться при переключении между "
+"приложениями."
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
@@ -2311,11 +2464,11 @@ msgstr "Требуется разрешение"
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification"
-" permission in app settings."
+"To keep connections alive in the background, you must enable notification "
+"permission in app settings."
 msgstr ""
-"Чтобы подключения оставались активными в фоновом режиме, необходимо "
-"включить разрешение на уведомления в настройках приложения."
+"Чтобы подключения оставались активными в фоновом режиме, необходимо включить "
+"разрешение на уведомления в настройках приложения."
 
 #. Button text to open ConnectBot app settings page where user can grant
 #. notification permission.
@@ -2326,7 +2479,8 @@ msgstr "Открыть настройки"
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid "Are you trying to access a local host? Grant local network permissions."
+msgid ""
+"Are you trying to access a local host? Grant local network permissions."
 msgstr ""
 "Вы пытаетесь получить доступ к локальному хосту? Выберите разрешение на "
 "доступ к локальной сети."
@@ -2397,11 +2551,11 @@ msgstr "Повторить"
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug "
-"log copied above"
+"If the problem persists, please report this issue at %1$s with the debug log "
+"copied above"
 msgstr ""
-"Если проблема сохраняется, пожалуйста, сообщите об этой проблеме в %1$s с"
-" отладочной информацией, скопированной выше"
+"Если проблема сохраняется, пожалуйста, сообщите об этой проблеме в %1$s с "
+"отладочной информацией, скопированной выше"
 
 #. Title for warnings section shown during database migration
 msgctxt "migration_warnings_title"
@@ -2437,10 +2591,46 @@ msgctxt "delete_host_confirm"
 msgid "Are you sure you want to delete host '%1$s'?"
 msgstr "Вы уверены, что хотите удалить хост «%1$s»?"
 
+#. Shown in the alert dialog when a user chooses the 'forget host keys' item.
+#, c-format
+msgctxt "forget_host_keys_confirm"
+msgid ""
+"Are you sure you want to forget the stored host keys for '%1$s'? You will be "
+"prompted to verify the host key on the next connection."
+msgstr ""
+"Вы уверены, что хотите удалить сохраненные ключи хоста для \"%1$s\"? При "
+"следующем подключении вам будет предложено подтвердить ключ хоста."
+
 #. Menu selection to edit a pubkey details (e.g., nickname)
 msgctxt "list_pubkey_edit"
 msgid "Edit pubkey"
 msgstr "Редактировать открытый ключ"
+
+#. IP Version selection for host connections
+#. Title for IP version preference in host editor
+msgctxt "hostpref_ipversion_title"
+msgid "IP version"
+msgstr "Версия IP"
+
+#. Summary text explaining what the IP version setting controls
+msgctxt "hostpref_ipversion_summary"
+msgid "Select which IP address version to use when connecting"
+msgstr "Выберите, какую версию IP-адреса использовать при подключении"
+
+#. Option for automatic IP version selection (try both IPv4 and IPv6)
+msgctxt "ipversion_auto"
+msgid "Automatic"
+msgstr "Автоматический"
+
+#. Option to force IPv4-only connections
+msgctxt "ipversion_ipv4"
+msgid "IPv4 only"
+msgstr "Только IPv4"
+
+#. Option to force IPv6-only connections
+msgctxt "ipversion_ipv6"
+msgid "IPv6 only"
+msgstr "Только IPv6"
 
 #. ProxyJump / Jump Host support
 #. Title for jump host selector in host editor
@@ -2522,11 +2712,11 @@ msgstr "Журналы скопированы в буфер обмена"
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at "
-"https://connectbot.org/bug"
+"To report a bug, copy these logs and open a new issue at https://connectbot."
+"org/bug"
 msgstr ""
-"Чтобы сообщить об ошибке скопируйте эти логи и откройте новое сообщение "
-"на https://connectbot.org/bug"
+"Чтобы сообщить об ошибке скопируйте эти логи и откройте новое сообщение на "
+"https://connectbot.org/bug"
 
 #. Message shown when no logs are available
 msgctxt "no_logs_available"
@@ -2538,6 +2728,48 @@ msgstr "Нет доступных журналов"
 msgctxt "help_section_about"
 msgid "About"
 msgstr "О программе"
+
+#. Window title for the Contact &amp; Support screen, also used as button text
+#. in Help screen.
+msgctxt "title_contact"
+msgid "Contact & Support"
+msgstr "Контакты и поддержка"
+
+#. Section title for the "Help" screen showing contact and support
+#. information.
+msgctxt "help_section_contact"
+msgid "Contact & Support"
+msgstr "Контакты и поддержка"
+
+#. Label for the official website link in the Help screen.
+msgctxt "help_website"
+msgid "Website"
+msgstr "Веб-сайт"
+
+#. Label for the GitHub repository link in the Help screen.
+msgctxt "help_github"
+msgid "Source Code"
+msgstr "Исходный код"
+
+#. Label for the bug report/issue tracker link in the Help screen.
+msgctxt "help_report_bug"
+msgid "Report a Bug"
+msgstr "Сообщить об ошибке"
+
+#. Section title for the "Help" screen showing donation options.
+msgctxt "help_section_donate"
+msgid "Support Development"
+msgstr "Поддержите разработку"
+
+#. Label for the GitHub Sponsors donation link in the Help screen.
+msgctxt "help_donate_github"
+msgid "GitHub Sponsors"
+msgstr "GitHub Sponsors"
+
+#. Label for the Buy Me a Coffee donation link in the Help screen.
+msgctxt "help_donate_coffee"
+msgid "Buy Me a Coffee"
+msgstr "Купите мне чашку кофе"
 
 #. Built-in color scheme descriptions for terminal display
 #. Description of the default terminal color scheme
@@ -2621,6 +2853,21 @@ msgctxt "dialog_customterminal_hint"
 msgid "Terminal type (e.g., rxvt-unicode)"
 msgstr "Тип терминала (например, rxvt-unicode)"
 
+#. Dialog title for managing custom terminal types
+msgctxt "dialog_manage_customterminal_title"
+msgid "Manage Custom Terminal Types"
+msgstr "Управление пользовательскими типами терминала"
+
+#. Button to add a custom item
+msgctxt "button_add_custom"
+msgid "Add custom…"
+msgstr "Добавить пользовательский…"
+
+#. Button to manage custom items
+msgctxt "button_manage_custom"
+msgid "Manage custom…"
+msgstr "Управление пользовательскими настройками…"
+
 #. Label for custom value input in list preference dialogs
 msgctxt "dialog_custom_value_label"
 msgid "Enter custom value"
@@ -2656,3 +2903,131 @@ msgctxt "list_camera_text_input_description"
 msgid "Text input"
 msgstr "Ввод текста"
 
+#. Host export/import menu items
+#. Menu item to export all hosts to a JSON file
+msgctxt "list_menu_export_hosts"
+msgid "Export Hosts"
+msgstr "Экспорт хостов"
+
+#. Menu item to import hosts from a JSON file
+msgctxt "list_menu_import_hosts"
+msgid "Import Hosts"
+msgstr "Импортировать хосты"
+
+#. Host export/import messages
+#. Success message shown after exporting hosts to a file. Parameters: %1$d =
+#. host count, %2$d = profile count
+#, c-format
+msgctxt "export_hosts_success"
+msgid "Exported %1$d hosts and %2$d profiles"
+msgstr "Экспортировано %1$d хостов и %2$d профилей"
+
+#. Success message shown after importing hosts from a file. Parameters: %1$d =
+#. hosts imported, %2$d = hosts skipped, %3$d = profiles imported, %4$d =
+#. profiles skipped
+#, c-format
+msgctxt "import_hosts_success"
+msgid "Imported %1$d hosts (%2$d skipped) and %3$d profiles (%4$d skipped)"
+msgstr ""
+"Импортировано %1$d хостов (%2$d пропущено) и %3$d профилей (%4$d пропущено)"
+
+#. Error message when host export fails
+#, c-format
+msgctxt "export_hosts_failed"
+msgid "Failed to export hosts: %s"
+msgstr "Не удалось экспортировать список хостов: %s"
+
+#. Error message when host import fails
+#, c-format
+msgctxt "import_hosts_failed"
+msgid "Failed to import hosts: %s"
+msgstr "Не удалось импортировать список хостов: %s"
+
+#. Title for the export hosts file picker dialog
+msgctxt "export_hosts_title"
+msgid "Export Hosts"
+msgstr "Экспорт хостов"
+
+#. Shortcut customization dialog strings
+#. Dialog title when customizing a shortcut icon
+msgctxt "shortcut_customize_title"
+msgid "Customize Shortcut"
+msgstr "Настроить сочетание клавиш"
+
+#. Label for the shortcut icon color selection dropdown
+msgctxt "shortcut_icon_color"
+msgid "Icon Color"
+msgstr "Цвет значка"
+
+#. Label for the shortcut icon style selection dropdown
+msgctxt "shortcut_icon_style"
+msgid "Icon Style"
+msgstr "Стиль значка"
+
+#. Checkbox label to use the host\'s configured color for the shortcut
+msgctxt "shortcut_use_host_color"
+msgid "Use host color"
+msgstr "Использовать цвет для имени хоста"
+
+#. Button to create the customized shortcut
+msgctxt "shortcut_create"
+msgid "Create Shortcut"
+msgstr "Создать ярлык"
+
+#. Icon style option: terminal prompt icon
+msgctxt "icon_style_terminal"
+msgid "Terminal"
+msgstr "Терминал"
+
+#. Icon style option: server/computer icon
+msgctxt "icon_style_server"
+msgid "Server"
+msgstr "Сервер"
+
+#. Icon style option: cloud icon
+msgctxt "icon_style_cloud"
+msgid "Cloud"
+msgstr "Облако"
+
+#. Icon style option: key/security icon
+msgctxt "icon_style_key"
+msgid "Key"
+msgstr "Ключ"
+
+#. Authentication on launch
+#. Title for the authentication on launch preference in settings
+msgctxt "pref_auth_on_launch_title"
+msgid "Authentication on launch"
+msgstr "Аутентификация при запуске"
+
+#. Summary for the authentication on launch preference
+msgctxt "pref_auth_on_launch_summary"
+msgid "Require fingerprint, face, or device PIN when opening the app"
+msgstr ""
+"Требуйте ввод отпечатка пальца, распознавание лица или PIN-код устройства "
+"при запуске приложения"
+
+#. Category title for security preferences in settings
+msgctxt "pref_security_category"
+msgid "Security"
+msgstr "Безопасность"
+
+#. Title shown on the authentication lock screen
+msgctxt "auth_screen_title"
+msgid "ConnectBot is locked"
+msgstr "ConnectBot заблокирован"
+
+#. Button text to trigger authentication on the lock screen
+msgctxt "auth_screen_unlock_button"
+msgid "Tap to unlock"
+msgstr "Нажмите, чтобы разблокировать"
+
+#. Title shown in the biometric/device credential authentication prompt
+msgctxt "auth_prompt_title"
+msgid "Unlock ConnectBot"
+msgstr "Разблокируйте ConnectBot"
+
+#. Subtitle shown in the biometric/device credential authentication prompt
+msgctxt "auth_prompt_subtitle"
+msgid "Verify your identity to continue"
+msgstr "Подтвердите свою личность, чтобы продолжить"

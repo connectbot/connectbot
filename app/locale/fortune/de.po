@@ -2,21 +2,22 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-26 16:01-0800\n"
-"PO-Revision-Date: 2025-12-26 15:13-0800\n"
+"POT-Creation-Date: 2026-02-12 10:47+0800\n"
+"PO-Revision-Date: 2026-02-12 11:54+0800\n"
 "Last-Translator: Kenny Root <Unknown>\n"
 "Language: de\n"
 "Language-Team: de <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=((((n == 1)) && ((0 == 0))) ? 0 : 1);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
+"X-Generator: Autopo v1.0.8\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -139,11 +140,11 @@ msgstr "Berühren Sie diese Box, um Zufallszahlen zu erzeugen: %1$d%% fertig"
 #. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger"
-" randomly over the box below."
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
 msgstr ""
-"Um eine gute Zufallsverteilung zu gewährleisten, bewegen Sie Ihren Finger"
-" zufällig über die Box unten!"
+"Um eine gute Zufallsverteilung zu gewährleisten, bewegen Sie Ihren Finger "
+"zufällig über die Box unten!"
 
 #. Progress message shown while generating a new SSH key pair
 msgctxt "pubkey_generating"
@@ -210,7 +211,8 @@ msgstr "Setze Exportpassphrase"
 #. Instructions to enter a passphrase to encrypt the key being exported
 msgctxt "pubkey_export_passphrase_message"
 msgid "Enter a passphrase to encrypt the exported key"
-msgstr "Geben Sie ein Passwort ein um den exportierten Schlüssel zu verschlüsseln"
+msgstr ""
+"Geben Sie ein Passwort ein um den exportierten Schlüssel zu verschlüsseln"
 
 #. Label for the field where user confirms the passphrase by entering it again
 msgctxt "pubkey_export_confirm_passphrase"
@@ -233,12 +235,49 @@ msgstr "Importiere verschlüsselten Schlüssel"
 #, c-format
 msgctxt "pubkey_import_encrypted_message"
 msgid "Enter password to decrypt key '%1$s' (%2$s)"
-msgstr "Geben Sie das Passwort zum Entschlüsseln des Schlüssels '%1$s' (%2$s) ein"
+msgstr ""
+"Geben Sie das Passwort zum Entschlüsseln des Schlüssels '%1$s' (%2$s) ein"
 
 #. Button text to confirm importing a key
 msgctxt "pubkey_import_button"
 msgid "Import"
 msgstr "Importieren"
+
+#. Checkbox label in the import encrypted key dialog. When checked, the
+#. imported key will be encrypted for storage on the device.
+msgctxt "pubkey_import_encrypt_key"
+msgid "Encrypt key for storage"
+msgstr "Schlüssel für die Verschlüsselung bei der Speicherung"
+
+#. Checkbox label that appears when 'Encrypt key for storage' is checked. When
+#. checked, the same password used to decrypt the imported key will be used to
+#. encrypt it for storage.
+msgctxt "pubkey_import_reuse_password"
+msgid "Use same password for encryption"
+msgstr "Verwenden Sie dasselbe Passwort für die Verschlüsselung"
+
+#. Label for the password field when entering a new password to encrypt the
+#. imported key for storage.
+msgctxt "pubkey_import_new_password"
+msgid "New password"
+msgstr "Neues Passwort"
+
+#. Label for the password confirmation field when setting a new password to
+#. encrypt the imported key.
+msgctxt "pubkey_import_confirm_password"
+msgid "Confirm password"
+msgstr "Passwort bestätigen"
+
+#. Note that the '\n' just splits lines, so it's actually "create or import"
+msgctxt "pubkey_list_empty"
+msgid "Tap \"Menu\" to create\n"
+"or import key pairs."
+msgstr ""
+"Tippen Sie auf „Menü“, um Schlüsselpaare zu erstellen oder zu importieren."
+
+msgctxt "pubkey_unknown_format"
+msgid "Unknown format"
+msgstr "Unbekanntes Format"
 
 #. Context menu action to change the password protecting a private key
 msgctxt "pubkey_change_password"
@@ -308,6 +347,12 @@ msgctxt "prompt_old_password"
 msgid "Old password:"
 msgstr "Altes Passwort:"
 
+#. Prompt for user to enter their username when the host has no username
+#. configured.
+msgctxt "prompt_username"
+msgid "Username:"
+msgstr "Benutzername:"
+
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
 msgctxt "prompt_password"
@@ -346,11 +391,9 @@ msgstr "Passwort für Schlüssel '%1$s'"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid ""
-"Allow remote host to\n"
+msgid "Allow remote host to\n"
 "use key '%1$s'?"
-msgstr ""
-"Remote Host die Benutzung\n"
+msgstr "Remote Host die Benutzung\n"
 "des Schlüssels '%1$s' erlauben?"
 
 #. The header of the warning a user gets when the host key has changed. Note
@@ -366,8 +409,7 @@ msgstr "WARNUNG: IDENTIFIKATION DES ENTFERNTEN HOSTS HAT SICH GEÄNDERT!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle "
-"attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "MÖGLICHERWEISE TUT JEMAND ETWAS BÖSES!\n"
@@ -376,11 +418,9 @@ msgstr ""
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid ""
-"Host has disconnected.\n"
+msgid "Host has disconnected.\n"
 "Close session?"
-msgstr ""
-"Der Host hat die Verbindung beendet.\n"
+msgstr "Der Host hat die Verbindung beendet.\n"
 "Sitzung schließen?"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -388,8 +428,7 @@ msgstr ""
 #, fuzzy
 msgctxt "prompt_continue_connecting"
 msgid "Are you sure you want to continue connecting?"
-msgstr ""
-"Sind Sie sicher, dass Sie\n"
+msgstr "Sind Sie sicher, dass Sie\n"
 "eine Verbindung herstellen wollen?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
@@ -500,7 +539,8 @@ msgstr "Bildlaufpuffergröße"
 #. Description of the scrollback size preference
 msgctxt "pref_scrollback_summary"
 msgid "Size of scrollback buffer to keep in memory for each console"
-msgstr "Größe des Bildlaufpuffers, der für jede Konsole im Speicher gehalten wird"
+msgstr ""
+"Größe des Bildlaufpuffers, der für jede Konsole im Speicher gehalten wird"
 
 #. Name for the font family preference
 msgctxt "pref_fontfamily_title"
@@ -543,6 +583,11 @@ msgctxt "font_validating"
 msgid "Validating font…"
 msgstr "Überprüfe Schriftart…"
 
+#. Message shown while downloading a font from Google Fonts
+msgctxt "font_downloading"
+msgid "Downloading font…"
+msgstr "Schriftart wird heruntergeladen…"
+
 #. Title for importing local font
 msgctxt "pref_localfont_title"
 msgid "Import local font"
@@ -583,13 +628,23 @@ msgstr "Sicherung Öffentliche Schlüssel"
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
 msgstr ""
-"Bewahren Sie Backups der privaten Schlüssel mit dem Backup-Mechanismus "
-"von Android auf"
+"Bewahren Sie Backups der privaten Schlüssel mit dem Backup-Mechanismus von "
+"Android auf"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
 msgid "User interface"
 msgstr "Benutzungsschnittstelle"
+
+#. Name for the language preference
+msgctxt "pref_language_title"
+msgid "Language"
+msgstr "Sprache"
+
+#. Default option for language preference that uses the system locale
+msgctxt "pref_language_system_default"
+msgid "System default"
+msgstr "Systemstandard"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
@@ -620,8 +675,8 @@ msgstr "Bild auf/ab Geste"
 msgctxt "pref_pg_updn_gesture_summary"
 msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
 msgstr ""
-"Ziehe deinen Finger über das linke Drittel des Bildschirms um Bild auf/ab"
-" an die Konsole zu schicken"
+"Ziehe deinen Finger über das linke Drittel des Bildschirms um Bild auf/ab an "
+"die Konsole zu schicken"
 
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
@@ -664,9 +719,11 @@ msgid "Volume keys change font size"
 msgstr "Lautstärketasten ändern die Schriftgröße"
 
 #. Summary for the volume keys control font size preference
+#, fuzzy
 msgctxt "pref_volumefont_summary"
-msgid "Font size can also be changed in per-host settings"
-msgstr "Die Schriftgröße kann auch in den Einstellungen pro Host geändert werden"
+msgid "Font size can also be changed in profile settings"
+msgstr ""
+"Die Schriftgröße kann auch in den Einstellungen pro Host geändert werden"
 
 #. Name for the memorize keys preference
 msgctxt "pref_memkeys_title"
@@ -677,8 +734,8 @@ msgstr "Schlüssel im Speicher behalten"
 msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
 msgstr ""
-"Entsperrte Schlüssel im Speicher halten, bis der Hintergrunddienst "
-"beendet wurde"
+"Entsperrte Schlüssel im Speicher halten, bis der Hintergrunddienst beendet "
+"wurde"
 
 #. Name for the preference that forces the service to stay running in the
 #. background.
@@ -722,8 +779,8 @@ msgstr "Bildschirm anlassen"
 msgctxt "pref_keepalive_summary"
 msgid "Prevent the screen from turning off when working in a console"
 msgstr ""
-"Verhindern, dass beim Arbeiten an der Konsole der Bildschirm abgeschaltet"
-" wird"
+"Verhindern, dass beim Arbeiten an der Konsole der Bildschirm abgeschaltet "
+"wird"
 
 #. Name for the Wi-Fi lock preference
 msgctxt "pref_wifilock_title"
@@ -788,10 +845,11 @@ msgstr "Hintergrundnotiz"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid "Send notification when a terminal running in the background sounds a bell."
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
 msgstr ""
-"Benachrichtigen, wenn ein im Hintergrund laufendendes Terminal eine "
-"Glocke erklingen lässt."
+"Benachrichtigen, wenn ein im Hintergrund laufendendes Terminal eine Glocke "
+"erklingen lässt."
 
 #. Preference selection to indicate use of right side of keyboard for special
 #. shortcuts.
@@ -1011,6 +1069,28 @@ msgctxt "hostpref_username_title"
 msgid "Username"
 msgstr "Benutzername"
 
+#. Password field supporting text in host editor
+msgctxt "hostpref_save_password_summary"
+msgid "Store login password securely for automatic authentication"
+msgstr ""
+"Speichern Sie das Login-Passwort sicher, um eine automatische "
+"Authentifizierung zu ermöglichen"
+
+#. Password field title in host editor
+msgctxt "hostpref_password_title"
+msgid "Password"
+msgstr "Passwort"
+
+#. Password field label when there is an existing password saved
+msgctxt "hostpref_password_unchanged"
+msgid "Password (unchanged)"
+msgstr "Passwort (unverändert)"
+
+#. Button to clear a saved password
+msgctxt "hostpref_clear_password"
+msgid "Clear saved password"
+msgstr "Gespeichertes Passwort löschen"
+
 #. Hostname field title for host editor preference
 msgctxt "hostpref_hostname_title"
 msgid "Host"
@@ -1120,6 +1200,35 @@ msgstr "Schriftfamilie"
 msgctxt "profile_editor_font_size_title"
 msgid "Font Size: %d"
 msgstr "Schriftgröße %d"
+
+#. Subsection title for force size settings
+msgctxt "profile_editor_force_size_title"
+msgid "Force Size"
+msgstr "Erzwungene Größe"
+
+#. Summary text explaining what force size does
+msgctxt "profile_editor_force_size_summary"
+msgid ""
+"Force the terminal to a specific size (columns x rows) instead of auto-"
+"sizing to fit the screen."
+msgstr ""
+"Erzwinge eine bestimmte Größe für das Terminal (Spalten x Zeilen) anstatt "
+"die automatische Anpassung an die Bildschirmgröße zu verwenden."
+
+#. Label for the enable force size switch
+msgctxt "profile_editor_force_size_enable"
+msgid "Enable force size"
+msgstr "Erzwinge die Größenanpassung"
+
+#. Label for the force size columns input field
+msgctxt "profile_editor_force_size_columns"
+msgid "Columns"
+msgstr "Spalten"
+
+#. Label for the force size rows input field
+msgctxt "profile_editor_force_size_rows"
+msgid "Rows"
+msgstr "Zeilen"
 
 #. Dropdown option to not override host color with profile color
 msgctxt "profile_icon_color_none"
@@ -1345,6 +1454,16 @@ msgctxt "list_host_delete"
 msgid "Delete host"
 msgstr "Host löschen"
 
+#. Context menu action to duplicate the selected host
+msgctxt "list_host_duplicate"
+msgid "Duplicate host"
+msgstr "Doppelter Host"
+
+#. Context menu action to forget stored host keys for the selected host
+msgctxt "list_host_forget_keys"
+msgid "Forget host keys"
+msgstr "Hostschlüssel vergessen"
+
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
 msgid "Default"
@@ -1491,6 +1610,16 @@ msgctxt "terminal_auth_pass_fail"
 msgid "Authentication method 'password' failed"
 msgstr "Authentisierungsmethode 'Passwort' fehlgeschlagen."
 
+#. Message shown in terminal when attempting saved password authentication
+msgctxt "terminal_auth_saved_password"
+msgid "Trying saved password…"
+msgstr "Versuche, das gespeicherte Passwort zu verwenden…"
+
+#. Message shown in terminal when saved password authentication fails
+msgctxt "terminal_auth_saved_password_fail"
+msgid "Saved password authentication failed"
+msgstr "Die gespeicherte Passwortauthentifizierung ist fehlgeschlagen"
+
 #. Message shown in terminal when trying public key authentication with any
 #. available key
 msgctxt "terminal_auth_pubkey_any"
@@ -1521,12 +1650,25 @@ msgctxt "terminal_auth_biometric"
 msgid "Requesting biometric authentication for key '%1$s'"
 msgstr "Anfrage der biometrischen Authentifizierung für den Schlüssel %1$s"
 
+#. Message shown when a biometric key has been invalidated due to new
+#. fingerprint enrollment. Parameter is the key nickname.
+#, c-format
+msgctxt "terminal_auth_biometric_invalidated"
+msgid ""
+"Biometric key '%1$s' has been invalidated. This can happen when new "
+"fingerprints are enrolled on the device. Please generate a new key."
+msgstr ""
+"Das biometrische Schlüssel '%1$s' wurde ungültig gemacht. Dies kann "
+"passieren, wenn neue Fingerabdrücke auf dem Gerät registriert werden. Bitte "
+"erstellen Sie einen neuen Schlüssel."
+
 #. Message shown in terminal when public key authentication fails. Parameter
 #. is the key nickname.
 #, c-format
 msgctxt "terminal_auth_pubkey_fail"
 msgid "Authentication method 'publickey' with key '%1$s' failed"
-msgstr "Authentifizierungs Methode 'publickey' mit Schlüssel '%1$s' fehlgeschlagen"
+msgstr ""
+"Authentifizierungs Methode 'publickey' mit Schlüssel '%1$s' fehlgeschlagen"
 
 #. Message shown in terminal when attempting keyboard-interactive
 #. authentication method
@@ -1655,8 +1797,8 @@ msgstr "Lösche Schema"
 msgctxt "dialog_message_delete_scheme"
 msgid "Are you sure you want to delete \"%1$s\"? This action cannot be undone."
 msgstr ""
-"Sind Sie sicher dass Sie \"%1$s\" löschen möchten Diese Aktion kann nicht"
-" rückgängig gemacht werden"
+"Sind Sie sicher dass Sie \"%1$s\" löschen möchten Diese Aktion kann nicht "
+"rückgängig gemacht werden"
 
 #. Button text for confirm action in dialogs
 msgctxt "button_confirm"
@@ -1681,7 +1823,8 @@ msgstr "Benutzerdefiniert"
 #. Empty state message when no custom schemes exist
 msgctxt "empty_custom_schemes"
 msgid "No custom schemes. Tap \"New Scheme\" to create one."
-msgstr "Keine benutzerdefinierten Schemata Tap New Scheme um eines zu erstellen"
+msgstr ""
+"Keine benutzerdefinierten Schemata Tap New Scheme um eines zu erstellen"
 
 #. Button text to edit full color palette
 msgctxt "button_edit_palette"
@@ -1756,11 +1899,11 @@ msgstr "Alle Farben zurücksetzen"
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action "
-"cannot be undone."
+"This will reset all 256 colors to their default values. This action cannot "
+"be undone."
 msgstr ""
-"Dies wird alle 256 Farben auf ihre Standardwerte zurücksetzen Dieser "
-"Vorgang kann nicht rückgängig gemacht werden"
+"Dies wird alle 256 Farben auf ihre Standardwerte zurücksetzen Dieser Vorgang "
+"kann nicht rückgängig gemacht werden"
 
 #. Displayed in the notification bar that connections are active
 msgctxt "app_is_running"
@@ -2054,6 +2197,12 @@ msgctxt "error_color_scheme_load_failed"
 msgid "Failed to load color scheme: %s"
 msgstr "Fehler beim Laden des Farbschemas %s"
 
+#. Format string for the nickname of a duplicated host
+#, c-format
+msgctxt "host_duplicate_nickname"
+msgid "%1$s (copy)"
+msgstr "%1$s (kopieren)"
+
 #. Empty state messages
 #. Message shown when no hosts have been configured yet
 msgctxt "empty_hosts_message"
@@ -2118,6 +2267,11 @@ msgctxt "resize_height_label"
 msgid "Height (rows)"
 msgstr "Höhe Zeilen"
 
+#. Button to disable force size and return to auto-sizing
+msgctxt "resize_disable_force_size"
+msgid "Disable force size"
+msgstr "Erzwingen der Größe deaktivieren"
+
 #. Public key editor labels
 #. Label for key type field in the SSH pubkey editor
 msgctxt "pubkey_editor_key_type_label"
@@ -2165,8 +2319,8 @@ msgstr "Schützen Sie diesen Schlüssel mit Ihrem Fingerabdruck"
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use "
-"this feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use this "
+"feature."
 msgstr ""
 "Kein Fingerabdruck eingeschrieben. Stellen Sie den Fingerabdruck in den "
 "Geräteeinstellungen ein, um diese Funktion zu verwenden"
@@ -2273,6 +2427,11 @@ msgctxt "hostpref_save_host"
 msgid "Save host"
 msgstr "Host speichern"
 
+#. Title shown in the app bar when editing an existing host's settings.
+msgctxt "hostpref_setting_title"
+msgid "Host setting"
+msgstr "Host-Einstellung"
+
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
@@ -2292,8 +2451,7 @@ msgstr "Verbindungen aufrechterhalten"
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch "
-"apps."
+"background. Without permission, connections may close when you switch apps."
 msgstr ""
 "Das Anzeigen einer Benachrichtigung ist erforderlich um Verbindungen im "
 "Hintergrund aufrechtzuerhalten Ohne Berechtigung können Verbindungen "
@@ -2323,8 +2481,8 @@ msgstr "Erforderliche Berechtigung"
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification"
-" permission in app settings."
+"To keep connections alive in the background, you must enable notification "
+"permission in app settings."
 msgstr ""
 "Um Verbindungen im Hintergrund aufrechtzuerhalten muss die "
 "Benachrichtigungsberechtigung in den App-Einstellungen aktiviert werden"
@@ -2338,7 +2496,8 @@ msgstr "Öffne Einstellungen"
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid "Are you trying to access a local host? Grant local network permissions."
+msgid ""
+"Are you trying to access a local host? Grant local network permissions."
 msgstr ""
 "Versuchen Sie auf einen lokalen Host zuzugreifen Grantieren Sie lokale "
 "Netzwerk Berechtigungen"
@@ -2409,11 +2568,11 @@ msgstr "Wiederholen"
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug "
-"log copied above"
+"If the problem persists, please report this issue at %1$s with the debug log "
+"copied above"
 msgstr ""
-"Wenn das Problem weiterhin besteht bitte melden Sie dieses Problem bei "
-"%1$s mit dem oben kopierten Debugprotokoll"
+"Wenn das Problem weiterhin besteht bitte melden Sie dieses Problem bei %1$s "
+"mit dem oben kopierten Debugprotokoll"
 
 #. Title for warnings section shown during database migration
 msgctxt "migration_warnings_title"
@@ -2449,10 +2608,47 @@ msgctxt "delete_host_confirm"
 msgid "Are you sure you want to delete host '%1$s'?"
 msgstr "Sind Sie sicher dass Sie den Host '%1$s' löschen möchten"
 
+#. Shown in the alert dialog when a user chooses the 'forget host keys' item.
+#, c-format
+msgctxt "forget_host_keys_confirm"
+msgid ""
+"Are you sure you want to forget the stored host keys for '%1$s'? You will be "
+"prompted to verify the host key on the next connection."
+msgstr ""
+"Sind Sie sicher, dass Sie die gespeicherten Hostschlüssel für '%1$s' löschen "
+"möchten? Sie werden beim nächsten Verbindungsaufbau aufgefordert, den "
+"Hostschlüssel zu bestätigen."
+
 #. Menu selection to edit a pubkey details (e.g., nickname)
 msgctxt "list_pubkey_edit"
 msgid "Edit pubkey"
 msgstr "Bearbeite Pubkey"
+
+#. IP Version selection for host connections
+#. Title for IP version preference in host editor
+msgctxt "hostpref_ipversion_title"
+msgid "IP version"
+msgstr "IP-Version"
+
+#. Summary text explaining what the IP version setting controls
+msgctxt "hostpref_ipversion_summary"
+msgid "Select which IP address version to use when connecting"
+msgstr "Wählen Sie die zu verwendende IP-Adressversion für die Verbindung aus"
+
+#. Option for automatic IP version selection (try both IPv4 and IPv6)
+msgctxt "ipversion_auto"
+msgid "Automatic"
+msgstr "Automatisch"
+
+#. Option to force IPv4-only connections
+msgctxt "ipversion_ipv4"
+msgid "IPv4 only"
+msgstr "Nur IPv4"
+
+#. Option to force IPv6-only connections
+msgctxt "ipversion_ipv6"
+msgid "IPv6 only"
+msgstr "Nur IPv6"
 
 #. ProxyJump / Jump Host support
 #. Title for jump host selector in host editor
@@ -2534,11 +2730,11 @@ msgstr "Protokolle in die Zwischenablage kopiert"
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at "
-"https://connectbot.org/bug"
+"To report a bug, copy these logs and open a new issue at https://connectbot."
+"org/bug"
 msgstr ""
-"Um einen Fehler zu melden kopieren Sie diese Protokolle und öffnen Sie "
-"ein neues Problem unter https://connectbot.org/bug"
+"Um einen Fehler zu melden kopieren Sie diese Protokolle und öffnen Sie ein "
+"neues Problem unter https://connectbot.org/bug"
 
 #. Message shown when no logs are available
 msgctxt "no_logs_available"
@@ -2550,6 +2746,48 @@ msgstr "Keine Protokolle verfügbar"
 msgctxt "help_section_about"
 msgid "About"
 msgstr "Über"
+
+#. Window title for the Contact &amp; Support screen, also used as button text
+#. in Help screen.
+msgctxt "title_contact"
+msgid "Contact & Support"
+msgstr "Kontakt und Support"
+
+#. Section title for the "Help" screen showing contact and support
+#. information.
+msgctxt "help_section_contact"
+msgid "Contact & Support"
+msgstr "Kontakt und Support"
+
+#. Label for the official website link in the Help screen.
+msgctxt "help_website"
+msgid "Website"
+msgstr "Website"
+
+#. Label for the GitHub repository link in the Help screen.
+msgctxt "help_github"
+msgid "Source Code"
+msgstr "Quellcode"
+
+#. Label for the bug report/issue tracker link in the Help screen.
+msgctxt "help_report_bug"
+msgid "Report a Bug"
+msgstr "Melden Sie einen Fehler"
+
+#. Section title for the "Help" screen showing donation options.
+msgctxt "help_section_donate"
+msgid "Support Development"
+msgstr "Unterstützen Sie die Entwicklung"
+
+#. Label for the GitHub Sponsors donation link in the Help screen.
+msgctxt "help_donate_github"
+msgid "GitHub Sponsors"
+msgstr "GitHub-Sponsoren"
+
+#. Label for the Buy Me a Coffee donation link in the Help screen.
+msgctxt "help_donate_coffee"
+msgid "Buy Me a Coffee"
+msgstr "Lass mich auf einen Kaffee einladen"
 
 #. Built-in color scheme descriptions for terminal display
 #. Description of the default terminal color scheme
@@ -2633,6 +2871,21 @@ msgctxt "dialog_customterminal_hint"
 msgid "Terminal type (e.g., rxvt-unicode)"
 msgstr "Termintyp zB rxvt-unicode"
 
+#. Dialog title for managing custom terminal types
+msgctxt "dialog_manage_customterminal_title"
+msgid "Manage Custom Terminal Types"
+msgstr "Benutzerdefinierte Terminaltypen verwalten"
+
+#. Button to add a custom item
+msgctxt "button_add_custom"
+msgid "Add custom…"
+msgstr "Benutzerdefiniert hinzufügen…"
+
+#. Button to manage custom items
+msgctxt "button_manage_custom"
+msgid "Manage custom…"
+msgstr "Benutzerdefinierte Einstellungen verwalten…"
+
 #. Label for custom value input in list preference dialogs
 msgctxt "dialog_custom_value_label"
 msgid "Enter custom value"
@@ -2668,3 +2921,132 @@ msgctxt "list_camera_text_input_description"
 msgid "Text input"
 msgstr "Eingabetext"
 
+#. Host export/import menu items
+#. Menu item to export all hosts to a JSON file
+msgctxt "list_menu_export_hosts"
+msgid "Export Hosts"
+msgstr "Hosts exportieren"
+
+#. Menu item to import hosts from a JSON file
+msgctxt "list_menu_import_hosts"
+msgid "Import Hosts"
+msgstr "Hosts importieren"
+
+#. Host export/import messages
+#. Success message shown after exporting hosts to a file. Parameters: %1$d =
+#. host count, %2$d = profile count
+#, c-format
+msgctxt "export_hosts_success"
+msgid "Exported %1$d hosts and %2$d profiles"
+msgstr "%1$d Hosts und %2$d Profile wurden exportiert"
+
+#. Success message shown after importing hosts from a file. Parameters: %1$d =
+#. hosts imported, %2$d = hosts skipped, %3$d = profiles imported, %4$d =
+#. profiles skipped
+#, c-format
+msgctxt "import_hosts_success"
+msgid "Imported %1$d hosts (%2$d skipped) and %3$d profiles (%4$d skipped)"
+msgstr ""
+"%1$d Hosts (von %2$d übersprungen) und %3$d Profile (von %4$d übersprungen) "
+"wurden importiert"
+
+#. Error message when host export fails
+#, c-format
+msgctxt "export_hosts_failed"
+msgid "Failed to export hosts: %s"
+msgstr "Fehler beim Exportieren der Hosts: %s"
+
+#. Error message when host import fails
+#, c-format
+msgctxt "import_hosts_failed"
+msgid "Failed to import hosts: %s"
+msgstr "Fehler beim Importieren der Hosts: %s"
+
+#. Title for the export hosts file picker dialog
+msgctxt "export_hosts_title"
+msgid "Export Hosts"
+msgstr "Hosts exportieren"
+
+#. Shortcut customization dialog strings
+#. Dialog title when customizing a shortcut icon
+msgctxt "shortcut_customize_title"
+msgid "Customize Shortcut"
+msgstr "Verknüpfung anpassen"
+
+#. Label for the shortcut icon color selection dropdown
+msgctxt "shortcut_icon_color"
+msgid "Icon Color"
+msgstr "Farbe des Symbols"
+
+#. Label for the shortcut icon style selection dropdown
+msgctxt "shortcut_icon_style"
+msgid "Icon Style"
+msgstr "Symbolstil"
+
+#. Checkbox label to use the host\'s configured color for the shortcut
+msgctxt "shortcut_use_host_color"
+msgid "Use host color"
+msgstr "Verwende Host-Farbe"
+
+#. Button to create the customized shortcut
+msgctxt "shortcut_create"
+msgid "Create Shortcut"
+msgstr "Verknüpfung erstellen"
+
+#. Icon style option: terminal prompt icon
+msgctxt "icon_style_terminal"
+msgid "Terminal"
+msgstr "Terminal"
+
+#. Icon style option: server/computer icon
+msgctxt "icon_style_server"
+msgid "Server"
+msgstr "Server"
+
+#. Icon style option: cloud icon
+msgctxt "icon_style_cloud"
+msgid "Cloud"
+msgstr "Cloud"
+
+#. Icon style option: key/security icon
+msgctxt "icon_style_key"
+msgid "Key"
+msgstr "Schlüssel"
+
+#. Authentication on launch
+#. Title for the authentication on launch preference in settings
+msgctxt "pref_auth_on_launch_title"
+msgid "Authentication on launch"
+msgstr "Authentifizierung beim Start"
+
+#. Summary for the authentication on launch preference
+msgctxt "pref_auth_on_launch_summary"
+msgid "Require fingerprint, face, or device PIN when opening the app"
+msgstr ""
+"Fordern Sie bei der Öffnung der App einen Fingerabdruck, eine "
+"Gesichtserkennung oder eine Geräte-PIN an"
+
+#. Category title for security preferences in settings
+msgctxt "pref_security_category"
+msgid "Security"
+msgstr "Sicherheit"
+
+#. Title shown on the authentication lock screen
+msgctxt "auth_screen_title"
+msgid "ConnectBot is locked"
+msgstr "ConnectBot ist gesperrt"
+
+#. Button text to trigger authentication on the lock screen
+msgctxt "auth_screen_unlock_button"
+msgid "Tap to unlock"
+msgstr "Tippen Sie, um zu entsperren"
+
+#. Title shown in the biometric/device credential authentication prompt
+msgctxt "auth_prompt_title"
+msgid "Unlock ConnectBot"
+msgstr "ConnectBot entsperren"
+
+#. Subtitle shown in the biometric/device credential authentication prompt
+msgctxt "auth_prompt_subtitle"
+msgid "Verify your identity to continue"
+msgstr "Bestätigen Sie Ihre Identität, um fortzufahren"
