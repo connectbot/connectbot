@@ -2,21 +2,22 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-26 16:39-0800\n"
-"PO-Revision-Date: 2025-06-16 17:06+0000\n"
+"POT-Creation-Date: 2026-02-12 10:47+0800\n"
+"PO-Revision-Date: 2026-02-12 11:47+0800\n"
 "Last-Translator: Thang Nguyen <Unknown>\n"
 "Language: vi\n"
 "Language-Team: vi <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=(0);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
+"X-Generator: Autopo v1.0.8\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -33,7 +34,7 @@ msgstr "Duy trì kết nối SSH và các khoá đã nạp"
 #. Displayed in the "Help" screen to denote the copyright of this app.
 msgctxt "app_copyright"
 msgid "Copyright © Kenny Root"
-msgstr ""
+msgstr "Bản quyền © Kenny Root"
 
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
@@ -133,17 +134,18 @@ msgstr "Thu thập thông tin ngẫu nhiên (Entropy)"
 #, c-format
 msgctxt "pubkey_touch_prompt"
 msgid "Touch this box to gather randomness: %1$d%% done"
-msgstr "Chạm vào hộp thoại này để thu thập thông tin ngẫu nhiên: hoàn thành %1$d%%"
+msgstr ""
+"Chạm vào hộp thoại này để thu thập thông tin ngẫu nhiên: hoàn thành %1$d%%"
 
 #. Instructions to user on how to provide randomness by moving their finger
 #. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger"
-" randomly over the box below."
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
 msgstr ""
-"Để đảm bảo tính ngẫu nhiên trong quá trình tạo khóa, hãy di chuyển ngón "
-"tay của bạn một cách ngẫu nhiên trên hộp bên dưới."
+"Để đảm bảo tính ngẫu nhiên trong quá trình tạo khóa, hãy di chuyển ngón tay "
+"của bạn một cách ngẫu nhiên trên hộp bên dưới."
 
 #. Progress message shown while generating a new SSH key pair
 msgctxt "pubkey_generating"
@@ -159,17 +161,17 @@ msgstr "Sao chép khóa riêng tư"
 #. Context menu action to copy the private key to clipboard in OpenSSH format
 msgctxt "pubkey_copy_private_openssh"
 msgid "Copy private key (OpenSSH)"
-msgstr ""
+msgstr "Sao chép khóa riêng (OpenSSH)"
 
 #. Context menu action to copy the private key to clipboard in PEM format
 msgctxt "pubkey_copy_private_pem"
 msgid "Copy private key (PEM)"
-msgstr ""
+msgstr "Sao chép khóa riêng (PEM)"
 
 #. Context menu action to copy the encrypted private key to clipboard
 msgctxt "pubkey_copy_private_encrypted"
 msgid "Copy private key (encrypted)"
-msgstr ""
+msgstr "Sao chép khóa riêng tư (đã mã hóa)"
 
 #. Context menu action to copy the public key to clipboard
 msgctxt "pubkey_copy_public"
@@ -179,66 +181,101 @@ msgstr "Sao chép khóa công khai"
 #. Context menu action to export the public key to a file
 msgctxt "pubkey_export_public"
 msgid "Export public key"
-msgstr ""
+msgstr "Xuất khóa công khai"
 
 #. Context menu action to export the private key to a file in the default
 #. format
 msgctxt "pubkey_export_private"
 msgid "Export private key"
-msgstr ""
+msgstr "Xuất khóa riêng"
 
 #. Context menu action to export the private key to a file in OpenSSH format
 msgctxt "pubkey_export_private_openssh"
 msgid "Export private key (OpenSSH)"
-msgstr ""
+msgstr "Xuất khóa riêng (OpenSSH)"
 
 #. Context menu action to export the private key to a file in PEM format
 msgctxt "pubkey_export_private_pem"
 msgid "Export private key (PEM)"
-msgstr ""
+msgstr "Xuất khóa riêng (định dạng PEM)"
 
 #. Context menu action to export the encrypted private key to a file
 msgctxt "pubkey_export_private_encrypted"
 msgid "Export private key (encrypted)"
-msgstr ""
+msgstr "Xuất khóa riêng (đã mã hóa)"
 
 #. Dialog title for setting a passphrase when exporting a key
 msgctxt "pubkey_export_set_passphrase"
 msgid "Set export passphrase"
-msgstr ""
+msgstr "Đặt mật khẩu xuất."
 
 #. Instructions to enter a passphrase to encrypt the key being exported
 msgctxt "pubkey_export_passphrase_message"
 msgid "Enter a passphrase to encrypt the exported key"
-msgstr ""
+msgstr "Nhập mật khẩu để mã hóa khóa đã xuất."
 
 #. Label for the field where user confirms the passphrase by entering it again
 msgctxt "pubkey_export_confirm_passphrase"
 msgid "Confirm passphrase"
-msgstr ""
+msgstr "Xác nhận mật khẩu."
 
 #. Error message shown when the passphrase and confirmation passphrase don't
 #. match
 msgctxt "pubkey_export_passphrase_mismatch"
 msgid "Passphrases do not match"
-msgstr ""
+msgstr "Mật khẩu không khớp"
 
 #. Dialog title when importing an encrypted SSH key file
 msgctxt "pubkey_import_encrypted_title"
 msgid "Import encrypted key"
-msgstr ""
+msgstr "Nhập khóa đã mã hóa"
 
 #. Prompt asking user to enter the password to decrypt an imported key file.
 #. First parameter is key nickname, second is key type.
 #, c-format
 msgctxt "pubkey_import_encrypted_message"
 msgid "Enter password to decrypt key '%1$s' (%2$s)"
-msgstr ""
+msgstr "Nhập mật khẩu để giải mã khóa '%1$s' (%2$s)"
 
 #. Button text to confirm importing a key
 msgctxt "pubkey_import_button"
 msgid "Import"
-msgstr ""
+msgstr "Nhập"
+
+#. Checkbox label in the import encrypted key dialog. When checked, the
+#. imported key will be encrypted for storage on the device.
+msgctxt "pubkey_import_encrypt_key"
+msgid "Encrypt key for storage"
+msgstr "Mã hóa khóa để lưu trữ"
+
+#. Checkbox label that appears when 'Encrypt key for storage' is checked. When
+#. checked, the same password used to decrypt the imported key will be used to
+#. encrypt it for storage.
+msgctxt "pubkey_import_reuse_password"
+msgid "Use same password for encryption"
+msgstr "Sử dụng cùng một mật khẩu để mã hóa."
+
+#. Label for the password field when entering a new password to encrypt the
+#. imported key for storage.
+msgctxt "pubkey_import_new_password"
+msgid "New password"
+msgstr "Mật khẩu mới"
+
+#. Label for the password confirmation field when setting a new password to
+#. encrypt the imported key.
+msgctxt "pubkey_import_confirm_password"
+msgid "Confirm password"
+msgstr "Xác nhận mật khẩu"
+
+#. Note that the '\n' just splits lines, so it's actually "create or import"
+msgctxt "pubkey_list_empty"
+msgid "Tap \"Menu\" to create\n"
+"or import key pairs."
+msgstr "Nhấn vào \"Menu\" để tạo hoặc nhập cặp khóa."
+
+msgctxt "pubkey_unknown_format"
+msgid "Unknown format"
+msgstr "Định dạng không xác định"
 
 #. Context menu action to change the password protecting a private key
 msgctxt "pubkey_change_password"
@@ -255,13 +292,13 @@ msgstr "Mở khóa khóa"
 #, c-format
 msgctxt "pubkey_unlock_message"
 msgid "Enter password to unlock key '%1$s'"
-msgstr ""
+msgstr "Nhập mật khẩu để mở khóa '%1$s'"
 
 #. Error message shown when user tries to use a nickname that already exists
 #. for another key.
 msgctxt "pubkey_nickname_exists"
 msgid "A key with this nickname already exists"
-msgstr ""
+msgstr "Một khóa có tên này đã tồn tại"
 
 #. Context menu checkbox that indicates that this pubkey entry should attempt
 #. to be loaded upon starting the app.
@@ -308,6 +345,12 @@ msgctxt "prompt_old_password"
 msgid "Old password:"
 msgstr "Mật khẩu cũ:"
 
+#. Prompt for user to enter their username when the host has no username
+#. configured.
+msgctxt "prompt_username"
+msgid "Username:"
+msgstr "Tên người dùng:"
+
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
 msgctxt "prompt_password"
@@ -346,11 +389,9 @@ msgstr "Mật khẩu của khóa '%1$s'"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid ""
-"Allow remote host to\n"
+msgid "Allow remote host to\n"
 "use key '%1$s'?"
-msgstr ""
-"Cho phép máy chủ từ xa\n"
+msgstr "Cho phép máy chủ từ xa\n"
 "sử dụng khóa '%1$s'?"
 
 #. The header of the warning a user gets when the host key has changed. Note
@@ -366,22 +407,18 @@ msgstr "CẢNH BÁO: NHẬN DẠNG MÁY CHỦ TỪ XA ĐÃ THAY ĐỔI!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle "
-"attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "CÓ THỂ AI ĐÓ ĐANG LÀM ĐIỀU GÌ ĐÓ BẤT THƯỜNG!\n"
-"Có thể ai đó đang nghe lén bạn ngay lúc này (tấn công man-in-the-middle)!"
-"\n"
+"Có thể ai đó đang nghe lén bạn ngay lúc này (tấn công man-in-the-middle)!\n"
 "Cũng có thể là khóa máy chủ vừa mới bị thay đổi."
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid ""
-"Host has disconnected.\n"
+msgid "Host has disconnected.\n"
 "Close session?"
-msgstr ""
-"Máy chủ đã ngắt kết nối.\n"
+msgstr "Máy chủ đã ngắt kết nối.\n"
 "Đóng phiên?"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -389,8 +426,7 @@ msgstr ""
 #, fuzzy
 msgctxt "prompt_continue_connecting"
 msgid "Are you sure you want to continue connecting?"
-msgstr ""
-"Bạn có chắc chắn muốn\n"
+msgstr "Bạn có chắc chắn muốn\n"
 "tiếp tục kết nối không?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
@@ -411,25 +447,25 @@ msgstr "Dấu vân tay khóa của máy chủ %1$s là %2$s"
 #. connecting to a new host
 msgctxt "host_key_verification_title"
 msgid "Host key verification"
-msgstr ""
+msgstr "Xác minh khóa máy chủ"
 
 #. Section header for the fingerprint formats display area
 msgctxt "fingerprint_format_header"
 msgid "Fingerprint format"
-msgstr ""
+msgstr "Định dạng dấu vân tay"
 
 #. Format string showing key type and size, e.g., "RSA 2048 bits". First field
 #. is key type, second is key size in bits.
 #, c-format
 msgctxt "host_key_type_and_size"
 msgid "%1$s %2$d bits"
-msgstr ""
+msgstr "%1$s %2$d bit"
 
 #. Content description for the copy fingerprint to clipboard button, used by
 #. screen readers for accessibility
 msgctxt "fingerprint_copy_description"
 msgid "Copy fingerprint to clipboard"
-msgstr ""
+msgstr "Sao chép dấu vân tay vào bộ nhớ tạm"
 
 #. Error message shown when entered password and confirmation password don't
 #. match
@@ -456,31 +492,32 @@ msgstr "Mất Kết Nối"
 #. reconnect
 msgctxt "network_lost_grace_period"
 msgid "Network lost, waiting to reconnect…"
-msgstr ""
+msgstr "Mất kết nối mạng, đang chờ kết nối lại…"
 
 #. Message shown when the 60-second grace period expires without network
 #. restoration
 msgctxt "network_grace_period_expired"
 msgid "Network not restored, disconnecting…"
-msgstr ""
+msgstr "Không thể kết nối lại mạng, đang ngắt kết nối…"
 
 #. Message shown when network is restored and connection can continue (same IP
 #. address)
 msgctxt "network_restored_same_ip"
 msgid "Network restored, connection maintained"
-msgstr ""
+msgstr "Mạng đã được khôi phục, kết nối được duy trì."
 
 #. Message shown when network is restored but IP address changed, requiring
 #. reconnection
 msgctxt "network_restored_ip_changed"
 msgid "Network restored but IP changed, reconnecting…"
 msgstr ""
+"Mạng đã được khôi phục nhưng địa chỉ IP đã thay đổi, đang kết nối lại…"
 
 #. Message shown when network is restored but previous network state is
 #. unknown
 msgctxt "network_restored_no_previous_state"
 msgid "Network restored, verifying connection…"
-msgstr ""
+msgstr "Mạng đã được khôi phục, đang kiểm tra kết nối…"
 
 #. The category title for terminal emulation preferences.
 msgctxt "pref_emulation_category"
@@ -506,73 +543,78 @@ msgstr "Kích thước của bộ đệm scrollback để giữ trong bộ nhớ
 #. Name for the font family preference
 msgctxt "pref_fontfamily_title"
 msgid "Font"
-msgstr ""
+msgstr "Phông chữ"
 
 #. Description of the font family preference
 #. Title for adding custom font
 msgctxt "pref_customfont_title"
 msgid "Add custom font"
-msgstr ""
+msgstr "Thêm phông chữ tùy chỉnh"
 
 #. Summary for adding custom font
 msgctxt "pref_customfont_summary"
 msgid "Add a font from Google Fonts by name"
-msgstr ""
+msgstr "Thêm một phông chữ từ Google Fonts theo tên."
 
 #. Dialog title for adding custom font
 msgctxt "dialog_customfont_title"
 msgid "Add Custom Font"
-msgstr ""
+msgstr "Thêm phông chữ tùy chỉnh"
 
 #. Hint for custom font name input
 msgctxt "dialog_customfont_hint"
 msgid "Google Fonts name (e.g., Cascadia Code)"
-msgstr ""
+msgstr "Tên phông chữ Google (ví dụ: Cascadia Code)"
 
 #. Button to add font
 msgctxt "button_add"
 msgid "Add"
-msgstr ""
+msgstr "Thêm"
 
 #. Button to remove font
 msgctxt "button_remove"
 msgid "Remove"
-msgstr ""
+msgstr "Xóa"
 
 #. Message shown when validating font
 msgctxt "font_validating"
 msgid "Validating font…"
-msgstr ""
+msgstr "Đang kiểm tra phông chữ…"
+
+#. Message shown while downloading a font from Google Fonts
+msgctxt "font_downloading"
+msgid "Downloading font…"
+msgstr "Đang tải xuống phông chữ…"
 
 #. Title for importing local font
 msgctxt "pref_localfont_title"
 msgid "Import local font"
-msgstr ""
+msgstr "Nhập phông chữ cục bộ"
 
 #. Summary for importing local font
 msgctxt "pref_localfont_summary"
 msgid "Import a font file from storage (TTF, OTF)"
-msgstr ""
+msgstr "Nhập một tệp phông chữ từ bộ nhớ (TTF, OTF)"
 
 #. Dialog title for importing local font
 msgctxt "dialog_localfont_title"
 msgid "Import Font"
-msgstr ""
+msgstr "Nhập phông chữ"
 
 #. Hint for local font name input
 msgctxt "dialog_localfont_hint"
 msgid "Display name for the font"
-msgstr ""
+msgstr "Tên hiển thị của phông chữ"
 
 #. Button to import font
 msgctxt "button_import"
 msgid "Import"
-msgstr ""
+msgstr "Nhập"
 
 #. Message shown when importing font
 msgctxt "font_importing"
 msgid "Importing font…"
-msgstr ""
+msgstr "Đang nhập phông chữ…"
 
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
@@ -589,6 +631,16 @@ msgstr "Giữ sao lưu của khóa riêng tư bằng cơ chế sao lưu của An
 msgctxt "pref_ui_category"
 msgid "User interface"
 msgstr "Giao diện người dùng"
+
+#. Name for the language preference
+msgctxt "pref_language_title"
+msgid "Language"
+msgstr "Ngôn ngữ"
+
+#. Default option for language preference that uses the system locale
+msgctxt "pref_language_system_default"
+msgid "System default"
+msgstr "Mặc định của hệ thống"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
@@ -661,11 +713,12 @@ msgid "Volume keys change font size"
 msgstr "Phím âm lượng thay đổi kích thước phông chữ"
 
 #. Summary for the volume keys control font size preference
+#, fuzzy
 msgctxt "pref_volumefont_summary"
-msgid "Font size can also be changed in per-host settings"
+msgid "Font size can also be changed in profile settings"
 msgstr ""
-"Kích thước phông chữ cũng có thể được thay đổi trong cài đặt của từng máy"
-" chủ"
+"Kích thước phông chữ cũng có thể được thay đổi trong cài đặt của từng máy "
+"chủ"
 
 #. Name for the memorize keys preference
 msgctxt "pref_memkeys_title"
@@ -729,20 +782,18 @@ msgstr "Giữ kết nối Wi-Fi"
 msgctxt "pref_wifilock_summary"
 msgid "Prevent Wi-Fi from turning off when a session is active"
 msgstr ""
-"Giữ kết nối Wi-Fi không bị tắt khi đang có một phiên làm việc đang hoạt "
-"động"
+"Giữ kết nối Wi-Fi không bị tắt khi đang có một phiên làm việc đang hoạt động"
 
 #. Name for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_title"
 msgid "Bumpy arrows"
-msgstr ""
+msgstr "Các mũi tên gồ ghề"
 
 #. Summary for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_summary"
 msgid "Vibrate when sending arrow keys; useful for laggy connections"
 msgstr ""
-"Rung khi gửi các phím mũi tên. Hữu dụng khi các kết nối không ổn định "
-"(lag)"
+"Rung khi gửi các phím mũi tên. Hữu dụng khi các kết nối không ổn định (lag)"
 
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
@@ -758,7 +809,7 @@ msgstr "Chuông báo hiệu"
 #. the terminal alert is triggered.
 msgctxt "pref_bell_summary"
 msgid "Play sound on terminal alert"
-msgstr ""
+msgstr "Phát âm thanh khi có thông báo trên giao diện dòng lệnh"
 
 #. Title for the slider preference to set the volume
 msgctxt "pref_bell_volume_title"
@@ -774,7 +825,7 @@ msgstr "Rung khi có chuông"
 #. terminal alert would cause the "bell" sound to play normally.
 msgctxt "pref_bell_vibrate_summary"
 msgid "Vibrate on terminal alert"
-msgstr ""
+msgstr "Rung khi có thông báo trên giao diện dòng lệnh"
 
 #. Checkbox preference title for the receive notifications on terminal bell
 #. feature
@@ -785,8 +836,10 @@ msgstr "Thông báo nhắc background"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid "Send notification when a terminal running in the background sounds a bell."
-msgstr "Gửi thông báo nhắc khi một Terminal đang chạy ở background phát chuông"
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
+msgstr ""
+"Gửi thông báo nhắc khi một Terminal đang chạy ở background phát chuông"
 
 #. Preference selection to indicate use of right side of keyboard for special
 #. shortcuts.
@@ -830,82 +883,82 @@ msgstr "Nhóm màu"
 #. Color name for red (#F44336)
 msgctxt "color_red"
 msgid "Red"
-msgstr ""
+msgstr "Màu đỏ"
 
 #. Color name for pink (#E91E63)
 msgctxt "color_pink"
 msgid "Pink"
-msgstr ""
+msgstr "Màu hồng"
 
 #. Color name for purple (#9C27B0)
 msgctxt "color_purple"
 msgid "Purple"
-msgstr ""
+msgstr "Màu tím"
 
 #. Color name for deep purple (#673AB7)
 msgctxt "color_deep_purple"
 msgid "Deep Purple"
-msgstr ""
+msgstr "Màu tím đậm"
 
 #. Color name for indigo (#3F51B5)
 msgctxt "color_indigo"
 msgid "Indigo"
-msgstr ""
+msgstr "Màu chàm"
 
 #. Color name for blue (#2196F3)
 msgctxt "color_blue"
 msgid "Blue"
-msgstr ""
+msgstr "Màu xanh lam"
 
 #. Color name for light blue (#03A9F4)
 msgctxt "color_light_blue"
 msgid "Light Blue"
-msgstr ""
+msgstr "Màu xanh lam nhạt"
 
 #. Color name for cyan (#00BCD4)
 msgctxt "color_cyan"
 msgid "Cyan"
-msgstr ""
+msgstr "Màu lục lam"
 
 #. Color name for teal (#009688)
 msgctxt "color_teal"
 msgid "Teal"
-msgstr ""
+msgstr "Màu xanh lục bảo"
 
 #. Color name for green (#4CAF50)
 msgctxt "color_green"
 msgid "Green"
-msgstr ""
+msgstr "Màu xanh lá cây"
 
 #. Color name for light green (#8BC34A)
 msgctxt "color_light_green"
 msgid "Light Green"
-msgstr ""
+msgstr "Màu xanh lá cây nhạt"
 
 #. Color name for lime (#CDDC39)
 msgctxt "color_lime"
 msgid "Lime"
-msgstr ""
+msgstr "Màu chanh"
 
 #. Color name for yellow (#FFEB3B)
 msgctxt "color_yellow"
 msgid "Yellow"
-msgstr ""
+msgstr "Màu vàng"
 
 #. Color name for amber (#FFC107)
 msgctxt "color_amber"
 msgid "Amber"
-msgstr ""
+msgstr "Màu hổ phách"
 
 #. Color name for orange (#FF9800)
 msgctxt "color_orange"
 msgid "Orange"
-msgstr ""
+msgstr "Màu cam"
 
 #. Color name for gray (#9E9E9E)
 msgctxt "color_gray"
 msgid "Gray"
-msgstr ""
+msgstr "Màu xám"
 
 #. Host's default font size when opening the terminal in points (pt)
 msgctxt "hostpref_fontsize_title"
@@ -915,12 +968,12 @@ msgstr "Cỡ chữ (pt)"
 #. Host's font family preference title
 msgctxt "hostpref_fontfamily_title"
 msgid "Font"
-msgstr ""
+msgstr "Phông chữ"
 
 #. Host's color scheme preference title
 msgctxt "hostpref_colorscheme_title"
 msgid "Terminal color scheme"
-msgstr ""
+msgstr "Chế độ màu của giao diện dòng lệnh"
 
 #. Host pubkey usage preference title
 msgctxt "hostpref_pubkeyid_title"
@@ -941,7 +994,8 @@ msgstr "Tự động sau khi login"
 #. Host post-login automation preference summary
 msgctxt "hostpref_postlogin_summary"
 msgid "Commands to run on remote server once authenticated"
-msgstr "Các lệnh sẽ chạy ở server truy cập đến ngay sau khi xác thực thành công"
+msgstr ""
+"Các lệnh sẽ chạy ở server truy cập đến ngay sau khi xác thực thành công"
 
 #. Host compression preference title
 msgctxt "hostpref_compression_title"
@@ -962,7 +1016,8 @@ msgstr "Bắt đầu phiên làm việc"
 #. connection or not
 msgctxt "hostpref_wantsession_summary"
 msgid "Disable this preference to only use port forwards"
-msgstr "Vô hiệu hoá tuỳ chọn này để chỉ dùng các cổng chuyển tiếp (port forward)"
+msgstr ""
+"Vô hiệu hoá tuỳ chọn này để chỉ dùng các cổng chuyển tiếp (port forward)"
 
 #. Setting for whether the host should be reconnected to automatically upon
 #. disconnect
@@ -1002,6 +1057,26 @@ msgctxt "hostpref_username_title"
 msgid "Username"
 msgstr "Tên đăng nhập (Username)"
 
+#. Password field supporting text in host editor
+msgctxt "hostpref_save_password_summary"
+msgid "Store login password securely for automatic authentication"
+msgstr "Lưu trữ mật khẩu đăng nhập một cách an toàn để tự động xác thực"
+
+#. Password field title in host editor
+msgctxt "hostpref_password_title"
+msgid "Password"
+msgstr "Mật khẩu"
+
+#. Password field label when there is an existing password saved
+msgctxt "hostpref_password_unchanged"
+msgid "Password (unchanged)"
+msgstr "Mật khẩu (không thay đổi)"
+
+#. Button to clear a saved password
+msgctxt "hostpref_clear_password"
+msgid "Clear saved password"
+msgstr "Xóa mật khẩu đã lưu"
+
 #. Hostname field title for host editor preference
 msgctxt "hostpref_hostname_title"
 msgid "Host"
@@ -1017,192 +1092,222 @@ msgstr "Cổng (Port)"
 #. terminal colors, terminal              font, etc.
 msgctxt "hostpref_profile_title"
 msgid "Profile"
-msgstr ""
+msgstr "Hồ sơ"
 
 #. Description text shown below the profile selector explaining what selecting
 #. a profile does
 msgctxt "hostpref_profile_summary"
 msgid "Select a profile to use its terminal settings"
 msgstr ""
+"Chọn một cấu hình để sử dụng các cài đặt thiết bị đầu cuối của cấu hình đó"
 
 #. Dropdown option shown when no profile is selected, indicating host-specific
 #. settings will be used instead
 msgctxt "hostpref_profile_none"
 msgid "None (use host settings)"
-msgstr ""
+msgstr "Không có (sử dụng cài đặt máy chủ)"
 
 #. Message displayed when a setting is disabled because it's controlled by a
 #. profile instead of host settings
 msgctxt "profile_controlled_setting"
 msgid "Controlled by profile"
-msgstr ""
+msgstr "Điều khiển bằng cấu hình"
 
 #. Dropdown option to use the default font when configuring font family
 msgctxt "font_use_default"
 msgid "Use Default"
-msgstr ""
+msgstr "Sử dụng mặc định"
 
 #. Display name for the system default monospace font option
 msgctxt "font_system_default"
 msgid "Default (Monospace)"
-msgstr ""
+msgstr "Mặc định (Phông chữ đơn cách)"
 
 #. Fallback text shown when referencing a pubkey that no longer exists in the
 #. database
 msgctxt "pubkey_unknown"
 msgid "Unknown key"
-msgstr ""
+msgstr "Khóa không xác định"
 
 #. Default name shown for the default color scheme when no specific scheme is
 #. selected
 msgctxt "colorscheme_default"
 msgid "Default"
-msgstr ""
+msgstr "Mặc định"
 
 #. Profile editor screen strings
 #. Window title shown when creating a new profile
 msgctxt "profile_editor_title_new"
 msgid "New Profile"
-msgstr ""
+msgstr "Tạo hồ sơ mới"
 
 #. Window title shown when editing an existing profile
 msgctxt "profile_editor_title_edit"
 msgid "Edit Profile"
-msgstr ""
+msgstr "Chỉnh sửa hồ sơ"
 
 #. Content description for the save button that saves profile changes
 msgctxt "profile_editor_save"
 msgid "Save"
-msgstr ""
+msgstr "Lưu"
 
 #. Label for the text field where user enters the profile name
 msgctxt "profile_editor_name_label"
 msgid "Profile Name"
-msgstr ""
+msgstr "Tên hồ sơ"
 
 #. Section header for icon color selection area
 msgctxt "profile_editor_section_icon_color"
 msgid "Icon Color"
-msgstr ""
+msgstr "Màu biểu tượng"
 
 #. Section header for color scheme selection area
 msgctxt "profile_editor_section_color_scheme"
 msgid "Color Scheme"
-msgstr ""
+msgstr "Chế độ màu"
 
 #. Section header for font configuration area
 msgctxt "profile_editor_section_font"
 msgid "Font"
-msgstr ""
+msgstr "Phông chữ"
 
 #. Section header for terminal emulation settings area
 msgctxt "profile_editor_section_terminal"
 msgid "Terminal"
-msgstr ""
+msgstr "Giao diện dòng lệnh"
 
 #. Subsection title for font family selector
 msgctxt "profile_editor_font_family_title"
 msgid "Font Family"
-msgstr ""
+msgstr "Font chữ"
 
 #. Subsection title showing current font size. Parameter is the font size in
 #. points.
 #, c-format
 msgctxt "profile_editor_font_size_title"
 msgid "Font Size: %d"
+msgstr "Kích thước phông chữ: %d"
+
+#. Subsection title for force size settings
+msgctxt "profile_editor_force_size_title"
+msgid "Force Size"
+msgstr "Buộc kích thước"
+
+#. Summary text explaining what force size does
+msgctxt "profile_editor_force_size_summary"
+msgid ""
+"Force the terminal to a specific size (columns x rows) instead of auto-"
+"sizing to fit the screen."
 msgstr ""
+"Buộc kích thước của giao diện dòng lệnh thành một kích thước cụ thể (số cột "
+"x số hàng) thay vì tự động điều chỉnh để phù hợp với màn hình."
+
+#. Label for the enable force size switch
+msgctxt "profile_editor_force_size_enable"
+msgid "Enable force size"
+msgstr "Bật tùy chọn đặt kích thước cố định"
+
+#. Label for the force size columns input field
+msgctxt "profile_editor_force_size_columns"
+msgid "Columns"
+msgstr "Cột"
+
+#. Label for the force size rows input field
+msgctxt "profile_editor_force_size_rows"
+msgid "Rows"
+msgstr "Số hàng"
 
 #. Dropdown option to not override host color with profile color
 msgctxt "profile_icon_color_none"
 msgid "None (use host color)"
-msgstr ""
+msgstr "Không có (sử dụng màu của máy chủ)"
 
 #. Profile list screen strings
 #. Window title for the profiles list screen
 msgctxt "profile_list_title"
 msgid "Profiles"
-msgstr ""
+msgstr "Hồ sơ"
 
 #. Content description for the FAB button that creates a new profile
 msgctxt "profile_list_create_profile"
 msgid "Create profile"
-msgstr ""
+msgstr "Tạo hồ sơ"
 
 #. Message shown when there are no profiles, encouraging user to create one
 msgctxt "profile_list_empty_message"
 msgid "No profiles yet. Tap + to create one."
-msgstr ""
+msgstr "Chưa có cấu hình nào. Nhấn vào dấu + để tạo một cấu hình mới."
 
 #. Content description for the menu button on each profile item
 msgctxt "profile_list_more_options"
 msgid "More options"
-msgstr ""
+msgstr "Thêm tùy chọn"
 
 #. Menu item to duplicate/copy a profile
 msgctxt "profile_list_duplicate"
 msgid "Duplicate"
-msgstr ""
+msgstr "Trùng lặp"
 
 #. Menu item to delete a profile
 msgctxt "profile_list_delete"
 msgid "Delete"
-msgstr ""
+msgstr "Xóa"
 
 #. Dialog title when creating a new profile
 msgctxt "profile_create_dialog_title"
 msgid "Create Profile"
-msgstr ""
+msgstr "Tạo hồ sơ"
 
 #. Label for the profile name text field in create dialog
 msgctxt "profile_create_name_label"
 msgid "Profile Name"
-msgstr ""
+msgstr "Tên hồ sơ"
 
 #. Button text to confirm creating a new profile
 msgctxt "profile_create_button"
 msgid "Create"
-msgstr ""
+msgstr "Tạo"
 
 #. Button text to cancel creating a new profile
 msgctxt "profile_create_cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Hủy"
 
 #. Dialog title when deleting a profile
 msgctxt "profile_delete_dialog_title"
 msgid "Delete Profile"
-msgstr ""
+msgstr "Xóa hồ sơ"
 
 #. Confirmation message asking if user wants to delete a profile. Parameter is
 #. the profile name.
 #, c-format
 msgctxt "profile_delete_dialog_message"
 msgid "Are you sure you want to delete '%s'?"
-msgstr ""
+msgstr "Bạn có chắc muốn xóa '%s' không?"
 
 #. Button text to confirm deleting a profile
 msgctxt "profile_delete_button"
 msgid "Delete"
-msgstr ""
+msgstr "Xóa"
 
 #. Button text to cancel deleting a profile
 msgctxt "profile_delete_cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Hủy"
 
 #. Summary text showing font settings. First parameter is font name, second is
 #. font size in points.
 #, c-format
 msgctxt "profile_summary_font"
 msgid "Font: %1$s %2$dpt"
-msgstr ""
+msgstr "Phông chữ: %1$s %2$dpt"
 
 #. Summary text showing emulation setting. Parameter is the terminal emulation
 #. type.
 #, c-format
 msgctxt "profile_summary_emulation"
 msgid "Emulation: %s"
-msgstr ""
+msgstr "Mô phỏng: %s"
 
 #. Button to close the disconnected terminal window.
 msgctxt "console_menu_close"
@@ -1260,7 +1365,7 @@ msgstr "Máy chủ từ xa"
 #. remote host and port.
 msgctxt "portforward_dynamic"
 msgid "Dynamic (SOCKS)"
-msgstr ""
+msgstr "Động (SOCKS)"
 
 #. Button that commits the port forward to be made from the Port Forward
 #. Creation dialog.
@@ -1272,7 +1377,7 @@ msgstr "Tạo cổng chuyển tiếp (port forward)"
 #. Edit dialog.
 msgctxt "portforward_save"
 msgid "Save"
-msgstr ""
+msgstr "Lưu"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
@@ -1336,6 +1441,16 @@ msgctxt "list_host_delete"
 msgid "Delete host"
 msgstr "Xoá host"
 
+#. Context menu action to duplicate the selected host
+msgctxt "list_host_duplicate"
+msgid "Duplicate host"
+msgstr "Tên máy chủ trùng lặp"
+
+#. Context menu action to forget stored host keys for the selected host
+msgctxt "list_host_forget_keys"
+msgid "Forget host keys"
+msgstr "Quên các khóa máy chủ"
+
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
 msgid "Default"
@@ -1388,7 +1503,7 @@ msgstr "Không tìm thấy"
 #. dialog.
 msgctxt "list_camera_text_input"
 msgid "Text Input"
-msgstr ""
+msgstr "Nhập văn bản"
 
 #. Confirmation dialog message asking user to confirm deletion. Parameter is
 #. the item name.
@@ -1482,33 +1597,55 @@ msgctxt "terminal_auth_pass_fail"
 msgid "Authentication method 'password' failed"
 msgstr "Phương thức xác thực 'mật khẩu' thất bại"
 
+#. Message shown in terminal when attempting saved password authentication
+msgctxt "terminal_auth_saved_password"
+msgid "Trying saved password…"
+msgstr "Đang thử mật khẩu đã lưu…"
+
+#. Message shown in terminal when saved password authentication fails
+msgctxt "terminal_auth_saved_password_fail"
+msgid "Saved password authentication failed"
+msgstr "Xác thực bằng mật khẩu đã lưu không thành công"
+
 #. Message shown in terminal when trying public key authentication with any
 #. available key
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
 msgstr ""
-"Thử xác thực 'publickey' với các khoá công khai (public key) bất kì có "
-"trong bộ nhớ trong"
+"Thử xác thực 'publickey' với các khoá công khai (public key) bất kì có trong "
+"bộ nhớ trong"
 
 #. Error message shown when the selected public key is corrupted or invalid
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
 msgstr ""
-"Khoá công khai đã chọn không hợp lệ, hãy thử chọn lại khoá trong trình "
-"chỉnh sửa Host"
+"Khoá công khai đã chọn không hợp lệ, hãy thử chọn lại khoá trong trình chỉnh "
+"sửa Host"
 
 #. Message shown in terminal when attempting public key authentication with a
 #. specific key
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
-msgstr "Thử xác thực 'publickey' với một khoá công khai (public key) được chỉ định"
+msgstr ""
+"Thử xác thực 'publickey' với một khoá công khai (public key) được chỉ định"
 
 #. Message shown in terminal when requesting biometric authentication to
 #. unlock a key. Parameter is the key nickname.
 #, c-format
 msgctxt "terminal_auth_biometric"
 msgid "Requesting biometric authentication for key '%1$s'"
+msgstr "Đang yêu cầu xác thực sinh trắc học cho khóa '%1$s'"
+
+#. Message shown when a biometric key has been invalidated due to new
+#. fingerprint enrollment. Parameter is the key nickname.
+#, c-format
+msgctxt "terminal_auth_biometric_invalidated"
+msgid ""
+"Biometric key '%1$s' has been invalidated. This can happen when new "
+"fingerprints are enrolled on the device. Please generate a new key."
 msgstr ""
+"Khóa sinh trắc học '%1$s' đã bị hủy. Điều này có thể xảy ra khi có thêm dấu "
+"vân tay được đăng ký trên thiết bị. Vui lòng tạo một khóa mới."
 
 #. Message shown in terminal when public key authentication fails. Parameter
 #. is the key nickname.
@@ -1577,7 +1714,7 @@ msgstr "Đồng ý"
 #. Selector title for the list of color schemes.
 msgctxt "list_color_schemes"
 msgid "Color schemes"
-msgstr ""
+msgstr "Chế độ màu"
 
 #. Menu selection to reset colors to their defaults.
 msgctxt "menu_colors_reset"
@@ -1587,165 +1724,168 @@ msgstr "Tái Thiết Lập"
 #. Button text to open color scheme manager
 msgctxt "button_manage_schemes"
 msgid "Manage Schemes"
-msgstr ""
+msgstr "Quản lý lược đồ"
 
 #. Window title for color scheme manager screen
 msgctxt "title_scheme_manager"
 msgid "Manage Color Schemes"
-msgstr ""
+msgstr "Quản lý các chủ đề màu"
 
 #. Button text to create a new color scheme
 msgctxt "button_new_scheme"
 msgid "New Scheme"
-msgstr ""
+msgstr "Chế độ mới"
 
 #. Button text to duplicate a color scheme
 msgctxt "button_duplicate_scheme"
 msgid "Duplicate"
-msgstr ""
+msgstr "Trùng lặp"
 
 #. Button text to rename a color scheme
 msgctxt "button_rename_scheme"
 msgid "Rename"
-msgstr ""
+msgstr "Đổi tên"
 
 #. Button text to delete a color scheme
 msgctxt "button_delete_scheme"
 msgid "Delete"
-msgstr ""
+msgstr "Xóa"
 
 #. Dialog title when creating a new color scheme
 msgctxt "dialog_title_new_scheme"
 msgid "New Color Scheme"
-msgstr ""
+msgstr "Chế độ màu mới"
 
 #. Dialog title when renaming a color scheme
 msgctxt "dialog_title_rename_scheme"
 msgid "Rename Color Scheme"
-msgstr ""
+msgstr "Đổi tên chủ đề màu"
 
 #. Label for scheme name input field
 msgctxt "label_scheme_name"
 msgid "Scheme Name"
-msgstr ""
+msgstr "Tên lược đồ"
 
 #. Label for scheme description input field (optional)
 msgctxt "label_scheme_description"
 msgid "Description (optional)"
-msgstr ""
+msgstr "Mô tả (tùy chọn)"
 
 #. Confirmation dialog title when deleting a scheme
 msgctxt "dialog_title_delete_scheme"
 msgid "Delete Scheme?"
-msgstr ""
+msgstr "Xóa lược đồ?"
 
 #. Confirmation dialog message when deleting a scheme
 #, c-format
 msgctxt "dialog_message_delete_scheme"
 msgid "Are you sure you want to delete \"%1$s\"? This action cannot be undone."
-msgstr ""
+msgstr "Bạn có chắc muốn xóa \"%1$s\" không? Hành động này không thể hoàn tác."
 
 #. Button text for confirm action in dialogs
 msgctxt "button_confirm"
 msgid "Confirm"
-msgstr ""
+msgstr "Xác nhận"
 
 #. Button text for cancel action in dialogs
 msgctxt "button_cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "Hủy"
 
 #. Label indicating a scheme is built-in and cannot be deleted
 msgctxt "label_built_in_scheme"
 msgid "Built-in"
-msgstr ""
+msgstr "Tích hợp sẵn"
 
 #. Label indicating a scheme is custom/user-created
 msgctxt "label_custom_scheme"
 msgid "Custom"
-msgstr ""
+msgstr "Tùy chỉnh"
 
 #. Empty state message when no custom schemes exist
 msgctxt "empty_custom_schemes"
 msgid "No custom schemes. Tap \"New Scheme\" to create one."
 msgstr ""
+"Không có lược đồ tùy chỉnh nào. Nhấn vào \"Lược đồ mới\" để tạo một lược đồ."
 
 #. Button text to edit full color palette
 msgctxt "button_edit_palette"
 msgid "Edit Palette"
-msgstr ""
+msgstr "Chỉnh sửa bảng màu"
 
 #. Button text to export a color scheme to JSON file
 msgctxt "button_export_scheme"
 msgid "Export Scheme"
-msgstr ""
+msgstr "Xuất lược đồ"
 
 #. Button text to import a color scheme from JSON file
 msgctxt "button_import_scheme"
 msgid "Import Scheme"
-msgstr ""
+msgstr "Nhập lược đồ"
 
 #. Success message after exporting a scheme
 #, c-format
 msgctxt "message_export_success"
 msgid "Exported %1$s"
-msgstr ""
+msgstr "Đã xuất %1$s"
 
 #. Success message after importing a scheme
 #, c-format
 msgctxt "message_import_success"
 msgid "Imported %1$s"
-msgstr ""
+msgstr "Đã nhập %1$s"
 
 #. Error message when export fails
 #, c-format
 msgctxt "error_export_failed"
 msgid "Failed to export scheme: %1$s"
-msgstr ""
+msgstr "Không thể xuất lược đồ: %1$s"
 
 #. Error message when import fails
 #, c-format
 msgctxt "error_import_failed"
 msgid "Failed to import scheme: %1$s"
-msgstr ""
+msgstr "Không thể nhập lược đồ: %1$s"
 
 #. Error message when JSON parsing fails
 msgctxt "error_invalid_json"
 msgid "Invalid JSON file"
-msgstr ""
+msgstr "Tệp JSON không hợp lệ"
 
 #. Window title for palette editor screen
 msgctxt "title_palette_editor"
 msgid "Edit Color Palette"
-msgstr ""
+msgstr "Chỉnh sửa bảng màu"
 
 #. Button text to reset entire palette to defaults
 msgctxt "button_reset_all_colors"
 msgid "Reset All"
-msgstr ""
+msgstr "Khôi phục tất cả"
 
 #. Section header for ANSI colors (0-15)
 msgctxt "section_ansi_colors"
 msgid "ANSI Colors (0–15)"
-msgstr ""
+msgstr "Màu ANSI (0–15)"
 
 #. Dialog title when editing a specific color
 #, c-format
 msgctxt "dialog_title_edit_color"
 msgid "Edit Color %1$d"
-msgstr ""
+msgstr "Chỉnh sửa màu %1$d"
 
 #. Confirmation dialog for resetting all colors
 msgctxt "dialog_title_reset_all"
 msgid "Reset All Colors?"
-msgstr ""
+msgstr "Khôi phục tất cả màu sắc mặc định?"
 
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action "
-"cannot be undone."
+"This will reset all 256 colors to their default values. This action cannot "
+"be undone."
 msgstr ""
+"Thao tác này sẽ đặt lại tất cả 256 màu về giá trị mặc định. Thao tác này "
+"không thể hoàn tác."
 
 #. Displayed in the notification bar that connections are active
 msgctxt "app_is_running"
@@ -1756,22 +1896,22 @@ msgstr "ConnectBot đang kết nối"
 #. Label for the red color component slider (0-255) in the RGB color picker
 msgctxt "label_red"
 msgid "Red"
-msgstr ""
+msgstr "Đỏ"
 
 #. Label for the green color component slider (0-255) in the RGB color picker
 msgctxt "label_green"
 msgid "Green"
-msgstr ""
+msgstr "Màu xanh lá cây"
 
 #. Label for the blue color component slider (0-255) in the RGB color picker
 msgctxt "label_blue"
 msgid "Blue"
-msgstr ""
+msgstr "Xanh lam"
 
 #. Label for the hex color input field where users can type a hex color code
 msgctxt "label_hex_color"
 msgid "Hex Color"
-msgstr ""
+msgstr "Mã màu hệ thập lục phân"
 
 #. Very short label indicating the number next to it is "foreground color"
 #. number.
@@ -1947,288 +2087,301 @@ msgstr "F12"
 #. longer text with full IME support
 msgctxt "terminal_keyboard_text_input_button"
 msgid "Text input"
-msgstr ""
+msgstr "Nhập văn bản"
 
 #. Title for the floating text input dialog where users can type longer text
 #. with full keyboard/IME support
 msgctxt "terminal_text_input_dialog_title"
 msgid "Text Input"
-msgstr ""
+msgstr "Nhập văn bản"
 
 #. Label for the text field in the floating text input dialog where users
 #. compose their text
 msgctxt "terminal_text_input_dialog_label"
 msgid "Enter text to send to terminal"
-msgstr ""
+msgstr "Nhập văn bản để gửi đến thiết bị đầu cuối"
 
 #. Menu item in console toolbar to open floating text input dialog
 msgctxt "console_menu_text_input"
 msgid "Text input"
-msgstr ""
+msgstr "Nhập văn bản"
 
 #. Send button in floating text input dialog
 msgctxt "button_send"
 msgid "Send"
-msgstr ""
+msgstr "Gửi"
 
 #. Common UI button labels
 #. Button label for confirming an action
 msgctxt "button_ok"
 msgid "OK"
-msgstr ""
+msgstr "Được rồi"
 
 #. Button label for closing a dialog
 msgctxt "button_close"
 msgid "Close"
-msgstr ""
+msgstr "Đóng"
 
 #. Accessibility label for back navigation button; used for screen readers
 msgctxt "button_back"
 msgid "Back"
-msgstr ""
+msgstr "Quay lại"
 
 #. Accessibility label for navigate up button in app bar; used for screen
 #. readers
 msgctxt "button_navigate_up"
 msgid "Navigate up"
-msgstr ""
+msgstr "Di chuyển lên trên"
 
 #. Accessibility label for more options menu button; used for screen readers
 msgctxt "button_more_options"
 msgid "More options"
-msgstr ""
+msgstr "Thêm tùy chọn"
 
 #. Accessibility label for host options menu button; used for screen readers
 msgctxt "button_host_options"
 msgid "Host options"
-msgstr ""
+msgstr "Các tùy chọn máy chủ"
 
 #. Accessibility label for collapse button; used for screen readers
 msgctxt "button_collapse"
 msgid "Collapse"
-msgstr ""
+msgstr "Thu gọn"
 
 #. Error messages
 #. Error message shown when a public key fails to load at startup
 #, c-format
 msgctxt "error_key_load_failed"
 msgid "Failed to load key '%1$s': %2$s"
-msgstr ""
+msgstr "Không thể tải khóa '%1$s': %2$s"
 
 #. Error message shown when a connection to a host fails
 #, c-format
 msgctxt "error_connection_failed"
 msgid "Failed to connect to %1$s (%2$s): %3$s"
-msgstr ""
+msgstr "Không thể kết nối đến %1$s (%2$s): %3$s"
 
 #. Error message shown when port forwards fail to load for a host
 #, c-format
 msgctxt "error_port_forward_load_failed"
 msgid "Failed to load port forwards for %1$s: %2$s"
-msgstr ""
+msgstr "Không thể tải các cấu hình chuyển tiếp cổng cho %1$s: %2$s"
 
 #. Error message shown when saving host configuration fails
 #, c-format
 msgctxt "error_host_save_failed"
 msgid "Failed to save host %1$s: %2$s"
-msgstr ""
+msgstr "Không thể lưu thông tin máy chủ %1$s: %2$s"
 
 #. Error message shown when loading a color scheme fails
 #, c-format
 msgctxt "error_color_scheme_load_failed"
 msgid "Failed to load color scheme: %s"
-msgstr ""
+msgstr "Không thể tải lược đồ màu: %s"
+
+#. Format string for the nickname of a duplicated host
+#, c-format
+msgctxt "host_duplicate_nickname"
+msgid "%1$s (copy)"
+msgstr "%1$s (sao chép)"
 
 #. Empty state messages
 #. Message shown when no hosts have been configured yet
 msgctxt "empty_hosts_message"
 msgid "No hosts configured"
-msgstr ""
+msgstr "Chưa có máy chủ nào được cấu hình"
 
 #. Message shown when no public keys have been generated or imported yet
 msgctxt "empty_pubkeys_message"
 msgid "No keys found."
-msgstr ""
+msgstr "Không tìm thấy khóa nào."
 
 #. Message shown when no port forwards have been configured for a host
 msgctxt "empty_port_forwards_message"
 msgid "No port forwards configured."
-msgstr ""
+msgstr "Không có chuyển tiếp cổng nào được cấu hình."
 
 #. Message shown when no URLs are found in the terminal buffer during URL scan
 msgctxt "empty_urls_message"
 msgid "No URLs found in terminal buffer"
-msgstr ""
+msgstr "Không tìm thấy URL nào trong bộ nhớ đệm của thiết bị đầu cuối"
 
 #. Console screen messages
 #. Default title for console screen when no specific host is connected
 msgctxt "console_default_title"
 msgid "Console"
-msgstr ""
+msgstr "Bảng điều khiển"
 
 #. Host editor screen labels
 #. Label for quick connect input field
 msgctxt "host_editor_quick_connect_label"
 msgid "Quick connect"
-msgstr ""
+msgstr "Kết nối nhanh"
 
 #. Placeholder text showing format for quick connect field
 msgctxt "host_editor_quick_connect_placeholder"
 msgid "user@hostname:port"
-msgstr ""
+msgstr "user@hostname:port"
 
 #. Supporting text showing example for quick connect field
 msgctxt "host_editor_quick_connect_example"
 msgid "Example: root@192.168.1.1:22"
-msgstr ""
+msgstr "Ví dụ: root@192.168.1.1:22"
 
 #. Text for button to show advanced host options
 msgctxt "host_editor_show_advanced"
 msgid "Show advanced options"
-msgstr ""
+msgstr "Hiển thị các tùy chọn nâng cao"
 
 #. Text for button to hide advanced host options
 msgctxt "host_editor_hide_advanced"
 msgid "Hide advanced options"
-msgstr ""
+msgstr "Ẩn các tùy chọn nâng cao"
 
 #. Terminal resize dialog
 #. Label for width input field in terminal resize dialog
 msgctxt "resize_width_label"
 msgid "Width (columns)"
-msgstr ""
+msgstr "Chiều rộng (số cột)"
 
 #. Label for height input field in terminal resize dialog
 msgctxt "resize_height_label"
 msgid "Height (rows)"
-msgstr ""
+msgstr "Chiều cao (số hàng)"
+
+#. Button to disable force size and return to auto-sizing
+msgctxt "resize_disable_force_size"
+msgid "Disable force size"
+msgstr "Tắt chế độ ép kích thước"
 
 #. Public key editor labels
 #. Label for key type field in the SSH pubkey editor
 msgctxt "pubkey_editor_key_type_label"
 msgid "Key type"
-msgstr ""
+msgstr "Loại khóa"
 
 #. Label for the options section on SSH pubkey editor
 msgctxt "pubkey_editor_options_label"
 msgid "Options"
-msgstr ""
+msgstr "Tùy chọn"
 
 #. Warning message shown when encrypted SSH pubkeys are set to load on startup
 msgctxt "pubkey_editor_encrypted_startup_warning"
 msgid "Encrypted keys cannot be unlocked at startup"
-msgstr ""
+msgstr "Không thể mở khóa các khóa đã mã hóa khi khởi động"
 
 #. Public key list labels
 #. Label prefix for displaying key type in list
 #, c-format
 msgctxt "pubkey_type_label"
 msgid "Type: %s"
-msgstr ""
+msgstr "Loại: %s"
 
 #. Accessibility description for encrypted key icon
 msgctxt "pubkey_encrypted_description"
 msgid "Encrypted"
-msgstr ""
+msgstr "Đã mã hóa"
 
 #. Accessibility description for unencrypted key icon
 msgctxt "pubkey_not_encrypted_description"
 msgid "Not encrypted"
-msgstr ""
+msgstr "Không được mã hóa"
 
 #. Biometric authentication strings
 #. Label for biometric protection toggle in key generation
 msgctxt "pubkey_biometric_protection"
 msgid "Fingerprint protection"
-msgstr ""
+msgstr "Bảo vệ bằng dấu vân tay"
 
 #. Description for biometric protection option
 msgctxt "pubkey_biometric_description"
 msgid "Protect this key with your fingerprint"
-msgstr ""
+msgstr "Bảo vệ khóa này bằng dấu vân tay của bạn"
 
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use "
-"this feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use this "
+"feature."
 msgstr ""
+"Chưa có dấu vân tay nào được đăng ký. Hãy thiết lập dấu vân tay trong cài "
+"đặt thiết bị để sử dụng tính năng này."
 
 #. Warning shown when key type doesn\'t support biometric protection
 msgctxt "pubkey_biometric_key_type_warning"
 msgid "Fingerprint protection is only available for RSA and EC keys"
-msgstr ""
+msgstr "Tính năng bảo vệ bằng dấu vân tay chỉ khả dụng cho khóa RSA và EC"
 
 #. Title for biometric prompt when unlocking a key
 msgctxt "pubkey_biometric_prompt_title"
 msgid "Authenticate to use key"
-msgstr ""
+msgstr "Xác thực bằng khóa để sử dụng"
 
 #. Subtitle for biometric prompt
 #, c-format
 msgctxt "pubkey_biometric_prompt_subtitle"
 msgid "Touch the fingerprint sensor to unlock '%1$s'"
-msgstr ""
+msgstr "Chạm vào cảm biến vân tay để mở khóa '%1$s'"
 
 #. Accessibility description for biometric-protected key icon
 msgctxt "pubkey_biometric_description_icon"
 msgid "Protected by fingerprint"
-msgstr ""
+msgstr "Được bảo vệ bằng dấu vân tay"
 
 #. Error message when biometric authentication is not available in current
 #. context
 msgctxt "pubkey_biometric_not_available"
 msgid "Fingerprint authentication is not available"
-msgstr ""
+msgstr "Tính năng xác thực bằng dấu vân tay không khả dụng"
 
 #. Port forward editor labels
 #. Placeholder for port forward nickname field. Should show an example
 #. nickname for a port forward.
 msgctxt "portforward_nickname_placeholder"
 msgid "Internal Webserver"
-msgstr ""
+msgstr "Máy chủ web nội bộ"
 
 #. Error message when port is out of valid range
 msgctxt "portforward_port_range_error"
 msgid "Port must be between 1 and 65535"
-msgstr ""
+msgstr "Cổng phải nằm trong khoảng từ 1 đến 65535"
 
 #. Placeholder for destination field
 msgctxt "portforward_destination_placeholder"
 msgid "localhost:80"
-msgstr ""
+msgstr "localhost:80"
 
 #. Error message for invalid destination format
 msgctxt "portforward_destination_format_error"
 msgid "Format should be host:port (e.g., localhost:80)"
-msgstr ""
+msgstr "Định dạng phải là: host:port (ví dụ: localhost:80)"
 
 #. Port forward list labels
 #. Label prefix for displaying port forward type in list
 #, c-format
 msgctxt "portforward_type_label"
 msgid "Type: %s"
-msgstr ""
+msgstr "Loại: %s"
 
 #. Menu item to enable port forward on live connection
 msgctxt "portforward_enable"
 msgid "Enable"
-msgstr ""
+msgstr "Bật"
 
 #. Menu item to disable port forward on live connection
 msgctxt "portforward_disable"
 msgid "Disable"
-msgstr ""
+msgstr "Tắt"
 
 #. Content description for enabled port forward visual indicator
 msgctxt "portforward_enabled"
 msgid "Port forward enabled"
-msgstr ""
+msgstr "Tính năng chuyển tiếp cổng đã được kích hoạt"
 
 #. Content description for disabled port forward visual indicator
 msgctxt "portforward_disabled"
 msgid "Port forward disabled"
-msgstr ""
+msgstr "Tính năng chuyển tiếp cổng đã bị tắt"
 
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
@@ -2256,6 +2409,11 @@ msgctxt "hostpref_save_host"
 msgid "Save host"
 msgstr "Lưu máy chủ (host)"
 
+#. Title shown in the app bar when editing an existing host's settings.
+msgctxt "hostpref_setting_title"
+msgid "Host setting"
+msgstr "Cài đặt máy chủ"
+
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
@@ -2267,7 +2425,7 @@ msgstr "Import khoá pubkey có sẵn"
 #. connections alive.
 msgctxt "notification_permission_title"
 msgid "Keep connections alive"
-msgstr ""
+msgstr "Duy trì kết nối"
 
 #. Explanation message shown in permission dialog when user tries to connect
 #. to a host.              Explains why notification permission is needed and
@@ -2275,368 +2433,601 @@ msgstr ""
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch "
-"apps."
+"background. Without permission, connections may close when you switch apps."
 msgstr ""
+"Việc hiển thị thông báo là bắt buộc để duy trì kết nối khi ứng dụng chạy ở "
+"chế độ nền. Nếu không có quyền, kết nối có thể bị ngắt khi bạn chuyển đổi "
+"giữa các ứng dụng."
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
 msgctxt "grant_permission"
 msgid "Grant permission"
-msgstr ""
+msgstr "Cấp quyền"
 
 #. Button text to proceed with connecting without granting notification
 #. permission.
 msgctxt "connect_anyway"
 msgid "Connect anyway"
-msgstr ""
+msgstr "Vẫn kết nối"
 
 #. Title for dialog directing users to app settings when notification
 #. permission was denied.              Shown when user tries to enable persist
 #. connections after denying permission.
 msgctxt "notification_permission_denied_title"
 msgid "Permission required"
-msgstr ""
+msgstr "Yêu cầu quyền truy cập"
 
 #. Message explaining that user must enable notification permission in app
 #. settings.              Shown when notification permission was previously
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification"
-" permission in app settings."
+"To keep connections alive in the background, you must enable notification "
+"permission in app settings."
 msgstr ""
+"Để duy trì kết nối trong nền, bạn phải bật quyền thông báo trong cài đặt ứng "
+"dụng."
 
 #. Button text to open ConnectBot app settings page where user can grant
 #. notification permission.
 msgctxt "open_settings"
 msgid "Open settings"
-msgstr ""
+msgstr "Mở cài đặt"
 
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid "Are you trying to access a local host? Grant local network permissions."
+msgid ""
+"Are you trying to access a local host? Grant local network permissions."
 msgstr ""
+"Bạn có đang cố gắng truy cập máy chủ cục bộ không? Hãy cấp quyền truy cập "
+"mạng cục bộ."
 
 #. Loading message shown during app initialization
 msgctxt "loading_message"
 msgid "Loading…"
-msgstr ""
+msgstr "Đang tải…"
 
 #. Database migration screen messages. Displayed during one-time migration
 #. from legacy database format to Room database.
 #. Title shown while checking if database migration is needed
 msgctxt "migration_checking"
 msgid "Checking database…"
-msgstr ""
+msgstr "Đang kiểm tra cơ sở dữ liệu…"
 
 #. Title shown during database migration process
 msgctxt "migration_title"
 msgid "Migrating Database"
-msgstr ""
+msgstr "Di chuyển cơ sở dữ liệu"
 
 #. Warning message shown during migration to inform user not to close the app
 msgctxt "migration_warning"
 msgid "Please do not close the app during migration"
-msgstr ""
+msgstr "Vui lòng không đóng ứng dụng trong quá trình chuyển đổi"
 
 #. Statistics label showing number of hosts migrated
 #, c-format
 msgctxt "migration_stats_hosts"
 msgid "Hosts migrated: %d"
-msgstr ""
+msgstr "Số lượng máy chủ đã chuyển đổi: %d"
 
 #. Statistics label showing number of SSH keys migrated
 #, c-format
 msgctxt "migration_stats_pubkeys"
 msgid "SSH keys migrated: %d"
-msgstr ""
+msgstr "Đã chuyển các khóa SSH: %d"
 
 #. Statistics label showing number of port forwards migrated
 #, c-format
 msgctxt "migration_stats_port_forwards"
 msgid "Port forwards migrated: %d"
-msgstr ""
+msgstr "Số lượng chuyển tiếp cổng đã được thực hiện: %d"
 
 #. Statistics label showing number of known hosts migrated
 #, c-format
 msgctxt "migration_stats_known_hosts"
 msgid "Known hosts migrated: %d"
-msgstr ""
+msgstr "Danh sách máy chủ đã biết đã được chuyển đổi: %d"
 
 #. Title shown when migration fails
 msgctxt "migration_failed_title"
 msgid "Migration Failed"
-msgstr ""
+msgstr "Quá trình di chuyển không thành công"
 
 #. Error message shown when migration fails, includes error details
 #, c-format
 msgctxt "migration_failed_message"
 msgid "An error occurred during database migration: %s"
-msgstr ""
+msgstr "Đã xảy ra lỗi trong quá trình di chuyển cơ sở dữ liệu: %s"
 
 #. Button label to retry failed migration
 msgctxt "migration_retry"
 msgid "Retry"
-msgstr ""
+msgstr "Thử lại"
 
 #. Help text shown after migration failure with link to GitHub issues
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug "
-"log copied above"
+"If the problem persists, please report this issue at %1$s with the debug log "
+"copied above"
 msgstr ""
+"Nếu sự cố vẫn tiếp diễn, vui lòng báo cáo vấn đề này tại %1$s và đính kèm "
+"bản ghi gỡ lỗi đã sao chép ở trên"
 
 #. Title for warnings section shown during database migration
 msgctxt "migration_warnings_title"
 msgid "Migration Warnings"
-msgstr ""
+msgstr "Cảnh báo về việc nâng cấp"
 
 #. Button text to copy migration warnings to clipboard for reporting issues
 msgctxt "migration_copy_warnings"
 msgid "Copy Warnings"
-msgstr ""
+msgstr "Sao chép Cảnh báo"
 
 #. Title for debug log section shown when migration fails
 msgctxt "migration_debug_log_title"
 msgid "Debug Log"
-msgstr ""
+msgstr "Nhật ký gỡ lỗi"
 
 #. Button text to copy debug log to clipboard for reporting issues
 msgctxt "migration_copy_debug_log"
 msgid "Copy Debug Log"
-msgstr ""
+msgstr "Sao chép nhật ký gỡ lỗi"
 
 #. Shown in the alert dialog when a user chooses the 'disconnect' item to
 #. disconnect from a SSH or Telnet host.
 #, c-format
 msgctxt "disconnect_host_alert"
 msgid "Are you sure you want to disconnect from '%1$s'?"
-msgstr ""
+msgstr "Bạn có chắc muốn ngắt kết nối khỏi '%1$s' không?"
 
 #. Shown in the alert dialog when a user chooses the 'delete host' item to
 #. delete a host.
 #, c-format
 msgctxt "delete_host_confirm"
 msgid "Are you sure you want to delete host '%1$s'?"
+msgstr "Bạn có chắc muốn xóa máy chủ '%1$s' không?"
+
+#. Shown in the alert dialog when a user chooses the 'forget host keys' item.
+#, c-format
+msgctxt "forget_host_keys_confirm"
+msgid ""
+"Are you sure you want to forget the stored host keys for '%1$s'? You will be "
+"prompted to verify the host key on the next connection."
 msgstr ""
+"Bạn có chắc muốn xóa các khóa máy chủ đã lưu cho '%1$s' không? Bạn sẽ được "
+"yêu cầu xác minh khóa máy chủ trong lần kết nối tiếp theo."
 
 #. Menu selection to edit a pubkey details (e.g., nickname)
 msgctxt "list_pubkey_edit"
 msgid "Edit pubkey"
-msgstr ""
+msgstr "Chỉnh sửa khóa công khai"
+
+#. IP Version selection for host connections
+#. Title for IP version preference in host editor
+msgctxt "hostpref_ipversion_title"
+msgid "IP version"
+msgstr "Phiên bản IP"
+
+#. Summary text explaining what the IP version setting controls
+msgctxt "hostpref_ipversion_summary"
+msgid "Select which IP address version to use when connecting"
+msgstr "Chọn phiên bản địa chỉ IP cần sử dụng khi kết nối"
+
+#. Option for automatic IP version selection (try both IPv4 and IPv6)
+msgctxt "ipversion_auto"
+msgid "Automatic"
+msgstr "Tự động"
+
+#. Option to force IPv4-only connections
+msgctxt "ipversion_ipv4"
+msgid "IPv4 only"
+msgstr "Chỉ sử dụng IPv4"
+
+#. Option to force IPv6-only connections
+msgctxt "ipversion_ipv6"
+msgid "IPv6 only"
+msgstr "Chỉ sử dụng IPv6"
 
 #. ProxyJump / Jump Host support
 #. Title for jump host selector in host editor
 msgctxt "hostpref_jumphost_title"
 msgid "Jump host (ProxyJump)"
-msgstr ""
+msgstr "Máy chủ trung gian (ProxyJump)"
 
 #. Summary text explaining jump host functionality
 msgctxt "hostpref_jumphost_summary"
 msgid "Connect through another SSH host"
-msgstr ""
+msgstr "Kết nối thông qua một máy chủ SSH khác"
 
 #. Option for no jump host (direct connection)
 msgctxt "list_jumphost_none"
 msgid "None (direct connection)"
-msgstr ""
+msgstr "Không có (kết nối trực tiếp)"
 
 #. Terminal message when connecting via jump host
 #, c-format
 msgctxt "terminal_connecting_via_jump"
 msgid "Connecting via jump host: %s"
-msgstr ""
+msgstr "Kết nối thông qua máy chủ trung gian: %s"
 
 #. Terminal message when connected to jump host
 #, c-format
 msgctxt "terminal_jump_connected"
 msgid "Connected to jump host: %s"
-msgstr ""
+msgstr "Đã kết nối đến máy chủ trung gian: %s"
 
 #. Terminal message when authenticated to jump host
 #, c-format
 msgctxt "terminal_jump_authenticated"
 msgid "Authenticated to jump host: %s"
-msgstr ""
+msgstr "Đã xác thực với máy chủ trung gian: %s"
 
 #. Terminal message when jump host connection fails
 #, c-format
 msgctxt "terminal_jump_failed"
 msgid "Failed to connect to jump host %1$s: %2$s"
-msgstr ""
+msgstr "Không thể kết nối đến máy chủ trung gian %1$s: %2$s"
 
 #. Terminal message when jump host authentication fails
 #, c-format
 msgctxt "terminal_jump_auth_failed"
 msgid "Authentication failed for jump host: %s"
-msgstr ""
+msgstr "Xác thực không thành công cho máy chủ trung gian: %s"
 
 #. Terminal message when jump host is not found in database
 msgctxt "terminal_jump_not_found"
 msgid "Jump host not found in saved hosts"
-msgstr ""
+msgstr "Không tìm thấy máy chủ trung gian trong danh sách máy chủ đã lưu"
 
 #. Password prompt prefix for jump host
 #, c-format
 msgctxt "terminal_jump_password"
 msgid "Password for jump host %s:"
-msgstr ""
+msgstr "Mật khẩu cho máy chủ trung gian %s:"
 
 #. Button text to view application logs for debugging
 msgctxt "view_logs"
 msgid "View Logs"
-msgstr ""
+msgstr "Xem nhật ký"
 
 #. Title for the log viewer dialog
 msgctxt "logs_title"
 msgid "Application Logs"
-msgstr ""
+msgstr "Nhật ký ứng dụng"
 
 #. Button text to copy logs to clipboard for bug reporting
 msgctxt "copy_logs"
 msgid "Copy Logs"
-msgstr ""
+msgstr "Sao chép nhật ký"
 
 #. Confirmation message shown when logs are copied to clipboard
 msgctxt "logs_copied"
 msgid "Logs copied to clipboard"
-msgstr ""
+msgstr "Nhật ký đã được sao chép vào bộ nhớ tạm"
 
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at "
-"https://connectbot.org/bug"
+"To report a bug, copy these logs and open a new issue at https://connectbot."
+"org/bug"
 msgstr ""
+"Để báo cáo lỗi, hãy sao chép các nhật ký này và mở một báo cáo mới tại https:"
+"//connectbot.org/bug"
 
 #. Message shown when no logs are available
 msgctxt "no_logs_available"
 msgid "No logs available"
-msgstr ""
+msgstr "Không có nhật ký nào khả dụng"
 
 #. Section title for the "Help" screen showing information about the program
 #. itself.
 msgctxt "help_section_about"
 msgid "About"
-msgstr ""
+msgstr "Giới thiệu"
+
+#. Window title for the Contact &amp; Support screen, also used as button text
+#. in Help screen.
+msgctxt "title_contact"
+msgid "Contact & Support"
+msgstr "Liên hệ và Hỗ trợ"
+
+#. Section title for the "Help" screen showing contact and support
+#. information.
+msgctxt "help_section_contact"
+msgid "Contact & Support"
+msgstr "Liên hệ và Hỗ trợ"
+
+#. Label for the official website link in the Help screen.
+msgctxt "help_website"
+msgid "Website"
+msgstr "Trang web"
+
+#. Label for the GitHub repository link in the Help screen.
+msgctxt "help_github"
+msgid "Source Code"
+msgstr "Mã nguồn"
+
+#. Label for the bug report/issue tracker link in the Help screen.
+msgctxt "help_report_bug"
+msgid "Report a Bug"
+msgstr "Báo cáo lỗi"
+
+#. Section title for the "Help" screen showing donation options.
+msgctxt "help_section_donate"
+msgid "Support Development"
+msgstr "Ủng hộ việc phát triển ứng dụng"
+
+#. Label for the GitHub Sponsors donation link in the Help screen.
+msgctxt "help_donate_github"
+msgid "GitHub Sponsors"
+msgstr "GitHub Sponsors"
+
+#. Label for the Buy Me a Coffee donation link in the Help screen.
+msgctxt "help_donate_coffee"
+msgid "Buy Me a Coffee"
+msgstr "Hãy mua cho tôi một tách cà phê"
 
 #. Built-in color scheme descriptions for terminal display
 #. Description of the default terminal color scheme
 msgctxt "colorscheme_default_description"
 msgid "Default terminal colors"
-msgstr ""
+msgstr "Màu mặc định của giao diện dòng lệnh"
 
 #. Description of the Solarized Dark color scheme
 msgctxt "colorscheme_solarized_dark_description"
 msgid "Precision colors for machines and people"
-msgstr ""
+msgstr "Màu sắc chính xác cho máy móc và con người"
 
 #. Description of the Solarized Light color scheme
 msgctxt "colorscheme_solarized_light_description"
 msgid "Solarized with light background"
-msgstr ""
+msgstr "Chế độ Solarized với nền sáng"
 
 #. Description of the Dracula color scheme
 msgctxt "colorscheme_dracula_description"
 msgid "A dark theme for the terminal"
-msgstr ""
+msgstr "Giao diện tối cho ứng dụng terminal"
 
 #. Description of the Nord color scheme
 msgctxt "colorscheme_nord_description"
 msgid "An arctic, north-bluish color palette"
-msgstr ""
+msgstr "Bảng màu xanh lam nhạt, mang sắc thái của vùng cực bắc"
 
 #. Description of the Gruvbox Dark color scheme
 msgctxt "colorscheme_gruvbox_dark_description"
 msgid "Retro groove color scheme"
-msgstr ""
+msgstr "Bảng màu theo phong cách cổ điển"
 
 #. Description of the Monokai color scheme
 msgctxt "colorscheme_monokai_description"
 msgid "Sublime Text inspired theme"
-msgstr ""
+msgstr "Giao diện lấy cảm hứng từ Sublime Text"
 
 #. Description of the Tomorrow Night color scheme
 msgctxt "colorscheme_tomorrow_night_description"
 msgid "A clean and comfortable dark theme"
-msgstr ""
+msgstr "Giao diện tối màu, sạch sẽ và dễ nhìn"
 
 #. Settings screen strings
 #. Category title for profile settings section
 msgctxt "pref_profiles_category"
 msgid "Profiles"
-msgstr ""
+msgstr "Hồ sơ"
 
 #. Setting title for default profile selection
 msgctxt "pref_default_profile_title"
 msgid "Default Profile"
-msgstr ""
+msgstr "Hồ sơ mặc định"
 
 #. Summary text when no default profile is selected
 msgctxt "pref_default_profile_none"
 msgid "None (use host settings)"
-msgstr ""
+msgstr "Không có (sử dụng cài đặt máy chủ)"
 
 #. Summary text for special keys always visible setting
 msgctxt "pref_alwaysvisible_summary"
 msgid "Keep special keys always visible"
-msgstr ""
+msgstr "Luôn hiển thị các phím đặc biệt"
 
 #. Title for custom terminal types preference
 msgctxt "pref_customterminal_title"
 msgid "Custom Terminal Types"
-msgstr ""
+msgstr "Các loại giao diện dòng lệnh tùy chỉnh"
 
 #. Summary for custom terminal types preference
 msgctxt "pref_customterminal_summary"
 msgid "Add custom TERM values for remote servers"
-msgstr ""
+msgstr "Thêm các giá trị TERM tùy chỉnh cho các máy chủ từ xa"
 
 #. Dialog title for adding a custom terminal type
 msgctxt "dialog_customterminal_title"
 msgid "Add Custom Terminal Type"
-msgstr ""
+msgstr "Thêm loại giao diện dòng lệnh tùy chỉnh"
 
 #. Label/hint for terminal type input field
 msgctxt "dialog_customterminal_hint"
 msgid "Terminal type (e.g., rxvt-unicode)"
-msgstr ""
+msgstr "Loại thiết bị đầu cuối (ví dụ: rxvt-unicode)"
+
+#. Dialog title for managing custom terminal types
+msgctxt "dialog_manage_customterminal_title"
+msgid "Manage Custom Terminal Types"
+msgstr "Quản lý các loại giao diện dòng lệnh tùy chỉnh"
+
+#. Button to add a custom item
+msgctxt "button_add_custom"
+msgid "Add custom…"
+msgstr "Thêm tùy chỉnh…"
+
+#. Button to manage custom items
+msgctxt "button_manage_custom"
+msgid "Manage custom…"
+msgstr "Quản lý các tùy chỉnh…"
 
 #. Label for custom value input in list preference dialogs
 msgctxt "dialog_custom_value_label"
 msgid "Enter custom value"
-msgstr ""
+msgstr "Nhập giá trị tùy chỉnh"
 
 #. Summary description for Ctrl+A then Space camera button action
 msgctxt "list_camera_ctrlaspace_description"
 msgid "Ctrl+A then Space"
-msgstr ""
+msgstr "Nhấn Ctrl+A, sau đó nhấn phím cách"
 
 #. Summary description for Ctrl+A camera button action
 msgctxt "list_camera_ctrla_description"
 msgid "Ctrl+A"
-msgstr ""
+msgstr "Ctrl+A"
 
 #. Summary description for Esc camera button action
 msgctxt "list_camera_esc_description"
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #. Summary description for Esc+A camera button action
 msgctxt "list_camera_esc_a_description"
 msgid "Esc+A"
-msgstr ""
+msgstr "Esc+A"
 
 #. Summary description for None camera button action
 msgctxt "list_camera_none_description"
 msgid "None"
-msgstr ""
+msgstr "Không có"
 
 #. Summary description for text input camera button action
 msgctxt "list_camera_text_input_description"
 msgid "Text input"
-msgstr ""
+msgstr "Nhập văn bản"
 
+#. Host export/import menu items
+#. Menu item to export all hosts to a JSON file
+msgctxt "list_menu_export_hosts"
+msgid "Export Hosts"
+msgstr "Xuất danh sách máy chủ"
+
+#. Menu item to import hosts from a JSON file
+msgctxt "list_menu_import_hosts"
+msgid "Import Hosts"
+msgstr "Nhập danh sách máy chủ"
+
+#. Host export/import messages
+#. Success message shown after exporting hosts to a file. Parameters: %1$d =
+#. host count, %2$d = profile count
+#, c-format
+msgctxt "export_hosts_success"
+msgid "Exported %1$d hosts and %2$d profiles"
+msgstr "Đã xuất %1$d máy chủ và %2$d cấu hình"
+
+#. Success message shown after importing hosts from a file. Parameters: %1$d =
+#. hosts imported, %2$d = hosts skipped, %3$d = profiles imported, %4$d =
+#. profiles skipped
+#, c-format
+msgctxt "import_hosts_success"
+msgid "Imported %1$d hosts (%2$d skipped) and %3$d profiles (%4$d skipped)"
+msgstr ""
+"Đã nhập %1$d máy chủ (%2$d máy bị bỏ qua) và %3$d cấu hình (%4$d cấu hình bị "
+"bỏ qua)"
+
+#. Error message when host export fails
+#, c-format
+msgctxt "export_hosts_failed"
+msgid "Failed to export hosts: %s"
+msgstr "Không thể xuất danh sách máy chủ: %s"
+
+#. Error message when host import fails
+#, c-format
+msgctxt "import_hosts_failed"
+msgid "Failed to import hosts: %s"
+msgstr "Không thể nhập danh sách máy chủ: %s"
+
+#. Title for the export hosts file picker dialog
+msgctxt "export_hosts_title"
+msgid "Export Hosts"
+msgstr "Xuất danh sách máy chủ"
+
+#. Shortcut customization dialog strings
+#. Dialog title when customizing a shortcut icon
+msgctxt "shortcut_customize_title"
+msgid "Customize Shortcut"
+msgstr "Tùy chỉnh phím tắt"
+
+#. Label for the shortcut icon color selection dropdown
+msgctxt "shortcut_icon_color"
+msgid "Icon Color"
+msgstr "Màu biểu tượng"
+
+#. Label for the shortcut icon style selection dropdown
+msgctxt "shortcut_icon_style"
+msgid "Icon Style"
+msgstr "Kiểu biểu tượng"
+
+#. Checkbox label to use the host\'s configured color for the shortcut
+msgctxt "shortcut_use_host_color"
+msgid "Use host color"
+msgstr "Sử dụng màu cho tên máy chủ"
+
+#. Button to create the customized shortcut
+msgctxt "shortcut_create"
+msgid "Create Shortcut"
+msgstr "Tạo lối tắt"
+
+#. Icon style option: terminal prompt icon
+msgctxt "icon_style_terminal"
+msgid "Terminal"
+msgstr "Giao diện dòng lệnh"
+
+#. Icon style option: server/computer icon
+msgctxt "icon_style_server"
+msgid "Server"
+msgstr "Máy chủ"
+
+#. Icon style option: cloud icon
+msgctxt "icon_style_cloud"
+msgid "Cloud"
+msgstr "Cloud"
+
+#. Icon style option: key/security icon
+msgctxt "icon_style_key"
+msgid "Key"
+msgstr "Key"
+
+#. Authentication on launch
+#. Title for the authentication on launch preference in settings
+msgctxt "pref_auth_on_launch_title"
+msgid "Authentication on launch"
+msgstr "Xác thực khi khởi động"
+
+#. Summary for the authentication on launch preference
+msgctxt "pref_auth_on_launch_summary"
+msgid "Require fingerprint, face, or device PIN when opening the app"
+msgstr ""
+"Yêu cầu sử dụng dấu vân tay, khuôn mặt hoặc mã PIN của thiết bị khi mở ứng "
+"dụng"
+
+#. Category title for security preferences in settings
+msgctxt "pref_security_category"
+msgid "Security"
+msgstr "Bảo mật"
+
+#. Title shown on the authentication lock screen
+msgctxt "auth_screen_title"
+msgid "ConnectBot is locked"
+msgstr "ConnectBot đã bị khóa"
+
+#. Button text to trigger authentication on the lock screen
+msgctxt "auth_screen_unlock_button"
+msgid "Tap to unlock"
+msgstr "Chạm để mở khóa"
+
+#. Title shown in the biometric/device credential authentication prompt
+msgctxt "auth_prompt_title"
+msgid "Unlock ConnectBot"
+msgstr "Mở khóa ConnectBot"
+
+#. Subtitle shown in the biometric/device credential authentication prompt
+msgctxt "auth_prompt_subtitle"
+msgid "Verify your identity to continue"
+msgstr "Xác minh danh tính của bạn để tiếp tục"
