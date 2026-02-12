@@ -40,6 +40,9 @@ fun ConnectBotApp(
     appUiState: AppUiState,
     navController: NavHostController,
     makingShortcut: Boolean,
+    authRequired: Boolean,
+    isAuthenticated: Boolean,
+    onAuthenticationSuccess: () -> Unit,
     onRetryMigration: () -> Unit,
     onSelectShortcut: (Host, String?, IconStyle) -> Unit,
     onNavigateToConsole: (Host) -> Unit,
@@ -71,15 +74,22 @@ fun ConnectBotApp(
             }
 
             is AppUiState.Ready -> {
-                CompositionLocalProvider(LocalTerminalManager provides appUiState.terminalManager) {
-                    ConnectBotNavHost(
-                        navController = navController,
-                        startDestination = NavDestinations.HOST_LIST,
-                        makingShortcut = makingShortcut,
-                        onSelectShortcut = onSelectShortcut,
-                        onNavigateToConsole = onNavigateToConsole,
+                if (authRequired && !isAuthenticated && !makingShortcut) {
+                    AuthenticationScreen(
+                        onAuthenticationSuccess = onAuthenticationSuccess,
                         modifier = modifier
                     )
+                } else {
+                    CompositionLocalProvider(LocalTerminalManager provides appUiState.terminalManager) {
+                        ConnectBotNavHost(
+                            navController = navController,
+                            startDestination = NavDestinations.HOST_LIST,
+                            makingShortcut = makingShortcut,
+                            onSelectShortcut = onSelectShortcut,
+                            onNavigateToConsole = onNavigateToConsole,
+                            modifier = modifier
+                        )
+                    }
                 }
             }
         }

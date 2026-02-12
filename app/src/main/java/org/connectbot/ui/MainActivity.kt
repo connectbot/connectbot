@@ -141,6 +141,8 @@ class MainActivity : AppCompatActivity() {
         setContent {
             val appUiState by appViewModel.uiState.collectAsState()
             val pendingDisconnectAll by appViewModel.pendingDisconnectAll.collectAsState()
+            val isAuthenticated by appViewModel.isAuthenticated.collectAsState()
+            val authOnLaunchEnabled = appViewModel.authOnLaunchEnabled
             val navController = rememberNavController()
             val context = LocalContext.current
             var showPermissionRationale by remember { mutableStateOf(false) }
@@ -291,6 +293,9 @@ class MainActivity : AppCompatActivity() {
                 appUiState = appUiState,
                 navController = navController,
                 makingShortcut = makingShortcut,
+                authRequired = authOnLaunchEnabled,
+                isAuthenticated = isAuthenticated,
+                onAuthenticationSuccess = { appViewModel.onAuthenticationSuccess() },
                 onRetryMigration = { appViewModel.retryMigration() },
                 onSelectShortcut = { host, color, iconStyle ->
                     createShortcutAndFinish(host, color, iconStyle)

@@ -79,6 +79,12 @@ class AppViewModel @Inject constructor(
     private val _requestPermission = Channel<Unit>(Channel.CONFLATED)
     val requestPermission = _requestPermission.receiveAsFlow()
 
+    private val _isAuthenticated = MutableStateFlow(false)
+    val isAuthenticated: StateFlow<Boolean> = _isAuthenticated.asStateFlow()
+
+    val authOnLaunchEnabled: Boolean
+        get() = prefs.getBoolean(PreferenceConstants.AUTH_ON_LAUNCH, false)
+
     private val _pendingConnectionUri = MutableStateFlow<Uri?>(null)
     val pendingConnectionUri: StateFlow<Uri?> = _pendingConnectionUri.asStateFlow()
 
@@ -98,11 +104,14 @@ class AppViewModel @Inject constructor(
             ) { migrationState, terminalMgr ->
                 when (migrationState) {
                     is MigrationUiState.Checking -> AppUiState.Loading
+
                     is MigrationUiState.InProgress -> AppUiState.MigrationInProgress(migrationState.state)
+
                     is MigrationUiState.Failed -> AppUiState.MigrationFailed(
                         migrationState.error,
                         migrationState.debugLog
                     )
+
                     is MigrationUiState.Completed -> {
                         if (terminalMgr != null) {
                             AppUiState.Ready(terminalMgr)
@@ -180,6 +189,13 @@ class AppViewModel @Inject constructor(
     }
 
     /**
+     * Called when user successfully authenticates via biometric/device credential.
+     */
+    fun onAuthenticationSuccess() {
+        _isAuthenticated.value = true
+    }
+
+    /**
      * Set the pending connection URI that should be opened after permission dialog is dismissed.
      */
     fun setPendingConnectionUri(uri: Uri?) {
@@ -246,6 +262,7 @@ class AppViewModel @Inject constructor(
                 Timber.d("Permission already granted, proceeding")
                 true
             }
+
             shouldShowRationale -> {
                 Timber.d("Showing rationale dialog")
                 _pendingConnectionUri.value = uri
@@ -254,6 +271,7 @@ class AppViewModel @Inject constructor(
                 }
                 false
             }
+
             else -> {
                 Timber.d("Requesting permission")
                 _pendingConnectionUri.value = uri

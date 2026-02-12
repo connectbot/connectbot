@@ -1332,4 +1332,20 @@
 	<string name="icon_style_cloud">Cloud</string>
 	<!-- Icon style option: key/security icon -->
 	<string name="icon_style_key">Key</string>
+
+	<!-- Authentication on launch -->
+	<!-- Title for the authentication on launch preference in settings -->
+	<string name="pref_auth_on_launch_title">Authentication on launch</string>
+	<!-- Summary for the authentication on launch preference -->
+	<string name="pref_auth_on_launch_summary">Require fingerprint, face, or device PIN when opening the app</string>
+	<!-- Category title for security preferences in settings -->
+	<string name="pref_security_category">Security</string>
+	<!-- Title shown on the authentication lock screen -->
+	<string name="auth_screen_title">ConnectBot is locked</string>
+	<!-- Button text to trigger authentication on the lock screen -->
+	<string name="auth_screen_unlock_button">Tap to unlock</string>
+	<!-- Title shown in the biometric/device credential authentication prompt -->
+	<string name="auth_prompt_title">Unlock ConnectBot</string>
+	<!-- Subtitle shown in the biometric/device credential authentication prompt -->
+	<string name="auth_prompt_subtitle">Verify your identity to continue</string>
 </resources>

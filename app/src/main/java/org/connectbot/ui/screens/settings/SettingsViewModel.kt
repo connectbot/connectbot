@@ -22,6 +22,8 @@ import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.net.Uri
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.biometric.BiometricManager
+import androidx.biometric.BiometricManager.Authenticators
 import androidx.core.content.edit
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
@@ -46,6 +48,8 @@ import timber.log.Timber
 import javax.inject.Inject
 
 data class SettingsUiState(
+    val authOnLaunch: Boolean = false,
+    val canAuthenticate: Boolean = false,
     val memkeys: Boolean = true,
     val connPersist: Boolean = true,
     val wifilock: Boolean = true,
@@ -136,7 +140,13 @@ class SettingsViewModel @Inject constructor(
         val appLocales = AppCompatDelegate.getApplicationLocales()
         val currentLanguage = if (appLocales.isEmpty) "" else appLocales.toLanguageTags()
 
+        val canAuthenticate = BiometricManager.from(context)
+            .canAuthenticate(Authenticators.BIOMETRIC_STRONG or Authenticators.DEVICE_CREDENTIAL) ==
+            BiometricManager.BIOMETRIC_SUCCESS
+
         return SettingsUiState(
+            authOnLaunch = prefs.getBoolean(PreferenceConstants.AUTH_ON_LAUNCH, false),
+            canAuthenticate = canAuthenticate,
             memkeys = prefs.getBoolean("memkeys", true),
             connPersist = prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true),
             wifilock = prefs.getBoolean("wifilock", true),
@@ -166,6 +176,18 @@ class SettingsViewModel @Inject constructor(
             language = currentLanguage,
             defaultProfileId = prefs.getLong("defaultProfileId", 0L)
         )
+    }
+
+    fun updateAuthOnLaunch(value: Boolean) {
+        if (value) {
+            val canAuth = BiometricManager.from(context)
+                .canAuthenticate(Authenticators.BIOMETRIC_STRONG or Authenticators.DEVICE_CREDENTIAL)
+            if (canAuth != BiometricManager.BIOMETRIC_SUCCESS) {
+                Timber.d("Cannot enable auth on launch: canAuthenticate=$canAuth")
+                return
+            }
+        }
+        updateBooleanPref(PreferenceConstants.AUTH_ON_LAUNCH, value) { copy(authOnLaunch = value) }
     }
 
     fun updateMemkeys(value: Boolean) {
