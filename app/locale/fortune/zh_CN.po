@@ -2,22 +2,21 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-12 10:47+0800\n"
+"POT-Creation-Date: 2026-02-12 21:00+0800\n"
 "PO-Revision-Date: 2026-02-12 12:09+0800\n"
 "Last-Translator: onecountry <Unknown>\n"
 "Language: zh_Hans_CN\n"
 "Language-Team: zh_Hans_CN <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=(0);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
-"X-Generator: Autopo v1.0.8\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -140,8 +139,8 @@ msgstr "触摸这个方框来获取随机性：已完成%1$d%%"
 #. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr "请在下方的方框内随机移动手指以保证密钥生成的随机性。"
 
 #. Progress message shown while generating a new SSH key pair
@@ -266,7 +265,8 @@ msgstr "确认密码"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
-msgid "Tap \"Menu\" to create\n"
+msgid ""
+"Tap \"Menu\" to create\n"
 "or import key pairs."
 msgstr "点击“菜单”以创建或导入密钥对。"
 
@@ -386,9 +386,11 @@ msgstr "密钥'%1$s'的密码"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid "Allow remote host to\n"
+msgid ""
+"Allow remote host to\n"
 "use key '%1$s'?"
-msgstr "允许远程主机\n"
+msgstr ""
+"允许远程主机\n"
 "使用密钥 '%1$s'？"
 
 #. The header of the warning a user gets when the host key has changed. Note
@@ -404,17 +406,21 @@ msgstr "警告：远程主机身份标识已改变！"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
-msgstr "可能有人正在做非善意的事情！\n"
+msgstr ""
+"可能有人正在做非善意的事情！\n"
 "可能有人正在偷听你的会话(中间人攻击)！\n"
 "但也可能是主机密钥刚刚被更改。"
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid "Host has disconnected.\n"
+msgid ""
+"Host has disconnected.\n"
 "Close session?"
-msgstr "主机已经断开。\n"
+msgstr ""
+"主机已经断开。\n"
 "关闭本次会话？"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -422,7 +428,8 @@ msgstr "主机已经断开。\n"
 #, fuzzy
 msgctxt "prompt_continue_connecting"
 msgid "Are you sure you want to continue connecting?"
-msgstr "你确定要\n"
+msgstr ""
+"你确定要\n"
 "继续连接？"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
@@ -827,8 +834,7 @@ msgstr "后台通知"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
+msgid "Send notification when a terminal running in the background sounds a bell."
 msgstr "当终端在后台响铃时发出通知"
 
 #. Preference selection to indicate use of right side of keyboard for special
@@ -1856,8 +1862,8 @@ msgstr "重置所有颜色？"
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action cannot "
-"be undone."
+"This will reset all 256 colors to their default values. This action "
+"cannot be undone."
 msgstr "这将把所有 256 种颜色重置为其默认值。此操作无法撤销。"
 
 #. Displayed in the notification bar that connections are active
@@ -2274,8 +2280,8 @@ msgstr "使用您的指纹保护此密钥"
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use this "
-"feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use "
+"this feature."
 msgstr "未注册指纹。请在设备设置中设置指纹以使用此功能。"
 
 #. Warning shown when key type doesn\'t support biometric protection
@@ -2404,7 +2410,8 @@ msgstr "保持连接活跃"
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch apps."
+"background. Without permission, connections may close when you switch "
+"apps."
 msgstr "显示通知是保持后台连接活跃的必要条件。如果没有此权限，在切换应用程序时，连接可能会中断。"
 
 #. Button text to grant notification permission in the permission explanation
@@ -2431,8 +2438,8 @@ msgstr "所需权限"
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification "
-"permission in app settings."
+"To keep connections alive in the background, you must enable notification"
+" permission in app settings."
 msgstr "为了在后台保持连接，您必须在应用设置中启用通知权限。"
 
 #. Button text to open ConnectBot app settings page where user can grant
@@ -2444,8 +2451,7 @@ msgstr "打开设置"
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid ""
-"Are you trying to access a local host? Grant local network permissions."
+msgid "Are you trying to access a local host? Grant local network permissions."
 msgstr "您是否正在尝试访问本地主机？请授予本地网络权限。"
 
 #. Loading message shown during app initialization
@@ -2514,8 +2520,8 @@ msgstr "重试"
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug log "
-"copied above"
+"If the problem persists, please report this issue at %1$s with the debug "
+"log copied above"
 msgstr "如果问题仍然存在，请将上述调试日志复制到 %1$s 并提交问题报告"
 
 #. Title for warnings section shown during database migration
@@ -2556,8 +2562,8 @@ msgstr "您确定要删除主机“%1$s”吗？"
 #, c-format
 msgctxt "forget_host_keys_confirm"
 msgid ""
-"Are you sure you want to forget the stored host keys for '%1$s'? You will be "
-"prompted to verify the host key on the next connection."
+"Are you sure you want to forget the stored host keys for '%1$s'? You will"
+" be prompted to verify the host key on the next connection."
 msgstr "您确定要删除已保存的 '%1$s' 的主机密钥吗？下次连接时，系统会提示您验证主机密钥。"
 
 #. Menu selection to edit a pubkey details (e.g., nickname)
@@ -2671,8 +2677,8 @@ msgstr "日志已复制到剪贴板"
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at https://connectbot."
-"org/bug"
+"To report a bug, copy these logs and open a new issue at "
+"https://connectbot.org/bug"
 msgstr "如需报告错误，请复制这些日志，然后在 https://connectbot.org/bug 上提交新的问题"
 
 #. Message shown when no logs are available
@@ -2985,3 +2991,4 @@ msgstr "解锁 ConnectBot"
 msgctxt "auth_prompt_subtitle"
 msgid "Verify your identity to continue"
 msgstr "请验证您的身份以继续"
+

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-12 10:47+0800\n"
-"PO-Revision-Date: 2025-12-03 05:46+0000\n"
+"POT-Creation-Date: 2026-02-12 21:00+0800\n"
+"PO-Revision-Date: 2026-02-12 20:45+0800\n"
 "Last-Translator: Sif sif <Unknown>\n"
 "Language: ar\n"
 "Language-Team: ar <LL@li.org>\n"
@@ -30,12 +30,12 @@ msgstr "عميل SSH بسيط وقوي ومفتوح المصدر."
 #. running apps list
 msgctxt "service_desc"
 msgid "Maintains SSH connections and loaded pubkeys"
-msgstr ""
+msgstr "يحافظ على اتصالات SSH ويقوم بتحميل مفاتيح SSH العامة."
 
 #. Displayed in the "Help" screen to denote the copyright of this app.
 msgctxt "app_copyright"
 msgid "Copyright © Kenny Root"
-msgstr ""
+msgstr "حقوق النشر © كيني روت"
 
 #. Window title for the Pubkeys List
 msgctxt "title_pubkey_list"
@@ -65,7 +65,7 @@ msgstr "إختر لوناً"
 #. Window title for the global applications settings activity.
 msgctxt "title_settings"
 msgid "Settings"
-msgstr ""
+msgstr "إعدادات"
 
 #. Window title when generating a new pubkey.
 msgctxt "title_pubkey_generate"
@@ -96,23 +96,23 @@ msgstr "تكبير حجم الخط"
 #. Keyboard shortcut for increasing the font size.
 msgctxt "increase_font_shortcut"
 msgid "Ctrl and +"
-msgstr ""
+msgstr "Ctrl و +"
 
 #. Text in a keyboard shortcuts list lined up to keys which decrease the
 #. terminal font-size.
 msgctxt "decrease_font_size"
 msgid "Decrease Font Size"
-msgstr ""
+msgstr "تصغير حجم الخط"
 
 #. Keyboard shortcut for decreasing the font size.
 msgctxt "decrease_font_shortcut"
 msgid "Ctrl and -"
-msgstr ""
+msgstr "Ctrl و -"
 
 #. Keyboard shortcut for pasting into the terminal.
 msgctxt "paste_shortcut"
 msgid "Ctrl-Shift-V"
-msgstr ""
+msgstr "Ctrl+Shift+V"
 
 #. Button text to generate a new SSH public/private key pair
 msgctxt "pubkey_generate"
@@ -128,14 +128,14 @@ msgstr "حذف المفتاح"
 #. entropy (collect random bits)
 msgctxt "pubkey_gather_entropy"
 msgid "Gathering Entropy"
-msgstr ""
+msgstr "تجميع البيانات العشوائية"
 
 #. Progress message showing percentage of random data collected for key
 #. generation
 #, c-format
 msgctxt "pubkey_touch_prompt"
 msgid "Touch this box to gather randomness: %1$d%% done"
-msgstr ""
+msgstr "المس هذا المربع لتجميع البيانات العشوائية: تم بنسبة %1$d%"
 
 #. Instructions to user on how to provide randomness by moving their finger
 #. over the screen
@@ -161,17 +161,17 @@ msgstr "نسخ المفتاح الخاص"
 #. Context menu action to copy the private key to clipboard in OpenSSH format
 msgctxt "pubkey_copy_private_openssh"
 msgid "Copy private key (OpenSSH)"
-msgstr ""
+msgstr "انسخ المفتاح الخاص (OpenSSH)"
 
 #. Context menu action to copy the private key to clipboard in PEM format
 msgctxt "pubkey_copy_private_pem"
 msgid "Copy private key (PEM)"
-msgstr ""
+msgstr "انسخ المفتاح الخاص (PEM)"
 
 #. Context menu action to copy the encrypted private key to clipboard
 msgctxt "pubkey_copy_private_encrypted"
 msgid "Copy private key (encrypted)"
-msgstr ""
+msgstr "انسخ المفتاح الخاص (المشفر)"
 
 #. Context menu action to copy the public key to clipboard
 msgctxt "pubkey_copy_public"
@@ -181,102 +181,102 @@ msgstr "نسخ المفتاح العام"
 #. Context menu action to export the public key to a file
 msgctxt "pubkey_export_public"
 msgid "Export public key"
-msgstr ""
+msgstr "تصدير المفتاح العام"
 
 #. Context menu action to export the private key to a file in the default
 #. format
 msgctxt "pubkey_export_private"
 msgid "Export private key"
-msgstr ""
+msgstr "تصدير المفتاح الخاص"
 
 #. Context menu action to export the private key to a file in OpenSSH format
 msgctxt "pubkey_export_private_openssh"
 msgid "Export private key (OpenSSH)"
-msgstr ""
+msgstr "تصدير المفتاح الخاص (OpenSSH)"
 
 #. Context menu action to export the private key to a file in PEM format
 msgctxt "pubkey_export_private_pem"
 msgid "Export private key (PEM)"
-msgstr ""
+msgstr "تصدير المفتاح الخاص (بتنسيق PEM)"
 
 #. Context menu action to export the encrypted private key to a file
 msgctxt "pubkey_export_private_encrypted"
 msgid "Export private key (encrypted)"
-msgstr ""
+msgstr "تصدير المفتاح الخاص (مشفر)"
 
 #. Dialog title for setting a passphrase when exporting a key
 msgctxt "pubkey_export_set_passphrase"
 msgid "Set export passphrase"
-msgstr ""
+msgstr "عيّن عبارة مرور التصدير"
 
 #. Instructions to enter a passphrase to encrypt the key being exported
 msgctxt "pubkey_export_passphrase_message"
 msgid "Enter a passphrase to encrypt the exported key"
-msgstr ""
+msgstr "أدخل عبارة مرور لتشفير المفتاح المصدر"
 
 #. Label for the field where user confirms the passphrase by entering it again
 msgctxt "pubkey_export_confirm_passphrase"
 msgid "Confirm passphrase"
-msgstr ""
+msgstr "أكّد عبارة المرور"
 
 #. Error message shown when the passphrase and confirmation passphrase don't
 #. match
 msgctxt "pubkey_export_passphrase_mismatch"
 msgid "Passphrases do not match"
-msgstr ""
+msgstr "عبارات المرور غير متطابقة"
 
 #. Dialog title when importing an encrypted SSH key file
 msgctxt "pubkey_import_encrypted_title"
 msgid "Import encrypted key"
-msgstr ""
+msgstr "استيراد مفتاح مشفر"
 
 #. Prompt asking user to enter the password to decrypt an imported key file.
 #. First parameter is key nickname, second is key type.
 #, c-format
 msgctxt "pubkey_import_encrypted_message"
 msgid "Enter password to decrypt key '%1$s' (%2$s)"
-msgstr ""
+msgstr "أدخل كلمة المرور لفك تشفير المفتاح '%1$s' (%2$s)."
 
 #. Button text to confirm importing a key
 msgctxt "pubkey_import_button"
 msgid "Import"
-msgstr ""
+msgstr "استيراد"
 
 #. Checkbox label in the import encrypted key dialog. When checked, the
 #. imported key will be encrypted for storage on the device.
 msgctxt "pubkey_import_encrypt_key"
 msgid "Encrypt key for storage"
-msgstr ""
+msgstr "قم بتشفير المفتاح للتخزين"
 
 #. Checkbox label that appears when 'Encrypt key for storage' is checked. When
 #. checked, the same password used to decrypt the imported key will be used to
 #. encrypt it for storage.
 msgctxt "pubkey_import_reuse_password"
 msgid "Use same password for encryption"
-msgstr ""
+msgstr "استخدم نفس كلمة المرور للتشفير"
 
 #. Label for the password field when entering a new password to encrypt the
 #. imported key for storage.
 msgctxt "pubkey_import_new_password"
 msgid "New password"
-msgstr ""
+msgstr "كلمة المرور الجديدة"
 
 #. Label for the password confirmation field when setting a new password to
 #. encrypt the imported key.
 msgctxt "pubkey_import_confirm_password"
 msgid "Confirm password"
-msgstr ""
+msgstr "تأكيد كلمة المرور"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
 msgid ""
 "Tap \"Menu\" to create\n"
 "or import key pairs."
-msgstr ""
+msgstr "اضغط على \"القائمة\" لإنشاء أو استيراد أزواج المفاتيح."
 
 msgctxt "pubkey_unknown_format"
 msgid "Unknown format"
-msgstr ""
+msgstr "تنسيق غير معروف"
 
 #. Context menu action to change the password protecting a private key
 msgctxt "pubkey_change_password"
@@ -286,26 +286,26 @@ msgstr "تعديل الكلمة السرية"
 #. Context menu action to unlock an encrypted key for use in authentication
 msgctxt "pubkey_unlock"
 msgid "Unlock key"
-msgstr ""
+msgstr "مفتاح فتح"
 
 #. Dialog message prompting the user to enter password to unlock an encrypted
 #. key.
 #, c-format
 msgctxt "pubkey_unlock_message"
 msgid "Enter password to unlock key '%1$s'"
-msgstr ""
+msgstr "أدخل كلمة المرور لفتح المفتاح '%1$s'"
 
 #. Error message shown when user tries to use a nickname that already exists
 #. for another key.
 msgctxt "pubkey_nickname_exists"
 msgid "A key with this nickname already exists"
-msgstr ""
+msgstr "المفتاح بهذا الاسم موجود بالفعل"
 
 #. Context menu checkbox that indicates that this pubkey entry should attempt
 #. to be loaded upon starting the app.
 msgctxt "pubkey_load_on_start"
 msgid "Load key on start"
-msgstr ""
+msgstr "تحميل المفتاح عند بدء التشغيل"
 
 #. Pubkey preference asking user whether the key use should be confirmed via
 #. prompt before it can be used for authentication
@@ -317,13 +317,13 @@ msgstr "تأكيد قبل الإستخدام"
 #. the host.
 msgctxt "portforward_edit"
 msgid "Edit port forward"
-msgstr ""
+msgstr "تعديل إعادة توجيه المنفذ"
 
 #. Context menu action where a user can delete the selected port forward from
 #. the host.
 msgctxt "portforward_delete"
 msgid "Delete port forward"
-msgstr ""
+msgstr "حذف إعادة توجيه المنفذ"
 
 #. Label for the input field where user enters a nickname for a host or key
 msgctxt "prompt_nickname"
@@ -350,7 +350,7 @@ msgstr "الكلمة السرية القديمة:"
 #. configured.
 msgctxt "prompt_username"
 msgid "Username:"
-msgstr ""
+msgstr "اسم المستخدم:"
 
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
@@ -361,29 +361,29 @@ msgstr "الكلمة السرية:"
 #. Added after a "Password:" prompt to indicate user needs to confirm entry.
 msgctxt "prompt_again"
 msgid "(again)"
-msgstr ""
+msgstr "(مرة أخرى)"
 
 #. Label for the user to select port forward type.
 msgctxt "prompt_type"
 msgid "Type:"
-msgstr ""
+msgstr "النوع:"
 
 #. Hint given below the password input box that lets them know that they are
 #. allowed to leave the field blank.
 msgctxt "prompt_password_can_be_blank"
 msgid "Note: password can be blank"
-msgstr ""
+msgstr "ملاحظة: يمكن أن تكون كلمة المرور فارغة."
 
 #. Prompt for the size of the private key in bits.
 msgctxt "prompt_bits"
 msgid "Bits:"
-msgstr ""
+msgstr "البتات:"
 
 #. Prompt for the password to unlock a certain pubkey.
 #, c-format
 msgctxt "prompt_pubkey_password"
 msgid "Password for key '%1$s'"
-msgstr ""
+msgstr "كلمة المرور للمفتاح '%1$s'"
 
 #. Prompt for whether to allow SSH Authentication Agent to use the specified
 #. key. Note that the '\n' means split the line so it's actually "host to use
@@ -393,14 +393,14 @@ msgctxt "prompt_allow_agent_to_use_key"
 msgid ""
 "Allow remote host to\n"
 "use key '%1$s'?"
-msgstr ""
+msgstr "هل تسمح للمضيف البعيد باستخدام المفتاح '%1$s'؟"
 
 #. The header of the warning a user gets when the host key has changed. Note
 #. that this can be a very serious attack, so we try to be as "loud" to the
 #. user as possible.
 msgctxt "host_verification_failure_warning_header"
 msgid "WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!"
-msgstr ""
+msgstr "تحذير: تم تغيير تعريف المضيف البعيد!"
 
 #. The body of the warning a user gets when the host key has changed. Note
 #. that this can be a very serious attack, so we try to be as "loud" to the
@@ -412,6 +412,9 @@ msgid ""
 "attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
+"من المحتمل أن يقوم شخص ما بفعل شيء سيئ!\n"
+"قد يكون شخص ما يتنصت عليك الآن (هجوم \"الرجل في المنتصف\")!\n"
+"من المحتمل أيضًا أن يكون مفتاح المضيف قد تغير للتو."
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
@@ -419,51 +422,53 @@ msgid ""
 "Host has disconnected.\n"
 "Close session?"
 msgstr ""
+"انقطع اتصال المضيف.\n"
+"هل تريد إغلاق الجلسة؟"
 
 #. Prompt user must answer yes or no to when the remote host fails
 #. verification of encryption fingerprint
 #, fuzzy
 msgctxt "prompt_continue_connecting"
 msgid "Are you sure you want to continue connecting?"
-msgstr ""
+msgstr "هل أنت متأكد أنك تريد المتابعة في الاتصال؟"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
 #. match the local database
 #, c-format
 msgctxt "host_authenticity_warning"
 msgid "The authenticity of host '%1$s' can't be established."
-msgstr ""
+msgstr "لا يمكن التحقق من صحة المضيف '%1$s'."
 
 #. First field is encryption algorithm. Second is the actual fingerprint in
 #. hex digits
 #, c-format
 msgctxt "host_fingerprint"
 msgid "Host %1$s key fingerprint is %2$s"
-msgstr ""
+msgstr "بصمة مفتاح المضيف %1$s هي %2$s"
 
 #. Title for the host key fingerprint verification prompt shown when
 #. connecting to a new host
 msgctxt "host_key_verification_title"
 msgid "Host key verification"
-msgstr ""
+msgstr "التحقق من مفتاح المضيف"
 
 #. Section header for the fingerprint formats display area
 msgctxt "fingerprint_format_header"
 msgid "Fingerprint format"
-msgstr ""
+msgstr "تنسيق البصمة"
 
 #. Format string showing key type and size, e.g., "RSA 2048 bits". First field
 #. is key type, second is key size in bits.
 #, c-format
 msgctxt "host_key_type_and_size"
 msgid "%1$s %2$d bits"
-msgstr ""
+msgstr "%1$s %2$d بت"
 
 #. Content description for the copy fingerprint to clipboard button, used by
 #. screen readers for accessibility
 msgctxt "fingerprint_copy_description"
 msgid "Copy fingerprint to clipboard"
-msgstr ""
+msgstr "انسخ البصمة إلى الحافظة"
 
 #. Error message shown when entered password and confirmation password don't
 #. match
@@ -490,128 +495,130 @@ msgstr "ضاع الإتصال"
 #. reconnect
 msgctxt "network_lost_grace_period"
 msgid "Network lost, waiting to reconnect…"
-msgstr ""
+msgstr "فقد الاتصال بالشبكة، في انتظار إعادة الاتصال…"
 
 #. Message shown when the 60-second grace period expires without network
 #. restoration
 msgctxt "network_grace_period_expired"
 msgid "Network not restored, disconnecting…"
-msgstr ""
+msgstr "لم يتم استعادة الاتصال بالشبكة، جاري قطع الاتصال…"
 
 #. Message shown when network is restored and connection can continue (same IP
 #. address)
 msgctxt "network_restored_same_ip"
 msgid "Network restored, connection maintained"
-msgstr ""
+msgstr "تم استعادة الشبكة، واستمر الاتصال."
 
 #. Message shown when network is restored but IP address changed, requiring
 #. reconnection
 msgctxt "network_restored_ip_changed"
 msgid "Network restored but IP changed, reconnecting…"
-msgstr ""
+msgstr "تم استعادة الشبكة ولكن تم تغيير عنوان IP، إعادة الاتصال..."
 
 #. Message shown when network is restored but previous network state is
 #. unknown
 msgctxt "network_restored_no_previous_state"
 msgid "Network restored, verifying connection…"
-msgstr ""
+msgstr "تم استعادة الشبكة، جارٍ التحقق من الاتصال…"
 
 #. The category title for terminal emulation preferences.
 msgctxt "pref_emulation_category"
 msgid "Terminal emulation"
-msgstr ""
+msgstr "محاكاة الطرفية"
 
 #. Name for the emulation terminal type preference.
 msgctxt "pref_emulation_title"
 msgid "Emulation mode"
-msgstr ""
+msgstr "وضع المحاكاة"
 
 #. Description of the emulation terminal type preference.
 #. Name for the scrollback size preference
 msgctxt "pref_scrollback_title"
 msgid "Scrollback size"
-msgstr ""
+msgstr "حجم الذاكرة المؤقتة للتمرير"
 
 #. Description of the scrollback size preference
 msgctxt "pref_scrollback_summary"
 msgid "Size of scrollback buffer to keep in memory for each console"
 msgstr ""
+"حجم ذاكرة التخزين المؤقت للتمرير التي يتم الاحتفاظ بها في الذاكرة لكل "
+"وحدة تحكم."
 
 #. Name for the font family preference
 msgctxt "pref_fontfamily_title"
 msgid "Font"
-msgstr ""
+msgstr "الخط"
 
 #. Description of the font family preference
 #. Title for adding custom font
 msgctxt "pref_customfont_title"
 msgid "Add custom font"
-msgstr ""
+msgstr "أضف خطًا مخصصًا"
 
 #. Summary for adding custom font
 msgctxt "pref_customfont_summary"
 msgid "Add a font from Google Fonts by name"
-msgstr ""
+msgstr "أضف خطًا من Google Fonts بالاسم."
 
 #. Dialog title for adding custom font
 msgctxt "dialog_customfont_title"
 msgid "Add Custom Font"
-msgstr ""
+msgstr "أضف خطًا مخصصًا"
 
 #. Hint for custom font name input
 msgctxt "dialog_customfont_hint"
 msgid "Google Fonts name (e.g., Cascadia Code)"
-msgstr ""
+msgstr "اسم خط Google (مثل Cascadia Code)"
 
 #. Button to add font
 msgctxt "button_add"
 msgid "Add"
-msgstr ""
+msgstr "أضف"
 
 #. Button to remove font
 msgctxt "button_remove"
 msgid "Remove"
-msgstr ""
+msgstr "إزالة"
 
 #. Message shown when validating font
 msgctxt "font_validating"
 msgid "Validating font…"
-msgstr ""
+msgstr "التحقق من صحة الخط..."
 
 #. Message shown while downloading a font from Google Fonts
 msgctxt "font_downloading"
 msgid "Downloading font…"
-msgstr ""
+msgstr "جارٍ تنزيل الخط…"
 
 #. Title for importing local font
 msgctxt "pref_localfont_title"
 msgid "Import local font"
-msgstr ""
+msgstr "استيراد خط محلي"
 
 #. Summary for importing local font
 msgctxt "pref_localfont_summary"
 msgid "Import a font file from storage (TTF, OTF)"
-msgstr ""
+msgstr "استيراد ملف خط من وحدة التخزين (TTF أو OTF)"
 
 #. Dialog title for importing local font
 msgctxt "dialog_localfont_title"
 msgid "Import Font"
-msgstr ""
+msgstr "استيراد الخط"
 
 #. Hint for local font name input
 msgctxt "dialog_localfont_hint"
 msgid "Display name for the font"
-msgstr ""
+msgstr "اسم العرض للخط"
 
 #. Button to import font
 msgctxt "button_import"
 msgid "Import"
-msgstr ""
+msgstr "استيراد"
 
 #. Message shown when importing font
 msgctxt "font_importing"
 msgid "Importing font…"
-msgstr ""
+msgstr "جاري استيراد الخط..."
 
 #. Title of the preference used to enable or disable the back-up of pubkeys.
 msgctxt "pref_backupkeys_title"
@@ -623,61 +630,63 @@ msgstr "النسخ الإحتياطي للمفاتيح العمومية"
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
 msgstr ""
+"احتفظ بنسخ احتياطية من المفاتيح الخاصة باستخدام آلية النسخ الاحتياطي في "
+"نظام Android."
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
 msgid "User interface"
-msgstr ""
+msgstr "واجهة المستخدم"
 
 #. Name for the language preference
 msgctxt "pref_language_title"
 msgid "Language"
-msgstr ""
+msgstr "اللغة"
 
 #. Default option for language preference that uses the system locale
 msgctxt "pref_language_system_default"
 msgid "System default"
-msgstr ""
+msgstr "الإعدادات الافتراضية للنظام"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
 msgid "Rotation mode"
-msgstr ""
+msgstr "وضع التدوير"
 
 #. Name for the titlebar hide preference
 msgctxt "pref_titlebarhide_title"
 msgid "Autohide title bar"
-msgstr ""
+msgstr "إخفاء شريط العنوان تلقائيًا"
 
 #. Summary for the titlebar hide preference
 msgctxt "pref_titlebarhide_summary"
 msgid "Tap console to show title bar and access menu"
-msgstr ""
+msgstr "اضغط على وحدة التحكم لعرض شريط العنوان والوصول إلى القائمة."
 
 #. Title for special keys always visible preference
 msgctxt "pref_alwaysvisible_title"
 msgid "Special keys always visible"
-msgstr ""
+msgstr "المفاتيح الخاصة تظهر دائمًا"
 
 #. Name for the page up/down gesture preference
 msgctxt "pref_pg_updn_gesture_title"
 msgid "Page up/down gesture"
-msgstr ""
+msgstr "إيماءة التمرير لأعلى/لأسفل"
 
 #. Summary for the full screen preference
 msgctxt "pref_pg_updn_gesture_summary"
 msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
-msgstr ""
+msgstr "اسحب الثلث الأيسر من الشاشة لإرسال أوامر التنقل لأعلى/لأسفل إلى الطرفية."
 
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
 msgid "Full screen"
-msgstr ""
+msgstr "ملء الشاشة"
 
 #. Summary for the full screen preference
 msgctxt "pref_fullscreen_summary"
 msgid "Hide status bar while in console"
-msgstr ""
+msgstr "إخفاء شريط الحالة أثناء استخدام وحدة التحكم"
 
 #. The category title for keyboard preferences
 msgctxt "pref_keyboard_category"
@@ -687,162 +696,166 @@ msgstr "لوحة المفاتيح"
 #. Name for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_title"
 msgid "Shift+num are F-keys"
-msgstr ""
+msgstr "Shift + رقم هي مفاتيح الوظائف."
 
 #. Summary for the shifted numbers are f-keys preference
 msgctxt "pref_shiftfkeys_summary"
 msgid "On hardware keyboards, number keys send F1-F10 with shift"
 msgstr ""
+"في لوحات المفاتيح الفعلية، ترسل مفاتيح الأرقام F1-F10 عند الضغط على مفتاح"
+" Shift."
 
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
 msgid "Ctrl+num are F-keys"
-msgstr ""
+msgstr "Ctrl + رقم هي مفاتيح الوظائف."
 
 #. Summary for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_summary"
 msgid "On software keyboards, number keys send F1-F10 with ctrl"
 msgstr ""
+"في لوحات المفاتيح الافتراضية، ترسل مفاتيح الأرقام أوامر F1-F10 مع مفتاح "
+"Ctrl."
 
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
 msgid "Volume keys change font size"
-msgstr ""
+msgstr "مفاتيح التحكم في مستوى الصوت لتغيير حجم الخط"
 
 #. Summary for the volume keys control font size preference
 #, fuzzy
 msgctxt "pref_volumefont_summary"
 msgid "Font size can also be changed in profile settings"
-msgstr ""
+msgstr "يمكن أيضًا تغيير حجم الخط في إعدادات الملف الشخصي."
 
 #. Name for the memorize keys preference
 msgctxt "pref_memkeys_title"
 msgid "Remember keys in memory"
-msgstr ""
+msgstr "تذكر المفاتيح في الذاكرة"
 
 #. Summary for the memorize keys preference
 msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
-msgstr ""
+msgstr "احتفظ بالمفاتيح التي تم فك قفلها في الذاكرة حتى يتم إنهاء الخدمة الخلفية."
 
 #. Name for the preference that forces the service to stay running in the
 #. background.
 msgctxt "pref_conn_persist_title"
 msgid "Persist connections"
-msgstr ""
+msgstr "حفظ الاتصالات"
 
 #. Summary for the preference that forces the service to stay running in the
 #. background.
 msgctxt "pref_conn_persist_summary"
 msgid "Force connections to stay connected while in background"
-msgstr ""
+msgstr "إجبار الاتصالات على البقاء متصلة أثناء تشغيل التطبيق في الخلفية."
 
 #. Name for the keyboard shortcuts preference
 msgctxt "pref_keymode_title"
 msgid "Directory shortcuts"
-msgstr ""
+msgstr "اختصارات الدليل"
 
 #. Name for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_title"
 msgid "Sticky modifiers"
-msgstr ""
+msgstr "تعديلات ثابتة"
 
 #. Sticky modifier preference value description for when only the Alt key
 #. should be a sticky modifier.
 msgctxt "only_alt"
 msgid "Only alt"
-msgstr ""
+msgstr "فقط Alt"
 
 #. Name for the camera shortcut usage preference
 msgctxt "pref_camera_title"
 msgid "Camera shortcut"
-msgstr ""
+msgstr "اختصار الكاميرا"
 
 #. Name for the keep screen on preference
 msgctxt "pref_keepalive_title"
 msgid "Keep screen awake"
-msgstr ""
+msgstr "حافظ على تشغيل الشاشة"
 
 #. Summary for the camera shortcut usage preference
 msgctxt "pref_keepalive_summary"
 msgid "Prevent the screen from turning off when working in a console"
-msgstr ""
+msgstr "امنع شاشة الجهاز من الانطفاء أثناء العمل في نافذة الأوامر"
 
 #. Name for the Wi-Fi lock preference
 msgctxt "pref_wifilock_title"
 msgid "Keep Wi-Fi active"
-msgstr ""
+msgstr "حافظ على تشغيل شبكة Wi-Fi"
 
 #. Summary for the Wi-Fi lock preference
 msgctxt "pref_wifilock_summary"
 msgid "Prevent Wi-Fi from turning off when a session is active"
-msgstr ""
+msgstr "منع إيقاف تشغيل Wi-Fi أثناء نشاط الجلسة"
 
 #. Name for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_title"
 msgid "Bumpy arrows"
-msgstr ""
+msgstr "أسهم متعرجة"
 
 #. Summary for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_summary"
 msgid "Vibrate when sending arrow keys; useful for laggy connections"
-msgstr ""
+msgstr "اهتزاز عند إرسال مفاتيح الأسهم؛ مفيد للاتصالات البطيئة."
 
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
 msgid "Terminal bell"
-msgstr ""
+msgstr "صوت تنبيه الطرفية"
 
 #. Checkbox preference title for the audible terminal bell feature
 msgctxt "pref_bell_title"
 msgid "Audible bell"
-msgstr ""
+msgstr "صوت تنبيه مسموع"
 
 #. Brief summary of the user preference that causes a bell sound to play when
 #. the terminal alert is triggered.
 msgctxt "pref_bell_summary"
 msgid "Play sound on terminal alert"
-msgstr ""
+msgstr "تشغيل صوت عند ظهور تنبيه في الطرفية"
 
 #. Title for the slider preference to set the volume
 msgctxt "pref_bell_volume_title"
 msgid "Bell volume"
-msgstr ""
+msgstr "حجم صوت الجرس"
 
 #. Checkbox preference title for the vibrate on terminal bell feature
 msgctxt "pref_bell_vibrate_title"
 msgid "Vibrate on bell"
-msgstr ""
+msgstr "اهتزاز عند الرنين"
 
 #. Brief summary of the feature that causes the phone to vibrate when a
 #. terminal alert would cause the "bell" sound to play normally.
 msgctxt "pref_bell_vibrate_summary"
 msgid "Vibrate on terminal alert"
-msgstr ""
+msgstr "اهتزاز عند وجود تنبيه في الطرفية"
 
 #. Checkbox preference title for the receive notifications on terminal bell
 #. feature
 msgctxt "pref_bell_notification_title"
 msgid "Background notifications"
-msgstr ""
+msgstr "إشعارات الخلفية"
 
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
 msgid "Send notification when a terminal running in the background sounds a bell."
-msgstr ""
+msgstr "أرسل إشعارًا عندما يصدر جرس في الطرفية التي تعمل في الخلفية."
 
 #. Preference selection to indicate use of right side of keyboard for special
 #. shortcuts.
 msgctxt "list_keymode_right"
 msgid "Use right-side keys"
-msgstr ""
+msgstr "استخدم المفاتيح الموجودة على الجانب الأيمن"
 
 #. Preference selection to indicate use of left side of keyboard for special
 #. shortcuts.
 msgctxt "list_keymode_left"
 msgid "Use left-side keys"
-msgstr ""
+msgstr "استخدم المفاتيح الموجودة على الجانب الأيسر"
 
 #. Preference selection to indicate never to use special shortcut keys.
 msgctxt "list_keymode_none"
@@ -852,12 +865,12 @@ msgstr "تعطيل"
 #. Preference to not use pubkeys to authenticate to this host.
 msgctxt "list_pubkeyids_none"
 msgid "Do not use keys"
-msgstr ""
+msgstr "لا تستخدم المفاتيح"
 
 #. Preference to use any pubkey to authenticate to this host.
 msgctxt "list_pubkeyids_any"
 msgid "Use any unlocked key"
-msgstr ""
+msgstr "استخدم أي مفتاح غير مقفل"
 
 #. Host nickname field preference title
 msgctxt "hostpref_nickname_title"
@@ -874,82 +887,82 @@ msgstr "فئة اللون"
 #. Color name for red (#F44336)
 msgctxt "color_red"
 msgid "Red"
-msgstr ""
+msgstr "أحمر"
 
 #. Color name for pink (#E91E63)
 msgctxt "color_pink"
 msgid "Pink"
-msgstr ""
+msgstr "وردي"
 
 #. Color name for purple (#9C27B0)
 msgctxt "color_purple"
 msgid "Purple"
-msgstr ""
+msgstr "أرجواني"
 
 #. Color name for deep purple (#673AB7)
 msgctxt "color_deep_purple"
 msgid "Deep Purple"
-msgstr ""
+msgstr "ديب بيربل"
 
 #. Color name for indigo (#3F51B5)
 msgctxt "color_indigo"
 msgid "Indigo"
-msgstr ""
+msgstr "أزرق نيلي"
 
 #. Color name for blue (#2196F3)
 msgctxt "color_blue"
 msgid "Blue"
-msgstr ""
+msgstr "أزرق"
 
 #. Color name for light blue (#03A9F4)
 msgctxt "color_light_blue"
 msgid "Light Blue"
-msgstr ""
+msgstr "أزرق فاتح"
 
 #. Color name for cyan (#00BCD4)
 msgctxt "color_cyan"
 msgid "Cyan"
-msgstr ""
+msgstr "أزرق سماوي"
 
 #. Color name for teal (#009688)
 msgctxt "color_teal"
 msgid "Teal"
-msgstr ""
+msgstr "لون أزرق مخضر"
 
 #. Color name for green (#4CAF50)
 msgctxt "color_green"
 msgid "Green"
-msgstr ""
+msgstr "أخضر"
 
 #. Color name for light green (#8BC34A)
 msgctxt "color_light_green"
 msgid "Light Green"
-msgstr ""
+msgstr "أخضر فاتح"
 
 #. Color name for lime (#CDDC39)
 msgctxt "color_lime"
 msgid "Lime"
-msgstr ""
+msgstr "لايم"
 
 #. Color name for yellow (#FFEB3B)
 msgctxt "color_yellow"
 msgid "Yellow"
-msgstr ""
+msgstr "أصفر"
 
 #. Color name for amber (#FFC107)
 msgctxt "color_amber"
 msgid "Amber"
-msgstr ""
+msgstr "عنبر"
 
 #. Color name for orange (#FF9800)
 msgctxt "color_orange"
 msgid "Orange"
-msgstr ""
+msgstr "برتقالي"
 
 #. Color name for gray (#9E9E9E)
 msgctxt "color_gray"
 msgid "Gray"
-msgstr ""
+msgstr "رمادي"
 
 #. Host's default font size when opening the terminal in points (pt)
 msgctxt "hostpref_fontsize_title"
@@ -959,87 +972,87 @@ msgstr "حجم الخط (pt)"
 #. Host's font family preference title
 msgctxt "hostpref_fontfamily_title"
 msgid "Font"
-msgstr ""
+msgstr "الخط"
 
 #. Host's color scheme preference title
 msgctxt "hostpref_colorscheme_title"
 msgid "Terminal color scheme"
-msgstr ""
+msgstr "مخطط ألوان الطرفية"
 
 #. Host pubkey usage preference title
 msgctxt "hostpref_pubkeyid_title"
 msgid "Use pubkey authentication"
-msgstr ""
+msgstr "استخدم مصادقة المفتاح العام"
 
 #. Preference title for the SSH Authentication Agent Forwarding for a host
 #. connection
 msgctxt "hostpref_authagent_title"
 msgid "Use SSH auth agent"
-msgstr ""
+msgstr "استخدم وكيل مصادقة SSH"
 
 #. Host post-login automation preference title
 msgctxt "hostpref_postlogin_title"
 msgid "Post-login automation"
-msgstr ""
+msgstr "الأتمتة بعد تسجيل الدخول"
 
 #. Host post-login automation preference summary
 msgctxt "hostpref_postlogin_summary"
 msgid "Commands to run on remote server once authenticated"
-msgstr ""
+msgstr "الأوامر التي سيتم تشغيلها على الخادم البعيد بعد المصادقة"
 
 #. Host compression preference title
 msgctxt "hostpref_compression_title"
 msgid "Compression"
-msgstr ""
+msgstr "الضغط"
 
 #. Summary for compression preference
 msgctxt "hostpref_compression_summary"
 msgid "This may help with slower networks"
-msgstr ""
+msgstr "قد يساعد هذا في تحسين الأداء على الشبكات البطيئة."
 
 #. Setting for whether we want a session to start up when we connect to a host
 msgctxt "hostpref_wantsession_title"
 msgid "Start shell session"
-msgstr ""
+msgstr "ابدأ جلسة الطرفية"
 
 #. Summary for field asking whether a shell session should be started up upon
 #. connection or not
 msgctxt "hostpref_wantsession_summary"
 msgid "Disable this preference to only use port forwards"
-msgstr ""
+msgstr "لتعطيل هذا الخيار، استخدم إعادة توجيه المنافذ فقط."
 
 #. Setting for whether the host should be reconnected to automatically upon
 #. disconnect
 msgctxt "hostpref_stayconnected_title"
 msgid "Stay connected"
-msgstr ""
+msgstr "ابق على اتصال"
 
 #. Summary for preference asking whether the host should be reconnected to
 #. when it disconnects
 msgctxt "hostpref_stayconnected_summary"
 msgid "Try to reconnect to host if disconnected"
-msgstr ""
+msgstr "حاول إعادة الاتصال بالمضيف في حالة انقطاع الاتصال"
 
 #. Setting for whether we should prompt to close after getting disconnected
 msgctxt "hostpref_quickdisconnect_title"
 msgid "Close on disconnect"
-msgstr ""
+msgstr "أغلق عند قطع الاتصال"
 
 #. Summary explaining that the console will close automatically without
 #. prompting when connection ends
 msgctxt "hostpref_quickdisconnect_summary"
 msgid "Close immediately after remote disconnect without prompting."
-msgstr ""
+msgstr "أغلق على الفور بعد قطع الاتصال عن بعد دون مطالبة المستخدم."
 
 #. Setting for what key code is sent to the server when DEL key is pressed.
 msgctxt "hostpref_delkey_title"
 msgid "DEL Key"
-msgstr ""
+msgstr "مفتاح الحذف"
 
 #. Host character encoding preference title
 msgctxt "hostpref_encoding_title"
 msgid "Encoding"
-msgstr ""
+msgstr "ترميز"
 
 #. Username field title for host editor preference
 msgctxt "hostpref_username_title"
@@ -1049,137 +1062,137 @@ msgstr "إسم المستخدم"
 #. Password field supporting text in host editor
 msgctxt "hostpref_save_password_summary"
 msgid "Store login password securely for automatic authentication"
-msgstr ""
+msgstr "قم بتخزين كلمة مرور تسجيل الدخول بشكل آمن لإجراء المصادقة التلقائية."
 
 #. Password field title in host editor
 msgctxt "hostpref_password_title"
 msgid "Password"
-msgstr ""
+msgstr "كلمة المرور"
 
 #. Password field label when there is an existing password saved
 msgctxt "hostpref_password_unchanged"
 msgid "Password (unchanged)"
-msgstr ""
+msgstr "كلمة المرور (لم تتغير)"
 
 #. Button to clear a saved password
 msgctxt "hostpref_clear_password"
 msgid "Clear saved password"
-msgstr ""
+msgstr "مسح كلمة المرور المحفوظة"
 
 #. Hostname field title for host editor preference
 msgctxt "hostpref_hostname_title"
 msgid "Host"
-msgstr ""
+msgstr "المضيف"
 
 #. Port field title for host editor preference
 msgctxt "hostpref_port_title"
 msgid "Port"
-msgstr ""
+msgstr "منفذ"
 
 #. When editing a host entry, this is displayed for the section about changing
 #. the              configuration profile of a host. The profile controls
 #. terminal colors, terminal              font, etc.
 msgctxt "hostpref_profile_title"
 msgid "Profile"
-msgstr ""
+msgstr "الملف الشخصي"
 
 #. Description text shown below the profile selector explaining what selecting
 #. a profile does
 msgctxt "hostpref_profile_summary"
 msgid "Select a profile to use its terminal settings"
-msgstr ""
+msgstr "اختر ملف تعريف لاستخدام إعدادات الطرفية الخاصة به."
 
 #. Dropdown option shown when no profile is selected, indicating host-specific
 #. settings will be used instead
 msgctxt "hostpref_profile_none"
 msgid "None (use host settings)"
-msgstr ""
+msgstr "لا شيء (استخدم إعدادات المضيف)"
 
 #. Message displayed when a setting is disabled because it's controlled by a
 #. profile instead of host settings
 msgctxt "profile_controlled_setting"
 msgid "Controlled by profile"
-msgstr ""
+msgstr "يتم التحكم فيه بواسطة ملف تعريف"
 
 #. Dropdown option to use the default font when configuring font family
 msgctxt "font_use_default"
 msgid "Use Default"
-msgstr ""
+msgstr "استخدم الإعدادات الافتراضية"
 
 #. Display name for the system default monospace font option
 msgctxt "font_system_default"
 msgid "Default (Monospace)"
-msgstr ""
+msgstr "افتراضي (خط ذو مسافة ثابتة)"
 
 #. Fallback text shown when referencing a pubkey that no longer exists in the
 #. database
 msgctxt "pubkey_unknown"
 msgid "Unknown key"
-msgstr ""
+msgstr "مفتاح غير معروف"
 
 #. Default name shown for the default color scheme when no specific scheme is
 #. selected
 msgctxt "colorscheme_default"
 msgid "Default"
-msgstr ""
+msgstr "افتراضي"
 
 #. Profile editor screen strings
 #. Window title shown when creating a new profile
 msgctxt "profile_editor_title_new"
 msgid "New Profile"
-msgstr ""
+msgstr "ملف تعريف جديد"
 
 #. Window title shown when editing an existing profile
 msgctxt "profile_editor_title_edit"
 msgid "Edit Profile"
-msgstr ""
+msgstr "تعديل الملف الشخصي"
 
 #. Content description for the save button that saves profile changes
 msgctxt "profile_editor_save"
 msgid "Save"
-msgstr ""
+msgstr "حفظ"
 
 #. Label for the text field where user enters the profile name
 msgctxt "profile_editor_name_label"
 msgid "Profile Name"
-msgstr ""
+msgstr "اسم الملف الشخصي"
 
 #. Section header for icon color selection area
 msgctxt "profile_editor_section_icon_color"
 msgid "Icon Color"
-msgstr ""
+msgstr "لون الأيقونة"
 
 #. Section header for color scheme selection area
 msgctxt "profile_editor_section_color_scheme"
 msgid "Color Scheme"
-msgstr ""
+msgstr "مخطط الألوان"
 
 #. Section header for font configuration area
 msgctxt "profile_editor_section_font"
 msgid "Font"
-msgstr ""
+msgstr "الخط"
 
 #. Section header for terminal emulation settings area
 msgctxt "profile_editor_section_terminal"
 msgid "Terminal"
-msgstr ""
+msgstr "نافذة الأوامر"
 
 #. Subsection title for font family selector
 msgctxt "profile_editor_font_family_title"
 msgid "Font Family"
-msgstr ""
+msgstr "عائلة الخط"
 
 #. Subsection title showing current font size. Parameter is the font size in
 #. points.
 #, c-format
 msgctxt "profile_editor_font_size_title"
 msgid "Font Size: %d"
-msgstr ""
+msgstr "حجم الخط: %d"
 
 #. Subsection title for force size settings
 msgctxt "profile_editor_force_size_title"
 msgid "Force Size"
-msgstr ""
+msgstr "فرض الحجم"
 
 #. Summary text explaining what force size does
 msgctxt "profile_editor_force_size_summary"
@@ -1187,113 +1200,115 @@ msgid ""
 "Force the terminal to a specific size (columns x rows) instead of auto-"
 "sizing to fit the screen."
 msgstr ""
+"فرض حجم معين للنافذة الطرفية (عدد الأعمدة × عدد الصفوف) بدلاً من ضبطها "
+"تلقائيًا لتناسب حجم الشاشة."
 
 #. Label for the enable force size switch
 msgctxt "profile_editor_force_size_enable"
 msgid "Enable force size"
-msgstr ""
+msgstr "تفعيل تحديد الحجم بالقوة"
 
 #. Label for the force size columns input field
 msgctxt "profile_editor_force_size_columns"
 msgid "Columns"
-msgstr ""
+msgstr "أعمدة"
 
 #. Label for the force size rows input field
 msgctxt "profile_editor_force_size_rows"
 msgid "Rows"
-msgstr ""
+msgstr "صفوف"
 
 #. Dropdown option to not override host color with profile color
 msgctxt "profile_icon_color_none"
 msgid "None (use host color)"
-msgstr ""
+msgstr "لا شيء (استخدم لون المضيف)"
 
 #. Profile list screen strings
 #. Window title for the profiles list screen
 msgctxt "profile_list_title"
 msgid "Profiles"
-msgstr ""
+msgstr "ملفات التعريف"
 
 #. Content description for the FAB button that creates a new profile
 msgctxt "profile_list_create_profile"
 msgid "Create profile"
-msgstr ""
+msgstr "إنشاء ملف تعريف"
 
 #. Message shown when there are no profiles, encouraging user to create one
 msgctxt "profile_list_empty_message"
 msgid "No profiles yet. Tap + to create one."
-msgstr ""
+msgstr "لا توجد ملفات تعريف حتى الآن. اضغط على علامة \"+\" لإنشاء ملف تعريف."
 
 #. Content description for the menu button on each profile item
 msgctxt "profile_list_more_options"
 msgid "More options"
-msgstr ""
+msgstr "خيارات إضافية"
 
 #. Menu item to duplicate/copy a profile
 msgctxt "profile_list_duplicate"
 msgid "Duplicate"
-msgstr ""
+msgstr "تكرار"
 
 #. Menu item to delete a profile
 msgctxt "profile_list_delete"
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 #. Dialog title when creating a new profile
 msgctxt "profile_create_dialog_title"
 msgid "Create Profile"
-msgstr ""
+msgstr "إنشاء ملف تعريف"
 
 #. Label for the profile name text field in create dialog
 msgctxt "profile_create_name_label"
 msgid "Profile Name"
-msgstr ""
+msgstr "اسم الملف الشخصي"
 
 #. Button text to confirm creating a new profile
 msgctxt "profile_create_button"
 msgid "Create"
-msgstr ""
+msgstr "إنشاء"
 
 #. Button text to cancel creating a new profile
 msgctxt "profile_create_cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #. Dialog title when deleting a profile
 msgctxt "profile_delete_dialog_title"
 msgid "Delete Profile"
-msgstr ""
+msgstr "حذف الملف الشخصي"
 
 #. Confirmation message asking if user wants to delete a profile. Parameter is
 #. the profile name.
 #, c-format
 msgctxt "profile_delete_dialog_message"
 msgid "Are you sure you want to delete '%s'?"
-msgstr ""
+msgstr "هل أنت متأكد أنك تريد حذف \"%s\"؟"
 
 #. Button text to confirm deleting a profile
 msgctxt "profile_delete_button"
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 #. Button text to cancel deleting a profile
 msgctxt "profile_delete_cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #. Summary text showing font settings. First parameter is font name, second is
 #. font size in points.
 #, c-format
 msgctxt "profile_summary_font"
 msgid "Font: %1$s %2$dpt"
-msgstr ""
+msgstr "الخط: %1$s %2$d نقطة"
 
 #. Summary text showing emulation setting. Parameter is the terminal emulation
 #. type.
 #, c-format
 msgctxt "profile_summary_emulation"
 msgid "Emulation: %s"
-msgstr ""
+msgstr "المحاكاة: %s"
 
 #. Button to close the disconnected terminal window.
 msgctxt "console_menu_close"
@@ -1322,7 +1337,7 @@ msgstr "افرض الحجم"
 #, fuzzy
 msgctxt "console_menu_urlscan"
 msgid "URL scan"
-msgstr ""
+msgstr "فحص عنوان URL"
 
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"
@@ -1351,7 +1366,7 @@ msgstr "بُعديّ"
 #. remote host and port.
 msgctxt "portforward_dynamic"
 msgid "Dynamic (SOCKS)"
-msgstr ""
+msgstr "ديناميكي (SOCKS)"
 
 #. Button that commits the port forward to be made from the Port Forward
 #. Creation dialog.
@@ -1363,7 +1378,7 @@ msgstr "انشاء تحويل منفذي"
 #. Edit dialog.
 msgctxt "portforward_save"
 msgid "Save"
-msgstr ""
+msgstr "حفظ"
 
 #. Part of the formatting hints that will be used like: username@hostname:port
 msgctxt "format_username"
@@ -1400,7 +1415,7 @@ msgstr "فرز بحسب الإسم"
 #, fuzzy
 msgctxt "list_menu_disconnect"
 msgid "Disconnect all"
-msgstr ""
+msgstr "افصل الكل"
 
 #. Menu item to open the app settings screen
 msgctxt "list_menu_settings"
@@ -1430,12 +1445,12 @@ msgstr "احذف الخادم"
 #. Context menu action to duplicate the selected host
 msgctxt "list_host_duplicate"
 msgid "Duplicate host"
-msgstr ""
+msgstr "تكرار اسم المضيف"
 
 #. Context menu action to forget stored host keys for the selected host
 msgctxt "list_host_forget_keys"
 msgid "Forget host keys"
-msgstr ""
+msgstr "تجاهل مفاتيح المضيف"
 
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
@@ -1445,12 +1460,12 @@ msgstr "افتراضي"
 #. Preference selection to force landscape orientation
 msgctxt "list_rotation_land"
 msgid "Force landscape"
-msgstr ""
+msgstr "فرض وضع العرض الأفقي"
 
 #. Preference selection to force portrait orientation
 msgctxt "list_rotation_port"
 msgid "Force portrait"
-msgstr ""
+msgstr "فرض وضع الشاشة الرأسي"
 
 #. Selection to indicate the rotation should be selected automatically based
 #. on the tilt sensor.
@@ -1462,22 +1477,22 @@ msgstr "تلقائي"
 #. Space".
 msgctxt "list_camera_ctrlaspace"
 msgid "Ctrl+A then Space"
-msgstr ""
+msgstr "Ctrl+A ثم مسافة"
 
 #. Selection to indicate pressing the Camera button should send "Ctrl+A".
 msgctxt "list_camera_ctrla"
 msgid "Ctrl+A"
-msgstr ""
+msgstr "Ctrl+A"
 
 #. Selection to indicate pressing the Camera button should send the "Esc" key.
 msgctxt "list_camera_esc"
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #. Selection to indicate pressing the Camera button should send "Esc+A".
 msgctxt "list_camera_esc_a"
 msgid "Esc+A"
-msgstr ""
+msgstr "Esc+A"
 
 #. Selection to indicate pressing the Camera button should send nothing at
 #. all.
@@ -1489,19 +1504,19 @@ msgstr "لا شيء"
 #. dialog.
 msgctxt "list_camera_text_input"
 msgid "Text Input"
-msgstr ""
+msgstr "إدخال نص"
 
 #. Confirmation dialog message asking user to confirm deletion. Parameter is
 #. the item name.
 #, c-format
 msgctxt "delete_message"
 msgid "Are you sure you want to delete '%1$s'?"
-msgstr ""
+msgstr "هل أنت متأكد أنك تريد حذف \"%1$s\"؟"
 
 #. Positive button text confirming deletion
 msgctxt "delete_pos"
 msgid "Yes, delete"
-msgstr ""
+msgstr "نعم، احذف."
 
 #. Negative button text canceling deletion
 msgctxt "delete_neg"
@@ -1512,7 +1527,7 @@ msgstr "إلغاء"
 #. hosts
 msgctxt "disconnect_all_message"
 msgid "Are you sure you want to disconnect from all connected hosts?"
-msgstr ""
+msgstr "هل أنت متأكد من أنك تريد قطع الاتصال بجميع الأجهزة المتصلة؟"
 
 #. Positive button text confirming disconnection from all hosts
 msgctxt "disconnect_all_pos"
@@ -1535,30 +1550,30 @@ msgstr "جارٍ الاتصال بِـ %1$s:%2$d عبر %3$s"
 #, c-format
 msgctxt "terminal_sucess"
 msgid "Verified host '%1$s' key: %2$s"
-msgstr ""
+msgstr "تم التحقق من مفتاح المضيف '%1$s': %2$s"
 
 #. Error message shown in terminal when host key verification fails
 msgctxt "terminal_failed"
 msgid "Host key verification failed."
-msgstr ""
+msgstr "فشل التحقق من مفتاح المضيف."
 
 #. Displayed on the terminal describing the cryptographic algorithm names
 #, c-format
 msgctxt "terminal_using_s2c_algorithm"
 msgid "Server-to-client algorithm: %1$s %2$s"
-msgstr ""
+msgstr "خوارزمية من الخادم إلى العميل: %1$s %2$s"
 
 #. Displayed on the terminal describing the cryptographic algorithm names
 #, c-format
 msgctxt "terminal_using_c2s_algorithm"
 msgid "Client-to-server algorithm: %1$s %2$s"
-msgstr ""
+msgstr "خوارزمية الاتصال بين العميل والخادم: %1$s %2$s"
 
 #. Displayed on the terminal describing the cryptographic algorithm names
 #, c-format
 msgctxt "terminal_using_algorithm"
 msgid "Using algorithm: %1$s %2$s"
-msgstr ""
+msgstr "باستخدام الخوارزمية: %1$s %2$s"
 
 #. Displayed on the terminal during a SSH connection describing the
 #. cryptographic key              exchange algorithm used to establish a shared
@@ -1566,56 +1581,58 @@ msgstr ""
 #, c-format
 msgctxt "terminal_kex_algorithm"
 msgid "Key exchange algorithm: %s"
-msgstr ""
+msgstr "خوارزمية تبادل المفاتيح: %s"
 
 #. Message shown in terminal when starting authentication process
 msgctxt "terminal_auth"
 msgid "Trying to authenticate"
-msgstr ""
+msgstr "جارٍ محاولة المصادقة"
 
 #. Message shown in terminal when attempting password authentication method
 msgctxt "terminal_auth_pass"
 msgid "Attempting 'password' authentication"
-msgstr ""
+msgstr "جارٍ محاولة المصادقة باستخدام \"كلمة المرور\""
 
 #. Message shown in terminal when password authentication fails
 msgctxt "terminal_auth_pass_fail"
 msgid "Authentication method 'password' failed"
-msgstr ""
+msgstr "فشلت طريقة المصادقة 'كلمة المرور'"
 
 #. Message shown in terminal when attempting saved password authentication
 msgctxt "terminal_auth_saved_password"
 msgid "Trying saved password…"
-msgstr ""
+msgstr "جارٍ تجربة كلمة المرور المحفوظة..."
 
 #. Message shown in terminal when saved password authentication fails
 msgctxt "terminal_auth_saved_password_fail"
 msgid "Saved password authentication failed"
-msgstr ""
+msgstr "فشل المصادقة باستخدام كلمة المرور المحفوظة."
 
 #. Message shown in terminal when trying public key authentication with any
 #. available key
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
 msgstr ""
+"جارٍ محاولة المصادقة باستخدام 'المفتاح العام' مع أي من المفاتيح العامة "
+"الموجودة في الذاكرة."
 
 #. Error message shown when the selected public key is corrupted or invalid
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
-msgstr ""
+msgstr "المفتاح العام المحدد غير صالح، حاول إعادة تحديده في محرر المضيف."
 
 #. Message shown in terminal when attempting public key authentication with a
 #. specific key
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
-msgstr ""
+msgstr "جارٍ محاولة المصادقة باستخدام مفتاح عام محدد"
 
 #. Message shown in terminal when requesting biometric authentication to
 #. unlock a key. Parameter is the key nickname.
 #, c-format
 msgctxt "terminal_auth_biometric"
 msgid "Requesting biometric authentication for key '%1$s'"
-msgstr ""
+msgstr "جارٍ طلب المصادقة البيومترية للمفتاح '%1$s'"
 
 #. Message shown when a biometric key has been invalidated due to new
 #. fingerprint enrollment. Parameter is the key nickname.
@@ -1625,24 +1642,26 @@ msgid ""
 "Biometric key '%1$s' has been invalidated. This can happen when new "
 "fingerprints are enrolled on the device. Please generate a new key."
 msgstr ""
+"تم إلغاء صلاحية المفتاح البيومتري '%1$s'. يمكن أن يحدث هذا عند تسجيل "
+"بصمات جديدة على الجهاز. يرجى إنشاء مفتاح جديد."
 
 #. Message shown in terminal when public key authentication fails. Parameter
 #. is the key nickname.
 #, c-format
 msgctxt "terminal_auth_pubkey_fail"
 msgid "Authentication method 'publickey' with key '%1$s' failed"
-msgstr ""
+msgstr "فشلت طريقة المصادقة 'publickey' باستخدام المفتاح '%1$s'."
 
 #. Message shown in terminal when attempting keyboard-interactive
 #. authentication method
 msgctxt "terminal_auth_ki"
 msgid "Attempting 'keyboard-interactive' authentication"
-msgstr ""
+msgstr "جارٍ محاولة المصادقة باستخدام طريقة \"التفاعل عبر لوحة المفاتيح\""
 
 #. Message shown in terminal when keyboard-interactive authentication fails
 msgctxt "terminal_auth_ki_fail"
 msgid "Authentication method 'keyboard-interactive' failed"
-msgstr ""
+msgstr "فشلت طريقة المصادقة 'التفاعل عبر لوحة المفاتيح'."
 
 #. Error message shown when server doesn't support any of the authentication
 #. methods we can use
@@ -1651,32 +1670,34 @@ msgid ""
 "[Your host doesn't support 'password' or 'keyboard-interactive' "
 "authentication.]"
 msgstr ""
+"[مضيفك لا يدعم طريقة المصادقة 'كلمة المرور' أو 'التفاعل عبر لوحة "
+"المفاتيح']."
 
 #. Message shown in terminal when shell session is not started because user
 #. disabled it in host settings
 msgctxt "terminal_no_session"
 msgid "Session will not be started due to host preference."
-msgstr ""
+msgstr "لن يتم بدء الجلسة بسبب تفضيل المضيف."
 
 #. Message shown in terminal when a port forward is enabled. Parameter is the
 #. port forward description.
 #, c-format
 msgctxt "terminal_enable_portfoward"
 msgid "Enable port forward: %1$s"
-msgstr ""
+msgstr "تفعيل إعادة توجيه المنفذ: %1$s"
 
 #. Error message shown when trying to open a local shell but it's not
 #. available on the device
 msgctxt "local_shell_unavailable"
 msgid "Failure! Local shell is unavailable on this phone."
-msgstr ""
+msgstr "فشل! واجهة سطر الأوامر المحلية غير متاحة على هذا الهاتف."
 
 #. Text sent to the user to alert them that a Terminal Bell is received in a
 #. background session
 #, c-format
 msgctxt "notification_text"
 msgid "%1$s wants your attention."
-msgstr ""
+msgstr "يريد %1$s أن يلفت انتباهك."
 
 #. Preference selection for SSH Authentication Agent to never use pubkeys
 msgctxt "no"
@@ -1691,7 +1712,7 @@ msgstr "نعم"
 #. Selector title for the list of color schemes.
 msgctxt "list_color_schemes"
 msgid "Color schemes"
-msgstr ""
+msgstr "مخططات الألوان"
 
 #. Menu selection to reset colors to their defaults.
 msgctxt "menu_colors_reset"
@@ -1701,158 +1722,158 @@ msgstr "صفّر"
 #. Button text to open color scheme manager
 msgctxt "button_manage_schemes"
 msgid "Manage Schemes"
-msgstr ""
+msgstr "إدارة المخططات"
 
 #. Window title for color scheme manager screen
 msgctxt "title_scheme_manager"
 msgid "Manage Color Schemes"
-msgstr ""
+msgstr "إدارة مخططات الألوان"
 
 #. Button text to create a new color scheme
 msgctxt "button_new_scheme"
 msgid "New Scheme"
-msgstr ""
+msgstr "مخطط جديد"
 
 #. Button text to duplicate a color scheme
 msgctxt "button_duplicate_scheme"
 msgid "Duplicate"
-msgstr ""
+msgstr "تكرار"
 
 #. Button text to rename a color scheme
 msgctxt "button_rename_scheme"
 msgid "Rename"
-msgstr ""
+msgstr "أعد التسمية"
 
 #. Button text to delete a color scheme
 msgctxt "button_delete_scheme"
 msgid "Delete"
-msgstr ""
+msgstr "حذف"
 
 #. Dialog title when creating a new color scheme
 msgctxt "dialog_title_new_scheme"
 msgid "New Color Scheme"
-msgstr ""
+msgstr "مخطط ألوان جديد"
 
 #. Dialog title when renaming a color scheme
 msgctxt "dialog_title_rename_scheme"
 msgid "Rename Color Scheme"
-msgstr ""
+msgstr "أعد تسمية نظام الألوان"
 
 #. Label for scheme name input field
 msgctxt "label_scheme_name"
 msgid "Scheme Name"
-msgstr ""
+msgstr "اسم المخطط"
 
 #. Label for scheme description input field (optional)
 msgctxt "label_scheme_description"
 msgid "Description (optional)"
-msgstr ""
+msgstr "وصف (اختياري)"
 
 #. Confirmation dialog title when deleting a scheme
 msgctxt "dialog_title_delete_scheme"
 msgid "Delete Scheme?"
-msgstr ""
+msgstr "هل تريد حذف المخطط؟"
 
 #. Confirmation dialog message when deleting a scheme
 #, c-format
 msgctxt "dialog_message_delete_scheme"
 msgid "Are you sure you want to delete \"%1$s\"? This action cannot be undone."
-msgstr ""
+msgstr "هل أنت متأكد من أنك تريد حذف \"%1$s\"؟ لا يمكن التراجع عن هذا الإجراء."
 
 #. Button text for confirm action in dialogs
 msgctxt "button_confirm"
 msgid "Confirm"
-msgstr ""
+msgstr "تأكيد"
 
 #. Button text for cancel action in dialogs
 msgctxt "button_cancel"
 msgid "Cancel"
-msgstr ""
+msgstr "إلغاء"
 
 #. Label indicating a scheme is built-in and cannot be deleted
 msgctxt "label_built_in_scheme"
 msgid "Built-in"
-msgstr ""
+msgstr "مدمج"
 
 #. Label indicating a scheme is custom/user-created
 msgctxt "label_custom_scheme"
 msgid "Custom"
-msgstr ""
+msgstr "مخصص"
 
 #. Empty state message when no custom schemes exist
 msgctxt "empty_custom_schemes"
 msgid "No custom schemes. Tap \"New Scheme\" to create one."
-msgstr ""
+msgstr "لا توجد مخططات مخصصة. اضغط على \"مخطط جديد\" لإنشاء مخطط."
 
 #. Button text to edit full color palette
 msgctxt "button_edit_palette"
 msgid "Edit Palette"
-msgstr ""
+msgstr "تعديل لوحة الألوان"
 
 #. Button text to export a color scheme to JSON file
 msgctxt "button_export_scheme"
 msgid "Export Scheme"
-msgstr ""
+msgstr "تصدير المخطط"
 
 #. Button text to import a color scheme from JSON file
 msgctxt "button_import_scheme"
 msgid "Import Scheme"
-msgstr ""
+msgstr "استيراد مخطط"
 
 #. Success message after exporting a scheme
 #, c-format
 msgctxt "message_export_success"
 msgid "Exported %1$s"
-msgstr ""
+msgstr "تم تصدير %1$s"
 
 #. Success message after importing a scheme
 #, c-format
 msgctxt "message_import_success"
 msgid "Imported %1$s"
-msgstr ""
+msgstr "تم استيراد %1$s"
 
 #. Error message when export fails
 #, c-format
 msgctxt "error_export_failed"
 msgid "Failed to export scheme: %1$s"
-msgstr ""
+msgstr "فشل تصدير المخطط: %1$s"
 
 #. Error message when import fails
 #, c-format
 msgctxt "error_import_failed"
 msgid "Failed to import scheme: %1$s"
-msgstr ""
+msgstr "فشل استيراد المخطط: %1$s"
 
 #. Error message when JSON parsing fails
 msgctxt "error_invalid_json"
 msgid "Invalid JSON file"
-msgstr ""
+msgstr "ملف JSON غير صالح"
 
 #. Window title for palette editor screen
 msgctxt "title_palette_editor"
 msgid "Edit Color Palette"
-msgstr ""
+msgstr "تعديل لوحة الألوان"
 
 #. Button text to reset entire palette to defaults
 msgctxt "button_reset_all_colors"
 msgid "Reset All"
-msgstr ""
+msgstr "إعادة تعيين الكل"
 
 #. Section header for ANSI colors (0-15)
 msgctxt "section_ansi_colors"
 msgid "ANSI Colors (0–15)"
-msgstr ""
+msgstr "ألوان ANSI (0-15)"
 
 #. Dialog title when editing a specific color
 #, c-format
 msgctxt "dialog_title_edit_color"
 msgid "Edit Color %1$d"
-msgstr ""
+msgstr "تعديل اللون %1$d"
 
 #. Confirmation dialog for resetting all colors
 msgctxt "dialog_title_reset_all"
 msgid "Reset All Colors?"
-msgstr ""
+msgstr "هل تريد إعادة تعيين جميع الألوان؟"
 
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
@@ -1860,6 +1881,8 @@ msgid ""
 "This will reset all 256 colors to their default values. This action "
 "cannot be undone."
 msgstr ""
+"سيؤدي هذا إلى إعادة تعيين جميع الألوان الـ 256 إلى قيمها الافتراضية. لا "
+"يمكن التراجع عن هذا الإجراء."
 
 #. Displayed in the notification bar that connections are active
 msgctxt "app_is_running"
@@ -1870,36 +1893,36 @@ msgstr "البرنامج يعمل"
 #. Label for the red color component slider (0-255) in the RGB color picker
 msgctxt "label_red"
 msgid "Red"
-msgstr ""
+msgstr "أحمر"
 
 #. Label for the green color component slider (0-255) in the RGB color picker
 msgctxt "label_green"
 msgid "Green"
-msgstr ""
+msgstr "أخضر"
 
 #. Label for the blue color component slider (0-255) in the RGB color picker
 msgctxt "label_blue"
 msgid "Blue"
-msgstr ""
+msgstr "أزرق"
 
 #. Label for the hex color input field where users can type a hex color code
 msgctxt "label_hex_color"
 msgid "Hex Color"
-msgstr ""
+msgstr "لون سداسي عشري"
 
 #. Very short label indicating the number next to it is "foreground color"
 #. number.
 #, c-format
 msgctxt "colors_fg_label"
 msgid "FG: %1$d"
-msgstr ""
+msgstr "FG: %1$d"
 
 #. Very short label indicating the number next to it is "background color"
 #. number.
 #, c-format
 msgctxt "color_bg_label"
 msgid "BG: %1$d"
-msgstr ""
+msgstr "الخلفية: %1$d"
 
 #. Accessibility text for connection state in list of hosts when the host is
 #. currently          connected.
@@ -1917,25 +1940,25 @@ msgstr "غير متّصل."
 #. view for              accessibility purposes.
 msgctxt "image_description_toggle_control_character"
 msgid "Toggle control character."
-msgstr ""
+msgstr "تبديل حرف التحكم."
 
 #. Describes the icon of the "send escape character" button in the terminal
 #. view for              accessibility purposes.
 msgctxt "image_description_send_escape_character"
 msgid "Send escape character."
-msgstr ""
+msgstr "أرسل حرف الهروب."
 
 #. Describes the icon of the "send tab character" button in the terminal view
 #. for              accessibility purposes.
 msgctxt "image_description_send_tab_character"
 msgid "Send TAB character."
-msgstr ""
+msgstr "أرسل حرف الجدولة (TAB)."
 
 #. Describes the icon of the "hide keyboard" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_hide_keyboard"
 msgid "Hide keyboard."
-msgstr ""
+msgstr "إخفاء لوحة المفاتيح."
 
 #. Describes the icon of the "show keyboard" button in the terminal view for
 #. accessibility              purposes.
@@ -1947,35 +1970,35 @@ msgstr "عرض لوحة المفاتيح."
 #. accessibility              purposes.
 msgctxt "image_description_up"
 msgid "Arrow up"
-msgstr ""
+msgstr "سهم للأعلى"
 
 #. Describes the icon of the "Arrow down" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_down"
 msgid "Arrow down"
-msgstr ""
+msgstr "سهم لأسفل"
 
 #. Describes the icon of the "Arrow left" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_left"
 msgid "Arrow left"
-msgstr ""
+msgstr "سهم لليسار"
 
 #. Describes the icon of the "Arrow right" button in the terminal view for
 #. accessibility              purposes.
 msgctxt "image_description_right"
 msgid "Arrow right"
-msgstr ""
+msgstr "سهم متجه لليمين"
 
 #. Text for the "Esc" button in virtual keyboard.
 msgctxt "button_key_esc"
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #. Text for the "Ctrl" button in virtual keyboard.
 msgctxt "button_key_ctrl"
 msgid "Ctrl"
-msgstr ""
+msgstr "Ctrl"
 
 #. Text for the "Home" button in virtual keyboard.
 msgctxt "button_key_home"
@@ -1985,292 +2008,292 @@ msgstr "الرئيسية"
 #. Text for the "End" button in virtual keyboard.
 msgctxt "button_key_end"
 msgid "End"
-msgstr ""
+msgstr "نهاية"
 
 #. Text for the "Page Up" button in virtual keyboard.
 msgctxt "button_key_pgup"
 msgid "PgUp"
-msgstr ""
+msgstr "Page Up"
 
 #. Text for the "Page Down" button in virtual keyboard.
 msgctxt "button_key_pgdn"
 msgid "PgDn"
-msgstr ""
+msgstr "Page Down"
 
 #. Text for the "F1" button in virtual keyboard.
 msgctxt "button_key_f1"
 msgid "F1"
-msgstr ""
+msgstr "F1"
 
 #. Text for the "F2" button in virtual keyboard.
 msgctxt "button_key_f2"
 msgid "F2"
-msgstr ""
+msgstr "F2"
 
 #. Text for the "F3" button in virtual keyboard.
 msgctxt "button_key_f3"
 msgid "F3"
-msgstr ""
+msgstr "F3"
 
 #. Text for the "F4" button in virtual keyboard.
 msgctxt "button_key_f4"
 msgid "F4"
-msgstr ""
+msgstr "F4"
 
 #. Text for the "F5" button in virtual keyboard.
 msgctxt "button_key_f5"
 msgid "F5"
-msgstr ""
+msgstr "F5"
 
 #. Text for the "F6" button in virtual keyboard.
 msgctxt "button_key_f6"
 msgid "F6"
-msgstr ""
+msgstr "F6"
 
 #. Text for the "F7" button in virtual keyboard.
 msgctxt "button_key_f7"
 msgid "F7"
-msgstr ""
+msgstr "F7"
 
 #. Text for the "F8" button in virtual keyboard.
 msgctxt "button_key_f8"
 msgid "F8"
-msgstr ""
+msgstr "F8"
 
 #. Text for the "F9" button in virtual keyboard.
 msgctxt "button_key_f9"
 msgid "F9"
-msgstr ""
+msgstr "F9"
 
 #. Text for the "F10" button in virtual keyboard.
 msgctxt "button_key_f10"
 msgid "F10"
-msgstr ""
+msgstr "F10"
 
 #. Text for the "F11" button in virtual keyboard.
 msgctxt "button_key_f11"
 msgid "F11"
-msgstr ""
+msgstr "F11"
 
 #. Text for the "F12" button in virtual keyboard.
 msgctxt "button_key_f12"
 msgid "F12"
-msgstr ""
+msgstr "F12"
 
 #. Button in virtual keyboard that opens text input dialog for composing
 #. longer text with full IME support
 msgctxt "terminal_keyboard_text_input_button"
 msgid "Text input"
-msgstr ""
+msgstr "إدخال نص"
 
 #. Title for the floating text input dialog where users can type longer text
 #. with full keyboard/IME support
 msgctxt "terminal_text_input_dialog_title"
 msgid "Text Input"
-msgstr ""
+msgstr "إدخال نص"
 
 #. Label for the text field in the floating text input dialog where users
 #. compose their text
 msgctxt "terminal_text_input_dialog_label"
 msgid "Enter text to send to terminal"
-msgstr ""
+msgstr "أدخل النص المراد إرساله إلى الطرفية"
 
 #. Menu item in console toolbar to open floating text input dialog
 msgctxt "console_menu_text_input"
 msgid "Text input"
-msgstr ""
+msgstr "إدخال نص"
 
 #. Send button in floating text input dialog
 msgctxt "button_send"
 msgid "Send"
-msgstr ""
+msgstr "أرسل"
 
 #. Common UI button labels
 #. Button label for confirming an action
 msgctxt "button_ok"
 msgid "OK"
-msgstr ""
+msgstr "حسناً"
 
 #. Button label for closing a dialog
 msgctxt "button_close"
 msgid "Close"
-msgstr ""
+msgstr "أغلق"
 
 #. Accessibility label for back navigation button; used for screen readers
 msgctxt "button_back"
 msgid "Back"
-msgstr ""
+msgstr "الرجوع"
 
 #. Accessibility label for navigate up button in app bar; used for screen
 #. readers
 msgctxt "button_navigate_up"
 msgid "Navigate up"
-msgstr ""
+msgstr "انتقل للأعلى"
 
 #. Accessibility label for more options menu button; used for screen readers
 msgctxt "button_more_options"
 msgid "More options"
-msgstr ""
+msgstr "خيارات إضافية"
 
 #. Accessibility label for host options menu button; used for screen readers
 msgctxt "button_host_options"
 msgid "Host options"
-msgstr ""
+msgstr "خيارات المضيف"
 
 #. Accessibility label for collapse button; used for screen readers
 msgctxt "button_collapse"
 msgid "Collapse"
-msgstr ""
+msgstr "طي"
 
 #. Error messages
 #. Error message shown when a public key fails to load at startup
 #, c-format
 msgctxt "error_key_load_failed"
 msgid "Failed to load key '%1$s': %2$s"
-msgstr ""
+msgstr "فشل تحميل المفتاح '%1$s': %2$s"
 
 #. Error message shown when a connection to a host fails
 #, c-format
 msgctxt "error_connection_failed"
 msgid "Failed to connect to %1$s (%2$s): %3$s"
-msgstr ""
+msgstr "فشل الاتصال بـ %1$s (%2$s): %3$s"
 
 #. Error message shown when port forwards fail to load for a host
 #, c-format
 msgctxt "error_port_forward_load_failed"
 msgid "Failed to load port forwards for %1$s: %2$s"
-msgstr ""
+msgstr "فشل تحميل إعادة توجيه المنافذ لـ %1$s: %2$s"
 
 #. Error message shown when saving host configuration fails
 #, c-format
 msgctxt "error_host_save_failed"
 msgid "Failed to save host %1$s: %2$s"
-msgstr ""
+msgstr "فشل حفظ المضيف %1$s: %2$s"
 
 #. Error message shown when loading a color scheme fails
 #, c-format
 msgctxt "error_color_scheme_load_failed"
 msgid "Failed to load color scheme: %s"
-msgstr ""
+msgstr "فشل تحميل نظام الألوان: %s"
 
 #. Format string for the nickname of a duplicated host
 #, c-format
 msgctxt "host_duplicate_nickname"
 msgid "%1$s (copy)"
-msgstr ""
+msgstr "%1$s (نسخة)"
 
 #. Empty state messages
 #. Message shown when no hosts have been configured yet
 msgctxt "empty_hosts_message"
 msgid "No hosts configured"
-msgstr ""
+msgstr "لم يتم تكوين أي مضيفات"
 
 #. Message shown when no public keys have been generated or imported yet
 msgctxt "empty_pubkeys_message"
 msgid "No keys found."
-msgstr ""
+msgstr "لم يتم العثور على أي مفاتيح."
 
 #. Message shown when no port forwards have been configured for a host
 msgctxt "empty_port_forwards_message"
 msgid "No port forwards configured."
-msgstr ""
+msgstr "لم يتم تكوين أي إعادة توجيه للمنافذ."
 
 #. Message shown when no URLs are found in the terminal buffer during URL scan
 msgctxt "empty_urls_message"
 msgid "No URLs found in terminal buffer"
-msgstr ""
+msgstr "لم يتم العثور على أي عناوين URL في ذاكرة التخزين المؤقت للطرفية."
 
 #. Console screen messages
 #. Default title for console screen when no specific host is connected
 msgctxt "console_default_title"
 msgid "Console"
-msgstr ""
+msgstr "وحدة التحكم"
 
 #. Host editor screen labels
 #. Label for quick connect input field
 msgctxt "host_editor_quick_connect_label"
 msgid "Quick connect"
-msgstr ""
+msgstr "اتصال سريع"
 
 #. Placeholder text showing format for quick connect field
 msgctxt "host_editor_quick_connect_placeholder"
 msgid "user@hostname:port"
-msgstr ""
+msgstr "user@hostname:port"
 
 #. Supporting text showing example for quick connect field
 msgctxt "host_editor_quick_connect_example"
 msgid "Example: root@192.168.1.1:22"
-msgstr ""
+msgstr "مثال: root@192.168.1.1:22"
 
 #. Text for button to show advanced host options
 msgctxt "host_editor_show_advanced"
 msgid "Show advanced options"
-msgstr ""
+msgstr "عرض الخيارات المتقدمة"
 
 #. Text for button to hide advanced host options
 msgctxt "host_editor_hide_advanced"
 msgid "Hide advanced options"
-msgstr ""
+msgstr "إخفاء الخيارات المتقدمة"
 
 #. Terminal resize dialog
 #. Label for width input field in terminal resize dialog
 msgctxt "resize_width_label"
 msgid "Width (columns)"
-msgstr ""
+msgstr "العرض (بالأعمدة)"
 
 #. Label for height input field in terminal resize dialog
 msgctxt "resize_height_label"
 msgid "Height (rows)"
-msgstr ""
+msgstr "الارتفاع (عدد الصفوف)"
 
 #. Button to disable force size and return to auto-sizing
 msgctxt "resize_disable_force_size"
 msgid "Disable force size"
-msgstr ""
+msgstr "تعطيل تحديد الحجم الإجباري"
 
 #. Public key editor labels
 #. Label for key type field in the SSH pubkey editor
 msgctxt "pubkey_editor_key_type_label"
 msgid "Key type"
-msgstr ""
+msgstr "نوع المفتاح"
 
 #. Label for the options section on SSH pubkey editor
 msgctxt "pubkey_editor_options_label"
 msgid "Options"
-msgstr ""
+msgstr "خيارات"
 
 #. Warning message shown when encrypted SSH pubkeys are set to load on startup
 msgctxt "pubkey_editor_encrypted_startup_warning"
 msgid "Encrypted keys cannot be unlocked at startup"
-msgstr ""
+msgstr "لا يمكن فك تشفير المفاتيح عند بدء التشغيل."
 
 #. Public key list labels
 #. Label prefix for displaying key type in list
 #, c-format
 msgctxt "pubkey_type_label"
 msgid "Type: %s"
-msgstr ""
+msgstr "النوع: %s"
 
 #. Accessibility description for encrypted key icon
 msgctxt "pubkey_encrypted_description"
 msgid "Encrypted"
-msgstr ""
+msgstr "مشفر"
 
 #. Accessibility description for unencrypted key icon
 msgctxt "pubkey_not_encrypted_description"
 msgid "Not encrypted"
-msgstr ""
+msgstr "غير مشفر"
 
 #. Biometric authentication strings
 #. Label for biometric protection toggle in key generation
 msgctxt "pubkey_biometric_protection"
 msgid "Fingerprint protection"
-msgstr ""
+msgstr "حماية بصمة الإصبع"
 
 #. Description for biometric protection option
 msgctxt "pubkey_biometric_description"
 msgid "Protect this key with your fingerprint"
-msgstr ""
+msgstr "احمِ هذه المفتاح ببصمتك."
 
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
@@ -2278,126 +2301,128 @@ msgid ""
 "No fingerprint enrolled. Set up fingerprint in device settings to use "
 "this feature."
 msgstr ""
+"لم يتم تسجيل أي بصمة. قم بإعداد بصمة في إعدادات الجهاز لاستخدام هذه "
+"الميزة."
 
 #. Warning shown when key type doesn\'t support biometric protection
 msgctxt "pubkey_biometric_key_type_warning"
 msgid "Fingerprint protection is only available for RSA and EC keys"
-msgstr ""
+msgstr "حماية بصمة الإصبع متاحة فقط لمفاتيح RSA و EC."
 
 #. Title for biometric prompt when unlocking a key
 msgctxt "pubkey_biometric_prompt_title"
 msgid "Authenticate to use key"
-msgstr ""
+msgstr "قم بالمصادقة باستخدام المفتاح"
 
 #. Subtitle for biometric prompt
 #, c-format
 msgctxt "pubkey_biometric_prompt_subtitle"
 msgid "Touch the fingerprint sensor to unlock '%1$s'"
-msgstr ""
+msgstr "المس مستشعر بصمة الإصبع لفتح '%1$s'"
 
 #. Accessibility description for biometric-protected key icon
 msgctxt "pubkey_biometric_description_icon"
 msgid "Protected by fingerprint"
-msgstr ""
+msgstr "محمي ببصمة الإصبع"
 
 #. Error message when biometric authentication is not available in current
 #. context
 msgctxt "pubkey_biometric_not_available"
 msgid "Fingerprint authentication is not available"
-msgstr ""
+msgstr "المصادقة عن طريق بصمة الإصبع غير متاحة"
 
 #. Port forward editor labels
 #. Placeholder for port forward nickname field. Should show an example
 #. nickname for a port forward.
 msgctxt "portforward_nickname_placeholder"
 msgid "Internal Webserver"
-msgstr ""
+msgstr "خادم الويب الداخلي"
 
 #. Error message when port is out of valid range
 msgctxt "portforward_port_range_error"
 msgid "Port must be between 1 and 65535"
-msgstr ""
+msgstr "يجب أن يكون رقم المنفذ بين 1 و 65535."
 
 #. Placeholder for destination field
 msgctxt "portforward_destination_placeholder"
 msgid "localhost:80"
-msgstr ""
+msgstr "localhost:80"
 
 #. Error message for invalid destination format
 msgctxt "portforward_destination_format_error"
 msgid "Format should be host:port (e.g., localhost:80)"
-msgstr ""
+msgstr "يجب أن يكون التنسيق كالتالي: اسم المضيف:المنفذ (مثل: localhost:80)"
 
 #. Port forward list labels
 #. Label prefix for displaying port forward type in list
 #, c-format
 msgctxt "portforward_type_label"
 msgid "Type: %s"
-msgstr ""
+msgstr "النوع: %s"
 
 #. Menu item to enable port forward on live connection
 msgctxt "portforward_enable"
 msgid "Enable"
-msgstr ""
+msgstr "تفعيل"
 
 #. Menu item to disable port forward on live connection
 msgctxt "portforward_disable"
 msgid "Disable"
-msgstr ""
+msgstr "تعطيل"
 
 #. Content description for enabled port forward visual indicator
 msgctxt "portforward_enabled"
 msgid "Port forward enabled"
-msgstr ""
+msgstr "تم تفعيل إعادة توجيه المنفذ"
 
 #. Content description for disabled port forward visual indicator
 msgctxt "portforward_disabled"
 msgid "Port forward disabled"
-msgstr ""
+msgstr "تم تعطيل إعادة توجيه المنفذ"
 
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
 msgid "Protocol"
-msgstr ""
+msgstr "البروتوكول"
 
 #. Label for button which expands/collapses section.
 msgctxt "expand"
 msgid "Expand"
-msgstr ""
+msgstr "توسيع"
 
 #. Label for checkbox which, when check, makes SSL authorization require
 #. confirmation.
 msgctxt "hostpref_authagent_with_confirmation"
 msgid "require confirmation"
-msgstr ""
+msgstr "يتطلب تأكيدًا"
 
 #. Text for button which, when clicked, adds a new host.
 msgctxt "hostpref_add_host"
 msgid "Add host"
-msgstr ""
+msgstr "أضف مضيفًا"
 
 #. Text for button which, when clicked, saves an existing host.
 msgctxt "hostpref_save_host"
 msgid "Save host"
-msgstr ""
+msgstr "حفظ المضيف"
 
 #. Title shown in the app bar when editing an existing host's settings.
 msgctxt "hostpref_setting_title"
 msgid "Host setting"
-msgstr ""
+msgstr "إعدادات المضيف"
 
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
 msgid "Import existing pubkey"
-msgstr ""
+msgstr "استيراد مفتاح عام موجود"
 
 #. Title for notification permission dialog shown when user first tries to
 #. connect to a host.              Explains that notifications keep SSH
 #. connections alive.
 msgctxt "notification_permission_title"
 msgid "Keep connections alive"
-msgstr ""
+msgstr "حافظ على استمرار الاتصالات"
 
 #. Explanation message shown in permission dialog when user tries to connect
 #. to a host.              Explains why notification permission is needed and
@@ -2408,25 +2433,27 @@ msgid ""
 "background. Without permission, connections may close when you switch "
 "apps."
 msgstr ""
+"يجب عرض إشعار للحفاظ على الاتصالات نشطة في الخلفية. بدون هذا الإذن، قد "
+"تنقطع الاتصالات عند التبديل بين التطبيقات."
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
 msgctxt "grant_permission"
 msgid "Grant permission"
-msgstr ""
+msgstr "امنح الإذن"
 
 #. Button text to proceed with connecting without granting notification
 #. permission.
 msgctxt "connect_anyway"
 msgid "Connect anyway"
-msgstr ""
+msgstr "واصل الاتصال على أي حال"
 
 #. Title for dialog directing users to app settings when notification
 #. permission was denied.              Shown when user tries to enable persist
 #. connections after denying permission.
 msgctxt "notification_permission_denied_title"
 msgid "Permission required"
-msgstr ""
+msgstr "الموافقة مطلوبة"
 
 #. Message explaining that user must enable notification permission in app
 #. settings.              Shown when notification permission was previously
@@ -2436,80 +2463,82 @@ msgid ""
 "To keep connections alive in the background, you must enable notification"
 " permission in app settings."
 msgstr ""
+"للحفاظ على استمرار الاتصالات في الخلفية، يجب عليك تفعيل إذن الإشعارات في "
+"إعدادات التطبيق."
 
 #. Button text to open ConnectBot app settings page where user can grant
 #. notification permission.
 msgctxt "open_settings"
 msgid "Open settings"
-msgstr ""
+msgstr "افتح الإعدادات"
 
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
 msgid "Are you trying to access a local host? Grant local network permissions."
-msgstr ""
+msgstr "هل تحاول الوصول إلى جهاز محلي؟ امنح التطبيق إذن الوصول إلى الشبكة المحلية."
 
 #. Loading message shown during app initialization
 msgctxt "loading_message"
 msgid "Loading…"
-msgstr ""
+msgstr "جاري التحميل..."
 
 #. Database migration screen messages. Displayed during one-time migration
 #. from legacy database format to Room database.
 #. Title shown while checking if database migration is needed
 msgctxt "migration_checking"
 msgid "Checking database…"
-msgstr ""
+msgstr "جارٍ فحص قاعدة البيانات…"
 
 #. Title shown during database migration process
 msgctxt "migration_title"
 msgid "Migrating Database"
-msgstr ""
+msgstr "ترحيل قاعدة البيانات"
 
 #. Warning message shown during migration to inform user not to close the app
 msgctxt "migration_warning"
 msgid "Please do not close the app during migration"
-msgstr ""
+msgstr "يرجى عدم إغلاق التطبيق أثناء عملية النقل."
 
 #. Statistics label showing number of hosts migrated
 #, c-format
 msgctxt "migration_stats_hosts"
 msgid "Hosts migrated: %d"
-msgstr ""
+msgstr "عدد الأجهزة التي تم ترحيلها: %d"
 
 #. Statistics label showing number of SSH keys migrated
 #, c-format
 msgctxt "migration_stats_pubkeys"
 msgid "SSH keys migrated: %d"
-msgstr ""
+msgstr "تم نقل مفاتيح SSH: %d"
 
 #. Statistics label showing number of port forwards migrated
 #, c-format
 msgctxt "migration_stats_port_forwards"
 msgid "Port forwards migrated: %d"
-msgstr ""
+msgstr "تم نقل عمليات إعادة توجيه المنافذ: %d"
 
 #. Statistics label showing number of known hosts migrated
 #, c-format
 msgctxt "migration_stats_known_hosts"
 msgid "Known hosts migrated: %d"
-msgstr ""
+msgstr "تم نقل قائمة المضيفين المعروفين: %d"
 
 #. Title shown when migration fails
 msgctxt "migration_failed_title"
 msgid "Migration Failed"
-msgstr ""
+msgstr "فشل الانتقال"
 
 #. Error message shown when migration fails, includes error details
 #, c-format
 msgctxt "migration_failed_message"
 msgid "An error occurred during database migration: %s"
-msgstr ""
+msgstr "حدث خطأ أثناء عملية ترحيل قاعدة البيانات: %s"
 
 #. Button label to retry failed migration
 msgctxt "migration_retry"
 msgid "Retry"
-msgstr ""
+msgstr "أعد المحاولة"
 
 #. Help text shown after migration failure with link to GitHub issues
 #, c-format
@@ -2518,40 +2547,42 @@ msgid ""
 "If the problem persists, please report this issue at %1$s with the debug "
 "log copied above"
 msgstr ""
+"إذا استمرت المشكلة، يرجى الإبلاغ عن هذه المشكلة على %1$s مع تضمين سجل "
+"التصحيح المنسوخ أعلاه."
 
 #. Title for warnings section shown during database migration
 msgctxt "migration_warnings_title"
 msgid "Migration Warnings"
-msgstr ""
+msgstr "تحذيرات حول الترحيل"
 
 #. Button text to copy migration warnings to clipboard for reporting issues
 msgctxt "migration_copy_warnings"
 msgid "Copy Warnings"
-msgstr ""
+msgstr "تحذيرات النسخ"
 
 #. Title for debug log section shown when migration fails
 msgctxt "migration_debug_log_title"
 msgid "Debug Log"
-msgstr ""
+msgstr "سجل التصحيح"
 
 #. Button text to copy debug log to clipboard for reporting issues
 msgctxt "migration_copy_debug_log"
 msgid "Copy Debug Log"
-msgstr ""
+msgstr "انسخ سجل التصحيح"
 
 #. Shown in the alert dialog when a user chooses the 'disconnect' item to
 #. disconnect from a SSH or Telnet host.
 #, c-format
 msgctxt "disconnect_host_alert"
 msgid "Are you sure you want to disconnect from '%1$s'?"
-msgstr ""
+msgstr "هل أنت متأكد من أنك تريد قطع الاتصال بـ '%1$s'؟"
 
 #. Shown in the alert dialog when a user chooses the 'delete host' item to
 #. delete a host.
 #, c-format
 msgctxt "delete_host_confirm"
 msgid "Are you sure you want to delete host '%1$s'?"
-msgstr ""
+msgstr "هل أنت متأكد من أنك تريد حذف المضيف \"%1$s\"؟"
 
 #. Shown in the alert dialog when a user chooses the 'forget host keys' item.
 #, c-format
@@ -2560,114 +2591,116 @@ msgid ""
 "Are you sure you want to forget the stored host keys for '%1$s'? You will"
 " be prompted to verify the host key on the next connection."
 msgstr ""
+"هل أنت متأكد من أنك تريد نسيان مفاتيح المضيف المحفوظة لـ '%1$s'؟ سيُطلب "
+"منك التحقق من مفتاح المضيف في المرة القادمة التي تتصل فيها."
 
 #. Menu selection to edit a pubkey details (e.g., nickname)
 msgctxt "list_pubkey_edit"
 msgid "Edit pubkey"
-msgstr ""
+msgstr "تعديل المفتاح العام"
 
 #. IP Version selection for host connections
 #. Title for IP version preference in host editor
 msgctxt "hostpref_ipversion_title"
 msgid "IP version"
-msgstr ""
+msgstr "إصدار بروتوكول الإنترنت"
 
 #. Summary text explaining what the IP version setting controls
 msgctxt "hostpref_ipversion_summary"
 msgid "Select which IP address version to use when connecting"
-msgstr ""
+msgstr "حدد إصدار عنوان IP الذي سيتم استخدامه عند الاتصال."
 
 #. Option for automatic IP version selection (try both IPv4 and IPv6)
 msgctxt "ipversion_auto"
 msgid "Automatic"
-msgstr ""
+msgstr "تلقائي"
 
 #. Option to force IPv4-only connections
 msgctxt "ipversion_ipv4"
 msgid "IPv4 only"
-msgstr ""
+msgstr "IPv4 فقط"
 
 #. Option to force IPv6-only connections
 msgctxt "ipversion_ipv6"
 msgid "IPv6 only"
-msgstr ""
+msgstr "يدعم بروتوكول IPv6 فقط"
 
 #. ProxyJump / Jump Host support
 #. Title for jump host selector in host editor
 msgctxt "hostpref_jumphost_title"
 msgid "Jump host (ProxyJump)"
-msgstr ""
+msgstr "مضيف وسيط (ProxyJump)"
 
 #. Summary text explaining jump host functionality
 msgctxt "hostpref_jumphost_summary"
 msgid "Connect through another SSH host"
-msgstr ""
+msgstr "اتصل عبر مضيف SSH آخر"
 
 #. Option for no jump host (direct connection)
 msgctxt "list_jumphost_none"
 msgid "None (direct connection)"
-msgstr ""
+msgstr "لا يوجد (اتصال مباشر)"
 
 #. Terminal message when connecting via jump host
 #, c-format
 msgctxt "terminal_connecting_via_jump"
 msgid "Connecting via jump host: %s"
-msgstr ""
+msgstr "الاتصال عبر مضيف وسيط: %s"
 
 #. Terminal message when connected to jump host
 #, c-format
 msgctxt "terminal_jump_connected"
 msgid "Connected to jump host: %s"
-msgstr ""
+msgstr "تم الاتصال بخادم الربط: %s"
 
 #. Terminal message when authenticated to jump host
 #, c-format
 msgctxt "terminal_jump_authenticated"
 msgid "Authenticated to jump host: %s"
-msgstr ""
+msgstr "تمت المصادقة على الخادم الوسيط: %s"
 
 #. Terminal message when jump host connection fails
 #, c-format
 msgctxt "terminal_jump_failed"
 msgid "Failed to connect to jump host %1$s: %2$s"
-msgstr ""
+msgstr "فشل الاتصال بمضيف الربط %1$s: %2$s"
 
 #. Terminal message when jump host authentication fails
 #, c-format
 msgctxt "terminal_jump_auth_failed"
 msgid "Authentication failed for jump host: %s"
-msgstr ""
+msgstr "فشل التحقق من الهوية للخادم الوسيط: %s"
 
 #. Terminal message when jump host is not found in database
 msgctxt "terminal_jump_not_found"
 msgid "Jump host not found in saved hosts"
-msgstr ""
+msgstr "لم يتم العثور على مضيف القفز في قائمة المضيفين المحفوظين."
 
 #. Password prompt prefix for jump host
 #, c-format
 msgctxt "terminal_jump_password"
 msgid "Password for jump host %s:"
-msgstr ""
+msgstr "كلمة المرور للخادم الوسيط %s:"
 
 #. Button text to view application logs for debugging
 msgctxt "view_logs"
 msgid "View Logs"
-msgstr ""
+msgstr "عرض السجلات"
 
 #. Title for the log viewer dialog
 msgctxt "logs_title"
 msgid "Application Logs"
-msgstr ""
+msgstr "سجلات التطبيق"
 
 #. Button text to copy logs to clipboard for bug reporting
 msgctxt "copy_logs"
 msgid "Copy Logs"
-msgstr ""
+msgstr "نسخ السجلات"
 
 #. Confirmation message shown when logs are copied to clipboard
 msgctxt "logs_copied"
 msgid "Logs copied to clipboard"
-msgstr ""
+msgstr "تم نسخ السجلات إلى الحافظة"
 
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
@@ -2675,202 +2708,204 @@ msgid ""
 "To report a bug, copy these logs and open a new issue at "
 "https://connectbot.org/bug"
 msgstr ""
+"لإبلاغ عن خطأ، انسخ سجلات الأخطاء هذه وافتح مشكلة جديدة على الرابط "
+"التالي: https://connectbot.org/bug"
 
 #. Message shown when no logs are available
 msgctxt "no_logs_available"
 msgid "No logs available"
-msgstr ""
+msgstr "لا توجد سجلات متاحة"
 
 #. Section title for the "Help" screen showing information about the program
 #. itself.
 msgctxt "help_section_about"
 msgid "About"
-msgstr ""
+msgstr "حول"
 
 #. Window title for the Contact &amp; Support screen, also used as button text
 #. in Help screen.
 msgctxt "title_contact"
 msgid "Contact & Support"
-msgstr ""
+msgstr "اتصل بنا للحصول على الدعم"
 
 #. Section title for the "Help" screen showing contact and support
 #. information.
 msgctxt "help_section_contact"
 msgid "Contact & Support"
-msgstr ""
+msgstr "اتصل بنا للحصول على الدعم"
 
 #. Label for the official website link in the Help screen.
 msgctxt "help_website"
 msgid "Website"
-msgstr ""
+msgstr "موقع ويب"
 
 #. Label for the GitHub repository link in the Help screen.
 msgctxt "help_github"
 msgid "Source Code"
-msgstr ""
+msgstr "كود المصدر"
 
 #. Label for the bug report/issue tracker link in the Help screen.
 msgctxt "help_report_bug"
 msgid "Report a Bug"
-msgstr ""
+msgstr "أبلغ عن خطأ"
 
 #. Section title for the "Help" screen showing donation options.
 msgctxt "help_section_donate"
 msgid "Support Development"
-msgstr ""
+msgstr "ادعم التطوير"
 
 #. Label for the GitHub Sponsors donation link in the Help screen.
 msgctxt "help_donate_github"
 msgid "GitHub Sponsors"
-msgstr ""
+msgstr "برنامج GitHub للرعاية"
 
 #. Label for the Buy Me a Coffee donation link in the Help screen.
 msgctxt "help_donate_coffee"
 msgid "Buy Me a Coffee"
-msgstr ""
+msgstr "ادعمني بشراء فنجان قهوة"
 
 #. Built-in color scheme descriptions for terminal display
 #. Description of the default terminal color scheme
 msgctxt "colorscheme_default_description"
 msgid "Default terminal colors"
-msgstr ""
+msgstr "الألوان الافتراضية للطرفية"
 
 #. Description of the Solarized Dark color scheme
 msgctxt "colorscheme_solarized_dark_description"
 msgid "Precision colors for machines and people"
-msgstr ""
+msgstr "ألوان دقيقة للآلات والبشر"
 
 #. Description of the Solarized Light color scheme
 msgctxt "colorscheme_solarized_light_description"
 msgid "Solarized with light background"
-msgstr ""
+msgstr "تصميم سولارايزد بخلفية فاتحة"
 
 #. Description of the Dracula color scheme
 msgctxt "colorscheme_dracula_description"
 msgid "A dark theme for the terminal"
-msgstr ""
+msgstr "تصميم داكن لواجهة الطرفية"
 
 #. Description of the Nord color scheme
 msgctxt "colorscheme_nord_description"
 msgid "An arctic, north-bluish color palette"
-msgstr ""
+msgstr "لوحة ألوان ذات طابع قطبي، وتتضمن ألوانًا زرقاء فاتحة."
 
 #. Description of the Gruvbox Dark color scheme
 msgctxt "colorscheme_gruvbox_dark_description"
 msgid "Retro groove color scheme"
-msgstr ""
+msgstr "مخطط ألوان مستوحى من الطراز القديم"
 
 #. Description of the Monokai color scheme
 msgctxt "colorscheme_monokai_description"
 msgid "Sublime Text inspired theme"
-msgstr ""
+msgstr "تصميم مستوحى من برنامج سابلايم تيكست"
 
 #. Description of the Tomorrow Night color scheme
 msgctxt "colorscheme_tomorrow_night_description"
 msgid "A clean and comfortable dark theme"
-msgstr ""
+msgstr "تصميم أنيق ومريح باللون الداكن"
 
 #. Settings screen strings
 #. Category title for profile settings section
 msgctxt "pref_profiles_category"
 msgid "Profiles"
-msgstr ""
+msgstr "ملفات التعريف"
 
 #. Setting title for default profile selection
 msgctxt "pref_default_profile_title"
 msgid "Default Profile"
-msgstr ""
+msgstr "الملف الشخصي الافتراضي"
 
 #. Summary text when no default profile is selected
 msgctxt "pref_default_profile_none"
 msgid "None (use host settings)"
-msgstr ""
+msgstr "لا شيء (استخدم إعدادات المضيف)"
 
 #. Summary text for special keys always visible setting
 msgctxt "pref_alwaysvisible_summary"
 msgid "Keep special keys always visible"
-msgstr ""
+msgstr "حافظ على ظهور المفاتيح الخاصة دائمًا"
 
 #. Title for custom terminal types preference
 msgctxt "pref_customterminal_title"
 msgid "Custom Terminal Types"
-msgstr ""
+msgstr "أنواع المحطات المخصصة"
 
 #. Summary for custom terminal types preference
 msgctxt "pref_customterminal_summary"
 msgid "Add custom TERM values for remote servers"
-msgstr ""
+msgstr "أضف قيم TERM مخصصة للخوادم البعيدة"
 
 #. Dialog title for adding a custom terminal type
 msgctxt "dialog_customterminal_title"
 msgid "Add Custom Terminal Type"
-msgstr ""
+msgstr "أضف نوع طرفية مخصص"
 
 #. Label/hint for terminal type input field
 msgctxt "dialog_customterminal_hint"
 msgid "Terminal type (e.g., rxvt-unicode)"
-msgstr ""
+msgstr "نوع الطرفية (مثل rxvt-unicode)"
 
 #. Dialog title for managing custom terminal types
 msgctxt "dialog_manage_customterminal_title"
 msgid "Manage Custom Terminal Types"
-msgstr ""
+msgstr "إدارة أنواع المحطات المخصصة"
 
 #. Button to add a custom item
 msgctxt "button_add_custom"
 msgid "Add custom…"
-msgstr ""
+msgstr "أضف خيارًا مخصصًا..."
 
 #. Button to manage custom items
 msgctxt "button_manage_custom"
 msgid "Manage custom…"
-msgstr ""
+msgstr "إدارة الإعدادات المخصصة..."
 
 #. Label for custom value input in list preference dialogs
 msgctxt "dialog_custom_value_label"
 msgid "Enter custom value"
-msgstr ""
+msgstr "أدخل قيمة مخصصة"
 
 #. Summary description for Ctrl+A then Space camera button action
 msgctxt "list_camera_ctrlaspace_description"
 msgid "Ctrl+A then Space"
-msgstr ""
+msgstr "Ctrl+A ثم مسافة"
 
 #. Summary description for Ctrl+A camera button action
 msgctxt "list_camera_ctrla_description"
 msgid "Ctrl+A"
-msgstr ""
+msgstr "Ctrl+A"
 
 #. Summary description for Esc camera button action
 msgctxt "list_camera_esc_description"
 msgid "Esc"
-msgstr ""
+msgstr "Esc"
 
 #. Summary description for Esc+A camera button action
 msgctxt "list_camera_esc_a_description"
 msgid "Esc+A"
-msgstr ""
+msgstr "Esc+A"
 
 #. Summary description for None camera button action
 msgctxt "list_camera_none_description"
 msgid "None"
-msgstr ""
+msgstr "لا يوجد"
 
 #. Summary description for text input camera button action
 msgctxt "list_camera_text_input_description"
 msgid "Text input"
-msgstr ""
+msgstr "إدخال نص"
 
 #. Host export/import menu items
 #. Menu item to export all hosts to a JSON file
 msgctxt "list_menu_export_hosts"
 msgid "Export Hosts"
-msgstr ""
+msgstr "تصدير قائمة المضيفين"
 
 #. Menu item to import hosts from a JSON file
 msgctxt "list_menu_import_hosts"
 msgid "Import Hosts"
-msgstr ""
+msgstr "استيراد المضيفين"
 
 #. Host export/import messages
 #. Success message shown after exporting hosts to a file. Parameters: %1$d =
@@ -2878,7 +2913,7 @@ msgstr ""
 #, c-format
 msgctxt "export_hosts_success"
 msgid "Exported %1$d hosts and %2$d profiles"
-msgstr ""
+msgstr "تم تصدير %1$d من المضيفين و %2$d من الملفات الشخصية."
 
 #. Success message shown after importing hosts from a file. Parameters: %1$d =
 #. hosts imported, %2$d = hosts skipped, %3$d = profiles imported, %4$d =
@@ -2887,103 +2922,107 @@ msgstr ""
 msgctxt "import_hosts_success"
 msgid "Imported %1$d hosts (%2$d skipped) and %3$d profiles (%4$d skipped)"
 msgstr ""
+"تم استيراد %1$d من المضيفين (%2$d تم تخطيهم) و %3$d من الملفات الشخصية "
+"(%4$d تم تخطيهم)"
 
 #. Error message when host export fails
 #, c-format
 msgctxt "export_hosts_failed"
 msgid "Failed to export hosts: %s"
-msgstr ""
+msgstr "فشل تصدير قائمة المضيفين: %s"
 
 #. Error message when host import fails
 #, c-format
 msgctxt "import_hosts_failed"
 msgid "Failed to import hosts: %s"
-msgstr ""
+msgstr "فشل استيراد قائمة المضيفين: %s"
 
 #. Title for the export hosts file picker dialog
 msgctxt "export_hosts_title"
 msgid "Export Hosts"
-msgstr ""
+msgstr "تصدير قائمة المضيفين"
 
 #. Shortcut customization dialog strings
 #. Dialog title when customizing a shortcut icon
 msgctxt "shortcut_customize_title"
 msgid "Customize Shortcut"
-msgstr ""
+msgstr "تخصيص الاختصار"
 
 #. Label for the shortcut icon color selection dropdown
 msgctxt "shortcut_icon_color"
 msgid "Icon Color"
-msgstr ""
+msgstr "لون الأيقونة"
 
 #. Label for the shortcut icon style selection dropdown
 msgctxt "shortcut_icon_style"
 msgid "Icon Style"
-msgstr ""
+msgstr "نمط الأيقونة"
 
 #. Checkbox label to use the host\'s configured color for the shortcut
 msgctxt "shortcut_use_host_color"
 msgid "Use host color"
-msgstr ""
+msgstr "استخدم لون المضيف"
 
 #. Button to create the customized shortcut
 msgctxt "shortcut_create"
 msgid "Create Shortcut"
-msgstr ""
+msgstr "إنشاء اختصار"
 
 #. Icon style option: terminal prompt icon
 msgctxt "icon_style_terminal"
 msgid "Terminal"
-msgstr ""
+msgstr "نافذة الأوامر"
 
 #. Icon style option: server/computer icon
 msgctxt "icon_style_server"
 msgid "Server"
-msgstr ""
+msgstr "خادم"
 
 #. Icon style option: cloud icon
 msgctxt "icon_style_cloud"
 msgid "Cloud"
-msgstr ""
+msgstr "سحابة"
 
 #. Icon style option: key/security icon
 msgctxt "icon_style_key"
 msgid "Key"
-msgstr ""
+msgstr "مفتاح"
 
 #. Authentication on launch
 #. Title for the authentication on launch preference in settings
 msgctxt "pref_auth_on_launch_title"
 msgid "Authentication on launch"
-msgstr ""
+msgstr "المصادقة عند التشغيل"
 
 #. Summary for the authentication on launch preference
 msgctxt "pref_auth_on_launch_summary"
 msgid "Require fingerprint, face, or device PIN when opening the app"
 msgstr ""
+"اطلب بصمة الإصبع أو التعرف على الوجه أو رمز PIN الخاص بالجهاز عند فتح "
+"التطبيق."
 
 #. Category title for security preferences in settings
 msgctxt "pref_security_category"
 msgid "Security"
-msgstr ""
+msgstr "الأمان"
 
 #. Title shown on the authentication lock screen
 msgctxt "auth_screen_title"
 msgid "ConnectBot is locked"
-msgstr ""
+msgstr "تم قفل ConnectBot"
 
 #. Button text to trigger authentication on the lock screen
 msgctxt "auth_screen_unlock_button"
 msgid "Tap to unlock"
-msgstr ""
+msgstr "اضغط لفتح القفل"
 
 #. Title shown in the biometric/device credential authentication prompt
 msgctxt "auth_prompt_title"
 msgid "Unlock ConnectBot"
-msgstr ""
+msgstr "افتح ConnectBot"
 
 #. Subtitle shown in the biometric/device credential authentication prompt
 msgctxt "auth_prompt_subtitle"
 msgid "Verify your identity to continue"
-msgstr ""
+msgstr "تحقق من هويتك للمتابعة."
 
