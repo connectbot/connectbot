@@ -147,6 +147,8 @@ fun HostListScreen(
                 }
                 viewModel.clearExportedJson()
             }
+        } else {
+            viewModel.clearExportedJson()
         }
     }
 
