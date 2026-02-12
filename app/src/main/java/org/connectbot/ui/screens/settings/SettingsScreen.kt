@@ -29,6 +29,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
@@ -66,10 +68,13 @@ import org.connectbot.R
 import org.connectbot.ui.ObservePermissionOnResume
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.common.getLocalizedFontDisplayName
+import org.connectbot.ui.components.FontDownloadProgressDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.NotificationPermissionHelper
 import org.connectbot.util.TerminalFont
+import org.xmlpull.v1.XmlPullParser
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -161,6 +166,7 @@ fun SettingsScreen(
         onDeleteLocalFont = viewModel::deleteLocalFont,
         onClearImportError = viewModel::clearFontImportError,
         onDefaultProfileChange = viewModel::updateDefaultProfile,
+        onLanguageChange = viewModel::updateLanguage,
         onRotationChange = viewModel::updateRotation,
         onFullscreenChange = viewModel::updateFullscreen,
         onTitleBarHideChange = viewModel::updateTitleBarHide,
@@ -203,6 +209,7 @@ fun SettingsScreenContent(
     onDeleteLocalFont: (String) -> Unit,
     onClearImportError: () -> Unit,
     onDefaultProfileChange: (Long) -> Unit,
+    onLanguageChange: (String) -> Unit,
     onRotationChange: (String) -> Unit,
     onFullscreenChange: (Boolean) -> Unit,
     onTitleBarHideChange: (Boolean) -> Unit,
@@ -385,6 +392,27 @@ fun SettingsScreenContent(
 
             item {
                 PreferenceCategory(title = stringResource(R.string.pref_ui_category))
+            }
+
+            item {
+                val context = LocalContext.current
+                val systemDefaultLabel = stringResource(R.string.pref_language_system_default)
+                val languageEntries = remember {
+                    listOf("" to systemDefaultLabel) + buildAvailableLanguageList(context)
+                }
+                val currentLabel = if (uiState.language.isEmpty()) {
+                    systemDefaultLabel
+                } else {
+                    languageEntries.find { it.first == uiState.language }?.second
+                        ?: uiState.language
+                }
+                ListPreference(
+                    title = stringResource(R.string.pref_language_title),
+                    summary = currentLabel,
+                    value = uiState.language,
+                    entries = languageEntries.map { (tag, label) -> label to tag },
+                    onValueChange = onLanguageChange
+                )
             }
 
             item {
@@ -597,6 +625,37 @@ fun SettingsScreenContent(
             }
         }
     }
+
+    if (uiState.fontDownloadInProgress) {
+        FontDownloadProgressDialog()
+    }
+}
+
+private fun buildAvailableLanguageList(context: android.content.Context): List<Pair<String, String>> {
+    val localeTags = mutableListOf<String>()
+    val parser = context.resources.getXml(R.xml._generated_res_locale_config)
+    while (parser.next() != XmlPullParser.END_DOCUMENT) {
+        if (parser.eventType == XmlPullParser.START_TAG && parser.name == "locale") {
+            val tag = parser.getAttributeValue(
+                "http://schemas.android.com/apk/res/android",
+                "name"
+            )
+            if (tag != null) {
+                localeTags.add(tag)
+            }
+        }
+    }
+    parser.close()
+    return localeTags
+        .map { tag ->
+            val locale = Locale.forLanguageTag(tag)
+            val canonicalTag = locale.toLanguageTag()
+            val nativeName = locale.getDisplayName(locale)
+                .replaceFirstChar { it.titlecase(locale) }
+            canonicalTag to nativeName
+        }
+        .distinctBy { it.first }
+        .sortedBy { it.second.lowercase() }
 }
 
 @Composable
@@ -743,7 +802,7 @@ private fun ListPreferenceDialog(
         onDismissRequest = onDismiss,
         title = { Text(title) },
         text = {
-            Column {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 entries.forEach { (label, entryValue) ->
                     ListItem(
                         headlineContent = { Text(label) },
@@ -1318,6 +1377,7 @@ private fun SettingsScreenPreview() {
             onDeleteLocalFont = {},
             onClearImportError = {},
             onDefaultProfileChange = {},
+            onLanguageChange = {},
             onRotationChange = {},
             onFullscreenChange = {},
             onTitleBarHideChange = {},

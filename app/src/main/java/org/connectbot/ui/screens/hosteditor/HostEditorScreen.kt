@@ -27,6 +27,7 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -58,6 +59,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.BuildConfig
@@ -105,6 +108,8 @@ fun HostEditorScreen(
         onPostLoginChange = viewModel::updatePostLogin,
         onJumpHostChange = viewModel::updateJumpHostId,
         onIpVersionChange = viewModel::updateIpVersion,
+        onPasswordChange = viewModel::updatePassword,
+        onClearPassword = viewModel::clearSavedPassword,
         onSaveHost = { expandedMode -> viewModel.saveHost(expandedMode) },
         modifier = modifier
     )
@@ -133,6 +138,8 @@ fun HostEditorScreenContent(
     onPostLoginChange: (String) -> Unit,
     onJumpHostChange: (Long?) -> Unit,
     onIpVersionChange: (String) -> Unit,
+    onPasswordChange: (String) -> Unit,
+    onClearPassword: () -> Unit,
     onSaveHost: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -334,6 +341,40 @@ fun HostEditorScreenContent(
                         onIpVersionSelect = onIpVersionChange,
                         modifier = Modifier.padding(top = 8.dp)
                     )
+
+                    // Save password section (SSH only)
+                    if (uiState.protocol == "ssh") {
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+                        OutlinedTextField(
+                            value = uiState.password,
+                            onValueChange = onPasswordChange,
+                            label = {
+                                Text(
+                                    if (uiState.hasExistingPassword && uiState.password.isEmpty()) {
+                                        stringResource(R.string.hostpref_password_unchanged)
+                                    } else {
+                                        stringResource(R.string.hostpref_password_title)
+                                    }
+                                )
+                            },
+                            supportingText = {
+                                Text(stringResource(R.string.hostpref_save_password_summary))
+                            },
+                            visualTransformation = PasswordVisualTransformation(),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true
+                        )
+
+                        if (uiState.hasExistingPassword) {
+                            TextButton(
+                                onClick = onClearPassword,
+                                modifier = Modifier.padding(top = 4.dp)
+                            ) {
+                                Text(stringResource(R.string.hostpref_clear_password))
+                            }
+                        }
+                    }
                 }
             }
 
@@ -1232,6 +1273,8 @@ private fun HostEditorScreenPreview() {
             onPostLoginChange = {},
             onJumpHostChange = {},
             onIpVersionChange = {},
+            onPasswordChange = {},
+            onClearPassword = {},
             onSaveHost = {}
         )
     }

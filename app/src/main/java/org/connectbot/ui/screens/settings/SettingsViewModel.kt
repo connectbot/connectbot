@@ -21,9 +21,11 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.net.Uri
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators
 import androidx.core.content.edit
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -78,6 +80,8 @@ data class SettingsUiState(
     val fontValidationError: String? = null,
     val fontImportInProgress: Boolean = false,
     val fontImportError: String? = null,
+    val fontDownloadInProgress: Boolean = false,
+    val language: String = "",
     val defaultProfileId: Long = 0L,
     val availableProfiles: List<Profile> = emptyList()
 )
@@ -89,7 +93,7 @@ class SettingsViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
-    private val fontProvider = TerminalFontProvider(context)
+    private val fontProvider = TerminalFontProvider(context, dispatchers.io)
     private val localFontProvider = LocalFontProvider(context)
     private val _uiState = MutableStateFlow(loadSettings())
     val uiState: StateFlow<SettingsUiState> = _uiState.asStateFlow()
@@ -133,6 +137,9 @@ class SettingsViewModel @Inject constructor(
         }
         val localFonts = localFontProvider.getImportedFonts()
 
+        val appLocales = AppCompatDelegate.getApplicationLocales()
+        val currentLanguage = if (appLocales.isEmpty) "" else appLocales.toLanguageTags()
+
         val canAuthenticate = BiometricManager.from(context)
             .canAuthenticate(Authenticators.BIOMETRIC_STRONG or Authenticators.DEVICE_CREDENTIAL) ==
             BiometricManager.BIOMETRIC_SUCCESS
@@ -166,6 +173,7 @@ class SettingsViewModel @Inject constructor(
             customFonts = customFonts,
             customTerminalTypes = customTerminalTypes,
             localFonts = localFonts,
+            language = currentLanguage,
             defaultProfileId = prefs.getLong("defaultProfileId", 0L)
         )
     }
@@ -303,6 +311,16 @@ class SettingsViewModel @Inject constructor(
         updateStringPref("rotation", value) { copy(rotation = value) }
     }
 
+    fun updateLanguage(languageTag: String) {
+        val localeList = if (languageTag.isEmpty()) {
+            LocaleListCompat.getEmptyLocaleList()
+        } else {
+            LocaleListCompat.forLanguageTags(languageTag)
+        }
+        AppCompatDelegate.setApplicationLocales(localeList)
+        _uiState.update { it.copy(language = languageTag) }
+    }
+
     fun updateBellVolume(value: Float) {
         updateFloatPref("bellVolume", value) { copy(bellVolume = value) }
     }
@@ -345,13 +363,15 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun preloadFont(storedValue: String) {
-        // Skip if it's a local font (already on device) or system default
         if (LocalFontProvider.isLocalFont(storedValue)) return
         val googleFontName = org.connectbot.util.TerminalFont.getGoogleFontName(storedValue)
         if (googleFontName.isBlank()) return
 
-        // Trigger font download/caching in background
-        fontProvider.loadFontByName(googleFontName) { /* just cache it */ }
+        viewModelScope.launch {
+            _uiState.update { it.copy(fontDownloadInProgress = true) }
+            fontProvider.loadFontByNameSuspend(googleFontName)
+            _uiState.update { it.copy(fontDownloadInProgress = false) }
+        }
     }
 
     fun addCustomFont(fontName: String) {

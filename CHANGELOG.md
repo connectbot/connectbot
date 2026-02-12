@@ -2,6 +2,36 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+### Added
+- Complete rewrite the of the UI using Jetpack Compose
+- Support for Biometric authentication for SSH keys (by nindanaoto)
+- Support for ProxyJump (jump hosts) and chained jump hosts (by nindanaoto)
+- Support for OSC 52 clipboard operations (by nindanaoto)
+- Support for OSC 9;4 progress reporting (by nindanaoto)
+- Downloadable fonts and local font support (by nindanaoto)
+- Profile system for bundling terminal settings (by nindanaoto)
+- Host configuration export/import via JSON (by nindanaoto)
+- Support importing Ed25519 keys from PKCS#8/PEM format (by nindanaoto)
+- Customization for shortcuts
+- Dynamic colors support in theme
+- IPv4/IPv6 setting for Hosts (by ppb2020)
+
+### Changed
+- Migrated database to Room
+- Converted build system and codebase to Kotlin
+- Updated terminal library; now using ConnectBot's termlib (w/ libvterm)
+- Updated to new SSH library; now supports Post-Quantum Cryptography ML-KEM
+- Public Key list now uses a FAB menu
+- Allow multiple known keys per host to support key migration
+
+### Translations
+- Update translations
+- Localize color schemes, fonts, profiles, and more
+
+### Dependencies
+- Update dependencies
+
 ## [1.9.13][1.9.13]
 ### Added
 - Add database foreign key constraints with cascade deletes (by Steffen Heil | secforge)

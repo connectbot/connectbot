@@ -143,6 +143,9 @@ class TerminalManager :
     @Inject
     internal lateinit var dispatchers: CoroutineDispatchers
 
+    @Inject
+    internal lateinit var securePasswordStorage: org.connectbot.util.SecurePasswordStorage
+
     private val binder: IBinder = TerminalBinder()
 
     internal lateinit var connectivityMonitor: ConnectivityMonitor

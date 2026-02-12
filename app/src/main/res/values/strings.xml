@@ -241,6 +241,8 @@
 	<string name="button_remove">"Remove"</string>
 	<!-- Message shown when validating font -->
 	<string name="font_validating">"Validating font…"</string>
+	<!-- Message shown while downloading a font from Google Fonts -->
+	<string name="font_downloading">"Downloading font…"</string>
 
 	<!-- Title for importing local font -->
 	<string name="pref_localfont_title">"Import local font"</string>
@@ -262,6 +264,11 @@
 
 	<!-- The category title for user interface preferences -->
 	<string name="pref_ui_category">"User interface"</string>
+
+	<!-- Name for the language preference -->
+	<string name="pref_language_title">Language</string>
+	<!-- Default option for language preference that uses the system locale -->
+	<string name="pref_language_system_default">System default</string>
 
 	<!-- Name for the rotation mode preference -->
 	<string name="pref_rotation_title">"Rotation mode"</string>
@@ -461,6 +468,15 @@
 	<!-- Username field title for host editor preference -->
 	<string name="hostpref_username_title">"Username"</string>
 
+	<!-- Password field supporting text in host editor -->
+	<string name="hostpref_save_password_summary">"Store login password securely for automatic authentication"</string>
+	<!-- Password field title in host editor -->
+	<string name="hostpref_password_title">"Password"</string>
+	<!-- Password field label when there is an existing password saved -->
+	<string name="hostpref_password_unchanged">"Password (unchanged)"</string>
+	<!-- Button to clear a saved password -->
+	<string name="hostpref_clear_password">"Clear saved password"</string>
+
 	<!-- Hostname field title for host editor preference -->
 	<string name="hostpref_hostname_title">"Host"</string>
 
@@ -608,6 +624,8 @@
 	<string name="list_host_portforwards">"Edit port forwards"</string>
 	<!-- Context menu action to delete the selected host -->
 	<string name="list_host_delete">"Delete host"</string>
+	<!-- Context menu action to duplicate the selected host -->
+	<string name="list_host_duplicate">"Duplicate host"</string>
 	<!-- Context menu action to forget stored host keys for the selected host -->
 	<string name="list_host_forget_keys">"Forget host keys"</string>
 
@@ -675,6 +693,10 @@
 	<string name="terminal_auth_pass">"Attempting 'password' authentication"</string>
 	<!-- Message shown in terminal when password authentication fails -->
 	<string name="terminal_auth_pass_fail">"Authentication method 'password' failed"</string>
+	<!-- Message shown in terminal when attempting saved password authentication -->
+	<string name="terminal_auth_saved_password">"Trying saved password…"</string>
+	<!-- Message shown in terminal when saved password authentication fails -->
+	<string name="terminal_auth_saved_password_fail">"Saved password authentication failed"</string>
 
 	<!-- Message shown in terminal when trying public key authentication with any available key -->
 	<string name="terminal_auth_pubkey_any">"Attempting 'publickey' authentication with any in-memory public keys"</string>
@@ -958,6 +980,9 @@
 	<string name="error_host_save_failed">Failed to save host %1$s: %2$s</string>
 	<!-- Error message shown when loading a color scheme fails -->
 	<string name="error_color_scheme_load_failed">Failed to load color scheme: %s</string>
+
+	<!-- Format string for the nickname of a duplicated host -->
+	<string name="host_duplicate_nickname">%1$s (copy)</string>
 
 	<!-- Empty state messages -->
 	<!-- Message shown when no hosts have been configured yet -->

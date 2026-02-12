@@ -26,8 +26,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -35,7 +35,6 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
@@ -52,7 +51,6 @@ import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -63,6 +61,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.BuildConfig
@@ -71,6 +70,7 @@ import org.connectbot.data.entity.ColorScheme
 import org.connectbot.ui.common.getIconColors
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.common.getLocalizedFontDisplayName
+import org.connectbot.ui.components.FontDownloadProgressDialog
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
 
@@ -78,6 +78,7 @@ import org.connectbot.util.TerminalFont
 @Composable
 fun ProfileEditorScreen(
     onNavigateBack: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: ProfileEditorViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -89,15 +90,21 @@ fun ProfileEditorScreen(
         }
     }
 
+    if (uiState.fontDownloadInProgress) {
+        FontDownloadProgressDialog()
+    }
+
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopAppBar(
                 title = {
                     Text(
-                        if (uiState.profileId == -1L)
+                        if (uiState.profileId == -1L) {
                             stringResource(R.string.profile_editor_title_new)
-                        else
+                        } else {
                             stringResource(R.string.profile_editor_title_edit)
+                        }
                     )
                 },
                 navigationIcon = {
@@ -167,7 +174,7 @@ fun ProfileEditorScreen(
 
                 IconColorSelector(
                     selectedColor = uiState.iconColor,
-                    onColorSelected = { viewModel.updateIconColor(it) },
+                    onSelectColor = { viewModel.updateIconColor(it) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -183,7 +190,7 @@ fun ProfileEditorScreen(
                 ColorSchemeSelector(
                     colorSchemeId = uiState.colorSchemeId,
                     availableSchemes = uiState.availableColorSchemes,
-                    onColorSchemeSelected = { viewModel.updateColorSchemeId(it) },
+                    onSelectColorScheme = { viewModel.updateColorSchemeId(it) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -200,7 +207,7 @@ fun ProfileEditorScreen(
                     fontFamily = uiState.fontFamily,
                     customFonts = uiState.customFonts,
                     localFonts = uiState.localFonts,
-                    onFontFamilySelected = { viewModel.updateFontFamily(it) },
+                    onSelectFontFamily = { viewModel.updateFontFamily(it) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -224,7 +231,7 @@ fun ProfileEditorScreen(
                 EmulationSelector(
                     emulation = uiState.emulation,
                     customTerminalTypes = uiState.customTerminalTypes,
-                    onEmulationSelected = { viewModel.updateEmulation(it) },
+                    onSelectEmulation = { viewModel.updateEmulation(it) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -232,7 +239,7 @@ fun ProfileEditorScreen(
 
                 DelKeySelector(
                     delKey = uiState.delKey,
-                    onDelKeySelected = { viewModel.updateDelKey(it) },
+                    onSelectDelKey = { viewModel.updateDelKey(it) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -240,7 +247,7 @@ fun ProfileEditorScreen(
 
                 EncodingSelector(
                     encoding = uiState.encoding,
-                    onEncodingSelected = { viewModel.updateEncoding(it) },
+                    onSelectEncoding = { viewModel.updateEncoding(it) },
                     modifier = Modifier.fillMaxWidth()
                 )
 
@@ -268,7 +275,7 @@ private fun FontFamilySelector(
     fontFamily: String?,
     customFonts: List<String>,
     localFonts: List<Pair<String, String>>,
-    onFontFamilySelected: (String?) -> Unit,
+    onSelectFontFamily: (String?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -325,7 +332,7 @@ private fun FontFamilySelector(
                     DropdownMenuItem(
                         text = { Text(displayName) },
                         onClick = {
-                            onFontFamilySelected(value)
+                            onSelectFontFamily(value)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -364,7 +371,7 @@ private fun FontSizeSelector(
 private fun EmulationSelector(
     emulation: String,
     customTerminalTypes: List<String>,
-    onEmulationSelected: (String) -> Unit,
+    onSelectEmulation: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -414,7 +421,7 @@ private fun EmulationSelector(
                     DropdownMenuItem(
                         text = { Text(option) },
                         onClick = {
-                            onEmulationSelected(option)
+                            onSelectEmulation(option)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -431,7 +438,7 @@ private fun EmulationSelector(
                                 )
                             },
                             onClick = {
-                                onEmulationSelected(option)
+                                onSelectEmulation(option)
                                 expanded = false
                             },
                             contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -447,7 +454,7 @@ private fun EmulationSelector(
 @Composable
 private fun DelKeySelector(
     delKey: String,
-    onDelKeySelected: (String) -> Unit,
+    onSelectDelKey: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -486,7 +493,7 @@ private fun DelKeySelector(
                     DropdownMenuItem(
                         text = { Text(option) },
                         onClick = {
-                            onDelKeySelected(option)
+                            onSelectDelKey(option)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -501,7 +508,7 @@ private fun DelKeySelector(
 @Composable
 private fun EncodingSelector(
     encoding: String,
-    onEncodingSelected: (String) -> Unit,
+    onSelectEncoding: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -540,7 +547,7 @@ private fun EncodingSelector(
                     DropdownMenuItem(
                         text = { Text(enc) },
                         onClick = {
-                            onEncodingSelected(enc)
+                            onSelectEncoding(enc)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -556,7 +563,7 @@ private fun EncodingSelector(
 private fun ColorSchemeSelector(
     colorSchemeId: Long,
     availableSchemes: List<ColorScheme>,
-    onColorSchemeSelected: (Long) -> Unit,
+    onSelectColorScheme: (Long) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -600,7 +607,7 @@ private fun ColorSchemeSelector(
                             }
                         },
                         onClick = {
-                            onColorSchemeSelected(scheme.id)
+                            onSelectColorScheme(scheme.id)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -615,7 +622,7 @@ private fun ColorSchemeSelector(
 @Composable
 private fun IconColorSelector(
     selectedColor: String?,
-    onColorSelected: (String?) -> Unit,
+    onSelectColor: (String?) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -658,7 +665,7 @@ private fun IconColorSelector(
                 DropdownMenuItem(
                     text = { Text(stringResource(R.string.profile_icon_color_none)) },
                     onClick = {
-                        onColorSelected(null)
+                        onSelectColor(null)
                         expanded = false
                     },
                     contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
@@ -669,7 +676,7 @@ private fun IconColorSelector(
                         text = { Text(color.localizedName) },
                         onClick = {
                             // Always store hex value in database (language-independent)
-                            onColorSelected(color.hexValue)
+                            onSelectColor(color.hexValue)
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
