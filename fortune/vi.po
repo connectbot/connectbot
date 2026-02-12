@@ -2,22 +2,21 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-12 10:47+0800\n"
+"POT-Creation-Date: 2026-02-12 21:00+0800\n"
 "PO-Revision-Date: 2026-02-12 11:47+0800\n"
 "Last-Translator: Thang Nguyen <Unknown>\n"
 "Language: vi\n"
 "Language-Team: vi <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=(0);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
-"X-Generator: Autopo v1.0.8\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -134,18 +133,17 @@ msgstr "Thu thập thông tin ngẫu nhiên (Entropy)"
 #, c-format
 msgctxt "pubkey_touch_prompt"
 msgid "Touch this box to gather randomness: %1$d%% done"
-msgstr ""
-"Chạm vào hộp thoại này để thu thập thông tin ngẫu nhiên: hoàn thành %1$d%%"
+msgstr "Chạm vào hộp thoại này để thu thập thông tin ngẫu nhiên: hoàn thành %1$d%%"
 
 #. Instructions to user on how to provide randomness by moving their finger
 #. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr ""
-"Để đảm bảo tính ngẫu nhiên trong quá trình tạo khóa, hãy di chuyển ngón tay "
-"của bạn một cách ngẫu nhiên trên hộp bên dưới."
+"Để đảm bảo tính ngẫu nhiên trong quá trình tạo khóa, hãy di chuyển ngón "
+"tay của bạn một cách ngẫu nhiên trên hộp bên dưới."
 
 #. Progress message shown while generating a new SSH key pair
 msgctxt "pubkey_generating"
@@ -269,7 +267,8 @@ msgstr "Xác nhận mật khẩu"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
-msgid "Tap \"Menu\" to create\n"
+msgid ""
+"Tap \"Menu\" to create\n"
 "or import key pairs."
 msgstr "Nhấn vào \"Menu\" để tạo hoặc nhập cặp khóa."
 
@@ -389,9 +388,11 @@ msgstr "Mật khẩu của khóa '%1$s'"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid "Allow remote host to\n"
+msgid ""
+"Allow remote host to\n"
 "use key '%1$s'?"
-msgstr "Cho phép máy chủ từ xa\n"
+msgstr ""
+"Cho phép máy chủ từ xa\n"
 "sử dụng khóa '%1$s'?"
 
 #. The header of the warning a user gets when the host key has changed. Note
@@ -407,18 +408,22 @@ msgstr "CẢNH BÁO: NHẬN DẠNG MÁY CHỦ TỪ XA ĐÃ THAY ĐỔI!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "CÓ THỂ AI ĐÓ ĐANG LÀM ĐIỀU GÌ ĐÓ BẤT THƯỜNG!\n"
-"Có thể ai đó đang nghe lén bạn ngay lúc này (tấn công man-in-the-middle)!\n"
+"Có thể ai đó đang nghe lén bạn ngay lúc này (tấn công man-in-the-middle)!"
+"\n"
 "Cũng có thể là khóa máy chủ vừa mới bị thay đổi."
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid "Host has disconnected.\n"
+msgid ""
+"Host has disconnected.\n"
 "Close session?"
-msgstr "Máy chủ đã ngắt kết nối.\n"
+msgstr ""
+"Máy chủ đã ngắt kết nối.\n"
 "Đóng phiên?"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -426,7 +431,8 @@ msgstr "Máy chủ đã ngắt kết nối.\n"
 #, fuzzy
 msgctxt "prompt_continue_connecting"
 msgid "Are you sure you want to continue connecting?"
-msgstr "Bạn có chắc chắn muốn\n"
+msgstr ""
+"Bạn có chắc chắn muốn\n"
 "tiếp tục kết nối không?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
@@ -510,8 +516,7 @@ msgstr "Mạng đã được khôi phục, kết nối được duy trì."
 #. reconnection
 msgctxt "network_restored_ip_changed"
 msgid "Network restored but IP changed, reconnecting…"
-msgstr ""
-"Mạng đã được khôi phục nhưng địa chỉ IP đã thay đổi, đang kết nối lại…"
+msgstr "Mạng đã được khôi phục nhưng địa chỉ IP đã thay đổi, đang kết nối lại…"
 
 #. Message shown when network is restored but previous network state is
 #. unknown
@@ -717,8 +722,8 @@ msgstr "Phím âm lượng thay đổi kích thước phông chữ"
 msgctxt "pref_volumefont_summary"
 msgid "Font size can also be changed in profile settings"
 msgstr ""
-"Kích thước phông chữ cũng có thể được thay đổi trong cài đặt của từng máy "
-"chủ"
+"Kích thước phông chữ cũng có thể được thay đổi trong cài đặt của từng máy"
+" chủ"
 
 #. Name for the memorize keys preference
 msgctxt "pref_memkeys_title"
@@ -782,7 +787,8 @@ msgstr "Giữ kết nối Wi-Fi"
 msgctxt "pref_wifilock_summary"
 msgid "Prevent Wi-Fi from turning off when a session is active"
 msgstr ""
-"Giữ kết nối Wi-Fi không bị tắt khi đang có một phiên làm việc đang hoạt động"
+"Giữ kết nối Wi-Fi không bị tắt khi đang có một phiên làm việc đang hoạt "
+"động"
 
 #. Name for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_title"
@@ -793,7 +799,8 @@ msgstr "Các mũi tên gồ ghề"
 msgctxt "pref_bumpyarrows_summary"
 msgid "Vibrate when sending arrow keys; useful for laggy connections"
 msgstr ""
-"Rung khi gửi các phím mũi tên. Hữu dụng khi các kết nối không ổn định (lag)"
+"Rung khi gửi các phím mũi tên. Hữu dụng khi các kết nối không ổn định "
+"(lag)"
 
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
@@ -836,10 +843,8 @@ msgstr "Thông báo nhắc background"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
-msgstr ""
-"Gửi thông báo nhắc khi một Terminal đang chạy ở background phát chuông"
+msgid "Send notification when a terminal running in the background sounds a bell."
+msgstr "Gửi thông báo nhắc khi một Terminal đang chạy ở background phát chuông"
 
 #. Preference selection to indicate use of right side of keyboard for special
 #. shortcuts.
@@ -994,8 +999,7 @@ msgstr "Tự động sau khi login"
 #. Host post-login automation preference summary
 msgctxt "hostpref_postlogin_summary"
 msgid "Commands to run on remote server once authenticated"
-msgstr ""
-"Các lệnh sẽ chạy ở server truy cập đến ngay sau khi xác thực thành công"
+msgstr "Các lệnh sẽ chạy ở server truy cập đến ngay sau khi xác thực thành công"
 
 #. Host compression preference title
 msgctxt "hostpref_compression_title"
@@ -1016,8 +1020,7 @@ msgstr "Bắt đầu phiên làm việc"
 #. connection or not
 msgctxt "hostpref_wantsession_summary"
 msgid "Disable this preference to only use port forwards"
-msgstr ""
-"Vô hiệu hoá tuỳ chọn này để chỉ dùng các cổng chuyển tiếp (port forward)"
+msgstr "Vô hiệu hoá tuỳ chọn này để chỉ dùng các cổng chuyển tiếp (port forward)"
 
 #. Setting for whether the host should be reconnected to automatically upon
 #. disconnect
@@ -1098,8 +1101,7 @@ msgstr "Hồ sơ"
 #. a profile does
 msgctxt "hostpref_profile_summary"
 msgid "Select a profile to use its terminal settings"
-msgstr ""
-"Chọn một cấu hình để sử dụng các cài đặt thiết bị đầu cuối của cấu hình đó"
+msgstr "Chọn một cấu hình để sử dụng các cài đặt thiết bị đầu cuối của cấu hình đó"
 
 #. Dropdown option shown when no profile is selected, indicating host-specific
 #. settings will be used instead
@@ -1199,8 +1201,8 @@ msgid ""
 "Force the terminal to a specific size (columns x rows) instead of auto-"
 "sizing to fit the screen."
 msgstr ""
-"Buộc kích thước của giao diện dòng lệnh thành một kích thước cụ thể (số cột "
-"x số hàng) thay vì tự động điều chỉnh để phù hợp với màn hình."
+"Buộc kích thước của giao diện dòng lệnh thành một kích thước cụ thể (số "
+"cột x số hàng) thay vì tự động điều chỉnh để phù hợp với màn hình."
 
 #. Label for the enable force size switch
 msgctxt "profile_editor_force_size_enable"
@@ -1612,22 +1614,21 @@ msgstr "Xác thực bằng mật khẩu đã lưu không thành công"
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
 msgstr ""
-"Thử xác thực 'publickey' với các khoá công khai (public key) bất kì có trong "
-"bộ nhớ trong"
+"Thử xác thực 'publickey' với các khoá công khai (public key) bất kì có "
+"trong bộ nhớ trong"
 
 #. Error message shown when the selected public key is corrupted or invalid
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
 msgstr ""
-"Khoá công khai đã chọn không hợp lệ, hãy thử chọn lại khoá trong trình chỉnh "
-"sửa Host"
+"Khoá công khai đã chọn không hợp lệ, hãy thử chọn lại khoá trong trình "
+"chỉnh sửa Host"
 
 #. Message shown in terminal when attempting public key authentication with a
 #. specific key
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
-msgstr ""
-"Thử xác thực 'publickey' với một khoá công khai (public key) được chỉ định"
+msgstr "Thử xác thực 'publickey' với một khoá công khai (public key) được chỉ định"
 
 #. Message shown in terminal when requesting biometric authentication to
 #. unlock a key. Parameter is the key nickname.
@@ -1644,8 +1645,8 @@ msgid ""
 "Biometric key '%1$s' has been invalidated. This can happen when new "
 "fingerprints are enrolled on the device. Please generate a new key."
 msgstr ""
-"Khóa sinh trắc học '%1$s' đã bị hủy. Điều này có thể xảy ra khi có thêm dấu "
-"vân tay được đăng ký trên thiết bị. Vui lòng tạo một khóa mới."
+"Khóa sinh trắc học '%1$s' đã bị hủy. Điều này có thể xảy ra khi có thêm "
+"dấu vân tay được đăng ký trên thiết bị. Vui lòng tạo một khóa mới."
 
 #. Message shown in terminal when public key authentication fails. Parameter
 #. is the key nickname.
@@ -1806,7 +1807,8 @@ msgstr "Tùy chỉnh"
 msgctxt "empty_custom_schemes"
 msgid "No custom schemes. Tap \"New Scheme\" to create one."
 msgstr ""
-"Không có lược đồ tùy chỉnh nào. Nhấn vào \"Lược đồ mới\" để tạo một lược đồ."
+"Không có lược đồ tùy chỉnh nào. Nhấn vào \"Lược đồ mới\" để tạo một lược "
+"đồ."
 
 #. Button text to edit full color palette
 msgctxt "button_edit_palette"
@@ -1881,8 +1883,8 @@ msgstr "Khôi phục tất cả màu sắc mặc định?"
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action cannot "
-"be undone."
+"This will reset all 256 colors to their default values. This action "
+"cannot be undone."
 msgstr ""
 "Thao tác này sẽ đặt lại tất cả 256 màu về giá trị mặc định. Thao tác này "
 "không thể hoàn tác."
@@ -2301,11 +2303,11 @@ msgstr "Bảo vệ khóa này bằng dấu vân tay của bạn"
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use this "
-"feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use "
+"this feature."
 msgstr ""
-"Chưa có dấu vân tay nào được đăng ký. Hãy thiết lập dấu vân tay trong cài "
-"đặt thiết bị để sử dụng tính năng này."
+"Chưa có dấu vân tay nào được đăng ký. Hãy thiết lập dấu vân tay trong cài"
+" đặt thiết bị để sử dụng tính năng này."
 
 #. Warning shown when key type doesn\'t support biometric protection
 msgctxt "pubkey_biometric_key_type_warning"
@@ -2433,11 +2435,12 @@ msgstr "Duy trì kết nối"
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch apps."
+"background. Without permission, connections may close when you switch "
+"apps."
 msgstr ""
-"Việc hiển thị thông báo là bắt buộc để duy trì kết nối khi ứng dụng chạy ở "
-"chế độ nền. Nếu không có quyền, kết nối có thể bị ngắt khi bạn chuyển đổi "
-"giữa các ứng dụng."
+"Việc hiển thị thông báo là bắt buộc để duy trì kết nối khi ứng dụng chạy "
+"ở chế độ nền. Nếu không có quyền, kết nối có thể bị ngắt khi bạn chuyển "
+"đổi giữa các ứng dụng."
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
@@ -2463,11 +2466,11 @@ msgstr "Yêu cầu quyền truy cập"
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification "
-"permission in app settings."
+"To keep connections alive in the background, you must enable notification"
+" permission in app settings."
 msgstr ""
-"Để duy trì kết nối trong nền, bạn phải bật quyền thông báo trong cài đặt ứng "
-"dụng."
+"Để duy trì kết nối trong nền, bạn phải bật quyền thông báo trong cài đặt "
+"ứng dụng."
 
 #. Button text to open ConnectBot app settings page where user can grant
 #. notification permission.
@@ -2478,11 +2481,10 @@ msgstr "Mở cài đặt"
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid ""
-"Are you trying to access a local host? Grant local network permissions."
+msgid "Are you trying to access a local host? Grant local network permissions."
 msgstr ""
-"Bạn có đang cố gắng truy cập máy chủ cục bộ không? Hãy cấp quyền truy cập "
-"mạng cục bộ."
+"Bạn có đang cố gắng truy cập máy chủ cục bộ không? Hãy cấp quyền truy cập"
+" mạng cục bộ."
 
 #. Loading message shown during app initialization
 msgctxt "loading_message"
@@ -2550,11 +2552,11 @@ msgstr "Thử lại"
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug log "
-"copied above"
+"If the problem persists, please report this issue at %1$s with the debug "
+"log copied above"
 msgstr ""
-"Nếu sự cố vẫn tiếp diễn, vui lòng báo cáo vấn đề này tại %1$s và đính kèm "
-"bản ghi gỡ lỗi đã sao chép ở trên"
+"Nếu sự cố vẫn tiếp diễn, vui lòng báo cáo vấn đề này tại %1$s và đính kèm"
+" bản ghi gỡ lỗi đã sao chép ở trên"
 
 #. Title for warnings section shown during database migration
 msgctxt "migration_warnings_title"
@@ -2594,11 +2596,11 @@ msgstr "Bạn có chắc muốn xóa máy chủ '%1$s' không?"
 #, c-format
 msgctxt "forget_host_keys_confirm"
 msgid ""
-"Are you sure you want to forget the stored host keys for '%1$s'? You will be "
-"prompted to verify the host key on the next connection."
+"Are you sure you want to forget the stored host keys for '%1$s'? You will"
+" be prompted to verify the host key on the next connection."
 msgstr ""
-"Bạn có chắc muốn xóa các khóa máy chủ đã lưu cho '%1$s' không? Bạn sẽ được "
-"yêu cầu xác minh khóa máy chủ trong lần kết nối tiếp theo."
+"Bạn có chắc muốn xóa các khóa máy chủ đã lưu cho '%1$s' không? Bạn sẽ "
+"được yêu cầu xác minh khóa máy chủ trong lần kết nối tiếp theo."
 
 #. Menu selection to edit a pubkey details (e.g., nickname)
 msgctxt "list_pubkey_edit"
@@ -2711,11 +2713,11 @@ msgstr "Nhật ký đã được sao chép vào bộ nhớ tạm"
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at https://connectbot."
-"org/bug"
+"To report a bug, copy these logs and open a new issue at "
+"https://connectbot.org/bug"
 msgstr ""
-"Để báo cáo lỗi, hãy sao chép các nhật ký này và mở một báo cáo mới tại https:"
-"//connectbot.org/bug"
+"Để báo cáo lỗi, hãy sao chép các nhật ký này và mở một báo cáo mới tại "
+"https://connectbot.org/bug"
 
 #. Message shown when no logs are available
 msgctxt "no_logs_available"
@@ -2928,8 +2930,8 @@ msgstr "Đã xuất %1$d máy chủ và %2$d cấu hình"
 msgctxt "import_hosts_success"
 msgid "Imported %1$d hosts (%2$d skipped) and %3$d profiles (%4$d skipped)"
 msgstr ""
-"Đã nhập %1$d máy chủ (%2$d máy bị bỏ qua) và %3$d cấu hình (%4$d cấu hình bị "
-"bỏ qua)"
+"Đã nhập %1$d máy chủ (%2$d máy bị bỏ qua) và %3$d cấu hình (%4$d cấu hình"
+" bị bỏ qua)"
 
 #. Error message when host export fails
 #, c-format
@@ -3004,8 +3006,8 @@ msgstr "Xác thực khi khởi động"
 msgctxt "pref_auth_on_launch_summary"
 msgid "Require fingerprint, face, or device PIN when opening the app"
 msgstr ""
-"Yêu cầu sử dụng dấu vân tay, khuôn mặt hoặc mã PIN của thiết bị khi mở ứng "
-"dụng"
+"Yêu cầu sử dụng dấu vân tay, khuôn mặt hoặc mã PIN của thiết bị khi mở "
+"ứng dụng"
 
 #. Category title for security preferences in settings
 msgctxt "pref_security_category"
@@ -3031,3 +3033,4 @@ msgstr "Mở khóa ConnectBot"
 msgctxt "auth_prompt_subtitle"
 msgid "Verify your identity to continue"
 msgstr "Xác minh danh tính của bạn để tiếp tục"
+

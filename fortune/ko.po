@@ -2,22 +2,21 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-12 10:47+0800\n"
+"POT-Creation-Date: 2026-02-12 21:00+0800\n"
 "PO-Revision-Date: 2026-02-12 11:07+0800\n"
 "Last-Translator: Steven CVAL <stevencval@gmail.com>\n"
 "Language: ko\n"
 "Language-Team: ko <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=(0);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
-"X-Generator: Autopo v1.0.8\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -140,8 +139,8 @@ msgstr "이 사각형의 랜덤으로 터치하세요: %1$d%% 완료"
 #. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr "키 생성시 랜덤을 보장하기 위해 아래의 사각형 안에서 손가락을 랜덤으로 이동하십시오."
 
 #. Progress message shown while generating a new SSH key pair
@@ -266,7 +265,8 @@ msgstr "비밀번호 확인"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
-msgid "Tap \"Menu\" to create\n"
+msgid ""
+"Tap \"Menu\" to create\n"
 "or import key pairs."
 msgstr "\"메뉴\"를 탭하여 키 쌍을 생성하거나 가져옵니다."
 
@@ -386,7 +386,8 @@ msgstr "키 '%1$s'에 대한 비밀번호"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid "Allow remote host to\n"
+msgid ""
+"Allow remote host to\n"
 "use key '%1$s'?"
 msgstr "원격 호스트가 키 '%1$s'를 사용하도록 허용합니까?"
 
@@ -403,7 +404,8 @@ msgstr "경고: 원격 호스트의 식별이 바뀌었습니다!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "누군가가 나쁜 짓을 하고 있는 것일 수 있습니다!\n"
@@ -412,9 +414,11 @@ msgstr ""
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid "Host has disconnected.\n"
+msgid ""
+"Host has disconnected.\n"
 "Close session?"
-msgstr "호스트 연결이 끊겼습니다.\n"
+msgstr ""
+"호스트 연결이 끊겼습니다.\n"
 "세션을 닫을까요?"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -422,7 +426,8 @@ msgstr "호스트 연결이 끊겼습니다.\n"
 #, fuzzy
 msgctxt "prompt_continue_connecting"
 msgid "Are you sure you want to continue connecting?"
-msgstr "정말로 연결을 진행하기\n"
+msgstr ""
+"정말로 연결을 진행하기\n"
 "바랍니까?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
@@ -827,8 +832,7 @@ msgstr "백그라운드 알림"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
+msgid "Send notification when a terminal running in the background sounds a bell."
 msgstr "백그라운드에서 실행중인 터미널 벨을 울리 때 알립니다."
 
 #. Preference selection to indicate use of right side of keyboard for special
@@ -1623,8 +1627,7 @@ msgctxt "terminal_auth_biometric_invalidated"
 msgid ""
 "Biometric key '%1$s' has been invalidated. This can happen when new "
 "fingerprints are enrolled on the device. Please generate a new key."
-msgstr ""
-"생체 인식 키 '%1$s'가 무효화되었습니다. 이는 장치에 새로운 지문이 등록될 때 발생할 수 있습니다. 새 키를 생성해 주세요."
+msgstr "생체 인식 키 '%1$s'가 무효화되었습니다. 이는 장치에 새로운 지문이 등록될 때 발생할 수 있습니다. 새 키를 생성해 주세요."
 
 #. Message shown in terminal when public key authentication fails. Parameter
 #. is the key nickname.
@@ -1857,8 +1860,8 @@ msgstr "모든 색상을 초기화합니까?"
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action cannot "
-"be undone."
+"This will reset all 256 colors to their default values. This action "
+"cannot be undone."
 msgstr "이 작업은 모든 256色的 색상을 기본값으로 재설정합니다. 이 동작은 실행 취소할 수 없습니다."
 
 #. Displayed in the notification bar that connections are active
@@ -2275,8 +2278,8 @@ msgstr "지문으로 이 키를 보호하세요"
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use this "
-"feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use "
+"this feature."
 msgstr "지문이 등록되지 않았습니다. 이 기능을 사용하려면 기기 설정에서 지문을 등록하세요."
 
 #. Warning shown when key type doesn\'t support biometric protection
@@ -2405,7 +2408,8 @@ msgstr "연결 유지하기"
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch apps."
+"background. Without permission, connections may close when you switch "
+"apps."
 msgstr "백그라운드에서 연결을 유지하기 위해 알림 표시가 필요합니다. 권한 없이 앱을 전환할 때 연결이 종료될 수 있습니다."
 
 #. Button text to grant notification permission in the permission explanation
@@ -2432,8 +2436,8 @@ msgstr "권한이 필요합니다"
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification "
-"permission in app settings."
+"To keep connections alive in the background, you must enable notification"
+" permission in app settings."
 msgstr "백그라운드에서 연결을 유지하려면 앱 설정에서 알림 권한을 활성화해야 합니다"
 
 #. Button text to open ConnectBot app settings page where user can grant
@@ -2445,8 +2449,7 @@ msgstr "설정 열기"
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid ""
-"Are you trying to access a local host? Grant local network permissions."
+msgid "Are you trying to access a local host? Grant local network permissions."
 msgstr "로컬 호스트에 액세스하려고 하십니까? 로컬 네트워크 권한을 부여하십시오."
 
 #. Loading message shown during app initialization
@@ -2515,8 +2518,8 @@ msgstr "재시도"
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug log "
-"copied above"
+"If the problem persists, please report this issue at %1$s with the debug "
+"log copied above"
 msgstr "문제가 지속되면 위에 복사한 디버그 로그와 함께 %1$s에서 이 문제를 보고해 주십시오"
 
 #. Title for warnings section shown during database migration
@@ -2557,8 +2560,8 @@ msgstr "호스트 '%1$s'를 삭제하시겠습니까"
 #, c-format
 msgctxt "forget_host_keys_confirm"
 msgid ""
-"Are you sure you want to forget the stored host keys for '%1$s'? You will be "
-"prompted to verify the host key on the next connection."
+"Are you sure you want to forget the stored host keys for '%1$s'? You will"
+" be prompted to verify the host key on the next connection."
 msgstr "'%1$s'에 저장된 호스트 키를 삭제하시겠습니까? 다음 연결 시 호스트 키를 확인하라는 메시지가 표시됩니다."
 
 #. Menu selection to edit a pubkey details (e.g., nickname)
@@ -2672,8 +2675,8 @@ msgstr "클립보드로 로그 복사됨"
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at https://connectbot."
-"org/bug"
+"To report a bug, copy these logs and open a new issue at "
+"https://connectbot.org/bug"
 msgstr "버그를報告하려면 이러한 로그를 복사하고 https://connectbot.org/bug에서 새로운 문제를 열어주세요"
 
 #. Message shown when no logs are available
@@ -2986,3 +2989,4 @@ msgstr "ConnectBot 잠금 해제"
 msgctxt "auth_prompt_subtitle"
 msgid "Verify your identity to continue"
 msgstr "계속하려면 본인 정보를 확인하세요"
+
