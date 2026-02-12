@@ -2,26 +2,26 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-12 10:47+0800\n"
+"POT-Creation-Date: 2026-02-12 21:00+0800\n"
 "PO-Revision-Date: 2026-02-12 11:14+0800\n"
 "Last-Translator: Sergey Ponomarev <stokito@gmail.com>\n"
 "Language: ru\n"
 "Language-Team: ru <LL@li.org>\n"
-"Plural-Forms: nplurals=4; plural=(((((0 == 0)) && (((n % 10) >= 2 && (n % "
-"10) <= 4))) && (!(((n % 100) >= 12 && (n % 100) <= 14)))) ? 1 : (((((0 == "
-"0)) && (((n % 10) == 0))) || (((0 == 0)) && (((n % 10) >= 5 && (n % 10) <= "
-"9)))) || (((0 == 0)) && (((n % 100) >= 11 && (n % 100) <= 14)))) ? 2 : ((((0 "
-"== 0)) && (((n % 10) == 1))) && (!(((n % 100) == 11)))) ? 0 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(((((0 == 0)) && (((n % 10) >= 2 && (n %"
+" 10) <= 4))) && (!(((n % 100) >= 12 && (n % 100) <= 14)))) ? 1 : (((((0 "
+"== 0)) && (((n % 10) == 0))) || (((0 == 0)) && (((n % 10) >= 5 && (n % "
+"10) <= 9)))) || (((0 == 0)) && (((n % 100) >= 11 && (n % 100) <= 14)))) ?"
+" 2 : ((((0 == 0)) && (((n % 10) == 1))) && (!(((n % 100) == 11)))) ? 0 : "
+"3);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
-"X-Generator: Autopo v1.0.8\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -138,15 +138,14 @@ msgstr "Сбор энтропии"
 #, c-format
 msgctxt "pubkey_touch_prompt"
 msgid "Touch this box to gather randomness: %1$d%% done"
-msgstr ""
-"Касайтесь поля, чтобы генерировать случайную информацию: %1$d%% завершено"
+msgstr "Касайтесь поля, чтобы генерировать случайную информацию: %1$d%% завершено"
 
 #. Instructions to user on how to provide randomness by moving their finger
 #. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr ""
 "Чтобы обеспечить случайную выборку, при генерации ключа, водите пальцем "
 "случайным образом по полю ниже."
@@ -273,7 +272,8 @@ msgstr "Подтвердите пароль"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
-msgid "Tap \"Menu\" to create\n"
+msgid ""
+"Tap \"Menu\" to create\n"
 "or import key pairs."
 msgstr "Нажмите «Меню», чтобы создать или импортировать пары ключей."
 
@@ -393,9 +393,11 @@ msgstr "Пароль для ключа '%1$s'"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid "Allow remote host to\n"
+msgid ""
+"Allow remote host to\n"
 "use key '%1$s'?"
-msgstr "Разрешить удалённому\n"
+msgstr ""
+"Разрешить удалённому\n"
 "серверу использовать ключ '%1$s'?"
 
 #. The header of the warning a user gets when the host key has changed. Note
@@ -411,17 +413,20 @@ msgstr "ВНИМАНИЕ! ИДЕНТИФИКАЦИЯ УДАЛЕННОГО СЕР
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
-"Похоже есть возможность что вас ломают. Или кто-то изменил ключ на удаленном "
-"сервере."
+"Похоже есть возможность что вас ломают. Или кто-то изменил ключ на "
+"удаленном сервере."
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid "Host has disconnected.\n"
+msgid ""
+"Host has disconnected.\n"
 "Close session?"
-msgstr "Сервер отключился.\n"
+msgstr ""
+"Сервер отключился.\n"
 "Закрыть сессию ?"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -429,7 +434,8 @@ msgstr "Сервер отключился.\n"
 #, fuzzy
 msgctxt "prompt_continue_connecting"
 msgid "Are you sure you want to continue connecting?"
-msgstr "Хотите продолжить\n"
+msgstr ""
+"Хотите продолжить\n"
 "попытки соединения?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
@@ -674,8 +680,7 @@ msgstr "Жест для Page Up/Down"
 #. Summary for the full screen preference
 msgctxt "pref_pg_updn_gesture_summary"
 msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
-msgstr ""
-"Проведите по левой трети экрана, чтобы послать в терминал Page Up/Down"
+msgstr "Проведите по левой трети экрана, чтобы послать в терминал Page Up/Down"
 
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
@@ -701,8 +706,8 @@ msgstr "Shift+Num как F-клавиши"
 msgctxt "pref_shiftfkeys_summary"
 msgid "On hardware keyboards, number keys send F1-F10 with shift"
 msgstr ""
-"На аппаратной клавиатуре цифровые клавиши при нажатии Shift будут посылать "
-"F1-F10"
+"На аппаратной клавиатуре цифровые клавиши при нажатии Shift будут "
+"посылать F1-F10"
 
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
@@ -713,8 +718,8 @@ msgstr "Ctrl+Num как F-клавиши"
 msgctxt "pref_ctrlfkeys_summary"
 msgid "On software keyboards, number keys send F1-F10 with ctrl"
 msgstr ""
-"На экранной клавиатуре цифровые клавиши при нажатии Ctrl будут посылать F1-"
-"F10"
+"На экранной клавиатуре цифровые клавиши при нажатии Ctrl будут посылать "
+"F1-F10"
 
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
@@ -843,8 +848,7 @@ msgstr "Фоновые уведомления"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
+msgid "Send notification when a terminal running in the background sounds a bell."
 msgstr "Включить уведомления для терминала работающего в фоновом процессе"
 
 #. Preference selection to indicate use of right side of keyboard for special
@@ -1021,8 +1025,7 @@ msgstr "Начать сеанс оболочки"
 #. connection or not
 msgctxt "hostpref_wantsession_summary"
 msgid "Disable this preference to only use port forwards"
-msgstr ""
-"Отключите эту настройку, чтобы использовать только переадресацию портов"
+msgstr "Отключите эту настройку, чтобы использовать только переадресацию портов"
 
 #. Setting for whether the host should be reconnected to automatically upon
 #. disconnect
@@ -1644,9 +1647,9 @@ msgid ""
 "Biometric key '%1$s' has been invalidated. This can happen when new "
 "fingerprints are enrolled on the device. Please generate a new key."
 msgstr ""
-"Биометрический ключ «%1$s» был аннулирован. Это может произойти, когда на "
-"устройстве регистрируются новые отпечатки пальцев. Пожалуйста, сгенерируйте "
-"новый ключ."
+"Биометрический ключ «%1$s» был аннулирован. Это может произойти, когда на"
+" устройстве регистрируются новые отпечатки пальцев. Пожалуйста, "
+"сгенерируйте новый ключ."
 
 #. Message shown in terminal when public key authentication fails. Parameter
 #. is the key nickname.
@@ -1806,8 +1809,7 @@ msgstr "Настройка"
 #. Empty state message when no custom schemes exist
 msgctxt "empty_custom_schemes"
 msgid "No custom schemes. Tap \"New Scheme\" to create one."
-msgstr ""
-"Нет пользовательских схем. Нажмите «Новая схема», чтобы создать новую."
+msgstr "Нет пользовательских схем. Нажмите «Новая схема», чтобы создать новую."
 
 #. Button text to edit full color palette
 msgctxt "button_edit_palette"
@@ -1882,8 +1884,8 @@ msgstr "Сбросить все цвета?"
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action cannot "
-"be undone."
+"This will reset all 256 colors to their default values. This action "
+"cannot be undone."
 msgstr ""
 "Это приведет к сбросу всех 256 цветов к их значениям по умолчанию. Это "
 "действие нельзя отменить."
@@ -2302,11 +2304,11 @@ msgstr "Защитите этот ключ отпечатком пальца"
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use this "
-"feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use "
+"this feature."
 msgstr ""
-"Отпечаток пальца не зарегистрирован. Настройте отпечаток пальца в настройках "
-"устройства, чтобы использовать эту функцию."
+"Отпечаток пальца не зарегистрирован. Настройте отпечаток пальца в "
+"настройках устройства, чтобы использовать эту функцию."
 
 #. Warning shown when key type doesn\'t support biometric protection
 msgctxt "pubkey_biometric_key_type_warning"
@@ -2434,11 +2436,12 @@ msgstr "Поддерживать соединения активными"
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch apps."
+"background. Without permission, connections may close when you switch "
+"apps."
 msgstr ""
 "Отображение уведомления необходимо для поддержания соединений в фоновом "
-"режиме. Без разрешения соединения могут закрываться при переключении между "
-"приложениями."
+"режиме. Без разрешения соединения могут закрываться при переключении "
+"между приложениями."
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
@@ -2464,11 +2467,11 @@ msgstr "Требуется разрешение"
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification "
-"permission in app settings."
+"To keep connections alive in the background, you must enable notification"
+" permission in app settings."
 msgstr ""
-"Чтобы подключения оставались активными в фоновом режиме, необходимо включить "
-"разрешение на уведомления в настройках приложения."
+"Чтобы подключения оставались активными в фоновом режиме, необходимо "
+"включить разрешение на уведомления в настройках приложения."
 
 #. Button text to open ConnectBot app settings page where user can grant
 #. notification permission.
@@ -2479,8 +2482,7 @@ msgstr "Открыть настройки"
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid ""
-"Are you trying to access a local host? Grant local network permissions."
+msgid "Are you trying to access a local host? Grant local network permissions."
 msgstr ""
 "Вы пытаетесь получить доступ к локальному хосту? Выберите разрешение на "
 "доступ к локальной сети."
@@ -2551,11 +2553,11 @@ msgstr "Повторить"
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug log "
-"copied above"
+"If the problem persists, please report this issue at %1$s with the debug "
+"log copied above"
 msgstr ""
-"Если проблема сохраняется, пожалуйста, сообщите об этой проблеме в %1$s с "
-"отладочной информацией, скопированной выше"
+"Если проблема сохраняется, пожалуйста, сообщите об этой проблеме в %1$s с"
+" отладочной информацией, скопированной выше"
 
 #. Title for warnings section shown during database migration
 msgctxt "migration_warnings_title"
@@ -2595,8 +2597,8 @@ msgstr "Вы уверены, что хотите удалить хост «%1$s�
 #, c-format
 msgctxt "forget_host_keys_confirm"
 msgid ""
-"Are you sure you want to forget the stored host keys for '%1$s'? You will be "
-"prompted to verify the host key on the next connection."
+"Are you sure you want to forget the stored host keys for '%1$s'? You will"
+" be prompted to verify the host key on the next connection."
 msgstr ""
 "Вы уверены, что хотите удалить сохраненные ключи хоста для \"%1$s\"? При "
 "следующем подключении вам будет предложено подтвердить ключ хоста."
@@ -2712,11 +2714,11 @@ msgstr "Журналы скопированы в буфер обмена"
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at https://connectbot."
-"org/bug"
-msgstr ""
-"Чтобы сообщить об ошибке скопируйте эти логи и откройте новое сообщение на "
+"To report a bug, copy these logs and open a new issue at "
 "https://connectbot.org/bug"
+msgstr ""
+"Чтобы сообщить об ошибке скопируйте эти логи и откройте новое сообщение "
+"на https://connectbot.org/bug"
 
 #. Message shown when no logs are available
 msgctxt "no_logs_available"
@@ -2929,7 +2931,8 @@ msgstr "Экспортировано %1$d хостов и %2$d профилей"
 msgctxt "import_hosts_success"
 msgid "Imported %1$d hosts (%2$d skipped) and %3$d profiles (%4$d skipped)"
 msgstr ""
-"Импортировано %1$d хостов (%2$d пропущено) и %3$d профилей (%4$d пропущено)"
+"Импортировано %1$d хостов (%2$d пропущено) и %3$d профилей (%4$d "
+"пропущено)"
 
 #. Error message when host export fails
 #, c-format
@@ -3004,8 +3007,8 @@ msgstr "Аутентификация при запуске"
 msgctxt "pref_auth_on_launch_summary"
 msgid "Require fingerprint, face, or device PIN when opening the app"
 msgstr ""
-"Требуйте ввод отпечатка пальца, распознавание лица или PIN-код устройства "
-"при запуске приложения"
+"Требуйте ввод отпечатка пальца, распознавание лица или PIN-код устройства"
+" при запуске приложения"
 
 #. Category title for security preferences in settings
 msgctxt "pref_security_category"
@@ -3031,3 +3034,4 @@ msgstr "Разблокируйте ConnectBot"
 msgctxt "auth_prompt_subtitle"
 msgid "Verify your identity to continue"
 msgstr "Подтвердите свою личность, чтобы продолжить"
+

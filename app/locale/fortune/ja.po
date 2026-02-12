@@ -2,22 +2,21 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-12 10:47+0800\n"
+"POT-Creation-Date: 2026-02-12 21:00+0800\n"
 "PO-Revision-Date: 2026-02-12 11:03+0800\n"
 "Last-Translator: Naofumi Fukue <naofum@gmail.com>\n"
 "Language: ja\n"
 "Language-Team: ja <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=(0);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
-"X-Generator: Autopo v1.0.8\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -140,8 +139,8 @@ msgstr "この四角内をランダムに触ってください: %1$d%% 完了"
 #. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr "鍵作成時のランダムさを保証するため、下の四角内で指をランダムに動かしてください。"
 
 #. Progress message shown while generating a new SSH key pair
@@ -266,7 +265,8 @@ msgstr "パスワードを確認してください"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
-msgid "Tap \"Menu\" to create\n"
+msgid ""
+"Tap \"Menu\" to create\n"
 "or import key pairs."
 msgstr "「メニュー」をタップして、キーペアを作成またはインポートします。"
 
@@ -386,7 +386,8 @@ msgstr "鍵 '%1$s' のパスワード"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid "Allow remote host to\n"
+msgid ""
+"Allow remote host to\n"
 "use key '%1$s'?"
 msgstr "リモートホストが鍵 '%1$s' を使用することを許可しますか?"
 
@@ -403,7 +404,8 @@ msgstr "警告: リモートホストのIDが変わっています!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "何者かが不正を行っている可能性があります!\n"
@@ -412,9 +414,11 @@ msgstr ""
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid "Host has disconnected.\n"
+msgid ""
+"Host has disconnected.\n"
 "Close session?"
-msgstr "ホスト切断されました．\n"
+msgstr ""
+"ホスト切断されました．\n"
 "セッションを閉じますか？"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -826,8 +830,7 @@ msgstr "バックグラウンド通知"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
+msgid "Send notification when a terminal running in the background sounds a bell."
 msgstr "バックグランドで実行中の端末がベルを鳴らしたとき通知します"
 
 #. Preference selection to indicate use of right side of keyboard for special
@@ -1622,8 +1625,7 @@ msgctxt "terminal_auth_biometric_invalidated"
 msgid ""
 "Biometric key '%1$s' has been invalidated. This can happen when new "
 "fingerprints are enrolled on the device. Please generate a new key."
-msgstr ""
-"生体認証キー「%1$s」が無効になりました。これは、デバイスに新しい指紋が登録された場合に発生する可能性があります。新しいキーを生成してください。"
+msgstr "生体認証キー「%1$s」が無効になりました。これは、デバイスに新しい指紋が登録された場合に発生する可能性があります。新しいキーを生成してください。"
 
 #. Message shown in terminal when public key authentication fails. Parameter
 #. is the key nickname.
@@ -1856,8 +1858,8 @@ msgstr "すべての色をリセットしますか?"
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action cannot "
-"be undone."
+"This will reset all 256 colors to their default values. This action "
+"cannot be undone."
 msgstr "これにより、256色すべてがデフォルト値にリセットされます。この操作は取り消すことができません。"
 
 #. Displayed in the notification bar that connections are active
@@ -2274,8 +2276,8 @@ msgstr "この鍵を指紋で保護する"
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use this "
-"feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use "
+"this feature."
 msgstr "フィンガープリントが登録されていません。 この機能を使用するには、デバイスの設定でフィンガープリントを設定してください"
 
 #. Warning shown when key type doesn\'t support biometric protection
@@ -2404,7 +2406,8 @@ msgstr "接続を維持する"
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch apps."
+"background. Without permission, connections may close when you switch "
+"apps."
 msgstr "通知を表示することはバックグラウンドで接続を維持するために必要です。許可なくして、接続はアプリを切り替えたときに閉じることがあります。"
 
 #. Button text to grant notification permission in the permission explanation
@@ -2431,8 +2434,8 @@ msgstr "パーミッションが必要です"
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification "
-"permission in app settings."
+"To keep connections alive in the background, you must enable notification"
+" permission in app settings."
 msgstr "バックグラウンドで接続を維持するにはアプリの設定で通知の許可を有効にする必要があります"
 
 #. Button text to open ConnectBot app settings page where user can grant
@@ -2444,8 +2447,7 @@ msgstr "設定を開く"
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid ""
-"Are you trying to access a local host? Grant local network permissions."
+msgid "Are you trying to access a local host? Grant local network permissions."
 msgstr "ローカルホストにアクセスしようとしていますか ローカルネットワークのパーミッションを付与してください"
 
 #. Loading message shown during app initialization
@@ -2514,8 +2516,8 @@ msgstr "リトライ"
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug log "
-"copied above"
+"If the problem persists, please report this issue at %1$s with the debug "
+"log copied above"
 msgstr "問題が解決しない場合はデバッグログを上でコピーして%1$sに報告してください"
 
 #. Title for warnings section shown during database migration
@@ -2556,8 +2558,8 @@ msgstr "ホスト'%1$s'を削除してよいですか?"
 #, c-format
 msgctxt "forget_host_keys_confirm"
 msgid ""
-"Are you sure you want to forget the stored host keys for '%1$s'? You will be "
-"prompted to verify the host key on the next connection."
+"Are you sure you want to forget the stored host keys for '%1$s'? You will"
+" be prompted to verify the host key on the next connection."
 msgstr "「保存されているホストキーを「%1$s」に対して削除してもよろしいですか？ 次回の接続時にホストキーの確認を求められます。」"
 
 #. Menu selection to edit a pubkey details (e.g., nickname)
@@ -2671,8 +2673,8 @@ msgstr "クリップボードにログをコピーしました"
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at https://connectbot."
-"org/bug"
+"To report a bug, copy these logs and open a new issue at "
+"https://connectbot.org/bug"
 msgstr "バグを報告するにはこれらのログをコピーしてhttps://connectbot.org/bugで新しい課題を開いてください"
 
 #. Message shown when no logs are available
@@ -2985,3 +2987,4 @@ msgstr "ConnectBotのロックを解除"
 msgctxt "auth_prompt_subtitle"
 msgid "Verify your identity to continue"
 msgstr "本人確認を行い、続行してください。"
+
