@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-26 16:39-0800\n"
+"POT-Creation-Date: 2026-02-12 10:47+0800\n"
 "PO-Revision-Date: 2020-01-23 07:35+0000\n"
 "Last-Translator: irmak <Unknown>\n"
 "Language: tr\n"
@@ -16,7 +16,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -240,6 +240,42 @@ msgctxt "pubkey_import_button"
 msgid "Import"
 msgstr ""
 
+#. Checkbox label in the import encrypted key dialog. When checked, the
+#. imported key will be encrypted for storage on the device.
+msgctxt "pubkey_import_encrypt_key"
+msgid "Encrypt key for storage"
+msgstr ""
+
+#. Checkbox label that appears when 'Encrypt key for storage' is checked. When
+#. checked, the same password used to decrypt the imported key will be used to
+#. encrypt it for storage.
+msgctxt "pubkey_import_reuse_password"
+msgid "Use same password for encryption"
+msgstr ""
+
+#. Label for the password field when entering a new password to encrypt the
+#. imported key for storage.
+msgctxt "pubkey_import_new_password"
+msgid "New password"
+msgstr ""
+
+#. Label for the password confirmation field when setting a new password to
+#. encrypt the imported key.
+msgctxt "pubkey_import_confirm_password"
+msgid "Confirm password"
+msgstr ""
+
+#. Note that the '\n' just splits lines, so it's actually "create or import"
+msgctxt "pubkey_list_empty"
+msgid ""
+"Tap \"Menu\" to create\n"
+"or import key pairs."
+msgstr ""
+
+msgctxt "pubkey_unknown_format"
+msgid "Unknown format"
+msgstr ""
+
 #. Context menu action to change the password protecting a private key
 msgctxt "pubkey_change_password"
 msgid "Change password"
@@ -307,6 +343,12 @@ msgstr "Hedef (Anasistem:Port):"
 msgctxt "prompt_old_password"
 msgid "Old password:"
 msgstr "Eski şifre:"
+
+#. Prompt for user to enter their username when the host has no username
+#. configured.
+msgctxt "prompt_username"
+msgid "Username:"
+msgstr ""
 
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
@@ -543,6 +585,11 @@ msgctxt "font_validating"
 msgid "Validating font…"
 msgstr ""
 
+#. Message shown while downloading a font from Google Fonts
+msgctxt "font_downloading"
+msgid "Downloading font…"
+msgstr ""
+
 #. Title for importing local font
 msgctxt "pref_localfont_title"
 msgid "Import local font"
@@ -588,6 +635,16 @@ msgstr ""
 msgctxt "pref_ui_category"
 msgid "User interface"
 msgstr "Kullanıcı arayüzü"
+
+#. Name for the language preference
+msgctxt "pref_language_title"
+msgid "Language"
+msgstr ""
+
+#. Default option for language preference that uses the system locale
+msgctxt "pref_language_system_default"
+msgid "System default"
+msgstr ""
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
@@ -660,8 +717,9 @@ msgid "Volume keys change font size"
 msgstr ""
 
 #. Summary for the volume keys control font size preference
+#, fuzzy
 msgctxt "pref_volumefont_summary"
-msgid "Font size can also be changed in per-host settings"
+msgid "Font size can also be changed in profile settings"
 msgstr ""
 
 #. Name for the memorize keys preference
@@ -995,6 +1053,26 @@ msgctxt "hostpref_username_title"
 msgid "Username"
 msgstr "Kullanıcı Adı"
 
+#. Password field supporting text in host editor
+msgctxt "hostpref_save_password_summary"
+msgid "Store login password securely for automatic authentication"
+msgstr ""
+
+#. Password field title in host editor
+msgctxt "hostpref_password_title"
+msgid "Password"
+msgstr ""
+
+#. Password field label when there is an existing password saved
+msgctxt "hostpref_password_unchanged"
+msgid "Password (unchanged)"
+msgstr ""
+
+#. Button to clear a saved password
+msgctxt "hostpref_clear_password"
+msgid "Clear saved password"
+msgstr ""
+
 #. Hostname field title for host editor preference
 msgctxt "hostpref_hostname_title"
 msgid "Host"
@@ -1103,6 +1181,33 @@ msgstr ""
 #, c-format
 msgctxt "profile_editor_font_size_title"
 msgid "Font Size: %d"
+msgstr ""
+
+#. Subsection title for force size settings
+msgctxt "profile_editor_force_size_title"
+msgid "Force Size"
+msgstr ""
+
+#. Summary text explaining what force size does
+msgctxt "profile_editor_force_size_summary"
+msgid ""
+"Force the terminal to a specific size (columns x rows) instead of auto-"
+"sizing to fit the screen."
+msgstr ""
+
+#. Label for the enable force size switch
+msgctxt "profile_editor_force_size_enable"
+msgid "Enable force size"
+msgstr ""
+
+#. Label for the force size columns input field
+msgctxt "profile_editor_force_size_columns"
+msgid "Columns"
+msgstr ""
+
+#. Label for the force size rows input field
+msgctxt "profile_editor_force_size_rows"
+msgid "Rows"
 msgstr ""
 
 #. Dropdown option to not override host color with profile color
@@ -1329,6 +1434,16 @@ msgctxt "list_host_delete"
 msgid "Delete host"
 msgstr "Sunucuyu sil"
 
+#. Context menu action to duplicate the selected host
+msgctxt "list_host_duplicate"
+msgid "Duplicate host"
+msgstr ""
+
+#. Context menu action to forget stored host keys for the selected host
+msgctxt "list_host_forget_keys"
+msgid "Forget host keys"
+msgstr ""
+
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
 msgid "Default"
@@ -1475,6 +1590,16 @@ msgctxt "terminal_auth_pass_fail"
 msgid "Authentication method 'password' failed"
 msgstr "Kimlik doğrulama 'şifre' başarısız"
 
+#. Message shown in terminal when attempting saved password authentication
+msgctxt "terminal_auth_saved_password"
+msgid "Trying saved password…"
+msgstr ""
+
+#. Message shown in terminal when saved password authentication fails
+msgctxt "terminal_auth_saved_password_fail"
+msgid "Saved password authentication failed"
+msgstr ""
+
 #. Message shown in terminal when trying public key authentication with any
 #. available key
 msgctxt "terminal_auth_pubkey_any"
@@ -1503,6 +1628,15 @@ msgstr ""
 #, c-format
 msgctxt "terminal_auth_biometric"
 msgid "Requesting biometric authentication for key '%1$s'"
+msgstr ""
+
+#. Message shown when a biometric key has been invalidated due to new
+#. fingerprint enrollment. Parameter is the key nickname.
+#, c-format
+msgctxt "terminal_auth_biometric_invalidated"
+msgid ""
+"Biometric key '%1$s' has been invalidated. This can happen when new "
+"fingerprints are enrolled on the device. Please generate a new key."
 msgstr ""
 
 #. Message shown in terminal when public key authentication fails. Parameter
@@ -2034,6 +2168,12 @@ msgctxt "error_color_scheme_load_failed"
 msgid "Failed to load color scheme: %s"
 msgstr ""
 
+#. Format string for the nickname of a duplicated host
+#, c-format
+msgctxt "host_duplicate_nickname"
+msgid "%1$s (copy)"
+msgstr ""
+
 #. Empty state messages
 #. Message shown when no hosts have been configured yet
 msgctxt "empty_hosts_message"
@@ -2096,6 +2236,11 @@ msgstr ""
 #. Label for height input field in terminal resize dialog
 msgctxt "resize_height_label"
 msgid "Height (rows)"
+msgstr ""
+
+#. Button to disable force size and return to auto-sizing
+msgctxt "resize_disable_force_size"
+msgid "Disable force size"
 msgstr ""
 
 #. Public key editor labels
@@ -2249,6 +2394,11 @@ msgstr ""
 #. Text for button which, when clicked, saves an existing host.
 msgctxt "hostpref_save_host"
 msgid "Save host"
+msgstr ""
+
+#. Title shown in the app bar when editing an existing host's settings.
+msgctxt "hostpref_setting_title"
+msgid "Host setting"
 msgstr ""
 
 #. Text for button which, when clicked, brings up picker to import an existing
@@ -2418,9 +2568,43 @@ msgctxt "delete_host_confirm"
 msgid "Are you sure you want to delete host '%1$s'?"
 msgstr ""
 
+#. Shown in the alert dialog when a user chooses the 'forget host keys' item.
+#, c-format
+msgctxt "forget_host_keys_confirm"
+msgid ""
+"Are you sure you want to forget the stored host keys for '%1$s'? You will"
+" be prompted to verify the host key on the next connection."
+msgstr ""
+
 #. Menu selection to edit a pubkey details (e.g., nickname)
 msgctxt "list_pubkey_edit"
 msgid "Edit pubkey"
+msgstr ""
+
+#. IP Version selection for host connections
+#. Title for IP version preference in host editor
+msgctxt "hostpref_ipversion_title"
+msgid "IP version"
+msgstr ""
+
+#. Summary text explaining what the IP version setting controls
+msgctxt "hostpref_ipversion_summary"
+msgid "Select which IP address version to use when connecting"
+msgstr ""
+
+#. Option for automatic IP version selection (try both IPv4 and IPv6)
+msgctxt "ipversion_auto"
+msgid "Automatic"
+msgstr ""
+
+#. Option to force IPv4-only connections
+msgctxt "ipversion_ipv4"
+msgid "IPv4 only"
+msgstr ""
+
+#. Option to force IPv6-only connections
+msgctxt "ipversion_ipv6"
+msgid "IPv6 only"
 msgstr ""
 
 #. ProxyJump / Jump Host support
@@ -2518,6 +2702,48 @@ msgctxt "help_section_about"
 msgid "About"
 msgstr ""
 
+#. Window title for the Contact &amp; Support screen, also used as button text
+#. in Help screen.
+msgctxt "title_contact"
+msgid "Contact & Support"
+msgstr ""
+
+#. Section title for the "Help" screen showing contact and support
+#. information.
+msgctxt "help_section_contact"
+msgid "Contact & Support"
+msgstr ""
+
+#. Label for the official website link in the Help screen.
+msgctxt "help_website"
+msgid "Website"
+msgstr ""
+
+#. Label for the GitHub repository link in the Help screen.
+msgctxt "help_github"
+msgid "Source Code"
+msgstr ""
+
+#. Label for the bug report/issue tracker link in the Help screen.
+msgctxt "help_report_bug"
+msgid "Report a Bug"
+msgstr ""
+
+#. Section title for the "Help" screen showing donation options.
+msgctxt "help_section_donate"
+msgid "Support Development"
+msgstr ""
+
+#. Label for the GitHub Sponsors donation link in the Help screen.
+msgctxt "help_donate_github"
+msgid "GitHub Sponsors"
+msgstr ""
+
+#. Label for the Buy Me a Coffee donation link in the Help screen.
+msgctxt "help_donate_coffee"
+msgid "Buy Me a Coffee"
+msgstr ""
+
 #. Built-in color scheme descriptions for terminal display
 #. Description of the default terminal color scheme
 msgctxt "colorscheme_default_description"
@@ -2600,6 +2826,21 @@ msgctxt "dialog_customterminal_hint"
 msgid "Terminal type (e.g., rxvt-unicode)"
 msgstr ""
 
+#. Dialog title for managing custom terminal types
+msgctxt "dialog_manage_customterminal_title"
+msgid "Manage Custom Terminal Types"
+msgstr ""
+
+#. Button to add a custom item
+msgctxt "button_add_custom"
+msgid "Add custom…"
+msgstr ""
+
+#. Button to manage custom items
+msgctxt "button_manage_custom"
+msgid "Manage custom…"
+msgstr ""
+
 #. Label for custom value input in list preference dialogs
 msgctxt "dialog_custom_value_label"
 msgid "Enter custom value"
@@ -2633,5 +2874,131 @@ msgstr ""
 #. Summary description for text input camera button action
 msgctxt "list_camera_text_input_description"
 msgid "Text input"
+msgstr ""
+
+#. Host export/import menu items
+#. Menu item to export all hosts to a JSON file
+msgctxt "list_menu_export_hosts"
+msgid "Export Hosts"
+msgstr ""
+
+#. Menu item to import hosts from a JSON file
+msgctxt "list_menu_import_hosts"
+msgid "Import Hosts"
+msgstr ""
+
+#. Host export/import messages
+#. Success message shown after exporting hosts to a file. Parameters: %1$d =
+#. host count, %2$d = profile count
+#, c-format
+msgctxt "export_hosts_success"
+msgid "Exported %1$d hosts and %2$d profiles"
+msgstr ""
+
+#. Success message shown after importing hosts from a file. Parameters: %1$d =
+#. hosts imported, %2$d = hosts skipped, %3$d = profiles imported, %4$d =
+#. profiles skipped
+#, c-format
+msgctxt "import_hosts_success"
+msgid "Imported %1$d hosts (%2$d skipped) and %3$d profiles (%4$d skipped)"
+msgstr ""
+
+#. Error message when host export fails
+#, c-format
+msgctxt "export_hosts_failed"
+msgid "Failed to export hosts: %s"
+msgstr ""
+
+#. Error message when host import fails
+#, c-format
+msgctxt "import_hosts_failed"
+msgid "Failed to import hosts: %s"
+msgstr ""
+
+#. Title for the export hosts file picker dialog
+msgctxt "export_hosts_title"
+msgid "Export Hosts"
+msgstr ""
+
+#. Shortcut customization dialog strings
+#. Dialog title when customizing a shortcut icon
+msgctxt "shortcut_customize_title"
+msgid "Customize Shortcut"
+msgstr ""
+
+#. Label for the shortcut icon color selection dropdown
+msgctxt "shortcut_icon_color"
+msgid "Icon Color"
+msgstr ""
+
+#. Label for the shortcut icon style selection dropdown
+msgctxt "shortcut_icon_style"
+msgid "Icon Style"
+msgstr ""
+
+#. Checkbox label to use the host\'s configured color for the shortcut
+msgctxt "shortcut_use_host_color"
+msgid "Use host color"
+msgstr ""
+
+#. Button to create the customized shortcut
+msgctxt "shortcut_create"
+msgid "Create Shortcut"
+msgstr ""
+
+#. Icon style option: terminal prompt icon
+msgctxt "icon_style_terminal"
+msgid "Terminal"
+msgstr ""
+
+#. Icon style option: server/computer icon
+msgctxt "icon_style_server"
+msgid "Server"
+msgstr ""
+
+#. Icon style option: cloud icon
+msgctxt "icon_style_cloud"
+msgid "Cloud"
+msgstr ""
+
+#. Icon style option: key/security icon
+msgctxt "icon_style_key"
+msgid "Key"
+msgstr ""
+
+#. Authentication on launch
+#. Title for the authentication on launch preference in settings
+msgctxt "pref_auth_on_launch_title"
+msgid "Authentication on launch"
+msgstr ""
+
+#. Summary for the authentication on launch preference
+msgctxt "pref_auth_on_launch_summary"
+msgid "Require fingerprint, face, or device PIN when opening the app"
+msgstr ""
+
+#. Category title for security preferences in settings
+msgctxt "pref_security_category"
+msgid "Security"
+msgstr ""
+
+#. Title shown on the authentication lock screen
+msgctxt "auth_screen_title"
+msgid "ConnectBot is locked"
+msgstr ""
+
+#. Button text to trigger authentication on the lock screen
+msgctxt "auth_screen_unlock_button"
+msgid "Tap to unlock"
+msgstr ""
+
+#. Title shown in the biometric/device credential authentication prompt
+msgctxt "auth_prompt_title"
+msgid "Unlock ConnectBot"
+msgstr ""
+
+#. Subtitle shown in the biometric/device credential authentication prompt
+msgctxt "auth_prompt_subtitle"
+msgid "Verify your identity to continue"
 msgstr ""
 

@@ -2,21 +2,22 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-26 16:01-0800\n"
-"PO-Revision-Date: 2025-12-26 16:00-0800\n"
+"POT-Creation-Date: 2026-02-12 10:47+0800\n"
+"PO-Revision-Date: 2026-02-12 11:03+0800\n"
 "Last-Translator: Naofumi Fukue <naofum@gmail.com>\n"
 "Language: ja\n"
 "Language-Team: ja <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=(0);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
+"X-Generator: Autopo v1.0.8\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -139,8 +140,8 @@ msgstr "この四角内をランダムに触ってください: %1$d%% 完了"
 #. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger"
-" randomly over the box below."
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
 msgstr "鍵作成時のランダムさを保証するため、下の四角内で指をランダムに動かしてください。"
 
 #. Progress message shown while generating a new SSH key pair
@@ -238,6 +239,41 @@ msgctxt "pubkey_import_button"
 msgid "Import"
 msgstr "インポート"
 
+#. Checkbox label in the import encrypted key dialog. When checked, the
+#. imported key will be encrypted for storage on the device.
+msgctxt "pubkey_import_encrypt_key"
+msgid "Encrypt key for storage"
+msgstr "保存用にキーを暗号化"
+
+#. Checkbox label that appears when 'Encrypt key for storage' is checked. When
+#. checked, the same password used to decrypt the imported key will be used to
+#. encrypt it for storage.
+msgctxt "pubkey_import_reuse_password"
+msgid "Use same password for encryption"
+msgstr "暗号化に同じパスワードを使用する"
+
+#. Label for the password field when entering a new password to encrypt the
+#. imported key for storage.
+msgctxt "pubkey_import_new_password"
+msgid "New password"
+msgstr "新しいパスワード"
+
+#. Label for the password confirmation field when setting a new password to
+#. encrypt the imported key.
+msgctxt "pubkey_import_confirm_password"
+msgid "Confirm password"
+msgstr "パスワードを確認してください"
+
+#. Note that the '\n' just splits lines, so it's actually "create or import"
+msgctxt "pubkey_list_empty"
+msgid "Tap \"Menu\" to create\n"
+"or import key pairs."
+msgstr "「メニュー」をタップして、キーペアを作成またはインポートします。"
+
+msgctxt "pubkey_unknown_format"
+msgid "Unknown format"
+msgstr "不明な形式"
+
 #. Context menu action to change the password protecting a private key
 msgctxt "pubkey_change_password"
 msgid "Change password"
@@ -306,6 +342,12 @@ msgctxt "prompt_old_password"
 msgid "Old password:"
 msgstr "旧パスワード:"
 
+#. Prompt for user to enter their username when the host has no username
+#. configured.
+msgctxt "prompt_username"
+msgid "Username:"
+msgstr "ユーザー名："
+
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
 msgctxt "prompt_password"
@@ -344,8 +386,7 @@ msgstr "鍵 '%1$s' のパスワード"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid ""
-"Allow remote host to\n"
+msgid "Allow remote host to\n"
 "use key '%1$s'?"
 msgstr "リモートホストが鍵 '%1$s' を使用することを許可しますか?"
 
@@ -362,8 +403,7 @@ msgstr "警告: リモートホストのIDが変わっています!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle "
-"attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "何者かが不正を行っている可能性があります!\n"
@@ -372,11 +412,9 @@ msgstr ""
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid ""
-"Host has disconnected.\n"
+msgid "Host has disconnected.\n"
 "Close session?"
-msgstr ""
-"ホスト切断されました．\n"
+msgstr "ホスト切断されました．\n"
 "セッションを閉じますか？"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -537,6 +575,11 @@ msgctxt "font_validating"
 msgid "Validating font…"
 msgstr "フォントを検証しています…"
 
+#. Message shown while downloading a font from Google Fonts
+msgctxt "font_downloading"
+msgid "Downloading font…"
+msgstr "フォントをダウンロードしています"
+
 #. Title for importing local font
 msgctxt "pref_localfont_title"
 msgid "Import local font"
@@ -582,6 +625,16 @@ msgstr "Android のバックアップの仕組みを使用して秘密鍵のバ�
 msgctxt "pref_ui_category"
 msgid "User interface"
 msgstr "ユーザーインターフェース"
+
+#. Name for the language preference
+msgctxt "pref_language_title"
+msgid "Language"
+msgstr "言語"
+
+#. Default option for language preference that uses the system locale
+msgctxt "pref_language_system_default"
+msgid "System default"
+msgstr "システムデフォルト"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
@@ -654,8 +707,9 @@ msgid "Volume keys change font size"
 msgstr "音量ボタンでフォントサイズを変更する"
 
 #. Summary for the volume keys control font size preference
+#, fuzzy
 msgctxt "pref_volumefont_summary"
-msgid "Font size can also be changed in per-host settings"
+msgid "Font size can also be changed in profile settings"
 msgstr "フォントサイズはホストごとの設定でも変更することができます"
 
 #. Name for the memorize keys preference
@@ -772,7 +826,8 @@ msgstr "バックグラウンド通知"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid "Send notification when a terminal running in the background sounds a bell."
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
 msgstr "バックグランドで実行中の端末がベルを鳴らしたとき通知します"
 
 #. Preference selection to indicate use of right side of keyboard for special
@@ -989,6 +1044,26 @@ msgctxt "hostpref_username_title"
 msgid "Username"
 msgstr "ユーザ名"
 
+#. Password field supporting text in host editor
+msgctxt "hostpref_save_password_summary"
+msgid "Store login password securely for automatic authentication"
+msgstr "ログインパスワードを安全に保存し、自動認証を可能にする"
+
+#. Password field title in host editor
+msgctxt "hostpref_password_title"
+msgid "Password"
+msgstr "パスワード"
+
+#. Password field label when there is an existing password saved
+msgctxt "hostpref_password_unchanged"
+msgid "Password (unchanged)"
+msgstr "パスワード（変更なし）"
+
+#. Button to clear a saved password
+msgctxt "hostpref_clear_password"
+msgid "Clear saved password"
+msgstr "保存されたパスワードを削除"
+
 #. Hostname field title for host editor preference
 msgctxt "hostpref_hostname_title"
 msgid "Host"
@@ -1098,6 +1173,33 @@ msgstr "フォントファミリー"
 msgctxt "profile_editor_font_size_title"
 msgid "Font Size: %d"
 msgstr "フォントサイズ：%d"
+
+#. Subsection title for force size settings
+msgctxt "profile_editor_force_size_title"
+msgid "Force Size"
+msgstr "サイズを強制設定"
+
+#. Summary text explaining what force size does
+msgctxt "profile_editor_force_size_summary"
+msgid ""
+"Force the terminal to a specific size (columns x rows) instead of auto-"
+"sizing to fit the screen."
+msgstr "「画面に合わせて自動的にサイズ調整するのではなく、ターミナルのサイズを特定のサイズ（列数×行数）に固定します。」"
+
+#. Label for the enable force size switch
+msgctxt "profile_editor_force_size_enable"
+msgid "Enable force size"
+msgstr "「強制サイズ指定を有効にする」"
+
+#. Label for the force size columns input field
+msgctxt "profile_editor_force_size_columns"
+msgid "Columns"
+msgstr "「カラム」"
+
+#. Label for the force size rows input field
+msgctxt "profile_editor_force_size_rows"
+msgid "Rows"
+msgstr "行"
 
 #. Dropdown option to not override host color with profile color
 msgctxt "profile_icon_color_none"
@@ -1323,6 +1425,16 @@ msgctxt "list_host_delete"
 msgid "Delete host"
 msgstr "接続ホストの削除"
 
+#. Context menu action to duplicate the selected host
+msgctxt "list_host_duplicate"
+msgid "Duplicate host"
+msgstr "ホスト名の重複"
+
+#. Context menu action to forget stored host keys for the selected host
+msgctxt "list_host_forget_keys"
+msgid "Forget host keys"
+msgstr "ホストキーを忘れる"
+
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
 msgid "Default"
@@ -1469,6 +1581,16 @@ msgctxt "terminal_auth_pass_fail"
 msgid "Authentication method 'password' failed"
 msgstr "'password' 認証失敗"
 
+#. Message shown in terminal when attempting saved password authentication
+msgctxt "terminal_auth_saved_password"
+msgid "Trying saved password…"
+msgstr "保存されたパスワードを試しています"
+
+#. Message shown in terminal when saved password authentication fails
+msgctxt "terminal_auth_saved_password_fail"
+msgid "Saved password authentication failed"
+msgstr "保存されたパスワードによる認証に失敗しました"
+
 #. Message shown in terminal when trying public key authentication with any
 #. available key
 msgctxt "terminal_auth_pubkey_any"
@@ -1492,6 +1614,16 @@ msgstr "指定された公開鍵による 'publickey' 認証を試行"
 msgctxt "terminal_auth_biometric"
 msgid "Requesting biometric authentication for key '%1$s'"
 msgstr "バイオメトリック認証をキー'%1$s'に要求しています"
+
+#. Message shown when a biometric key has been invalidated due to new
+#. fingerprint enrollment. Parameter is the key nickname.
+#, c-format
+msgctxt "terminal_auth_biometric_invalidated"
+msgid ""
+"Biometric key '%1$s' has been invalidated. This can happen when new "
+"fingerprints are enrolled on the device. Please generate a new key."
+msgstr ""
+"生体認証キー「%1$s」が無効になりました。これは、デバイスに新しい指紋が登録された場合に発生する可能性があります。新しいキーを生成してください。"
 
 #. Message shown in terminal when public key authentication fails. Parameter
 #. is the key nickname.
@@ -1724,8 +1856,8 @@ msgstr "すべての色をリセットしますか?"
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action "
-"cannot be undone."
+"This will reset all 256 colors to their default values. This action cannot "
+"be undone."
 msgstr "これにより、256色すべてがデフォルト値にリセットされます。この操作は取り消すことができません。"
 
 #. Displayed in the notification bar that connections are active
@@ -2020,6 +2152,12 @@ msgctxt "error_color_scheme_load_failed"
 msgid "Failed to load color scheme: %s"
 msgstr "カラースキームの読み込みに失敗：%s"
 
+#. Format string for the nickname of a duplicated host
+#, c-format
+msgctxt "host_duplicate_nickname"
+msgid "%1$s (copy)"
+msgstr "%1$s (コピー)"
+
 #. Empty state messages
 #. Message shown when no hosts have been configured yet
 msgctxt "empty_hosts_message"
@@ -2084,6 +2222,11 @@ msgctxt "resize_height_label"
 msgid "Height (rows)"
 msgstr "行数"
 
+#. Button to disable force size and return to auto-sizing
+msgctxt "resize_disable_force_size"
+msgid "Disable force size"
+msgstr "「強制サイズ変更を無効にする」"
+
 #. Public key editor labels
 #. Label for key type field in the SSH pubkey editor
 msgctxt "pubkey_editor_key_type_label"
@@ -2131,8 +2274,8 @@ msgstr "この鍵を指紋で保護する"
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use "
-"this feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use this "
+"feature."
 msgstr "フィンガープリントが登録されていません。 この機能を使用するには、デバイスの設定でフィンガープリントを設定してください"
 
 #. Warning shown when key type doesn\'t support biometric protection
@@ -2237,6 +2380,11 @@ msgctxt "hostpref_save_host"
 msgid "Save host"
 msgstr "ホストを保存"
 
+#. Title shown in the app bar when editing an existing host's settings.
+msgctxt "hostpref_setting_title"
+msgid "Host setting"
+msgstr "ホスト設定"
+
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
@@ -2256,8 +2404,7 @@ msgstr "接続を維持する"
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch "
-"apps."
+"background. Without permission, connections may close when you switch apps."
 msgstr "通知を表示することはバックグラウンドで接続を維持するために必要です。許可なくして、接続はアプリを切り替えたときに閉じることがあります。"
 
 #. Button text to grant notification permission in the permission explanation
@@ -2284,8 +2431,8 @@ msgstr "パーミッションが必要です"
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification"
-" permission in app settings."
+"To keep connections alive in the background, you must enable notification "
+"permission in app settings."
 msgstr "バックグラウンドで接続を維持するにはアプリの設定で通知の許可を有効にする必要があります"
 
 #. Button text to open ConnectBot app settings page where user can grant
@@ -2297,7 +2444,8 @@ msgstr "設定を開く"
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid "Are you trying to access a local host? Grant local network permissions."
+msgid ""
+"Are you trying to access a local host? Grant local network permissions."
 msgstr "ローカルホストにアクセスしようとしていますか ローカルネットワークのパーミッションを付与してください"
 
 #. Loading message shown during app initialization
@@ -2366,8 +2514,8 @@ msgstr "リトライ"
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug "
-"log copied above"
+"If the problem persists, please report this issue at %1$s with the debug log "
+"copied above"
 msgstr "問題が解決しない場合はデバッグログを上でコピーして%1$sに報告してください"
 
 #. Title for warnings section shown during database migration
@@ -2404,10 +2552,44 @@ msgctxt "delete_host_confirm"
 msgid "Are you sure you want to delete host '%1$s'?"
 msgstr "ホスト'%1$s'を削除してよいですか?"
 
+#. Shown in the alert dialog when a user chooses the 'forget host keys' item.
+#, c-format
+msgctxt "forget_host_keys_confirm"
+msgid ""
+"Are you sure you want to forget the stored host keys for '%1$s'? You will be "
+"prompted to verify the host key on the next connection."
+msgstr "「保存されているホストキーを「%1$s」に対して削除してもよろしいですか？ 次回の接続時にホストキーの確認を求められます。」"
+
 #. Menu selection to edit a pubkey details (e.g., nickname)
 msgctxt "list_pubkey_edit"
 msgid "Edit pubkey"
 msgstr "公開鍵を編集"
+
+#. IP Version selection for host connections
+#. Title for IP version preference in host editor
+msgctxt "hostpref_ipversion_title"
+msgid "IP version"
+msgstr "IPバージョン"
+
+#. Summary text explaining what the IP version setting controls
+msgctxt "hostpref_ipversion_summary"
+msgid "Select which IP address version to use when connecting"
+msgstr "接続時に使用するIPアドレスのバージョンを選択してください"
+
+#. Option for automatic IP version selection (try both IPv4 and IPv6)
+msgctxt "ipversion_auto"
+msgid "Automatic"
+msgstr "自動"
+
+#. Option to force IPv4-only connections
+msgctxt "ipversion_ipv4"
+msgid "IPv4 only"
+msgstr "IPv4のみ"
+
+#. Option to force IPv6-only connections
+msgctxt "ipversion_ipv6"
+msgid "IPv6 only"
+msgstr "IPv6のみ"
 
 #. ProxyJump / Jump Host support
 #. Title for jump host selector in host editor
@@ -2489,8 +2671,8 @@ msgstr "クリップボードにログをコピーしました"
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at "
-"https://connectbot.org/bug"
+"To report a bug, copy these logs and open a new issue at https://connectbot."
+"org/bug"
 msgstr "バグを報告するにはこれらのログをコピーしてhttps://connectbot.org/bugで新しい課題を開いてください"
 
 #. Message shown when no logs are available
@@ -2503,6 +2685,48 @@ msgstr "ログは利用できない"
 msgctxt "help_section_about"
 msgid "About"
 msgstr "概要"
+
+#. Window title for the Contact &amp; Support screen, also used as button text
+#. in Help screen.
+msgctxt "title_contact"
+msgid "Contact & Support"
+msgstr "お問い合わせとサポート"
+
+#. Section title for the "Help" screen showing contact and support
+#. information.
+msgctxt "help_section_contact"
+msgid "Contact & Support"
+msgstr "お問い合わせとサポート"
+
+#. Label for the official website link in the Help screen.
+msgctxt "help_website"
+msgid "Website"
+msgstr "ウェブサイト"
+
+#. Label for the GitHub repository link in the Help screen.
+msgctxt "help_github"
+msgid "Source Code"
+msgstr "ソースコード"
+
+#. Label for the bug report/issue tracker link in the Help screen.
+msgctxt "help_report_bug"
+msgid "Report a Bug"
+msgstr "バグを報告する"
+
+#. Section title for the "Help" screen showing donation options.
+msgctxt "help_section_donate"
+msgid "Support Development"
+msgstr "開発へのご支援"
+
+#. Label for the GitHub Sponsors donation link in the Help screen.
+msgctxt "help_donate_github"
+msgid "GitHub Sponsors"
+msgstr "GitHubスポンサー"
+
+#. Label for the Buy Me a Coffee donation link in the Help screen.
+msgctxt "help_donate_coffee"
+msgid "Buy Me a Coffee"
+msgstr "コーヒーをおごってください"
 
 #. Built-in color scheme descriptions for terminal display
 #. Description of the default terminal color scheme
@@ -2586,6 +2810,21 @@ msgctxt "dialog_customterminal_hint"
 msgid "Terminal type (e.g., rxvt-unicode)"
 msgstr "ターミナルタイプ（例：rxvt-unicode）"
 
+#. Dialog title for managing custom terminal types
+msgctxt "dialog_manage_customterminal_title"
+msgid "Manage Custom Terminal Types"
+msgstr "カスタムターミナルタイプの管理"
+
+#. Button to add a custom item
+msgctxt "button_add_custom"
+msgid "Add custom…"
+msgstr "カスタムを追加"
+
+#. Button to manage custom items
+msgctxt "button_manage_custom"
+msgid "Manage custom…"
+msgstr "カスタム設定を管理"
+
 #. Label for custom value input in list preference dialogs
 msgctxt "dialog_custom_value_label"
 msgid "Enter custom value"
@@ -2621,3 +2860,128 @@ msgctxt "list_camera_text_input_description"
 msgid "Text input"
 msgstr "テキスト入力"
 
+#. Host export/import menu items
+#. Menu item to export all hosts to a JSON file
+msgctxt "list_menu_export_hosts"
+msgid "Export Hosts"
+msgstr "ホストをエクスポート"
+
+#. Menu item to import hosts from a JSON file
+msgctxt "list_menu_import_hosts"
+msgid "Import Hosts"
+msgstr "ホストをインポート"
+
+#. Host export/import messages
+#. Success message shown after exporting hosts to a file. Parameters: %1$d =
+#. host count, %2$d = profile count
+#, c-format
+msgctxt "export_hosts_success"
+msgid "Exported %1$d hosts and %2$d profiles"
+msgstr "「%1$d個のホストと%2$d個のプロファイルをエクスポートしました」"
+
+#. Success message shown after importing hosts from a file. Parameters: %1$d =
+#. hosts imported, %2$d = hosts skipped, %3$d = profiles imported, %4$d =
+#. profiles skipped
+#, c-format
+msgctxt "import_hosts_success"
+msgid "Imported %1$d hosts (%2$d skipped) and %3$d profiles (%4$d skipped)"
+msgstr "「%1$d個のホスト（%2$d個はスキップ）と%3$d個のプロファイル（%4$d個はスキップ）をインポートしました」"
+
+#. Error message when host export fails
+#, c-format
+msgctxt "export_hosts_failed"
+msgid "Failed to export hosts: %s"
+msgstr "ホストのエクスポートに失敗しました：%s"
+
+#. Error message when host import fails
+#, c-format
+msgctxt "import_hosts_failed"
+msgid "Failed to import hosts: %s"
+msgstr "ホストのインポートに失敗しました：%s"
+
+#. Title for the export hosts file picker dialog
+msgctxt "export_hosts_title"
+msgid "Export Hosts"
+msgstr "ホストをエクスポート"
+
+#. Shortcut customization dialog strings
+#. Dialog title when customizing a shortcut icon
+msgctxt "shortcut_customize_title"
+msgid "Customize Shortcut"
+msgstr "ショートカットをカスタマイズ"
+
+#. Label for the shortcut icon color selection dropdown
+msgctxt "shortcut_icon_color"
+msgid "Icon Color"
+msgstr "アイコンの色"
+
+#. Label for the shortcut icon style selection dropdown
+msgctxt "shortcut_icon_style"
+msgid "Icon Style"
+msgstr "アイコンスタイル"
+
+#. Checkbox label to use the host\'s configured color for the shortcut
+msgctxt "shortcut_use_host_color"
+msgid "Use host color"
+msgstr "「ホストの色を使用」"
+
+#. Button to create the customized shortcut
+msgctxt "shortcut_create"
+msgid "Create Shortcut"
+msgstr "ショートカットを作成"
+
+#. Icon style option: terminal prompt icon
+msgctxt "icon_style_terminal"
+msgid "Terminal"
+msgstr "ターミナル"
+
+#. Icon style option: server/computer icon
+msgctxt "icon_style_server"
+msgid "Server"
+msgstr "サーバー"
+
+#. Icon style option: cloud icon
+msgctxt "icon_style_cloud"
+msgid "Cloud"
+msgstr "クラウド"
+
+#. Icon style option: key/security icon
+msgctxt "icon_style_key"
+msgid "Key"
+msgstr "キー"
+
+#. Authentication on launch
+#. Title for the authentication on launch preference in settings
+msgctxt "pref_auth_on_launch_title"
+msgid "Authentication on launch"
+msgstr "起動時の認証"
+
+#. Summary for the authentication on launch preference
+msgctxt "pref_auth_on_launch_summary"
+msgid "Require fingerprint, face, or device PIN when opening the app"
+msgstr "アプリを開く際に、指紋、顔認証、またはデバイスのPINコードの入力を必須にする"
+
+#. Category title for security preferences in settings
+msgctxt "pref_security_category"
+msgid "Security"
+msgstr "セキュリティ"
+
+#. Title shown on the authentication lock screen
+msgctxt "auth_screen_title"
+msgid "ConnectBot is locked"
+msgstr "ConnectBotがロックされています"
+
+#. Button text to trigger authentication on the lock screen
+msgctxt "auth_screen_unlock_button"
+msgid "Tap to unlock"
+msgstr "アンロックするためにタップしてください"
+
+#. Title shown in the biometric/device credential authentication prompt
+msgctxt "auth_prompt_title"
+msgid "Unlock ConnectBot"
+msgstr "ConnectBotのロックを解除"
+
+#. Subtitle shown in the biometric/device credential authentication prompt
+msgctxt "auth_prompt_subtitle"
+msgid "Verify your identity to continue"
+msgstr "本人確認を行い、続行してください。"

@@ -2,21 +2,22 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2025-12-26 16:01-0800\n"
-"PO-Revision-Date: 2025-12-26 16:00-0800\n"
+"POT-Creation-Date: 2026-02-12 10:47+0800\n"
+"PO-Revision-Date: 2026-02-12 11:07+0800\n"
 "Last-Translator: Steven CVAL <stevencval@gmail.com>\n"
 "Language: ko\n"
 "Language-Team: ko <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=(0);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Generated-By: Babel 2.17.0\n"
+"Generated-By: Babel 2.18.0\n"
+"X-Generator: Autopo v1.0.8\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -139,8 +140,8 @@ msgstr "이 사각형의 랜덤으로 터치하세요: %1$d%% 완료"
 #. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger"
-" randomly over the box below."
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
 msgstr "키 생성시 랜덤을 보장하기 위해 아래의 사각형 안에서 손가락을 랜덤으로 이동하십시오."
 
 #. Progress message shown while generating a new SSH key pair
@@ -238,6 +239,41 @@ msgctxt "pubkey_import_button"
 msgid "Import"
 msgstr "수입"
 
+#. Checkbox label in the import encrypted key dialog. When checked, the
+#. imported key will be encrypted for storage on the device.
+msgctxt "pubkey_import_encrypt_key"
+msgid "Encrypt key for storage"
+msgstr "저장용 키 암호화"
+
+#. Checkbox label that appears when 'Encrypt key for storage' is checked. When
+#. checked, the same password used to decrypt the imported key will be used to
+#. encrypt it for storage.
+msgctxt "pubkey_import_reuse_password"
+msgid "Use same password for encryption"
+msgstr "\"암호화에 동일한 비밀번호를 사용하세요.\""
+
+#. Label for the password field when entering a new password to encrypt the
+#. imported key for storage.
+msgctxt "pubkey_import_new_password"
+msgid "New password"
+msgstr "새 비밀번호"
+
+#. Label for the password confirmation field when setting a new password to
+#. encrypt the imported key.
+msgctxt "pubkey_import_confirm_password"
+msgid "Confirm password"
+msgstr "비밀번호 확인"
+
+#. Note that the '\n' just splits lines, so it's actually "create or import"
+msgctxt "pubkey_list_empty"
+msgid "Tap \"Menu\" to create\n"
+"or import key pairs."
+msgstr "\"메뉴\"를 탭하여 키 쌍을 생성하거나 가져옵니다."
+
+msgctxt "pubkey_unknown_format"
+msgid "Unknown format"
+msgstr "알 수 없는 형식"
+
 #. Context menu action to change the password protecting a private key
 msgctxt "pubkey_change_password"
 msgid "Change password"
@@ -306,6 +342,12 @@ msgctxt "prompt_old_password"
 msgid "Old password:"
 msgstr "이전 암호:"
 
+#. Prompt for user to enter their username when the host has no username
+#. configured.
+msgctxt "prompt_username"
+msgid "Username:"
+msgstr "사용자 이름:"
+
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
 msgctxt "prompt_password"
@@ -344,8 +386,7 @@ msgstr "키 '%1$s'에 대한 비밀번호"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid ""
-"Allow remote host to\n"
+msgid "Allow remote host to\n"
 "use key '%1$s'?"
 msgstr "원격 호스트가 키 '%1$s'를 사용하도록 허용합니까?"
 
@@ -362,8 +403,7 @@ msgstr "경고: 원격 호스트의 식별이 바뀌었습니다!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle "
-"attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "누군가가 나쁜 짓을 하고 있는 것일 수 있습니다!\n"
@@ -372,11 +412,9 @@ msgstr ""
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid ""
-"Host has disconnected.\n"
+msgid "Host has disconnected.\n"
 "Close session?"
-msgstr ""
-"호스트 연결이 끊겼습니다.\n"
+msgstr "호스트 연결이 끊겼습니다.\n"
 "세션을 닫을까요?"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -384,8 +422,7 @@ msgstr ""
 #, fuzzy
 msgctxt "prompt_continue_connecting"
 msgid "Are you sure you want to continue connecting?"
-msgstr ""
-"정말로 연결을 진행하기\n"
+msgstr "정말로 연결을 진행하기\n"
 "바랍니까?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
@@ -539,6 +576,11 @@ msgctxt "font_validating"
 msgid "Validating font…"
 msgstr "글꼴 유효성 검사중…"
 
+#. Message shown while downloading a font from Google Fonts
+msgctxt "font_downloading"
+msgid "Downloading font…"
+msgstr "폰트 다운로드 중…"
+
 #. Title for importing local font
 msgctxt "pref_localfont_title"
 msgid "Import local font"
@@ -584,6 +626,16 @@ msgstr "Android의 백업 메커니즘을 사용하여 비공개 키 백업 유�
 msgctxt "pref_ui_category"
 msgid "User interface"
 msgstr "사용자 인터페이스"
+
+#. Name for the language preference
+msgctxt "pref_language_title"
+msgid "Language"
+msgstr "언어"
+
+#. Default option for language preference that uses the system locale
+msgctxt "pref_language_system_default"
+msgid "System default"
+msgstr "시스템 기본값"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
@@ -656,8 +708,9 @@ msgid "Volume keys change font size"
 msgstr "볼륨키로 글꼴 크기 변경"
 
 #. Summary for the volume keys control font size preference
+#, fuzzy
 msgctxt "pref_volumefont_summary"
-msgid "Font size can also be changed in per-host settings"
+msgid "Font size can also be changed in profile settings"
 msgstr "글꼴 크기는 호스트별 설정에서도 변경할 수 있습니다."
 
 #. Name for the memorize keys preference
@@ -774,7 +827,8 @@ msgstr "백그라운드 알림"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid "Send notification when a terminal running in the background sounds a bell."
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
 msgstr "백그라운드에서 실행중인 터미널 벨을 울리 때 알립니다."
 
 #. Preference selection to indicate use of right side of keyboard for special
@@ -991,6 +1045,26 @@ msgctxt "hostpref_username_title"
 msgid "Username"
 msgstr "사용자 이름"
 
+#. Password field supporting text in host editor
+msgctxt "hostpref_save_password_summary"
+msgid "Store login password securely for automatic authentication"
+msgstr "로그인 비밀번호를 안전하게 저장하여 자동 인증을 사용합니다"
+
+#. Password field title in host editor
+msgctxt "hostpref_password_title"
+msgid "Password"
+msgstr "비밀번호"
+
+#. Password field label when there is an existing password saved
+msgctxt "hostpref_password_unchanged"
+msgid "Password (unchanged)"
+msgstr "비밀번호 (변경 없음)"
+
+#. Button to clear a saved password
+msgctxt "hostpref_clear_password"
+msgid "Clear saved password"
+msgstr "저장된 비밀번호 삭제"
+
 #. Hostname field title for host editor preference
 msgctxt "hostpref_hostname_title"
 msgid "Host"
@@ -1100,6 +1174,33 @@ msgstr "글꼴 가계"
 msgctxt "profile_editor_font_size_title"
 msgid "Font Size: %d"
 msgstr "글자 크기: %d"
+
+#. Subsection title for force size settings
+msgctxt "profile_editor_force_size_title"
+msgid "Force Size"
+msgstr "강제 크기 설정"
+
+#. Summary text explaining what force size does
+msgctxt "profile_editor_force_size_summary"
+msgid ""
+"Force the terminal to a specific size (columns x rows) instead of auto-"
+"sizing to fit the screen."
+msgstr "터미널이 화면에 맞게 자동으로 크기가 조정되는 대신 특정 크기(열 x 행)로 강제 설정합니다."
+
+#. Label for the enable force size switch
+msgctxt "profile_editor_force_size_enable"
+msgid "Enable force size"
+msgstr "\"강제 크기 설정\""
+
+#. Label for the force size columns input field
+msgctxt "profile_editor_force_size_columns"
+msgid "Columns"
+msgstr "열"
+
+#. Label for the force size rows input field
+msgctxt "profile_editor_force_size_rows"
+msgid "Rows"
+msgstr "행"
 
 #. Dropdown option to not override host color with profile color
 msgctxt "profile_icon_color_none"
@@ -1325,6 +1426,16 @@ msgctxt "list_host_delete"
 msgid "Delete host"
 msgstr "호스트 삭제"
 
+#. Context menu action to duplicate the selected host
+msgctxt "list_host_duplicate"
+msgid "Duplicate host"
+msgstr "중복된 호스트"
+
+#. Context menu action to forget stored host keys for the selected host
+msgctxt "list_host_forget_keys"
+msgid "Forget host keys"
+msgstr "호스트 키를 잊어버리세요"
+
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
 msgid "Default"
@@ -1471,6 +1582,16 @@ msgctxt "terminal_auth_pass_fail"
 msgid "Authentication method 'password' failed"
 msgstr "인증 방법 비밀번호 실패"
 
+#. Message shown in terminal when attempting saved password authentication
+msgctxt "terminal_auth_saved_password"
+msgid "Trying saved password…"
+msgstr "저장된 비밀번호를 사용해 연결 시도 중…"
+
+#. Message shown in terminal when saved password authentication fails
+msgctxt "terminal_auth_saved_password_fail"
+msgid "Saved password authentication failed"
+msgstr "저장된 비밀번호를 이용한 인증에 실패했습니다"
+
 #. Message shown in terminal when trying public key authentication with any
 #. available key
 msgctxt "terminal_auth_pubkey_any"
@@ -1494,6 +1615,16 @@ msgstr "공개 키 인증을 특정 공개 키로 시도합니다"
 msgctxt "terminal_auth_biometric"
 msgid "Requesting biometric authentication for key '%1$s'"
 msgstr "키 '%1$s'에 대한 생체 인증 요청"
+
+#. Message shown when a biometric key has been invalidated due to new
+#. fingerprint enrollment. Parameter is the key nickname.
+#, c-format
+msgctxt "terminal_auth_biometric_invalidated"
+msgid ""
+"Biometric key '%1$s' has been invalidated. This can happen when new "
+"fingerprints are enrolled on the device. Please generate a new key."
+msgstr ""
+"생체 인식 키 '%1$s'가 무효화되었습니다. 이는 장치에 새로운 지문이 등록될 때 발생할 수 있습니다. 새 키를 생성해 주세요."
 
 #. Message shown in terminal when public key authentication fails. Parameter
 #. is the key nickname.
@@ -1726,8 +1857,8 @@ msgstr "모든 색상을 초기화합니까?"
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action "
-"cannot be undone."
+"This will reset all 256 colors to their default values. This action cannot "
+"be undone."
 msgstr "이 작업은 모든 256色的 색상을 기본값으로 재설정합니다. 이 동작은 실행 취소할 수 없습니다."
 
 #. Displayed in the notification bar that connections are active
@@ -2022,6 +2153,12 @@ msgctxt "error_color_scheme_load_failed"
 msgid "Failed to load color scheme: %s"
 msgstr "컬러 스키마를 로드하지 못했습니다 %s"
 
+#. Format string for the nickname of a duplicated host
+#, c-format
+msgctxt "host_duplicate_nickname"
+msgid "%1$s (copy)"
+msgstr "%1$s (복사본)"
+
 #. Empty state messages
 #. Message shown when no hosts have been configured yet
 msgctxt "empty_hosts_message"
@@ -2086,6 +2223,11 @@ msgctxt "resize_height_label"
 msgid "Height (rows)"
 msgstr "높이 행"
 
+#. Button to disable force size and return to auto-sizing
+msgctxt "resize_disable_force_size"
+msgid "Disable force size"
+msgstr "강제 크기 조정 비활성화"
+
 #. Public key editor labels
 #. Label for key type field in the SSH pubkey editor
 msgctxt "pubkey_editor_key_type_label"
@@ -2133,8 +2275,8 @@ msgstr "지문으로 이 키를 보호하세요"
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use "
-"this feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use this "
+"feature."
 msgstr "지문이 등록되지 않았습니다. 이 기능을 사용하려면 기기 설정에서 지문을 등록하세요."
 
 #. Warning shown when key type doesn\'t support biometric protection
@@ -2239,6 +2381,11 @@ msgctxt "hostpref_save_host"
 msgid "Save host"
 msgstr "호스트 저장"
 
+#. Title shown in the app bar when editing an existing host's settings.
+msgctxt "hostpref_setting_title"
+msgid "Host setting"
+msgstr "호스트 설정"
+
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
 msgctxt "pubkey_import_existing"
@@ -2258,8 +2405,7 @@ msgstr "연결 유지하기"
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch "
-"apps."
+"background. Without permission, connections may close when you switch apps."
 msgstr "백그라운드에서 연결을 유지하기 위해 알림 표시가 필요합니다. 권한 없이 앱을 전환할 때 연결이 종료될 수 있습니다."
 
 #. Button text to grant notification permission in the permission explanation
@@ -2286,8 +2432,8 @@ msgstr "권한이 필요합니다"
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification"
-" permission in app settings."
+"To keep connections alive in the background, you must enable notification "
+"permission in app settings."
 msgstr "백그라운드에서 연결을 유지하려면 앱 설정에서 알림 권한을 활성화해야 합니다"
 
 #. Button text to open ConnectBot app settings page where user can grant
@@ -2299,7 +2445,8 @@ msgstr "설정 열기"
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid "Are you trying to access a local host? Grant local network permissions."
+msgid ""
+"Are you trying to access a local host? Grant local network permissions."
 msgstr "로컬 호스트에 액세스하려고 하십니까? 로컬 네트워크 권한을 부여하십시오."
 
 #. Loading message shown during app initialization
@@ -2368,8 +2515,8 @@ msgstr "재시도"
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug "
-"log copied above"
+"If the problem persists, please report this issue at %1$s with the debug log "
+"copied above"
 msgstr "문제가 지속되면 위에 복사한 디버그 로그와 함께 %1$s에서 이 문제를 보고해 주십시오"
 
 #. Title for warnings section shown during database migration
@@ -2406,10 +2553,44 @@ msgctxt "delete_host_confirm"
 msgid "Are you sure you want to delete host '%1$s'?"
 msgstr "호스트 '%1$s'를 삭제하시겠습니까"
 
+#. Shown in the alert dialog when a user chooses the 'forget host keys' item.
+#, c-format
+msgctxt "forget_host_keys_confirm"
+msgid ""
+"Are you sure you want to forget the stored host keys for '%1$s'? You will be "
+"prompted to verify the host key on the next connection."
+msgstr "'%1$s'에 저장된 호스트 키를 삭제하시겠습니까? 다음 연결 시 호스트 키를 확인하라는 메시지가 표시됩니다."
+
 #. Menu selection to edit a pubkey details (e.g., nickname)
 msgctxt "list_pubkey_edit"
 msgid "Edit pubkey"
 msgstr "公開키 편집"
+
+#. IP Version selection for host connections
+#. Title for IP version preference in host editor
+msgctxt "hostpref_ipversion_title"
+msgid "IP version"
+msgstr "IP 버전"
+
+#. Summary text explaining what the IP version setting controls
+msgctxt "hostpref_ipversion_summary"
+msgid "Select which IP address version to use when connecting"
+msgstr "연결할 때 사용할 IP 주소 버전을 선택하세요"
+
+#. Option for automatic IP version selection (try both IPv4 and IPv6)
+msgctxt "ipversion_auto"
+msgid "Automatic"
+msgstr "자동"
+
+#. Option to force IPv4-only connections
+msgctxt "ipversion_ipv4"
+msgid "IPv4 only"
+msgstr "IPv4만 사용"
+
+#. Option to force IPv6-only connections
+msgctxt "ipversion_ipv6"
+msgid "IPv6 only"
+msgstr "IPv6만 사용"
 
 #. ProxyJump / Jump Host support
 #. Title for jump host selector in host editor
@@ -2491,8 +2672,8 @@ msgstr "클립보드로 로그 복사됨"
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at "
-"https://connectbot.org/bug"
+"To report a bug, copy these logs and open a new issue at https://connectbot."
+"org/bug"
 msgstr "버그를報告하려면 이러한 로그를 복사하고 https://connectbot.org/bug에서 새로운 문제를 열어주세요"
 
 #. Message shown when no logs are available
@@ -2505,6 +2686,48 @@ msgstr "로그가 사용할 수 없음"
 msgctxt "help_section_about"
 msgid "About"
 msgstr "앱에 관하여"
+
+#. Window title for the Contact &amp; Support screen, also used as button text
+#. in Help screen.
+msgctxt "title_contact"
+msgid "Contact & Support"
+msgstr "문의 및 지원"
+
+#. Section title for the "Help" screen showing contact and support
+#. information.
+msgctxt "help_section_contact"
+msgid "Contact & Support"
+msgstr "문의 및 지원"
+
+#. Label for the official website link in the Help screen.
+msgctxt "help_website"
+msgid "Website"
+msgstr "웹사이트"
+
+#. Label for the GitHub repository link in the Help screen.
+msgctxt "help_github"
+msgid "Source Code"
+msgstr "소스 코드"
+
+#. Label for the bug report/issue tracker link in the Help screen.
+msgctxt "help_report_bug"
+msgid "Report a Bug"
+msgstr "버그 신고"
+
+#. Section title for the "Help" screen showing donation options.
+msgctxt "help_section_donate"
+msgid "Support Development"
+msgstr "개발 지원"
+
+#. Label for the GitHub Sponsors donation link in the Help screen.
+msgctxt "help_donate_github"
+msgid "GitHub Sponsors"
+msgstr "GitHub 스폰서"
+
+#. Label for the Buy Me a Coffee donation link in the Help screen.
+msgctxt "help_donate_coffee"
+msgid "Buy Me a Coffee"
+msgstr "커피 한 잔 사주세요"
 
 #. Built-in color scheme descriptions for terminal display
 #. Description of the default terminal color scheme
@@ -2588,6 +2811,21 @@ msgctxt "dialog_customterminal_hint"
 msgid "Terminal type (e.g., rxvt-unicode)"
 msgstr "터미널 종류 예를 들어 rxvt 유니코드"
 
+#. Dialog title for managing custom terminal types
+msgctxt "dialog_manage_customterminal_title"
+msgid "Manage Custom Terminal Types"
+msgstr "사용자 지정 터미널 유형 관리"
+
+#. Button to add a custom item
+msgctxt "button_add_custom"
+msgid "Add custom…"
+msgstr "사용자 지정 항목 추가"
+
+#. Button to manage custom items
+msgctxt "button_manage_custom"
+msgid "Manage custom…"
+msgstr "사용자 지정 항목 관리"
+
 #. Label for custom value input in list preference dialogs
 msgctxt "dialog_custom_value_label"
 msgid "Enter custom value"
@@ -2623,3 +2861,128 @@ msgctxt "list_camera_text_input_description"
 msgid "Text input"
 msgstr "텍스트 입력"
 
+#. Host export/import menu items
+#. Menu item to export all hosts to a JSON file
+msgctxt "list_menu_export_hosts"
+msgid "Export Hosts"
+msgstr "호스트 내보내기"
+
+#. Menu item to import hosts from a JSON file
+msgctxt "list_menu_import_hosts"
+msgid "Import Hosts"
+msgstr "호스트 가져오기"
+
+#. Host export/import messages
+#. Success message shown after exporting hosts to a file. Parameters: %1$d =
+#. host count, %2$d = profile count
+#, c-format
+msgctxt "export_hosts_success"
+msgid "Exported %1$d hosts and %2$d profiles"
+msgstr "총 %1$d개의 호스트와 %2$d개의 프로필이 내보내졌습니다"
+
+#. Success message shown after importing hosts from a file. Parameters: %1$d =
+#. hosts imported, %2$d = hosts skipped, %3$d = profiles imported, %4$d =
+#. profiles skipped
+#, c-format
+msgctxt "import_hosts_success"
+msgid "Imported %1$d hosts (%2$d skipped) and %3$d profiles (%4$d skipped)"
+msgstr "\"%1$d개의 호스트(건너뛴 항목 %2$d개)와 %3$d개의 프로필(건너뛴 항목 %4$d개)을 가져왔습니다.\""
+
+#. Error message when host export fails
+#, c-format
+msgctxt "export_hosts_failed"
+msgid "Failed to export hosts: %s"
+msgstr "호스트 내보내기에 실패했습니다: %s"
+
+#. Error message when host import fails
+#, c-format
+msgctxt "import_hosts_failed"
+msgid "Failed to import hosts: %s"
+msgstr "호스트 가져오기에 실패했습니다: %s"
+
+#. Title for the export hosts file picker dialog
+msgctxt "export_hosts_title"
+msgid "Export Hosts"
+msgstr "호스트 내보내기"
+
+#. Shortcut customization dialog strings
+#. Dialog title when customizing a shortcut icon
+msgctxt "shortcut_customize_title"
+msgid "Customize Shortcut"
+msgstr "단축키 사용자 지정"
+
+#. Label for the shortcut icon color selection dropdown
+msgctxt "shortcut_icon_color"
+msgid "Icon Color"
+msgstr "아이콘 색상"
+
+#. Label for the shortcut icon style selection dropdown
+msgctxt "shortcut_icon_style"
+msgid "Icon Style"
+msgstr "아이콘 스타일"
+
+#. Checkbox label to use the host\'s configured color for the shortcut
+msgctxt "shortcut_use_host_color"
+msgid "Use host color"
+msgstr "호스트 색상 사용"
+
+#. Button to create the customized shortcut
+msgctxt "shortcut_create"
+msgid "Create Shortcut"
+msgstr "바로 가기 만들기"
+
+#. Icon style option: terminal prompt icon
+msgctxt "icon_style_terminal"
+msgid "Terminal"
+msgstr "터미널"
+
+#. Icon style option: server/computer icon
+msgctxt "icon_style_server"
+msgid "Server"
+msgstr "서버"
+
+#. Icon style option: cloud icon
+msgctxt "icon_style_cloud"
+msgid "Cloud"
+msgstr "클라우드"
+
+#. Icon style option: key/security icon
+msgctxt "icon_style_key"
+msgid "Key"
+msgstr "키"
+
+#. Authentication on launch
+#. Title for the authentication on launch preference in settings
+msgctxt "pref_auth_on_launch_title"
+msgid "Authentication on launch"
+msgstr "\"앱 실행 시 인증\""
+
+#. Summary for the authentication on launch preference
+msgctxt "pref_auth_on_launch_summary"
+msgid "Require fingerprint, face, or device PIN when opening the app"
+msgstr "앱을 실행할 때 지문, 얼굴 인식 또는 기기 PIN을 요구합니다"
+
+#. Category title for security preferences in settings
+msgctxt "pref_security_category"
+msgid "Security"
+msgstr "보안"
+
+#. Title shown on the authentication lock screen
+msgctxt "auth_screen_title"
+msgid "ConnectBot is locked"
+msgstr "ConnectBot이 잠겨 있습니다"
+
+#. Button text to trigger authentication on the lock screen
+msgctxt "auth_screen_unlock_button"
+msgid "Tap to unlock"
+msgstr "\"잠금 해제하려면 탭하세요\""
+
+#. Title shown in the biometric/device credential authentication prompt
+msgctxt "auth_prompt_title"
+msgid "Unlock ConnectBot"
+msgstr "ConnectBot 잠금 해제"
+
+#. Subtitle shown in the biometric/device credential authentication prompt
+msgctxt "auth_prompt_subtitle"
+msgid "Verify your identity to continue"
+msgstr "계속하려면 본인 정보를 확인하세요"
