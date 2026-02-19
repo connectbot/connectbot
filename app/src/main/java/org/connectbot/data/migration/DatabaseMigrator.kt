@@ -435,7 +435,7 @@ class DatabaseMigrator @Inject constructor(
             // Reset invalid color scheme references to default
             if (fixedHost.colorSchemeId > 0 && fixedHost.colorSchemeId !in colorSchemeIds) {
                 logDebug("Resetting invalid color scheme reference (ID ${fixedHost.colorSchemeId}) to default for host '${fixedHost.nickname}'")
-                fixedHost = fixedHost.copy(colorSchemeId = 1L)
+                fixedHost = fixedHost.copy(colorSchemeId = -1L)
             }
 
             fixedHost
