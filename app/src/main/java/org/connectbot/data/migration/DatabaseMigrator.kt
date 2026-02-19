@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
+import org.connectbot.BuildConfig
 import org.connectbot.data.ConnectBotDatabase
 import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.ColorScheme
@@ -200,7 +201,7 @@ class DatabaseMigrator @Inject constructor(
             )
         }
 
-        logDebug("Starting database migration")
+        logDebug("Starting database migration (app version: ${BuildConfig.VERSION_NAME})")
         _migrationState.update { it.copy(status = MigrationStatus.IN_PROGRESS, currentStep = "Starting migration") }
 
         try {
