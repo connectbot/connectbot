@@ -32,6 +32,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -79,6 +80,7 @@ import org.connectbot.util.TerminalFont
 fun ProfileEditorScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
+    onNavigateToColors: () -> Unit = {},
     viewModel: ProfileEditorViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -181,11 +183,22 @@ fun ProfileEditorScreen(
                 Spacer(modifier = Modifier.height(24.dp))
 
                 // Color Scheme Section
-                Text(
-                    text = stringResource(R.string.profile_editor_section_color_scheme),
-                    style = MaterialTheme.typography.titleLarge,
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(bottom = 8.dp)
-                )
+                ) {
+                    Text(
+                        text = stringResource(R.string.profile_editor_section_color_scheme),
+                        style = MaterialTheme.typography.titleLarge,
+                        modifier = Modifier.weight(1f)
+                    )
+                    IconButton(onClick = onNavigateToColors) {
+                        Icon(
+                            Icons.Default.Palette,
+                            contentDescription = stringResource(R.string.menu_manage_colors)
+                        )
+                    }
+                }
 
                 ColorSchemeSelector(
                     colorSchemeId = uiState.colorSchemeId,

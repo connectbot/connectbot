@@ -856,6 +856,22 @@
 	<!-- Very short label indicating the number next to it is "background color" number. -->
 	<string name="color_bg_label">"BG: %1$d"</string>
 
+	<!-- Section header for the foreground and background color selectors in the palette editor -->
+	<string name="section_fg_bg_colors">Foreground &amp; Background</string>
+	<!-- Label under the foreground color swatch in the palette editor -->
+	<string name="label_foreground_color">Foreground</string>
+	<!-- Label under the background color swatch in the palette editor -->
+	<string name="label_background_color">Background</string>
+
+	<!-- Label for the base scheme selector in the new color scheme dialog -->
+	<string name="label_base_scheme">Base scheme:</string>
+	<!-- Icon button in the profile list screen to open color scheme management -->
+	<string name="menu_manage_colors">Manage Color Schemes</string>
+	<!-- Note shown in palette editor for built-in schemes that cannot be edited -->
+	<string name="palette_editor_builtin_note">Built-in schemes are read-only. Duplicate to customize.</string>
+	<!-- Section header for the terminal color preview shown below the ANSI color grid -->
+	<string name="section_color_preview">Preview</string>
+
 	<!-- Accessibility text for connection state in list of hosts when the host is currently
 	 connected. -->
 	<string name="image_description_connected">"Connected."</string>

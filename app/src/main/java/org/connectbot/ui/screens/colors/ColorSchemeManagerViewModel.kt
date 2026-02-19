@@ -35,7 +35,6 @@ data class SchemeManagerUiState(
     val isLoading: Boolean = false,
     val error: String? = null,
     val showNewSchemeDialog: Boolean = false,
-    val showRenameDialog: Boolean = false,
     val showDeleteDialog: Boolean = false,
     val dialogError: String? = null
 )
@@ -101,24 +100,6 @@ class ColorSchemeManagerViewModel @Inject constructor(
         }
     }
 
-    fun showRenameDialog() {
-        _uiState.update {
-            it.copy(
-                showRenameDialog = true,
-                dialogError = null
-            )
-        }
-    }
-
-    fun hideRenameDialog() {
-        _uiState.update {
-            it.copy(
-                showRenameDialog = false,
-                dialogError = null
-            )
-        }
-    }
-
     fun showDeleteDialog() {
         _uiState.update {
             it.copy(
@@ -161,40 +142,6 @@ class ColorSchemeManagerViewModel @Inject constructor(
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(dialogError = e.message ?: "Failed to create scheme")
-                }
-            }
-        }
-    }
-
-    fun renameScheme(schemeId: Long, newName: String, newDescription: String = "") {
-        viewModelScope.launch {
-            try {
-                // Validate name
-                if (newName.isBlank()) {
-                    _uiState.update { it.copy(dialogError = "Scheme name cannot be empty") }
-                    return@launch
-                }
-
-                // Check for duplicate name (excluding current scheme)
-                if (repository.schemeNameExists(newName, excludeSchemeId = schemeId)) {
-                    _uiState.update { it.copy(dialogError = "A scheme with this name already exists") }
-                    return@launch
-                }
-
-                // Rename the scheme
-                val success = repository.renameScheme(schemeId, newName, newDescription)
-                if (success) {
-                    // Reload schemes and close dialog
-                    loadSchemes()
-                    hideRenameDialog()
-                } else {
-                    _uiState.update {
-                        it.copy(dialogError = "Failed to rename scheme")
-                    }
-                }
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(dialogError = e.message ?: "Failed to rename scheme")
                 }
             }
         }

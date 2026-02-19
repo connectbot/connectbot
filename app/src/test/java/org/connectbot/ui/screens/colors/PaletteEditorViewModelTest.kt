@@ -30,6 +30,7 @@ import org.connectbot.data.ColorSchemePresets
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.util.HostConstants
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -68,6 +69,8 @@ class PaletteEditorViewModelTest {
         runBlocking {
             whenever(repository.getAllSchemes()).thenReturn(listOf(defaultScheme))
             whenever(repository.getSchemeColors(testSchemeId)).thenReturn(ColorSchemePresets.default.colors)
+            whenever(repository.getSchemeDefaults(testSchemeId))
+                .thenReturn(Pair(HostConstants.DEFAULT_FG_COLOR, HostConstants.DEFAULT_BG_COLOR))
         }
     }
 
@@ -352,5 +355,189 @@ class PaletteEditorViewModelTest {
 
         val state = viewModel.uiState.value
         assertThat(state.palette.size).isEqualTo(16)
+    }
+
+    @Test
+    fun `initial state loads fg and bg color indices from repository`() = runTest {
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertThat(state.foregroundColorIndex).isEqualTo(HostConstants.DEFAULT_FG_COLOR)
+        assertThat(state.backgroundColorIndex).isEqualTo(HostConstants.DEFAULT_BG_COLOR)
+    }
+
+    @Test
+    fun `isBuiltIn reflects scheme from repository`() = runTest {
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.isBuiltIn).isTrue()
+    }
+
+    @Test
+    fun `updateForegroundColor is blocked for built-in schemes`() = runTest {
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
+        advanceUntilIdle()
+
+        val originalFg = viewModel.uiState.value.foregroundColorIndex
+        viewModel.updateForegroundColor(3)
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.foregroundColorIndex).isEqualTo(originalFg)
+        assertThat(viewModel.uiState.value.error).isNotNull()
+    }
+
+    @Test
+    fun `updateBackgroundColor is blocked for built-in schemes`() = runTest {
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
+        advanceUntilIdle()
+
+        val originalBg = viewModel.uiState.value.backgroundColorIndex
+        viewModel.updateBackgroundColor(3)
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.backgroundColorIndex).isEqualTo(originalBg)
+        assertThat(viewModel.uiState.value.error).isNotNull()
+    }
+
+    @Test
+    fun `updateForegroundColor saves to repository for custom scheme`() = runTest {
+        val customSchemeId = 99L
+        val customScheme = ColorScheme(id = customSchemeId, name = "Custom", isBuiltIn = false)
+        whenever(savedStateHandle.get<Long>("schemeId")).thenReturn(customSchemeId)
+        whenever(repository.getAllSchemes()).thenReturn(listOf(customScheme))
+        whenever(repository.getSchemeColors(customSchemeId)).thenReturn(ColorSchemePresets.default.colors)
+        whenever(repository.getSchemeDefaults(customSchemeId))
+            .thenReturn(Pair(HostConstants.DEFAULT_FG_COLOR, HostConstants.DEFAULT_BG_COLOR))
+
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
+        advanceUntilIdle()
+
+        viewModel.updateForegroundColor(3)
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.foregroundColorIndex).isEqualTo(3)
+        verify(repository).setDefaultColorsForScheme(customSchemeId, 3, HostConstants.DEFAULT_BG_COLOR)
+    }
+
+    @Test
+    fun `updateBackgroundColor saves to repository for custom scheme`() = runTest {
+        val customSchemeId = 99L
+        val customScheme = ColorScheme(id = customSchemeId, name = "Custom", isBuiltIn = false)
+        whenever(savedStateHandle.get<Long>("schemeId")).thenReturn(customSchemeId)
+        whenever(repository.getAllSchemes()).thenReturn(listOf(customScheme))
+        whenever(repository.getSchemeColors(customSchemeId)).thenReturn(ColorSchemePresets.default.colors)
+        whenever(repository.getSchemeDefaults(customSchemeId))
+            .thenReturn(Pair(HostConstants.DEFAULT_FG_COLOR, HostConstants.DEFAULT_BG_COLOR))
+
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
+        advanceUntilIdle()
+
+        viewModel.updateBackgroundColor(2)
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.backgroundColorIndex).isEqualTo(2)
+        verify(repository).setDefaultColorsForScheme(customSchemeId, HostConstants.DEFAULT_FG_COLOR, 2)
+    }
+
+    @Test
+    fun `updateName updates schemeName in state`() = runTest {
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
+        advanceUntilIdle()
+
+        viewModel.updateName("New Name")
+
+        assertThat(viewModel.uiState.value.schemeName).isEqualTo("New Name")
+    }
+
+    @Test
+    fun `updateDescription updates schemeDescription in state`() = runTest {
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
+        advanceUntilIdle()
+
+        viewModel.updateDescription("A description")
+
+        assertThat(viewModel.uiState.value.schemeDescription).isEqualTo("A description")
+    }
+
+    @Test
+    fun `saveNameAndDescription is ignored for built-in schemes`() = runTest {
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
+        advanceUntilIdle()
+
+        viewModel.updateName("Attempted rename")
+        viewModel.saveNameAndDescription()
+        advanceUntilIdle()
+
+        verify(repository, times(0)).renameScheme(testSchemeId, "Attempted rename", "")
+    }
+
+    @Test
+    fun `saveNameAndDescription calls repository for custom scheme`() = runTest {
+        val customSchemeId = 99L
+        val customScheme = ColorScheme(id = customSchemeId, name = "Custom", isBuiltIn = false)
+        whenever(savedStateHandle.get<Long>("schemeId")).thenReturn(customSchemeId)
+        whenever(repository.getAllSchemes()).thenReturn(listOf(customScheme))
+        whenever(repository.getSchemeColors(customSchemeId)).thenReturn(ColorSchemePresets.default.colors)
+        whenever(repository.getSchemeDefaults(customSchemeId))
+            .thenReturn(Pair(HostConstants.DEFAULT_FG_COLOR, HostConstants.DEFAULT_BG_COLOR))
+        whenever(repository.renameScheme(customSchemeId, "New Name", "Desc")).thenReturn(true)
+
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
+        advanceUntilIdle()
+
+        viewModel.updateName("New Name")
+        viewModel.updateDescription("Desc")
+        viewModel.saveNameAndDescription()
+        advanceUntilIdle()
+
+        verify(repository).renameScheme(customSchemeId, "New Name", "Desc")
+    }
+
+    @Test
+    fun `showDuplicateDialog and hideDuplicateDialog toggle state`() = runTest {
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.showDuplicateDialog).isFalse()
+
+        viewModel.showDuplicateDialog()
+        assertThat(viewModel.uiState.value.showDuplicateDialog).isTrue()
+
+        viewModel.hideDuplicateDialog()
+        assertThat(viewModel.uiState.value.showDuplicateDialog).isFalse()
+    }
+
+    @Test
+    fun `duplicateScheme calls repository and closes dialog`() = runTest {
+        val newSchemeId = 42L
+        whenever(repository.duplicateScheme(testSchemeId, "Copy of Default")).thenReturn(newSchemeId)
+
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
+        advanceUntilIdle()
+
+        viewModel.showDuplicateDialog()
+        assertThat(viewModel.uiState.value.showDuplicateDialog).isTrue()
+
+        viewModel.duplicateScheme("Copy of Default")
+        advanceUntilIdle()
+
+        verify(repository).duplicateScheme(testSchemeId, "Copy of Default")
+        assertThat(viewModel.uiState.value.showDuplicateDialog).isFalse()
+    }
+
+    @Test
+    fun `duplicateScheme sets error on repository failure`() = runTest {
+        whenever(repository.duplicateScheme(testSchemeId, "Copy"))
+            .thenThrow(RuntimeException("DB error"))
+
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
+        advanceUntilIdle()
+
+        viewModel.duplicateScheme("Copy")
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.error).isNotNull()
     }
 }
