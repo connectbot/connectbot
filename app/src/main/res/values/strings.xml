@@ -580,6 +580,14 @@
 	<string name="console_menu_resize">"Force size"</string>
 	<!-- Button that brings up the list of URLs on the current screen -->
 	<string name="console_menu_urlscan">"URL scan"</string>
+	<!-- Menu item to read the last command output using shell integration -->
+	<string name="console_menu_read_last_output">Read last output</string>
+	<!-- Dialog title for displaying last command output -->
+	<string name="console_read_last_output_title">Last Command Output</string>
+	<!-- Message shown when no completed command output is found -->
+	<string name="console_read_last_output_empty">No completed command output found. Shell integration (OSC 133) may not be enabled.</string>
+	<!-- Toast message shown when output is copied to clipboard -->
+	<string name="console_read_last_output_copied">Output copied to clipboard</string>
 
 	<!-- Button label to answer "Yes" to a yes/no prompt -->
 	<string name="button_yes">"Yes"</string>
@@ -958,6 +966,8 @@
 	<string name="button_ok">OK</string>
 	<!-- Button label for closing a dialog -->
 	<string name="button_close">Close</string>
+	<!-- Button label for copying content to clipboard -->
+	<string name="button_copy">Copy</string>
 	<!-- Accessibility label for back navigation button; used for screen readers -->
 	<string name="button_back">Back</string>
 	<!-- Accessibility label for navigate up button in app bar; used for screen readers -->
