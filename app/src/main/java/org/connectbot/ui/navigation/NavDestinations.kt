@@ -27,7 +27,6 @@ object NavDestinations {
     const val PORT_FORWARD_LIST = "port_forward_list"
     const val SETTINGS = "settings"
     const val COLORS = "colors"
-    const val SCHEME_MANAGER = "scheme_manager"
     const val PALETTE_EDITOR = "palette_editor"
     const val PROFILES = "profiles"
     const val PROFILE_EDITOR = "profile_editor"

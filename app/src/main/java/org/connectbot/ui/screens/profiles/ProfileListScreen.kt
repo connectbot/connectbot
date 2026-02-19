@@ -34,6 +34,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
@@ -69,11 +70,14 @@ import org.connectbot.ui.common.getLocalizedFontDisplayName
 fun ProfileListScreen(
     onNavigateBack: () -> Unit,
     onNavigateToEdit: (Profile) -> Unit,
+    modifier: Modifier = Modifier,
+    onNavigateToColors: () -> Unit = {},
     viewModel: ProfileListViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.profile_list_title)) },
@@ -82,6 +86,14 @@ fun ProfileListScreen(
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.button_navigate_up)
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = onNavigateToColors) {
+                        Icon(
+                            Icons.Default.Palette,
+                            contentDescription = stringResource(R.string.menu_manage_colors)
                         )
                     }
                 }
