@@ -245,7 +245,7 @@ class SSH :
                     }
                     if (result) {
                         // save this key in known database
-                        verifyHost?.let {
+                        verifyHost.let {
                             manager?.hostRepository?.saveKnownHostBlocking(it, hostname, port, serverHostKeyAlgorithm, serverHostKey)
                         }
                     }
@@ -282,7 +282,7 @@ class SSH :
                     )
                     if (result != null && result) {
                         // save this key in known database
-                        verifyHost?.let {
+                        verifyHost.let {
                             manager?.hostRepository?.saveKnownHostBlocking(it, hostname, port, serverHostKeyAlgorithm, serverHostKey)
                         }
                         true
