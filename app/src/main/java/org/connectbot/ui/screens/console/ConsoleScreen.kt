@@ -79,6 +79,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
+import androidx.compose.ui.input.key.isCtrlPressed
+import androidx.compose.ui.input.key.isShiftPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
@@ -103,6 +105,7 @@ import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.service.PromptRequest
 import org.connectbot.terminal.ProgressState
+import org.connectbot.terminal.SelectionController
 import org.connectbot.terminal.Terminal
 import org.connectbot.ui.LoadingScreen
 import org.connectbot.ui.LocalTerminalManager
@@ -175,6 +178,7 @@ fun ConsoleScreen(
     var showTitleBar by remember { mutableStateOf(!titleBarHide) }
     var lastInteractionTime by remember { mutableLongStateOf(System.currentTimeMillis()) }
     var scannedUrls by remember { mutableStateOf<List<String>>(emptyList()) }
+    var selectionController by remember { mutableStateOf<SelectionController?>(null) }
     var imeVisible by remember { mutableStateOf(false) }
     var keyboardScrollInProgress by remember { mutableStateOf(false) }
 
@@ -281,6 +285,11 @@ fun ConsoleScreen(
         }
     }
 
+    // Reset selection controller when bridge changes
+    LaunchedEffect(currentBridge) {
+        selectionController = null
+    }
+
     // Initialize forceSize from profile when bridge changes
     LaunchedEffect(currentBridge) {
         currentBridge?.let { bridge ->
@@ -362,15 +371,45 @@ fun ConsoleScreen(
                 )
                 .windowInsetsPadding(WindowInsets.imeAnimationTarget)
                 .onPreviewKeyEvent { keyEvent ->
-                    // Handle volume keys for font size change
-                    if (volumeKeysChangeFontSize && keyEvent.type == KeyEventType.KeyDown) {
-                        when (keyEvent.key) {
-                            Key.VolumeUp -> {
+                    if (keyEvent.type == KeyEventType.KeyDown) {
+                        when {
+                            // Ctrl+Shift+C: copy selection
+                            keyEvent.key == Key.C && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
+                                selectionController?.copySelection()
+                                true
+                            }
+
+                            // Ctrl+Shift+V: paste clipboard content
+                            keyEvent.key == Key.V && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
+                                currentBridge?.let { bridge ->
+                                    val clipboard =
+                                        context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                    val clip =
+                                        clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: ""
+                                    bridge.injectString(clip)
+                                }
+                                true
+                            }
+
+                            // Ctrl+Shift+= (Ctrl++): increase font size
+                            keyEvent.isCtrlPressed && keyEvent.isShiftPressed && keyEvent.key == Key.Equals -> {
                                 currentBridge?.increaseFontSize()
                                 true
                             }
 
-                            Key.VolumeDown -> {
+                            // Ctrl+Shift+-: decrease font size
+                            keyEvent.isCtrlPressed && keyEvent.isShiftPressed && keyEvent.key == Key.Minus -> {
+                                currentBridge?.decreaseFontSize()
+                                true
+                            }
+
+                            // Volume keys: change font size
+                            volumeKeysChangeFontSize && keyEvent.key == Key.VolumeUp -> {
+                                currentBridge?.increaseFontSize()
+                                true
+                            }
+
+                            volumeKeysChangeFontSize && keyEvent.key == Key.VolumeDown -> {
                                 currentBridge?.decreaseFontSize()
                                 true
                             }
@@ -435,6 +474,7 @@ fun ConsoleScreen(
                             focusRequester = termFocusRequester,
                             forcedSize = forceSize,
                             modifierManager = bridge.keyHandler,
+                            onSelectionControllerAvailable = { selectionController = it },
                             onTerminalTap = { handleTerminalInteraction() },
                             onImeVisibilityChanged = { visible ->
                                 imeVisible = visible
