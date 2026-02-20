@@ -11,7 +11,7 @@ pythonUv = "0.3.17"
 appVersioning = "1.5.0"
 room = "2.8.4"
 ksp = "2.3.6"
-hilt = "2.59.1"
+hilt = "2.59.2"
 hiltNavigationCompose = "1.3.0"
 
 compileSdk = "36"
