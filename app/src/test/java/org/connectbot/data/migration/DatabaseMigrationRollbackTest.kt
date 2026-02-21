@@ -321,46 +321,42 @@ class DatabaseMigrationRollbackTest {
         username: String = "user",
         hostname: String = "example.com",
         port: Int = 22
-    ): Host {
-        return Host(
-            nickname = nickname,
-            protocol = protocol,
-            username = username,
-            hostname = hostname,
-            port = port,
-            hostKeyAlgo = null,
-            lastConnect = 0,
-            color = "gray",
-            useKeys = false,
-            useAuthAgent = null,
-            stayConnected = false,
-            postLogin = null,
-            pubkeyId = 0,
-            wantSession = true,
-            compression = false,
-            scrollbackLines = 140,
-            useCtrlAltAsMetaKey = false,
-            jumpHostId = null,
-            profileId = 1L
-        )
-    }
+    ): Host = Host(
+        nickname = nickname,
+        protocol = protocol,
+        username = username,
+        hostname = hostname,
+        port = port,
+        hostKeyAlgo = null,
+        lastConnect = 0,
+        color = "gray",
+        useKeys = false,
+        useAuthAgent = null,
+        stayConnected = false,
+        postLogin = null,
+        pubkeyId = 0,
+        wantSession = true,
+        compression = false,
+        scrollbackLines = 140,
+        useCtrlAltAsMetaKey = false,
+        jumpHostId = null,
+        profileId = 1L
+    )
 
     private fun createTestPubkey(
         nickname: String,
         type: String = "ssh-rsa"
-    ): Pubkey {
-        return Pubkey(
-            nickname = nickname,
-            type = type,
-            privateKey = byteArrayOf(1, 2, 3),
-            publicKey = byteArrayOf(4, 5, 6),
-            encrypted = false,
-            startup = false,
-            confirmation = false,
-            createdDate = System.currentTimeMillis(),
-            storageType = KeyStorageType.EXPORTABLE,
-            allowBackup = true,
-            keystoreAlias = null
-        )
-    }
+    ): Pubkey = Pubkey(
+        nickname = nickname,
+        type = type,
+        privateKey = byteArrayOf(1, 2, 3),
+        publicKey = byteArrayOf(4, 5, 6),
+        encrypted = false,
+        startup = false,
+        confirmation = false,
+        createdDate = System.currentTimeMillis(),
+        storageType = KeyStorageType.EXPORTABLE,
+        allowBackup = true,
+        keystoreAlias = null
+    )
 }

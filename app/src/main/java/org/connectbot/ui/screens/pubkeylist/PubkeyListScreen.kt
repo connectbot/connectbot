@@ -23,11 +23,11 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -105,11 +105,11 @@ fun PubkeyListScreen(
     onNavigateBack: () -> Unit,
     onNavigateToGenerate: () -> Unit,
     onNavigateToEdit: (Pubkey) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: PubkeyListViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val terminalManager = LocalTerminalManager.current
-    val viewModel: PubkeyListViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -181,13 +181,14 @@ fun PubkeyListScreen(
         onError = { errorCode, errString ->
             // Show error in snackbar (unless user cancelled)
             if (errorCode != androidx.biometric.BiometricPrompt.ERROR_USER_CANCELED &&
-                errorCode != androidx.biometric.BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
+                errorCode != androidx.biometric.BiometricPrompt.ERROR_NEGATIVE_BUTTON
+            ) {
                 viewModel.onBiometricError(errString.toString())
             } else {
                 viewModel.cancelBiometricAuth()
             }
         },
-        onFailed = {
+        onFailure = {
             // Don't do anything on failed attempt - user can retry
         }
     )
@@ -228,7 +229,7 @@ fun PubkeyListScreen(
         onNavigateToGenerate = onNavigateToGenerate,
         onNavigateToEdit = onNavigateToEdit,
         onDeletePubkey = viewModel::deletePubkey,
-        onToggleKeyLoaded = viewModel::toggleKeyLoaded,
+        onToggleKeyLoad = viewModel::toggleKeyLoaded,
         onCopyPublicKey = viewModel::copyPublicKey,
         onCopyPrivateKeyOpenSSH = { pubkey, onPasswordRequired ->
             viewModel.copyPrivateKeyOpenSSH(pubkey, onPasswordRequired)
@@ -236,7 +237,7 @@ fun PubkeyListScreen(
         onCopyPrivateKeyPem = { pubkey, onPasswordRequired ->
             viewModel.copyPrivateKeyPem(pubkey, onPasswordRequired)
         },
-        onCopyPrivateKeyEncrypted = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
+        onCopyEncryptedPrivateKey = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
             viewModel.copyPrivateKeyEncrypted(pubkey, onPasswordRequired, onExportPassphraseRequired)
         },
         onExportPublicKey = viewModel::requestExportPublicKey,
@@ -246,7 +247,7 @@ fun PubkeyListScreen(
         onExportPrivateKeyPem = { pubkey, onPasswordRequired ->
             viewModel.requestExportPrivateKeyPem(pubkey, onPasswordRequired)
         },
-        onExportPrivateKeyEncrypted = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
+        onExportEncryptedPrivateKey = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
             viewModel.requestExportPrivateKeyEncrypted(pubkey, onPasswordRequired, onExportPassphraseRequired)
         },
         onImportKey = {
@@ -265,15 +266,15 @@ fun PubkeyListScreenContent(
     onNavigateToGenerate: () -> Unit,
     onNavigateToEdit: (Pubkey) -> Unit,
     onDeletePubkey: (Pubkey) -> Unit,
-    onToggleKeyLoaded: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onToggleKeyLoad: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPublicKey: (Pubkey) -> Unit,
     onCopyPrivateKeyOpenSSH: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPrivateKeyPem: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
-    onCopyPrivateKeyEncrypted: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onCopyEncryptedPrivateKey: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPublicKey: (Pubkey) -> Unit,
     onExportPrivateKeyOpenSSH: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyPem: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
-    onExportPrivateKeyEncrypted: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onExportEncryptedPrivateKey: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onImportKey: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -309,7 +310,7 @@ fun PubkeyListScreenContent(
                             } else {
                                 stringResource(R.string.pubkey_generate)
                             },
-                            modifier = Modifier.animateIcon({ checkedProgress }),
+                            modifier = Modifier.animateIcon({ checkedProgress })
                         )
                     }
                 }
@@ -365,7 +366,7 @@ fun PubkeyListScreenContent(
                             start = 16.dp,
                             end = 16.dp,
                             top = 16.dp,
-                            bottom = 104.dp, // Extra padding to avoid FAB menu overlap (88dp + 16dp for menu padding)
+                            bottom = 104.dp // Extra padding to avoid FAB menu overlap (88dp + 16dp for menu padding)
                         ),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
@@ -377,7 +378,7 @@ fun PubkeyListScreenContent(
                                 pubkey = pubkey,
                                 isLoaded = uiState.loadedKeyNicknames.contains(pubkey.nickname),
                                 onDelete = { onDeletePubkey(pubkey) },
-                                onToggleLoaded = { onToggleKeyLoaded(pubkey, it) },
+                                onToggleLoad = { onToggleKeyLoad(pubkey, it) },
                                 onCopyPublicKey = { onCopyPublicKey(pubkey) },
                                 onCopyPrivateKeyOpenSSH = { onPasswordRequired ->
                                     onCopyPrivateKeyOpenSSH(pubkey, onPasswordRequired)
@@ -385,8 +386,8 @@ fun PubkeyListScreenContent(
                                 onCopyPrivateKeyPem = { onPasswordRequired ->
                                     onCopyPrivateKeyPem(pubkey, onPasswordRequired)
                                 },
-                                onCopyPrivateKeyEncrypted = { onPasswordRequired, onExportPassphraseRequired ->
-                                    onCopyPrivateKeyEncrypted(pubkey, onPasswordRequired, onExportPassphraseRequired)
+                                onCopyEncryptedPrivateKey = { onPasswordRequired, onExportPassphraseRequired ->
+                                    onCopyEncryptedPrivateKey(pubkey, onPasswordRequired, onExportPassphraseRequired)
                                 },
                                 onExportPublicKey = { onExportPublicKey(pubkey) },
                                 onExportPrivateKeyOpenSSH = { onPasswordRequired ->
@@ -395,11 +396,11 @@ fun PubkeyListScreenContent(
                                 onExportPrivateKeyPem = { onPasswordRequired ->
                                     onExportPrivateKeyPem(pubkey, onPasswordRequired)
                                 },
-                                onExportPrivateKeyEncrypted = { onPasswordRequired, onExportPassphraseRequired ->
-                                    onExportPrivateKeyEncrypted(pubkey, onPasswordRequired, onExportPassphraseRequired)
+                                onExportEncryptedPrivateKey = { onPasswordRequired, onExportPassphraseRequired ->
+                                    onExportEncryptedPrivateKey(pubkey, onPasswordRequired, onExportPassphraseRequired)
                                 },
                                 onEdit = { onNavigateToEdit(pubkey) },
-                                onClick = { onToggleKeyLoaded(pubkey, it) }
+                                onClick = { onToggleKeyLoad(pubkey, it) }
                             )
                         }
                     }
@@ -414,15 +415,15 @@ private fun PubkeyListItem(
     pubkey: Pubkey,
     isLoaded: Boolean,
     onDelete: () -> Unit,
-    onToggleLoaded: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onToggleLoad: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPublicKey: () -> Unit,
     onCopyPrivateKeyOpenSSH: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPrivateKeyPem: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
-    onCopyPrivateKeyEncrypted: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onCopyEncryptedPrivateKey: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPublicKey: () -> Unit,
     onExportPrivateKeyOpenSSH: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyPem: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
-    onExportPrivateKeyEncrypted: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onExportEncryptedPrivateKey: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onEdit: () -> Unit,
     onClick: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     modifier: Modifier = Modifier
@@ -434,134 +435,123 @@ private fun PubkeyListItem(
     var passwordCallback by remember { mutableStateOf<((String) -> Unit)?>(null) }
     var exportPassphraseCallback by remember { mutableStateOf<((String) -> Unit)?>(null) }
 
-    ListItem(
-        headlineContent = {
-            Text(
-                text = pubkey.nickname,
-                fontWeight = FontWeight.Bold
-            )
-        },
-        supportingContent = {
-            Text(
-                stringResource(
-                    R.string.pubkey_type_label,
-                    pubkey.type
+    Column(modifier = modifier) {
+        ListItem(
+            headlineContent = {
+                Text(
+                    text = pubkey.nickname,
+                    fontWeight = FontWeight.Bold
                 )
-            )
-        },
-        leadingContent = {
-            val icon = when {
-                pubkey.isBiometric -> Icons.Outlined.Fingerprint
-                pubkey.encrypted -> Icons.Outlined.Lock
-                else -> Icons.Outlined.LockOpen
-            }
-
-            val modifier = when {
-                isLoaded -> Modifier
-                    .padding(2.dp)
-                    .border(
-                        width = 2.dp, // Border thickness
-                        color = Color.Green, // Border color
-                        shape = CircleShape // Makes the border a circle
+            },
+            supportingContent = {
+                Text(
+                    stringResource(
+                        R.string.pubkey_type_label,
+                        pubkey.type
                     )
-                    .clip(CircleShape)
-                    .padding(4.dp)
-                else -> Modifier.padding(2.dp).clip(CircleShape).padding(4.dp)
-            }
-
-            Box(
-                modifier = modifier
-            ) {
-                Icon(
-                    imageVector = icon,
-                    contentDescription = when {
-                        pubkey.isBiometric -> stringResource(R.string.pubkey_biometric_description_icon)
-                        pubkey.encrypted -> stringResource(R.string.pubkey_encrypted_description)
-                        else -> stringResource(R.string.pubkey_not_encrypted_description)
-                    },
                 )
-            }
-        },
-        trailingContent = {
-            Box {
-                IconButton(onClick = { showMenu = true }) {
-                    Icon(Icons.Default.MoreVert, stringResource(R.string.button_more_options))
+            },
+            leadingContent = {
+                val icon = when {
+                    pubkey.isBiometric -> Icons.Outlined.Fingerprint
+                    pubkey.encrypted -> Icons.Outlined.Lock
+                    else -> Icons.Outlined.LockOpen
                 }
-                DropdownMenu(
-                    expanded = showMenu,
-                    onDismissRequest = { showMenu = false }
+
+                val iconModifier = when {
+                    isLoaded ->
+                        Modifier
+                            .padding(2.dp)
+                            .border(
+                                width = 2.dp,
+                                color = Color.Green,
+                                shape = CircleShape
+                            )
+                            .clip(CircleShape)
+                            .padding(4.dp)
+
+                    else -> Modifier.padding(2.dp).clip(CircleShape).padding(4.dp)
+                }
+
+                Box(
+                    modifier = iconModifier
                 ) {
-                    // Edit key
-                    DropdownMenuItem(
-                        text = {
-                            Text(stringResource(R.string.list_pubkey_edit))
-                        },
-                        onClick = {
-                            showMenu = false
-                            onEdit()
-                        },
-                        leadingIcon = {
-                            Icon(Icons.Default.Edit, null)
+                    Icon(
+                        imageVector = icon,
+                        contentDescription = when {
+                            pubkey.isBiometric -> stringResource(R.string.pubkey_biometric_description_icon)
+                            pubkey.encrypted -> stringResource(R.string.pubkey_encrypted_description)
+                            else -> stringResource(R.string.pubkey_not_encrypted_description)
                         }
                     )
-
-                    // Copy public key
-                    val isImported = pubkey.type == "IMPORTED"
-                    DropdownMenuItem(
-                        text = { Text(stringResource(R.string.pubkey_copy_public)) },
-                        onClick = {
-                            showMenu = false
-                            onCopyPublicKey()
-                        },
-                        leadingIcon = {
-                            Icon(Icons.Default.ContentCopy, null)
-                        },
-                        enabled = !isImported
-                    )
-
-                    // Export public key to file
-                    DropdownMenuItem(
-                        text = { Text(stringResource(R.string.pubkey_export_public)) },
-                        onClick = {
-                            showMenu = false
-                            onExportPublicKey()
-                        },
-                        leadingIcon = {
-                            Icon(Icons.Default.FileDownload, null)
-                        },
-                        enabled = !isImported
-                    )
-
-                    // Copy private key in OpenSSH format (not available for Keystore keys)
-                    DropdownMenuItem(
-                        text = {
-                            Text(stringResource(
-                                if (isImported)
-                                    R.string.pubkey_copy_private
-                                else
-                                    R.string.pubkey_copy_private_openssh
-                            ))
-                        },
-                        onClick = {
-                            showMenu = false
-                            onCopyPrivateKeyOpenSSH { _, callback ->
-                                passwordCallback = callback
-                                showPasswordDialog = true
-                            }
-                        },
-                        leadingIcon = {
-                            Icon(Icons.Default.ContentCopy, null)
-                        },
-                        enabled = !pubkey.isBiometric
-                    )
-
-                    // Copy private key in PEM format (for non-imported keys)
-                    if (!isImported) {
+                }
+            },
+            trailingContent = {
+                Box {
+                    IconButton(onClick = { showMenu = true }) {
+                        Icon(Icons.Default.MoreVert, stringResource(R.string.button_more_options))
+                    }
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false }
+                    ) {
+                        // Edit key
                         DropdownMenuItem(
-                            text = { Text(stringResource(R.string.pubkey_copy_private_pem)) },
+                            text = {
+                                Text(stringResource(R.string.list_pubkey_edit))
+                            },
                             onClick = {
                                 showMenu = false
-                                onCopyPrivateKeyPem { _, callback ->
+                                onEdit()
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.Edit, null)
+                            }
+                        )
+
+                        // Copy public key
+                        val isImported = pubkey.type == "IMPORTED"
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.pubkey_copy_public)) },
+                            onClick = {
+                                showMenu = false
+                                onCopyPublicKey()
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.ContentCopy, null)
+                            },
+                            enabled = !isImported
+                        )
+
+                        // Export public key to file
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.pubkey_export_public)) },
+                            onClick = {
+                                showMenu = false
+                                onExportPublicKey()
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.FileDownload, null)
+                            },
+                            enabled = !isImported
+                        )
+
+                        // Copy private key in OpenSSH format (not available for Keystore keys)
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    stringResource(
+                                        if (isImported) {
+                                            R.string.pubkey_copy_private
+                                        } else {
+                                            R.string.pubkey_copy_private_openssh
+                                        }
+                                    )
+                                )
+                            },
+                            onClick = {
+                                showMenu = false
+                                onCopyPrivateKeyOpenSSH { _, callback ->
                                     passwordCallback = callback
                                     showPasswordDialog = true
                                 }
@@ -571,62 +561,65 @@ private fun PubkeyListItem(
                             },
                             enabled = !pubkey.isBiometric
                         )
-                    }
 
-                    // Copy private key encrypted (for non-imported keys)
-                    if (!isImported) {
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.pubkey_copy_private_encrypted)) },
-                            onClick = {
-                                showMenu = false
-                                onCopyPrivateKeyEncrypted(
-                                    { _, callback ->
+                        // Copy private key in PEM format (for non-imported keys)
+                        if (!isImported) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.pubkey_copy_private_pem)) },
+                                onClick = {
+                                    showMenu = false
+                                    onCopyPrivateKeyPem { _, callback ->
                                         passwordCallback = callback
                                         showPasswordDialog = true
-                                    },
-                                    { _, callback ->
-                                        exportPassphraseCallback = callback
-                                        showExportPassphraseDialog = true
                                     }
+                                },
+                                leadingIcon = {
+                                    Icon(Icons.Default.ContentCopy, null)
+                                },
+                                enabled = !pubkey.isBiometric
+                            )
+                        }
+
+                        // Copy private key encrypted (for non-imported keys)
+                        if (!isImported) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.pubkey_copy_private_encrypted)) },
+                                onClick = {
+                                    showMenu = false
+                                    onCopyEncryptedPrivateKey(
+                                        { _, callback ->
+                                            passwordCallback = callback
+                                            showPasswordDialog = true
+                                        },
+                                        { _, callback ->
+                                            exportPassphraseCallback = callback
+                                            showExportPassphraseDialog = true
+                                        }
+                                    )
+                                },
+                                leadingIcon = {
+                                    Icon(Icons.Default.Lock, null)
+                                },
+                                enabled = !pubkey.isBiometric
+                            )
+                        }
+
+                        // Export private key to file in OpenSSH format
+                        DropdownMenuItem(
+                            text = {
+                                Text(
+                                    stringResource(
+                                        if (isImported) {
+                                            R.string.pubkey_export_private
+                                        } else {
+                                            R.string.pubkey_export_private_openssh
+                                        }
+                                    )
                                 )
                             },
-                            leadingIcon = {
-                                Icon(Icons.Default.Lock, null)
-                            },
-                            enabled = !pubkey.isBiometric
-                        )
-                    }
-
-                    // Export private key to file in OpenSSH format
-                    DropdownMenuItem(
-                        text = {
-                            Text(stringResource(
-                                if (isImported)
-                                    R.string.pubkey_export_private
-                                else
-                                    R.string.pubkey_export_private_openssh
-                            ))
-                        },
-                        onClick = {
-                            showMenu = false
-                            onExportPrivateKeyOpenSSH { _, callback ->
-                                passwordCallback = callback
-                                showPasswordDialog = true
-                            }
-                        },
-                        leadingIcon = {
-                            Icon(Icons.Default.FileDownload, null)
-                        },
-                        enabled = !pubkey.isBiometric
-                    )
-
-                    // Export private key to file in PEM format (for non-imported keys)
-                    if (!isImported) {
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.pubkey_export_private_pem)) },
                             onClick = {
                                 showMenu = false
-                                onExportPrivateKeyPem { _, callback ->
+                                onExportPrivateKeyOpenSSH { _, callback ->
                                     passwordCallback = callback
                                     showPasswordDialog = true
                                 }
@@ -636,55 +629,72 @@ private fun PubkeyListItem(
                             },
                             enabled = !pubkey.isBiometric
                         )
-                    }
 
-                    // Export private key to file with encryption (for non-imported keys)
-                    if (!isImported) {
-                        DropdownMenuItem(
-                            text = { Text(stringResource(R.string.pubkey_export_private_encrypted)) },
-                            onClick = {
-                                showMenu = false
-                                onExportPrivateKeyEncrypted(
-                                    { _, callback ->
+                        // Export private key to file in PEM format (for non-imported keys)
+                        if (!isImported) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.pubkey_export_private_pem)) },
+                                onClick = {
+                                    showMenu = false
+                                    onExportPrivateKeyPem { _, callback ->
                                         passwordCallback = callback
                                         showPasswordDialog = true
-                                    },
-                                    { _, callback ->
-                                        exportPassphraseCallback = callback
-                                        showExportPassphraseDialog = true
                                     }
-                                )
+                                },
+                                leadingIcon = {
+                                    Icon(Icons.Default.FileDownload, null)
+                                },
+                                enabled = !pubkey.isBiometric
+                            )
+                        }
+
+                        // Export private key to file with encryption (for non-imported keys)
+                        if (!isImported) {
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.pubkey_export_private_encrypted)) },
+                                onClick = {
+                                    showMenu = false
+                                    onExportEncryptedPrivateKey(
+                                        { _, callback ->
+                                            passwordCallback = callback
+                                            showPasswordDialog = true
+                                        },
+                                        { _, callback ->
+                                            exportPassphraseCallback = callback
+                                            showExportPassphraseDialog = true
+                                        }
+                                    )
+                                },
+                                leadingIcon = {
+                                    Icon(Icons.Default.Lock, null)
+                                },
+                                enabled = !pubkey.isBiometric
+                            )
+                        }
+
+                        // Delete
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.pubkey_delete)) },
+                            onClick = {
+                                showMenu = false
+                                showDeleteDialog = true
                             },
                             leadingIcon = {
-                                Icon(Icons.Default.Lock, null)
-                            },
-                            enabled = !pubkey.isBiometric
+                                Icon(Icons.Default.Delete, null)
+                            }
                         )
                     }
-
-                    // Delete
-                    DropdownMenuItem(
-                        text = { Text(stringResource(R.string.pubkey_delete)) },
-                        onClick = {
-                            showMenu = false
-                            showDeleteDialog = true
-                        },
-                        leadingIcon = {
-                            Icon(Icons.Default.Delete, null)
-                        }
-                    )
+                }
+            },
+            modifier = Modifier.clickable {
+                onClick { _, callback ->
+                    passwordCallback = callback
+                    showPasswordDialog = true
                 }
             }
-        },
-        modifier = modifier.clickable {
-            onClick { targetPubkey, callback ->
-                // Show password dialog if needed
-                passwordCallback = callback
-                showPasswordDialog = true
-            }
-        }
-    )
-    HorizontalDivider()
+        )
+        HorizontalDivider()
+    }
 
     // Password dialog for unlocking key
     if (showPasswordDialog && passwordCallback != null) {
@@ -694,7 +704,7 @@ private fun PubkeyListItem(
                 showPasswordDialog = false
                 passwordCallback = null
             },
-            onPasswordProvided = { password ->
+            onProvidePassword = { password ->
                 passwordCallback?.invoke(password)
                 showPasswordDialog = false
                 passwordCallback = null
@@ -723,7 +733,7 @@ private fun PubkeyListItem(
                 showExportPassphraseDialog = false
                 exportPassphraseCallback = null
             },
-            onPassphraseProvided = { passphrase ->
+            onProvidePassphrase = { passphrase ->
                 exportPassphraseCallback?.invoke(passphrase)
                 showExportPassphraseDialog = false
                 exportPassphraseCallback = null
@@ -736,7 +746,7 @@ private fun PubkeyListItem(
 private fun PubkeyPasswordDialog(
     pubkey: Pubkey,
     onDismiss: () -> Unit,
-    onPasswordProvided: (String) -> Unit
+    onProvidePassword: (String) -> Unit
 ) {
     var password by remember { mutableStateOf("") }
 
@@ -763,7 +773,7 @@ private fun PubkeyPasswordDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = { onPasswordProvided(password) }
+                onClick = { onProvidePassword(password) }
             ) {
                 Text(stringResource(R.string.pubkey_unlock))
             }
@@ -819,9 +829,9 @@ private fun ImportPasswordDialog(
 
     val canImport = password.isNotEmpty() && (
         !encryptKey ||
-        reusePassword ||
-        (newPassword.isNotEmpty() && newPassword == confirmPassword)
-    )
+            reusePassword ||
+            (newPassword.isNotEmpty() && newPassword == confirmPassword)
+        )
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -925,7 +935,7 @@ private fun ImportPasswordDialog(
 @Composable
 private fun ExportPassphraseDialog(
     onDismiss: () -> Unit,
-    onPassphraseProvided: (String) -> Unit
+    onProvidePassphrase: (String) -> Unit
 ) {
     var passphrase by remember { mutableStateOf("") }
     var confirmPassphrase by remember { mutableStateOf("") }
@@ -982,7 +992,7 @@ private fun ExportPassphraseDialog(
             TextButton(
                 onClick = {
                     if (passphrase == confirmPassphrase && passphrase.isNotEmpty()) {
-                        onPassphraseProvided(passphrase)
+                        onProvidePassphrase(passphrase)
                     } else {
                         showError = true
                     }
@@ -1013,15 +1023,15 @@ private fun PubkeyListScreenEmptyPreview() {
             onNavigateToGenerate = {},
             onNavigateToEdit = {},
             onDeletePubkey = {},
-            onToggleKeyLoaded = { _, _ -> },
+            onToggleKeyLoad = { _, _ -> },
             onCopyPublicKey = {},
             onCopyPrivateKeyOpenSSH = { _, _ -> },
             onCopyPrivateKeyPem = { _, _ -> },
-            onCopyPrivateKeyEncrypted = { _, _, _ -> },
+            onCopyEncryptedPrivateKey = { _, _, _ -> },
             onExportPublicKey = {},
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
-            onExportPrivateKeyEncrypted = { _, _, _ -> },
+            onExportEncryptedPrivateKey = { _, _, _ -> },
             onImportKey = {}
         )
     }
@@ -1041,15 +1051,15 @@ private fun PubkeyListScreenLoadingPreview() {
             onNavigateToGenerate = {},
             onNavigateToEdit = {},
             onDeletePubkey = {},
-            onToggleKeyLoaded = { _, _ -> },
+            onToggleKeyLoad = { _, _ -> },
             onCopyPublicKey = {},
             onCopyPrivateKeyOpenSSH = { _, _ -> },
             onCopyPrivateKeyPem = { _, _ -> },
-            onCopyPrivateKeyEncrypted = { _, _, _ -> },
+            onCopyEncryptedPrivateKey = { _, _, _ -> },
             onExportPublicKey = {},
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
-            onExportPrivateKeyEncrypted = { _, _, _ -> },
+            onExportEncryptedPrivateKey = { _, _, _ -> },
             onImportKey = {}
         )
     }
@@ -1071,7 +1081,7 @@ private fun PubkeyListScreenPopulatedPreview() {
                         confirmation = false,
                         createdDate = System.currentTimeMillis(),
                         privateKey = ByteArray(0),
-                        publicKey = ByteArray(0),
+                        publicKey = ByteArray(0)
                     ),
                     Pubkey(
                         id = 2,
@@ -1082,7 +1092,7 @@ private fun PubkeyListScreenPopulatedPreview() {
                         confirmation = true,
                         createdDate = System.currentTimeMillis(),
                         privateKey = ByteArray(0),
-                        publicKey = ByteArray(0),
+                        publicKey = ByteArray(0)
                     ),
                     Pubkey(
                         id = 3,
@@ -1093,7 +1103,7 @@ private fun PubkeyListScreenPopulatedPreview() {
                         confirmation = false,
                         createdDate = System.currentTimeMillis(),
                         privateKey = ByteArray(0),
-                        publicKey = ByteArray(0),
+                        publicKey = ByteArray(0)
                     )
                 ),
                 isLoading = false,
@@ -1104,15 +1114,15 @@ private fun PubkeyListScreenPopulatedPreview() {
             onNavigateToGenerate = {},
             onNavigateToEdit = {},
             onDeletePubkey = {},
-            onToggleKeyLoaded = { _, _ -> },
+            onToggleKeyLoad = { _, _ -> },
             onCopyPublicKey = {},
             onCopyPrivateKeyOpenSSH = { _, _ -> },
             onCopyPrivateKeyPem = { _, _ -> },
-            onCopyPrivateKeyEncrypted = { _, _, _ -> },
+            onCopyEncryptedPrivateKey = { _, _, _ -> },
             onExportPublicKey = {},
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
-            onExportPrivateKeyEncrypted = { _, _, _ -> },
+            onExportEncryptedPrivateKey = { _, _, _ -> },
             onImportKey = {}
         )
     }

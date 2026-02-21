@@ -69,9 +69,7 @@ data class PortForward(
     /**
      * Get a human-readable description of this port forward (Java interop helper).
      */
-    fun getDescription(): String {
-        return "$nickname ($type)"
-    }
+    fun getDescription(): String = "$nickname ($type)"
 
     /**
      * Check if this port forward is currently enabled (Java interop helper).

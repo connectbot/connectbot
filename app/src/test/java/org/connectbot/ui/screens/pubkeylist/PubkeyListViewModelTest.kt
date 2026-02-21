@@ -18,7 +18,6 @@
 package org.connectbot.ui.screens.pubkeylist
 
 import android.content.Context
-import com.trilead.ssh2.crypto.PEMEncoder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,6 +29,7 @@ import kotlinx.coroutines.test.setMain
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.sshlib.SshKeys
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -73,12 +73,12 @@ class PubkeyListViewModelTest {
 
     // PEM-encoded unencrypted private key for testing
     private val testUnencryptedPemKey by lazy {
-        PEMEncoder.encodePrivateKey(testKeyPair.private, null)
+        SshKeys.encodePemPrivateKey(testKeyPair)
     }
 
     // PEM-encoded encrypted private key for testing (password: "testpass")
     private val testEncryptedPemKey by lazy {
-        PEMEncoder.encodePrivateKey(testKeyPair.private, "testpass")
+        SshKeys.encodeOpenSshPrivateKey(testKeyPair, "testpass")
     }
 
     @Before
@@ -104,9 +104,7 @@ class PubkeyListViewModelTest {
         Timber.uprootAll()
     }
 
-    private fun createViewModel(): PubkeyListViewModel {
-        return PubkeyListViewModel(context, repository, dispatchers)
-    }
+    private fun createViewModel(): PubkeyListViewModel = PubkeyListViewModel(context, repository, dispatchers)
 
     // ========== Tests for encrypted key import with re-encryption ==========
 
@@ -197,7 +195,7 @@ class PubkeyListViewModelTest {
         viewModel.completeImportWithPassword(
             decryptPassword = "testpass",
             encrypt = true,
-            encryptPassword = "testpass"  // Same as decrypt password
+            encryptPassword = "testpass" // Same as decrypt password
         )
         advanceUntilIdle()
 
@@ -256,7 +254,7 @@ class PubkeyListViewModelTest {
 
         // Import unencrypted key without re-encrypting
         viewModel.completeImportWithPassword(
-            decryptPassword = "",  // No password needed for unencrypted key
+            decryptPassword = "", // No password needed for unencrypted key
             encrypt = false,
             encryptPassword = null
         )

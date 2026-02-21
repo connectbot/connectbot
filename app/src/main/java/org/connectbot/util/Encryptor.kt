@@ -51,7 +51,6 @@ object Encryptor {
     /** cipher algorithm (must be compatible with KEY_ALGORITHM)  */
     private const val CIPHER_ALGORITHM = "AES/CBC/PKCS5Padding"
 
-
     /**
      * Encrypt the specified cleartext using the given password.
      * With the correct salt, number of iterations, and password, the decrypt() method reverses
@@ -122,7 +121,6 @@ object Encryptor {
 
         return cipher.doFinal(cleartext)
     }
-
 
     /**
      * Decrypt the specified ciphertext using the given password.

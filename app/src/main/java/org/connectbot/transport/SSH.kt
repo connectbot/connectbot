@@ -22,26 +22,11 @@ import android.net.Uri
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.UserNotAuthenticatedException
 import androidx.core.net.toUri
-import com.trilead.ssh2.AuthAgentCallback
-import com.trilead.ssh2.ChannelCondition
-import com.trilead.ssh2.Connection
-import com.trilead.ssh2.ConnectionMonitor
-import com.trilead.ssh2.DynamicPortForwarder
-import com.trilead.ssh2.ExtendedServerHostKeyVerifier
-import com.trilead.ssh2.InteractiveCallback
-import com.trilead.ssh2.IpVersion
-import com.trilead.ssh2.KnownHosts
-import com.trilead.ssh2.LocalPortForwarder
-import com.trilead.ssh2.Session
-import com.trilead.ssh2.crypto.PEMDecoder
-import com.trilead.ssh2.crypto.fingerprint.KeyFingerprint
-import com.trilead.ssh2.crypto.keys.Ed25519PrivateKey
-import com.trilead.ssh2.crypto.keys.Ed25519Provider
-import com.trilead.ssh2.crypto.keys.Ed25519PublicKey
-import com.trilead.ssh2.signature.DSASHA1Verify
-import com.trilead.ssh2.signature.ECDSASHA2Verify
-import com.trilead.ssh2.signature.Ed25519Verify
-import com.trilead.ssh2.signature.RSASHA1Verify
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
@@ -53,37 +38,38 @@ import org.connectbot.service.requestBiometricAuth
 import org.connectbot.service.requestBooleanPrompt
 import org.connectbot.service.requestHostKeyFingerprintPrompt
 import org.connectbot.service.requestStringPrompt
+import org.connectbot.sshlib.AgentProvider
+import org.connectbot.sshlib.AgentSignatureFlags
+import org.connectbot.sshlib.AgentSigningContext
+import org.connectbot.sshlib.AuthHandler
+import org.connectbot.sshlib.AuthPublicKey
+import org.connectbot.sshlib.HostKeyVerifier
+import org.connectbot.sshlib.KeyFingerprint
+import org.connectbot.sshlib.KeyboardInteractiveCallback
+import org.connectbot.sshlib.PortForwarder
+import org.connectbot.sshlib.SshClient
+import org.connectbot.sshlib.SshClientConfig
+import org.connectbot.sshlib.SshKeys
+import org.connectbot.sshlib.SshSession
+import org.connectbot.sshlib.SshSigning
+import org.connectbot.sshlib.transport.IpVersion
+import org.connectbot.sshlib.transport.TransportFactory
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PubkeyUtils
 import timber.log.Timber
 import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
-import java.net.InetAddress
-import java.net.InetSocketAddress
 import java.net.NoRouteToHostException
 import java.nio.charset.StandardCharsets
 import java.security.KeyPair
-import java.security.NoSuchAlgorithmException
-import java.security.PublicKey
-import java.security.interfaces.DSAPrivateKey
-import java.security.interfaces.DSAPublicKey
-import java.security.interfaces.ECPrivateKey
-import java.security.interfaces.ECPublicKey
-import java.security.interfaces.RSAPrivateKey
-import java.security.interfaces.RSAPublicKey
-import java.security.spec.InvalidKeySpecException
+import java.security.KeyStore
+import java.security.PrivateKey
 import java.util.Locale
 import java.util.regex.Pattern
 
 /**
  * @author Kenny Root
  */
-class SSH :
-    AbsTransport,
-    ConnectionMonitor,
-    InteractiveCallback,
-    AuthAgentCallback {
+class SSH : AbsTransport {
 
     private var compression = false
 
@@ -96,17 +82,12 @@ class SSH :
     @Volatile
     private var sessionOpen = false
 
-    private var pubkeysExhausted = false
-    private var interactiveCanContinue = true
-    private var savedPasswordTried = false
+    private var client: SshClient? = null
+    private var session: SshSession? = null
+    private val jumpClients = mutableListOf<SshClient>()
 
-    private var connection: Connection? = null
-    private val jumpConnections: MutableList<Connection> = mutableListOf()
-    private var session: Session? = null
-
-    private var stdin: OutputStream? = null
-    private var stdout: InputStream? = null
-    private var stderr: InputStream? = null
+    private var readBuffer: ByteArray? = null
+    private var readBufferOffset: Int = 0
 
     private val portForwards = mutableListOf<PortForward>()
 
@@ -119,86 +100,25 @@ class SSH :
     private var useAuthAgent = HostConstants.AUTHAGENT_NO
     private var agentLockPassphrase: String? = null
 
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+
     constructor() : super()
 
     constructor(host: Host?, bridge: TerminalBridge?, manager: TerminalManager?) : super(host, bridge, manager)
 
-    private fun decodePublicKey(algorithm: String, keyBlob: ByteArray): PublicKey? = try {
-        when (algorithm) {
-            "ssh-rsa" -> RSASHA1Verify.get().decodePublicKey(keyBlob)
-            "ssh-dss" -> DSASHA1Verify.get().decodePublicKey(keyBlob)
-            "ssh-ed25519" -> Ed25519Verify.get().decodePublicKey(keyBlob)
-            "ecdsa-sha2-nistp256" -> ECDSASHA2Verify.ECDSASHA2NISTP256Verify.get().decodePublicKey(keyBlob)
-            "ecdsa-sha2-nistp384" -> ECDSASHA2Verify.ECDSASHA2NISTP384Verify.get().decodePublicKey(keyBlob)
-            "ecdsa-sha2-nistp521" -> ECDSASHA2Verify.ECDSASHA2NISTP521Verify.get().decodePublicKey(keyBlob)
-            else -> null
-        }
-    } catch (e: IOException) {
-        Timber.e(e, "Failed to decode public key")
-        null
-    }
-
-    private fun getKeySize(publicKey: PublicKey?): Int = when (publicKey) {
-        is RSAPublicKey -> publicKey.modulus.bitLength()
-        is DSAPublicKey -> publicKey.params.p.bitLength()
-        is ECPublicKey -> publicKey.params.curve.field.fieldSize
-        is Ed25519PublicKey -> 256
-        else -> 0
-    }
-
-    private fun getKeyType(openSshKeyType: String): String? = if (openSshKeyType == "ssh-rsa") {
-        "RSA"
-    } else if (openSshKeyType == "ssh-dss") {
-        "DSA"
-    } else if (openSshKeyType == "ssh-ed25519") {
-        "Ed25519"
-    } else if (openSshKeyType.startsWith("ecdsa-sha2-")) {
-        "EC"
-    } else {
-        null
-    }
-
-    inner class HostKeyVerifier(private val verifyHost: Host? = host) : ExtendedServerHostKeyVerifier() {
-        @Throws(IOException::class)
-        override fun verifyServerHostKey(
-            hostname: String,
-            port: Int,
-            serverHostKeyAlgorithm: String,
-            serverHostKey: ByteArray
-        ): Boolean {
-            // Get known hosts for this specific host entry
+    inner class ConnectBotHostKeyVerifier(private val verifyHost: Host? = host) : HostKeyVerifier {
+        override suspend fun verify(key: org.connectbot.sshlib.PublicKey): Boolean {
             val hostId = verifyHost?.id ?: return false
             val knownHostsList = manager?.hostRepository?.getKnownHostsForHostBlocking(hostId) ?: emptyList()
 
-            // Convert to KnownHosts format, grouping by (algo, key) to handle renamed hosts
-            val hosts = KnownHosts()
-            data class HostKeyGroup(val algo: String, val key: ByteArray) {
-                override fun equals(other: Any?): Boolean {
-                    if (this === other) return true
-                    if (other !is HostKeyGroup) return false
-                    return algo == other.algo && key.contentEquals(other.key)
-                }
-                override fun hashCode(): Int {
-                    var result = algo.hashCode()
-                    result = 31 * result + key.contentHashCode()
-                    return result
-                }
-            }
+            val serverHostKeyAlgorithm = key.type
+            val serverHostKey = key.encoded
+            val hostname = verifyHost.hostname
+            val port = verifyHost.port
 
-            knownHostsList.groupBy { HostKeyGroup(it.hostKeyAlgo, it.hostKey) }.forEach { (group, entries) ->
-                try {
-                    // Collect all hostname:port combinations for this key
-                    val hostnames = entries.map { "${it.hostname}:${it.port}" }.toTypedArray()
-                    hosts.addHostkey(hostnames, group.algo, group.key)
-                } catch (e: Exception) {
-                    Timber.e(e, "Failed to add known host key")
-                }
-            }
-
-            val matchName = String.format(Locale.US, "%s:%d", hostname, port)
             val algorithmName = getKeyType(serverHostKeyAlgorithm)
-            val sha256 = KeyFingerprint.createSHA256Fingerprint(serverHostKey)
-            val md5 = KeyFingerprint.createMD5Fingerprint(serverHostKey)
+            val sha256 = KeyFingerprint.sha256(serverHostKey)
+            val md5 = KeyFingerprint.md5(serverHostKey)
             val fingerprint = buildString {
                 append("\nMD5:")
                 append(md5)
@@ -206,117 +126,104 @@ class SSH :
                 append(sha256)
             }
 
-            return when (hosts.verifyHostkey(matchName, serverHostKeyAlgorithm, serverHostKey)) {
-                KnownHosts.HOSTKEY_IS_OK -> {
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_sucess, algorithmName, fingerprint))
+            val matchingKey = knownHostsList.find {
+                it.hostKeyAlgo == serverHostKeyAlgorithm && it.hostKey.contentEquals(serverHostKey)
+            }
+
+            return if (matchingKey != null) {
+                bridge?.outputLine(manager?.res?.getString(R.string.terminal_sucess, algorithmName, fingerprint))
+                true
+            } else if (knownHostsList.none { it.hostKeyAlgo == serverHostKeyAlgorithm }) {
+                // New key
+                bridge?.outputLine(manager?.res?.getString(R.string.host_authenticity_warning, hostname))
+                bridge?.outputLine(manager?.res?.getString(R.string.host_fingerprint, algorithmName, fingerprint))
+
+                val keySize = getKeySizeFromAlgorithm(serverHostKeyAlgorithm, serverHostKey)
+                val randomArt = KeyFingerprint.randomArt(
+                    serverHostKey,
+                    algorithmName ?: "UNKNOWN",
+                    keySize
+                )
+                val bubblebabble = KeyFingerprint.bubblebabble(serverHostKey)
+
+                val result = bridge?.requestHostKeyFingerprintPrompt(
+                    hostname = hostname,
+                    keyType = algorithmName ?: "UNKNOWN",
+                    keySize = keySize,
+                    serverHostKey = serverHostKey,
+                    randomArt = randomArt,
+                    bubblebabble = bubblebabble,
+                    sha256 = sha256,
+                    md5 = md5
+                )
+
+                if (result == null) {
+                    return false
+                }
+                if (result) {
+                    verifyHost.let {
+                        manager?.hostRepository?.saveKnownHostBlocking(it, hostname, port, serverHostKeyAlgorithm, serverHostKey)
+                    }
+                }
+                result
+            } else {
+                // Key has changed
+                val header = String.format(
+                    "@   %s   @",
+                    manager?.res?.getString(R.string.host_verification_failure_warning_header)
+                )
+                val atsigns = CharArray(header.length) { '@' }
+                val border = String(atsigns)
+
+                bridge?.outputLine(border)
+                bridge?.outputLine(header)
+                bridge?.outputLine(border)
+                bridge?.outputLine(manager?.res?.getString(R.string.host_verification_failure_warning))
+                bridge?.outputLine(
+                    String.format(
+                        manager?.res?.getString(R.string.host_fingerprint) ?: "",
+                        algorithmName,
+                        fingerprint
+                    )
+                )
+
+                val result = bridge?.requestBooleanPrompt(
+                    null,
+                    manager?.res?.getString(R.string.prompt_continue_connecting) ?: ""
+                )
+                if (result != null && result) {
+                    verifyHost.let {
+                        manager?.hostRepository?.saveKnownHostBlocking(it, hostname, port, serverHostKeyAlgorithm, serverHostKey)
+                    }
                     true
-                }
-
-                KnownHosts.HOSTKEY_IS_NEW -> {
-                    // Keep terminal output for backward compatibility
-                    bridge?.outputLine(manager?.res?.getString(R.string.host_authenticity_warning, hostname))
-                    bridge?.outputLine(manager?.res?.getString(R.string.host_fingerprint, algorithmName, fingerprint))
-
-                    // Prepare data for inline prompt
-                    val publicKey = decodePublicKey(serverHostKeyAlgorithm, serverHostKey)
-                    val keySize = getKeySize(publicKey)
-
-                    val randomArt = KeyFingerprint.createRandomArt(
-                        serverHostKey,
-                        algorithmName ?: "UNKNOWN",
-                        keySize
-                    )
-                    val bubblebabble = KeyFingerprint.createBubblebabbleFingerprint(serverHostKey)
-
-                    // Show inline prompt with all fingerprint formats
-                    val result = bridge?.requestHostKeyFingerprintPrompt(
-                        hostname = hostname,
-                        keyType = algorithmName ?: "UNKNOWN",
-                        keySize = keySize,
-                        serverHostKey = serverHostKey,
-                        randomArt = randomArt,
-                        bubblebabble = bubblebabble,
-                        sha256 = sha256,
-                        md5 = md5
-                    )
-
-                    if (result == null) {
-                        return false
-                    }
-                    if (result) {
-                        // save this key in known database
-                        verifyHost.let {
-                            manager?.hostRepository?.saveKnownHostBlocking(it, hostname, port, serverHostKeyAlgorithm, serverHostKey)
-                        }
-                    }
-                    result
-                }
-
-                KnownHosts.HOSTKEY_HAS_CHANGED -> {
-                    val header = String.format(
-                        "@   %s   @",
-                        manager?.res?.getString(R.string.host_verification_failure_warning_header)
-                    )
-
-                    val atsigns = CharArray(header.length) { '@' }
-                    val border = String(atsigns)
-
-                    bridge?.outputLine(border)
-                    bridge?.outputLine(header)
-                    bridge?.outputLine(border)
-
-                    bridge?.outputLine(manager?.res?.getString(R.string.host_verification_failure_warning))
-
-                    bridge?.outputLine(
-                        String.format(
-                            manager?.res?.getString(R.string.host_fingerprint) ?: "",
-                            algorithmName,
-                            fingerprint
-                        )
-                    )
-
-                    // Users have no way to delete keys, so we'll prompt them for now.
-                    val result = bridge?.requestBooleanPrompt(
-                        null,
-                        manager?.res?.getString(R.string.prompt_continue_connecting) ?: ""
-                    )
-                    if (result != null && result) {
-                        // save this key in known database
-                        verifyHost.let {
-                            manager?.hostRepository?.saveKnownHostBlocking(it, hostname, port, serverHostKeyAlgorithm, serverHostKey)
-                        }
-                        true
-                    } else {
-                        false
-                    }
-                }
-
-                else -> {
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_failed))
+                } else {
                     false
                 }
             }
         }
 
-        override fun getKnownKeyAlgorithmsForHost(host: String, port: Int): List<String>? = verifyHost?.id?.let { hostId ->
-            manager?.hostRepository?.getHostKeyAlgorithmsForHostBlocking(hostId)
-        }
-
-        override fun removeServerHostKey(host: String, port: Int, algorithm: String, hostKey: ByteArray) {
-            verifyHost?.id?.let { hostId ->
-                manager?.hostRepository?.removeKnownHostBlocking(hostId, algorithm, hostKey)
+        override suspend fun addKeys(keys: List<org.connectbot.sshlib.PublicKey>) {
+            val currentHost = verifyHost ?: return
+            for (key in keys) {
+                manager?.hostRepository?.saveKnownHostBlocking(
+                    currentHost,
+                    currentHost.hostname,
+                    currentHost.port,
+                    key.type,
+                    key.encoded
+                )
             }
         }
 
-        override fun addServerHostKey(hostname: String, port: Int, algorithm: String, hostKey: ByteArray) {
-            verifyHost?.let {
-                manager?.hostRepository?.saveKnownHostBlocking(it, hostname, port, algorithm, hostKey)
+        override suspend fun removeKeys(keys: List<org.connectbot.sshlib.PublicKey>) {
+            val hostId = verifyHost?.id ?: return
+            for (key in keys) {
+                manager?.hostRepository?.removeKnownHostBlocking(hostId, key.type, key.encoded)
             }
         }
     }
 
-    private fun authenticate() {
-        // Prompt for username if not configured
+    private suspend fun authenticate() {
         if (host?.username.isNullOrEmpty()) {
             val username = bridge?.requestStringPrompt(
                 null,
@@ -330,138 +237,162 @@ class SSH :
             host = host?.copy(username = username)
         }
 
-        try {
-            val currentHost = host ?: return
-            if (connection?.authenticateWithNone(currentHost.username) == true) {
-                finishConnection()
-                return
-            }
-        } catch (e: Exception) {
-            Timber.d("Host does not support 'none' authentication.")
-        }
+        val currentHost = host ?: return
+        var savedPasswordTried = false
 
-        bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth))
+        val result = client?.authenticate(
+            currentHost.username,
+            object : AuthHandler {
+                override suspend fun onAuthMethodsAvailable(methods: Set<String>) {
+                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth))
+                }
 
-        try {
-            val currentHost = host ?: return
-            val pubkeyId = currentHost.pubkeyId
+                override suspend fun onPublicKeysNeeded(): List<AuthPublicKey> {
+                    val pubkeyId = currentHost.pubkeyId
+                    if (pubkeyId == HostConstants.PUBKEYID_NEVER) return emptyList()
 
-            if (!pubkeysExhausted &&
-                pubkeyId != HostConstants.PUBKEYID_NEVER &&
-                connection?.isAuthMethodAvailable(currentHost.username, AUTH_PUBLICKEY) == true
-            ) {
-                // if explicit pubkey defined for this host, then prompt for password as needed
-                // otherwise just try all in-memory keys held in terminalmanager
+                    val keys = mutableListOf<AuthPublicKey>()
 
-                if (pubkeyId == HostConstants.PUBKEYID_ANY) {
-                    // try each of the in-memory keys
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_any))
-                    manager?.loadedKeypairs?.entries?.forEach { entry ->
-                        if (entry.value.pubkey?.confirmation == true && !promptForPubkeyUse(entry.key)) {
-                            return@forEach
+                    if (pubkeyId == HostConstants.PUBKEYID_ANY) {
+                        bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_any))
+                        manager?.loadedKeypairs?.entries?.forEach { entry ->
+                            if (entry.value.pubkey?.confirmation == true && !promptForPubkeyUse(entry.key)) {
+                                return@forEach
+                            }
+                            val keyPair = entry.value.pair ?: return@forEach
+                            try {
+                                keys.add(SshSigning.encodePublicKey(keyPair))
+                            } catch (e: Exception) {
+                                Timber.d(e, "Could not encode public key: ${entry.key}")
+                            }
+                        }
+                    } else {
+                        bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_specific))
+                        val pubkey = manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)
+                        if (pubkey == null) {
+                            bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_invalid))
+                        } else {
+                            if (pubkey.confirmation && manager?.isKeyLoaded(pubkey.nickname) == true) {
+                                if (!promptForPubkeyUse(pubkey.nickname)) {
+                                    return keys
+                                }
+                            }
+                            val pair = getOrUnlockKey(pubkey)
+                            if (pair != null) {
+                                try {
+                                    keys.add(SshSigning.encodePublicKey(pair))
+                                } catch (e: Exception) {
+                                    Timber.d(e, "Could not encode public key: ${pubkey.nickname}")
+                                }
+                            }
+                        }
+                    }
+
+                    return keys
+                }
+
+                override suspend fun onSignatureRequest(key: AuthPublicKey, dataToSign: ByteArray): ByteArray? {
+                    val keyPair = findKeyPairForPublicKey(key) ?: return null
+                    return try {
+                        SshSigning.signWithKeyPair(key.algorithmName, keyPair, dataToSign)
+                    } catch (e: Exception) {
+                        val cause = e.cause ?: e
+                        val isKeyInvalidated = cause is KeyPermanentlyInvalidatedException ||
+                            cause is UserNotAuthenticatedException ||
+                            e is KeyPermanentlyInvalidatedException ||
+                            e is UserNotAuthenticatedException
+                        if (isKeyInvalidated) {
+                            val nickname = findKeyNicknameForPublicKey(key)
+                            val message = manager?.res?.getString(R.string.terminal_auth_biometric_invalidated, nickname)
+                                ?: "Biometric key has been invalidated."
+                            Timber.e(e, message)
+                            bridge?.outputLine(message)
+                        } else {
+                            Timber.e(e, "Signature request failed")
+                        }
+                        null
+                    }
+                }
+
+                override suspend fun onKeyboardInteractivePrompt(
+                    name: String,
+                    instruction: String,
+                    prompts: List<KeyboardInteractiveCallback.Prompt>
+                ): List<String>? {
+                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_ki))
+                    return prompts.map { prompt ->
+                        val isPassword = !prompt.echo
+
+                        if (isPassword && !savedPasswordTried) {
+                            val savedPassword = manager?.securePasswordStorage?.getPassword(currentHost.id)
+                            if (savedPassword != null) {
+                                savedPasswordTried = true
+                                bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_saved_password))
+                                return@map savedPassword
+                            }
                         }
 
-                        val keyPair = entry.value.pair ?: return@forEach
-
-                        if (tryPublicKey(currentHost.username, entry.key, keyPair)) {
-                            finishConnection()
-                            return
-                        }
-                    }
-                } else {
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_specific))
-                    // use a specific key for this host, as requested
-                    val pubkey = manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)
-
-                    if (pubkey == null) {
-                        bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_invalid))
-                    } else if (tryPublicKey(pubkey)) {
-                        finishConnection()
+                        bridge?.requestStringPrompt(instruction, prompt.text, isPassword) ?: ""
                     }
                 }
 
-                pubkeysExhausted = true
-            } else if (interactiveCanContinue &&
-                connection?.isAuthMethodAvailable(currentHost.username, AUTH_KEYBOARDINTERACTIVE) == true
-            ) {
-                // this auth method will talk with us using InteractiveCallback interface
-                // it blocks until authentication finishes
-                bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_ki))
-                interactiveCanContinue = false
-                if (connection?.authenticateWithKeyboardInteractive(currentHost.username, this) == true) {
-                    finishConnection()
-                } else {
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_ki_fail))
-                }
-            } else if (connection?.isAuthMethodAvailable(currentHost.username, AUTH_PASSWORD) == true) {
-                // Try saved password first
-                val savedPassword = manager?.securePasswordStorage?.getPassword(currentHost.id)
-                if (savedPassword != null) {
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_saved_password))
-                    if (connection?.authenticateWithPassword(currentHost.username, savedPassword) == true) {
-                        finishConnection()
-                        return
+                override suspend fun onPasswordNeeded(): String? {
+                    val savedPassword = manager?.securePasswordStorage?.getPassword(currentHost.id)
+                    if (savedPassword != null && !savedPasswordTried) {
+                        savedPasswordTried = true
+                        bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_saved_password))
+                        return savedPassword
                     }
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_saved_password_fail))
-                }
 
-                // Fall back to password prompt
-                bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pass))
-                val password = bridge?.requestStringPrompt(
-                    null,
-                    manager?.res?.getString(R.string.prompt_password),
-                    true
-                )
-                if (password != null && connection?.authenticateWithPassword(currentHost.username, password) == true) {
-                    finishConnection()
-                } else {
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pass_fail))
+                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pass))
+                    return bridge?.requestStringPrompt(
+                        null,
+                        manager?.res?.getString(R.string.prompt_password),
+                        true
+                    )
                 }
-            } else {
-                bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_fail))
             }
-        } catch (e: IllegalStateException) {
-            Timber.e(e, "Connection went away while we were trying to authenticate")
-        } catch (e: Exception) {
-            Timber.e(e, "Problem during handleAuthentication()")
+        )
+
+        if (result == true) {
+            finishConnection()
         }
     }
 
-    /**
-     * Attempt connection with given [pubkey].
-     * @return `true` for successful authentication
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
-     * @throws IOException
-     */
-    @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class, IOException::class)
-    private fun tryPublicKey(pubkey: Pubkey): Boolean {
-        if (pubkey.confirmation && manager?.isKeyLoaded(pubkey.nickname) == true) {
-            if (!promptForPubkeyUse(pubkey.nickname)) {
-                return false
+    private fun findKeyPairForPublicKey(key: AuthPublicKey): KeyPair? {
+        manager?.loadedKeypairs?.entries?.forEach { entry ->
+            val pair = entry.value.pair ?: return@forEach
+            try {
+                val encoded = SshSigning.encodePublicKey(pair)
+                if (encoded.publicKeyBlob.contentEquals(key.publicKeyBlob)) {
+                    return pair
+                }
+            } catch (_: Exception) {
             }
         }
-
-        val pair = getOrUnlockKey(pubkey) ?: return false
-
-        val currentHost = host ?: return false
-        return tryPublicKey(currentHost.username, pubkey.nickname, pair)
+        return null
     }
 
-    /**
-     * Gets a key pair from memory cache, or unlocks it by prompting for password/biometric as needed.
-     *
-     * @param pubkey the public key record to get or unlock
-     * @return the KeyPair if successful, null if the key couldn't be loaded/unlocked
-     */
+    private fun findKeyNicknameForPublicKey(key: AuthPublicKey): String? {
+        manager?.loadedKeypairs?.entries?.forEach { entry ->
+            val pair = entry.value.pair ?: return@forEach
+            try {
+                val encoded = SshSigning.encodePublicKey(pair)
+                if (encoded.publicKeyBlob.contentEquals(key.publicKeyBlob)) {
+                    return entry.key
+                }
+            } catch (_: Exception) {
+            }
+        }
+        return null
+    }
+
     private fun getOrUnlockKey(pubkey: Pubkey): KeyPair? {
         if (manager?.isKeyLoaded(pubkey.nickname) == true) {
-            // load this key from memory if it's already there
-            Timber.d(String.format("Found unlocked key '%s' already in-memory", pubkey.nickname))
+            Timber.d("Found unlocked key '%s' already in-memory", pubkey.nickname)
             return manager?.getKey(pubkey.nickname)
         }
 
-        // Handle Android Keystore (biometric) keys
         if (pubkey.storageType == KeyStorageType.ANDROID_KEYSTORE) {
             val keystoreAlias = pubkey.keystoreAlias
             if (keystoreAlias == null) {
@@ -473,7 +404,6 @@ class SSH :
 
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_biometric, pubkey.nickname))
 
-            // Request biometric authentication
             val biometricSuccess = bridge?.requestBiometricAuth(pubkey.nickname, keystoreAlias) ?: false
             if (!biometricSuccess) {
                 val message = String.format("Biometric authentication failed for key '%s'.", pubkey.nickname)
@@ -482,12 +412,11 @@ class SSH :
                 return null
             }
 
-            // Load the key from Keystore after successful biometric auth
             return try {
-                val keyStore = java.security.KeyStore.getInstance("AndroidKeyStore")
+                val keyStore = KeyStore.getInstance("AndroidKeyStore")
                 keyStore.load(null)
                 val publicKey = keyStore.getCertificate(keystoreAlias)?.publicKey
-                val privateKey = keyStore.getKey(keystoreAlias, null) as? java.security.PrivateKey
+                val privateKey = keyStore.getKey(keystoreAlias, null) as? PrivateKey
 
                 if (publicKey == null || privateKey == null) {
                     val message = String.format("Failed to load key '%s' from Keystore.", pubkey.nickname)
@@ -499,7 +428,7 @@ class SSH :
                 val pair = KeyPair(publicKey, privateKey)
                 when (val result = manager?.addBiometricKey(pubkey, keystoreAlias, publicKey)) {
                     is TerminalManager.BiometricKeyResult.Success -> {
-                        Timber.d(String.format("Unlocked biometric key '%s'", pubkey.nickname))
+                        Timber.d("Unlocked biometric key '%s'", pubkey.nickname)
                         pair
                     }
 
@@ -528,7 +457,6 @@ class SSH :
             }
         }
 
-        // otherwise load key from database and prompt for password as needed
         var password: String? = null
         if (pubkey.encrypted) {
             password = bridge?.requestStringPrompt(
@@ -537,18 +465,15 @@ class SSH :
                 true
             )
 
-            // Something must have interrupted the prompt.
             if (password == null) {
                 return null
             }
         }
 
         val pair = if (pubkey.type == "IMPORTED") {
-            // load specific key using pem format
             val privateKey = pubkey.privateKey ?: return null
-            PEMDecoder.decode(String(privateKey, StandardCharsets.UTF_8).toCharArray(), password)
+            SshKeys.decodePemPrivateKey(String(privateKey, StandardCharsets.UTF_8), password)
         } else {
-            // load using internal generated format
             val privateKey = pubkey.privateKey ?: return null
             val privKey = try {
                 PubkeyUtils.decodePrivate(privateKey, pubkey.type, password)
@@ -568,51 +493,19 @@ class SSH :
 
             val pubKey = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
 
-            // convert key to trilead format
             KeyPair(pubKey, privKey).also {
                 Timber.d("Unlocked key %s", PubkeyUtils.formatKey(pubKey))
             }
         }
 
-        Timber.d(String.format("Unlocked key '%s'", pubkey.nickname))
+        Timber.d("Unlocked key '%s'", pubkey.nickname)
 
-        // save this key in memory
         manager?.addKey(pubkey, pair)
 
         return pair
     }
 
-    @Throws(IOException::class)
-    private fun tryPublicKey(username: String, keyNickname: String, pair: KeyPair): Boolean = try {
-        val success = connection?.authenticateWithPublicKey(username, pair) == true
-        if (!success) {
-            bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, keyNickname))
-        }
-        success
-    } catch (e: Exception) {
-        // Check if this is a biometric key error (may be wrapped in IOException)
-        val cause = e.cause ?: e
-        val isKeyInvalidated = cause is KeyPermanentlyInvalidatedException ||
-            cause is UserNotAuthenticatedException ||
-            e is KeyPermanentlyInvalidatedException ||
-            e is UserNotAuthenticatedException
-        if (isKeyInvalidated) {
-            val message = manager?.res?.getString(R.string.terminal_auth_biometric_invalidated, keyNickname)
-                ?: String.format("Biometric key '%s' has been invalidated. Please generate a new key.", keyNickname)
-            Timber.e(e, message)
-            bridge?.outputLine(message)
-        } else {
-            Timber.e(e, "Public key authentication failed for '%s'", keyNickname)
-            bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, keyNickname))
-        }
-        false
-    }
-
-    /**
-     * Internal method to request actual PTY terminal once we've finished
-     * authentication. If called before authenticated, it will just fail.
-     */
-    private fun finishConnection() {
+    private suspend fun finishConnection() {
         authenticated = true
 
         for (portForward in portForwards) {
@@ -632,273 +525,183 @@ class SSH :
         }
 
         try {
-            session = connection?.openSession()
-
             if (useAuthAgent != HostConstants.AUTHAGENT_NO) {
-                session?.requestAuthAgentForwarding(this)
+                client?.enableAgentForwarding(ConnectBotAgentProvider())
             }
 
-            session?.requestPTY(getEmulation(), columns, rows, width, height, null)
-            session?.startShell()
-
-            stdin = session?.stdin
-            stdout = session?.stdout
-            stderr = session?.stderr
+            session = client?.openSession()
+            session?.requestPty(getEmulation() ?: "xterm", columns, rows, width, height)
+            session?.requestShell()
 
             sessionOpen = true
 
             bridge?.onConnected()
-        } catch (e1: IOException) {
-            Timber.e(e1, "Problem while trying to create PTY in finishConnection()")
+        } catch (e: Exception) {
+            Timber.e(e, "Problem while trying to create PTY in finishConnection()")
         }
     }
 
-    /**
-     * Establish and authenticate a connection to the jump host.
-     * This is called before connecting to the target host when ProxyJump is configured.
-     * Supports chained jump hosts (jump host that requires another jump host).
-     *
-     * @param jumpHost The jump host configuration
-     * @return The authenticated Connection, or null if connection/authentication failed
-     */
-    private fun connectToJumpHost(jumpHost: Host): Connection? {
+    private suspend fun connectToJumpHost(jumpHostId: Long): TransportFactory? {
+        val jumpHost = manager?.hostRepository?.findHostByIdBlocking(jumpHostId) ?: return null
         bridge?.outputLine(manager?.res?.getString(R.string.terminal_connecting_via_jump, jumpHost.nickname))
 
-        val jc = Connection(jumpHost.hostname, jumpHost.port)
+        var jumpTransportFactory: TransportFactory? = null
+        val nestedJumpHostId = jumpHost.jumpHostId
+        if (nestedJumpHostId != null && nestedJumpHostId > 0) {
+            jumpTransportFactory = connectToJumpHost(nestedJumpHostId) ?: return null
+        }
 
-        try {
-            // Check if this jump host itself requires a jump host (chained ProxyJump)
-            val nestedJumpHostId = jumpHost.jumpHostId
-            if (nestedJumpHostId != null && nestedJumpHostId > 0) {
-                val nestedJumpHost = manager?.hostRepository?.findHostByIdBlocking(nestedJumpHostId)
-                if (nestedJumpHost != null) {
-                    val nestedConnection = connectToJumpHost(nestedJumpHost) ?: return null
-                    // Use the nested jump host connection as proxy for this jump host
-                    jc.setProxyData(JumpHostProxyData(nestedConnection))
-                } else {
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_not_found))
-                    return null
-                }
+        val config = SshClientConfig {
+            if (jumpTransportFactory != null) {
+                this.transportFactory = jumpTransportFactory
+            } else {
+                this.host = jumpHost.hostname
+                this.port = jumpHost.port
             }
+            this.hostKeyVerifier = ConnectBotHostKeyVerifier(jumpHost)
+            this.enableCompression = jumpHost.compression
+            this.ipVersion = parseIpVersion(jumpHost.ipVersion, jumpHost.hostname)
+        }
 
-            if (jumpHost.compression) {
-                jc.setCompression(true)
-            }
-
-            // Connect to jump host
-            jc.connect(HostKeyVerifier(jumpHost), parseIpVersion(jumpHost.ipVersion, jumpHost.hostname))
-
-            // Track this connection for cleanup
-            jumpConnections.add(jc)
-
-            bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_connected, jumpHost.nickname))
-
-            // Authenticate to jump host
-            if (!authenticateJumpHost(jc, jumpHost)) {
-                bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_auth_failed, jumpHost.nickname))
-                jc.close()
-                jumpConnections.remove(jc)
-                return null
-            }
-
-            bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_authenticated, jumpHost.nickname))
-            return jc
-        } catch (e: IOException) {
-            Timber.e(e, "Failed to connect to jump host: ${jumpHost.nickname}")
-            bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_failed, jumpHost.nickname, e.message))
-            try {
-                jc.close()
-                jumpConnections.remove(jc)
-            } catch (ignored: Exception) {
-            }
+        val jumpClient = SshClient(config)
+        if (!jumpClient.connect()) {
+            Timber.e("Failed to connect to jump host: ${jumpHost.nickname}")
+            bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_failed, jumpHost.nickname, "connection failed"))
             return null
         }
+        jumpClients.add(jumpClient)
+
+        bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_connected, jumpHost.nickname))
+
+        if (!authenticateJumpHost(jumpClient, jumpHost)) {
+            bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_auth_failed, jumpHost.nickname))
+            jumpClient.disconnect()
+            jumpClients.remove(jumpClient)
+            return null
+        }
+
+        bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_authenticated, jumpHost.nickname))
+
+        val currentHost = host ?: return null
+        return jumpClient.openDirectTcpipTransport(currentHost.hostname, currentHost.port)
     }
 
-    /**
-     * Authenticate to a jump host connection.
-     *
-     * @param jc The jump host connection
-     * @param jumpHost The jump host configuration
-     * @return true if authentication succeeded
-     */
-    private fun authenticateJumpHost(jc: Connection, jumpHost: Host): Boolean {
+    private suspend fun authenticateJumpHost(jumpClient: SshClient, jumpHost: Host): Boolean {
         try {
-            // Try 'none' authentication first
-            if (jc.authenticateWithNone(jumpHost.username)) {
-                return true
-            }
+            var savedPasswordTried = false
 
-            val pubkeyId = jumpHost.pubkeyId
+            val result = jumpClient.authenticate(
+                jumpHost.username,
+                object : AuthHandler {
+                    override suspend fun onPublicKeysNeeded(): List<AuthPublicKey> {
+                        val pubkeyId = jumpHost.pubkeyId
+                        if (pubkeyId == HostConstants.PUBKEYID_NEVER) return emptyList()
 
-            // Try public key authentication
-            if (pubkeyId != HostConstants.PUBKEYID_NEVER &&
-                jc.isAuthMethodAvailable(jumpHost.username, AUTH_PUBLICKEY)
-            ) {
-                if (pubkeyId == HostConstants.PUBKEYID_ANY) {
-                    // Try all in-memory keys
-                    manager?.loadedKeypairs?.entries?.forEach { entry ->
-                        try {
-                            if (jc.authenticateWithPublicKey(jumpHost.username, entry.value.pair)) {
-                                return true
-                            }
-                        } catch (_: Exception) {
-                            Timber.d("Jump host pubkey auth failed with key: ${entry.key}")
-                        }
-                    }
-                } else {
-                    // Try specific key (with unlock prompt if needed)
-                    val pubkey = manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)
-                    if (pubkey != null) {
-                        val pair = getOrUnlockKey(pubkey)
-                        if (pair != null) {
-                            try {
-                                if (jc.authenticateWithPublicKey(jumpHost.username, pair)) {
-                                    return true
+                        val keys = mutableListOf<AuthPublicKey>()
+                        if (pubkeyId == HostConstants.PUBKEYID_ANY) {
+                            manager?.loadedKeypairs?.entries?.forEach { entry ->
+                                val keyPair = entry.value.pair ?: return@forEach
+                                try {
+                                    keys.add(SshSigning.encodePublicKey(keyPair))
+                                } catch (_: Exception) {
+                                    Timber.d("Jump host: could not encode key ${entry.key}")
                                 }
-                            } catch (_: Exception) {
-                                Timber.d("Jump host specific pubkey auth failed")
+                            }
+                        } else {
+                            val pubkey = manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)
+                            if (pubkey != null) {
+                                val pair = getOrUnlockKey(pubkey)
+                                if (pair != null) {
+                                    try {
+                                        keys.add(SshSigning.encodePublicKey(pair))
+                                    } catch (_: Exception) {
+                                        Timber.d("Jump host: could not encode specific key")
+                                    }
+                                }
                             }
                         }
+                        return keys
                     }
-                }
-            }
 
-            // Try keyboard-interactive authentication
-            if (jc.isAuthMethodAvailable(jumpHost.username, AUTH_KEYBOARDINTERACTIVE)) {
-                try {
-                    if (jc.authenticateWithKeyboardInteractive(
-                            jumpHost.username
-                        ) { name, instruction, numPrompts, prompt, echo ->
-                            val responses = Array(numPrompts) { i ->
-                                val isPassword = echo != null && i < echo.size && !echo[i]
-                                val promptPrefix = manager?.res?.getString(R.string.terminal_jump_prompt, jumpHost.nickname) ?: ""
-                                bridge?.requestStringPrompt(
-                                    instruction,
-                                    "$promptPrefix ${prompt[i]}",
-                                    isPassword
-                                ) ?: ""
-                            }
-                            responses
+                    override suspend fun onSignatureRequest(key: AuthPublicKey, dataToSign: ByteArray): ByteArray? {
+                        val keyPair = findKeyPairForPublicKey(key) ?: return null
+                        return try {
+                            SshSigning.signWithKeyPair(key.algorithmName, keyPair, dataToSign)
+                        } catch (e: Exception) {
+                            Timber.d(e, "Jump host signature request failed")
+                            null
                         }
-                    ) {
-                        return true
                     }
-                } catch (e: Exception) {
-                    Timber.d(e, "Jump host keyboard-interactive auth failed")
-                }
-            }
 
-            // Try password authentication
-            if (jc.isAuthMethodAvailable(jumpHost.username, AUTH_PASSWORD)) {
-                // Try saved password first
-                val savedPassword = manager?.securePasswordStorage?.getPassword(jumpHost.id)
-                if (savedPassword != null) {
-                    try {
-                        if (jc.authenticateWithPassword(jumpHost.username, savedPassword)) {
-                            return true
+                    override suspend fun onKeyboardInteractivePrompt(
+                        name: String,
+                        instruction: String,
+                        prompts: List<KeyboardInteractiveCallback.Prompt>
+                    ): List<String>? = prompts.map { prompt ->
+                        val isPassword = !prompt.echo
+                        val promptPrefix = manager?.res?.getString(R.string.terminal_jump_prompt, jumpHost.nickname) ?: ""
+                        bridge?.requestStringPrompt(
+                            instruction,
+                            "$promptPrefix ${prompt.text}",
+                            isPassword
+                        ) ?: ""
+                    }
+
+                    override suspend fun onPasswordNeeded(): String? {
+                        val savedPassword = manager?.securePasswordStorage?.getPassword(jumpHost.id)
+                        if (savedPassword != null && !savedPasswordTried) {
+                            savedPasswordTried = true
+                            return savedPassword
                         }
-                    } catch (e: Exception) {
-                        Timber.d(e, "Jump host saved password auth failed")
+
+                        val passwordPrompt = manager?.res?.getString(R.string.terminal_jump_password, jumpHost.nickname)
+                        return bridge?.requestStringPrompt(null, passwordPrompt, true)
                     }
                 }
+            )
 
-                // Fall back to prompting
-                val passwordPrompt = manager?.res?.getString(R.string.terminal_jump_password, jumpHost.nickname)
-                val password = bridge?.requestStringPrompt(null, passwordPrompt, true)
-                if (password != null) {
-                    try {
-                        if (jc.authenticateWithPassword(jumpHost.username, password)) {
-                            return true
-                        }
-                    } catch (e: Exception) {
-                        Timber.d(e, "Jump host password auth failed")
-                    }
-                }
-            }
-
-            return jc.isAuthenticationComplete
+            return result
         } catch (e: Exception) {
             Timber.e(e, "Error during jump host authentication")
             return false
         }
     }
 
-    override fun connect() {
+    override suspend fun connect() {
         val currentHost = host ?: return
 
-        // Check if we need to connect through a jump host
+        var transportFactory: TransportFactory? = null
         val jumpHostId = currentHost.jumpHostId
-        var directJumpConnection: Connection? = null
         if (jumpHostId != null && jumpHostId > 0) {
-            val jumpHost = manager?.hostRepository?.findHostByIdBlocking(jumpHostId)
-            if (jumpHost != null) {
-                directJumpConnection = connectToJumpHost(jumpHost)
-                if (directJumpConnection == null) {
-                    onDisconnect()
-                    return
-                }
-            } else {
-                bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_not_found))
+            transportFactory = connectToJumpHost(jumpHostId) ?: run {
                 onDisconnect()
                 return
             }
         }
 
-        connection = Connection(currentHost.hostname, currentHost.port)
-        connection?.addConnectionMonitor(this)
-
-        // If we have a jump host connection, set up the proxy
-        directJumpConnection?.let {
-            connection?.setProxyData(JumpHostProxyData(it))
-        }
-
-        try {
-            connection?.setCompression(compression)
-        } catch (e: IOException) {
-            Timber.e(e, "Could not enable compression!")
-        }
-
-        try {
-            val connectionInfo = connection?.connect(HostKeyVerifier(), parseIpVersion(currentHost.ipVersion, currentHost.hostname))
-            connected = true
-
-            connectionInfo?.let { info ->
-                bridge?.outputLine(
-                    manager?.res?.getString(R.string.terminal_kex_algorithm, info.keyExchangeAlgorithm)
-                )
-                if (info.clientToServerCryptoAlgorithm == info.serverToClientCryptoAlgorithm &&
-                    info.clientToServerMACAlgorithm == info.serverToClientMACAlgorithm
-                ) {
-                    bridge?.outputLine(
-                        manager?.res?.getString(
-                            R.string.terminal_using_algorithm,
-                            info.clientToServerCryptoAlgorithm,
-                            info.clientToServerMACAlgorithm ?: ""
-                        )
-                    )
-                } else {
-                    bridge?.outputLine(
-                        manager?.res?.getString(
-                            R.string.terminal_using_c2s_algorithm,
-                            info.clientToServerCryptoAlgorithm,
-                            info.clientToServerMACAlgorithm ?: ""
-                        )
-                    )
-
-                    bridge?.outputLine(
-                        manager?.res?.getString(
-                            R.string.terminal_using_s2c_algorithm,
-                            info.serverToClientCryptoAlgorithm,
-                            info.serverToClientMACAlgorithm ?: ""
-                        )
-                    )
-                }
+        val config = SshClientConfig {
+            if (transportFactory != null) {
+                this.transportFactory = transportFactory
+            } else {
+                this.host = currentHost.hostname
+                this.port = currentHost.port
             }
-        } catch (e: IOException) {
-            Timber.e(e, "Problem in SSH connection thread during authentication")
+            this.hostKeyVerifier = ConnectBotHostKeyVerifier(currentHost)
+            this.enableCompression = compression
+            this.ipVersion = parseIpVersion(currentHost.ipVersion, currentHost.hostname)
+        }
 
-            // Display the reason in the text.
+        client = SshClient(config)
+
+        try {
+            if (client?.connect() != true) {
+                close()
+                onDisconnect()
+                return
+            }
+        } catch (e: Exception) {
+            Timber.e(e, "Problem in SSH connection thread during connect")
+
             var t: Throwable? = e
             while (t != null) {
                 val message = t.message
@@ -915,44 +718,52 @@ class SSH :
             onDisconnect()
             return
         }
+        connected = true
+
+        scope.launch {
+            client?.disconnectedFlow?.collect { reason ->
+                if (bridge?.isInGracePeriod() == true) {
+                    Timber.d("SSH connection lost during grace period (expected due to network loss)")
+                    return@collect
+                }
+                Timber.d("SSH connection lost outside grace period - disconnecting")
+                onDisconnect()
+            }
+        }
 
         try {
-            // enter a loop to keep trying until authentication
             var tries = 0
-            while (connected && connection?.isAuthenticationComplete != true && tries++ < AUTH_TRIES) {
+            while (connected && client?.isAuthenticated != true && tries++ < AUTH_TRIES) {
                 authenticate()
-
-                // sleep to make sure we dont kill system
-                Thread.sleep(1000)
+                delay(1000)
             }
         } catch (e: Exception) {
             Timber.e(e, "Problem in SSH connection thread during authentication")
         }
     }
 
-    override fun close() {
-        // Don't close during grace period - wait for network restore
+    override suspend fun close() {
         if (bridge?.isInGracePeriod() == true) {
             Timber.d("Deferring SSH close - bridge in network grace period")
             return
         }
 
         connected = false
+        sessionOpen = false
 
         session?.close()
         session = null
 
-        connection?.close()
-        connection = null
+        client?.disconnect()
+        client = null
 
-        // Close all jump host connections (in reverse order)
-        jumpConnections.asReversed().forEach { jc ->
+        jumpClients.asReversed().forEach {
             try {
-                jc.close()
+                it.disconnect()
             } catch (ignored: Exception) {
             }
         }
-        jumpConnections.clear()
+        jumpClients.clear()
     }
 
     private fun onDisconnect() {
@@ -960,46 +771,43 @@ class SSH :
     }
 
     @Throws(IOException::class)
-    override fun flush() {
-        stdin?.flush()
+    override suspend fun flush() {
+        // New library handles flushing internally
     }
 
     @Throws(IOException::class)
-    override fun read(buffer: ByteArray, offset: Int, length: Int): Int {
-        var bytesRead = 0
-
-        val currentSession = session ?: return 0
-
-        val newConditions = currentSession.waitForCondition(conditions, 0)
-
-        if ((newConditions and ChannelCondition.STDOUT_DATA) != 0) {
-            bytesRead = stdout?.read(buffer, offset, length) ?: 0
-        }
-
-        if ((newConditions and ChannelCondition.STDERR_DATA) != 0) {
-            val discard = ByteArray(256)
-            while (stderr?.available() ?: 0 > 0) {
-                stderr?.read(discard)
+    override suspend fun read(buffer: ByteArray, offset: Int, length: Int): Int {
+        if (readBuffer != null) {
+            val available = readBuffer!!.size - readBufferOffset
+            val toCopy = minOf(available, length)
+            readBuffer!!.copyInto(buffer, offset, readBufferOffset, readBufferOffset + toCopy)
+            readBufferOffset += toCopy
+            if (readBufferOffset >= readBuffer!!.size) {
+                readBuffer = null
+                readBufferOffset = 0
             }
+            return toCopy
         }
 
-        if ((newConditions and ChannelCondition.EOF) != 0) {
-            close()
-            onDisconnect()
-            throw IOException("Remote end closed connection")
+        val data = session?.read() ?: throw IOException("Remote end closed connection")
+        if (data.size <= length) {
+            data.copyInto(buffer, offset)
+            return data.size
         }
-
-        return bytesRead
+        data.copyInto(buffer, offset, 0, length)
+        readBuffer = data
+        readBufferOffset = length
+        return length
     }
 
     @Throws(IOException::class)
-    override fun write(buffer: ByteArray) {
-        stdin?.write(buffer)
+    override suspend fun write(buffer: ByteArray) {
+        session?.write(buffer)
     }
 
     @Throws(IOException::class)
-    override fun write(c: Int) {
-        stdin?.write(c)
+    override suspend fun write(c: Int) {
+        session?.write(byteArrayOf(c.toByte()))
     }
 
     override fun getOptions(): Map<String, String> = mapOf("compression" to compression.toString())
@@ -1014,32 +822,18 @@ class SSH :
 
     override fun isConnected(): Boolean = connected
 
-    override fun connectionLost(reason: Throwable) {
-        // During grace period, SSH disconnect is EXPECTED (network loss)
-        // Don't trigger disconnect - let grace period handle it
-        if (bridge?.isInGracePeriod() == true) {
-            Timber.d("SSH connection lost during grace period (expected due to network loss)")
-            return
-        }
-
-        // Unexpected disconnect - normal flow
-        Timber.d("SSH connection lost outside grace period - disconnecting")
-        onDisconnect()
-    }
-
     override fun canForwardPorts(): Boolean = true
 
     override fun getPortForwards(): List<PortForward> = portForwards
 
     override fun addPortForward(portForward: PortForward): Boolean = portForwards.add(portForward)
 
-    override fun removePortForward(portForward: PortForward): Boolean {
-        // Make sure we don't have a phantom forwarder.
+    override suspend fun removePortForward(portForward: PortForward): Boolean {
         disablePortForward(portForward)
         return portForwards.remove(portForward)
     }
 
-    override fun enablePortForward(portForward: PortForward): Boolean {
+    override suspend fun enablePortForward(portForward: PortForward): Boolean {
         if (!portForwards.contains(portForward)) {
             Timber.e("Attempt to enable port forward not in list")
             return false
@@ -1049,65 +843,37 @@ class SSH :
             return false
         }
 
-        return when (portForward.type) {
-            HostConstants.PORTFORWARD_LOCAL -> {
-                val lpf: LocalPortForwarder? = try {
-                    connection?.createLocalPortForwarder(
-                        InetSocketAddress(InetAddress.getLocalHost(), portForward.sourcePort),
-                        portForward.destAddr,
-                        portForward.destPort
-                    )
-                } catch (e: Exception) {
-                    Timber.e(e, "Could not create local port forward")
-                    return false
+        val forwarder: PortForwarder? = try {
+            when (portForward.type) {
+                HostConstants.PORTFORWARD_LOCAL ->
+                    client?.localPortForward(portForward.sourcePort, portForward.destAddr ?: "", portForward.destPort)
+
+                HostConstants.PORTFORWARD_REMOTE ->
+                    client?.remotePortForward("", portForward.sourcePort, portForward.destAddr ?: "", portForward.destPort)
+
+                HostConstants.PORTFORWARD_DYNAMIC5 ->
+                    client?.dynamicPortForward(portForward.sourcePort)
+
+                else -> {
+                    Timber.e("attempt to forward unknown type %s", portForward.type)
+                    null
                 }
-
-                if (lpf == null) {
-                    Timber.e("returned LocalPortForwarder object is null")
-                    return false
-                }
-
-                portForward.setIdentifier(lpf)
-                portForward.setEnabled(true)
-                true
             }
-
-            HostConstants.PORTFORWARD_REMOTE -> {
-                try {
-                    connection?.requestRemotePortForwarding("", portForward.sourcePort, portForward.destAddr, portForward.destPort)
-                } catch (e: Exception) {
-                    Timber.e(e, "Could not create remote port forward")
-                    return false
-                }
-
-                portForward.setEnabled(true)
-                true
-            }
-
-            HostConstants.PORTFORWARD_DYNAMIC5 -> {
-                val dpf: DynamicPortForwarder? = try {
-                    connection?.createDynamicPortForwarder(
-                        InetSocketAddress(InetAddress.getLocalHost(), portForward.sourcePort)
-                    )
-                } catch (e: Exception) {
-                    Timber.e(e, "Could not create dynamic port forward")
-                    return false
-                }
-
-                portForward.setIdentifier(dpf)
-                portForward.setEnabled(true)
-                true
-            }
-
-            else -> {
-                // Unsupported type
-                Timber.e(String.format("attempt to forward unknown type %s", portForward.type))
-                false
-            }
+        } catch (e: Exception) {
+            Timber.e(e, "Could not create port forward")
+            return false
         }
+
+        if (forwarder == null) {
+            return false
+        }
+
+        portForward.setIdentifier(forwarder)
+        portForward.setEnabled(true)
+        return true
     }
 
-    override fun disablePortForward(portForward: PortForward): Boolean {
+    override suspend fun disablePortForward(portForward: PortForward): Boolean {
         if (!portForwards.contains(portForward)) {
             Timber.e("Attempt to disable port forward not in list")
             return false
@@ -1117,61 +883,28 @@ class SSH :
             return false
         }
 
-        return when (portForward.type) {
-            HostConstants.PORTFORWARD_LOCAL -> {
-                val lpf = portForward.getIdentifier() as? LocalPortForwarder
+        val forwarder = portForward.getIdentifier() as? PortForwarder
 
-                if (!portForward.isEnabled() || lpf == null) {
-                    Timber.d(String.format("Could not disable %s; it appears to be not enabled or have no handler", portForward.nickname))
-                    return false
-                }
-
-                portForward.setEnabled(false)
-                lpf.close()
-                true
-            }
-
-            HostConstants.PORTFORWARD_REMOTE -> {
-                portForward.setEnabled(false)
-
-                try {
-                    connection?.cancelRemotePortForwarding(portForward.sourcePort)
-                } catch (e: IOException) {
-                    Timber.e(e, "Could not stop remote port forwarding, setting enabled to false")
-                    return false
-                }
-                true
-            }
-
-            HostConstants.PORTFORWARD_DYNAMIC5 -> {
-                val dpf = portForward.getIdentifier() as? DynamicPortForwarder
-
-                if (!portForward.isEnabled() || dpf == null) {
-                    Timber.d(String.format("Could not disable %s; it appears to be not enabled or have no handler", portForward.nickname))
-                    return false
-                }
-
-                portForward.setEnabled(false)
-                dpf.close()
-                true
-            }
-
-            else -> {
-                // Unsupported type
-                Timber.e(String.format("attempt to forward unknown type %s", portForward.type))
-                false
-            }
+        if (!portForward.isEnabled() || forwarder == null) {
+            Timber.d("Could not disable %s; it appears to be not enabled or have no handler", portForward.nickname)
+            return false
         }
+
+        portForward.setEnabled(false)
+        forwarder.stop()
+        return true
     }
 
-    override fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) {
+    override suspend fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) {
         this.columns = columns
         this.rows = rows
+        this.width = width
+        this.height = height
 
         if (sessionOpen) {
             try {
-                session?.resizePTY(columns, rows, width, height)
-            } catch (e: IOException) {
+                session?.resizeTerminal(columns, rows, width, height)
+            } catch (e: Exception) {
                 Timber.e(e, "Couldn't send resize PTY packet")
             }
         }
@@ -1183,39 +916,6 @@ class SSH :
         String.format(Locale.US, "%s@%s", username, hostname)
     } else {
         String.format(Locale.US, "%s@%s:%d", username, hostname, port)
-    }
-
-    /**
-     * Handle challenges from keyboard-interactive authentication mode.
-     */
-    override fun replyToChallenge(
-        name: String,
-        instruction: String,
-        numPrompts: Int,
-        prompt: Array<String>,
-        echo: BooleanArray
-    ): Array<String> {
-        interactiveCanContinue = true
-        val responses = Array(numPrompts) { i ->
-            // request response from user for each prompt
-            val isPassword = i < echo.size && !echo[i]
-
-            // Try saved password for password prompts (only on first attempt)
-            if (isPassword && !savedPasswordTried) {
-                val currentHost = host
-                if (currentHost != null) {
-                    val savedPassword = manager?.securePasswordStorage?.getPassword(currentHost.id)
-                    if (savedPassword != null) {
-                        savedPasswordTried = true
-                        bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_saved_password))
-                        return@Array savedPassword
-                    }
-                }
-            }
-
-            bridge?.requestStringPrompt(instruction, prompt[i], isPassword) ?: ""
-        }
-        return responses
     }
 
     override fun createHost(uri: Uri): Host {
@@ -1256,57 +956,6 @@ class SSH :
         this.useAuthAgent = useAuthAgent
     }
 
-    override fun retrieveIdentities(): Map<String, ByteArray> {
-        val pubKeys = HashMap<String, ByteArray>(manager?.loadedKeypairs?.size ?: 0)
-
-        manager?.loadedKeypairs?.entries?.forEach { entry ->
-            val pair = entry.value.pair ?: return@forEach
-            try {
-                val privKey = pair.private
-                when (privKey) {
-                    is RSAPrivateKey -> {
-                        val pubkey = pair.public as RSAPublicKey
-                        pubKeys[entry.key] = RSASHA1Verify.get().encodePublicKey(pubkey)
-                    }
-
-                    is DSAPrivateKey -> {
-                        val pubkey = pair.public as DSAPublicKey
-                        pubKeys[entry.key] = DSASHA1Verify.get().encodePublicKey(pubkey)
-                    }
-
-                    is ECPrivateKey -> {
-                        val pubkey = pair.public as ECPublicKey
-                        pubKeys[entry.key] = ECDSASHA2Verify.getVerifierForKey(pubkey).encodePublicKey(pubkey)
-                    }
-
-                    is Ed25519PrivateKey -> {
-                        val pubkey = pair.public as Ed25519PublicKey
-                        pubKeys[entry.key] = Ed25519Verify.get().encodePublicKey(pubkey)
-                    }
-                }
-            } catch (ignored: IOException) {
-            }
-        }
-
-        return pubKeys
-    }
-
-    override fun getKeyPair(publicKey: ByteArray): KeyPair? {
-        val nickname = manager?.getKeyNickname(publicKey) ?: return null
-
-        if (useAuthAgent == HostConstants.AUTHAGENT_NO) {
-            Timber.e("")
-            return null
-        }
-        if (useAuthAgent == HostConstants.AUTHAGENT_CONFIRM) {
-            val holder = manager?.loadedKeypairs?.get(nickname)
-            if (holder != null && holder.pubkey?.confirmation == true && !promptForPubkeyUse(nickname)) {
-                return null
-            }
-        }
-        return manager?.getKey(nickname)
-    }
-
     private fun promptForPubkeyUse(nickname: String): Boolean {
         val result = bridge?.requestBooleanPrompt(
             null,
@@ -1315,97 +964,120 @@ class SSH :
         return result ?: false
     }
 
-    override fun addIdentity(pair: KeyPair, comment: String, confirmUse: Boolean, lifetime: Int): Boolean {
-        // Create a temporary pubkey for in-memory storage (not persisted to database)
-        // Note: lifetime functionality is not yet implemented in Pubkey entity
-        val pubkey = Pubkey(
-            id = 0L, // temporary, not saved to database
-            nickname = comment,
-            type = "IMPORTED",
-            privateKey = byteArrayOf(), // not needed for agent forwarding
-            publicKey = pair.public.encoded,
-            encrypted = false,
-            startup = false,
-            confirmation = confirmUse,
-            createdDate = System.currentTimeMillis(),
-            storageType = KeyStorageType.EXPORTABLE,
-            allowBackup = true,
-            keystoreAlias = null
-        )
-        manager?.addKey(pubkey, pair)
-        return true
-    }
-
-    override fun removeAllIdentities(): Boolean {
-        manager?.loadedKeypairs?.clear()
-        return true
-    }
-
-    override fun removeIdentity(publicKey: ByteArray): Boolean = manager?.removeKey(publicKey) ?: false
-
-    override fun isAgentLocked(): Boolean = agentLockPassphrase != null
-
-    override fun requestAgentUnlock(unlockPassphrase: String): Boolean {
-        if (agentLockPassphrase == null) {
-            return false
+    inner class ConnectBotAgentProvider : AgentProvider {
+        override suspend fun getIdentities(): List<org.connectbot.sshlib.AgentIdentity> {
+            return manager?.loadedKeypairs?.entries?.mapNotNull { entry ->
+                val pair = entry.value.pair ?: return@mapNotNull null
+                try {
+                    val encoded = SshSigning.encodePublicKey(pair)
+                    org.connectbot.sshlib.AgentIdentity(encoded.publicKeyBlob, entry.key)
+                } catch (e: Exception) {
+                    Timber.d(e, "Could not encode key for agent: ${entry.key}")
+                    null
+                }
+            } ?: emptyList()
         }
 
-        if (agentLockPassphrase == unlockPassphrase) {
-            agentLockPassphrase = null
-        }
+        override suspend fun signData(context: AgentSigningContext): ByteArray? {
+            if (agentLockPassphrase != null) return null
 
-        return agentLockPassphrase == null
+            val nickname = manager?.getKeyNickname(context.publicKeyBlob) ?: return null
+
+            if (useAuthAgent == HostConstants.AUTHAGENT_NO) return null
+            if (useAuthAgent == HostConstants.AUTHAGENT_CONFIRM) {
+                val holder = manager?.loadedKeypairs?.get(nickname)
+                if (holder != null && holder.pubkey?.confirmation == true && !promptForPubkeyUse(nickname)) {
+                    return null
+                }
+            }
+
+            val keyPair = manager?.getKey(nickname) ?: return null
+            val algo = determineAlgorithm(keyPair, context.flags)
+            return try {
+                SshSigning.signWithKeyPair(algo, keyPair, context.dataToSign)
+            } catch (e: Exception) {
+                Timber.e(e, "Agent signing failed for key: $nickname")
+                null
+            }
+        }
     }
 
-    override fun setAgentLock(lockPassphrase: String): Boolean {
-        if (agentLockPassphrase != null) {
-            return false
+    private fun determineAlgorithm(keyPair: KeyPair, flags: Int): String = when {
+        keyPair.private is java.security.interfaces.RSAPrivateKey -> {
+            when {
+                flags and AgentSignatureFlags.RSA_SHA2_512 != 0 -> "rsa-sha2-512"
+                flags and AgentSignatureFlags.RSA_SHA2_256 != 0 -> "rsa-sha2-256"
+                else -> "ssh-rsa"
+            }
         }
 
-        agentLockPassphrase = lockPassphrase
-        return true
+        keyPair.private is java.security.interfaces.DSAPrivateKey -> "ssh-dss"
+
+        keyPair.private is java.security.interfaces.ECPrivateKey -> {
+            val ecKey = keyPair.private as java.security.interfaces.ECPrivateKey
+            when (ecKey.params.curve.field.fieldSize) {
+                256 -> "ecdsa-sha2-nistp256"
+                384 -> "ecdsa-sha2-nistp384"
+                521 -> "ecdsa-sha2-nistp521"
+                else -> "ecdsa-sha2-nistp256"
+            }
+        }
+
+        else -> {
+            // Ed25519 or other
+            SshSigning.encodePublicKey(keyPair).algorithmName
+        }
     }
 
     override fun usesNetwork(): Boolean = true
 
     companion object {
-        init {
-            // Since this class deals with Ed25519 keys, we need to make sure this is available.
-            Ed25519Provider.insertIfNeeded()
+        private fun getKeyType(openSshKeyType: String): String? = when {
+            openSshKeyType == "ssh-rsa" || openSshKeyType.startsWith("rsa-sha2-") -> "RSA"
+            openSshKeyType == "ssh-dss" -> "DSA"
+            openSshKeyType == "ssh-ed25519" -> "Ed25519"
+            openSshKeyType.startsWith("ecdsa-sha2-") -> "EC"
+            else -> null
+        }
+
+        private fun getKeySizeFromAlgorithm(algorithm: String, keyBlob: ByteArray): Int = when {
+            algorithm == "ssh-rsa" || algorithm.startsWith("rsa-sha2-") -> {
+                // RSA key size is in the key blob; approximate from blob size
+                (keyBlob.size - 20) * 8 / 3
+            }
+
+            algorithm == "ssh-dss" -> 1024
+
+            algorithm == "ssh-ed25519" -> 256
+
+            algorithm == "ecdsa-sha2-nistp256" -> 256
+
+            algorithm == "ecdsa-sha2-nistp384" -> 384
+
+            algorithm == "ecdsa-sha2-nistp521" -> 521
+
+            else -> 0
         }
 
         private fun parseIpVersion(value: String, hostname: String): IpVersion {
-            // If hostname is a literal IP address, use automatic (the address type is already determined)
             if (HostConstants.isIpAddress(hostname)) {
-                return IpVersion.IPV4_AND_IPV6
+                return IpVersion.AUTO
             }
             return when (value) {
                 HostConstants.IPVERSION_IPV4_ONLY -> IpVersion.IPV4_ONLY
                 HostConstants.IPVERSION_IPV6_ONLY -> IpVersion.IPV6_ONLY
-                else -> IpVersion.IPV4_AND_IPV6
+                else -> IpVersion.AUTO
             }
         }
 
         private const val PROTOCOL = "ssh"
         private const val DEFAULT_PORT = 22
-
-        private const val AUTH_PUBLICKEY = "publickey"
-        private const val AUTH_PASSWORD = "password"
-        private const val AUTH_KEYBOARDINTERACTIVE = "keyboard-interactive"
-
         private const val AUTH_TRIES = 20
 
         private val hostmask = Pattern.compile(
             "^(.+)@((?:[0-9a-z._-]+)|(?:\\[[a-f:0-9]+(?:%[-_.a-z0-9]+)?\\]))(?::(\\d+))?\$",
             Pattern.CASE_INSENSITIVE
         )
-
-        private const val conditions = (
-            ChannelCondition.STDOUT_DATA
-                or ChannelCondition.STDERR_DATA
-                or ChannelCondition.CLOSED
-                or ChannelCondition.EOF
-            )
 
         @JvmStatic
         fun getProtocolName(): String = PROTOCOL

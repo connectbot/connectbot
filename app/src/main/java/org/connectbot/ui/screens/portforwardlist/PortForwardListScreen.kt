@@ -71,10 +71,10 @@ import org.connectbot.ui.theme.ConnectBotTheme
 @Composable
 fun PortForwardListScreen(
     onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: PortForwardListViewModel = hiltViewModel()
 ) {
     val terminalManager = org.connectbot.ui.LocalTerminalManager.current
-    val viewModel: PortForwardListViewModel = hiltViewModel()
 
     LaunchedEffect(terminalManager) {
         terminalManager?.let { viewModel.setTerminalManager(it) }
@@ -136,7 +136,7 @@ fun PortForwardListScreenContent(
             FloatingActionButton(
                 onClick = { showAddDialog = true },
                 // This matches the FloatingActionButtonMenu padding
-                modifier = Modifier.padding(end = 16.dp, bottom = 16.dp),
+                modifier = Modifier.padding(end = 16.dp, bottom = 16.dp)
             ) {
                 Icon(
                     Icons.Default.Add,
@@ -174,7 +174,7 @@ fun PortForwardListScreenContent(
                             start = 16.dp,
                             end = 16.dp,
                             top = 16.dp,
-                            bottom = 104.dp, // Extra padding to avoid FAB menu overlap (88dp + 16dp for menu padding)
+                            bottom = 104.dp // Extra padding to avoid FAB menu overlap (88dp + 16dp for menu padding)
                         ),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {

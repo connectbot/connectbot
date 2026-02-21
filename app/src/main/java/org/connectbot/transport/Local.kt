@@ -19,16 +19,16 @@ package org.connectbot.transport
 
 import android.content.Context
 import android.net.Uri
-import timber.log.Timber
 import androidx.annotation.VisibleForTesting
+import androidx.core.net.toUri
 import com.google.ase.Exec
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import timber.log.Timber
 import java.io.FileDescriptor
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.io.IOException
-import androidx.core.net.toUri
 
 /**
  * @author Kenny Root
@@ -43,7 +43,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
 
     constructor() : this(AndroidKiller())
 
-    override fun close() {
+    override suspend fun close() {
         try {
             os?.close()
             os = null
@@ -55,7 +55,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
         }
     }
 
-    override fun connect() {
+    override suspend fun connect() {
         val pids = IntArray(1)
 
         try {
@@ -84,12 +84,11 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
     }
 
     @Throws(IOException::class)
-    override fun flush() {
+    override suspend fun flush() {
         os?.flush()
     }
 
-    override fun getDefaultNickname(username: String?, hostname: String?, port: Int): String =
-        DEFAULT_URI
+    override fun getDefaultNickname(username: String?, hostname: String?, port: Int): String = DEFAULT_URI
 
     override fun getDefaultPort(): Int = 0
 
@@ -98,7 +97,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
     override fun isSessionOpen(): Boolean = `is` != null && os != null
 
     @Throws(IOException::class)
-    override fun read(buffer: ByteArray, offset: Int, length: Int): Int {
+    override suspend fun read(buffer: ByteArray, offset: Int, length: Int): Int {
         val inputStream = `is` ?: run {
             bridge?.dispatchDisconnect(false)
             throw IOException("session closed")
@@ -106,7 +105,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
         return inputStream.read(buffer, offset, length)
     }
 
-    override fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) {
+    override suspend fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) {
         // We are not connected yet.
         val fd = shellFd ?: return
 
@@ -118,12 +117,12 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
     }
 
     @Throws(IOException::class)
-    override fun write(buffer: ByteArray) {
+    override suspend fun write(buffer: ByteArray) {
         os?.write(buffer)
     }
 
     @Throws(IOException::class)
-    override fun write(c: Int) {
+    override suspend fun write(c: Int) {
         os?.write(c)
     }
 
@@ -172,7 +171,6 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
         }
 
         @JvmStatic
-        fun getFormatHint(context: Context): String =
-            context.getString(R.string.hostpref_nickname_title)
+        fun getFormatHint(context: Context): String = context.getString(R.string.hostpref_nickname_title)
     }
 }

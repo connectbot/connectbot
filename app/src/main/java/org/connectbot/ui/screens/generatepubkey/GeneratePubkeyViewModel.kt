@@ -19,9 +19,7 @@ package org.connectbot.ui.screens.generatepubkey
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.trilead.ssh2.crypto.keys.Ed25519Provider
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,6 +30,7 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.sshlib.SshKeys
 import org.connectbot.util.BiometricAvailability
 import org.connectbot.util.BiometricKeyManager
 import org.connectbot.util.PubkeyUtils
@@ -79,8 +78,8 @@ data class GeneratePubkeyUiState(
 
     val canGenerate: Boolean
         get() = nickname.isNotEmpty() &&
-                !nicknameExists &&
-                (useBiometric || !passwordMismatch)
+            !nicknameExists &&
+            (useBiometric || !passwordMismatch)
 
     /** Whether the current key type supports biometric protection */
     val keyTypeSupportsBiometric: Boolean
@@ -99,7 +98,7 @@ class GeneratePubkeyViewModel @Inject constructor(
 
     init {
         // Ensure Ed25519 provider is available
-        Ed25519Provider.insertIfNeeded()
+        SshKeys.ensureEd25519Support()
     }
 
     private val _uiState = MutableStateFlow(
@@ -188,9 +187,7 @@ class GeneratePubkeyViewModel @Inject constructor(
         _uiState.update { it.copy(bits = finalBits) }
     }
 
-    private fun getClosestEcdsaSize(bits: Int): Int {
-        return ECDSA_SIZES.minByOrNull { kotlin.math.abs(it - bits) } ?: ECDSA_SIZES[0]
-    }
+    private fun getClosestEcdsaSize(bits: Int): Int = ECDSA_SIZES.minByOrNull { kotlin.math.abs(it - bits) } ?: ECDSA_SIZES[0]
 
     fun updatePassword1(password: String) {
         _uiState.update { it.copy(password1 = password) }

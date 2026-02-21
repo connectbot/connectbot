@@ -16,10 +16,9 @@
  */
 package org.connectbot.util
 
-import timber.log.Timber
-import com.trilead.ssh2.crypto.PEMDecoder
-import com.trilead.ssh2.crypto.keys.Ed25519Provider
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.sshlib.SshKeys
+import timber.log.Timber
 import java.security.Key
 import java.security.KeyFactory
 import java.security.KeyPair
@@ -33,13 +32,10 @@ import java.util.Arrays
 
 object PubkeyUtils {
     init {
-        Ed25519Provider.insertIfNeeded()
+        SshKeys.ensureEd25519Support()
     }
 
     private const val TAG = "CB.PubkeyUtils"
-
-    const val PKCS8_START: String = "-----BEGIN PRIVATE KEY-----"
-    const val PKCS8_END: String = "-----END PRIVATE KEY-----"
 
     // Size in bytes of salt to use.
     private const val SALT_SIZE = 8
@@ -52,7 +48,7 @@ object PubkeyUtils {
         val fmt = key.format
         val encoded = key.encoded
         return "Key[algorithm=" + algo + ", format=" + fmt +
-                ", bytes=" + encoded.size + "]"
+            ", bytes=" + encoded.size + "]"
     }
 
     @Throws(Exception::class)
@@ -101,12 +97,13 @@ object PubkeyUtils {
     }
 
     @Throws(Exception::class)
-    fun decodePrivate(encoded: ByteArray, keyType: String?, secret: String?): PrivateKey? {
-        return if (secret != null && secret.isNotEmpty()) decodePrivate(
+    fun decodePrivate(encoded: ByteArray, keyType: String?, secret: String?): PrivateKey? = if (secret != null && secret.isNotEmpty()) {
+        decodePrivate(
             decrypt(encoded, secret),
             keyType
         )
-        else decodePrivate(encoded, keyType)
+    } else {
+        decodePrivate(encoded, keyType)
     }
 
     @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class)
@@ -121,8 +118,8 @@ object PubkeyUtils {
         if ("IMPORTED" == pubkey.type) {
             // load specific key using pem format
             try {
-                return PEMDecoder.decode(
-                    String(pubkey.privateKey!!, charset("UTF-8")).toCharArray(),
+                return SshKeys.decodePemPrivateKey(
+                    String(pubkey.privateKey!!, charset("UTF-8")),
                     password
                 )
             } catch (e: Exception) {

@@ -26,6 +26,7 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
@@ -131,7 +132,7 @@ class BiometricPromptState(
 fun rememberBiometricPromptState(
     onSuccess: (BiometricPrompt.AuthenticationResult) -> Unit,
     onError: (Int, CharSequence) -> Unit,
-    onFailed: () -> Unit = {}
+    onFailure: () -> Unit = {}
 ): BiometricPromptState? {
     val context = LocalContext.current
     val activity = context.findFragmentActivity()
@@ -141,12 +142,18 @@ fun rememberBiometricPromptState(
         return null
     }
 
+    // Use rememberUpdatedState to ensure the BiometricPromptState always uses the latest callbacks
+    // even though it's remembered across recompositions.
+    val currentOnSuccess by rememberUpdatedState(onSuccess)
+    val currentOnError by rememberUpdatedState(onError)
+    val currentOnFailure by rememberUpdatedState(onFailure)
+
     val state = remember(activity) {
         BiometricPromptState(
             activity = activity,
-            onSuccess = onSuccess,
-            onError = onError,
-            onFailed = onFailed
+            onSuccess = { currentOnSuccess(it) },
+            onError = { code, msg -> currentOnError(code, msg) },
+            onFailed = { currentOnFailure() }
         )
     }
 
