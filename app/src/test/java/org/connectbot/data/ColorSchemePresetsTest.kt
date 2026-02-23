@@ -17,7 +17,9 @@
 
 package org.connectbot.data
 
-import org.junit.Assert.*
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertNotEquals
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
@@ -32,7 +34,7 @@ class ColorSchemePresetsTest {
         assertEquals("Solarized Dark", scheme.name)
         assertEquals("Precision colors for machines and people", scheme.description)
         assertEquals(12, scheme.defaultFg) // base0
-        assertEquals(8, scheme.defaultBg)  // base03
+        assertEquals(8, scheme.defaultBg) // base03
     }
 
     @Test
@@ -50,9 +52,9 @@ class ColorSchemePresetsTest {
         val scheme = ColorSchemePresets.solarizedDark
 
         // Check a few key colors
-        assertEquals(0xff073642.toInt(), scheme.colors[0])  // black: base02
-        assertEquals(0xffdc322f.toInt(), scheme.colors[1])  // red
-        assertEquals(0xff002b36.toInt(), scheme.colors[8])  // bright black: base03
+        assertEquals(0xff073642.toInt(), scheme.colors[0]) // black: base02
+        assertEquals(0xffdc322f.toInt(), scheme.colors[1]) // red
+        assertEquals(0xff002b36.toInt(), scheme.colors[8]) // bright black: base03
         assertEquals(0xff839496.toInt(), scheme.colors[12]) // bright blue: base0
     }
 

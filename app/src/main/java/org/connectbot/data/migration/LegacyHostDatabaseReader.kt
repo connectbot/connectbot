@@ -20,11 +20,11 @@ package org.connectbot.data.migration
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
-import timber.log.Timber
 import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.KnownHost
 import org.connectbot.data.entity.PortForward
+import timber.log.Timber
 
 /**
  * Data class for hosts from the legacy database that includes
@@ -375,7 +375,5 @@ class LegacyHostDatabaseReader(private val context: Context) {
         return value.equals("true", ignoreCase = true)
     }
 
-    private fun Cursor.getStringOrNull(columnIndex: Int): String? {
-        return if (isNull(columnIndex)) null else getString(columnIndex)
-    }
+    private fun Cursor.getStringOrNull(columnIndex: Int): String? = if (isNull(columnIndex)) null else getString(columnIndex)
 }

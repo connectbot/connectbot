@@ -254,14 +254,12 @@ class PortForwardDaoTest {
         sourcePort: Int = 8080,
         destAddr: String = "localhost",
         destPort: Int = 80
-    ): PortForward {
-        return PortForward(
-            hostId = hostId,
-            nickname = nickname,
-            type = type,
-            sourcePort = sourcePort,
-            destAddr = destAddr,
-            destPort = destPort
-        )
-    }
+    ): PortForward = PortForward(
+        hostId = hostId,
+        nickname = nickname,
+        type = type,
+        sourcePort = sourcePort,
+        destAddr = destAddr,
+        destPort = destPort
+    )
 }

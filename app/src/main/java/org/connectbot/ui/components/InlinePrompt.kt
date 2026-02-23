@@ -55,6 +55,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -86,14 +87,15 @@ fun InlinePrompt(
     onResponse: (PromptResponse) -> Unit,
     onCancel: () -> Unit,
     modifier: Modifier = Modifier,
-    onDismissed: () -> Unit = {},
+    onDismiss: () -> Unit = {}
 ) {
     var wasVisible by remember { mutableStateOf(false) }
+    val currentOnDismissed by rememberUpdatedState(onDismiss)
 
-    // Track when prompt becomes invisible to call onDismissed
+    // Track when prompt becomes invisible to call onDismiss
     LaunchedEffect(promptRequest) {
         if (wasVisible && promptRequest == null) {
-            onDismissed()
+            currentOnDismissed()
         }
         wasVisible = promptRequest != null
     }
@@ -141,7 +143,8 @@ fun InlinePrompt(
                 )
             }
 
-            null -> { /* No prompt */
+            null -> {
+                /* No prompt */
             }
         }
     }
@@ -233,7 +236,7 @@ private fun StringPromptContent(
             visualTransformation = if (isPassword) PasswordVisualTransformation() else VisualTransformation.None,
             keyboardOptions = KeyboardOptions(
                 imeAction = ImeAction.Done,
-                keyboardType = if (isPassword) KeyboardType.Password else KeyboardType.Unspecified,
+                keyboardType = if (isPassword) KeyboardType.Password else KeyboardType.Unspecified
             ),
             keyboardActions = KeyboardActions(
                 onDone = {
@@ -305,7 +308,7 @@ private fun HostKeyFingerprintPromptContent(
             text = stringResource(R.string.host_key_verification_title),
             style = MaterialTheme.typography.titleMedium,
             color = terminalColors.overlayText,
-            modifier = Modifier.padding(bottom = 8.dp),
+            modifier = Modifier.padding(bottom = 8.dp)
         )
 
         Text(
@@ -362,7 +365,7 @@ private fun HostKeyFingerprintPromptContent(
         // Fingerprint format selector
         ExposedDropdownMenuBox(
             expanded = dropdownExpanded,
-            onExpandedChange = { dropdownExpanded = it },
+            onExpandedChange = { dropdownExpanded = it }
         ) {
             TextField(
                 value = formats[selectedFormatIndex].first,
@@ -445,6 +448,6 @@ private fun HostKeyFingerprintPromptPreview() {
             md5 = "md5"
         ),
         onAccept = { },
-        onReject = { },
+        onReject = { }
     )
 }

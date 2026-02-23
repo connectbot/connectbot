@@ -69,7 +69,7 @@ import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
-import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.common.getIconColors
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.common.getLocalizedFontDisplayName
@@ -1220,7 +1220,7 @@ private fun SwitchPreference(
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun HostEditorScreenPreview() {
     ConnectBotTheme {

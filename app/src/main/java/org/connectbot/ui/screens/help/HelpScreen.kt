@@ -61,7 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.BuildConfig
 import org.connectbot.R
-import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.theme.ConnectBotTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -320,7 +320,7 @@ private fun copyLogsToClipboard(context: Context, logs: String) {
     Toast.makeText(context, R.string.logs_copied, Toast.LENGTH_SHORT).show()
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun HelpScreenPreview() {
     ConnectBotTheme {

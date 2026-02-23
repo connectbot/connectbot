@@ -66,7 +66,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.BuildConfig
 import org.connectbot.R
 import org.connectbot.ui.ObservePermissionOnResume
-import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.common.getLocalizedFontDisplayName
 import org.connectbot.ui.components.FontDownloadProgressDialog
 import org.connectbot.ui.theme.ConnectBotTheme
@@ -1321,7 +1321,7 @@ private fun LocalFontPreference(
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun SettingsScreenPreview() {
     ConnectBotTheme {

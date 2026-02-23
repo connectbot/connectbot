@@ -52,6 +52,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -60,22 +61,23 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
-import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.theme.ConnectBotTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PubkeyEditorScreen(
     onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: PubkeyEditorViewModel = hiltViewModel()
 ) {
-    val viewModel: PubkeyEditorViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
 
     // Navigate back on successful save
     LaunchedEffect(uiState.saveSuccess) {
         if (uiState.saveSuccess) {
-            onNavigateBack()
+            currentOnNavigateBack()
         }
     }
 
@@ -167,7 +169,9 @@ fun PubkeyEditorScreenContent(
                         isError = uiState.nicknameExists,
                         supportingText = if (uiState.nicknameExists) {
                             { Text(stringResource(R.string.pubkey_nickname_exists)) }
-                        } else null
+                        } else {
+                            null
+                        }
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -330,7 +334,7 @@ fun PubkeyEditorScreenContent(
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun PubkeyEditorScreenLoadingPreview() {
     ConnectBotTheme {
@@ -350,7 +354,7 @@ private fun PubkeyEditorScreenLoadingPreview() {
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun PubkeyEditorScreenErrorPreview() {
     ConnectBotTheme {
@@ -371,7 +375,7 @@ private fun PubkeyEditorScreenErrorPreview() {
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun PubkeyEditorScreenUnencryptedPreview() {
     ConnectBotTheme {
@@ -396,7 +400,7 @@ private fun PubkeyEditorScreenUnencryptedPreview() {
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun PubkeyEditorScreenEncryptedPreview() {
     ConnectBotTheme {
@@ -422,7 +426,7 @@ private fun PubkeyEditorScreenEncryptedPreview() {
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun PubkeyEditorScreenPasswordMismatchPreview() {
     ConnectBotTheme {
@@ -450,7 +454,7 @@ private fun PubkeyEditorScreenPasswordMismatchPreview() {
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun PubkeyEditorScreenWrongPasswordPreview() {
     ConnectBotTheme {

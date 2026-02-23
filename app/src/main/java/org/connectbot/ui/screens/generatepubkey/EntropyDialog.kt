@@ -37,14 +37,14 @@ import org.connectbot.ui.components.EntropyGatherer
 
 @Composable
 fun EntropyGatherDialog(
-    onEntropyGathered: (ByteArray?) -> Unit,
+    onGatherEntropy: (ByteArray?) -> Unit,
     onDismiss: () -> Unit
 ) {
     var progress by remember { mutableIntStateOf(0) }
 
     AlertDialog(
         onDismissRequest = {
-            onEntropyGathered(null)
+            onGatherEntropy(null)
             onDismiss()
         },
         title = { Text(stringResource(R.string.pubkey_gather_entropy)) },
@@ -61,10 +61,10 @@ fun EntropyGatherDialog(
                 )
 
                 EntropyGatherer(
-                    onEntropyGathered = { entropy ->
-                        onEntropyGathered(entropy)
+                    onGatherEntropy = { entropy ->
+                        onGatherEntropy(entropy)
                     },
-                    onProgressUpdated = { newProgress ->
+                    onProgressUpdate = { newProgress ->
                         progress = newProgress
                     },
                     modifier = Modifier.padding(vertical = 8.dp)

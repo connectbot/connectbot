@@ -22,7 +22,9 @@ import android.content.ContextWrapper
 import androidx.biometric.BiometricPrompt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
@@ -42,11 +44,12 @@ fun BiometricPromptHandler(
 ) {
     val context = LocalContext.current
     val activity = remember(context) { context.findFragmentActivity() }
+    val currentOnResponse by rememberUpdatedState(onResponse)
 
     LaunchedEffect(prompt) {
         if (activity == null) {
             Timber.e("Cannot show BiometricPrompt: FragmentActivity not found")
-            onResponse(PromptResponse.BiometricResponse(false))
+            currentOnResponse(PromptResponse.BiometricResponse(false))
             return@LaunchedEffect
         }
 
@@ -55,12 +58,12 @@ fun BiometricPromptHandler(
         val callback = object : BiometricPrompt.AuthenticationCallback() {
             override fun onAuthenticationSucceeded(result: BiometricPrompt.AuthenticationResult) {
                 Timber.d("Biometric authentication succeeded")
-                onResponse(PromptResponse.BiometricResponse(true))
+                currentOnResponse(PromptResponse.BiometricResponse(true))
             }
 
             override fun onAuthenticationError(errorCode: Int, errString: CharSequence) {
                 Timber.e("Biometric authentication error: $errorCode - $errString")
-                onResponse(PromptResponse.BiometricResponse(false))
+                currentOnResponse(PromptResponse.BiometricResponse(false))
             }
 
             override fun onAuthenticationFailed() {
@@ -94,4 +97,3 @@ private fun Context.findFragmentActivity(): FragmentActivity? {
     }
     return null
 }
-

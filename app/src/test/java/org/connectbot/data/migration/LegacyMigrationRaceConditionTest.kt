@@ -26,9 +26,9 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
-import org.connectbot.di.CoroutineDispatchers
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.di.CoroutineDispatchers
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -127,10 +127,12 @@ class LegacyMigrationRaceConditionTest {
                     // This is the exact same code from DatabaseModule.kt
                     // It creates a default profile when the database is first created
                     Timber.d("Room onCreate callback - inserting default profile")
-                    db.execSQL("""
+                    db.execSQL(
+                        """
                         INSERT INTO profiles (name, color_scheme_id, font_size, del_key, encoding, emulation)
                         VALUES ('Default', -1, 10, 'del', 'UTF-8', 'xterm-256color')
-                    """.trimIndent())
+                        """.trimIndent()
+                    )
                 }
             })
             .allowMainThreadQueries()
@@ -153,12 +155,11 @@ class LegacyMigrationRaceConditionTest {
             assertThat(isMigrationNeeded)
                 .describedAs(
                     "isMigrationNeeded() should return true when legacy databases exist " +
-                    "and Room database was just created. The bug causes it to return false " +
-                    "because Room's onCreate callback inserts a default profile before " +
-                    "the migration check completes."
+                        "and Room database was just created. The bug causes it to return false " +
+                        "because Room's onCreate callback inserts a default profile before " +
+                        "the migration check completes."
                 )
                 .isTrue()
-
         } finally {
             database.close()
         }
@@ -190,10 +191,12 @@ class LegacyMigrationRaceConditionTest {
             .addCallback(object : RoomDatabase.Callback() {
                 override fun onCreate(db: SupportSQLiteDatabase) {
                     super.onCreate(db)
-                    db.execSQL("""
+                    db.execSQL(
+                        """
                         INSERT INTO profiles (name, color_scheme_id, font_size, del_key, encoding, emulation)
                         VALUES ('Default', -1, 10, 'del', 'UTF-8', 'xterm-256color')
-                    """.trimIndent())
+                        """.trimIndent()
+                    )
                 }
             })
             .allowMainThreadQueries()
@@ -222,7 +225,6 @@ class LegacyMigrationRaceConditionTest {
             // - isMigrationNeeded() checks: hosts.isEmpty && pubkeys.isEmpty && profiles.isEmpty
             // - profiles.isEmpty is FALSE (because of the default profile)
             // - So isMigrationNeeded() returns false, skipping migration
-
         } finally {
             database.close()
         }
@@ -239,7 +241,8 @@ class LegacyMigrationRaceConditionTest {
         val db = android.database.sqlite.SQLiteDatabase.openOrCreateDatabase(dbFile, null)
         try {
             // Create the hosts table with the legacy schema (version 27)
-            db.execSQL("""
+            db.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS hosts (
                     _id INTEGER PRIMARY KEY AUTOINCREMENT,
                     nickname TEXT NOT NULL,
@@ -265,16 +268,20 @@ class LegacyMigrationRaceConditionTest {
                     scrollback INTEGER DEFAULT 140,
                     ctrl_alt_meta INTEGER DEFAULT 0
                 )
-            """.trimIndent())
+                """.trimIndent()
+            )
 
             // Insert a sample host
-            db.execSQL("""
+            db.execSQL(
+                """
                 INSERT INTO hosts (nickname, protocol, username, hostname, port, usekeys)
                 VALUES ('test-server', 'ssh', 'testuser', 'test.example.com', 22, 1)
-            """.trimIndent())
+                """.trimIndent()
+            )
 
             // Create other tables that might be expected
-            db.execSQL("""
+            db.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS portforwards (
                     _id INTEGER PRIMARY KEY AUTOINCREMENT,
                     hostid INTEGER NOT NULL,
@@ -284,9 +291,11 @@ class LegacyMigrationRaceConditionTest {
                     destaddr TEXT NOT NULL,
                     destport INTEGER NOT NULL
                 )
-            """.trimIndent())
+                """.trimIndent()
+            )
 
-            db.execSQL("""
+            db.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS knownhosts (
                     _id INTEGER PRIMARY KEY AUTOINCREMENT,
                     hostid INTEGER,
@@ -295,24 +304,28 @@ class LegacyMigrationRaceConditionTest {
                     hostkeyalgo TEXT NOT NULL,
                     hostkey BLOB NOT NULL
                 )
-            """.trimIndent())
+                """.trimIndent()
+            )
 
-            db.execSQL("""
+            db.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS color_schemes (
                     _id INTEGER PRIMARY KEY AUTOINCREMENT,
                     name TEXT NOT NULL
                 )
-            """.trimIndent())
+                """.trimIndent()
+            )
 
-            db.execSQL("""
+            db.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS color_palette (
                     _id INTEGER PRIMARY KEY AUTOINCREMENT,
                     scheme_id INTEGER NOT NULL,
                     color_index INTEGER NOT NULL,
                     color INTEGER NOT NULL
                 )
-            """.trimIndent())
-
+                """.trimIndent()
+            )
         } finally {
             db.close()
         }
@@ -329,7 +342,8 @@ class LegacyMigrationRaceConditionTest {
         val db = android.database.sqlite.SQLiteDatabase.openOrCreateDatabase(dbFile, null)
         try {
             // Create the pubkeys table with the legacy schema (version 2)
-            db.execSQL("""
+            db.execSQL(
+                """
                 CREATE TABLE IF NOT EXISTS pubkeys (
                     _id INTEGER PRIMARY KEY AUTOINCREMENT,
                     nickname TEXT NOT NULL,
@@ -341,14 +355,16 @@ class LegacyMigrationRaceConditionTest {
                     confirmuse INTEGER DEFAULT 0,
                     lifetime INTEGER DEFAULT 0
                 )
-            """.trimIndent())
+                """.trimIndent()
+            )
 
             // Insert a sample pubkey
-            db.execSQL("""
+            db.execSQL(
+                """
                 INSERT INTO pubkeys (nickname, type, private, public, encrypted, startup, confirmuse)
                 VALUES ('my-test-key', 'RSA', X'010203', X'040506', 0, 1, 0)
-            """.trimIndent())
-
+                """.trimIndent()
+            )
         } finally {
             db.close()
         }

@@ -38,7 +38,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
-import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.theme.ConnectBotTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -147,7 +147,7 @@ private fun ContactLinkItem(
     HorizontalDivider()
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun ContactScreenPreview() {
     ConnectBotTheme {

@@ -57,7 +57,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
-import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.theme.ConnectBotTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -65,8 +65,8 @@ import org.connectbot.ui.theme.ConnectBotTheme
 fun GeneratePubkeyScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: GeneratePubkeyViewModel = hiltViewModel()
 ) {
-    val viewModel: GeneratePubkeyViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
 
     GeneratePubkeyScreenContent(
@@ -81,7 +81,7 @@ fun GeneratePubkeyScreen(
         onConfirmUseChange = viewModel::updateConfirmUse,
         onUseBiometricChange = viewModel::updateUseBiometric,
         onGenerateKey = { viewModel.generateKey(onSuccess = onNavigateBack) },
-        onEntropyGathered = viewModel::onEntropyGathered,
+        onGatherEntropy = viewModel::onEntropyGathered,
         onCancelGeneration = {
             viewModel.cancelGeneration()
             onNavigateBack()
@@ -104,7 +104,7 @@ fun GeneratePubkeyScreenContent(
     onConfirmUseChange: (Boolean) -> Unit,
     onUseBiometricChange: (Boolean) -> Unit,
     onGenerateKey: () -> Unit,
-    onEntropyGathered: (ByteArray?) -> Unit,
+    onGatherEntropy: (ByteArray?) -> Unit,
     onCancelGeneration: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -139,7 +139,9 @@ fun GeneratePubkeyScreenContent(
                 isError = uiState.nicknameExists,
                 supportingText = if (uiState.nicknameExists) {
                     { Text(stringResource(R.string.pubkey_nickname_exists)) }
-                } else null
+                } else {
+                    null
+                }
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -345,7 +347,7 @@ fun GeneratePubkeyScreenContent(
     // Show entropy dialog when needed
     if (uiState.showEntropyDialog) {
         EntropyGatherDialog(
-            onEntropyGathered = onEntropyGathered,
+            onGatherEntropy = onGatherEntropy,
             onDismiss = onCancelGeneration
         )
     }
@@ -387,7 +389,7 @@ private fun KeyTypeOption(
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun GeneratePubkeyScreenEmptyPreview() {
     ConnectBotTheme {
@@ -403,13 +405,13 @@ private fun GeneratePubkeyScreenEmptyPreview() {
             onConfirmUseChange = {},
             onUseBiometricChange = {},
             onGenerateKey = {},
-            onEntropyGathered = {},
+            onGatherEntropy = {},
             onCancelGeneration = {}
         )
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun GeneratePubkeyScreenFilledPreview() {
     ConnectBotTheme {
@@ -433,13 +435,13 @@ private fun GeneratePubkeyScreenFilledPreview() {
             onConfirmUseChange = {},
             onUseBiometricChange = {},
             onGenerateKey = {},
-            onEntropyGathered = {},
+            onGatherEntropy = {},
             onCancelGeneration = {}
         )
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun GeneratePubkeyScreenPasswordMismatchPreview() {
     ConnectBotTheme {
@@ -462,13 +464,13 @@ private fun GeneratePubkeyScreenPasswordMismatchPreview() {
             onConfirmUseChange = {},
             onUseBiometricChange = {},
             onGenerateKey = {},
-            onEntropyGathered = {},
+            onGatherEntropy = {},
             onCancelGeneration = {}
         )
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun GeneratePubkeyScreenBiometricPreview() {
     ConnectBotTheme {
@@ -491,7 +493,7 @@ private fun GeneratePubkeyScreenBiometricPreview() {
             onConfirmUseChange = {},
             onUseBiometricChange = {},
             onGenerateKey = {},
-            onEntropyGathered = {},
+            onGatherEntropy = {},
             onCancelGeneration = {}
         )
     }

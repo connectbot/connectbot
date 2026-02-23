@@ -53,14 +53,14 @@ import org.connectbot.R
  *
  * @param title The title of the dialog
  * @param initialColor The initial ARGB color value
- * @param onColorSelected Callback when a color is selected, receives ARGB Int
+ * @param onSelectColor Callback when a color is selected, receives ARGB Int
  * @param onDismiss Callback when dialog is dismissed
  */
 @Composable
 fun RgbColorPickerDialog(
     title: String,
     initialColor: Int,
-    onColorSelected: (Int) -> Unit,
+    onSelectColor: (Int) -> Unit,
     onDismiss: () -> Unit
 ) {
     // Extract RGB components from ARGB Int
@@ -78,9 +78,9 @@ fun RgbColorPickerDialog(
 
     // Construct current color from RGB sliders
     val currentColor = (0xFF shl 24) or
-            (red.toInt() shl 16) or
-            (green.toInt() shl 8) or
-            blue.toInt()
+        (red.toInt() shl 16) or
+        (green.toInt() shl 8) or
+        blue.toInt()
 
     // Update hex input when sliders change
     LaunchedEffect(red, green, blue) {
@@ -170,7 +170,7 @@ fun RgbColorPickerDialog(
         },
         confirmButton = {
             TextButton(onClick = {
-                onColorSelected(currentColor)
+                onSelectColor(currentColor)
                 onDismiss()
             }) {
                 Text(stringResource(R.string.button_ok))
@@ -229,28 +229,26 @@ private fun ColorSliderRow(
  * - 6 digits: "aabbcc"
  * Returns null if invalid.
  */
-private fun parseHexColor(hex: String): Int? {
-    return when (hex.length) {
-        3 -> {
-            // Expand abc to aabbcc
-            val r = hex[0].toString().repeat(2)
-            val g = hex[1].toString().repeat(2)
-            val b = hex[2].toString().repeat(2)
-            try {
-                (r + g + b).toInt(16)
-            } catch (e: NumberFormatException) {
-                null
-            }
+private fun parseHexColor(hex: String): Int? = when (hex.length) {
+    3 -> {
+        // Expand abc to aabbcc
+        val r = hex[0].toString().repeat(2)
+        val g = hex[1].toString().repeat(2)
+        val b = hex[2].toString().repeat(2)
+        try {
+            (r + g + b).toInt(16)
+        } catch (e: NumberFormatException) {
+            null
         }
-
-        6 -> {
-            try {
-                hex.toInt(16)
-            } catch (e: NumberFormatException) {
-                null
-            }
-        }
-
-        else -> null
     }
+
+    6 -> {
+        try {
+            hex.toInt(16)
+        } catch (e: NumberFormatException) {
+            null
+        }
+    }
+
+    else -> null
 }

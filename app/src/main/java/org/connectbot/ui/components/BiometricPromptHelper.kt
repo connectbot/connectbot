@@ -42,7 +42,7 @@ class BiometricPromptState(
     private val activity: FragmentActivity,
     private val onSuccess: (BiometricPrompt.AuthenticationResult) -> Unit,
     private val onError: (Int, CharSequence) -> Unit,
-    private val onFailed: () -> Unit
+    private val onFail: () -> Unit
 ) {
     private var biometricPrompt: BiometricPrompt? = null
     var isAuthenticating by mutableStateOf(false)
@@ -64,7 +64,7 @@ class BiometricPromptState(
         override fun onAuthenticationFailed() {
             Timber.w("Authentication failed")
             // Don't set isAuthenticating to false here - user can retry
-            onFailed()
+            onFail()
         }
     }
 
@@ -123,7 +123,7 @@ class BiometricPromptState(
  *                  the CryptoObject (if provided) with an authenticated Signature.
  * @param onError Called when authentication fails with an error.
  *                The error code can be one of BiometricPrompt.ERROR_* constants.
- * @param onFailed Called when a biometric is recognized but not valid (wrong finger).
+ * @param onFail Called when a biometric is recognized but not valid (wrong finger).
  *                 The prompt remains visible for retry.
  * @return BiometricPromptState, or null if FragmentActivity context is not available
  */
@@ -131,7 +131,7 @@ class BiometricPromptState(
 fun rememberBiometricPromptState(
     onSuccess: (BiometricPrompt.AuthenticationResult) -> Unit,
     onError: (Int, CharSequence) -> Unit,
-    onFailed: () -> Unit = {}
+    onFail: () -> Unit = {}
 ): BiometricPromptState? {
     val context = LocalContext.current
     val activity = context.findFragmentActivity()
@@ -146,7 +146,7 @@ fun rememberBiometricPromptState(
             activity = activity,
             onSuccess = onSuccess,
             onError = onError,
-            onFailed = onFailed
+            onFail = onFail
         )
     }
 

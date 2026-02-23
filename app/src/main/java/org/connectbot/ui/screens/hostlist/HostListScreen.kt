@@ -84,7 +84,7 @@ import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.ui.LocalTerminalManager
-import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.components.ShortcutCustomizationDialog
 import org.connectbot.ui.theme.ConnectBotTheme
@@ -769,7 +769,7 @@ private fun parseColor(colorString: String?): Color {
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun HostListScreenEmptyPreview() {
     ConnectBotTheme {
@@ -795,7 +795,7 @@ private fun HostListScreenEmptyPreview() {
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun HostListScreenLoadingPreview() {
     ConnectBotTheme {
@@ -821,7 +821,7 @@ private fun HostListScreenLoadingPreview() {
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun HostListScreenErrorPreview() {
     ConnectBotTheme {
@@ -848,7 +848,7 @@ private fun HostListScreenErrorPreview() {
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun HostListScreenPopulatedPreview() {
     ConnectBotTheme {

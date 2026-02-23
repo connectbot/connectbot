@@ -368,8 +368,11 @@ class SchemaBasedExporter(
 
             when (field.affinity) {
                 "INTEGER" -> values.put(field.columnName, row.getLong(field.fieldPath))
+
                 "TEXT" -> values.put(field.columnName, row.getString(field.fieldPath))
+
                 "REAL" -> values.put(field.columnName, row.getDouble(field.fieldPath))
+
                 "BLOB" -> {
                     val base64 = row.getString(field.fieldPath)
                     values.put(field.columnName, Base64.decode(base64, Base64.NO_WRAP))
