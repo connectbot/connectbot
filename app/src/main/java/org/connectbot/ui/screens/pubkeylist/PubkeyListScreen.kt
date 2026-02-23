@@ -29,11 +29,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -218,9 +218,9 @@ fun PubkeyListScreen(
     if (showClipboardImportDialog) {
         ImportFromClipboardDialog(
             onDismiss = { showClipboardImportDialog = false },
-            onImport = { keyText, nickname ->
+            onImport = { keyText ->
                 showClipboardImportDialog = false
-                viewModel.importKeyFromText(keyText, nickname)
+                viewModel.importKeyFromText(keyText, "clipboard-key")
             },
         )
     }
@@ -1015,10 +1015,9 @@ private fun ImportPasswordDialog(
 @Composable
 private fun ImportFromClipboardDialog(
     onDismiss: () -> Unit,
-    onImport: (keyText: String, nickname: String) -> Unit,
+    onImport: (String) -> Unit,
 ) {
     val context = LocalContext.current
-    var nickname by rememberSaveable { mutableStateOf("clipboard-key") }
     var keyText by rememberSaveable { mutableStateOf("") }
 
     AlertDialog(
@@ -1026,44 +1025,34 @@ private fun ImportFromClipboardDialog(
         icon = { Icon(Icons.Default.ContentPaste, contentDescription = null) },
         title = { Text(stringResource(R.string.pubkey_import_from_clipboard)) },
         text = {
-            Column {
-                OutlinedTextField(
-                    value = nickname,
-                    onValueChange = { nickname = it },
-                    label = { Text(stringResource(R.string.prompt_nickname)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(
-                    value = keyText,
-                    onValueChange = { keyText = it },
-                    label = { Text(stringResource(R.string.pubkey_import_clipboard_key_label)) },
-                    trailingIcon = {
-                        IconButton(
-                            onClick = {
-                                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE)
-                                        as android.content.ClipboardManager
-                                keyText = clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: keyText
-                            },
-                        ) {
-                            Icon(
-                                Icons.Default.ContentPaste,
-                                contentDescription = stringResource(R.string.pubkey_paste_from_clipboard),
-                            )
-                        }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp),
-                    minLines = 5,
-                )
-            }
+            OutlinedTextField(
+                value = keyText,
+                onValueChange = { keyText = it },
+                label = { Text(stringResource(R.string.pubkey_import_clipboard_key_label)) },
+                trailingIcon = {
+                    IconButton(
+                        onClick = {
+                            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE)
+                                as android.content.ClipboardManager
+                            keyText = clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: keyText
+                        },
+                    ) {
+                        Icon(
+                            Icons.Default.ContentPaste,
+                            contentDescription = stringResource(R.string.pubkey_paste_from_clipboard),
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                minLines = 5,
+            )
         },
         confirmButton = {
             TextButton(
-                onClick = { onImport(keyText, nickname) },
-                enabled = keyText.isNotBlank() && nickname.isNotBlank(),
+                onClick = { onImport(keyText) },
+                enabled = keyText.isNotBlank(),
             ) {
                 Text(stringResource(R.string.pubkey_import_button))
             }
