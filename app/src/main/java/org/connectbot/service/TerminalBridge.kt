@@ -616,9 +616,8 @@ class TerminalBridge {
         } else {
             if (host.stayConnected) {
                 manager.requestReconnect(this)
-                return
             }
-            // Notify UI immediately so the reconnect/close overlay appears
+            // Notify UI so the reconnect/close overlay appears (or updates)
             manager.notifyBridgeStateChanged()
         }
     }

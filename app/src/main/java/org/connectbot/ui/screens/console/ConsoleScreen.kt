@@ -556,7 +556,7 @@ fun ConsoleScreen(
                         )
 
                         // Show reconnect/close overlay when session is disconnected
-                        if (disconnected && !sessionOpen) {
+                        if (disconnected) {
                             Row(
                                 horizontalArrangement = Arrangement.spacedBy(8.dp),
                                 modifier = Modifier.align(Alignment.Center)
@@ -746,7 +746,7 @@ fun ConsoleScreen(
                             }
                         ) {
                             // Reconnect (shown only when disconnected)
-                            if (disconnected && !sessionOpen) {
+                            if (disconnected) {
                                 DropdownMenuItem(
                                     text = { Text(stringResource(R.string.console_menu_reconnect)) },
                                     onClick = {
