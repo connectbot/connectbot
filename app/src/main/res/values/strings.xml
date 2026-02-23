@@ -570,6 +570,8 @@
 	<!-- Summary text showing emulation setting. Parameter is the terminal emulation type. -->
 	<string name="profile_summary_emulation">Emulation: %s</string>
 
+	<!-- Button to reconnect to a disconnected host. -->
+	<string name="console_menu_reconnect">Reconnect</string>
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">"Close"</string>
 	<!-- Button to paste from the clipboard to the terminal. -->

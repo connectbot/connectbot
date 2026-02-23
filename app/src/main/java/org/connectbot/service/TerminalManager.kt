@@ -950,6 +950,14 @@ class TerminalManager :
         }
     }
 
+    /**
+     * Notify that a bridge has successfully (re)connected.
+     * Called by [TerminalBridge.onConnected] so the UI can react.
+     */
+    fun notifyBridgeConnected() {
+        notifyHostStatusChanged()
+    }
+
     private fun notifyHostStatusChanged() {
         scope.launch {
             _hostStatusChanged.emit(Unit)
