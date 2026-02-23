@@ -26,6 +26,7 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -36,6 +37,7 @@ import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imeAnimationTarget
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.union
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -44,7 +46,9 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -544,6 +548,21 @@ fun ConsoleScreen(
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
                         )
+
+                        // Show reconnect button overlay when session is disconnected
+                        if (disconnected && !sessionOpen) {
+                            Button(
+                                onClick = { viewModel.reconnect(bridge) },
+                                modifier = Modifier.align(Alignment.Center)
+                            ) {
+                                Icon(
+                                    Icons.Default.Refresh,
+                                    contentDescription = null
+                                )
+                                Spacer(Modifier.width(8.dp))
+                                Text(stringResource(R.string.console_menu_reconnect))
+                            }
+                        }
                     }
                 }
             }
@@ -693,6 +712,20 @@ fun ConsoleScreen(
                                 termFocusRequester.requestFocus()
                             }
                         ) {
+                            // Reconnect (shown only when disconnected)
+                            if (disconnected && !sessionOpen) {
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.console_menu_reconnect)) },
+                                    onClick = {
+                                        showMenu = false
+                                        currentBridge?.let { viewModel.reconnect(it) }
+                                    },
+                                    leadingIcon = {
+                                        Icon(Icons.Default.Refresh, contentDescription = null)
+                                    }
+                                )
+                            }
+
                             // Disconnect/Close
                             DropdownMenuItem(
                                 text = {
