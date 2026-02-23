@@ -68,6 +68,13 @@ class ConsoleViewModel @Inject constructor(
                 }
             }
 
+            // Observe host status changes (connect/disconnect events) to refresh UI
+            viewModelScope.launch {
+                manager.hostStatusChangedFlow.collect {
+                    _uiState.update { it.copy(revision = it.revision + 1) }
+                }
+            }
+
             // First, try to find or create the bridge for this host
             if (hostId != -1L) {
                 viewModelScope.launch {
@@ -220,5 +227,12 @@ class ConsoleViewModel @Inject constructor(
      */
     fun refreshMenuState() {
         _uiState.update { it.copy(revision = it.revision + 1) }
+    }
+
+    /**
+     * Request a reconnection for the given bridge.
+     */
+    fun reconnect(bridge: TerminalBridge) {
+        terminalManager?.requestReconnect(bridge)
     }
 }

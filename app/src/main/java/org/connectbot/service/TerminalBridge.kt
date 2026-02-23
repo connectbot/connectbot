@@ -558,6 +558,9 @@ class TerminalBridge {
 
         // Capture network state after successful connection
         captureNetworkState()
+
+        // Notify manager so the UI can react to the (re)connection
+        manager.notifyBridgeConnected()
     }
 
     /**
