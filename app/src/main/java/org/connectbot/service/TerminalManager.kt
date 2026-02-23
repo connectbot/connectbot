@@ -951,10 +951,10 @@ class TerminalManager :
     }
 
     /**
-     * Notify that a bridge has successfully (re)connected.
-     * Called by [TerminalBridge.onConnected] so the UI can react.
+     * Notify that a bridge's connection state has changed (connected or disconnected-but-staying).
+     * Called by [TerminalBridge] so the UI can recompose with fresh state.
      */
-    fun notifyBridgeConnected() {
+    fun notifyBridgeStateChanged() {
         notifyHostStatusChanged()
     }
 
