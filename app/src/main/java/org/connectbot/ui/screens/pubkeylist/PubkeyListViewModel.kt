@@ -93,7 +93,9 @@ data class PubkeyListUiState(
     // Public key pending export to file (triggers file picker in UI)
     val pendingPublicKeyExport: PendingPublicKeyExport? = null,
     // Key pending import that needs password (triggers password dialog in UI)
-    val pendingImport: PendingImport? = null
+    val pendingImport: PendingImport? = null,
+    // Successfully parsed key awaiting nickname confirmation before saving
+    val pendingNicknameConfirmation: Pubkey? = null
 )
 
 @HiltViewModel
@@ -724,11 +726,11 @@ class PubkeyListViewModel @Inject constructor(
         }
     }
 
-    fun importKeyFromText(keyText: String) {
+    fun importKeyFromText(keyText: String, nickname: String) {
         viewModelScope.launch {
             try {
                 val result = withContext(dispatchers.default) {
-                    parseKeyBytes(keyText.toByteArray(Charsets.UTF_8), "clipboard-key")
+                    parseKeyBytes(keyText.toByteArray(Charsets.UTF_8), nickname)
                 }
                 handleImportResult(result, "Failed to parse key from clipboard")
             } catch (e: Exception) {
@@ -743,8 +745,8 @@ class PubkeyListViewModel @Inject constructor(
     private fun handleImportResult(result: ImportResult, failureMessage: String) {
         when (result) {
             is ImportResult.Success -> {
-                viewModelScope.launch {
-                    repository.save(result.pubkey)
+                _uiState.update {
+                    it.copy(pendingNicknameConfirmation = result.pubkey)
                 }
             }
 
@@ -768,19 +770,32 @@ class PubkeyListViewModel @Inject constructor(
         }
     }
 
+    fun confirmImportNickname(nickname: String) {
+        val pubkey = _uiState.value.pendingNicknameConfirmation ?: return
+        viewModelScope.launch {
+            repository.save(pubkey.copy(nickname = nickname))
+            _uiState.update { it.copy(pendingNicknameConfirmation = null) }
+        }
+    }
+
+    fun cancelImportNickname() {
+        _uiState.update { it.copy(pendingNicknameConfirmation = null) }
+    }
+
     /**
      * Complete the import of an encrypted key with the provided password.
+     * @param nickname Nickname to save the key under
      * @param decryptPassword Password to decrypt the imported key
      * @param encrypt Whether to encrypt the key for storage
      * @param encryptPassword Password to use for encryption (null if not encrypting)
      */
-    fun completeImportWithPassword(decryptPassword: String, encrypt: Boolean, encryptPassword: String?) {
+    fun completeImportWithPassword(nickname: String, decryptPassword: String, encrypt: Boolean, encryptPassword: String?) {
         val pending = _uiState.value.pendingImport ?: return
 
         viewModelScope.launch {
             try {
                 val pubkey = withContext(dispatchers.io) {
-                    decryptAndImportKey(pending.keyData, pending.nickname, decryptPassword, encrypt, encryptPassword)
+                    decryptAndImportKey(pending.keyData, nickname, decryptPassword, encrypt, encryptPassword)
                 }
 
                 if (pubkey != null) {
