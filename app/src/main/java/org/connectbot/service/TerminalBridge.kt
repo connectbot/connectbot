@@ -130,6 +130,9 @@ class TerminalBridge {
     private val _bellEvents = MutableSharedFlow<Unit>(replay = 0, extraBufferCapacity = 10)
     val bellEvents: SharedFlow<Unit> = _bellEvents.asSharedFlow()
 
+    private val _networkStatusMessages = MutableSharedFlow<String>(replay = 0, extraBufferCapacity = 10)
+    val networkStatusMessages: SharedFlow<String> = _networkStatusMessages.asSharedFlow()
+
     // Progress state for OSC 9;4 progress reporting
     data class ProgressInfo(val state: ProgressState, val progress: Int)
     private val _progressState = MutableStateFlow<ProgressInfo?>(null)
@@ -559,8 +562,8 @@ class TerminalBridge {
         // Capture network state after successful connection
         captureNetworkState()
 
-        // Notify manager so the UI can react to the (re)connection
-        manager.notifyBridgeConnected()
+        // Notify manager so the UI recomposes with updated connection state
+        manager.notifyBridgeStateChanged()
     }
 
     /**
@@ -627,6 +630,9 @@ class TerminalBridge {
                 if (result == null || result) {
                     awaitingClose = true
                     triggerDisconnectListener()
+                } else {
+                    // User declined to close — notify UI so reconnect button appears
+                    manager.notifyBridgeStateChanged()
                 }
             }
         }
@@ -953,7 +959,7 @@ class TerminalBridge {
         inGracePeriod = true
 
         // Show status message to user
-        outputLine(manager.res.getString(R.string.network_lost_grace_period))
+        scope.launch { _networkStatusMessages.emit(manager.res.getString(R.string.network_lost_grace_period)) }
 
         // Start 60-second timer
         networkGracePeriodJob = scope.launch {
@@ -963,7 +969,7 @@ class TerminalBridge {
             inGracePeriod = false
             lastKnownNetworkState = null
             Timber.i("Network grace period expired")
-            outputLine(manager.res.getString(R.string.network_grace_period_expired))
+            _networkStatusMessages.emit(manager.res.getString(R.string.network_grace_period_expired))
 
             // Trigger normal disconnect flow
             dispatchDisconnect(immediate = false)
@@ -985,7 +991,7 @@ class TerminalBridge {
 
         if (oldState == null) {
             // No previous state - treat as new connection
-            outputLine(manager.res.getString(R.string.network_restored_no_previous_state))
+            scope.launch { _networkStatusMessages.emit(manager.res.getString(R.string.network_restored_no_previous_state)) }
             lastKnownNetworkState = NetworkState(
                 ipAddresses = newNetworkInfo.ipAddresses,
                 networkId = newNetworkInfo.networkId
@@ -999,7 +1005,7 @@ class TerminalBridge {
 
         if (ipMatches) {
             // Same IP - SSH session should still be alive, resume normally
-            outputLine(manager.res.getString(R.string.network_restored_same_ip))
+            scope.launch { _networkStatusMessages.emit(manager.res.getString(R.string.network_restored_same_ip)) }
             lastKnownNetworkState = NetworkState(
                 ipAddresses = newNetworkInfo.ipAddresses,
                 networkId = newNetworkInfo.networkId
@@ -1007,7 +1013,7 @@ class TerminalBridge {
             // No action needed - connection continues
         } else {
             // IP changed - TCP connection is broken, must reconnect
-            outputLine(manager.res.getString(R.string.network_restored_ip_changed))
+            scope.launch { _networkStatusMessages.emit(manager.res.getString(R.string.network_restored_ip_changed)) }
             lastKnownNetworkState = null
             dispatchDisconnect(immediate = false)
         }
