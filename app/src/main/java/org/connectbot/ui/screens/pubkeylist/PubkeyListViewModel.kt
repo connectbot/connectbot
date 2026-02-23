@@ -714,35 +714,55 @@ class PubkeyListViewModel @Inject constructor(
                 val result = withContext(dispatchers.io) {
                     readKeyFromUri(uri)
                 }
-
-                when (result) {
-                    is ImportResult.Success -> {
-                        repository.save(result.pubkey)
-                    }
-
-                    is ImportResult.NeedsPassword -> {
-                        // Set pending import - UI will show password dialog
-                        _uiState.update {
-                            it.copy(
-                                pendingImport = PendingImport(
-                                    keyData = result.keyData,
-                                    nickname = result.nickname,
-                                    keyType = result.keyType
-                                )
-                            )
-                        }
-                    }
-
-                    is ImportResult.Failed -> {
-                        _uiState.update {
-                            it.copy(error = "Failed to parse key file")
-                        }
-                    }
-                }
+                handleImportResult(result, "Failed to parse key file")
             } catch (e: Exception) {
                 Timber.e(e, "Failed to import key")
                 _uiState.update {
                     it.copy(error = "Failed to import key: ${e.message}")
+                }
+            }
+        }
+    }
+
+    fun importKeyFromText(keyText: String) {
+        viewModelScope.launch {
+            try {
+                val result = withContext(dispatchers.default) {
+                    parseKeyBytes(keyText.toByteArray(Charsets.UTF_8), "clipboard-key")
+                }
+                handleImportResult(result, "Failed to parse key from clipboard")
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to import key from clipboard")
+                _uiState.update {
+                    it.copy(error = "Failed to import key from clipboard: ${e.message}")
+                }
+            }
+        }
+    }
+
+    private fun handleImportResult(result: ImportResult, failureMessage: String) {
+        when (result) {
+            is ImportResult.Success -> {
+                viewModelScope.launch {
+                    repository.save(result.pubkey)
+                }
+            }
+
+            is ImportResult.NeedsPassword -> {
+                _uiState.update {
+                    it.copy(
+                        pendingImport = PendingImport(
+                            keyData = result.keyData,
+                            nickname = result.nickname,
+                            keyType = result.keyType
+                        )
+                    )
+                }
+            }
+
+            is ImportResult.Failed -> {
+                _uiState.update {
+                    it.copy(error = failureMessage)
                 }
             }
         }
@@ -864,6 +884,10 @@ class PubkeyListViewModel @Inject constructor(
             return ImportResult.Failed
         }
 
+        return parseKeyBytes(keyData, nickname)
+    }
+
+    private fun parseKeyBytes(keyData: ByteArray, nickname: String): ImportResult {
         val keyString = String(keyData)
 
         // Try to parse using PEMDecoder first (handles OpenSSH, traditional PEM formats)

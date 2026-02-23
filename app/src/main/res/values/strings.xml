@@ -1088,6 +1088,12 @@
 	<string name="hostpref_setting_title">Host setting</string>
 	<!-- Text for button which, when clicked, brings up picker to import an existing pubkey. -->
 	<string name="pubkey_import_existing">Import existing pubkey</string>
+	<!-- Text for button which, when clicked, imports a pubkey from the clipboard. -->
+	<string name="pubkey_import_from_clipboard">Import from clipboard</string>
+	<!-- Label for the key content text field in the import-from-clipboard dialog. -->
+	<string name="pubkey_import_clipboard_key_label">Private key content</string>
+	<!-- Content description for the paste button in the import-from-clipboard dialog. -->
+	<string name="pubkey_paste_from_clipboard">Paste from clipboard</string>
 
 	<!-- Title for notification permission dialog shown when user first tries to connect to a host.
 	     Explains that notifications keep SSH connections alive. -->

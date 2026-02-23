@@ -17,6 +17,7 @@
 
 package org.connectbot.ui.screens.pubkeylist
 
+import android.content.Context
 import android.net.Uri
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -30,6 +31,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -40,6 +42,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.ContentCopy
+import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FileDownload
@@ -208,6 +211,18 @@ fun PubkeyListScreen(
         }
     }
 
+    // Dialog for importing keys from clipboard text
+    var showClipboardImportDialog by rememberSaveable { mutableStateOf(false) }
+    if (showClipboardImportDialog) {
+        ImportFromClipboardDialog(
+            onDismiss = { showClipboardImportDialog = false },
+            onImport = { keyText ->
+                showClipboardImportDialog = false
+                viewModel.importKeyFromText(keyText)
+            }
+        )
+    }
+
     // Password dialog for importing encrypted keys
     val pendingImport = uiState.pendingImport
     if (pendingImport != null) {
@@ -252,6 +267,7 @@ fun PubkeyListScreen(
         onImportKey = {
             filePickerLauncher.launch(arrayOf("*/*"))
         },
+        onImportKeyFromClipboard = { showClipboardImportDialog = true },
         modifier = modifier
     )
 }
@@ -275,6 +291,7 @@ fun PubkeyListScreenContent(
     onExportPrivateKeyPem: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyEncrypted: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onImportKey: () -> Unit,
+    onImportKeyFromClipboard: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     var fabMenuExpanded by rememberSaveable { mutableStateOf(false) }
@@ -329,6 +346,14 @@ fun PubkeyListScreenContent(
                     },
                     icon = { Icon(Icons.Default.FileOpen, contentDescription = null) },
                     text = { Text(stringResource(R.string.pubkey_import_existing)) }
+                )
+                FloatingActionButtonMenuItem(
+                    onClick = {
+                        fabMenuExpanded = false
+                        onImportKeyFromClipboard()
+                    },
+                    icon = { Icon(Icons.Default.ContentPaste, contentDescription = null) },
+                    text = { Text(stringResource(R.string.pubkey_import_from_clipboard)) }
                 )
             }
         },
@@ -923,6 +948,59 @@ private fun ImportPasswordDialog(
 }
 
 @Composable
+private fun ImportFromClipboardDialog(
+    onDismiss: () -> Unit,
+    onImport: (String) -> Unit
+) {
+    val context = LocalContext.current
+    var keyText by rememberSaveable { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = { Icon(Icons.Default.ContentPaste, contentDescription = null) },
+        title = { Text(stringResource(R.string.pubkey_import_from_clipboard)) },
+        text = {
+            OutlinedTextField(
+                value = keyText,
+                onValueChange = { keyText = it },
+                label = { Text(stringResource(R.string.pubkey_import_clipboard_key_label)) },
+                trailingIcon = {
+                    IconButton(
+                        onClick = {
+                            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE)
+                                    as android.content.ClipboardManager
+                            keyText = clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: keyText
+                        }
+                    ) {
+                        Icon(
+                            Icons.Default.ContentPaste,
+                            contentDescription = stringResource(R.string.pubkey_paste_from_clipboard)
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                minLines = 5
+            )
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { onImport(keyText) },
+                enabled = keyText.isNotBlank()
+            ) {
+                Text(stringResource(R.string.pubkey_import_button))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        }
+    )
+}
+
+@Composable
 private fun ExportPassphraseDialog(
     onDismiss: () -> Unit,
     onPassphraseProvided: (String) -> Unit
@@ -1022,7 +1100,8 @@ private fun PubkeyListScreenEmptyPreview() {
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
             onExportPrivateKeyEncrypted = { _, _, _ -> },
-            onImportKey = {}
+            onImportKey = {},
+            onImportKeyFromClipboard = {}
         )
     }
 }
@@ -1050,7 +1129,8 @@ private fun PubkeyListScreenLoadingPreview() {
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
             onExportPrivateKeyEncrypted = { _, _, _ -> },
-            onImportKey = {}
+            onImportKey = {},
+            onImportKeyFromClipboard = {}
         )
     }
 }
@@ -1113,7 +1193,8 @@ private fun PubkeyListScreenPopulatedPreview() {
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
             onExportPrivateKeyEncrypted = { _, _, _ -> },
-            onImportKey = {}
+            onImportKey = {},
+            onImportKeyFromClipboard = {}
         )
     }
 }
