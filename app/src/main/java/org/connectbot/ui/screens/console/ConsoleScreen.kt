@@ -26,8 +26,10 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.calculateEndPadding
@@ -59,6 +61,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
@@ -552,18 +555,22 @@ fun ConsoleScreen(
                                 .align(Alignment.BottomCenter)
                         )
 
-                        // Show reconnect button overlay when session is disconnected
+                        // Show reconnect/close overlay when session is disconnected
                         if (disconnected && !sessionOpen) {
-                            Button(
-                                onClick = { viewModel.reconnect(bridge) },
+                            Row(
+                                horizontalArrangement = Arrangement.spacedBy(8.dp),
                                 modifier = Modifier.align(Alignment.Center)
                             ) {
-                                Icon(
-                                    Icons.Default.Refresh,
-                                    contentDescription = null
-                                )
-                                Spacer(Modifier.width(8.dp))
-                                Text(stringResource(R.string.console_menu_reconnect))
+                                Button(onClick = { viewModel.reconnect(bridge) }) {
+                                    Icon(Icons.Default.Refresh, contentDescription = null)
+                                    Spacer(Modifier.width(8.dp))
+                                    Text(stringResource(R.string.console_menu_reconnect))
+                                }
+                                OutlinedButton(onClick = { showDisconnectDialog = true }) {
+                                    Icon(Icons.Default.LinkOff, contentDescription = null)
+                                    Spacer(Modifier.width(8.dp))
+                                    Text(stringResource(R.string.console_menu_close))
+                                }
                             }
                         }
                     }
