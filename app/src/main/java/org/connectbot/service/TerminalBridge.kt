@@ -622,19 +622,8 @@ class TerminalBridge {
                 manager.requestReconnect(this)
                 return
             }
-            scope.launch(dispatchers.io) {
-                val result = requestBooleanPrompt(
-                    message = manager.res.getString(R.string.prompt_host_disconnected),
-                    instructions = null
-                )
-                if (result == null || result) {
-                    awaitingClose = true
-                    triggerDisconnectListener()
-                } else {
-                    // User declined to close — notify UI so reconnect button appears
-                    manager.notifyBridgeStateChanged()
-                }
-            }
+            // Notify UI immediately so the reconnect/close overlay appears
+            manager.notifyBridgeStateChanged()
         }
     }
 
