@@ -26,11 +26,12 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -41,7 +42,6 @@ import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imeAnimationTarget
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.union
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -61,7 +61,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
@@ -125,6 +124,7 @@ import org.connectbot.ui.components.ResizeDialog
 import org.connectbot.ui.components.TERMINAL_KEYBOARD_HEIGHT_DP
 import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
+import org.connectbot.ui.theme.terminal
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.rememberTerminalTypefaceResultFromStoredValue
 import timber.log.Timber
@@ -556,20 +556,41 @@ fun ConsoleScreen(
                         )
 
                         // Show reconnect/close overlay when session is disconnected
-                        if (disconnected) {
-                            Row(
-                                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                                modifier = Modifier.align(Alignment.Center)
+                        AnimatedVisibility(
+                            visible = disconnected,
+                            enter = slideInVertically(initialOffsetY = { it }),
+                            exit = slideOutVertically(targetOffsetY = { it }),
+                            modifier = Modifier.align(Alignment.BottomCenter)
+                        ) {
+                            val terminalColors = MaterialTheme.colorScheme.terminal
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(terminalColors.overlayBackground)
+                                    .padding(16.dp)
                             ) {
-                                Button(onClick = { viewModel.reconnect(bridge) }) {
-                                    Icon(Icons.Default.Refresh, contentDescription = null)
-                                    Spacer(Modifier.width(8.dp))
-                                    Text(stringResource(R.string.console_menu_reconnect))
-                                }
-                                OutlinedButton(onClick = { showDisconnectDialog = true }) {
-                                    Icon(Icons.Default.LinkOff, contentDescription = null)
-                                    Spacer(Modifier.width(8.dp))
-                                    Text(stringResource(R.string.console_menu_close))
+                                Text(
+                                    text = stringResource(R.string.alert_disconnect_msg),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = terminalColors.overlayText,
+                                    modifier = Modifier.padding(bottom = 16.dp)
+                                )
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.End
+                                ) {
+                                    TextButton(onClick = { showDisconnectDialog = true }) {
+                                        Text(
+                                            stringResource(R.string.console_menu_close),
+                                            color = terminalColors.overlayText
+                                        )
+                                    }
+                                    Button(
+                                        onClick = { viewModel.reconnect(bridge) },
+                                        modifier = Modifier.padding(start = 8.dp)
+                                    ) {
+                                        Text(stringResource(R.string.console_menu_reconnect))
+                                    }
                                 }
                             }
                         }
