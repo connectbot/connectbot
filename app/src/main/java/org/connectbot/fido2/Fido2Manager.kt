@@ -1153,6 +1153,17 @@ class Fido2Manager @Inject constructor(
             return
         }
 
+        // Close the existing session before opening a new connection for signing.
+        // USB devices only support one active connection at a time; leaving the
+        // discovery session open would cause requestConnection to block forever.
+        try {
+            currentSession?.close()
+        } catch (e: Exception) {
+            Timber.w(e, "Failed to close existing session before signing")
+        }
+        currentSession = null
+        pinUvAuthProtocol = null
+
         scope.launch {
             val result = suspendCancellableCoroutine<Fido2Result<Fido2SignatureResult>> { continuation ->
                 device.requestConnection(FidoConnection::class.java) { connectionResult ->
