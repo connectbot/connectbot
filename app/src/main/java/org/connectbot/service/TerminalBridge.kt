@@ -614,10 +614,6 @@ class TerminalBridge {
             awaitingClose = true
             triggerDisconnectListener()
         } else {
-            run {
-                val line = manager.res.getString(R.string.alert_disconnect_msg)
-                outputLine("\r\n$line\r\n")
-            }
             if (host.stayConnected) {
                 manager.requestReconnect(this)
                 return
