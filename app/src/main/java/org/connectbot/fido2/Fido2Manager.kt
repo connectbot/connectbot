@@ -319,46 +319,48 @@ class Fido2Manager @Inject constructor(
             val rps = credMgmt.enumerateRps()
             Log.d(TAG, "USB found ${rps.size} RPs")
 
-            val sshRp = rps.find { rpData ->
+            val sshRps = rps.filter { rpData ->
                 val rpId = rpData.rp?.get("id") as? String
                 rpId == SSH_RP_ID || rpId?.startsWith("ssh:") == true
             }
 
-            if (sshRp == null) {
+            if (sshRps.isEmpty()) {
                 Log.d(TAG, "USB no SSH RP found")
                 return Fido2Result.Success(emptyList())
             }
 
-            val rpHash = sshRp.rpIdHash ?: sha256((sshRp.rp?.get("id") as String).toByteArray())
-            val credentials = credMgmt.enumerateCredentials(rpHash)
-            Log.d(TAG, "USB found ${credentials.size} credentials")
+            val credentialList = sshRps.flatMap { sshRp ->
+                val rpHash = sshRp.rpIdHash ?: sha256((sshRp.rp?.get("id") as String).toByteArray())
+                val credentials = credMgmt.enumerateCredentials(rpHash)
+                Log.d(TAG, "USB found ${credentials.size} credentials for RP ${sshRp.rp?.get("id")}")
 
-            val credentialList = credentials.map { credData ->
-                val user = credData.user
-                val credentialId = credData.credentialId?.get("id") as? ByteArray
-                    ?: throw IllegalStateException("Missing credential ID")
+                credentials.map { credData ->
+                    val user = credData.user
+                    val credentialId = credData.credentialId?.get("id") as? ByteArray
+                        ?: throw IllegalStateException("Missing credential ID")
 
-                val publicKey = credData.publicKey
+                    val publicKey = credData.publicKey
 
-                @Suppress("UNCHECKED_CAST")
-                val pubKeyMap = publicKey as? Map<Int, Any>
-                val algValue = pubKeyMap?.get(3)
-                val algorithm = when (algValue) {
-                    -7, -7L -> Fido2Algorithm.ES256
-                    -8, -8L -> Fido2Algorithm.EDDSA
-                    else -> throw IllegalStateException("Unsupported algorithm: $algValue")
+                    @Suppress("UNCHECKED_CAST")
+                    val pubKeyMap = publicKey as? Map<Int, Any>
+                    val algValue = pubKeyMap?.get(3)
+                    val algorithm = when (algValue) {
+                        -7, -7L -> Fido2Algorithm.ES256
+                        -8, -8L -> Fido2Algorithm.EDDSA
+                        else -> throw IllegalStateException("Unsupported algorithm: $algValue")
+                    }
+
+                    val publicKeyCose = encodeCoseKey(publicKey ?: emptyMap<Any, Any>())
+
+                    Fido2Credential(
+                        credentialId = credentialId,
+                        rpId = sshRp.rp?.get("id") as? String ?: SSH_RP_ID,
+                        userHandle = user?.get("id") as? ByteArray,
+                        userName = user?.get("name") as? String,
+                        publicKeyCose = publicKeyCose,
+                        algorithm = algorithm
+                    )
                 }
-
-                val publicKeyCose = encodeCoseKey(publicKey ?: emptyMap<Any, Any>())
-
-                Fido2Credential(
-                    credentialId = credentialId,
-                    rpId = sshRp.rp?.get("id") as? String ?: SSH_RP_ID,
-                    userHandle = user?.get("id") as? ByteArray,
-                    userName = user?.get("name") as? String,
-                    publicKeyCose = publicKeyCose,
-                    algorithm = algorithm
-                )
             }
 
             Log.i(TAG, "USB credential enumeration complete: ${credentialList.size} credentials")
@@ -663,48 +665,50 @@ class Fido2Manager @Inject constructor(
                             val rps = credMgmt.enumerateRps()
                             Timber.d("NFC found ${rps.size} RPs")
 
-                            val sshRp = rps.find { rpData ->
+                            val sshRps = rps.filter { rpData ->
                                 val rpId = rpData.rp?.get("id") as? String
                                 rpId == SSH_RP_ID || rpId?.startsWith("ssh:") == true
                             }
 
-                            if (sshRp == null) {
+                            if (sshRps.isEmpty()) {
                                 Timber.d("NFC no SSH RP found")
                                 session.close()
                                 continuation.resume(Fido2Result.Success(emptyList()))
                                 return@requestConnection
                             }
 
-                            val rpHash = sshRp.rpIdHash ?: sha256((sshRp.rp?.get("id") as String).toByteArray())
-                            val credentials = credMgmt.enumerateCredentials(rpHash)
-                            Timber.d("NFC found ${credentials.size} credentials")
+                            val credentialList = sshRps.flatMap { sshRp ->
+                                val rpHash = sshRp.rpIdHash ?: sha256((sshRp.rp?.get("id") as String).toByteArray())
+                                val credentials = credMgmt.enumerateCredentials(rpHash)
+                                Timber.d("NFC found ${credentials.size} credentials for RP ${sshRp.rp?.get("id")}")
 
-                            val credentialList = credentials.map { credData ->
-                                val user = credData.user
-                                val credentialId = credData.credentialId?.get("id") as? ByteArray
-                                    ?: throw IllegalStateException("Missing credential ID")
+                                credentials.map { credData ->
+                                    val user = credData.user
+                                    val credentialId = credData.credentialId?.get("id") as? ByteArray
+                                        ?: throw IllegalStateException("Missing credential ID")
 
-                                val publicKey = credData.publicKey
+                                    val publicKey = credData.publicKey
 
-                                @Suppress("UNCHECKED_CAST")
-                                val pubKeyMap = publicKey as? Map<Int, Any>
-                                val algValue = pubKeyMap?.get(3)
-                                val algorithm = when (algValue) {
-                                    -7, -7L -> Fido2Algorithm.ES256
-                                    -8, -8L -> Fido2Algorithm.EDDSA
-                                    else -> throw IllegalStateException("Unsupported algorithm: $algValue")
+                                    @Suppress("UNCHECKED_CAST")
+                                    val pubKeyMap = publicKey as? Map<Int, Any>
+                                    val algValue = pubKeyMap?.get(3)
+                                    val algorithm = when (algValue) {
+                                        -7, -7L -> Fido2Algorithm.ES256
+                                        -8, -8L -> Fido2Algorithm.EDDSA
+                                        else -> throw IllegalStateException("Unsupported algorithm: $algValue")
+                                    }
+
+                                    val publicKeyCose = encodeCoseKey(publicKey ?: emptyMap<Any, Any>())
+
+                                    Fido2Credential(
+                                        credentialId = credentialId,
+                                        rpId = sshRp.rp?.get("id") as? String ?: SSH_RP_ID,
+                                        userHandle = user?.get("id") as? ByteArray,
+                                        userName = user?.get("name") as? String,
+                                        publicKeyCose = publicKeyCose,
+                                        algorithm = algorithm
+                                    )
                                 }
-
-                                val publicKeyCose = encodeCoseKey(publicKey ?: emptyMap<Any, Any>())
-
-                                Fido2Credential(
-                                    credentialId = credentialId,
-                                    rpId = sshRp.rp?.get("id") as? String ?: SSH_RP_ID,
-                                    userHandle = user?.get("id") as? ByteArray,
-                                    userName = user?.get("name") as? String,
-                                    publicKeyCose = publicKeyCose,
-                                    algorithm = algorithm
-                                )
                             }
 
                             session.close()
@@ -910,51 +914,49 @@ class Fido2Manager @Inject constructor(
             // Find SSH relying party
             val rps = credMgmt.enumerateRps()
             Log.d(TAG, "discoverSshCredentials: found ${rps.size} RPs")
-            val sshRp = rps.find { rpData ->
+            val sshRps = rps.filter { rpData ->
                 val rpId = rpData.rp?.get("id") as? String
                 rpId == SSH_RP_ID || rpId?.startsWith("ssh:") == true
             }
 
-            if (sshRp == null) {
+            if (sshRps.isEmpty()) {
                 Log.d(TAG, "discoverSshCredentials: no SSH RP found")
                 return Fido2Result.Success(emptyList())
             }
 
-            // Enumerate credentials for SSH RP
-            val rpHash = sshRp.rpIdHash ?: sha256((sshRp.rp?.get("id") as String).toByteArray())
-            val credentials = credMgmt.enumerateCredentials(rpHash)
-            Log.d(TAG, "discoverSshCredentials: found ${credentials.size} credentials")
+            // Enumerate credentials for all SSH RPs
+            val result = sshRps.flatMap { sshRp ->
+                val rpHash = sshRp.rpIdHash ?: sha256((sshRp.rp?.get("id") as String).toByteArray())
+                val credentials = credMgmt.enumerateCredentials(rpHash)
+                Log.d(TAG, "discoverSshCredentials: found ${credentials.size} credentials for RP ${sshRp.rp?.get("id")}")
 
-            val result = credentials.map { credData ->
-                val user = credData.user
-                val credentialId = credData.credentialId?.get("id") as? ByteArray
-                    ?: throw IllegalStateException("Missing credential ID")
+                credentials.map { credData ->
+                    val user = credData.user
+                    val credentialId = credData.credentialId?.get("id") as? ByteArray
+                        ?: throw IllegalStateException("Missing credential ID")
 
-                // Get public key from credential data
-                val publicKey = credData.publicKey
+                    val publicKey = credData.publicKey
 
-                // Determine algorithm from public key (key 3 is the algorithm)
-                // The COSE key map uses integer keys: 3 is the algorithm identifier
-                @Suppress("UNCHECKED_CAST")
-                val pubKeyMap = publicKey as? Map<Int, Any>
-                val algValue = pubKeyMap?.get(3)
-                val algorithm = when (algValue) {
-                    -7, -7L -> Fido2Algorithm.ES256
-                    -8, -8L -> Fido2Algorithm.EDDSA
-                    else -> throw IllegalStateException("Unsupported algorithm: $algValue")
+                    @Suppress("UNCHECKED_CAST")
+                    val pubKeyMap = publicKey as? Map<Int, Any>
+                    val algValue = pubKeyMap?.get(3)
+                    val algorithm = when (algValue) {
+                        -7, -7L -> Fido2Algorithm.ES256
+                        -8, -8L -> Fido2Algorithm.EDDSA
+                        else -> throw IllegalStateException("Unsupported algorithm: $algValue")
+                    }
+
+                    val publicKeyCose = encodeCoseKey(publicKey ?: emptyMap<Any, Any>())
+
+                    Fido2Credential(
+                        credentialId = credentialId,
+                        rpId = sshRp.rp?.get("id") as? String ?: SSH_RP_ID,
+                        userHandle = user?.get("id") as? ByteArray,
+                        userName = user?.get("name") as? String,
+                        publicKeyCose = publicKeyCose,
+                        algorithm = algorithm
+                    )
                 }
-
-                // Encode public key to COSE format
-                val publicKeyCose = encodeCoseKey(publicKey ?: emptyMap<Any, Any>())
-
-                Fido2Credential(
-                    credentialId = credentialId,
-                    rpId = sshRp.rp?.get("id") as? String ?: SSH_RP_ID,
-                    userHandle = user?.get("id") as? ByteArray,
-                    userName = user?.get("name") as? String,
-                    publicKeyCose = publicKeyCose,
-                    algorithm = algorithm
-                )
             }
 
             Log.d(TAG, "discoverSshCredentials: success with ${result.size} credentials")
