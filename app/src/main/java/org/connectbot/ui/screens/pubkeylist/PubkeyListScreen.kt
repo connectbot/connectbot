@@ -24,16 +24,16 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -109,11 +109,11 @@ fun PubkeyListScreen(
     onNavigateBack: () -> Unit,
     onNavigateToGenerate: () -> Unit,
     onNavigateToEdit: (Pubkey) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: PubkeyListViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
     val terminalManager = LocalTerminalManager.current
-    val viewModel: PubkeyListViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -185,7 +185,8 @@ fun PubkeyListScreen(
         onError = { errorCode, errString ->
             // Show error in snackbar (unless user cancelled)
             if (errorCode != androidx.biometric.BiometricPrompt.ERROR_USER_CANCELED &&
-                errorCode != androidx.biometric.BiometricPrompt.ERROR_NEGATIVE_BUTTON) {
+                errorCode != androidx.biometric.BiometricPrompt.ERROR_NEGATIVE_BUTTON
+            ) {
                 viewModel.onBiometricError(errString.toString())
             } else {
                 viewModel.cancelBiometricAuth()
@@ -217,9 +218,9 @@ fun PubkeyListScreen(
     if (showClipboardImportDialog) {
         ImportFromClipboardDialog(
             onDismiss = { showClipboardImportDialog = false },
-            onImport = { keyText, nickname ->
+            onImport = { keyText ->
                 showClipboardImportDialog = false
-                viewModel.importKeyFromText(keyText, nickname)
+                viewModel.importKeyFromText(keyText, "clipboard-key")
             }
         )
     }
@@ -254,7 +255,7 @@ fun PubkeyListScreen(
         onNavigateToGenerate = onNavigateToGenerate,
         onNavigateToEdit = onNavigateToEdit,
         onDeletePubkey = viewModel::deletePubkey,
-        onToggleKeyLoaded = viewModel::toggleKeyLoaded,
+        onToggleKeyLoad = viewModel::toggleKeyLoaded,
         onCopyPublicKey = viewModel::copyPublicKey,
         onCopyPrivateKeyOpenSSH = { pubkey, onPasswordRequired ->
             viewModel.copyPrivateKeyOpenSSH(pubkey, onPasswordRequired)
@@ -262,7 +263,7 @@ fun PubkeyListScreen(
         onCopyPrivateKeyPem = { pubkey, onPasswordRequired ->
             viewModel.copyPrivateKeyPem(pubkey, onPasswordRequired)
         },
-        onCopyPrivateKeyEncrypted = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
+        onCopyPrivateKeyEncrypt = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
             viewModel.copyPrivateKeyEncrypted(pubkey, onPasswordRequired, onExportPassphraseRequired)
         },
         onExportPublicKey = viewModel::requestExportPublicKey,
@@ -272,7 +273,7 @@ fun PubkeyListScreen(
         onExportPrivateKeyPem = { pubkey, onPasswordRequired ->
             viewModel.requestExportPrivateKeyPem(pubkey, onPasswordRequired)
         },
-        onExportPrivateKeyEncrypted = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
+        onExportPrivateKeyEncrypt = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
             viewModel.requestExportPrivateKeyEncrypted(pubkey, onPasswordRequired, onExportPassphraseRequired)
         },
         onImportKey = {
@@ -292,15 +293,15 @@ fun PubkeyListScreenContent(
     onNavigateToGenerate: () -> Unit,
     onNavigateToEdit: (Pubkey) -> Unit,
     onDeletePubkey: (Pubkey) -> Unit,
-    onToggleKeyLoaded: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onToggleKeyLoad: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPublicKey: (Pubkey) -> Unit,
     onCopyPrivateKeyOpenSSH: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPrivateKeyPem: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
-    onCopyPrivateKeyEncrypted: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onCopyPrivateKeyEncrypt: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPublicKey: (Pubkey) -> Unit,
     onExportPrivateKeyOpenSSH: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyPem: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
-    onExportPrivateKeyEncrypted: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onExportPrivateKeyEncrypt: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onImportKey: () -> Unit,
     onImportKeyFromClipboard: () -> Unit,
     modifier: Modifier = Modifier
@@ -337,7 +338,7 @@ fun PubkeyListScreenContent(
                             } else {
                                 stringResource(R.string.pubkey_generate)
                             },
-                            modifier = Modifier.animateIcon({ checkedProgress }),
+                            modifier = Modifier.animateIcon({ checkedProgress })
                         )
                     }
                 }
@@ -401,7 +402,7 @@ fun PubkeyListScreenContent(
                             start = 16.dp,
                             end = 16.dp,
                             top = 16.dp,
-                            bottom = 104.dp, // Extra padding to avoid FAB menu overlap (88dp + 16dp for menu padding)
+                            bottom = 104.dp // Extra padding to avoid FAB menu overlap (88dp + 16dp for menu padding)
                         ),
                         verticalArrangement = Arrangement.spacedBy(8.dp)
                     ) {
@@ -413,7 +414,7 @@ fun PubkeyListScreenContent(
                                 pubkey = pubkey,
                                 isLoaded = uiState.loadedKeyNicknames.contains(pubkey.nickname),
                                 onDelete = { onDeletePubkey(pubkey) },
-                                onToggleLoaded = { onToggleKeyLoaded(pubkey, it) },
+                                onToggleLoad = { onToggleKeyLoad(pubkey, it) },
                                 onCopyPublicKey = { onCopyPublicKey(pubkey) },
                                 onCopyPrivateKeyOpenSSH = { onPasswordRequired ->
                                     onCopyPrivateKeyOpenSSH(pubkey, onPasswordRequired)
@@ -421,8 +422,8 @@ fun PubkeyListScreenContent(
                                 onCopyPrivateKeyPem = { onPasswordRequired ->
                                     onCopyPrivateKeyPem(pubkey, onPasswordRequired)
                                 },
-                                onCopyPrivateKeyEncrypted = { onPasswordRequired, onExportPassphraseRequired ->
-                                    onCopyPrivateKeyEncrypted(pubkey, onPasswordRequired, onExportPassphraseRequired)
+                                onCopyPrivateKeyEncrypt = { onPasswordRequired, onExportPassphraseRequired ->
+                                    onCopyPrivateKeyEncrypt(pubkey, onPasswordRequired, onExportPassphraseRequired)
                                 },
                                 onExportPublicKey = { onExportPublicKey(pubkey) },
                                 onExportPrivateKeyOpenSSH = { onPasswordRequired ->
@@ -431,11 +432,11 @@ fun PubkeyListScreenContent(
                                 onExportPrivateKeyPem = { onPasswordRequired ->
                                     onExportPrivateKeyPem(pubkey, onPasswordRequired)
                                 },
-                                onExportPrivateKeyEncrypted = { onPasswordRequired, onExportPassphraseRequired ->
-                                    onExportPrivateKeyEncrypted(pubkey, onPasswordRequired, onExportPassphraseRequired)
+                                onExportPrivateKeyEncrypt = { onPasswordRequired, onExportPassphraseRequired ->
+                                    onExportPrivateKeyEncrypt(pubkey, onPasswordRequired, onExportPassphraseRequired)
                                 },
                                 onEdit = { onNavigateToEdit(pubkey) },
-                                onClick = { onToggleKeyLoaded(pubkey, it) }
+                                onClick = { onToggleKeyLoad(pubkey, it) }
                             )
                         }
                     }
@@ -450,15 +451,15 @@ private fun PubkeyListItem(
     pubkey: Pubkey,
     isLoaded: Boolean,
     onDelete: () -> Unit,
-    onToggleLoaded: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onToggleLoad: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPublicKey: () -> Unit,
     onCopyPrivateKeyOpenSSH: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPrivateKeyPem: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
-    onCopyPrivateKeyEncrypted: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onCopyPrivateKeyEncrypt: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPublicKey: () -> Unit,
     onExportPrivateKeyOpenSSH: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyPem: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
-    onExportPrivateKeyEncrypted: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onExportPrivateKeyEncrypt: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onEdit: () -> Unit,
     onClick: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     modifier: Modifier = Modifier
@@ -492,21 +493,23 @@ private fun PubkeyListItem(
                 else -> Icons.Outlined.LockOpen
             }
 
-            val modifier = when {
-                isLoaded -> Modifier
-                    .padding(2.dp)
-                    .border(
-                        width = 2.dp, // Border thickness
-                        color = Color.Green, // Border color
-                        shape = CircleShape // Makes the border a circle
-                    )
-                    .clip(CircleShape)
-                    .padding(4.dp)
+            val iconModifier = when {
+                isLoaded ->
+                    Modifier
+                        .padding(2.dp)
+                        .border(
+                            width = 2.dp, // Border thickness
+                            color = Color.Green, // Border color
+                            shape = CircleShape // Makes the border a circle
+                        )
+                        .clip(CircleShape)
+                        .padding(4.dp)
+
                 else -> Modifier.padding(2.dp).clip(CircleShape).padding(4.dp)
             }
 
             Box(
-                modifier = modifier
+                modifier = iconModifier
             ) {
                 Icon(
                     imageVector = icon,
@@ -514,7 +517,7 @@ private fun PubkeyListItem(
                         pubkey.isBiometric -> stringResource(R.string.pubkey_biometric_description_icon)
                         pubkey.encrypted -> stringResource(R.string.pubkey_encrypted_description)
                         else -> stringResource(R.string.pubkey_not_encrypted_description)
-                    },
+                    }
                 )
             }
         },
@@ -571,12 +574,15 @@ private fun PubkeyListItem(
                     // Copy private key in OpenSSH format (not available for Keystore keys)
                     DropdownMenuItem(
                         text = {
-                            Text(stringResource(
-                                if (isImported)
-                                    R.string.pubkey_copy_private
-                                else
-                                    R.string.pubkey_copy_private_openssh
-                            ))
+                            Text(
+                                stringResource(
+                                    if (isImported) {
+                                        R.string.pubkey_copy_private
+                                    } else {
+                                        R.string.pubkey_copy_private_openssh
+                                    }
+                                )
+                            )
                         },
                         onClick = {
                             showMenu = false
@@ -615,7 +621,7 @@ private fun PubkeyListItem(
                             text = { Text(stringResource(R.string.pubkey_copy_private_encrypted)) },
                             onClick = {
                                 showMenu = false
-                                onCopyPrivateKeyEncrypted(
+                                onCopyPrivateKeyEncrypt(
                                     { _, callback ->
                                         passwordCallback = callback
                                         showPasswordDialog = true
@@ -636,12 +642,15 @@ private fun PubkeyListItem(
                     // Export private key to file in OpenSSH format
                     DropdownMenuItem(
                         text = {
-                            Text(stringResource(
-                                if (isImported)
-                                    R.string.pubkey_export_private
-                                else
-                                    R.string.pubkey_export_private_openssh
-                            ))
+                            Text(
+                                stringResource(
+                                    if (isImported) {
+                                        R.string.pubkey_export_private
+                                    } else {
+                                        R.string.pubkey_export_private_openssh
+                                    }
+                                )
+                            )
                         },
                         onClick = {
                             showMenu = false
@@ -680,7 +689,7 @@ private fun PubkeyListItem(
                             text = { Text(stringResource(R.string.pubkey_export_private_encrypted)) },
                             onClick = {
                                 showMenu = false
-                                onExportPrivateKeyEncrypted(
+                                onExportPrivateKeyEncrypt(
                                     { _, callback ->
                                         passwordCallback = callback
                                         showPasswordDialog = true
@@ -730,7 +739,7 @@ private fun PubkeyListItem(
                 showPasswordDialog = false
                 passwordCallback = null
             },
-            onPasswordProvided = { password ->
+            onProvidePassword = { password ->
                 passwordCallback?.invoke(password)
                 showPasswordDialog = false
                 passwordCallback = null
@@ -759,7 +768,7 @@ private fun PubkeyListItem(
                 showExportPassphraseDialog = false
                 exportPassphraseCallback = null
             },
-            onPassphraseProvided = { passphrase ->
+            onProvidePassphrase = { passphrase ->
                 exportPassphraseCallback?.invoke(passphrase)
                 showExportPassphraseDialog = false
                 exportPassphraseCallback = null
@@ -772,7 +781,7 @@ private fun PubkeyListItem(
 private fun PubkeyPasswordDialog(
     pubkey: Pubkey,
     onDismiss: () -> Unit,
-    onPasswordProvided: (String) -> Unit
+    onProvidePassword: (String) -> Unit
 ) {
     var password by remember { mutableStateOf("") }
 
@@ -799,7 +808,7 @@ private fun PubkeyPasswordDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = { onPasswordProvided(password) }
+                onClick = { onProvidePassword(password) }
             ) {
                 Text(stringResource(R.string.pubkey_unlock))
             }
@@ -892,9 +901,9 @@ private fun ImportPasswordDialog(
 
     val canImport = nickname.isNotBlank() && password.isNotEmpty() && (
         !encryptKey ||
-        reusePassword ||
-        (newPassword.isNotEmpty() && newPassword == confirmPassword)
-    )
+            reusePassword ||
+            (newPassword.isNotEmpty() && newPassword == confirmPassword)
+        )
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -1006,10 +1015,9 @@ private fun ImportPasswordDialog(
 @Composable
 private fun ImportFromClipboardDialog(
     onDismiss: () -> Unit,
-    onImport: (keyText: String, nickname: String) -> Unit
+    onImport: (String) -> Unit
 ) {
     val context = LocalContext.current
-    var nickname by rememberSaveable { mutableStateOf("clipboard-key") }
     var keyText by rememberSaveable { mutableStateOf("") }
 
     AlertDialog(
@@ -1017,44 +1025,34 @@ private fun ImportFromClipboardDialog(
         icon = { Icon(Icons.Default.ContentPaste, contentDescription = null) },
         title = { Text(stringResource(R.string.pubkey_import_from_clipboard)) },
         text = {
-            Column {
-                OutlinedTextField(
-                    value = nickname,
-                    onValueChange = { nickname = it },
-                    label = { Text(stringResource(R.string.prompt_nickname)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
-                )
-                Spacer(modifier = Modifier.height(8.dp))
-                OutlinedTextField(
-                    value = keyText,
-                    onValueChange = { keyText = it },
-                    label = { Text(stringResource(R.string.pubkey_import_clipboard_key_label)) },
-                    trailingIcon = {
-                        IconButton(
-                            onClick = {
-                                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE)
-                                        as android.content.ClipboardManager
-                                keyText = clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: keyText
-                            }
-                        ) {
-                            Icon(
-                                Icons.Default.ContentPaste,
-                                contentDescription = stringResource(R.string.pubkey_paste_from_clipboard)
-                            )
+            OutlinedTextField(
+                value = keyText,
+                onValueChange = { keyText = it },
+                label = { Text(stringResource(R.string.pubkey_import_clipboard_key_label)) },
+                trailingIcon = {
+                    IconButton(
+                        onClick = {
+                            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE)
+                                as android.content.ClipboardManager
+                            keyText = clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: keyText
                         }
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp),
-                    minLines = 5
-                )
-            }
+                    ) {
+                        Icon(
+                            Icons.Default.ContentPaste,
+                            contentDescription = stringResource(R.string.pubkey_paste_from_clipboard)
+                        )
+                    }
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(200.dp),
+                minLines = 5
+            )
         },
         confirmButton = {
             TextButton(
-                onClick = { onImport(keyText, nickname) },
-                enabled = keyText.isNotBlank() && nickname.isNotBlank()
+                onClick = { onImport(keyText) },
+                enabled = keyText.isNotBlank()
             ) {
                 Text(stringResource(R.string.pubkey_import_button))
             }
@@ -1070,7 +1068,7 @@ private fun ImportFromClipboardDialog(
 @Composable
 private fun ExportPassphraseDialog(
     onDismiss: () -> Unit,
-    onPassphraseProvided: (String) -> Unit
+    onProvidePassphrase: (String) -> Unit
 ) {
     var passphrase by remember { mutableStateOf("") }
     var confirmPassphrase by remember { mutableStateOf("") }
@@ -1127,7 +1125,7 @@ private fun ExportPassphraseDialog(
             TextButton(
                 onClick = {
                     if (passphrase == confirmPassphrase && passphrase.isNotEmpty()) {
-                        onPassphraseProvided(passphrase)
+                        onProvidePassphrase(passphrase)
                     } else {
                         showError = true
                     }
@@ -1158,15 +1156,15 @@ private fun PubkeyListScreenEmptyPreview() {
             onNavigateToGenerate = {},
             onNavigateToEdit = {},
             onDeletePubkey = {},
-            onToggleKeyLoaded = { _, _ -> },
+            onToggleKeyLoad = { _, _ -> },
             onCopyPublicKey = {},
             onCopyPrivateKeyOpenSSH = { _, _ -> },
             onCopyPrivateKeyPem = { _, _ -> },
-            onCopyPrivateKeyEncrypted = { _, _, _ -> },
+            onCopyPrivateKeyEncrypt = { _, _, _ -> },
             onExportPublicKey = {},
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
-            onExportPrivateKeyEncrypted = { _, _, _ -> },
+            onExportPrivateKeyEncrypt = { _, _, _ -> },
             onImportKey = {},
             onImportKeyFromClipboard = {}
         )
@@ -1187,15 +1185,15 @@ private fun PubkeyListScreenLoadingPreview() {
             onNavigateToGenerate = {},
             onNavigateToEdit = {},
             onDeletePubkey = {},
-            onToggleKeyLoaded = { _, _ -> },
+            onToggleKeyLoad = { _, _ -> },
             onCopyPublicKey = {},
             onCopyPrivateKeyOpenSSH = { _, _ -> },
             onCopyPrivateKeyPem = { _, _ -> },
-            onCopyPrivateKeyEncrypted = { _, _, _ -> },
+            onCopyPrivateKeyEncrypt = { _, _, _ -> },
             onExportPublicKey = {},
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
-            onExportPrivateKeyEncrypted = { _, _, _ -> },
+            onExportPrivateKeyEncrypt = { _, _, _ -> },
             onImportKey = {},
             onImportKeyFromClipboard = {}
         )
@@ -1218,7 +1216,7 @@ private fun PubkeyListScreenPopulatedPreview() {
                         confirmation = false,
                         createdDate = System.currentTimeMillis(),
                         privateKey = ByteArray(0),
-                        publicKey = ByteArray(0),
+                        publicKey = ByteArray(0)
                     ),
                     Pubkey(
                         id = 2,
@@ -1229,7 +1227,7 @@ private fun PubkeyListScreenPopulatedPreview() {
                         confirmation = true,
                         createdDate = System.currentTimeMillis(),
                         privateKey = ByteArray(0),
-                        publicKey = ByteArray(0),
+                        publicKey = ByteArray(0)
                     ),
                     Pubkey(
                         id = 3,
@@ -1240,7 +1238,7 @@ private fun PubkeyListScreenPopulatedPreview() {
                         confirmation = false,
                         createdDate = System.currentTimeMillis(),
                         privateKey = ByteArray(0),
-                        publicKey = ByteArray(0),
+                        publicKey = ByteArray(0)
                     )
                 ),
                 isLoading = false,
@@ -1251,15 +1249,15 @@ private fun PubkeyListScreenPopulatedPreview() {
             onNavigateToGenerate = {},
             onNavigateToEdit = {},
             onDeletePubkey = {},
-            onToggleKeyLoaded = { _, _ -> },
+            onToggleKeyLoad = { _, _ -> },
             onCopyPublicKey = {},
             onCopyPrivateKeyOpenSSH = { _, _ -> },
             onCopyPrivateKeyPem = { _, _ -> },
-            onCopyPrivateKeyEncrypted = { _, _, _ -> },
+            onCopyPrivateKeyEncrypt = { _, _, _ -> },
             onExportPublicKey = {},
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
-            onExportPrivateKeyEncrypted = { _, _, _ -> },
+            onExportPrivateKeyEncrypt = { _, _, _ -> },
             onImportKey = {},
             onImportKeyFromClipboard = {}
         )
