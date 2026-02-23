@@ -48,16 +48,16 @@ import org.connectbot.data.ColorSchemePresets
  * @param title The title of the dialog
  * @param selectedColorIndex The currently selected color index (0-15)
  * @param palette The current color palette (16 ARGB values)
- * @param onColorSelected Callback when a color is selected
+ * @param onSelectColor Callback when a color is selected
  * @param onDismiss Callback when dialog is dismissed
  */
 @Composable
 fun ColorPickerDialog(
     title: String,
     selectedColorIndex: Int,
-    palette: IntArray = ColorSchemePresets.default.colors,
-    onColorSelected: (Int) -> Unit,
-    onDismiss: () -> Unit
+    onSelectColor: (Int) -> Unit,
+    onDismiss: () -> Unit,
+    palette: IntArray = ColorSchemePresets.default.colors
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -98,7 +98,7 @@ fun ColorPickerDialog(
                                     shape = RoundedCornerShape(4.dp)
                                 )
                                 .clickable {
-                                    onColorSelected(index)
+                                    onSelectColor(index)
                                     onDismiss()
                                 },
                             contentAlignment = Alignment.Center

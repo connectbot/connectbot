@@ -88,9 +88,7 @@ data class EntitySchema(
     /**
      * Get the unique index columns for conflict detection (e.g., "nickname" for hosts).
      */
-    fun getUniqueConstraintFields(): List<String> {
-        return uniqueIndices.flatMap { it.columnNames }
-    }
+    fun getUniqueConstraintFields(): List<String> = uniqueIndices.flatMap { it.columnNames }
 
     companion object {
         fun fromJson(json: JSONObject): EntitySchema {
@@ -142,22 +140,24 @@ data class EntitySchema(
  * Schema definition for a single field (column).
  */
 data class FieldSchema(
-    val fieldPath: String,      // Kotlin property name (e.g., "jumpHostId")
-    val columnName: String,     // Database column name (e.g., "jump_host_id")
-    val affinity: String,       // SQLite type affinity (INTEGER, TEXT, BLOB, REAL)
+    // Kotlin property name (e.g., "jumpHostId")
+    val fieldPath: String,
+    // Database column name (e.g., "jump_host_id")
+    val columnName: String,
+    // SQLite type affinity (INTEGER, TEXT, BLOB, REAL)
+    val affinity: String,
     val notNull: Boolean,
-    val excluded: Boolean       // True if field should be excluded from export (e.g., runtime state)
+    // True if field should be excluded from export (e.g., runtime state)
+    val excluded: Boolean
 ) {
     companion object {
-        fun fromJson(json: JSONObject): FieldSchema {
-            return FieldSchema(
-                fieldPath = json.getString("fieldPath"),
-                columnName = json.getString("columnName"),
-                affinity = json.getString("affinity"),
-                notNull = json.optBoolean("notNull", false),
-                excluded = json.optBoolean("excluded", false)
-            )
-        }
+        fun fromJson(json: JSONObject): FieldSchema = FieldSchema(
+            fieldPath = json.getString("fieldPath"),
+            columnName = json.getString("columnName"),
+            affinity = json.getString("affinity"),
+            notNull = json.optBoolean("notNull", false),
+            excluded = json.optBoolean("excluded", false)
+        )
     }
 }
 
@@ -173,24 +173,22 @@ data class PrimaryKeySchema(
  * Schema definition for a foreign key relationship.
  */
 data class ForeignKeySchema(
-    val table: String,              // Referenced table name
-    val columns: List<String>,      // Local column names
-    val referencedColumns: List<String>,  // Referenced column names
+    val table: String, // Referenced table name
+    val columns: List<String>, // Local column names
+    val referencedColumns: List<String>, // Referenced column names
     val onDelete: String
 ) {
     companion object {
-        fun fromJson(json: JSONObject): ForeignKeySchema {
-            return ForeignKeySchema(
-                table = json.getString("table"),
-                columns = json.getJSONArray("columns").let { arr ->
-                    (0 until arr.length()).map { arr.getString(it) }
-                },
-                referencedColumns = json.getJSONArray("referencedColumns").let { arr ->
-                    (0 until arr.length()).map { arr.getString(it) }
-                },
-                onDelete = json.getString("onDelete")
-            )
-        }
+        fun fromJson(json: JSONObject): ForeignKeySchema = ForeignKeySchema(
+            table = json.getString("table"),
+            columns = json.getJSONArray("columns").let { arr ->
+                (0 until arr.length()).map { arr.getString(it) }
+            },
+            referencedColumns = json.getJSONArray("referencedColumns").let { arr ->
+                (0 until arr.length()).map { arr.getString(it) }
+            },
+            onDelete = json.getString("onDelete")
+        )
     }
 }
 
@@ -202,13 +200,11 @@ data class UniqueIndexSchema(
     val columnNames: List<String>
 ) {
     companion object {
-        fun fromJson(json: JSONObject): UniqueIndexSchema {
-            return UniqueIndexSchema(
-                name = json.getString("name"),
-                columnNames = json.getJSONArray("columnNames").let { arr ->
-                    (0 until arr.length()).map { arr.getString(it) }
-                }
-            )
-        }
+        fun fromJson(json: JSONObject): UniqueIndexSchema = UniqueIndexSchema(
+            name = json.getString("name"),
+            columnNames = json.getJSONArray("columnNames").let { arr ->
+                (0 until arr.length()).map { arr.getString(it) }
+            }
+        )
     }
 }

@@ -45,8 +45,8 @@ private const val MILLIS_BETWEEN_INPUTS = 50L
  */
 @Composable
 fun EntropyGatherer(
-    onEntropyGathered: (ByteArray) -> Unit,
-    onProgressUpdated: (Int) -> Unit = {},
+    onGatherEntropy: (ByteArray) -> Unit,
+    onProgressUpdate: (Int) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val entropyGenerator = remember { DragEntropyGenerator() }
@@ -68,12 +68,12 @@ fun EntropyGatherer(
                     val wasAdded = entropyGenerator.addDragInput(x, y, now, MILLIS_BETWEEN_INPUTS)
 
                     if (wasAdded) {
-                        onProgressUpdated(entropyGenerator.getProgress())
+                        onProgressUpdate(entropyGenerator.getProgress())
                     }
 
                     if (entropyGenerator.isEntropyComplete()) {
                         val finalEntropy = entropyGenerator.getEntropy()
-                        onEntropyGathered(finalEntropy)
+                        onGatherEntropy(finalEntropy)
                     }
                 }
             }
@@ -153,6 +153,7 @@ class DragEntropyGenerator(private val entropyCapacity: Int = SHA1_MAX_BYTES) {
                     entropy[entropyByteIndex] = ((entropy[entropyByteIndex].toInt() shl 1) or 1).toByte()
                     entropyBitIndex++
                 }
+
                 0x2 -> {
                     // Shift left and set bit to 0
                     entropy[entropyByteIndex] = (entropy[entropyByteIndex].toInt() shl 1).toByte()
@@ -171,14 +172,9 @@ class DragEntropyGenerator(private val entropyCapacity: Int = SHA1_MAX_BYTES) {
         return true
     }
 
-    fun getProgress(): Int =
-        (entropyByteIndex * 100 / SHA1_MAX_BYTES) + (entropyBitIndex * 5 / 8)
+    fun getProgress(): Int = (entropyByteIndex * 100 / SHA1_MAX_BYTES) + (entropyBitIndex * 5 / 8)
 
-    fun getEntropy(): ByteArray {
-        return entropy.copyOfRange(0, entropyByteIndex)
-    }
+    fun getEntropy(): ByteArray = entropy.copyOfRange(0, entropyByteIndex)
 
-    fun isEntropyComplete(): Boolean {
-        return entropyByteIndex >= entropyCapacity
-    }
+    fun isEntropyComplete(): Boolean = entropyByteIndex >= entropyCapacity
 }

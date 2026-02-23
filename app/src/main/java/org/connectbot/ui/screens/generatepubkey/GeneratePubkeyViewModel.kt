@@ -79,8 +79,8 @@ data class GeneratePubkeyUiState(
 
     val canGenerate: Boolean
         get() = nickname.isNotEmpty() &&
-                !nicknameExists &&
-                (useBiometric || !passwordMismatch)
+            !nicknameExists &&
+            (useBiometric || !passwordMismatch)
 
     /** Whether the current key type supports biometric protection */
     val keyTypeSupportsBiometric: Boolean
@@ -188,9 +188,7 @@ class GeneratePubkeyViewModel @Inject constructor(
         _uiState.update { it.copy(bits = finalBits) }
     }
 
-    private fun getClosestEcdsaSize(bits: Int): Int {
-        return ECDSA_SIZES.minByOrNull { kotlin.math.abs(it - bits) } ?: ECDSA_SIZES[0]
-    }
+    private fun getClosestEcdsaSize(bits: Int): Int = ECDSA_SIZES.minByOrNull { kotlin.math.abs(it - bits) } ?: ECDSA_SIZES[0]
 
     fun updatePassword1(password: String) {
         _uiState.update { it.copy(password1 = password) }

@@ -77,7 +77,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.ColorScheme
-import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.theme.ConnectBotTheme
 
@@ -367,7 +367,7 @@ fun ColorsScreenContent(
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun ColorsScreenEmptyPreview() {
     ConnectBotTheme {
@@ -392,7 +392,7 @@ private fun ColorsScreenEmptyPreview() {
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun ColorsScreenLoadingPreview() {
     ConnectBotTheme {
@@ -417,7 +417,7 @@ private fun ColorsScreenLoadingPreview() {
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun ColorsScreenPopulatedPreview() {
     ConnectBotTheme {

@@ -27,4 +27,4 @@ import androidx.compose.ui.tooling.preview.PreviewScreenSizes
 @PreviewScreenSizes
 @PreviewLightDark
 @PreviewDynamicColors
-annotation class ScreenPreviews
+annotation class PreviewScreen

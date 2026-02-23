@@ -73,7 +73,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
-import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.components.ColorPickerDialog
 import org.connectbot.ui.components.RgbColorPickerDialog
 
@@ -252,7 +252,7 @@ fun PaletteEditorScreenContent(
         RgbColorPickerDialog(
             title = stringResource(R.string.dialog_title_edit_color, colorIndex),
             initialColor = uiState.palette[colorIndex],
-            onColorSelected = { newColor ->
+            onSelectColor = { newColor ->
                 onUpdateColor(colorIndex, newColor)
             },
             onDismiss = { onCloseColorEditor() }
@@ -264,7 +264,7 @@ fun PaletteEditorScreenContent(
             title = stringResource(R.string.label_foreground_color),
             selectedColorIndex = uiState.foregroundColorIndex,
             palette = uiState.palette,
-            onColorSelected = { colorIndex ->
+            onSelectColor = { colorIndex ->
                 onUpdateForegroundColor(colorIndex)
                 showForegroundPicker = false
             },
@@ -277,7 +277,7 @@ fun PaletteEditorScreenContent(
             title = stringResource(R.string.label_background_color),
             selectedColorIndex = uiState.backgroundColorIndex,
             palette = uiState.palette,
-            onColorSelected = { colorIndex ->
+            onSelectColor = { colorIndex ->
                 onUpdateBackgroundColor(colorIndex)
                 showBackgroundPicker = false
             },
@@ -682,7 +682,7 @@ private fun DuplicateSchemeDialog(
     )
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun PaletteEditorScreenPreview() {
     PaletteEditorScreenContent(

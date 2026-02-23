@@ -37,7 +37,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
-import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.theme.ConnectBotTheme
 
 data class Hint(
@@ -139,7 +139,7 @@ fun HintsScreen(
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun HintsScreenPreview() {
     ConnectBotTheme {

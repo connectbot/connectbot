@@ -36,25 +36,25 @@ object DatabaseModule {
 
     @Provides
     @Singleton
-    fun provideConnectBotDatabase(@ApplicationContext context: Context): ConnectBotDatabase {
-        return Room.databaseBuilder(
-            context,
-            ConnectBotDatabase::class.java,
-            DATABASE_NAME
-        )
-            .addMigrations(ConnectBotDatabase.MIGRATION_4_5)
-            .addCallback(object : RoomDatabase.Callback() {
-                override fun onCreate(db: SupportSQLiteDatabase) {
-                    super.onCreate(db)
-                    // Create default profile on fresh database creation
-                    db.execSQL("""
+    fun provideConnectBotDatabase(@ApplicationContext context: Context): ConnectBotDatabase = Room.databaseBuilder(
+        context,
+        ConnectBotDatabase::class.java,
+        DATABASE_NAME
+    )
+        .addMigrations(ConnectBotDatabase.MIGRATION_4_5)
+        .addCallback(object : RoomDatabase.Callback() {
+            override fun onCreate(db: SupportSQLiteDatabase) {
+                super.onCreate(db)
+                // Create default profile on fresh database creation
+                db.execSQL(
+                    """
                         INSERT INTO profiles (name, color_scheme_id, font_size, del_key, encoding, emulation)
                         VALUES ('Default', -1, 10, 'del', 'UTF-8', 'xterm-256color')
-                    """.trimIndent())
-                }
-            })
-            .build()
-    }
+                    """.trimIndent()
+                )
+            }
+        })
+        .build()
 
     @Provides
     fun provideHostDao(database: ConnectBotDatabase) = database.hostDao()

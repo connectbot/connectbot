@@ -19,9 +19,6 @@ package org.connectbot.service
 import android.content.SharedPreferences
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener
 import android.content.res.Configuration
-// NOTE: Using deprecated android.text.ClipboardManager is intentional.
-// Migration to android.content.ClipboardManager requires careful testing
-// as there were issues with clipboard access in certain scenarios.
 import android.text.ClipboardManager
 import android.view.KeyCharacterMap
 import android.view.KeyEvent
@@ -37,12 +34,17 @@ import org.connectbot.util.PreferenceConstants
 import timber.log.Timber
 import java.io.IOException
 
+// NOTE: Using deprecated android.text.ClipboardManager is intentional.
+// Migration to android.content.ClipboardManager requires careful testing
+// as there were issues with clipboard access in certain scenarios.
 @Suppress("DEPRECATION")
 class TerminalKeyListener(
     private val manager: TerminalManager?,
     private val bridge: TerminalBridge,
     private var encoding: String?
-) : OnKeyListener, OnSharedPreferenceChangeListener, ModifierManager {
+) : OnKeyListener,
+    OnSharedPreferenceChangeListener,
+    ModifierManager {
 
     private var keymode: String? = null
     private val deviceHasHardKeyboard: Boolean
@@ -67,8 +69,10 @@ class TerminalKeyListener(
     init {
         prefs?.registerOnSharedPreferenceChangeListener(this)
 
-        deviceHasHardKeyboard = (manager?.res?.configuration?.keyboard
-                == Configuration.KEYBOARD_QWERTY)
+        deviceHasHardKeyboard = (
+            manager?.res?.configuration?.keyboard
+                == Configuration.KEYBOARD_QWERTY
+            )
 
         updatePrefs()
     }
@@ -77,30 +81,33 @@ class TerminalKeyListener(
         val transport = bridge.transport
 
         try {
-            if (bridge.isDisconnected || transport == null)
+            if (bridge.isDisconnected || transport == null) {
                 return false
+            }
 
             val interpretAsHardKeyboard = deviceHasHardKeyboard &&
-                    manager?.hardKeyboardHidden == false
+                manager?.hardKeyboardHidden == false
             val rightModifiersAreSlashAndTab = interpretAsHardKeyboard &&
-                    PreferenceConstants.KEYMODE_RIGHT == keymode
+                PreferenceConstants.KEYMODE_RIGHT == keymode
             val leftModifiersAreSlashAndTab = interpretAsHardKeyboard &&
-                    PreferenceConstants.KEYMODE_LEFT == keymode
+                PreferenceConstants.KEYMODE_LEFT == keymode
             val shiftedNumbersAreFKeys = shiftedNumbersAreFKeysOnHardKeyboard &&
-                    interpretAsHardKeyboard
+                interpretAsHardKeyboard
             val controlNumbersAreFKeys = controlNumbersAreFKeysOnSoftKeyboard &&
-                    !interpretAsHardKeyboard
+                !interpretAsHardKeyboard
 
             if (event.action == KeyEvent.ACTION_UP) {
                 if (rightModifiersAreSlashAndTab) {
                     if (keyCode == KeyEvent.KEYCODE_ALT_RIGHT &&
-                            (ourMetaState and OUR_SLASH) != 0) {
+                        (ourMetaState and OUR_SLASH) != 0
+                    ) {
                         ourMetaState = ourMetaState and OUR_TRANSIENT.inv()
                         _modifierState.value = getModifierState()
                         transport.write('/'.code)
                         return true
                     } else if (keyCode == KeyEvent.KEYCODE_SHIFT_RIGHT &&
-                            (ourMetaState and OUR_TAB) != 0) {
+                        (ourMetaState and OUR_TAB) != 0
+                    ) {
                         ourMetaState = ourMetaState and OUR_TRANSIENT.inv()
                         _modifierState.value = getModifierState()
                         transport.write(0x09)
@@ -108,13 +115,15 @@ class TerminalKeyListener(
                     }
                 } else if (leftModifiersAreSlashAndTab) {
                     if (keyCode == KeyEvent.KEYCODE_ALT_LEFT &&
-                            (ourMetaState and OUR_SLASH) != 0) {
+                        (ourMetaState and OUR_SLASH) != 0
+                    ) {
                         ourMetaState = ourMetaState and OUR_TRANSIENT.inv()
                         _modifierState.value = getModifierState()
                         transport.write('/'.code)
                         return true
                     } else if (keyCode == KeyEvent.KEYCODE_SHIFT_LEFT &&
-                            (ourMetaState and OUR_TAB) != 0) {
+                        (ourMetaState and OUR_TAB) != 0
+                    ) {
                         ourMetaState = ourMetaState and OUR_TRANSIENT.inv()
                         _modifierState.value = getModifierState()
                         transport.write(0x09)
@@ -131,6 +140,7 @@ class TerminalKeyListener(
                         bridge.increaseFontSize()
                         return true
                     }
+
                     KeyEvent.KEYCODE_VOLUME_DOWN -> {
                         bridge.decreaseFontSize()
                         return true
@@ -142,7 +152,8 @@ class TerminalKeyListener(
 //            bridge.resetScrollPosition()
 
             if (keyCode == KeyEvent.KEYCODE_UNKNOWN &&
-                    event.action == KeyEvent.ACTION_MULTIPLE) {
+                event.action == KeyEvent.ACTION_MULTIPLE
+            ) {
                 val input = encoding?.let { event.characters.toByteArray(charset(it)) }
                 input?.let { transport.write(it) }
                 return true
@@ -155,14 +166,17 @@ class TerminalKeyListener(
                             ourMetaState = ourMetaState or OUR_SLASH
                             return true
                         }
+
                         KeyEvent.KEYCODE_SHIFT_RIGHT -> {
                             ourMetaState = ourMetaState or OUR_TAB
                             return true
                         }
+
                         KeyEvent.KEYCODE_SHIFT_LEFT -> {
                             metaPress(OUR_SHIFT_ON)
                             return true
                         }
+
                         KeyEvent.KEYCODE_ALT_LEFT -> {
                             metaPress(OUR_ALT_ON)
                             return true
@@ -174,14 +188,17 @@ class TerminalKeyListener(
                             ourMetaState = ourMetaState or OUR_SLASH
                             return true
                         }
+
                         KeyEvent.KEYCODE_SHIFT_LEFT -> {
                             ourMetaState = ourMetaState or OUR_TAB
                             return true
                         }
+
                         KeyEvent.KEYCODE_SHIFT_RIGHT -> {
                             metaPress(OUR_SHIFT_ON)
                             return true
                         }
+
                         KeyEvent.KEYCODE_ALT_RIGHT -> {
                             metaPress(OUR_ALT_ON)
                             return true
@@ -194,6 +211,7 @@ class TerminalKeyListener(
                             metaPress(OUR_ALT_ON)
                             return true
                         }
+
                         KeyEvent.KEYCODE_SHIFT_LEFT,
                         KeyEvent.KEYCODE_SHIFT_RIGHT -> {
                             metaPress(OUR_SHIFT_ON)
@@ -225,19 +243,23 @@ class TerminalKeyListener(
                     if ((ourMetaState and OUR_CTRL_ON) != 0) {
                         sendEscape()
                         ourMetaState = ourMetaState and OUR_CTRL_ON.inv()
-                    } else
+                    } else {
                         metaPress(OUR_CTRL_ON, true)
+                    }
                 }
                 return true
             }
 
             var derivedMetaState = event.metaState
-            if ((ourMetaState and OUR_SHIFT_MASK) != 0)
+            if ((ourMetaState and OUR_SHIFT_MASK) != 0) {
                 derivedMetaState = derivedMetaState or KeyEvent.META_SHIFT_ON
-            if ((ourMetaState and OUR_ALT_MASK) != 0)
+            }
+            if ((ourMetaState and OUR_ALT_MASK) != 0) {
                 derivedMetaState = derivedMetaState or KeyEvent.META_ALT_ON
-            if ((ourMetaState and OUR_CTRL_MASK) != 0)
+            }
+            if ((ourMetaState and OUR_CTRL_MASK) != 0) {
                 derivedMetaState = derivedMetaState or HC_META_CTRL_ON
+            }
 
             if ((ourMetaState and OUR_TRANSIENT) != 0) {
                 val oldState = ourMetaState
@@ -248,35 +270,44 @@ class TerminalKeyListener(
             }
 
             if (shiftedNumbersAreFKeys && (derivedMetaState and KeyEvent.META_SHIFT_ON) != 0) {
-                if (sendFunctionKey(keyCode))
+                if (sendFunctionKey(keyCode)) {
                     return true
+                }
             }
             if (controlNumbersAreFKeys && (derivedMetaState and HC_META_CTRL_ON) != 0) {
-                if (sendFunctionKey(keyCode))
+                if (sendFunctionKey(keyCode)) {
                     return true
+                }
             }
 
             if (keyCode == KeyEvent.KEYCODE_C &&
-                    (derivedMetaState and HC_META_CTRL_ON) != 0 &&
-                    (derivedMetaState and KeyEvent.META_SHIFT_ON) != 0) {
+                (derivedMetaState and HC_META_CTRL_ON) != 0 &&
+                (derivedMetaState and KeyEvent.META_SHIFT_ON) != 0
+            ) {
                 // TODO(Terminal): copy current selection
 //                bridge.copyCurrentSelection()
                 return true
             }
 
             if (keyCode == KeyEvent.KEYCODE_V &&
-                    (derivedMetaState and HC_META_CTRL_ON) != 0 &&
-                    (derivedMetaState and KeyEvent.META_SHIFT_ON) != 0 &&
-                    clipboard?.hasText() == true) {
+                (derivedMetaState and HC_META_CTRL_ON) != 0 &&
+                (derivedMetaState and KeyEvent.META_SHIFT_ON) != 0 &&
+                clipboard?.hasText() == true
+            ) {
                 bridge.injectString(clipboard?.text.toString())
                 return true
             }
 
-            if ((keyCode == KeyEvent.KEYCODE_EQUALS &&
-                    (derivedMetaState and HC_META_CTRL_ON) != 0 &&
-                    (derivedMetaState and KeyEvent.META_SHIFT_ON) != 0) ||
-                    (keyCode == KeyEvent.KEYCODE_PLUS &&
-                    (derivedMetaState and HC_META_CTRL_ON) != 0)) {
+            if ((
+                    keyCode == KeyEvent.KEYCODE_EQUALS &&
+                        (derivedMetaState and HC_META_CTRL_ON) != 0 &&
+                        (derivedMetaState and KeyEvent.META_SHIFT_ON) != 0
+                    ) ||
+                (
+                    keyCode == KeyEvent.KEYCODE_PLUS &&
+                        (derivedMetaState and HC_META_CTRL_ON) != 0
+                    )
+            ) {
                 bridge.increaseFontSize()
                 return true
             }
@@ -287,8 +318,7 @@ class TerminalKeyListener(
             }
 
             var uchar = event.getUnicodeChar(derivedMetaState and HC_META_CTRL_MASK.inv())
-            val ucharWithoutAlt = event.getUnicodeChar(
-                    derivedMetaState and (HC_META_ALT_MASK or HC_META_CTRL_MASK).inv())
+            val ucharWithoutAlt = event.getUnicodeChar(derivedMetaState and (HC_META_ALT_MASK or HC_META_CTRL_MASK).inv())
             if (uchar == 0) {
                 uchar = ucharWithoutAlt
             } else if (uchar != ucharWithoutAlt) {
@@ -309,17 +339,22 @@ class TerminalKeyListener(
 
             if (uchar >= 0x20) {
                 var finalChar = uchar
-                if ((derivedMetaState and HC_META_CTRL_ON) != 0)
+                if ((derivedMetaState and HC_META_CTRL_ON) != 0) {
                     finalChar = keyAsControl(finalChar)
-                if ((derivedMetaState and KeyEvent.META_ALT_ON) != 0)
+                }
+                if ((derivedMetaState and KeyEvent.META_ALT_ON) != 0) {
                     sendEscape()
-                if (finalChar < 0x80)
+                }
+                if (finalChar < 0x80) {
                     transport.write(finalChar)
-                else
+                } else {
                     encoding?.let {
-                        transport.write(String(Character.toChars(finalChar))
-                            .toByteArray(charset(it)))
+                        transport.write(
+                            String(Character.toChars(finalChar))
+                                .toByteArray(charset(it))
+                        )
                     }
+                }
                 return true
             }
 
@@ -328,29 +363,36 @@ class TerminalKeyListener(
                     sendEscape()
                     return true
                 }
+
                 KeyEvent.KEYCODE_TAB -> {
                     transport.write(0x09)
                     return true
                 }
+
                 KeyEvent.KEYCODE_CAMERA -> {
                     val camera = manager?.prefs?.getString(
                         PreferenceConstants.CAMERA,
-                        PreferenceConstants.CAMERA_CTRLA_SPACE)
+                        PreferenceConstants.CAMERA_CTRLA_SPACE
+                    )
                     when (camera) {
                         PreferenceConstants.CAMERA_CTRLA_SPACE -> {
                             transport.write(0x01)
                             transport.write(' '.code)
                         }
+
                         PreferenceConstants.CAMERA_CTRLA -> {
                             transport.write(0x01)
                         }
+
                         PreferenceConstants.CAMERA_ESC -> {
                             bridge.terminalEmulator.dispatchKey(0, VTermKey.ESCAPE)
                         }
+
                         PreferenceConstants.CAMERA_ESC_A -> {
                             bridge.terminalEmulator.dispatchKey(0, VTermKey.ESCAPE)
                             transport.write('a'.code)
                         }
+
                         "text_input" -> {
                             // Request floating text input dialog
                             bridge.requestOpenTextInput()
@@ -358,14 +400,17 @@ class TerminalKeyListener(
                         }
                     }
                 }
+
                 KeyEvent.KEYCODE_DEL -> {
                     bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.BACKSPACE)
                     return true
                 }
+
                 KeyEvent.KEYCODE_ENTER -> {
                     bridge.terminalEmulator.dispatchKey(0, VTermKey.ENTER)
                     return true
                 }
+
                 KeyEvent.KEYCODE_DPAD_LEFT -> {
                     if (selectingForCopy) {
                         // TODO(Terminal): implement selection area change
@@ -376,6 +421,7 @@ class TerminalKeyListener(
                     }
                     return true
                 }
+
                 KeyEvent.KEYCODE_DPAD_UP -> {
                     if (selectingForCopy) {
                         // TODO(Terminal): implement selection area change
@@ -386,6 +432,7 @@ class TerminalKeyListener(
                     }
                     return true
                 }
+
                 KeyEvent.KEYCODE_DPAD_DOWN -> {
                     if (selectingForCopy) {
                         // TODO(Terminal): implement selection area change
@@ -396,6 +443,7 @@ class TerminalKeyListener(
                     }
                     return true
                 }
+
                 KeyEvent.KEYCODE_DPAD_RIGHT -> {
                     if (selectingForCopy) {
                         // TODO(Terminal): implement selection area change
@@ -406,32 +454,37 @@ class TerminalKeyListener(
                     }
                     return true
                 }
+
                 KEYCODE_INSERT -> {
                     bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.INS)
                     return true
                 }
+
                 KEYCODE_FORWARD_DEL -> {
                     bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.DEL)
                     return true
                 }
+
                 KEYCODE_MOVE_HOME -> {
                     bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.HOME)
                     return true
                 }
+
                 KEYCODE_MOVE_END -> {
                     bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.END)
                     return true
                 }
+
                 KEYCODE_PAGE_UP -> {
                     bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.PAGEUP)
                     return true
                 }
+
                 KEYCODE_PAGE_DOWN -> {
                     bridge.terminalEmulator.dispatchKey(modifiersForTerminal, VTermKey.PAGEDOWN)
                     return true
                 }
             }
-
         } catch (e: IOException) {
             Timber.e(e, "Problem while trying to handle an onKey() event")
             try {
@@ -477,42 +530,52 @@ class TerminalKeyListener(
                 bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_1)
                 return true
             }
+
             KeyEvent.KEYCODE_2 -> {
                 bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_2)
                 return true
             }
+
             KeyEvent.KEYCODE_3 -> {
                 bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_3)
                 return true
             }
+
             KeyEvent.KEYCODE_4 -> {
                 bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_4)
                 return true
             }
+
             KeyEvent.KEYCODE_5 -> {
                 bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_5)
                 return true
             }
+
             KeyEvent.KEYCODE_6 -> {
                 bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_6)
                 return true
             }
+
             KeyEvent.KEYCODE_7 -> {
                 bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_7)
                 return true
             }
+
             KeyEvent.KEYCODE_8 -> {
                 bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_8)
                 return true
             }
+
             KeyEvent.KEYCODE_9 -> {
                 bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_9)
                 return true
             }
+
             KeyEvent.KEYCODE_0 -> {
                 bridge.terminalEmulator.dispatchKey(0, VTermKey.FUNCTION_10)
                 return true
             }
+
             else -> return false
         }
     }
@@ -553,10 +616,11 @@ class TerminalKeyListener(
 
     override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String?) {
         if (PreferenceConstants.KEYMODE == key ||
-                PreferenceConstants.SHIFT_FKEYS == key ||
-                PreferenceConstants.CTRL_FKEYS == key ||
-                PreferenceConstants.VOLUME_FONT == key ||
-                PreferenceConstants.STICKY_MODIFIERS == key) {
+            PreferenceConstants.SHIFT_FKEYS == key ||
+            PreferenceConstants.CTRL_FKEYS == key ||
+            PreferenceConstants.VOLUME_FONT == key ||
+            PreferenceConstants.STICKY_MODIFIERS == key
+        ) {
             updatePrefs()
         }
     }
@@ -568,8 +632,10 @@ class TerminalKeyListener(
         controlNumbersAreFKeysOnSoftKeyboard =
             prefs?.getBoolean(PreferenceConstants.CTRL_FKEYS, false) == true
         volumeKeysChangeFontSize = prefs?.getBoolean(PreferenceConstants.VOLUME_FONT, true) == true
-        val stickyModifiers = prefs?.getString(PreferenceConstants.STICKY_MODIFIERS,
-                PreferenceConstants.NO)
+        val stickyModifiers = prefs?.getString(
+            PreferenceConstants.STICKY_MODIFIERS,
+            PreferenceConstants.NO
+        )
         stickyMetas = when (stickyModifiers) {
             PreferenceConstants.ALT -> OUR_ALT_ON
             PreferenceConstants.YES -> OUR_SHIFT_ON or OUR_CTRL_ON or OUR_ALT_ON
@@ -595,25 +661,23 @@ class TerminalKeyListener(
         }
     }
 
-    fun getModifierState(): ModifierState {
-        return ModifierState(
-            ctrlState = when {
-                (ourMetaState and OUR_CTRL_LOCK) != 0 -> ModifierLevel.LOCKED
-                (ourMetaState and OUR_CTRL_ON) != 0 -> ModifierLevel.TRANSIENT
-                else -> ModifierLevel.OFF
-            },
-            altState = when {
-                (ourMetaState and OUR_ALT_LOCK) != 0 -> ModifierLevel.LOCKED
-                (ourMetaState and OUR_ALT_ON) != 0 -> ModifierLevel.TRANSIENT
-                else -> ModifierLevel.OFF
-            },
-            shiftState = when {
-                (ourMetaState and OUR_SHIFT_LOCK) != 0 -> ModifierLevel.LOCKED
-                (ourMetaState and OUR_SHIFT_ON) != 0 -> ModifierLevel.TRANSIENT
-                else -> ModifierLevel.OFF
-            }
-        )
-    }
+    fun getModifierState(): ModifierState = ModifierState(
+        ctrlState = when {
+            (ourMetaState and OUR_CTRL_LOCK) != 0 -> ModifierLevel.LOCKED
+            (ourMetaState and OUR_CTRL_ON) != 0 -> ModifierLevel.TRANSIENT
+            else -> ModifierLevel.OFF
+        },
+        altState = when {
+            (ourMetaState and OUR_ALT_LOCK) != 0 -> ModifierLevel.LOCKED
+            (ourMetaState and OUR_ALT_ON) != 0 -> ModifierLevel.TRANSIENT
+            else -> ModifierLevel.OFF
+        },
+        shiftState = when {
+            (ourMetaState and OUR_SHIFT_LOCK) != 0 -> ModifierLevel.LOCKED
+            (ourMetaState and OUR_SHIFT_ON) != 0 -> ModifierLevel.TRANSIENT
+            else -> ModifierLevel.OFF
+        }
+    )
 
     companion object {
         private const val TAG = "CB.OnKeyListener"
@@ -628,7 +692,7 @@ class TerminalKeyListener(
         private const val OUR_TAB = 0x80
 
         private const val OUR_TRANSIENT = OUR_CTRL_ON or OUR_ALT_ON or
-                OUR_SHIFT_ON or OUR_SLASH or OUR_TAB
+            OUR_SHIFT_ON or OUR_SLASH or OUR_TAB
 
         private const val OUR_CTRL_MASK = OUR_CTRL_ON or OUR_CTRL_LOCK
         private const val OUR_ALT_MASK = OUR_ALT_ON or OUR_ALT_LOCK
@@ -647,9 +711,9 @@ class TerminalKeyListener(
         private const val HC_META_CTRL_LEFT_ON = 0x2000
         private const val HC_META_CTRL_RIGHT_ON = 0x4000
         private const val HC_META_CTRL_MASK = HC_META_CTRL_ON or HC_META_CTRL_RIGHT_ON or
-                HC_META_CTRL_LEFT_ON
+            HC_META_CTRL_LEFT_ON
         private const val HC_META_ALT_MASK = KeyEvent.META_ALT_ON or KeyEvent.META_ALT_LEFT_ON or
-                KeyEvent.META_ALT_RIGHT_ON
+            KeyEvent.META_ALT_RIGHT_ON
     }
 }
 
