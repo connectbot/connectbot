@@ -33,6 +33,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -217,10 +218,20 @@ fun PubkeyListScreen(
     if (showClipboardImportDialog) {
         ImportFromClipboardDialog(
             onDismiss = { showClipboardImportDialog = false },
-            onImport = { keyText ->
+            onImport = { keyText, nickname ->
                 showClipboardImportDialog = false
-                viewModel.importKeyFromText(keyText)
+                viewModel.importKeyFromText(keyText, nickname)
             }
+        )
+    }
+
+    // Nickname confirmation dialog for unencrypted file imports
+    val pendingNicknameConfirmation = uiState.pendingNicknameConfirmation
+    if (pendingNicknameConfirmation != null) {
+        NicknameConfirmationDialog(
+            initialNickname = pendingNicknameConfirmation.nickname,
+            onDismiss = { viewModel.cancelImportNickname() },
+            onConfirm = { nickname -> viewModel.confirmImportNickname(nickname) }
         )
     }
 
@@ -229,10 +240,10 @@ fun PubkeyListScreen(
     if (pendingImport != null) {
         ImportPasswordDialog(
             keyType = pendingImport.keyType,
-            nickname = pendingImport.nickname,
+            initialNickname = pendingImport.nickname,
             onDismiss = { viewModel.cancelImport() },
-            onImport = { decryptPassword, encrypt, encryptPassword ->
-                viewModel.completeImportWithPassword(decryptPassword, encrypt, encryptPassword)
+            onImport = { nickname, decryptPassword, encrypt, encryptPassword ->
+                viewModel.completeImportWithPassword(nickname, decryptPassword, encrypt, encryptPassword)
             }
         )
     }
@@ -839,19 +850,56 @@ private fun PubkeyDeleteDialog(
 }
 
 @Composable
+private fun NicknameConfirmationDialog(
+    initialNickname: String,
+    onDismiss: () -> Unit,
+    onConfirm: (String) -> Unit
+) {
+    var nickname by rememberSaveable { mutableStateOf(initialNickname) }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.pubkey_import_button)) },
+        text = {
+            OutlinedTextField(
+                value = nickname,
+                onValueChange = { nickname = it },
+                label = { Text(stringResource(R.string.prompt_nickname)) },
+                modifier = Modifier.fillMaxWidth(),
+                singleLine = true
+            )
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { onConfirm(nickname) },
+                enabled = nickname.isNotBlank()
+            ) {
+                Text(stringResource(R.string.portforward_save))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        }
+    )
+}
+
+@Composable
 private fun ImportPasswordDialog(
     keyType: String,
-    nickname: String,
+    initialNickname: String,
     onDismiss: () -> Unit,
-    onImport: (decryptPassword: String, encrypt: Boolean, encryptPassword: String?) -> Unit
+    onImport: (nickname: String, decryptPassword: String, encrypt: Boolean, encryptPassword: String?) -> Unit
 ) {
+    var nickname by rememberSaveable { mutableStateOf(initialNickname) }
     var password by remember { mutableStateOf("") }
     var encryptKey by remember { mutableStateOf(true) }
     var reusePassword by remember { mutableStateOf(true) }
     var newPassword by remember { mutableStateOf("") }
     var confirmPassword by remember { mutableStateOf("") }
 
-    val canImport = password.isNotEmpty() && (
+    val canImport = nickname.isNotBlank() && password.isNotEmpty() && (
         !encryptKey ||
             reusePassword ||
             (newPassword.isNotEmpty() && newPassword == confirmPassword)
@@ -864,9 +912,17 @@ private fun ImportPasswordDialog(
         text = {
             Column {
                 Text(
-                    text = stringResource(R.string.pubkey_import_encrypted_message, nickname, keyType),
+                    text = stringResource(R.string.pubkey_import_encrypted_message, initialNickname, keyType),
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
+                OutlinedTextField(
+                    value = nickname,
+                    onValueChange = { nickname = it },
+                    label = { Text(stringResource(R.string.prompt_nickname)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+                Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = password,
                     onValueChange = { password = it },
@@ -941,7 +997,7 @@ private fun ImportPasswordDialog(
                         reusePassword -> password
                         else -> newPassword
                     }
-                    onImport(password, encryptKey, encryptPassword)
+                    onImport(nickname, password, encryptKey, encryptPassword)
                 },
                 enabled = canImport
             ) {
@@ -959,9 +1015,10 @@ private fun ImportPasswordDialog(
 @Composable
 private fun ImportFromClipboardDialog(
     onDismiss: () -> Unit,
-    onImport: (String) -> Unit
+    onImport: (keyText: String, nickname: String) -> Unit
 ) {
     val context = LocalContext.current
+    var nickname by rememberSaveable { mutableStateOf("clipboard-key") }
     var keyText by rememberSaveable { mutableStateOf("") }
 
     AlertDialog(
@@ -969,34 +1026,44 @@ private fun ImportFromClipboardDialog(
         icon = { Icon(Icons.Default.ContentPaste, contentDescription = null) },
         title = { Text(stringResource(R.string.pubkey_import_from_clipboard)) },
         text = {
-            OutlinedTextField(
-                value = keyText,
-                onValueChange = { keyText = it },
-                label = { Text(stringResource(R.string.pubkey_import_clipboard_key_label)) },
-                trailingIcon = {
-                    IconButton(
-                        onClick = {
-                            val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE)
-                                    as android.content.ClipboardManager
-                            keyText = clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: keyText
+            Column {
+                OutlinedTextField(
+                    value = nickname,
+                    onValueChange = { nickname = it },
+                    label = { Text(stringResource(R.string.prompt_nickname)) },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                OutlinedTextField(
+                    value = keyText,
+                    onValueChange = { keyText = it },
+                    label = { Text(stringResource(R.string.pubkey_import_clipboard_key_label)) },
+                    trailingIcon = {
+                        IconButton(
+                            onClick = {
+                                val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE)
+                                        as android.content.ClipboardManager
+                                keyText = clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: keyText
+                            }
+                        ) {
+                            Icon(
+                                Icons.Default.ContentPaste,
+                                contentDescription = stringResource(R.string.pubkey_paste_from_clipboard)
+                            )
                         }
-                    ) {
-                        Icon(
-                            Icons.Default.ContentPaste,
-                            contentDescription = stringResource(R.string.pubkey_paste_from_clipboard)
-                        )
-                    }
-                },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(200.dp),
-                minLines = 5
-            )
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp),
+                    minLines = 5
+                )
+            }
         },
         confirmButton = {
             TextButton(
-                onClick = { onImport(keyText) },
-                enabled = keyText.isNotBlank()
+                onClick = { onImport(keyText, nickname) },
+                enabled = keyText.isNotBlank() && nickname.isNotBlank()
             ) {
                 Text(stringResource(R.string.pubkey_import_button))
             }
