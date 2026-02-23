@@ -104,9 +104,7 @@ class PubkeyListViewModelTest {
         Timber.uprootAll()
     }
 
-    private fun createViewModel(): PubkeyListViewModel {
-        return PubkeyListViewModel(context, repository, dispatchers)
-    }
+    private fun createViewModel(): PubkeyListViewModel = PubkeyListViewModel(context, repository, dispatchers)
 
     // ========== Tests for encrypted key import with re-encryption ==========
 
@@ -127,6 +125,7 @@ class PubkeyListViewModelTest {
 
         // Import with encrypt=false (don't re-encrypt for storage)
         viewModel.completeImportWithPassword(
+            nickname = "test-key",
             decryptPassword = "testpass",
             encrypt = false,
             encryptPassword = null
@@ -162,6 +161,7 @@ class PubkeyListViewModelTest {
 
         // Import with encrypt=true and a new password
         viewModel.completeImportWithPassword(
+            nickname = "test-key",
             decryptPassword = "testpass",
             encrypt = true,
             encryptPassword = "newpassword"
@@ -195,9 +195,10 @@ class PubkeyListViewModelTest {
 
         // Import with encrypt=true, reusing the same password for encryption
         viewModel.completeImportWithPassword(
+            nickname = "test-key",
             decryptPassword = "testpass",
             encrypt = true,
-            encryptPassword = "testpass"  // Same as decrypt password
+            encryptPassword = "testpass" // Same as decrypt password
         )
         advanceUntilIdle()
 
@@ -226,6 +227,7 @@ class PubkeyListViewModelTest {
 
         // Try to import with wrong decrypt password
         viewModel.completeImportWithPassword(
+            nickname = "test-key",
             decryptPassword = "wrongpassword",
             encrypt = false,
             encryptPassword = null
@@ -256,7 +258,8 @@ class PubkeyListViewModelTest {
 
         // Import unencrypted key without re-encrypting
         viewModel.completeImportWithPassword(
-            decryptPassword = "",  // No password needed for unencrypted key
+            nickname = "unencrypted-key",
+            decryptPassword = "", // No password needed for unencrypted key
             encrypt = false,
             encryptPassword = null
         )
@@ -289,6 +292,7 @@ class PubkeyListViewModelTest {
 
         // Import unencrypted key but encrypt it for storage
         viewModel.completeImportWithPassword(
+            nickname = "encrypt-for-storage",
             decryptPassword = "",
             encrypt = true,
             encryptPassword = "storagepassword"
@@ -316,7 +320,7 @@ class PubkeyListViewModelTest {
         viewModel = createViewModel()
         advanceUntilIdle()
 
-        viewModel.completeImportWithPassword("password", false, null)
+        viewModel.completeImportWithPassword("any-key", "password", false, null)
         advanceUntilIdle()
 
         verify(repository, never()).save(any())
