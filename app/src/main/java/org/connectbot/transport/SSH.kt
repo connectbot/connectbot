@@ -684,13 +684,8 @@ class SSH :
                 bridge?.outputLine("FIDO2 PIN entry cancelled")
                 return null
             }
-
-            // Then notify that we're ready for NFC (skipped in ConsoleScreen for NFC)
-            val connected = bridge?.requestFido2Connect(pubkey.nickname, credentialId, transport) ?: false
-            if (!connected) {
-                bridge?.outputLine("FIDO2 security key connection cancelled or failed")
-                return null
-            }
+            // NFC connection is transient — it happens during the signing phase
+            // when the user taps their key, so no connect prompt is needed here.
         }
 
         // Create the public key from stored data
