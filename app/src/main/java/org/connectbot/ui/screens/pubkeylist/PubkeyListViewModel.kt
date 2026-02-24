@@ -93,7 +93,9 @@ data class PubkeyListUiState(
     // Public key pending export to file (triggers file picker in UI)
     val pendingPublicKeyExport: PendingPublicKeyExport? = null,
     // Key pending import that needs password (triggers password dialog in UI)
-    val pendingImport: PendingImport? = null
+    val pendingImport: PendingImport? = null,
+    // Successfully parsed key awaiting nickname confirmation before saving
+    val pendingNicknameConfirmation: Pubkey? = null
 )
 
 @HiltViewModel
@@ -714,31 +716,7 @@ class PubkeyListViewModel @Inject constructor(
                 val result = withContext(dispatchers.io) {
                     readKeyFromUri(uri)
                 }
-
-                when (result) {
-                    is ImportResult.Success -> {
-                        repository.save(result.pubkey)
-                    }
-
-                    is ImportResult.NeedsPassword -> {
-                        // Set pending import - UI will show password dialog
-                        _uiState.update {
-                            it.copy(
-                                pendingImport = PendingImport(
-                                    keyData = result.keyData,
-                                    nickname = result.nickname,
-                                    keyType = result.keyType
-                                )
-                            )
-                        }
-                    }
-
-                    is ImportResult.Failed -> {
-                        _uiState.update {
-                            it.copy(error = "Failed to parse key file")
-                        }
-                    }
-                }
+                handleImportResult(result, "Failed to parse key file")
             } catch (e: Exception) {
                 Timber.e(e, "Failed to import key")
                 _uiState.update {
@@ -748,19 +726,76 @@ class PubkeyListViewModel @Inject constructor(
         }
     }
 
+    fun importKeyFromText(keyText: String, nickname: String) {
+        viewModelScope.launch {
+            try {
+                val result = withContext(dispatchers.default) {
+                    parseKeyBytes(keyText.toByteArray(Charsets.UTF_8), nickname)
+                }
+                handleImportResult(result, "Failed to parse key from clipboard")
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to import key from clipboard")
+                _uiState.update {
+                    it.copy(error = "Failed to import key from clipboard: ${e.message}")
+                }
+            }
+        }
+    }
+
+    private fun handleImportResult(result: ImportResult, failureMessage: String) {
+        when (result) {
+            is ImportResult.Success -> {
+                _uiState.update {
+                    it.copy(pendingNicknameConfirmation = result.pubkey)
+                }
+            }
+
+            is ImportResult.NeedsPassword -> {
+                _uiState.update {
+                    it.copy(
+                        pendingImport = PendingImport(
+                            keyData = result.keyData,
+                            nickname = result.nickname,
+                            keyType = result.keyType
+                        )
+                    )
+                }
+            }
+
+            is ImportResult.Failed -> {
+                _uiState.update {
+                    it.copy(error = failureMessage)
+                }
+            }
+        }
+    }
+
+    fun confirmImportNickname(nickname: String) {
+        val pubkey = _uiState.value.pendingNicknameConfirmation ?: return
+        viewModelScope.launch {
+            repository.save(pubkey.copy(nickname = nickname))
+            _uiState.update { it.copy(pendingNicknameConfirmation = null) }
+        }
+    }
+
+    fun cancelImportNickname() {
+        _uiState.update { it.copy(pendingNicknameConfirmation = null) }
+    }
+
     /**
      * Complete the import of an encrypted key with the provided password.
+     * @param nickname Nickname to save the key under
      * @param decryptPassword Password to decrypt the imported key
      * @param encrypt Whether to encrypt the key for storage
      * @param encryptPassword Password to use for encryption (null if not encrypting)
      */
-    fun completeImportWithPassword(decryptPassword: String, encrypt: Boolean, encryptPassword: String?) {
+    fun completeImportWithPassword(nickname: String, decryptPassword: String, encrypt: Boolean, encryptPassword: String?) {
         val pending = _uiState.value.pendingImport ?: return
 
         viewModelScope.launch {
             try {
                 val pubkey = withContext(dispatchers.io) {
-                    decryptAndImportKey(pending.keyData, pending.nickname, decryptPassword, encrypt, encryptPassword)
+                    decryptAndImportKey(pending.keyData, nickname, decryptPassword, encrypt, encryptPassword)
                 }
 
                 if (pubkey != null) {
@@ -864,6 +899,10 @@ class PubkeyListViewModel @Inject constructor(
             return ImportResult.Failed
         }
 
+        return parseKeyBytes(keyData, nickname)
+    }
+
+    private fun parseKeyBytes(keyData: ByteArray, nickname: String): ImportResult {
         val keyString = String(keyData)
 
         // Try to parse using PEMDecoder first (handles OpenSSH, traditional PEM formats)

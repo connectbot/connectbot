@@ -104,9 +104,7 @@ class PubkeyListViewModelTest {
         Timber.uprootAll()
     }
 
-    private fun createViewModel(): PubkeyListViewModel {
-        return PubkeyListViewModel(context, repository, dispatchers)
-    }
+    private fun createViewModel(): PubkeyListViewModel = PubkeyListViewModel(context, repository, dispatchers)
 
     // ========== Tests for encrypted key import with re-encryption ==========
 
@@ -127,6 +125,7 @@ class PubkeyListViewModelTest {
 
         // Import with encrypt=false (don't re-encrypt for storage)
         viewModel.completeImportWithPassword(
+            nickname = "test-key",
             decryptPassword = "testpass",
             encrypt = false,
             encryptPassword = null
@@ -162,6 +161,7 @@ class PubkeyListViewModelTest {
 
         // Import with encrypt=true and a new password
         viewModel.completeImportWithPassword(
+            nickname = "test-key",
             decryptPassword = "testpass",
             encrypt = true,
             encryptPassword = "newpassword"
@@ -195,9 +195,10 @@ class PubkeyListViewModelTest {
 
         // Import with encrypt=true, reusing the same password for encryption
         viewModel.completeImportWithPassword(
+            nickname = "test-key",
             decryptPassword = "testpass",
             encrypt = true,
-            encryptPassword = "testpass"  // Same as decrypt password
+            encryptPassword = "testpass" // Same as decrypt password
         )
         advanceUntilIdle()
 
@@ -226,6 +227,7 @@ class PubkeyListViewModelTest {
 
         // Try to import with wrong decrypt password
         viewModel.completeImportWithPassword(
+            nickname = "test-key",
             decryptPassword = "wrongpassword",
             encrypt = false,
             encryptPassword = null
@@ -256,7 +258,8 @@ class PubkeyListViewModelTest {
 
         // Import unencrypted key without re-encrypting
         viewModel.completeImportWithPassword(
-            decryptPassword = "",  // No password needed for unencrypted key
+            nickname = "unencrypted-key",
+            decryptPassword = "", // No password needed for unencrypted key
             encrypt = false,
             encryptPassword = null
         )
@@ -289,6 +292,7 @@ class PubkeyListViewModelTest {
 
         // Import unencrypted key but encrypt it for storage
         viewModel.completeImportWithPassword(
+            nickname = "encrypt-for-storage",
             decryptPassword = "",
             encrypt = true,
             encryptPassword = "storagepassword"
@@ -316,7 +320,7 @@ class PubkeyListViewModelTest {
         viewModel = createViewModel()
         advanceUntilIdle()
 
-        viewModel.completeImportWithPassword("password", false, null)
+        viewModel.completeImportWithPassword("any-key", "password", false, null)
         advanceUntilIdle()
 
         verify(repository, never()).save(any())
@@ -360,6 +364,139 @@ class PubkeyListViewModelTest {
         viewModel.clearError()
 
         assertNull("Error should be cleared", viewModel.uiState.value.error)
+    }
+
+    // ========== Tests for importKeyFromText ==========
+
+    /**
+     * Tests importing an unencrypted PEM key from text.
+     *
+     * Scenario: User pastes an unencrypted private key into the clipboard import dialog.
+     * Expected: Key is parsed successfully and pendingNicknameConfirmation is set.
+     */
+    @Test
+    fun importKeyFromText_WithUnencryptedPemKey_SetsPendingNicknameConfirmation() = runTest {
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.importKeyFromText(testUnencryptedPemKey, "my-key")
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertNotNull("Should have pending nickname confirmation", state.pendingNicknameConfirmation)
+        assertEquals("Nickname should match", "my-key", state.pendingNicknameConfirmation?.nickname)
+        assertEquals("Type should be RSA", "RSA", state.pendingNicknameConfirmation?.type)
+        assertFalse("Key should not be encrypted", state.pendingNicknameConfirmation?.encrypted ?: true)
+        assertNull("Should have no pending import", state.pendingImport)
+        assertNull("Should have no error", state.error)
+    }
+
+    /**
+     * Tests importing an encrypted PEM key from text.
+     *
+     * Scenario: User pastes an encrypted private key into the clipboard import dialog.
+     * Expected: Key is detected as encrypted and pendingImport is set for password entry.
+     */
+    @Test
+    fun importKeyFromText_WithEncryptedPemKey_SetsPendingImport() = runTest {
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.importKeyFromText(testEncryptedPemKey, "encrypted-key")
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertNotNull("Should have pending import", state.pendingImport)
+        assertEquals("Nickname should match", "encrypted-key", state.pendingImport?.nickname)
+        assertNull("Should have no pending nickname confirmation", state.pendingNicknameConfirmation)
+        assertNull("Should have no error", state.error)
+    }
+
+    /**
+     * Tests importing invalid text that is not a valid key.
+     *
+     * Scenario: User pastes random text that is not a valid private key.
+     * Expected: Import fails and error state is set.
+     */
+    @Test
+    fun importKeyFromText_WithInvalidText_SetsError() = runTest {
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.importKeyFromText("this is not a valid key", "bad-key")
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertNotNull("Should have an error", state.error)
+        assertNull("Should have no pending import", state.pendingImport)
+        assertNull("Should have no pending nickname confirmation", state.pendingNicknameConfirmation)
+        verify(repository, never()).save(any())
+    }
+
+    // ========== Tests for confirmImportNickname ==========
+
+    /**
+     * Tests confirming the nickname for a successfully parsed key.
+     *
+     * Scenario: User imports an unencrypted key and confirms its nickname in the dialog.
+     * Expected: Key is saved with the confirmed nickname and pendingNicknameConfirmation is cleared.
+     */
+    @Test
+    fun confirmImportNickname_SavesKeyWithConfirmedNickname() = runTest {
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.importKeyFromText(testUnencryptedPemKey, "my-key")
+        advanceUntilIdle()
+        assertNotNull("Should have pending confirmation", viewModel.uiState.value.pendingNicknameConfirmation)
+
+        viewModel.confirmImportNickname("confirmed-name")
+        advanceUntilIdle()
+
+        val captor = argumentCaptor<Pubkey>()
+        verify(repository).save(captor.capture())
+        assertEquals("Saved key should use confirmed nickname", "confirmed-name", captor.firstValue.nickname)
+        assertNull("pendingNicknameConfirmation should be cleared", viewModel.uiState.value.pendingNicknameConfirmation)
+    }
+
+    /**
+     * Tests that confirmImportNickname does nothing when there is no pending confirmation.
+     *
+     * Scenario: confirmImportNickname is called without a prior successful import.
+     * Expected: No action is taken and no key is saved.
+     */
+    @Test
+    fun confirmImportNickname_WithNoPendingConfirmation_DoesNothing() = runTest {
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.confirmImportNickname("some-key")
+        advanceUntilIdle()
+
+        verify(repository, never()).save(any())
+    }
+
+    // ========== Tests for cancelImportNickname ==========
+
+    /**
+     * Tests that cancelImportNickname clears the pending nickname confirmation.
+     *
+     * Scenario: User imports an unencrypted key but cancels the nickname confirmation dialog.
+     * Expected: pendingNicknameConfirmation is cleared and no key is saved.
+     */
+    @Test
+    fun cancelImportNickname_ClearsPendingNicknameConfirmation() = runTest {
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.importKeyFromText(testUnencryptedPemKey, "my-key")
+        advanceUntilIdle()
+        assertNotNull("Should have pending confirmation", viewModel.uiState.value.pendingNicknameConfirmation)
+
+        viewModel.cancelImportNickname()
+
+        assertNull("pendingNicknameConfirmation should be cleared after cancel", viewModel.uiState.value.pendingNicknameConfirmation)
+        verify(repository, never()).save(any())
     }
 
     // ========== Helper methods ==========
