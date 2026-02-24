@@ -19,6 +19,7 @@ package org.connectbot.service
 
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.runBlocking
+import org.connectbot.data.entity.Fido2Transport
 import timber.log.Timber
 
 /**
@@ -37,7 +38,7 @@ import timber.log.Timber
  */
 fun TerminalBridge.requestBooleanPrompt(
     instructions: String?,
-    message: String,
+    message: String
 ): Boolean? {
     return try {
         runBlocking {
@@ -62,7 +63,7 @@ fun TerminalBridge.requestBooleanPrompt(
 fun TerminalBridge.requestStringPrompt(
     instructions: String?,
     hint: String?,
-    isPassword: Boolean = false,
+    isPassword: Boolean = false
 ): String? {
     return try {
         runBlocking {
@@ -123,13 +124,82 @@ fun TerminalBridge.requestHostKeyFingerprintPrompt(
     return try {
         runBlocking {
             promptManager.requestHostKeyFingerprintPrompt(
-                hostname, keyType, keySize, serverHostKey,
-                randomArt, bubblebabble, sha256, md5
+                hostname,
+                keyType,
+                keySize,
+                serverHostKey,
+                randomArt,
+                bubblebabble,
+                sha256,
+                md5
             )
         }
     } catch (e: CancellationException) {
         // Prompt was cancelled due to connection loss - throw IOException to propagate error
         Timber.w("Attempted prompt on a closed stream.")
         return null
+    }
+}
+
+/**
+ * Request FIDO2 security key connection for authentication.
+ *
+ * @param keyNickname The nickname of the key for display
+ * @param credentialId The credential ID on the security key
+ * @param transport The preferred transport (USB or NFC)
+ * @return true if security key connected successfully, false otherwise
+ */
+fun TerminalBridge.requestFido2Connect(
+    keyNickname: String,
+    credentialId: ByteArray,
+    transport: Fido2Transport
+): Boolean {
+    return try {
+        runBlocking {
+            promptManager.requestFido2Connect(keyNickname, credentialId, transport)
+        }
+    } catch (e: CancellationException) {
+        Timber.w("Attempted prompt on a closed stream.")
+        return false
+    }
+}
+
+/**
+ * Request FIDO2 PIN entry.
+ *
+ * @param keyNickname The nickname of the key for display
+ * @param attemptsRemaining Number of PIN attempts remaining, or null if unknown
+ * @return The PIN entered by user, or null if cancelled
+ */
+fun TerminalBridge.requestFido2Pin(
+    keyNickname: String,
+    attemptsRemaining: Int? = null
+): String? {
+    return try {
+        runBlocking {
+            promptManager.requestFido2Pin(keyNickname, attemptsRemaining)
+        }
+    } catch (e: CancellationException) {
+        Timber.w("Attempted prompt on a closed stream.")
+        return null
+    }
+}
+
+/**
+ * Request user to touch FIDO2 security key for confirmation.
+ *
+ * @param keyNickname The nickname of the key for display
+ * @return true if touch confirmed, false otherwise
+ */
+fun TerminalBridge.requestFido2Touch(
+    keyNickname: String
+): Boolean {
+    return try {
+        runBlocking {
+            promptManager.requestFido2Touch(keyNickname)
+        }
+    } catch (e: CancellationException) {
+        Timber.w("Attempted prompt on a closed stream.")
+        return false
     }
 }

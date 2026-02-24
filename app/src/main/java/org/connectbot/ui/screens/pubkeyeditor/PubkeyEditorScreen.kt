@@ -28,16 +28,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Nfc
+import androidx.compose.material.icons.filled.Usb
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -52,6 +56,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -60,6 +65,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
+import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.ui.ScreenPreviews
 import org.connectbot.ui.theme.ConnectBotTheme
 
@@ -67,15 +73,16 @@ import org.connectbot.ui.theme.ConnectBotTheme
 @Composable
 fun PubkeyEditorScreen(
     onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: PubkeyEditorViewModel = hiltViewModel()
 ) {
-    val viewModel: PubkeyEditorViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
 
     // Navigate back on successful save
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
     LaunchedEffect(uiState.saveSuccess) {
         if (uiState.saveSuccess) {
-            onNavigateBack()
+            currentOnNavigateBack()
         }
     }
 
@@ -88,6 +95,7 @@ fun PubkeyEditorScreen(
         onNewPassword2Change = viewModel::updateNewPassword2,
         onUnlockAtStartupChange = viewModel::updateUnlockAtStartup,
         onConfirmUseChange = viewModel::updateConfirmUse,
+        onFido2TransportChange = viewModel::updateFido2Transport,
         onSave = viewModel::save,
         modifier = modifier
     )
@@ -104,6 +112,7 @@ fun PubkeyEditorScreenContent(
     onNewPassword2Change: (String) -> Unit,
     onUnlockAtStartupChange: (Boolean) -> Unit,
     onConfirmUseChange: (Boolean) -> Unit,
+    onFido2TransportChange: (Fido2Transport) -> Unit,
     onSave: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -167,7 +176,9 @@ fun PubkeyEditorScreenContent(
                         isError = uiState.nicknameExists,
                         supportingText = if (uiState.nicknameExists) {
                             { Text(stringResource(R.string.pubkey_nickname_exists)) }
-                        } else null
+                        } else {
+                            null
+                        }
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -314,6 +325,50 @@ fun PubkeyEditorScreenContent(
                         Text(stringResource(R.string.pubkey_confirm_use))
                     }
 
+                    // FIDO2 Transport Selection (only for FIDO2 keys)
+                    if (uiState.isFido2) {
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Text(
+                            text = stringResource(R.string.fido2_transport_label),
+                            style = MaterialTheme.typography.titleMedium
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        ) {
+                            FilterChip(
+                                selected = uiState.fido2Transport == Fido2Transport.USB,
+                                onClick = { onFido2TransportChange(Fido2Transport.USB) },
+                                label = { Text(stringResource(R.string.fido2_transport_usb)) },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Filled.Usb,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                },
+                                modifier = Modifier.weight(1f)
+                            )
+                            FilterChip(
+                                selected = uiState.fido2Transport == Fido2Transport.NFC,
+                                onClick = { onFido2TransportChange(Fido2Transport.NFC) },
+                                label = { Text(stringResource(R.string.fido2_transport_nfc)) },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Filled.Nfc,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(18.dp)
+                                    )
+                                },
+                                modifier = Modifier.weight(1f)
+                            )
+                        }
+                    }
+
                     Spacer(modifier = Modifier.height(24.dp))
 
                     // Save Button
@@ -345,6 +400,7 @@ private fun PubkeyEditorScreenLoadingPreview() {
             onNewPassword2Change = {},
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
+            onFido2TransportChange = {},
             onSave = {}
         )
     }
@@ -366,6 +422,7 @@ private fun PubkeyEditorScreenErrorPreview() {
             onNewPassword2Change = {},
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
+            onFido2TransportChange = {},
             onSave = {}
         )
     }
@@ -391,6 +448,7 @@ private fun PubkeyEditorScreenUnencryptedPreview() {
             onNewPassword2Change = {},
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
+            onFido2TransportChange = {},
             onSave = {}
         )
     }
@@ -417,6 +475,7 @@ private fun PubkeyEditorScreenEncryptedPreview() {
             onNewPassword2Change = {},
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
+            onFido2TransportChange = {},
             onSave = {}
         )
     }
@@ -445,6 +504,7 @@ private fun PubkeyEditorScreenPasswordMismatchPreview() {
             onNewPassword2Change = {},
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
+            onFido2TransportChange = {},
             onSave = {}
         )
     }
@@ -474,6 +534,7 @@ private fun PubkeyEditorScreenWrongPasswordPreview() {
             onNewPassword2Change = {},
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
+            onFido2TransportChange = {},
             onSave = {}
         )
     }

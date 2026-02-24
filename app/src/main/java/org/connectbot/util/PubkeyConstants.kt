@@ -35,4 +35,10 @@ object PubkeyConstants {
     const val KEY_TYPE_EC: String = "EC"
     const val KEY_TYPE_ED25519: String = "Ed25519"
     const val KEY_TYPE_IMPORTED: String = "IMPORTED"
+
+    /**
+     * FIDO2 security key types (sk-* keys from OpenSSH 8.2+).
+     */
+    const val KEY_TYPE_SK_ECDSA: String = "SK-ECDSA"
+    const val KEY_TYPE_SK_ED25519: String = "SK-Ed25519"
 }

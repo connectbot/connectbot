@@ -99,16 +99,22 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.preference.PreferenceManager
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.fido2.Fido2ConnectionState
 import org.connectbot.service.PromptRequest
+import org.connectbot.service.PromptResponse
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.SelectionController
 import org.connectbot.terminal.Terminal
 import org.connectbot.ui.LoadingScreen
 import org.connectbot.ui.LocalTerminalManager
+import org.connectbot.ui.components.Fido2NfcTapOverlay
 import org.connectbot.ui.components.FloatingTextInputDialog
 import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
@@ -530,6 +536,47 @@ fun ConsoleScreen(
                         // Must be AFTER keyboard so prompts appear on top (z-order)
                         val promptState by bridge.promptManager.promptState.collectAsState()
 
+                        // Handle FIDO2 connect prompt based on transport preference
+                        LaunchedEffect(promptState) {
+                            val fido2Prompt = promptState as? PromptRequest.Fido2ConnectPrompt
+                            if (fido2Prompt != null) {
+                                val fido2Manager = bridge.fido2Manager
+
+                                // For NFC transport, skip USB wait - proceed immediately
+                                // NFC tap will happen during the signing phase
+                                if (fido2Prompt.transport == org.connectbot.data.entity.Fido2Transport.NFC) {
+                                    bridge.promptManager.respond(PromptResponse.Fido2Response(true))
+                                    return@LaunchedEffect
+                                }
+
+                                // For USB transport, wait for device connection
+                                // If device already connected, complete immediately
+                                if (fido2Manager.isDeviceConnected()) {
+                                    bridge.promptManager.respond(PromptResponse.Fido2Response(true))
+                                    return@LaunchedEffect
+                                }
+
+                                // Start USB discovery and wait for connection
+                                fido2Manager.startUsbDiscovery()
+                                fido2Manager.connectionState.first { state ->
+                                    state is Fido2ConnectionState.Connected
+                                }
+                                // Don't stop USB discovery - device needs to stay connected for signing
+                                bridge.promptManager.respond(PromptResponse.Fido2Response(true))
+                            }
+                        }
+
+                        // Show NFC tap prompt when waiting for NFC signing
+                        val waitingForNfc by bridge.fido2Manager.waitingForNfcSigning.collectAsState()
+                        if (waitingForNfc) {
+                            Fido2NfcTapOverlay(
+                                onCancel = {
+                                    bridge.fido2Manager.cancelNfcSigning()
+                                },
+                                modifier = Modifier.align(Alignment.BottomCenter)
+                            )
+                        }
+
                         InlinePrompt(
                             promptRequest = promptState,
                             onResponse = { response ->
@@ -538,7 +585,7 @@ fun ConsoleScreen(
                             onCancel = {
                                 bridge.promptManager.cancelPrompt()
                             },
-                            onDismissed = {
+                            onDismiss = {
                                 termFocusRequester.requestFocus()
                             },
                             modifier = Modifier
