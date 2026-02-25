@@ -19,7 +19,7 @@ minSdk = "24"
 targetSdk = "35"
 
 composeBom = "2026.02.00"
-material3 = "1.5.0-alpha14"
+material3 = "1.5.0-alpha15"
 lifecycleViewModel = "2.10.0"
 navigationCompose = "2.9.7"
 activityCompose = "1.12.4"
