@@ -29,7 +29,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import org.connectbot.data.entity.Host
-import org.connectbot.ui.screens.colors.ColorSchemeManagerScreen
 import org.connectbot.ui.screens.colors.ColorsScreen
 import org.connectbot.ui.screens.colors.PaletteEditorScreen
 import org.connectbot.ui.screens.console.ConsoleScreen
@@ -87,9 +86,6 @@ fun ConnectBotNavHost(
                 },
                 onNavigateToSftp = { host ->
                     navController.navigate("${NavDestinations.SFTP_BROWSER}/${host.id}")
-                },
-                onNavigateToColors = {
-                    navController.navigateSafely(NavDestinations.COLORS)
                 },
                 onNavigateToProfiles = {
                     navController.navigateSafely(NavDestinations.PROFILES)
@@ -186,13 +182,6 @@ fun ConnectBotNavHost(
         composable(NavDestinations.COLORS) {
             ColorsScreen(
                 onNavigateBack = { navController.safePopBackStack() },
-                onNavigateToSchemeManager = { navController.navigateSafely(NavDestinations.SCHEME_MANAGER) }
-            )
-        }
-
-        composable(NavDestinations.SCHEME_MANAGER) {
-            ColorSchemeManagerScreen(
-                onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToPaletteEditor = { schemeId ->
                     navController.navigateSafely("${NavDestinations.PALETTE_EDITOR}/$schemeId")
                 }
@@ -206,7 +195,18 @@ fun ConnectBotNavHost(
             )
         ) {
             PaletteEditorScreen(
-                onNavigateBack = { navController.safePopBackStack() }
+                onNavigateBack = { navController.safePopBackStack() },
+                onNavigateToDuplicate = { newSchemeId ->
+                    navController.navigate(
+                        route = "${NavDestinations.PALETTE_EDITOR}/$newSchemeId",
+                        navOptions = NavOptions.Builder()
+                            .setPopUpTo(
+                                route = "${NavDestinations.PALETTE_EDITOR}/{${NavArgs.SCHEME_ID}}",
+                                inclusive = true
+                            )
+                            .build()
+                    )
+                }
             )
         }
 
@@ -215,6 +215,9 @@ fun ConnectBotNavHost(
                 onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToEdit = { profile ->
                     navController.navigateSafely("${NavDestinations.PROFILE_EDITOR}/${profile.id}")
+                },
+                onNavigateToColors = {
+                    navController.navigateSafely(NavDestinations.COLORS)
                 }
             )
         }
@@ -226,7 +229,10 @@ fun ConnectBotNavHost(
             )
         ) {
             ProfileEditorScreen(
-                onNavigateBack = { navController.safePopBackStack() }
+                onNavigateBack = { navController.safePopBackStack() },
+                onNavigateToColors = {
+                    navController.navigateSafely(NavDestinations.COLORS)
+                }
             )
         }
 
