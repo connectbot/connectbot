@@ -184,6 +184,8 @@ fun SettingsScreen(
         onBellVolumeChange = viewModel::updateBellVolume,
         onBellVibrateChange = viewModel::updateBellVibrate,
         onBellNotificationChange = viewModel::updateBellNotification,
+        onSwipeLeftKeysChange = viewModel::updateSwipeLeftKeys,
+        onSwipeRightKeysChange = viewModel::updateSwipeRightKeys,
         modifier = modifier
     )
 }
@@ -227,6 +229,8 @@ fun SettingsScreenContent(
     onBellVolumeChange: (Float) -> Unit,
     onBellVibrateChange: (Boolean) -> Unit,
     onBellNotificationChange: (Boolean) -> Unit,
+    onSwipeLeftKeysChange: (String) -> Unit,
+    onSwipeRightKeysChange: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Scaffold(
@@ -460,6 +464,41 @@ fun SettingsScreenContent(
                     summary = stringResource(R.string.pref_pg_updn_gesture_summary),
                     checked = uiState.pgupdngesture,
                     onCheckedChange = onPgUpDnGestureChange
+                )
+            }
+
+            // Swipe gestures
+            item {
+                PreferenceCategory(title = stringResource(R.string.pref_swipe_gestures_category))
+            }
+
+            item {
+                val swipeKeyPresets = listOf(
+                    stringResource(R.string.swipe_keys_none) to "",
+                    "Ctrl+B P" to "Ctrl+B P",
+                    "Ctrl+B N" to "Ctrl+B N",
+                    "Ctrl+A P" to "Ctrl+A P",
+                    "Ctrl+A N" to "Ctrl+A N"
+                )
+                val swipeCustomLabel = stringResource(R.string.swipe_keys_custom)
+                val swipeNoneLabel = stringResource(R.string.swipe_keys_none)
+
+                ListPreferenceWithCustom(
+                    title = stringResource(R.string.pref_swipe_left_keys_title),
+                    summary = uiState.swipeLeftKeys.ifEmpty { swipeNoneLabel },
+                    value = uiState.swipeLeftKeys,
+                    entries = swipeKeyPresets,
+                    onValueChange = onSwipeLeftKeysChange,
+                    customLabel = swipeCustomLabel
+                )
+
+                ListPreferenceWithCustom(
+                    title = stringResource(R.string.pref_swipe_right_keys_title),
+                    summary = uiState.swipeRightKeys.ifEmpty { swipeNoneLabel },
+                    value = uiState.swipeRightKeys,
+                    entries = swipeKeyPresets,
+                    onValueChange = onSwipeRightKeysChange,
+                    customLabel = swipeCustomLabel
                 )
             }
 
@@ -1358,7 +1397,9 @@ private fun SettingsScreenPreview() {
                 fontValidationInProgress = false,
                 fontValidationError = null,
                 fontImportInProgress = false,
-                fontImportError = null
+                fontImportError = null,
+                swipeLeftKeys = "Ctrl+B P",
+                swipeRightKeys = "Ctrl+B N"
             ),
             onNavigateBack = {},
             onAuthOnLaunchChange = {},
@@ -1394,7 +1435,9 @@ private fun SettingsScreenPreview() {
             onBellChange = {},
             onBellVolumeChange = {},
             onBellVibrateChange = {},
-            onBellNotificationChange = {}
+            onBellNotificationChange = {},
+            onSwipeLeftKeysChange = {},
+            onSwipeRightKeysChange = {}
         )
     }
 }

@@ -76,6 +76,8 @@ data class SettingsUiState(
     val customFonts: List<String> = emptyList(),
     val customTerminalTypes: List<String> = emptyList(),
     val localFonts: List<Pair<String, String>> = emptyList(),
+    val swipeLeftKeys: String = "",
+    val swipeRightKeys: String = "",
     val fontValidationInProgress: Boolean = false,
     val fontValidationError: String? = null,
     val fontImportInProgress: Boolean = false,
@@ -169,6 +171,8 @@ class SettingsViewModel @Inject constructor(
             bellVolume = prefs.getFloat("bellVolume", 0.5f),
             bellVibrate = prefs.getBoolean("bellVibrate", true),
             bellNotification = prefs.getBoolean("bellNotification", false),
+            swipeLeftKeys = prefs.getString(PreferenceConstants.SWIPE_LEFT_KEYS, "") ?: "",
+            swipeRightKeys = prefs.getString(PreferenceConstants.SWIPE_RIGHT_KEYS, "") ?: "",
             fontFamily = prefs.getString("fontFamily", "SYSTEM_DEFAULT") ?: "SYSTEM_DEFAULT",
             customFonts = customFonts,
             customTerminalTypes = customTerminalTypes,
@@ -309,6 +313,14 @@ class SettingsViewModel @Inject constructor(
 
     fun updateRotation(value: String) {
         updateStringPref("rotation", value) { copy(rotation = value) }
+    }
+
+    fun updateSwipeLeftKeys(value: String) {
+        updateStringPref(PreferenceConstants.SWIPE_LEFT_KEYS, value) { copy(swipeLeftKeys = value) }
+    }
+
+    fun updateSwipeRightKeys(value: String) {
+        updateStringPref(PreferenceConstants.SWIPE_RIGHT_KEYS, value) { copy(swipeRightKeys = value) }
     }
 
     fun updateLanguage(languageTag: String) {

@@ -82,6 +82,10 @@ object PreferenceConstants {
     /* Security */
     const val AUTH_ON_LAUNCH: String = "authOnLaunch"
 
+    /* Swipe gesture key mappings */
+    const val SWIPE_LEFT_KEYS: String = "swipeLeftKeys"
+    const val SWIPE_RIGHT_KEYS: String = "swipeRightKeys"
+
     /* Font settings */
     const val FONT_FAMILY: String = "fontFamily"
     const val FONT_FAMILY_DEFAULT: String = "SYSTEM_DEFAULT"

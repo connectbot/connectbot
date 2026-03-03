@@ -286,6 +286,15 @@
 	<!-- Summary for the full screen preference -->
 	<string name="pref_pg_updn_gesture_summary">"Swipe the left third of the screen to send pg up/dn to the terminal"</string>
 
+	<!-- Swipe gesture key mappings -->
+	<string name="pref_swipe_gestures_category">"Swipe gestures"</string>
+	<string name="pref_swipe_left_keys_title">"Swipe left"</string>
+	<string name="pref_swipe_left_keys_summary">"Key sequence to send on swipe left"</string>
+	<string name="pref_swipe_right_keys_title">"Swipe right"</string>
+	<string name="pref_swipe_right_keys_summary">"Key sequence to send on swipe right"</string>
+	<string name="swipe_keys_none">"None"</string>
+	<string name="swipe_keys_custom">"Custom\u2026"</string>
+
 	<!-- Name for the full screen preference -->
 	<string name="pref_fullscreen_title">"Full screen"</string>
 	<!-- Summary for the full screen preference -->

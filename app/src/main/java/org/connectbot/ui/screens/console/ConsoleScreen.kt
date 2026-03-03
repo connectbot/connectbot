@@ -24,6 +24,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.WindowInsets
@@ -84,6 +85,7 @@ import androidx.compose.ui.input.key.isShiftPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -116,6 +118,7 @@ import org.connectbot.ui.components.TERMINAL_KEYBOARD_HEIGHT_DP
 import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.SwipeKeySequenceParser
 import org.connectbot.util.rememberTerminalTypefaceResultFromStoredValue
 import timber.log.Timber
 
@@ -159,6 +162,12 @@ fun ConsoleScreen(
     var fullscreen by remember { mutableStateOf(prefs.getBoolean("fullscreen", false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean("titlebarhide", false)) }
     val volumeKeysChangeFontSize = remember { prefs.getBoolean(PreferenceConstants.VOLUME_FONT, true) }
+    val swipeLeftParsed = remember {
+        SwipeKeySequenceParser.parse(prefs.getString(PreferenceConstants.SWIPE_LEFT_KEYS, "") ?: "")
+    }
+    val swipeRightParsed = remember {
+        SwipeKeySequenceParser.parse(prefs.getString(PreferenceConstants.SWIPE_RIGHT_KEYS, "") ?: "")
+    }
 
     // Keyboard state
     val hasHardwareKeyboard = rememberHasHardwareKeyboard()
@@ -441,6 +450,30 @@ fun ConsoleScreen(
                             .fillMaxSize()
                             .padding(
                                 top = if (!titleBarHide) titleBarHeight else 0.dp
+                            )
+                            .then(
+                                if (swipeLeftParsed.isNotEmpty() || swipeRightParsed.isNotEmpty()) {
+                                    Modifier.pointerInput(swipeLeftParsed, swipeRightParsed) {
+                                        val thresholdPx = 100.dp.toPx()
+                                        var totalDragX = 0f
+                                        detectHorizontalDragGestures(
+                                            onDragStart = { totalDragX = 0f },
+                                            onDragEnd = {
+                                                if (totalDragX < -thresholdPx && swipeLeftParsed.isNotEmpty()) {
+                                                    bridge.injectString(swipeLeftParsed)
+                                                } else if (totalDragX > thresholdPx && swipeRightParsed.isNotEmpty()) {
+                                                    bridge.injectString(swipeRightParsed)
+                                                }
+                                            },
+                                            onDragCancel = { totalDragX = 0f },
+                                            onHorizontalDrag = { _, dragAmount ->
+                                                totalDragX += dragAmount
+                                            }
+                                        )
+                                    }
+                                } else {
+                                    Modifier
+                                }
                             )
                     ) {
                         // Get font from profile (stored in bridge)
