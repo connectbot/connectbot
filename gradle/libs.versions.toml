@@ -1,7 +1,7 @@
 [versions]
 androidGradlePlugin = "9.0.1"
 kotlin = "2.3.10"
-spotless = "8.2.1"
+spotless = "8.3.0"
 versions = "0.53.0"
 errorprone = "5.0.0"
 coveralls = "2.12.2"
