@@ -37,6 +37,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Computer
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Error
@@ -84,7 +85,7 @@ import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.ui.LocalTerminalManager
-import org.connectbot.ui.ScreenPreviews
+import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.components.ShortcutCustomizationDialog
 import org.connectbot.ui.theme.ConnectBotTheme
@@ -99,7 +100,6 @@ fun HostListScreen(
     onNavigateToPubkeys: () -> Unit,
     onNavigateToPortForwards: (Host) -> Unit,
     onNavigateToSftp: (Host) -> Unit,
-    onNavigateToColors: () -> Unit,
     onNavigateToProfiles: () -> Unit,
     onNavigateToHelp: () -> Unit,
     modifier: Modifier = Modifier,
@@ -148,6 +148,8 @@ fun HostListScreen(
                 }
                 viewModel.clearExportedJson()
             }
+        } else {
+            viewModel.clearExportedJson()
         }
     }
 
@@ -231,11 +233,11 @@ fun HostListScreen(
         onNavigateToPubkeys = onNavigateToPubkeys,
         onNavigateToPortForwards = onNavigateToPortForwards,
         onNavigateToSftp = onNavigateToSftp,
-        onNavigateToColors = onNavigateToColors,
         onNavigateToProfiles = onNavigateToProfiles,
         onNavigateToHelp = onNavigateToHelp,
         onToggleSortOrder = viewModel::toggleSortOrder,
         onDeleteHost = viewModel::deleteHost,
+        onDuplicateHost = viewModel::duplicateHost,
         onForgetHostKeys = viewModel::forgetHostKeys,
         onDisconnectHost = viewModel::disconnectHost,
         onDisconnectAll = viewModel::disconnectAll,
@@ -257,11 +259,11 @@ fun HostListScreenContent(
     onNavigateToPubkeys: () -> Unit,
     onNavigateToPortForwards: (Host) -> Unit,
     onNavigateToSftp: (Host) -> Unit,
-    onNavigateToColors: () -> Unit,
     onNavigateToProfiles: () -> Unit,
     onNavigateToHelp: () -> Unit,
     onToggleSortOrder: () -> Unit,
     onDeleteHost: (Host) -> Unit,
+    onDuplicateHost: (Host) -> Unit,
     onForgetHostKeys: (Host) -> Unit,
     onDisconnectHost: (Host) -> Unit,
     onDisconnectAll: () -> Unit,
@@ -319,13 +321,6 @@ fun HostListScreenContent(
                                 onClick = {
                                     showMenu = false
                                     onNavigateToSettings()
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.title_colors)) },
-                                onClick = {
-                                    showMenu = false
-                                    onNavigateToColors()
                                 }
                             )
                             DropdownMenuItem(
@@ -444,6 +439,7 @@ fun HostListScreenContent(
                                 },
                                 onEdit = { onNavigateToEditHost(host) },
                                 onPortForwards = { onNavigateToPortForwards(host) },
+                                onDuplicate = { onDuplicateHost(host) },
                                 onForgetHostKeys = { onForgetHostKeys(host) },
                                 onSftp = { onNavigateToSftp(host) },
                                 onDisconnect = { onDisconnectHost(host) },
@@ -475,6 +471,7 @@ private fun HostListItem(
     onClick: () -> Unit,
     onEdit: () -> Unit,
     onPortForwards: () -> Unit,
+    onDuplicate: () -> Unit,
     onForgetHostKeys: () -> Unit,
     onSftp: () -> Unit,
     onDisconnect: () -> Unit,
@@ -600,6 +597,16 @@ private fun HostListItem(
                             },
                             leadingIcon = {
                                 Icon(Icons.Default.Link, null)
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.list_host_duplicate)) },
+                            onClick = {
+                                showMenu = false
+                                onDuplicate()
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.ContentCopy, null)
                             }
                         )
                         if (host.protocol == "ssh") {
@@ -779,7 +786,7 @@ private fun parseColor(colorString: String?): Color {
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun HostListScreenEmptyPreview() {
     ConnectBotTheme {
@@ -794,11 +801,11 @@ private fun HostListScreenEmptyPreview() {
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
             onNavigateToSftp = {},
-            onNavigateToColors = {},
             onNavigateToProfiles = {},
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
+            onDuplicateHost = {},
             onForgetHostKeys = {},
             onDisconnectHost = {},
             onDisconnectAll = {}
@@ -806,7 +813,7 @@ private fun HostListScreenEmptyPreview() {
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun HostListScreenLoadingPreview() {
     ConnectBotTheme {
@@ -821,11 +828,11 @@ private fun HostListScreenLoadingPreview() {
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
             onNavigateToSftp = {},
-            onNavigateToColors = {},
             onNavigateToProfiles = {},
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
+            onDuplicateHost = {},
             onForgetHostKeys = {},
             onDisconnectHost = {},
             onDisconnectAll = {}
@@ -833,7 +840,7 @@ private fun HostListScreenLoadingPreview() {
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun HostListScreenErrorPreview() {
     ConnectBotTheme {
@@ -849,11 +856,11 @@ private fun HostListScreenErrorPreview() {
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
             onNavigateToSftp = {},
-            onNavigateToColors = {},
             onNavigateToProfiles = {},
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
+            onDuplicateHost = {},
             onForgetHostKeys = {},
             onDisconnectHost = {},
             onDisconnectAll = {}
@@ -861,7 +868,7 @@ private fun HostListScreenErrorPreview() {
     }
 }
 
-@ScreenPreviews
+@PreviewScreen
 @Composable
 private fun HostListScreenPopulatedPreview() {
     ConnectBotTheme {
@@ -909,11 +916,11 @@ private fun HostListScreenPopulatedPreview() {
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
             onNavigateToSftp = {},
-            onNavigateToColors = {},
             onNavigateToProfiles = {},
             onNavigateToHelp = {},
             onToggleSortOrder = {},
             onDeleteHost = {},
+            onDuplicateHost = {},
             onForgetHostKeys = {},
             onDisconnectHost = {},
             onDisconnectAll = {}
