@@ -66,6 +66,7 @@ class ConsoleViewModelTest {
         savedStateHandle = mock()
         bridgesFlow = MutableStateFlow(emptyList())
         whenever(terminalManager.bridgesFlow).thenReturn(bridgesFlow)
+        whenever(terminalManager.hostStatusChangedFlow).thenReturn(MutableSharedFlow())
     }
 
     @After
@@ -468,6 +469,7 @@ class ConsoleViewModelTest {
         whenever(bridge.isDisconnected).thenReturn(false)
         whenever(bridge.bellEvents).thenReturn(MutableSharedFlow())
         whenever(bridge.progressState).thenReturn(progressFlow)
+        whenever(bridge.networkStatusMessages).thenReturn(MutableSharedFlow())
         return bridge
     }
 }
