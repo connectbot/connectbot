@@ -21,6 +21,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -42,7 +43,9 @@ data class ConsoleUiState(
     val revision: Int = 0,
     // Progress state from OSC 9;4 escape sequences
     val progressState: ProgressState? = null,
-    val progressValue: Int = 0
+    val progressValue: Int = 0,
+    // Transient network status message to show as a top banner
+    val networkStatusMessage: String? = null
 )
 
 @HiltViewModel
@@ -65,6 +68,14 @@ class ConsoleViewModel @Inject constructor(
                     updateBridges(bridges)
                     subscribeToActiveBridgeBells(bridges)
                     subscribeToActiveBridgeProgress(bridges)
+                    subscribeToNetworkStatusMessages(bridges)
+                }
+            }
+
+            // Observe host status changes (connect/disconnect events) to refresh UI
+            viewModelScope.launch {
+                manager.hostStatusChangedFlow.collect {
+                    _uiState.update { it.copy(revision = it.revision + 1) }
                 }
             }
 
@@ -120,6 +131,23 @@ class ConsoleViewModel @Inject constructor(
                                     )
                                 }
                             }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun subscribeToNetworkStatusMessages(bridges: List<TerminalBridge>) {
+        viewModelScope.launch {
+            bridges.forEach { bridge ->
+                launch {
+                    bridge.networkStatusMessages.collect { message ->
+                        val currentBridge = _uiState.value.bridges.getOrNull(_uiState.value.currentBridgeIndex)
+                        if (currentBridge == bridge) {
+                            _uiState.update { it.copy(networkStatusMessage = message) }
+                            delay(4_000)
+                            _uiState.update { it.copy(networkStatusMessage = null) }
                         }
                     }
                 }
@@ -220,5 +248,12 @@ class ConsoleViewModel @Inject constructor(
      */
     fun refreshMenuState() {
         _uiState.update { it.copy(revision = it.revision + 1) }
+    }
+
+    /**
+     * Request a reconnection for the given bridge.
+     */
+    fun reconnect(bridge: TerminalBridge) {
+        terminalManager?.requestReconnect(bridge)
     }
 }

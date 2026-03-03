@@ -24,8 +24,14 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -44,7 +50,9 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -58,6 +66,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -115,6 +124,7 @@ import org.connectbot.ui.components.ResizeDialog
 import org.connectbot.ui.components.TERMINAL_KEYBOARD_HEIGHT_DP
 import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
+import org.connectbot.ui.theme.terminal
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.rememberTerminalTypefaceResultFromStoredValue
 import timber.log.Timber
@@ -544,7 +554,70 @@ fun ConsoleScreen(
                             modifier = Modifier
                                 .align(Alignment.BottomCenter)
                         )
+
+                        // Show reconnect/close overlay when session is disconnected
+                        AnimatedVisibility(
+                            visible = disconnected,
+                            enter = slideInVertically(initialOffsetY = { it }),
+                            exit = slideOutVertically(targetOffsetY = { it }),
+                            modifier = Modifier.align(Alignment.BottomCenter)
+                        ) {
+                            val terminalColors = MaterialTheme.colorScheme.terminal
+                            Column(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .background(terminalColors.overlayBackground)
+                                    .padding(16.dp)
+                            ) {
+                                Text(
+                                    text = stringResource(R.string.alert_disconnect_msg),
+                                    style = MaterialTheme.typography.bodyLarge,
+                                    color = terminalColors.overlayText,
+                                    modifier = Modifier.padding(bottom = 16.dp)
+                                )
+                                Row(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.End
+                                ) {
+                                    TextButton(onClick = { showDisconnectDialog = true }) {
+                                        Text(
+                                            stringResource(R.string.console_menu_close),
+                                            color = terminalColors.overlayText
+                                        )
+                                    }
+                                    Button(
+                                        onClick = { viewModel.reconnect(bridge) },
+                                        modifier = Modifier.padding(start = 8.dp)
+                                    ) {
+                                        Text(stringResource(R.string.console_menu_reconnect))
+                                    }
+                                }
+                            }
+                        }
                     }
+                }
+            }
+
+            // Network status banner — slides in from the top, auto-dismisses after 4 s
+            AnimatedVisibility(
+                visible = uiState.networkStatusMessage != null,
+                enter = slideInVertically { -it } + fadeIn(),
+                exit = slideOutVertically { -it } + fadeOut(),
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(top = titleBarHeight)
+            ) {
+                Surface(
+                    color = MaterialTheme.colorScheme.inverseSurface,
+                    shape = MaterialTheme.shapes.small,
+                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+                ) {
+                    Text(
+                        text = uiState.networkStatusMessage ?: "",
+                        color = MaterialTheme.colorScheme.inverseOnSurface,
+                        style = MaterialTheme.typography.bodyMedium,
+                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
+                    )
                 }
             }
         }
@@ -693,6 +766,20 @@ fun ConsoleScreen(
                                 termFocusRequester.requestFocus()
                             }
                         ) {
+                            // Reconnect (shown only when disconnected)
+                            if (disconnected) {
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.console_menu_reconnect)) },
+                                    onClick = {
+                                        showMenu = false
+                                        currentBridge?.let { viewModel.reconnect(it) }
+                                    },
+                                    leadingIcon = {
+                                        Icon(Icons.Default.Refresh, contentDescription = null)
+                                    }
+                                )
+                            }
+
                             // Disconnect/Close
                             DropdownMenuItem(
                                 text = {

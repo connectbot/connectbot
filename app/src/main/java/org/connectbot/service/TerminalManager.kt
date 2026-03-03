@@ -950,6 +950,14 @@ class TerminalManager :
         }
     }
 
+    /**
+     * Notify that a bridge's connection state has changed (connected or disconnected-but-staying).
+     * Called by [TerminalBridge] so the UI can recompose with fresh state.
+     */
+    fun notifyBridgeStateChanged() {
+        notifyHostStatusChanged()
+    }
+
     private fun notifyHostStatusChanged() {
         scope.launch {
             _hostStatusChanged.emit(Unit)
