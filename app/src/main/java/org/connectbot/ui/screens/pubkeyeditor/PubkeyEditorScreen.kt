@@ -77,8 +77,6 @@ fun PubkeyEditorScreen(
     viewModel: PubkeyEditorViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
-
     // Navigate back on successful save
     val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
     LaunchedEffect(uiState.saveSuccess) {
