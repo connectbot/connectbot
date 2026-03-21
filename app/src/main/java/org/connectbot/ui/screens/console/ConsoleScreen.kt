@@ -66,7 +66,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -310,6 +309,13 @@ fun ConsoleScreen(
             } else {
                 forceSize = null
             }
+        }
+    }
+
+    // Show snackbar for network status messages
+    LaunchedEffect(Unit) {
+        viewModel.networkStatusMessages.collect { message ->
+            snackbarHostState.showSnackbar(message)
         }
     }
 
@@ -595,29 +601,6 @@ fun ConsoleScreen(
                             }
                         }
                     }
-                }
-            }
-
-            // Network status banner — slides in from the top, auto-dismisses after 4 s
-            AnimatedVisibility(
-                visible = uiState.networkStatusMessage != null,
-                enter = slideInVertically { -it } + fadeIn(),
-                exit = slideOutVertically { -it } + fadeOut(),
-                modifier = Modifier
-                    .align(Alignment.TopCenter)
-                    .padding(top = titleBarHeight)
-            ) {
-                Surface(
-                    color = MaterialTheme.colorScheme.inverseSurface,
-                    shape = MaterialTheme.shapes.small,
-                    modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
-                ) {
-                    Text(
-                        text = uiState.networkStatusMessage ?: "",
-                        color = MaterialTheme.colorScheme.inverseOnSurface,
-                        style = MaterialTheme.typography.bodyMedium,
-                        modifier = Modifier.padding(horizontal = 16.dp, vertical = 10.dp)
-                    )
                 }
             }
         }
