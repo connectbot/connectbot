@@ -284,8 +284,25 @@ class PubkeyListViewModel @Inject constructor(
                         throw IllegalArgumentException("Cannot export public key from imported key")
                     }
 
-                    val pk = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
-                    PublicKeyUtils.toAuthorizedKeysFormat(pk, pubkey.nickname)
+                    // For FIDO2 keys, the public key is already in SSH wire format
+                    if (pubkey.isFido2) {
+                        val publicKeyBytes = pubkey.publicKey
+                            ?: throw IllegalArgumentException("No public key data")
+                        val base64Key = android.util.Base64.encodeToString(
+                            publicKeyBytes,
+                            android.util.Base64.NO_WRAP
+                        )
+                        // Use the correct SSH key type string for authorized_keys format
+                        val sshKeyType = when (pubkey.type) {
+                            "SK-Ed25519" -> "sk-ssh-ed25519@openssh.com"
+                            "SK-ECDSA" -> "sk-ecdsa-sha2-nistp256@openssh.com"
+                            else -> pubkey.type
+                        }
+                        "$sshKeyType $base64Key ${pubkey.nickname}"
+                    } else {
+                        val pk = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
+                        PublicKeyUtils.toAuthorizedKeysFormat(pk, pubkey.nickname)
+                    }
                 }
 
                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
