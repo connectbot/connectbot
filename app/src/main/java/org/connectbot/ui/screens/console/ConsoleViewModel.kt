@@ -21,9 +21,11 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -43,9 +45,7 @@ data class ConsoleUiState(
     val revision: Int = 0,
     // Progress state from OSC 9;4 escape sequences
     val progressState: ProgressState? = null,
-    val progressValue: Int = 0,
-    // Transient network status message to show as a top banner
-    val networkStatusMessage: String? = null
+    val progressValue: Int = 0
 )
 
 @HiltViewModel
@@ -58,6 +58,9 @@ class ConsoleViewModel @Inject constructor(
 
     private val _uiState = MutableStateFlow(ConsoleUiState())
     val uiState: StateFlow<ConsoleUiState> = _uiState.asStateFlow()
+
+    private val _networkStatusMessages = MutableSharedFlow<String>(extraBufferCapacity = 8)
+    val networkStatusMessages: SharedFlow<String> = _networkStatusMessages.asSharedFlow()
 
     fun setTerminalManager(manager: TerminalManager) {
         if (terminalManager != manager) {
@@ -145,9 +148,7 @@ class ConsoleViewModel @Inject constructor(
                     bridge.networkStatusMessages.collect { message ->
                         val currentBridge = _uiState.value.bridges.getOrNull(_uiState.value.currentBridgeIndex)
                         if (currentBridge == bridge) {
-                            _uiState.update { it.copy(networkStatusMessage = message) }
-                            delay(4_000)
-                            _uiState.update { it.copy(networkStatusMessage = null) }
+                            _networkStatusMessages.emit(message)
                         }
                     }
                 }
