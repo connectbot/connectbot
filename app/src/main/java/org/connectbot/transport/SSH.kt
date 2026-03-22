@@ -860,7 +860,10 @@ class SSH :
         }
 
         try {
-            val connectionInfo = connection?.connect(HostKeyVerifier(), parseIpVersion(currentHost.ipVersion, currentHost.hostname))
+            val connectionInfo = connection?.connect(
+                HostKeyVerifier(),
+                parseIpVersion(currentHost.ipVersion, currentHost.hostname)
+            ) ?: throw IOException("Connection failed")
             connected = true
 
             connectionInfo?.let { info ->
