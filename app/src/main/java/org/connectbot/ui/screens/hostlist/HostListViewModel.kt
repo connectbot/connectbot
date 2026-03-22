@@ -187,9 +187,15 @@ class HostListViewModel @Inject constructor(
     private fun getConnectionState(host: Host): ConnectionState {
         val manager = terminalManager ?: return ConnectionState.UNKNOWN
 
-        // Check if connected by ID
-        if (manager.bridgesFlow.value.any { it.host.id == host.id }) {
-            return ConnectionState.CONNECTED
+        // Check if host has an active bridge
+        val bridge = manager.bridgesFlow.value.find { it.host.id == host.id }
+        if (bridge != null) {
+            // Bridge exists but may be disconnected or in grace period
+            return if (bridge.disconnected || bridge.isInGracePeriod()) {
+                ConnectionState.DISCONNECTED
+            } else {
+                ConnectionState.CONNECTED
+            }
         }
 
         // Check if in disconnected list by comparing ID
