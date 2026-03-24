@@ -138,7 +138,8 @@ class TerminalBridge {
     private val _progressState = MutableStateFlow<ProgressInfo?>(null)
     val progressState: StateFlow<ProgressInfo?> = _progressState.asStateFlow()
 
-    private var disconnected = false
+    var disconnected = false
+        private set
     private var awaitingClose = false
 
     private var forcedSize = false
