@@ -57,6 +57,7 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.fido2.Fido2Manager
 import org.connectbot.transport.TransportFactory
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.ProviderLoader
@@ -139,6 +140,9 @@ class TerminalManager :
 
     @Inject
     internal lateinit var connectionNotifier: ConnectionNotifier
+
+    @Inject
+    internal lateinit var fido2Manager: Fido2Manager
 
     @Inject
     internal lateinit var dispatchers: CoroutineDispatchers
@@ -632,6 +636,38 @@ class TerminalManager :
             }
         }
         return null
+    }
+
+    // FIDO2 PIN storage for SSH authentication
+    private val fido2Pins: MutableMap<String, String> = HashMap()
+
+    /**
+     * Store a FIDO2 PIN for later use during SSH signing.
+     * The PIN is stored temporarily and should be cleared after use.
+     */
+    fun storeFido2Pin(keyNickname: String, pin: String) {
+        fido2Pins[keyNickname] = pin
+        Timber.d("Stored FIDO2 PIN for key '%s'", keyNickname)
+    }
+
+    /**
+     * Retrieve and consume a stored FIDO2 PIN.
+     * The PIN is removed after retrieval for security.
+     */
+    fun consumeFido2Pin(keyNickname: String): String? {
+        val pin = fido2Pins.remove(keyNickname)
+        if (pin != null) {
+            Timber.d("Consumed FIDO2 PIN for key '%s'", keyNickname)
+        }
+        return pin
+    }
+
+    /**
+     * Clear all stored FIDO2 PINs.
+     */
+    fun clearFido2Pins() {
+        fido2Pins.clear()
+        Timber.d("Cleared all FIDO2 PINs")
     }
 
     private fun stopWithDelay() {
