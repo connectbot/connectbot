@@ -440,7 +440,7 @@ private fun PinEntryContent(
             label = { Text(stringResource(R.string.fido2_pin_hint)) },
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.NumberPassword,
+                keyboardType = KeyboardType.Password,
                 imeAction = ImeAction.Done
             ),
             keyboardActions = KeyboardActions(
