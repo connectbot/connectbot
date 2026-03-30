@@ -309,7 +309,7 @@ class Fido2Manager @Inject constructor(
         try {
             val clientPin = ClientPin(session, protocol)
             val token = clientPin.getPinToken(
-                pin.toCharArray(),
+                normalizePin(pin),
                 ClientPin.PIN_PERMISSION_CM,
                 null
             )
@@ -652,7 +652,7 @@ class Fido2Manager @Inject constructor(
                             Timber.d("NFC authenticating with PIN on thread $threadName")
                             val clientPin = ClientPin(session, protocol)
                             val token = clientPin.getPinToken(
-                                pin.toCharArray(),
+                                normalizePin(pin),
                                 ClientPin.PIN_PERMISSION_CM,
                                 null
                             )
@@ -854,7 +854,7 @@ class Fido2Manager @Inject constructor(
             // Get PIN token with credential management permission
             Log.d(TAG, "authenticateWithPin: getting PIN token")
             val token = clientPin.getPinToken(
-                pin.toCharArray(),
+                normalizePin(pin),
                 ClientPin.PIN_PERMISSION_CM, // Credential Management permission
                 null // rpId
             )
@@ -1183,7 +1183,7 @@ class Fido2Manager @Inject constructor(
                         Log.d(TAG, "Authenticating with PIN for SSH signing")
                         val clientPin = ClientPin(session, protocol)
                         val token = clientPin.getPinToken(
-                            pin.toCharArray(),
+                            normalizePin(pin),
                             ClientPin.PIN_PERMISSION_GA, // Get Assertion permission for signing
                             SSH_RP_ID // Specify the RP ID
                         )
@@ -1315,7 +1315,7 @@ class Fido2Manager @Inject constructor(
                         Log.d(TAG, "Authenticating with PIN for NFC SSH signing")
                         val clientPin = ClientPin(session, protocol)
                         val token = clientPin.getPinToken(
-                            pin.toCharArray(),
+                            normalizePin(pin),
                             ClientPin.PIN_PERMISSION_GA,
                             SSH_RP_ID
                         )
