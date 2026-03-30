@@ -119,7 +119,7 @@ class Fido2SignatureProxy(
      * Perform signing via USB-connected device.
      */
     private suspend fun performUsbSigning(challenge: ByteArray): Fido2Result<Fido2SignatureResult> = kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
-        fido2Manager.prepareSshSigning(credentialId, challenge) { result ->
+        fido2Manager.prepareSshSigning(credentialId, challenge, rpId) { result ->
             continuation.resumeWith(Result.success(result))
         }
         fido2Manager.connectAndSignUsb(pin)
@@ -130,7 +130,7 @@ class Fido2SignatureProxy(
      * This sets up the signing request and waits for the user to tap their NFC key.
      */
     private suspend fun performNfcSigning(challenge: ByteArray): Fido2Result<Fido2SignatureResult> = kotlinx.coroutines.suspendCancellableCoroutine { continuation ->
-        fido2Manager.prepareSshSigning(credentialId, challenge) { result ->
+        fido2Manager.prepareSshSigning(credentialId, challenge, rpId) { result ->
             continuation.resumeWith(Result.success(result))
         }
         // Request NFC tap - UI will observe waitingForNfcSigning and start NFC discovery
