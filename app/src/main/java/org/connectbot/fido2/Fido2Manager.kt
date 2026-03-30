@@ -164,6 +164,11 @@ class Fido2Manager @Inject constructor(
         try {
             yubiKitManager.stopUsbDiscovery()
             usbDiscoveryActive = false
+            // Clear device/session references that are invalidated when YubiKit
+            // tears down its USB transport. Without this, a subsequent signing
+            // attempt would use a stale device object whose requestConnection()
+            // callback never fires, causing the app to hang.
+            disconnect()
         } catch (e: Exception) {
             Timber.e(e, "Failed to stop USB discovery")
         }
