@@ -978,6 +978,7 @@ class Fido2Manager @Inject constructor(
     suspend fun signSshChallenge(
         credentialId: ByteArray,
         challenge: ByteArray,
+        rpId: String = SSH_RP_ID,
         pin: String? = null
     ): Fido2Result<Fido2SignatureResult> {
         val session = currentSession
@@ -1015,7 +1016,7 @@ class Fido2Manager @Inject constructor(
 
                 // Get assertion
                 val assertions = session.getAssertions(
-                    SSH_RP_ID,
+                    rpId,
                     clientDataHash,
                     allowList,
                     null, // extensions
@@ -1076,6 +1077,7 @@ class Fido2Manager @Inject constructor(
     private var sshCredentialId: ByteArray? = null
     private var sshChallenge: ByteArray? = null
     private var sshPin: String? = null
+    private var sshRpId: String? = null
 
     // State flow to signal when waiting for NFC tap for SSH signing
     private val _waitingForNfcSigning = MutableStateFlow(false)
@@ -1088,10 +1090,12 @@ class Fido2Manager @Inject constructor(
     fun prepareSshSigning(
         credentialId: ByteArray,
         challenge: ByteArray,
+        rpId: String = SSH_RP_ID,
         callback: (Fido2Result<Fido2SignatureResult>) -> Unit
     ) {
         sshCredentialId = credentialId
         sshChallenge = challenge
+        sshRpId = rpId
         sshSigningCallback = callback
     }
 
@@ -1123,16 +1127,18 @@ class Fido2Manager @Inject constructor(
         val credId = sshCredentialId ?: return
         val challenge = sshChallenge ?: return
         val pin = sshPin ?: return
+        val rpId = sshRpId ?: SSH_RP_ID
         val callback = sshSigningCallback ?: return
 
         _waitingForNfcSigning.value = false
 
-        val result = connectAndSignNfc(tag, pin, credId, challenge)
+        val result = connectAndSignNfc(tag, pin, credId, challenge, rpId)
 
         // Clear state
         sshCredentialId = null
         sshChallenge = null
         sshPin = null
+        sshRpId = null
         sshSigningCallback = null
 
         callback(result)
@@ -1145,6 +1151,7 @@ class Fido2Manager @Inject constructor(
     fun connectAndSignUsb(pin: String) {
         val credId = sshCredentialId ?: return
         val challenge = sshChallenge ?: return
+        val rpId = sshRpId ?: SSH_RP_ID
         val callback = sshSigningCallback ?: return
 
         val device = currentDevice
@@ -1185,7 +1192,7 @@ class Fido2Manager @Inject constructor(
                         val token = clientPin.getPinToken(
                             normalizePin(pin),
                             ClientPin.PIN_PERMISSION_GA, // Get Assertion permission for signing
-                            SSH_RP_ID // Specify the RP ID
+                            rpId
                         )
                         Log.d(TAG, "PIN authentication successful for SSH signing")
 
@@ -1205,7 +1212,7 @@ class Fido2Manager @Inject constructor(
                         )
 
                         val assertions = session.getAssertions(
-                            SSH_RP_ID,
+                            rpId,
                             clientDataHash,
                             allowList,
                             null, // extensions
@@ -1284,6 +1291,7 @@ class Fido2Manager @Inject constructor(
             // Clear state and deliver result
             sshCredentialId = null
             sshChallenge = null
+            sshRpId = null
             sshSigningCallback = null
             callback(result)
         }
@@ -1293,7 +1301,7 @@ class Fido2Manager @Inject constructor(
      * Connect to NFC device and perform SSH signing.
      * This handles the full flow: connect -> PIN auth -> sign in a single NFC tap.
      */
-    suspend fun connectAndSignNfc(tag: Tag, pin: String, credentialId: ByteArray, challenge: ByteArray): Fido2Result<Fido2SignatureResult> {
+    suspend fun connectAndSignNfc(tag: Tag, pin: String, credentialId: ByteArray, challenge: ByteArray, rpId: String = SSH_RP_ID): Fido2Result<Fido2SignatureResult> {
         return suspendCancellableCoroutine { continuation ->
             try {
                 val device = NfcYubiKeyDevice(tag, 30000, sessionExecutor)
@@ -1317,7 +1325,7 @@ class Fido2Manager @Inject constructor(
                         val token = clientPin.getPinToken(
                             normalizePin(pin),
                             ClientPin.PIN_PERMISSION_GA,
-                            SSH_RP_ID
+                            rpId
                         )
                         Log.d(TAG, "NFC PIN authentication successful")
 
@@ -1337,7 +1345,7 @@ class Fido2Manager @Inject constructor(
                         )
 
                         val assertions = session.getAssertions(
-                            SSH_RP_ID,
+                            rpId,
                             clientDataHash,
                             allowList,
                             null,
