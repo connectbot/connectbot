@@ -7,12 +7,6 @@ pluginManagement {
     }
 }
 
-includeBuild("../sshlib") {
-    dependencySubstitution {
-        substitute(module("org.connectbot:sshlib")).using(project(":"))
-    }
-}
-
 val TRANSLATIONS_ONLY: String? by settings
 
 if (TRANSLATIONS_ONLY.isNullOrBlank()) {
