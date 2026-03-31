@@ -256,5 +256,6 @@ class ConsoleViewModel @Inject constructor(
      */
     fun reconnect(bridge: TerminalBridge) {
         terminalManager?.requestReconnect(bridge)
+        _uiState.update { it.copy(revision = it.revision + 1) }
     }
 }
