@@ -23,6 +23,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -36,7 +37,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material.icons.filled.OpenInFull
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -64,8 +65,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import org.connectbot.R
@@ -74,8 +75,14 @@ import kotlin.math.roundToInt
 
 private const val PREF_FLOATING_INPUT_X = "floating_input_x"
 private const val PREF_FLOATING_INPUT_Y = "floating_input_y"
-private const val DEFAULT_X_RATIO = 0.05f // 5% from left
-private const val DEFAULT_Y_RATIO = 0.3f // 30% from top
+private const val PREF_FLOATING_INPUT_WIDTH = "floating_input_width"
+private const val PREF_FLOATING_INPUT_HEIGHT = "floating_input_height"
+private const val DEFAULT_X_RATIO = 0.05f
+private const val DEFAULT_Y_RATIO = 0.3f
+private const val DEFAULT_WIDTH_RATIO = 0.9f
+private const val DEFAULT_HEIGHT_RATIO = 0.25f
+private const val MIN_WIDTH_DP = 200f
+private const val MIN_HEIGHT_DP = 80f
 
 /**
  * Floating, draggable text input dialog with Compose TextField for full IME support.
@@ -100,18 +107,20 @@ fun FloatingTextInputDialog(
     // Calculate screen dimensions
     val screenWidthPx = with(density) { configuration.screenWidthDp.dp.toPx() }
     val screenHeightPx = with(density) { configuration.screenHeightDp.dp.toPx() }
+    val minWidthPx = with(density) { MIN_WIDTH_DP.dp.toPx() }
+    val minHeightPx = with(density) { MIN_HEIGHT_DP.dp.toPx() }
 
-    // Window dimensions (90% of screen width)
-    val windowWidthDp = configuration.screenWidthDp * 0.9f
-    val windowWidthPx = with(density) { windowWidthDp.dp.toPx() }
-
-    // Load saved position or use defaults
+    // Load saved position/size or use defaults
     val savedX = prefs.getFloat(PREF_FLOATING_INPUT_X, DEFAULT_X_RATIO)
     val savedY = prefs.getFloat(PREF_FLOATING_INPUT_Y, DEFAULT_Y_RATIO)
+    val savedWidth = prefs.getFloat(PREF_FLOATING_INPUT_WIDTH, DEFAULT_WIDTH_RATIO)
+    val savedHeight = prefs.getFloat(PREF_FLOATING_INPUT_HEIGHT, DEFAULT_HEIGHT_RATIO)
 
-    // Current position in pixels
+    // Current position and size in pixels
     var offsetX by remember { mutableFloatStateOf(screenWidthPx * savedX) }
     var offsetY by remember { mutableFloatStateOf(screenHeightPx * savedY) }
+    var windowWidthPx by remember { mutableFloatStateOf(screenWidthPx * savedWidth) }
+    var windowHeightPx by remember { mutableFloatStateOf(screenHeightPx * savedHeight) }
 
     // Text state and focus
     var text by remember { mutableStateOf(initialText) }
@@ -122,13 +131,14 @@ fun FloatingTextInputDialog(
         focusRequester.requestFocus()
     }
 
-    // Save position when dialog closes
+    // Save position and size when dialog closes
     DisposableEffect(Unit) {
         onDispose {
-            // Save position as ratio of screen size for orientation change support
             prefs.edit {
                 putFloat(PREF_FLOATING_INPUT_X, offsetX / screenWidthPx)
                 putFloat(PREF_FLOATING_INPUT_Y, offsetY / screenHeightPx)
+                putFloat(PREF_FLOATING_INPUT_WIDTH, windowWidthPx / screenWidthPx)
+                putFloat(PREF_FLOATING_INPUT_HEIGHT, windowHeightPx / screenHeightPx)
             }
         }
     }
@@ -141,12 +151,9 @@ fun FloatingTextInputDialog(
         }
     }
 
-    Dialog(
+    Popup(
         onDismissRequest = onDismiss,
-        properties = DialogProperties(
-            usePlatformDefaultWidth = false,
-            decorFitsSystemWindows = false
-        )
+        properties = PopupProperties(focusable = true)
     ) {
         Box(
             modifier = Modifier
@@ -159,13 +166,13 @@ fun FloatingTextInputDialog(
             Column(
                 modifier = Modifier
                     .offset { IntOffset(offsetX.roundToInt(), offsetY.roundToInt()) }
-                    .width(windowWidthDp.dp)
+                    .width(with(density) { windowWidthPx.toDp() })
                     .background(
                         MaterialTheme.colorScheme.surface,
                         RoundedCornerShape(12.dp)
                     )
             ) {
-                // Draggable header
+                // Draggable header with send and close buttons
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -183,7 +190,7 @@ fun FloatingTextInputDialog(
                                 )
                                 offsetY = (offsetY + dragAmount.y).coerceIn(
                                     0f,
-                                    screenHeightPx - with(density) { 200.dp.toPx() }
+                                    screenHeightPx - windowHeightPx
                                 )
                             }
                         }
@@ -194,7 +201,8 @@ fun FloatingTextInputDialog(
                     Text(
                         text = stringResource(R.string.terminal_text_input_dialog_title),
                         style = MaterialTheme.typography.titleSmall,
-                        color = MaterialTheme.colorScheme.onPrimary
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        modifier = Modifier.weight(1f)
                     )
 
                     IconButton(
@@ -210,15 +218,12 @@ fun FloatingTextInputDialog(
                     }
                 }
 
-                // TextField container
+                // TextField with send button and resize handle to the right
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(12.dp),
-                    verticalAlignment = Alignment.Bottom,
-                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                        .height(with(density) { (windowHeightPx - 36.dp.toPx()).coerceAtLeast(minHeightPx).toDp() })
                 ) {
-                    // Compose TextField for full IME support
                     TextField(
                         value = text,
                         onValueChange = { text = it },
@@ -237,24 +242,59 @@ fun FloatingTextInputDialog(
                             focusedIndicatorColor = Color.Transparent,
                             unfocusedIndicatorColor = Color.Transparent
                         ),
-                        shape = RoundedCornerShape(8.dp),
+                        shape = RoundedCornerShape(bottomStart = 12.dp),
                         modifier = Modifier
                             .weight(1f)
-                            .height(90.dp)
+                            .fillMaxHeight()
                             .focusRequester(focusRequester)
                     )
 
-                    // Send button
-                    FloatingActionButton(
-                        onClick = { sendText() },
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(48.dp)
+                    Column(
+                        modifier = Modifier
+                            .fillMaxHeight()
+                            .background(
+                                MaterialTheme.colorScheme.surfaceVariant,
+                                RoundedCornerShape(bottomEnd = 12.dp)
+                            ),
+                        verticalArrangement = Arrangement.SpaceBetween,
+                        horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.Send,
-                            contentDescription = stringResource(R.string.button_send)
-                        )
+                        IconButton(
+                            onClick = { sendText() },
+                            modifier = Modifier.size(48.dp)
+                        ) {
+                            Icon(
+                                Icons.AutoMirrored.Filled.Send,
+                                contentDescription = stringResource(R.string.button_send),
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        }
+
+                        Box(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .pointerInput(Unit) {
+                                    detectDragGestures { change, dragAmount ->
+                                        change.consume()
+                                        windowWidthPx = (windowWidthPx + dragAmount.x).coerceIn(
+                                            minWidthPx,
+                                            screenWidthPx - offsetX
+                                        )
+                                        windowHeightPx = (windowHeightPx + dragAmount.y).coerceIn(
+                                            minHeightPx,
+                                            screenHeightPx - offsetY
+                                        )
+                                    }
+                                },
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Icon(
+                                Icons.Default.OpenInFull,
+                                contentDescription = stringResource(R.string.terminal_text_input_resize_handle),
+                                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                                modifier = Modifier.size(16.dp)
+                            )
+                        }
                     }
                 }
             }
