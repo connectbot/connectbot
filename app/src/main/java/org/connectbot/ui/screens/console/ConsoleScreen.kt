@@ -283,6 +283,7 @@ fun ConsoleScreen(
     // These values are computed from bridge state and will recompute when uiState.revision changes
     val sessionOpen = currentBridge?.isSessionOpen == true
     val disconnected = currentBridge?.isDisconnected == true
+    val connecting = currentBridge?.isConnecting == true
     val canForwardPorts = currentBridge?.canFowardPorts() == true
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -563,7 +564,7 @@ fun ConsoleScreen(
 
                         // Show reconnect/close overlay when session is disconnected
                         AnimatedVisibility(
-                            visible = disconnected,
+                            visible = disconnected && !connecting && promptState == null,
                             enter = slideInVertically(initialOffsetY = { it }),
                             exit = slideOutVertically(targetOffsetY = { it }),
                             modifier = Modifier.align(Alignment.BottomCenter)

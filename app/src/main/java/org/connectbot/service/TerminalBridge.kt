@@ -140,6 +140,8 @@ class TerminalBridge {
 
     var disconnected = false
         private set
+    var connecting = false
+        private set
     private var awaitingClose = false
 
     private var forcedSize = false
@@ -408,6 +410,7 @@ class TerminalBridge {
             Timber.w("No transport found for ${host.protocol}")
             return
         }
+        connecting = true
 
         transport = newTransport
         newTransport.bridge = this
@@ -529,6 +532,7 @@ class TerminalBridge {
      */
     fun onConnected() {
         disconnected = false
+        connecting = false
 
         // We no longer need our local output.
         localOutput.clear()
@@ -596,6 +600,7 @@ class TerminalBridge {
             }
 
             disconnected = true
+            connecting = false
         }
 
         // Cancel any pending prompts
@@ -853,6 +858,9 @@ class TerminalBridge {
      */
     val isDisconnected: Boolean
         get() = disconnected
+
+    val isConnecting: Boolean
+        get() = connecting
 
     private object PatternHolder {
         val urlPattern: Pattern
