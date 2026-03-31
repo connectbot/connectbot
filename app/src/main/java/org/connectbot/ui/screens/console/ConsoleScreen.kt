@@ -649,7 +649,7 @@ fun ConsoleScreen(
             )
         }
 
-        if (showTextInputDialog && currentBridge != null) {
+        if (showTextInputDialog && promptState == null && currentBridge != null) {
             // TODO: Get selected text from TerminalEmulator when selection is implemented
             val selectedText = ""
 

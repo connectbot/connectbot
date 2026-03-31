@@ -965,6 +965,9 @@
 	<!-- Label for the text field in the floating text input dialog where users compose their text -->
 	<string name="terminal_text_input_dialog_label">Enter text to send to terminal</string>
 
+	<!-- Content description for the resize handle in the floating text input dialog -->
+	<string name="terminal_text_input_resize_handle">Resize</string>
+
 	<!-- Menu item in console toolbar to open floating text input dialog -->
 	<string name="console_menu_text_input">Text input</string>
 
