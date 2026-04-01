@@ -57,6 +57,7 @@ data class HostEditorUiState(
     val jumpHostId: Long? = null,
     val availableJumpHosts: List<Host> = emptyList(),
     val ipVersion: String = "IPV4_AND_IPV6",
+    val keyboardSuggestions: Boolean = false,
     val password: String = "",
     val hasExistingPassword: Boolean = false,
     val isLoading: Boolean = false,
@@ -156,6 +157,7 @@ class HostEditorViewModel @Inject constructor(
                             postLogin = host.postLogin ?: "",
                             jumpHostId = host.jumpHostId,
                             ipVersion = host.ipVersion,
+                            keyboardSuggestions = host.keyboardSuggestions,
                             hasExistingPassword = hasPassword,
                             isLoading = false
                         )
@@ -259,6 +261,10 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(ipVersion = value) }
     }
 
+    fun updateKeyboardSuggestions(value: Boolean) {
+        _uiState.update { it.copy(keyboardSuggestions = value) }
+    }
+
     fun updatePassword(value: String) {
         _uiState.update { it.copy(password = value) }
     }
@@ -309,7 +315,8 @@ class HostEditorViewModel @Inject constructor(
                     scrollbackLines = existingHost?.scrollbackLines ?: 140,
                     useCtrlAltAsMetaKey = existingHost?.useCtrlAltAsMetaKey ?: false,
                     jumpHostId = jumpHostId,
-                    ipVersion = state.ipVersion
+                    ipVersion = state.ipVersion,
+                    keyboardSuggestions = state.keyboardSuggestions
                 )
 
                 val savedHost = repository.saveHost(host)

@@ -502,6 +502,12 @@ fun ConsoleScreen(
                                     url.toUri()
                                 )
                                 context.startActivity(intent)
+                            },
+                            onComposeControllerAvailable = { controller ->
+                                // Auto-enable keyboard suggestions if configured for this host
+                                if (bridge.host.keyboardSuggestions) {
+                                    controller.startComposeMode()
+                                }
                             }
                         )
 

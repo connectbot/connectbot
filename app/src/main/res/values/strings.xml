@@ -459,6 +459,11 @@
 	<!-- Summary explaining that the console will close automatically without prompting when connection ends -->
 	<string name="hostpref_quickdisconnect_summary">"Close immediately after remote disconnect without prompting."</string>
 
+	<!-- Setting to enable keyboard autocomplete/suggestions for this host. Useful for AI CLI tools. -->
+	<string name="hostpref_keyboard_suggestions_title">"Keyboard suggestions"</string>
+	<!-- Summary explaining that enabling keyboard suggestions shows autocomplete and predictive text -->
+	<string name="hostpref_keyboard_suggestions_summary">"Show autocomplete and predictive text. Useful for AI CLI tools like Claude Code where natural language input is common."</string>
+
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
 	<string name="hostpref_delkey_title">"DEL Key"</string>
 

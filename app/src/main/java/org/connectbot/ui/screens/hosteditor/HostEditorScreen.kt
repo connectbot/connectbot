@@ -108,6 +108,7 @@ fun HostEditorScreen(
         onPostLoginChange = viewModel::updatePostLogin,
         onJumpHostChange = viewModel::updateJumpHostId,
         onIpVersionChange = viewModel::updateIpVersion,
+        onKeyboardSuggestionsChange = viewModel::updateKeyboardSuggestions,
         onPasswordChange = viewModel::updatePassword,
         onClearPassword = viewModel::clearSavedPassword,
         onSaveHost = { expandedMode -> viewModel.saveHost(expandedMode) },
@@ -138,6 +139,7 @@ fun HostEditorScreenContent(
     onPostLoginChange: (String) -> Unit,
     onJumpHostChange: (Long?) -> Unit,
     onIpVersionChange: (String) -> Unit,
+    onKeyboardSuggestionsChange: (Boolean) -> Unit,
     onPasswordChange: (String) -> Unit,
     onClearPassword: () -> Unit,
     onSaveHost: (Boolean) -> Unit,
@@ -465,6 +467,15 @@ fun HostEditorScreenContent(
                 summary = stringResource(R.string.hostpref_quickdisconnect_summary),
                 checked = uiState.quickDisconnect,
                 onCheckedChange = onQuickDisconnectChange
+            )
+
+            // Keyboard suggestions
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+            SwitchPreference(
+                title = stringResource(R.string.hostpref_keyboard_suggestions_title),
+                summary = stringResource(R.string.hostpref_keyboard_suggestions_summary),
+                checked = uiState.keyboardSuggestions,
+                onCheckedChange = onKeyboardSuggestionsChange
             )
 
             // Post-login automation
@@ -1273,6 +1284,7 @@ private fun HostEditorScreenPreview() {
             onPostLoginChange = {},
             onJumpHostChange = {},
             onIpVersionChange = {},
+            onKeyboardSuggestionsChange = {},
             onPasswordChange = {},
             onClearPassword = {},
             onSaveHost = {}

@@ -104,7 +104,15 @@ data class Host(
      * Values: "IPV4_AND_IPV6" (default), "IPV4_ONLY", "IPV6_ONLY"
      */
     @ColumnInfo(name = "ip_version", defaultValue = "IPV4_AND_IPV6")
-    val ipVersion: String = "IPV4_AND_IPV6"
+    val ipVersion: String = "IPV4_AND_IPV6",
+
+    /**
+     * Enable keyboard suggestions (autocomplete/predictive text) for this host.
+     * Useful for AI CLI tools (Claude Code, Codex) where natural language input benefits
+     * from IME suggestions. Disabled by default for security (password entry).
+     */
+    @ColumnInfo(name = "keyboard_suggestions", defaultValue = "0")
+    val keyboardSuggestions: Boolean = false
 ) {
     /**
      * Check if this host is temporary (not saved to database).
