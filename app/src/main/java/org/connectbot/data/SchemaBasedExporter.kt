@@ -20,6 +20,7 @@ package org.connectbot.data
 import android.content.ContentValues
 import android.database.Cursor
 import android.util.Base64
+import androidx.core.graphics.toColorInt
 import androidx.room.RoomDatabase
 import org.json.JSONArray
 import org.json.JSONObject
@@ -87,9 +88,9 @@ class SchemaBasedExporter(
      *
      * @param jsonString JSON string containing table data
      * @param tableNames List of table names to import (in order - parent tables first)
-     * @return Map of table name to Pair of (inserted count, skipped count)
+     * @return Map of table name to Triple of (inserted count, updated count, skipped count)
      */
-    fun importFromJson(jsonString: String, tableNames: List<String>): Map<String, Pair<Int, Int>> {
+    fun importFromJson(jsonString: String, tableNames: List<String>): Map<String, Triple<Int, Int, Int>> {
         val json = JSONObject(jsonString)
         val version = json.optInt("version", 1)
 
@@ -100,7 +101,7 @@ class SchemaBasedExporter(
         }
 
         val db = database.openHelper.writableDatabase
-        val results = mutableMapOf<String, Pair<Int, Int>>()
+        val results = mutableMapOf<String, Triple<Int, Int, Int>>()
 
         // Track ID mappings for foreign key remapping: tableName -> (oldId -> newId)
         val idMappings = mutableMapOf<String, MutableMap<Long, Long>>()
@@ -113,6 +114,7 @@ class SchemaBasedExporter(
             idMappings[tableName] = idMapping
 
             var insertedCount = 0
+            var updatedCount = 0
             var skippedCount = 0
 
             // Find unique constraint for conflict detection
@@ -135,8 +137,9 @@ class SchemaBasedExporter(
                 val existingId = findExistingId(db, tableName, remappedRow, uniqueFields, entitySchema)
 
                 val newId = if (existingId != null) {
-                    // Skip existing row - do not update
-                    skippedCount++
+                    // Update existing row
+                    updateRow(db, tableName, existingId, remappedRow, entitySchema)
+                    updatedCount++
                     existingId
                 } else {
                     // Insert new row
@@ -151,7 +154,7 @@ class SchemaBasedExporter(
             // Second pass: update self-referencing foreign keys
             updateSelfReferences(db, tableName, entitySchema, idMapping, rows)
 
-            results[tableName] = Pair(insertedCount, skippedCount)
+            results[tableName] = Triple(insertedCount, updatedCount, skippedCount)
         }
 
         // Notify Room's InvalidationTracker that tables have changed
@@ -369,7 +372,19 @@ class SchemaBasedExporter(
             when (field.affinity) {
                 "INTEGER" -> values.put(field.columnName, row.getLong(field.fieldPath))
 
-                "TEXT" -> values.put(field.columnName, row.getString(field.fieldPath))
+                "TEXT" -> {
+                    val text = row.getString(field.fieldPath)
+                    if (field.columnName == "color" && text != null) {
+                        try {
+                            text.toColorInt()
+                            values.put(field.columnName, text)
+                        } catch (_: IllegalArgumentException) {
+                            values.putNull(field.columnName)
+                        }
+                    } else {
+                        values.put(field.columnName, text)
+                    }
+                }
 
                 "REAL" -> values.put(field.columnName, row.getDouble(field.fieldPath))
 
