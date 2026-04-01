@@ -198,8 +198,10 @@ fun HostListScreen(
                 context.getString(
                     R.string.import_hosts_success,
                     result.hostsImported,
+                    result.hostsUpdated,
                     result.hostsSkipped,
                     result.profilesImported,
+                    result.profilesUpdated,
                     result.profilesSkipped
                 ),
                 Toast.LENGTH_SHORT
@@ -763,9 +765,11 @@ private fun ForgetHostKeysDialog(
 private fun parseColor(colorString: String?): Color {
     if (colorString.isNullOrBlank()) {
         return colorResource(R.color.host_blue)
-    } else {
-        val colorInt = colorString.toColorInt()
-        return Color(colorInt)
+    }
+    return try {
+        Color(colorString.toColorInt())
+    } catch (_: IllegalArgumentException) {
+        colorResource(R.color.host_blue)
     }
 }
 

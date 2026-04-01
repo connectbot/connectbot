@@ -61,8 +61,10 @@ data class HostListUiState(
 
 data class ImportResult(
     val hostsImported: Int,
+    val hostsUpdated: Int,
     val hostsSkipped: Int,
     val profilesImported: Int,
+    val profilesUpdated: Int,
     val profilesSkipped: Int
 )
 
@@ -305,8 +307,10 @@ class HostListViewModel @Inject constructor(
                 }
                 val importResult = ImportResult(
                     hostsImported = importCounts.hostsImported,
+                    hostsUpdated = importCounts.hostsUpdated,
                     hostsSkipped = importCounts.hostsSkipped,
                     profilesImported = importCounts.profilesImported,
+                    profilesUpdated = importCounts.profilesUpdated,
                     profilesSkipped = importCounts.profilesSkipped
                 )
                 _uiState.update { it.copy(importResult = importResult) }

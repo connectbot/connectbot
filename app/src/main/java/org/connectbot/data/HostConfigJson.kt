@@ -36,14 +36,18 @@ data class ExportCounts(
  * Result of importing host configurations.
  *
  * @param hostsImported Number of hosts newly inserted
- * @param hostsSkipped Number of hosts skipped (already existed)
+ * @param hostsUpdated Number of hosts updated (already existed)
+ * @param hostsSkipped Number of hosts skipped (unchanged)
  * @param profilesImported Number of profiles newly inserted
- * @param profilesSkipped Number of profiles skipped (already existed)
+ * @param profilesUpdated Number of profiles updated (already existed)
+ * @param profilesSkipped Number of profiles skipped (unchanged)
  */
 data class ImportCounts(
     val hostsImported: Int,
+    val hostsUpdated: Int,
     val hostsSkipped: Int,
     val profilesImported: Int,
+    val profilesUpdated: Int,
     val profilesSkipped: Int
 )
 
@@ -104,14 +108,16 @@ object HostConfigJson {
         val exporter = SchemaBasedExporter(database, schema)
         val results = exporter.importFromJson(jsonString, EXPORT_TABLES)
 
-        val hostCounts = results["hosts"] ?: Pair(0, 0)
-        val profileCounts = results["profiles"] ?: Pair(0, 0)
+        val hostCounts = results["hosts"] ?: Triple(0, 0, 0)
+        val profileCounts = results["profiles"] ?: Triple(0, 0, 0)
 
         return ImportCounts(
             hostsImported = hostCounts.first,
-            hostsSkipped = hostCounts.second,
+            hostsUpdated = hostCounts.second,
+            hostsSkipped = hostCounts.third,
             profilesImported = profileCounts.first,
-            profilesSkipped = profileCounts.second
+            profilesUpdated = profileCounts.second,
+            profilesSkipped = profileCounts.third
         )
     }
 }
