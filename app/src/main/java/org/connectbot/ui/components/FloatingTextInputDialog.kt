@@ -217,7 +217,7 @@ fun FloatingTextInputDialog(
                         RoundedCornerShape(12.dp)
                     )
             ) {
-                // Draggable header with send and close buttons
+                // Draggable headerwith send and close buttons
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()

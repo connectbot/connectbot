@@ -24,11 +24,6 @@ import android.net.Uri
 import android.provider.OpenableColumns
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.trilead.ssh2.crypto.Base64
-import com.trilead.ssh2.crypto.OpenSSHKeyEncoder
-import com.trilead.ssh2.crypto.PEMDecoder
-import com.trilead.ssh2.crypto.PEMEncoder
-import com.trilead.ssh2.crypto.PublicKeyUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -41,13 +36,12 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalManager
+import org.connectbot.sshlib.SshKeys
+import org.connectbot.sshlib.SshSigning
 import org.connectbot.util.BiometricKeyManager
 import org.connectbot.util.PubkeyUtils
 import timber.log.Timber
-import java.io.BufferedReader
-import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.InputStreamReader
 import javax.inject.Inject
 
 enum class ExportFormat {
@@ -285,7 +279,7 @@ class PubkeyListViewModel @Inject constructor(
                     }
 
                     val pk = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
-                    PublicKeyUtils.toAuthorizedKeysFormat(pk, pubkey.nickname)
+                    toAuthorizedKeysFormat(pk, pubkey.nickname)
                 }
 
                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -328,7 +322,7 @@ class PubkeyListViewModel @Inject constructor(
                         val privateKeyBytes = pubkey.privateKey ?: throw Exception("No private key data")
                         val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
                         val pub = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
-                        pk?.let { OpenSSHKeyEncoder.exportOpenSSH(it, pub, pubkey.nickname) }
+                        pk?.let { SshKeys.encodeOpenSshPrivateKey(java.security.KeyPair(pub, it)) }
                     }
                 }
 
@@ -378,7 +372,8 @@ class PubkeyListViewModel @Inject constructor(
                         // For all non-imported keys, export as PKCS#8 PEM
                         val privateKeyBytes = pubkey.privateKey ?: throw Exception("No private key data")
                         val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
-                        pk?.let { PEMEncoder.encodePrivateKey(it, null) }
+                        val pub = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
+                        pk?.let { SshKeys.encodePemPrivateKey(java.security.KeyPair(pub, it)) }
                     }
                 }
 
@@ -432,7 +427,7 @@ class PubkeyListViewModel @Inject constructor(
                     val privateKeyBytes = pubkey.privateKey ?: throw Exception("No private key data")
                     val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
                     val pub = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
-                    pk?.let { OpenSSHKeyEncoder.exportOpenSSH(it, pub, pubkey.nickname, exportPassphrase) }
+                    pk?.let { SshKeys.encodeOpenSshPrivateKey(java.security.KeyPair(pub, it), exportPassphrase) }
                 }
 
                 val clipboard = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
@@ -604,7 +599,7 @@ class PubkeyListViewModel @Inject constructor(
 
                 val publicKeyString = withContext(dispatchers.default) {
                     val pk = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
-                    PublicKeyUtils.toAuthorizedKeysFormat(pk, pubkey.nickname)
+                    toAuthorizedKeysFormat(pk, pubkey.nickname)
                 }
 
                 withContext(dispatchers.io) {
@@ -661,12 +656,13 @@ class PubkeyListViewModel @Inject constructor(
                             ExportFormat.OPENSSH -> {
                                 val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
                                 val pub = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
-                                pk?.let { OpenSSHKeyEncoder.exportOpenSSH(it, pub, pubkey.nickname, exportPassphrase) }
+                                pk?.let { SshKeys.encodeOpenSshPrivateKey(java.security.KeyPair(pub, it), exportPassphrase) }
                             }
 
                             ExportFormat.PEM -> {
                                 val pk = PubkeyUtils.decodePrivate(privateKeyBytes, pubkey.type, password)
-                                pk?.let { PEMEncoder.encodePrivateKey(it, null) }
+                                val pub = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
+                                pk?.let { SshKeys.encodePemPrivateKey(java.security.KeyPair(pub, it)) }
                             }
                         }
                     }
@@ -806,7 +802,7 @@ class PubkeyListViewModel @Inject constructor(
 
         try {
             // Use PEMDecoder to decrypt the key
-            val kp = PEMDecoder.decode(keyString.toCharArray(), decryptPassword)
+            val kp = SshKeys.decodePemPrivateKey(keyString, decryptPassword)
             val algorithm = convertAlgorithmName(kp.private.algorithm)
 
             // Optionally re-encrypt the private key with the specified password
@@ -866,42 +862,10 @@ class PubkeyListViewModel @Inject constructor(
 
         val keyString = String(keyData)
 
-        // Try to parse using PEMDecoder first (handles OpenSSH, traditional PEM formats)
+        // Try to decode using SshKeys (handles PEM, PKCS#8, and OpenSSH formats)
         try {
-            val struct = PEMDecoder.parsePEM(keyString.toCharArray())
-            val encrypted = PEMDecoder.isPEMEncrypted(struct)
-
-            if (!encrypted) {
-                // Unencrypted PEM - decode and convert to internal format
-                val kp = PEMDecoder.decode(struct, null)
-                val algorithm = convertAlgorithmName(kp.private.algorithm)
-                return ImportResult.Success(
-                    Pubkey(
-                        id = 0,
-                        nickname = nickname,
-                        type = algorithm,
-                        encrypted = false,
-                        startup = false,
-                        confirmation = false,
-                        createdDate = System.currentTimeMillis(),
-                        privateKey = kp.private.encoded,
-                        publicKey = kp.public.encoded
-                    )
-                )
-            } else {
-                // Encrypted key - need password to decrypt
-                val keyType = PublicKeyUtils.detectKeyType(keyString) ?: "IMPORTED"
-                return ImportResult.NeedsPassword(keyData, nickname, keyType)
-            }
-        } catch (e: Exception) {
-            Timber.d(e, "PEMDecoder failed, trying PKCS#8")
-        }
-
-        // Fallback: Try to parse as PKCS#8 format (-----BEGIN PRIVATE KEY-----)
-        // Note: This only supports RSA, DSA, and EC keys, not Ed25519
-        val keyPair = parsePKCS8Key(keyData)
-        if (keyPair != null) {
-            val algorithm = convertAlgorithmName(keyPair.private.algorithm)
+            val kp = SshKeys.decodePemPrivateKey(keyString)
+            val algorithm = convertAlgorithmName(kp.private.algorithm)
             return ImportResult.Success(
                 Pubkey(
                     id = 0,
@@ -911,51 +875,27 @@ class PubkeyListViewModel @Inject constructor(
                     startup = false,
                     confirmation = false,
                     createdDate = System.currentTimeMillis(),
-                    privateKey = keyPair.private.encoded,
-                    publicKey = keyPair.public.encoded
+                    privateKey = kp.private.encoded,
+                    publicKey = kp.public.encoded
                 )
             )
+        } catch (e: Exception) {
+            Timber.d(e, "Unencrypted decode failed, checking if key is encrypted")
+        }
+
+        // If the key looks like a PEM/OpenSSH key, it's probably encrypted
+        if (keyString.contains("-----BEGIN ")) {
+            return ImportResult.NeedsPassword(keyData, nickname, "IMPORTED")
         }
 
         Timber.e("Failed to parse key in any supported format")
         return ImportResult.Failed
     }
 
-    /**
-     * Parse a PKCS#8 format key (-----BEGIN PRIVATE KEY-----) using PubkeyUtils.
-     * This handles the PEM armor stripping and Base64 decoding.
-     *
-     * Note: PubkeyUtils.recoverKeyPair() only supports RSA, DSA, and EC keys.
-     * Ed25519 keys are not supported via PKCS#8 format.
-     * This is used as a fallback after PEMDecoder fails.
-     */
-    private fun parsePKCS8Key(keyData: ByteArray): java.security.KeyPair? {
-        val reader = BufferedReader(InputStreamReader(ByteArrayInputStream(keyData)))
-
-        try {
-            val keyBytes = ByteArrayOutputStream()
-            var line: String?
-            var inKey = false
-
-            // Strip PEM armor and collect Base64 data
-            while (reader.readLine().also { line = it } != null) {
-                when {
-                    line == PubkeyUtils.PKCS8_START -> inKey = true
-                    line == PubkeyUtils.PKCS8_END -> break
-                    inKey -> keyBytes.write(line!!.toByteArray(Charsets.US_ASCII))
-                }
-            }
-
-            if (keyBytes.size() > 0) {
-                // Decode Base64 and use PubkeyUtils to recover the KeyPair
-                val decoded = Base64.decode(keyBytes.toString().toCharArray())
-                return OpenSSHKeyEncoder.recoverKeyPair(decoded)
-            }
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to parse PKCS#8 key")
-        }
-
-        return null
+    private fun toAuthorizedKeysFormat(publicKey: java.security.PublicKey, comment: String): String {
+        val authKey = SshSigning.encodePublicKey(java.security.KeyPair(publicKey, null))
+        val base64Blob = android.util.Base64.encodeToString(authKey.publicKeyBlob, android.util.Base64.NO_WRAP)
+        return "${authKey.algorithmName} $base64Blob $comment"
     }
 
     /**

@@ -22,9 +22,9 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import org.connectbot.util.NotificationPermissionHelper
 
 /**
@@ -39,12 +39,16 @@ fun ObservePermissionOnResume(onPermissionChange: (Boolean) -> Unit) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val currentOnPermissionChanged by rememberUpdatedState(onPermissionChange)
 
+    // Use rememberUpdatedState to ensure the effect always uses the latest callback
+    // without restarting the effect when the callback changes.
+    val currentOnPermissionChange by rememberUpdatedState(onPermissionChange)
+
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
                 // Check current permission status - may have changed while user was away
                 val isGranted = NotificationPermissionHelper.isNotificationPermissionGranted(context)
-                currentOnPermissionChanged(isGranted)
+                currentOnPermissionChange(isGranted)
             }
         }
         lifecycleOwner.lifecycle.addObserver(observer)
