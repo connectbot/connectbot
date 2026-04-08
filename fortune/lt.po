@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-12 21:00+0800\n"
+"POT-Creation-Date: 2026-04-07 21:40-0700\n"
 "PO-Revision-Date: 2011-02-23 19:01+0000\n"
 "Last-Translator: Kenny Root <Unknown>\n"
 "Language: lt\n"
@@ -1294,6 +1294,11 @@ msgctxt "profile_summary_emulation"
 msgid "Emulation: %s"
 msgstr ""
 
+#. Button to reconnect to a disconnected host.
+msgctxt "console_menu_reconnect"
+msgid "Reconnect"
+msgstr ""
+
 #. Button to close the disconnected terminal window.
 msgctxt "console_menu_close"
 msgid "Close"
@@ -1900,6 +1905,43 @@ msgctxt "color_bg_label"
 msgid "BG: %1$d"
 msgstr ""
 
+#. Section header for the foreground and background color selectors in the
+#. palette editor
+msgctxt "section_fg_bg_colors"
+msgid "Foreground & Background"
+msgstr ""
+
+#. Label under the foreground color swatch in the palette editor
+msgctxt "label_foreground_color"
+msgid "Foreground"
+msgstr ""
+
+#. Label under the background color swatch in the palette editor
+msgctxt "label_background_color"
+msgid "Background"
+msgstr ""
+
+#. Label for the base scheme selector in the new color scheme dialog
+msgctxt "label_base_scheme"
+msgid "Base scheme:"
+msgstr ""
+
+#. Icon button in the profile list screen to open color scheme management
+msgctxt "menu_manage_colors"
+msgid "Manage Color Schemes"
+msgstr ""
+
+#. Note shown in palette editor for built-in schemes that cannot be edited
+msgctxt "palette_editor_builtin_note"
+msgid "Built-in schemes are read-only. Duplicate to customize."
+msgstr ""
+
+#. Section header for the terminal color preview shown below the ANSI color
+#. grid
+msgctxt "section_color_preview"
+msgid "Preview"
+msgstr ""
+
 #. Accessibility text for connection state in list of hosts when the host is
 #. currently          connected.
 msgctxt "image_description_connected"
@@ -2072,6 +2114,11 @@ msgstr ""
 #. compose their text
 msgctxt "terminal_text_input_dialog_label"
 msgid "Enter text to send to terminal"
+msgstr ""
+
+#. Content description for the resize handle in the floating text input dialog
+msgctxt "terminal_text_input_resize_handle"
+msgid "Resize"
 msgstr ""
 
 #. Menu item in console toolbar to open floating text input dialog
