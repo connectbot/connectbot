@@ -234,6 +234,7 @@
   <string name="profile_delete_cancel">キャンセル</string>
   <string name="profile_summary_font">フォント：%1$s %2$dpt</string>
   <string name="profile_summary_emulation">エミュレーション：%s</string>
+  <string name="console_menu_reconnect">再接続</string>
   <string name="console_menu_close">切断</string>
   <string name="console_menu_paste">貼り付け</string>
   <string name="console_menu_portforwards">ポート転送</string>
@@ -343,6 +344,13 @@
   <string name="label_hex_color">16進カラーコード</string>
   <string name="colors_fg_label">FG: %1$d</string>
   <string name="color_bg_label">BG: %1$d</string>
+  <string name="section_fg_bg_colors">フォアグラウンドとバックグラウンド</string>
+  <string name="label_foreground_color">フォアグラウンド</string>
+  <string name="label_background_color">背景</string>
+  <string name="label_base_scheme">基本的な仕組み：</string>
+  <string name="menu_manage_colors">カラーテーマを管理する</string>
+  <string name="palette_editor_builtin_note">組み込みのスキームは読み取り専用です。カスタマイズするには、コピーを作成してください。</string>
+  <string name="section_color_preview">プレビュー</string>
   <string name="image_description_connected">接続しました。</string>
   <string name="image_description_disconnected">切断しました</string>
   <string name="image_description_toggle_control_character">コントロール文字を切り替えます。</string>
@@ -375,6 +383,7 @@
   <string name="terminal_keyboard_text_input_button">テキスト入力</string>
   <string name="terminal_text_input_dialog_title">テキスト入力</string>
   <string name="terminal_text_input_dialog_label">ターミナルに送信するテキストを入力してください</string>
+  <string name="terminal_text_input_resize_handle">サイズ変更</string>
   <string name="console_menu_text_input">テキスト入力</string>
   <string name="button_send">送信</string>
   <string name="button_ok">OK</string>

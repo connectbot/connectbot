@@ -234,6 +234,7 @@
   <string name="profile_delete_cancel">Batalkan</string>
   <string name="profile_summary_font">Font: %1$s %2$dpt</string>
   <string name="profile_summary_emulation">Emulasi: %s</string>
+  <string name="console_menu_reconnect">Hubungkan kembali</string>
   <string name="console_menu_close">Tutup</string>
   <string name="console_menu_paste">Tempel</string>
   <string name="console_menu_portforwards">Penerusan port</string>
@@ -343,6 +344,13 @@
   <string name="label_hex_color">Kode Warna Heksadesimal</string>
   <string name="colors_fg_label">WD: %1$d</string>
   <string name="color_bg_label">WB: %1$d</string>
+  <string name="section_fg_bg_colors">Latar Depan &amp; Latar Belakang</string>
+  <string name="label_foreground_color">Latar Depan</string>
+  <string name="label_background_color">Latar Belakang</string>
+  <string name="label_base_scheme">Skema dasar:</string>
+  <string name="menu_manage_colors">Kelola Skema Warna</string>
+  <string name="palette_editor_builtin_note">Skema bawaan bersifat hanya baca. Duplikat untuk menyesuaikan.</string>
+  <string name="section_color_preview">Pratinjau</string>
   <string name="image_description_connected">Tersambung.</string>
   <string name="image_description_disconnected">Koneksi terputus.</string>
   <string name="image_description_toggle_control_character">Ubah-ubah karakter control.</string>
@@ -375,6 +383,7 @@
   <string name="terminal_keyboard_text_input_button">Input teks</string>
   <string name="terminal_text_input_dialog_title">Input Teks</string>
   <string name="terminal_text_input_dialog_label">Masukkan teks yang akan dikirim ke terminal</string>
+  <string name="terminal_text_input_resize_handle">Ubah ukuran</string>
   <string name="console_menu_text_input">Input teks</string>
   <string name="button_send">Kirim</string>
   <string name="button_ok">Baik</string>
@@ -474,6 +483,7 @@
   <string name="terminal_jump_authenticated">Berhasil melakukan autentikasi ke host perantara: %s</string>
   <string name="terminal_jump_failed">Gagal terhubung ke host perantara %1$s: %2$s</string>
   <string name="terminal_jump_auth_failed">Autentikasi gagal untuk host perantara: %s</string>
+  <string name="terminal_jump_not_found">Host perantara tidak ditemukan di daftar host yang tersimpan</string>
   <string name="terminal_jump_password">Kata sandi untuk host perantara %s:</string>
   <string name="view_logs">Lihat Log</string>
   <string name="logs_title">Catatan Aplikasi</string>

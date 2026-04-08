@@ -146,7 +146,7 @@
   <string name="pref_bell_vibrate_title">Vibrar con el timbre</string>
   <string name="pref_bell_vibrate_summary">Vibrar al recibir una alerta en la terminal</string>
   <string name="pref_bell_notification_title">Notificaciones de fondo</string>
-  <string name="pref_bell_notification_summary">Activar notificacion cuando algun terminal corriendo en el fondo active un timbre</string>
+  <string name="pref_bell_notification_summary">Activar notificacion cuando algun terminal corriendo en el fondo active un timbre.</string>
   <string name="list_keymode_right">Usar teclas del lado derecho</string>
   <string name="list_keymode_left">Usar teclas del lado izquierdo</string>
   <string name="list_keymode_none">Desactivar</string>
@@ -234,6 +234,7 @@
   <string name="profile_delete_cancel">Cancelar</string>
   <string name="profile_summary_font">Fuente %1$s %2$dpt</string>
   <string name="profile_summary_emulation">Emulación: %s</string>
+  <string name="console_menu_reconnect">Volver a conectar</string>
   <string name="console_menu_close">Cerrar</string>
   <string name="console_menu_paste">Pegar</string>
   <string name="console_menu_portforwards">Traducciones de puerto</string>
@@ -343,6 +344,13 @@
   <string name="label_hex_color">Color Hexadecimal</string>
   <string name="colors_fg_label">Color de fondo: %1$d</string>
   <string name="color_bg_label">Color de fondo: %1$d</string>
+  <string name="section_fg_bg_colors">Primer plano y segundo</string>
+  <string name="label_foreground_color">Primer plano</string>
+  <string name="label_background_color">Fondo</string>
+  <string name="label_base_scheme">Esquema básico:</string>
+  <string name="menu_manage_colors">Administrar esquemas de colores</string>
+  <string name="palette_editor_builtin_note">Los esquemas predeterminados son de solo lectura. Duplícalos para personalizarlos.</string>
+  <string name="section_color_preview">Vista previa</string>
   <string name="image_description_connected">Conectado</string>
   <string name="image_description_disconnected">Desconectado.</string>
   <string name="image_description_toggle_control_character">Activar el envío de la pulsación de tecla Control.</string>
@@ -375,6 +383,7 @@
   <string name="terminal_keyboard_text_input_button">Entrada de texto</string>
   <string name="terminal_text_input_dialog_title">Entrada de texto</string>
   <string name="terminal_text_input_dialog_label">Introduzca texto para enviar a la terminal</string>
+  <string name="terminal_text_input_resize_handle">Cambiar tamaño</string>
   <string name="console_menu_text_input">Entrada de texto</string>
   <string name="button_send">Enviar</string>
   <string name="button_ok">De acuerdo</string>

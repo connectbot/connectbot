@@ -234,6 +234,7 @@
   <string name="profile_delete_cancel">取消</string>
   <string name="profile_summary_font">字體： %1$s %2$d 點</string>
   <string name="profile_summary_emulation">模擬： %s</string>
+  <string name="console_menu_reconnect">重新連線</string>
   <string name="console_menu_close">關閉</string>
   <string name="console_menu_paste">貼上</string>
   <string name="console_menu_portforwards">連接埠轉址</string>
@@ -343,6 +344,13 @@
   <string name="label_hex_color">十六進位顏色</string>
   <string name="colors_fg_label">前景：%1$d</string>
   <string name="color_bg_label">背景：%1$d</string>
+  <string name="section_fg_bg_colors">前景與背景</string>
+  <string name="label_foreground_color">前景</string>
+  <string name="label_background_color">背景</string>
+  <string name="label_base_scheme">基本配置：</string>
+  <string name="menu_manage_colors">管理色彩配置</string>
+  <string name="palette_editor_builtin_note">內建的設定方案為唯讀模式。請複製一份以進行自訂。</string>
+  <string name="section_color_preview">預覽</string>
   <string name="image_description_connected">已連線。</string>
   <string name="image_description_disconnected">已中斷連線。</string>
   <string name="image_description_toggle_control_character">切換控制字元。</string>
@@ -375,6 +383,7 @@
   <string name="terminal_keyboard_text_input_button">文字輸入</string>
   <string name="terminal_text_input_dialog_title">文字輸入</string>
   <string name="terminal_text_input_dialog_label">輸入要傳送到終端機的文字</string>
+  <string name="terminal_text_input_resize_handle">調整大小</string>
   <string name="console_menu_text_input">文字輸入</string>
   <string name="button_send">傳送</string>
   <string name="button_ok">好的</string>

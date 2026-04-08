@@ -234,6 +234,7 @@
   <string name="profile_delete_cancel">取消</string>
   <string name="profile_summary_font">字体：%1$s %2$d磅</string>
   <string name="profile_summary_emulation">模拟：%s</string>
+  <string name="console_menu_reconnect">重新连接</string>
   <string name="console_menu_close">关闭</string>
   <string name="console_menu_paste">粘贴</string>
   <string name="console_menu_portforwards">端口转发</string>
@@ -343,6 +344,13 @@
   <string name="label_hex_color">十六进制颜色</string>
   <string name="colors_fg_label">前景色：%1$d</string>
   <string name="color_bg_label">背景色：%1$d</string>
+  <string name="section_fg_bg_colors">前台和后台</string>
+  <string name="label_foreground_color">前台</string>
+  <string name="label_background_color">背景</string>
+  <string name="label_base_scheme">基本方案：</string>
+  <string name="menu_manage_colors">管理配色方案</string>
+  <string name="palette_editor_builtin_note">内置方案为只读模式。复制后可进行自定义。</string>
+  <string name="section_color_preview">预览</string>
   <string name="image_description_connected">已连接。</string>
   <string name="image_description_disconnected">已断开连接。</string>
   <string name="image_description_toggle_control_character">切换控制字符。</string>
@@ -375,6 +383,7 @@
   <string name="terminal_keyboard_text_input_button">文本输入</string>
   <string name="terminal_text_input_dialog_title">文本输入</string>
   <string name="terminal_text_input_dialog_label">输入要发送到终端的文本</string>
+  <string name="terminal_text_input_resize_handle">调整大小</string>
   <string name="console_menu_text_input">文本输入</string>
   <string name="button_send">发送</string>
   <string name="button_ok">好的</string>

@@ -146,7 +146,7 @@
   <string name="pref_bell_vibrate_title">Rung khi có chuông</string>
   <string name="pref_bell_vibrate_summary">Rung khi có thông báo trên giao diện dòng lệnh</string>
   <string name="pref_bell_notification_title">Thông báo nhắc background</string>
-  <string name="pref_bell_notification_summary">Gửi thông báo nhắc khi một Terminal đang chạy ở background phát chuông</string>
+  <string name="pref_bell_notification_summary">Gửi thông báo nhắc khi một Terminal đang chạy ở background phát chuông.</string>
   <string name="list_keymode_right">Dung các phím bên phía tay phải</string>
   <string name="list_keymode_left">Dùng các phím bên phía tay trái</string>
   <string name="list_keymode_none">Vô hiệu hóa</string>
@@ -234,6 +234,7 @@
   <string name="profile_delete_cancel">Hủy</string>
   <string name="profile_summary_font">Phông chữ: %1$s %2$dpt</string>
   <string name="profile_summary_emulation">Mô phỏng: %s</string>
+  <string name="console_menu_reconnect">Kết nối lại</string>
   <string name="console_menu_close">Ðóng</string>
   <string name="console_menu_paste">Dán (Paste)</string>
   <string name="console_menu_portforwards">Cổng chuyển tiếp (Port Forward)</string>
@@ -343,6 +344,13 @@
   <string name="label_hex_color">Mã màu hệ thập lục phân</string>
   <string name="colors_fg_label">Màu trên nền: %1$d</string>
   <string name="color_bg_label">Màu nền: %1$d</string>
+  <string name="section_fg_bg_colors">Màu nền &amp; Màu tiền cảnh</string>
+  <string name="label_foreground_color">Màu tiền</string>
+  <string name="label_background_color">Màu nền</string>
+  <string name="label_base_scheme">Sơ đồ cơ bản:</string>
+  <string name="menu_manage_colors">Quản lý các chủ đề màu</string>
+  <string name="palette_editor_builtin_note">Các lược đồ tích hợp sẵn chỉ có thể đọc. Sao chép để tùy chỉnh.</string>
+  <string name="section_color_preview">Xem trước</string>
   <string name="image_description_connected">Đã kết nối.</string>
   <string name="image_description_disconnected">Đã ngắt kết nối.</string>
   <string name="image_description_toggle_control_character">Chuyển đổi phím điều khiển.</string>
@@ -375,6 +383,7 @@
   <string name="terminal_keyboard_text_input_button">Nhập văn bản</string>
   <string name="terminal_text_input_dialog_title">Nhập văn bản</string>
   <string name="terminal_text_input_dialog_label">Nhập văn bản để gửi đến thiết bị đầu cuối</string>
+  <string name="terminal_text_input_resize_handle">Thay đổi kích thước</string>
   <string name="console_menu_text_input">Nhập văn bản</string>
   <string name="button_send">Gửi</string>
   <string name="button_ok">Được rồi</string>

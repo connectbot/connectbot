@@ -234,6 +234,7 @@
   <string name="profile_delete_cancel">Anuluj</string>
   <string name="profile_summary_font">Czcionka %1$s %2$dpt</string>
   <string name="profile_summary_emulation">Emulacja: %s</string>
+  <string name="console_menu_reconnect">Ponów połączenie</string>
   <string name="console_menu_close">Zamknij</string>
   <string name="console_menu_paste">Wklej</string>
   <string name="console_menu_portforwards">Przekierowania portów</string>
@@ -343,6 +344,13 @@
   <string name="label_hex_color">Kolor heksadecymalny</string>
   <string name="colors_fg_label">FG: %1$d</string>
   <string name="color_bg_label">BG: %1$d</string>
+  <string name="section_fg_bg_colors">Tryb pierwszoplanowy i drugoplanowy</string>
+  <string name="label_foreground_color">Tryb pierwszoplanowy</string>
+  <string name="label_background_color">Tło</string>
+  <string name="label_base_scheme">Podstawowy schemat:</string>
+  <string name="menu_manage_colors">Zarządzaj schematami kolorów</string>
+  <string name="palette_editor_builtin_note">Wbudowane schematy są tylko do odczytu. Skopiuj, aby je dostosować.</string>
+  <string name="section_color_preview">Podgląd</string>
   <string name="image_description_connected">Połączono</string>
   <string name="image_description_disconnected">Rozłączono.</string>
   <string name="image_description_toggle_control_character">Przełącz znak kontrolny</string>
@@ -375,6 +383,7 @@
   <string name="terminal_keyboard_text_input_button">Wprowadzanie tekstu</string>
   <string name="terminal_text_input_dialog_title">Wprowadzanie tekstu</string>
   <string name="terminal_text_input_dialog_label">Wprowadź tekst do wysłania do terminala</string>
+  <string name="terminal_text_input_resize_handle">Zmień rozmiar</string>
   <string name="console_menu_text_input">Wprowadzanie tekstu</string>
   <string name="button_send">Wyślij</string>
   <string name="button_ok">OK</string>

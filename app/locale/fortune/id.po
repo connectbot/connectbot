@@ -2,21 +2,22 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-02-12 21:00+0800\n"
-"PO-Revision-Date: 2026-02-12 20:59+0800\n"
+"POT-Creation-Date: 2026-04-07 21:40-0700\n"
+"PO-Revision-Date: 2026-04-07 21:47-0700\n"
 "Last-Translator: dwi purnomo <dwipurnomo.yk@gmail.com>\n"
 "Language: id\n"
 "Language-Team: id <LL@li.org>\n"
 "Plural-Forms: nplurals=1; plural=(0);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
+"X-Generator: Autopo v1.0.9\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -139,11 +140,11 @@ msgstr "Sentuh boks ini untuk mengumpulkan ke tidak tentuan: %1$d%% selesai"
 #. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger"
-" randomly over the box below."
+"In order to assure randomness during the key generation, move your finger "
+"randomly over the box below."
 msgstr ""
-"Untuk memastikan ketidaktentuan selama pembuatan kunci, gerakkan tangan "
-"anda secara acak diatas kotak dibawah ini."
+"Untuk memastikan ketidaktentuan selama pembuatan kunci, gerakkan tangan anda "
+"secara acak diatas kotak dibawah ini."
 
 #. Progress message shown while generating a new SSH key pair
 msgctxt "pubkey_generating"
@@ -267,8 +268,7 @@ msgstr "Konfirmasi kata sandi"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
-msgid ""
-"Tap \"Menu\" to create\n"
+msgid "Tap \"Menu\" to create\n"
 "or import key pairs."
 msgstr "Ketuk \"Menu\" untuk membuat atau mengimpor pasangan kunci."
 
@@ -388,11 +388,9 @@ msgstr "Kata sandi untuk kunci '%1$s'"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid ""
-"Allow remote host to\n"
+msgid "Allow remote host to\n"
 "use key '%1$s'?"
-msgstr ""
-"Ijinkan remote host untuk\n"
+msgstr "Ijinkan remote host untuk\n"
 "menggunakan kunci '%1$s'?"
 
 #. The header of the warning a user gets when the host key has changed. Note
@@ -408,8 +406,7 @@ msgstr "PERINGATAN: IDENTIFIKASI REMOTE HOST TELAH BERUBAH!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle "
-"attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "KEMUNGKINAN SESEORANG SEDANG BERBUAT KOTOR!\n"
@@ -419,11 +416,9 @@ msgstr ""
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid ""
-"Host has disconnected.\n"
+msgid "Host has disconnected.\n"
 "Close session?"
-msgstr ""
-"Sambungan dengan host telah terputus.\n"
+msgstr "Sambungan dengan host telah terputus.\n"
 "Tutup sesi ini?"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -431,8 +426,7 @@ msgstr ""
 #, fuzzy
 msgctxt "prompt_continue_connecting"
 msgid "Are you sure you want to continue connecting?"
-msgstr ""
-"Apakah Anda yakin ingin\n"
+msgstr "Apakah Anda yakin ingin\n"
 "terus mencoba menyambungkan?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
@@ -517,8 +511,8 @@ msgstr "Jaringan telah dipulihkan, koneksi tetap terjaga"
 msgctxt "network_restored_ip_changed"
 msgid "Network restored but IP changed, reconnecting…"
 msgstr ""
-"Jaringan telah dipulihkan, tetapi alamat IP telah berubah, sedang mencoba"
-" menghubungkan kembali…"
+"Jaringan telah dipulihkan, tetapi alamat IP telah berubah, sedang mencoba "
+"menghubungkan kembali…"
 
 #. Message shown when network is restored but previous network state is
 #. unknown
@@ -634,7 +628,8 @@ msgstr "Cadangkan kunci publik"
 #. pubkeys.
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
-msgstr "Simpan cadangan kunci privat menggunakan mekanisme pencadangan Android"
+msgstr ""
+"Simpan cadangan kunci privat menggunakan mekanisme pencadangan Android"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -718,7 +713,8 @@ msgstr "Ctrl+angka adalah tombol fungsi"
 #. Summary for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_summary"
 msgid "On software keyboards, number keys send F1-F10 with ctrl"
-msgstr "Pada keyboard virtual, tombol angka mengirimkan F1-F10 dengan tombol Ctrl"
+msgstr ""
+"Pada keyboard virtual, tombol angka mengirimkan F1-F10 dengan tombol Ctrl"
 
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
@@ -739,7 +735,8 @@ msgstr "Ingat kunci dalam memori"
 #. Summary for the memorize keys preference
 msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
-msgstr "Simpan kunci yang terbuka kedalam memori hingga layanan backend berakhir"
+msgstr ""
+"Simpan kunci yang terbuka kedalam memori hingga layanan backend berakhir"
 
 #. Name for the preference that forces the service to stay running in the
 #. background.
@@ -803,8 +800,8 @@ msgstr "Panah belok"
 msgctxt "pref_bumpyarrows_summary"
 msgid "Vibrate when sending arrow keys; useful for laggy connections"
 msgstr ""
-"Getarkan perangkat saat mengirimkan tombol panah; berguna untuk koneksi "
-"yang lambat"
+"Getarkan perangkat saat mengirimkan tombol panah; berguna untuk koneksi yang "
+"lambat"
 
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
@@ -847,7 +844,8 @@ msgstr "Pemberitahuan di belakang layar"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid "Send notification when a terminal running in the background sounds a bell."
+msgid ""
+"Send notification when a terminal running in the background sounds a bell."
 msgstr ""
 "Kirim pemberitahuan ketika sebuah terminal berjalan di belakang dengan "
 "membunyikan sebuah nada dering"
@@ -1049,7 +1047,8 @@ msgstr "Tutup saat terputus"
 #. prompting when connection ends
 msgctxt "hostpref_quickdisconnect_summary"
 msgid "Close immediately after remote disconnect without prompting."
-msgstr "Tutup segera setelah koneksi jarak jauh terputus tanpa meminta konfirmasi."
+msgstr ""
+"Tutup segera setelah koneksi jarak jauh terputus tanpa meminta konfirmasi."
 
 #. Setting for what key code is sent to the server when DEL key is pressed.
 msgctxt "hostpref_delkey_title"
@@ -1207,8 +1206,8 @@ msgid ""
 "Force the terminal to a specific size (columns x rows) instead of auto-"
 "sizing to fit the screen."
 msgstr ""
-"Paksa terminal untuk menggunakan ukuran tertentu (kolom x baris) alih-"
-"alih menyesuaikan ukuran secara otomatis agar sesuai dengan layar."
+"Paksa terminal untuk menggunakan ukuran tertentu (kolom x baris) alih-alih "
+"menyesuaikan ukuran secara otomatis agar sesuai dengan layar."
 
 #. Label for the enable force size switch
 msgctxt "profile_editor_force_size_enable"
@@ -1316,6 +1315,11 @@ msgstr "Font: %1$s %2$dpt"
 msgctxt "profile_summary_emulation"
 msgid "Emulation: %s"
 msgstr "Emulasi: %s"
+
+#. Button to reconnect to a disconnected host.
+msgctxt "console_menu_reconnect"
+msgid "Reconnect"
+msgstr "Hubungkan kembali"
 
 #. Button to close the disconnected terminal window.
 msgctxt "console_menu_close"
@@ -1535,8 +1539,7 @@ msgstr "Batal"
 msgctxt "disconnect_all_message"
 msgid "Are you sure you want to disconnect from all connected hosts?"
 msgstr ""
-"Apakah Anda yakin ingin memutuskan sambungan dari semua host yang "
-"terhubung?"
+"Apakah Anda yakin ingin memutuskan sambungan dari semua host yang terhubung?"
 
 #. Positive button text confirming disconnection from all hosts
 msgctxt "disconnect_all_pos"
@@ -1622,15 +1625,14 @@ msgstr "Autentikasi kata sandi yang disimpan gagal."
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
 msgstr ""
-"Mencoba otentifikasi 'kunci publik' dengan kunci publik apapun dalam "
-"memori"
+"Mencoba otentifikasi 'kunci publik' dengan kunci publik apapun dalam memori"
 
 #. Error message shown when the selected public key is corrupted or invalid
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
 msgstr ""
-"Kunci publik yang dipilih tidak valid, coba pilih kembali kunci dalam "
-"editor host"
+"Kunci publik yang dipilih tidak valid, coba pilih kembali kunci dalam editor "
+"host"
 
 #. Message shown in terminal when attempting public key authentication with a
 #. specific key
@@ -1891,8 +1893,8 @@ msgstr "Atur Ulang Semua Warna?"
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action "
-"cannot be undone."
+"This will reset all 256 colors to their default values. This action cannot "
+"be undone."
 msgstr ""
 "Ini akan mengatur ulang semua 256 warna ke nilai bawaannya. Tindakan ini "
 "tidak dapat dibatalkan."
@@ -1936,6 +1938,43 @@ msgstr "WD: %1$d"
 msgctxt "color_bg_label"
 msgid "BG: %1$d"
 msgstr "WB: %1$d"
+
+#. Section header for the foreground and background color selectors in the
+#. palette editor
+msgctxt "section_fg_bg_colors"
+msgid "Foreground & Background"
+msgstr "Latar Depan & Latar Belakang"
+
+#. Label under the foreground color swatch in the palette editor
+msgctxt "label_foreground_color"
+msgid "Foreground"
+msgstr "Latar Depan"
+
+#. Label under the background color swatch in the palette editor
+msgctxt "label_background_color"
+msgid "Background"
+msgstr "Latar Belakang"
+
+#. Label for the base scheme selector in the new color scheme dialog
+msgctxt "label_base_scheme"
+msgid "Base scheme:"
+msgstr "Skema dasar:"
+
+#. Icon button in the profile list screen to open color scheme management
+msgctxt "menu_manage_colors"
+msgid "Manage Color Schemes"
+msgstr "Kelola Skema Warna"
+
+#. Note shown in palette editor for built-in schemes that cannot be edited
+msgctxt "palette_editor_builtin_note"
+msgid "Built-in schemes are read-only. Duplicate to customize."
+msgstr "Skema bawaan bersifat hanya baca. Duplikat untuk menyesuaikan."
+
+#. Section header for the terminal color preview shown below the ANSI color
+#. grid
+msgctxt "section_color_preview"
+msgid "Preview"
+msgstr "Pratinjau"
 
 #. Accessibility text for connection state in list of hosts when the host is
 #. currently          connected.
@@ -2110,6 +2149,11 @@ msgstr "Input Teks"
 msgctxt "terminal_text_input_dialog_label"
 msgid "Enter text to send to terminal"
 msgstr "Masukkan teks yang akan dikirim ke terminal"
+
+#. Content description for the resize handle in the floating text input dialog
+msgctxt "terminal_text_input_resize_handle"
+msgid "Resize"
+msgstr "Ubah ukuran"
 
 #. Menu item in console toolbar to open floating text input dialog
 msgctxt "console_menu_text_input"
@@ -2311,11 +2355,11 @@ msgstr "Lindungi kunci ini dengan sidik jari Anda"
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use "
-"this feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use this "
+"feature."
 msgstr ""
-"Tidak ada sidik jari yang terdaftar. Atur sidik jari di pengaturan "
-"perangkat untuk menggunakan fitur ini."
+"Tidak ada sidik jari yang terdaftar. Atur sidik jari di pengaturan perangkat "
+"untuk menggunakan fitur ini."
 
 #. Warning shown when key type doesn\'t support biometric protection
 msgctxt "pubkey_biometric_key_type_warning"
@@ -2443,12 +2487,10 @@ msgstr "Pertahankan koneksi agar tetap aktif"
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch "
-"apps."
+"background. Without permission, connections may close when you switch apps."
 msgstr ""
-"Menampilkan notifikasi diperlukan untuk menjaga koneksi tetap aktif di "
-"latar belakang. Tanpa izin, koneksi mungkin terputus saat Anda beralih "
-"aplikasi."
+"Menampilkan notifikasi diperlukan untuk menjaga koneksi tetap aktif di latar "
+"belakang. Tanpa izin, koneksi mungkin terputus saat Anda beralih aplikasi."
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
@@ -2474,8 +2516,8 @@ msgstr "Izin diperlukan"
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification"
-" permission in app settings."
+"To keep connections alive in the background, you must enable notification "
+"permission in app settings."
 msgstr ""
 "Untuk menjaga agar koneksi tetap aktif di latar belakang, Anda harus "
 "mengaktifkan izin notifikasi di pengaturan aplikasi."
@@ -2489,8 +2531,10 @@ msgstr "Buka pengaturan"
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid "Are you trying to access a local host? Grant local network permissions."
-msgstr "Apakah Anda mencoba mengakses host lokal? Berikan izin jaringan lokal."
+msgid ""
+"Are you trying to access a local host? Grant local network permissions."
+msgstr ""
+"Apakah Anda mencoba mengakses host lokal? Berikan izin jaringan lokal."
 
 #. Loading message shown during app initialization
 msgctxt "loading_message"
@@ -2558,8 +2602,8 @@ msgstr "Coba lagi"
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug "
-"log copied above"
+"If the problem persists, please report this issue at %1$s with the debug log "
+"copied above"
 msgstr ""
 "Jika masalah ini masih berlanjut, laporkan masalah ini di %1$s dengan "
 "menyertakan log debug yang telah disalin"
@@ -2602,12 +2646,11 @@ msgstr "Apakah Anda yakin ingin menghapus host '%1$s'?"
 #, c-format
 msgctxt "forget_host_keys_confirm"
 msgid ""
-"Are you sure you want to forget the stored host keys for '%1$s'? You will"
-" be prompted to verify the host key on the next connection."
+"Are you sure you want to forget the stored host keys for '%1$s'? You will be "
+"prompted to verify the host key on the next connection."
 msgstr ""
-"Apakah Anda yakin ingin menghapus kunci host yang tersimpan untuk '%1$s'?"
-" Anda akan diminta untuk memverifikasi kunci host pada koneksi "
-"berikutnya."
+"Apakah Anda yakin ingin menghapus kunci host yang tersimpan untuk '%1$s'? "
+"Anda akan diminta untuk memverifikasi kunci host pada koneksi berikutnya."
 
 #. Menu selection to edit a pubkey details (e.g., nickname)
 msgctxt "list_pubkey_edit"
@@ -2689,7 +2732,7 @@ msgstr "Autentikasi gagal untuk host perantara: %s"
 #. Terminal message when jump host is not found in database
 msgctxt "terminal_jump_not_found"
 msgid "Jump host not found in saved hosts"
-msgstr ""
+msgstr "Host perantara tidak ditemukan di daftar host yang tersimpan"
 
 #. Password prompt prefix for jump host
 #, c-format
@@ -2720,11 +2763,11 @@ msgstr "Log disalin ke papan klip"
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at "
-"https://connectbot.org/bug"
+"To report a bug, copy these logs and open a new issue at https://connectbot."
+"org/bug"
 msgstr ""
-"Untuk melaporkan bug, salin log ini dan buka laporan baru di "
-"https://connectbot.org/bug"
+"Untuk melaporkan bug, salin log ini dan buka laporan baru di https://"
+"connectbot.org/bug"
 
 #. Message shown when no logs are available
 msgctxt "no_logs_available"
@@ -3038,4 +3081,3 @@ msgstr "Buka ConnectBot"
 msgctxt "auth_prompt_subtitle"
 msgid "Verify your identity to continue"
 msgstr "Verifikasi identitas Anda untuk melanjutkan"
-

@@ -234,6 +234,7 @@
   <string name="profile_delete_cancel">취소</string>
   <string name="profile_summary_font">글꼴 %1$s %2$dpt</string>
   <string name="profile_summary_emulation">모의: %s</string>
+  <string name="console_menu_reconnect">다시 연결</string>
   <string name="console_menu_close">닫기</string>
   <string name="console_menu_paste">붙여넣기</string>
   <string name="console_menu_portforwards">포트 포워드</string>
@@ -343,6 +344,13 @@
   <string name="label_hex_color">16진 색상</string>
   <string name="colors_fg_label">FG %1$d</string>
   <string name="color_bg_label">BG %1d</string>
+  <string name="section_fg_bg_colors">전경 및 배경</string>
+  <string name="label_foreground_color">전경</string>
+  <string name="label_background_color">배경</string>
+  <string name="label_base_scheme">기본 방식:</string>
+  <string name="menu_manage_colors">색 구성표 관리</string>
+  <string name="palette_editor_builtin_note">기본 스키마는 읽기 전용입니다. 복사하여 사용자 지정하세요.</string>
+  <string name="section_color_preview">미리보기</string>
   <string name="image_description_connected">연결되었습니다</string>
   <string name="image_description_disconnected">연결 해제됨.</string>
   <string name="image_description_toggle_control_character">토글 컨트롤 문자</string>
@@ -375,6 +383,7 @@
   <string name="terminal_keyboard_text_input_button">텍스트 입력</string>
   <string name="terminal_text_input_dialog_title">텍스트 입력</string>
   <string name="terminal_text_input_dialog_label">터미널에 보낼 텍스트 입력하세요</string>
+  <string name="terminal_text_input_resize_handle">크기 조정</string>
   <string name="console_menu_text_input">텍스트 입력</string>
   <string name="button_send">전송하다</string>
   <string name="button_ok">확인</string>
