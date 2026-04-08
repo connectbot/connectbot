@@ -234,6 +234,7 @@
   <string name="profile_delete_cancel">إلغاء</string>
   <string name="profile_summary_font">الخط: %1$s %2$d نقطة</string>
   <string name="profile_summary_emulation">المحاكاة: %s</string>
+  <string name="console_menu_reconnect">أعد الاتصال</string>
   <string name="console_menu_close">إغلاق</string>
   <string name="console_menu_paste">لصق</string>
   <string name="console_menu_portforwards">تحويلات المنافذ</string>
@@ -343,6 +344,13 @@
   <string name="label_hex_color">لون سداسي عشري</string>
   <string name="colors_fg_label">FG: %1$d</string>
   <string name="color_bg_label">الخلفية: %1$d</string>
+  <string name="section_fg_bg_colors">الخلفية والأمام</string>
+  <string name="label_foreground_color">المقدمة</string>
+  <string name="label_background_color">الخلفية</string>
+  <string name="label_base_scheme">الخطة الأساسية:</string>
+  <string name="menu_manage_colors">إدارة مخططات الألوان</string>
+  <string name="palette_editor_builtin_note">الأنظمة المضمنة للقراءة فقط. قم بعمل نسخة لتخصيصها.</string>
+  <string name="section_color_preview">معاينة</string>
   <string name="image_description_connected">متصل.</string>
   <string name="image_description_disconnected">غير متّصل.</string>
   <string name="image_description_toggle_control_character">تبديل حرف التحكم.</string>
@@ -375,6 +383,7 @@
   <string name="terminal_keyboard_text_input_button">إدخال نص</string>
   <string name="terminal_text_input_dialog_title">إدخال نص</string>
   <string name="terminal_text_input_dialog_label">أدخل النص المراد إرساله إلى الطرفية</string>
+  <string name="terminal_text_input_resize_handle">تغيير الحجم</string>
   <string name="console_menu_text_input">إدخال نص</string>
   <string name="button_send">أرسل</string>
   <string name="button_ok">حسناً</string>

@@ -234,6 +234,7 @@
   <string name="profile_delete_cancel">Zrušit</string>
   <string name="profile_summary_font">Písmo: %1$s %2$dpt</string>
   <string name="profile_summary_emulation">Emulace: %s</string>
+  <string name="console_menu_reconnect">Znovu se připojit</string>
   <string name="console_menu_close">Zavřít</string>
   <string name="console_menu_paste">Vložit</string>
   <string name="console_menu_portforwards">Přesměrování portů</string>
@@ -296,7 +297,7 @@
   <string name="terminal_auth_pubkey_fail">Pokus o autentizaci veřejným klíčem \'%1$s\' selhal</string>
   <string name="terminal_auth_ki">Pokus o autentizaci \'keyboard-interactive\' …</string>
   <string name="terminal_auth_ki_fail">Pokus o autentizaci \'keyboard-interactive\' selhal</string>
-  <string name="terminal_auth_fail">[Hostitel nepodporuje autentizaci heslem, ani \'keyboard-interactive\']</string>
+  <string name="terminal_auth_fail">[Váš server nepodporuje ověřování pomocí hesla nebo interaktivního klíče.]</string>
   <string name="terminal_no_session">Sezení nebude spuštěno kvůli nastavení hosta.</string>
   <string name="terminal_enable_portfoward">Povolit přesměrování portu: %1$s</string>
   <string name="local_shell_unavailable">Selhání! Místní shell není na tomto telefonu podporován</string>
@@ -343,6 +344,13 @@
   <string name="label_hex_color">Barva v hexadecimálním formátu</string>
   <string name="colors_fg_label">Popředí: %1$d</string>
   <string name="color_bg_label">Pozadí: %1$d</string>
+  <string name="section_fg_bg_colors">Popředí a pozadí</string>
+  <string name="label_foreground_color">Popředí</string>
+  <string name="label_background_color">Pozadí</string>
+  <string name="label_base_scheme">Základní schéma:</string>
+  <string name="menu_manage_colors">Spravujte barevná schémata</string>
+  <string name="palette_editor_builtin_note">Předdefinovaná schémata jsou určena pouze pro čtení. Pro úpravu je duplikujte.</string>
+  <string name="section_color_preview">Náhled</string>
   <string name="image_description_connected">Připojeno.</string>
   <string name="image_description_disconnected">Odpojeno.</string>
   <string name="image_description_toggle_control_character">Přepnout řídicí znak</string>
@@ -375,6 +383,7 @@
   <string name="terminal_keyboard_text_input_button">Vstup textu</string>
   <string name="terminal_text_input_dialog_title">Vstup textu</string>
   <string name="terminal_text_input_dialog_label">Zadejte text k odeslání do terminálu</string>
+  <string name="terminal_text_input_resize_handle">Změnit velikost</string>
   <string name="console_menu_text_input">Vstup textu</string>
   <string name="button_send">Odeslat</string>
   <string name="button_ok">OK</string>

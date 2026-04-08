@@ -234,6 +234,7 @@
   <string name="profile_delete_cancel">Отмена</string>
   <string name="profile_summary_font">Шрифт: %1$s %2$dpt</string>
   <string name="profile_summary_emulation">Эмуляция: %s</string>
+  <string name="console_menu_reconnect">Повторное подключение</string>
   <string name="console_menu_close">Закрыть</string>
   <string name="console_menu_paste">Вставить</string>
   <string name="console_menu_portforwards">Перенаправления портов</string>
@@ -297,7 +298,7 @@
   <string name="terminal_auth_ki">Попытка \'интерактивной с клавиатурой\' авторизации</string>
   <string name="terminal_auth_ki_fail">Авторизация \'интерактивная с клавиатурой\' не удалась</string>
   <string name="terminal_auth_fail">Ваш сервер не поддерживает авторизацию \'по паролю\' и \'интерактивную с клавиатурой\'</string>
-  <string name="terminal_no_session">Настройки сервера не позволяют запустить данную сессию</string>
+  <string name="terminal_no_session">Настройки сервера не позволяют запустить данную сессию.</string>
   <string name="terminal_enable_portfoward">Включить переадресацию порта: %1$s</string>
   <string name="local_shell_unavailable">Ошибка! На данном устройстве отсутствует локальная оболочка.</string>
   <string name="notification_text">%1$s требует Вашего внимания.</string>
@@ -343,6 +344,13 @@
   <string name="label_hex_color">Цвет в формате HEX</string>
   <string name="colors_fg_label">ПП: %1$d</string>
   <string name="color_bg_label">ЗП: %1$d</string>
+  <string name="section_fg_bg_colors">Основной и фоновый</string>
+  <string name="label_foreground_color">Основной</string>
+  <string name="label_background_color">Фон</string>
+  <string name="label_base_scheme">Базовая схема:</string>
+  <string name="menu_manage_colors">Управление цветовыми схемами</string>
+  <string name="palette_editor_builtin_note">Встроенные схемы доступны только для чтения. Создайте их копию, чтобы настроить.</string>
+  <string name="section_color_preview">Превью</string>
   <string name="image_description_connected">Подключено.</string>
   <string name="image_description_disconnected">Отключено.</string>
   <string name="image_description_toggle_control_character">Toggle control character.</string>
@@ -375,6 +383,7 @@
   <string name="terminal_keyboard_text_input_button">Ввод текста</string>
   <string name="terminal_text_input_dialog_title">Ввод текста</string>
   <string name="terminal_text_input_dialog_label">Введите текст для отправки в терминал</string>
+  <string name="terminal_text_input_resize_handle">Изменить размер</string>
   <string name="console_menu_text_input">Ввод текста</string>
   <string name="button_send">Отправить</string>
   <string name="button_ok">Хорошо</string>

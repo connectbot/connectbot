@@ -234,6 +234,7 @@
   <string name="profile_delete_cancel">Annuler</string>
   <string name="profile_summary_font">Police: %1$s %2$dpt</string>
   <string name="profile_summary_emulation">Emulation %s</string>
+  <string name="console_menu_reconnect">Se reconnecter</string>
   <string name="console_menu_close">Fermer</string>
   <string name="console_menu_paste">Coller</string>
   <string name="console_menu_portforwards">Redirections de port</string>
@@ -343,6 +344,13 @@
   <string name="label_hex_color">Couleur Hexa</string>
   <string name="colors_fg_label">PP: %1$d</string>
   <string name="color_bg_label">AP: %1$d</string>
+  <string name="section_fg_bg_colors">Premier plan et arrière-plan</string>
+  <string name="label_foreground_color">Premier plan</string>
+  <string name="label_background_color">Arrière-plan</string>
+  <string name="label_base_scheme">Schéma de base :</string>
+  <string name="menu_manage_colors">Gérer les schémas de couleurs</string>
+  <string name="palette_editor_builtin_note">Les schémas intégrés sont en lecture seule. Dupliquez-les pour les personnaliser.</string>
+  <string name="section_color_preview">Aperçu</string>
   <string name="image_description_connected">Connecté</string>
   <string name="image_description_disconnected">Déconnecté</string>
   <string name="image_description_toggle_control_character">Activer/désactiver le caractère \"contrôle\".</string>
@@ -375,6 +383,7 @@
   <string name="terminal_keyboard_text_input_button">Saisie de texte</string>
   <string name="terminal_text_input_dialog_title">Saisie de texte</string>
   <string name="terminal_text_input_dialog_label">Entrez le texte à envoyer au terminal</string>
+  <string name="terminal_text_input_resize_handle">Redimensionner</string>
   <string name="console_menu_text_input">Saisie de texte</string>
   <string name="button_send">Envoyer</string>
   <string name="button_ok">daccord</string>

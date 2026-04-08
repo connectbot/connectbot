@@ -234,6 +234,7 @@
   <string name="profile_delete_cancel">Cancelar</string>
   <string name="profile_summary_font">Fonte %1$s %2$dpontos</string>
   <string name="profile_summary_emulation">Emulação</string>
+  <string name="console_menu_reconnect">Reconectar</string>
   <string name="console_menu_close">Fechar</string>
   <string name="console_menu_paste">Colar</string>
   <string name="console_menu_portforwards">Encaminhamento de portas</string>
@@ -343,6 +344,13 @@
   <string name="label_hex_color">Cor Hexadecimal</string>
   <string name="colors_fg_label">PP: %1$d</string>
   <string name="color_bg_label">SP: %1$d</string>
+  <string name="section_fg_bg_colors">Primeiro plano e fundo</string>
+  <string name="label_foreground_color">Plano</string>
+  <string name="label_background_color">Fundo</string>
+  <string name="label_base_scheme">Esquema básico:</string>
+  <string name="menu_manage_colors">Gerenciar esquemas de cores</string>
+  <string name="palette_editor_builtin_note">Os esquemas padrão são somente leitura. Duplique-os para personalizar.</string>
+  <string name="section_color_preview">Visualização</string>
   <string name="image_description_connected">Conectado.</string>
   <string name="image_description_disconnected">Desconectado.</string>
   <string name="image_description_toggle_control_character">Alternar o caractere de controle.</string>
@@ -375,6 +383,7 @@
   <string name="terminal_keyboard_text_input_button">Entrada de texto</string>
   <string name="terminal_text_input_dialog_title">Entrada de Texto</string>
   <string name="terminal_text_input_dialog_label">Digite o texto para enviar ao terminal</string>
+  <string name="terminal_text_input_resize_handle">Redimensionar</string>
   <string name="console_menu_text_input">Entrada de texto</string>
   <string name="button_send">Enviar</string>
   <string name="button_ok">OK</string>
@@ -438,7 +447,7 @@
   <string name="grant_permission">Conceder permissão</string>
   <string name="connect_anyway">Conectar de qualquer forma</string>
   <string name="notification_permission_denied_title">Permissão necessária</string>
-  <string name="notification_permission_denied_message">Redefinir todas as cores? Para manter as conexões ativas em segundo plano, você deve habilitar a permissão de notificação nas configurações do aplicativo.</string>
+  <string name="notification_permission_denied_message">Para manter as conexões ativas em segundo plano, você deve ativar a permissão de notificação nas configurações do aplicativo.</string>
   <string name="open_settings">Abrir configurações</string>
   <string name="terminal_no_route">Você está tentando acessar um host local? Grant permissões de rede local.</string>
   <string name="loading_message">Carregando…</string>

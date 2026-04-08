@@ -234,6 +234,7 @@
   <string name="profile_delete_cancel">Abbrechen</string>
   <string name="profile_summary_font">Schriftart %1$s %2$dpt</string>
   <string name="profile_summary_emulation">Emulation: %s</string>
+  <string name="console_menu_reconnect">Erneut verbinden</string>
   <string name="console_menu_close">Schließen</string>
   <string name="console_menu_paste">Einfügen</string>
   <string name="console_menu_portforwards">Port-Weiterleitungen</string>
@@ -343,6 +344,13 @@
   <string name="label_hex_color">Hex Farbe</string>
   <string name="colors_fg_label">SF: %1$d</string>
   <string name="color_bg_label">HF: %1$d</string>
+  <string name="section_fg_bg_colors">Im Vordergrund und im Hintergrund</string>
+  <string name="label_foreground_color">Im Vordergrund</string>
+  <string name="label_background_color">Hintergrund</string>
+  <string name="label_base_scheme">Grundlegendes Schema:</string>
+  <string name="menu_manage_colors">Farbpaletten verwalten</string>
+  <string name="palette_editor_builtin_note">Die vordefinierten Schemata sind schreibgeschützt. Duplizieren Sie sie, um sie anzupassen.</string>
+  <string name="section_color_preview">Vorschau</string>
   <string name="image_description_connected">Verbunden.</string>
   <string name="image_description_disconnected">Verbindung getrennt.</string>
   <string name="image_description_toggle_control_character">Steuerzeichen umschalten</string>
@@ -375,6 +383,7 @@
   <string name="terminal_keyboard_text_input_button">Eingabetext</string>
   <string name="terminal_text_input_dialog_title">Eingabetext</string>
   <string name="terminal_text_input_dialog_label">Geben Sie Text ein um ihn an die Konsole zu senden</string>
+  <string name="terminal_text_input_resize_handle">Größe ändern</string>
   <string name="console_menu_text_input">Eingabetext</string>
   <string name="button_send">Senden</string>
   <string name="button_ok">OK</string>

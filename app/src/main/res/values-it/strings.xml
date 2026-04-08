@@ -234,6 +234,7 @@
   <string name="profile_delete_cancel">Annulla</string>
   <string name="profile_summary_font">Carattere %1$s %2$dpt</string>
   <string name="profile_summary_emulation">Emulazione %s</string>
+  <string name="console_menu_reconnect">Riconnetti</string>
   <string name="console_menu_close">Chiudi</string>
   <string name="console_menu_paste">Incolla</string>
   <string name="console_menu_portforwards">Inoltro porte</string>
@@ -296,7 +297,7 @@
   <string name="terminal_auth_pubkey_fail">Metodo di autenticazione a \'chiave pubblica\' con la chiave \'%1$s\' fallito</string>
   <string name="terminal_auth_ki">Provando l\'autenticazione \'keyboard-interactive\'</string>
   <string name="terminal_auth_ki_fail">Metodo di autenticazione \'keyboard-interactive\' fallito</string>
-  <string name="terminal_auth_fail">[Il tuo host non supporta l\'autenticazione \'password\' o \'keyboard-interactive\'</string>
+  <string name="terminal_auth_fail">[Il tuo host non supporta l\'autenticazione \'password\' o \'keyboard-interactive\']</string>
   <string name="terminal_no_session">La sessione non inizierà a causa delle preferenze dell\'host.</string>
   <string name="terminal_enable_portfoward">Abilita il port forward: %1$s</string>
   <string name="local_shell_unavailable">Fallimento! La shell locale non è disponibile su questo telefono.</string>
@@ -343,6 +344,13 @@
   <string name="label_hex_color">Colore Esadecimale</string>
   <string name="colors_fg_label">CP: %1$d</string>
   <string name="color_bg_label">CS: %1$d</string>
+  <string name="section_fg_bg_colors">In primo piano e in secondo piano</string>
+  <string name="label_foreground_color">In primo piano</string>
+  <string name="label_background_color">Sfondo</string>
+  <string name="label_base_scheme">Schema di base:</string>
+  <string name="menu_manage_colors">Gestisci gli schemi di colori</string>
+  <string name="palette_editor_builtin_note">Gli schemi predefiniti sono di sola lettura. Duplicarli per personalizzarli.</string>
+  <string name="section_color_preview">Anteprima</string>
   <string name="image_description_connected">Connesso.</string>
   <string name="image_description_disconnected">Disconnesso.</string>
   <string name="image_description_toggle_control_character">"Alterna  il carattere di controllo."</string>
@@ -375,6 +383,7 @@
   <string name="terminal_keyboard_text_input_button">Inserimento di testo</string>
   <string name="terminal_text_input_dialog_title">Inserimento di testo</string>
   <string name="terminal_text_input_dialog_label">Inserisci il testo da inviare al terminale</string>
+  <string name="terminal_text_input_resize_handle">Ridimensiona</string>
   <string name="console_menu_text_input">Inserimento di testo</string>
   <string name="button_send">Invia</string>
   <string name="button_ok">OK</string>
