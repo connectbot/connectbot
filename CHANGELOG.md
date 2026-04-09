@@ -2,7 +2,7 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
-## [Unreleased]
+## [1.10.0][1.10.0]
 ### Added
 - Complete rewrite the of the UI using Jetpack Compose
 - Support for Biometric authentication for SSH keys (by nindanaoto)
@@ -16,6 +16,11 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Customization for shortcuts
 - Dynamic colors support in theme
 - IPv4/IPv6 setting for Hosts (by ppb2020)
+- Optional biometric/PIN authentication on app launch
+- OSC 8 hyperlink support
+- In-app language switching in Settings
+- Save login password per host
+- Duplicate host option in host list context menu
 
 ### Changed
 - Migrated database to Room
@@ -24,10 +29,15 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Updated to new SSH library; now supports Post-Quantum Cryptography ML-KEM
 - Public Key list now uses a FAB menu
 - Allow multiple known keys per host to support key migration
+- Color scheme settings moved under Profiles
+- Network status messages shown as top banner (Snackbar) instead of terminal output
+- Resizable floating text input dialog with various improvements
+- ProxyJump now uses the jump host's own profile for host key verification
 
 ### Translations
 - Update translations
 - Localize color schemes, fonts, profiles, and more
+- Support system per-app language settings
 
 ### Dependencies
 - Update dependencies
@@ -212,6 +222,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Color picker color numbers are now localized
 
 
+[1.10.0]: https://github.com/connectbot/connectbot/compare/v1.9.13...v1.10.0
 [1.9.13]: https://github.com/connectbot/connectbot/compare/v1.9.12...v1.9.13
 [1.9.12]: https://github.com/connectbot/connectbot/compare/v1.9.11...v1.9.12
 [1.9.11]: https://github.com/connectbot/connectbot/compare/v1.9.10...v1.9.11
