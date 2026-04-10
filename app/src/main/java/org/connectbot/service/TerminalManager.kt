@@ -741,22 +741,25 @@ class TerminalManager :
 
     private fun vibrate() {
         vibrator?.let {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // O = API 26
-                val vibrationEffect = VibrationEffect.createOneShot(
-                    VIBRATE_DURATION,
-                    VibrationEffect.DEFAULT_AMPLITUDE
-                )
-                it.vibrate(vibrationEffect)
-            } else {
-                // Deprecated path for compatibility with older APIs (pre-API 26)
-                @Suppress("DEPRECATION")
-                it.vibrate(VIBRATE_DURATION)
+            scope.launch(dispatchers.io) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // O = API 26
+                    val vibrationEffect = VibrationEffect.createOneShot(
+                        VIBRATE_DURATION,
+                        VibrationEffect.DEFAULT_AMPLITUDE
+                    )
+                    it.vibrate(vibrationEffect)
+                } else {
+                    // Deprecated path for compatibility with older APIs (pre-API 26)
+                    @Suppress("DEPRECATION")
+                    it.vibrate(VIBRATE_DURATION)
+                }
             }
         }
     }
 
     private fun enableMediaPlayer() {
-        mediaPlayer = MediaPlayer()
+        val player = MediaPlayer()
+        mediaPlayer = player
 
         val volume = prefs.getFloat(
             PreferenceConstants.BELL_VOLUME,
@@ -769,36 +772,44 @@ class TerminalManager :
             // Use CONTENT_TYPE_SONIFICATION for non-music/non-speech sounds (like notifications or alarms)
             .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
             .build()
-        mediaPlayer?.setAudioAttributes(audioAttributes)
+        player.setAudioAttributes(audioAttributes)
 
         val file = res.openRawResourceFd(R.raw.bell)
         try {
-            mediaPlayer!!.isLooping = false
-            mediaPlayer!!.setDataSource(
-                file.fileDescriptor,
-                file
-                    .startOffset,
-                file.length
-            )
+            player.isLooping = false
+            player.setDataSource(file.fileDescriptor, file.startOffset, file.length)
             file.close()
-            mediaPlayer!!.setVolume(volume, volume)
-            mediaPlayer!!.prepare()
+            player.setVolume(volume, volume)
+            player.setOnPreparedListener { /* ready to play */ }
+            player.setOnErrorListener { mp, what, extra ->
+                Timber.e("MediaPlayer error: what=%d extra=%d", what, extra)
+                mp.reset()
+                true
+            }
+            player.prepareAsync()
         } catch (e: IOException) {
             Timber.e(e, "Error setting up bell media player")
-        }
-    }
-
-    private fun disableMediaPlayer() {
-        if (mediaPlayer != null) {
-            mediaPlayer!!.release()
+            player.release()
             mediaPlayer = null
         }
     }
 
+    private fun disableMediaPlayer() {
+        mediaPlayer?.release()
+        mediaPlayer = null
+    }
+
     fun playBeep() {
-        if (mediaPlayer != null) {
-            mediaPlayer!!.seekTo(0)
-            mediaPlayer!!.start()
+        val player = mediaPlayer
+        if (player != null) {
+            scope.launch(dispatchers.io) {
+                try {
+                    player.seekTo(0)
+                    player.start()
+                } catch (e: IllegalStateException) {
+                    Timber.w(e, "MediaPlayer not ready for playback")
+                }
+            }
         }
 
         if (wantBellVibration) {
