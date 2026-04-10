@@ -204,12 +204,15 @@ class PubkeyListViewModel @Inject constructor(
                 val alias = pubkey.keystoreAlias
                     ?: throw IllegalStateException("Biometric key missing keystore alias")
 
-                val biometricKeyManager = BiometricKeyManager(context)
-                val publicKey = biometricKeyManager.getPublicKey(alias)
-                    ?: throw IllegalStateException("Could not retrieve public key from keystore")
+                val result = withContext(dispatchers.io) {
+                    val biometricKeyManager = BiometricKeyManager(context)
+                    val publicKey = biometricKeyManager.getPublicKey(alias)
+                        ?: throw IllegalStateException("Could not retrieve public key from keystore")
+                    terminalManager?.addBiometricKey(pubkey, alias, publicKey)
+                }
 
                 // Add the biometric key to TerminalManager
-                when (val result = terminalManager?.addBiometricKey(pubkey, alias, publicKey)) {
+                when (result) {
                     is TerminalManager.BiometricKeyResult.Success -> {
                         // Clear the biometric key to unlock
                         _uiState.update { it.copy(biometricKeyToUnlock = null) }
