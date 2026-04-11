@@ -86,4 +86,7 @@ object PreferenceConstants {
     const val FONT_FAMILY: String = "fontFamily"
     const val FONT_FAMILY_DEFAULT: String = "SYSTEM_DEFAULT"
     const val CUSTOM_FONTS: String = "customFonts"
+
+    /* Theme */
+    const val THEME_MODE: String = "themeMode"
 }

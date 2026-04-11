@@ -40,6 +40,7 @@ import org.connectbot.data.migration.MigrationState
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalManager
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.ThemeMode
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -85,6 +86,17 @@ class AppViewModel @Inject constructor(
     val authOnLaunchEnabled: Boolean
         get() = prefs.getBoolean(PreferenceConstants.AUTH_ON_LAUNCH, false)
 
+    private fun currentThemeMode() = ThemeMode.fromString(prefs.getString(PreferenceConstants.THEME_MODE, null))
+
+    private val _themeMode = MutableStateFlow(currentThemeMode())
+    val themeMode: StateFlow<ThemeMode> = _themeMode.asStateFlow()
+
+    private val themePrefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
+        if (key == PreferenceConstants.THEME_MODE) {
+            _themeMode.value = currentThemeMode()
+        }
+    }
+
     private val _pendingConnectionUri = MutableStateFlow<Uri?>(null)
     val pendingConnectionUri: StateFlow<Uri?> = _pendingConnectionUri.asStateFlow()
 
@@ -95,6 +107,7 @@ class AppViewModel @Inject constructor(
     val finishActivity = _finishActivity.receiveAsFlow()
 
     init {
+        prefs.registerOnSharedPreferenceChangeListener(themePrefListener)
         checkAndMigrate()
 
         viewModelScope.launch {
@@ -124,6 +137,11 @@ class AppViewModel @Inject constructor(
                 _uiState.value = newState
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        prefs.unregisterOnSharedPreferenceChangeListener(themePrefListener)
     }
 
     private fun checkAndMigrate() {
