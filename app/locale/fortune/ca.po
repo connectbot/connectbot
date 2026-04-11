@@ -2,24 +2,23 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-07 21:40-0700\n"
+"POT-Creation-Date: 2026-04-11 10:17-0700\n"
 "PO-Revision-Date: 2026-04-07 21:45-0700\n"
 "Last-Translator: BennyBeat <Unknown>\n"
 "Language: ca\n"
 "Language-Team: ca <LL@li.org>\n"
-"Plural-Forms: nplurals=3; plural=(((((((e == 0)) && (!((n == 0)))) && (((n % "
-"1000000) == 0))) && ((0 == 0))) || (!((e >= 0 && e <= 5)))) ? 1 : (((n == "
-"1)) && ((0 == 0))) ? 0 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(((((((e == 0)) && (!((n == 0)))) && "
+"(((n % 1000000) == 0))) && ((0 == 0))) || (!((e >= 0 && e <= 5)))) ? 1 : "
+"(((n == 1)) && ((0 == 0))) ? 0 : 2);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
-"X-Generator: Autopo v1.0.9\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -142,8 +141,8 @@ msgstr "Toca aquesta caixa per obtenir aleatorietat: %1$d%% completat"
 #. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr ""
 "Per assegurar l'aleatorietat durant la generació de la clau, mou el dit "
 "aleatoriament per sobre la caixa de sota."
@@ -270,7 +269,8 @@ msgstr "Confirmeu la contrasenya"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
-msgid "Tap \"Menu\" to create\n"
+msgid ""
+"Tap \"Menu\" to create\n"
 "or import key pairs."
 msgstr "Toqueu \"Menú\" per crear o importar parells de claus."
 
@@ -390,9 +390,11 @@ msgstr "Contrasenya per la clau '%1$s'"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid "Allow remote host to\n"
+msgid ""
+"Allow remote host to\n"
 "use key '%1$s'?"
-msgstr "Permet al servidor remot\n"
+msgstr ""
+"Permet al servidor remot\n"
 "utilitzar la clau '%1$s'?"
 
 #. The header of the warning a user gets when the host key has changed. Note
@@ -408,7 +410,8 @@ msgstr "ALERTA: LA IDENTIFICACIÓ DEL SERVIDOR REMOT HA CANVIAT!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "ES POSSIBLE QUE ALGÚ ESTIGUI FENT ALGUNA COSA LLETGA!\n"
@@ -417,9 +420,11 @@ msgstr ""
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid "Host has disconnected.\n"
+msgid ""
+"Host has disconnected.\n"
 "Close session?"
-msgstr "Servidor desconnectat.\n"
+msgstr ""
+"Servidor desconnectat.\n"
 "Tancar sessió?"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -427,7 +432,8 @@ msgstr "Servidor desconnectat.\n"
 #, fuzzy
 msgctxt "prompt_continue_connecting"
 msgid "Are you sure you want to continue connecting?"
-msgstr "Estàs segur que vols\n"
+msgstr ""
+"Estàs segur que vols\n"
 "continuar connectant?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
@@ -494,8 +500,8 @@ msgstr "Connexió perduda"
 msgctxt "network_lost_grace_period"
 msgid "Network lost, waiting to reconnect…"
 msgstr ""
-"S'ha perdut la connexió de xarxa, s'està esperant per tornar a connectar-se.."
-"."
+"S'ha perdut la connexió de xarxa, s'està esperant per tornar a connectar-"
+"se..."
 
 #. Message shown when the 60-second grace period expires without network
 #. restoration
@@ -514,8 +520,8 @@ msgstr "La xarxa s'ha restablert, la connexió s'ha mantingut."
 msgctxt "network_restored_ip_changed"
 msgid "Network restored but IP changed, reconnecting…"
 msgstr ""
-"La xarxa s'ha restablert, però l'adreça IP ha canviat, tornant a connectar..."
-""
+"La xarxa s'ha restablert, però l'adreça IP ha canviat, tornant a "
+"connectar..."
 
 #. Message shown when network is restored but previous network state is
 #. unknown
@@ -630,8 +636,8 @@ msgstr "Còpia de seguretat de claus públiques"
 msgctxt "pref_backupkeys_summary"
 msgid "Keep back-ups of the private keys using Android's backup mechanism"
 msgstr ""
-"Crea una còpia de seguretat de les claus públiques mitjançant el mecanisme "
-"de còpia d'Android"
+"Crea una còpia de seguretat de les claus públiques mitjançant el "
+"mecanisme de còpia d'Android"
 
 #. The category title for user interface preferences
 msgctxt "pref_ui_category"
@@ -647,6 +653,27 @@ msgstr "Idioma"
 msgctxt "pref_language_system_default"
 msgid "System default"
 msgstr "Configuració per defecte del sistema"
+
+#. Title of the theme mode selector preference in the User Interface settings
+#. section
+msgctxt "pref_theme_title"
+msgid "Theme"
+msgstr ""
+
+#. Theme option: follow the OS light/dark setting
+msgctxt "pref_theme_system"
+msgid "System default"
+msgstr ""
+
+#. Theme option: always use the light theme regardless of OS setting
+msgctxt "pref_theme_light"
+msgid "Light"
+msgstr ""
+
+#. Theme option: always use the dark theme regardless of OS setting
+msgctxt "pref_theme_dark"
+msgid "Dark"
+msgstr ""
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
@@ -677,7 +704,8 @@ msgstr "Gest de pàgina amunt/avall"
 msgctxt "pref_pg_updn_gesture_summary"
 msgid "Swipe the left third of the screen to send pg up/dn to the terminal"
 msgstr ""
-"Llisqueu pel terç esquerre de la pantalla per enviar Inici/Final al terminal"
+"Llisqueu pel terç esquerre de la pantalla per enviar Inici/Final al "
+"terminal"
 
 #. Name for the full screen preference
 msgctxt "pref_fullscreen_title"
@@ -715,7 +743,8 @@ msgstr "Ctrl+núm són les tecles «F-unció»"
 msgctxt "pref_ctrlfkeys_summary"
 msgid "On software keyboards, number keys send F1-F10 with ctrl"
 msgstr ""
-"En teclats virtuals les tecles F1-F10 es representen mitjançant Ctrl+número"
+"En teclats virtuals les tecles F1-F10 es representen mitjançant "
+"Ctrl+número"
 
 #. Name for the volume keys control font size preference
 msgctxt "pref_volumefont_title"
@@ -844,11 +873,10 @@ msgstr "Notificacions en rerefons"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
+msgid "Send notification when a terminal running in the background sounds a bell."
 msgstr ""
-"Envia notificacions quan un terminal actiu al rerefons envia una senyal de "
-"so."
+"Envia notificacions quan un terminal actiu al rerefons envia una senyal "
+"de so."
 
 #. Preference selection to indicate use of right side of keyboard for special
 #. shortcuts.
@@ -1024,8 +1052,7 @@ msgstr "Inicia una sessió de shell"
 #. connection or not
 msgctxt "hostpref_wantsession_summary"
 msgid "Disable this preference to only use port forwards"
-msgstr ""
-"Deshabilita aquesta preferència per només usar redireccionament de ports"
+msgstr "Deshabilita aquesta preferència per només usar redireccionament de ports"
 
 #. Setting for whether the host should be reconnected to automatically upon
 #. disconnect
@@ -1208,8 +1235,8 @@ msgid ""
 "Force the terminal to a specific size (columns x rows) instead of auto-"
 "sizing to fit the screen."
 msgstr ""
-"Força el terminal a una mida específica (columnes x files) en lloc d'ajustar-"
-"se automàticament a la pantalla."
+"Força el terminal a una mida específica (columnes x files) en lloc d"
+"'ajustar-se automàticament a la pantalla."
 
 #. Label for the enable force size switch
 msgctxt "profile_editor_force_size_enable"
@@ -1351,6 +1378,12 @@ msgstr "Força el tamany"
 msgctxt "console_menu_urlscan"
 msgid "URL scan"
 msgstr "Llistat de URL"
+
+#. Error shown in a snackbar when the user taps a URL but no app on the device
+#. can handle it
+msgctxt "console_url_no_handler"
+msgid "No app available to open this URL"
+msgstr ""
 
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"
@@ -1626,14 +1659,15 @@ msgstr "L'autenticació amb la contrasenya emmagatzemada ha fallat."
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
 msgstr ""
-"Intentant autenticació amb 'claus públiques' amb totes les claus en memòria"
+"Intentant autenticació amb 'claus públiques' amb totes les claus en "
+"memòria"
 
 #. Error message shown when the selected public key is corrupted or invalid
 msgctxt "terminal_auth_pubkey_invalid"
 msgid "Selected public key is invalid, try reselecting key in host editor"
 msgstr ""
-"La clau pública seleccionada és invàlida, intenta reseleccionar la clau en "
-"l'editor del servidor"
+"La clau pública seleccionada és invàlida, intenta reseleccionar la clau "
+"en l'editor del servidor"
 
 #. Message shown in terminal when attempting public key authentication with a
 #. specific key
@@ -1657,8 +1691,8 @@ msgid ""
 "fingerprints are enrolled on the device. Please generate a new key."
 msgstr ""
 "La clau biomètrica '%1$s' ha estat invalidada. Això pot passar quan "
-"s'afegeixen noves empremtes dactilars al dispositiu. Si us plau, genereu una "
-"nova clau."
+"s'afegeixen noves empremtes dactilars al dispositiu. Si us plau, genereu "
+"una nova clau."
 
 #. Message shown in terminal when public key authentication fails. Parameter
 #. is the key nickname.
@@ -1685,7 +1719,8 @@ msgid ""
 "[Your host doesn't support 'password' or 'keyboard-interactive' "
 "authentication.]"
 msgstr ""
-"[El servidor no admet autenticació amb 'contrasenya' o 'teclat-interactiu'.]"
+"[El servidor no admet autenticació amb 'contrasenya' o 'teclat-"
+"interactiu'.]"
 
 #. Message shown in terminal when shell session is not started because user
 #. disabled it in host settings
@@ -1792,8 +1827,7 @@ msgstr "Vols eliminar l'esquema?"
 #, c-format
 msgctxt "dialog_message_delete_scheme"
 msgid "Are you sure you want to delete \"%1$s\"? This action cannot be undone."
-msgstr ""
-"Estàs segur que vols eliminar \"%1$s\"? Aquesta acció no es pot revertir."
+msgstr "Estàs segur que vols eliminar \"%1$s\"? Aquesta acció no es pot revertir."
 
 #. Button text for confirm action in dialogs
 msgctxt "button_confirm"
@@ -1818,8 +1852,7 @@ msgstr "Personalitzat"
 #. Empty state message when no custom schemes exist
 msgctxt "empty_custom_schemes"
 msgid "No custom schemes. Tap \"New Scheme\" to create one."
-msgstr ""
-"No hi ha esquemes personalitzats. Toqueu \"Nou esquema\" per crear-ne un."
+msgstr "No hi ha esquemes personalitzats. Toqueu \"Nou esquema\" per crear-ne un."
 
 #. Button text to edit full color palette
 msgctxt "button_edit_palette"
@@ -1894,8 +1927,8 @@ msgstr "Restaurar tots els colors?"
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action cannot "
-"be undone."
+"This will reset all 256 colors to their default values. This action "
+"cannot be undone."
 msgstr ""
 "Això restablirà tots els 256 colors als seus valors per defecte. Aquesta "
 "acció no es pot revertir."
@@ -1970,8 +2003,8 @@ msgstr "Gestiona els esquemes de colors"
 msgctxt "palette_editor_builtin_note"
 msgid "Built-in schemes are read-only. Duplicate to customize."
 msgstr ""
-"Els esquemes integrats són de només lectura. Dupliqueu-los per personalitzar-"
-"los."
+"Els esquemes integrats són de només lectura. Dupliqueu-los per "
+"personalitzar-los."
 
 #. Section header for the terminal color preview shown below the ANSI color
 #. grid
@@ -2358,18 +2391,18 @@ msgstr "Protegeix aquesta clau amb la teva empremta digital."
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use this "
-"feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use "
+"this feature."
 msgstr ""
-"No s'ha registrat cap empremta digital. Configureu l'empremta digital a la "
-"configuració del dispositiu per utilitzar aquesta funció."
+"No s'ha registrat cap empremta digital. Configureu l'empremta digital a "
+"la configuració del dispositiu per utilitzar aquesta funció."
 
 #. Warning shown when key type doesn\'t support biometric protection
 msgctxt "pubkey_biometric_key_type_warning"
 msgid "Fingerprint protection is only available for RSA and EC keys"
 msgstr ""
-"La protecció per empremta digital només està disponible per a les claus RSA "
-"i EC."
+"La protecció per empremta digital només està disponible per a les claus "
+"RSA i EC."
 
 #. Title for biometric prompt when unlocking a key
 msgctxt "pubkey_biometric_prompt_title"
@@ -2492,11 +2525,12 @@ msgstr "Manteniu les connexions actives"
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch apps."
+"background. Without permission, connections may close when you switch "
+"apps."
 msgstr ""
-"Mostrar una notificació és necessari per mantenir les connexions actives en "
-"segon pla. Sense aquest permís, les connexions es poden tancar quan canvieu "
-"d'aplicació."
+"Mostrar una notificació és necessari per mantenir les connexions actives "
+"en segon pla. Sense aquest permís, les connexions es poden tancar quan "
+"canvieu d'aplicació."
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
@@ -2522,11 +2556,11 @@ msgstr "Es requereix permís"
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification "
-"permission in app settings."
+"To keep connections alive in the background, you must enable notification"
+" permission in app settings."
 msgstr ""
-"Per mantenir les connexions actives en segon pla, heu d'activar el permís de "
-"notificacions a la configuració de l'aplicació."
+"Per mantenir les connexions actives en segon pla, heu d'activar el permís"
+" de notificacions a la configuració de l'aplicació."
 
 #. Button text to open ConnectBot app settings page where user can grant
 #. notification permission.
@@ -2537,8 +2571,7 @@ msgstr "Obriu la configuració"
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid ""
-"Are you trying to access a local host? Grant local network permissions."
+msgid "Are you trying to access a local host? Grant local network permissions."
 msgstr "Intenteu accedir a un host local? Doneu permís a la xarxa local."
 
 #. Loading message shown during app initialization
@@ -2607,11 +2640,11 @@ msgstr "Torna-ho a provar"
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug log "
-"copied above"
+"If the problem persists, please report this issue at %1$s with the debug "
+"log copied above"
 msgstr ""
-"Si el problema persisteix, si us plau, notifiqueu-ho a %1$s i adjunteu el "
-"registre de depuració que heu copiat."
+"Si el problema persisteix, si us plau, notifiqueu-ho a %1$s i adjunteu el"
+" registre de depuració que heu copiat."
 
 #. Title for warnings section shown during database migration
 msgctxt "migration_warnings_title"
@@ -2651,12 +2684,12 @@ msgstr "Estàs segur que vols eliminar l'amfitrió '%1$s'?"
 #, c-format
 msgctxt "forget_host_keys_confirm"
 msgid ""
-"Are you sure you want to forget the stored host keys for '%1$s'? You will be "
-"prompted to verify the host key on the next connection."
+"Are you sure you want to forget the stored host keys for '%1$s'? You will"
+" be prompted to verify the host key on the next connection."
 msgstr ""
 "Estàs segur que vols oblidar les claus d'amfitrió emmagatzemades per a "
-"'%1$s'? Se't demanarà que verifiquis la clau d'amfitrió la propera vegada "
-"que et connectis."
+"'%1$s'? Se't demanarà que verifiquis la clau d'amfitrió la propera vegada"
+" que et connectis."
 
 #. Menu selection to edit a pubkey details (e.g., nickname)
 msgctxt "list_pubkey_edit"
@@ -2672,8 +2705,7 @@ msgstr "Versió IP"
 #. Summary text explaining what the IP version setting controls
 msgctxt "hostpref_ipversion_summary"
 msgid "Select which IP address version to use when connecting"
-msgstr ""
-"Seleccioneu la versió d'adreça IP que voleu utilitzar quan us connecteu"
+msgstr "Seleccioneu la versió d'adreça IP que voleu utilitzar quan us connecteu"
 
 #. Option for automatic IP version selection (try both IPv4 and IPv6)
 msgctxt "ipversion_auto"
@@ -2770,11 +2802,11 @@ msgstr "Els registres s'han copiat a la memòria portallàpies."
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at https://connectbot."
-"org/bug"
-msgstr ""
-"Per informar d'un error, copieu aquests registres i obriu un nou registre a "
+"To report a bug, copy these logs and open a new issue at "
 "https://connectbot.org/bug"
+msgstr ""
+"Per informar d'un error, copieu aquests registres i obriu un nou registre"
+" a https://connectbot.org/bug"
 
 #. Message shown when no logs are available
 msgctxt "no_logs_available"
@@ -2986,8 +3018,7 @@ msgstr "S'han exportat %1$d amfitrions i %2$d perfils."
 #, c-format
 msgctxt "import_hosts_success"
 msgid "Imported %1$d hosts (%2$d skipped) and %3$d profiles (%4$d skipped)"
-msgstr ""
-"S'han importat %1$d hosts (%2$d ignorats) i %3$d perfils (%4$d ignorats)."
+msgstr "S'han importat %1$d hosts (%2$d ignorats) i %3$d perfils (%4$d ignorats)."
 
 #. Error message when host export fails
 #, c-format
@@ -3062,8 +3093,8 @@ msgstr "Autenticació en iniciar l'aplicació"
 msgctxt "pref_auth_on_launch_summary"
 msgid "Require fingerprint, face, or device PIN when opening the app"
 msgstr ""
-"Demana l'empremta digital, el reconeixement facial o el PIN del dispositiu "
-"quan s'obre l'aplicació."
+"Demana l'empremta digital, el reconeixement facial o el PIN del "
+"dispositiu quan s'obre l'aplicació."
 
 #. Category title for security preferences in settings
 msgctxt "pref_security_category"
@@ -3089,3 +3120,4 @@ msgstr "Desbloqueja ConnectBot"
 msgctxt "auth_prompt_subtitle"
 msgid "Verify your identity to continue"
 msgstr "Verifiqueu la vostra identitat per continuar."
+

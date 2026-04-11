@@ -2,22 +2,21 @@
 # Copyright (C) 2015 ORGANIZATION
 # This file is distributed under the same license as the PROJECT project.
 # FIRST AUTHOR <EMAIL@ADDRESS>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-07 21:40-0700\n"
+"POT-Creation-Date: 2026-04-11 10:17-0700\n"
 "PO-Revision-Date: 2026-04-07 21:48-0700\n"
 "Last-Translator: Kenny Root <Unknown>\n"
 "Language: nl\n"
 "Language-Team: nl <LL@li.org>\n"
 "Plural-Forms: nplurals=2; plural=((((n == 1)) && ((0 == 0))) ? 0 : 1);\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Generated-By: Babel 2.18.0\n"
-"X-Generator: Autopo v1.0.9\n"
 
 #. Summary of what ConnectBot is; used as a short description in the Android
 #. running apps list
@@ -140,11 +139,11 @@ msgstr "Raak dit vierkant aan om willekeurigheid te verzamelen: %1$d%% gedaan"
 #. over the screen
 msgctxt "pubkey_touch_hint"
 msgid ""
-"In order to assure randomness during the key generation, move your finger "
-"randomly over the box below."
+"In order to assure randomness during the key generation, move your finger"
+" randomly over the box below."
 msgstr ""
-"Beweeg je vinger in willekeurige volgorde over het vak beneden om er voor te "
-"zorgen dat de invoer willekeurig blijft."
+"Beweeg je vinger in willekeurige volgorde over het vak beneden om er voor"
+" te zorgen dat de invoer willekeurig blijft."
 
 #. Progress message shown while generating a new SSH key pair
 msgctxt "pubkey_generating"
@@ -211,8 +210,7 @@ msgstr "Stel de exportwachtwoordzin in"
 #. Instructions to enter a passphrase to encrypt the key being exported
 msgctxt "pubkey_export_passphrase_message"
 msgid "Enter a passphrase to encrypt the exported key"
-msgstr ""
-"Voer een wachtwoordzin in om de geëxporteerde sleutel te versleutelen."
+msgstr "Voer een wachtwoordzin in om de geëxporteerde sleutel te versleutelen."
 
 #. Label for the field where user confirms the passphrase by entering it again
 msgctxt "pubkey_export_confirm_passphrase"
@@ -269,9 +267,11 @@ msgstr "Bevestig wachtwoord"
 
 #. Note that the '\n' just splits lines, so it's actually "create or import"
 msgctxt "pubkey_list_empty"
-msgid "Tap \"Menu\" to create\n"
+msgid ""
+"Tap \"Menu\" to create\n"
 "or import key pairs."
-msgstr "Tik op \"Menu\" om sleutelparen te maken\n"
+msgstr ""
+"Tik op \"Menu\" om sleutelparen te maken\n"
 "of te importeren."
 
 msgctxt "pubkey_unknown_format"
@@ -390,9 +390,11 @@ msgstr "Wachtwoord voor sleutel '%1$s'"
 #. key"
 #, c-format
 msgctxt "prompt_allow_agent_to_use_key"
-msgid "Allow remote host to\n"
+msgid ""
+"Allow remote host to\n"
 "use key '%1$s'?"
-msgstr "Sta host toe om '%1$s' \n"
+msgstr ""
+"Sta host toe om '%1$s' \n"
 "sleutel te gebruiken ?"
 
 #. The header of the warning a user gets when the host key has changed. Note
@@ -408,19 +410,22 @@ msgstr "WAARSCHUWING: REMOTE HOST IDENTIFICATIE IS VERANDERD!"
 msgctxt "host_verification_failure_warning"
 msgid ""
 "IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!\n"
-"Someone could be eavesdropping on you right now (man-in-the-middle attack)!\n"
+"Someone could be eavesdropping on you right now (man-in-the-middle "
+"attack)!\n"
 "It is also possible that the host key has just been changed."
 msgstr ""
 "HET IS MOGELIJK DAT IEMAND ONGEWILD BEZIG IS!\n"
-"Iemand kan nu misschien mee kijken met wat je aan het doen bent (man-in-the-"
-"middle attack)!\n"
+"Iemand kan nu misschien mee kijken met wat je aan het doen bent (man-in-"
+"the-middle attack)!\n"
 "Het is ook mogelijk dat de host sleutel veranderd is."
 
 #. Prompt user gets when the remote host has disconnected unexpectedly.
 msgctxt "prompt_host_disconnected"
-msgid "Host has disconnected.\n"
+msgid ""
+"Host has disconnected.\n"
 "Close session?"
-msgstr "Host heeft de verbinding verbroken.\n"
+msgstr ""
+"Host heeft de verbinding verbroken.\n"
 "Sessie afsluiten?"
 
 #. Prompt user must answer yes or no to when the remote host fails
@@ -428,7 +433,8 @@ msgstr "Host heeft de verbinding verbroken.\n"
 #, fuzzy
 msgctxt "prompt_continue_connecting"
 msgid "Are you sure you want to continue connecting?"
-msgstr "Weet je zeker dat je\n"
+msgstr ""
+"Weet je zeker dat je\n"
 "wilt doorgaan met verbinden?"
 
 #. Sent to user when the remote public encryption key fingerprint doesn't
@@ -539,8 +545,7 @@ msgstr "Scrollback grootte"
 #. Description of the scrollback size preference
 msgctxt "pref_scrollback_summary"
 msgid "Size of scrollback buffer to keep in memory for each console"
-msgstr ""
-"Grootte van scrollback buffer om in geheugen te houden voor elke console"
+msgstr "Grootte van scrollback buffer om in geheugen te houden voor elke console"
 
 #. Name for the font family preference
 msgctxt "pref_fontfamily_title"
@@ -646,6 +651,27 @@ msgctxt "pref_language_system_default"
 msgid "System default"
 msgstr "Standaard systeeminstelling"
 
+#. Title of the theme mode selector preference in the User Interface settings
+#. section
+msgctxt "pref_theme_title"
+msgid "Theme"
+msgstr ""
+
+#. Theme option: follow the OS light/dark setting
+msgctxt "pref_theme_system"
+msgid "System default"
+msgstr ""
+
+#. Theme option: always use the light theme regardless of OS setting
+msgctxt "pref_theme_light"
+msgid "Light"
+msgstr ""
+
+#. Theme option: always use the dark theme regardless of OS setting
+msgctxt "pref_theme_dark"
+msgid "Dark"
+msgstr ""
+
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
 msgid "Rotation mode"
@@ -659,8 +685,7 @@ msgstr "Titelbalk automatisch verbergen"
 #. Summary for the titlebar hide preference
 msgctxt "pref_titlebarhide_summary"
 msgid "Tap console to show title bar and access menu"
-msgstr ""
-"Tik op de console om de titelbalk weer te geven en het menu te openen."
+msgstr "Tik op de console om de titelbalk weer te geven en het menu te openen."
 
 #. Title for special keys always visible preference
 msgctxt "pref_alwaysvisible_title"
@@ -703,8 +728,8 @@ msgstr "Shift+cijfer zijn functietoetsen"
 msgctxt "pref_shiftfkeys_summary"
 msgid "On hardware keyboards, number keys send F1-F10 with shift"
 msgstr ""
-"Op fysieke toetsenborden zorgen de cijfertoetsen in combinatie met de Shift-"
-"toets voor de functietoetsen F1-F10."
+"Op fysieke toetsenborden zorgen de cijfertoetsen in combinatie met de "
+"Shift-toets voor de functietoetsen F1-F10."
 
 #. Name for the ctrl'ed numbers are f-keys preference
 msgctxt "pref_ctrlfkeys_title"
@@ -737,8 +762,7 @@ msgstr "Onthoud sleutels in geheugen"
 #. Summary for the memorize keys preference
 msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
-msgstr ""
-"Houd ontgrendelde sleutels in geheugen tot achtergrond service is gestopt"
+msgstr "Houd ontgrendelde sleutels in geheugen tot achtergrond service is gestopt"
 
 #. Name for the preference that forces the service to stay running in the
 #. background.
@@ -801,8 +825,7 @@ msgstr "Hobbelige pijlen"
 #. Summary for the haptic feedback (bumpy arrow) preference
 msgctxt "pref_bumpyarrows_summary"
 msgid "Vibrate when sending arrow keys; useful for laggy connections"
-msgstr ""
-"Tril bij het verzenden van pijltjestoetsen; handig bij trage verbindingen."
+msgstr "Tril bij het verzenden van pijltjestoetsen; handig bij trage verbindingen."
 
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
@@ -845,10 +868,8 @@ msgstr "Achtergrond notificaties"
 #. Brief summary of the feature that is enabled when the checkbox preference
 #. for the receive notifications on terminal bell feature is checked
 msgctxt "pref_bell_notification_summary"
-msgid ""
-"Send notification when a terminal running in the background sounds a bell."
-msgstr ""
-"Stuur notificatie als terminal in de achtergrond een bel laat klinken."
+msgid "Send notification when a terminal running in the background sounds a bell."
+msgstr "Stuur notificatie als terminal in de achtergrond een bel laat klinken."
 
 #. Preference selection to indicate use of right side of keyboard for special
 #. shortcuts.
@@ -1003,8 +1024,7 @@ msgstr "Na-login automatie"
 #. Host post-login automation preference summary
 msgctxt "hostpref_postlogin_summary"
 msgid "Commands to run on remote server once authenticated"
-msgstr ""
-"Commando's om uit te voeren op de remote server wanneer geauthenticeerd"
+msgstr "Commando's om uit te voeren op de remote server wanneer geauthenticeerd"
 
 #. Host compression preference title
 msgctxt "hostpref_compression_title"
@@ -1208,8 +1228,8 @@ msgid ""
 "Force the terminal to a specific size (columns x rows) instead of auto-"
 "sizing to fit the screen."
 msgstr ""
-"Dwing de terminal om een specifieke grootte (kolommen x rijen) te gebruiken "
-"in plaats van automatisch aan te passen aan het scherm."
+"Dwing de terminal om een specifieke grootte (kolommen x rijen) te "
+"gebruiken in plaats van automatisch aan te passen aan het scherm."
 
 #. Label for the enable force size switch
 msgctxt "profile_editor_force_size_enable"
@@ -1351,6 +1371,12 @@ msgstr "Forceer grootte"
 msgctxt "console_menu_urlscan"
 msgid "URL scan"
 msgstr "URK Scan"
+
+#. Error shown in a snackbar when the user taps a URL but no app on the device
+#. can handle it
+msgctxt "console_url_no_handler"
+msgid "No app available to open this URL"
+msgstr ""
 
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"
@@ -1541,7 +1567,8 @@ msgstr "Annuleren"
 msgctxt "disconnect_all_message"
 msgid "Are you sure you want to disconnect from all connected hosts?"
 msgstr ""
-"Weet je zeker dat je de verbinding wilt verbreken van alle verbonden hosts?"
+"Weet je zeker dat je de verbinding wilt verbreken van alle verbonden "
+"hosts?"
 
 #. Positive button text confirming disconnection from all hosts
 msgctxt "disconnect_all_pos"
@@ -1627,8 +1654,8 @@ msgstr "De opgeslagen wachtwoordauthenticatie is mislukt."
 msgctxt "terminal_auth_pubkey_any"
 msgid "Attempting 'publickey' authentication with any in-memory public keys"
 msgstr ""
-"Probeert 'publieke sleutel' authenticatie met een willekeurige in-geheugen "
-"publieke sleutel"
+"Probeert 'publieke sleutel' authenticatie met een willekeurige in-"
+"geheugen publieke sleutel"
 
 #. Error message shown when the selected public key is corrupted or invalid
 msgctxt "terminal_auth_pubkey_invalid"
@@ -1641,8 +1668,7 @@ msgstr ""
 #. specific key
 msgctxt "terminal_auth_pubkey_specific"
 msgid "Attempting 'publickey' authentication with a specific public key"
-msgstr ""
-"Probeert 'publickey' authenticatie met een specifieke publieke sleutel"
+msgstr "Probeert 'publickey' authenticatie met een specifieke publieke sleutel"
 
 #. Message shown in terminal when requesting biometric authentication to
 #. unlock a key. Parameter is the key nickname.
@@ -1688,8 +1714,8 @@ msgid ""
 "[Your host doesn't support 'password' or 'keyboard-interactive' "
 "authentication.]"
 msgstr ""
-"[Uw host ondersteund 'wachtwoord' of 'keyboard-interactive' authenticatie "
-"niet.]"
+"[Uw host ondersteund 'wachtwoord' of 'keyboard-interactive' authenticatie"
+" niet.]"
 
 #. Message shown in terminal when shell session is not started because user
 #. disabled it in host settings
@@ -1797,8 +1823,8 @@ msgstr "Schema verwijderen?"
 msgctxt "dialog_message_delete_scheme"
 msgid "Are you sure you want to delete \"%1$s\"? This action cannot be undone."
 msgstr ""
-"Weet u zeker dat u \"%1$s\" wilt verwijderen? Deze actie kan niet ongedaan "
-"worden gemaakt."
+"Weet u zeker dat u \"%1$s\" wilt verwijderen? Deze actie kan niet "
+"ongedaan worden gemaakt."
 
 #. Button text for confirm action in dialogs
 msgctxt "button_confirm"
@@ -1824,8 +1850,8 @@ msgstr "Aangepast"
 msgctxt "empty_custom_schemes"
 msgid "No custom schemes. Tap \"New Scheme\" to create one."
 msgstr ""
-"Er zijn geen aangepaste schema's. Tik op \"Nieuw schema\" om er een aan te "
-"maken."
+"Er zijn geen aangepaste schema's. Tik op \"Nieuw schema\" om er een aan "
+"te maken."
 
 #. Button text to edit full color palette
 msgctxt "button_edit_palette"
@@ -1900,11 +1926,11 @@ msgstr "Alle kleuren terugzetten?"
 #. Message for reset all colors confirmation
 msgctxt "dialog_message_reset_all"
 msgid ""
-"This will reset all 256 colors to their default values. This action cannot "
-"be undone."
+"This will reset all 256 colors to their default values. This action "
+"cannot be undone."
 msgstr ""
-"Dit zal alle 256 kleuren terugzetten naar hun standaardwaarden. Deze actie "
-"kan niet ongedaan worden gemaakt."
+"Dit zal alle 256 kleuren terugzetten naar hun standaardwaarden. Deze "
+"actie kan niet ongedaan worden gemaakt."
 
 #. Displayed in the notification bar that connections are active
 msgctxt "app_is_running"
@@ -1976,8 +2002,8 @@ msgstr "Kleurenschema's beheren"
 msgctxt "palette_editor_builtin_note"
 msgid "Built-in schemes are read-only. Duplicate to customize."
 msgstr ""
-"De vooraf ingestelde schema's zijn niet bewerkbaar. Kopieer ze om ze aan te "
-"passen."
+"De vooraf ingestelde schema's zijn niet bewerkbaar. Kopieer ze om ze aan "
+"te passen."
 
 #. Section header for the terminal color preview shown below the ANSI color
 #. grid
@@ -2331,8 +2357,7 @@ msgstr "Opties"
 #. Warning message shown when encrypted SSH pubkeys are set to load on startup
 msgctxt "pubkey_editor_encrypted_startup_warning"
 msgid "Encrypted keys cannot be unlocked at startup"
-msgstr ""
-"Versleutelde sleutels kunnen niet worden ontgrendeld bij het opstarten"
+msgstr "Versleutelde sleutels kunnen niet worden ontgrendeld bij het opstarten"
 
 #. Public key list labels
 #. Label prefix for displaying key type in list
@@ -2365,8 +2390,8 @@ msgstr "Bescherm deze sleutel met uw vingerafdruk"
 #. Warning shown when biometrics are not enrolled
 msgctxt "pubkey_biometric_not_enrolled"
 msgid ""
-"No fingerprint enrolled. Set up fingerprint in device settings to use this "
-"feature."
+"No fingerprint enrolled. Set up fingerprint in device settings to use "
+"this feature."
 msgstr ""
 "Er is geen vingerafdruk geregistreerd. Stel een vingerafdruk in via de "
 "instellingen van het apparaat om deze functie te gebruiken."
@@ -2374,8 +2399,7 @@ msgstr ""
 #. Warning shown when key type doesn\'t support biometric protection
 msgctxt "pubkey_biometric_key_type_warning"
 msgid "Fingerprint protection is only available for RSA and EC keys"
-msgstr ""
-"Vingerafdrukbeveiliging is alleen beschikbaar voor RSA- en EC-sleutels"
+msgstr "Vingerafdrukbeveiliging is alleen beschikbaar voor RSA- en EC-sleutels"
 
 #. Title for biometric prompt when unlocking a key
 msgctxt "pubkey_biometric_prompt_title"
@@ -2498,11 +2522,12 @@ msgstr "Houd verbindingen actief"
 msgctxt "notification_permission_message"
 msgid ""
 "Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch apps."
+"background. Without permission, connections may close when you switch "
+"apps."
 msgstr ""
-"Het weergeven van een melding is vereist om verbindingen op de achtergrond "
-"actief te houden. Zonder toestemming kunnen verbindingen worden verbroken "
-"wanneer u van app wisselt."
+"Het weergeven van een melding is vereist om verbindingen op de "
+"achtergrond actief te houden. Zonder toestemming kunnen verbindingen "
+"worden verbroken wanneer u van app wisselt."
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
@@ -2528,11 +2553,11 @@ msgstr "Vereiste toestemming"
 #. denied and user tries to enable persist connections.
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification "
-"permission in app settings."
+"To keep connections alive in the background, you must enable notification"
+" permission in app settings."
 msgstr ""
-"Om ervoor te zorgen dat verbindingen op de achtergrond actief blijven, moet "
-"je de toestemming voor meldingen inschakelen in de app-instellingen."
+"Om ervoor te zorgen dat verbindingen op de achtergrond actief blijven, "
+"moet je de toestemming voor meldingen inschakelen in de app-instellingen."
 
 #. Button text to open ConnectBot app settings page where user can grant
 #. notification permission.
@@ -2543,11 +2568,10 @@ msgstr "Open instellingen"
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
 msgctxt "terminal_no_route"
-msgid ""
-"Are you trying to access a local host? Grant local network permissions."
+msgid "Are you trying to access a local host? Grant local network permissions."
 msgstr ""
-"Probeer je toegang te krijgen tot een lokale host? Geef dan toestemming voor "
-"toegang tot het lokale netwerk."
+"Probeer je toegang te krijgen tot een lokale host? Geef dan toestemming "
+"voor toegang tot het lokale netwerk."
 
 #. Loading message shown during app initialization
 msgctxt "loading_message"
@@ -2615,8 +2639,8 @@ msgstr "Opnieuw proberen"
 #, c-format
 msgctxt "migration_failed_help"
 msgid ""
-"If the problem persists, please report this issue at %1$s with the debug log "
-"copied above"
+"If the problem persists, please report this issue at %1$s with the debug "
+"log copied above"
 msgstr ""
 "Als het probleem aanhoudt, meld dit dan op %1$s en voeg de hierboven "
 "gekopieerde debuglog toe."
@@ -2659,11 +2683,11 @@ msgstr "Weet u zeker dat u de host '%1$s' wilt verwijderen?"
 #, c-format
 msgctxt "forget_host_keys_confirm"
 msgid ""
-"Are you sure you want to forget the stored host keys for '%1$s'? You will be "
-"prompted to verify the host key on the next connection."
+"Are you sure you want to forget the stored host keys for '%1$s'? You will"
+" be prompted to verify the host key on the next connection."
 msgstr ""
-"Weet u zeker dat u de opgeslagen hostkeys voor '%1$s' wilt verwijderen? U "
-"wordt gevraagd om de hostkey te verifiëren bij de volgende verbinding."
+"Weet u zeker dat u de opgeslagen hostkeys voor '%1$s' wilt verwijderen? U"
+" wordt gevraagd om de hostkey te verifiëren bij de volgende verbinding."
 
 #. Menu selection to edit a pubkey details (e.g., nickname)
 msgctxt "list_pubkey_edit"
@@ -2680,8 +2704,8 @@ msgstr "IP-versie"
 msgctxt "hostpref_ipversion_summary"
 msgid "Select which IP address version to use when connecting"
 msgstr ""
-"Selecteer welke IP-adresversie u wilt gebruiken bij het maken van verbinding."
-""
+"Selecteer welke IP-adresversie u wilt gebruiken bij het maken van "
+"verbinding."
 
 #. Option for automatic IP version selection (try both IPv4 and IPv6)
 msgctxt "ipversion_auto"
@@ -2778,11 +2802,11 @@ msgstr "Logbestanden naar het klembord gekopieerd"
 #. Instruction text for reporting bugs with logs
 msgctxt "logs_bug_report_info"
 msgid ""
-"To report a bug, copy these logs and open a new issue at https://connectbot."
-"org/bug"
-msgstr ""
-"Om een bug te melden, kopieer deze logbestanden en open een nieuw issue op "
+"To report a bug, copy these logs and open a new issue at "
 "https://connectbot.org/bug"
+msgstr ""
+"Om een bug te melden, kopieer deze logbestanden en open een nieuw issue "
+"op https://connectbot.org/bug"
 
 #. Message shown when no logs are available
 msgctxt "no_logs_available"
@@ -3071,8 +3095,8 @@ msgstr "Authenticatie bij het opstarten"
 msgctxt "pref_auth_on_launch_summary"
 msgid "Require fingerprint, face, or device PIN when opening the app"
 msgstr ""
-"Vraag om een vingerafdruk, gezichtsherkenning of een apparaat-pincode bij "
-"het openen van de app."
+"Vraag om een vingerafdruk, gezichtsherkenning of een apparaat-pincode bij"
+" het openen van de app."
 
 #. Category title for security preferences in settings
 msgctxt "pref_security_category"
@@ -3098,3 +3122,4 @@ msgstr "Ontgrendel ConnectBot"
 msgctxt "auth_prompt_subtitle"
 msgid "Verify your identity to continue"
 msgstr "Verifieer uw identiteit om verder te gaan"
+
