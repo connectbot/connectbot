@@ -44,6 +44,7 @@ import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.TerminalFontProvider
+import org.connectbot.util.ThemeMode
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -81,6 +82,7 @@ data class SettingsUiState(
     val fontImportInProgress: Boolean = false,
     val fontImportError: String? = null,
     val fontDownloadInProgress: Boolean = false,
+    val themeMode: ThemeMode = ThemeMode.SYSTEM,
     val language: String = "",
     val defaultProfileId: Long = 0L,
     val availableProfiles: List<Profile> = emptyList()
@@ -173,6 +175,7 @@ class SettingsViewModel @Inject constructor(
             customFonts = customFonts,
             customTerminalTypes = customTerminalTypes,
             localFonts = localFonts,
+            themeMode = ThemeMode.fromString(prefs.getString(PreferenceConstants.THEME_MODE, null)),
             language = currentLanguage,
             defaultProfileId = prefs.getLong("defaultProfileId", 0L)
         )
@@ -309,6 +312,10 @@ class SettingsViewModel @Inject constructor(
 
     fun updateRotation(value: String) {
         updateStringPref("rotation", value) { copy(rotation = value) }
+    }
+
+    fun updateThemeMode(mode: ThemeMode) {
+        updateStringPref(PreferenceConstants.THEME_MODE, mode.name) { copy(themeMode = mode) }
     }
 
     fun updateLanguage(languageTag: String) {

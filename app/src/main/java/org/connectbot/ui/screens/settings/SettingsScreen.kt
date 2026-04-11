@@ -73,6 +73,7 @@ import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.NotificationPermissionHelper
 import org.connectbot.util.TerminalFont
+import org.connectbot.util.ThemeMode
 import org.xmlpull.v1.XmlPullParser
 import java.util.Locale
 
@@ -167,6 +168,7 @@ fun SettingsScreen(
         onClearImportError = viewModel::clearFontImportError,
         onDefaultProfileChange = viewModel::updateDefaultProfile,
         onLanguageChange = viewModel::updateLanguage,
+        onThemeModeChange = viewModel::updateThemeMode,
         onRotationChange = viewModel::updateRotation,
         onFullscreenChange = viewModel::updateFullscreen,
         onTitleBarHideChange = viewModel::updateTitleBarHide,
@@ -210,6 +212,7 @@ fun SettingsScreenContent(
     onClearImportError: () -> Unit,
     onDefaultProfileChange: (Long) -> Unit,
     onLanguageChange: (String) -> Unit,
+    onThemeModeChange: (ThemeMode) -> Unit,
     onRotationChange: (String) -> Unit,
     onFullscreenChange: (Boolean) -> Unit,
     onTitleBarHideChange: (Boolean) -> Unit,
@@ -412,6 +415,24 @@ fun SettingsScreenContent(
                     value = uiState.language,
                     entries = languageEntries.map { (tag, label) -> label to tag },
                     onValueChange = onLanguageChange
+                )
+            }
+
+            item {
+                ListPreference(
+                    title = stringResource(R.string.pref_theme_title),
+                    summary = when (uiState.themeMode) {
+                        ThemeMode.SYSTEM -> stringResource(R.string.pref_theme_system)
+                        ThemeMode.LIGHT -> stringResource(R.string.pref_theme_light)
+                        ThemeMode.DARK -> stringResource(R.string.pref_theme_dark)
+                    },
+                    value = uiState.themeMode.name,
+                    entries = listOf(
+                        stringResource(R.string.pref_theme_system) to ThemeMode.SYSTEM.name,
+                        stringResource(R.string.pref_theme_light) to ThemeMode.LIGHT.name,
+                        stringResource(R.string.pref_theme_dark) to ThemeMode.DARK.name
+                    ),
+                    onValueChange = { onThemeModeChange(ThemeMode.fromString(it)) }
                 )
             }
 
@@ -1378,6 +1399,7 @@ private fun SettingsScreenPreview() {
             onClearImportError = {},
             onDefaultProfileChange = {},
             onLanguageChange = {},
+            onThemeModeChange = {},
             onRotationChange = {},
             onFullscreenChange = {},
             onTitleBarHideChange = {},

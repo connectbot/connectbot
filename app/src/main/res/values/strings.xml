@@ -270,6 +270,15 @@
 	<!-- Default option for language preference that uses the system locale -->
 	<string name="pref_language_system_default">System default</string>
 
+	<!-- Title of the theme mode selector preference in the User Interface settings section -->
+	<string name="pref_theme_title">Theme</string>
+	<!-- Theme option: follow the OS light/dark setting -->
+	<string name="pref_theme_system">System default</string>
+	<!-- Theme option: always use the light theme regardless of OS setting -->
+	<string name="pref_theme_light">Light</string>
+	<!-- Theme option: always use the dark theme regardless of OS setting -->
+	<string name="pref_theme_dark">Dark</string>
+
 	<!-- Name for the rotation mode preference -->
 	<string name="pref_rotation_title">"Rotation mode"</string>
 

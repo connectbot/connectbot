@@ -30,6 +30,7 @@ import org.connectbot.ui.navigation.ConnectBotNavHost
 import org.connectbot.ui.navigation.NavDestinations
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.IconStyle
+import org.connectbot.util.ThemeMode
 
 val LocalTerminalManager = compositionLocalOf<TerminalManager?> {
     null
@@ -42,13 +43,14 @@ fun ConnectBotApp(
     makingShortcut: Boolean,
     authRequired: Boolean,
     isAuthenticated: Boolean,
+    themeMode: ThemeMode,
     onAuthenticationSuccess: () -> Unit,
     onRetryMigration: () -> Unit,
     onSelectShortcut: (Host, String?, IconStyle) -> Unit,
     onNavigateToConsole: (Host) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    ConnectBotTheme {
+    ConnectBotTheme(themeMode = themeMode) {
         when (appUiState) {
             is AppUiState.Loading -> {
                 LoadingScreen(modifier = modifier)
