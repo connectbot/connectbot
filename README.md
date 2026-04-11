@@ -34,7 +34,17 @@ two versions:
 -  `oss` &mdash; includes the cryptography provider in the APK which
    increases its size by a few megabytes.
 
-## 
+## Architecture
+
+### Major dependencies
+
+The ConnectBot app that uses two other libraries to provide its functionality:
+* [ConnectBot Terminal](https://github.com/connectbot/termlib) &mdash; the
+  terminal emulator used by the app is also created and maintained by the
+  ConnectBot author, Kenny Root.
+* [ConnectBot fork of Trilead SSH-2](https://github.com/connectbot/sshlib)
+  &mdash; a heavily modified fork of the original Trilead SSH-2 Java library
+  written by Christian Plattner.
 
 ## Compiling
 
