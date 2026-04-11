@@ -110,6 +110,10 @@
   <string name="pref_ui_category">사용자 인터페이스</string>
   <string name="pref_language_title">언어</string>
   <string name="pref_language_system_default">시스템 기본값</string>
+  <string name="pref_theme_title">테마</string>
+  <string name="pref_theme_system">시스템 기본값</string>
+  <string name="pref_theme_light">가벼운</string>
+  <string name="pref_theme_dark">어둡다</string>
   <string name="pref_rotation_title">회전 모드</string>
   <string name="pref_titlebarhide_title">제목 표시 줄 자동 숨기기</string>
   <string name="pref_titlebarhide_summary">제목 표시 줄과 액세스 메뉴를 표시하려면 콘솔을 누르십시오.</string>
@@ -240,6 +244,7 @@
   <string name="console_menu_portforwards">포트 포워드</string>
   <string name="console_menu_resize">크기 고정</string>
   <string name="console_menu_urlscan">URL 검색</string>
+  <string name="console_url_no_handler">이 URL을 열 수 있는 앱이 없습니다.</string>
   <string name="button_yes">예</string>
   <string name="button_no">아니오</string>
   <string name="portforward_local">로컬</string>

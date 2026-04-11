@@ -110,6 +110,10 @@
   <string name="pref_ui_category">واجهة المستخدم</string>
   <string name="pref_language_title">اللغة</string>
   <string name="pref_language_system_default">الإعدادات الافتراضية للنظام</string>
+  <string name="pref_theme_title">النمط</string>
+  <string name="pref_theme_system">الإعدادات الافتراضية للنظام</string>
+  <string name="pref_theme_light">خفيف</string>
+  <string name="pref_theme_dark">داكن</string>
   <string name="pref_rotation_title">وضع التدوير</string>
   <string name="pref_titlebarhide_title">إخفاء شريط العنوان تلقائيًا</string>
   <string name="pref_titlebarhide_summary">اضغط على وحدة التحكم لعرض شريط العنوان والوصول إلى القائمة.</string>
@@ -240,6 +244,7 @@
   <string name="console_menu_portforwards">تحويلات المنافذ</string>
   <string name="console_menu_resize">افرض الحجم</string>
   <string name="console_menu_urlscan">فحص عنوان URL</string>
+  <string name="console_url_no_handler">لا يوجد تطبيق متاح لفتح هذا الرابط.</string>
   <string name="button_yes">نعم</string>
   <string name="button_no">لا</string>
   <string name="portforward_local">المحلي</string>

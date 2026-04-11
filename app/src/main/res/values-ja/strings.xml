@@ -110,6 +110,10 @@
   <string name="pref_ui_category">ユーザーインターフェース</string>
   <string name="pref_language_title">言語</string>
   <string name="pref_language_system_default">システムデフォルト</string>
+  <string name="pref_theme_title">テーマ</string>
+  <string name="pref_theme_system">システムのデフォルト</string>
+  <string name="pref_theme_light">明るい</string>
+  <string name="pref_theme_dark">暗い</string>
   <string name="pref_rotation_title">画面の向き</string>
   <string name="pref_titlebarhide_title">タイトルバーを自動的に隠す</string>
   <string name="pref_titlebarhide_summary">タイトルバーとアクセスメニューを表示するにはコンソールをタップ</string>
@@ -240,6 +244,7 @@
   <string name="console_menu_portforwards">ポート転送</string>
   <string name="console_menu_resize">サイズ強制</string>
   <string name="console_menu_urlscan">URL スキャン</string>
+  <string name="console_url_no_handler">このURLを開くことができるアプリがありません</string>
   <string name="button_yes">はい</string>
   <string name="button_no">いいえ</string>
   <string name="portforward_local">ローカル</string>

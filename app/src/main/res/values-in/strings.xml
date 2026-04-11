@@ -110,6 +110,10 @@
   <string name="pref_ui_category">Antarmuka pengguna</string>
   <string name="pref_language_title">Bahasa</string>
   <string name="pref_language_system_default">Pengaturan bawaan sistem</string>
+  <string name="pref_theme_title">Tema</string>
+  <string name="pref_theme_system">Pengaturan bawaan sistem</string>
+  <string name="pref_theme_light">Ringan</string>
+  <string name="pref_theme_dark">Gelap</string>
   <string name="pref_rotation_title">Mode rotasi</string>
   <string name="pref_titlebarhide_title">Sembunyikan bilah judul secara otomatis</string>
   <string name="pref_titlebarhide_summary">Ketuk konsol untuk menampilkan bilah judul dan mengakses menu</string>
@@ -240,6 +244,7 @@
   <string name="console_menu_portforwards">Penerusan port</string>
   <string name="console_menu_resize">Paksakan ukuran</string>
   <string name="console_menu_urlscan">Pindai URL</string>
+  <string name="console_url_no_handler">Tidak ada aplikasi yang tersedia untuk membuka URL ini</string>
   <string name="button_yes">Ya</string>
   <string name="button_no">Tidak</string>
   <string name="portforward_local">Lokal</string>

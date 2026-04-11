@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-11 10:17-0700\n"
-"PO-Revision-Date: 2026-04-07 21:56-0700\n"
+"POT-Creation-Date: 2026-04-11 10:25-0700\n"
+"PO-Revision-Date: 2026-04-11 10:22-0700\n"
 "Last-Translator: Steven CVAL <stevencval@gmail.com>\n"
 "Language: ko\n"
 "Language-Team: ko <LL@li.org>\n"
@@ -646,22 +646,22 @@ msgstr "시스템 기본값"
 #. section
 msgctxt "pref_theme_title"
 msgid "Theme"
-msgstr ""
+msgstr "테마"
 
 #. Theme option: follow the OS light/dark setting
 msgctxt "pref_theme_system"
 msgid "System default"
-msgstr ""
+msgstr "시스템 기본값"
 
 #. Theme option: always use the light theme regardless of OS setting
 msgctxt "pref_theme_light"
 msgid "Light"
-msgstr ""
+msgstr "가벼운"
 
 #. Theme option: always use the dark theme regardless of OS setting
 msgctxt "pref_theme_dark"
 msgid "Dark"
-msgstr ""
+msgstr "어둡다"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
@@ -1357,7 +1357,7 @@ msgstr "URL 검색"
 #. can handle it
 msgctxt "console_url_no_handler"
 msgid "No app available to open this URL"
-msgstr ""
+msgstr "이 URL을 열 수 있는 앱이 없습니다."
 
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"

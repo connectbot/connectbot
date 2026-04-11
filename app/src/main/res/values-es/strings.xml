@@ -110,6 +110,10 @@
   <string name="pref_ui_category">Interfaz de usuario</string>
   <string name="pref_language_title">Idioma</string>
   <string name="pref_language_system_default">Configuración predeterminada del sistema</string>
+  <string name="pref_theme_title">Tema</string>
+  <string name="pref_theme_system">Configuración predeterminada del sistema</string>
+  <string name="pref_theme_light">Ligero</string>
+  <string name="pref_theme_dark">Oscuro</string>
   <string name="pref_rotation_title">Modo de rotación</string>
   <string name="pref_titlebarhide_title">Ocultar automáticamente la barra de título</string>
   <string name="pref_titlebarhide_summary">Tocar la pantalla para que se muestre la barra de título y el menú de acceso</string>
@@ -240,6 +244,7 @@
   <string name="console_menu_portforwards">Traducciones de puerto</string>
   <string name="console_menu_resize">Forzar un tamaño</string>
   <string name="console_menu_urlscan">Escaneo de direcciones</string>
+  <string name="console_url_no_handler">No hay ninguna aplicación disponible para abrir esta URL</string>
   <string name="button_yes">Sí</string>
   <string name="button_no">Denegar</string>
   <string name="portforward_local">Local</string>

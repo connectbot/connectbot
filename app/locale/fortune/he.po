@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-11 10:17-0700\n"
-"PO-Revision-Date: 2026-04-10 22:25-0700\n"
+"POT-Creation-Date: 2026-04-11 10:25-0700\n"
+"PO-Revision-Date: 2026-04-11 10:21-0700\n"
 "Last-Translator: Kenny Root <Unknown>\n"
 "Language: he\n"
 "Language-Team: he <LL@li.org>\n"
@@ -651,22 +651,22 @@ msgstr "ברירת המחדל של המערכת"
 #. section
 msgctxt "pref_theme_title"
 msgid "Theme"
-msgstr ""
+msgstr "נושא"
 
 #. Theme option: follow the OS light/dark setting
 msgctxt "pref_theme_system"
 msgid "System default"
-msgstr ""
+msgstr "ברירת המחדל של המערכת"
 
 #. Theme option: always use the light theme regardless of OS setting
 msgctxt "pref_theme_light"
 msgid "Light"
-msgstr ""
+msgstr "קַל"
 
 #. Theme option: always use the dark theme regardless of OS setting
 msgctxt "pref_theme_dark"
 msgid "Dark"
-msgstr ""
+msgstr "חושך"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
@@ -1368,7 +1368,7 @@ msgstr "סריקת כתובות"
 #. can handle it
 msgctxt "console_url_no_handler"
 msgid "No app available to open this URL"
-msgstr ""
+msgstr "אין אפליקציה זמינה לפתיחת כתובת URL זו."
 
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"

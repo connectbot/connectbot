@@ -110,6 +110,10 @@
   <string name="pref_ui_category">رابط کاربری</string>
   <string name="pref_language_title">زبان</string>
   <string name="pref_language_system_default">مقدار پیش‌فرض سیستم</string>
+  <string name="pref_theme_title">تم</string>
+  <string name="pref_theme_system">مقدار پیش‌فرض سیستم</string>
+  <string name="pref_theme_light">نور</string>
+  <string name="pref_theme_dark">تاریک</string>
   <string name="pref_rotation_title">حالت چرخش</string>
   <string name="pref_titlebarhide_title">"مخفی شدن خودکار  نوار عنوان"</string>
   <string name="pref_titlebarhide_summary">برای نمایش نوار عنوان و دسترسی به منو، روی کنسول ضربه بزنید.</string>
@@ -240,6 +244,7 @@
   <string name="console_menu_portforwards">پورت فوروارد</string>
   <string name="console_menu_resize">اندازه را به زور تنظیم کن</string>
   <string name="console_menu_urlscan">بررسی URL</string>
+  <string name="console_url_no_handler">هیچ برنامه‌ای برای باز کردن این آدرس اینترنتی موجود نیست</string>
   <string name="button_yes">بله</string>
   <string name="button_no">خیر</string>
   <string name="portforward_local">محلی</string>

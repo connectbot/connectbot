@@ -110,6 +110,10 @@
   <string name="pref_ui_category">Gebruikers interface</string>
   <string name="pref_language_title">Taal</string>
   <string name="pref_language_system_default">Standaard systeeminstelling</string>
+  <string name="pref_theme_title">Thema</string>
+  <string name="pref_theme_system">Standaard systeeminstelling</string>
+  <string name="pref_theme_light">Licht</string>
+  <string name="pref_theme_dark">Donker</string>
   <string name="pref_rotation_title">Rotatie mode</string>
   <string name="pref_titlebarhide_title">Titelbalk automatisch verbergen</string>
   <string name="pref_titlebarhide_summary">Tik op de console om de titelbalk weer te geven en het menu te openen.</string>
@@ -240,6 +244,7 @@
   <string name="console_menu_portforwards">Port Forwards</string>
   <string name="console_menu_resize">Forceer grootte</string>
   <string name="console_menu_urlscan">URK Scan</string>
+  <string name="console_url_no_handler">Er is geen app beschikbaar om deze URL te openen.</string>
   <string name="button_yes">Ja</string>
   <string name="button_no">Nee</string>
   <string name="portforward_local">Lokaal</string>
