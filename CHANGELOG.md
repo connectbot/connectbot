@@ -2,6 +2,16 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.10.1][1.10.1]
+### Added
+- Ability to select light/dark theme in settings
+- More clickable URLs
+
+### Fixed
+- Non-ASCII characters (e.g., üé) can be typed again
+- SSH host key rotation for RSA keys no longer crashes
+- URLs with no handlers no longer crash
+
 ## [1.10.0][1.10.0]
 ### Added
 - Complete rewrite the of the UI using Jetpack Compose
@@ -222,6 +232,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Color picker color numbers are now localized
 
 
+[1.10.1]: https://github.com/connectbot/connectbot/compare/v1.10.0...v1.10.1
 [1.10.0]: https://github.com/connectbot/connectbot/compare/v1.9.13...v1.10.0
 [1.9.13]: https://github.com/connectbot/connectbot/compare/v1.9.12...v1.9.13
 [1.9.12]: https://github.com/connectbot/connectbot/compare/v1.9.11...v1.9.12
