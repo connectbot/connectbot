@@ -19,7 +19,8 @@ cryptographically secure link.
 The easiest way to get ConnectBot is to [install from Google Play Store][1].
 If you have installed from a downloaded APK, Google Play Store can upgrade
 your installed version to the latest version. However, once it has upgraded
-*you can't install a version from the releases on GitHub anymore.*
+*you can't install a version from the releases on GitHub anymore* (due to
+key rotation that upgrades the package signature to a more secure algorithm).
 
 
 ### Download a release
@@ -28,10 +29,13 @@ ConnectBot can be downloaded from [releases](
 https://github.com/connectbot/connectbot/releases) on GitHub. There are
 two versions:
 
--  "`google`" &mdash; for a version that uses Google Play Services
-to handle upgrading the cryptography provider
--  "`oss`" &mdash; includes the cryptography provider in the APK which
+-  `google` &mdash; for a version that uses Google Play Services
+   to handle upgrading the cryptography provider
+-  `oss` &mdash; includes the cryptography provider in the APK which
    increases its size by a few megabytes.
+
+## 
+
 ## Compiling
 
 ### Android Studio
@@ -68,10 +72,3 @@ To run the main CI workflow (`ci.yml`):
 ```sh
 act -W .github/workflows/ci.yml
 ```
-
-
-## Translations
-
-If you'd like to correct or contribute new translations to ConnectBot,
-then head on over to [ConnectBot's translations project](
-https://translations.launchpad.net/connectbot/trunk/+pots/fortune)
