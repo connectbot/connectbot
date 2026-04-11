@@ -18,8 +18,10 @@
 package org.connectbot.ui.screens.console
 
 import android.app.Activity
+import android.content.ActivityNotFoundException
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -154,6 +156,7 @@ fun ConsoleScreen(
     val context = LocalContext.current
     val terminalManager = LocalTerminalManager.current
     val uiState by viewModel.uiState.collectAsState()
+    val coroutineScope = rememberCoroutineScope()
 
     // Capture latest callback for use in effects
     val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
@@ -330,6 +333,20 @@ fun ConsoleScreen(
         }
     }
 
+    val noUrlHandlerMessage = stringResource(R.string.console_url_no_handler)
+
+    fun openUrl(url: String) {
+        val intent = Intent(Intent.ACTION_VIEW, url.toUri())
+            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        try {
+            context.startActivity(intent)
+        } catch (e: ActivityNotFoundException) {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar(noUrlHandlerMessage)
+            }
+        }
+    }
+
     fun handleTerminalInteraction() {
         // Show emulated keyboard when terminal is tapped (unless always visible)
         if (!keyboardAlwaysVisible) {
@@ -497,12 +514,7 @@ fun ConsoleScreen(
                                 imeVisible = visible
                             },
                             onHyperlinkClick = { url ->
-                                // Open OSC8 hyperlink in browser
-                                val intent = android.content.Intent(
-                                    android.content.Intent.ACTION_VIEW,
-                                    url.toUri()
-                                )
-                                context.startActivity(intent)
+                                openUrl(url)
                             }
                         )
 
@@ -612,12 +624,7 @@ fun ConsoleScreen(
                 urls = scannedUrls,
                 onDismiss = { showUrlScanDialog = false },
                 onUrlClick = { url ->
-                    // Open URL in browser
-                    val intent = android.content.Intent(
-                        android.content.Intent.ACTION_VIEW,
-                        url.toUri()
-                    )
-                    context.startActivity(intent)
+                    openUrl(url)
                 }
             )
         }
