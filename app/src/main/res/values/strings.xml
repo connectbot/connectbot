@@ -582,6 +582,8 @@
 	<string name="console_menu_resize">"Force size"</string>
 	<!-- Button that brings up the list of URLs on the current screen -->
 	<string name="console_menu_urlscan">"URL scan"</string>
+	<!-- Error shown in a snackbar when the user taps a URL but no app on the device can handle it -->
+	<string name="console_url_no_handler">No app available to open this URL</string>
 
 	<!-- Button label to answer "Yes" to a yes/no prompt -->
 	<string name="button_yes">"Yes"</string>
