@@ -110,6 +110,10 @@
   <string name="pref_ui_category">Користувацький інтерфейс</string>
   <string name="pref_language_title">Мова</string>
   <string name="pref_language_system_default">Системні налаштування за замовчуванням</string>
+  <string name="pref_theme_title">Тема</string>
+  <string name="pref_theme_system">Системні налаштування за замовчуванням</string>
+  <string name="pref_theme_light">Легкий</string>
+  <string name="pref_theme_dark">Темний</string>
   <string name="pref_rotation_title">Режим обертання</string>
   <string name="pref_titlebarhide_title">"Автоматичне приховуваня головної  панелі"</string>
   <string name="pref_titlebarhide_summary">"Натисніть на консоль, щоб відобразити панель заголовку та  меню доступу"</string>
@@ -240,6 +244,7 @@
   <string name="console_menu_portforwards">Переадресація портів</string>
   <string name="console_menu_resize">Примусове встановлення розміру</string>
   <string name="console_menu_urlscan">Сканування URL-адреси</string>
+  <string name="console_url_no_handler">Немає жодної програми, за допомогою якої можна було б відкрити це посилання</string>
   <string name="button_yes">Так</string>
   <string name="button_no">Ні</string>
   <string name="portforward_local">Локальний</string>

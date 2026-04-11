@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-11 10:17-0700\n"
-"PO-Revision-Date: 2026-04-08 08:14-0700\n"
+"POT-Creation-Date: 2026-04-11 10:25-0700\n"
+"PO-Revision-Date: 2026-04-11 10:22-0700\n"
 "Last-Translator: Dannylo <dannylo.xavier@gmail.com>\n"
 "Language: pt_BR\n"
 "Language-Team: pt_BR <LL@li.org>\n"
@@ -652,22 +652,22 @@ msgstr "Padrão do sistema"
 #. section
 msgctxt "pref_theme_title"
 msgid "Theme"
-msgstr ""
+msgstr "Tema"
 
 #. Theme option: follow the OS light/dark setting
 msgctxt "pref_theme_system"
 msgid "System default"
-msgstr ""
+msgstr "Padrão do sistema"
 
 #. Theme option: always use the light theme regardless of OS setting
 msgctxt "pref_theme_light"
 msgid "Light"
-msgstr ""
+msgstr "Leve"
 
 #. Theme option: always use the dark theme regardless of OS setting
 msgctxt "pref_theme_dark"
 msgid "Dark"
-msgstr ""
+msgstr "Escuro"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
@@ -1367,7 +1367,7 @@ msgstr "Localizar URLs"
 #. can handle it
 msgctxt "console_url_no_handler"
 msgid "No app available to open this URL"
-msgstr ""
+msgstr "Nenhum aplicativo disponível para abrir este URL"
 
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"

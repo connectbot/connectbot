@@ -110,6 +110,10 @@
   <string name="pref_ui_category">用户界面</string>
   <string name="pref_language_title">语言</string>
   <string name="pref_language_system_default">系统默认</string>
+  <string name="pref_theme_title">主题</string>
+  <string name="pref_theme_system">系统默认</string>
+  <string name="pref_theme_light">轻量</string>
+  <string name="pref_theme_dark">深色</string>
   <string name="pref_rotation_title">旋转模式</string>
   <string name="pref_titlebarhide_title">自动隐藏标题栏</string>
   <string name="pref_titlebarhide_summary">点击控制台以显示标题栏和访问菜单</string>
@@ -240,6 +244,7 @@
   <string name="console_menu_portforwards">端口转发</string>
   <string name="console_menu_resize">指定终端大小</string>
   <string name="console_menu_urlscan">URL 扫描</string>
+  <string name="console_url_no_handler">没有可用的应用程序来打开此 URL</string>
   <string name="button_yes">确认</string>
   <string name="button_no">否</string>
   <string name="portforward_local">本地</string>

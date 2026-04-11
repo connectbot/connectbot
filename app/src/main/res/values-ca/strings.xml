@@ -110,6 +110,10 @@
   <string name="pref_ui_category">Interfície d\'usuari</string>
   <string name="pref_language_title">Idioma</string>
   <string name="pref_language_system_default">Configuració per defecte del sistema</string>
+  <string name="pref_theme_title">Tema</string>
+  <string name="pref_theme_system">Configuració per defecte del sistema</string>
+  <string name="pref_theme_light">Llum</string>
+  <string name="pref_theme_dark">Fosc</string>
   <string name="pref_rotation_title">Mode de rotació</string>
   <string name="pref_titlebarhide_title">Amaga automàticament la barra de títol</string>
   <string name="pref_titlebarhide_summary">Toqueu la consola per mostrar la barra de títol i el menú d\'accés</string>
@@ -240,6 +244,7 @@
   <string name="console_menu_portforwards">Redireccionament de ports</string>
   <string name="console_menu_resize">Força el tamany</string>
   <string name="console_menu_urlscan">Llistat de URL</string>
+  <string name="console_url_no_handler">No hi ha cap aplicació disponible per obrir aquesta URL.</string>
   <string name="button_yes">Sí</string>
   <string name="button_no">No</string>
   <string name="portforward_local">Local</string>

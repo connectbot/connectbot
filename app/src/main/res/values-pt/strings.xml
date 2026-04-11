@@ -110,6 +110,10 @@
   <string name="pref_ui_category">Interface de utilizador</string>
   <string name="pref_language_title">Idioma</string>
   <string name="pref_language_system_default">Padrão do sistema</string>
+  <string name="pref_theme_title">Tema</string>
+  <string name="pref_theme_system">Padrão do sistema</string>
+  <string name="pref_theme_light">Leve</string>
+  <string name="pref_theme_dark">Escuro</string>
   <string name="pref_rotation_title">Rotação de ecrã</string>
   <string name="pref_titlebarhide_title">Esconder automaticamente a barra de título</string>
   <string name="pref_titlebarhide_summary">Pressione no terminal para mostrar a barra de título e o menu de acesso</string>
@@ -240,6 +244,7 @@
   <string name="console_menu_portforwards">Redirecionamento de portas</string>
   <string name="console_menu_resize">Forçar Tamanho</string>
   <string name="console_menu_urlscan">Detecção de URL</string>
+  <string name="console_url_no_handler">Nenhum aplicativo disponível para abrir este URL</string>
   <string name="button_yes">Sim</string>
   <string name="button_no">Não</string>
   <string name="portforward_local">Local</string>

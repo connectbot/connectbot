@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-11 10:17-0700\n"
-"PO-Revision-Date: 2026-04-08 08:08-0700\n"
+"POT-Creation-Date: 2026-04-11 10:25-0700\n"
+"PO-Revision-Date: 2026-04-11 10:23-0700\n"
 "Last-Translator: Sergey Ponomarev <stokito@gmail.com>\n"
 "Language: ru\n"
 "Language-Team: ru <LL@li.org>\n"
@@ -656,22 +656,22 @@ msgstr "Системные настройки по умолчанию"
 #. section
 msgctxt "pref_theme_title"
 msgid "Theme"
-msgstr ""
+msgstr "Тема"
 
 #. Theme option: follow the OS light/dark setting
 msgctxt "pref_theme_system"
 msgid "System default"
-msgstr ""
+msgstr "Системные настройки по умолчанию"
 
 #. Theme option: always use the light theme regardless of OS setting
 msgctxt "pref_theme_light"
 msgid "Light"
-msgstr ""
+msgstr "Легкий"
 
 #. Theme option: always use the dark theme regardless of OS setting
 msgctxt "pref_theme_dark"
 msgid "Dark"
-msgstr ""
+msgstr "Темный"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
@@ -1376,7 +1376,7 @@ msgstr "Список URL"
 #. can handle it
 msgctxt "console_url_no_handler"
 msgid "No app available to open this URL"
-msgstr ""
+msgstr "Нет доступных приложений для открытия этой ссылки"
 
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"

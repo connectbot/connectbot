@@ -110,6 +110,10 @@
   <string name="pref_ui_category">使用者介面</string>
   <string name="pref_language_title">語言</string>
   <string name="pref_language_system_default">系統預設值</string>
+  <string name="pref_theme_title">主題</string>
+  <string name="pref_theme_system">系統預設值</string>
+  <string name="pref_theme_light">輕巧</string>
+  <string name="pref_theme_dark">深色</string>
   <string name="pref_rotation_title">螢幕旋轉模式</string>
   <string name="pref_titlebarhide_title">自動隱藏標題列</string>
   <string name="pref_titlebarhide_summary">輕觸終端機來顯示標題列並存取選單</string>
@@ -240,6 +244,7 @@
   <string name="console_menu_portforwards">連接埠轉址</string>
   <string name="console_menu_resize">字體大小</string>
   <string name="console_menu_urlscan">URL 掃描</string>
+  <string name="console_url_no_handler">沒有可用的應用程式來開啟此網址</string>
   <string name="button_yes">是</string>
   <string name="button_no">否</string>
   <string name="portforward_local">本地端</string>

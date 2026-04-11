@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-11 10:17-0700\n"
-"PO-Revision-Date: 2026-04-07 21:46-0700\n"
+"POT-Creation-Date: 2026-04-11 10:25-0700\n"
+"PO-Revision-Date: 2026-04-11 10:19-0700\n"
 "Last-Translator: Pavel Borecki <Unknown>\n"
 "Language: cs\n"
 "Language-Team: cs <LL@li.org>\n"
@@ -653,22 +653,22 @@ msgstr "Výchozí nastavení systému"
 #. section
 msgctxt "pref_theme_title"
 msgid "Theme"
-msgstr ""
+msgstr "Vzhled"
 
 #. Theme option: follow the OS light/dark setting
 msgctxt "pref_theme_system"
 msgid "System default"
-msgstr ""
+msgstr "Výchozí nastavení systému"
 
 #. Theme option: always use the light theme regardless of OS setting
 msgctxt "pref_theme_light"
 msgid "Light"
-msgstr ""
+msgstr "Lehký"
 
 #. Theme option: always use the dark theme regardless of OS setting
 msgctxt "pref_theme_dark"
 msgid "Dark"
-msgstr ""
+msgstr "Tmavý"
 
 #. Name for the rotation mode preference
 msgctxt "pref_rotation_title"
@@ -1374,7 +1374,7 @@ msgstr "Najít URL"
 #. can handle it
 msgctxt "console_url_no_handler"
 msgid "No app available to open this URL"
-msgstr ""
+msgstr "Žádná dostupná aplikace pro otevření této adresy URL"
 
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"
