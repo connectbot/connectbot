@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-07 21:40-0700\n"
+"POT-Creation-Date: 2026-04-11 10:17-0700\n"
 "PO-Revision-Date: 2017-08-24 14:24+0000\n"
 "Last-Translator: Hadrián Candela <Unknown>\n"
 "Language: gl\n"
@@ -645,6 +645,27 @@ msgstr ""
 #. Default option for language preference that uses the system locale
 msgctxt "pref_language_system_default"
 msgid "System default"
+msgstr ""
+
+#. Title of the theme mode selector preference in the User Interface settings
+#. section
+msgctxt "pref_theme_title"
+msgid "Theme"
+msgstr ""
+
+#. Theme option: follow the OS light/dark setting
+msgctxt "pref_theme_system"
+msgid "System default"
+msgstr ""
+
+#. Theme option: always use the light theme regardless of OS setting
+msgctxt "pref_theme_light"
+msgid "Light"
+msgstr ""
+
+#. Theme option: always use the dark theme regardless of OS setting
+msgctxt "pref_theme_dark"
+msgid "Dark"
 msgstr ""
 
 #. Name for the rotation mode preference
@@ -1340,6 +1361,12 @@ msgstr "Forzar tamaño"
 msgctxt "console_menu_urlscan"
 msgid "URL scan"
 msgstr "Escanear URLs"
+
+#. Error shown in a snackbar when the user taps a URL but no app on the device
+#. can handle it
+msgctxt "console_url_no_handler"
+msgid "No app available to open this URL"
+msgstr ""
 
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"
