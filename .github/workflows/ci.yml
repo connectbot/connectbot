@@ -41,6 +41,7 @@ jobs:
         with:
           dependency-graph: generate-and-submit
           cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
+          cache-read-only: ${{ github.ref_name != github.event.repository.default_branch }}
 
       - name: Delete old Android SDK cmdline-tools
         run: |
