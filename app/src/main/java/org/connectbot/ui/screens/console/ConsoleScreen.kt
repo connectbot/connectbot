@@ -63,7 +63,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryTabRow
+import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarDuration
@@ -362,7 +362,10 @@ fun ConsoleScreen(
         wasBiometricPromptActive = isBiometricPromptActive
     }
 
-    val currentBridge = uiState.bridges.getOrNull(uiState.currentBridgeIndex)
+    val currentBridge = uiState.bridges
+        .getOrNull(uiState.currentBridgeIndex)
+        ?.takeUnless { uiState.isLoading }
+    val showSessionSwitcher = uiState.bridges.size > 1 && !uiState.isLoading
     // These values are computed from bridge state and will recompute when uiState.revision changes
     val sessionOpen = currentBridge?.isSessionOpen == true
     val disconnected = currentBridge?.isDisconnected == true
@@ -381,6 +384,9 @@ fun ConsoleScreen(
     // Reset selection controller when bridge changes
     LaunchedEffect(currentBridge) {
         selectionController = null
+        if (currentBridge != null) {
+            termFocusRequester.requestFocus()
+        }
     }
 
     // Initialize forceSize from profile when bridge changes
@@ -471,39 +477,15 @@ fun ConsoleScreen(
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets
             .union(WindowInsets.imeAnimationTarget),
     ) { innerPadding ->
-        // Show tabs if multiple terminals
-        if (uiState.bridges.size > 1) {
-            PrimaryTabRow(
-                selectedTabIndex = uiState.currentBridgeIndex,
-                modifier = Modifier.fillMaxWidth(),
-            ) {
-                uiState.bridges.forEachIndexed { index, bridge ->
-                    Tab(
-                        selected = index == uiState.currentBridgeIndex,
-                        onClick = { viewModel.selectBridge(index) },
-                        text = {
-                            Text(
-                                bridge.host.nickname,
-                                maxLines = 1,
-                                overflow = TextOverflow.Ellipsis,
-                            )
-                        },
-                    )
-                }
-            }
-        }
-
-        // Terminal content with keyboard overlay
-        // This Box is transparent to accessibility - it's just for layout
         val layoutDirection = LocalLayoutDirection.current
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxSize()
                 .consumeWindowInsets(innerPadding)
                 .padding(
                     start = innerPadding.calculateStartPadding(layoutDirection),
                     end = innerPadding.calculateEndPadding(layoutDirection),
-                    top = if (!titleBarHide) 0.dp else innerPadding.calculateTopPadding(),
+                    top = if (!titleBarHide) titleBarHeight else innerPadding.calculateTopPadding(),
                     bottom = innerPadding.calculateBottomPadding(),
                 )
                 .windowInsetsPadding(WindowInsets.imeAnimationTarget)
@@ -552,27 +534,89 @@ fun ConsoleScreen(
                     }
                 },
         ) {
+            if (showSessionSwitcher) {
+                PrimaryScrollableTabRow(
+                    selectedTabIndex = uiState.currentBridgeIndex,
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    uiState.bridges.forEachIndexed { index, bridge ->
+                        Tab(
+                            selected = index == uiState.currentBridgeIndex,
+                            onClick = { viewModel.selectBridge(index) },
+                            text = {
+                                Text(
+                                    bridge.host.nickname,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            },
+                        )
+                    }
+                }
+            }
+
             when {
                 uiState.isLoading -> {
                     LoadingScreen(modifier = Modifier.fillMaxSize())
                 }
 
                 uiState.bridges.isNotEmpty() -> {
-                    // TODO(Terminal): Re-implement support for switching between terminals
-                    // For now, just show the current bridge directly without HorizontalPager
-                    // to avoid accessibility issues. Maybe a tab strip across the top for
-                    // small screen devices and a list of hosts on the left for large screen.
-
                     val bridge = uiState.bridges[uiState.currentBridgeIndex]
 
-                    // Terminal view fills entire space with insets padding
-                    // to avoid content being cut off by screen curves/notches
                     Box(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .padding(
-                                top = if (!titleBarHide) titleBarHeight else 0.dp,
-                            ),
+                            .fillMaxWidth()
+                            .weight(1f)
+                            .onPreviewKeyEvent { keyEvent ->
+                                if (keyEvent.type == KeyEventType.KeyDown) {
+                                    when {
+                                        // Ctrl+Shift+C: copy selection
+                                        keyEvent.key == Key.C && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
+                                            selectionController?.copySelection()
+                                            true
+                                        }
+
+                                        // Ctrl+Shift+V: paste clipboard content
+                                        keyEvent.key == Key.V && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
+                                            currentBridge?.let { current ->
+                                                val clipboard =
+                                                    context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                                                val clip =
+                                                    clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: ""
+                                                current.injectString(clip)
+                                            }
+                                            true
+                                        }
+
+                                        // Ctrl+Shift+= (Ctrl++): increase font size
+                                        keyEvent.isCtrlPressed && keyEvent.isShiftPressed && keyEvent.key == Key.Equals -> {
+                                            currentBridge?.increaseFontSize()
+                                            true
+                                        }
+
+                                        // Ctrl+Shift+-: decrease font size
+                                        keyEvent.isCtrlPressed && keyEvent.isShiftPressed && keyEvent.key == Key.Minus -> {
+                                            currentBridge?.decreaseFontSize()
+                                            true
+                                        }
+
+                                        // Volume keys: change font size
+                                        volumeKeysChangeFontSize && keyEvent.key == Key.VolumeUp -> {
+                                            currentBridge?.increaseFontSize()
+                                            true
+                                        }
+
+                                        volumeKeysChangeFontSize && keyEvent.key == Key.VolumeDown -> {
+                                            currentBridge?.decreaseFontSize()
+                                            true
+                                        }
+
+                                        else -> false
+                                    }
+                                } else {
+                                    false
+                                }
+                            },
                     ) {
                         // Get font from profile (stored in bridge)
                         val fontResult = rememberTerminalTypefaceResultFromStoredValue(bridge.fontFamily)
@@ -872,6 +916,26 @@ fun ConsoleScreen(
                                     leadingIcon = {
                                         Icon(Icons.Default.Refresh, contentDescription = null)
                                     },
+                                )
+                            }
+
+                            if (uiState.bridges.size > 1) {
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.console_previous_session)) },
+                                    onClick = {
+                                        showMenu = false
+                                        viewModel.selectPreviousBridge()
+                                    },
+                                    enabled = uiState.currentBridgeIndex > 0
+                                )
+
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.console_next_session)) },
+                                    onClick = {
+                                        showMenu = false
+                                        viewModel.selectNextBridge()
+                                    },
+                                    enabled = uiState.currentBridgeIndex < uiState.bridges.lastIndex
                                 )
                             }
 
