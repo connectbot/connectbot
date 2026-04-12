@@ -62,6 +62,7 @@ data class SettingsUiState(
     val titlebarhide: Boolean = false,
     val fullscreen: Boolean = false,
     val pgupdngesture: Boolean = false,
+    val swipeSessions: Boolean = false,
     val volumefont: Boolean = true,
     val keepalive: Boolean = true,
     val alwaysvisible: Boolean = false,
@@ -199,6 +200,7 @@ class SettingsViewModel @Inject constructor(
             titlebarhide = prefs.getBoolean("titlebarhide", false),
             fullscreen = prefs.getBoolean("fullscreen", false),
             pgupdngesture = prefs.getBoolean("pgupdngesture", false),
+            swipeSessions = prefs.getBoolean(PreferenceConstants.SWIPE_SESSIONS, false),
             volumefont = prefs.getBoolean("volumefont", true),
             keepalive = prefs.getBoolean("keepalive", true),
             alwaysvisible = prefs.getBoolean("alwaysvisible", false),
@@ -313,6 +315,10 @@ class SettingsViewModel @Inject constructor(
 
     fun updatePgUpDnGesture(value: Boolean) {
         updateBooleanPref(PreferenceConstants.PG_UPDN_GESTURE, value) { copy(pgupdngesture = value) }
+    }
+
+    fun updateSwipeSessions(value: Boolean) {
+        updateBooleanPref(PreferenceConstants.SWIPE_SESSIONS, value) { copy(swipeSessions = value) }
     }
 
     fun updateVolumeFont(value: Boolean) {

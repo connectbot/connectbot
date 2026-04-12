@@ -47,6 +47,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.pager.HorizontalPager
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentPaste
@@ -118,6 +120,7 @@ import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.PromptRequest
+import org.connectbot.service.TerminalBridge
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.SelectionController
 import org.connectbot.terminal.Terminal
@@ -153,6 +156,164 @@ private fun rememberHasHardwareKeyboard(): Boolean {
 @VisibleForTesting
 const val AUTO_HIDE_DELAY_MS = 3000L
 
+@Composable
+private fun ConsoleTerminalPage(
+    bridge: TerminalBridge,
+    isActive: Boolean,
+    keyboardAlwaysVisible: Boolean,
+    showSoftwareKeyboard: Boolean,
+    forceSize: Pair<Int, Int>?,
+    termFocusRequester: FocusRequester,
+    showExtraKeyboard: Boolean,
+    hasPlayedKeyboardAnimation: Boolean,
+    imeVisible: Boolean,
+    handleTerminalInteraction: () -> Unit,
+    onShowSoftwareKeyboardChange: (Boolean) -> Unit,
+    onImeVisibilityChanged: (Boolean) -> Unit,
+    onTextInputRequested: () -> Unit,
+    onDisconnectRequested: () -> Unit,
+    onKeyboardScrollInProgressChange: (Boolean) -> Unit,
+    onSelectionControllerAvailable: (SelectionController) -> Unit,
+    onOpenUrl: (String) -> Unit,
+    onPasteRequest: () -> Unit,
+    onReconnect: () -> Unit,
+    snackbarHostState: SnackbarHostState,
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier = modifier) {
+        val fontResult = rememberTerminalTypefaceResultFromStoredValue(bridge.fontFamily)
+        val coroutineScope = rememberCoroutineScope()
+        val fontSize by bridge.fontSizeFlow.collectAsState()
+        val delKeyMode by bridge.delKeyModeFlow.collectAsState()
+
+        LaunchedEffect(fontResult.loadFailed, fontResult.isLoading) {
+            if (fontResult.loadFailed && !fontResult.isLoading) {
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar(
+                        message = "Failed to load font '${fontResult.requestedFontName}'. Using system default.",
+                    )
+                }
+            }
+        }
+
+        Terminal(
+            terminalEmulator = bridge.terminalEmulator,
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(
+                    bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp,
+                )
+                .testTag("terminal"),
+            typeface = fontResult.typeface,
+            initialFontSize = fontSize.sp,
+            keyboardEnabled = true,
+            showSoftKeyboard = showSoftwareKeyboard && isActive,
+            focusRequester = termFocusRequester,
+            forcedSize = forceSize,
+            modifierManager = bridge.keyHandler,
+            onSelectionControllerAvailable = { controller ->
+                if (isActive) {
+                    onSelectionControllerAvailable(controller)
+                }
+            },
+            onTerminalTap = { handleTerminalInteraction() },
+            onImeVisibilityChanged = { visible ->
+                if (isActive) {
+                    onImeVisibilityChanged(visible)
+                }
+            },
+            onHyperlinkClick = onOpenUrl,
+            delKeyMode = delKeyMode,
+            onPasteRequest = onPasteRequest,
+        )
+
+        SideEffect {
+            bridge.onTextInputRequested = onTextInputRequested
+        }
+
+        if (isActive) {
+            AnimatedVisibility(
+                visible = showExtraKeyboard,
+                enter = fadeIn(animationSpec = tween(durationMillis = 100)),
+                exit = fadeOut(animationSpec = tween(durationMillis = 100)),
+                modifier = Modifier
+                    .align(Alignment.BottomCenter)
+                    .testTag("terminal_keyboard"),
+            ) {
+                TerminalKeyboard(
+                    bridge = bridge,
+                    onInteraction = { handleTerminalInteraction() },
+                    onHideIme = {
+                        onShowSoftwareKeyboardChange(false)
+                    },
+                    onShowIme = {
+                        onShowSoftwareKeyboardChange(true)
+                    },
+                    onOpenTextInput = onTextInputRequested,
+                    onScrollInProgressChange = onKeyboardScrollInProgressChange,
+                    imeVisible = imeVisible,
+                    playAnimation = !hasPlayedKeyboardAnimation,
+                )
+            }
+
+            val promptState by bridge.promptManager.promptState.collectAsState()
+
+            InlinePrompt(
+                promptRequest = promptState,
+                onResponse = { response ->
+                    bridge.promptManager.respond(response)
+                },
+                onCancel = {
+                    bridge.promptManager.cancelPrompt()
+                },
+                onDismiss = {
+                    termFocusRequester.requestFocus()
+                },
+                modifier = Modifier.align(Alignment.BottomCenter),
+            )
+
+            AnimatedVisibility(
+                visible = bridge.isDisconnected && !bridge.isConnecting && promptState == null,
+                enter = slideInVertically(initialOffsetY = { it }),
+                exit = slideOutVertically(targetOffsetY = { it }),
+                modifier = Modifier.align(Alignment.BottomCenter),
+            ) {
+                val terminalColors = MaterialTheme.colorScheme.terminal
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .background(terminalColors.overlayBackground)
+                        .padding(16.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.alert_disconnect_msg),
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = terminalColors.overlayText,
+                        modifier = Modifier.padding(bottom = 16.dp),
+                    )
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.End,
+                    ) {
+                        TextButton(onClick = onDisconnectRequested) {
+                            Text(
+                                stringResource(R.string.console_menu_close),
+                                color = terminalColors.overlayText,
+                            )
+                        }
+                        Button(
+                            onClick = onReconnect,
+                            modifier = Modifier.padding(start = 8.dp),
+                        ) {
+                            Text(stringResource(R.string.console_menu_reconnect))
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ConsoleScreen(
@@ -178,6 +339,9 @@ fun ConsoleScreen(
     // Read preferences
     val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
     val keyboardAlwaysVisible = remember { prefs.getBoolean(PreferenceConstants.KEY_ALWAYS_VISIBLE, false) }
+    val swipeSessionsEnabled = remember {
+        prefs.getBoolean(PreferenceConstants.SWIPE_SESSIONS, false)
+    }
     var fullscreen by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.FULLSCREEN, false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false)) }
     val volumeKeysChangeFontSize = remember { prefs.getBoolean(PreferenceConstants.VOLUME_FONT, true) }
@@ -368,10 +532,10 @@ fun ConsoleScreen(
         .getOrNull(uiState.currentBridgeIndex)
         ?.takeUnless { uiState.isLoading }
     val hasMultipleSessions = uiState.bridges.size > 1 && !uiState.isLoading
+    val swipeBetweenSessions = swipeSessionsEnabled && hasMultipleSessions
     // These values are computed from bridge state and will recompute when uiState.revision changes
     val sessionOpen = currentBridge?.isSessionOpen == true
     val disconnected = currentBridge?.isDisconnected == true
-    val connecting = currentBridge?.isConnecting == true
     val canForwardPorts = currentBridge?.canFowardPorts() == true
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -452,6 +616,52 @@ fun ConsoleScreen(
                 }
                 snackbarHostState.showSnackbar(message)
             }
+        }
+    }
+
+    fun handleTerminalKeyEvent(keyEvent: androidx.compose.ui.input.key.KeyEvent): Boolean {
+        if (keyEvent.type != KeyEventType.KeyDown) {
+            return false
+        }
+
+        return when {
+            keyEvent.key == Key.C && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
+                selectionController?.copySelection()
+                true
+            }
+
+            keyEvent.key == Key.V && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
+                currentBridge?.let { current ->
+                    val clipboard =
+                        context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                    val clip =
+                        clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: ""
+                    current.injectString(clip)
+                }
+                true
+            }
+
+            keyEvent.isCtrlPressed && keyEvent.isShiftPressed && keyEvent.key == Key.Equals -> {
+                currentBridge?.increaseFontSize()
+                true
+            }
+
+            keyEvent.isCtrlPressed && keyEvent.isShiftPressed && keyEvent.key == Key.Minus -> {
+                currentBridge?.decreaseFontSize()
+                true
+            }
+
+            volumeKeysChangeFontSize && keyEvent.key == Key.VolumeUp -> {
+                currentBridge?.increaseFontSize()
+                true
+            }
+
+            volumeKeysChangeFontSize && keyEvent.key == Key.VolumeDown -> {
+                currentBridge?.decreaseFontSize()
+                true
+            }
+
+            else -> false
         }
     }
 
@@ -542,207 +752,95 @@ fun ConsoleScreen(
                 }
 
                 uiState.bridges.isNotEmpty() -> {
-                    val bridge = uiState.bridges[uiState.currentBridgeIndex]
-
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f)
-                            .onPreviewKeyEvent { keyEvent ->
-                                if (keyEvent.type == KeyEventType.KeyDown) {
-                                    when {
-                                        // Ctrl+Shift+C: copy selection
-                                        keyEvent.key == Key.C && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
-                                            selectionController?.copySelection()
-                                            true
-                                        }
-
-                                        // Ctrl+Shift+V: paste clipboard content
-                                        keyEvent.key == Key.V && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
-                                            currentBridge?.let { current ->
-                                                val clipboard =
-                                                    context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                                                val clip =
-                                                    clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: ""
-                                                current.injectString(clip)
-                                            }
-                                            true
-                                        }
-
-                                        // Ctrl+Shift+= (Ctrl++): increase font size
-                                        keyEvent.isCtrlPressed && keyEvent.isShiftPressed && keyEvent.key == Key.Equals -> {
-                                            currentBridge?.increaseFontSize()
-                                            true
-                                        }
-
-                                        // Ctrl+Shift+-: decrease font size
-                                        keyEvent.isCtrlPressed && keyEvent.isShiftPressed && keyEvent.key == Key.Minus -> {
-                                            currentBridge?.decreaseFontSize()
-                                            true
-                                        }
-
-                                        // Volume keys: change font size
-                                        volumeKeysChangeFontSize && keyEvent.key == Key.VolumeUp -> {
-                                            currentBridge?.increaseFontSize()
-                                            true
-                                        }
-
-                                        volumeKeysChangeFontSize && keyEvent.key == Key.VolumeDown -> {
-                                            currentBridge?.decreaseFontSize()
-                                            true
-                                        }
-
-                                        else -> false
-                                    }
-                                } else {
-                                    false
-                                }
-                            },
+                            .onPreviewKeyEvent(::handleTerminalKeyEvent),
                     ) {
-                        // Get font from profile (stored in bridge)
-                        val fontResult = rememberTerminalTypefaceResultFromStoredValue(bridge.fontFamily)
-                        val coroutineScope = rememberCoroutineScope()
-                        // Observe font size changes for reactive updates
-                        val fontSize by bridge.fontSizeFlow.collectAsState()
-                        // Observe DEL key mode changes
-                        val delKeyMode by bridge.delKeyModeFlow.collectAsState()
+                        if (swipeBetweenSessions) {
+                            val pagerState = rememberPagerState(
+                                initialPage = uiState.currentBridgeIndex,
+                                pageCount = { uiState.bridges.size },
+                            )
 
-                        // Show snackbar if font loading failed
-                        LaunchedEffect(fontResult.loadFailed, fontResult.isLoading) {
-                            if (fontResult.loadFailed && !fontResult.isLoading) {
-                                coroutineScope.launch {
-                                    snackbarHostState.showSnackbar(
-                                        message = "Failed to load font '${fontResult.requestedFontName}'. Using system default.",
-                                    )
+                            LaunchedEffect(pagerState.currentPage) {
+                                if (pagerState.currentPage != uiState.currentBridgeIndex) {
+                                    viewModel.selectBridge(pagerState.currentPage)
                                 }
                             }
-                        }
 
-                        Terminal(
-                            terminalEmulator = bridge.terminalEmulator,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .padding(
-                                    bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp,
-                                )
-                                .testTag("terminal"),
-                            typeface = fontResult.typeface,
-                            initialFontSize = fontSize.sp,
-                            keyboardEnabled = true,
-                            showSoftKeyboard = showSoftwareKeyboard,
-                            focusRequester = termFocusRequester,
-                            forcedSize = forceSize,
-                            modifierManager = bridge.keyHandler,
-                            onSelectionControllerAvailable = { selectionController = it },
-                            onTerminalTap = { handleTerminalInteraction(isTerminalTap = true) },
-                            onImeVisibilityChanged = { visible ->
-                                imeVisible = visible
-                            },
-                            onHyperlinkClick = { url ->
-                                openUrl(url)
-                            },
-                            delKeyMode = delKeyMode,
-                            onPasteRequest = {
-                                pasteClipboardContents()
-                            },
-                        )
-
-                        // Set up text input request callback from bridge (for camera button)
-                        SideEffect {
-                            bridge.onTextInputRequested = {
-                                showTextInputDialog = true
+                            LaunchedEffect(uiState.currentBridgeIndex, uiState.bridges.size) {
+                                if (pagerState.currentPage != uiState.currentBridgeIndex) {
+                                    pagerState.scrollToPage(uiState.currentBridgeIndex)
+                                }
                             }
-                        }
 
-                        // Terminal keyboard overlay (doesn't resize terminal)
-                        // Must be BEFORE prompts so prompts appear on top
-                        // Fade in/out animation matches ConsoleActivity (100ms duration)
-                        AnimatedVisibility(
-                            visible = showExtraKeyboard,
-                            enter = fadeIn(animationSpec = tween(durationMillis = 100)),
-                            exit = fadeOut(animationSpec = tween(durationMillis = 100)),
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .testTag("terminal_keyboard"),
-                        ) {
-                            TerminalKeyboard(
+                            HorizontalPager(
+                                state = pagerState,
+                                modifier = Modifier.fillMaxSize(),
+                                key = { page -> uiState.bridges[page].host.id },
+                            ) { page ->
+                                val pageBridge = uiState.bridges[page]
+                                ConsoleTerminalPage(
+                                    bridge = pageBridge,
+                                    isActive = page == uiState.currentBridgeIndex,
+                                    keyboardAlwaysVisible = keyboardAlwaysVisible,
+                                    showSoftwareKeyboard = showSoftwareKeyboard,
+                                    forceSize = forceSize,
+                                    termFocusRequester = termFocusRequester,
+                                    showExtraKeyboard = showExtraKeyboard,
+                                    hasPlayedKeyboardAnimation = hasPlayedKeyboardAnimation,
+                                    imeVisible = imeVisible,
+                                    handleTerminalInteraction = { handleTerminalInteraction(isTerminalTap = true) },
+                                    onShowSoftwareKeyboardChange = { showSoftwareKeyboard = it },
+                                    onImeVisibilityChanged = { imeVisible = it },
+                                    onTextInputRequested = { showTextInputDialog = true },
+                                    onDisconnectRequested = {
+                                        pageBridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
+                                    },
+                                    onKeyboardScrollInProgressChange = { inProgress ->
+                                        keyboardScrollInProgress = inProgress
+                                        handleTerminalInteraction()
+                                    },
+                                    onSelectionControllerAvailable = { selectionController = it },
+                                    onOpenUrl = ::openUrl,
+                                    onPasteRequest = ::pasteClipboardContents,
+                                    onReconnect = { viewModel.reconnect(pageBridge) },
+                                    snackbarHostState = snackbarHostState,
+                                    modifier = Modifier.fillMaxSize(),
+                                )
+                            }
+                        } else {
+                            val bridge = uiState.bridges[uiState.currentBridgeIndex]
+                            ConsoleTerminalPage(
                                 bridge = bridge,
-                                onInteraction = { handleTerminalInteraction() },
-                                onHideIme = {
-                                    showSoftwareKeyboard = false
+                                isActive = true,
+                                keyboardAlwaysVisible = keyboardAlwaysVisible,
+                                showSoftwareKeyboard = showSoftwareKeyboard,
+                                forceSize = forceSize,
+                                termFocusRequester = termFocusRequester,
+                                showExtraKeyboard = showExtraKeyboard,
+                                hasPlayedKeyboardAnimation = hasPlayedKeyboardAnimation,
+                                imeVisible = imeVisible,
+                                handleTerminalInteraction = { handleTerminalInteraction(isTerminalTap = true) },
+                                onShowSoftwareKeyboardChange = { showSoftwareKeyboard = it },
+                                onImeVisibilityChanged = { imeVisible = it },
+                                onTextInputRequested = { showTextInputDialog = true },
+                                onDisconnectRequested = {
+                                    bridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
                                 },
-                                onShowIme = {
-                                    showSoftwareKeyboard = true
-                                },
-                                onOpenTextInput = {
-                                    showTextInputDialog = true
-                                },
-                                onScrollInProgressChange = { inProgress ->
+                                onKeyboardScrollInProgressChange = { inProgress ->
                                     keyboardScrollInProgress = inProgress
                                     handleTerminalInteraction()
                                 },
-                                imeVisible = imeVisible,
-                                playAnimation = !hasPlayedKeyboardAnimation,
+                                onSelectionControllerAvailable = { selectionController = it },
+                                onOpenUrl = ::openUrl,
+                                onPasteRequest = ::pasteClipboardContents,
+                                onReconnect = { viewModel.reconnect(bridge) },
+                                snackbarHostState = snackbarHostState,
+                                modifier = Modifier.fillMaxSize(),
                             )
-                        }
-
-                        // Show inline prompts from the current bridge (non-modal at bottom)
-                        // Must be AFTER keyboard so prompts appear on top (z-order)
-                        val promptState by bridge.promptManager.promptState.collectAsState()
-
-                        InlinePrompt(
-                            promptRequest = promptState,
-                            onResponse = { response ->
-                                bridge.promptManager.respond(response)
-                            },
-                            onCancel = {
-                                bridge.promptManager.cancelPrompt()
-                            },
-                            onDismiss = {
-                                termFocusRequester.requestFocus()
-                            },
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter),
-                        )
-
-                        // Show reconnect/close overlay when session is disconnected
-                        AnimatedVisibility(
-                            visible = disconnected && !connecting && promptState == null,
-                            enter = slideInVertically(initialOffsetY = { it }),
-                            exit = slideOutVertically(targetOffsetY = { it }),
-                            modifier = Modifier.align(Alignment.BottomCenter),
-                        ) {
-                            val terminalColors = MaterialTheme.colorScheme.terminal
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .background(terminalColors.overlayBackground)
-                                    .padding(16.dp),
-                            ) {
-                                Text(
-                                    text = stringResource(R.string.alert_disconnect_msg),
-                                    style = MaterialTheme.typography.bodyLarge,
-                                    color = terminalColors.overlayText,
-                                    modifier = Modifier.padding(bottom = 16.dp),
-                                )
-                                Row(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.End,
-                                ) {
-                                    TextButton(onClick = { bridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED) }) {
-                                        Text(
-                                            stringResource(R.string.console_menu_close),
-                                            color = terminalColors.overlayText,
-                                        )
-                                    }
-                                    Button(
-                                        onClick = { viewModel.reconnect(bridge) },
-                                        modifier = Modifier.padding(start = 8.dp),
-                                    ) {
-                                        Text(stringResource(R.string.console_menu_reconnect))
-                                    }
-                                }
-                            }
                         }
                     }
                 }
@@ -1097,7 +1195,7 @@ private fun HostDisconnectDialog(
 
 @Composable
 private fun SessionPickerDialog(
-    bridges: List<org.connectbot.service.TerminalBridge>,
+    bridges: List<TerminalBridge>,
     currentBridgeIndex: Int,
     onDismiss: () -> Unit,
     onSelectBridge: (Int) -> Unit,

@@ -137,7 +137,7 @@ class ConsoleViewModelTest {
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
         whenever(savedStateHandle.get<Long>("hostId")).thenReturn(2L)
 
-        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
 
         advanceUntilIdle()
@@ -157,7 +157,7 @@ class ConsoleViewModelTest {
         whenever(savedStateHandle.get<Long>("hostId")).thenReturn(2L)
         whenever(terminalManager.openConnectionForHostId(2L)).thenReturn(mockBridge2)
 
-        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
 
         advanceUntilIdle()
@@ -219,7 +219,7 @@ class ConsoleViewModelTest {
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
         whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
-        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
 
         advanceUntilIdle()
@@ -236,7 +236,7 @@ class ConsoleViewModelTest {
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
         whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
-        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
 
         advanceUntilIdle()
@@ -387,7 +387,7 @@ class ConsoleViewModelTest {
         bridgesFlow.value = listOf(mockBridge1, mockBridge2, mockBridge3)
         whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
-        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
 
         advanceUntilIdle()
