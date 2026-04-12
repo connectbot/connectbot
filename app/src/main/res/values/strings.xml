@@ -587,6 +587,10 @@
 
 	<!-- Button to reconnect to a disconnected host. -->
 	<string name="console_menu_reconnect">Reconnect</string>
+	<!-- Button to switch to the previous active terminal session. -->
+	<string name="console_previous_session">Previous session</string>
+	<!-- Button to switch to the next active terminal session. -->
+	<string name="console_next_session">Next session</string>
 	<!-- Button to close the disconnected terminal window. -->
 	<string name="console_menu_close">"Close"</string>
 	<!-- Button to paste from the clipboard to the terminal. -->
