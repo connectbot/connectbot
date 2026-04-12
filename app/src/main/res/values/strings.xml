@@ -300,6 +300,10 @@
 	<string name="pref_pg_updn_gesture_title">"Page up/down gesture"</string>
 	<!-- Summary for the full screen preference -->
 	<string name="pref_pg_updn_gesture_summary">"Swipe the left third of the screen to send pg up/dn to the terminal"</string>
+	<!-- Name for the optional swipe-to-switch-sessions preference -->
+	<string name="pref_swipe_sessions_title">Swipe between sessions</string>
+	<!-- Summary for the optional swipe-to-switch-sessions preference -->
+	<string name="pref_swipe_sessions_summary">Enable horizontal swiping to switch terminal sessions. Off by default for accessibility.</string>
 
 	<!-- Name for the full screen preference -->
 	<string name="pref_fullscreen_title">"Full screen"</string>
