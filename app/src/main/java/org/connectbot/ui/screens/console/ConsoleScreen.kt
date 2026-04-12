@@ -40,11 +40,13 @@ import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.consumeWindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imeAnimationTarget
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentPaste
@@ -53,6 +55,7 @@ import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Refresh
+import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
@@ -63,14 +66,12 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -208,6 +209,7 @@ fun ConsoleScreen(
     var showUrlScanDialog by remember { mutableStateOf(false) }
     var showResizeDialog by remember { mutableStateOf(false) }
     var showDisconnectDialog by remember { mutableStateOf(false) }
+    var showSessionPickerDialog by remember { mutableStateOf(false) }
     var showTextInputDialog by remember { mutableStateOf(false) }
     var showExtraKeyboard by remember { mutableStateOf(true) } // Start visible to show animation
     var hasPlayedKeyboardAnimation by remember { mutableStateOf(false) }
@@ -365,7 +367,7 @@ fun ConsoleScreen(
     val currentBridge = uiState.bridges
         .getOrNull(uiState.currentBridgeIndex)
         ?.takeUnless { uiState.isLoading }
-    val showSessionSwitcher = uiState.bridges.size > 1 && !uiState.isLoading
+    val hasMultipleSessions = uiState.bridges.size > 1 && !uiState.isLoading
     // These values are computed from bridge state and will recompute when uiState.revision changes
     val sessionOpen = currentBridge?.isSessionOpen == true
     val disconnected = currentBridge?.isDisconnected == true
@@ -534,27 +536,6 @@ fun ConsoleScreen(
                     }
                 },
         ) {
-            if (showSessionSwitcher) {
-                PrimaryScrollableTabRow(
-                    selectedTabIndex = uiState.currentBridgeIndex,
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    uiState.bridges.forEachIndexed { index, bridge ->
-                        Tab(
-                            selected = index == uiState.currentBridgeIndex,
-                            onClick = { viewModel.selectBridge(index) },
-                            text = {
-                                Text(
-                                    bridge.host.nickname,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                )
-                            },
-                        )
-                    }
-                }
-            }
-
             when {
                 uiState.isLoading -> {
                     LoadingScreen(modifier = Modifier.fillMaxSize())
@@ -806,6 +787,18 @@ fun ConsoleScreen(
             )
         }
 
+        if (showSessionPickerDialog && hasMultipleSessions) {
+            SessionPickerDialog(
+                bridges = uiState.bridges,
+                currentBridgeIndex = uiState.currentBridgeIndex,
+                onDismiss = { showSessionPickerDialog = false },
+                onSelectBridge = { index ->
+                    showSessionPickerDialog = false
+                    viewModel.selectBridge(index)
+                },
+            )
+        }
+
         if (showTextInputDialog && promptState == null && currentBridge != null) {
             // TODO: Get selected text from TerminalEmulator when selection is implemented
             val selectedText = ""
@@ -856,6 +849,15 @@ fun ConsoleScreen(
                     TopAppBarDefaults.topAppBarColors()
                 },
                 actions = {
+                    if (hasMultipleSessions) {
+                        IconButton(onClick = { showSessionPickerDialog = true }) {
+                            Icon(
+                                Icons.Default.SwapHoriz,
+                                contentDescription = stringResource(R.string.console_switch_session),
+                            )
+                        }
+                    }
+
                     // Text Input button
                     IconButton(
                         onClick = { showTextInputDialog = true },
@@ -919,14 +921,14 @@ fun ConsoleScreen(
                                 )
                             }
 
-                            if (uiState.bridges.size > 1) {
+                            if (hasMultipleSessions) {
                                 DropdownMenuItem(
                                     text = { Text(stringResource(R.string.console_previous_session)) },
                                     onClick = {
                                         showMenu = false
                                         viewModel.selectPreviousBridge()
                                     },
-                                    enabled = uiState.currentBridgeIndex > 0
+                                    enabled = uiState.currentBridgeIndex > 0,
                                 )
 
                                 DropdownMenuItem(
@@ -935,7 +937,7 @@ fun ConsoleScreen(
                                         showMenu = false
                                         viewModel.selectNextBridge()
                                     },
-                                    enabled = uiState.currentBridgeIndex < uiState.bridges.lastIndex
+                                    enabled = uiState.currentBridgeIndex < uiState.bridges.lastIndex,
                                 )
                             }
 
@@ -1088,6 +1090,53 @@ private fun HostDisconnectDialog(
         dismissButton = {
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.button_no))
+            }
+        },
+    )
+}
+
+@Composable
+private fun SessionPickerDialog(
+    bridges: List<org.connectbot.service.TerminalBridge>,
+    currentBridgeIndex: Int,
+    onDismiss: () -> Unit,
+    onSelectBridge: (Int) -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(stringResource(R.string.console_switch_session))
+        },
+        text = {
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(max = 320.dp),
+            ) {
+                items(
+                    count = bridges.size,
+                    key = { index -> bridges[index].host.id },
+                ) { index ->
+                    val bridge = bridges[index]
+                    TextButton(
+                        onClick = { onSelectBridge(index) },
+                        modifier = Modifier.fillMaxWidth(),
+                    ) {
+                        Text(
+                            text = if (index == currentBridgeIndex) {
+                                "\u2022 ${bridge.host.nickname}"
+                            } else {
+                                bridge.host.nickname
+                            },
+                            modifier = Modifier.fillMaxWidth(),
+                        )
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.button_cancel))
             }
         },
     )
