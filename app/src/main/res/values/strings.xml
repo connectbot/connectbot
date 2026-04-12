@@ -587,6 +587,8 @@
 
 	<!-- Button to reconnect to a disconnected host. -->
 	<string name="console_menu_reconnect">Reconnect</string>
+	<!-- Content description and dialog title for switching between active terminal sessions. -->
+	<string name="console_switch_session">Switch session</string>
 	<!-- Button to switch to the previous active terminal session. -->
 	<string name="console_previous_session">Previous session</string>
 	<!-- Button to switch to the next active terminal session. -->
