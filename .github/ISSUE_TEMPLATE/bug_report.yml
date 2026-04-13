@@ -5,7 +5,9 @@ body:
   - type: markdown
     attributes:
       value: |
-        Thanks for taking the time to fill out this bug report! Please provide as much detail as possible to help us diagnose and fix the issue.
+        Thanks for taking the time to fill out this bug report! Please provide as much detail as possible to help us diagnose and fix the issue. Even if the detail seems irrelevant (e.g., my dog is a Wi-Fi hotspot), please include it.
+
+        If you obtained ConnectBot from an app store outside of Google Play Store, make sure you are using the latest version according to [the releases page](https://github.com/connectbot/connectbot/releases/latest).
 
   - type: textarea
     id: description
