@@ -48,6 +48,13 @@ fun ContactScreen(
     modifier: Modifier = Modifier
 ) {
     val uriHandler = LocalUriHandler.current
+    val openUri: (String) -> Unit = { uri ->
+        try {
+            uriHandler.openUri(uri)
+        } catch (_: IllegalArgumentException) {
+            // No app available to handle this URI
+        }
+    }
 
     Scaffold(
         topBar = {
@@ -75,7 +82,7 @@ fun ContactScreen(
                 ContactLinkItem(
                     label = stringResource(R.string.help_website),
                     url = stringResource(R.string.help_website_url),
-                    onClick = { uriHandler.openUri(it) }
+                    onClick = openUri
                 )
             }
 
@@ -83,7 +90,7 @@ fun ContactScreen(
                 ContactLinkItem(
                     label = stringResource(R.string.help_github),
                     url = stringResource(R.string.help_github_url),
-                    onClick = { uriHandler.openUri(it) }
+                    onClick = openUri
                 )
             }
 
@@ -91,7 +98,7 @@ fun ContactScreen(
                 ContactLinkItem(
                     label = stringResource(R.string.help_report_bug),
                     url = stringResource(R.string.help_report_bug_url),
-                    onClick = { uriHandler.openUri(it) }
+                    onClick = openUri
                 )
             }
 
@@ -107,7 +114,7 @@ fun ContactScreen(
                 ContactLinkItem(
                     label = stringResource(R.string.help_donate_github),
                     url = stringResource(R.string.help_donate_github_url),
-                    onClick = { uriHandler.openUri(it) }
+                    onClick = openUri
                 )
             }
 
@@ -115,7 +122,7 @@ fun ContactScreen(
                 ContactLinkItem(
                     label = stringResource(R.string.help_donate_coffee),
                     url = stringResource(R.string.help_donate_coffee_url),
-                    onClick = { uriHandler.openUri(it) }
+                    onClick = openUri
                 )
             }
         }
