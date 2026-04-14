@@ -147,8 +147,6 @@ fun ColorsScreen(
                     val schemes = repository.getAllSchemes()
                     val importedScheme = schemes.find { it.id == schemeId }
 
-                    viewModel.refresh()
-
                     Toast.makeText(
                         context,
                         context.getString(

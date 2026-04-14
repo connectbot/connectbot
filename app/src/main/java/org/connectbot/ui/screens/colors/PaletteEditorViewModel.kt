@@ -27,6 +27,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.connectbot.data.ColorSchemePresets
@@ -103,38 +105,64 @@ class PaletteEditorViewModel @Inject constructor(
     val navigateToDuplicate: SharedFlow<Long> = _navigateToDuplicate.asSharedFlow()
 
     init {
-        loadPalette()
+        observeScheme()
+        observePalette()
+        observeDefaults()
     }
 
-    private fun loadPalette() {
+    private fun observeScheme() {
         viewModelScope.launch {
-            _uiState.update { it.copy(isLoading = true) }
-            try {
-                val palette = repository.getSchemeColors(schemeId)
-                val schemes = repository.getAllSchemes()
-                val scheme = schemes.find { it.id == schemeId }
-                val defaults = repository.getSchemeDefaults(schemeId)
+            repository.observeScheme(schemeId)
+                .catch { e -> _uiState.update { it.copy(error = e.message ?: "Failed to load scheme") } }
+                .collect { scheme ->
+                    if (scheme != null) {
+                        _uiState.update {
+                            it.copy(
+                                schemeName = scheme.name,
+                                schemeDescription = scheme.description,
+                                isBuiltIn = scheme.isBuiltIn,
+                                error = null
+                            )
+                        }
+                    } else {
+                        _uiState.update { it.copy(error = "Scheme not found") }
+                    }
+                }
+        }
+    }
 
-                _uiState.update {
-                    it.copy(
-                        palette = palette,
-                        schemeName = scheme?.name ?: "Unknown",
-                        schemeDescription = scheme?.description ?: "",
-                        foregroundColorIndex = defaults.first,
-                        backgroundColorIndex = defaults.second,
-                        isBuiltIn = scheme?.isBuiltIn ?: false,
-                        isLoading = false,
-                        error = null
-                    )
+    private fun observePalette() {
+        viewModelScope.launch {
+            repository.observeSchemeColors(schemeId)
+                .onStart { _uiState.update { it.copy(isLoading = true) } }
+                .catch { e ->
+                    _uiState.update { it.copy(isLoading = false, error = e.message ?: "Failed to load palette") }
                 }
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(
-                        isLoading = false,
-                        error = e.message ?: "Failed to load palette"
-                    )
+                .collect { palette ->
+                    _uiState.update {
+                        it.copy(
+                            palette = palette,
+                            isLoading = false,
+                            error = null
+                        )
+                    }
                 }
-            }
+        }
+    }
+
+    private fun observeDefaults() {
+        viewModelScope.launch {
+            repository.observeSchemeDefaults(schemeId)
+                .catch { e -> _uiState.update { it.copy(error = e.message ?: "Failed to load defaults") } }
+                .collect { defaults ->
+                    _uiState.update {
+                        it.copy(
+                            foregroundColorIndex = defaults.first,
+                            backgroundColorIndex = defaults.second,
+                            error = null
+                        )
+                    }
+                }
         }
     }
 
@@ -152,16 +180,8 @@ class PaletteEditorViewModel @Inject constructor(
                 // Update in database
                 repository.setColorForScheme(schemeId, colorIndex, newColor)
 
-                // Update in local state
-                val newPalette = _uiState.value.palette.clone()
-                newPalette[colorIndex] = newColor
-
-                _uiState.update {
-                    it.copy(
-                        palette = newPalette,
-                        editingColorIndex = null
-                    )
-                }
+                // No need to update local state manually, observePalette will handle it
+                _uiState.update { it.copy(editingColorIndex = null) }
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(error = e.message ?: "Failed to update color")
@@ -179,11 +199,7 @@ class PaletteEditorViewModel @Inject constructor(
                 // Update in database
                 repository.setColorForScheme(schemeId, colorIndex, defaultColor)
 
-                // Update in local state
-                val newPalette = _uiState.value.palette.clone()
-                newPalette[colorIndex] = defaultColor
-
-                _uiState.update { it.copy(palette = newPalette) }
+                // No need to update local state manually, observePalette will handle it
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(error = e.message ?: "Failed to reset color")
@@ -206,9 +222,7 @@ class PaletteEditorViewModel @Inject constructor(
                 // Reset to defaults in database
                 repository.resetSchemeToDefaults(schemeId)
 
-                // Reload palette
-                loadPalette()
-
+                // No need to reload manually, observers will handle it
                 _uiState.update { it.copy(showResetAllDialog = false) }
             } catch (e: Exception) {
                 _uiState.update {

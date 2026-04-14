@@ -19,9 +19,10 @@ package org.connectbot.ui.screens.colors
 
 import android.graphics.Color
 import androidx.lifecycle.SavedStateHandle
-import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -55,23 +56,23 @@ class PaletteEditorViewModelTest {
     )
     private val testSchemeId = -1L
 
+    private val defaultScheme = ColorScheme(
+        id = testSchemeId,
+        name = "Default",
+        isBuiltIn = true
+    )
+
     @Before
     fun setUp() {
         repository = mock()
         savedStateHandle = mock()
         whenever(savedStateHandle.get<Long>("schemeId")).thenReturn(testSchemeId)
 
-        val defaultScheme = ColorScheme(
-            id = testSchemeId,
-            name = "Default",
-            isBuiltIn = true
-        )
-        runBlocking {
-            whenever(repository.getAllSchemes()).thenReturn(listOf(defaultScheme))
-            whenever(repository.getSchemeColors(testSchemeId)).thenReturn(ColorSchemePresets.default.colors)
-            whenever(repository.getSchemeDefaults(testSchemeId))
-                .thenReturn(Pair(HostConstants.DEFAULT_FG_COLOR, HostConstants.DEFAULT_BG_COLOR))
-        }
+        whenever(repository.observeScheme(testSchemeId)).thenReturn(flowOf(defaultScheme))
+        whenever(repository.observeSchemeColors(testSchemeId))
+            .thenReturn(MutableStateFlow(ColorSchemePresets.default.colors.clone()))
+        whenever(repository.observeSchemeDefaults(testSchemeId))
+            .thenReturn(flowOf(Pair(HostConstants.DEFAULT_FG_COLOR, HostConstants.DEFAULT_BG_COLOR)))
     }
 
     @Test
@@ -126,18 +127,29 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `updateColor changes color in palette`() = runTest {
+        val paletteFlow = MutableStateFlow(ColorSchemePresets.default.colors.clone())
+        whenever(repository.observeSchemeColors(testSchemeId)).thenReturn(paletteFlow)
+
         viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         val colorIndex = 3
         val newColor = Color.rgb(255, 128, 64)
 
+        // Simulate the repository updating the flow after the write
+        whenever(repository.setColorForScheme(testSchemeId, colorIndex, newColor)).then {
+            val updated = paletteFlow.value.clone()
+            updated[colorIndex] = newColor
+            paletteFlow.value = updated
+            Unit
+        }
+
         viewModel.updateColor(colorIndex, newColor)
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
         assertThat(state.palette[colorIndex]).isEqualTo(newColor)
-        assertThat(state.editingColorIndex).isNull() // Editor should close after update
+        assertThat(state.editingColorIndex).isNull()
     }
 
     @Test
@@ -146,47 +158,49 @@ class PaletteEditorViewModelTest {
         advanceUntilIdle()
 
         val colorIndex = 0
-
-        // Define unique colors for the test
-        val initialPaletteState = viewModel.uiState.value
-        val originalColor = initialPaletteState.palette[colorIndex]
-
-        // Ensure the new color is distinctly different from the original color
+        val originalColor = viewModel.uiState.value.palette[colorIndex]
         val newColor = Color.rgb(100, 200, 50)
         assertThat(newColor).isNotEqualTo(originalColor)
 
         viewModel.updateColor(colorIndex, newColor)
         advanceUntilIdle()
 
-        verify(repository, times(1)).setColorForScheme(
-            testSchemeId,
-            colorIndex,
-            newColor
-        )
-
-        // Make sure the UI updated
-        assertThat(viewModel.uiState.value.palette[colorIndex]).isEqualTo(newColor)
+        verify(repository, times(1)).setColorForScheme(testSchemeId, colorIndex, newColor)
     }
 
     @Test
     fun `resetColor restores default color`() = runTest {
+        val paletteFlow = MutableStateFlow(ColorSchemePresets.default.colors.clone())
+        whenever(repository.observeSchemeColors(testSchemeId)).thenReturn(paletteFlow)
+
         viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         val colorIndex = 4
-        val customColor = Color.rgb(111, 222, 333)
+        val customColor = Color.rgb(111, 222, 33)
+        val defaultColor = ColorSchemePresets.default.colors[colorIndex]
 
-        // First, change the color
+        whenever(repository.setColorForScheme(testSchemeId, colorIndex, customColor)).then {
+            val updated = paletteFlow.value.clone()
+            updated[colorIndex] = customColor
+            paletteFlow.value = updated
+            Unit
+        }
+        whenever(repository.setColorForScheme(testSchemeId, colorIndex, defaultColor)).then {
+            val updated = paletteFlow.value.clone()
+            updated[colorIndex] = defaultColor
+            paletteFlow.value = updated
+            Unit
+        }
+
         viewModel.updateColor(colorIndex, customColor)
         advanceUntilIdle()
         assertThat(viewModel.uiState.value.palette[colorIndex]).isEqualTo(customColor)
 
-        // Then reset it
         viewModel.resetColor(colorIndex)
         advanceUntilIdle()
 
-        val state = viewModel.uiState.value
-        assertThat(state.palette[colorIndex]).isEqualTo(ColorSchemePresets.default.colors[colorIndex])
+        assertThat(viewModel.uiState.value.palette[colorIndex]).isEqualTo(defaultColor)
     }
 
     @Test
@@ -216,16 +230,22 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `resetAllColors restores all default colors`() = runTest {
+        val paletteFlow = MutableStateFlow(ColorSchemePresets.default.colors.clone())
+        whenever(repository.observeSchemeColors(testSchemeId)).thenReturn(paletteFlow)
+
         viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
-        // Change multiple colors
+        whenever(repository.resetSchemeToDefaults(testSchemeId)).then {
+            paletteFlow.value = ColorSchemePresets.default.colors.clone()
+            Unit
+        }
+
         viewModel.updateColor(0, Color.RED)
         viewModel.updateColor(1, Color.GREEN)
         viewModel.updateColor(2, Color.BLUE)
         advanceUntilIdle()
 
-        // Reset all
         viewModel.resetAllColors()
         advanceUntilIdle()
 
@@ -254,8 +274,6 @@ class PaletteEditorViewModelTest {
         viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
-        // Manually set an error state for testing
-        // (In real scenarios, errors would come from database operations)
         viewModel.clearError()
 
         val state = viewModel.uiState.value
@@ -264,6 +282,9 @@ class PaletteEditorViewModelTest {
 
     @Test
     fun `multiple color updates are handled correctly`() = runTest {
+        val paletteFlow = MutableStateFlow(ColorSchemePresets.default.colors.clone())
+        whenever(repository.observeSchemeColors(testSchemeId)).thenReturn(paletteFlow)
+
         viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
@@ -275,6 +296,12 @@ class PaletteEditorViewModelTest {
         )
 
         updates.forEach { (index, color) ->
+            whenever(repository.setColorForScheme(testSchemeId, index, color)).then {
+                val updated = paletteFlow.value.clone()
+                updated[index] = color
+                paletteFlow.value = updated
+                Unit
+            }
             viewModel.updateColor(index, color)
             advanceUntilIdle()
         }
@@ -291,21 +318,9 @@ class PaletteEditorViewModelTest {
         val palette2 = intArrayOf(1, 2, 3, 4)
         val palette3 = intArrayOf(1, 2, 3, 5)
 
-        val state1 = PaletteEditorUiState(
-            schemeId = 1,
-            schemeName = "Test",
-            palette = palette1
-        )
-        val state2 = PaletteEditorUiState(
-            schemeId = 1,
-            schemeName = "Test",
-            palette = palette2
-        )
-        val state3 = PaletteEditorUiState(
-            schemeId = 1,
-            schemeName = "Test",
-            palette = palette3
-        )
+        val state1 = PaletteEditorUiState(schemeId = 1, schemeName = "Test", palette = palette1)
+        val state2 = PaletteEditorUiState(schemeId = 1, schemeName = "Test", palette = palette2)
+        val state3 = PaletteEditorUiState(schemeId = 1, schemeName = "Test", palette = palette3)
 
         assertThat(state1).isEqualTo(state2)
         assertThat(state1).isNotEqualTo(state3)
@@ -316,16 +331,8 @@ class PaletteEditorViewModelTest {
         val palette1 = intArrayOf(1, 2, 3, 4)
         val palette2 = intArrayOf(1, 2, 3, 4)
 
-        val state1 = PaletteEditorUiState(
-            schemeId = 1,
-            schemeName = "Test",
-            palette = palette1
-        )
-        val state2 = PaletteEditorUiState(
-            schemeId = 1,
-            schemeName = "Test",
-            palette = palette2
-        )
+        val state1 = PaletteEditorUiState(schemeId = 1, schemeName = "Test", palette = palette1)
+        val state2 = PaletteEditorUiState(schemeId = 1, schemeName = "Test", palette = palette2)
 
         assertThat(state1.hashCode()).isEqualTo(state2.hashCode())
     }
@@ -335,15 +342,12 @@ class PaletteEditorViewModelTest {
         viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
-        // Open editor
         viewModel.editColor(3)
         assertThat(viewModel.uiState.value.editingColorIndex).isEqualTo(3)
 
-        // Change to different color
         viewModel.editColor(8)
         assertThat(viewModel.uiState.value.editingColorIndex).isEqualTo(8)
 
-        // Close editor
         viewModel.closeColorEditor()
         assertThat(viewModel.uiState.value.editingColorIndex).isNull()
     }
@@ -401,15 +405,21 @@ class PaletteEditorViewModelTest {
         assertThat(viewModel.uiState.value.error).isNotNull()
     }
 
+    private fun setupCustomScheme(customSchemeId: Long): ColorScheme {
+        val customScheme = ColorScheme(id = customSchemeId, name = "Custom", isBuiltIn = false)
+        whenever(savedStateHandle.get<Long>("schemeId")).thenReturn(customSchemeId)
+        whenever(repository.observeScheme(customSchemeId)).thenReturn(flowOf(customScheme))
+        whenever(repository.observeSchemeColors(customSchemeId))
+            .thenReturn(MutableStateFlow(ColorSchemePresets.default.colors.clone()))
+        whenever(repository.observeSchemeDefaults(customSchemeId))
+            .thenReturn(flowOf(Pair(HostConstants.DEFAULT_FG_COLOR, HostConstants.DEFAULT_BG_COLOR)))
+        return customScheme
+    }
+
     @Test
     fun `updateForegroundColor saves to repository for custom scheme`() = runTest {
         val customSchemeId = 99L
-        val customScheme = ColorScheme(id = customSchemeId, name = "Custom", isBuiltIn = false)
-        whenever(savedStateHandle.get<Long>("schemeId")).thenReturn(customSchemeId)
-        whenever(repository.getAllSchemes()).thenReturn(listOf(customScheme))
-        whenever(repository.getSchemeColors(customSchemeId)).thenReturn(ColorSchemePresets.default.colors)
-        whenever(repository.getSchemeDefaults(customSchemeId))
-            .thenReturn(Pair(HostConstants.DEFAULT_FG_COLOR, HostConstants.DEFAULT_BG_COLOR))
+        setupCustomScheme(customSchemeId)
 
         viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
@@ -424,12 +434,7 @@ class PaletteEditorViewModelTest {
     @Test
     fun `updateBackgroundColor saves to repository for custom scheme`() = runTest {
         val customSchemeId = 99L
-        val customScheme = ColorScheme(id = customSchemeId, name = "Custom", isBuiltIn = false)
-        whenever(savedStateHandle.get<Long>("schemeId")).thenReturn(customSchemeId)
-        whenever(repository.getAllSchemes()).thenReturn(listOf(customScheme))
-        whenever(repository.getSchemeColors(customSchemeId)).thenReturn(ColorSchemePresets.default.colors)
-        whenever(repository.getSchemeDefaults(customSchemeId))
-            .thenReturn(Pair(HostConstants.DEFAULT_FG_COLOR, HostConstants.DEFAULT_BG_COLOR))
+        setupCustomScheme(customSchemeId)
 
         viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
@@ -476,12 +481,7 @@ class PaletteEditorViewModelTest {
     @Test
     fun `saveNameAndDescription calls repository for custom scheme`() = runTest {
         val customSchemeId = 99L
-        val customScheme = ColorScheme(id = customSchemeId, name = "Custom", isBuiltIn = false)
-        whenever(savedStateHandle.get<Long>("schemeId")).thenReturn(customSchemeId)
-        whenever(repository.getAllSchemes()).thenReturn(listOf(customScheme))
-        whenever(repository.getSchemeColors(customSchemeId)).thenReturn(ColorSchemePresets.default.colors)
-        whenever(repository.getSchemeDefaults(customSchemeId))
-            .thenReturn(Pair(HostConstants.DEFAULT_FG_COLOR, HostConstants.DEFAULT_BG_COLOR))
+        setupCustomScheme(customSchemeId)
         whenever(repository.renameScheme(customSchemeId, "New Name", "Desc")).thenReturn(true)
 
         viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
@@ -536,6 +536,18 @@ class PaletteEditorViewModelTest {
         advanceUntilIdle()
 
         viewModel.duplicateScheme("Copy")
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.error).isNotNull()
+    }
+
+    @Test
+    fun `null scheme emission sets error state`() = runTest {
+        whenever(repository.observeScheme(testSchemeId)).thenReturn(flowOf(null))
+        whenever(repository.observeSchemeColors(testSchemeId)).thenReturn(emptyFlow())
+        whenever(repository.observeSchemeDefaults(testSchemeId)).thenReturn(emptyFlow())
+
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         assertThat(viewModel.uiState.value.error).isNotNull()

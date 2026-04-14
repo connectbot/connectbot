@@ -17,6 +17,9 @@
 
 package org.connectbot.data
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import org.connectbot.data.dao.ColorSchemeDao
@@ -68,6 +71,95 @@ class ColorSchemeRepository @Inject constructor(
     }
 
     /**
+     * Observe all available color schemes (built-in + custom).
+     */
+    fun observeAllSchemes(): Flow<List<ColorScheme>> = colorSchemeDao.observeAll().map { userSchemes ->
+        val schemes = mutableListOf<ColorScheme>()
+
+        // Add all built-in preset schemes (including Default)
+        ColorSchemePresets.builtInSchemes.forEachIndexed { index, preset ->
+            schemes.add(
+                ColorScheme(
+                    id = -(index + 1L), // Start from Default at -1
+                    name = preset.name,
+                    isBuiltIn = true,
+                    description = preset.description
+                )
+            )
+        }
+
+        // Add custom schemes from database
+        schemes.addAll(userSchemes)
+        schemes
+    }
+
+    /**
+     * Observe a specific color scheme's metadata.
+     *
+     * @param schemeId The scheme ID
+     * @return Flow of ColorScheme (or null if not found)
+     */
+    fun observeScheme(schemeId: Long): Flow<ColorScheme?> = if (schemeId < 0) {
+        val presetIndex = -(schemeId + 1).toInt()
+        if (presetIndex < 0 || presetIndex >= ColorSchemePresets.builtInSchemes.size) {
+            flowOf(null)
+        } else {
+            val preset = ColorSchemePresets.builtInSchemes[presetIndex]
+            flowOf(
+                ColorScheme(
+                    id = schemeId,
+                    name = preset.name,
+                    isBuiltIn = true,
+                    description = preset.description
+                )
+            )
+        }
+    } else {
+        colorSchemeDao.observeById(schemeId)
+    }
+
+    /**
+     * Observe the color palette for a specific scheme.
+     *
+     * @param schemeId The scheme ID
+     * @return Flow of IntArray of 16 ARGB colors
+     */
+    fun observeSchemeColors(schemeId: Long): Flow<IntArray> = if (schemeId < 0) {
+        val presetIndex = -(schemeId + 1).toInt()
+        val safeIndex = presetIndex.coerceIn(0, ColorSchemePresets.builtInSchemes.size - 1)
+        flowOf(ColorSchemePresets.builtInSchemes[safeIndex].colors.clone())
+    } else {
+        colorSchemeDao.observeColors(schemeId).map { paletteEntries ->
+            val colors = ColorSchemePresets.default.colors.clone()
+            paletteEntries.forEach { entry ->
+                if (entry.colorIndex in 0..15) {
+                    colors[entry.colorIndex] = entry.color
+                }
+            }
+            colors
+        }
+    }
+
+    /**
+     * Observe the default FG/BG indices for a scheme.
+     *
+     * @param schemeId The scheme ID
+     * @return Flow of Pair of (foreground index, background index)
+     */
+    fun observeSchemeDefaults(schemeId: Long): Flow<Pair<Int, Int>> = if (schemeId < 0) {
+        val presetIndex = -(schemeId + 1).toInt().coerceIn(0, ColorSchemePresets.builtInSchemes.size - 1)
+        val preset = ColorSchemePresets.builtInSchemes[presetIndex]
+        flowOf(Pair(preset.defaultFg, preset.defaultBg))
+    } else {
+        colorSchemeDao.observeById(schemeId).map { scheme ->
+            Pair(
+                scheme?.foreground ?: ColorSchemePresets.default.defaultFg,
+                scheme?.background ?: ColorSchemePresets.default.defaultBg
+            )
+        }
+    }
+
+    /**
      * Get the color palette for a specific scheme.
      *
      * @param schemeId The scheme ID (negative for built-in, positive for custom)
@@ -79,12 +171,12 @@ class ColorSchemeRepository @Inject constructor(
             schemeId < 0 -> {
                 val presetIndexUnbounded = -(schemeId + 1).toInt()
                 val presetIndex = presetIndexUnbounded.coerceIn(0, ColorSchemePresets.builtInSchemes.size - 1)
-                ColorSchemePresets.builtInSchemes[presetIndex].colors
+                ColorSchemePresets.builtInSchemes[presetIndex].colors.clone()
             }
 
             // Non-negative ID represents a scheme stored in the database.
             else -> {
-                val colors = ColorSchemePresets.default.colors
+                val colors = ColorSchemePresets.default.colors.clone()
                 colorSchemeDao.getColors(schemeId).map { colors[it.colorIndex] = it.color }
                 colors
             }
