@@ -34,6 +34,7 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.transport.JumpHostProxyData
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PubkeyUtils
 import java.io.IOException
@@ -67,7 +68,8 @@ class SftpConnectionManager @Inject constructor(
         val hostId: Long,
         val connection: Connection,
         val sftpClient: SFTPv3Client,
-        val operations: SftpOperations
+        val operations: SftpOperations,
+        val jumpConnections: List<Connection> = emptyList()
     )
 
     private val activeSessions = mutableMapOf<Long, SftpSession>()
@@ -91,8 +93,20 @@ class SftpConnectionManager @Inject constructor(
             }
         }
 
+        val jumpConnections = mutableListOf<Connection>()
         try {
+            // Resolve ProxyJump chain before connecting to the target
+            val directJumpConnection = host.jumpHostId?.takeIf { it > 0 }?.let { jumpHostId ->
+                val jumpHost = hostRepository.findHostById(jumpHostId)
+                    ?: throw IOException("Jump host (id=$jumpHostId) not found")
+                connectToJumpHost(jumpHost, promptHandler, jumpConnections)
+            }
+
             val connection = Connection(host.hostname, host.port)
+
+            directJumpConnection?.let {
+                connection.setProxyData(JumpHostProxyData(it))
+            }
 
             // Set compression if enabled
             if (host.compression) {
@@ -107,6 +121,7 @@ class SftpConnectionManager @Inject constructor(
             val authenticated = authenticate(connection, host, promptHandler)
             if (!authenticated) {
                 connection.close()
+                closeJumpConnections(jumpConnections)
                 return@withContext Result.failure(IOException("Authentication failed"))
             }
 
@@ -115,7 +130,7 @@ class SftpConnectionManager @Inject constructor(
             val operations = SftpOperations(sftpClient)
 
             // Store session
-            val session = SftpSession(host.id, connection, sftpClient, operations)
+            val session = SftpSession(host.id, connection, sftpClient, operations, jumpConnections.toList())
             sessionMutex.withLock {
                 activeSessions[host.id] = session
             }
@@ -124,7 +139,60 @@ class SftpConnectionManager @Inject constructor(
             Result.success(operations)
         } catch (e: Exception) {
             Log.e(TAG, "Failed to connect to ${host.hostname}", e)
+            closeJumpConnections(jumpConnections)
             Result.failure(e)
+        }
+    }
+
+    /**
+     * Establish and authenticate a connection to a jump host for SFTP.
+     * Supports chained ProxyJump (jump host that itself requires a jump host).
+     */
+    private suspend fun connectToJumpHost(
+        jumpHost: Host,
+        promptHandler: SftpPromptHandler,
+        jumpConnections: MutableList<Connection>
+    ): Connection {
+        val jc = Connection(jumpHost.hostname, jumpHost.port)
+
+        // Chained ProxyJump: this jump host itself needs a jump host
+        jumpHost.jumpHostId?.takeIf { it > 0 }?.let { nestedId ->
+            val nested = hostRepository.findHostById(nestedId)
+                ?: throw IOException("Jump host (id=$nestedId) not found")
+            val nestedConnection = connectToJumpHost(nested, promptHandler, jumpConnections)
+            jc.setProxyData(JumpHostProxyData(nestedConnection))
+        }
+
+        if (jumpHost.compression) {
+            jc.setCompression(true)
+        }
+
+        try {
+            jc.connect(SftpHostKeyVerifier(jumpHost, promptHandler))
+            jumpConnections.add(jc)
+
+            if (!authenticate(jc, jumpHost, promptHandler)) {
+                throw IOException("Authentication to jump host ${jumpHost.nickname} failed")
+            }
+            Log.d(TAG, "Authenticated to jump host ${jumpHost.nickname}")
+            return jc
+        } catch (e: Exception) {
+            try {
+                jc.close()
+            } catch (_: Exception) {
+            }
+            jumpConnections.remove(jc)
+            throw e
+        }
+    }
+
+    private fun closeJumpConnections(jumpConnections: List<Connection>) {
+        jumpConnections.asReversed().forEach { jc ->
+            try {
+                jc.close()
+            } catch (e: Exception) {
+                Log.w(TAG, "Error closing jump connection", e)
+            }
         }
     }
 
@@ -146,6 +214,7 @@ class SftpConnectionManager @Inject constructor(
                 } catch (e: Exception) {
                     Log.w(TAG, "Error closing connection", e)
                 }
+                closeJumpConnections(session.jumpConnections)
                 Log.d(TAG, "SFTP connection closed for host $hostId")
             }
         }
