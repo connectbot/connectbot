@@ -83,7 +83,7 @@ class ProfileEditorViewModel @Inject constructor(
         loadCustomFonts()
         loadLocalFonts()
         loadCustomTerminalTypes()
-        loadColorSchemes()
+        observeColorSchemes()
         if (profileId != -1L) {
             loadProfile()
         } else {
@@ -116,13 +116,10 @@ class ProfileEditorViewModel @Inject constructor(
         _uiState.update { it.copy(localFonts = localFonts) }
     }
 
-    private fun loadColorSchemes() {
+    private fun observeColorSchemes() {
         viewModelScope.launch {
-            try {
-                val schemes = colorSchemeRepository.getAllSchemes()
+            colorSchemeRepository.observeAllSchemes().collect { schemes ->
                 _uiState.update { it.copy(availableColorSchemes = schemes) }
-            } catch (e: Exception) {
-                _uiState.update { it.copy(availableColorSchemes = emptyList()) }
             }
         }
     }

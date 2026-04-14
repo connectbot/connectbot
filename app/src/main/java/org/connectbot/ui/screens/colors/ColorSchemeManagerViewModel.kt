@@ -48,20 +48,21 @@ class ColorSchemeManagerViewModel @Inject constructor(
     val uiState: StateFlow<SchemeManagerUiState> = _uiState.asStateFlow()
 
     init {
-        loadSchemes()
+        observeSchemes()
     }
 
-    private fun loadSchemes() {
+    private fun observeSchemes() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
             try {
-                val schemes = repository.getAllSchemes()
-                _uiState.update {
-                    it.copy(
-                        schemes = schemes,
-                        isLoading = false,
-                        error = null
-                    )
+                repository.observeAllSchemes().collect { schemes ->
+                    _uiState.update {
+                        it.copy(
+                            schemes = schemes,
+                            isLoading = false,
+                            error = null
+                        )
+                    }
                 }
             } catch (e: Exception) {
                 _uiState.update {
@@ -136,8 +137,6 @@ class ColorSchemeManagerViewModel @Inject constructor(
                 // Create the scheme
                 repository.createCustomScheme(name, description, basedOnSchemeId)
 
-                // Reload schemes and close dialog
-                loadSchemes()
                 hideNewSchemeDialog()
             } catch (e: Exception) {
                 _uiState.update {
@@ -162,8 +161,6 @@ class ColorSchemeManagerViewModel @Inject constructor(
                 // Delete the scheme
                 repository.deleteCustomScheme(schemeId)
 
-                // Reload schemes and close dialog
-                loadSchemes()
                 hideDeleteDialog()
                 _uiState.update { it.copy(selectedSchemeId = null) }
             } catch (e: Exception) {
@@ -176,12 +173,5 @@ class ColorSchemeManagerViewModel @Inject constructor(
 
     fun clearError() {
         _uiState.update { it.copy(error = null) }
-    }
-
-    /**
-     * Refresh the scheme list (e.g., after importing a scheme externally).
-     */
-    fun refresh() {
-        loadSchemes()
     }
 }

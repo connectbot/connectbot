@@ -24,6 +24,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.connectbot.data.HostRepository
@@ -78,9 +79,9 @@ class HostEditorViewModel @Inject constructor(
     val uiState: StateFlow<HostEditorUiState> = _uiState.asStateFlow()
 
     init {
-        loadPubkeys()
-        loadJumpHosts()
-        loadProfiles()
+        observePubkeys()
+        observeJumpHosts()
+        observeProfiles()
         if (hostId != -1L) {
             loadHost()
         } else {
@@ -92,42 +93,34 @@ class HostEditorViewModel @Inject constructor(
         }
     }
 
-    private fun loadPubkeys() {
+    private fun observePubkeys() {
         viewModelScope.launch {
-            try {
-                val pubkeys = pubkeyRepository.getAll()
-                _uiState.update { it.copy(availablePubkeys = pubkeys) }
-            } catch (e: Exception) {
-                // Don't fail the whole screen if pubkeys can't be loaded
-                _uiState.update { it.copy(availablePubkeys = emptyList()) }
-            }
+            pubkeyRepository.observeAll()
+                .catch { _uiState.update { it.copy(availablePubkeys = emptyList()) } }
+                .collect { pubkeys ->
+                    _uiState.update { it.copy(availablePubkeys = pubkeys) }
+                }
         }
     }
 
-    private fun loadJumpHosts() {
+    private fun observeJumpHosts() {
         viewModelScope.launch {
-            try {
-                // Get all SSH hosts that can be used as jump hosts
-                // Exclude the current host being edited to prevent circular references
-                val sshHosts = repository.getSshHosts()
-                    .filter { it.id != hostId }
-                _uiState.update { it.copy(availableJumpHosts = sshHosts) }
-            } catch (e: Exception) {
-                // Don't fail the whole screen if jump hosts can't be loaded
-                _uiState.update { it.copy(availableJumpHosts = emptyList()) }
-            }
+            repository.observeSshHosts()
+                .catch { _uiState.update { it.copy(availableJumpHosts = emptyList()) } }
+                .collect { sshHosts ->
+                    val filteredHosts = sshHosts.filter { it.id != hostId }
+                    _uiState.update { it.copy(availableJumpHosts = filteredHosts) }
+                }
         }
     }
 
-    private fun loadProfiles() {
+    private fun observeProfiles() {
         viewModelScope.launch {
-            try {
-                val profiles = profileRepository.getAll()
-                _uiState.update { it.copy(availableProfiles = profiles) }
-            } catch (e: Exception) {
-                // Don't fail the whole screen if profiles can't be loaded
-                _uiState.update { it.copy(availableProfiles = emptyList()) }
-            }
+            profileRepository.observeAll()
+                .catch { _uiState.update { it.copy(availableProfiles = emptyList()) } }
+                .collect { profiles ->
+                    _uiState.update { it.copy(availableProfiles = profiles) }
+                }
         }
     }
 
