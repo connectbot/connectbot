@@ -67,6 +67,7 @@ import java.io.IOException
 import java.lang.ref.WeakReference
 import java.security.KeyPair
 import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicLong
 import javax.inject.Inject
 
 /**
@@ -171,6 +172,8 @@ class TerminalManager :
     private var savingKeys = false
 
     private val pendingReconnect: MutableList<WeakReference<TerminalBridge>> = ArrayList()
+
+    private val nextTemporaryHostId = AtomicLong(-1L)
 
     internal var hardKeyboardHidden = false
 
@@ -278,6 +281,12 @@ class TerminalManager :
     }
 
     /**
+     * Generate a unique negative ID for a temporary host.
+     * Temporary hosts use negative IDs to distinguish them from database hosts.
+     */
+    private fun generateTemporaryHostId(): Long = nextTemporaryHostId.getAndDecrement()
+
+    /**
      * Disconnect all currently connected bridges.
      */
     fun disconnectAll(immediate: Boolean, excludeLocal: Boolean) {
@@ -360,11 +369,16 @@ class TerminalManager :
         val scheme = uri.scheme
             ?: throw IllegalArgumentException("URI must contain a scheme (e.g., 'ssh://', 'telnet://'). URI: $uri")
 
-        val finalHost: Host = TransportFactory.findHost(hostRepository, uri)
-            ?: hostRepository.saveHost(
-                TransportFactory.getTransport(scheme)?.createHost(uri)
-                    ?: throw IllegalArgumentException("No transport found for scheme '$scheme' in URI: $uri")
-            )
+        val host: Host = TransportFactory.findHost(hostRepository, uri)
+            ?: TransportFactory.getTransport(scheme)?.createHost(uri)
+            ?: throw IllegalArgumentException("No transport found for scheme '$scheme' in URI: $uri")
+
+        // Assign unique negative ID to temporary hosts (id == 0)
+        val finalHost = if (host.id == 0L) {
+            host.copy(id = generateTemporaryHostId())
+        } else {
+            host
+        }
 
         return openConnection(finalHost)
     }
