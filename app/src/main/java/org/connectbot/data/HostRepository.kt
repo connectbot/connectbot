@@ -242,6 +242,12 @@ class HostRepository @Inject constructor(
         serverHostKeyAlgorithm: String,
         serverHostKey: ByteArray
     ) {
+        // Temporary hosts (negative ids) are never inserted into the hosts
+        // table, so persisting a known_hosts row keyed by host.id would break
+        // the foreign key constraint (issue #2060).
+        if (host.isTemporary) {
+            return
+        }
         // Check if this exact key already exists for this host
         val existing = knownHostDao.getByHostIdAlgoAndKey(
             host.id,
