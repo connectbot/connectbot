@@ -292,7 +292,7 @@ class DatabaseMigrator @Inject constructor(
         }
 
         val knownHosts = if (getLegacyDatabaseFile(LEGACY_HOSTS_DB).exists()) {
-            legacyHostReader.readKnownHosts()
+            legacyHostReader.readKnownHosts(::logWarning)
         } else {
             emptyList()
         }
@@ -310,7 +310,7 @@ class DatabaseMigrator @Inject constructor(
         }
 
         val pubkeys = if (getLegacyDatabaseFile(LEGACY_PUBKEYS_DB).exists()) {
-            legacyPubkeyReader.readPubkeys()
+            legacyPubkeyReader.readPubkeys(::logWarning)
         } else {
             emptyList()
         }

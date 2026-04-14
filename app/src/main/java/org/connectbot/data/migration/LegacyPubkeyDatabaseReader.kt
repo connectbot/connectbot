@@ -37,8 +37,9 @@ class LegacyPubkeyDatabaseReader(private val context: Context) {
     /**
      * Reads all pubkeys from the legacy database.
      * All migrated keys are marked as EXPORTABLE with allowBackup=true by default.
+     * @param onWarning optional callback for user-visible warnings about skipped rows
      */
-    fun readPubkeys(): List<Pubkey> {
+    fun readPubkeys(onWarning: ((String) -> Unit)? = null): List<Pubkey> {
         val pubkeys = mutableListOf<Pubkey>()
 
         withReadableDatabase { db ->
@@ -53,8 +54,10 @@ class LegacyPubkeyDatabaseReader(private val context: Context) {
             ).use { cursor ->
                 while (cursor.moveToNext()) {
                     try {
-                        val pubkey = cursorToPubkey(cursor)
-                        pubkeys.add(pubkey)
+                        val pubkey = cursorToPubkey(cursor, onWarning)
+                        if (pubkey != null) {
+                            pubkeys.add(pubkey)
+                        }
                     } catch (e: Exception) {
                         Timber.e(e, "Error reading pubkey from cursor")
                     }
@@ -66,7 +69,7 @@ class LegacyPubkeyDatabaseReader(private val context: Context) {
         return pubkeys
     }
 
-    private fun cursorToPubkey(cursor: Cursor): Pubkey {
+    private fun cursorToPubkey(cursor: Cursor, onWarning: ((String) -> Unit)?): Pubkey? {
         val idIndex = cursor.getColumnIndexOrThrow("_id")
         val nicknameIndex = cursor.getColumnIndexOrThrow("nickname")
         val typeIndex = cursor.getColumnIndexOrThrow("type")
@@ -79,12 +82,27 @@ class LegacyPubkeyDatabaseReader(private val context: Context) {
         // Note: The legacy database has a "lifetime" field that we're not migrating
         // as it's not used in the new schema
 
+        val id = cursor.getLong(idIndex)
+        val type = cursor.getString(typeIndex)
+        val publicKey = cursor.getBlob(publicIndex)
+
+        if (type.isNullOrEmpty()) {
+            val msg = "Skipping SSH key id=$id: NULL or empty key type"
+            onWarning?.invoke(msg) ?: Timber.w(msg)
+            return null
+        }
+        if (publicKey == null || publicKey.isEmpty()) {
+            val msg = "Skipping SSH key id=$id: NULL or empty public key"
+            onWarning?.invoke(msg) ?: Timber.w(msg)
+            return null
+        }
+
         return Pubkey(
-            id = cursor.getLong(idIndex),
-            nickname = cursor.getString(nicknameIndex),
-            type = cursor.getString(typeIndex),
+            id = id,
+            nickname = cursor.getString(nicknameIndex) ?: "",
+            type = type,
             privateKey = cursor.getBlob(privateIndex),
-            publicKey = cursor.getBlob(publicIndex),
+            publicKey = publicKey,
             encrypted = cursor.getInt(encryptedIndex) == 1,
             startup = cursor.getInt(startupIndex) == 1,
             confirmation = cursor.getInt(confirmUseIndex) == 1,
