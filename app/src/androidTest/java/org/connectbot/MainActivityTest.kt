@@ -90,7 +90,10 @@ class MainActivityTest {
                 }
 
                 assertNotNull("Shortcut should create connection", bridge)
-                assertTrue("Shortcut host should be temporary", bridge.host.id < 0)
+                // URI-launched hosts are persisted on first use so that dependents
+                // such as known_hosts and port_forwards can reference a real row
+                // via foreign key (issue #2060).
+                assertTrue("URI-launched host should be persisted", bridge.host.id > 0)
             }
         }
     }
