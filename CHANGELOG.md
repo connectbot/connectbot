@@ -2,6 +2,18 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.10.3][1.10.3]
+### Fixed
+- More input fixes; all soft keyboards seem fixed
+- Home key mapping corrected
+- Legacy migration more tolerant of NULLs in database
+- System bar color fixed in older API versions
+- Color schemes update in profile editor after adding new scheme
+- No crash when no https:// handler on device (e.g., Zebra devices)
+
+### Changed
+- Auto-correct disabled on custom font field
+
 ## [1.10.2][1.10.2]
 ### Fixed
 - Control and other meta modifiers from IMEs are now working again
@@ -240,6 +252,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Color picker color numbers are now localized
 
 
+[1.10.3]: https://github.com/connectbot/connectbot/compare/v1.10.2...v1.10.3
 [1.10.2]: https://github.com/connectbot/connectbot/compare/v1.10.1...v1.10.2
 [1.10.1]: https://github.com/connectbot/connectbot/compare/v1.10.0...v1.10.1
 [1.10.0]: https://github.com/connectbot/connectbot/compare/v1.9.13...v1.10.0
