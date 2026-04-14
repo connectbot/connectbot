@@ -506,7 +506,7 @@ class TerminalBridge {
 
     /**
      * Inject a specific string into this terminal. Used for post-login strings
-     * and pasting clipboard.
+     * and manual text input where bracketed paste is undesired.
      */
     fun injectString(string: String?) {
         if (string == null || string.isEmpty()) {
@@ -516,6 +516,19 @@ class TerminalBridge {
         transportOperations.trySend(
             TransportOperation.WriteData(string.toByteArray(charset(encoding)))
         )
+    }
+
+    /**
+     * Paste clipboard text into this terminal. When the remote side has
+     * enabled DEC mode 2004 (bracketed paste), the text is wrapped with
+     * ESC[200~/ESC[201~ so shells can treat it as paste rather than typed
+     * input. When the mode is off, the text is sent as if typed.
+     */
+    fun pasteClipboard(text: String?) {
+        if (text.isNullOrEmpty()) {
+            return
+        }
+        terminalEmulator.paste(text)
     }
 
     /**

@@ -294,7 +294,7 @@ class TerminalKeyListener(
                 (derivedMetaState and KeyEvent.META_SHIFT_ON) != 0 &&
                 clipboard?.hasText() == true
             ) {
-                bridge.injectString(clipboard?.text.toString())
+                bridge.pasteClipboard(clipboard?.text.toString())
                 return true
             }
 

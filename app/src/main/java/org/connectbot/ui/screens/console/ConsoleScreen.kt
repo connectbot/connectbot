@@ -420,7 +420,7 @@ fun ConsoleScreen(
                                         context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                                     val clip =
                                         clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: ""
-                                    bridge.injectString(clip)
+                                    bridge.pasteClipboard(clip)
                                 }
                                 true
                             }
@@ -723,7 +723,7 @@ fun ConsoleScreen(
                                     context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
                                 val clip =
                                     clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: ""
-                                bridge.injectString(clip)
+                                bridge.pasteClipboard(clip)
                             }
                         },
                         enabled = currentBridge != null
