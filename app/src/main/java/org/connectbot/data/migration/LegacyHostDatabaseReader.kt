@@ -132,8 +132,9 @@ class LegacyHostDatabaseReader(private val context: Context) {
     /**
      * Reads all known hosts from the legacy database.
      * Joins with hosts table to get hostname and port.
+     * @param onWarning optional callback for user-visible warnings about skipped rows
      */
-    fun readKnownHosts(): List<KnownHost> {
+    fun readKnownHosts(onWarning: ((String) -> Unit)? = null): List<KnownHost> {
         val knownHosts = mutableListOf<KnownHost>()
 
         withReadableDatabase { db ->
@@ -149,8 +150,10 @@ class LegacyHostDatabaseReader(private val context: Context) {
             ).use { cursor ->
                 while (cursor.moveToNext()) {
                     try {
-                        val knownHost = cursorToKnownHost(cursor)
-                        knownHosts.add(knownHost)
+                        val knownHost = cursorToKnownHost(cursor, onWarning)
+                        if (knownHost != null) {
+                            knownHosts.add(knownHost)
+                        }
                     } catch (e: Exception) {
                         Timber.e(e, "Error reading known host from cursor")
                     }
@@ -255,10 +258,10 @@ class LegacyHostDatabaseReader(private val context: Context) {
 
         return LegacyHost(
             id = cursor.getLong(idIndex),
-            nickname = cursor.getString(nicknameIndex),
-            protocol = cursor.getString(protocolIndex),
-            username = cursor.getString(usernameIndex),
-            hostname = cursor.getString(hostnameIndex),
+            nickname = cursor.getString(nicknameIndex) ?: "",
+            protocol = cursor.getString(protocolIndex) ?: "ssh",
+            username = cursor.getString(usernameIndex) ?: "",
+            hostname = cursor.getString(hostnameIndex) ?: "",
             port = cursor.getInt(portIndex),
             hostKeyAlgo = if (hostkeyAlgoIndex >= 0) cursor.getStringOrNull(hostkeyAlgoIndex) else null,
             lastConnect = cursor.getLong(lastConnectIndex),
@@ -269,12 +272,12 @@ class LegacyHostDatabaseReader(private val context: Context) {
             pubkeyId = cursor.getLong(pubkeyIdIndex),
             wantSession = cursor.getStringAsBoolean(wantSessionIndex),
             compression = cursor.getStringAsBoolean(compressionIndex),
-            encoding = cursor.getString(encodingIndex),
+            encoding = cursor.getString(encodingIndex) ?: "UTF-8",
             stayConnected = cursor.getStringAsBoolean(stayConnectedIndex),
             quickDisconnect = if (quickDisconnectIndex >= 0) cursor.getStringAsBoolean(quickDisconnectIndex) else false,
             fontSize = cursor.getInt(fontSizeIndex),
             colorSchemeId = if (colorSchemeIdIndex >= 0) cursor.getLong(colorSchemeIdIndex) else 1L,
-            delKey = cursor.getString(delKeyIndex),
+            delKey = cursor.getString(delKeyIndex) ?: "del",
             scrollbackLines = if (scrollbackLinesIndex >= 0) cursor.getInt(scrollbackLinesIndex) else 140,
             useCtrlAltAsMetaKey = if (useCtrlAltAsMetaIndex >= 0) cursor.getStringAsBoolean(useCtrlAltAsMetaIndex) else false
         )
@@ -292,15 +295,15 @@ class LegacyHostDatabaseReader(private val context: Context) {
         return PortForward(
             id = cursor.getLong(idIndex),
             hostId = cursor.getLong(hostIdIndex),
-            nickname = cursor.getString(nicknameIndex),
-            type = cursor.getString(typeIndex),
+            nickname = cursor.getString(nicknameIndex) ?: "",
+            type = cursor.getString(typeIndex) ?: "local",
             sourcePort = cursor.getInt(sourcePortIndex),
-            destAddr = cursor.getString(destAddrIndex),
+            destAddr = cursor.getString(destAddrIndex) ?: "",
             destPort = cursor.getInt(destPortIndex)
         )
     }
 
-    private fun cursorToKnownHost(cursor: Cursor): KnownHost {
+    private fun cursorToKnownHost(cursor: Cursor, onWarning: ((String) -> Unit)?): KnownHost? {
         val idIndex = cursor.getColumnIndexOrThrow("_id")
         val hostIdIndex = cursor.getColumnIndexOrThrow("hostid")
         val hostnameIndex = cursor.getColumnIndexOrThrow("hostname")
@@ -308,13 +311,28 @@ class LegacyHostDatabaseReader(private val context: Context) {
         val hostKeyAlgoIndex = cursor.getColumnIndexOrThrow("hostkeyalgo")
         val hostKeyIndex = cursor.getColumnIndexOrThrow("hostkey")
 
+        val id = cursor.getLong(idIndex)
+        val hostKeyAlgo = cursor.getString(hostKeyAlgoIndex)
+        val hostKey = cursor.getBlob(hostKeyIndex)
+
+        if (hostKeyAlgo.isNullOrEmpty()) {
+            val msg = "Skipping known host id=$id: NULL or empty host key algorithm"
+            onWarning?.invoke(msg) ?: Timber.w(msg)
+            return null
+        }
+        if (hostKey == null || hostKey.isEmpty()) {
+            val msg = "Skipping known host id=$id: NULL or empty host key"
+            onWarning?.invoke(msg) ?: Timber.w(msg)
+            return null
+        }
+
         return KnownHost(
-            id = cursor.getLong(idIndex),
+            id = id,
             hostId = cursor.getLong(hostIdIndex),
-            hostname = cursor.getString(hostnameIndex),
+            hostname = cursor.getString(hostnameIndex) ?: "",
             port = cursor.getInt(portIndex),
-            hostKeyAlgo = cursor.getString(hostKeyAlgoIndex),
-            hostKey = cursor.getBlob(hostKeyIndex)
+            hostKeyAlgo = hostKeyAlgo,
+            hostKey = hostKey
         )
     }
 
@@ -323,9 +341,14 @@ class LegacyHostDatabaseReader(private val context: Context) {
         val nameIndex = cursor.getColumnIndexOrThrow("name")
         val descriptionIndex = cursor.getColumnIndex("description")
 
+        val id = cursor.getLong(idIndex)
+        val name = cursor.getString(nameIndex).let {
+            if (it.isNullOrBlank()) "Recovered Scheme $id" else it
+        }
+
         return ColorScheme(
-            id = cursor.getLong(idIndex),
-            name = cursor.getString(nameIndex),
+            id = id,
+            name = name,
             isBuiltIn = true, // Legacy schemes are treated as built-in
             description = if (descriptionIndex >= 0) cursor.getString(descriptionIndex) ?: "" else ""
         )
@@ -368,10 +391,10 @@ class LegacyHostDatabaseReader(private val context: Context) {
     }
 
     /**
-     * Legacy database stored booleans as strings ("true"/"false").
+     * Legacy database stored booleans as strings ("true"/"false"). NULL is treated as false.
      */
     private fun Cursor.getStringAsBoolean(columnIndex: Int): Boolean {
-        val value = getString(columnIndex)
+        val value = getString(columnIndex) ?: return false
         return value.equals("true", ignoreCase = true)
     }
 
