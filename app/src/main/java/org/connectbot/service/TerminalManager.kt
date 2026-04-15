@@ -118,6 +118,10 @@ class TerminalManager :
         MutableSharedFlow<Set<String>>(replay = 1, extraBufferCapacity = 1)
     val loadedKeysChangedFlow: SharedFlow<Set<String>> = _loadedKeysChanged.asSharedFlow()
 
+    // Encrypted keys marked "unlock at startup" that still need a passphrase from the user.
+    private val _pendingStartupKeyPrompts = MutableStateFlow<List<Pubkey>>(emptyList())
+    val pendingStartupKeyPrompts: StateFlow<List<Pubkey>> = _pendingStartupKeyPrompts.asStateFlow()
+
     internal val loadedKeypairs: MutableMap<String, KeyHolder> = ConcurrentHashMap()
 
     internal lateinit var res: Resources
@@ -190,34 +194,26 @@ class TerminalManager :
         scope.launch(dispatchers.io) {
             try {
                 val pubkeys = pubkeyRepository.getStartupKeys()
+                val encryptedPending = mutableListOf<Pubkey>()
                 for (pubkey in pubkeys) {
-                    try {
-                        val pair = PubkeyUtils.convertToKeyPair(pubkey, null)
-                        if (pair != null) {
-                            addKey(pubkey, pair)
-                        } else {
-                            Timber.w(
-                                String.format(
-                                    "Failed to convert key '%s' to KeyPair",
-                                    pubkey.nickname
-                                )
-                            )
+                    when (val outcome = classifyStartupKey(pubkey, PubkeyUtils::convertToKeyPair)) {
+                        is StartupKeyLoadOutcome.Loaded -> addKey(outcome.pubkey, outcome.pair)
+
+                        is StartupKeyLoadOutcome.NeedsPassphrase -> encryptedPending.add(outcome.pubkey)
+
+                        is StartupKeyLoadOutcome.Failed -> {
+                            Timber.w("Failed to convert key '%s' to KeyPair: %s", pubkey.nickname, outcome.reason)
                             _serviceErrors.emit(
                                 ServiceError.KeyLoadFailed(
                                     keyName = pubkey.nickname,
-                                    reason = "Failed to convert key to KeyPair"
+                                    reason = outcome.reason
                                 )
                             )
                         }
-                    } catch (e: Exception) {
-                        Timber.w(e, "Problem adding key '%s' to in-memory cache", pubkey.nickname)
-                        _serviceErrors.emit(
-                            ServiceError.KeyLoadFailed(
-                                keyName = pubkey.nickname,
-                                reason = e.message ?: "Unknown error loading key"
-                            )
-                        )
                     }
+                }
+                if (encryptedPending.isNotEmpty()) {
+                    _pendingStartupKeyPrompts.value = encryptedPending.toList()
                 }
             } catch (e: Exception) {
                 Timber.e(e, "Failed to load startup keys")
@@ -473,6 +469,40 @@ class TerminalManager :
             val keys = HashSet(loadedKeypairs.keys)
             _loadedKeysChanged.emit(keys)
         }
+    }
+
+    /**
+     * Attempt to unlock an encrypted startup key with the supplied passphrase. On success the
+     * key is added to the in-memory cache and removed from [pendingStartupKeyPrompts].
+     *
+     * @return true if the key was decrypted and loaded, false if the passphrase was wrong or
+     *   the key otherwise failed to decode (the key stays in the pending queue).
+     */
+    fun unlockPendingStartupKey(pubkey: Pubkey, password: String): Boolean {
+        val pair = try {
+            PubkeyUtils.convertToKeyPair(pubkey, password)
+        } catch (_: PubkeyUtils.BadPasswordException) {
+            return false
+        } catch (e: Exception) {
+            Timber.w(e, "Failed to unlock startup key '%s'", pubkey.nickname)
+            return false
+        } ?: return false
+
+        addKey(pubkey, pair, true)
+        removeFromPendingStartupKeys(pubkey)
+        return true
+    }
+
+    /**
+     * Drop an encrypted startup key from [pendingStartupKeyPrompts] without loading it. The
+     * key's persisted `startup=true` flag is unaffected; the prompt will re-appear next launch.
+     */
+    fun dismissPendingStartupKey(pubkey: Pubkey) {
+        removeFromPendingStartupKeys(pubkey)
+    }
+
+    private fun removeFromPendingStartupKeys(pubkey: Pubkey) {
+        _pendingStartupKeyPrompts.value = _pendingStartupKeyPrompts.value.filterNot { it.id == pubkey.id }
     }
 
     fun addKey(pubkey: Pubkey, pair: KeyPair) {
