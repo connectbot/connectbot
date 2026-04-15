@@ -28,11 +28,13 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
@@ -44,6 +46,7 @@ import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
@@ -56,6 +59,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -77,12 +81,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.Pubkey
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.components.DisconnectAllDialog
@@ -218,6 +225,15 @@ fun HostListScreen(
                 onSelectShortcut(shortcutHost!!, color, iconStyle)
                 shortcutHost = null
             }
+        )
+    }
+
+    uiState.startupKeyPrompt?.let { pendingKey ->
+        StartupKeyPasswordDialog(
+            pubkey = pendingKey,
+            wrongPassword = uiState.startupKeyWrongPassword,
+            onDismiss = viewModel::dismissStartupKeyPrompt,
+            onProvidePassword = viewModel::submitStartupKeyPassword
         )
     }
 
@@ -905,4 +921,53 @@ private fun HostListScreenPopulatedPreview() {
             onDisconnectAll = {}
         )
     }
+}
+
+@Composable
+private fun StartupKeyPasswordDialog(
+    pubkey: Pubkey,
+    wrongPassword: Boolean,
+    onDismiss: () -> Unit,
+    onProvidePassword: (String) -> Unit
+) {
+    var password by remember(pubkey.id) { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = { Icon(Icons.Default.Lock, contentDescription = null) },
+        title = { Text(stringResource(R.string.pubkey_unlock)) },
+        text = {
+            Column {
+                Text(
+                    text = stringResource(R.string.pubkey_unlock_message, pubkey.nickname),
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+                OutlinedTextField(
+                    value = password,
+                    onValueChange = { password = it },
+                    label = { Text(stringResource(R.string.prompt_password)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    isError = wrongPassword,
+                    supportingText = if (wrongPassword) {
+                        { Text(stringResource(R.string.alert_wrong_password_msg)) }
+                    } else {
+                        null
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { onProvidePassword(password) }) {
+                Text(stringResource(R.string.pubkey_unlock))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        }
+    )
 }

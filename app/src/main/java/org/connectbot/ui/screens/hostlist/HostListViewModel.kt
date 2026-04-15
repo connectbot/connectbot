@@ -36,6 +36,7 @@ import kotlinx.coroutines.withContext
 import org.connectbot.R
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.ServiceError
 import org.connectbot.service.TerminalManager
@@ -56,7 +57,9 @@ data class HostListUiState(
     val sortedByColor: Boolean = false,
     val exportedJson: String? = null,
     val exportResult: ExportResult? = null,
-    val importResult: ImportResult? = null
+    val importResult: ImportResult? = null,
+    val startupKeyPrompt: Pubkey? = null,
+    val startupKeyWrongPassword: Boolean = false
 )
 
 data class ImportResult(
@@ -99,6 +102,8 @@ class HostListViewModel @Inject constructor(
             observeHostStatusChanges()
             // Collect service errors from TerminalManager
             collectServiceErrors()
+            // Surface any encrypted keys that are waiting for a passphrase to be entered
+            observePendingStartupKeyPrompts()
             // Update initial connection states
             updateConnectionStates(_uiState.value.hosts)
         }
@@ -320,5 +325,44 @@ class HostListViewModel @Inject constructor(
 
     fun clearImportResult() {
         _uiState.update { it.copy(importResult = null) }
+    }
+
+    private fun observePendingStartupKeyPrompts() {
+        val manager = terminalManager ?: return
+        viewModelScope.launch {
+            manager.pendingStartupKeyPrompts.collect { queue ->
+                val head = queue.firstOrNull()
+                _uiState.update { state ->
+                    state.copy(
+                        startupKeyPrompt = head,
+                        // Reset wrong-password flag whenever the head of the queue changes
+                        startupKeyWrongPassword = if (head?.id != state.startupKeyPrompt?.id) {
+                            false
+                        } else {
+                            state.startupKeyWrongPassword
+                        }
+                    )
+                }
+            }
+        }
+    }
+
+    fun submitStartupKeyPassword(password: String) {
+        val manager = terminalManager ?: return
+        val pubkey = _uiState.value.startupKeyPrompt ?: return
+        viewModelScope.launch {
+            val unlocked = withContext(dispatchers.default) {
+                manager.unlockPendingStartupKey(pubkey, password)
+            }
+            if (!unlocked) {
+                _uiState.update { it.copy(startupKeyWrongPassword = true) }
+            }
+        }
+    }
+
+    fun dismissStartupKeyPrompt() {
+        val manager = terminalManager ?: return
+        val pubkey = _uiState.value.startupKeyPrompt ?: return
+        manager.dismissPendingStartupKey(pubkey)
     }
 }
