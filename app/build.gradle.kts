@@ -12,15 +12,10 @@ plugins {
     alias(libs.plugins.versions)
     alias(libs.plugins.errorprone)
     alias(libs.plugins.app.versioning)
-    alias(libs.plugins.coveralls)
     alias(libs.plugins.jacoco.android)
     alias(libs.plugins.easylauncher)
     alias(libs.plugins.spotless)
     alias(libs.plugins.hilt.android)
-}
-
-coveralls {
-    jacocoReportPath = "build/reports/coverage/google/debug/report.xml"
 }
 
 appVersioning {
