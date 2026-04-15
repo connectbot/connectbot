@@ -323,7 +323,7 @@ class GeneratePubkeyViewModel @Inject constructor(
                     privateKey = PubkeyUtils.getEncodedPrivate(keyPair.private, state.password1),
                     publicKey = keyPair.public.encoded,
                     encrypted = encrypted,
-                    startup = state.unlockAtStartup && !encrypted,
+                    startup = state.unlockAtStartup,
                     confirmation = state.confirmUse,
                     createdDate = System.currentTimeMillis()
                 )
