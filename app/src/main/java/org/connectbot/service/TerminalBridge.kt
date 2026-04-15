@@ -74,6 +74,7 @@ class TerminalBridge {
     private sealed class TransportOperation {
         data class WriteData(val data: ByteArray) : TransportOperation()
         data class SetDimensions(val columns: Int, val rows: Int, val width: Int, val height: Int) : TransportOperation()
+        data object Flush : TransportOperation()
     }
 
     private val transportOperations = Channel<TransportOperation>(Channel.UNLIMITED)
@@ -302,6 +303,10 @@ class TerminalBridge {
                                 operation.height
                             )
                         }
+
+                        is TransportOperation.Flush -> {
+                            transport?.flush()
+                        }
                     }
                 } catch (e: IOException) {
                     Timber.e(e, "Error processing transport operation")
@@ -516,6 +521,33 @@ class TerminalBridge {
         transportOperations.trySend(
             TransportOperation.WriteData(string.toByteArray(charset(encoding)))
         )
+    }
+
+    /**
+     * Enqueue a single byte for transport write. Goes through the same serialized
+     * channel as [injectString] so keyboard input cannot interleave with paste data.
+     */
+    fun sendByte(c: Int) {
+        transportOperations.trySend(
+            TransportOperation.WriteData(byteArrayOf(c.toByte()))
+        )
+    }
+
+    /**
+     * Enqueue a byte array for transport write. Serialized with all other
+     * transport operations (paste, keyboard, resize, flush).
+     */
+    fun sendBytes(data: ByteArray) {
+        if (data.isEmpty()) return
+        transportOperations.trySend(TransportOperation.WriteData(data))
+    }
+
+    /**
+     * Enqueue a flush after any pending writes. Serialized with writes so the
+     * flush happens only after preceding bytes have been sent to the transport.
+     */
+    fun requestFlush() {
+        transportOperations.trySend(TransportOperation.Flush)
     }
 
     /**
