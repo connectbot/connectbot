@@ -13,8 +13,6 @@ package org.connectbot.service
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.view.KeyEvent
-import android.view.View
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -134,96 +132,93 @@ class TerminalBridgeWriteSerializationTest {
         // via its bound service. We don't interact with the UI.
         val intent = Intent(context, MainActivity::class.java)
         ActivityScenario.launch<MainActivity>(intent).use { scenario ->
+            // Capture the activity on the main thread but do NOT block the main
+            // thread with runBlocking — the TerminalEmulator's onKeyboardInput
+            // callback is dispatched via Handler(mainLooper), so blocking the
+            // main thread would prevent tab keystrokes from ever reaching the
+            // transport.
+            var capturedActivity: MainActivity? = null
             scenario.onActivity { activity ->
-                val state = runBlocking { activity.waitUntilServiceBound() }
-                val manager = state.terminalManager
+                capturedActivity = activity
+            }
+            val activity = requireNotNull(capturedActivity)
 
-                // id <= 0 makes TerminalBridge take the short-circuit profile-
-                // observation path (no host observer needed).
-                val host = Host(
-                    id = 0L,
-                    nickname = "bridge-serialization-test",
-                    protocol = "local",
-                    username = "",
-                    hostname = "",
-                    port = 0,
-                    profileId = 1L
-                )
-                val dispatchers = CoroutineDispatchers(
-                    default = Dispatchers.Default,
-                    io = Dispatchers.IO,
-                    main = Dispatchers.Main
-                )
+            val state = runBlocking { activity.waitUntilServiceBound() }
+            val manager = state.terminalManager
 
-                val bridge = TerminalBridge(manager, host, dispatchers)
-                try {
-                    val transport = LossyNonThreadSafeTransport()
-                    bridge.transport = transport
+            // id <= 0 makes TerminalBridge take the short-circuit profile-
+            // observation path (no host observer needed).
+            val host = Host(
+                id = 0L,
+                nickname = "bridge-serialization-test",
+                protocol = "local",
+                username = "",
+                hostname = "",
+                port = 0,
+                profileId = 1L
+            )
+            val dispatchers = CoroutineDispatchers(
+                default = Dispatchers.Default,
+                io = Dispatchers.IO,
+                main = Dispatchers.Main
+            )
 
-                    val keyListener = TerminalBridge::class.java
-                        .getDeclaredField("keyListener")
-                        .apply { isAccessible = true }
-                        .get(bridge) as TerminalKeyListener
+            val bridge = TerminalBridge(manager, host, dispatchers)
+            try {
+                val transport = LossyNonThreadSafeTransport()
+                bridge.transport = transport
 
-                    val view = View(context)
-                    val iterations = 40
+                val keyListener = bridge.keyHandler
 
-                    runBlocking {
-                        val jobs = mutableListOf<Job>()
-                        repeat(iterations) { i ->
-                            // Paste path: injectString -> transportOperations
-                            // channel -> IO coroutine -> transport.write.
-                            jobs += launch(Dispatchers.Default) {
-                                bridge.injectString(
-                                    "paste-$i-" + "x".repeat(128)
-                                )
-                            }
-                            // Keystroke path: pre-fix this called
-                            // transport.write(0x09) directly from whichever
-                            // thread invoked onKey.
-                            jobs += launch(Dispatchers.IO) {
-                                val down = KeyEvent(
-                                    KeyEvent.ACTION_DOWN,
-                                    KeyEvent.KEYCODE_TAB
-                                )
-                                keyListener.onKey(
-                                    view,
-                                    KeyEvent.KEYCODE_TAB,
-                                    down
-                                )
-                            }
+                val iterations = 40
+
+                runBlocking {
+                    val jobs = mutableListOf<Job>()
+                    repeat(iterations) { i ->
+                        // Paste path: injectString -> transportOperations
+                        // channel -> IO coroutine -> transport.write.
+                        jobs += launch(Dispatchers.Default) {
+                            bridge.injectString(
+                                "paste-$i-" + "x".repeat(128)
+                            )
                         }
-                        jobs.forEach { it.join() }
-
-                        // Let the serialized queue drain any remaining
-                        // enqueued writes.
-                        val expectedBytes =
-                            // Each paste: "paste-N-" (or "paste-NN-") + 128 'x's.
-                            (0 until iterations).sumOf { i ->
-                                "paste-$i-".length + 128
-                            } + iterations // one byte per Tab keystroke
-                        withTimeout(10_000) {
-                            while (transport.attemptedBytes.get() < expectedBytes) {
-                                delay(10)
-                            }
-                            delay(250)
+                        // Keystroke path: pre-fix this called
+                        // transport.write(0x09) directly from whichever
+                        // thread invoked onKey.
+                        jobs += launch(Dispatchers.IO) {
+                            keyListener.sendTab()
                         }
                     }
+                    jobs.forEach { it.join() }
 
-                    assertEquals(
-                        "Characters were lost at the transport layer: " +
-                            "attempted ${transport.attemptedBytes.get()} " +
-                            "bytes, but only ${transport.receivedBytes()} " +
-                            "survived. This is exactly the symptom reported " +
-                            "in issue #2058 — dropped characters on long " +
-                            "pastes due to unserialized writes racing at " +
-                            "the underlying OutputStream.",
-                        transport.attemptedBytes.get(),
-                        transport.receivedBytes()
-                    )
-                } finally {
-                    bridge.cleanup()
+                    // Let the serialized queue drain any remaining
+                    // enqueued writes.
+                    val expectedBytes =
+                        // Each paste: "paste-N-" (or "paste-NN-") + 128 'x's.
+                        (0 until iterations).sumOf { i ->
+                            "paste-$i-".length + 128
+                        } + iterations // one byte per Tab keystroke
+                    withTimeout(10_000) {
+                        while (transport.attemptedBytes.get() < expectedBytes) {
+                            delay(10)
+                        }
+                        delay(250)
+                    }
                 }
+
+                assertEquals(
+                    "Characters were lost at the transport layer: " +
+                        "attempted ${transport.attemptedBytes.get()} " +
+                        "bytes, but only ${transport.receivedBytes()} " +
+                        "survived. This is exactly the symptom reported " +
+                        "in issue #2058 — dropped characters on long " +
+                        "pastes due to unserialized writes racing at " +
+                        "the underlying OutputStream.",
+                    transport.attemptedBytes.get(),
+                    transport.receivedBytes()
+                )
+            } finally {
+                bridge.cleanup()
             }
         }
     }
