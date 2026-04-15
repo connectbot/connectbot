@@ -224,7 +224,7 @@ class PubkeyEditorViewModel @Inject constructor(
                         nickname = state.nickname,
                         privateKey = newPrivateKey,
                         encrypted = newEncrypted,
-                        startup = state.unlockAtStartup && !newEncrypted,
+                        startup = state.unlockAtStartup,
                         confirmation = state.confirmUse
                     )
 
