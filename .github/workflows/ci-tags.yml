@@ -1,0 +1,16 @@
+name: Continuous Integration (tags)
+
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+jobs:
+  ci:
+    name: CI
+    uses: ./.github/workflows/ci-build.yml
+    permissions:
+      contents: write
+    with:
+      is_push: true
+    secrets: inherit
