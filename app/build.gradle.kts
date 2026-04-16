@@ -12,7 +12,6 @@ plugins {
     alias(libs.plugins.versions)
     alias(libs.plugins.errorprone)
     alias(libs.plugins.app.versioning)
-    alias(libs.plugins.jacoco.android)
     alias(libs.plugins.easylauncher)
     alias(libs.plugins.spotless)
     alias(libs.plugins.hilt.android)
@@ -207,10 +206,6 @@ tasks.withType<JavaCompile>().configureEach {
 
 tasks.withType<Test>().configureEach {
     jvmArgs("--add-opens", "java.base/java.lang=ALL-UNNAMED")
-    configure<JacocoTaskExtension> {
-        isIncludeNoLocationClasses = true
-        excludes = listOf("jdk.internal.*")
-    }
 }
 
 // Generate filtered export schema from Room schema
