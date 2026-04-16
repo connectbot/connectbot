@@ -432,9 +432,7 @@ private fun TerminalKeyboardContent(
                 }
             }
 
-            // IME toggle key (sits next to the input field key). The button reflects the
-            // app-side lock state; the parent keeps termlib's compose mode active for as
-            // long as this is true (re-activating it after Enter/Escape auto-deactivates).
+            // IME toggle key (sits next to the input field key, optional via setting)
             if (showImeToggleKey) {
                 val imeBackgroundColor = if (isComposeModeActive) {
                     MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
