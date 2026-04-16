@@ -3,199 +3,33 @@ name: Continuous Integration
 on:
   push:
     branches: [ main ]
-    tags:
-      - "v*.*.*"
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - '.gitattributes'
+      - 'LICENSE'
+      - '.java-version'
+      - 'icons/**'
   pull_request:
     branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - '.gitattributes'
+      - 'LICENSE'
+      - '.java-version'
+      - 'icons/**'
   schedule:
     - cron: "0 7 */3 * *"
   merge_group:
     types: [ checks_requested ]
 
 jobs:
-  build:
-    name: Build and test
-    runs-on: ubuntu-latest
+  ci:
+    name: CI
+    uses: ./.github/workflows/ci-build.yml
     permissions:
       contents: write
-
-    steps:
-      - name: Checkout (with history)
-        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-        with:
-          fetch-depth: 0
-          fetch-tags: true
-          persist-credentials: false
-
-      - name: Validate Gradle Wrapper
-        uses: gradle/actions/wrapper-validation@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
-
-      - name: Set up JDK
-        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
-        with:
-          distribution: 'zulu'
-          java-version: '17'
-
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
-        with:
-          dependency-graph: generate-and-submit
-          cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
-          cache-read-only: ${{ github.ref_name != github.event.repository.default_branch }}
-
-      - name: Delete old Android SDK cmdline-tools
-        run: |
-          rm -rf $ANDROID_HOME/cmdline-tools/latest
-
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@40fd30fb8d7440372e1316f5d1809ec01dcd3699 # v4.0.1
-        with:
-          cmdline-tools-version: '13114758'
-          packages: 'cmdline-tools;latest tools platform-tools'
-
-      - name: Build ConnectBot
-        run: ./gradlew build bundle
-
-      - name: Enable KVM for emulator and clear up space
-        run: |
-          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
-          sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm
-
-          echo "Available disk space before cleanup:"
-          df -h
-
-          sudo rm -rf \
-            /opt/ghc \
-            /opt/google/chrome \
-            /opt/hostedtoolcache/CodeQL \
-            /opt/hostedtoolcache/Python \
-            /opt/hostedtoolcache/Ruby \
-            /opt/hostedtoolcache/go \
-            /opt/hostedtoolcache/node \
-            /opt/microsoft/msedge \
-            /opt/microsoft/powershell \
-            /opt/pipx \
-            /usr/lib/mono \
-            /usr/lib/node_modules \
-            /usr/local/graalvm/ \
-            /usr/local/julia* \
-            /usr/local/share/boost \
-            /usr/local/share/chromium \
-            /usr/local/share/powershell \
-            /usr/share/dotnet \
-            /usr/share/swift
-
-          sudo apt-get clean
-
-          sudo swapoff -a || true
-          sudo rm -f /swapfile || true
-
-          echo "Available disk space after cleanup:"
-          df -h
-
-      - name: Run instrument tests
-        uses: reactivecircus/android-emulator-runner@e89f39f1abbbd05b1113a29cf4db69e7540cae5a # v2.37.0
-        with:
-          api-level: 29
-          target: default
-          arch: x86_64
-          disk-size: 2G
-          script: ./gradlew connectedCheck --continue
-
-      - name: Prepare release
-        if: ${{ github.event_name == 'push' }}
-        run: |
-          if git describe --exact-match; then \
-            TAGGED=yes
-          fi
-
-          if [[ -n $TAGGED ]]; then
-            GITHUB_TAG="$(git describe)"
-            echo "${GITHUB_TAG}" > tag.txt
-            echo "Release ${GITHUB_TAG}" > release-title.txt
-          else \
-            GITHUB_TAG="git-$(git describe)"
-            GITHUB_TITLE="$(git log -1 --pretty=%B | head -1)"
-            echo "${GITHUB_TAG}" > tag.txt
-            echo "${GITHUB_TAG}: ${GITHUB_TITLE}" > release-title.txt
-          fi
-          cp ./app/build/outputs/apk/oss/release/app-oss-release-unsigned.apk ConnectBot-${GITHUB_TAG}-oss-unsigned.apk
-          cp ./app/build/outputs/apk/google/release/app-google-release-unsigned.apk ConnectBot-${GITHUB_TAG}-google-unsigned.apk
-          cp ./app/build/outputs/bundle/googleRelease/app-google-release.aab ConnectBot-${GITHUB_TAG}-google-unsigned.aab
-          cp ./app/build/outputs/bundle/ossRelease/app-oss-release.aab ConnectBot-${GITHUB_TAG}-oss-unsigned.aab
-          cp ./app/build/outputs/native-debug-symbols/googleRelease/native-debug-symbols.zip ConnectBot-${GITHUB_TAG}-google.native-debug-symbols.zip
-          cp ./app/build/outputs/native-debug-symbols/ossRelease/native-debug-symbols.zip ConnectBot-${GITHUB_TAG}-oss.native-debug-symbols.zip
-          cp ./app/build/outputs/mapping/googleRelease/mapping.txt ConnectBot-${GITHUB_TAG}-google.mapping.txt
-          cp ./app/build/outputs/mapping/ossRelease/mapping.txt ConnectBot-${GITHUB_TAG}-oss.mapping.txt
-          zstd *.mapping.txt
-  
-      - name: Store artifacts for upload
-        if: ${{ github.event_name == 'push' }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: apk
-          path: |
-            release-title.txt
-            tag.txt
-            ConnectBot-*-unsigned.apk
-            ConnectBot-*-unsigned.aab
-            ConnectBot-*.native-debug-symbols.zip
-            ConnectBot-*.mapping.txt.zst
-
-  upload:
-    name: Upload to GitHub releases
-    needs: build
-    if: ${{ (github.event_name == 'push') && (github.repository == 'connectbot/connectbot') && ((github.ref == 'refs/heads/main') || startsWith(github.ref, 'refs/tags/v')) }}
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - name: Download artifacts from previous job
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: apk
-
-      - name: Set release name
-        id: name
-        run: |
-          echo "RELEASE_TITLE=$(cat release-title.txt)" >> "$GITHUB_OUTPUT"
-          echo "GITHUB_TAG=$(cat tag.txt)" >> "$GITHUB_OUTPUT"
-
-      - name: Upload release
-        uses: softprops/action-gh-release@b4309332981a82ec1c5618f44dd2e27cc8bfbfda # v3.0.0
-        with:
-          body: "Untested build"
-          draft: true
-          tag_name: ${{ steps.name.outputs.GITHUB_TAG }}
-          name: ${{ steps.name.outputs.RELEASE_TITLE }}
-          generate_release_notes: true
-          files: |
-            ConnectBot-*-unsigned.apk
-            ConnectBot-*-unsigned.aab
-            ConnectBot-*.native-debug-symbols.zip
-            ConnectBot-*.mapping.txt.zst
-
-  signing:
-    name: Trigger remote signing
-    needs: upload
-    if: ${{ (github.event_name == 'push') && (github.repository == 'connectbot/connectbot') && ((github.ref == 'refs/heads/main') || startsWith(github.ref, 'refs/tags/v')) }}
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Download artifacts from previous job
-        uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
-        with:
-          name: apk
-
-      - name: Set release name
-        id: name
-        run: |
-          echo "GITHUB_TAG=$(cat tag.txt)" >> "$GITHUB_OUTPUT"
-
-      - name: Call remote signer
-        uses: distributhor/workflow-webhook@2381f0e9c7b6bf061fb1405bd0804b8706116369 # v3.0.8
-        with:
-          webhook_url: ${{ secrets.SIGNER_WEBHOOK_URL }}
-          data: '{"tag_id": "${{ steps.name.outputs.GITHUB_TAG }}"}'
+    with:
+      is_push: ${{ github.event_name == 'push' }}
+    secrets: inherit
