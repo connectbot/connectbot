@@ -148,7 +148,7 @@ object SkEcdsaVerify {
                 return convertRawEcdsaToSsh(derSignature)
             }
 
-            val seqLen = readDerLength(buffer)
+            readDerLength(buffer) // advance past the sequence length
 
             // Parse r INTEGER
             val rTag = buffer.get().toInt() and 0xFF
