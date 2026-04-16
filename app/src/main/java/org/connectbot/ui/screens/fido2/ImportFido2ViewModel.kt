@@ -157,46 +157,6 @@ class ImportFido2ViewModel @Inject constructor(
         }
     }
 
-    /**
-     * Scan for credentials on USB-connected device.
-     * NFC credentials are handled via callback in connectToDevice.
-     */
-    private fun scanForCredentials() {
-        viewModelScope.launch(dispatchers.io) {
-            _uiState.update { it.copy(isScanning = true, error = null, credentials = emptyList(), waitingForNfcTap = false) }
-
-            try {
-                // Check if PIN is required for USB
-                val infoResult = fido2Manager.getAuthenticatorInfo()
-                if (infoResult is Fido2Result.Success) {
-                    val info = infoResult.value
-                    if (info.pinConfigured && currentPin == null) {
-                        // PIN is required but we don't have it yet
-                        _uiState.update {
-                            it.copy(
-                                isScanning = false,
-                                needsPin = true
-                            )
-                        }
-                        return@launch
-                    }
-                }
-
-                // Discover SSH credentials via USB
-                val result = fido2Manager.discoverSshCredentials(currentPin)
-                handleCredentialResult(result)
-            } catch (e: Exception) {
-                Timber.e(e, "Failed to scan for FIDO2 credentials")
-                _uiState.update {
-                    it.copy(
-                        isScanning = false,
-                        error = "Failed to scan: ${e.message}"
-                    )
-                }
-            }
-        }
-    }
-
     fun submitPin(pin: String) {
         currentPin = pin
 
