@@ -296,6 +296,11 @@
 	<!-- Title for special keys always visible preference -->
 	<string name="pref_alwaysvisible_title">Special keys always visible</string>
 
+	<!-- Title for the IME toggle key preference (shows an extra "IME" key in the special-keys row) -->
+	<string name="pref_imetogglekey_title">Show IME toggle key</string>
+	<!-- Summary for the IME toggle key preference -->
+	<string name="pref_imetogglekey_summary">Add an IME button to the special keys row that toggles compose mode for languages requiring a composition buffer (Japanese, Chinese, Korean, etc.)</string>
+
 	<!-- Name for the page up/down gesture preference -->
 	<string name="pref_pg_updn_gesture_title">"Page up/down gesture"</string>
 	<!-- Summary for the full screen preference -->
@@ -941,6 +946,10 @@
 	<string name="button_key_esc">Esc</string>
 	<!-- Text for the "Ctrl" button in virtual keyboard. -->
 	<string name="button_key_ctrl">Ctrl</string>
+	<!-- Text for the "IME" button in virtual keyboard that toggles compose mode for IME composition (Japanese, etc.) -->
+	<string name="button_key_ime">IME</string>
+	<!-- Accessibility description for the IME toggle button in the virtual keyboard -->
+	<string name="image_description_toggle_compose_mode">Toggle compose mode for IME input</string>
 
 	<!-- Text for the "Home" button in virtual keyboard. -->
 	<string name="button_key_home">Home</string>
@@ -989,6 +998,9 @@
 
 	<!-- Menu item in console toolbar to open floating text input dialog -->
 	<string name="console_menu_text_input">Text input</string>
+
+	<!-- Menu item in console overflow menu that toggles compose mode for IME composition (Japanese, etc.) -->
+	<string name="console_menu_compose_mode">Compose mode (IME)</string>
 
 	<!-- Send button in floating text input dialog -->
 	<string name="button_send">Send</string>

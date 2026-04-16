@@ -65,6 +65,7 @@ data class SettingsUiState(
     val volumefont: Boolean = true,
     val keepalive: Boolean = true,
     val alwaysvisible: Boolean = false,
+    val imeTogglekey: Boolean = false,
     val shiftfkeys: Boolean = false,
     val ctrlfkeys: Boolean = false,
     val stickymodifiers: String = "no",
@@ -202,6 +203,7 @@ class SettingsViewModel @Inject constructor(
             volumefont = prefs.getBoolean("volumefont", true),
             keepalive = prefs.getBoolean("keepalive", true),
             alwaysvisible = prefs.getBoolean("alwaysvisible", false),
+            imeTogglekey = prefs.getBoolean(PreferenceConstants.IME_TOGGLE_KEY, false),
             shiftfkeys = prefs.getBoolean("shiftfkeys", false),
             ctrlfkeys = prefs.getBoolean("ctrlfkeys", false),
             stickymodifiers = prefs.getString("stickymodifiers", "no") ?: "no",
@@ -321,6 +323,10 @@ class SettingsViewModel @Inject constructor(
 
     fun updateAlwaysVisible(value: Boolean) {
         updateBooleanPref(PreferenceConstants.KEY_ALWAYS_VISIBLE, value) { copy(alwaysvisible = value) }
+    }
+
+    fun updateImeToggleKey(value: Boolean) {
+        updateBooleanPref(PreferenceConstants.IME_TOGGLE_KEY, value) { copy(imeTogglekey = value) }
     }
 
     fun updateShiftFkeys(value: Boolean) {
