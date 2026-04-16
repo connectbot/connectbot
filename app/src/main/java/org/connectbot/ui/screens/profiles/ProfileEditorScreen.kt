@@ -260,6 +260,8 @@ fun ProfileEditorScreen(
 
                 EncodingSelector(
                     encoding = uiState.encoding,
+                    commonEncodings = viewModel.commonEncodings,
+                    allEncodings = viewModel.allEncodings,
                     onSelectEncoding = { viewModel.updateEncoding(it) },
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -521,11 +523,17 @@ private fun DelKeySelector(
 @Composable
 private fun EncodingSelector(
     encoding: String,
+    commonEncodings: List<String>,
+    allEncodings: List<String>,
     onSelectEncoding: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val encodings = listOf("UTF-8", "ISO-8859-1", "US-ASCII", "Windows-1252")
+    var filterText by remember { mutableStateOf("") }
+
+    val filteredCommon = commonEncodings.filter { it.contains(filterText, ignoreCase = true) }
+    val filteredAll = allEncodings.filter { it.contains(filterText, ignoreCase = true) }
+    val showDivider = filteredCommon.isNotEmpty() && filteredAll.isNotEmpty()
 
     Column(modifier = modifier) {
         Text(
@@ -536,31 +544,54 @@ private fun EncodingSelector(
 
         ExposedDropdownMenuBox(
             expanded = expanded,
-            onExpandedChange = { expanded = it }
+            onExpandedChange = {
+                if (!it) {
+                    filterText = ""
+                }
+                expanded = it
+            }
         ) {
             OutlinedTextField(
-                value = encoding,
-                onValueChange = {},
-                readOnly = true,
+                value = if (expanded) filterText else encoding,
+                onValueChange = { filterText = it },
+                readOnly = !expanded,
                 singleLine = true,
                 trailingIcon = {
                     ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
                 },
                 colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                 modifier = Modifier
-                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryEditable)
                     .fillMaxWidth()
             )
 
             ExposedDropdownMenu(
                 expanded = expanded,
-                onDismissRequest = { expanded = false }
+                onDismissRequest = {
+                    filterText = ""
+                    expanded = false
+                }
             ) {
-                encodings.forEach { enc ->
+                filteredCommon.forEach { enc ->
                     DropdownMenuItem(
                         text = { Text(enc) },
                         onClick = {
                             onSelectEncoding(enc)
+                            filterText = ""
+                            expanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    )
+                }
+                if (showDivider) {
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 4.dp))
+                }
+                filteredAll.forEach { enc ->
+                    DropdownMenuItem(
+                        text = { Text(enc) },
+                        onClick = {
+                            onSelectEncoding(enc)
+                            filterText = ""
                             expanded = false
                         },
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
