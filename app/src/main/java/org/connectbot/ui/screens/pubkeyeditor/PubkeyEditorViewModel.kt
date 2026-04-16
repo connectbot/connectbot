@@ -233,7 +233,7 @@ class PubkeyEditorViewModel @Inject constructor(
                         nickname = state.nickname,
                         privateKey = newPrivateKey,
                         encrypted = newEncrypted,
-                        startup = state.unlockAtStartup && !newEncrypted,
+                        startup = state.unlockAtStartup,
                         confirmation = state.confirmUse,
                         fido2Transport = if (state.isFido2) state.fido2Transport else pubkey.fido2Transport,
                     )
