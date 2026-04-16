@@ -30,6 +30,7 @@ jobs:
     uses: ./.github/workflows/ci-build.yml
     permissions:
       contents: write
+      pull-requests: write
     with:
       is_push: ${{ github.event_name == 'push' }}
     secrets: inherit
