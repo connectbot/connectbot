@@ -170,7 +170,7 @@ fun ConsoleScreen(
     // Read preferences
     val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
     val keyboardAlwaysVisible = remember { prefs.getBoolean("alwaysvisible", false) }
-    val showImeToggleKey = remember { prefs.getBoolean(PreferenceConstants.IME_TOGGLE_KEY, false) }
+    val showImeToggleKey = remember { prefs.getBoolean(PreferenceConstants.IME_TOGGLE_KEY, true) }
     var fullscreen by remember { mutableStateOf(prefs.getBoolean("fullscreen", false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean("titlebarhide", false)) }
     val volumeKeysChangeFontSize = remember { prefs.getBoolean(PreferenceConstants.VOLUME_FONT, true) }
