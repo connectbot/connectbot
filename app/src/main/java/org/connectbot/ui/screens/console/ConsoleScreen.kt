@@ -90,6 +90,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -589,6 +590,7 @@ fun ConsoleScreen(
     var scannedUrls by remember { mutableStateOf<List<String>>(emptyList()) }
     var selectionController by remember { mutableStateOf<SelectionController?>(null) }
     var composeController by remember { mutableStateOf<ComposeController?>(null) }
+    var isComposeModeLocked by remember { mutableStateOf(false) }
     var imeVisible by remember { mutableStateOf(false) }
     var keyboardScrollInProgress by remember { mutableStateOf(false) }
     var previousBridgeIdForImeState by remember { mutableStateOf<Long?>(null) }
@@ -810,9 +812,24 @@ fun ConsoleScreen(
     LaunchedEffect(currentBridge) {
         selectionController = null
         composeController = null
+        isComposeModeLocked = false
         if (currentBridge != null) {
             termFocusRequester.requestFocus()
         }
+    }
+
+    // Maintain the invariant: while the IME key is locked on, termlib's compose mode
+    // must stay active. termlib auto-deactivates after each Enter/Escape, so this
+    // re-activates it. Conversely, unlocking the key tears down compose mode.
+    LaunchedEffect(composeController) {
+        val controller = composeController ?: return@LaunchedEffect
+        snapshotFlow { controller.isComposeModeActive to isComposeModeLocked }
+            .collect { (isActive, isLocked) ->
+                when {
+                    isLocked && !isActive -> controller.startComposeMode()
+                    !isLocked && isActive -> controller.stopComposeMode()
+                }
+            }
     }
 
     // Initialize forceSize from profile when bridge changes
@@ -985,8 +1002,10 @@ fun ConsoleScreen(
                                 onReconnect = { viewModel.reconnect(bridge) },
                                 snackbarHostState = snackbarHostState,
                                 showImeToggleKey = showImeToggleKey,
-                                isComposeModeActive = composeController?.isComposeModeActive == true,
-                                onToggleComposeMode = { composeController?.toggleComposeMode() },
+                                isComposeModeActive = isComposeModeLocked,
+                                onToggleComposeMode = {
+                                    isComposeModeLocked = !isComposeModeLocked
+                                },
                                 modifier = Modifier.fillMaxSize(),
                                 terminalModifier = terminalModifier,
                             )
@@ -1251,7 +1270,7 @@ fun ConsoleScreen(
                                 text = { Text(stringResource(R.string.console_menu_compose_mode)) },
                                 onClick = {
                                     showMenu = false
-                                    composeController?.toggleComposeMode()
+                                    isComposeModeLocked = !isComposeModeLocked
                                 },
                                 enabled = composeController != null,
                                 leadingIcon = {
@@ -1259,7 +1278,7 @@ fun ConsoleScreen(
                                 },
                                 trailingIcon = {
                                     Checkbox(
-                                        checked = composeController?.isComposeModeActive == true,
+                                        checked = isComposeModeLocked,
                                         onCheckedChange = null
                                     )
                                 }
