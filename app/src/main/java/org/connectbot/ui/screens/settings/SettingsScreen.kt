@@ -1568,7 +1568,7 @@ private fun SettingsScreenPreview() {
                 volumefont = true,
                 keepalive = true,
                 alwaysvisible = true,
-                imeTogglekey = false,
+                imeTogglekey = true,
                 shiftfkeys = false,
                 ctrlfkeys = false,
                 stickymodifiers = "yes",

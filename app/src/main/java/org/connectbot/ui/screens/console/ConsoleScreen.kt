@@ -542,7 +542,7 @@ fun ConsoleScreen(
     val swipeSessionsEnabled = remember {
         prefs.getBoolean(PreferenceConstants.SWIPE_SESSIONS, false)
     }
-    val showImeToggleKey = remember { prefs.getBoolean(PreferenceConstants.IME_TOGGLE_KEY, false) }
+    val showImeToggleKey = remember { prefs.getBoolean(PreferenceConstants.IME_TOGGLE_KEY, true) }
     var fullscreen by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.FULLSCREEN, false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false)) }
     val volumeKeysChangeFontSize = remember { prefs.getBoolean(PreferenceConstants.VOLUME_FONT, true) }
