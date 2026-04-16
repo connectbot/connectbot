@@ -288,10 +288,8 @@ class PubkeyListViewModel @Inject constructor(
 
                     // For FIDO2 keys, the public key is already in SSH wire format
                     if (pubkey.isFido2) {
-                        val publicKeyBytes = pubkey.publicKey
-                            ?: throw IllegalArgumentException("No public key data")
                         val base64Key = android.util.Base64.encodeToString(
-                            publicKeyBytes,
+                            pubkey.publicKey,
                             android.util.Base64.NO_WRAP
                         )
                         // Use the correct SSH key type string for authorized_keys format

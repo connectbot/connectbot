@@ -113,7 +113,7 @@ fun ImportFido2Screen(
                 when (event) {
                     Lifecycle.Event.ON_RESUME -> viewModel.startNfcDiscovery(activity)
                     Lifecycle.Event.ON_PAUSE -> viewModel.stopNfcDiscovery(activity)
-                    else -> {}
+                    else -> Unit
                 }
             }
         }

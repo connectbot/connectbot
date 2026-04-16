@@ -730,11 +730,13 @@ private fun Fido2TouchPromptContent(
     }
 }
 
+private const val FIDO2_PREVIEW_NICKNAME = "My YubiKey"
+
 @Preview
 @Composable
 private fun Fido2ConnectPromptPreview() {
     Fido2ConnectPromptContent(
-        keyNickname = "My YubiKey",
+        keyNickname = FIDO2_PREVIEW_NICKNAME,
         onCancel = { }
     )
 }
@@ -743,7 +745,7 @@ private fun Fido2ConnectPromptPreview() {
 @Composable
 private fun Fido2PinPromptPreview() {
     Fido2PinPromptContent(
-        keyNickname = "My YubiKey",
+        keyNickname = FIDO2_PREVIEW_NICKNAME,
         attemptsRemaining = 3,
         onSubmit = { },
         onCancel = { }
@@ -754,7 +756,7 @@ private fun Fido2PinPromptPreview() {
 @Composable
 private fun Fido2TouchPromptPreview() {
     Fido2TouchPromptContent(
-        keyNickname = "My YubiKey",
+        keyNickname = FIDO2_PREVIEW_NICKNAME,
         onCancel = { }
     )
 }
