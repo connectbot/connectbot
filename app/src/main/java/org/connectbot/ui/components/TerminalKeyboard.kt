@@ -103,7 +103,10 @@ fun TerminalKeyboard(
     onOpenTextInput: () -> Unit = {},
     onScrollInProgressChange: (Boolean) -> Unit = {},
     imeVisible: Boolean = false,
-    playAnimation: Boolean = false
+    playAnimation: Boolean = false,
+    showImeToggleKey: Boolean = false,
+    isComposeModeActive: Boolean = false,
+    onToggleComposeMode: () -> Unit = {}
 ) {
     val keyHandler = bridge.keyHandler
     val modifierState by keyHandler.modifierState.collectAsState()
@@ -133,6 +136,9 @@ fun TerminalKeyboard(
         onScrollInProgressChange = onScrollInProgressChange,
         imeVisible = imeVisible,
         playAnimation = playAnimation,
+        showImeToggleKey = showImeToggleKey,
+        isComposeModeActive = isComposeModeActive,
+        onToggleComposeMode = onToggleComposeMode,
         modifier = modifier
     )
 }
@@ -155,6 +161,9 @@ private fun TerminalKeyboardContent(
     onScrollInProgressChange: (Boolean) -> Unit,
     imeVisible: Boolean,
     playAnimation: Boolean,
+    showImeToggleKey: Boolean = false,
+    isComposeModeActive: Boolean = false,
+    onToggleComposeMode: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val scrollState = rememberScrollState()
@@ -220,6 +229,30 @@ private fun TerminalKeyboardContent(
                     modifierLevel = modifierState.ctrlState,
                     onClick = onCtrlPress
                 )
+
+                // IME toggle key (optional, shown when enabled in settings)
+                if (showImeToggleKey) {
+                    val imeBackgroundColor = if (isComposeModeActive) {
+                        MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                    } else {
+                        MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY)
+                    }
+                    val imeTextColor = if (isComposeModeActive) {
+                        MaterialTheme.colorScheme.onPrimary
+                    } else {
+                        MaterialTheme.colorScheme.onSurface
+                    }
+                    KeyButton(
+                        text = stringResource(R.string.button_key_ime),
+                        contentDescription = stringResource(R.string.image_description_toggle_compose_mode),
+                        onClick = {
+                            onToggleComposeMode()
+                            onInteraction()
+                        },
+                        backgroundColor = imeBackgroundColor,
+                        tint = imeTextColor
+                    )
+                }
 
                 // Esc key
                 KeyButton(
