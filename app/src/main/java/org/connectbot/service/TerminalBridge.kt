@@ -273,7 +273,7 @@ class TerminalBridge {
         val ansiColors = fullColorPalette.sliceArray(0 until 16)
         terminalEmulator.applyColorScheme(ansiColors, defaultFgColor, defaultBgColor)
 
-        keyListener = TerminalKeyListener(manager, this, encoding)
+        keyListener = TerminalKeyListener(terminalEmulator)
 
         // Start the transport operation processor to serialize all writes
         startTransportOperationProcessor()
@@ -476,7 +476,6 @@ class TerminalBridge {
      */
     fun setCharset(encoding: String) {
         relay?.setCharset(encoding)
-        keyListener.setCharset(encoding)
     }
 
     /**

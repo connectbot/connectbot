@@ -13,8 +13,6 @@ package org.connectbot.service
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.view.KeyEvent
-import android.view.View
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -160,12 +158,8 @@ class TerminalBridgeWriteSerializationTest {
                     val transport = LossyNonThreadSafeTransport()
                     bridge.transport = transport
 
-                    val keyListener = TerminalBridge::class.java
-                        .getDeclaredField("keyListener")
-                        .apply { isAccessible = true }
-                        .get(bridge) as TerminalKeyListener
+                    val keyListener = bridge.keyHandler
 
-                    val view = View(context)
                     val iterations = 40
 
                     runBlocking {
@@ -182,15 +176,7 @@ class TerminalBridgeWriteSerializationTest {
                             // transport.write(0x09) directly from whichever
                             // thread invoked onKey.
                             jobs += launch(Dispatchers.IO) {
-                                val down = KeyEvent(
-                                    KeyEvent.ACTION_DOWN,
-                                    KeyEvent.KEYCODE_TAB
-                                )
-                                keyListener.onKey(
-                                    view,
-                                    KeyEvent.KEYCODE_TAB,
-                                    down
-                                )
+                                keyListener.sendTab()
                             }
                         }
                         jobs.forEach { it.join() }
