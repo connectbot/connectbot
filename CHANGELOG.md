@@ -2,6 +2,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.10.4][1.10.4]
+### Fixed
+- Console insets for API 29 were too large
+- Encrypted keys now have password prompts
+- Long pastes no longer drop characters
+- Gaps in background at certain sizes
+- External keyboards now work with non-US keymaps
+
+### Added
+- More character encodings in Profiles
+
 ## [1.10.3][1.10.3]
 ### Fixed
 - More input fixes; all soft keyboards seem fixed
@@ -252,6 +263,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Color picker color numbers are now localized
 
 
+[1.10.4]: https://github.com/connectbot/connectbot/compare/v1.10.3...v1.10.4
 [1.10.3]: https://github.com/connectbot/connectbot/compare/v1.10.2...v1.10.3
 [1.10.2]: https://github.com/connectbot/connectbot/compare/v1.10.1...v1.10.2
 [1.10.1]: https://github.com/connectbot/connectbot/compare/v1.10.0...v1.10.1
