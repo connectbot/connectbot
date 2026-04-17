@@ -5,6 +5,10 @@ on:
     tags:
       - "v*.*.*"
 
+concurrency:
+  group: ci-main-${{ github.sha }}
+  cancel-in-progress: false
+
 jobs:
   ci:
     name: CI

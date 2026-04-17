@@ -10,8 +10,6 @@ on:
       - 'LICENSE'
       - '.java-version'
       - 'icons/**'
-    tags-ignore:
-      - "v*.*.*"
   pull_request:
     branches: [ main ]
     paths-ignore:
@@ -25,6 +23,10 @@ on:
     - cron: "0 7 */3 * *"
   merge_group:
     types: [ checks_requested ]
+
+concurrency:
+  group: ci-main-${{ github.sha }}
+  cancel-in-progress: true
 
 jobs:
   ci:
