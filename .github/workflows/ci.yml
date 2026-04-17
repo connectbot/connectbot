@@ -10,6 +10,8 @@ on:
       - 'LICENSE'
       - '.java-version'
       - 'icons/**'
+    tags-ignore:
+      - "v*.*.*"
   pull_request:
     branches: [ main ]
     paths-ignore:
