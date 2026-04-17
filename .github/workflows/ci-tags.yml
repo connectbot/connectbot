@@ -11,6 +11,7 @@ jobs:
     uses: ./.github/workflows/ci-build.yml
     permissions:
       contents: write
+      pull-requests: write
     with:
       is_push: true
     secrets: inherit
