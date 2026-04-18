@@ -38,6 +38,7 @@ import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.service.DisconnectReason
 import org.connectbot.service.ServiceError
 import org.connectbot.service.TerminalManager
 import org.connectbot.util.PreferenceConstants
@@ -272,7 +273,7 @@ class HostListViewModel @Inject constructor(
 
     fun disconnectHost(host: Host) {
         val bridge = terminalManager?.bridgesFlow?.value?.find { it.host.id == host.id }
-        bridge?.dispatchDisconnect(true)
+        bridge?.dispatchDisconnect(true, DisconnectReason.USER_REQUESTED)
     }
 
     fun clearError() {

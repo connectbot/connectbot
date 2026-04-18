@@ -300,7 +300,7 @@ class TerminalManager :
                 if (excludeLocal && !tmpBridge.isUsingNetwork()) {
                     continue
                 }
-                tmpBridge.dispatchDisconnect(immediate)
+                tmpBridge.dispatchDisconnect(immediate, DisconnectReason.USER_REQUESTED)
             }
         }
     }

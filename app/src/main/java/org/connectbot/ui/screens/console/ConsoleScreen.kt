@@ -113,6 +113,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.service.DisconnectReason
 import org.connectbot.service.PromptRequest
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.SelectionController
@@ -598,7 +599,7 @@ fun ConsoleScreen(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.End
                                 ) {
-                                    TextButton(onClick = { showDisconnectDialog = true }) {
+                                    TextButton(onClick = { bridge.dispatchDisconnect(true, DisconnectReason.USER_REQUESTED) }) {
                                         Text(
                                             stringResource(R.string.console_menu_close),
                                             color = terminalColors.overlayText
@@ -651,7 +652,7 @@ fun ConsoleScreen(
                 onDismiss = { showDisconnectDialog = false },
                 onConfirm = {
                     showDisconnectDialog = false
-                    currentBridge.dispatchDisconnect(true)
+                    currentBridge.dispatchDisconnect(true, DisconnectReason.USER_REQUESTED)
                 }
             )
         }

@@ -24,6 +24,7 @@ import androidx.core.net.toUri
 import de.mud.telnet.TelnetProtocolHandler
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.service.DisconnectReason
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.util.HostConstants
@@ -178,7 +179,7 @@ class Telnet : AbsTransport {
             } while (n == 0)
             n = `is`!!.read(buffer, offset, length)
             if (n < 0) {
-                bridge?.dispatchDisconnect(false)
+                bridge?.dispatchDisconnect(false, DisconnectReason.REMOTE_EOF)
                 throw IOException("Remote end closed connection.")
             }
 
@@ -193,7 +194,7 @@ class Telnet : AbsTransport {
         try {
             os?.write(buffer)
         } catch (_: SocketException) {
-            bridge?.dispatchDisconnect(false)
+            bridge?.dispatchDisconnect(false, DisconnectReason.IO_ERROR)
         }
     }
 
@@ -202,7 +203,7 @@ class Telnet : AbsTransport {
         try {
             os?.write(c)
         } catch (_: SocketException) {
-            bridge?.dispatchDisconnect(false)
+            bridge?.dispatchDisconnect(false, DisconnectReason.IO_ERROR)
         }
     }
 

@@ -47,6 +47,7 @@ import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.service.DisconnectReason
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.service.requestBiometricAuth
@@ -958,8 +959,8 @@ class SSH :
         jumpConnections.clear()
     }
 
-    private fun onDisconnect() {
-        bridge?.dispatchDisconnect(false)
+    private fun onDisconnect(reason: DisconnectReason = DisconnectReason.IO_ERROR) {
+        bridge?.dispatchDisconnect(false, reason)
     }
 
     @Throws(IOException::class)
@@ -988,7 +989,7 @@ class SSH :
 
         if ((newConditions and ChannelCondition.EOF) != 0) {
             close()
-            onDisconnect()
+            onDisconnect(DisconnectReason.REMOTE_EOF)
             throw IOException("Remote end closed connection")
         }
 
