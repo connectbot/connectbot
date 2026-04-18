@@ -143,6 +143,8 @@ class TerminalBridge {
         private set
     var connecting = false
         private set
+    var disconnectReason: DisconnectReason = DisconnectReason.UNKNOWN
+        private set
     private var awaitingClose = false
 
     private var forcedSize = false
@@ -623,7 +625,7 @@ class TerminalBridge {
     /**
      * Force disconnection of this terminal bridge.
      */
-    fun dispatchDisconnect(immediate: Boolean) {
+    fun dispatchDisconnect(immediate: Boolean, reason: DisconnectReason = DisconnectReason.UNKNOWN) {
         // We don't need to do this multiple times.
         synchronized(this) {
             if (disconnected && !immediate) {
@@ -632,6 +634,9 @@ class TerminalBridge {
 
             disconnected = true
             connecting = false
+            if (disconnectReason == DisconnectReason.UNKNOWN) {
+                disconnectReason = reason
+            }
         }
 
         // Cancel any pending prompts
@@ -647,7 +652,7 @@ class TerminalBridge {
             }
         }
 
-        if (immediate || (host.quickDisconnect && !host.stayConnected)) {
+        if (immediate || reason.isIntentional || (host.quickDisconnect && !host.stayConnected)) {
             awaitingClose = true
             triggerDisconnectListener()
         } else {
@@ -996,7 +1001,7 @@ class TerminalBridge {
             _networkStatusMessages.emit(manager.res.getString(R.string.network_grace_period_expired))
 
             // Trigger normal disconnect flow
-            dispatchDisconnect(immediate = false)
+            dispatchDisconnect(immediate = false, reason = DisconnectReason.NETWORK_LOST)
         }
     }
 
@@ -1039,7 +1044,7 @@ class TerminalBridge {
             // IP changed - TCP connection is broken, must reconnect
             scope.launch { _networkStatusMessages.emit(manager.res.getString(R.string.network_restored_ip_changed)) }
             lastKnownNetworkState = null
-            dispatchDisconnect(immediate = false)
+            dispatchDisconnect(immediate = false, reason = DisconnectReason.NETWORK_LOST)
         }
     }
 

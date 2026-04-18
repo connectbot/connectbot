@@ -24,6 +24,7 @@ import androidx.core.net.toUri
 import com.google.ase.Exec
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.service.DisconnectReason
 import timber.log.Timber
 import java.io.FileDescriptor
 import java.io.FileInputStream
@@ -69,7 +70,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
         shellPid = pids[0]
         val exitWatcher = Runnable {
             Exec.waitFor(shellPid)
-            bridge?.dispatchDisconnect(false)
+            bridge?.dispatchDisconnect(false, DisconnectReason.REMOTE_EOF)
         }
 
         val exitWatcherThread = Thread(exitWatcher)
@@ -99,7 +100,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
     @Throws(IOException::class)
     override fun read(buffer: ByteArray, offset: Int, length: Int): Int {
         val inputStream = `is` ?: run {
-            bridge?.dispatchDisconnect(false)
+            bridge?.dispatchDisconnect(false, DisconnectReason.IO_ERROR)
             throw IOException("session closed")
         }
         return inputStream.read(buffer, offset, length)
