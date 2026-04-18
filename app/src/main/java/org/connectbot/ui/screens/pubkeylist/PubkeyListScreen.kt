@@ -44,6 +44,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.FileOpen
+import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.outlined.Fingerprint
@@ -104,6 +105,7 @@ import org.connectbot.ui.theme.ConnectBotTheme
 fun PubkeyListScreen(
     onNavigateBack: () -> Unit,
     onNavigateToGenerate: () -> Unit,
+    onNavigateToImportFido2: () -> Unit,
     onNavigateToEdit: (Pubkey) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PubkeyListViewModel = hiltViewModel()
@@ -227,6 +229,7 @@ fun PubkeyListScreen(
         snackbarHostState = snackbarHostState,
         onNavigateBack = onNavigateBack,
         onNavigateToGenerate = onNavigateToGenerate,
+        onNavigateToImportFido2 = onNavigateToImportFido2,
         onNavigateToEdit = onNavigateToEdit,
         onDeletePubkey = viewModel::deletePubkey,
         onToggleKeyLoad = viewModel::toggleKeyLoaded,
@@ -237,7 +240,7 @@ fun PubkeyListScreen(
         onCopyPrivateKeyPem = { pubkey, onPasswordRequired ->
             viewModel.copyPrivateKeyPem(pubkey, onPasswordRequired)
         },
-        onCopyPrivateKeyEncrypt = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
+        onCopyEncryptedPrivateKey = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
             viewModel.copyPrivateKeyEncrypted(pubkey, onPasswordRequired, onExportPassphraseRequired)
         },
         onExportPublicKey = viewModel::requestExportPublicKey,
@@ -247,7 +250,7 @@ fun PubkeyListScreen(
         onExportPrivateKeyPem = { pubkey, onPasswordRequired ->
             viewModel.requestExportPrivateKeyPem(pubkey, onPasswordRequired)
         },
-        onExportPrivateKeyEncrypt = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
+        onExportEncryptedPrivateKey = { pubkey, onPasswordRequired, onExportPassphraseRequired ->
             viewModel.requestExportPrivateKeyEncrypted(pubkey, onPasswordRequired, onExportPassphraseRequired)
         },
         onImportKey = {
@@ -264,17 +267,18 @@ fun PubkeyListScreenContent(
     snackbarHostState: SnackbarHostState,
     onNavigateBack: () -> Unit,
     onNavigateToGenerate: () -> Unit,
+    onNavigateToImportFido2: () -> Unit,
     onNavigateToEdit: (Pubkey) -> Unit,
     onDeletePubkey: (Pubkey) -> Unit,
     onToggleKeyLoad: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPublicKey: (Pubkey) -> Unit,
     onCopyPrivateKeyOpenSSH: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPrivateKeyPem: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
-    onCopyPrivateKeyEncrypt: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onCopyEncryptedPrivateKey: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPublicKey: (Pubkey) -> Unit,
     onExportPrivateKeyOpenSSH: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyPem: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
-    onExportPrivateKeyEncrypt: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onExportEncryptedPrivateKey: (Pubkey, (Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onImportKey: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -331,6 +335,14 @@ fun PubkeyListScreenContent(
                     icon = { Icon(Icons.Default.FileOpen, contentDescription = null) },
                     text = { Text(stringResource(R.string.pubkey_import_existing)) }
                 )
+                FloatingActionButtonMenuItem(
+                    onClick = {
+                        fabMenuExpanded = false
+                        onNavigateToImportFido2()
+                    },
+                    icon = { Icon(Icons.Default.Key, contentDescription = null) },
+                    text = { Text(stringResource(R.string.pubkey_import_fido2)) }
+                )
             }
         },
         snackbarHost = {
@@ -386,8 +398,8 @@ fun PubkeyListScreenContent(
                                 onCopyPrivateKeyPem = { onPasswordRequired ->
                                     onCopyPrivateKeyPem(pubkey, onPasswordRequired)
                                 },
-                                onCopyPrivateKeyEncrypt = { onPasswordRequired, onExportPassphraseRequired ->
-                                    onCopyPrivateKeyEncrypt(pubkey, onPasswordRequired, onExportPassphraseRequired)
+                                onCopyEncryptedPrivateKey = { onPasswordRequired, onExportPassphraseRequired ->
+                                    onCopyEncryptedPrivateKey(pubkey, onPasswordRequired, onExportPassphraseRequired)
                                 },
                                 onExportPublicKey = { onExportPublicKey(pubkey) },
                                 onExportPrivateKeyOpenSSH = { onPasswordRequired ->
@@ -396,8 +408,8 @@ fun PubkeyListScreenContent(
                                 onExportPrivateKeyPem = { onPasswordRequired ->
                                     onExportPrivateKeyPem(pubkey, onPasswordRequired)
                                 },
-                                onExportPrivateKeyEncrypt = { onPasswordRequired, onExportPassphraseRequired ->
-                                    onExportPrivateKeyEncrypt(pubkey, onPasswordRequired, onExportPassphraseRequired)
+                                onExportEncryptedPrivateKey = { onPasswordRequired, onExportPassphraseRequired ->
+                                    onExportEncryptedPrivateKey(pubkey, onPasswordRequired, onExportPassphraseRequired)
                                 },
                                 onEdit = { onNavigateToEdit(pubkey) },
                                 onClick = { onToggleKeyLoad(pubkey, it) }
@@ -419,11 +431,11 @@ private fun PubkeyListItem(
     onCopyPublicKey: () -> Unit,
     onCopyPrivateKeyOpenSSH: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onCopyPrivateKeyPem: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
-    onCopyPrivateKeyEncrypt: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onCopyEncryptedPrivateKey: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPublicKey: () -> Unit,
     onExportPrivateKeyOpenSSH: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onExportPrivateKeyPem: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
-    onExportPrivateKeyEncrypt: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
+    onExportEncryptedPrivateKey: ((Pubkey, (String) -> Unit) -> Unit, (Pubkey, (String) -> Unit) -> Unit) -> Unit,
     onEdit: () -> Unit,
     onClick: ((Pubkey, (String) -> Unit) -> Unit) -> Unit,
     modifier: Modifier = Modifier
@@ -451,14 +463,18 @@ private fun PubkeyListItem(
             )
         },
         leadingContent = {
+            // FIDO2 keys always show locked icon (private key is on hardware)
             val icon = when {
+                pubkey.isFido2 -> Icons.Outlined.Lock
                 pubkey.isBiometric -> Icons.Outlined.Fingerprint
                 pubkey.encrypted -> Icons.Outlined.Lock
                 else -> Icons.Outlined.LockOpen
             }
 
+            // FIDO2 keys never show loaded state (they're always "locked" on hardware)
+            val showLoaded = isLoaded && !pubkey.isFido2
             val iconModifier = when {
-                isLoaded ->
+                showLoaded ->
                     Modifier
                         .padding(2.dp)
                         .border(
@@ -478,6 +494,7 @@ private fun PubkeyListItem(
                 Icon(
                     imageVector = icon,
                     contentDescription = when {
+                        pubkey.isFido2 -> stringResource(R.string.pubkey_fido2_description)
                         pubkey.isBiometric -> stringResource(R.string.pubkey_biometric_description_icon)
                         pubkey.encrypted -> stringResource(R.string.pubkey_encrypted_description)
                         else -> stringResource(R.string.pubkey_not_encrypted_description)
@@ -535,7 +552,7 @@ private fun PubkeyListItem(
                         enabled = !isImported
                     )
 
-                    // Copy private key in OpenSSH format (not available for Keystore keys)
+                    // Copy private key in OpenSSH format (not available for Keystore or FIDO2 keys)
                     DropdownMenuItem(
                         text = {
                             Text(
@@ -558,7 +575,7 @@ private fun PubkeyListItem(
                         leadingIcon = {
                             Icon(Icons.Default.ContentCopy, null)
                         },
-                        enabled = !pubkey.isBiometric
+                        enabled = !pubkey.isBiometric && !pubkey.isFido2
                     )
 
                     // Copy private key in PEM format (for non-imported keys)
@@ -575,7 +592,7 @@ private fun PubkeyListItem(
                             leadingIcon = {
                                 Icon(Icons.Default.ContentCopy, null)
                             },
-                            enabled = !pubkey.isBiometric
+                            enabled = !pubkey.isBiometric && !pubkey.isFido2
                         )
                     }
 
@@ -585,7 +602,7 @@ private fun PubkeyListItem(
                             text = { Text(stringResource(R.string.pubkey_copy_private_encrypted)) },
                             onClick = {
                                 showMenu = false
-                                onCopyPrivateKeyEncrypt(
+                                onCopyEncryptedPrivateKey(
                                     { _, callback ->
                                         passwordCallback = callback
                                         showPasswordDialog = true
@@ -599,7 +616,7 @@ private fun PubkeyListItem(
                             leadingIcon = {
                                 Icon(Icons.Default.Lock, null)
                             },
-                            enabled = !pubkey.isBiometric
+                            enabled = !pubkey.isBiometric && !pubkey.isFido2
                         )
                     }
 
@@ -626,7 +643,7 @@ private fun PubkeyListItem(
                         leadingIcon = {
                             Icon(Icons.Default.FileDownload, null)
                         },
-                        enabled = !pubkey.isBiometric
+                        enabled = !pubkey.isBiometric && !pubkey.isFido2
                     )
 
                     // Export private key to file in PEM format (for non-imported keys)
@@ -643,7 +660,7 @@ private fun PubkeyListItem(
                             leadingIcon = {
                                 Icon(Icons.Default.FileDownload, null)
                             },
-                            enabled = !pubkey.isBiometric
+                            enabled = !pubkey.isBiometric && !pubkey.isFido2
                         )
                     }
 
@@ -653,7 +670,7 @@ private fun PubkeyListItem(
                             text = { Text(stringResource(R.string.pubkey_export_private_encrypted)) },
                             onClick = {
                                 showMenu = false
-                                onExportPrivateKeyEncrypt(
+                                onExportEncryptedPrivateKey(
                                     { _, callback ->
                                         passwordCallback = callback
                                         showPasswordDialog = true
@@ -667,7 +684,7 @@ private fun PubkeyListItem(
                             leadingIcon = {
                                 Icon(Icons.Default.Lock, null)
                             },
-                            enabled = !pubkey.isBiometric
+                            enabled = !pubkey.isBiometric && !pubkey.isFido2
                         )
                     }
 
@@ -685,11 +702,16 @@ private fun PubkeyListItem(
                 }
             }
         },
-        modifier = modifier.clickable {
-            onClick { targetPubkey, callback ->
-                // Show password dialog if needed
-                passwordCallback = callback
-                showPasswordDialog = true
+        // FIDO2 keys can't be "loaded" - they're always on hardware
+        modifier = if (pubkey.isFido2) {
+            modifier
+        } else {
+            modifier.clickable {
+                onClick { targetPubkey, callback ->
+                    // Show password dialog if needed
+                    passwordCallback = callback
+                    showPasswordDialog = true
+                }
             }
         }
     )
@@ -703,7 +725,7 @@ private fun PubkeyListItem(
                 showPasswordDialog = false
                 passwordCallback = null
             },
-            onProvidePassword = { password ->
+            onPasswordSubmit = { password ->
                 passwordCallback?.invoke(password)
                 showPasswordDialog = false
                 passwordCallback = null
@@ -732,7 +754,7 @@ private fun PubkeyListItem(
                 showExportPassphraseDialog = false
                 exportPassphraseCallback = null
             },
-            onProvidePassphrase = { passphrase ->
+            onPassphraseSubmit = { passphrase ->
                 exportPassphraseCallback?.invoke(passphrase)
                 showExportPassphraseDialog = false
                 exportPassphraseCallback = null
@@ -745,7 +767,7 @@ private fun PubkeyListItem(
 private fun PubkeyPasswordDialog(
     pubkey: Pubkey,
     onDismiss: () -> Unit,
-    onProvidePassword: (String) -> Unit
+    onPasswordSubmit: (String) -> Unit
 ) {
     var password by remember { mutableStateOf("") }
 
@@ -772,7 +794,7 @@ private fun PubkeyPasswordDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = { onProvidePassword(password) }
+                onClick = { onPasswordSubmit(password) }
             ) {
                 Text(stringResource(R.string.pubkey_unlock))
             }
@@ -934,7 +956,7 @@ private fun ImportPasswordDialog(
 @Composable
 private fun ExportPassphraseDialog(
     onDismiss: () -> Unit,
-    onProvidePassphrase: (String) -> Unit
+    onPassphraseSubmit: (String) -> Unit
 ) {
     var passphrase by remember { mutableStateOf("") }
     var confirmPassphrase by remember { mutableStateOf("") }
@@ -991,7 +1013,7 @@ private fun ExportPassphraseDialog(
             TextButton(
                 onClick = {
                     if (passphrase == confirmPassphrase && passphrase.isNotEmpty()) {
-                        onProvidePassphrase(passphrase)
+                        onPassphraseSubmit(passphrase)
                     } else {
                         showError = true
                     }
@@ -1020,17 +1042,18 @@ private fun PubkeyListScreenEmptyPreview() {
             snackbarHostState = remember { SnackbarHostState() },
             onNavigateBack = {},
             onNavigateToGenerate = {},
+            onNavigateToImportFido2 = {},
             onNavigateToEdit = {},
             onDeletePubkey = {},
             onToggleKeyLoad = { _, _ -> },
             onCopyPublicKey = {},
             onCopyPrivateKeyOpenSSH = { _, _ -> },
             onCopyPrivateKeyPem = { _, _ -> },
-            onCopyPrivateKeyEncrypt = { _, _, _ -> },
+            onCopyEncryptedPrivateKey = { _, _, _ -> },
             onExportPublicKey = {},
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
-            onExportPrivateKeyEncrypt = { _, _, _ -> },
+            onExportEncryptedPrivateKey = { _, _, _ -> },
             onImportKey = {}
         )
     }
@@ -1048,17 +1071,18 @@ private fun PubkeyListScreenLoadingPreview() {
             snackbarHostState = remember { SnackbarHostState() },
             onNavigateBack = {},
             onNavigateToGenerate = {},
+            onNavigateToImportFido2 = {},
             onNavigateToEdit = {},
             onDeletePubkey = {},
             onToggleKeyLoad = { _, _ -> },
             onCopyPublicKey = {},
             onCopyPrivateKeyOpenSSH = { _, _ -> },
             onCopyPrivateKeyPem = { _, _ -> },
-            onCopyPrivateKeyEncrypt = { _, _, _ -> },
+            onCopyEncryptedPrivateKey = { _, _, _ -> },
             onExportPublicKey = {},
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
-            onExportPrivateKeyEncrypt = { _, _, _ -> },
+            onExportEncryptedPrivateKey = { _, _, _ -> },
             onImportKey = {}
         )
     }
@@ -1111,17 +1135,18 @@ private fun PubkeyListScreenPopulatedPreview() {
             snackbarHostState = remember { SnackbarHostState() },
             onNavigateBack = {},
             onNavigateToGenerate = {},
+            onNavigateToImportFido2 = {},
             onNavigateToEdit = {},
             onDeletePubkey = {},
             onToggleKeyLoad = { _, _ -> },
             onCopyPublicKey = {},
             onCopyPrivateKeyOpenSSH = { _, _ -> },
             onCopyPrivateKeyPem = { _, _ -> },
-            onCopyPrivateKeyEncrypt = { _, _, _ -> },
+            onCopyEncryptedPrivateKey = { _, _, _ -> },
             onExportPublicKey = {},
             onExportPrivateKeyOpenSSH = { _, _ -> },
             onExportPrivateKeyPem = { _, _ -> },
-            onExportPrivateKeyEncrypt = { _, _, _ -> },
+            onExportEncryptedPrivateKey = { _, _, _ -> },
             onImportKey = {}
         )
     }
