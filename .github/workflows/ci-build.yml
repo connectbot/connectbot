@@ -121,7 +121,7 @@ jobs:
 
       - name: Generate coverage reports for SonarQube
         if: needs.check-inputs.outputs.has-sonar-token == 'true'
-        run: ./gradlew createOssDebugUnitTestCoverageReport createGoogleDebugUnitTestCoverageReport
+        run: ./gradlew koverXmlReportOssDebug koverXmlReportGoogleDebug createOssDebugAndroidTestCoverageReport createGoogleDebugAndroidTestCoverageReport
 
       - name: Run SonarQube analysis
         if: needs.check-inputs.outputs.has-sonar-token == 'true'

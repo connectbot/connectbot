@@ -47,6 +47,7 @@ mockito = "5.23.0"
 mockitoKotlin = "6.3.0"
 assertj = "3.27.7"
 robolectric = "4.16.1"
+kover = "0.9.8"
 
 errorproneCore = "2.49.0"
 media3CommonKtx = "1.10.0"
@@ -129,3 +130,4 @@ python-uv = { id = "com.pswidersk.python-uv-plugin", version.ref = "pythonUv" }
 app-versioning = { id = "io.github.reactivecircus.app-versioning", version.ref = "appVersioning"}
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 hilt-android = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+kover = { id = "org.jetbrains.kotlinx.kover", version.ref = "kover" }
