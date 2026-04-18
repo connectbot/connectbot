@@ -15,6 +15,7 @@ plugins {
     alias(libs.plugins.easylauncher)
     alias(libs.plugins.spotless)
     alias(libs.plugins.hilt.android)
+    alias(libs.plugins.kover)
 }
 
 appVersioning {
@@ -116,7 +117,6 @@ android {
             testProguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard.cfg", "proguard-tests.cfg")
 
             applicationIdSuffix = ".debug"
-            enableUnitTestCoverage = true
             enableAndroidTestCoverage = true
         }
     }
@@ -181,6 +181,46 @@ android {
 
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
+}
+
+kover {
+    reports {
+        filters {
+            excludes {
+                // Third-party code vendored in the source tree
+                packages(
+                    "de.mud.*",
+                    "com.google.ase",
+                    "org.apache.*",
+                    "org.keyczar.*",
+                    "org.openintents.*",
+                )
+                // Hilt/Dagger generated code
+                packages("dagger.*", "hilt_aggregated_deps")
+                classes(
+                    "*_MembersInjector",
+                    "*_MembersInjector\$*",
+                    "*_Factory",
+                    "*_Factory\$*",
+                    "*Hilt_*",
+                    "*_GeneratedInjector",
+                    "*_HiltModules*",
+                    "*_HiltComponents*",
+                    "*Module_Provide*",
+                    "*Module_Bind*",
+                )
+                // Room generated implementations
+                classes(
+                    "*_Impl",
+                    "*_Impl\$*",
+                    "*_AutoMigration_*",
+                    "*_AutoMigration_*\$*",
+                )
+                // Build config
+                classes("*.BuildConfig")
+            }
+        }
+    }
 }
 
 kotlin {
