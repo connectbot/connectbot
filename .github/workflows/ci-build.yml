@@ -117,11 +117,7 @@ jobs:
           target: default
           arch: x86_64
           disk-size: 2G
-          script: ./gradlew connectedCheck --continue
-
-      - name: Generate coverage reports for SonarQube
-        if: needs.check-inputs.outputs.has-sonar-token == 'true'
-        run: ./gradlew koverXmlReportOssDebug koverXmlReportGoogleDebug createOssDebugAndroidTestCoverageReport createGoogleDebugAndroidTestCoverageReport
+          script: ./gradlew connectedCheck koverXmlReportOssDebug koverXmlReportGoogleDebug createOssDebugAndroidTestCoverageReport createGoogleDebugAndroidTestCoverageReport --continue
 
       - name: Run SonarQube analysis
         if: needs.check-inputs.outputs.has-sonar-token == 'true'
