@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 
 package org.connectbot
 
+import androidx.activity.ComponentActivity
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
@@ -44,15 +45,17 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
+@Config(sdk = [34], qualifiers = "w1000dp-h1200dp-xhdpi", application = HiltTestApplication_Application::class)
 class HostEditorScreenTest {
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1)
-    val composeTestRule = createAndroidComposeRule<HiltComponentActivity>()
+    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     private lateinit var navController: TestNavHostController
 
@@ -64,17 +67,14 @@ class HostEditorScreenTest {
             navController = TestNavHostController(context)
             navController.navigatorProvider.addNavigator(ComposeNavigator())
             ConnectBotTheme {
-                // Define a test route for HostEditorScreen
                 NavHost(navController = navController, startDestination = "start") {
-                    composable("start") {
-                        // Empty start destination - tests will navigate to hostEditor
-                    }
+                    composable("start") {}
                     composable(
                         route = "hostEditor/{hostId}",
-                        arguments = listOf(navArgument("hostId") { type = NavType.LongType })
+                        arguments = listOf(navArgument("hostId") { type = NavType.LongType }),
                     ) {
                         HostEditorScreen(
-                            onNavigateBack = { navController.popBackStack() }
+                            onNavigateBack = { navController.popBackStack() },
                         )
                     }
                 }
@@ -82,7 +82,6 @@ class HostEditorScreenTest {
         }
     }
 
-    // Helper function to navigate to HostEditorScreen with a specific hostId
     private fun navigateToHostEditorScreen(hostId: Long) {
         composeTestRule.runOnUiThread {
             navController.navigate("hostEditor/$hostId")
@@ -102,9 +101,6 @@ class HostEditorScreenTest {
     fun hostEditorScreen_newHost_saveButtonDisabledByDefault() {
         navigateToHostEditorScreen(-1L)
 
-        // The save button should be disabled when quick connect is empty
-        // There are two "Add Host" texts - one in title, one in button
-        // We need to find the button specifically
         composeTestRule
             .onNodeWithTag("add_host_button")
             .assertIsNotEnabled()
@@ -114,16 +110,13 @@ class HostEditorScreenTest {
     fun hostEditorScreen_newHost_saveButtonEnabledAfterInput() {
         navigateToHostEditorScreen(-1L)
 
-        // Enter text in quick connect field
         composeTestRule
             .onNodeWithText("Quick connect")
             .performClick()
             .performTextInput("test@example.com")
 
-        // Wait for the state to update
         composeTestRule.waitForIdle()
 
-        // The save button should now be enabled
         composeTestRule
             .onNodeWithTag("add_host_button")
             .assertIsEnabled()
@@ -133,7 +126,6 @@ class HostEditorScreenTest {
     fun hostEditorScreen_newHost_callsNavigateBackOnSave() {
         navigateToHostEditorScreen(-1L)
 
-        // Enter text in quick connect field
         composeTestRule
             .onNodeWithText("Quick connect")
             .performClick()
@@ -141,12 +133,10 @@ class HostEditorScreenTest {
 
         composeTestRule.waitForIdle()
 
-        // Click save button (the second "Add Host" text)
         composeTestRule
             .onNodeWithTag("add_host_button")
             .performClick()
 
-        // Verify navigateBack was called (by checking if the navController popped back to start)
         composeTestRule.runOnIdle {
             assertTrue(navController.currentBackStackEntry?.destination?.route == "start")
         }
@@ -156,12 +146,10 @@ class HostEditorScreenTest {
     fun hostEditorScreen_hasBackButton() {
         navigateToHostEditorScreen(-1L)
 
-        // Click back button
         composeTestRule
             .onNodeWithContentDescription("Navigate up")
             .performClick()
 
-        // Verify navigateBack was called (by checking if the navController popped back to start)
         composeTestRule.runOnIdle {
             assertTrue(navController.currentBackStackEntry?.destination?.route == "start")
         }
@@ -171,14 +159,12 @@ class HostEditorScreenTest {
     fun hostEditorScreen_localProtocol_hidesUserHostPortFields() {
         navigateToHostEditorScreen(-1L)
 
-        // Click "Show advanced options" to enter expanded mode
         composeTestRule
             .onNodeWithText("Show advanced options")
             .performClick()
 
         composeTestRule.waitForIdle()
 
-        // Initially, with default protocol (ssh), fields should be visible
         composeTestRule
             .onNodeWithText("Username")
             .assertIsDisplayed()
@@ -189,21 +175,18 @@ class HostEditorScreenTest {
             .onNodeWithText("Port")
             .assertIsDisplayed()
 
-        // Click on protocol dropdown
         composeTestRule
             .onNodeWithText("ssh")
             .performClick()
 
         composeTestRule.waitForIdle()
 
-        // Select "local" protocol
         composeTestRule
             .onNodeWithText("local")
             .performClick()
 
         composeTestRule.waitForIdle()
 
-        // Now username, hostname, and port fields should be hidden
         composeTestRule
             .onNodeWithText("Username")
             .assertIsNotDisplayed()
@@ -219,34 +202,28 @@ class HostEditorScreenTest {
     fun hostEditorScreen_localProtocol_saveButtonEnabled() {
         navigateToHostEditorScreen(-1L)
 
-        // Click "Show advanced options" to enter expanded mode
         composeTestRule
             .onNodeWithText("Show advanced options")
             .performClick()
 
         composeTestRule.waitForIdle()
 
-        // Save button should be disabled initially (no hostname entered)
         composeTestRule
             .onNodeWithTag("add_host_button")
             .assertIsNotEnabled()
 
-        // Click on protocol dropdown
         composeTestRule
             .onNodeWithText("ssh")
             .performClick()
 
         composeTestRule.waitForIdle()
 
-        // Select "local" protocol
         composeTestRule
             .onNodeWithText("local")
             .performClick()
 
         composeTestRule.waitForIdle()
 
-        // Now save button should be enabled even without hostname
-        // because local protocol doesn't require hostname
         composeTestRule
             .onNodeWithTag("add_host_button")
             .assertIsEnabled()

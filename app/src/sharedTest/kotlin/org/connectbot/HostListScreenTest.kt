@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,7 @@
 
 package org.connectbot
 
+import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -31,15 +32,17 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
+@Config(sdk = [34], qualifiers = "w1000dp-h1200dp-xhdpi", application = HiltTestApplication_Application::class)
 class HostListScreenTest {
     @get:Rule(order = 0)
     val hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1)
-    val composeTestRule = createAndroidComposeRule<HiltComponentActivity>()
+    val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Before
     fun setUp() {
@@ -57,7 +60,7 @@ class HostListScreenTest {
                     onNavigateToPubkeys = {},
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
-                    onNavigateToHelp = {}
+                    onNavigateToHelp = {},
                 )
             }
         }
@@ -78,7 +81,7 @@ class HostListScreenTest {
                     onNavigateToPubkeys = {},
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
-                    onNavigateToHelp = {}
+                    onNavigateToHelp = {},
                 )
             }
         }
@@ -99,17 +102,15 @@ class HostListScreenTest {
                     onNavigateToPubkeys = {},
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
-                    onNavigateToHelp = {}
+                    onNavigateToHelp = {},
                 )
             }
         }
 
-        // Click the menu button (MoreVert icon)
         composeTestRule
             .onNodeWithContentDescription("More options")
             .performClick()
 
-        // Verify menu items are displayed
         composeTestRule
             .onNodeWithText("Manage pubkeys")
             .assertIsDisplayed()
@@ -128,7 +129,7 @@ class HostListScreenTest {
                     onNavigateToPubkeys = {},
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
-                    onNavigateToHelp = {}
+                    onNavigateToHelp = {},
                 )
             }
         }
