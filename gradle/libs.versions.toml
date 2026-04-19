@@ -24,7 +24,7 @@ navigationCompose = "2.9.7"
 activityCompose = "1.13.0"
 
 sshlib = "2.2.45"
-termlib = "0.0.33"
+termlib = "0.0.34"
 playServicesBasement = "18.10.0"
 conscrypt = "2.5.3"
 conscryptOpenJdk = "2.5.2"
