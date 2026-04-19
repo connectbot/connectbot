@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ import javax.inject.Singleton
 @Module
 @TestInstallIn(
     components = [SingletonComponent::class],
-    replaces = [DatabaseModule::class]
+    replaces = [DatabaseModule::class],
 )
 object TestDatabaseModule {
     private const val TEST_DATABASE_NAME = "connectbot_test.db"
@@ -42,18 +42,17 @@ object TestDatabaseModule {
     fun provideConnectBotDatabase(@ApplicationContext context: Context): ConnectBotDatabase = Room.databaseBuilder(
         context,
         ConnectBotDatabase::class.java,
-        TEST_DATABASE_NAME
+        TEST_DATABASE_NAME,
     )
         .addMigrations(ConnectBotDatabase.MIGRATION_4_5)
         .addCallback(object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
-                // Create default profile on fresh database creation
                 db.execSQL(
                     """
                         INSERT INTO profiles (name, color_scheme_id, font_size, del_key, encoding, emulation)
                         VALUES ('Default', -1, 10, 'del', 'UTF-8', 'xterm-256color')
-                    """.trimIndent()
+                    """.trimIndent(),
                 )
             }
         })

@@ -154,6 +154,12 @@ android {
         getByName("main") {
             assets.directories.add("build/generated/exportSchema")
         }
+        getByName("test") {
+            kotlin.srcDir("src/sharedTest/kotlin")
+        }
+        getByName("androidTest") {
+            kotlin.srcDir("src/sharedTest/kotlin")
+        }
     }
 
     lint {
@@ -389,6 +395,10 @@ dependencies {
 
     androidTestImplementation(libs.hilt.android.testing)
     kspAndroidTest(libs.hilt.android.compiler)
+
+    testImplementation(libs.hilt.android.testing)
+    kspTest(libs.hilt.android.compiler)
+    testImplementation(libs.androidx.compose.ui.test.junit4)
 
     implementation(libs.androidx.biometric)
     implementation(libs.androidx.core)
