@@ -988,8 +988,11 @@ class SSH :
         }
 
         if ((newConditions and ChannelCondition.EOF) != 0) {
-            close()
+            // Dispatch REMOTE_EOF before close(): connection.close() fires
+            // connectionLost() synchronously, which would otherwise race in
+            // with IO_ERROR and trigger the reconnect overlay.
             onDisconnect(DisconnectReason.REMOTE_EOF)
+            close()
             throw IOException("Remote end closed connection")
         }
 
