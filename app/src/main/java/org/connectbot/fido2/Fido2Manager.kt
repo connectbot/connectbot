@@ -325,7 +325,7 @@ class Fido2Manager @Inject constructor(
             Log.d(TAG, "USB found ${rps.size} RPs")
 
             val sshRps = rps.filter { rpData ->
-                val rpId = rpData.rp?.get("id") as? String
+                val rpId = rpData.rp["id"] as? String
                 rpId == SSH_RP_ID || rpId?.startsWith("ssh:") == true
             }
 
@@ -335,9 +335,9 @@ class Fido2Manager @Inject constructor(
             }
 
             val credentialList = sshRps.flatMap { sshRp ->
-                val rpHash = sshRp.rpIdHash ?: sha256((sshRp.rp?.get("id") as String).toByteArray())
+                val rpHash = sshRp.rpIdHash
                 val credentials = credMgmt.enumerateCredentials(rpHash)
-                Log.d(TAG, "USB found ${credentials.size} credentials for RP ${sshRp.rp?.get("id")}")
+                Log.d(TAG, "USB found ${credentials.size} credentials for RP ${sshRp.rp["id"]}")
                 credentials.map { buildCredentialFromData(it, sshRp) }
             }
 
@@ -561,7 +561,7 @@ class Fido2Manager @Inject constructor(
                                 Log.d(TAG, "USB Ctap2Session created, checking if PIN required")
 
                                 val info = session.cachedInfo
-                                val pinRequired = info.options?.get("clientPin") == true
+                                val pinRequired = info.options["clientPin"] == true
                                 Log.d(TAG, "USB PIN required: $pinRequired")
 
                                 // Always store the device for retry
@@ -637,7 +637,7 @@ class Fido2Manager @Inject constructor(
                             Timber.d("NFC found ${rps.size} RPs")
 
                             val sshRps = rps.filter { rpData ->
-                                val rpId = rpData.rp?.get("id") as? String
+                                val rpId = rpData.rp["id"] as? String
                                 rpId == SSH_RP_ID || rpId?.startsWith("ssh:") == true
                             }
 
@@ -649,9 +649,9 @@ class Fido2Manager @Inject constructor(
                             }
 
                             val credentialList = sshRps.flatMap { sshRp ->
-                                val rpHash = sshRp.rpIdHash ?: sha256((sshRp.rp?.get("id") as String).toByteArray())
+                                val rpHash = sshRp.rpIdHash
                                 val credentials = credMgmt.enumerateCredentials(rpHash)
-                                Timber.d("NFC found ${credentials.size} credentials for RP ${sshRp.rp?.get("id")}")
+                                Timber.d("NFC found ${credentials.size} credentials for RP ${sshRp.rp["id"]}")
                                 credentials.map { buildCredentialFromData(it, sshRp) }
                             }
 
@@ -758,12 +758,12 @@ class Fido2Manager @Inject constructor(
 
                 Fido2Result.Success(
                     Fido2AuthenticatorInfo(
-                        versions = info.versions?.toList() ?: emptyList(),
+                        versions = info.versions.toList(),
                         aaguid = info.aaguid,
-                        pinConfigured = options?.get("clientPin") == true,
-                        credentialManagementSupported = options?.get("credMgmt") == true ||
-                            options?.get("credentialMgmtPreview") == true,
-                        residentKeySupported = options?.get("rk") == true,
+                        pinConfigured = options["clientPin"] == true,
+                        credentialManagementSupported = options["credMgmt"] == true ||
+                            options["credentialMgmtPreview"] == true,
+                        residentKeySupported = options["rk"] == true,
                         maxCredentialCount = info.maxCredentialCountInList,
                         remainingCredentialCount = info.remainingDiscoverableCredentials
                     )
@@ -859,7 +859,7 @@ class Fido2Manager @Inject constructor(
             val rps = credMgmt.enumerateRps()
             Log.d(TAG, "discoverSshCredentials: found ${rps.size} RPs")
             val sshRps = rps.filter { rpData ->
-                val rpId = rpData.rp?.get("id") as? String
+                val rpId = rpData.rp["id"] as? String
                 rpId == SSH_RP_ID || rpId?.startsWith("ssh:") == true
             }
 
@@ -870,9 +870,9 @@ class Fido2Manager @Inject constructor(
 
             // Enumerate credentials for all SSH RPs
             val result = sshRps.flatMap { sshRp ->
-                val rpHash = sshRp.rpIdHash ?: sha256((sshRp.rp?.get("id") as String).toByteArray())
+                val rpHash = sshRp.rpIdHash
                 val credentials = credMgmt.enumerateCredentials(rpHash)
-                Log.d(TAG, "discoverSshCredentials: found ${credentials.size} credentials for RP ${sshRp.rp?.get("id")}")
+                Log.d(TAG, "discoverSshCredentials: found ${credentials.size} credentials for RP ${sshRp.rp["id"]}")
                 credentials.map { buildCredentialFromData(it, sshRp) }
             }
 
@@ -1148,7 +1148,7 @@ class Fido2Manager @Inject constructor(
         sshRp: CredentialManagement.RpData
     ): Fido2Credential {
         val user = credData.user
-        val credentialId = credData.credentialId?.get("id") as? ByteArray
+        val credentialId = credData.credentialId["id"] as? ByteArray
             ?: error(ERR_MISSING_CREDENTIAL_ID)
         val publicKey = credData.publicKey
 
@@ -1165,9 +1165,9 @@ class Fido2Manager @Inject constructor(
 
         return Fido2Credential(
             credentialId = credentialId,
-            rpId = sshRp.rp?.get("id") as? String ?: SSH_RP_ID,
-            userHandle = user?.get("id") as? ByteArray,
-            userName = user?.get("name") as? String,
+            rpId = sshRp.rp["id"] as? String ?: SSH_RP_ID,
+            userHandle = user["id"] as? ByteArray,
+            userName = user["name"] as? String,
             publicKeyCose = publicKeyCose,
             algorithm = algorithm
         )
@@ -1285,7 +1285,7 @@ class Fido2Manager @Inject constructor(
      */
     private fun selectPinProtocol(session: Ctap2Session): PinUvAuthProtocol {
         val supportedProtocols = session.cachedInfo.pinUvAuthProtocols
-        return if (supportedProtocols != null && 2 in supportedProtocols) {
+        return if (2 in supportedProtocols) {
             PinUvAuthProtocolV2()
         } else {
             PinUvAuthProtocolV1()
