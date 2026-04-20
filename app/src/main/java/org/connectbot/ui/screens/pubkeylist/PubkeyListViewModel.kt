@@ -52,7 +52,7 @@ import javax.inject.Inject
 
 enum class ExportFormat {
     OPENSSH,
-    PEM
+    PEM,
 }
 
 data class PendingExport(
@@ -61,18 +61,18 @@ data class PendingExport(
     // Password to decrypt the key (if encrypted)
     val password: String? = null,
     // Passphrase to encrypt the exported file
-    val exportPassphrase: String? = null
+    val exportPassphrase: String? = null,
 )
 
 data class PendingImport(
     val keyData: ByteArray,
     val nickname: String,
     // Extracted key type (RSA, Ed25519, etc.)
-    val keyType: String
+    val keyType: String,
 )
 
 data class PendingPublicKeyExport(
-    val pubkey: Pubkey
+    val pubkey: Pubkey,
 )
 
 sealed class ImportResult {
@@ -93,14 +93,15 @@ data class PubkeyListUiState(
     // Public key pending export to file (triggers file picker in UI)
     val pendingPublicKeyExport: PendingPublicKeyExport? = null,
     // Key pending import that needs password (triggers password dialog in UI)
-    val pendingImport: PendingImport? = null
+    val pendingImport: PendingImport? = null,
 )
 
 @HiltViewModel
 class PubkeyListViewModel @Inject constructor(
     @param:ApplicationContext private val context: Context,
     private val repository: PubkeyRepository,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
+    private val biometricKeyManager: BiometricKeyManager,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PubkeyListUiState(isLoading = true))
@@ -189,7 +190,7 @@ class PubkeyListViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 biometricKeyToUnlock = null,
-                error = errorMessage
+                error = errorMessage,
             )
         }
     }
@@ -204,7 +205,6 @@ class PubkeyListViewModel @Inject constructor(
                 val alias = pubkey.keystoreAlias
                     ?: throw IllegalStateException("Biometric key missing keystore alias")
 
-                val biometricKeyManager = BiometricKeyManager(context)
                 val publicKey = biometricKeyManager.getPublicKey(alias)
                     ?: throw IllegalStateException("Could not retrieve public key from keystore")
 
@@ -219,7 +219,7 @@ class PubkeyListViewModel @Inject constructor(
                         _uiState.update {
                             it.copy(
                                 error = result.message,
-                                biometricKeyToUnlock = null
+                                biometricKeyToUnlock = null,
                             )
                         }
                     }
@@ -228,7 +228,7 @@ class PubkeyListViewModel @Inject constructor(
                         _uiState.update {
                             it.copy(
                                 error = result.message,
-                                biometricKeyToUnlock = null
+                                biometricKeyToUnlock = null,
                             )
                         }
                     }
@@ -237,7 +237,7 @@ class PubkeyListViewModel @Inject constructor(
                         _uiState.update {
                             it.copy(
                                 error = "Failed to load biometric key: TerminalManager not available",
-                                biometricKeyToUnlock = null
+                                biometricKeyToUnlock = null,
                             )
                         }
                     }
@@ -247,7 +247,7 @@ class PubkeyListViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         error = "Failed to load biometric key: ${e.message}",
-                        biometricKeyToUnlock = null
+                        biometricKeyToUnlock = null,
                     )
                 }
             }
@@ -405,7 +405,7 @@ class PubkeyListViewModel @Inject constructor(
     fun copyPrivateKeyEncrypted(
         pubkey: Pubkey,
         onPasswordRequired: (Pubkey, (String) -> Unit) -> Unit,
-        onExportPassphraseRequired: (Pubkey, (String) -> Unit) -> Unit
+        onExportPassphraseRequired: (Pubkey, (String) -> Unit) -> Unit,
     ) {
         val isImported = pubkey.type == "IMPORTED"
 
@@ -506,7 +506,7 @@ class PubkeyListViewModel @Inject constructor(
     fun requestExportPrivateKeyEncrypted(
         pubkey: Pubkey,
         onPasswordRequired: (Pubkey, (String) -> Unit) -> Unit,
-        onExportPassphraseRequired: (Pubkey, (String) -> Unit) -> Unit
+        onExportPassphraseRequired: (Pubkey, (String) -> Unit) -> Unit,
     ) {
         val isImported = pubkey.type == "IMPORTED"
 
@@ -520,8 +520,8 @@ class PubkeyListViewModel @Inject constructor(
                                 pubkey = pubkey,
                                 format = ExportFormat.OPENSSH,
                                 password = password,
-                                exportPassphrase = exportPassphrase
-                            )
+                                exportPassphrase = exportPassphrase,
+                            ),
                         )
                     }
                 }
@@ -537,8 +537,8 @@ class PubkeyListViewModel @Inject constructor(
                         pubkey = pubkey,
                         format = ExportFormat.OPENSSH,
                         password = null,
-                        exportPassphrase = exportPassphrase
-                    )
+                        exportPassphrase = exportPassphrase,
+                    ),
                 )
             }
         }
@@ -596,7 +596,7 @@ class PubkeyListViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             error = "Cannot export public key from imported key",
-                            pendingPublicKeyExport = null
+                            pendingPublicKeyExport = null,
                         )
                     }
                     return@launch
@@ -619,7 +619,7 @@ class PubkeyListViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         error = "Failed to export public key: ${e.message}",
-                        pendingPublicKeyExport = null
+                        pendingPublicKeyExport = null,
                     )
                 }
             }
@@ -676,7 +676,7 @@ class PubkeyListViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             error = "Failed to export private key",
-                            pendingExport = null
+                            pendingExport = null,
                         )
                     }
                     return@launch
@@ -693,7 +693,7 @@ class PubkeyListViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         error = "Failed to decrypt key: Bad password",
-                        pendingExport = null
+                        pendingExport = null,
                     )
                 }
             } catch (e: Exception) {
@@ -701,7 +701,7 @@ class PubkeyListViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         error = "Failed to export private key: ${e.message}",
-                        pendingExport = null
+                        pendingExport = null,
                     )
                 }
             }
@@ -727,8 +727,8 @@ class PubkeyListViewModel @Inject constructor(
                                 pendingImport = PendingImport(
                                     keyData = result.keyData,
                                     nickname = result.nickname,
-                                    keyType = result.keyType
-                                )
+                                    keyType = result.keyType,
+                                ),
                             )
                         }
                     }
@@ -772,7 +772,7 @@ class PubkeyListViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             error = "Failed to decrypt key: Bad password",
-                            pendingImport = null
+                            pendingImport = null,
                         )
                     }
                 }
@@ -781,7 +781,7 @@ class PubkeyListViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         error = "Failed to decrypt key: ${e.message}",
-                        pendingImport = null
+                        pendingImport = null,
                     )
                 }
             }
@@ -800,7 +800,7 @@ class PubkeyListViewModel @Inject constructor(
         nickname: String,
         decryptPassword: String,
         encrypt: Boolean,
-        encryptPassword: String?
+        encryptPassword: String?,
     ): Pubkey? {
         val keyString = String(keyData)
 
@@ -825,7 +825,7 @@ class PubkeyListViewModel @Inject constructor(
                 confirmation = false,
                 createdDate = System.currentTimeMillis(),
                 privateKey = privateKeyBytes,
-                publicKey = kp.public.encoded
+                publicKey = kp.public.encoded,
             )
         } catch (e: Exception) {
             Timber.e(e, "Failed to decrypt key")
@@ -885,8 +885,8 @@ class PubkeyListViewModel @Inject constructor(
                         confirmation = false,
                         createdDate = System.currentTimeMillis(),
                         privateKey = kp.private.encoded,
-                        publicKey = kp.public.encoded
-                    )
+                        publicKey = kp.public.encoded,
+                    ),
                 )
             } else {
                 // Encrypted key - need password to decrypt
@@ -912,8 +912,8 @@ class PubkeyListViewModel @Inject constructor(
                     confirmation = false,
                     createdDate = System.currentTimeMillis(),
                     privateKey = keyPair.private.encoded,
-                    publicKey = keyPair.public.encoded
-                )
+                    publicKey = keyPair.public.encoded,
+                ),
             )
         }
 

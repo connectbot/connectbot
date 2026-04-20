@@ -57,7 +57,7 @@ class PubkeyListViewModelTest {
     private val dispatchers = CoroutineDispatchers(
         default = testDispatcher,
         io = testDispatcher,
-        main = testDispatcher
+        main = testDispatcher,
     )
     private lateinit var context: Context
     private lateinit var repository: PubkeyRepository
@@ -104,7 +104,7 @@ class PubkeyListViewModelTest {
         Timber.uprootAll()
     }
 
-    private fun createViewModel(): PubkeyListViewModel = PubkeyListViewModel(context, repository, dispatchers)
+    private fun createViewModel(): PubkeyListViewModel = PubkeyListViewModel(context, repository, dispatchers, mock())
 
     // ========== Tests for encrypted key import with re-encryption ==========
 
@@ -127,7 +127,7 @@ class PubkeyListViewModelTest {
         viewModel.completeImportWithPassword(
             decryptPassword = "testpass",
             encrypt = false,
-            encryptPassword = null
+            encryptPassword = null,
         )
         advanceUntilIdle()
 
@@ -162,7 +162,7 @@ class PubkeyListViewModelTest {
         viewModel.completeImportWithPassword(
             decryptPassword = "testpass",
             encrypt = true,
-            encryptPassword = "newpassword"
+            encryptPassword = "newpassword",
         )
         advanceUntilIdle()
 
@@ -195,7 +195,7 @@ class PubkeyListViewModelTest {
         viewModel.completeImportWithPassword(
             decryptPassword = "testpass",
             encrypt = true,
-            encryptPassword = "testpass" // Same as decrypt password
+            encryptPassword = "testpass", // Same as decrypt password
         )
         advanceUntilIdle()
 
@@ -226,7 +226,7 @@ class PubkeyListViewModelTest {
         viewModel.completeImportWithPassword(
             decryptPassword = "wrongpassword",
             encrypt = false,
-            encryptPassword = null
+            encryptPassword = null,
         )
         advanceUntilIdle()
 
@@ -256,7 +256,7 @@ class PubkeyListViewModelTest {
         viewModel.completeImportWithPassword(
             decryptPassword = "", // No password needed for unencrypted key
             encrypt = false,
-            encryptPassword = null
+            encryptPassword = null,
         )
         advanceUntilIdle()
 
@@ -289,7 +289,7 @@ class PubkeyListViewModelTest {
         viewModel.completeImportWithPassword(
             decryptPassword = "",
             encrypt = true,
-            encryptPassword = "storagepassword"
+            encryptPassword = "storagepassword",
         )
         advanceUntilIdle()
 
@@ -376,7 +376,7 @@ class PubkeyListViewModelTest {
         @Suppress("UNCHECKED_CAST")
         val uiStateFlow = uiStateField.get(viewModel) as MutableStateFlow<PubkeyListUiState>
         uiStateFlow.value = uiStateFlow.value.copy(
-            pendingImport = PendingImport(keyData, nickname, keyType)
+            pendingImport = PendingImport(keyData, nickname, keyType),
         )
     }
 }

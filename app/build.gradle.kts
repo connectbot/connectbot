@@ -398,6 +398,7 @@ dependencies {
 
     testImplementation(libs.hilt.android.testing)
     kspTest(libs.hilt.android.compiler)
+    testImplementation(libs.androidx.compose.ui.test)
     testImplementation(libs.androidx.compose.ui.test.junit4)
 
     implementation(libs.androidx.biometric)

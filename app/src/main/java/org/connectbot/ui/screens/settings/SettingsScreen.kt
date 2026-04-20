@@ -83,14 +83,14 @@ import java.util.Locale
 fun SettingsScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SettingsViewModel = hiltViewModel()
+    viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
 
     // Permission launcher for notification permission
     val permissionLauncher = rememberLauncherForActivityResult(
-        ActivityResultContracts.RequestPermission()
+        ActivityResultContracts.RequestPermission(),
     ) { _ ->
         // Check the actual permission status instead of relying on the launcher result.
         // If user went to settings and granted permission, the result will be false but
@@ -145,7 +145,7 @@ fun SettingsScreen(
                     data = Uri.fromParts("package", context.packageName, null)
                 }
                 context.startActivity(intent)
-            }
+            },
         )
     }
 
@@ -187,7 +187,7 @@ fun SettingsScreen(
         onBellVolumeChange = viewModel::updateBellVolume,
         onBellVibrateChange = viewModel::updateBellVibrate,
         onBellNotificationChange = viewModel::updateBellNotification,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -231,7 +231,7 @@ fun SettingsScreenContent(
     onBellVolumeChange: (Float) -> Unit,
     onBellVibrateChange: (Boolean) -> Unit,
     onBellNotificationChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Scaffold(
         topBar = {
@@ -239,12 +239,12 @@ fun SettingsScreenContent(
                 title = { Text(stringResource(R.string.title_settings)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.button_navigate_up))
                     }
-                }
+                },
             )
         },
-        modifier = modifier
+        modifier = modifier,
     ) { padding ->
         LazyColumn(modifier = Modifier.padding(padding)) {
             if (uiState.canAuthenticate) {
@@ -257,7 +257,7 @@ fun SettingsScreenContent(
                         title = stringResource(R.string.pref_auth_on_launch_title),
                         summary = stringResource(R.string.pref_auth_on_launch_summary),
                         checked = uiState.authOnLaunch,
-                        onCheckedChange = onAuthOnLaunchChange
+                        onCheckedChange = onAuthOnLaunchChange,
                     )
                 }
             }
@@ -267,7 +267,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_memkeys_title),
                     summary = stringResource(R.string.pref_memkeys_summary),
                     checked = uiState.memkeys,
-                    onCheckedChange = onMemkeysChange
+                    onCheckedChange = onMemkeysChange,
                 )
             }
 
@@ -276,7 +276,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_conn_persist_title),
                     summary = stringResource(R.string.pref_conn_persist_summary),
                     checked = uiState.connPersist,
-                    onCheckedChange = onConnPersistChange
+                    onCheckedChange = onConnPersistChange,
                 )
             }
 
@@ -285,7 +285,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_wifilock_title),
                     summary = stringResource(R.string.pref_wifilock_summary),
                     checked = uiState.wifilock,
-                    onCheckedChange = onWifilockChange
+                    onCheckedChange = onWifilockChange,
                 )
             }
 
@@ -294,7 +294,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_backupkeys_title),
                     summary = stringResource(R.string.pref_backupkeys_summary),
                     checked = uiState.backupkeys,
-                    onCheckedChange = onBackupkeysChange
+                    onCheckedChange = onBackupkeysChange,
                 )
             }
 
@@ -307,7 +307,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_scrollback_title),
                     summary = stringResource(R.string.pref_scrollback_summary),
                     value = uiState.scrollback,
-                    onValueChange = onScrollbackChange
+                    onValueChange = onScrollbackChange,
                 )
             }
 
@@ -315,7 +315,7 @@ fun SettingsScreenContent(
                 AddCustomTerminalTypePreference(
                     customTerminalTypes = uiState.customTerminalTypes,
                     onAddTerminalType = onAddCustomTerminalType,
-                    onRemoveTerminalType = onRemoveCustomTerminalType
+                    onRemoveTerminalType = onRemoveCustomTerminalType,
                 )
             }
 
@@ -343,7 +343,7 @@ fun SettingsScreenContent(
                     summary = getLocalizedFontDisplayName(uiState.fontFamily),
                     value = uiState.fontFamily,
                     entries = allEntries,
-                    onValueChange = onFontFamilyChange
+                    onValueChange = onFontFamilyChange,
                 )
             }
 
@@ -356,7 +356,7 @@ fun SettingsScreenContent(
                         validationError = uiState.fontValidationError,
                         onAddFont = onAddCustomFont,
                         onRemoveFont = onRemoveCustomFont,
-                        onClearError = onClearFontError
+                        onClearError = onClearFontError,
                     )
                 }
             }
@@ -368,7 +368,7 @@ fun SettingsScreenContent(
                     importError = uiState.fontImportError,
                     onImportFont = onImportLocalFont,
                     onDeleteFont = onDeleteLocalFont,
-                    onClearError = onClearImportError
+                    onClearError = onClearImportError,
                 )
             }
 
@@ -390,7 +390,7 @@ fun SettingsScreenContent(
                     summary = selectedProfile?.name ?: noneLabel,
                     value = uiState.defaultProfileId.toString(),
                     entries = profileEntries,
-                    onValueChange = { onDefaultProfileChange(it.toLong()) }
+                    onValueChange = { onDefaultProfileChange(it.toLong()) },
                 )
             }
 
@@ -415,7 +415,7 @@ fun SettingsScreenContent(
                     summary = currentLabel,
                     value = uiState.language,
                     entries = languageEntries.map { (tag, label) -> label to tag },
-                    onValueChange = onLanguageChange
+                    onValueChange = onLanguageChange,
                 )
             }
 
@@ -431,9 +431,9 @@ fun SettingsScreenContent(
                     entries = listOf(
                         stringResource(R.string.pref_theme_system) to ThemeMode.SYSTEM.name,
                         stringResource(R.string.pref_theme_light) to ThemeMode.LIGHT.name,
-                        stringResource(R.string.pref_theme_dark) to ThemeMode.DARK.name
+                        stringResource(R.string.pref_theme_dark) to ThemeMode.DARK.name,
                     ),
-                    onValueChange = { onThemeModeChange(ThemeMode.fromString(it)) }
+                    onValueChange = { onThemeModeChange(ThemeMode.fromString(it)) },
                 )
             }
 
@@ -452,9 +452,9 @@ fun SettingsScreenContent(
                         stringResource(R.string.list_rotation_default) to "Default",
                         stringResource(R.string.list_rotation_land) to "Force landscape",
                         stringResource(R.string.list_rotation_port) to "Force portrait",
-                        stringResource(R.string.list_rotation_auto) to "Automatic"
+                        stringResource(R.string.list_rotation_auto) to "Automatic",
                     ),
-                    onValueChange = onRotationChange
+                    onValueChange = onRotationChange,
                 )
             }
 
@@ -463,7 +463,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_fullscreen_title),
                     summary = stringResource(R.string.pref_fullscreen_summary),
                     checked = uiState.fullscreen,
-                    onCheckedChange = onFullscreenChange
+                    onCheckedChange = onFullscreenChange,
                 )
             }
 
@@ -472,7 +472,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_titlebarhide_title),
                     summary = stringResource(R.string.pref_titlebarhide_summary),
                     checked = uiState.titlebarhide,
-                    onCheckedChange = onTitleBarHideChange
+                    onCheckedChange = onTitleBarHideChange,
                 )
             }
 
@@ -481,7 +481,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_pg_updn_gesture_title),
                     summary = stringResource(R.string.pref_pg_updn_gesture_summary),
                     checked = uiState.pgupdngesture,
-                    onCheckedChange = onPgUpDnGestureChange
+                    onCheckedChange = onPgUpDnGestureChange,
                 )
             }
 
@@ -490,7 +490,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_volumefont_title),
                     summary = stringResource(R.string.pref_volumefont_summary),
                     checked = uiState.volumefont,
-                    onCheckedChange = onVolumeFontChange
+                    onCheckedChange = onVolumeFontChange,
                 )
             }
 
@@ -499,7 +499,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_keepalive_title),
                     summary = stringResource(R.string.pref_keepalive_summary),
                     checked = uiState.keepalive,
-                    onCheckedChange = onKeepAliveChange
+                    onCheckedChange = onKeepAliveChange,
                 )
             }
 
@@ -512,7 +512,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_alwaysvisible_title),
                     summary = stringResource(R.string.pref_alwaysvisible_summary),
                     checked = uiState.alwaysvisible,
-                    onCheckedChange = onAlwaysVisibleChange
+                    onCheckedChange = onAlwaysVisibleChange,
                 )
             }
 
@@ -521,7 +521,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_shiftfkeys_title),
                     summary = stringResource(R.string.pref_shiftfkeys_summary),
                     checked = uiState.shiftfkeys,
-                    onCheckedChange = onShiftFkeysChange
+                    onCheckedChange = onShiftFkeysChange,
                 )
             }
 
@@ -530,7 +530,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_ctrlfkeys_title),
                     summary = stringResource(R.string.pref_ctrlfkeys_summary),
                     checked = uiState.ctrlfkeys,
-                    onCheckedChange = onCtrlFkeysChange
+                    onCheckedChange = onCtrlFkeysChange,
                 )
             }
 
@@ -547,9 +547,9 @@ fun SettingsScreenContent(
                     entries = listOf(
                         stringResource(R.string.no) to "no",
                         stringResource(R.string.only_alt) to "alt",
-                        stringResource(R.string.yes) to "yes"
+                        stringResource(R.string.yes) to "yes",
                     ),
-                    onValueChange = onStickyModifiersChange
+                    onValueChange = onStickyModifiersChange,
                 )
             }
 
@@ -566,9 +566,9 @@ fun SettingsScreenContent(
                     entries = listOf(
                         stringResource(R.string.list_keymode_right) to "Use right-side keys",
                         stringResource(R.string.list_keymode_left) to "Use left-side keys",
-                        stringResource(R.string.list_keymode_none) to "none"
+                        stringResource(R.string.list_keymode_none) to "none",
                     ),
-                    onValueChange = onKeyModeChange
+                    onValueChange = onKeyModeChange,
                 )
             }
 
@@ -592,9 +592,9 @@ fun SettingsScreenContent(
                         stringResource(R.string.list_camera_esc) to "Esc",
                         stringResource(R.string.list_camera_esc_a) to "Esc+A",
                         stringResource(R.string.list_camera_none) to "None",
-                        stringResource(R.string.list_camera_text_input) to "text_input"
+                        stringResource(R.string.list_camera_text_input) to "text_input",
                     ),
-                    onValueChange = onCameraChange
+                    onValueChange = onCameraChange,
                 )
             }
 
@@ -603,7 +603,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_bumpyarrows_title),
                     summary = stringResource(R.string.pref_bumpyarrows_summary),
                     checked = uiState.bumpyarrows,
-                    onCheckedChange = onBumpyArrowsChange
+                    onCheckedChange = onBumpyArrowsChange,
                 )
             }
 
@@ -616,7 +616,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_bell_title),
                     summary = stringResource(R.string.pref_bell_summary),
                     checked = uiState.bell,
-                    onCheckedChange = onBellChange
+                    onCheckedChange = onBellChange,
                 )
             }
 
@@ -624,7 +624,7 @@ fun SettingsScreenContent(
                 SliderPreference(
                     title = stringResource(R.string.pref_bell_volume_title),
                     value = uiState.bellVolume,
-                    onValueChange = onBellVolumeChange
+                    onValueChange = onBellVolumeChange,
                 )
             }
 
@@ -633,7 +633,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_bell_vibrate_title),
                     summary = stringResource(R.string.pref_bell_vibrate_summary),
                     checked = uiState.bellVibrate,
-                    onCheckedChange = onBellVibrateChange
+                    onCheckedChange = onBellVibrateChange,
                 )
             }
 
@@ -642,7 +642,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_bell_notification_title),
                     summary = stringResource(R.string.pref_bell_notification_summary),
                     checked = uiState.bellNotification,
-                    onCheckedChange = onBellNotificationChange
+                    onCheckedChange = onBellNotificationChange,
                 )
             }
         }
@@ -660,7 +660,7 @@ private fun buildAvailableLanguageList(context: android.content.Context): List<P
         if (parser.eventType == XmlPullParser.START_TAG && parser.name == "locale") {
             val tag = parser.getAttributeValue(
                 "http://schemas.android.com/apk/res/android",
-                "name"
+                "name",
             )
             if (tag != null) {
                 localeTags.add(tag)
@@ -683,14 +683,14 @@ private fun buildAvailableLanguageList(context: android.content.Context): List<P
 @Composable
 private fun PreferenceCategory(
     title: String,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleSmall,
             color = MaterialTheme.colorScheme.primary,
-            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp)
+            modifier = Modifier.padding(horizontal = 16.dp, vertical = 12.dp),
         )
     }
 }
@@ -701,7 +701,7 @@ private fun SwitchPreference(
     summary: String,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     ListItem(
         headlineContent = { Text(title) },
@@ -709,10 +709,10 @@ private fun SwitchPreference(
         trailingContent = {
             Switch(
                 checked = checked,
-                onCheckedChange = onCheckedChange
+                onCheckedChange = onCheckedChange,
             )
         },
-        modifier = modifier.clickable { onCheckedChange(!checked) }
+        modifier = modifier.clickable { onCheckedChange(!checked) },
     )
     HorizontalDivider()
 }
@@ -723,14 +723,14 @@ private fun TextPreference(
     summary: String,
     value: String,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
     ListItem(
         headlineContent = { Text(title) },
         supportingContent = { Text(summary) },
-        modifier = modifier.clickable { showDialog = true }
+        modifier = modifier.clickable { showDialog = true },
     )
     HorizontalDivider()
 
@@ -742,7 +742,7 @@ private fun TextPreference(
             onConfirm = { newValue ->
                 onValueChange(newValue)
                 showDialog = false
-            }
+            },
         )
     }
 }
@@ -752,7 +752,7 @@ private fun TextPreferenceDialog(
     title: String,
     value: String,
     onDismiss: () -> Unit,
-    onConfirm: (String) -> Unit
+    onConfirm: (String) -> Unit,
 ) {
     var textValue by remember { mutableStateOf(value) }
 
@@ -764,7 +764,7 @@ private fun TextPreferenceDialog(
                 value = textValue,
                 onValueChange = { textValue = it },
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         },
         confirmButton = {
@@ -776,7 +776,7 @@ private fun TextPreferenceDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.delete_neg))
             }
-        }
+        },
     )
 }
 
@@ -787,14 +787,14 @@ private fun ListPreference(
     value: String,
     entries: List<Pair<String, String>>,
     onValueChange: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
     ListItem(
         headlineContent = { Text(title) },
         supportingContent = { Text(summary) },
-        modifier = modifier.clickable { showDialog = true }
+        modifier = modifier.clickable { showDialog = true },
     )
     HorizontalDivider()
 
@@ -807,7 +807,7 @@ private fun ListPreference(
             onConfirm = { newValue ->
                 onValueChange(newValue)
                 showDialog = false
-            }
+            },
         )
     }
 }
@@ -818,7 +818,7 @@ private fun ListPreferenceDialog(
     value: String,
     entries: List<Pair<String, String>>,
     onDismiss: () -> Unit,
-    onConfirm: (String) -> Unit
+    onConfirm: (String) -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -828,7 +828,7 @@ private fun ListPreferenceDialog(
                 entries.forEach { (label, entryValue) ->
                     ListItem(
                         headlineContent = { Text(label) },
-                        modifier = Modifier.clickable { onConfirm(entryValue) }
+                        modifier = Modifier.clickable { onConfirm(entryValue) },
                     )
                 }
             }
@@ -837,7 +837,7 @@ private fun ListPreferenceDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.delete_neg))
             }
-        }
+        },
     )
 }
 
@@ -849,14 +849,14 @@ private fun ListPreferenceWithCustom(
     entries: List<Pair<String, String>>,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    customLabel: String = "Custom..."
+    customLabel: String = "Custom...",
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
     ListItem(
         headlineContent = { Text(title) },
         supportingContent = { Text(summary) },
-        modifier = modifier.clickable { showDialog = true }
+        modifier = modifier.clickable { showDialog = true },
     )
     HorizontalDivider()
 
@@ -870,7 +870,7 @@ private fun ListPreferenceWithCustom(
             onConfirm = { newValue ->
                 onValueChange(newValue)
                 showDialog = false
-            }
+            },
         )
     }
 }
@@ -882,7 +882,7 @@ private fun ListPreferenceWithCustomDialog(
     entries: List<Pair<String, String>>,
     customLabel: String,
     onDismiss: () -> Unit,
-    onConfirm: (String) -> Unit
+    onConfirm: (String) -> Unit,
 ) {
     var showCustomInput by remember { mutableStateOf(false) }
     var customValue by remember { mutableStateOf(value) }
@@ -900,7 +900,7 @@ private fun ListPreferenceWithCustomDialog(
                     onValueChange = { customValue = it },
                     label = { Text(stringResource(R.string.dialog_custom_value_label)) },
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             },
             confirmButton = {
@@ -910,7 +910,7 @@ private fun ListPreferenceWithCustomDialog(
                             onConfirm(customValue)
                         }
                     },
-                    enabled = customValue.isNotBlank()
+                    enabled = customValue.isNotBlank(),
                 ) {
                     Text(stringResource(android.R.string.ok))
                 }
@@ -922,7 +922,7 @@ private fun ListPreferenceWithCustomDialog(
                 }) {
                     Text(stringResource(android.R.string.cancel))
                 }
-            }
+            },
         )
     } else {
         AlertDialog(
@@ -933,7 +933,7 @@ private fun ListPreferenceWithCustomDialog(
                     entries.forEach { (label, entryValue) ->
                         ListItem(
                             headlineContent = { Text(label) },
-                            modifier = Modifier.clickable { onConfirm(entryValue) }
+                            modifier = Modifier.clickable { onConfirm(entryValue) },
                         )
                     }
                     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
@@ -941,13 +941,13 @@ private fun ListPreferenceWithCustomDialog(
                         headlineContent = {
                             Text(
                                 text = customLabel,
-                                color = MaterialTheme.colorScheme.primary
+                                color = MaterialTheme.colorScheme.primary,
                             )
                         },
                         modifier = Modifier.clickable {
                             customValue = value
                             showCustomInput = true
-                        }
+                        },
                     )
                 }
             },
@@ -955,7 +955,7 @@ private fun ListPreferenceWithCustomDialog(
                 TextButton(onClick = onDismiss) {
                     Text(stringResource(R.string.delete_neg))
                 }
-            }
+            },
         )
     }
 }
@@ -965,14 +965,14 @@ private fun SliderPreference(
     title: String,
     value: Float,
     onValueChange: (Float) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+        modifier = modifier.padding(horizontal = 16.dp, vertical = 8.dp),
     ) {
         Text(
             text = title,
-            style = MaterialTheme.typography.bodyLarge
+            style = MaterialTheme.typography.bodyLarge,
         )
         Slider(
             value = value,
@@ -980,12 +980,12 @@ private fun SliderPreference(
             valueRange = 0f..1f,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 4.dp)
+                .padding(top = 4.dp),
         )
         Text(
             text = "${(value * 100).toInt()}%",
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
     HorizontalDivider()
@@ -996,7 +996,7 @@ private fun AddCustomTerminalTypePreference(
     customTerminalTypes: List<String>,
     onAddTerminalType: (String) -> Unit,
     onRemoveTerminalType: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var showAddDialog by remember { mutableStateOf(false) }
     var newTerminalType by remember { mutableStateOf("") }
@@ -1005,7 +1005,7 @@ private fun AddCustomTerminalTypePreference(
         ListItem(
             headlineContent = { Text(stringResource(R.string.pref_customterminal_title)) },
             supportingContent = { Text(stringResource(R.string.pref_customterminal_summary)) },
-            modifier = Modifier.clickable { showAddDialog = true }
+            modifier = Modifier.clickable { showAddDialog = true },
         )
 
         // Show existing custom terminal types with remove option
@@ -1016,18 +1016,18 @@ private fun AddCustomTerminalTypePreference(
                     Icon(
                         imageVector = Icons.Default.Terminal,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.primary,
                     )
                 },
                 trailingContent = {
                     IconButton(onClick = { onRemoveTerminalType(terminalType) }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = stringResource(R.string.button_remove)
+                            contentDescription = stringResource(R.string.button_remove),
                         )
                     }
                 },
-                modifier = Modifier.padding(start = 16.dp)
+                modifier = Modifier.padding(start = 16.dp),
             )
         }
 
@@ -1047,7 +1047,7 @@ private fun AddCustomTerminalTypePreference(
                     onValueChange = { newTerminalType = it },
                     label = { Text(stringResource(R.string.dialog_customterminal_hint)) },
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
             },
             confirmButton = {
@@ -1059,7 +1059,7 @@ private fun AddCustomTerminalTypePreference(
                             newTerminalType = ""
                         }
                     },
-                    enabled = newTerminalType.isNotBlank()
+                    enabled = newTerminalType.isNotBlank(),
                 ) {
                     Text(stringResource(R.string.button_add))
                 }
@@ -1071,7 +1071,7 @@ private fun AddCustomTerminalTypePreference(
                 }) {
                     Text(stringResource(R.string.delete_neg))
                 }
-            }
+            },
         )
     }
 }
@@ -1085,7 +1085,7 @@ private fun AddCustomFontPreference(
     onAddFont: (String) -> Unit,
     onRemoveFont: (String) -> Unit,
     onClearError: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var showAddDialog by remember { mutableStateOf(false) }
     var newFontName by remember { mutableStateOf("") }
@@ -1101,7 +1101,7 @@ private fun AddCustomFontPreference(
         ListItem(
             headlineContent = { Text(stringResource(R.string.pref_customfont_title)) },
             supportingContent = { Text(stringResource(R.string.pref_customfont_summary)) },
-            modifier = Modifier.clickable { showAddDialog = true }
+            modifier = Modifier.clickable { showAddDialog = true },
         )
 
         // Show existing custom fonts with remove option
@@ -1112,18 +1112,18 @@ private fun AddCustomFontPreference(
                     Icon(
                         imageVector = Icons.Default.FontDownload,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.primary,
                     )
                 },
                 trailingContent = {
                     IconButton(onClick = { onRemoveFont(fontName) }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = stringResource(R.string.button_remove)
+                            contentDescription = stringResource(R.string.button_remove),
                         )
                     }
                 },
-                modifier = Modifier.padding(start = 16.dp)
+                modifier = Modifier.padding(start = 16.dp),
             )
         }
 
@@ -1160,9 +1160,9 @@ private fun AddCustomFontPreference(
                             null
                         },
                         keyboardOptions = KeyboardOptions(
-                            autoCorrectEnabled = false
+                            autoCorrectEnabled = false,
                         ),
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
             },
@@ -1173,7 +1173,7 @@ private fun AddCustomFontPreference(
                             onAddFont(newFontName.trim())
                         }
                     },
-                    enabled = newFontName.isNotBlank() && !validationInProgress
+                    enabled = newFontName.isNotBlank() && !validationInProgress,
                 ) {
                     Text(stringResource(R.string.button_add))
                 }
@@ -1185,11 +1185,11 @@ private fun AddCustomFontPreference(
                         newFontName = ""
                         onClearError()
                     },
-                    enabled = !validationInProgress
+                    enabled = !validationInProgress,
                 ) {
                     Text(stringResource(android.R.string.cancel))
                 }
-            }
+            },
         )
     }
 
@@ -1212,14 +1212,14 @@ private fun LocalFontPreference(
     onImportFont: (Uri, String) -> Unit,
     onDeleteFont: (String) -> Unit,
     onClearError: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var pendingUri by remember { mutableStateOf<Uri?>(null) }
     var showNameDialog by remember { mutableStateOf(false) }
     var fontDisplayName by remember { mutableStateOf("") }
 
     val fontPickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.OpenDocument()
+        contract = ActivityResultContracts.OpenDocument(),
     ) { uri ->
         if (uri != null) {
             pendingUri = uri
@@ -1237,12 +1237,12 @@ private fun LocalFontPreference(
                         stringResource(R.string.font_importing)
                     } else {
                         stringResource(R.string.pref_localfont_summary)
-                    }
+                    },
                 )
             },
             modifier = Modifier.clickable(enabled = !importInProgress) {
                 fontPickerLauncher.launch(arrayOf("font/*", "application/x-font-ttf", "application/x-font-otf"))
-            }
+            },
         )
 
         // Show existing local fonts with delete option
@@ -1253,18 +1253,18 @@ private fun LocalFontPreference(
                     Icon(
                         imageVector = Icons.Default.FolderOpen,
                         contentDescription = null,
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.primary,
                     )
                 },
                 trailingContent = {
                     IconButton(onClick = { onDeleteFont(fileName) }) {
                         Icon(
                             imageVector = Icons.Default.Delete,
-                            contentDescription = stringResource(R.string.button_remove)
+                            contentDescription = stringResource(R.string.button_remove),
                         )
                     }
                 },
-                modifier = Modifier.padding(start = 16.dp)
+                modifier = Modifier.padding(start = 16.dp),
             )
         }
 
@@ -1302,7 +1302,7 @@ private fun LocalFontPreference(
                         } else {
                             null
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     )
                 }
             },
@@ -1315,7 +1315,7 @@ private fun LocalFontPreference(
                             }
                         }
                     },
-                    enabled = fontDisplayName.isNotBlank() && !importInProgress
+                    enabled = fontDisplayName.isNotBlank() && !importInProgress,
                 ) {
                     Text(stringResource(R.string.button_import))
                 }
@@ -1328,11 +1328,11 @@ private fun LocalFontPreference(
                         fontDisplayName = ""
                         onClearError()
                     },
-                    enabled = !importInProgress
+                    enabled = !importInProgress,
                 ) {
                     Text(stringResource(android.R.string.cancel))
                 }
-            }
+            },
         )
     }
 
@@ -1383,7 +1383,7 @@ private fun SettingsScreenPreview() {
                 fontValidationInProgress = false,
                 fontValidationError = null,
                 fontImportInProgress = false,
-                fontImportError = null
+                fontImportError = null,
             ),
             onNavigateBack = {},
             onAuthOnLaunchChange = {},
@@ -1420,7 +1420,7 @@ private fun SettingsScreenPreview() {
             onBellChange = {},
             onBellVolumeChange = {},
             onBellVibrateChange = {},
-            onBellNotificationChange = {}
+            onBellNotificationChange = {},
         )
     }
 }
@@ -1428,7 +1428,7 @@ private fun SettingsScreenPreview() {
 @Composable
 private fun NotificationPermissionDeniedDialog(
     onDismiss: () -> Unit,
-    onOpenSettings: () -> Unit
+    onOpenSettings: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -1443,6 +1443,6 @@ private fun NotificationPermissionDeniedDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(android.R.string.cancel))
             }
-        }
+        },
     )
 }

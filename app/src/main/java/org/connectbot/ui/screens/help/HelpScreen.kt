@@ -71,7 +71,7 @@ fun HelpScreen(
     onNavigateToHints: () -> Unit,
     onNavigateToEula: () -> Unit,
     onNavigateToContact: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var showKeyboardShortcuts by remember { mutableStateOf(false) }
     var showLogViewer by remember { mutableStateOf(false) }
@@ -82,33 +82,33 @@ fun HelpScreen(
                 title = { Text(stringResource(R.string.title_help)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.button_navigate_up))
                     }
-                }
+                },
             )
         },
-        modifier = modifier
+        modifier = modifier,
     ) { padding ->
         LazyColumn(
             modifier = Modifier
                 .padding(padding)
-                .padding(16.dp)
+                .padding(16.dp),
         ) {
             item {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
+                    horizontalAlignment = Alignment.CenterHorizontally,
                 ) {
                     Text(
                         text = "ConnectBot",
                         style = MaterialTheme.typography.headlineMedium,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = 8.dp),
                     )
                     Text(
                         text = "Version ${BuildConfig.VERSION_NAME}",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = 24.dp)
+                        modifier = Modifier.padding(bottom = 24.dp),
                     )
                 }
             }
@@ -118,7 +118,7 @@ fun HelpScreen(
                     onClick = onNavigateToHints,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)
+                        .padding(vertical = 8.dp),
                 ) {
                     Text(stringResource(R.string.hints))
                 }
@@ -129,7 +129,7 @@ fun HelpScreen(
                     onClick = { showKeyboardShortcuts = true },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)
+                        .padding(vertical = 8.dp),
                 ) {
                     Text(stringResource(R.string.keyboard_shortcuts))
                 }
@@ -140,7 +140,7 @@ fun HelpScreen(
                     onClick = onNavigateToEula,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)
+                        .padding(vertical = 8.dp),
                 ) {
                     Text(stringResource(R.string.terms_and_conditions))
                 }
@@ -151,7 +151,7 @@ fun HelpScreen(
                     onClick = { showLogViewer = true },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)
+                        .padding(vertical = 8.dp),
                 ) {
                     Text(stringResource(R.string.view_logs))
                 }
@@ -162,7 +162,7 @@ fun HelpScreen(
                     onClick = onNavigateToContact,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)
+                        .padding(vertical = 8.dp),
                 ) {
                     Text(stringResource(R.string.title_contact))
                 }
@@ -172,17 +172,17 @@ fun HelpScreen(
                 Text(
                     text = stringResource(R.string.help_section_about),
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(top = 16.dp, bottom = 8.dp)
+                    modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
                 )
                 Text(
                     text = stringResource(R.string.app_desc),
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    modifier = Modifier.padding(bottom = 16.dp),
                 )
                 Text(
                     text = stringResource(R.string.app_copyright),
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
@@ -190,20 +190,20 @@ fun HelpScreen(
 
     if (showKeyboardShortcuts) {
         KeyboardShortcutsDialog(
-            onDismiss = { showKeyboardShortcuts = false }
+            onDismiss = { showKeyboardShortcuts = false },
         )
     }
 
     if (showLogViewer) {
         LogViewerDialog(
-            onDismiss = { showLogViewer = false }
+            onDismiss = { showLogViewer = false },
         )
     }
 }
 
 @Composable
 private fun KeyboardShortcutsDialog(
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -212,15 +212,15 @@ private fun KeyboardShortcutsDialog(
             Column {
                 ShortcutRow(
                     shortcut = stringResource(R.string.paste_shortcut),
-                    description = stringResource(R.string.console_menu_paste)
+                    description = stringResource(R.string.console_menu_paste),
                 )
                 ShortcutRow(
                     shortcut = stringResource(R.string.increase_font_shortcut),
-                    description = stringResource(R.string.increase_font_size)
+                    description = stringResource(R.string.increase_font_size),
                 )
                 ShortcutRow(
                     shortcut = stringResource(R.string.decrease_font_shortcut),
-                    description = stringResource(R.string.decrease_font_size)
+                    description = stringResource(R.string.decrease_font_size),
                 )
             }
         },
@@ -228,29 +228,29 @@ private fun KeyboardShortcutsDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(android.R.string.ok))
             }
-        }
+        },
     )
 }
 
 @Composable
 private fun ShortcutRow(
     shortcut: String,
-    description: String
+    description: String,
 ) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 4.dp)
+            .padding(vertical = 4.dp),
     ) {
         Text(
             text = shortcut,
             style = MaterialTheme.typography.bodyMedium,
-            modifier = Modifier.weight(1f)
+            modifier = Modifier.weight(1f),
         )
         Spacer(modifier = Modifier.width(16.dp))
         Text(
             text = description,
-            style = MaterialTheme.typography.bodyMedium
+            style = MaterialTheme.typography.bodyMedium,
         )
     }
 }
@@ -258,7 +258,7 @@ private fun ShortcutRow(
 @Composable
 private fun LogViewerDialog(
     onDismiss: () -> Unit,
-    viewModel: LogViewerViewModel = hiltViewModel()
+    viewModel: LogViewerViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
@@ -273,13 +273,13 @@ private fun LogViewerDialog(
         title = { Text(stringResource(R.string.logs_title)) },
         text = {
             Column(
-                modifier = Modifier.fillMaxHeight(0.7f)
+                modifier = Modifier.fillMaxHeight(0.7f),
             ) {
                 Text(
                     text = stringResource(R.string.logs_bug_report_info),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 8.dp)
+                    modifier = Modifier.padding(bottom = 8.dp),
                 )
 
                 val scrollState = rememberScrollState()
@@ -292,7 +292,7 @@ private fun LogViewerDialog(
                         .weight(1f)
                         .verticalScroll(scrollState)
                         .horizontalScroll(rememberScrollState())
-                        .padding(8.dp)
+                        .padding(8.dp),
                 )
             }
         },
@@ -300,7 +300,7 @@ private fun LogViewerDialog(
             TextButton(
                 onClick = {
                     copyLogsToClipboard(context, logs)
-                }
+                },
             ) {
                 Text(stringResource(R.string.copy_logs))
             }
@@ -309,7 +309,7 @@ private fun LogViewerDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(android.R.string.ok))
             }
-        }
+        },
     )
 }
 
@@ -328,7 +328,7 @@ private fun HelpScreenPreview() {
             onNavigateBack = {},
             onNavigateToHints = {},
             onNavigateToEula = {},
-            onNavigateToContact = {}
+            onNavigateToContact = {},
         )
     }
 }
@@ -338,7 +338,7 @@ private fun HelpScreenPreview() {
 private fun KeyboardShortcutsDialogPreview() {
     ConnectBotTheme {
         KeyboardShortcutsDialog(
-            onDismiss = {}
+            onDismiss = {},
         )
     }
 }
