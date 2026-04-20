@@ -23,9 +23,26 @@ import org.connectbot.terminal.ModifierManager
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.VTermKey
 
+fun interface KeyDispatcher {
+    fun dispatchKey(modifiers: Int, key: Int)
+}
+
+class TerminalEmulatorKeyDispatcher(private val emulator: TerminalEmulator) : KeyDispatcher {
+    override fun dispatchKey(modifiers: Int, key: Int) = emulator.dispatchKey(modifiers, key)
+}
+
+enum class StickyModifierSetting(internal val mask: Int) {
+    NONE(0),
+    ALT(0x04),
+    ALL(0x01 or 0x04 or 0x10),
+}
+
 class TerminalKeyListener(
-    private val terminalEmulator: TerminalEmulator
+    private val keyDispatcher: KeyDispatcher,
+    stickyModifierSetting: StickyModifierSetting = StickyModifierSetting.NONE,
 ) : ModifierManager {
+
+    private val stickyMetas: Int = stickyModifierSetting.mask
 
     private var ourMetaState: Int = 0
 
@@ -33,17 +50,17 @@ class TerminalKeyListener(
     val modifierState: StateFlow<ModifierState> = _modifierState.asStateFlow()
 
     fun sendEscape() {
-        terminalEmulator.dispatchKey(0, VTermKey.ESCAPE)
+        keyDispatcher.dispatchKey(0, VTermKey.ESCAPE)
         clearTransients()
     }
 
     fun sendTab() {
-        terminalEmulator.dispatchKey(0, VTermKey.TAB)
+        keyDispatcher.dispatchKey(0, VTermKey.TAB)
         clearTransients()
     }
 
     fun sendPressedKey(key: Int) {
-        terminalEmulator.dispatchKey(modifiersForTerminal, key)
+        keyDispatcher.dispatchKey(modifiersForTerminal, key)
         clearTransients()
     }
 
@@ -52,8 +69,12 @@ class TerminalKeyListener(
         if ((ourMetaState and (code shl 1)) != 0) {
             // LOCKED → OFF
             ourMetaState = ourMetaState and (code shl 1).inv()
-        } else if (forceSticky || (ourMetaState and code) != 0) {
-            // TRANSIENT → LOCKED, or OFF → LOCKED when forceSticky
+        } else if (forceSticky || (stickyMetas and code) != 0) {
+            // OFF → LOCKED (sticky or forced)
+            ourMetaState = ourMetaState and code.inv()
+            ourMetaState = ourMetaState or (code shl 1)
+        } else if ((ourMetaState and code) != 0) {
+            // TRANSIENT → LOCKED
             ourMetaState = ourMetaState and code.inv()
             ourMetaState = ourMetaState or (code shl 1)
         } else {
