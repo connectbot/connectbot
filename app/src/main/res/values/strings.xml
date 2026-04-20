@@ -595,6 +595,8 @@
 	<string name="console_menu_urlscan">"URL scan"</string>
 	<!-- Error shown in a snackbar when the user taps a URL but no app on the device can handle it -->
 	<string name="console_url_no_handler">No app available to open this URL</string>
+	<!-- Error shown in a snackbar when the URL type is not supported -->
+	<string name="console_url_not_supported">This URL type is not supported</string>
 
 	<!-- Button label to answer "Yes" to a yes/no prompt -->
 	<string name="button_yes">"Yes"</string>
