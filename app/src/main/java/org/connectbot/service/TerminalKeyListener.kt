@@ -23,6 +23,23 @@ import org.connectbot.terminal.ModifierManager
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.VTermKey
 
+// Internal modifier bitmasks
+private const val OUR_CTRL_ON = 0x01
+private const val OUR_CTRL_LOCK = 0x02
+private const val OUR_ALT_ON = 0x04
+private const val OUR_ALT_LOCK = 0x08
+private const val OUR_SHIFT_ON = 0x10
+private const val OUR_SHIFT_LOCK = 0x20
+
+private const val OUR_CTRL_MASK = OUR_CTRL_ON or OUR_CTRL_LOCK
+private const val OUR_ALT_MASK = OUR_ALT_ON or OUR_ALT_LOCK
+private const val OUR_SHIFT_MASK = OUR_SHIFT_ON or OUR_SHIFT_LOCK
+
+// Terminal modifier bitmasks (per VTerm spec)
+private const val VTERM_MOD_SHIFT = 1
+private const val VTERM_MOD_ALT = 2
+private const val VTERM_MOD_CTRL = 4
+
 fun interface KeyDispatcher {
     fun dispatchKey(modifiers: Int, key: Int)
 }
@@ -33,10 +50,21 @@ class TerminalEmulatorKeyDispatcher(private val emulator: TerminalEmulator) : Ke
 
 enum class StickyModifierSetting(internal val mask: Int) {
     NONE(0),
-    ALT(0x04),
-    ALL(0x01 or 0x04 or 0x10),
+    ALT(OUR_ALT_ON),
+    ALL(OUR_CTRL_ON or OUR_ALT_ON or OUR_SHIFT_ON),
 }
 
+/**
+ * Handles key state tracking for terminal modifiers (Ctrl, Alt, Shift).
+ *
+ * This class distinguishes between two types of interaction:
+ * 1. **Hardware Keyboards:** Modifiers typically only enter the "sticky" cycle
+ *    (TRANSIENT -> LOCKED) if the user has enabled the "Sticky Modifiers" preference.
+ * 2. **Software (On-screen) Keyboards:** Because on-screen buttons cannot be "held"
+ *    while pressing another key, they use the [metaPress] method with `forceSticky = true`
+ *    to ensure they at least enter the TRANSIENT state, allowing for one-handed
+ *    modifier use.
+ */
 class TerminalKeyListener(
     private val keyDispatcher: KeyDispatcher,
     stickyModifierSetting: StickyModifierSetting = StickyModifierSetting.NONE,
@@ -64,38 +92,44 @@ class TerminalKeyListener(
         clearTransients()
     }
 
+    /**
+     * Toggles the state of a modifier key.
+     *
+     * The state machine follows a 3-state toggle:
+     * OFF → TRANSIENT → LOCKED → OFF
+     *
+     * @param code The modifier code (e.g., [OUR_CTRL_ON]).
+     * @param forceSticky If true, forces the transition to at least TRANSIENT even if
+     *   the modifier isn't in the [stickyMetas] list. This is primarily used by
+     *   on-screen keyboards.
+     */
     @JvmOverloads
     fun metaPress(code: Int, forceSticky: Boolean = false) {
         if ((ourMetaState and (code shl 1)) != 0) {
             // LOCKED → OFF
             ourMetaState = ourMetaState and (code shl 1).inv()
-        } else if (forceSticky || (stickyMetas and code) != 0) {
-            // OFF → LOCKED (sticky or forced)
-            ourMetaState = ourMetaState and code.inv()
-            ourMetaState = ourMetaState or (code shl 1)
         } else if ((ourMetaState and code) != 0) {
             // TRANSIENT → LOCKED
             ourMetaState = ourMetaState and code.inv()
             ourMetaState = ourMetaState or (code shl 1)
-        } else {
+        } else if (forceSticky || (stickyMetas and code) != 0) {
             // OFF → TRANSIENT
             ourMetaState = ourMetaState or code
+        } else {
+            return
         }
         _modifierState.value = getModifierState()
     }
 
     /**
      * Build VTerm modifier mask from our meta state.
-     * Bit 0: Shift
-     * Bit 1: Alt
-     * Bit 2: Ctrl
      */
     private val modifiersForTerminal: Int
         get() {
             var mask = 0
-            if ((ourMetaState and OUR_SHIFT_MASK) != 0) mask = mask or 1
-            if ((ourMetaState and OUR_ALT_MASK) != 0) mask = mask or 2
-            if ((ourMetaState and OUR_CTRL_MASK) != 0) mask = mask or 4
+            if ((ourMetaState and OUR_SHIFT_MASK) != 0) mask = mask or VTERM_MOD_SHIFT
+            if ((ourMetaState and OUR_ALT_MASK) != 0) mask = mask or VTERM_MOD_ALT
+            if ((ourMetaState and OUR_CTRL_MASK) != 0) mask = mask or VTERM_MOD_CTRL
             return mask
         }
 
@@ -132,16 +166,9 @@ class TerminalKeyListener(
     )
 
     companion object {
-        const val OUR_CTRL_ON = 0x01
-        const val OUR_CTRL_LOCK = 0x02
-        const val OUR_ALT_ON = 0x04
-        const val OUR_ALT_LOCK = 0x08
-        const val OUR_SHIFT_ON = 0x10
-        const val OUR_SHIFT_LOCK = 0x20
-
-        private const val OUR_CTRL_MASK = OUR_CTRL_ON or OUR_CTRL_LOCK
-        private const val OUR_ALT_MASK = OUR_ALT_ON or OUR_ALT_LOCK
-        private const val OUR_SHIFT_MASK = OUR_SHIFT_ON or OUR_SHIFT_LOCK
+        const val CTRL_ON = OUR_CTRL_ON
+        const val ALT_ON = OUR_ALT_ON
+        const val SHIFT_ON = OUR_SHIFT_ON
     }
 }
 
