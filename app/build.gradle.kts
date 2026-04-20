@@ -165,6 +165,7 @@ android {
     lint {
         abortOnError = false
         lintConfig = file("lint.xml")
+        checkTestSources = false
     }
 
     packaging {
