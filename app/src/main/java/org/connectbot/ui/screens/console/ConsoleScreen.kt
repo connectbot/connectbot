@@ -104,7 +104,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
-import androidx.core.net.toUri
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -128,6 +127,7 @@ import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
 import org.connectbot.ui.theme.terminal
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.UrlUtils
 import org.connectbot.util.rememberTerminalTypefaceResultFromStoredValue
 import timber.log.Timber
 
@@ -336,14 +336,17 @@ fun ConsoleScreen(
 
     val noUrlHandlerMessage = stringResource(R.string.console_url_no_handler)
 
+    val urlNotSupportedMessage = stringResource(R.string.console_url_not_supported)
+
     fun openUrl(url: String) {
-        val intent = Intent(Intent.ACTION_VIEW, url.toUri())
-            .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        try {
-            context.startActivity(intent)
-        } catch (e: ActivityNotFoundException) {
+        UrlUtils.openUrl(context, url).onFailure { e ->
             coroutineScope.launch {
-                snackbarHostState.showSnackbar(noUrlHandlerMessage)
+                val message = if (e is ActivityNotFoundException) {
+                    noUrlHandlerMessage
+                } else {
+                    urlNotSupportedMessage
+                }
+                snackbarHostState.showSnackbar(message)
             }
         }
     }
