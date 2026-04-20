@@ -624,11 +624,16 @@ class TerminalBridge {
 
     /**
      * Force disconnection of this terminal bridge.
+     *
+     * Intentional reasons ([DisconnectReason.isIntentional]) always take the
+     * immediate-close path, even if the bridge already reached the
+     * disconnected state — this is how the "Close" button on the reconnect
+     * overlay tears down a session that an IO_ERROR already marked disconnected.
      */
-    fun dispatchDisconnect(immediate: Boolean, reason: DisconnectReason = DisconnectReason.UNKNOWN) {
+    fun dispatchDisconnect(reason: DisconnectReason) {
         // We don't need to do this multiple times.
         synchronized(this) {
-            if (disconnected && !immediate) {
+            if (disconnected && !reason.isIntentional) {
                 return
             }
 
@@ -652,7 +657,7 @@ class TerminalBridge {
             }
         }
 
-        if (immediate || reason.isIntentional || (host.quickDisconnect && !host.stayConnected)) {
+        if (reason.isIntentional || (host.quickDisconnect && !host.stayConnected)) {
             awaitingClose = true
             triggerDisconnectListener()
         } else {
@@ -1001,7 +1006,7 @@ class TerminalBridge {
             _networkStatusMessages.emit(manager.res.getString(R.string.network_grace_period_expired))
 
             // Trigger normal disconnect flow
-            dispatchDisconnect(immediate = false, reason = DisconnectReason.NETWORK_LOST)
+            dispatchDisconnect(DisconnectReason.NETWORK_LOST)
         }
     }
 
@@ -1044,7 +1049,7 @@ class TerminalBridge {
             // IP changed - TCP connection is broken, must reconnect
             scope.launch { _networkStatusMessages.emit(manager.res.getString(R.string.network_restored_ip_changed)) }
             lastKnownNetworkState = null
-            dispatchDisconnect(immediate = false, reason = DisconnectReason.NETWORK_LOST)
+            dispatchDisconnect(DisconnectReason.NETWORK_LOST)
         }
     }
 

@@ -161,7 +161,7 @@ class AppViewModelPermissionTest {
         val result = viewModel.executePendingDisconnectAllIfReady()
 
         assertFalse("Should return false when not pending", result)
-        verify(terminalManager, never()).disconnectAll(any(), any())
+        verify(terminalManager, never()).disconnectAll(any())
     }
 
     @Test
@@ -184,7 +184,7 @@ class AppViewModelPermissionTest {
 
         assertTrue("Should return true when executed", result)
         assertFalse("Should clear pending flag", viewModel.pendingDisconnectAll.value)
-        verify(terminalManager).disconnectAll(immediate = true, excludeLocal = false)
+        verify(terminalManager).disconnectAll(excludeLocal = false)
         assertEquals("Should emit finish activity event", 1, finishEvents.size)
 
         job.cancel()
@@ -254,7 +254,7 @@ class AppViewModelPermissionTest {
         advanceUntilIdle()
 
         assertTrue("Should execute when ready", result)
-        verify(terminalManager).disconnectAll(immediate = true, excludeLocal = false)
+        verify(terminalManager).disconnectAll(excludeLocal = false)
         assertEquals("Should emit finish event", 1, finishEvents.size)
         assertFalse("Should clear pending flag", viewModel.pendingDisconnectAll.value)
 

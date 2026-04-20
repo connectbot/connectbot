@@ -242,7 +242,7 @@ class AppViewModel @Inject constructor(
         val state = _uiState.value
         if (state is AppUiState.Ready && _pendingDisconnectAll.value) {
             Timber.d("Executing pending disconnectAll")
-            state.terminalManager.disconnectAll(immediate = true, excludeLocal = false)
+            state.terminalManager.disconnectAll(excludeLocal = false)
             _pendingDisconnectAll.value = false
             viewModelScope.launch {
                 _finishActivity.send(Unit)

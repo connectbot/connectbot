@@ -599,7 +599,7 @@ fun ConsoleScreen(
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.End
                                 ) {
-                                    TextButton(onClick = { bridge.dispatchDisconnect(true, DisconnectReason.USER_REQUESTED) }) {
+                                    TextButton(onClick = { bridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED) }) {
                                         Text(
                                             stringResource(R.string.console_menu_close),
                                             color = terminalColors.overlayText
@@ -652,7 +652,7 @@ fun ConsoleScreen(
                 onDismiss = { showDisconnectDialog = false },
                 onConfirm = {
                     showDisconnectDialog = false
-                    currentBridge.dispatchDisconnect(true, DisconnectReason.USER_REQUESTED)
+                    currentBridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
                 }
             )
         }
