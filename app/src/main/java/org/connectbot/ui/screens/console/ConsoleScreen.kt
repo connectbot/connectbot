@@ -152,7 +152,7 @@ fun ConsoleScreen(
     onNavigateBack: () -> Unit,
     onNavigateToPortForwards: (Long) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ConsoleViewModel = hiltViewModel()
+    viewModel: ConsoleViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val terminalManager = LocalTerminalManager.current
@@ -329,7 +329,7 @@ fun ConsoleScreen(
         uiState.error?.let { error ->
             snackbarHostState.showSnackbar(
                 message = error,
-                withDismissAction = true
+                withDismissAction = true,
             )
         }
     }
@@ -370,13 +370,13 @@ fun ConsoleScreen(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = modifier.fillMaxSize(),
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets
-            .union(WindowInsets.imeAnimationTarget)
+            .union(WindowInsets.imeAnimationTarget),
     ) { innerPadding ->
         // Show tabs if multiple terminals
         if (uiState.bridges.size > 1) {
             PrimaryTabRow(
                 selectedTabIndex = uiState.currentBridgeIndex,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 uiState.bridges.forEachIndexed { index, bridge ->
                     Tab(
@@ -386,9 +386,9 @@ fun ConsoleScreen(
                             Text(
                                 bridge.host.nickname,
                                 maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
+                                overflow = TextOverflow.Ellipsis,
                             )
-                        }
+                        },
                     )
                 }
             }
@@ -405,7 +405,7 @@ fun ConsoleScreen(
                     start = innerPadding.calculateStartPadding(layoutDirection),
                     end = innerPadding.calculateEndPadding(layoutDirection),
                     top = if (!titleBarHide) 0.dp else innerPadding.calculateTopPadding(),
-                    bottom = innerPadding.calculateBottomPadding()
+                    bottom = innerPadding.calculateBottomPadding(),
                 )
                 .windowInsetsPadding(WindowInsets.imeAnimationTarget)
                 .onPreviewKeyEvent { keyEvent ->
@@ -457,7 +457,7 @@ fun ConsoleScreen(
                     } else {
                         false
                     }
-                }
+                },
         ) {
             when {
                 uiState.isLoading -> {
@@ -478,8 +478,8 @@ fun ConsoleScreen(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(
-                                top = if (!titleBarHide) titleBarHeight else 0.dp
-                            )
+                                top = if (!titleBarHide) titleBarHeight else 0.dp,
+                            ),
                     ) {
                         // Get font from profile (stored in bridge)
                         val fontResult = rememberTerminalTypefaceResultFromStoredValue(bridge.fontFamily)
@@ -492,7 +492,7 @@ fun ConsoleScreen(
                             if (fontResult.loadFailed && !fontResult.isLoading) {
                                 coroutineScope.launch {
                                     snackbarHostState.showSnackbar(
-                                        message = "Failed to load font '${fontResult.requestedFontName}'. Using system default."
+                                        message = "Failed to load font '${fontResult.requestedFontName}'. Using system default.",
                                     )
                                 }
                             }
@@ -503,7 +503,7 @@ fun ConsoleScreen(
                             modifier = Modifier
                                 .fillMaxSize()
                                 .padding(
-                                    bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp
+                                    bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp,
                                 ),
                             typeface = fontResult.typeface,
                             initialFontSize = fontSize.sp,
@@ -519,7 +519,7 @@ fun ConsoleScreen(
                             },
                             onHyperlinkClick = { url ->
                                 openUrl(url)
-                            }
+                            },
                         )
 
                         // Set up text input request callback from bridge (for camera button)
@@ -537,7 +537,7 @@ fun ConsoleScreen(
                             enter = fadeIn(animationSpec = tween(durationMillis = 100)),
                             exit = fadeOut(animationSpec = tween(durationMillis = 100)),
                             modifier = Modifier
-                                .align(Alignment.BottomCenter)
+                                .align(Alignment.BottomCenter),
                         ) {
                             TerminalKeyboard(
                                 bridge = bridge,
@@ -555,7 +555,7 @@ fun ConsoleScreen(
                                     keyboardScrollInProgress = inProgress
                                 },
                                 imeVisible = imeVisible,
-                                playAnimation = !hasPlayedKeyboardAnimation
+                                playAnimation = !hasPlayedKeyboardAnimation,
                             )
                         }
 
@@ -575,7 +575,7 @@ fun ConsoleScreen(
                                 termFocusRequester.requestFocus()
                             },
                             modifier = Modifier
-                                .align(Alignment.BottomCenter)
+                                .align(Alignment.BottomCenter),
                         )
 
                         // Show reconnect/close overlay when session is disconnected
@@ -583,34 +583,34 @@ fun ConsoleScreen(
                             visible = disconnected && !connecting && promptState == null,
                             enter = slideInVertically(initialOffsetY = { it }),
                             exit = slideOutVertically(targetOffsetY = { it }),
-                            modifier = Modifier.align(Alignment.BottomCenter)
+                            modifier = Modifier.align(Alignment.BottomCenter),
                         ) {
                             val terminalColors = MaterialTheme.colorScheme.terminal
                             Column(
                                 modifier = Modifier
                                     .fillMaxWidth()
                                     .background(terminalColors.overlayBackground)
-                                    .padding(16.dp)
+                                    .padding(16.dp),
                             ) {
                                 Text(
                                     text = stringResource(R.string.alert_disconnect_msg),
                                     style = MaterialTheme.typography.bodyLarge,
                                     color = terminalColors.overlayText,
-                                    modifier = Modifier.padding(bottom = 16.dp)
+                                    modifier = Modifier.padding(bottom = 16.dp),
                                 )
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.End
+                                    horizontalArrangement = Arrangement.End,
                                 ) {
                                     TextButton(onClick = { bridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED) }) {
                                         Text(
                                             stringResource(R.string.console_menu_close),
-                                            color = terminalColors.overlayText
+                                            color = terminalColors.overlayText,
                                         )
                                     }
                                     Button(
                                         onClick = { viewModel.reconnect(bridge) },
-                                        modifier = Modifier.padding(start = 8.dp)
+                                        modifier = Modifier.padding(start = 8.dp),
                                     ) {
                                         Text(stringResource(R.string.console_menu_reconnect))
                                     }
@@ -629,7 +629,7 @@ fun ConsoleScreen(
                 onDismiss = { showUrlScanDialog = false },
                 onUrlClick = { url ->
                     openUrl(url)
-                }
+                },
             )
         }
 
@@ -645,7 +645,7 @@ fun ConsoleScreen(
                 onDisableForceSize = {
                     // Disable force size for this session
                     forceSize = null
-                }
+                },
             )
         }
 
@@ -656,7 +656,7 @@ fun ConsoleScreen(
                 onConfirm = {
                     showDisconnectDialog = false
                     currentBridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
-                }
+                },
             )
         }
 
@@ -670,7 +670,7 @@ fun ConsoleScreen(
                 onDismiss = {
                     showTextInputDialog = false
                     termFocusRequester.requestFocus()
-                }
+                },
             )
         }
 
@@ -684,7 +684,7 @@ fun ConsoleScreen(
                         currentBridge?.host?.nickname
                             ?: stringResource(R.string.console_default_title),
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 },
                 modifier = Modifier.onSizeChanged {
@@ -694,14 +694,14 @@ fun ConsoleScreen(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            stringResource(R.string.button_back)
+                            stringResource(R.string.button_back),
                         )
                     }
                 },
                 colors = if (titleBarHide) {
                     // Translucent overlay when auto-hide is enabled
                     TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
+                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
                     )
                 } else {
                     // Solid color when permanently visible
@@ -711,11 +711,11 @@ fun ConsoleScreen(
                     // Text Input button
                     IconButton(
                         onClick = { showTextInputDialog = true },
-                        enabled = currentBridge != null
+                        enabled = currentBridge != null,
                     ) {
                         Icon(
                             Icons.Default.Edit,
-                            contentDescription = stringResource(R.string.console_menu_text_input)
+                            contentDescription = stringResource(R.string.console_menu_text_input),
                         )
                     }
 
@@ -730,11 +730,11 @@ fun ConsoleScreen(
                                 bridge.injectString(clip)
                             }
                         },
-                        enabled = currentBridge != null
+                        enabled = currentBridge != null,
                     ) {
                         Icon(
                             Icons.Default.ContentPaste,
-                            contentDescription = stringResource(R.string.console_menu_paste)
+                            contentDescription = stringResource(R.string.console_menu_paste),
                         )
                     }
 
@@ -747,7 +747,7 @@ fun ConsoleScreen(
                         }) {
                             Icon(
                                 Icons.Default.MoreVert,
-                                contentDescription = stringResource(R.string.button_more_options)
+                                contentDescription = stringResource(R.string.button_more_options),
                             )
                         }
                         DropdownMenu(
@@ -759,7 +759,7 @@ fun ConsoleScreen(
                                     showTitleBar = false
                                 }
                                 termFocusRequester.requestFocus()
-                            }
+                            },
                         ) {
                             // Reconnect (shown only when disconnected)
                             if (disconnected) {
@@ -771,7 +771,7 @@ fun ConsoleScreen(
                                     },
                                     leadingIcon = {
                                         Icon(Icons.Default.Refresh, contentDescription = null)
-                                    }
+                                    },
                                 )
                             }
 
@@ -783,7 +783,7 @@ fun ConsoleScreen(
                                             stringResource(R.string.console_menu_close)
                                         } else {
                                             stringResource(R.string.list_host_disconnect)
-                                        }
+                                        },
                                     )
                                 },
                                 onClick = {
@@ -793,7 +793,7 @@ fun ConsoleScreen(
                                 enabled = currentBridge != null,
                                 leadingIcon = {
                                     Icon(Icons.Default.LinkOff, null)
-                                }
+                                },
                             )
 
                             // URL Scan
@@ -809,7 +809,7 @@ fun ConsoleScreen(
                                 leadingIcon = {
                                     Icon(Icons.Default.Link, contentDescription = null)
                                 },
-                                enabled = currentBridge != null
+                                enabled = currentBridge != null,
                             )
 
                             // Resize
@@ -819,7 +819,7 @@ fun ConsoleScreen(
                                     showMenu = false
                                     showResizeDialog = true
                                 },
-                                enabled = sessionOpen
+                                enabled = sessionOpen,
                             )
 
                             // Port Forwards (if available)
@@ -830,11 +830,11 @@ fun ConsoleScreen(
                                         showMenu = false
                                         currentBridge.host.id.let {
                                             onNavigateToPortForwards(
-                                                it
+                                                it,
                                             )
                                         }
                                     },
-                                    enabled = sessionOpen
+                                    enabled = sessionOpen,
                                 )
                             }
 
@@ -848,9 +848,9 @@ fun ConsoleScreen(
                                 trailingIcon = {
                                     Checkbox(
                                         checked = fullscreen,
-                                        onCheckedChange = null
+                                        onCheckedChange = null,
                                     )
-                                }
+                                },
                             )
 
                             // Title bar auto-hide toggle
@@ -863,13 +863,13 @@ fun ConsoleScreen(
                                 trailingIcon = {
                                     Checkbox(
                                         checked = titleBarHide,
-                                        onCheckedChange = null
+                                        onCheckedChange = null,
                                     )
-                                }
+                                },
                             )
                         }
                     }
-                }
+                },
             )
 
             // Progress indicator for OSC 9;4 progress reporting
@@ -886,7 +886,7 @@ fun ConsoleScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = titleBarHeight),
-                        color = progressColor
+                        color = progressColor,
                     )
                 } else {
                     LinearProgressIndicator(
@@ -894,7 +894,7 @@ fun ConsoleScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = titleBarHeight),
-                        color = progressColor
+                        color = progressColor,
                     )
                 }
             }
@@ -906,7 +906,7 @@ fun ConsoleScreen(
 private fun HostDisconnectDialog(
     host: Host,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    onConfirm: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -915,7 +915,7 @@ private fun HostDisconnectDialog(
         },
         confirmButton = {
             TextButton(
-                onClick = onConfirm
+                onClick = onConfirm,
             ) {
                 Text(stringResource(R.string.button_yes))
             }
@@ -924,6 +924,6 @@ private fun HostDisconnectDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.button_no))
             }
-        }
+        },
     )
 }
