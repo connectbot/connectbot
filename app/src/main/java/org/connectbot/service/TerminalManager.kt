@@ -265,7 +265,7 @@ class TerminalManager :
 
         stopIdleTimer()
 
-        disconnectAll(immediate = true, excludeLocal = false)
+        disconnectAll(excludeLocal = false)
 
         connectionNotifier.hideRunningNotification(this)
 
@@ -285,7 +285,7 @@ class TerminalManager :
     /**
      * Disconnect all currently connected bridges.
      */
-    fun disconnectAll(immediate: Boolean, excludeLocal: Boolean) {
+    fun disconnectAll(excludeLocal: Boolean) {
         var tmpBridges: Array<TerminalBridge>? = null
 
         synchronized(_bridges) {
@@ -300,7 +300,7 @@ class TerminalManager :
                 if (excludeLocal && !tmpBridge.isUsingNetwork()) {
                     continue
                 }
-                tmpBridge.dispatchDisconnect(immediate, DisconnectReason.USER_REQUESTED)
+                tmpBridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
             }
         }
     }
