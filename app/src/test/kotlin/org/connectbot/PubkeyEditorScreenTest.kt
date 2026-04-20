@@ -25,7 +25,8 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import org.connectbot.ui.screens.pubkeyeditor.PubkeyEditorScreen
+import org.connectbot.ui.screens.pubkeyeditor.PubkeyEditorScreenContent
+import org.connectbot.ui.screens.pubkeyeditor.PubkeyEditorUiState
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -51,7 +52,17 @@ class PubkeyEditorScreenTest {
     fun pubkeyEditorScreen_displaysTitle() {
         composeTestRule.setContent {
             ConnectBotTheme {
-                PubkeyEditorScreen(onNavigateBack = {})
+                PubkeyEditorScreenContent(
+                    uiState = PubkeyEditorUiState(isLoading = false),
+                    onNavigateBack = {},
+                    onNicknameChange = {},
+                    onOldPasswordChange = {},
+                    onNewPassword1Change = {},
+                    onNewPassword2Change = {},
+                    onUnlockAtStartupChange = {},
+                    onConfirmUseChange = {},
+                    onSave = {},
+                )
             }
         }
 
@@ -66,7 +77,17 @@ class PubkeyEditorScreenTest {
 
         composeTestRule.setContent {
             ConnectBotTheme {
-                PubkeyEditorScreen(onNavigateBack = { backCalled = true })
+                PubkeyEditorScreenContent(
+                    uiState = PubkeyEditorUiState(isLoading = false),
+                    onNavigateBack = { backCalled = true },
+                    onNicknameChange = {},
+                    onOldPasswordChange = {},
+                    onNewPassword1Change = {},
+                    onNewPassword2Change = {},
+                    onUnlockAtStartupChange = {},
+                    onConfirmUseChange = {},
+                    onSave = {},
+                )
             }
         }
 
@@ -81,11 +102,19 @@ class PubkeyEditorScreenTest {
     fun pubkeyEditorScreen_displaysNicknameField() {
         composeTestRule.setContent {
             ConnectBotTheme {
-                PubkeyEditorScreen(onNavigateBack = {})
+                PubkeyEditorScreenContent(
+                    uiState = PubkeyEditorUiState(isLoading = false),
+                    onNavigateBack = {},
+                    onNicknameChange = {},
+                    onOldPasswordChange = {},
+                    onNewPassword1Change = {},
+                    onNewPassword2Change = {},
+                    onUnlockAtStartupChange = {},
+                    onConfirmUseChange = {},
+                    onSave = {},
+                )
             }
         }
-
-        composeTestRule.waitForIdle()
 
         composeTestRule
             .onNodeWithText("Nickname:", useUnmergedTree = true)
