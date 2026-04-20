@@ -47,19 +47,7 @@ spotless {
     kotlin {
         target("app/src/**/*.kt")
         ktlint("1.8.0")
-            .editorConfigOverride(
-                mapOf(
-                    "ij_kotlin_imports_layout" to "*,java.**,javax.**,kotlin.**,^",
-                    "ktlint_code_style" to "android_studio",
-                    "ktlint_function_naming_ignore_when_annotated_with" to "Composable",
-                    "ktlint_standard_property-naming" to "disabled",
-                    "ktlint_standard_backing-property-naming" to "disabled",
-                    "ktlint_standard_filename" to "disabled",
-                    "ktlint_standard_discouraged-comment-location" to "disabled",
-                    "ktlint_standard_max-line-length" to "disabled",
-                    "ktlint_standard_kdoc" to "disabled",
-                ),
-            ).customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.5.7"))
+            .customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.5.7"))
     }
 
     groovyGradle {
