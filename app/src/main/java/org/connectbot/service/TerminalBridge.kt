@@ -52,6 +52,7 @@ import org.connectbot.transport.AbsTransport
 import org.connectbot.transport.SSH
 import org.connectbot.transport.TransportFactory
 import org.connectbot.util.HostConstants
+import org.connectbot.util.PreferenceConstants
 import timber.log.Timber
 import java.io.IOException
 import java.nio.charset.Charset
@@ -275,7 +276,14 @@ class TerminalBridge {
         val ansiColors = fullColorPalette.sliceArray(0 until 16)
         terminalEmulator.applyColorScheme(ansiColors, defaultFgColor, defaultBgColor)
 
-        keyListener = TerminalKeyListener(terminalEmulator)
+        val stickyModifierSetting = when (
+            manager.prefs.getString(PreferenceConstants.STICKY_MODIFIERS, PreferenceConstants.NO)
+        ) {
+            PreferenceConstants.ALT -> StickyModifierSetting.ALT
+            PreferenceConstants.YES -> StickyModifierSetting.ALL
+            else -> StickyModifierSetting.NONE
+        }
+        keyListener = TerminalKeyListener(TerminalEmulatorKeyDispatcher(terminalEmulator), stickyModifierSetting)
 
         // Start the transport operation processor to serialize all writes
         startTransportOperationProcessor()
