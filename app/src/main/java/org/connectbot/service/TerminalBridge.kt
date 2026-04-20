@@ -153,7 +153,7 @@ class TerminalBridge {
     // Network state tracking for grace period
     private data class NetworkState(
         val ipAddresses: Set<String>,
-        val networkId: String
+        val networkId: String,
     )
 
     private var lastKnownNetworkState: NetworkState? = null
@@ -256,7 +256,7 @@ class TerminalBridge {
             },
             onResize = {
                 transportOperations.trySend(
-                    TransportOperation.SetDimensions(it.columns, it.rows, 0, 0)
+                    TransportOperation.SetDimensions(it.columns, it.rows, 0, 0),
                 )
             },
             onClipboardCopy = { text ->
@@ -269,7 +269,7 @@ class TerminalBridge {
                 // OSC 9;4 progress reporting - update progress state
                 Timber.d("OSC 9;4 progress: state=$state, progress=$progress")
                 _progressState.value = ProgressInfo(state, progress)
-            }
+            },
         )
 
         // Apply color scheme to terminal emulator
@@ -310,7 +310,7 @@ class TerminalBridge {
                                 operation.columns,
                                 operation.rows,
                                 operation.width,
-                                operation.height
+                                operation.height,
                             )
                         }
 
@@ -453,8 +453,8 @@ class TerminalBridge {
                         manager.reportError(
                             ServiceError.PortForwardLoadFailed(
                                 hostNickname = host.nickname,
-                                reason = e.message ?: "Failed to load port forwards"
-                            )
+                                reason = e.message ?: "Failed to load port forwards",
+                            ),
                         )
                     }
                 }
@@ -466,8 +466,8 @@ class TerminalBridge {
                     ServiceError.ConnectionFailed(
                         hostNickname = host.nickname,
                         hostname = host.hostname,
-                        reason = e.message ?: "Connection failed"
-                    )
+                        reason = e.message ?: "Connection failed",
+                    ),
                 )
             }
         }
@@ -498,7 +498,7 @@ class TerminalBridge {
         if (transport?.isSessionOpen() == true) {
             Timber.e(
                 "Session established, cannot use outputLine!",
-                IOException("outputLine call traceback")
+                IOException("outputLine call traceback"),
             )
         }
 
@@ -528,7 +528,7 @@ class TerminalBridge {
         }
 
         transportOperations.trySend(
-            TransportOperation.WriteData(string.toByteArray(charset(encoding)))
+            TransportOperation.WriteData(string.toByteArray(charset(encoding))),
         )
     }
 
@@ -538,7 +538,7 @@ class TerminalBridge {
      */
     fun sendByte(c: Int) {
         transportOperations.trySend(
-            TransportOperation.WriteData(byteArrayOf(c.toByte()))
+            TransportOperation.WriteData(byteArrayOf(c.toByte())),
         )
     }
 
@@ -982,7 +982,7 @@ class TerminalBridge {
         if (networkInfo != null) {
             lastKnownNetworkState = NetworkState(
                 ipAddresses = networkInfo.ipAddresses,
-                networkId = networkInfo.networkId
+                networkId = networkInfo.networkId,
             )
             Timber.d("Captured network state: ${networkInfo.ipAddresses.size} IPs")
         }
@@ -1036,7 +1036,7 @@ class TerminalBridge {
             scope.launch { _networkStatusMessages.emit(manager.res.getString(R.string.network_restored_no_previous_state)) }
             lastKnownNetworkState = NetworkState(
                 ipAddresses = newNetworkInfo.ipAddresses,
-                networkId = newNetworkInfo.networkId
+                networkId = newNetworkInfo.networkId,
             )
             // Allow connection to continue
             return
@@ -1050,7 +1050,7 @@ class TerminalBridge {
             scope.launch { _networkStatusMessages.emit(manager.res.getString(R.string.network_restored_same_ip)) }
             lastKnownNetworkState = NetworkState(
                 ipAddresses = newNetworkInfo.ipAddresses,
-                networkId = newNetworkInfo.networkId
+                networkId = newNetworkInfo.networkId,
             )
             // No action needed - connection continues
         } else {

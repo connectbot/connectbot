@@ -128,7 +128,7 @@ class TerminalKeyListener(
             (ourMetaState and OUR_SHIFT_LOCK) != 0 -> ModifierLevel.LOCKED
             (ourMetaState and OUR_SHIFT_ON) != 0 -> ModifierLevel.TRANSIENT
             else -> ModifierLevel.OFF
-        }
+        },
     )
 
     companion object {
@@ -148,11 +148,11 @@ class TerminalKeyListener(
 data class ModifierState(
     val ctrlState: ModifierLevel,
     val altState: ModifierLevel,
-    val shiftState: ModifierLevel
+    val shiftState: ModifierLevel,
 )
 
 enum class ModifierLevel {
     OFF,
     TRANSIENT,
-    LOCKED
+    LOCKED,
 }
