@@ -65,7 +65,7 @@ import org.connectbot.ui.theme.ConnectBotTheme
 fun GeneratePubkeyScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: GeneratePubkeyViewModel = hiltViewModel()
+    viewModel: GeneratePubkeyViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -86,7 +86,7 @@ fun GeneratePubkeyScreen(
             viewModel.cancelGeneration()
             onNavigateBack()
         },
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -106,7 +106,7 @@ fun GeneratePubkeyScreenContent(
     onGenerateKey: () -> Unit,
     onGatherEntropy: (ByteArray?) -> Unit,
     onCancelGeneration: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Scaffold(
         topBar = {
@@ -114,12 +114,12 @@ fun GeneratePubkeyScreenContent(
                 title = { Text(stringResource(R.string.title_pubkey_generate)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.button_navigate_up))
                     }
-                }
+                },
             )
         },
-        modifier = modifier
+        modifier = modifier,
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -127,7 +127,7 @@ fun GeneratePubkeyScreenContent(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
-                .imePadding()
+                .imePadding(),
         ) {
             // Nickname
             OutlinedTextField(
@@ -141,7 +141,7 @@ fun GeneratePubkeyScreenContent(
                     { Text(stringResource(R.string.pubkey_nickname_exists)) }
                 } else {
                     null
-                }
+                },
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -149,30 +149,30 @@ fun GeneratePubkeyScreenContent(
             // Key Type Selection
             Text(
                 text = stringResource(R.string.pubkey_editor_key_type_label),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
             Spacer(modifier = Modifier.height(8.dp))
 
             KeyTypeOption(
                 label = stringResource(R.string.pubkey_type_rsa),
                 selected = uiState.keyType == KeyType.RSA,
-                onClick = { onKeyTypeChange(KeyType.RSA) }
+                onClick = { onKeyTypeChange(KeyType.RSA) },
             )
             KeyTypeOption(
                 label = stringResource(R.string.pubkey_type_dsa),
                 selected = uiState.keyType == KeyType.DSA,
-                onClick = { onKeyTypeChange(KeyType.DSA) }
+                onClick = { onKeyTypeChange(KeyType.DSA) },
             )
             KeyTypeOption(
                 label = stringResource(R.string.pubkey_type_ecdsa),
                 selected = uiState.keyType == KeyType.EC,
                 onClick = { onKeyTypeChange(KeyType.EC) },
-                enabled = uiState.ecdsaAvailable
+                enabled = uiState.ecdsaAvailable,
             )
             KeyTypeOption(
                 label = stringResource(R.string.pubkey_type_ed25519),
                 selected = uiState.keyType == KeyType.ED25519,
-                onClick = { onKeyTypeChange(KeyType.ED25519) }
+                onClick = { onKeyTypeChange(KeyType.ED25519) },
             )
 
             Spacer(modifier = Modifier.height(16.dp))
@@ -181,7 +181,7 @@ fun GeneratePubkeyScreenContent(
             if (uiState.allowBitStrengthChange) {
                 Text(
                     text = "${stringResource(R.string.prompt_bits)} ${uiState.bits}",
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Slider(
@@ -189,7 +189,7 @@ fun GeneratePubkeyScreenContent(
                     onValueChange = { onBitsChange(it.toInt()) },
                     valueRange = uiState.minBits.toFloat()..uiState.maxBits.toFloat(),
                     steps = ((uiState.maxBits - uiState.minBits) / 8) - 1,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
                 Spacer(modifier = Modifier.height(16.dp))
             }
@@ -201,7 +201,7 @@ fun GeneratePubkeyScreenContent(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { onUseBiometricChange(!uiState.useBiometric) }
-                        .padding(vertical = 8.dp)
+                        .padding(vertical = 8.dp),
                 ) {
                     Icon(
                         imageVector = Icons.Default.Fingerprint,
@@ -210,23 +210,23 @@ fun GeneratePubkeyScreenContent(
                             MaterialTheme.colorScheme.primary
                         } else {
                             MaterialTheme.colorScheme.onSurfaceVariant
-                        }
+                        },
                     )
                     Spacer(modifier = Modifier.width(12.dp))
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = stringResource(R.string.pubkey_biometric_protection),
-                            style = MaterialTheme.typography.bodyLarge
+                            style = MaterialTheme.typography.bodyLarge,
                         )
                         Text(
                             text = stringResource(R.string.pubkey_biometric_description),
                             style = MaterialTheme.typography.bodySmall,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
                         )
                     }
                     Switch(
                         checked = uiState.useBiometric,
-                        onCheckedChange = onUseBiometricChange
+                        onCheckedChange = onUseBiometricChange,
                     )
                 }
                 Spacer(modifier = Modifier.height(16.dp))
@@ -238,7 +238,7 @@ fun GeneratePubkeyScreenContent(
                     text = stringResource(R.string.pubkey_biometric_not_enrolled),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    modifier = Modifier.padding(bottom = 16.dp),
                 )
             }
 
@@ -248,7 +248,7 @@ fun GeneratePubkeyScreenContent(
                     text = stringResource(R.string.pubkey_biometric_key_type_warning),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    modifier = Modifier.padding(bottom = 16.dp),
                 )
             }
 
@@ -262,7 +262,7 @@ fun GeneratePubkeyScreenContent(
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -275,14 +275,14 @@ fun GeneratePubkeyScreenContent(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
-                    isError = uiState.passwordMismatch
+                    isError = uiState.passwordMismatch,
                 )
                 if (uiState.passwordMismatch) {
                     Text(
                         text = stringResource(R.string.alert_passwords_do_not_match_msg),
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                        modifier = Modifier.padding(start = 16.dp, top = 4.dp),
                     )
                 }
 
@@ -297,12 +297,12 @@ fun GeneratePubkeyScreenContent(
                     .fillMaxWidth()
                     .clickable(enabled = !uiState.useBiometric) {
                         onUnlockAtStartupChange(!uiState.unlockAtStartup)
-                    }
+                    },
             ) {
                 Checkbox(
                     checked = uiState.unlockAtStartup,
                     onCheckedChange = onUnlockAtStartupChange,
-                    enabled = !uiState.useBiometric
+                    enabled = !uiState.useBiometric,
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(
@@ -311,7 +311,7 @@ fun GeneratePubkeyScreenContent(
                         MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
                     } else {
                         MaterialTheme.colorScheme.onSurface
-                    }
+                    },
                 )
             }
 
@@ -321,11 +321,11 @@ fun GeneratePubkeyScreenContent(
                     .fillMaxWidth()
                     .clickable {
                         onConfirmUseChange(!uiState.confirmUse)
-                    }
+                    },
             ) {
                 Checkbox(
                     checked = uiState.confirmUse,
-                    onCheckedChange = onConfirmUseChange
+                    onCheckedChange = onConfirmUseChange,
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Text(stringResource(R.string.pubkey_confirm_use))
@@ -337,7 +337,7 @@ fun GeneratePubkeyScreenContent(
             Button(
                 onClick = onGenerateKey,
                 enabled = uiState.canGenerate,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             ) {
                 Text(stringResource(R.string.pubkey_generate))
             }
@@ -348,7 +348,7 @@ fun GeneratePubkeyScreenContent(
     if (uiState.showEntropyDialog) {
         EntropyGatherDialog(
             onGatherEntropy = onGatherEntropy,
-            onDismiss = onCancelGeneration
+            onDismiss = onCancelGeneration,
         )
     }
 
@@ -363,19 +363,19 @@ private fun KeyTypeOption(
     label: String,
     selected: Boolean,
     onClick: () -> Unit,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .clickable(enabled = enabled) { onClick() }
-            .padding(vertical = 4.dp)
+            .padding(vertical = 4.dp),
     ) {
         RadioButton(
             selected = selected,
             onClick = onClick,
-            enabled = enabled
+            enabled = enabled,
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(
@@ -384,7 +384,7 @@ private fun KeyTypeOption(
                 MaterialTheme.colorScheme.onSurface
             } else {
                 MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-            }
+            },
         )
     }
 }
@@ -406,7 +406,7 @@ private fun GeneratePubkeyScreenEmptyPreview() {
             onUseBiometricChange = {},
             onGenerateKey = {},
             onGatherEntropy = {},
-            onCancelGeneration = {}
+            onCancelGeneration = {},
         )
     }
 }
@@ -423,7 +423,7 @@ private fun GeneratePubkeyScreenFilledPreview() {
                 password1 = "password123",
                 password2 = "password123",
                 unlockAtStartup = true,
-                confirmUse = false
+                confirmUse = false,
             ),
             onNavigateBack = {},
             onNicknameChange = {},
@@ -436,7 +436,7 @@ private fun GeneratePubkeyScreenFilledPreview() {
             onUseBiometricChange = {},
             onGenerateKey = {},
             onGatherEntropy = {},
-            onCancelGeneration = {}
+            onCancelGeneration = {},
         )
     }
 }
@@ -452,7 +452,7 @@ private fun GeneratePubkeyScreenPasswordMismatchPreview() {
                 password1 = "password123",
                 password2 = "password456",
                 unlockAtStartup = false,
-                confirmUse = true
+                confirmUse = true,
             ),
             onNavigateBack = {},
             onNicknameChange = {},
@@ -465,7 +465,7 @@ private fun GeneratePubkeyScreenPasswordMismatchPreview() {
             onUseBiometricChange = {},
             onGenerateKey = {},
             onGatherEntropy = {},
-            onCancelGeneration = {}
+            onCancelGeneration = {},
         )
     }
 }
@@ -481,7 +481,7 @@ private fun GeneratePubkeyScreenBiometricPreview() {
                 bits = 4096,
                 useBiometric = true,
                 biometricAvailable = true,
-                confirmUse = true
+                confirmUse = true,
             ),
             onNavigateBack = {},
             onNicknameChange = {},
@@ -494,7 +494,7 @@ private fun GeneratePubkeyScreenBiometricPreview() {
             onUseBiometricChange = {},
             onGenerateKey = {},
             onGatherEntropy = {},
-            onCancelGeneration = {}
+            onCancelGeneration = {},
         )
     }
 }

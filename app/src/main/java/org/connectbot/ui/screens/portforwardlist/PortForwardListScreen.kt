@@ -72,7 +72,7 @@ import org.connectbot.ui.theme.ConnectBotTheme
 fun PortForwardListScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: PortForwardListViewModel = hiltViewModel()
+    viewModel: PortForwardListViewModel = hiltViewModel(),
 ) {
     val terminalManager = org.connectbot.ui.LocalTerminalManager.current
 
@@ -90,7 +90,7 @@ fun PortForwardListScreen(
         onUpdatePortForward = viewModel::updatePortForward,
         onEnablePortForward = viewModel::enablePortForward,
         onDisablePortForward = viewModel::disablePortForward,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -104,7 +104,7 @@ fun PortForwardListScreenContent(
     onUpdatePortForward: (PortForward, String, String, String, String) -> Unit,
     onEnablePortForward: (PortForward) -> Unit,
     onDisablePortForward: (PortForward) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var showAddDialog by remember { mutableStateOf(false) }
     var editingPortForward by remember { mutableStateOf<PortForward?>(null) }
@@ -115,7 +115,7 @@ fun PortForwardListScreenContent(
         uiState.error?.let { error ->
             snackbarHostState.showSnackbar(
                 message = error,
-                withDismissAction = true
+                withDismissAction = true,
             )
         }
     }
@@ -127,34 +127,34 @@ fun PortForwardListScreenContent(
                 title = { Text(stringResource(R.string.title_port_forwards_list)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.button_navigate_up))
                     }
-                }
+                },
             )
         },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = { showAddDialog = true },
                 // This matches the FloatingActionButtonMenu padding
-                modifier = Modifier.padding(end = 16.dp, bottom = 16.dp)
+                modifier = Modifier.padding(end = 16.dp, bottom = 16.dp),
             ) {
                 Icon(
                     Icons.Default.Add,
-                    contentDescription = stringResource(R.string.portforward_pos)
+                    contentDescription = stringResource(R.string.portforward_pos),
                 )
             }
         },
-        modifier = modifier
+        modifier = modifier,
     ) { padding ->
         Box(
             modifier = Modifier
                 .padding(padding)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             when {
                 uiState.isLoading -> {
                     CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
+                        modifier = Modifier.align(Alignment.Center),
                     )
                 }
 
@@ -163,7 +163,7 @@ fun PortForwardListScreenContent(
                         text = stringResource(R.string.empty_port_forwards_message),
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.align(Alignment.Center)
+                        modifier = Modifier.align(Alignment.Center),
                     )
                 }
 
@@ -174,13 +174,13 @@ fun PortForwardListScreenContent(
                             start = 16.dp,
                             end = 16.dp,
                             top = 16.dp,
-                            bottom = 104.dp // Extra padding to avoid FAB menu overlap (88dp + 16dp for menu padding)
+                            bottom = 104.dp, // Extra padding to avoid FAB menu overlap (88dp + 16dp for menu padding)
                         ),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         items(
                             items = uiState.portForwards,
-                            key = { it.id }
+                            key = { it.id },
                         ) { portForward ->
                             PortForwardListItem(
                                 portForward = portForward,
@@ -189,7 +189,7 @@ fun PortForwardListScreenContent(
                                 onDelete = { onDeletePortForward(portForward) },
                                 onEnable = { onEnablePortForward(portForward) },
                                 onDisable = { onDisablePortForward(portForward) },
-                                hasLiveConnection = uiState.hasLiveConnection
+                                hasLiveConnection = uiState.hasLiveConnection,
                             )
                         }
                     }
@@ -204,7 +204,7 @@ fun PortForwardListScreenContent(
             onSave = { nickname, type, sourcePort, destination ->
                 showAddDialog = false
                 onAddPortForward(nickname, type, sourcePort, destination)
-            }
+            },
         )
     }
 
@@ -225,7 +225,7 @@ fun PortForwardListScreenContent(
             initialType = portForward.type,
             initialSourcePort = portForward.sourcePort.toString(),
             initialDestination = initialDest,
-            isEditing = true
+            isEditing = true,
         )
     }
 }
@@ -237,14 +237,14 @@ private fun PortForwardListScreenEmptyPreview() {
         PortForwardListScreenContent(
             uiState = PortForwardListUiState(
                 portForwards = emptyList(),
-                isLoading = false
+                isLoading = false,
             ),
             onNavigateBack = {},
             onDeletePortForward = {},
             onAddPortForward = { _, _, _, _ -> },
             onUpdatePortForward = { _, _, _, _, _ -> },
             onEnablePortForward = {},
-            onDisablePortForward = {}
+            onDisablePortForward = {},
         )
     }
 }
@@ -256,14 +256,14 @@ private fun PortForwardListScreenLoadingPreview() {
         PortForwardListScreenContent(
             uiState = PortForwardListUiState(
                 portForwards = emptyList(),
-                isLoading = true
+                isLoading = true,
             ),
             onNavigateBack = {},
             onDeletePortForward = {},
             onAddPortForward = { _, _, _, _ -> },
             onUpdatePortForward = { _, _, _, _, _ -> },
             onEnablePortForward = {},
-            onDisablePortForward = {}
+            onDisablePortForward = {},
         )
     }
 }
@@ -276,14 +276,14 @@ private fun PortForwardListScreenErrorPreview() {
             uiState = PortForwardListUiState(
                 portForwards = emptyList(),
                 isLoading = false,
-                error = "Failed to load port forwards"
+                error = "Failed to load port forwards",
             ),
             onNavigateBack = {},
             onDeletePortForward = {},
             onAddPortForward = { _, _, _, _ -> },
             onUpdatePortForward = { _, _, _, _, _ -> },
             onEnablePortForward = {},
-            onDisablePortForward = {}
+            onDisablePortForward = {},
         )
     }
 }
@@ -302,7 +302,7 @@ private fun PortForwardListScreenPopulatedPreview() {
                         sourcePort = 3306,
                         destAddr = "db.internal",
                         destPort = 3306,
-                        hostId = 1
+                        hostId = 1,
                     ).apply { setEnabled(true) },
                     PortForward(
                         id = 2,
@@ -311,7 +311,7 @@ private fun PortForwardListScreenPopulatedPreview() {
                         sourcePort = 8080,
                         destAddr = "localhost",
                         destPort = 80,
-                        hostId = 1
+                        hostId = 1,
                     ).apply { setEnabled(false) },
                     PortForward(
                         id = 3,
@@ -320,18 +320,18 @@ private fun PortForwardListScreenPopulatedPreview() {
                         sourcePort = 1080,
                         destAddr = "",
                         destPort = 0,
-                        hostId = 1
-                    ).apply { setEnabled(true) }
+                        hostId = 1,
+                    ).apply { setEnabled(true) },
                 ),
                 isLoading = false,
-                hasLiveConnection = true
+                hasLiveConnection = true,
             ),
             onNavigateBack = {},
             onDeletePortForward = {},
             onAddPortForward = { _, _, _, _ -> },
             onUpdatePortForward = { _, _, _, _, _ -> },
             onEnablePortForward = {},
-            onDisablePortForward = {}
+            onDisablePortForward = {},
         )
     }
 }
@@ -345,7 +345,7 @@ private fun PortForwardListItem(
     onEnable: () -> Unit,
     onDisable: () -> Unit,
     hasLiveConnection: Boolean,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
@@ -353,7 +353,7 @@ private fun PortForwardListItem(
         headlineContent = {
             Text(
                 text = portForward.nickname,
-                fontWeight = FontWeight.Bold
+                fontWeight = FontWeight.Bold,
             )
         },
         supportingContent = {
@@ -361,8 +361,8 @@ private fun PortForwardListItem(
                 Text(
                     stringResource(
                         R.string.portforward_type_label,
-                        portForward.type
-                    )
+                        portForward.type,
+                    ),
                 )
                 Text("${portForward.sourcePort} → ${portForward.destAddr}:${portForward.destPort}")
             }
@@ -372,7 +372,7 @@ private fun PortForwardListItem(
                 Icon(
                     imageVector = if (isEnabled) Icons.Filled.CheckCircle else Icons.Outlined.Circle,
                     contentDescription = if (isEnabled) stringResource(R.string.portforward_enabled) else stringResource(R.string.portforward_disabled),
-                    tint = if (isEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline
+                    tint = if (isEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
                 )
             }
         },
@@ -383,7 +383,7 @@ private fun PortForwardListItem(
                 }
                 DropdownMenu(
                     expanded = showMenu,
-                    onDismissRequest = { showMenu = false }
+                    onDismissRequest = { showMenu = false },
                 ) {
                     if (hasLiveConnection) {
                         if (isEnabled) {
@@ -395,7 +395,7 @@ private fun PortForwardListItem(
                                 },
                                 leadingIcon = {
                                     Icon(Icons.Outlined.Circle, null)
-                                }
+                                },
                             )
                         } else {
                             DropdownMenuItem(
@@ -406,7 +406,7 @@ private fun PortForwardListItem(
                                 },
                                 leadingIcon = {
                                     Icon(Icons.Filled.CheckCircle, null)
-                                }
+                                },
                             )
                         }
                     }
@@ -418,7 +418,7 @@ private fun PortForwardListItem(
                         },
                         leadingIcon = {
                             Icon(Icons.Default.Edit, null)
-                        }
+                        },
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.portforward_delete)) },
@@ -428,12 +428,12 @@ private fun PortForwardListItem(
                         },
                         leadingIcon = {
                             Icon(Icons.Default.Delete, null)
-                        }
+                        },
                     )
                 }
             }
         },
-        modifier = modifier.clickable { onEdit() }
+        modifier = modifier.clickable { onEdit() },
     )
     HorizontalDivider()
 }

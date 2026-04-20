@@ -69,7 +69,7 @@ import org.connectbot.ui.theme.ConnectBotTheme
 fun PubkeyEditorScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: PubkeyEditorViewModel = hiltViewModel()
+    viewModel: PubkeyEditorViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
@@ -91,7 +91,7 @@ fun PubkeyEditorScreen(
         onUnlockAtStartupChange = viewModel::updateUnlockAtStartup,
         onConfirmUseChange = viewModel::updateConfirmUse,
         onSave = viewModel::save,
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -107,7 +107,7 @@ fun PubkeyEditorScreenContent(
     onUnlockAtStartupChange: (Boolean) -> Unit,
     onConfirmUseChange: (Boolean) -> Unit,
     onSave: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -116,7 +116,7 @@ fun PubkeyEditorScreenContent(
         uiState.error?.let { error ->
             snackbarHostState.showSnackbar(
                 message = error,
-                withDismissAction = true
+                withDismissAction = true,
             )
         }
     }
@@ -128,12 +128,12 @@ fun PubkeyEditorScreenContent(
                 title = { Text(stringResource(R.string.title_pubkey_list)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.button_navigate_up))
                     }
-                }
+                },
             )
         },
-        modifier = modifier
+        modifier = modifier,
     ) { innerPadding ->
         when {
             uiState.isLoading -> {
@@ -142,7 +142,7 @@ fun PubkeyEditorScreenContent(
                     verticalArrangement = Arrangement.Center,
                     modifier = Modifier
                         .consumeWindowInsets(innerPadding)
-                        .fillMaxSize()
+                        .fillMaxSize(),
                 ) {
                     CircularProgressIndicator()
                 }
@@ -157,7 +157,7 @@ fun PubkeyEditorScreenContent(
                         .fillMaxSize()
                         .verticalScroll(scrollState)
                         .padding(16.dp)
-                        .imePadding()
+                        .imePadding(),
                 ) {
                     // Nickname
                     OutlinedTextField(
@@ -171,7 +171,7 @@ fun PubkeyEditorScreenContent(
                             { Text(stringResource(R.string.pubkey_nickname_exists)) }
                         } else {
                             null
-                        }
+                        },
                     )
 
                     Spacer(modifier = Modifier.height(16.dp))
@@ -183,7 +183,7 @@ fun PubkeyEditorScreenContent(
                         label = { Text(stringResource(R.string.pubkey_editor_key_type_label)) },
                         modifier = Modifier.fillMaxWidth(),
                         enabled = false,
-                        singleLine = true
+                        singleLine = true,
                     )
 
                     Spacer(modifier = Modifier.height(24.dp))
@@ -191,7 +191,7 @@ fun PubkeyEditorScreenContent(
                     // Change Password Section
                     Text(
                         text = stringResource(R.string.pubkey_change_password),
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -204,7 +204,7 @@ fun PubkeyEditorScreenContent(
                             visualTransformation = PasswordVisualTransformation(),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                             modifier = Modifier.fillMaxWidth(),
-                            singleLine = true
+                            singleLine = true,
                         )
                         Spacer(modifier = Modifier.height(8.dp))
                     }
@@ -217,7 +217,7 @@ fun PubkeyEditorScreenContent(
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         modifier = Modifier.fillMaxWidth(),
-                        singleLine = true
+                        singleLine = true,
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -229,16 +229,16 @@ fun PubkeyEditorScreenContent(
                             Text(
                                 "${stringResource(R.string.prompt_password)} ${
                                     stringResource(
-                                        R.string.prompt_again
+                                        R.string.prompt_again,
                                     )
-                                }"
+                                }",
                             )
                         },
                         visualTransformation = PasswordVisualTransformation(),
                         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                         modifier = Modifier.fillMaxWidth(),
                         singleLine = true,
-                        isError = uiState.passwordMismatch
+                        isError = uiState.passwordMismatch,
                     )
 
                     if (uiState.passwordMismatch) {
@@ -246,7 +246,7 @@ fun PubkeyEditorScreenContent(
                             text = stringResource(R.string.alert_passwords_do_not_match_msg),
                             color = MaterialTheme.colorScheme.error,
                             style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                            modifier = Modifier.padding(start = 16.dp, top = 4.dp),
                         )
                     }
 
@@ -255,7 +255,7 @@ fun PubkeyEditorScreenContent(
                             text = stringResource(R.string.alert_wrong_password_msg),
                             color = MaterialTheme.colorScheme.error,
                             style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(start = 16.dp, top = 4.dp)
+                            modifier = Modifier.padding(start = 16.dp, top = 4.dp),
                         )
                     }
 
@@ -264,7 +264,7 @@ fun PubkeyEditorScreenContent(
                     // Options
                     Text(
                         text = stringResource(R.string.pubkey_editor_options_label),
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
                     )
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -275,12 +275,12 @@ fun PubkeyEditorScreenContent(
                             .fillMaxWidth()
                             .clickable(enabled = !uiState.willBeEncrypted) {
                                 onUnlockAtStartupChange(!uiState.unlockAtStartup)
-                            }
+                            },
                     ) {
                         Checkbox(
                             checked = uiState.unlockAtStartup,
                             onCheckedChange = onUnlockAtStartupChange,
-                            enabled = !uiState.willBeEncrypted
+                            enabled = !uiState.willBeEncrypted,
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(
@@ -289,7 +289,7 @@ fun PubkeyEditorScreenContent(
                                 MaterialTheme.colorScheme.onSurface
                             } else {
                                 MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-                            }
+                            },
                         )
                     }
 
@@ -298,7 +298,7 @@ fun PubkeyEditorScreenContent(
                             text = stringResource(R.string.pubkey_editor_encrypted_startup_warning),
                             color = MaterialTheme.colorScheme.error,
                             style = MaterialTheme.typography.bodySmall,
-                            modifier = Modifier.padding(start = 48.dp)
+                            modifier = Modifier.padding(start = 48.dp),
                         )
                     }
 
@@ -308,11 +308,11 @@ fun PubkeyEditorScreenContent(
                             .fillMaxWidth()
                             .clickable {
                                 onConfirmUseChange(!uiState.confirmUse)
-                            }
+                            },
                     ) {
                         Checkbox(
                             checked = uiState.confirmUse,
-                            onCheckedChange = onConfirmUseChange
+                            onCheckedChange = onConfirmUseChange,
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(stringResource(R.string.pubkey_confirm_use))
@@ -324,7 +324,7 @@ fun PubkeyEditorScreenContent(
                     Button(
                         onClick = onSave,
                         enabled = uiState.canSave,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(stringResource(R.string.portforward_save))
                     }
@@ -340,7 +340,7 @@ private fun PubkeyEditorScreenLoadingPreview() {
     ConnectBotTheme {
         PubkeyEditorScreenContent(
             uiState = PubkeyEditorUiState(
-                isLoading = true
+                isLoading = true,
             ),
             onNavigateBack = {},
             onNicknameChange = {},
@@ -349,7 +349,7 @@ private fun PubkeyEditorScreenLoadingPreview() {
             onNewPassword2Change = {},
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
-            onSave = {}
+            onSave = {},
         )
     }
 }
@@ -361,7 +361,7 @@ private fun PubkeyEditorScreenErrorPreview() {
         PubkeyEditorScreenContent(
             uiState = PubkeyEditorUiState(
                 isLoading = false,
-                error = "Failed to load public key"
+                error = "Failed to load public key",
             ),
             onNavigateBack = {},
             onNicknameChange = {},
@@ -370,7 +370,7 @@ private fun PubkeyEditorScreenErrorPreview() {
             onNewPassword2Change = {},
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
-            onSave = {}
+            onSave = {},
         )
     }
 }
@@ -386,7 +386,7 @@ private fun PubkeyEditorScreenUnencryptedPreview() {
                 isEncrypted = false,
                 unlockAtStartup = true,
                 confirmUse = false,
-                isLoading = false
+                isLoading = false,
             ),
             onNavigateBack = {},
             onNicknameChange = {},
@@ -395,7 +395,7 @@ private fun PubkeyEditorScreenUnencryptedPreview() {
             onNewPassword2Change = {},
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
-            onSave = {}
+            onSave = {},
         )
     }
 }
@@ -412,7 +412,7 @@ private fun PubkeyEditorScreenEncryptedPreview() {
                 oldPassword = "",
                 unlockAtStartup = false,
                 confirmUse = true,
-                isLoading = false
+                isLoading = false,
             ),
             onNavigateBack = {},
             onNicknameChange = {},
@@ -421,7 +421,7 @@ private fun PubkeyEditorScreenEncryptedPreview() {
             onNewPassword2Change = {},
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
-            onSave = {}
+            onSave = {},
         )
     }
 }
@@ -440,7 +440,7 @@ private fun PubkeyEditorScreenPasswordMismatchPreview() {
                 newPassword2 = "newpass456",
                 unlockAtStartup = false,
                 confirmUse = false,
-                isLoading = false
+                isLoading = false,
             ),
             onNavigateBack = {},
             onNicknameChange = {},
@@ -449,7 +449,7 @@ private fun PubkeyEditorScreenPasswordMismatchPreview() {
             onNewPassword2Change = {},
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
-            onSave = {}
+            onSave = {},
         )
     }
 }
@@ -469,7 +469,7 @@ private fun PubkeyEditorScreenWrongPasswordPreview() {
                 unlockAtStartup = false,
                 confirmUse = true,
                 isLoading = false,
-                wrongPassword = true
+                wrongPassword = true,
             ),
             onNavigateBack = {},
             onNicknameChange = {},
@@ -478,7 +478,7 @@ private fun PubkeyEditorScreenWrongPasswordPreview() {
             onNewPassword2Change = {},
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
-            onSave = {}
+            onSave = {},
         )
     }
 }

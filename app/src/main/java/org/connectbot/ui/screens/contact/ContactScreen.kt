@@ -45,7 +45,7 @@ import org.connectbot.ui.theme.ConnectBotTheme
 @Composable
 fun ContactScreen(
     onNavigateBack: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val uriHandler = LocalUriHandler.current
     val openUri: (String) -> Unit = { uri ->
@@ -62,19 +62,19 @@ fun ContactScreen(
                 title = { Text(stringResource(R.string.title_contact)) },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.button_navigate_up))
                     }
-                }
+                },
             )
         },
-        modifier = modifier
+        modifier = modifier,
     ) { padding ->
         LazyColumn(modifier = Modifier.padding(padding)) {
             item {
                 Text(
                     text = stringResource(R.string.help_section_contact),
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
                 )
             }
 
@@ -82,7 +82,7 @@ fun ContactScreen(
                 ContactLinkItem(
                     label = stringResource(R.string.help_website),
                     url = stringResource(R.string.help_website_url),
-                    onClick = openUri
+                    onClick = openUri,
                 )
             }
 
@@ -90,7 +90,7 @@ fun ContactScreen(
                 ContactLinkItem(
                     label = stringResource(R.string.help_github),
                     url = stringResource(R.string.help_github_url),
-                    onClick = openUri
+                    onClick = openUri,
                 )
             }
 
@@ -98,7 +98,7 @@ fun ContactScreen(
                 ContactLinkItem(
                     label = stringResource(R.string.help_report_bug),
                     url = stringResource(R.string.help_report_bug_url),
-                    onClick = openUri
+                    onClick = openUri,
                 )
             }
 
@@ -106,7 +106,7 @@ fun ContactScreen(
                 Text(
                     text = stringResource(R.string.help_section_donate),
                     style = MaterialTheme.typography.titleMedium,
-                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 16.dp)
+                    modifier = Modifier.padding(start = 16.dp, end = 16.dp, top = 24.dp, bottom = 16.dp),
                 )
             }
 
@@ -114,7 +114,7 @@ fun ContactScreen(
                 ContactLinkItem(
                     label = stringResource(R.string.help_donate_github),
                     url = stringResource(R.string.help_donate_github_url),
-                    onClick = openUri
+                    onClick = openUri,
                 )
             }
 
@@ -122,7 +122,7 @@ fun ContactScreen(
                 ContactLinkItem(
                     label = stringResource(R.string.help_donate_coffee),
                     url = stringResource(R.string.help_donate_coffee_url),
-                    onClick = openUri
+                    onClick = openUri,
                 )
             }
         }
@@ -133,23 +133,23 @@ fun ContactScreen(
 private fun ContactLinkItem(
     label: String,
     url: String,
-    onClick: (String) -> Unit
+    onClick: (String) -> Unit,
 ) {
     ListItem(
         headlineContent = {
             Text(
                 text = label,
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium,
             )
         },
         supportingContent = {
             Text(
                 text = url,
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
             )
         },
-        modifier = Modifier.clickable { onClick(url) }
+        modifier = Modifier.clickable { onClick(url) },
     )
     HorizontalDivider()
 }
@@ -159,7 +159,7 @@ private fun ContactLinkItem(
 private fun ContactScreenPreview() {
     ConnectBotTheme {
         ContactScreen(
-            onNavigateBack = {}
+            onNavigateBack = {},
         )
     }
 }

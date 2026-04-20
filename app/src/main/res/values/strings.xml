@@ -35,6 +35,8 @@
 	<string name="title_port_forwards_list">"Port forwards"</string>
 	<!-- Window title for Help index -->
 	<string name="title_help">"Help"</string>
+	<!-- Window title for the license/EULA screen -->
+	<string name="title_eula">License</string>
 	<!-- Window title for color list editing screen -->
 	<string name="title_colors">"Colors"</string>
 	<!-- Dialog title for color picker dialog -->

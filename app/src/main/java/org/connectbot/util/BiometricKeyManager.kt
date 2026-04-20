@@ -23,7 +23,6 @@ import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricPrompt
-import dagger.hilt.android.qualifiers.ApplicationContext
 import org.connectbot.ui.screens.generatepubkey.KeyType
 import timber.log.Timber
 import java.security.KeyPairGenerator
@@ -33,8 +32,28 @@ import java.security.PublicKey
 import java.security.Signature
 import java.security.spec.ECGenParameterSpec
 import java.util.UUID
-import javax.inject.Inject
-import javax.inject.Singleton
+
+interface BiometricKeyManager {
+    fun isBiometricAvailable(): BiometricAvailability
+    fun generateKeyAlias(): String
+    fun generateRsaKey(alias: String, keySize: Int = 4096): PublicKey
+    fun generateEcKey(alias: String, keySize: Int = 256): PublicKey
+    fun generateKey(alias: String, keyType: String, keySize: Int): PublicKey
+    fun getCryptoObject(alias: String, algorithm: String): BiometricPrompt.CryptoObject
+    fun getSignatureAlgorithm(keyType: String, keySize: Int = 256): String
+    fun getPrivateKey(alias: String): PrivateKey
+    fun getPublicKey(alias: String): PublicKey?
+    fun keyExists(alias: String): Boolean
+    fun deleteKey(alias: String)
+    fun sign(signature: Signature, data: ByteArray): ByteArray
+
+    companion object {
+        private const val KEYSTORE_PROVIDER = "AndroidKeyStore"
+        val SUPPORTED_KEY_TYPES = listOf("RSA", "EC")
+
+        fun supportsBiometric(keyType: KeyType): Boolean = keyType == KeyType.RSA || keyType == KeyType.EC
+    }
+}
 
 /**
  * Manages SSH keys stored in Android Keystore with biometric authentication.
@@ -45,10 +64,9 @@ import javax.inject.Singleton
  * - Cannot be exported or backed up
  * - Are invalidated if new biometrics are enrolled
  */
-@Singleton
-class BiometricKeyManager @Inject constructor(
-    @param:ApplicationContext private val context: Context
-) {
+class BiometricKeyManagerImpl(
+    private val context: Context,
+) : BiometricKeyManager {
     companion object {
         private const val TAG = "BiometricKeyManager"
         private const val KEYSTORE_PROVIDER = "AndroidKeyStore"
@@ -56,25 +74,13 @@ class BiometricKeyManager @Inject constructor(
 
         // Authentication validity duration in seconds after successful biometric auth
         private const val AUTH_VALIDITY_DURATION_SECONDS = 30
-
-        // Supported key types for biometric protection
-        val SUPPORTED_KEY_TYPES = listOf("RSA", "EC")
-
-        /**
-         * Check if a KeyType supports biometric protection.
-         * Only RSA and EC keys can be stored in Android Keystore with biometric auth.
-         */
-        fun supportsBiometric(keyType: KeyType): Boolean = keyType == KeyType.RSA || keyType == KeyType.EC
     }
 
-    private val keyStore: KeyStore = KeyStore.getInstance(KEYSTORE_PROVIDER).apply {
-        load(null)
+    private val keyStore: KeyStore by lazy {
+        KeyStore.getInstance(KEYSTORE_PROVIDER).apply { load(null) }
     }
 
-    /**
-     * Check if biometric authentication is available and configured on this device.
-     */
-    fun isBiometricAvailable(): BiometricAvailability {
+    override fun isBiometricAvailable(): BiometricAvailability {
         val biometricManager = BiometricManager.from(context)
         return when (biometricManager.canAuthenticate(BiometricManager.Authenticators.BIOMETRIC_STRONG)) {
             BiometricManager.BIOMETRIC_SUCCESS -> BiometricAvailability.AVAILABLE
@@ -86,19 +92,9 @@ class BiometricKeyManager @Inject constructor(
         }
     }
 
-    /**
-     * Generate a unique alias for a new biometric key.
-     */
-    fun generateKeyAlias(): String = KEY_ALIAS_PREFIX + UUID.randomUUID().toString()
+    override fun generateKeyAlias(): String = KEY_ALIAS_PREFIX + UUID.randomUUID().toString()
 
-    /**
-     * Generate an RSA key pair in Android Keystore with biometric authentication requirement.
-     *
-     * @param alias The alias to store the key under
-     * @param keySize The RSA key size in bits (2048, 3072, or 4096)
-     * @return The public key (private key remains in Keystore)
-     */
-    fun generateRsaKey(alias: String, keySize: Int = 4096): PublicKey {
+    override fun generateRsaKey(alias: String, keySize: Int): PublicKey {
         Timber.d("Generating RSA key with alias: $alias, size: $keySize")
 
         // Try with StrongBox first, fall back to TEE if not available
@@ -120,18 +116,18 @@ class BiometricKeyManager @Inject constructor(
     private fun generateRsaKeyInternal(alias: String, keySize: Int, useStrongBox: Boolean): PublicKey {
         val keyPairGenerator = KeyPairGenerator.getInstance(
             KeyProperties.KEY_ALGORITHM_RSA,
-            KEYSTORE_PROVIDER
+            KEYSTORE_PROVIDER,
         )
 
         val builder = KeyGenParameterSpec.Builder(
             alias,
-            KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY
+            KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY,
         ).apply {
             setKeySize(keySize)
             setDigests(
                 KeyProperties.DIGEST_SHA256,
                 KeyProperties.DIGEST_SHA384,
-                KeyProperties.DIGEST_SHA512
+                KeyProperties.DIGEST_SHA512,
             )
             setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PKCS1)
 
@@ -142,7 +138,7 @@ class BiometricKeyManager @Inject constructor(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 setUserAuthenticationParameters(
                     AUTH_VALIDITY_DURATION_SECONDS,
-                    KeyProperties.AUTH_BIOMETRIC_STRONG
+                    KeyProperties.AUTH_BIOMETRIC_STRONG,
                 )
             } else {
                 @Suppress("DEPRECATION")
@@ -165,14 +161,7 @@ class BiometricKeyManager @Inject constructor(
         return keyPair.public
     }
 
-    /**
-     * Generate an EC (ECDSA) key pair in Android Keystore with biometric authentication requirement.
-     *
-     * @param alias The alias to store the key under
-     * @param keySize The EC key size in bits (256, 384, or 521)
-     * @return The public key (private key remains in Keystore)
-     */
-    fun generateEcKey(alias: String, keySize: Int = 256): PublicKey {
+    override fun generateEcKey(alias: String, keySize: Int): PublicKey {
         Timber.d("Generating EC key with alias: $alias, size: $keySize")
 
         // Try with StrongBox first, fall back to TEE if not available
@@ -201,18 +190,18 @@ class BiometricKeyManager @Inject constructor(
 
         val keyPairGenerator = KeyPairGenerator.getInstance(
             KeyProperties.KEY_ALGORITHM_EC,
-            KEYSTORE_PROVIDER
+            KEYSTORE_PROVIDER,
         )
 
         val builder = KeyGenParameterSpec.Builder(
             alias,
-            KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY
+            KeyProperties.PURPOSE_SIGN or KeyProperties.PURPOSE_VERIFY,
         ).apply {
             setAlgorithmParameterSpec(ECGenParameterSpec(curveName))
             setDigests(
                 KeyProperties.DIGEST_SHA256,
                 KeyProperties.DIGEST_SHA384,
-                KeyProperties.DIGEST_SHA512
+                KeyProperties.DIGEST_SHA512,
             )
 
             // Require biometric authentication for every use
@@ -222,7 +211,7 @@ class BiometricKeyManager @Inject constructor(
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
                 setUserAuthenticationParameters(
                     AUTH_VALIDITY_DURATION_SECONDS,
-                    KeyProperties.AUTH_BIOMETRIC_STRONG
+                    KeyProperties.AUTH_BIOMETRIC_STRONG,
                 )
             } else {
                 @Suppress("DEPRECATION")
@@ -245,100 +234,45 @@ class BiometricKeyManager @Inject constructor(
         return keyPair.public
     }
 
-    /**
-     * Generate a biometric-protected key of the specified type.
-     *
-     * @param alias The alias to store the key under
-     * @param keyType "RSA" or "EC"
-     * @param keySize The key size in bits
-     * @return The public key
-     */
-    fun generateKey(alias: String, keyType: String, keySize: Int): PublicKey = when (keyType) {
+    override fun generateKey(alias: String, keyType: String, keySize: Int): PublicKey = when (keyType) {
         "RSA" -> generateRsaKey(alias, keySize)
         "EC" -> generateEcKey(alias, keySize)
         else -> throw IllegalArgumentException("Unsupported key type for biometric protection: $keyType")
     }
 
-    /**
-     * Get a CryptoObject for BiometricPrompt authentication.
-     * This must be used before signing operations.
-     *
-     * @param alias The key alias
-     * @param algorithm The signature algorithm (e.g., "SHA256withRSA", "SHA256withECDSA")
-     * @return A CryptoObject containing the Signature instance
-     */
-    fun getCryptoObject(alias: String, algorithm: String): BiometricPrompt.CryptoObject {
+    override fun getCryptoObject(alias: String, algorithm: String): BiometricPrompt.CryptoObject {
         val privateKey = keyStore.getKey(alias, null) as PrivateKey
         val signature = Signature.getInstance(algorithm)
         signature.initSign(privateKey)
         return BiometricPrompt.CryptoObject(signature)
     }
 
-    /**
-     * Get the signature algorithm for a key type.
-     *
-     * @param keyType The key type ("RSA" or "EC")
-     * @param keySize The key size in bits (used to determine hash algorithm for EC keys)
-     * @return The signature algorithm string
-     */
-    fun getSignatureAlgorithm(keyType: String, keySize: Int = 256): String = when (keyType) {
+    override fun getSignatureAlgorithm(keyType: String, keySize: Int): String = when (keyType) {
         "RSA" -> "SHA256withRSA"
 
         "EC" -> when (keySize) {
             521 -> "SHA512withECDSA"
             384 -> "SHA384withECDSA"
-            else -> "SHA256withECDSA" // P-256 and any other size
+            else -> "SHA256withECDSA"
         }
 
         else -> throw IllegalArgumentException("Unsupported key type: $keyType")
     }
 
-    /**
-     * Get the private key from Keystore.
-     * Note: This will fail if biometric authentication is required and not satisfied.
-     *
-     * @param alias The key alias
-     * @return The private key
-     */
-    fun getPrivateKey(alias: String): PrivateKey = keyStore.getKey(alias, null) as PrivateKey
+    override fun getPrivateKey(alias: String): PrivateKey = keyStore.getKey(alias, null) as PrivateKey
 
-    /**
-     * Get the public key from Keystore.
-     *
-     * @param alias The key alias
-     * @return The public key, or null if not found
-     */
-    fun getPublicKey(alias: String): PublicKey? = keyStore.getCertificate(alias)?.publicKey
+    override fun getPublicKey(alias: String): PublicKey? = keyStore.getCertificate(alias)?.publicKey
 
-    /**
-     * Check if a key exists in the Keystore.
-     *
-     * @param alias The key alias
-     * @return True if the key exists
-     */
-    fun keyExists(alias: String): Boolean = keyStore.containsAlias(alias)
+    override fun keyExists(alias: String): Boolean = keyStore.containsAlias(alias)
 
-    /**
-     * Delete a key from the Keystore.
-     *
-     * @param alias The key alias
-     */
-    fun deleteKey(alias: String) {
+    override fun deleteKey(alias: String) {
         if (keyStore.containsAlias(alias)) {
             keyStore.deleteEntry(alias)
             Timber.d("Key deleted: $alias")
         }
     }
 
-    /**
-     * Sign data using a key in the Keystore.
-     * This should be called after successful BiometricPrompt authentication.
-     *
-     * @param signature The authenticated Signature from BiometricPrompt.CryptoObject
-     * @param data The data to sign
-     * @return The signature bytes
-     */
-    fun sign(signature: Signature, data: ByteArray): ByteArray {
+    override fun sign(signature: Signature, data: ByteArray): ByteArray {
         signature.update(data)
         return signature.sign()
     }
@@ -364,5 +298,5 @@ enum class BiometricAvailability {
     SECURITY_UPDATE_REQUIRED,
 
     /** Unknown error */
-    UNKNOWN_ERROR
+    UNKNOWN_ERROR,
 }
