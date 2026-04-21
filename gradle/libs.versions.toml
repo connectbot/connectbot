@@ -3,7 +3,7 @@ androidGradlePlugin = "9.1.1"
 
 kotlin = "2.3.20"
 spotless = "8.4.0"
-versions = "0.53.0"
+versions = "0.54.0"
 errorprone = "5.1.0"
 easylauncher = "6.4.1"
 pythonUv = "0.4.5"
