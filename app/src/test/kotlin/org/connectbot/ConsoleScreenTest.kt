@@ -17,6 +17,12 @@
 
 package org.connectbot
 
+import android.content.Context
+import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_BEHIND
+import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR
+import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
@@ -28,16 +34,22 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.testing.TestNavHostController
+import androidx.preference.PreferenceManager
+import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.connectbot.ui.screens.console.ConsoleScreen
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.PreferenceConstants
+import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -53,6 +65,15 @@ class ConsoleScreenTest {
     @Before
     fun setUp() {
         hiltRule.inject()
+    }
+
+    @After
+    fun tearDown() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        PreferenceManager.getDefaultSharedPreferences(context).edit().clear().commit()
+    }
+
+    private fun setContent() {
         composeTestRule.setContent {
             val context = LocalContext.current
             navController = TestNavHostController(context)
@@ -82,6 +103,7 @@ class ConsoleScreenTest {
 
     @Test
     fun consoleScreen_displaysBackButton() {
+        setContent()
         navigateToConsoleScreen()
 
         composeTestRule
@@ -91,6 +113,7 @@ class ConsoleScreenTest {
 
     @Test
     fun consoleScreen_backButtonNavigatesUp() {
+        setContent()
         navigateToConsoleScreen()
 
         composeTestRule
@@ -104,6 +127,7 @@ class ConsoleScreenTest {
 
     @Test
     fun consoleScreen_displaysTextInputButton() {
+        setContent()
         navigateToConsoleScreen()
 
         composeTestRule
@@ -113,10 +137,96 @@ class ConsoleScreenTest {
 
     @Test
     fun consoleScreen_displaysPasteButton() {
+        setContent()
         navigateToConsoleScreen()
 
         composeTestRule
             .onNodeWithContentDescription("Paste")
             .assertIsDisplayed()
+    }
+
+    @Test
+    fun consoleScreen_setsLandscapeOrientation_whenPreferenceSet() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(
+            PreferenceConstants.ROTATION,
+            PreferenceConstants.ROTATION_LANDSCAPE,
+        ).commit()
+
+        setContent()
+        navigateToConsoleScreen()
+
+        composeTestRule.runOnIdle {
+            assertEquals(SCREEN_ORIENTATION_LANDSCAPE, composeTestRule.activity.requestedOrientation)
+        }
+    }
+
+    @Test
+    fun consoleScreen_setsPortraitOrientation_whenPreferenceSet() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(
+            PreferenceConstants.ROTATION,
+            PreferenceConstants.ROTATION_PORTRAIT,
+        ).commit()
+
+        setContent()
+        navigateToConsoleScreen()
+
+        composeTestRule.runOnIdle {
+            assertEquals(SCREEN_ORIENTATION_PORTRAIT, composeTestRule.activity.requestedOrientation)
+        }
+    }
+
+    @Test
+    fun consoleScreen_setsSensorOrientation_whenAutoPreferenceSet() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        PreferenceManager.getDefaultSharedPreferences(context).edit().putString(
+            PreferenceConstants.ROTATION,
+            PreferenceConstants.ROTATION_AUTO,
+        ).commit()
+
+        setContent()
+        navigateToConsoleScreen()
+
+        composeTestRule.runOnIdle {
+            assertEquals(SCREEN_ORIENTATION_SENSOR, composeTestRule.activity.requestedOrientation)
+        }
+    }
+
+    @Test
+    fun consoleScreen_setsPortraitOrientation_whenDefaultPreferenceAndNoHardwareKeyboard() {
+        setContent()
+        navigateToConsoleScreen()
+
+        composeTestRule.runOnIdle {
+            assertEquals(SCREEN_ORIENTATION_PORTRAIT, composeTestRule.activity.requestedOrientation)
+        }
+    }
+
+    @Test
+    fun consoleScreen_restoresOriginalOrientation_onNavigateBack() {
+        // Set an initial orientation that's different from what ConsoleScreen might set
+        composeTestRule.runOnUiThread {
+            composeTestRule.activity.requestedOrientation = SCREEN_ORIENTATION_BEHIND
+        }
+
+        setContent()
+        navigateToConsoleScreen()
+
+        // Verify orientation changed
+        composeTestRule.runOnIdle {
+            // Default rotation is portrait (without keyboard in tests)
+            assertEquals(SCREEN_ORIENTATION_PORTRAIT, composeTestRule.activity.requestedOrientation)
+        }
+
+        // Navigate back
+        composeTestRule
+            .onNodeWithContentDescription("Back")
+            .performClick()
+
+        // Verify orientation restored
+        composeTestRule.runOnIdle {
+            assertEquals(SCREEN_ORIENTATION_BEHIND, composeTestRule.activity.requestedOrientation)
+        }
     }
 }

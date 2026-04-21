@@ -22,6 +22,7 @@ import android.content.ActivityNotFoundException
 import android.content.ClipboardManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -74,6 +75,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
@@ -168,14 +170,29 @@ fun ConsoleScreen(
 
     // Read preferences
     val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
-    val keyboardAlwaysVisible = remember { prefs.getBoolean("alwaysvisible", false) }
-    var fullscreen by remember { mutableStateOf(prefs.getBoolean("fullscreen", false)) }
-    var titleBarHide by remember { mutableStateOf(prefs.getBoolean("titlebarhide", false)) }
+    val keyboardAlwaysVisible = remember { prefs.getBoolean(PreferenceConstants.KEY_ALWAYS_VISIBLE, false) }
+    var fullscreen by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.FULLSCREEN, false)) }
+    var titleBarHide by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false)) }
     val volumeKeysChangeFontSize = remember { prefs.getBoolean(PreferenceConstants.VOLUME_FONT, true) }
 
     // Keyboard state
     val hasHardwareKeyboard = rememberHasHardwareKeyboard()
     var showSoftwareKeyboard by remember { mutableStateOf(!hasHardwareKeyboard) }
+
+    var rotation by remember(hasHardwareKeyboard) {
+        val prefValue = prefs.getString(PreferenceConstants.ROTATION, PreferenceConstants.ROTATION_DEFAULT)
+        mutableStateOf(
+            if (prefValue == PreferenceConstants.ROTATION_DEFAULT) {
+                if (hasHardwareKeyboard) {
+                    PreferenceConstants.ROTATION_LANDSCAPE
+                } else {
+                    PreferenceConstants.ROTATION_PORTRAIT
+                }
+            } else {
+                prefValue
+            },
+        )
+    }
 
     val termFocusRequester = remember { FocusRequester() }
 
@@ -215,6 +232,28 @@ fun ConsoleScreen(
         } catch (e: IllegalArgumentException) {
             // Handle foldable device state issues
             Timber.e(e, "Error setting fullscreen mode (foldable device?)")
+        }
+    }
+
+    // Restore original orientation on dispose
+    val activity = context as? Activity
+    if (activity != null) {
+        DisposableEffect(activity) {
+            val originalOrientation = activity.requestedOrientation
+            onDispose {
+                activity.requestedOrientation = originalOrientation
+            }
+        }
+    }
+
+    // Apply orientation settings based on user preference
+    LaunchedEffect(rotation) {
+        if (activity == null) return@LaunchedEffect
+        activity.requestedOrientation = when (rotation) {
+            PreferenceConstants.ROTATION_LANDSCAPE -> ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
+            PreferenceConstants.ROTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            PreferenceConstants.ROTATION_AUTO -> ActivityInfo.SCREEN_ORIENTATION_SENSOR
+            else -> ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
         }
     }
 
@@ -740,11 +779,13 @@ fun ConsoleScreen(
 
                     // More menu
                     Box {
-                        IconButton(onClick = {
-                            // Refresh menu state to update enabled/disabled items
-                            viewModel.refreshMenuState()
-                            showMenu = true
-                        }) {
+                        IconButton(
+                            onClick = {
+                                // Refresh menu state to update enabled/disabled items
+                                viewModel.refreshMenuState()
+                                showMenu = true
+                            },
+                        ) {
                             Icon(
                                 Icons.Default.MoreVert,
                                 contentDescription = stringResource(R.string.button_more_options),
