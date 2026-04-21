@@ -17,11 +17,17 @@
 
 package org.connectbot.service
 
-enum class DisconnectReason {
-    USER_REQUESTED,
-    REMOTE_EOF,
-    IO_ERROR,
-    NETWORK_LOST,
-    AUTH_FAIL,
-    UNKNOWN,
+object DisconnectPolicy {
+    fun decide(
+        reason: DisconnectReason,
+        quickDisconnect: Boolean,
+        stayConnected: Boolean,
+    ): DisconnectAction {
+        if (reason == DisconnectReason.USER_REQUESTED) return DisconnectAction.CloseImmediately
+        if (quickDisconnect) return DisconnectAction.CloseImmediately
+        // Never auto-reconnect on auth failures — looping would lock accounts
+        if (reason == DisconnectReason.AUTH_FAIL) return DisconnectAction.ShowReconnectOverlay
+        if (stayConnected) return DisconnectAction.AutoReconnect
+        return DisconnectAction.ShowReconnectOverlay
+    }
 }
