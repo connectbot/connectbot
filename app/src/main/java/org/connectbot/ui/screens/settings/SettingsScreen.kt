@@ -73,6 +73,7 @@ import org.connectbot.ui.components.FontDownloadProgressDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.NotificationPermissionHelper
+import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.TerminalFont
 import org.connectbot.util.ThemeMode
 import org.xmlpull.v1.XmlPullParser
@@ -441,18 +442,18 @@ fun SettingsScreenContent(
                 ListPreference(
                     title = stringResource(R.string.pref_rotation_title),
                     summary = when (uiState.rotation) {
-                        "Default" -> stringResource(R.string.list_rotation_default)
-                        "Force landscape" -> stringResource(R.string.list_rotation_land)
-                        "Force portrait" -> stringResource(R.string.list_rotation_port)
-                        "Automatic" -> stringResource(R.string.list_rotation_auto)
+                        PreferenceConstants.ROTATION_DEFAULT -> stringResource(R.string.list_rotation_default)
+                        PreferenceConstants.ROTATION_LANDSCAPE -> stringResource(R.string.list_rotation_land)
+                        PreferenceConstants.ROTATION_PORTRAIT -> stringResource(R.string.list_rotation_port)
+                        PreferenceConstants.ROTATION_AUTO -> stringResource(R.string.list_rotation_auto)
                         else -> uiState.rotation
                     },
                     value = uiState.rotation,
                     entries = listOf(
-                        stringResource(R.string.list_rotation_default) to "Default",
-                        stringResource(R.string.list_rotation_land) to "Force landscape",
-                        stringResource(R.string.list_rotation_port) to "Force portrait",
-                        stringResource(R.string.list_rotation_auto) to "Automatic",
+                        stringResource(R.string.list_rotation_default) to PreferenceConstants.ROTATION_DEFAULT,
+                        stringResource(R.string.list_rotation_land) to PreferenceConstants.ROTATION_LANDSCAPE,
+                        stringResource(R.string.list_rotation_port) to PreferenceConstants.ROTATION_PORTRAIT,
+                        stringResource(R.string.list_rotation_auto) to PreferenceConstants.ROTATION_AUTO,
                     ),
                     onValueChange = onRotationChange,
                 )

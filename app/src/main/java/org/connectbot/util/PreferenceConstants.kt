@@ -32,6 +32,7 @@ object PreferenceConstants {
     const val ROTATION_DEFAULT: String = "Default"
     const val ROTATION_LANDSCAPE: String = "Force landscape"
     const val ROTATION_PORTRAIT: String = "Force portrait"
+    const val ROTATION_AUTO: String = "Automatic"
 
     const val FULLSCREEN: String = "fullscreen"
     const val TITLEBARHIDE: String = "titlebarhide"
