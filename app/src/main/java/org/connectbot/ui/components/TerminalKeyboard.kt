@@ -17,6 +17,7 @@
 
 package org.connectbot.ui.components
 
+import android.view.HapticFeedbackConstants
 import android.view.ViewConfiguration
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.BorderStroke
@@ -58,9 +59,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -70,6 +74,7 @@ import org.connectbot.service.ModifierState
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalKeyListener
 import org.connectbot.terminal.VTermKey
+import org.connectbot.util.PreferenceConstants
 
 private const val UI_OPACITY = 0.5f
 
@@ -105,8 +110,13 @@ fun TerminalKeyboard(
     imeVisible: Boolean = false,
     playAnimation: Boolean = false,
 ) {
+    val context = LocalContext.current
+    val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
     val keyHandler = bridge.keyHandler
     val modifierState by keyHandler.modifierState.collectAsState()
+    val bumpyArrows by remember {
+        mutableStateOf(prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, false))
+    }
 
     TerminalKeyboardContent(
         modifierState = modifierState,
@@ -133,6 +143,7 @@ fun TerminalKeyboard(
         onScrollInProgressChange = onScrollInProgressChange,
         imeVisible = imeVisible,
         playAnimation = playAnimation,
+        bumpyArrows = bumpyArrows,
         modifier = modifier,
     )
 }
@@ -155,10 +166,16 @@ private fun TerminalKeyboardContent(
     onScrollInProgressChange: (Boolean) -> Unit,
     imeVisible: Boolean,
     playAnimation: Boolean,
+    bumpyArrows: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val scrollState = rememberScrollState()
     val currentOnScrollInProgressChange by rememberUpdatedState(onScrollInProgressChange)
+    val view = LocalView.current
+
+    if (bumpyArrows) {
+        view.isHapticFeedbackEnabled = true
+    }
 
     // Notify parent when scroll state changes
     LaunchedEffect(scrollState.isScrollInProgress) {
@@ -239,25 +256,45 @@ private fun TerminalKeyboardContent(
                 RepeatableKeyButton(
                     icon = Icons.Default.KeyboardArrowUp,
                     contentDescription = stringResource(R.string.image_description_up),
-                    onPress = { onKeyPress(VTermKey.UP) },
+                    onPress = {
+                        onKeyPress(VTermKey.UP)
+                        if (bumpyArrows) {
+                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                        }
+                    },
                 )
 
                 RepeatableKeyButton(
                     icon = Icons.Default.KeyboardArrowDown,
                     contentDescription = stringResource(R.string.image_description_down),
-                    onPress = { onKeyPress(VTermKey.DOWN) },
+                    onPress = {
+                        onKeyPress(VTermKey.DOWN)
+                        if (bumpyArrows) {
+                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                        }
+                    },
                 )
 
                 RepeatableKeyButton(
                     icon = Icons.Default.KeyboardArrowLeft,
                     contentDescription = stringResource(R.string.image_description_left),
-                    onPress = { onKeyPress(VTermKey.LEFT) },
+                    onPress = {
+                        onKeyPress(VTermKey.LEFT)
+                        if (bumpyArrows) {
+                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                        }
+                    },
                 )
 
                 RepeatableKeyButton(
                     icon = Icons.Default.KeyboardArrowRight,
                     contentDescription = stringResource(R.string.image_description_right),
-                    onPress = { onKeyPress(VTermKey.RIGHT) },
+                    onPress = {
+                        onKeyPress(VTermKey.RIGHT)
+                        if (bumpyArrows) {
+                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                        }
+                    },
                 )
 
                 // Home/End
@@ -610,6 +647,7 @@ private fun TerminalKeyboardPreview() {
             onScrollInProgressChange = {},
             imeVisible = false,
             playAnimation = false,
+            bumpyArrows = false,
         )
     }
 }
@@ -635,6 +673,7 @@ private fun TerminalKeyboardCtrlPressedPreview() {
             onScrollInProgressChange = {},
             imeVisible = false,
             playAnimation = false,
+            bumpyArrows = false,
         )
     }
 }
@@ -660,6 +699,7 @@ private fun TerminalKeyboardCtrlLockedPreview() {
             onScrollInProgressChange = {},
             imeVisible = false,
             playAnimation = false,
+            bumpyArrows = false,
         )
     }
 }
@@ -685,6 +725,7 @@ private fun TerminalKeyboardImeVisiblePreview() {
             onScrollInProgressChange = {},
             imeVisible = true,
             playAnimation = false,
+            bumpyArrows = false,
         )
     }
 }
