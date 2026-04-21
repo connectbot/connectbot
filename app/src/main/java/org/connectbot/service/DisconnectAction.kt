@@ -17,11 +17,13 @@
 
 package org.connectbot.service
 
-enum class DisconnectReason {
-    USER_REQUESTED,
-    REMOTE_EOF,
-    IO_ERROR,
-    NETWORK_LOST,
-    AUTH_FAIL,
-    UNKNOWN,
+sealed class DisconnectAction {
+    /** Remove the bridge and navigate away from the terminal screen immediately. */
+    object CloseImmediately : DisconnectAction()
+
+    /** Keep the bridge visible; show "Reconnect" and "Close" buttons so the user can read output. */
+    object ShowReconnectOverlay : DisconnectAction()
+
+    /** Silently attempt a new connection without showing the overlay. */
+    object AutoReconnect : DisconnectAction()
 }

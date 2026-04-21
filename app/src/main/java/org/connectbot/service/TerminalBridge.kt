@@ -633,15 +633,15 @@ class TerminalBridge {
     /**
      * Force disconnection of this terminal bridge.
      *
-     * Intentional reasons ([DisconnectReason.isIntentional]) always take the
-     * immediate-close path, even if the bridge already reached the
-     * disconnected state — this is how the "Close" button on the reconnect
-     * overlay tears down a session that an IO_ERROR already marked disconnected.
+     * [DisconnectReason.USER_REQUESTED] always takes the immediate-close path,
+     * even if the bridge already reached the disconnected state — this is how
+     * the "Close" button on the reconnect overlay tears down a session that an
+     * IO_ERROR already marked disconnected.
      */
     fun dispatchDisconnect(reason: DisconnectReason) {
         // We don't need to do this multiple times.
         synchronized(this) {
-            if (disconnected && !reason.isIntentional) {
+            if (disconnected && reason != DisconnectReason.USER_REQUESTED) {
                 return
             }
 
@@ -665,15 +665,20 @@ class TerminalBridge {
             }
         }
 
-        if (reason.isIntentional || (host.quickDisconnect && !host.stayConnected)) {
-            awaitingClose = true
-            triggerDisconnectListener()
-        } else {
-            if (host.stayConnected) {
-                manager.requestReconnect(this)
+        when (DisconnectPolicy.decide(reason, host.quickDisconnect, host.stayConnected)) {
+            is DisconnectAction.CloseImmediately -> {
+                awaitingClose = true
+                triggerDisconnectListener()
             }
-            // Notify UI so the reconnect/close overlay appears (or updates)
-            manager.notifyBridgeStateChanged()
+
+            is DisconnectAction.AutoReconnect -> {
+                manager.requestReconnect(this)
+                manager.notifyBridgeStateChanged()
+            }
+
+            is DisconnectAction.ShowReconnectOverlay -> {
+                manager.notifyBridgeStateChanged()
+            }
         }
     }
 
