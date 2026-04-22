@@ -2,6 +2,22 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.10.5][1.10.5]
+### Fixed
+- Fixed the top bar appearing when touching terminal keys
+- Added back some haptic feedback to arrow terminal keys
+- Disconnect dialog now has a policy to only show when needed
+- Only open URLs for destinations safe to open
+- Console screen does not interpret touches as copy
+- Dead key handling for hardware keyboards
+
+### Added
+- Double-click on console screen to select by word
+- Context menu for copy button on console screen
+
+### Changed
+- Updated French translations (thanks @grenagt)
+
 ## [1.10.4][1.10.4]
 ### Fixed
 - Console insets for API 29 were too large
@@ -263,6 +279,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Color picker color numbers are now localized
 
 
+[1.10.5]: https://github.com/connectbot/connectbot/compare/v1.10.4...v1.10.5
 [1.10.4]: https://github.com/connectbot/connectbot/compare/v1.10.3...v1.10.4
 [1.10.3]: https://github.com/connectbot/connectbot/compare/v1.10.2...v1.10.3
 [1.10.2]: https://github.com/connectbot/connectbot/compare/v1.10.1...v1.10.2
