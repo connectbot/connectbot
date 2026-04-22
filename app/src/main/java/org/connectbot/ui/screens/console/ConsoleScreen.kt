@@ -316,28 +316,6 @@ fun ConsoleScreen(
         }
     }
 
-    // Restore original orientation on dispose
-    val activity = context as? Activity
-    if (activity != null) {
-        DisposableEffect(activity) {
-            val originalOrientation = activity.requestedOrientation
-            onDispose {
-                activity.requestedOrientation = originalOrientation
-            }
-        }
-    }
-
-    // Apply orientation settings based on user preference
-    LaunchedEffect(rotation) {
-        if (activity == null) return@LaunchedEffect
-        activity.requestedOrientation = when (rotation) {
-            PreferenceConstants.ROTATION_LANDSCAPE -> ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
-            PreferenceConstants.ROTATION_PORTRAIT -> ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
-            PreferenceConstants.ROTATION_AUTO -> ActivityInfo.SCREEN_ORIENTATION_SENSOR
-            else -> ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
-        }
-    }
-
     // Navigate back if all bridges are closed (after initial loading)
     LaunchedEffect(uiState.bridges.size, uiState.isLoading) {
         if (uiState.bridges.isEmpty() && !uiState.isLoading) {

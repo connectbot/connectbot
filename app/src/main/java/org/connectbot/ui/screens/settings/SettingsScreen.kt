@@ -438,26 +438,26 @@ fun SettingsScreenContent(
                 )
             }
 
-            item {
-                ListPreference(
-                    title = stringResource(R.string.pref_rotation_title),
-                    summary = when (uiState.rotation) {
-                        PreferenceConstants.ROTATION_DEFAULT -> stringResource(R.string.list_rotation_default)
-                        PreferenceConstants.ROTATION_LANDSCAPE -> stringResource(R.string.list_rotation_land)
-                        PreferenceConstants.ROTATION_PORTRAIT -> stringResource(R.string.list_rotation_port)
-                        PreferenceConstants.ROTATION_AUTO -> stringResource(R.string.list_rotation_auto)
-                        else -> uiState.rotation
-                    },
-                    value = uiState.rotation,
-                    entries = listOf(
-                        stringResource(R.string.list_rotation_default) to PreferenceConstants.ROTATION_DEFAULT,
-                        stringResource(R.string.list_rotation_land) to PreferenceConstants.ROTATION_LANDSCAPE,
-                        stringResource(R.string.list_rotation_port) to PreferenceConstants.ROTATION_PORTRAIT,
-                        stringResource(R.string.list_rotation_auto) to PreferenceConstants.ROTATION_AUTO,
-                    ),
-                    onValueChange = onRotationChange,
-                )
-            }
+//            item {
+//                ListPreference(
+//                    title = stringResource(R.string.pref_rotation_title),
+//                    summary = when (uiState.rotation) {
+//                        PreferenceConstants.ROTATION_DEFAULT -> stringResource(R.string.list_rotation_default)
+//                        PreferenceConstants.ROTATION_LANDSCAPE -> stringResource(R.string.list_rotation_land)
+//                        PreferenceConstants.ROTATION_PORTRAIT -> stringResource(R.string.list_rotation_port)
+//                        PreferenceConstants.ROTATION_AUTO -> stringResource(R.string.list_rotation_auto)
+//                        else -> uiState.rotation
+//                    },
+//                    value = uiState.rotation,
+//                    entries = listOf(
+//                        stringResource(R.string.list_rotation_default) to PreferenceConstants.ROTATION_DEFAULT,
+//                        stringResource(R.string.list_rotation_land) to PreferenceConstants.ROTATION_LANDSCAPE,
+//                        stringResource(R.string.list_rotation_port) to PreferenceConstants.ROTATION_PORTRAIT,
+//                        stringResource(R.string.list_rotation_auto) to PreferenceConstants.ROTATION_AUTO,
+//                    ),
+//                    onValueChange = onRotationChange,
+//                )
+//            }
 
             item {
                 SwitchPreference(
