@@ -50,6 +50,11 @@ msgctxt "title_help"
 msgid "Help"
 msgstr "Bantuan"
 
+#. Window title for the license/EULA screen
+msgctxt "title_eula"
+msgid "License"
+msgstr "Lisensi"
+
 #. Window title for color list editing screen
 msgctxt "title_colors"
 msgid "Colors"
@@ -1377,6 +1382,11 @@ msgstr "Pindai URL"
 msgctxt "console_url_no_handler"
 msgid "No app available to open this URL"
 msgstr "Tidak ada aplikasi yang tersedia untuk membuka URL ini"
+
+#. Error shown in a snackbar when the URL type is not supported
+msgctxt "console_url_not_supported"
+msgid "This URL type is not supported"
+msgstr "Jenis URL ini tidak didukung"
 
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"
