@@ -85,7 +85,7 @@ data class SettingsUiState(
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
     val language: String = "",
     val defaultProfileId: Long = 0L,
-    val availableProfiles: List<Profile> = emptyList()
+    val availableProfiles: List<Profile> = emptyList(),
 )
 
 @HiltViewModel
@@ -93,7 +93,7 @@ class SettingsViewModel @Inject constructor(
     private val prefs: SharedPreferences,
     private val profileRepository: ProfileRepository,
     @ApplicationContext private val context: Context,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
     private val fontProvider = TerminalFontProvider(context, dispatchers.io)
     private val localFontProvider = LocalFontProvider(context)
@@ -177,7 +177,7 @@ class SettingsViewModel @Inject constructor(
             localFonts = localFonts,
             themeMode = ThemeMode.fromString(prefs.getString(PreferenceConstants.THEME_MODE, null)),
             language = currentLanguage,
-            defaultProfileId = prefs.getLong("defaultProfileId", 0L)
+            defaultProfileId = prefs.getLong("defaultProfileId", 0L),
         )
     }
 
@@ -403,7 +403,7 @@ class SettingsViewModel @Inject constructor(
                         it.copy(
                             customFonts = updatedFonts,
                             fontValidationInProgress = false,
-                            fontValidationError = null
+                            fontValidationError = null,
                         )
                     }
                 } else {
@@ -411,7 +411,7 @@ class SettingsViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             fontValidationInProgress = false,
-                            fontValidationError = "Font not found in Google Fonts"
+                            fontValidationError = "Font not found in Google Fonts",
                         )
                     }
                 }
@@ -455,14 +455,14 @@ class SettingsViewModel @Inject constructor(
                     it.copy(
                         localFonts = updatedLocalFonts,
                         fontImportInProgress = false,
-                        fontImportError = null
+                        fontImportError = null,
                     )
                 }
             } else {
                 _uiState.update {
                     it.copy(
                         fontImportInProgress = false,
-                        fontImportError = "Failed to import font"
+                        fontImportError = "Failed to import font",
                     )
                 }
             }
