@@ -6,6 +6,7 @@
   <string name="title_pubkey_list">공개키</string>
   <string name="title_port_forwards_list">포트 포워딩</string>
   <string name="title_help">도움말</string>
+  <string name="title_eula">라이선스</string>
   <string name="title_colors">색상</string>
   <string name="title_color_picker">색상 선택</string>
   <string name="title_settings">설정</string>
@@ -245,6 +246,7 @@
   <string name="console_menu_resize">크기 고정</string>
   <string name="console_menu_urlscan">URL 검색</string>
   <string name="console_url_no_handler">이 URL을 열 수 있는 앱이 없습니다.</string>
+  <string name="console_url_not_supported">이 URL 유형은 지원되지 않습니다</string>
   <string name="button_yes">예</string>
   <string name="button_no">아니오</string>
   <string name="portforward_local">로컬</string>

@@ -6,6 +6,7 @@
   <string name="title_pubkey_list">公開鍵</string>
   <string name="title_port_forwards_list">ポート転送</string>
   <string name="title_help">ヘルプ</string>
+  <string name="title_eula">ライセンス</string>
   <string name="title_colors">配色</string>
   <string name="title_color_picker">色の取得</string>
   <string name="title_settings">設定</string>
@@ -245,6 +246,7 @@
   <string name="console_menu_resize">サイズ強制</string>
   <string name="console_menu_urlscan">URL スキャン</string>
   <string name="console_url_no_handler">このURLを開くことができるアプリがありません</string>
+  <string name="console_url_not_supported">このURL形式はサポートされていません</string>
   <string name="button_yes">はい</string>
   <string name="button_no">いいえ</string>
   <string name="portforward_local">ローカル</string>

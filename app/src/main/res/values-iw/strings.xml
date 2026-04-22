@@ -6,6 +6,7 @@
   <string name="title_pubkey_list">מפתחות ציבוריים</string>
   <string name="title_port_forwards_list">הפניית פתחות</string>
   <string name="title_help">עזרה</string>
+  <string name="title_eula">רישיון</string>
   <string name="title_colors">צבעים</string>
   <string name="title_color_picker">בחירת צבע</string>
   <string name="title_settings">הגדרות</string>
@@ -245,6 +246,7 @@
   <string name="console_menu_resize">אילוץ גודל</string>
   <string name="console_menu_urlscan">סריקת כתובות</string>
   <string name="console_url_no_handler">אין אפליקציה זמינה לפתיחת כתובת URL זו.</string>
+  <string name="console_url_not_supported">סוג כתובת האתר הזה אינו נתמך</string>
   <string name="button_yes">כן</string>
   <string name="button_no">לא</string>
   <string name="portforward_local">מקומי</string>

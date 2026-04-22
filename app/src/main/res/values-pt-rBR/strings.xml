@@ -6,6 +6,7 @@
   <string name="title_pubkey_list">Chaves Públicas</string>
   <string name="title_port_forwards_list">Redirecionamento de Portas</string>
   <string name="title_help">Ajuda</string>
+  <string name="title_eula">Licença</string>
   <string name="title_colors">Cores</string>
   <string name="title_color_picker">Escolha a cor</string>
   <string name="title_settings">Configurações</string>
@@ -245,6 +246,7 @@
   <string name="console_menu_resize">Forçar tamanho</string>
   <string name="console_menu_urlscan">Localizar URLs</string>
   <string name="console_url_no_handler">Nenhum aplicativo disponível para abrir este URL</string>
+  <string name="console_url_not_supported">Este tipo de URL não é suportado</string>
   <string name="button_yes">Sim</string>
   <string name="button_no">Não</string>
   <string name="portforward_local">Porta local</string>

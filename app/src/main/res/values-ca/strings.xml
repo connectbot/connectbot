@@ -6,6 +6,7 @@
   <string name="title_pubkey_list">Claus Públiques</string>
   <string name="title_port_forwards_list">Redirecció de Ports</string>
   <string name="title_help">Ajuda</string>
+  <string name="title_eula">Llicència</string>
   <string name="title_colors">Colors</string>
   <string name="title_color_picker">Trieu un color</string>
   <string name="title_settings">Configuració</string>
@@ -245,6 +246,7 @@
   <string name="console_menu_resize">Força el tamany</string>
   <string name="console_menu_urlscan">Llistat de URL</string>
   <string name="console_url_no_handler">No hi ha cap aplicació disponible per obrir aquesta URL.</string>
+  <string name="console_url_not_supported">Aquest tipus d\'URL no és compatible</string>
   <string name="button_yes">Sí</string>
   <string name="button_no">No</string>
   <string name="portforward_local">Local</string>

@@ -52,6 +52,11 @@ msgctxt "title_help"
 msgid "Help"
 msgstr "Aide"
 
+#. Window title for the license/EULA screen
+msgctxt "title_eula"
+msgid "License"
+msgstr "Licence"
+
 #. Window title for color list editing screen
 msgctxt "title_colors"
 msgid "Colors"
@@ -273,7 +278,7 @@ msgctxt "pubkey_list_empty"
 msgid ""
 "Tap \"Menu\" to create\n"
 "or import key pairs."
-msgstr "Appuyez sur « Menu » pour créer ou importer des paires de clés."
+msgstr "Appuyez sur \"Menu\" pour créer ou importer des paires de clés."
 
 msgctxt "pubkey_unknown_format"
 msgid "Unknown format"
@@ -351,7 +356,7 @@ msgstr "Ancien mot de passe :"
 #. configured.
 msgctxt "prompt_username"
 msgid "Username:"
-msgstr "Nom d’utilisateur :"
+msgstr "Nom d'utilisateur :"
 
 #. Prompt for user to enter their password to log into the host when using
 #. 'password' authentication.
@@ -461,7 +466,7 @@ msgstr "Vérification de la clé d'hôte"
 #. Section header for the fingerprint formats display area
 msgctxt "fingerprint_format_header"
 msgid "Fingerprint format"
-msgstr "Format dempreinte"
+msgstr "Format d'empreinte"
 
 #. Format string showing key type and size, e.g., "RSA 2048 bits". First field
 #. is key type, second is key size in bits.
@@ -474,7 +479,7 @@ msgstr "%1$s %2$d bits "
 #. screen readers for accessibility
 msgctxt "fingerprint_copy_description"
 msgid "Copy fingerprint to clipboard"
-msgstr "Copier lempreinte dans le presse-papiers"
+msgstr "Copier l'empreinte dans le presse-papiers"
 
 #. Error message shown when entered password and confirmation password don't
 #. match
@@ -787,7 +792,7 @@ msgstr "Raccourcis de navigation"
 #. Name for the sticky modifiers preference
 msgctxt "pref_stickymodifiers_title"
 msgid "Sticky modifiers"
-msgstr "Touches de combinaison ''collantes''"
+msgstr "Touches de combinaison \"collantes\""
 
 #. Sticky modifier preference value description for when only the Alt key
 #. should be a sticky modifier.
@@ -830,7 +835,7 @@ msgctxt "pref_bumpyarrows_summary"
 msgid "Vibrate when sending arrow keys; useful for laggy connections"
 msgstr ""
 "Vibrer lors de l'envoi d'une touche \"flèche\"; utile lorsque la "
-"connexion lag"
+"connexion lague"
 
 #. Category title for the Terminal Bell preferences
 msgctxt "pref_bell_category"
@@ -1238,7 +1243,7 @@ msgid ""
 "sizing to fit the screen."
 msgstr ""
 "Forcez le terminal à une taille spécifique (colonnes x lignes) au lieu de"
-" l’adapter automatiquement à la taille de l’écran."
+" l'adapter automatiquement à la taille de l'écran."
 
 #. Label for the enable force size switch
 msgctxt "profile_editor_force_size_enable"
@@ -1258,7 +1263,7 @@ msgstr "Lignes"
 #. Dropdown option to not override host color with profile color
 msgctxt "profile_icon_color_none"
 msgid "None (use host color)"
-msgstr "Aucun (utiliser la couleur de l hôte)"
+msgstr "Aucun (utiliser la couleur de l'hôte)"
 
 #. Profile list screen strings
 #. Window title for the profiles list screen
@@ -1338,7 +1343,7 @@ msgstr "Annuler"
 #, c-format
 msgctxt "profile_summary_font"
 msgid "Font: %1$s %2$dpt"
-msgstr "Police: %1$s %2$dpt"
+msgstr "Police : %1$s %2$dpt"
 
 #. Summary text showing emulation setting. Parameter is the terminal emulation
 #. type.
@@ -1386,6 +1391,11 @@ msgstr "Lister les URL"
 msgctxt "console_url_no_handler"
 msgid "No app available to open this URL"
 msgstr "Aucune application disponible pour ouvrir cette URL"
+
+#. Error shown in a snackbar when the URL type is not supported
+msgctxt "console_url_not_supported"
+msgid "This URL type is not supported"
+msgstr "Ce type d’URL n’est pas pris en charge"
 
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"
@@ -1498,7 +1508,7 @@ msgstr "Hôte dupliqué"
 #. Context menu action to forget stored host keys for the selected host
 msgctxt "list_host_forget_keys"
 msgid "Forget host keys"
-msgstr "Oublier les clés d’hôte"
+msgstr "Oublier les clés d'hôte"
 
 #. Default screen rotation preference selection
 msgctxt "list_rotation_default"
@@ -1649,12 +1659,12 @@ msgstr "L'authentification par mot de passe a échoué"
 #. Message shown in terminal when attempting saved password authentication
 msgctxt "terminal_auth_saved_password"
 msgid "Trying saved password…"
-msgstr "Tentative d’utilisation du mot de passe enregistré…"
+msgstr "Tentative d'utilisation du mot de passe enregistré…"
 
 #. Message shown in terminal when saved password authentication fails
 msgctxt "terminal_auth_saved_password_fail"
 msgid "Saved password authentication failed"
-msgstr "L’authentification avec le mot de passe enregistré a échoué"
+msgstr "L'authentification avec le mot de passe enregistré a échoué"
 
 #. Message shown in terminal when trying public key authentication with any
 #. available key
@@ -1765,7 +1775,7 @@ msgstr "Oui"
 #. Selector title for the list of color schemes.
 msgctxt "list_color_schemes"
 msgid "Color schemes"
-msgstr "Schemas de couleurs"
+msgstr "Schémas de couleurs"
 
 #. Menu selection to reset colors to their defaults.
 msgctxt "menu_colors_reset"
@@ -1858,7 +1868,7 @@ msgstr "Personnalisé"
 #. Empty state message when no custom schemes exist
 msgctxt "empty_custom_schemes"
 msgid "No custom schemes. Tap \"New Scheme\" to create one."
-msgstr "Aucun schéma personnalisé Tapez sur Nouveau schéma pour en créer un"
+msgstr "Aucun schéma personnalisé. Tapez sur \"Nouveau schéma\" pour en créer un."
 
 #. Button text to edit full color palette
 msgctxt "button_edit_palette"
@@ -1891,7 +1901,7 @@ msgstr "Importé %1$s"
 #, c-format
 msgctxt "error_export_failed"
 msgid "Failed to export scheme: %1$s"
-msgstr "Échec de l exportation du schéma %1$s"
+msgstr "Échec de l'exportation du schéma %1$s"
 
 #. Error message when import fails
 #, c-format
@@ -2211,7 +2221,7 @@ msgstr "Envoyer"
 #. Button label for confirming an action
 msgctxt "button_ok"
 msgid "OK"
-msgstr "daccord"
+msgstr "OK"
 
 #. Button label for closing a dialog
 msgctxt "button_close"
@@ -2359,15 +2369,7 @@ msgstr "Type de clé"
 #. Label for the options section on SSH pubkey editor
 msgctxt "pubkey_editor_options_label"
 msgid "Options"
-msgstr ""
-"Options est traduit par Options mais dans le contexte de la phrase il "
-"faut utiliser le mot  Options est remplacé par Paramètres ou préférences "
-"mais le terme exact pour cette application serait paramètres ou "
-"préférences mais le terme qui correspond à options est bien Options mais "
-"dans ce cas précis c'est plutôt les paramètres ou préférences mais si on "
-"doit traduire le mot options il faut utiliser le mot options donc la "
-"réponse est \n"
-"Paramètres"
+msgstr "Options"
 
 #. Warning message shown when encrypted SSH pubkeys are set to load on startup
 msgctxt "pubkey_editor_encrypted_startup_warning"
@@ -2408,9 +2410,9 @@ msgid ""
 "No fingerprint enrolled. Set up fingerprint in device settings to use "
 "this feature."
 msgstr ""
-"Aucune empreinte digitale n est enregistrée configurez les empreintes "
+"Aucune empreinte digitale n'est enregistrée. Configurez les empreintes "
 "digitales dans les paramètres du périphérique pour utiliser cette "
-"fonctionnalité"
+"fonctionnalité."
 
 #. Warning shown when key type doesn\'t support biometric protection
 msgctxt "pubkey_biometric_key_type_warning"
@@ -2428,7 +2430,7 @@ msgstr "Authentifier pour utiliser la clé"
 #, c-format
 msgctxt "pubkey_biometric_prompt_subtitle"
 msgid "Touch the fingerprint sensor to unlock '%1$s'"
-msgstr "Touchez le capteur dempreintes digitales pour déverrouiller %1$s"
+msgstr "Touchez le capteur d'empreintes digitales pour déverrouiller %1$s"
 
 #. Accessibility description for biometric-protected key icon
 msgctxt "pubkey_biometric_description_icon"
@@ -2439,7 +2441,7 @@ msgstr "Protégé par empreinte digitale"
 #. context
 msgctxt "pubkey_biometric_not_available"
 msgid "Fingerprint authentication is not available"
-msgstr "Lauthentification par empreinte digitale nest pas disponible"
+msgstr "L'authentification par empreinte digitale n'est pas disponible"
 
 #. Port forward editor labels
 #. Placeholder for port forward nickname field. Should show an example
@@ -2483,12 +2485,12 @@ msgstr "Désactiver"
 #. Content description for enabled port forward visual indicator
 msgctxt "portforward_enabled"
 msgid "Port forward enabled"
-msgstr "Le transfert de port est activé"
+msgstr "Transfert de port activé"
 
 #. Content description for disabled port forward visual indicator
 msgctxt "portforward_disabled"
 msgid "Port forward disabled"
-msgstr "Le transfert de port désactivé"
+msgstr "Transfert de port désactivé"
 
 #. Label for spinner which allows user to select SSH/Telnet/Local.
 msgctxt "protocol_spinner_label"
@@ -2519,7 +2521,7 @@ msgstr "Enregistrer le serveur"
 #. Title shown in the app bar when editing an existing host's settings.
 msgctxt "hostpref_setting_title"
 msgid "Host setting"
-msgstr "Paramètres de l’hôte"
+msgstr "Paramètres de l'hôte"
 
 #. Text for button which, when clicked, brings up picker to import an existing
 #. pubkey.
@@ -2543,9 +2545,9 @@ msgid ""
 "background. Without permission, connections may close when you switch "
 "apps."
 msgstr ""
-"L affichage d une notification est requis pour maintenir les connexions "
-"actives en arriere plan Sans autorisation les connexions peuvent se "
-"fermer lorsque vous basculez entre les applications"
+"L'affichage d une notification est requis pour maintenir les connexions "
+"actives en arrière-plan. Sans autorisation, les connexions peuvent se "
+"fermer lorsque vous basculez entre les applications."
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
@@ -2574,8 +2576,8 @@ msgid ""
 "To keep connections alive in the background, you must enable notification"
 " permission in app settings."
 msgstr ""
-"Pour garder les connexions actives en arrière-plan vous devez activer l "
-"autorisation de notification dans les paramètres de l application"
+"Pour garder les connexions actives en arrière-plan vous devez activer "
+"l'autorisation de notification dans les paramètres de l'application"
 
 #. Button text to open ConnectBot app settings page where user can grant
 #. notification permission.
@@ -2588,8 +2590,8 @@ msgstr "Ouvrir les paramètres"
 msgctxt "terminal_no_route"
 msgid "Are you trying to access a local host? Grant local network permissions."
 msgstr ""
-"Essayez-vous d accéder à un hôte local Accordez les autorisations de "
-"réseau local"
+"Essayez-vous d'accéder à un hôte local ? Accordez les autorisations de "
+"réseau local."
 
 #. Loading message shown during app initialization
 msgctxt "loading_message"
@@ -2611,7 +2613,7 @@ msgstr "Migration de la base de données"
 #. Warning message shown during migration to inform user not to close the app
 msgctxt "migration_warning"
 msgid "Please do not close the app during migration"
-msgstr "Veuillez ne pas fermer lapplication pendant la migration"
+msgstr "Veuillez ne pas fermer l'application pendant la migration"
 
 #. Statistics label showing number of hosts migrated
 #, c-format
@@ -2646,7 +2648,7 @@ msgstr "Échec de la migration"
 #, c-format
 msgctxt "migration_failed_message"
 msgid "An error occurred during database migration: %s"
-msgstr "Une erreur s est produite lors de la migration de la base de données %s"
+msgstr "Une erreur s'est produite lors de la migration de la base de données %s"
 
 #. Button label to retry failed migration
 msgctxt "migration_retry"
@@ -2704,8 +2706,8 @@ msgid ""
 "Are you sure you want to forget the stored host keys for '%1$s'? You will"
 " be prompted to verify the host key on the next connection."
 msgstr ""
-"Êtes-vous sûr de vouloir supprimer les clés d’hôte enregistrées pour « "
-"%1$s » ? Vous devrez vérifier la clé d’hôte lors de la prochaine "
+"Êtes-vous sûr de vouloir supprimer les clés d'hôte enregistrées pour "
+"'%1$s' ? Vous devrez vérifier la clé d'hôte lors de la prochaine "
 "connexion."
 
 #. Menu selection to edit a pubkey details (e.g., nickname)
@@ -2722,7 +2724,7 @@ msgstr "Version IP"
 #. Summary text explaining what the IP version setting controls
 msgctxt "hostpref_ipversion_summary"
 msgid "Select which IP address version to use when connecting"
-msgstr "Sélectionnez la version d’adresse IP à utiliser lors de la connexion"
+msgstr "Sélectionnez la version d'adresse IP à utiliser lors de la connexion"
 
 #. Option for automatic IP version selection (try both IPv4 and IPv6)
 msgctxt "ipversion_auto"
@@ -2804,7 +2806,7 @@ msgstr "Afficher les journaux"
 #. Title for the log viewer dialog
 msgctxt "logs_title"
 msgid "Application Logs"
-msgstr "Journaux d application"
+msgstr "Journaux d'application"
 
 #. Button text to copy logs to clipboard for bug reporting
 msgctxt "copy_logs"
@@ -2871,7 +2873,7 @@ msgstr "Soutenez le développement"
 #. Label for the GitHub Sponsors donation link in the Help screen.
 msgctxt "help_donate_github"
 msgid "GitHub Sponsors"
-msgstr "GitHub Sponsors"
+msgstr "Sponsors GitHub"
 
 #. Label for the Buy Me a Coffee donation link in the Help screen.
 msgctxt "help_donate_coffee"
@@ -2912,7 +2914,7 @@ msgstr "Schéma de couleurs groove rétro"
 #. Description of the Monokai color scheme
 msgctxt "colorscheme_monokai_description"
 msgid "Sublime Text inspired theme"
-msgstr "thème inspiré de Sublime Text"
+msgstr "Thème inspiré de Sublime Text"
 
 #. Description of the Tomorrow Night color scheme
 msgctxt "colorscheme_tomorrow_night_description"
@@ -2993,12 +2995,12 @@ msgstr "Ctrl+A"
 #. Summary description for Esc camera button action
 msgctxt "list_camera_esc_description"
 msgid "Esc"
-msgstr "Echappe"
+msgstr "Echap"
 
 #. Summary description for Esc+A camera button action
 msgctxt "list_camera_esc_a_description"
 msgid "Esc+A"
-msgstr "Échappement+A"
+msgstr "Echap+A"
 
 #. Summary description for None camera button action
 msgctxt "list_camera_none_description"
@@ -3041,13 +3043,13 @@ msgstr "%1$d hôtes importés (%2$d ignorés) et %3$d profils (%4$d ignorés)"
 #, c-format
 msgctxt "export_hosts_failed"
 msgid "Failed to export hosts: %s"
-msgstr "Échec de l’exportation des hôtes : %s"
+msgstr "Échec de l'exportation des hôtes : %s"
 
 #. Error message when host import fails
 #, c-format
 msgctxt "import_hosts_failed"
 msgid "Failed to import hosts: %s"
-msgstr "Échec de l’importation des hôtes : %s"
+msgstr "Échec de l'importation des hôtes : %s"
 
 #. Title for the export hosts file picker dialog
 msgctxt "export_hosts_title"
@@ -3063,17 +3065,17 @@ msgstr "Personnaliser le raccourci"
 #. Label for the shortcut icon color selection dropdown
 msgctxt "shortcut_icon_color"
 msgid "Icon Color"
-msgstr "Couleur de l’icône"
+msgstr "Couleur de l'icône"
 
 #. Label for the shortcut icon style selection dropdown
 msgctxt "shortcut_icon_style"
 msgid "Icon Style"
-msgstr "Style d’icône"
+msgstr "Style d'icône"
 
 #. Checkbox label to use the host\'s configured color for the shortcut
 msgctxt "shortcut_use_host_color"
 msgid "Use host color"
-msgstr "Utiliser la couleur de l’hôte"
+msgstr "Utiliser la couleur de l'hôte"
 
 #. Button to create the customized shortcut
 msgctxt "shortcut_create"
@@ -3111,7 +3113,7 @@ msgctxt "pref_auth_on_launch_summary"
 msgid "Require fingerprint, face, or device PIN when opening the app"
 msgstr ""
 "Exigez une empreinte digitale, la reconnaissance faciale ou le code PIN "
-"de l’appareil lors de l’ouverture de l’application"
+"de l'appareil lors de l'ouverture de l'application"
 
 #. Category title for security preferences in settings
 msgctxt "pref_security_category"

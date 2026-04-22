@@ -6,6 +6,7 @@
   <string name="title_pubkey_list">Clés publiques</string>
   <string name="title_port_forwards_list">Redirections de ports</string>
   <string name="title_help">Aide</string>
+  <string name="title_eula">Licence</string>
   <string name="title_colors">Couleurs</string>
   <string name="title_color_picker">Choisissez une couleur</string>
   <string name="title_settings">Préférences</string>
@@ -245,6 +246,7 @@
   <string name="console_menu_resize">Forcer la taille</string>
   <string name="console_menu_urlscan">Lister les URL</string>
   <string name="console_url_no_handler">Aucune application disponible pour ouvrir cette URL</string>
+  <string name="console_url_not_supported">Ce type d’URL n’est pas pris en charge</string>
   <string name="button_yes">Oui</string>
   <string name="button_no">Non</string>
   <string name="portforward_local">Local</string>
@@ -438,7 +440,7 @@
   <string name="portforward_type_label">Type %s</string>
   <string name="portforward_enable">Activer</string>
   <string name="portforward_disable">Désactiver</string>
-  T<string name="portforward_enabled">Transfert de port activé</string>
+  <string name="portforward_enabled">Transfert de port activé</string>
   <string name="portforward_disabled">Transfert de port désactivé</string>
   <string name="protocol_spinner_label">Protocole</string>
   <string name="expand">Développer</string>

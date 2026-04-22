@@ -6,6 +6,7 @@
   <string name="title_pubkey_list">Відкриті ключі</string>
   <string name="title_port_forwards_list">Переадресація портів</string>
   <string name="title_help">Допомога</string>
+  <string name="title_eula">Ліцензія</string>
   <string name="title_colors">Кольори</string>
   <string name="title_color_picker">Оберіть колір</string>
   <string name="title_settings">Налаштування</string>
@@ -245,6 +246,7 @@
   <string name="console_menu_resize">Примусове встановлення розміру</string>
   <string name="console_menu_urlscan">Сканування URL-адреси</string>
   <string name="console_url_no_handler">Немає жодної програми, за допомогою якої можна було б відкрити це посилання</string>
+  <string name="console_url_not_supported">Цей тип URL-адреси не підтримується</string>
   <string name="button_yes">Так</string>
   <string name="button_no">Ні</string>
   <string name="portforward_local">Локальний</string>

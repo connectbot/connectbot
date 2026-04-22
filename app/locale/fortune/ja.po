@@ -50,6 +50,11 @@ msgctxt "title_help"
 msgid "Help"
 msgstr "ヘルプ"
 
+#. Window title for the license/EULA screen
+msgctxt "title_eula"
+msgid "License"
+msgstr "ライセンス"
+
 #. Window title for color list editing screen
 msgctxt "title_colors"
 msgid "Colors"
@@ -1356,6 +1361,11 @@ msgstr "URL スキャン"
 msgctxt "console_url_no_handler"
 msgid "No app available to open this URL"
 msgstr "このURLを開くことができるアプリがありません"
+
+#. Error shown in a snackbar when the URL type is not supported
+msgctxt "console_url_not_supported"
+msgid "This URL type is not supported"
+msgstr "このURL形式はサポートされていません"
 
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"

@@ -6,6 +6,7 @@
   <string name="title_pubkey_list">公鑰</string>
   <string name="title_port_forwards_list">連接埠轉址</string>
   <string name="title_help">說明</string>
+  <string name="title_eula">授權條款</string>
   <string name="title_colors">顏色</string>
   <string name="title_color_picker">挑選顏色</string>
   <string name="title_settings">設置</string>
@@ -245,6 +246,7 @@
   <string name="console_menu_resize">字體大小</string>
   <string name="console_menu_urlscan">URL 掃描</string>
   <string name="console_url_no_handler">沒有可用的應用程式來開啟此網址</string>
+  <string name="console_url_not_supported">此 URL 類型不支援</string>
   <string name="button_yes">是</string>
   <string name="button_no">否</string>
   <string name="portforward_local">本地端</string>

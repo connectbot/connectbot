@@ -51,6 +51,11 @@ msgctxt "title_help"
 msgid "Help"
 msgstr "Nápověda"
 
+#. Window title for the license/EULA screen
+msgctxt "title_eula"
+msgid "License"
+msgstr "Licence"
+
 #. Window title for color list editing screen
 msgctxt "title_colors"
 msgid "Colors"
@@ -1375,6 +1380,11 @@ msgstr "Najít URL"
 msgctxt "console_url_no_handler"
 msgid "No app available to open this URL"
 msgstr "Žádná dostupná aplikace pro otevření této adresy URL"
+
+#. Error shown in a snackbar when the URL type is not supported
+msgctxt "console_url_not_supported"
+msgid "This URL type is not supported"
+msgstr "Tento typ URL adresy není podporován"
 
 #. Button label to answer "Yes" to a yes/no prompt
 msgctxt "button_yes"

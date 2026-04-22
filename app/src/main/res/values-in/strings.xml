@@ -6,6 +6,7 @@
   <string name="title_pubkey_list">Kunci Publik</string>
   <string name="title_port_forwards_list">Penerusan port</string>
   <string name="title_help">Bantuan</string>
+  <string name="title_eula">Lisensi</string>
   <string name="title_colors">Warna</string>
   <string name="title_color_picker">Pilih warna</string>
   <string name="title_settings">Setelan</string>
@@ -245,6 +246,7 @@
   <string name="console_menu_resize">Paksakan ukuran</string>
   <string name="console_menu_urlscan">Pindai URL</string>
   <string name="console_url_no_handler">Tidak ada aplikasi yang tersedia untuk membuka URL ini</string>
+  <string name="console_url_not_supported">Jenis URL ini tidak didukung</string>
   <string name="button_yes">Ya</string>
   <string name="button_no">Tidak</string>
   <string name="portforward_local">Lokal</string>

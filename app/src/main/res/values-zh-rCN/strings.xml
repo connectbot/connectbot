@@ -6,6 +6,7 @@
   <string name="title_pubkey_list">公钥</string>
   <string name="title_port_forwards_list">端口转发</string>
   <string name="title_help">帮助</string>
+  <string name="title_eula">许可协议</string>
   <string name="title_colors">颜色</string>
   <string name="title_color_picker">选取颜色</string>
   <string name="title_settings">设置</string>
@@ -245,6 +246,7 @@
   <string name="console_menu_resize">指定终端大小</string>
   <string name="console_menu_urlscan">URL 扫描</string>
   <string name="console_url_no_handler">没有可用的应用程序来打开此 URL</string>
+  <string name="console_url_not_supported">不支持此 URL 类型</string>
   <string name="button_yes">确认</string>
   <string name="button_no">否</string>
   <string name="portforward_local">本地</string>

@@ -6,6 +6,7 @@
   <string name="title_pubkey_list">Khoá</string>
   <string name="title_port_forwards_list">Chuyển tiếp cổng</string>
   <string name="title_help">Trợ Giúp</string>
+  <string name="title_eula">Giấy phép</string>
   <string name="title_colors">Màu Sắc</string>
   <string name="title_color_picker">Chọn màu</string>
   <string name="title_settings">Cài Đặt</string>
@@ -245,6 +246,7 @@
   <string name="console_menu_resize">Kích cỡ bắt buộc</string>
   <string name="console_menu_urlscan">Danh sách các URL</string>
   <string name="console_url_no_handler">Không có ứng dụng nào khả dụng để mở URL này</string>
+  <string name="console_url_not_supported">Loại URL này không được hỗ trợ</string>
   <string name="button_yes">Có</string>
   <string name="button_no">Không</string>
   <string name="portforward_local">Local</string>

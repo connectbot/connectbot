@@ -6,6 +6,7 @@
   <string name="title_pubkey_list">کلیدهای همگانی</string>
   <string name="title_port_forwards_list">پورت فوروارد</string>
   <string name="title_help">راهنما</string>
+  <string name="title_eula">لایسنس</string>
   <string name="title_colors">رنگ‌ها</string>
   <string name="title_color_picker">رنگی برگزینید</string>
   <string name="title_settings">تنظیمات</string>
@@ -245,6 +246,7 @@
   <string name="console_menu_resize">اندازه را به زور تنظیم کن</string>
   <string name="console_menu_urlscan">بررسی URL</string>
   <string name="console_url_no_handler">هیچ برنامه‌ای برای باز کردن این آدرس اینترنتی موجود نیست</string>
+  <string name="console_url_not_supported">این نوع URL پشتیبانی نمی‌شود</string>
   <string name="button_yes">بله</string>
   <string name="button_no">خیر</string>
   <string name="portforward_local">محلی</string>

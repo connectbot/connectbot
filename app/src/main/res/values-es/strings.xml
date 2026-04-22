@@ -6,6 +6,7 @@
   <string name="title_pubkey_list">Claves Publicas</string>
   <string name="title_port_forwards_list">Traducciones de puerto</string>
   <string name="title_help">Ayuda</string>
+  <string name="title_eula">Licencia</string>
   <string name="title_colors">Colores</string>
   <string name="title_color_picker">Escoger un color</string>
   <string name="title_settings">Ajustes</string>
@@ -245,6 +246,7 @@
   <string name="console_menu_resize">Forzar un tamaño</string>
   <string name="console_menu_urlscan">Escaneo de direcciones</string>
   <string name="console_url_no_handler">No hay ninguna aplicación disponible para abrir esta URL</string>
+  <string name="console_url_not_supported">Este tipo de URL no es compatible</string>
   <string name="button_yes">Sí</string>
   <string name="button_no">Denegar</string>
   <string name="portforward_local">Local</string>

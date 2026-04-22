@@ -6,6 +6,7 @@
   <string name="title_pubkey_list">Veřejné klíče</string>
   <string name="title_port_forwards_list">Přesměrování portu</string>
   <string name="title_help">Nápověda</string>
+  <string name="title_eula">Licence</string>
   <string name="title_colors">Barvy</string>
   <string name="title_color_picker">Vybrat barvu</string>
   <string name="title_settings">Nastavení</string>
@@ -245,6 +246,7 @@
   <string name="console_menu_resize">Vynutit velikost</string>
   <string name="console_menu_urlscan">Najít URL</string>
   <string name="console_url_no_handler">Žádná dostupná aplikace pro otevření této adresy URL</string>
+  <string name="console_url_not_supported">Tento typ URL adresy není podporován</string>
   <string name="button_yes">Ano</string>
   <string name="button_no">Ne</string>
   <string name="portforward_local">Místní</string>

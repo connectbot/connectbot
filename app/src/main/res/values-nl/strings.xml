@@ -6,6 +6,7 @@
   <string name="title_pubkey_list">Pubkeys</string>
   <string name="title_port_forwards_list">Port forwards</string>
   <string name="title_help">Help</string>
+  <string name="title_eula">Licentie</string>
   <string name="title_colors">Kleuren</string>
   <string name="title_color_picker">Kies een kleur</string>
   <string name="title_settings">Instellingen</string>
@@ -245,6 +246,7 @@
   <string name="console_menu_resize">Forceer grootte</string>
   <string name="console_menu_urlscan">URK Scan</string>
   <string name="console_url_no_handler">Er is geen app beschikbaar om deze URL te openen.</string>
+  <string name="console_url_not_supported">Dit URL-type wordt niet ondersteund</string>
   <string name="button_yes">Ja</string>
   <string name="button_no">Nee</string>
   <string name="portforward_local">Lokaal</string>

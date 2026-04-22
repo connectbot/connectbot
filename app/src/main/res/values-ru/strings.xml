@@ -6,6 +6,7 @@
   <string name="title_pubkey_list">Публичные ключи</string>
   <string name="title_port_forwards_list">Проброс портов</string>
   <string name="title_help">Помощь</string>
+  <string name="title_eula">Лицензия</string>
   <string name="title_colors">Настройка цветов</string>
   <string name="title_color_picker">Выбор цвета</string>
   <string name="title_settings">Настройки</string>
@@ -245,6 +246,7 @@
   <string name="console_menu_resize">Зафиксировать размер</string>
   <string name="console_menu_urlscan">Список URL</string>
   <string name="console_url_no_handler">Нет доступных приложений для открытия этой ссылки</string>
+  <string name="console_url_not_supported">Этот тип URL-адреса не поддерживается</string>
   <string name="button_yes">Да</string>
   <string name="button_no">Нет</string>
   <string name="portforward_local">Локальный</string>
