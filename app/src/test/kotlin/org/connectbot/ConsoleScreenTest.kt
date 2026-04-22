@@ -22,11 +22,13 @@ import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_BEHIND
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR
-import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
 import androidx.navigation.NavType
 import androidx.navigation.compose.ComposeNavigator
@@ -39,6 +41,8 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.connectbot.service.TerminalManager
+import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.screens.console.ConsoleScreen
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.PreferenceConstants
@@ -49,7 +53,6 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.robolectric.annotation.Config
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -73,22 +76,24 @@ class ConsoleScreenTest {
         PreferenceManager.getDefaultSharedPreferences(context).edit().clear().commit()
     }
 
-    private fun setContent() {
+    private fun setContent(mockTerminalManager: TerminalManager? = null) {
         composeTestRule.setContent {
             val context = LocalContext.current
             navController = TestNavHostController(context)
             navController.navigatorProvider.addNavigator(ComposeNavigator())
             ConnectBotTheme {
-                NavHost(navController = navController, startDestination = "start") {
-                    composable("start") {}
-                    composable(
-                        route = "console/{hostId}",
-                        arguments = listOf(navArgument("hostId") { type = NavType.LongType }),
-                    ) {
-                        ConsoleScreen(
-                            onNavigateBack = { navController.popBackStack() },
-                            onNavigateToPortForwards = {},
-                        )
+                CompositionLocalProvider(LocalTerminalManager provides mockTerminalManager) {
+                    NavHost(navController = navController, startDestination = "start") {
+                        composable("start") {}
+                        composable(
+                            route = "console/{hostId}",
+                            arguments = listOf(navArgument("hostId") { type = NavType.LongType }),
+                        ) {
+                            ConsoleScreen(
+                                onNavigateBack = { navController.popBackStack() },
+                                onNavigateToPortForwards = {},
+                            )
+                        }
                     }
                 }
             }
@@ -99,6 +104,29 @@ class ConsoleScreenTest {
         composeTestRule.runOnUiThread {
             navController.navigate("console/$hostId")
         }
+    }
+
+    @Test
+    fun consoleScreen_hidesTopAppBar_whenPreferenceSet() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        PreferenceManager.getDefaultSharedPreferences(context).edit()
+            .putBoolean(PreferenceConstants.TITLEBARHIDE, true)
+            .commit()
+
+        setContent()
+        navigateToConsoleScreen()
+
+        composeTestRule.onNodeWithTag("top_app_bar").assertIsNotDisplayed()
+    }
+
+    @Test
+    fun consoleScreen_displaysTopAppBarByDefault() {
+        setContent()
+        navigateToConsoleScreen()
+
+        composeTestRule
+            .onNodeWithTag("top_app_bar")
+            .assertIsDisplayed()
     }
 
     @Test
