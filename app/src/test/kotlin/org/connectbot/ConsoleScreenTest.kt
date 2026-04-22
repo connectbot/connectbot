@@ -50,6 +50,7 @@ import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -174,6 +175,7 @@ class ConsoleScreenTest {
     }
 
     @Test
+    @Ignore("rotation is disabled until stability is addressed")
     fun consoleScreen_setsLandscapeOrientation_whenPreferenceSet() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString(
@@ -190,6 +192,7 @@ class ConsoleScreenTest {
     }
 
     @Test
+    @Ignore("rotation is disabled until stability is addressed")
     fun consoleScreen_setsPortraitOrientation_whenPreferenceSet() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString(
@@ -206,6 +209,7 @@ class ConsoleScreenTest {
     }
 
     @Test
+    @Ignore("rotation is disabled until stability is addressed")
     fun consoleScreen_setsSensorOrientation_whenAutoPreferenceSet() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         PreferenceManager.getDefaultSharedPreferences(context).edit().putString(
@@ -222,6 +226,7 @@ class ConsoleScreenTest {
     }
 
     @Test
+    @Ignore("rotation is disabled until stability is addressed")
     fun consoleScreen_setsPortraitOrientation_whenDefaultPreferenceAndNoHardwareKeyboard() {
         setContent()
         navigateToConsoleScreen()
@@ -232,6 +237,7 @@ class ConsoleScreenTest {
     }
 
     @Test
+    @Ignore("rotation is disabled until stability is addressed")
     fun consoleScreen_restoresOriginalOrientation_onNavigateBack() {
         // Set an initial orientation that's different from what ConsoleScreen might set
         composeTestRule.runOnUiThread {
