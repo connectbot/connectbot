@@ -239,79 +239,79 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun updateWifilock(value: Boolean) {
-        updateBooleanPref("wifilock", value) { copy(wifilock = value) }
+        updateBooleanPref(PreferenceConstants.WIFI_LOCK, value) { copy(wifilock = value) }
     }
 
     fun updateBackupkeys(value: Boolean) {
-        updateBooleanPref("backupkeys", value) { copy(backupkeys = value) }
+        updateBooleanPref(PreferenceConstants.BACKUP_KEYS, value) { copy(backupkeys = value) }
     }
 
     fun updateFullscreen(value: Boolean) {
-        updateBooleanPref("fullscreen", value) { copy(fullscreen = value) }
+        updateBooleanPref(PreferenceConstants.FULLSCREEN, value) { copy(fullscreen = value) }
     }
 
     fun updateKeepAlive(value: Boolean) {
-        updateBooleanPref("keepalive", value) { copy(keepalive = value) }
+        updateBooleanPref(PreferenceConstants.KEEP_ALIVE, value) { copy(keepalive = value) }
     }
 
     fun updateBell(value: Boolean) {
-        updateBooleanPref("bell", value) { copy(bell = value) }
+        updateBooleanPref(PreferenceConstants.BELL, value) { copy(bell = value) }
     }
 
     fun updateBellVibrate(value: Boolean) {
-        updateBooleanPref("bellVibrate", value) { copy(bellVibrate = value) }
+        updateBooleanPref(PreferenceConstants.BELL_VIBRATE, value) { copy(bellVibrate = value) }
     }
 
     fun updateBellNotification(value: Boolean) {
-        updateBooleanPref("bellNotification", value) { copy(bellNotification = value) }
+        updateBooleanPref(PreferenceConstants.BELL_NOTIFICATION, value) { copy(bellNotification = value) }
     }
 
     fun updateTitleBarHide(value: Boolean) {
-        updateBooleanPref("titlebarhide", value) { copy(titlebarhide = value) }
+        updateBooleanPref(PreferenceConstants.TITLEBARHIDE, value) { copy(titlebarhide = value) }
     }
 
     fun updatePgUpDnGesture(value: Boolean) {
-        updateBooleanPref("pgupdngesture", value) { copy(pgupdngesture = value) }
+        updateBooleanPref(PreferenceConstants.PG_UPDN_GESTURE, value) { copy(pgupdngesture = value) }
     }
 
     fun updateVolumeFont(value: Boolean) {
-        updateBooleanPref("volumefont", value) { copy(volumefont = value) }
+        updateBooleanPref(PreferenceConstants.VOLUME_FONT, value) { copy(volumefont = value) }
     }
 
     fun updateAlwaysVisible(value: Boolean) {
-        updateBooleanPref("alwaysvisible", value) { copy(alwaysvisible = value) }
+        updateBooleanPref(PreferenceConstants.KEY_ALWAYS_VISIBLE, value) { copy(alwaysvisible = value) }
     }
 
     fun updateShiftFkeys(value: Boolean) {
-        updateBooleanPref("shiftfkeys", value) { copy(shiftfkeys = value) }
+        updateBooleanPref(PreferenceConstants.SHIFT_FKEYS, value) { copy(shiftfkeys = value) }
     }
 
     fun updateCtrlFkeys(value: Boolean) {
-        updateBooleanPref("ctrlfkeys", value) { copy(ctrlfkeys = value) }
+        updateBooleanPref(PreferenceConstants.CTRL_FKEYS, value) { copy(ctrlfkeys = value) }
     }
 
     fun updateBumpyArrows(value: Boolean) {
-        updateBooleanPref("bumpyarrows", value) { copy(bumpyarrows = value) }
+        updateBooleanPref(PreferenceConstants.BUMPY_ARROWS, value) { copy(bumpyarrows = value) }
     }
 
     fun updateScrollback(value: String) {
-        updateStringPref("scrollback", value) { copy(scrollback = value) }
+        updateStringPref(PreferenceConstants.SCROLLBACK, value) { copy(scrollback = value) }
     }
 
     fun updateStickyModifiers(value: String) {
-        updateStringPref("stickymodifiers", value) { copy(stickymodifiers = value) }
+        updateStringPref(PreferenceConstants.STICKY_MODIFIERS, value) { copy(stickymodifiers = value) }
     }
 
     fun updateKeyMode(value: String) {
-        updateStringPref("keymode", value) { copy(keymode = value) }
+        updateStringPref(PreferenceConstants.KEYMODE, value) { copy(keymode = value) }
     }
 
     fun updateCamera(value: String) {
-        updateStringPref("camera", value) { copy(camera = value) }
+        updateStringPref(PreferenceConstants.CAMERA, value) { copy(camera = value) }
     }
 
     fun updateRotation(value: String) {
-        updateStringPref("rotation", value) { copy(rotation = value) }
+        updateStringPref(PreferenceConstants.ROTATION, value) { copy(rotation = value) }
     }
 
     fun updateThemeMode(mode: ThemeMode) {
@@ -329,11 +329,11 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun updateBellVolume(value: Float) {
-        updateFloatPref("bellVolume", value) { copy(bellVolume = value) }
+        updateFloatPref(PreferenceConstants.BELL_VOLUME, value) { copy(bellVolume = value) }
     }
 
     fun updateFontFamily(value: String) {
-        updateStringPref("fontFamily", value) { copy(fontFamily = value) }
+        updateStringPref(PreferenceConstants.FONT_FAMILY, value) { copy(fontFamily = value) }
         // Preload the font so it's cached when the Terminal opens
         preloadFont(value)
     }
