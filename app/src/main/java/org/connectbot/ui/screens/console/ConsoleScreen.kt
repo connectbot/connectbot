@@ -21,8 +21,7 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Intent
-import android.content.pm.ActivityInfo
+import androidx.annotation.VisibleForTesting
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
@@ -75,12 +74,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -101,6 +98,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -110,6 +108,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.preference.PreferenceManager
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.connectbot.R
@@ -147,6 +146,9 @@ private fun rememberHasHardwareKeyboard(): Boolean {
             keyboardType == android.content.res.Configuration.KEYBOARD_12KEY
     }
 }
+
+@VisibleForTesting
+const val AUTO_HIDE_DELAY_MS = 3000L
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
@@ -206,11 +208,90 @@ fun ConsoleScreen(
     var showExtraKeyboard by remember { mutableStateOf(true) } // Start visible to show animation
     var hasPlayedKeyboardAnimation by remember { mutableStateOf(false) }
     var showTitleBar by remember { mutableStateOf(!titleBarHide) }
-    var lastInteractionTime by remember { mutableLongStateOf(System.currentTimeMillis()) }
+    // Non-state holder for auto-hide job to avoid unnecessary recompositions
+    val autoHideJobRef = remember {
+        object {
+            var job: Job? = null
+        }
+    }
     var scannedUrls by remember { mutableStateOf<List<String>>(emptyList()) }
     var selectionController by remember { mutableStateOf<SelectionController?>(null) }
     var imeVisible by remember { mutableStateOf(false) }
     var keyboardScrollInProgress by remember { mutableStateOf(false) }
+
+    // Get current prompt state to check if biometric prompt is active
+    val currentBridgeForPrompt = uiState.bridges.getOrNull(uiState.currentBridgeIndex)
+    val promptState by currentBridgeForPrompt?.promptManager?.promptState?.collectAsState()
+        ?: remember { mutableStateOf(null) }
+    var wasBiometricPromptActive by remember { mutableStateOf(false) }
+    val isBiometricPromptActive = promptState is PromptRequest.BiometricPrompt
+
+    // Check if any modal (menu or dialog) is currently active
+    val anyModalActive = showMenu || showUrlScanDialog || showResizeDialog ||
+        showDisconnectDialog || showTextInputDialog || isBiometricPromptActive
+
+    /**
+     * Unified interaction handler for terminal and keyboard.
+     * Manages visibility of the extra keyboard and title bar based on preferences.
+     *
+     * Intent Matrix:
+     * | keyboardAlwaysVisible | titleBarHide | keyboardScrollInProgress | anyModalActive | isTerminalTap | Action                     |
+     * |-----------------------|--------------|--------------------------|----------------|---------------|----------------------------|
+     * | false                 | any          | false                    | false          | any           | Show KB, Start/Reset Timer |
+     * | any                   | true         | false                    | false          | true          | Show TB, Start/Reset Timer |
+     * | true                  | false        | any                      | any            | any           | Ensure Both Shown, No Timer|
+     * | any                   | any          | true                     | any            | any           | Show KB, Cancel Timer      |
+     * | any                   | any          | any                      | true           | any           | Cancel Timer               |
+     *
+     * @param isTerminalTap Whether this call was triggered by a terminal tap or title bar action.
+     * @param isInteraction Whether this call was triggered by a user interaction (tap, key press, scroll).
+     *                      If false, only the timer is managed without forcing visibility to true.
+     */
+    fun handleTerminalInteraction(isTerminalTap: Boolean = false, isInteraction: Boolean = true) {
+        autoHideJobRef.job?.cancel()
+
+        if (isInteraction || keyboardScrollInProgress) {
+            // Show emulated keyboard on any interaction or while scrolling (unless always visible)
+            if (!keyboardAlwaysVisible) {
+                showExtraKeyboard = true
+            }
+            // Show title bar temporarily ONLY when terminal is tapped (if auto-hide enabled)
+            if (titleBarHide && isTerminalTap) {
+                showTitleBar = true
+            }
+        }
+
+        // Ensure they are shown if they should be permanent
+        if (keyboardAlwaysVisible) showExtraKeyboard = true
+        if (!titleBarHide) showTitleBar = true
+
+        // Only start the auto-hide timer if we are not actively scrolling,
+        // no modal is active, and at least one element is configured to auto-hide.
+        if (!keyboardScrollInProgress && !anyModalActive && (!keyboardAlwaysVisible || titleBarHide)) {
+            autoHideJobRef.job = coroutineScope.launch {
+                delay(AUTO_HIDE_DELAY_MS)
+                // Accessing Compose State within coroutine to avoid stale closures
+                // Hide keyboard if not always visible
+                if (!keyboardAlwaysVisible) {
+                    showExtraKeyboard = false
+                }
+                // Hide title bar if auto-hide is enabled
+                if (titleBarHide) {
+                    showTitleBar = false
+                }
+                // Mark animation as played after first timeout
+                hasPlayedKeyboardAnimation = true
+            }
+        }
+    }
+
+    // Sync our state when user dismisses modals or prompts
+    LaunchedEffect(anyModalActive) {
+        if (!anyModalActive) {
+            // When modals are dismissed, restart the auto-hide timer
+            handleTerminalInteraction(isInteraction = false)
+        }
+    }
 
     // Apply fullscreen mode and display cutout settings
     LaunchedEffect(fullscreen) {
@@ -267,6 +348,8 @@ fun ConsoleScreen(
     // Request focus on terminal when screen appears (e.g., returning from navigation)
     LaunchedEffect(Unit) {
         termFocusRequester.requestFocus()
+        // Initial auto-hide timer start (without forcing show)
+        handleTerminalInteraction(isInteraction = false)
     }
 
     // Track actual IME visibility using WindowInsets to detect user dismissing with back button
@@ -289,37 +372,12 @@ fun ConsoleScreen(
         imeVisible = systemImeVisible
     }
 
-    // Get current prompt state to check if biometric prompt is active
-    val currentBridgeForPrompt = uiState.bridges.getOrNull(uiState.currentBridgeIndex)
-    val promptState by currentBridgeForPrompt?.promptManager?.promptState?.collectAsState()
-        ?: remember { mutableStateOf(null) }
-    var wasBiometricPromptActive by remember { mutableStateOf(false) }
-    val isBiometricPromptActive = promptState is PromptRequest.BiometricPrompt
-
     // Show software keyboard after biometric prompt completes (unless hardware keyboard is connected)
     LaunchedEffect(isBiometricPromptActive) {
         if (wasBiometricPromptActive && !isBiometricPromptActive && !hasHardwareKeyboard) {
             showSoftwareKeyboard = true
         }
         wasBiometricPromptActive = isBiometricPromptActive
-    }
-
-    // Unified auto-hide timer for both keyboard and title bar
-    LaunchedEffect(lastInteractionTime, keyboardAlwaysVisible, titleBarHide, keyboardScrollInProgress) {
-        // Only run the timer if there's something to auto-hide and not actively scrolling
-        if ((!keyboardAlwaysVisible || titleBarHide) && !keyboardScrollInProgress) {
-            delay(3000)
-            // Hide keyboard if not always visible
-            if (!keyboardAlwaysVisible) {
-                showExtraKeyboard = false
-            }
-            // Hide title bar if auto-hide is enabled
-            if (titleBarHide) {
-                showTitleBar = false
-            }
-            // Mark animation as played after first timeout
-            hasPlayedKeyboardAnimation = true
-        }
     }
 
     val currentBridge = uiState.bridges.getOrNull(uiState.currentBridgeIndex)
@@ -388,19 +446,6 @@ fun ConsoleScreen(
                 snackbarHostState.showSnackbar(message)
             }
         }
-    }
-
-    fun handleTerminalInteraction() {
-        // Show emulated keyboard when terminal is tapped (unless always visible)
-        if (!keyboardAlwaysVisible) {
-            showExtraKeyboard = true
-        }
-        // Show title bar temporarily when terminal is tapped (if auto-hide enabled)
-        if (titleBarHide) {
-            showTitleBar = true
-        }
-        // Reset the unified timer
-        lastInteractionTime = System.currentTimeMillis()
     }
 
     var titleBarHeight by remember { mutableStateOf(0.dp) }
@@ -543,7 +588,8 @@ fun ConsoleScreen(
                                 .fillMaxSize()
                                 .padding(
                                     bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp,
-                                ),
+                                )
+                                .testTag("terminal"),
                             typeface = fontResult.typeface,
                             initialFontSize = fontSize.sp,
                             keyboardEnabled = true,
@@ -552,7 +598,7 @@ fun ConsoleScreen(
                             forcedSize = forceSize,
                             modifierManager = bridge.keyHandler,
                             onSelectionControllerAvailable = { selectionController = it },
-                            onTerminalTap = { handleTerminalInteraction() },
+                            onTerminalTap = { handleTerminalInteraction(isTerminalTap = true) },
                             onImeVisibilityChanged = { visible ->
                                 imeVisible = visible
                             },
@@ -576,7 +622,8 @@ fun ConsoleScreen(
                             enter = fadeIn(animationSpec = tween(durationMillis = 100)),
                             exit = fadeOut(animationSpec = tween(durationMillis = 100)),
                             modifier = Modifier
-                                .align(Alignment.BottomCenter),
+                                .align(Alignment.BottomCenter)
+                                .testTag("terminal_keyboard"),
                         ) {
                             TerminalKeyboard(
                                 bridge = bridge,
@@ -592,6 +639,7 @@ fun ConsoleScreen(
                                 },
                                 onScrollInProgressChange = { inProgress ->
                                     keyboardScrollInProgress = inProgress
+                                    handleTerminalInteraction()
                                 },
                                 imeVisible = imeVisible,
                                 playAnimation = !hasPlayedKeyboardAnimation,
@@ -726,9 +774,11 @@ fun ConsoleScreen(
                         overflow = TextOverflow.Ellipsis,
                     )
                 },
-                modifier = Modifier.onSizeChanged {
-                    titleBarHeight = with(density) { it.height.toDp() }
-                },
+                modifier = Modifier
+                    .testTag("top_app_bar")
+                    .onSizeChanged {
+                        titleBarHeight = with(density) { it.height.toDp() }
+                    },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
@@ -900,6 +950,7 @@ fun ConsoleScreen(
                                 onClick = {
                                     titleBarHide = !titleBarHide
                                     prefs.edit { putBoolean("titlebarhide", titleBarHide) }
+                                    handleTerminalInteraction(isTerminalTap = true)
                                 },
                                 trailingIcon = {
                                     Checkbox(
