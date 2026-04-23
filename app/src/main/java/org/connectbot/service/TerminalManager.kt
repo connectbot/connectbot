@@ -584,7 +584,7 @@ class TerminalManager :
                 e is KeyPermanentlyInvalidatedException ||
                 e is UserNotAuthenticatedException
             if (isKeyInvalidated) {
-                val message = res?.getString(R.string.terminal_auth_biometric_invalidated, pubkey.nickname)
+                val message = res.getString(R.string.terminal_auth_biometric_invalidated, pubkey.nickname)
                     ?: "Biometric key '${pubkey.nickname}' has been invalidated. Please generate a new key."
                 Timber.e(e, message)
                 return BiometricKeyResult.KeyInvalidated(message)

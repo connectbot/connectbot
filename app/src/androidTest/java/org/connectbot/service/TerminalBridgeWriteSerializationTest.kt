@@ -124,6 +124,7 @@ class TerminalBridgeWriteSerializationTest {
         override fun getSelectionArgs(uri: Uri, selection: MutableMap<String, String>) = Unit
         override fun createHost(uri: Uri) = Host()
         override fun usesNetwork() = true
+        override fun getLocalIpAddress(): String = "127.0.0.1"
     }
 
     @Test
