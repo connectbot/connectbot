@@ -44,7 +44,9 @@ import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
+import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.terminal.DelKeyMode
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.TerminalEmulatorFactory
@@ -120,6 +122,10 @@ class TerminalBridge {
     /** Force size columns from profile (null = auto-size) */
     var profileForceSizeColumns: Int? = null
         private set
+
+    /** DEL key mode from profile */
+    private val _delKeyModeFlow = MutableStateFlow<DelKeyMode>(DelKeyMode.Delete)
+    val delKeyModeFlow: StateFlow<DelKeyMode> = _delKeyModeFlow.asStateFlow()
 
     // Terminal emulator from ConnectBot Terminal library
     val terminalEmulator: TerminalEmulator
@@ -219,6 +225,9 @@ class TerminalBridge {
         // Store force size from profile
         profileForceSizeRows = profile.forceSizeRows
         profileForceSizeColumns = profile.forceSizeColumns
+
+        // Set DEL key mode from profile
+        _delKeyModeFlow.value = delKeyModeFromProfile(profile)
 
         // Use settings from profile
         var fontSizeSp = profile.fontSize
@@ -411,6 +420,9 @@ class TerminalBridge {
         // Update force size from profile
         profileForceSizeRows = profile.forceSizeRows
         profileForceSizeColumns = profile.forceSizeColumns
+
+        // Update DEL key mode from profile
+        _delKeyModeFlow.value = delKeyModeFromProfile(profile)
 
         // Note: encoding and fontFamily changes require reconnection to take effect
         // as they are deeply integrated into the terminal initialization
@@ -1097,4 +1109,10 @@ class TerminalBridge {
         private const val DEFAULT_FONT_SIZE_SP = 10
         private const val FONT_SIZE_STEP = 2
     }
+}
+
+private fun delKeyModeFromProfile(profile: Profile): DelKeyMode = if (profile.delKey == HostConstants.DELKEY_BACKSPACE) {
+    DelKeyMode.Backspace
+} else {
+    DelKeyMode.Delete
 }

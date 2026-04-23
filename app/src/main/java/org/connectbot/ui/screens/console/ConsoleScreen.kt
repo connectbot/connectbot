@@ -548,6 +548,8 @@ fun ConsoleScreen(
                         val coroutineScope = rememberCoroutineScope()
                         // Observe font size changes for reactive updates
                         val fontSize by bridge.fontSizeFlow.collectAsState()
+                        // Observe DEL key mode changes
+                        val delKeyMode by bridge.delKeyModeFlow.collectAsState()
 
                         // Show snackbar if font loading failed
                         LaunchedEffect(fontResult.loadFailed, fontResult.isLoading) {
@@ -583,6 +585,7 @@ fun ConsoleScreen(
                             onHyperlinkClick = { url ->
                                 openUrl(url)
                             },
+                            delKeyMode = delKeyMode,
                         )
 
                         // Set up text input request callback from bridge (for camera button)
