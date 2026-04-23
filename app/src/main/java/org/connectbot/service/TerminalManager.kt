@@ -207,8 +207,8 @@ class TerminalManager :
                             _serviceErrors.emit(
                                 ServiceError.KeyLoadFailed(
                                     keyName = pubkey.nickname,
-                                    reason = outcome.reason
-                                )
+                                    reason = outcome.reason,
+                                ),
                             )
                         }
                     }
@@ -221,8 +221,8 @@ class TerminalManager :
                 _serviceErrors.emit(
                     ServiceError.KeyLoadFailed(
                         keyName = "startup keys",
-                        reason = e.message ?: "Failed to retrieve keys from database"
-                    )
+                        reason = e.message ?: "Failed to retrieve keys from database",
+                    ),
                 )
             }
         }
@@ -620,7 +620,7 @@ class TerminalManager :
         Timber.d(
             "Added biometric key '%s' to in-memory cache (expires in %d seconds)",
             pubkey.nickname,
-            BIOMETRIC_AUTH_VALIDITY_SECONDS
+            BIOMETRIC_AUTH_VALIDITY_SECONDS,
         )
         emitLoadedKeysChanged()
         return BiometricKeyResult.Success
@@ -741,7 +741,7 @@ class TerminalManager :
         super.onRebind(intent)
         Timber.i(
             "Someone rebound to TerminalManager with %d bridges active",
-            bridgesFlow.value.size
+            bridgesFlow.value.size,
         )
         isUiBound = true
         keepServiceAlive()
@@ -751,7 +751,7 @@ class TerminalManager :
     override fun onUnbind(intent: Intent): Boolean {
         Timber.i(
             "Someone unbound from TerminalManager with %d bridges active",
-            bridgesFlow.value.size
+            bridgesFlow.value.size,
         )
 
         isUiBound = false
@@ -775,7 +775,7 @@ class TerminalManager :
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) { // O = API 26
                 val vibrationEffect = VibrationEffect.createOneShot(
                     VIBRATE_DURATION,
-                    VibrationEffect.DEFAULT_AMPLITUDE
+                    VibrationEffect.DEFAULT_AMPLITUDE,
                 )
                 it.vibrate(vibrationEffect)
             } else {
@@ -791,7 +791,7 @@ class TerminalManager :
 
         val volume = prefs.getFloat(
             PreferenceConstants.BELL_VOLUME,
-            PreferenceConstants.DEFAULT_BELL_VOLUME
+            PreferenceConstants.DEFAULT_BELL_VOLUME,
         )
 
         val audioAttributes = AudioAttributes.Builder()
@@ -809,7 +809,7 @@ class TerminalManager :
                 file.fileDescriptor,
                 file
                     .startOffset,
-                file.length
+                file.length,
             )
             file.close()
             mediaPlayer!!.setVolume(volume, volume)
@@ -852,7 +852,7 @@ class TerminalManager :
 
     override fun onSharedPreferenceChanged(
         sharedPreferences: SharedPreferences,
-        key: String?
+        key: String?,
     ) {
         if (PreferenceConstants.BELL == key) {
             val wantAudible = sharedPreferences.getBoolean(PreferenceConstants.BELL, true)
@@ -865,7 +865,7 @@ class TerminalManager :
             if (mediaPlayer != null) {
                 val volume = sharedPreferences.getFloat(
                     PreferenceConstants.BELL_VOLUME,
-                    PreferenceConstants.DEFAULT_BELL_VOLUME
+                    PreferenceConstants.DEFAULT_BELL_VOLUME,
                 )
                 mediaPlayer!!.setVolume(volume, volume)
             }
