@@ -156,12 +156,12 @@ class TerminalBridgeWriteSerializationTest {
                 username = "",
                 hostname = "",
                 port = 0,
-                profileId = 1L
+                profileId = 1L,
             )
             val dispatchers = CoroutineDispatchers(
                 default = Dispatchers.Default,
                 io = Dispatchers.IO,
-                main = Dispatchers.Main
+                main = Dispatchers.Main,
             )
 
             val bridge = TerminalBridge(manager, host, dispatchers)
@@ -180,7 +180,7 @@ class TerminalBridgeWriteSerializationTest {
                         // channel -> IO coroutine -> transport.write.
                         jobs += launch(Dispatchers.Default) {
                             bridge.injectString(
-                                "paste-$i-" + "x".repeat(128)
+                                "paste-$i-" + "x".repeat(128),
                             )
                         }
                         // Keystroke path: pre-fix this called
@@ -216,7 +216,7 @@ class TerminalBridgeWriteSerializationTest {
                         "pastes due to unserialized writes racing at " +
                         "the underlying OutputStream.",
                     transport.attemptedBytes.get(),
-                    transport.receivedBytes()
+                    transport.receivedBytes(),
                 )
             } finally {
                 bridge.cleanup()
