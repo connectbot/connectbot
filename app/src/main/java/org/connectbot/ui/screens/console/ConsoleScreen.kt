@@ -839,7 +839,7 @@ fun ConsoleScreen(
                                     text = { Text(stringResource(R.string.console_menu_reconnect)) },
                                     onClick = {
                                         showMenu = false
-                                        currentBridge?.let { viewModel.reconnect(it) }
+                                        viewModel.reconnect(currentBridge)
                                     },
                                     leadingIcon = {
                                         Icon(Icons.Default.Refresh, contentDescription = null)
