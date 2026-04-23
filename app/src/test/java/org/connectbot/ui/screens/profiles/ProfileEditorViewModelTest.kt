@@ -83,12 +83,16 @@ class ProfileEditorViewModelTest {
     )
 
     @Test
-    fun commonEncodings_hasExpectedFiveEntriesInOrder() {
+    fun commonEncodings_containsExpectedPreferredEntriesInOrder() {
         val viewModel = createViewModel()
-        assertEquals(
-            listOf("UTF-8", "ISO-8859-1", "US-ASCII", "windows-1252", "CP437"),
-            viewModel.commonEncodings
-        )
+        val common = viewModel.commonEncodings
+
+        assertEquals("UTF-8", common.first())
+        assertTrue("commonEncodings must contain EUC-JP", common.contains("EUC-JP"))
+        assertTrue("commonEncodings must contain Shift_JIS", common.contains("Shift_JIS"))
+        assertTrue("commonEncodings must contain ISO-2022-JP", common.contains("ISO-2022-JP"))
+        assertTrue("commonEncodings must contain CP437", common.contains("CP437"))
+        assertTrue("EUC-JP should be preferred before Shift_JIS", common.indexOf("EUC-JP") < common.indexOf("Shift_JIS"))
     }
 
     @Test
@@ -107,8 +111,7 @@ class ProfileEditorViewModelTest {
     @Test
     fun allEncodings_containsAllCommonEncodings() {
         val viewModel = createViewModel()
-        val common = listOf("UTF-8", "ISO-8859-1", "US-ASCII", "windows-1252", "CP437")
-        common.forEach { encoding ->
+        viewModel.commonEncodings.forEach { encoding ->
             assertTrue("allEncodings must contain $encoding", viewModel.allEncodings.contains(encoding))
         }
     }

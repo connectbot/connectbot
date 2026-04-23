@@ -53,6 +53,7 @@ import org.connectbot.transport.SSH
 import org.connectbot.transport.TransportFactory
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.TerminalEncodings
 import timber.log.Timber
 import java.io.IOException
 import java.nio.charset.Charset
@@ -246,7 +247,7 @@ class TerminalBridge {
             defaultForeground = Color(defaultFgColor),
             defaultBackground = Color(defaultBgColor),
             onKeyboardInput = { data ->
-                transportOperations.trySend(TransportOperation.WriteData(data))
+                writeTerminalInput(data)
             },
             onBell = {
                 scope.launch {
@@ -528,7 +529,13 @@ class TerminalBridge {
         }
 
         transportOperations.trySend(
-            TransportOperation.WriteData(string.toByteArray(charset(encoding))),
+            TransportOperation.WriteData(string.toByteArray(TerminalEncodings.charsetFor(encoding))),
+        )
+    }
+
+    private fun writeTerminalInput(data: ByteArray) {
+        transportOperations.trySend(
+            TransportOperation.WriteData(TerminalEncodings.encodeTerminalInput(data, encoding)),
         )
     }
 

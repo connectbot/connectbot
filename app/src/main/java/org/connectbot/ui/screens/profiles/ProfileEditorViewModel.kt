@@ -35,9 +35,9 @@ import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.LocalFontProvider
+import org.connectbot.util.TerminalEncodings
 import org.connectbot.util.TerminalFont
 import org.connectbot.util.TerminalFontProvider
-import java.nio.charset.Charset
 import javax.inject.Inject
 
 data class ProfileEditorUiState(
@@ -73,19 +73,9 @@ class ProfileEditorViewModel @Inject constructor(
     private val dispatchers: CoroutineDispatchers
 ) : ViewModel() {
 
-    val commonEncodings: List<String> = listOf(
-        "UTF-8",
-        "ISO-8859-1",
-        "US-ASCII",
-        "windows-1252",
-        "CP437"
-    )
+    val commonEncodings: List<String> = TerminalEncodings.commonEncodings
 
-    val allEncodings: List<String> = run {
-        val charsets = Charset.availableCharsets().keys.toMutableSet()
-        charsets.add("CP437")
-        charsets.sortedWith(String.CASE_INSENSITIVE_ORDER)
-    }
+    val allEncodings: List<String> = TerminalEncodings.allEncodings
 
     private val profileId: Long = savedStateHandle.get<Long>("profileId") ?: -1L
     private val localFontProvider = LocalFontProvider(context)

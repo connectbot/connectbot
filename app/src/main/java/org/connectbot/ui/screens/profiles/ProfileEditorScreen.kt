@@ -532,7 +532,10 @@ private fun EncodingSelector(
     var filterText by remember { mutableStateOf("") }
 
     val filteredCommon = commonEncodings.filter { it.contains(filterText, ignoreCase = true) }
-    val filteredAll = allEncodings.filter { it.contains(filterText, ignoreCase = true) }
+    val commonEncodingSet = commonEncodings.toSet()
+    val filteredAll = allEncodings.filter {
+        it !in commonEncodingSet && it.contains(filterText, ignoreCase = true)
+    }
     val showDivider = filteredCommon.isNotEmpty() && filteredAll.isNotEmpty()
 
     Column(modifier = modifier) {

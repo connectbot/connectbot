@@ -76,6 +76,7 @@ import org.connectbot.ui.common.getLocalizedFontDisplayName
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.HostConstants
 import org.connectbot.util.LocalFontProvider
+import org.connectbot.util.TerminalEncodings
 import org.connectbot.util.TerminalFont
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -1129,7 +1130,7 @@ private fun EncodingSelector(
     enabled: Boolean = true
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val encodings = listOf("UTF-8", "ISO-8859-1", "US-ASCII", "Windows-1252")
+    val encodings = TerminalEncodings.commonEncodings
 
     Column(modifier = modifier) {
         Text(

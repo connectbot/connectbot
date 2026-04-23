@@ -19,9 +19,9 @@ package org.connectbot.service
 
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.withContext
-import org.apache.harmony.niochar.charset.additional.IBM437
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.transport.AbsTransport
+import org.connectbot.util.TerminalEncodings
 import timber.log.Timber
 import java.io.IOException
 import java.nio.ByteBuffer
@@ -69,11 +69,7 @@ class Relay(
     fun setCharset(encoding: String) {
         Timber.d("changing charset to $encoding")
 
-        val charset = if (encoding == "CP437") {
-            IBM437("IBM437", arrayOf("IBM437", "CP437"))
-        } else {
-            Charset.forName(encoding)
-        }
+        val charset = TerminalEncodings.charsetFor(encoding)
 
         if (charset == currentCharset) {
             return
