@@ -60,7 +60,7 @@ data class ProfileEditorUiState(
     val isLoading: Boolean = true,
     val isSaving: Boolean = false,
     val saveError: String? = null,
-    val fontDownloadInProgress: Boolean = false
+    val fontDownloadInProgress: Boolean = false,
 )
 
 @HiltViewModel
@@ -70,7 +70,7 @@ class ProfileEditorViewModel @Inject constructor(
     private val colorSchemeRepository: ColorSchemeRepository,
     private val prefs: SharedPreferences,
     @ApplicationContext private val context: Context,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
 
     val commonEncodings: List<String> = TerminalEncodings.commonEncodings
@@ -147,7 +147,7 @@ class ProfileEditorViewModel @Inject constructor(
                         forceSizeEnabled = forceSizeEnabled,
                         forceSizeRows = profile.forceSizeRows ?: 24,
                         forceSizeColumns = profile.forceSizeColumns ?: 80,
-                        isLoading = false
+                        isLoading = false,
                     )
                 }
             } else {
@@ -244,7 +244,7 @@ class ProfileEditorViewModel @Inject constructor(
                 encoding = state.encoding,
                 emulation = state.emulation,
                 forceSizeRows = if (state.forceSizeEnabled) state.forceSizeRows else null,
-                forceSizeColumns = if (state.forceSizeEnabled) state.forceSizeColumns else null
+                forceSizeColumns = if (state.forceSizeEnabled) state.forceSizeColumns else null,
             )
 
             profileRepository.save(profile)

@@ -84,7 +84,7 @@ import org.connectbot.util.TerminalFont
 fun HostEditorScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: HostEditorViewModel = hiltViewModel()
+    viewModel: HostEditorViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -112,7 +112,7 @@ fun HostEditorScreen(
         onPasswordChange = viewModel::updatePassword,
         onClearPassword = viewModel::clearSavedPassword,
         onSaveHost = { expandedMode -> viewModel.saveHost(expandedMode) },
-        modifier = modifier
+        modifier = modifier,
     )
 }
 
@@ -142,7 +142,7 @@ fun HostEditorScreenContent(
     onPasswordChange: (String) -> Unit,
     onClearPassword: () -> Unit,
     onSaveHost: (Boolean) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var showProtocolMenu by remember { mutableStateOf(false) }
     var expandedMode by remember { mutableStateOf(hostId != -1L) }
@@ -157,14 +157,14 @@ fun HostEditorScreenContent(
                             stringResource(R.string.hostpref_add_host)
                         } else {
                             stringResource(R.string.hostpref_setting_title)
-                        }
+                        },
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.button_navigate_up)
+                            contentDescription = stringResource(R.string.button_navigate_up),
                         )
                     }
                 },
@@ -180,14 +180,14 @@ fun HostEditorScreenContent(
                             uiState.protocol == "local" || uiState.hostname.isNotBlank()
                         } else {
                             uiState.quickConnect.isNotBlank()
-                        }
+                        },
                     ) {
                         Text(stringResource(if (hostId == -1L) R.string.hostpref_add_host else R.string.hostpref_save_host))
                     }
-                }
+                },
             )
         },
-        modifier = modifier
+        modifier = modifier,
     ) { padding ->
         Column(
             modifier = Modifier
@@ -195,7 +195,7 @@ fun HostEditorScreenContent(
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
-                .imePadding()
+                .imePadding(),
         ) {
             if (!expandedMode) {
                 // Quick connect mode
@@ -206,25 +206,25 @@ fun HostEditorScreenContent(
                     placeholder = { Text(stringResource(R.string.host_editor_quick_connect_placeholder)) },
                     supportingText = { Text(stringResource(R.string.host_editor_quick_connect_example)) },
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
                 )
 
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .clickable { expandedMode = true }
-                        .padding(vertical = 8.dp)
+                        .padding(vertical = 8.dp),
                 ) {
                     Text(
                         text = stringResource(R.string.host_editor_show_advanced),
                         style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary
+                        color = MaterialTheme.colorScheme.primary,
                     )
                     Spacer(Modifier.width(4.dp))
                     Icon(
                         Icons.Default.ExpandMore,
                         contentDescription = stringResource(R.string.expand),
-                        tint = MaterialTheme.colorScheme.primary
+                        tint = MaterialTheme.colorScheme.primary,
                     )
                 }
             } else {
@@ -234,7 +234,7 @@ fun HostEditorScreenContent(
                     onValueChange = onNicknameChange,
                     label = { Text(stringResource(R.string.hostpref_nickname_title)) },
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
                 )
 
                 // Show collapse button only if this is a new host (not editing existing)
@@ -243,18 +243,18 @@ fun HostEditorScreenContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clickable { expandedMode = false }
-                            .padding(vertical = 8.dp)
+                            .padding(vertical = 8.dp),
                     ) {
                         Text(
                             text = stringResource(R.string.host_editor_hide_advanced),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.primary
+                            color = MaterialTheme.colorScheme.primary,
                         )
                         Spacer(Modifier.width(4.dp))
                         Icon(
                             Icons.Default.ExpandLess,
                             contentDescription = stringResource(R.string.button_collapse),
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = MaterialTheme.colorScheme.primary,
                         )
                     }
                 }
@@ -268,7 +268,7 @@ fun HostEditorScreenContent(
                     onExpandedChange = { showProtocolMenu = it },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 8.dp)
+                        .padding(top = 8.dp),
                 ) {
                     OutlinedTextField(
                         value = uiState.protocol,
@@ -282,12 +282,12 @@ fun HostEditorScreenContent(
                         colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                         modifier = Modifier
                             .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
                     )
 
                     ExposedDropdownMenu(
                         expanded = showProtocolMenu,
-                        onDismissRequest = { showProtocolMenu = false }
+                        onDismissRequest = { showProtocolMenu = false },
                     ) {
                         protocols.forEach { protocol ->
                             DropdownMenuItem(
@@ -296,7 +296,7 @@ fun HostEditorScreenContent(
                                     onProtocolChange(protocol)
                                     showProtocolMenu = false
                                 },
-                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                             )
                         }
                     }
@@ -311,7 +311,7 @@ fun HostEditorScreenContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp),
-                        singleLine = true
+                        singleLine = true,
                     )
 
                     OutlinedTextField(
@@ -322,7 +322,7 @@ fun HostEditorScreenContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp),
-                        singleLine = true
+                        singleLine = true,
                     )
 
                     OutlinedTextField(
@@ -332,7 +332,7 @@ fun HostEditorScreenContent(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(top = 8.dp),
-                        singleLine = true
+                        singleLine = true,
                     )
 
                     // IP version selector (disabled for literal IP addresses)
@@ -340,7 +340,7 @@ fun HostEditorScreenContent(
                         ipVersion = uiState.ipVersion,
                         hostname = uiState.hostname,
                         onIpVersionSelect = onIpVersionChange,
-                        modifier = Modifier.padding(top = 8.dp)
+                        modifier = Modifier.padding(top = 8.dp),
                     )
 
                     // Save password section (SSH only)
@@ -355,7 +355,7 @@ fun HostEditorScreenContent(
                                         stringResource(R.string.hostpref_password_unchanged)
                                     } else {
                                         stringResource(R.string.hostpref_password_title)
-                                    }
+                                    },
                                 )
                             },
                             supportingText = {
@@ -364,13 +364,13 @@ fun HostEditorScreenContent(
                             visualTransformation = PasswordVisualTransformation(),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
                             modifier = Modifier.fillMaxWidth(),
-                            singleLine = true
+                            singleLine = true,
                         )
 
                         if (uiState.hasExistingPassword) {
                             TextButton(
                                 onClick = onClearPassword,
-                                modifier = Modifier.padding(top = 4.dp)
+                                modifier = Modifier.padding(top = 4.dp),
                             ) {
                                 Text(stringResource(R.string.hostpref_clear_password))
                             }
@@ -383,7 +383,7 @@ fun HostEditorScreenContent(
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
             ColorSelector(
                 selectedColor = uiState.color,
-                onColorSelect = onColorChange
+                onColorSelect = onColorChange,
             )
 
             // Pubkey selector
@@ -391,7 +391,7 @@ fun HostEditorScreenContent(
             PubkeySelector(
                 pubkeyId = uiState.pubkeyId,
                 availablePubkeys = uiState.availablePubkeys,
-                onPubkeySelect = onPubkeyChange
+                onPubkeySelect = onPubkeyChange,
             )
 
             // Profile selector
@@ -399,7 +399,7 @@ fun HostEditorScreenContent(
             ProfileSelector(
                 profileId = uiState.profileId,
                 availableProfiles = uiState.availableProfiles,
-                onProfileSelect = onProfileChange
+                onProfileSelect = onProfileChange,
             )
 
             // Jump host selector (only for SSH protocol)
@@ -408,7 +408,7 @@ fun HostEditorScreenContent(
                 JumpHostSelector(
                     jumpHostId = uiState.jumpHostId,
                     availableJumpHosts = uiState.availableJumpHosts,
-                    onJumpHostSelect = onJumpHostChange
+                    onJumpHostSelect = onJumpHostChange,
                 )
             }
 
@@ -419,7 +419,7 @@ fun HostEditorScreenContent(
                 checked = uiState.useAuthAgent != "no",
                 onCheckedChange = { checked ->
                     onUseAuthAgentChange(if (checked) "yes" else "no")
-                }
+                },
             )
 
             if (uiState.useAuthAgent != "no") {
@@ -428,7 +428,7 @@ fun HostEditorScreenContent(
                     checked = uiState.useAuthAgent == "confirm",
                     onCheckedChange = { checked ->
                         onUseAuthAgentChange(if (checked) "confirm" else "yes")
-                    }
+                    },
                 )
             }
 
@@ -438,7 +438,7 @@ fun HostEditorScreenContent(
                 title = stringResource(R.string.hostpref_compression_title),
                 summary = stringResource(R.string.hostpref_compression_summary),
                 checked = uiState.compression,
-                onCheckedChange = onCompressionChange
+                onCheckedChange = onCompressionChange,
             )
 
             // Want session
@@ -447,7 +447,7 @@ fun HostEditorScreenContent(
                 title = stringResource(R.string.hostpref_wantsession_title),
                 summary = stringResource(R.string.hostpref_wantsession_summary),
                 checked = uiState.wantSession,
-                onCheckedChange = onWantSessionChange
+                onCheckedChange = onWantSessionChange,
             )
 
             // Stay connected
@@ -456,7 +456,7 @@ fun HostEditorScreenContent(
                 title = stringResource(R.string.hostpref_stayconnected_title),
                 summary = stringResource(R.string.hostpref_stayconnected_summary),
                 checked = uiState.stayConnected,
-                onCheckedChange = onStayConnectedChange
+                onCheckedChange = onStayConnectedChange,
             )
 
             // Quick disconnect
@@ -465,7 +465,7 @@ fun HostEditorScreenContent(
                 title = stringResource(R.string.hostpref_quickdisconnect_title),
                 summary = stringResource(R.string.hostpref_quickdisconnect_summary),
                 checked = uiState.quickDisconnect,
-                onCheckedChange = onQuickDisconnectChange
+                onCheckedChange = onQuickDisconnectChange,
             )
 
             // Post-login automation
@@ -479,7 +479,7 @@ fun HostEditorScreenContent(
                 maxLines = 8,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 8.dp)
+                    .padding(top = 8.dp),
             )
         }
     }
@@ -490,7 +490,7 @@ fun HostEditorScreenContent(
 private fun ColorSelector(
     selectedColor: String,
     onColorSelect: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
     val iconColors = getIconColors()
@@ -505,12 +505,12 @@ private fun ColorSelector(
         Text(
             text = stringResource(R.string.hostpref_color_title),
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 8.dp),
         )
 
         ExposedDropdownMenuBox(
             expanded = expanded,
-            onExpandedChange = { expanded = it }
+            onExpandedChange = { expanded = it },
         ) {
             OutlinedTextField(
                 value = selectedDisplayName,
@@ -523,12 +523,12 @@ private fun ColorSelector(
                 colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                 modifier = Modifier
                     .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             )
 
             ExposedDropdownMenu(
                 expanded = expanded,
-                onDismissRequest = { expanded = false }
+                onDismissRequest = { expanded = false },
             ) {
                 iconColors.forEach { color ->
                     DropdownMenuItem(
@@ -538,7 +538,7 @@ private fun ColorSelector(
                             onColorSelect(color.hexValue)
                             expanded = false
                         },
-                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                     )
                 }
             }
@@ -551,40 +551,40 @@ private fun FontSizeSelector(
     fontSize: Int,
     onFontSizeChange: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.hostpref_fontsize_title),
             style = MaterialTheme.typography.titleMedium,
             color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 8.dp),
         )
         if (!enabled) {
             Text(
                 text = stringResource(R.string.profile_controlled_setting),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 8.dp),
             )
         }
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Slider(
                 value = fontSize.toFloat(),
                 onValueChange = { onFontSizeChange(it.toInt()) },
                 valueRange = 8f..32f,
                 enabled = enabled,
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
             Text(
                 text = fontSize.toString(),
                 modifier = Modifier.padding(start = 16.dp),
                 style = MaterialTheme.typography.bodyLarge,
-                color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
             )
         }
     }
@@ -598,7 +598,7 @@ private fun FontFamilySelector(
     localFonts: List<Pair<String, String>>,
     onFontFamilySelect: (String?) -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -625,20 +625,20 @@ private fun FontFamilySelector(
             text = stringResource(R.string.hostpref_fontfamily_title),
             style = MaterialTheme.typography.titleMedium,
             color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 8.dp),
         )
         if (!enabled) {
             Text(
                 text = stringResource(R.string.profile_controlled_setting),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 8.dp),
             )
         }
 
         ExposedDropdownMenuBox(
             expanded = expanded && enabled,
-            onExpandedChange = { if (enabled) expanded = it }
+            onExpandedChange = { if (enabled) expanded = it },
         ) {
             OutlinedTextField(
                 value = if (fontFamily == null) {
@@ -656,12 +656,12 @@ private fun FontFamilySelector(
                 colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                 modifier = Modifier
                     .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             )
 
             ExposedDropdownMenu(
                 expanded = expanded && enabled,
-                onDismissRequest = { expanded = false }
+                onDismissRequest = { expanded = false },
             ) {
                 allOptions.forEach { (label, value) ->
                     DropdownMenuItem(
@@ -670,7 +670,7 @@ private fun FontFamilySelector(
                             onFontFamilySelect(value)
                             expanded = false
                         },
-                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                     )
                 }
             }
@@ -685,7 +685,7 @@ private fun ColorSchemeSelector(
     availableSchemes: List<ColorScheme>,
     onColorSchemeSelect: (Long) -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -694,20 +694,20 @@ private fun ColorSchemeSelector(
             text = stringResource(R.string.hostpref_colorscheme_title),
             style = MaterialTheme.typography.titleMedium,
             color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 8.dp),
         )
         if (!enabled) {
             Text(
                 text = stringResource(R.string.profile_controlled_setting),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 8.dp),
             )
         }
 
         ExposedDropdownMenuBox(
             expanded = expanded && enabled,
-            onExpandedChange = { if (enabled) expanded = it }
+            onExpandedChange = { if (enabled) expanded = it },
         ) {
             OutlinedTextField(
                 value = availableSchemes.find { it.id == colorSchemeId }?.name ?: stringResource(R.string.colorscheme_default),
@@ -721,12 +721,12 @@ private fun ColorSchemeSelector(
                 colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                 modifier = Modifier
                     .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             )
 
             ExposedDropdownMenu(
                 expanded = expanded,
-                onDismissRequest = { expanded = false }
+                onDismissRequest = { expanded = false },
             ) {
                 availableSchemes.forEach { scheme ->
                     DropdownMenuItem(
@@ -738,7 +738,7 @@ private fun ColorSchemeSelector(
                                     Text(
                                         text = localizedDescription,
                                         style = MaterialTheme.typography.bodySmall,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                                     )
                                 }
                             }
@@ -747,7 +747,7 @@ private fun ColorSchemeSelector(
                             onColorSchemeSelect(scheme.id)
                             expanded = false
                         },
-                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                     )
                 }
             }
@@ -761,14 +761,14 @@ private fun PubkeySelector(
     pubkeyId: Long,
     availablePubkeys: List<Pubkey>,
     onPubkeySelect: (Long) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
     // Build options list: first the default options, then individual keys
     val defaultOptions = listOf(
         stringResource(R.string.list_pubkeyids_any) to -1L,
-        stringResource(R.string.list_pubkeyids_none) to -2L
+        stringResource(R.string.list_pubkeyids_none) to -2L,
     )
 
     val pubkeyOptions = availablePubkeys.map { pubkey ->
@@ -781,12 +781,12 @@ private fun PubkeySelector(
         Text(
             text = stringResource(R.string.hostpref_pubkeyid_title),
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 8.dp),
         )
 
         ExposedDropdownMenuBox(
             expanded = expanded,
-            onExpandedChange = { expanded = it }
+            onExpandedChange = { expanded = it },
         ) {
             OutlinedTextField(
                 value = when (pubkeyId) {
@@ -808,12 +808,12 @@ private fun PubkeySelector(
                 colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                 modifier = Modifier
                     .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             )
 
             ExposedDropdownMenu(
                 expanded = expanded,
-                onDismissRequest = { expanded = false }
+                onDismissRequest = { expanded = false },
             ) {
                 allOptions.forEach { (label, id) ->
                     DropdownMenuItem(
@@ -822,7 +822,7 @@ private fun PubkeySelector(
                             onPubkeySelect(id)
                             expanded = false
                         },
-                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                     )
                 }
             }
@@ -836,7 +836,7 @@ private fun ProfileSelector(
     profileId: Long?,
     availableProfiles: List<Profile>,
     onProfileSelect: (Long?) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -844,18 +844,18 @@ private fun ProfileSelector(
         Text(
             text = stringResource(R.string.hostpref_profile_title),
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(bottom = 4.dp)
+            modifier = Modifier.padding(bottom = 4.dp),
         )
         Text(
             text = stringResource(R.string.hostpref_profile_summary),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 8.dp),
         )
 
         ExposedDropdownMenuBox(
             expanded = expanded,
-            onExpandedChange = { expanded = it }
+            onExpandedChange = { expanded = it },
         ) {
             OutlinedTextField(
                 value = when {
@@ -875,12 +875,12 @@ private fun ProfileSelector(
                 colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                 modifier = Modifier
                     .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             )
 
             ExposedDropdownMenu(
                 expanded = expanded,
-                onDismissRequest = { expanded = false }
+                onDismissRequest = { expanded = false },
             ) {
                 // "None" option
                 DropdownMenuItem(
@@ -889,7 +889,7 @@ private fun ProfileSelector(
                         onProfileSelect(null)
                         expanded = false
                     },
-                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                 )
 
                 // Available profiles
@@ -900,7 +900,7 @@ private fun ProfileSelector(
                             onProfileSelect(profile.id)
                             expanded = false
                         },
-                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                     )
                 }
             }
@@ -914,7 +914,7 @@ private fun IpVersionSelector(
     ipVersion: String,
     hostname: String,
     onIpVersionSelect: (String) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -925,7 +925,7 @@ private fun IpVersionSelector(
     val options = listOf(
         HostConstants.IPVERSION_IPV4_AND_IPV6 to stringResource(R.string.ipversion_auto),
         HostConstants.IPVERSION_IPV4_ONLY to stringResource(R.string.ipversion_ipv4),
-        HostConstants.IPVERSION_IPV6_ONLY to stringResource(R.string.ipversion_ipv6)
+        HostConstants.IPVERSION_IPV6_ONLY to stringResource(R.string.ipversion_ipv6),
     )
 
     val displayLabel = when {
@@ -940,7 +940,7 @@ private fun IpVersionSelector(
     ExposedDropdownMenuBox(
         expanded = expanded && !isLiteralIp,
         onExpandedChange = { if (!isLiteralIp) expanded = it },
-        modifier = modifier.fillMaxWidth()
+        modifier = modifier.fillMaxWidth(),
     ) {
         OutlinedTextField(
             value = displayLabel,
@@ -957,12 +957,12 @@ private fun IpVersionSelector(
             colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
             modifier = Modifier
                 .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                .fillMaxWidth()
+                .fillMaxWidth(),
         )
 
         ExposedDropdownMenu(
             expanded = expanded && !isLiteralIp,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
         ) {
             options.forEach { (value, label) ->
                 DropdownMenuItem(
@@ -971,7 +971,7 @@ private fun IpVersionSelector(
                         onIpVersionSelect(value)
                         expanded = false
                     },
-                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                 )
             }
         }
@@ -984,7 +984,7 @@ private fun JumpHostSelector(
     jumpHostId: Long?,
     availableJumpHosts: List<Host>,
     onJumpHostSelect: (Long?) -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -992,18 +992,18 @@ private fun JumpHostSelector(
         Text(
             text = stringResource(R.string.hostpref_jumphost_title),
             style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(bottom = 4.dp)
+            modifier = Modifier.padding(bottom = 4.dp),
         )
         Text(
             text = stringResource(R.string.hostpref_jumphost_summary),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 8.dp),
         )
 
         ExposedDropdownMenuBox(
             expanded = expanded,
-            onExpandedChange = { expanded = it }
+            onExpandedChange = { expanded = it },
         ) {
             OutlinedTextField(
                 value = when {
@@ -1023,12 +1023,12 @@ private fun JumpHostSelector(
                 colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                 modifier = Modifier
                     .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             )
 
             ExposedDropdownMenu(
                 expanded = expanded,
-                onDismissRequest = { expanded = false }
+                onDismissRequest = { expanded = false },
             ) {
                 // "None" option for direct connection
                 DropdownMenuItem(
@@ -1037,7 +1037,7 @@ private fun JumpHostSelector(
                         onJumpHostSelect(null)
                         expanded = false
                     },
-                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                    contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                 )
 
                 // Available jump hosts
@@ -1048,7 +1048,7 @@ private fun JumpHostSelector(
                             onJumpHostSelect(host.id)
                             expanded = false
                         },
-                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                     )
                 }
             }
@@ -1062,7 +1062,7 @@ private fun DelKeySelector(
     delKey: String,
     onDelKeySelect: (String) -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     var expanded by remember { mutableStateOf(false) }
     val options = listOf("del", "backspace")
@@ -1072,20 +1072,20 @@ private fun DelKeySelector(
             text = stringResource(R.string.hostpref_delkey_title),
             style = MaterialTheme.typography.titleMedium,
             color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 8.dp),
         )
         if (!enabled) {
             Text(
                 text = stringResource(R.string.profile_controlled_setting),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 8.dp),
             )
         }
 
         ExposedDropdownMenuBox(
             expanded = expanded && enabled,
-            onExpandedChange = { if (enabled) expanded = it }
+            onExpandedChange = { if (enabled) expanded = it },
         ) {
             OutlinedTextField(
                 value = delKey,
@@ -1099,12 +1099,12 @@ private fun DelKeySelector(
                 colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                 modifier = Modifier
                     .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             )
 
             ExposedDropdownMenu(
                 expanded = expanded && enabled,
-                onDismissRequest = { expanded = false }
+                onDismissRequest = { expanded = false },
             ) {
                 options.forEach { option ->
                     DropdownMenuItem(
@@ -1113,7 +1113,7 @@ private fun DelKeySelector(
                             onDelKeySelect(option)
                             expanded = false
                         },
-                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                     )
                 }
             }
@@ -1127,7 +1127,7 @@ private fun EncodingSelector(
     encoding: String,
     onEncodingSelect: (String) -> Unit,
     modifier: Modifier = Modifier,
-    enabled: Boolean = true
+    enabled: Boolean = true,
 ) {
     var expanded by remember { mutableStateOf(false) }
     val encodings = TerminalEncodings.commonEncodings
@@ -1137,20 +1137,20 @@ private fun EncodingSelector(
             text = stringResource(R.string.hostpref_encoding_title),
             style = MaterialTheme.typography.titleMedium,
             color = if (enabled) MaterialTheme.colorScheme.onSurface else MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f),
-            modifier = Modifier.padding(bottom = 8.dp)
+            modifier = Modifier.padding(bottom = 8.dp),
         )
         if (!enabled) {
             Text(
                 text = stringResource(R.string.profile_controlled_setting),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(bottom = 8.dp)
+                modifier = Modifier.padding(bottom = 8.dp),
             )
         }
 
         ExposedDropdownMenuBox(
             expanded = expanded && enabled,
-            onExpandedChange = { if (enabled) expanded = it }
+            onExpandedChange = { if (enabled) expanded = it },
         ) {
             OutlinedTextField(
                 value = encoding,
@@ -1164,12 +1164,12 @@ private fun EncodingSelector(
                 colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                 modifier = Modifier
                     .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                    .fillMaxWidth()
+                    .fillMaxWidth(),
             )
 
             ExposedDropdownMenu(
                 expanded = expanded && enabled,
-                onDismissRequest = { expanded = false }
+                onDismissRequest = { expanded = false },
             ) {
                 encodings.forEach { enc ->
                     DropdownMenuItem(
@@ -1178,7 +1178,7 @@ private fun EncodingSelector(
                             onEncodingSelect(enc)
                             expanded = false
                         },
-                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                     )
                 }
             }
@@ -1192,31 +1192,31 @@ private fun SwitchPreference(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    summary: String? = null
+    summary: String? = null,
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
             .clickable { onCheckedChange(!checked) }
             .padding(vertical = 8.dp),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = title,
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge,
             )
             if (summary != null) {
                 Text(
                     text = summary,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
         Switch(
             checked = checked,
-            onCheckedChange = onCheckedChange
+            onCheckedChange = onCheckedChange,
         )
     }
 }
@@ -1246,15 +1246,15 @@ private fun HostEditorScreenPreview() {
                         encrypted = false,
                         startup = false,
                         confirmation = false,
-                        createdDate = System.currentTimeMillis()
-                    )
+                        createdDate = System.currentTimeMillis(),
+                    ),
                 ),
                 useAuthAgent = "yes",
                 compression = true,
                 wantSession = true,
                 stayConnected = false,
                 quickDisconnect = false,
-                postLogin = "cd /var/www"
+                postLogin = "cd /var/www",
             ),
             onNavigateBack = {},
             onQuickConnectChange = {},
@@ -1276,7 +1276,7 @@ private fun HostEditorScreenPreview() {
             onIpVersionChange = {},
             onPasswordChange = {},
             onClearPassword = {},
-            onSaveHost = {}
+            onSaveHost = {},
         )
     }
 }

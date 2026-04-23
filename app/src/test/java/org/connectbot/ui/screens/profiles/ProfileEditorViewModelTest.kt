@@ -48,7 +48,7 @@ class ProfileEditorViewModelTest {
     private val dispatchers = CoroutineDispatchers(
         default = testDispatcher,
         io = testDispatcher,
-        main = testDispatcher
+        main = testDispatcher,
     )
     private lateinit var context: Context
     private lateinit var profileRepository: ProfileRepository
@@ -79,7 +79,7 @@ class ProfileEditorViewModelTest {
         colorSchemeRepository = colorSchemeRepository,
         prefs = sharedPreferences,
         context = context,
-        dispatchers = dispatchers
+        dispatchers = dispatchers,
     )
 
     @Test

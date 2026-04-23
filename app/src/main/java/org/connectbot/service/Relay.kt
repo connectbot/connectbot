@@ -42,7 +42,7 @@ class Relay(
     private val bridge: TerminalBridge,
     private val transport: AbsTransport,
     private val dispatchers: CoroutineDispatchers,
-    encoding: String
+    encoding: String,
 ) {
 
     private var currentCharset: Charset? = null
@@ -149,7 +149,7 @@ class Relay(
                                     bridge.terminalEmulator.writeInput(
                                         destBuffer.array(),
                                         0,
-                                        destBuffer.limit()
+                                        destBuffer.limit(),
                                     )
                                 }
                                 destBuffer.clear()

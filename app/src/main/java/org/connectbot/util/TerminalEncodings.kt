@@ -57,21 +57,17 @@ object TerminalEncodings {
         }.toList()
     }
 
-    fun isSupported(encoding: String): Boolean {
-        return encoding.equals(CP437, ignoreCase = true) ||
-            try {
-                Charset.isSupported(encoding)
-            } catch (_: IllegalCharsetNameException) {
-                false
-            }
-    }
-
-    fun charsetFor(encoding: String): Charset {
-        return if (encoding.equals(CP437, ignoreCase = true)) {
-            IBM437("IBM437", arrayOf(CP437))
-        } else {
-            Charset.forName(encoding)
+    fun isSupported(encoding: String): Boolean = encoding.equals(CP437, ignoreCase = true) ||
+        try {
+            Charset.isSupported(encoding)
+        } catch (_: IllegalCharsetNameException) {
+            false
         }
+
+    fun charsetFor(encoding: String): Charset = if (encoding.equals(CP437, ignoreCase = true)) {
+        IBM437("IBM437", arrayOf(CP437))
+    } else {
+        Charset.forName(encoding)
     }
 
     /**
