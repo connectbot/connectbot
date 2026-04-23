@@ -165,7 +165,7 @@ class SSH :
             hostname: String,
             port: Int,
             serverHostKeyAlgorithm: String,
-            serverHostKey: ByteArray
+            serverHostKey: ByteArray,
         ): Boolean {
             // Get known hosts for this specific host entry
             val hostId = verifyHost?.id ?: return false
@@ -225,7 +225,7 @@ class SSH :
                     val randomArt = KeyFingerprint.createRandomArt(
                         serverHostKey,
                         algorithmName ?: "UNKNOWN",
-                        keySize
+                        keySize,
                     )
                     val bubblebabble = KeyFingerprint.createBubblebabbleFingerprint(serverHostKey)
 
@@ -238,7 +238,7 @@ class SSH :
                         randomArt = randomArt,
                         bubblebabble = bubblebabble,
                         sha256 = sha256,
-                        md5 = md5
+                        md5 = md5,
                     )
 
                     if (result == null) {
@@ -256,7 +256,7 @@ class SSH :
                 KnownHosts.HOSTKEY_HAS_CHANGED -> {
                     val header = String.format(
                         "@   %s   @",
-                        manager?.res?.getString(R.string.host_verification_failure_warning_header)
+                        manager?.res?.getString(R.string.host_verification_failure_warning_header),
                     )
 
                     val atsigns = CharArray(header.length) { '@' }
@@ -272,14 +272,14 @@ class SSH :
                         String.format(
                             manager?.res?.getString(R.string.host_fingerprint) ?: "",
                             algorithmName,
-                            fingerprint
-                        )
+                            fingerprint,
+                        ),
                     )
 
                     // Users have no way to delete keys, so we'll prompt them for now.
                     val result = bridge?.requestBooleanPrompt(
                         null,
-                        manager?.res?.getString(R.string.prompt_continue_connecting) ?: ""
+                        manager?.res?.getString(R.string.prompt_continue_connecting) ?: "",
                     )
                     if (result != null && result) {
                         // save this key in known database
@@ -322,7 +322,7 @@ class SSH :
             val username = bridge?.requestStringPrompt(
                 null,
                 manager?.res?.getString(R.string.prompt_username),
-                false
+                false,
             )
             if (username.isNullOrEmpty()) {
                 bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_fail))
@@ -411,7 +411,7 @@ class SSH :
                 val password = bridge?.requestStringPrompt(
                     null,
                     manager?.res?.getString(R.string.prompt_password),
-                    true
+                    true,
                 )
                 if (password != null && connection?.authenticateWithPassword(currentHost.username, password) == true) {
                     finishConnection()
@@ -535,7 +535,7 @@ class SSH :
             password = bridge?.requestStringPrompt(
                 null,
                 manager?.res?.getString(R.string.prompt_pubkey_password, pubkey.nickname),
-                true
+                true,
             )
 
             // Something must have interrupted the prompt.
@@ -769,7 +769,7 @@ class SSH :
             if (jc.isAuthMethodAvailable(jumpHost.username, AUTH_KEYBOARDINTERACTIVE)) {
                 try {
                     if (jc.authenticateWithKeyboardInteractive(
-                            jumpHost.username
+                            jumpHost.username,
                         ) { name, instruction, numPrompts, prompt, echo ->
                             val responses = Array(numPrompts) { i ->
                                 val isPassword = echo != null && i < echo.size && !echo[i]
@@ -777,7 +777,7 @@ class SSH :
                                 bridge?.requestStringPrompt(
                                     instruction,
                                     "$promptPrefix ${prompt[i]}",
-                                    isPassword
+                                    isPassword,
                                 ) ?: ""
                             }
                             responses
@@ -863,13 +863,13 @@ class SSH :
         try {
             val connectionInfo = connection?.connect(
                 HostKeyVerifier(),
-                parseIpVersion(currentHost.ipVersion, currentHost.hostname)
+                parseIpVersion(currentHost.ipVersion, currentHost.hostname),
             ) ?: throw IOException("Connection failed")
             connected = true
 
             connectionInfo?.let { info ->
                 bridge?.outputLine(
-                    manager?.res?.getString(R.string.terminal_kex_algorithm, info.keyExchangeAlgorithm)
+                    manager?.res?.getString(R.string.terminal_kex_algorithm, info.keyExchangeAlgorithm),
                 )
                 if (info.clientToServerCryptoAlgorithm == info.serverToClientCryptoAlgorithm &&
                     info.clientToServerMACAlgorithm == info.serverToClientMACAlgorithm
@@ -878,24 +878,24 @@ class SSH :
                         manager?.res?.getString(
                             R.string.terminal_using_algorithm,
                             info.clientToServerCryptoAlgorithm,
-                            info.clientToServerMACAlgorithm ?: ""
-                        )
+                            info.clientToServerMACAlgorithm ?: "",
+                        ),
                     )
                 } else {
                     bridge?.outputLine(
                         manager?.res?.getString(
                             R.string.terminal_using_c2s_algorithm,
                             info.clientToServerCryptoAlgorithm,
-                            info.clientToServerMACAlgorithm ?: ""
-                        )
+                            info.clientToServerMACAlgorithm ?: "",
+                        ),
                     )
 
                     bridge?.outputLine(
                         manager?.res?.getString(
                             R.string.terminal_using_s2c_algorithm,
                             info.serverToClientCryptoAlgorithm,
-                            info.serverToClientMACAlgorithm ?: ""
-                        )
+                            info.serverToClientMACAlgorithm ?: "",
+                        ),
                     )
                 }
             }
@@ -1062,7 +1062,7 @@ class SSH :
                     connection?.createLocalPortForwarder(
                         InetSocketAddress(InetAddress.getLocalHost(), portForward.sourcePort),
                         portForward.destAddr,
-                        portForward.destPort
+                        portForward.destPort,
                     )
                 } catch (e: Exception) {
                     Timber.e(e, "Could not create local port forward")
@@ -1094,7 +1094,7 @@ class SSH :
             HostConstants.PORTFORWARD_DYNAMIC5 -> {
                 val dpf: DynamicPortForwarder? = try {
                     connection?.createDynamicPortForwarder(
-                        InetSocketAddress(InetAddress.getLocalHost(), portForward.sourcePort)
+                        InetSocketAddress(InetAddress.getLocalHost(), portForward.sourcePort),
                     )
                 } catch (e: Exception) {
                     Timber.e(e, "Could not create dynamic port forward")
@@ -1200,7 +1200,7 @@ class SSH :
         instruction: String,
         numPrompts: Int,
         prompt: Array<String>,
-        echo: BooleanArray
+        echo: BooleanArray,
     ): Array<String> {
         interactiveCanContinue = true
         val responses = Array(numPrompts) { i ->
@@ -1238,7 +1238,7 @@ class SSH :
             nickname,
             hostname ?: "",
             port,
-            username ?: ""
+            username ?: "",
         )
     }
 
@@ -1317,7 +1317,7 @@ class SSH :
     private fun promptForPubkeyUse(nickname: String): Boolean {
         val result = bridge?.requestBooleanPrompt(
             null,
-            manager?.res?.getString(R.string.prompt_allow_agent_to_use_key, nickname) ?: ""
+            manager?.res?.getString(R.string.prompt_allow_agent_to_use_key, nickname) ?: "",
         )
         return result ?: false
     }
@@ -1337,7 +1337,7 @@ class SSH :
             createdDate = System.currentTimeMillis(),
             storageType = KeyStorageType.EXPORTABLE,
             allowBackup = true,
-            keystoreAlias = null
+            keystoreAlias = null,
         )
         manager?.addKey(pubkey, pair)
         return true
@@ -1406,7 +1406,7 @@ class SSH :
 
         private val hostmask = Pattern.compile(
             "^(.+)@((?:[0-9a-z._-]+)|(?:\\[[a-f:0-9]+(?:%[-_.a-z0-9]+)?\\]))(?::(\\d+))?\$",
-            Pattern.CASE_INSENSITIVE
+            Pattern.CASE_INSENSITIVE,
         )
 
         private const val conditions = (
@@ -1464,7 +1464,7 @@ class SSH :
             "%s@%s:%s",
             context.getString(R.string.format_username),
             context.getString(R.string.format_hostname),
-            context.getString(R.string.format_port)
+            context.getString(R.string.format_port),
         )
     }
 }

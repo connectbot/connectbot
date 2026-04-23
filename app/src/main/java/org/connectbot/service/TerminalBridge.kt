@@ -21,8 +21,8 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Paint
-import android.net.Network
 import android.graphics.Typeface
+import android.net.Network
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -1003,14 +1003,14 @@ class TerminalBridge {
             localIp != null -> {
                 NetworkState(
                     ipAddresses = setOf(localIp),
-                    networkId = networkInfo?.networkId ?: ""
+                    networkId = networkInfo?.networkId ?: "",
                 )
             }
 
             networkInfo != null -> {
                 NetworkState(
                     ipAddresses = networkInfo.ipAddresses,
-                    networkId = networkInfo.networkId
+                    networkId = networkInfo.networkId,
                 )
             }
 

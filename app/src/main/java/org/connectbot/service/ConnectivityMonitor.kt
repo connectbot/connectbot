@@ -35,14 +35,14 @@ import java.util.concurrent.ConcurrentHashMap
  */
 class ConnectivityMonitor(
     private val terminalManager: TerminalManager,
-    private var lockingWifi: Boolean
+    private var lockingWifi: Boolean,
 ) {
     private val connectivityManager: ConnectivityManager = terminalManager.getSystemService(
-        Context.CONNECTIVITY_SERVICE
+        Context.CONNECTIVITY_SERVICE,
     ) as ConnectivityManager
 
     private val wifiManager: WifiManager = terminalManager.applicationContext.getSystemService(
-        Context.WIFI_SERVICE
+        Context.WIFI_SERVICE,
     ) as WifiManager
 
     private val wifiLock: WifiLock = wifiManager.createWifiLock(TAG)
@@ -65,7 +65,7 @@ class ConnectivityMonitor(
         val isConnected: Boolean,
         val ipAddresses: Set<String>,
         val networkId: String,
-        val networkType: Int
+        val networkType: Int,
     )
 
     private val networkCallback = object : ConnectivityManager.NetworkCallback() {
@@ -180,7 +180,7 @@ class ConnectivityMonitor(
             isConnected = capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED),
             ipAddresses = ipAddresses,
             networkId = networkId,
-            networkType = networkType
+            networkType = networkType,
         )
 
         allNetworks[network] = newNetworkInfo

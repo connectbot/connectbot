@@ -260,7 +260,7 @@ class Telnet : AbsTransport {
 
         private val hostmask: Pattern = Pattern.compile(
             "^((?:[0-9a-z._-]+)|(?:\\[[a-f:0-9]+(?:%[-_.a-z0-9]+)?\\]))(?::(\\d+))?\$",
-            Pattern.CASE_INSENSITIVE
+            Pattern.CASE_INSENSITIVE,
         )
 
         @JvmStatic
@@ -331,7 +331,7 @@ class Telnet : AbsTransport {
         fun getFormatHint(context: Context): String = String.format(
             "%s:%s",
             context.getString(R.string.format_hostname),
-            context.getString(R.string.format_port)
+            context.getString(R.string.format_port),
         )
     }
 }

@@ -25,9 +25,9 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
-import org.mockito.Mockito.`when`
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
 import org.robolectric.RobolectricTestRunner
 import java.util.concurrent.ConcurrentHashMap
@@ -72,7 +72,7 @@ class ConnectivityMonitorTest {
             isConnected = true,
             ipAddresses = ipAddresses,
             networkId = "net1",
-            networkType = 1
+            networkType = 1,
         )
         allNetworks[network] = networkInfo
 
