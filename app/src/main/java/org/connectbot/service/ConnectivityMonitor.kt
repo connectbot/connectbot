@@ -26,6 +26,7 @@ import android.net.NetworkRequest
 import android.net.wifi.WifiManager
 import android.net.wifi.WifiManager.WifiLock
 import timber.log.Timber
+import java.util.concurrent.ConcurrentHashMap
 
 /**
  * Tracks network availability and IP addresses for connection resilience.
@@ -52,6 +53,11 @@ class ConnectivityMonitor(
     @Volatile
     private var currentNetworkInfo: NetworkInfo? = null
 
+    private val allNetworks = ConcurrentHashMap<Network, NetworkInfo>()
+
+    @Volatile
+    private var defaultNetwork: Network? = null
+
     /**
      * Network information containing connection state and IP addresses.
      */
@@ -70,8 +76,18 @@ class ConnectivityMonitor(
 
         override fun onLost(network: Network) {
             Timber.i("Network lost: $network")
-            currentNetworkInfo = null
-            terminalManager.onConnectivityLost()
+            val lostInfo = allNetworks.remove(network)
+            if (lostInfo != null) {
+                terminalManager.onConnectivityLost(network, lostInfo.ipAddresses)
+            } else {
+                // Fallback for untracked networks
+                terminalManager.onConnectivityLost(network, emptySet())
+            }
+
+            if (defaultNetwork == network) {
+                defaultNetwork = null
+                currentNetworkInfo = null
+            }
         }
 
         override fun onLinkPropertiesChanged(network: Network, linkProperties: LinkProperties) {
@@ -86,6 +102,22 @@ class ConnectivityMonitor(
         }
     }
 
+    private val defaultNetworkCallback = object : ConnectivityManager.NetworkCallback() {
+        override fun onAvailable(network: Network) {
+            Timber.i("Default network available: $network")
+            defaultNetwork = network
+            updateNetworkInfo(network)
+        }
+
+        override fun onLost(network: Network) {
+            Timber.i("Default network lost: $network")
+            if (defaultNetwork == network) {
+                defaultNetwork = null
+                currentNetworkInfo = null
+            }
+        }
+    }
+
     /**
      * Initialize network monitoring by registering the NetworkCallback.
      * Must be called before using this monitor.
@@ -93,15 +125,14 @@ class ConnectivityMonitor(
     fun init() {
         val request = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
-            .addCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
             .build()
 
         connectivityManager.registerNetworkCallback(request, networkCallback)
+        connectivityManager.registerDefaultNetworkCallback(defaultNetworkCallback)
 
-        // Initialize current network state
-        val activeNetwork = connectivityManager.activeNetwork
-        if (activeNetwork != null) {
-            updateNetworkInfo(activeNetwork)
+        // Initialize all active networks
+        for (network in connectivityManager.allNetworks) {
+            updateNetworkInfo(network)
         }
     }
 
@@ -111,6 +142,7 @@ class ConnectivityMonitor(
     fun cleanup() {
         try {
             connectivityManager.unregisterNetworkCallback(networkCallback)
+            connectivityManager.unregisterNetworkCallback(defaultNetworkCallback)
         } catch (e: IllegalArgumentException) {
             // Callback was not registered, ignore
             Timber.w(e, "Failed to unregister network callback")
@@ -144,7 +176,6 @@ class ConnectivityMonitor(
         val networkId = network.toString()
         val networkType = getNetworkType(capabilities)
 
-        val wasConnected = currentNetworkInfo?.isConnected == true
         val newNetworkInfo = NetworkInfo(
             isConnected = capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED),
             ipAddresses = ipAddresses,
@@ -152,13 +183,18 @@ class ConnectivityMonitor(
             networkType = networkType
         )
 
-        currentNetworkInfo = newNetworkInfo
+        allNetworks[network] = newNetworkInfo
 
-        Timber.i("Network info updated: ${ipAddresses.size} IPs, type=$networkType, id=$networkId")
+        if (network == defaultNetwork || defaultNetwork == null) {
+            val wasConnected = currentNetworkInfo?.isConnected == true
+            currentNetworkInfo = newNetworkInfo
 
-        // Notify terminal manager if we just became connected
-        if (!wasConnected && newNetworkInfo.isConnected) {
-            terminalManager.onConnectivityRestored()
+            Timber.i("Current network info updated: ${ipAddresses.size} IPs, type=$networkType, id=$networkId")
+
+            // Notify terminal manager if we just became connected
+            if (!wasConnected && newNetworkInfo.isConnected) {
+                terminalManager.onConnectivityRestored()
+            }
         }
     }
 

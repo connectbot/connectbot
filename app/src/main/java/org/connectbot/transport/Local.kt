@@ -142,6 +142,8 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
 
     override fun usesNetwork(): Boolean = false
 
+    override fun getLocalIpAddress(): String? = null
+
     @VisibleForTesting
     interface Killer {
         fun killProcess(pid: Int)

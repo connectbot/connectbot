@@ -25,6 +25,7 @@ import android.content.res.Configuration
 import android.content.res.Resources
 import android.media.AudioAttributes
 import android.media.MediaPlayer
+import android.net.Network
 import android.net.Uri
 import android.os.Binder
 import android.os.Build
@@ -904,16 +905,16 @@ class TerminalManager :
     }
 
     /**
-     * Called when connectivity to the network is lost.
-     * Instead of immediate disconnect, starts grace period for all bridges.
+     * Called when connectivity to a network is lost.
+     * Starts grace period for bridges using this network.
      */
-    fun onConnectivityLost() {
-        Timber.d("Network lost - starting grace period for all network bridges")
+    fun onConnectivityLost(network: Network, lostIpAddresses: Set<String>) {
+        Timber.d("Network lost ($network) - checking bridges for impact")
         scope.launch(dispatchers.io) {
             synchronized(_bridges) {
                 for (bridge in _bridges) {
                     if (bridge.isUsingNetwork()) {
-                        bridge.onNetworkLost()
+                        bridge.onNetworkLost(network, lostIpAddresses)
                     }
                 }
             }

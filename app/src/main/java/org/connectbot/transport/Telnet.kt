@@ -252,6 +252,8 @@ class Telnet : AbsTransport {
 
     override fun usesNetwork(): Boolean = true
 
+    override fun getLocalIpAddress(): String? = socket?.localAddress?.hostAddress
+
     companion object {
         private const val PROTOCOL = "telnet"
         private const val DEFAULT_PORT = 23

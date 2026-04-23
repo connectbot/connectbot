@@ -21,6 +21,7 @@ import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
 import android.graphics.Paint
+import android.net.Network
 import android.graphics.Typeface
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.CoroutineScope
@@ -995,22 +996,49 @@ class TerminalBridge {
     fun captureNetworkState() {
         if (!isUsingNetwork()) return
 
+        val localIp = transport?.getLocalIpAddress()
         val networkInfo = manager.connectivityMonitor.getCurrentNetworkInfo()
-        if (networkInfo != null) {
-            lastKnownNetworkState = NetworkState(
-                ipAddresses = networkInfo.ipAddresses,
-                networkId = networkInfo.networkId,
-            )
-            Timber.d("Captured network state: ${networkInfo.ipAddresses.size} IPs")
+
+        lastKnownNetworkState = when {
+            localIp != null -> {
+                NetworkState(
+                    ipAddresses = setOf(localIp),
+                    networkId = networkInfo?.networkId ?: ""
+                )
+            }
+
+            networkInfo != null -> {
+                NetworkState(
+                    ipAddresses = networkInfo.ipAddresses,
+                    networkId = networkInfo.networkId
+                )
+            }
+
+            else -> null
         }
+        Timber.d("Captured network state: localIp=$localIp, netId=${lastKnownNetworkState?.networkId}")
     }
 
     /**
      * Called by TerminalManager when network is lost.
      * Starts 60-second grace period instead of immediate disconnect.
      */
-    fun onNetworkLost() {
+    fun onNetworkLost(network: Network, lostIpAddresses: Set<String>) {
         if (!isUsingNetwork() || disconnected) return
+
+        val state = lastKnownNetworkState ?: return
+
+        // Check if we are using this network or one of these IP addresses
+        val isAffected = if (state.ipAddresses.isNotEmpty() && lostIpAddresses.isNotEmpty()) {
+            state.ipAddresses.intersect(lostIpAddresses).isNotEmpty()
+        } else {
+            state.networkId == network.toString()
+        }
+
+        if (!isAffected) {
+            Timber.d("Network $network lost but bridge not affected")
+            return
+        }
 
         // Cancel any existing grace period (rapid network changes)
         networkGracePeriodJob?.cancel()
