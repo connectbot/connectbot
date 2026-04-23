@@ -215,4 +215,10 @@ abstract class AbsTransport {
      * @return
      */
     abstract fun usesNetwork(): Boolean
+
+    /**
+     * Gets the local IP address of the transport connection if available.
+     * @return the local IP address or null
+     */
+    abstract fun getLocalIpAddress(): String?
 }

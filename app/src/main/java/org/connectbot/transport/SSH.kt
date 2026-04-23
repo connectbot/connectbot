@@ -1375,6 +1375,8 @@ class SSH :
 
     override fun usesNetwork(): Boolean = true
 
+    override fun getLocalIpAddress(): String? = connection?.connectionInfo?.localSocketAddress?.address?.hostAddress
+
     companion object {
         init {
             // Since this class deals with Ed25519 keys, we need to make sure this is available.
