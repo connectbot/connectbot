@@ -86,6 +86,10 @@ android {
         compose = true
     }
 
+    composeCompiler {
+        stabilityConfigurationFile.set(rootProject.layout.projectDirectory.file("compose-stability.conf"))
+    }
+
     signingConfigs {
         if (project.hasProperty("keystorePassword")) {
             create("release") {

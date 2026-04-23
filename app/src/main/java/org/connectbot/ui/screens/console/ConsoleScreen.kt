@@ -77,6 +77,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -165,6 +166,7 @@ fun ConsoleScreen(
 
     // Capture latest callback for use in effects
     val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
+    val currentOnNavigateToPortForwards by rememberUpdatedState(onNavigateToPortForwards)
 
     LaunchedEffect(terminalManager) {
         terminalManager?.let { viewModel.setTerminalManager(it) }
@@ -224,72 +226,89 @@ fun ConsoleScreen(
     val promptState by currentBridgeForPrompt?.promptManager?.promptState?.collectAsState()
         ?: remember { mutableStateOf(null) }
     var wasBiometricPromptActive by remember { mutableStateOf(false) }
-    val isBiometricPromptActive = promptState is PromptRequest.BiometricPrompt
+
+    val isBiometricPromptActive by remember(promptState) {
+        derivedStateOf { promptState is PromptRequest.BiometricPrompt }
+    }
 
     // Check if any modal (menu or dialog) is currently active
-    val anyModalActive = showMenu || showUrlScanDialog || showResizeDialog ||
-        showDisconnectDialog || showTextInputDialog || isBiometricPromptActive
+    val anyModalActive by remember(
+        showMenu,
+        showUrlScanDialog,
+        showResizeDialog,
+        showDisconnectDialog,
+        showTextInputDialog,
+        isBiometricPromptActive,
+    ) {
+        derivedStateOf {
+            showMenu || showUrlScanDialog || showResizeDialog ||
+                showDisconnectDialog || showTextInputDialog || isBiometricPromptActive
+        }
+    }
 
     /**
      * Unified interaction handler for terminal and keyboard.
      * Manages visibility of the extra keyboard and title bar based on preferences.
-     *
-     * Intent Matrix:
-     * | keyboardAlwaysVisible | titleBarHide | keyboardScrollInProgress | anyModalActive | isTerminalTap | Action                     |
-     * |-----------------------|--------------|--------------------------|----------------|---------------|----------------------------|
-     * | false                 | any          | false                    | false          | any           | Show KB, Start/Reset Timer |
-     * | any                   | true         | false                    | false          | true          | Show TB, Start/Reset Timer |
-     * | true                  | false        | any                      | any            | any           | Ensure Both Shown, No Timer|
-     * | any                   | any          | true                     | any            | any           | Show KB, Cancel Timer      |
-     * | any                   | any          | any                      | true           | any           | Cancel Timer               |
-     *
-     * @param isTerminalTap Whether this call was triggered by a terminal tap or title bar action.
-     * @param isInteraction Whether this call was triggered by a user interaction (tap, key press, scroll).
-     *                      If false, only the timer is managed without forcing visibility to true.
      */
-    fun handleTerminalInteraction(isTerminalTap: Boolean = false, isInteraction: Boolean = true) {
-        autoHideJobRef.job?.cancel()
+    val handleTerminalInteraction = remember(
+        coroutineScope,
+        keyboardAlwaysVisible,
+        titleBarHide,
+    ) {
+        { isTerminalTap: Boolean, isInteraction: Boolean ->
+            autoHideJobRef.job?.cancel()
 
-        if (isInteraction || keyboardScrollInProgress) {
-            // Show emulated keyboard on any interaction or while scrolling (unless always visible)
-            if (!keyboardAlwaysVisible) {
-                showExtraKeyboard = true
-            }
-            // Show title bar temporarily ONLY when terminal is tapped (if auto-hide enabled)
-            if (titleBarHide && isTerminalTap) {
-                showTitleBar = true
-            }
-        }
-
-        // Ensure they are shown if they should be permanent
-        if (keyboardAlwaysVisible) showExtraKeyboard = true
-        if (!titleBarHide) showTitleBar = true
-
-        // Only start the auto-hide timer if we are not actively scrolling,
-        // no modal is active, and at least one element is configured to auto-hide.
-        if (!keyboardScrollInProgress && !anyModalActive && (!keyboardAlwaysVisible || titleBarHide)) {
-            autoHideJobRef.job = coroutineScope.launch {
-                delay(AUTO_HIDE_DELAY_MS)
-                // Accessing Compose State within coroutine to avoid stale closures
-                // Hide keyboard if not always visible
+            if (isInteraction || keyboardScrollInProgress) {
+                // Show emulated keyboard on any interaction or while scrolling (unless always visible)
                 if (!keyboardAlwaysVisible) {
-                    showExtraKeyboard = false
+                    showExtraKeyboard = true
                 }
-                // Hide title bar if auto-hide is enabled
-                if (titleBarHide) {
-                    showTitleBar = false
+                // Show title bar temporarily ONLY when terminal is tapped (if auto-hide enabled)
+                if (titleBarHide && isTerminalTap) {
+                    showTitleBar = true
                 }
-                // Mark animation as played after first timeout
-                hasPlayedKeyboardAnimation = true
+            }
+
+            // Ensure they are shown if they should be permanent
+            if (keyboardAlwaysVisible) showExtraKeyboard = true
+            if (!titleBarHide) showTitleBar = true
+
+            // Only start the auto-hide timer if we are not actively scrolling,
+            // no modal is active, and at least one element is configured to auto-hide.
+            if (!keyboardScrollInProgress && !anyModalActive && (!keyboardAlwaysVisible || titleBarHide)) {
+                autoHideJobRef.job = coroutineScope.launch {
+                    delay(AUTO_HIDE_DELAY_MS)
+                    // Hide keyboard if not always visible
+                    if (!keyboardAlwaysVisible) {
+                        showExtraKeyboard = false
+                    }
+                    // Hide title bar if auto-hide is enabled
+                    if (titleBarHide) {
+                        showTitleBar = false
+                    }
+                    // Mark animation as played after first timeout
+                    hasPlayedKeyboardAnimation = true
+                }
             }
         }
+    }
+
+    // Wrap handleTerminalInteraction for no-args calls to keep lambdas stable
+    val onTerminalInteraction = remember(handleTerminalInteraction) {
+        { handleTerminalInteraction(false, true) }
+    }
+    val onTerminalTapInteraction = remember(handleTerminalInteraction) {
+        { handleTerminalInteraction(true, true) }
+    }
+    val onTerminalBackgroundInteraction = remember(handleTerminalInteraction) {
+        { handleTerminalInteraction(false, false) }
     }
 
     // Sync our state when user dismisses modals or prompts
     LaunchedEffect(anyModalActive) {
         if (!anyModalActive) {
             // When modals are dismissed, restart the auto-hide timer
-            handleTerminalInteraction(isInteraction = false)
+            onTerminalBackgroundInteraction()
         }
     }
 
@@ -327,7 +346,7 @@ fun ConsoleScreen(
     LaunchedEffect(Unit) {
         termFocusRequester.requestFocus()
         // Initial auto-hide timer start (without forcing show)
-        handleTerminalInteraction(isInteraction = false)
+        onTerminalBackgroundInteraction()
     }
 
     // Track actual IME visibility using WindowInsets to detect user dismissing with back button
@@ -360,10 +379,18 @@ fun ConsoleScreen(
 
     val currentBridge = uiState.bridges.getOrNull(uiState.currentBridgeIndex)
     // These values are computed from bridge state and will recompute when uiState.revision changes
-    val sessionOpen = currentBridge?.isSessionOpen == true
-    val disconnected = currentBridge?.isDisconnected == true
-    val connecting = currentBridge?.isConnecting == true
-    val canForwardPorts = currentBridge?.canFowardPorts() == true
+    val sessionOpen = remember(currentBridge, uiState.revision) {
+        currentBridge?.isSessionOpen == true
+    }
+    val disconnected = remember(currentBridge, uiState.revision) {
+        currentBridge?.isDisconnected == true
+    }
+    val connecting = remember(currentBridge, uiState.revision) {
+        currentBridge?.isConnecting == true
+    }
+    val canForwardPorts = remember(currentBridge, uiState.revision) {
+        currentBridge?.canFowardPorts() == true
+    }
     val snackbarHostState = remember { SnackbarHostState() }
 
     // Show software keyboard when session becomes open (if no hardware keyboard)
@@ -413,16 +440,19 @@ fun ConsoleScreen(
 
     val urlNotSupportedMessage = stringResource(R.string.console_url_not_supported)
 
-    fun openUrl(url: String) {
-        UrlUtils.openUrl(context, url).onFailure { e ->
-            coroutineScope.launch {
-                val message = if (e is ActivityNotFoundException) {
-                    noUrlHandlerMessage
-                } else {
-                    urlNotSupportedMessage
+    val openUrl = remember(context, coroutineScope, noUrlHandlerMessage, urlNotSupportedMessage, snackbarHostState) {
+        { url: String ->
+            UrlUtils.openUrl(context, url).onFailure { e ->
+                coroutineScope.launch {
+                    val message = if (e is ActivityNotFoundException) {
+                        noUrlHandlerMessage
+                    } else {
+                        urlNotSupportedMessage
+                    }
+                    snackbarHostState.showSnackbar(message)
                 }
-                snackbarHostState.showSnackbar(message)
             }
+            Unit
         }
     }
 
@@ -577,14 +607,10 @@ fun ConsoleScreen(
                             focusRequester = termFocusRequester,
                             forcedSize = forceSize,
                             modifierManager = bridge.keyHandler,
-                            onSelectionControllerAvailable = { selectionController = it },
-                            onTerminalTap = { handleTerminalInteraction(isTerminalTap = true) },
-                            onImeVisibilityChanged = { visible ->
-                                imeVisible = visible
-                            },
-                            onHyperlinkClick = { url ->
-                                openUrl(url)
-                            },
+                            onSelectionControllerAvailable = remember { { selectionController = it } },
+                            onTerminalTap = onTerminalTapInteraction,
+                            onImeVisibilityChanged = remember { { visible -> imeVisible = visible } },
+                            onHyperlinkClick = openUrl,
                             delKeyMode = delKeyMode,
                         )
 
@@ -608,19 +634,15 @@ fun ConsoleScreen(
                         ) {
                             TerminalKeyboard(
                                 bridge = bridge,
-                                onInteraction = { handleTerminalInteraction() },
-                                onHideIme = {
-                                    showSoftwareKeyboard = false
-                                },
-                                onShowIme = {
-                                    showSoftwareKeyboard = true
-                                },
-                                onOpenTextInput = {
-                                    showTextInputDialog = true
-                                },
-                                onScrollInProgressChange = { inProgress ->
-                                    keyboardScrollInProgress = inProgress
-                                    handleTerminalInteraction()
+                                onInteraction = onTerminalInteraction,
+                                onHideIme = remember { { showSoftwareKeyboard = false } },
+                                onShowIme = remember { { showSoftwareKeyboard = true } },
+                                onOpenTextInput = remember { { showTextInputDialog = true } },
+                                onScrollInProgressChange = remember(onTerminalInteraction) {
+                                    { inProgress ->
+                                        keyboardScrollInProgress = inProgress
+                                        onTerminalInteraction()
+                                    }
                                 },
                                 imeVisible = imeVisible,
                                 playAnimation = !hasPlayedKeyboardAnimation,
@@ -633,14 +655,14 @@ fun ConsoleScreen(
 
                         InlinePrompt(
                             promptRequest = promptState,
-                            onResponse = { response ->
-                                bridge.promptManager.respond(response)
+                            onResponse = remember(bridge) {
+                                { response -> bridge.promptManager.respond(response) }
                             },
-                            onCancel = {
-                                bridge.promptManager.cancelPrompt()
+                            onCancel = remember(bridge) {
+                                { bridge.promptManager.cancelPrompt() }
                             },
-                            onDismiss = {
-                                termFocusRequester.requestFocus()
+                            onDismiss = remember(termFocusRequester) {
+                                { termFocusRequester.requestFocus() }
                             },
                             modifier = Modifier
                                 .align(Alignment.BottomCenter),
@@ -761,7 +783,7 @@ fun ConsoleScreen(
                         titleBarHeight = with(density) { it.height.toDp() }
                     },
                 navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
+                    IconButton(onClick = currentOnNavigateBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             stringResource(R.string.button_back),
@@ -839,7 +861,7 @@ fun ConsoleScreen(
                                     text = { Text(stringResource(R.string.console_menu_reconnect)) },
                                     onClick = {
                                         showMenu = false
-                                        viewModel.reconnect(currentBridge)
+                                        currentBridge?.let { viewModel.reconnect(it) }
                                     },
                                     leadingIcon = {
                                         Icon(Icons.Default.Refresh, contentDescription = null)
@@ -900,10 +922,8 @@ fun ConsoleScreen(
                                     text = { Text(stringResource(R.string.console_menu_portforwards)) },
                                     onClick = {
                                         showMenu = false
-                                        currentBridge.host.id.let {
-                                            onNavigateToPortForwards(
-                                                it,
-                                            )
+                                        currentBridge?.host?.id?.let {
+                                            currentOnNavigateToPortForwards(it)
                                         }
                                     },
                                     enabled = sessionOpen,
@@ -931,7 +951,7 @@ fun ConsoleScreen(
                                 onClick = {
                                     titleBarHide = !titleBarHide
                                     prefs.edit { putBoolean("titlebarhide", titleBarHide) }
-                                    handleTerminalInteraction(isTerminalTap = true)
+                                    onTerminalTapInteraction()
                                 },
                                 trailingIcon = {
                                     Checkbox(
