@@ -867,37 +867,36 @@ class SSH :
             ) ?: throw IOException("Connection failed")
             connected = true
 
-            connectionInfo?.let { info ->
-                bridge?.outputLine(
-                    manager?.res?.getString(R.string.terminal_kex_algorithm, info.keyExchangeAlgorithm),
-                )
-                if (info.clientToServerCryptoAlgorithm == info.serverToClientCryptoAlgorithm &&
-                    info.clientToServerMACAlgorithm == info.serverToClientMACAlgorithm
-                ) {
-                    bridge?.outputLine(
-                        manager?.res?.getString(
-                            R.string.terminal_using_algorithm,
-                            info.clientToServerCryptoAlgorithm,
-                            info.clientToServerMACAlgorithm ?: "",
-                        ),
-                    )
-                } else {
-                    bridge?.outputLine(
-                        manager?.res?.getString(
-                            R.string.terminal_using_c2s_algorithm,
-                            info.clientToServerCryptoAlgorithm,
-                            info.clientToServerMACAlgorithm ?: "",
-                        ),
-                    )
+            bridge?.outputLine(
+                manager?.res?.getString(R.string.terminal_kex_algorithm, connectionInfo.keyExchangeAlgorithm),
+            )
 
-                    bridge?.outputLine(
-                        manager?.res?.getString(
-                            R.string.terminal_using_s2c_algorithm,
-                            info.serverToClientCryptoAlgorithm,
-                            info.serverToClientMACAlgorithm ?: "",
-                        ),
-                    )
-                }
+            if (connectionInfo.clientToServerCryptoAlgorithm == connectionInfo.serverToClientCryptoAlgorithm &&
+                connectionInfo.clientToServerMACAlgorithm == connectionInfo.serverToClientMACAlgorithm
+            ) {
+                bridge?.outputLine(
+                    manager?.res?.getString(
+                        R.string.terminal_using_algorithm,
+                        connectionInfo.clientToServerCryptoAlgorithm,
+                        connectionInfo.clientToServerMACAlgorithm ?: "",
+                    ),
+                )
+            } else {
+                bridge?.outputLine(
+                    manager?.res?.getString(
+                        R.string.terminal_using_c2s_algorithm,
+                        connectionInfo.clientToServerCryptoAlgorithm,
+                        connectionInfo.clientToServerMACAlgorithm ?: "",
+                    ),
+                )
+
+                bridge?.outputLine(
+                    manager?.res?.getString(
+                        R.string.terminal_using_s2c_algorithm,
+                        connectionInfo.serverToClientCryptoAlgorithm,
+                        connectionInfo.serverToClientMACAlgorithm ?: "",
+                    ),
+                )
             }
         } catch (e: IOException) {
             Timber.e(e, "Problem in SSH connection thread during authentication")
