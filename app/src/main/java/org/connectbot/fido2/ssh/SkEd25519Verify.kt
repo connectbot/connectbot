@@ -93,7 +93,7 @@ object SkEd25519Verify {
 
         return SkEd25519PublicKey(
             application = application,
-            ed25519Key = ed25519Key
+            ed25519Key = ed25519Key,
         )
     }
 

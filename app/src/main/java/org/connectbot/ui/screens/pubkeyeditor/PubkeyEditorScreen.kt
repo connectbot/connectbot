@@ -330,14 +330,14 @@ fun PubkeyEditorScreenContent(
 
                         Text(
                             text = stringResource(R.string.fido2_transport_label),
-                            style = MaterialTheme.typography.titleMedium
+                            style = MaterialTheme.typography.titleMedium,
                         )
 
                         Spacer(modifier = Modifier.height(8.dp))
 
                         Row(
                             modifier = Modifier.fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
                         ) {
                             FilterChip(
                                 selected = uiState.fido2Transport == Fido2Transport.USB,
@@ -347,10 +347,10 @@ fun PubkeyEditorScreenContent(
                                     Icon(
                                         imageVector = Icons.Filled.Usb,
                                         contentDescription = null,
-                                        modifier = Modifier.size(18.dp)
+                                        modifier = Modifier.size(18.dp),
                                     )
                                 },
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f),
                             )
                             FilterChip(
                                 selected = uiState.fido2Transport == Fido2Transport.NFC,
@@ -360,10 +360,10 @@ fun PubkeyEditorScreenContent(
                                     Icon(
                                         imageVector = Icons.Filled.Nfc,
                                         contentDescription = null,
-                                        modifier = Modifier.size(18.dp)
+                                        modifier = Modifier.size(18.dp),
                                     )
                                 },
-                                modifier = Modifier.weight(1f)
+                                modifier = Modifier.weight(1f),
                             )
                         }
                     }
