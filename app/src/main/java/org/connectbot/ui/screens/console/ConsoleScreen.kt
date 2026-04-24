@@ -773,7 +773,7 @@ fun ConsoleScreen(
                 onConfirm = {
                     showDisconnectDialog = false
                     viewModel.disconnectCurrentSession()
-                }
+                },
             )
         }
 
@@ -918,7 +918,7 @@ fun ConsoleScreen(
                                 leadingIcon = {
                                     Icon(Icons.Default.OpenInNew, contentDescription = null)
                                 },
-                                enabled = currentBridge != null
+                                enabled = currentBridge != null,
                             )
 
                             // Switch session (if multiple sessions exist for current host)
@@ -931,13 +931,13 @@ fun ConsoleScreen(
                                         },
                                         leadingIcon = {
                                             Icon(Icons.Default.SwapHoriz, contentDescription = null)
-                                        }
+                                        },
                                     )
 
                                     // Switch session submenu
                                     DropdownMenu(
                                         expanded = showSwitchSessionMenu,
-                                        onDismissRequest = { showSwitchSessionMenu = false }
+                                        onDismissRequest = { showSwitchSessionMenu = false },
                                     ) {
                                         sessionsForCurrentHost.forEachIndexed { index, bridge ->
                                             val isCurrentSession = bridge.sessionId == currentBridge?.sessionId
@@ -945,7 +945,7 @@ fun ConsoleScreen(
                                                 text = {
                                                     Text(
                                                         stringResource(R.string.console_menu_session_number, index + 1),
-                                                        fontWeight = if (isCurrentSession) androidx.compose.ui.text.font.FontWeight.Bold else null
+                                                        fontWeight = if (isCurrentSession) androidx.compose.ui.text.font.FontWeight.Bold else null,
                                                     )
                                                 },
                                                 onClick = {
@@ -954,7 +954,7 @@ fun ConsoleScreen(
                                                     viewModel.selectBridgeBySessionId(bridge.sessionId)
                                                     termFocusRequester.requestFocus()
                                                 },
-                                                enabled = !isCurrentSession
+                                                enabled = !isCurrentSession,
                                             )
                                         }
                                     }
