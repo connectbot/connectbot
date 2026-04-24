@@ -91,7 +91,7 @@ object SkEcdsaVerify {
         return SkEcdsaPublicKey(
             application = application,
             ecPoint = ecPoint,
-            curve = curve
+            curve = curve,
         )
     }
 
