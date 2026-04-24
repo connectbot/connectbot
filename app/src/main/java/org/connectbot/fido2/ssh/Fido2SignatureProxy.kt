@@ -49,7 +49,7 @@ class Fido2SignatureProxy(
     private val algorithm: Fido2Algorithm,
     private val pin: String,
     private val transport: Fido2Transport,
-    private val fido2Manager: Fido2Manager
+    private val fido2Manager: Fido2Manager,
 ) : SignatureProxy(publicKey) {
 
     /**

@@ -43,5 +43,5 @@ enum class KeyStorageType {
      * Signing operations require the security key to be connected via USB or NFC.
      * Cannot be backed up or exported.
      */
-    FIDO2_RESIDENT_KEY
+    FIDO2_RESIDENT_KEY,
 }
