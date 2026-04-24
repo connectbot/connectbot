@@ -1054,7 +1054,7 @@ fun ConsoleScreen(
                 onConfirm = {
                     showDisconnectDialog = false
                     viewModel.disconnectCurrentSession()
-                }
+                },
             )
         }
 
