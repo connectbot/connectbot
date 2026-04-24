@@ -290,7 +290,7 @@ class PubkeyListViewModel @Inject constructor(
                     if (pubkey.isFido2) {
                         val base64Key = android.util.Base64.encodeToString(
                             pubkey.publicKey,
-                            android.util.Base64.NO_WRAP
+                            android.util.Base64.NO_WRAP,
                         )
                         // Use the correct SSH key type string for authorized_keys format
                         val sshKeyType = when (pubkey.type) {

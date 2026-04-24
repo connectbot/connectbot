@@ -89,7 +89,7 @@ data class Pubkey(
 
     /** Preferred transport for FIDO2 security key (USB or NFC) */
     @ColumnInfo(name = "fido2_transport")
-    val fido2Transport: Fido2Transport? = null
+    val fido2Transport: Fido2Transport? = null,
 ) {
     /** Whether this key is stored in Android Keystore with biometric protection */
     val isBiometric: Boolean

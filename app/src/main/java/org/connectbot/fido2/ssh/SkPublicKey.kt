@@ -51,7 +51,7 @@ data class SkEcdsaPublicKey(
     /** EC point in uncompressed format (0x04 || x || y) */
     val ecPoint: ByteArray,
     /** Curve identifier, typically "nistp256" */
-    val curve: String = "nistp256"
+    val curve: String = "nistp256",
 ) : SkPublicKey {
 
     override fun getSshKeyType(): String = KEY_TYPE
@@ -106,7 +106,7 @@ data class SkEd25519PublicKey(
     /** The application ID, typically "ssh:" for SSH keys */
     private val application: String,
     /** Ed25519 public key (32 bytes) */
-    val ed25519Key: ByteArray
+    val ed25519Key: ByteArray,
 ) : SkPublicKey {
 
     override fun getSshKeyType(): String = KEY_TYPE

@@ -40,7 +40,7 @@ class SkEd25519VerifyTest {
 
         val pubkey = SkEd25519PublicKey(
             application = application,
-            ed25519Key = ed25519Key
+            ed25519Key = ed25519Key,
         )
 
         val encoded = SkEd25519Verify.encodePublicKey(pubkey)
@@ -123,7 +123,7 @@ class SkEd25519VerifyTest {
 
         val original = SkEd25519PublicKey(
             application = application,
-            ed25519Key = ed25519Key
+            ed25519Key = ed25519Key,
         )
 
         val encoded = SkEd25519Verify.encodePublicKey(original)
@@ -144,7 +144,7 @@ class SkEd25519VerifyTest {
             signature = signature,
             userPresenceVerified = true,
             userVerified = false,
-            counter = 12345
+            counter = 12345,
         )
 
         val encoded = SkEd25519Verify.encodeSignature(fido2Result)
@@ -190,7 +190,7 @@ class SkEd25519VerifyTest {
             signature = wrappedSignature,
             userPresenceVerified = true,
             userVerified = true,
-            counter = 99
+            counter = 99,
         )
 
         val encoded = SkEd25519Verify.encodeSignature(fido2Result)
@@ -220,7 +220,7 @@ class SkEd25519VerifyTest {
             signature = signature,
             userPresenceVerified = true,
             userVerified = false,
-            counter = Int.MAX_VALUE
+            counter = Int.MAX_VALUE,
         )
 
         val encoded = SkEd25519Verify.encodeSignature(fido2Result)
@@ -243,7 +243,7 @@ class SkEd25519VerifyTest {
         val buffer = ByteBuffer.allocate(
             4 + keyTypeBytes.size +
                 4 + key.size +
-                4 + appBytes.size
+                4 + appBytes.size,
         ).order(ByteOrder.BIG_ENDIAN)
 
         buffer.putInt(keyTypeBytes.size)

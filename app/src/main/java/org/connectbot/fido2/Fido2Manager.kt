@@ -72,7 +72,7 @@ import kotlin.coroutines.resumeWithException
  */
 @Singleton
 class Fido2Manager @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     private val yubiKitManager = YubiKitManager(context)
@@ -201,7 +201,7 @@ class Fido2Manager @Inject constructor(
         try {
             yubiKitManager.startNfcDiscovery(
                 NfcConfiguration().timeout(30000), // 30 second timeout
-                activity
+                activity,
             ) { device ->
                 Timber.d("NFC YubiKey detected")
                 scope.launch {
@@ -309,14 +309,14 @@ class Fido2Manager @Inject constructor(
         session: Ctap2Session,
         protocol: PinUvAuthProtocol,
         pin: String,
-        closeSessionAfter: Boolean = false
+        closeSessionAfter: Boolean = false,
     ): Fido2Result<List<Fido2Credential>> {
         try {
             val clientPin = ClientPin(session, protocol)
             val token = clientPin.getPinToken(
                 normalizePin(pin),
                 ClientPin.PIN_PERMISSION_CM,
-                null
+                null,
             )
             Log.d(TAG, "USB PIN authentication successful")
 
@@ -372,7 +372,7 @@ class Fido2Manager @Inject constructor(
                             session = reconnectSession,
                             protocol = reconnectProtocol,
                             pin = pin,
-                            closeSessionAfter = false
+                            closeSessionAfter = false,
                         )
                     } catch (e: Exception) {
                         if (shouldRetryPinBlockedWithV1(e, reconnectProtocol)) {
@@ -382,21 +382,21 @@ class Fido2Manager @Inject constructor(
                                     session = reconnectSession,
                                     protocol = PinUvAuthProtocolV1(),
                                     pin = pin,
-                                    closeSessionAfter = false
+                                    closeSessionAfter = false,
                                 )
                             } catch (fallbackError: Exception) {
                                 mapPinOrCredentialError(
                                     fallbackError,
                                     v1FallbackAttempted = true,
                                     session = reconnectSession,
-                                    protocol = PinUvAuthProtocolV1()
+                                    protocol = PinUvAuthProtocolV1(),
                                 )
                             }
                         } else {
                             mapPinOrCredentialError(
                                 e,
                                 session = reconnectSession,
-                                protocol = reconnectProtocol
+                                protocol = reconnectProtocol,
                             )
                         }
                     } finally {
@@ -433,7 +433,7 @@ class Fido2Manager @Inject constructor(
         e: Exception,
         v1FallbackAttempted: Boolean = false,
         session: Ctap2Session? = null,
-        protocol: PinUvAuthProtocol? = null
+        protocol: PinUvAuthProtocol? = null,
     ): Fido2Result<List<Fido2Credential>> {
         Log.e(TAG, "USB operation failed: ${e.message}", e)
         val message = e.message ?: ""
@@ -446,7 +446,7 @@ class Fido2Manager @Inject constructor(
             message.contains("PIN_AUTH_BLOCKED", ignoreCase = true) -> {
                 if (v1FallbackAttempted) {
                     Fido2Result.PinLocked(
-                        "PIN is temporarily blocked. Retried with PIN protocol V1; reinsert the security key and try again."
+                        "PIN is temporarily blocked. Retried with PIN protocol V1; reinsert the security key and try again.",
                     )
                 } else {
                     Fido2Result.PinLocked(ERR_PIN_AUTH_BLOCKED)
@@ -468,7 +468,7 @@ class Fido2Manager @Inject constructor(
                     }
                     Fido2Result.PinLocked(
                         "Authenticator reported PIN_BLOCKED, but $retryHint Remaining retries: ${retries.count}. " +
-                            "This may be a device firmware quirk. $powerCycleHint"
+                            "This may be a device firmware quirk. $powerCycleHint",
                     )
                 } else if (v1FallbackAttempted) {
                     Fido2Result.PinLocked("PIN is locked. Retried with PIN protocol V1. Please reset your security key.")
@@ -483,12 +483,12 @@ class Fido2Manager @Inject constructor(
 
     private data class PinRetryInfo(
         val count: Int,
-        val powerCycleState: Boolean?
+        val powerCycleState: Boolean?,
     )
 
     private fun getPinRetriesWithFallback(
         session: Ctap2Session?,
-        protocol: PinUvAuthProtocol?
+        protocol: PinUvAuthProtocol?,
     ): PinRetryInfo? {
         if (session == null || protocol == null) {
             Timber.w("PIN retries probe skipped: session or protocol is null")
@@ -510,18 +510,18 @@ class Fido2Manager @Inject constructor(
     private fun getPinRetriesSafely(
         session: Ctap2Session,
         protocol: PinUvAuthProtocol,
-        probeName: String
+        probeName: String,
     ): PinRetryInfo? = try {
         val retries = ClientPin(session, protocol).getPinRetries()
         val result = PinRetryInfo(
             count = retries.count,
-            powerCycleState = retries.powerCycleState
+            powerCycleState = retries.powerCycleState,
         )
         Timber.i(
             "PIN retries probe %s succeeded: count=%d, powerCycleState=%s",
             probeName,
             result.count,
-            result.powerCycleState
+            result.powerCycleState,
         )
         result
     } catch (e: Exception) {
@@ -582,7 +582,7 @@ class Fido2Manager @Inject constructor(
 
                     _connectionState.value = Fido2ConnectionState.Connected(
                         transport = "USB",
-                        deviceName = deviceName
+                        deviceName = deviceName,
                     )
                     // If needsPin, ViewModel will show PIN prompt and call back with PIN
                     return
@@ -625,7 +625,7 @@ class Fido2Manager @Inject constructor(
                             val token = clientPin.getPinToken(
                                 normalizePin(pin),
                                 ClientPin.PIN_PERMISSION_CM,
-                                null
+                                null,
                             )
                             Timber.d("NFC PIN authentication successful")
 
@@ -692,7 +692,7 @@ class Fido2Manager @Inject constructor(
                     is Fido2Result.Success -> {
                         _connectionState.value = Fido2ConnectionState.Connected(
                             transport = "NFC",
-                            deviceName = deviceName
+                            deviceName = deviceName,
                         )
                     }
 
@@ -765,8 +765,8 @@ class Fido2Manager @Inject constructor(
                             options["credentialMgmtPreview"] == true,
                         residentKeySupported = options["rk"] == true,
                         maxCredentialCount = info.maxCredentialCountInList,
-                        remainingCredentialCount = info.remainingDiscoverableCredentials
-                    )
+                        remainingCredentialCount = info.remainingDiscoverableCredentials,
+                    ),
                 )
             } catch (e: Exception) {
                 Timber.e(e, "Failed to get authenticator info")
@@ -800,7 +800,7 @@ class Fido2Manager @Inject constructor(
             val token = clientPin.getPinToken(
                 normalizePin(pin),
                 ClientPin.PIN_PERMISSION_CM, // Credential Management permission
-                null // rpId
+                null, // rpId
             )
 
             pinUvToken = token
@@ -896,7 +896,7 @@ class Fido2Manager @Inject constructor(
         credentialId: ByteArray,
         challenge: ByteArray,
         rpId: String = SSH_RP_ID,
-        pin: String? = null
+        pin: String? = null,
     ): Fido2Result<Fido2SignatureResult> {
         val session = currentSession
             ?: return Fido2Result.Error(ERR_NO_DEVICE_CONNECTED)
@@ -927,8 +927,8 @@ class Fido2Manager @Inject constructor(
                 val allowList = listOf(
                     mapOf(
                         "type" to PUBLIC_KEY_TYPE,
-                        "id" to credentialId
-                    )
+                        "id" to credentialId,
+                    ),
                 )
 
                 // Get assertion
@@ -940,7 +940,7 @@ class Fido2Manager @Inject constructor(
                     null, // options
                     pinUvAuth,
                     protocol.version,
-                    null // CommandState
+                    null, // CommandState
                 )
 
                 if (assertions.isEmpty()) {
@@ -981,7 +981,7 @@ class Fido2Manager @Inject constructor(
         credentialId: ByteArray,
         challenge: ByteArray,
         rpId: String = SSH_RP_ID,
-        callback: (Fido2Result<Fido2SignatureResult>) -> Unit
+        callback: (Fido2Result<Fido2SignatureResult>) -> Unit,
     ) {
         sshCredentialId = credentialId
         sshChallenge = challenge
@@ -1145,7 +1145,7 @@ class Fido2Manager @Inject constructor(
      */
     private fun buildCredentialFromData(
         credData: CredentialManagement.CredentialData,
-        sshRp: CredentialManagement.RpData
+        sshRp: CredentialManagement.RpData,
     ): Fido2Credential {
         val user = credData.user
         val credentialId = credData.credentialId["id"] as? ByteArray
@@ -1169,7 +1169,7 @@ class Fido2Manager @Inject constructor(
             userHandle = user["id"] as? ByteArray,
             userName = user["name"] as? String,
             publicKeyCose = publicKeyCose,
-            algorithm = algorithm
+            algorithm = algorithm,
         )
     }
 
@@ -1193,7 +1193,7 @@ class Fido2Manager @Inject constructor(
             signature = assertion.signature,
             userPresenceVerified = (flags.toInt() and 0x01) != 0,
             userVerified = (flags.toInt() and 0x04) != 0,
-            counter = counter
+            counter = counter,
         )
     }
 
@@ -1209,7 +1209,7 @@ class Fido2Manager @Inject constructor(
         credentialId: ByteArray,
         challenge: ByteArray,
         rpId: String,
-        transport: String
+        transport: String,
     ): Fido2Result<Fido2SignatureResult> = try {
         val protocol = selectPinProtocol(session)
         Log.d(TAG, "$transport authenticating with PIN for SSH signing")
@@ -1217,15 +1217,15 @@ class Fido2Manager @Inject constructor(
         val token = clientPin.getPinToken(
             normalizePin(pin),
             ClientPin.PIN_PERMISSION_GA,
-            rpId
+            rpId,
         )
         val clientDataHash = sha256(challenge)
         val pinUvAuth = protocol.authenticate(token, clientDataHash)
         val allowList = listOf(
             mapOf(
                 "type" to PUBLIC_KEY_TYPE,
-                "id" to credentialId
-            )
+                "id" to credentialId,
+            ),
         )
         val assertions = session.getAssertions(
             rpId,
@@ -1235,7 +1235,7 @@ class Fido2Manager @Inject constructor(
             null,
             pinUvAuth,
             protocol.version,
-            null
+            null,
         )
         if (assertions.isEmpty()) {
             Fido2Result.Error(ERR_NO_ASSERTION_RETURNED)
