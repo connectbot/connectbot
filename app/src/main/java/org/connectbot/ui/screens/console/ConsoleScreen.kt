@@ -118,8 +118,8 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
-import org.connectbot.service.DisconnectReason
 import org.connectbot.fido2.Fido2ConnectionState
+import org.connectbot.service.DisconnectReason
 import org.connectbot.service.PromptRequest
 import org.connectbot.service.PromptResponse
 import org.connectbot.terminal.ProgressState
@@ -708,7 +708,7 @@ fun ConsoleScreen(
                                 onCancel = {
                                     bridge.fido2Manager.cancelNfcSigning()
                                 },
-                                modifier = Modifier.align(Alignment.BottomCenter)
+                                modifier = Modifier.align(Alignment.BottomCenter),
                             )
                         }
 

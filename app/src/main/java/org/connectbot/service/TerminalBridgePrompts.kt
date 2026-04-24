@@ -152,7 +152,7 @@ fun TerminalBridge.requestHostKeyFingerprintPrompt(
 fun TerminalBridge.requestFido2Connect(
     keyNickname: String,
     credentialId: ByteArray,
-    transport: Fido2Transport
+    transport: Fido2Transport,
 ): Boolean {
     return try {
         runBlocking {
@@ -173,7 +173,7 @@ fun TerminalBridge.requestFido2Connect(
  */
 fun TerminalBridge.requestFido2Pin(
     keyNickname: String,
-    attemptsRemaining: Int? = null
+    attemptsRemaining: Int? = null,
 ): String? {
     return try {
         runBlocking {
@@ -192,7 +192,7 @@ fun TerminalBridge.requestFido2Pin(
  * @return true if touch confirmed, false otherwise
  */
 fun TerminalBridge.requestFido2Touch(
-    keyNickname: String
+    keyNickname: String,
 ): Boolean {
     return try {
         runBlocking {

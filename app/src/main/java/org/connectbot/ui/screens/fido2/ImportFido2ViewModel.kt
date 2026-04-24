@@ -61,14 +61,14 @@ data class ImportFido2UiState(
     val waitingForNfcTap: Boolean = false, // True when PIN entered and waiting for NFC tap
     val pinError: String? = null,
     val error: String? = null,
-    val importSuccess: Boolean = false
+    val importSuccess: Boolean = false,
 )
 
 @HiltViewModel
 class ImportFido2ViewModel @Inject constructor(
     private val fido2Manager: Fido2Manager,
     private val repository: PubkeyRepository,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ImportFido2UiState())
@@ -105,7 +105,7 @@ class ImportFido2ViewModel @Inject constructor(
                             it.copy(
                                 error = state.message,
                                 isScanning = false,
-                                waitingForNfcTap = false
+                                waitingForNfcTap = false,
                             )
                         }
                     }
@@ -180,7 +180,7 @@ class ImportFido2ViewModel @Inject constructor(
                 it.copy(
                     pinError = null,
                     needsPin = false,
-                    isScanning = true
+                    isScanning = true,
                 )
             }
 
@@ -198,7 +198,7 @@ class ImportFido2ViewModel @Inject constructor(
                 it.copy(
                     pinError = null,
                     needsPin = false,
-                    waitingForNfcTap = true // Now waiting for user to tap NFC
+                    waitingForNfcTap = true, // Now waiting for user to tap NFC
                 )
             }
             // Wait for NFC tap which will trigger connection
@@ -216,7 +216,7 @@ class ImportFido2ViewModel @Inject constructor(
                         isScanning = false,
                         needsPin = false,
                         waitingForNfcTap = false,
-                        error = if (credentials.isEmpty()) "No SSH credentials found on security key" else null
+                        error = if (credentials.isEmpty()) "No SSH credentials found on security key" else null,
                     )
                 }
             }
@@ -226,7 +226,7 @@ class ImportFido2ViewModel @Inject constructor(
                     it.copy(
                         isScanning = false,
                         needsPin = true,
-                        waitingForNfcTap = false
+                        waitingForNfcTap = false,
                     )
                 }
             }
@@ -238,7 +238,7 @@ class ImportFido2ViewModel @Inject constructor(
                         isScanning = false,
                         needsPin = true,
                         waitingForNfcTap = false,
-                        pinError = "Invalid PIN. ${result.attemptsRemaining ?: "Unknown"} attempts remaining."
+                        pinError = "Invalid PIN. ${result.attemptsRemaining ?: "Unknown"} attempts remaining.",
                     )
                 }
             }
@@ -250,7 +250,7 @@ class ImportFido2ViewModel @Inject constructor(
                         isScanning = false,
                         needsPin = false,
                         waitingForNfcTap = false,
-                        error = result.message
+                        error = result.message,
                     )
                 }
             }
@@ -260,7 +260,7 @@ class ImportFido2ViewModel @Inject constructor(
                     it.copy(
                         isScanning = false,
                         waitingForNfcTap = false,
-                        error = result.message
+                        error = result.message,
                     )
                 }
             }
@@ -269,7 +269,7 @@ class ImportFido2ViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         isScanning = false,
-                        waitingForNfcTap = false
+                        waitingForNfcTap = false,
                     )
                 }
             }
@@ -283,7 +283,7 @@ class ImportFido2ViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 selectedCredential = credential,
-                nickname = defaultNickname
+                nickname = defaultNickname,
             )
         }
     }
@@ -323,7 +323,7 @@ class ImportFido2ViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 selectedCredential = null,
-                nickname = ""
+                nickname = "",
             )
         }
     }
@@ -361,7 +361,7 @@ class ImportFido2ViewModel @Inject constructor(
                 val ed25519Key = CoseKeyDecoder.decodeEd25519PublicKey(credential.publicKeyCose)
                 val skPubKey = SkEd25519PublicKey(
                     application = credential.rpId,
-                    ed25519Key = ed25519Key
+                    ed25519Key = ed25519Key,
                 )
                 PubkeyConstants.KEY_TYPE_SK_ED25519 to SkEd25519Verify.encodePublicKey(skPubKey)
             }
@@ -372,7 +372,7 @@ class ImportFido2ViewModel @Inject constructor(
                 val skPubKey = SkEcdsaPublicKey(
                     application = credential.rpId,
                     ecPoint = ecPoint,
-                    curve = "nistp256"
+                    curve = "nistp256",
                 )
                 PubkeyConstants.KEY_TYPE_SK_ECDSA to SkEcdsaVerify.encodePublicKey(skPubKey)
             }
@@ -391,7 +391,7 @@ class ImportFido2ViewModel @Inject constructor(
             storageType = KeyStorageType.FIDO2_RESIDENT_KEY,
             credentialId = credential.credentialId,
             fido2RpId = credential.rpId,
-            fido2Transport = transport
+            fido2Transport = transport,
         )
     }
 

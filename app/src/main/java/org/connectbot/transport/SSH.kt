@@ -710,7 +710,7 @@ open class SSH :
             algorithm = algorithm,
             pin = pin,
             transport = transport,
-            fido2Manager = fido2Manager
+            fido2Manager = fido2Manager,
         )
 
         Timber.d("Created FIDO2 SignatureProxy for '${pubkey.nickname}'")

@@ -150,7 +150,7 @@ fun ConnectBotNavHost(
 
         composable(NavDestinations.IMPORT_FIDO2) {
             ImportFido2Screen(
-                onNavigateBack = { navController.safePopBackStack() }
+                onNavigateBack = { navController.safePopBackStack() },
             )
         }
 

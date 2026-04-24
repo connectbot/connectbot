@@ -80,7 +80,7 @@ class Fido2ModelsTest {
             userHandle = byteArrayOf(10, 20),
             userName = "testuser",
             publicKeyCose = byteArrayOf(100, 101, 102),
-            algorithm = Fido2Algorithm.ES256
+            algorithm = Fido2Algorithm.ES256,
         )
 
         val credential2 = Fido2Credential(
@@ -89,7 +89,7 @@ class Fido2ModelsTest {
             userHandle = byteArrayOf(10, 20),
             userName = "testuser",
             publicKeyCose = byteArrayOf(100, 101, 102),
-            algorithm = Fido2Algorithm.ES256
+            algorithm = Fido2Algorithm.ES256,
         )
 
         assertThat(credential1).isEqualTo(credential2)
@@ -104,7 +104,7 @@ class Fido2ModelsTest {
             userHandle = null,
             userName = null,
             publicKeyCose = byteArrayOf(100, 101, 102),
-            algorithm = Fido2Algorithm.ES256
+            algorithm = Fido2Algorithm.ES256,
         )
 
         val credential2 = Fido2Credential(
@@ -113,7 +113,7 @@ class Fido2ModelsTest {
             userHandle = null,
             userName = null,
             publicKeyCose = byteArrayOf(100, 101, 102),
-            algorithm = Fido2Algorithm.ES256
+            algorithm = Fido2Algorithm.ES256,
         )
 
         assertThat(credential1).isNotEqualTo(credential2)
@@ -127,7 +127,7 @@ class Fido2ModelsTest {
             userHandle = null,
             userName = "testuser",
             publicKeyCose = byteArrayOf(100, 101, 102),
-            algorithm = Fido2Algorithm.ES256
+            algorithm = Fido2Algorithm.ES256,
         )
 
         val credential2 = Fido2Credential(
@@ -136,7 +136,7 @@ class Fido2ModelsTest {
             userHandle = byteArrayOf(10, 20), // Non-null
             userName = "testuser",
             publicKeyCose = byteArrayOf(100, 101, 102),
-            algorithm = Fido2Algorithm.ES256
+            algorithm = Fido2Algorithm.ES256,
         )
 
         assertThat(credential1).isNotEqualTo(credential2)
@@ -153,7 +153,7 @@ class Fido2ModelsTest {
             signature = byteArrayOf(1, 2, 3),
             userPresenceVerified = true,
             userVerified = true,
-            counter = 42
+            counter = 42,
         )
 
         assertThat(result.flags).isEqualTo(0x05.toByte())
@@ -166,7 +166,7 @@ class Fido2ModelsTest {
             signature = byteArrayOf(1, 2, 3),
             userPresenceVerified = true,
             userVerified = false,
-            counter = 0
+            counter = 0,
         )
 
         assertThat(result.flags).isEqualTo(0.toByte())
@@ -179,7 +179,7 @@ class Fido2ModelsTest {
             signature = byteArrayOf(10, 20, 30),
             userPresenceVerified = true,
             userVerified = false,
-            counter = 100
+            counter = 100,
         )
 
         val result2 = Fido2SignatureResult(
@@ -187,7 +187,7 @@ class Fido2ModelsTest {
             signature = byteArrayOf(10, 20, 30),
             userPresenceVerified = true,
             userVerified = false,
-            counter = 100
+            counter = 100,
         )
 
         assertThat(result1).isEqualTo(result2)
@@ -198,7 +198,7 @@ class Fido2ModelsTest {
     fun `Fido2ConnectionState Connected contains transport info`() {
         val state = Fido2ConnectionState.Connected(
             transport = "USB",
-            deviceName = "YubiKey 5"
+            deviceName = "YubiKey 5",
         )
 
         assertThat(state.transport).isEqualTo("USB")
@@ -247,7 +247,7 @@ class Fido2ModelsTest {
             credentialManagementSupported = true,
             residentKeySupported = true,
             maxCredentialCount = 25,
-            remainingCredentialCount = 20
+            remainingCredentialCount = 20,
         )
 
         val info2 = Fido2AuthenticatorInfo(
@@ -257,7 +257,7 @@ class Fido2ModelsTest {
             credentialManagementSupported = true,
             residentKeySupported = true,
             maxCredentialCount = 25,
-            remainingCredentialCount = 20
+            remainingCredentialCount = 20,
         )
 
         assertThat(info1).isEqualTo(info2)
@@ -273,7 +273,7 @@ class Fido2ModelsTest {
             credentialManagementSupported = false,
             residentKeySupported = true,
             maxCredentialCount = null,
-            remainingCredentialCount = null
+            remainingCredentialCount = null,
         )
 
         val info2 = Fido2AuthenticatorInfo(
@@ -283,7 +283,7 @@ class Fido2ModelsTest {
             credentialManagementSupported = false,
             residentKeySupported = true,
             maxCredentialCount = null,
-            remainingCredentialCount = null
+            remainingCredentialCount = null,
         )
 
         assertThat(info1).isNotEqualTo(info2)

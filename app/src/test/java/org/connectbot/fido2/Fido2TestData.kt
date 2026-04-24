@@ -39,12 +39,12 @@ object Fido2TestData {
     // Sample credential IDs
     val CREDENTIAL_ID_1 = byteArrayOf(
         0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
-        0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10
+        0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F, 0x10,
     )
 
     val CREDENTIAL_ID_2 = byteArrayOf(
         0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18,
-        0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20
+        0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F, 0x20,
     )
 
     // Sample Ed25519 public key (32 bytes)
@@ -71,7 +71,7 @@ object Fido2TestData {
     val COSE_ECDSA_P256_KEY: ByteArray by lazy {
         createCoseEcdsaP256Key(
             x = ByteArray(32) { it.toByte() },
-            y = ByteArray(32) { (it + 32).toByte() }
+            y = ByteArray(32) { (it + 32).toByte() },
         )
     }
 
@@ -79,7 +79,7 @@ object Fido2TestData {
     // 32 bytes rpIdHash + 1 byte flags + 4 bytes counter
     fun createAuthenticatorData(
         flags: Byte = 0x01, // UP flag
-        counter: Int = 1
+        counter: Int = 1,
     ): ByteArray {
         val data = ByteArray(37)
         // rpIdHash (32 bytes of zeros for test)
@@ -108,28 +108,28 @@ object Fido2TestData {
     fun createEd25519Credential(
         credentialId: ByteArray = CREDENTIAL_ID_1,
         userName: String? = USER_NAME,
-        rpId: String = SSH_RP_ID
+        rpId: String = SSH_RP_ID,
     ) = Fido2Credential(
         credentialId = credentialId,
         rpId = rpId,
         userHandle = USER_ID,
         userName = userName,
         publicKeyCose = COSE_ED25519_KEY,
-        algorithm = Fido2Algorithm.EDDSA
+        algorithm = Fido2Algorithm.EDDSA,
     )
 
     // Create a test Fido2Credential for ECDSA
     fun createEcdsaCredential(
         credentialId: ByteArray = CREDENTIAL_ID_2,
         userName: String? = USER_NAME,
-        rpId: String = SSH_RP_ID
+        rpId: String = SSH_RP_ID,
     ) = Fido2Credential(
         credentialId = credentialId,
         rpId = rpId,
         userHandle = USER_ID,
         userName = userName,
         publicKeyCose = COSE_ECDSA_P256_KEY,
-        algorithm = Fido2Algorithm.ES256
+        algorithm = Fido2Algorithm.ES256,
     )
 
     // Create a test Fido2SignatureResult
@@ -138,20 +138,20 @@ object Fido2TestData {
         signature: ByteArray = ED25519_SIGNATURE,
         userPresenceVerified: Boolean = true,
         userVerified: Boolean = false,
-        counter: Int = 1
+        counter: Int = 1,
     ) = Fido2SignatureResult(
         authenticatorData = authenticatorData,
         signature = signature,
         userPresenceVerified = userPresenceVerified,
         userVerified = userVerified,
-        counter = counter
+        counter = counter,
     )
 
     // Create a test Fido2AuthenticatorInfo
     fun createAuthenticatorInfo(
         pinConfigured: Boolean = true,
         credentialManagementSupported: Boolean = true,
-        residentKeySupported: Boolean = true
+        residentKeySupported: Boolean = true,
     ) = Fido2AuthenticatorInfo(
         versions = listOf("FIDO_2_0", "FIDO_2_1"),
         aaguid = ByteArray(16) { it.toByte() },
@@ -159,7 +159,7 @@ object Fido2TestData {
         credentialManagementSupported = credentialManagementSupported,
         residentKeySupported = residentKeySupported,
         maxCredentialCount = 25,
-        remainingCredentialCount = 20
+        remainingCredentialCount = 20,
     )
 
     // Helper to create COSE Ed25519 key in CBOR format
@@ -171,22 +171,22 @@ object Fido2TestData {
         // kty = 1 (OKP)
         cborMap.put(
             co.nstant.`in`.cbor.model.UnsignedInteger(1),
-            co.nstant.`in`.cbor.model.UnsignedInteger(1)
+            co.nstant.`in`.cbor.model.UnsignedInteger(1),
         )
         // alg = -8 (EdDSA)
         cborMap.put(
             co.nstant.`in`.cbor.model.UnsignedInteger(3),
-            co.nstant.`in`.cbor.model.NegativeInteger(-8)
+            co.nstant.`in`.cbor.model.NegativeInteger(-8),
         )
         // crv = 6 (Ed25519)
         cborMap.put(
             co.nstant.`in`.cbor.model.NegativeInteger(-1),
-            co.nstant.`in`.cbor.model.UnsignedInteger(6)
+            co.nstant.`in`.cbor.model.UnsignedInteger(6),
         )
         // x = public key
         cborMap.put(
             co.nstant.`in`.cbor.model.NegativeInteger(-2),
-            co.nstant.`in`.cbor.model.ByteString(publicKey)
+            co.nstant.`in`.cbor.model.ByteString(publicKey),
         )
 
         encoder.encode(cborMap)
@@ -202,27 +202,27 @@ object Fido2TestData {
         // kty = 2 (EC2)
         cborMap.put(
             co.nstant.`in`.cbor.model.UnsignedInteger(1),
-            co.nstant.`in`.cbor.model.UnsignedInteger(2)
+            co.nstant.`in`.cbor.model.UnsignedInteger(2),
         )
         // alg = -7 (ES256)
         cborMap.put(
             co.nstant.`in`.cbor.model.UnsignedInteger(3),
-            co.nstant.`in`.cbor.model.NegativeInteger(-7)
+            co.nstant.`in`.cbor.model.NegativeInteger(-7),
         )
         // crv = 1 (P-256)
         cborMap.put(
             co.nstant.`in`.cbor.model.NegativeInteger(-1),
-            co.nstant.`in`.cbor.model.UnsignedInteger(1)
+            co.nstant.`in`.cbor.model.UnsignedInteger(1),
         )
         // x coordinate
         cborMap.put(
             co.nstant.`in`.cbor.model.NegativeInteger(-2),
-            co.nstant.`in`.cbor.model.ByteString(x)
+            co.nstant.`in`.cbor.model.ByteString(x),
         )
         // y coordinate
         cborMap.put(
             co.nstant.`in`.cbor.model.NegativeInteger(-3),
-            co.nstant.`in`.cbor.model.ByteString(y)
+            co.nstant.`in`.cbor.model.ByteString(y),
         )
 
         encoder.encode(cborMap)

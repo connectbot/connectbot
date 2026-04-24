@@ -59,7 +59,7 @@ class ImportFido2ViewModelTest {
     private val dispatchers = CoroutineDispatchers(
         default = testDispatcher,
         io = testDispatcher,
-        main = testDispatcher
+        main = testDispatcher,
     )
 
     private lateinit var fido2Manager: Fido2Manager
@@ -146,7 +146,7 @@ class ImportFido2ViewModelTest {
     fun `USB connection triggers PIN prompt when no credentials`() = runTest {
         connectionStateFlow.value = Fido2ConnectionState.Connected(
             transport = "USB",
-            deviceName = "YubiKey 5"
+            deviceName = "YubiKey 5",
         )
         advanceUntilIdle()
 
@@ -169,7 +169,7 @@ class ImportFido2ViewModelTest {
         // First simulate USB connection
         connectionStateFlow.value = Fido2ConnectionState.Connected(
             transport = "USB",
-            deviceName = "YubiKey 5"
+            deviceName = "YubiKey 5",
         )
         advanceUntilIdle()
 
@@ -204,7 +204,7 @@ class ImportFido2ViewModelTest {
     fun `successful credential discovery updates state`() = runTest {
         val credentials = listOf(
             Fido2TestData.createEd25519Credential(),
-            Fido2TestData.createEcdsaCredential()
+            Fido2TestData.createEcdsaCredential(),
         )
 
         // Capture the callback and invoke it with test data

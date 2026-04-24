@@ -86,7 +86,7 @@ import org.connectbot.fido2.Fido2Credential
 fun ImportFido2Screen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: ImportFido2ViewModel = hiltViewModel()
+    viewModel: ImportFido2ViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -152,16 +152,16 @@ fun ImportFido2Screen(
                     IconButton(onClick = onNavigateBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = null)
                     }
-                }
+                },
             )
         },
         snackbarHost = { SnackbarHost(snackbarHostState) },
-        modifier = modifier
+        modifier = modifier,
     ) { innerPadding ->
         Box(
             modifier = Modifier
                 .padding(innerPadding)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             when {
                 !uiState.transportSelected -> {
@@ -170,7 +170,7 @@ fun ImportFido2Screen(
                         selectedTransport = uiState.selectedTransport,
                         onTransportChange = viewModel::updateTransport,
                         onConfirm = viewModel::confirmTransportSelection,
-                        onCancel = onNavigateBack
+                        onCancel = onNavigateBack,
                     )
                 }
 
@@ -183,7 +183,7 @@ fun ImportFido2Screen(
                         onNicknameChange = viewModel::updateNickname,
                         onTransportChange = viewModel::updateTransport,
                         onConfirm = viewModel::importSelectedCredential,
-                        onCancel = viewModel::clearSelection
+                        onCancel = viewModel::clearSelection,
                     )
                 }
 
@@ -192,7 +192,7 @@ fun ImportFido2Screen(
                     PinEntryContent(
                         pinError = uiState.pinError,
                         onSubmitPin = viewModel::submitPin,
-                        onCancel = onNavigateBack
+                        onCancel = onNavigateBack,
                     )
                 }
 
@@ -205,7 +205,7 @@ fun ImportFido2Screen(
                     // Show credential list
                     CredentialListContent(
                         credentials = uiState.credentials,
-                        onSelectCredential = viewModel::selectCredential
+                        onSelectCredential = viewModel::selectCredential,
                     )
                 }
 
@@ -214,7 +214,7 @@ fun ImportFido2Screen(
                     ConnectionStatusContent(
                         connectionState = uiState.connectionState,
                         isScanning = uiState.isScanning,
-                        transport = uiState.selectedTransport
+                        transport = uiState.selectedTransport,
                     )
                 }
             }
@@ -227,20 +227,20 @@ private fun TransportSelectionContent(
     selectedTransport: Fido2Transport,
     onTransportChange: (Fido2Transport) -> Unit,
     onConfirm: () -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Icon(
             imageVector = Icons.Filled.Key,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.primary
+            tint = MaterialTheme.colorScheme.primary,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -248,7 +248,7 @@ private fun TransportSelectionContent(
         Text(
             text = stringResource(R.string.fido2_select_transport_title),
             style = MaterialTheme.typography.headlineSmall,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -257,14 +257,14 @@ private fun TransportSelectionContent(
             text = stringResource(R.string.fido2_select_transport_hint),
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp),
         ) {
             FilterChip(
                 selected = selectedTransport == Fido2Transport.USB,
@@ -274,10 +274,10 @@ private fun TransportSelectionContent(
                     Icon(
                         imageVector = Icons.Filled.Usb,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
             FilterChip(
                 selected = selectedTransport == Fido2Transport.NFC,
@@ -287,10 +287,10 @@ private fun TransportSelectionContent(
                     Icon(
                         imageVector = Icons.Filled.Nfc,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
         }
 
@@ -298,14 +298,14 @@ private fun TransportSelectionContent(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.End,
         ) {
             TextButton(onClick = onCancel) {
                 Text(stringResource(R.string.fido2_cancel))
             }
             Button(
                 onClick = onConfirm,
-                modifier = Modifier.padding(start = 8.dp)
+                modifier = Modifier.padding(start = 8.dp),
             ) {
                 Text(stringResource(R.string.fido2_continue))
             }
@@ -317,20 +317,20 @@ private fun TransportSelectionContent(
 private fun ConnectionStatusContent(
     connectionState: Fido2ConnectionState,
     isScanning: Boolean,
-    transport: Fido2Transport
+    transport: Fido2Transport,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Icon(
             imageVector = if (transport == Fido2Transport.USB) Icons.Filled.Usb else Icons.Filled.Nfc,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.primary
+            tint = MaterialTheme.colorScheme.primary,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -358,7 +358,7 @@ private fun ConnectionStatusContent(
                 is Fido2ConnectionState.Error -> connectionState.message
             },
             style = MaterialTheme.typography.bodyLarge,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
         if (connectionState is Fido2ConnectionState.Connecting || isScanning) {
@@ -375,13 +375,13 @@ private fun WaitingForNfcTapContent() {
             .fillMaxSize()
             .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Icon(
             imageVector = Icons.Filled.Key,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.primary
+            tint = MaterialTheme.colorScheme.primary,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -389,7 +389,7 @@ private fun WaitingForNfcTapContent() {
         Text(
             text = stringResource(R.string.fido2_tap_and_hold),
             style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -398,7 +398,7 @@ private fun WaitingForNfcTapContent() {
             text = stringResource(R.string.fido2_tap_and_hold_hint),
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -407,7 +407,7 @@ private fun WaitingForNfcTapContent() {
 private fun PinEntryContent(
     pinError: String?,
     onSubmitPin: (String) -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
 ) {
     var pin by remember { mutableStateOf("") }
 
@@ -416,20 +416,20 @@ private fun PinEntryContent(
             .fillMaxSize()
             .padding(32.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
+        verticalArrangement = Arrangement.Center,
     ) {
         Icon(
             imageVector = Icons.Filled.Key,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.primary
+            tint = MaterialTheme.colorScheme.primary,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
             text = stringResource(R.string.fido2_pin_title),
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.headlineSmall,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -441,22 +441,22 @@ private fun PinEntryContent(
             visualTransformation = PasswordVisualTransformation(),
             keyboardOptions = KeyboardOptions(
                 keyboardType = KeyboardType.Password,
-                imeAction = ImeAction.Done
+                imeAction = ImeAction.Done,
             ),
             keyboardActions = KeyboardActions(
-                onDone = { onSubmitPin(pin) }
+                onDone = { onSubmitPin(pin) },
             ),
             isError = pinError != null,
             supportingText = pinError?.let { { Text(it, color = MaterialTheme.colorScheme.error) } },
             singleLine = true,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.End,
         ) {
             TextButton(onClick = onCancel) {
                 Text(stringResource(R.string.fido2_cancel))
@@ -464,7 +464,7 @@ private fun PinEntryContent(
             Button(
                 onClick = { onSubmitPin(pin) },
                 enabled = pin.isNotEmpty(),
-                modifier = Modifier.padding(start = 8.dp)
+                modifier = Modifier.padding(start = 8.dp),
             ) {
                 Text(stringResource(R.string.button_ok))
             }
@@ -475,18 +475,18 @@ private fun PinEntryContent(
 @Composable
 private fun CredentialListContent(
     credentials: List<Fido2Credential>,
-    onSelectCredential: (Fido2Credential) -> Unit
+    onSelectCredential: (Fido2Credential) -> Unit,
 ) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         items(credentials) { credential ->
             CredentialCard(
                 credential = credential,
-                onClick = { onSelectCredential(credential) }
+                onClick = { onSelectCredential(credential) },
             )
         }
     }
@@ -495,37 +495,37 @@ private fun CredentialListContent(
 @Composable
 private fun CredentialCard(
     credential: Fido2Credential,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .clickable(onClick = onClick),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        ),
     ) {
         Row(
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 imageVector = Icons.Filled.Key,
                 contentDescription = null,
                 modifier = Modifier.size(40.dp),
-                tint = MaterialTheme.colorScheme.primary
+                tint = MaterialTheme.colorScheme.primary,
             )
 
             Column(
                 modifier = Modifier
                     .padding(start = 16.dp)
-                    .weight(1f)
+                    .weight(1f),
             ) {
                 Text(
                     text = credential.userName ?: "SSH Key",
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
 
                 Text(
@@ -534,13 +534,13 @@ private fun CredentialCard(
                         Fido2Algorithm.EDDSA -> "SK-Ed25519"
                     },
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
 
                 Text(
                     text = credential.rpId,
                     style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
         }
@@ -555,26 +555,26 @@ private fun ImportConfirmationContent(
     onNicknameChange: (String) -> Unit,
     onTransportChange: (Fido2Transport) -> Unit,
     onConfirm: () -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(32.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
             imageVector = Icons.Filled.Key,
             contentDescription = null,
             modifier = Modifier.size(64.dp),
-            tint = MaterialTheme.colorScheme.primary
+            tint = MaterialTheme.colorScheme.primary,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         Text(
             text = stringResource(R.string.fido2_import_credential),
-            style = MaterialTheme.typography.headlineSmall
+            style = MaterialTheme.typography.headlineSmall,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -585,7 +585,7 @@ private fun ImportConfirmationContent(
                 Fido2Algorithm.EDDSA -> "SK-Ed25519"
             },
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -595,7 +595,7 @@ private fun ImportConfirmationContent(
             onValueChange = onNicknameChange,
             label = { Text(stringResource(R.string.prompt_nickname)) },
             singleLine = true,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -604,14 +604,14 @@ private fun ImportConfirmationContent(
         Text(
             text = stringResource(R.string.fido2_transport_label),
             style = MaterialTheme.typography.labelMedium,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             FilterChip(
                 selected = selectedTransport == Fido2Transport.USB,
@@ -621,10 +621,10 @@ private fun ImportConfirmationContent(
                     Icon(
                         imageVector = Icons.Filled.Usb,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
             FilterChip(
                 selected = selectedTransport == Fido2Transport.NFC,
@@ -634,10 +634,10 @@ private fun ImportConfirmationContent(
                     Icon(
                         imageVector = Icons.Filled.Nfc,
                         contentDescription = null,
-                        modifier = Modifier.size(18.dp)
+                        modifier = Modifier.size(18.dp),
                     )
                 },
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             )
         }
 
@@ -645,7 +645,7 @@ private fun ImportConfirmationContent(
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.End
+            horizontalArrangement = Arrangement.End,
         ) {
             TextButton(onClick = onCancel) {
                 Text(stringResource(R.string.fido2_cancel))
@@ -653,7 +653,7 @@ private fun ImportConfirmationContent(
             Button(
                 onClick = onConfirm,
                 enabled = nickname.isNotBlank(),
-                modifier = Modifier.padding(start = 8.dp)
+                modifier = Modifier.padding(start = 8.dp),
             ) {
                 Text(stringResource(R.string.fido2_import_credential))
             }
