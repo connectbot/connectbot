@@ -25,5 +25,5 @@ enum class Fido2Transport {
     USB,
 
     /** Use NFC transport */
-    NFC
+    NFC,
 }

@@ -45,7 +45,7 @@ class SkEcdsaVerifyTest {
         val pubkey = SkEcdsaPublicKey(
             application = application,
             ecPoint = ecPoint,
-            curve = CURVE_NAME
+            curve = CURVE_NAME,
         )
 
         val encoded = SkEcdsaVerify.encodePublicKey(pubkey)
@@ -113,7 +113,7 @@ class SkEcdsaVerifyTest {
         val buffer = ByteBuffer.allocate(
             4 + curveBytes.size +
                 4 + ecPoint.size +
-                4 + appBytes.size
+                4 + appBytes.size,
         ).order(ByteOrder.BIG_ENDIAN)
 
         buffer.putInt(curveBytes.size)
@@ -142,7 +142,7 @@ class SkEcdsaVerifyTest {
         val original = SkEcdsaPublicKey(
             application = application,
             ecPoint = ecPoint,
-            curve = CURVE_NAME
+            curve = CURVE_NAME,
         )
 
         val encoded = SkEcdsaVerify.encodePublicKey(original)
@@ -170,7 +170,7 @@ class SkEcdsaVerifyTest {
             signature = rawSignature,
             userPresenceVerified = true,
             userVerified = false,
-            counter = 42
+            counter = 42,
         )
 
         val encoded = SkEcdsaVerify.encodeSignature(fido2Result)
@@ -217,7 +217,7 @@ class SkEcdsaVerifyTest {
             signature = derSignature,
             userPresenceVerified = true,
             userVerified = true,
-            counter = 100
+            counter = 100,
         )
 
         val encoded = SkEcdsaVerify.encodeSignature(fido2Result)
@@ -255,7 +255,7 @@ class SkEcdsaVerifyTest {
             signature = signature,
             userPresenceVerified = true,
             userVerified = false,
-            counter = 0
+            counter = 0,
         )
         val encoded1 = SkEcdsaVerify.encodeSignature(result1)
         assertThat(extractCounter(encoded1)).isEqualTo(0)
@@ -266,7 +266,7 @@ class SkEcdsaVerifyTest {
             signature = signature,
             userPresenceVerified = true,
             userVerified = false,
-            counter = Int.MAX_VALUE
+            counter = Int.MAX_VALUE,
         )
         val encoded2 = SkEcdsaVerify.encodeSignature(result2)
         assertThat(extractCounter(encoded2)).isEqualTo(Int.MAX_VALUE)
@@ -284,7 +284,7 @@ class SkEcdsaVerifyTest {
             signature = signature,
             userPresenceVerified = true,
             userVerified = false,
-            counter = 1
+            counter = 1,
         )
         assertThat(extractFlags(SkEcdsaVerify.encodeSignature(result1))).isEqualTo(0x01.toByte())
 
@@ -296,7 +296,7 @@ class SkEcdsaVerifyTest {
             signature = signature,
             userPresenceVerified = false,
             userVerified = true,
-            counter = 1
+            counter = 1,
         )
         assertThat(extractFlags(SkEcdsaVerify.encodeSignature(result2))).isEqualTo(0x04.toByte())
 
@@ -308,7 +308,7 @@ class SkEcdsaVerifyTest {
             signature = signature,
             userPresenceVerified = true,
             userVerified = true,
-            counter = 1
+            counter = 1,
         )
         assertThat(extractFlags(SkEcdsaVerify.encodeSignature(result3))).isEqualTo(0x05.toByte())
     }
@@ -317,7 +317,7 @@ class SkEcdsaVerifyTest {
         keyType: String,
         curveName: String,
         ecPoint: ByteArray,
-        application: String
+        application: String,
     ): ByteArray {
         val keyTypeBytes = keyType.toByteArray()
         val curveBytes = curveName.toByteArray()
@@ -327,7 +327,7 @@ class SkEcdsaVerifyTest {
             4 + keyTypeBytes.size +
                 4 + curveBytes.size +
                 4 + ecPoint.size +
-                4 + appBytes.size
+                4 + appBytes.size,
         ).order(ByteOrder.BIG_ENDIAN)
 
         buffer.putInt(keyTypeBytes.size)

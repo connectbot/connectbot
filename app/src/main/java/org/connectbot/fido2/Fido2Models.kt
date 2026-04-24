@@ -24,13 +24,14 @@ package org.connectbot.fido2
 enum class Fido2Algorithm(
     val coseId: Int,
     val sshKeyType: String,
-    val displayName: String
+    val displayName: String,
 ) {
     /** ECDSA with P-256 curve and SHA-256 (COSE algorithm -7) */
     ES256(-7, "sk-ecdsa-sha2-nistp256@openssh.com", "ECDSA-SK"),
 
     /** EdDSA with Ed25519 curve (COSE algorithm -8) */
-    EDDSA(-8, "sk-ssh-ed25519@openssh.com", "Ed25519-SK");
+    EDDSA(-8, "sk-ssh-ed25519@openssh.com", "Ed25519-SK"),
+    ;
 
     companion object {
         fun fromCoseId(coseId: Int): Fido2Algorithm? = entries.find { it.coseId == coseId }
@@ -59,7 +60,7 @@ data class Fido2Credential(
     val publicKeyCose: ByteArray,
 
     /** The cryptographic algorithm used by this credential */
-    val algorithm: Fido2Algorithm
+    val algorithm: Fido2Algorithm,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -111,7 +112,7 @@ data class Fido2SignatureResult(
     val userVerified: Boolean,
 
     /** Signature counter from authenticator data */
-    val counter: Int
+    val counter: Int,
 ) {
     /** The flags byte from authenticator data (first byte after rpIdHash) */
     val flags: Byte
@@ -157,7 +158,7 @@ sealed class Fido2ConnectionState {
         /** Transport type: "USB" or "NFC" */
         val transport: String,
         /** Device name if available */
-        val deviceName: String? = null
+        val deviceName: String? = null,
     ) : Fido2ConnectionState()
 
     /** An error occurred during connection or operation */
@@ -199,7 +200,7 @@ data class Fido2AuthenticatorInfo(
     val maxCredentialCount: Int?,
 
     /** Remaining credential slots available */
-    val remainingCredentialCount: Int?
+    val remainingCredentialCount: Int?,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

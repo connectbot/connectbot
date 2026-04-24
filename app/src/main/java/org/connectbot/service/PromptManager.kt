@@ -111,7 +111,7 @@ class PromptManager {
     suspend fun requestFido2Connect(
         keyNickname: String,
         credentialId: ByteArray,
-        transport: Fido2Transport
+        transport: Fido2Transport,
     ): Boolean {
         val deferred = CompletableDeferred<PromptResponse>()
         currentDeferred = deferred
@@ -120,7 +120,7 @@ class PromptManager {
             PromptRequest.Fido2ConnectPrompt(
                 keyNickname = keyNickname,
                 credentialId = credentialId,
-                transport = transport
+                transport = transport,
             )
         }
 
@@ -135,7 +135,7 @@ class PromptManager {
      */
     suspend fun requestFido2Pin(
         keyNickname: String,
-        attemptsRemaining: Int? = null
+        attemptsRemaining: Int? = null,
     ): String? {
         val deferred = CompletableDeferred<PromptResponse>()
         currentDeferred = deferred
@@ -143,7 +143,7 @@ class PromptManager {
         _promptState.update {
             PromptRequest.Fido2PinPrompt(
                 keyNickname = keyNickname,
-                attemptsRemaining = attemptsRemaining
+                attemptsRemaining = attemptsRemaining,
             )
         }
 
@@ -157,14 +157,14 @@ class PromptManager {
      * Request user to touch FIDO2 security key for confirmation
      */
     suspend fun requestFido2Touch(
-        keyNickname: String
+        keyNickname: String,
     ): Boolean {
         val deferred = CompletableDeferred<PromptResponse>()
         currentDeferred = deferred
 
         _promptState.update {
             PromptRequest.Fido2TouchPrompt(
-                keyNickname = keyNickname
+                keyNickname = keyNickname,
             )
         }
 
@@ -251,7 +251,7 @@ sealed class PromptRequest {
     data class Fido2ConnectPrompt(
         val keyNickname: String,
         val credentialId: ByteArray,
-        val transport: Fido2Transport
+        val transport: Fido2Transport,
     ) : PromptRequest() {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true
@@ -272,12 +272,12 @@ sealed class PromptRequest {
     /** Prompt for FIDO2 PIN entry */
     data class Fido2PinPrompt(
         val keyNickname: String,
-        val attemptsRemaining: Int?
+        val attemptsRemaining: Int?,
     ) : PromptRequest()
 
     /** Prompt to touch FIDO2 security key */
     data class Fido2TouchPrompt(
-        val keyNickname: String
+        val keyNickname: String,
     ) : PromptRequest()
 
     data class HostKeyFingerprintPrompt(
