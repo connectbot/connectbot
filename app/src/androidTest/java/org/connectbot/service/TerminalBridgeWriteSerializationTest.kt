@@ -182,7 +182,7 @@ class TerminalBridgeWriteSerializationTest {
                 main = Dispatchers.Main,
             )
 
-            val bridge = TerminalBridge(manager, host, dispatchers)
+            val bridge = TerminalBridge(manager, host, sessionId = 1L, dispatchers = dispatchers)
             try {
                 val transport = LossyNonThreadSafeTransport()
                 bridge.transport = transport
