@@ -567,7 +567,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_imetogglekey_title),
                     summary = stringResource(R.string.pref_imetogglekey_summary),
                     checked = uiState.imeTogglekey,
-                    onCheckedChange = onImeToggleKeyChange
+                    onCheckedChange = onImeToggleKeyChange,
                 )
             }
 
