@@ -49,7 +49,7 @@ data class SftpEntry(
     val isSymlink: Boolean,
     val size: Long?,
     val modifiedTime: Long?,
-    val permissions: String?
+    val permissions: String?,
 )
 
 /**
@@ -75,7 +75,7 @@ data class SftpBrowserUiState(
     val keyPassphrasePrompt: String? = null,
     val showBiometricDialog: Boolean = false,
     val biometricKeyInfo: BiometricKeyInfo? = null,
-    val showGoToPathDialog: Boolean = false
+    val showGoToPathDialog: Boolean = false,
 )
 
 /**
@@ -85,7 +85,7 @@ data class TransferProgress(
     val filename: String,
     val isUpload: Boolean,
     val bytesTransferred: Long,
-    val totalBytes: Long
+    val totalBytes: Long,
 ) {
     val progress: Float
         get() = if (totalBytes > 0) bytesTransferred.toFloat() / totalBytes else 0f
@@ -101,7 +101,7 @@ data class HostKeyInfo(
     val hostname: String,
     val keyType: String,
     val fingerprint: String,
-    val isNewKey: Boolean
+    val isNewKey: Boolean,
 )
 
 /**
@@ -109,7 +109,7 @@ data class HostKeyInfo(
  */
 data class BiometricKeyInfo(
     val keyName: String,
-    val keystoreAlias: String
+    val keystoreAlias: String,
 )
 
 @HiltViewModel
@@ -117,7 +117,7 @@ class SftpBrowserViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val hostRepository: HostRepository,
     private val sftpConnectionManager: SftpConnectionManager,
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
     private val hostId: Long = savedStateHandle.get<Long>(NavArgs.HOST_ID) ?: -1L
@@ -168,10 +168,10 @@ class SftpBrowserViewModel @Inject constructor(
                         it.copy(
                             isConnecting = false,
                             isConnected = false,
-                            error = "Connection failed: ${error.message}"
+                            error = "Connection failed: ${error.message}",
                         )
                     }
-                }
+                },
             )
         }
     }
@@ -186,7 +186,7 @@ class SftpBrowserViewModel @Inject constructor(
                 it.copy(
                     isConnected = false,
                     entries = emptyList(),
-                    currentPath = "/"
+                    currentPath = "/",
                 )
             }
         }
@@ -221,14 +221,14 @@ class SftpBrowserViewModel @Inject constructor(
                     it.copy(
                         currentPath = canonicalPath,
                         entries = entries,
-                        isLoading = false
+                        isLoading = false,
                     )
                 }
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        error = "Failed to list directory: ${e.message}"
+                        error = "Failed to list directory: ${e.message}",
                     )
                 }
             }
@@ -285,7 +285,7 @@ class SftpBrowserViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        error = "Failed to create folder: ${e.message}"
+                        error = "Failed to create folder: ${e.message}",
                     )
                 }
             }
@@ -318,7 +318,7 @@ class SftpBrowserViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        error = "Failed to delete: ${e.message}"
+                        error = "Failed to delete: ${e.message}",
                     )
                 }
             }
@@ -339,15 +339,15 @@ class SftpBrowserViewModel @Inject constructor(
                             filename = entry.filename,
                             isUpload = false,
                             bytesTransferred = 0,
-                            totalBytes = entry.size ?: 0
-                        )
+                            totalBytes = entry.size ?: 0,
+                        ),
                     )
                 }
 
                 outputStream.use { stream ->
                     operations.downloadFile(
                         remotePath = entry.fullPath,
-                        outputStream = stream
+                        outputStream = stream,
                     ) { bytesTransferred, totalBytes ->
                         _uiState.update {
                             it.copy(
@@ -355,8 +355,8 @@ class SftpBrowserViewModel @Inject constructor(
                                     filename = entry.filename,
                                     isUpload = false,
                                     bytesTransferred = bytesTransferred,
-                                    totalBytes = totalBytes
-                                )
+                                    totalBytes = totalBytes,
+                                ),
                             )
                         }
                     }
@@ -367,7 +367,7 @@ class SftpBrowserViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         transferProgress = null,
-                        error = "Download failed: ${e.message}"
+                        error = "Download failed: ${e.message}",
                     )
                 }
             }
@@ -396,8 +396,8 @@ class SftpBrowserViewModel @Inject constructor(
                             filename = filename,
                             isUpload = true,
                             bytesTransferred = 0,
-                            totalBytes = fileSize
-                        )
+                            totalBytes = fileSize,
+                        ),
                     )
                 }
 
@@ -405,7 +405,7 @@ class SftpBrowserViewModel @Inject constructor(
                     operations.uploadFile(
                         inputStream = stream,
                         remotePath = remotePath,
-                        totalSize = fileSize
+                        totalSize = fileSize,
                     ) { bytesTransferred, totalBytes ->
                         _uiState.update {
                             it.copy(
@@ -413,8 +413,8 @@ class SftpBrowserViewModel @Inject constructor(
                                     filename = filename,
                                     isUpload = true,
                                     bytesTransferred = bytesTransferred,
-                                    totalBytes = totalBytes
-                                )
+                                    totalBytes = totalBytes,
+                                ),
                             )
                         }
                     }
@@ -426,7 +426,7 @@ class SftpBrowserViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         transferProgress = null,
-                        error = "Upload failed: ${e.message}"
+                        error = "Upload failed: ${e.message}",
                     )
                 }
             }
@@ -513,7 +513,7 @@ class SftpBrowserViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         showKeyPassphraseDialog = true,
-                        keyPassphrasePrompt = "Enter passphrase for key '$keyName'"
+                        keyPassphrasePrompt = "Enter passphrase for key '$keyName'",
                     )
                 }
             }
@@ -522,7 +522,7 @@ class SftpBrowserViewModel @Inject constructor(
                 hostname: String,
                 keyType: String,
                 fingerprint: String,
-                isNewKey: Boolean
+                isNewKey: Boolean,
             ): Boolean = kotlinx.coroutines.suspendCancellableCoroutine { cont ->
                 pendingHostKeyCallback = { accepted ->
                     cont.resumeWith(Result.success(accepted))
@@ -530,7 +530,7 @@ class SftpBrowserViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         showHostKeyDialog = true,
-                        hostKeyInfo = HostKeyInfo(hostname, keyType, fingerprint, isNewKey)
+                        hostKeyInfo = HostKeyInfo(hostname, keyType, fingerprint, isNewKey),
                     )
                 }
             }
@@ -542,7 +542,7 @@ class SftpBrowserViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         showBiometricDialog = true,
-                        biometricKeyInfo = BiometricKeyInfo(keyName, keystoreAlias)
+                        biometricKeyInfo = BiometricKeyInfo(keyName, keystoreAlias),
                     )
                 }
             }
@@ -551,7 +551,7 @@ class SftpBrowserViewModel @Inject constructor(
                 name: String,
                 instruction: String,
                 prompts: Array<String>,
-                echoResponses: BooleanArray
+                echoResponses: BooleanArray,
             ): Array<String>? {
                 // For simplicity, treat single prompt as password
                 if (prompts.size == 1) {
@@ -577,7 +577,7 @@ class SftpBrowserViewModel @Inject constructor(
             isSymlink = entry.attributes?.isSymlink == true,
             size = entry.attributes?.size,
             modifiedTime = entry.attributes?.mtime,
-            permissions = entry.attributes?.octalPermissions
+            permissions = entry.attributes?.octalPermissions,
         )
     }
 

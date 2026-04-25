@@ -54,7 +54,7 @@ fun SftpEntryItem(
     onClick: () -> Unit,
     onDownload: () -> Unit,
     onDelete: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
@@ -64,7 +64,7 @@ fun SftpEntryItem(
                 Text(
                     text = entry.filename,
                     maxLines = 1,
-                    overflow = TextOverflow.Ellipsis
+                    overflow = TextOverflow.Ellipsis,
                 )
             },
             supportingContent = {
@@ -82,7 +82,7 @@ fun SftpEntryItem(
                         text = details,
                         style = MaterialTheme.typography.bodySmall,
                         maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
+                        overflow = TextOverflow.Ellipsis,
                     )
                 }
             },
@@ -103,18 +103,18 @@ fun SftpEntryItem(
                         entry.isDirectory -> MaterialTheme.colorScheme.primary
                         else -> MaterialTheme.colorScheme.onSurfaceVariant
                     },
-                    modifier = Modifier.size(24.dp)
+                    modifier = Modifier.size(24.dp),
                 )
             },
             modifier = Modifier.combinedClickable(
                 onClick = onClick,
-                onLongClick = { showMenu = true }
-            )
+                onLongClick = { showMenu = true },
+            ),
         )
 
         DropdownMenu(
             expanded = showMenu,
-            onDismissRequest = { showMenu = false }
+            onDismissRequest = { showMenu = false },
         ) {
             if (!entry.isDirectory) {
                 DropdownMenuItem(
@@ -125,7 +125,7 @@ fun SftpEntryItem(
                     },
                     leadingIcon = {
                         Icon(Icons.Default.FileDownload, contentDescription = null)
-                    }
+                    },
                 )
             }
             DropdownMenuItem(
@@ -136,7 +136,7 @@ fun SftpEntryItem(
                 },
                 leadingIcon = {
                     Icon(Icons.Default.Delete, contentDescription = null)
-                }
+                },
             )
         }
     }
