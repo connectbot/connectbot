@@ -949,9 +949,9 @@ fun ConsoleScreen(
                                 trailingIcon = {
                                     Checkbox(
                                         checked = composeController?.isComposeModeActive == true,
-                                        onCheckedChange = null
+                                        onCheckedChange = null,
                                     )
-                                }
+                                },
                             )
 
                             // Port Forwards (if available)
