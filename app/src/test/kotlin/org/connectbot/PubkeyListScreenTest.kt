@@ -64,6 +64,7 @@ class PubkeyListScreenTest {
                 PubkeyListScreen(
                     onNavigateBack = {},
                     onNavigateToGenerate = {},
+                    onNavigateToImportFido2 = {},
                     onNavigateToEdit = {},
                 )
             }
@@ -83,6 +84,7 @@ class PubkeyListScreenTest {
                 PubkeyListScreen(
                     onNavigateBack = { backCalled = true },
                     onNavigateToGenerate = {},
+                    onNavigateToImportFido2 = {},
                     onNavigateToEdit = {},
                 )
             }
@@ -102,6 +104,7 @@ class PubkeyListScreenTest {
                 PubkeyListScreen(
                     onNavigateBack = {},
                     onNavigateToGenerate = {},
+                    onNavigateToImportFido2 = {},
                     onNavigateToEdit = {},
                 )
             }
@@ -126,6 +129,7 @@ class PubkeyListScreenTest {
                 PubkeyListScreen(
                     onNavigateBack = {},
                     onNavigateToGenerate = { generateCalled = true },
+                    onNavigateToImportFido2 = {},
                     onNavigateToEdit = {},
                 )
             }
