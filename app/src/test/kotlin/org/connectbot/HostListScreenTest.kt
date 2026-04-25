@@ -61,7 +61,7 @@ class HostListScreenTest {
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
-                    onNavigateToSftp = {}
+                    onNavigateToSftp = {},
                 )
             }
         }
@@ -85,7 +85,7 @@ class HostListScreenTest {
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
-                    onNavigateToSftp = {}
+                    onNavigateToSftp = {},
                 )
             }
         }
@@ -110,7 +110,7 @@ class HostListScreenTest {
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
-                    onNavigateToSftp = {}
+                    onNavigateToSftp = {},
                 )
             }
         }
@@ -139,7 +139,7 @@ class HostListScreenTest {
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
-                    onNavigateToSftp = {}
+                    onNavigateToSftp = {},
                 )
             }
         }
@@ -163,6 +163,7 @@ class HostListScreenTest {
                     onNavigateToSettings = {},
                     onNavigateToPubkeys = {},
                     onNavigateToPortForwards = {},
+                    onNavigateToSftp = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
                     shouldShowNotificationWarning = { true },
@@ -190,6 +191,7 @@ class HostListScreenTest {
                     onNavigateToSettingsHighlightConnPersist = { navigatedToSettingsHighlight = true },
                     onNavigateToPubkeys = {},
                     onNavigateToPortForwards = {},
+                    onNavigateToSftp = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
                     shouldShowNotificationWarning = { true },
@@ -217,6 +219,7 @@ class HostListScreenTest {
                     onNavigateToSettings = {},
                     onNavigateToPubkeys = {},
                     onNavigateToPortForwards = {},
+                    onNavigateToSftp = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
                     shouldShowNotificationWarning = { false },
