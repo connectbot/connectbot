@@ -51,7 +51,7 @@ interface SftpPromptHandler {
         hostname: String,
         keyType: String,
         fingerprint: String,
-        isNewKey: Boolean
+        isNewKey: Boolean,
     ): Boolean
 
     /**
@@ -76,6 +76,6 @@ interface SftpPromptHandler {
         name: String,
         instruction: String,
         prompts: Array<String>,
-        echoResponses: BooleanArray
+        echoResponses: BooleanArray,
     ): Array<String>?
 }
