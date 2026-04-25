@@ -139,7 +139,7 @@ class SftpOperations(private val client: SFTPv3Client) {
     suspend fun downloadFile(
         remotePath: String,
         outputStream: OutputStream,
-        progressCallback: (Long, Long) -> Unit = { _, _ -> }
+        progressCallback: (Long, Long) -> Unit = { _, _ -> },
     ) = withContext(Dispatchers.IO) {
         val attrs = client.stat(remotePath)
         val totalSize = attrs.size ?: 0L
@@ -181,7 +181,7 @@ class SftpOperations(private val client: SFTPv3Client) {
         inputStream: InputStream,
         remotePath: String,
         totalSize: Long,
-        progressCallback: (Long, Long) -> Unit = { _, _ -> }
+        progressCallback: (Long, Long) -> Unit = { _, _ -> },
     ) = withContext(Dispatchers.IO) {
         val handle = client.createFileTruncate(remotePath)
         try {
