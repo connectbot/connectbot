@@ -51,7 +51,7 @@ import javax.inject.Singleton
 @Singleton
 class SftpConnectionManager @Inject constructor(
     private val hostRepository: HostRepository,
-    private val pubkeyRepository: PubkeyRepository
+    private val pubkeyRepository: PubkeyRepository,
 ) {
     companion object {
         private const val TAG = "CB.SftpConnMgr"
@@ -69,7 +69,7 @@ class SftpConnectionManager @Inject constructor(
         val connection: Connection,
         val sftpClient: SFTPv3Client,
         val operations: SftpOperations,
-        val jumpConnections: List<Connection> = emptyList()
+        val jumpConnections: List<Connection> = emptyList(),
     )
 
     private val activeSessions = mutableMapOf<Long, SftpSession>()
@@ -84,7 +84,7 @@ class SftpConnectionManager @Inject constructor(
      */
     suspend fun connect(
         host: Host,
-        promptHandler: SftpPromptHandler
+        promptHandler: SftpPromptHandler,
     ): Result<SftpOperations> = withContext(Dispatchers.IO) {
         // Check for existing session
         sessionMutex.withLock {
@@ -151,7 +151,7 @@ class SftpConnectionManager @Inject constructor(
     private suspend fun connectToJumpHost(
         jumpHost: Host,
         promptHandler: SftpPromptHandler,
-        jumpConnections: MutableList<Connection>
+        jumpConnections: MutableList<Connection>,
     ): Connection {
         val jc = Connection(jumpHost.hostname, jumpHost.port)
 
@@ -258,7 +258,7 @@ class SftpConnectionManager @Inject constructor(
     private suspend fun authenticate(
         connection: Connection,
         host: Host,
-        promptHandler: SftpPromptHandler
+        promptHandler: SftpPromptHandler,
     ): Boolean {
         // Try 'none' authentication first
         try {
@@ -309,7 +309,7 @@ class SftpConnectionManager @Inject constructor(
     private suspend fun tryPublicKeyAuth(
         connection: Connection,
         host: Host,
-        promptHandler: SftpPromptHandler
+        promptHandler: SftpPromptHandler,
     ): Boolean {
         val pubkeyId = host.pubkeyId
 
@@ -350,7 +350,7 @@ class SftpConnectionManager @Inject constructor(
 
     private suspend fun loadKeyPair(
         pubkey: Pubkey,
-        promptHandler: SftpPromptHandler
+        promptHandler: SftpPromptHandler,
     ): KeyPair? {
         // Handle Android Keystore (biometric) keys
         if (pubkey.storageType == KeyStorageType.ANDROID_KEYSTORE) {
@@ -406,7 +406,7 @@ class SftpConnectionManager @Inject constructor(
     private suspend fun tryKeyboardInteractiveAuth(
         connection: Connection,
         host: Host,
-        promptHandler: SftpPromptHandler
+        promptHandler: SftpPromptHandler,
     ): Boolean {
         return try {
             connection.authenticateWithKeyboardInteractive(
@@ -417,14 +417,14 @@ class SftpConnectionManager @Inject constructor(
                         instruction: String,
                         numPrompts: Int,
                         prompt: Array<String>,
-                        echo: BooleanArray
+                        echo: BooleanArray,
                     ): Array<String> {
                         val responses = kotlinx.coroutines.runBlocking {
                             promptHandler.handleKeyboardInteractive(name, instruction, prompt, echo)
                         }
                         return responses ?: Array(numPrompts) { "" }
                     }
-                }
+                },
             )
         } catch (e: Exception) {
             Log.d(TAG, "Keyboard-interactive auth failed: ${e.message}")
@@ -435,7 +435,7 @@ class SftpConnectionManager @Inject constructor(
     private suspend fun tryPasswordAuth(
         connection: Connection,
         host: Host,
-        promptHandler: SftpPromptHandler
+        promptHandler: SftpPromptHandler,
     ): Boolean {
         val password = promptHandler.requestPassword("Password for ${host.username}@${host.hostname}")
             ?: return false
@@ -453,14 +453,14 @@ class SftpConnectionManager @Inject constructor(
      */
     private inner class SftpHostKeyVerifier(
         private val host: Host,
-        private val promptHandler: SftpPromptHandler
+        private val promptHandler: SftpPromptHandler,
     ) : ExtendedServerHostKeyVerifier() {
 
         override fun verifyServerHostKey(
             hostname: String,
             port: Int,
             serverHostKeyAlgorithm: String,
-            serverHostKey: ByteArray
+            serverHostKey: ByteArray,
         ): Boolean {
             val knownHosts = kotlinx.coroutines.runBlocking {
                 hostRepository.getKnownHostsForHost(host.id)
@@ -485,7 +485,7 @@ class SftpConnectionManager @Inject constructor(
                             hostname = hostname,
                             keyType = getKeyType(serverHostKeyAlgorithm) ?: "UNKNOWN",
                             fingerprint = sha256,
-                            isNewKey = true
+                            isNewKey = true,
                         )
                     }
 
@@ -504,7 +504,7 @@ class SftpConnectionManager @Inject constructor(
                             hostname = hostname,
                             keyType = getKeyType(serverHostKeyAlgorithm) ?: "UNKNOWN",
                             fingerprint = sha256,
-                            isNewKey = false
+                            isNewKey = false,
                         )
                     }
 
@@ -523,7 +523,7 @@ class SftpConnectionManager @Inject constructor(
                             hostname = hostname,
                             keyType = getKeyType(serverHostKeyAlgorithm) ?: "UNKNOWN",
                             fingerprint = sha256,
-                            isNewKey = true
+                            isNewKey = true,
                         )
                     }
 
