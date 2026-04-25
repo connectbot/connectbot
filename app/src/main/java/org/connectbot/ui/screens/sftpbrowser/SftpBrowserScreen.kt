@@ -90,7 +90,7 @@ import timber.log.Timber
 fun SftpBrowserScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SftpBrowserViewModel = hiltViewModel()
+    viewModel: SftpBrowserViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
@@ -122,7 +122,7 @@ fun SftpBrowserScreen(
 
     // File picker for uploading
     val uploadFilePicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.OpenDocument()
+        contract = ActivityResultContracts.OpenDocument(),
     ) { uri: Uri? ->
         uri?.let { selectedUri ->
             // Get filename from URI
@@ -138,7 +138,7 @@ fun SftpBrowserScreen(
 
     // File saver for downloading
     val downloadFileSaver = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.CreateDocument("*/*")
+        contract = ActivityResultContracts.CreateDocument("*/*"),
     ) { uri: Uri? ->
         if (uri != null && pendingDownloadEntry != null) {
             viewModel.downloadFile(pendingDownloadEntry!!, uri)
@@ -155,14 +155,14 @@ fun SftpBrowserScreen(
                         Text(
                             text = stringResource(R.string.sftp_title, uiState.host?.nickname ?: ""),
                             maxLines = 1,
-                            overflow = TextOverflow.Ellipsis
+                            overflow = TextOverflow.Ellipsis,
                         )
                         if (uiState.isConnected) {
                             Text(
                                 text = uiState.currentPath,
                                 style = MaterialTheme.typography.bodySmall,
                                 maxLines = 1,
-                                overflow = TextOverflow.Ellipsis
+                                overflow = TextOverflow.Ellipsis,
                             )
                         }
                     }
@@ -171,7 +171,7 @@ fun SftpBrowserScreen(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.button_back)
+                            contentDescription = stringResource(R.string.button_back),
                         )
                     }
                 },
@@ -180,17 +180,17 @@ fun SftpBrowserScreen(
                         IconButton(onClick = { viewModel.showGoToPathDialog() }) {
                             Icon(
                                 Icons.Default.Folder,
-                                contentDescription = stringResource(R.string.sftp_go_to_path)
+                                contentDescription = stringResource(R.string.sftp_go_to_path),
                             )
                         }
                         IconButton(onClick = { viewModel.refresh() }) {
                             Icon(
                                 Icons.Default.Refresh,
-                                contentDescription = stringResource(R.string.sftp_refresh)
+                                contentDescription = stringResource(R.string.sftp_refresh),
                             )
                         }
                     }
-                }
+                },
             )
         },
         floatingActionButton = {
@@ -200,17 +200,17 @@ fun SftpBrowserScreen(
                     button = {
                         ToggleFloatingActionButton(
                             checked = fabExpanded,
-                            onCheckedChange = { fabExpanded = !fabExpanded }
+                            onCheckedChange = { fabExpanded = !fabExpanded },
                         ) {
                             Icon(
                                 painter = rememberVectorPainter(
-                                    if (checkedProgress > 0.5f) Icons.Filled.Close else Icons.Filled.Add
+                                    if (checkedProgress > 0.5f) Icons.Filled.Close else Icons.Filled.Add,
                                 ),
                                 contentDescription = stringResource(R.string.sftp_actions),
-                                modifier = Modifier.animateIcon({ checkedProgress })
+                                modifier = Modifier.animateIcon({ checkedProgress }),
                             )
                         }
-                    }
+                    },
                 ) {
                     FloatingActionButtonMenuItem(
                         onClick = {
@@ -218,7 +218,7 @@ fun SftpBrowserScreen(
                             uploadFilePicker.launch(arrayOf("*/*"))
                         },
                         icon = { Icon(Icons.Default.UploadFile, contentDescription = null) },
-                        text = { Text(stringResource(R.string.sftp_upload_file)) }
+                        text = { Text(stringResource(R.string.sftp_upload_file)) },
                     )
                     FloatingActionButtonMenuItem(
                         onClick = {
@@ -226,29 +226,29 @@ fun SftpBrowserScreen(
                             viewModel.showCreateFolderDialog()
                         },
                         icon = { Icon(Icons.Default.CreateNewFolder, contentDescription = null) },
-                        text = { Text(stringResource(R.string.sftp_create_folder)) }
+                        text = { Text(stringResource(R.string.sftp_create_folder)) },
                     )
                 }
             }
         },
-        modifier = modifier
+        modifier = modifier,
     ) { padding ->
         Box(
             modifier = Modifier
                 .padding(padding)
-                .fillMaxSize()
+                .fillMaxSize(),
         ) {
             when {
                 uiState.isConnecting -> {
                     Column(
                         modifier = Modifier.align(Alignment.Center),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         CircularProgressIndicator()
                         Text(
                             text = stringResource(R.string.sftp_connecting, uiState.host?.hostname ?: ""),
-                            style = MaterialTheme.typography.bodyMedium
+                            style = MaterialTheme.typography.bodyMedium,
                         )
                     }
                 }
@@ -259,12 +259,12 @@ fun SftpBrowserScreen(
                             .align(Alignment.Center)
                             .padding(16.dp),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         Text(
                             text = stringResource(R.string.sftp_connection_failed, uiState.error ?: ""),
                             style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.error
+                            color = MaterialTheme.colorScheme.error,
                         )
                         TextButton(onClick = { viewModel.connect() }) {
                             Text(stringResource(R.string.sftp_retry))
@@ -276,27 +276,27 @@ fun SftpBrowserScreen(
                     PullToRefreshBox(
                         isRefreshing = uiState.isLoading,
                         onRefresh = { viewModel.refresh() },
-                        modifier = Modifier.fillMaxSize()
+                        modifier = Modifier.fillMaxSize(),
                     ) {
                         if (uiState.entries.isEmpty() && !uiState.isLoading) {
                             Box(
                                 modifier = Modifier.fillMaxSize(),
-                                contentAlignment = Alignment.Center
+                                contentAlignment = Alignment.Center,
                             ) {
                                 Text(
                                     text = stringResource(R.string.sftp_empty_directory),
                                     style = MaterialTheme.typography.bodyLarge,
-                                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                                 )
                             }
                         } else {
                             LazyColumn(
                                 modifier = Modifier.fillMaxSize(),
-                                contentPadding = PaddingValues(bottom = 88.dp)
+                                contentPadding = PaddingValues(bottom = 88.dp),
                             ) {
                                 items(
                                     items = uiState.entries,
-                                    key = { it.fullPath }
+                                    key = { it.fullPath },
                                 ) { entry ->
                                     SftpEntryItem(
                                         entry = entry,
@@ -319,7 +319,7 @@ fun SftpBrowserScreen(
                                         },
                                         onDelete = {
                                             viewModel.showDeleteDialog(entry)
-                                        }
+                                        },
                                     )
                                     HorizontalDivider()
                                 }
@@ -331,7 +331,7 @@ fun SftpBrowserScreen(
                 else -> {
                     // Initial state - waiting to connect
                     CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
+                        modifier = Modifier.align(Alignment.Center),
                     )
                 }
             }
@@ -342,7 +342,7 @@ fun SftpBrowserScreen(
     if (uiState.showCreateFolderDialog) {
         CreateFolderDialog(
             onDismiss = { viewModel.dismissCreateFolderDialog() },
-            onConfirm = { folderName -> viewModel.createFolder(folderName) }
+            onConfirm = { folderName -> viewModel.createFolder(folderName) },
         )
     }
 
@@ -350,7 +350,7 @@ fun SftpBrowserScreen(
         GoToPathDialog(
             currentPath = uiState.currentPath,
             onDismiss = { viewModel.dismissGoToPathDialog() },
-            onConfirm = { path -> viewModel.goToPath(path) }
+            onConfirm = { path -> viewModel.goToPath(path) },
         )
     }
 
@@ -358,14 +358,14 @@ fun SftpBrowserScreen(
         DeleteConfirmDialog(
             entry = uiState.entryToDelete!!,
             onDismiss = { viewModel.dismissDeleteDialog() },
-            onConfirm = { viewModel.deleteEntry() }
+            onConfirm = { viewModel.deleteEntry() },
         )
     }
 
     if (uiState.transferProgress != null) {
         TransferProgressDialog(
             progress = uiState.transferProgress!!,
-            onCancel = { viewModel.cancelTransfer() }
+            onCancel = { viewModel.cancelTransfer() },
         )
     }
 
@@ -373,7 +373,7 @@ fun SftpBrowserScreen(
         HostKeyDialog(
             info = uiState.hostKeyInfo!!,
             onAccept = { viewModel.acceptHostKey() },
-            onReject = { viewModel.rejectHostKey() }
+            onReject = { viewModel.rejectHostKey() },
         )
     }
 
@@ -381,7 +381,7 @@ fun SftpBrowserScreen(
         PasswordDialog(
             prompt = uiState.passwordPrompt!!,
             onSubmit = { viewModel.submitPassword(it) },
-            onCancel = { viewModel.cancelPassword() }
+            onCancel = { viewModel.cancelPassword() },
         )
     }
 
@@ -389,7 +389,7 @@ fun SftpBrowserScreen(
         KeyPassphraseDialog(
             prompt = uiState.keyPassphrasePrompt!!,
             onSubmit = { viewModel.submitKeyPassphrase(it) },
-            onCancel = { viewModel.cancelKeyPassphrase() }
+            onCancel = { viewModel.cancelKeyPassphrase() },
         )
     }
 
@@ -397,7 +397,7 @@ fun SftpBrowserScreen(
         SftpBiometricPromptHandler(
             keyName = uiState.biometricKeyInfo!!.keyName,
             onSuccess = { viewModel.onBiometricSuccess() },
-            onFailure = { viewModel.onBiometricFailure() }
+            onFailure = { viewModel.onBiometricFailure() },
         )
     }
 }
@@ -410,7 +410,7 @@ fun SftpBrowserScreen(
 private fun SftpBiometricPromptHandler(
     keyName: String,
     onSuccess: () -> Unit,
-    onFailure: () -> Unit
+    onFailure: () -> Unit,
 ) {
     val context = LocalContext.current
     val activity = remember(context) { context.findFragmentActivity() }
