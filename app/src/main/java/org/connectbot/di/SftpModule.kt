@@ -34,6 +34,6 @@ object SftpModule {
     @Singleton
     fun provideSftpConnectionManager(
         hostRepository: HostRepository,
-        pubkeyRepository: PubkeyRepository
+        pubkeyRepository: PubkeyRepository,
     ): SftpConnectionManager = SftpConnectionManager(hostRepository, pubkeyRepository)
 }
