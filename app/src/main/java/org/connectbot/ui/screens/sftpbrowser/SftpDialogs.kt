@@ -45,7 +45,7 @@ import org.connectbot.R
 @Composable
 fun CreateFolderDialog(
     onDismiss: () -> Unit,
-    onConfirm: (String) -> Unit
+    onConfirm: (String) -> Unit,
 ) {
     var folderName by remember { mutableStateOf("") }
 
@@ -58,13 +58,13 @@ fun CreateFolderDialog(
                 onValueChange = { folderName = it },
                 label = { Text(stringResource(R.string.sftp_folder_name)) },
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         },
         confirmButton = {
             TextButton(
                 onClick = { onConfirm(folderName) },
-                enabled = folderName.isNotBlank()
+                enabled = folderName.isNotBlank(),
             ) {
                 Text(stringResource(R.string.button_create))
             }
@@ -73,7 +73,7 @@ fun CreateFolderDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.button_cancel))
             }
-        }
+        },
     )
 }
 
@@ -81,7 +81,7 @@ fun CreateFolderDialog(
 fun GoToPathDialog(
     currentPath: String,
     onDismiss: () -> Unit,
-    onConfirm: (String) -> Unit
+    onConfirm: (String) -> Unit,
 ) {
     var path by remember { mutableStateOf(currentPath) }
 
@@ -94,13 +94,13 @@ fun GoToPathDialog(
                 onValueChange = { path = it },
                 label = { Text(stringResource(R.string.sftp_path)) },
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         },
         confirmButton = {
             TextButton(
                 onClick = { onConfirm(path) },
-                enabled = path.isNotBlank()
+                enabled = path.isNotBlank(),
             ) {
                 Text(stringResource(R.string.sftp_go))
             }
@@ -109,7 +109,7 @@ fun GoToPathDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.button_cancel))
             }
-        }
+        },
     )
 }
 
@@ -117,7 +117,7 @@ fun GoToPathDialog(
 fun DeleteConfirmDialog(
     entry: SftpEntry,
     onDismiss: () -> Unit,
-    onConfirm: () -> Unit
+    onConfirm: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -130,7 +130,7 @@ fun DeleteConfirmDialog(
                     Text(
                         text = stringResource(R.string.sftp_delete_folder_warning),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.error,
                     )
                 }
             }
@@ -144,14 +144,14 @@ fun DeleteConfirmDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.button_cancel))
             }
-        }
+        },
     )
 }
 
 @Composable
 fun TransferProgressDialog(
     progress: TransferProgress,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = { /* Non-dismissable while transferring */ },
@@ -161,19 +161,19 @@ fun TransferProgressDialog(
                     stringResource(R.string.sftp_transfer_uploading, progress.filename)
                 } else {
                     stringResource(R.string.sftp_transfer_downloading, progress.filename)
-                }
+                },
             )
         },
         text = {
             Column {
                 LinearProgressIndicator(
                     progress = { progress.progress },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "${formatBytes(progress.bytesTransferred)} / ${formatBytes(progress.totalBytes)} (${progress.percentComplete}%)",
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodySmall,
                 )
             }
         },
@@ -181,7 +181,7 @@ fun TransferProgressDialog(
             TextButton(onClick = onCancel) {
                 Text(stringResource(R.string.button_cancel))
             }
-        }
+        },
     )
 }
 
@@ -189,7 +189,7 @@ fun TransferProgressDialog(
 fun HostKeyDialog(
     info: HostKeyInfo,
     onAccept: () -> Unit,
-    onReject: () -> Unit
+    onReject: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onReject,
@@ -199,7 +199,7 @@ fun HostKeyDialog(
                     stringResource(R.string.sftp_host_key_new)
                 } else {
                     stringResource(R.string.sftp_host_key_changed)
-                }
+                },
             )
         },
         text = {
@@ -208,20 +208,20 @@ fun HostKeyDialog(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "${info.keyType} fingerprint:",
-                    style = MaterialTheme.typography.labelMedium
+                    style = MaterialTheme.typography.labelMedium,
                 )
                 Text(
                     text = info.fingerprint,
                     style = MaterialTheme.typography.bodySmall,
                     fontFamily = FontFamily.Monospace,
-                    modifier = Modifier.padding(vertical = 4.dp)
+                    modifier = Modifier.padding(vertical = 4.dp),
                 )
                 if (!info.isNewKey) {
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = stringResource(R.string.sftp_host_key_warning),
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.error,
                     )
                 }
             }
@@ -235,7 +235,7 @@ fun HostKeyDialog(
             TextButton(onClick = onReject) {
                 Text(stringResource(R.string.sftp_host_key_reject))
             }
-        }
+        },
     )
 }
 
@@ -243,7 +243,7 @@ fun HostKeyDialog(
 fun PasswordDialog(
     prompt: String,
     onSubmit: (String) -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
 ) {
     var password by remember { mutableStateOf("") }
 
@@ -258,13 +258,13 @@ fun PasswordDialog(
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         },
         confirmButton = {
             TextButton(
                 onClick = { onSubmit(password) },
-                enabled = password.isNotEmpty()
+                enabled = password.isNotEmpty(),
             ) {
                 Text(stringResource(R.string.button_ok))
             }
@@ -273,7 +273,7 @@ fun PasswordDialog(
             TextButton(onClick = onCancel) {
                 Text(stringResource(R.string.button_cancel))
             }
-        }
+        },
     )
 }
 
@@ -281,7 +281,7 @@ fun PasswordDialog(
 fun KeyPassphraseDialog(
     prompt: String,
     onSubmit: (String) -> Unit,
-    onCancel: () -> Unit
+    onCancel: () -> Unit,
 ) {
     var passphrase by remember { mutableStateOf("") }
 
@@ -296,13 +296,13 @@ fun KeyPassphraseDialog(
                 singleLine = true,
                 visualTransformation = PasswordVisualTransformation(),
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         },
         confirmButton = {
             TextButton(
                 onClick = { onSubmit(passphrase) },
-                enabled = passphrase.isNotEmpty()
+                enabled = passphrase.isNotEmpty(),
             ) {
                 Text(stringResource(R.string.button_ok))
             }
@@ -311,7 +311,7 @@ fun KeyPassphraseDialog(
             TextButton(onClick = onCancel) {
                 Text(stringResource(R.string.button_cancel))
             }
-        }
+        },
     )
 }
 
