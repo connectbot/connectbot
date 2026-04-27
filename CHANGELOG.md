@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.10.6][1.10.6]
+### Fixed
+- Better network connection tracking for reconnects
+- Japanese translation corrections
+- More efficient terminal updates
+- Support IMEs that use ACTION_MULTIPLE
+- Respect Delete/Backspace key preference
+
 ## [1.10.5][1.10.5]
 ### Fixed
 - Fixed the top bar appearing when touching terminal keys
@@ -279,6 +287,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Color picker color numbers are now localized
 
 
+[1.10.6]: https://github.com/connectbot/connectbot/compare/v1.10.5...v1.10.6
 [1.10.5]: https://github.com/connectbot/connectbot/compare/v1.10.4...v1.10.5
 [1.10.4]: https://github.com/connectbot/connectbot/compare/v1.10.3...v1.10.4
 [1.10.3]: https://github.com/connectbot/connectbot/compare/v1.10.2...v1.10.3
