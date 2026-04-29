@@ -428,6 +428,22 @@ fun ConsoleScreen(
 
     var titleBarHeight by remember { mutableStateOf(0.dp) }
 
+    fun pasteClipboardContents() {
+        currentBridge?.let { bridge ->
+            val clipboard =
+                context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+            val clip = clipboard.primaryClip
+                ?.takeIf { it.itemCount > 0 }
+                ?.getItemAt(0)
+                ?.coerceToText(context)
+                ?.toString()
+
+            if (!clip.isNullOrBlank()) {
+                bridge.injectString(clip)
+            }
+        }
+    }
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = modifier.fillMaxSize(),
@@ -481,13 +497,7 @@ fun ConsoleScreen(
 
                             // Ctrl+Shift+V: paste clipboard content
                             keyEvent.key == Key.V && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
-                                currentBridge?.let { bridge ->
-                                    val clipboard =
-                                        context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                                    val clip =
-                                        clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: ""
-                                    bridge.injectString(clip)
-                                }
+                                pasteClipboardContents()
                                 true
                             }
 
@@ -586,6 +596,9 @@ fun ConsoleScreen(
                                 openUrl(url)
                             },
                             delKeyMode = delKeyMode,
+                            onPasteRequest = {
+                                pasteClipboardContents()
+                            },
                         )
 
                         // Set up text input request callback from bridge (for camera button)
@@ -792,13 +805,7 @@ fun ConsoleScreen(
                     // Paste button - always visible
                     IconButton(
                         onClick = {
-                            currentBridge?.let { bridge ->
-                                val clipboard =
-                                    context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                                val clip =
-                                    clipboard.primaryClip?.getItemAt(0)?.text?.toString() ?: ""
-                                bridge.injectString(clip)
-                            }
+                            pasteClipboardContents()
                         },
                         enabled = currentBridge != null,
                     ) {
