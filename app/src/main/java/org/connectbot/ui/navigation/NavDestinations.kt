@@ -26,6 +26,7 @@ object NavDestinations {
     const val PUBKEY_EDITOR = "pubkey_editor"
     const val PORT_FORWARD_LIST = "port_forward_list"
     const val SETTINGS = "settings"
+    const val SETTINGS_HIGHLIGHT_CONN_PERSIST = "settings?highlight=conn_persist"
     const val COLORS = "colors"
     const val PALETTE_EDITOR = "palette_editor"
     const val PROFILES = "profiles"

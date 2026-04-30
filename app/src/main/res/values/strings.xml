@@ -325,10 +325,10 @@
 	<!-- Summary for the memorize keys preference -->
 	<string name="pref_memkeys_summary">"Keep unlocked keys in memory until backend service is terminated"</string>
 
-	<!-- Name for the preference that forces the service to stay running in the background.-->
-	<string name="pref_conn_persist_title">"Persist connections"</string>
-	<!-- Summary for the preference that forces the service to stay running in the background. -->
-	<string name="pref_conn_persist_summary">"Force connections to stay connected while in background"</string>
+	<!-- Title for the preference that keeps the background service running to prevent connection drops. -->
+	<string name="pref_conn_persist_title">"Stay connected in the background"</string>
+	<!-- Summary for the preference that keeps the background service running to prevent connection drops. -->
+	<string name="pref_conn_persist_summary">"Keep your sessions open even when you switch to other apps"</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">"Directory shortcuts"</string>
@@ -1133,28 +1133,35 @@
 
 	<!-- Title for notification permission dialog shown when user first tries to connect to a host.
 	     Explains that notifications keep SSH connections alive. -->
-	<string name="notification_permission_title">Keep connections alive</string>
+	<string name="notification_permission_title">"Stay connected in the background"</string>
 
 	<!-- Explanation message shown in permission dialog when user tries to connect to a host.
 	     Explains why notification permission is needed and what happens without it. -->
-	<string name="notification_permission_message">Displaying a notification is required keep connections alive in the background. Without permission, connections may close when you switch apps.</string>
+	<string name="notification_permission_message">"ConnectBot needs notification permission to keep your connections active when you switch apps. Without it, the system may drop your connections to save battery."</string>
 
 	<!-- Button text to grant notification permission in the permission explanation dialog. -->
-	<string name="grant_permission">Grant permission</string>
+	<string name="grant_permission">"Allow"</string>
 
 	<!-- Button text to proceed with connecting without granting notification permission. -->
-	<string name="connect_anyway">Connect anyway</string>
+	<string name="connect_anyway">"Connect anyway"</string>
 
 	<!-- Title for dialog directing users to app settings when notification permission was denied.
 	     Shown when user tries to enable persist connections after denying permission. -->
-	<string name="notification_permission_denied_title">Permission required</string>
+	<string name="notification_permission_denied_title">"Notification permission needed"</string>
 
 	<!-- Message explaining that user must enable notification permission in app settings.
 	     Shown when notification permission was previously denied and user tries to enable persist connections. -->
-	<string name="notification_permission_denied_message">To keep connections alive in the background, you must enable notification permission in app settings.</string>
+	<string name="notification_permission_denied_message">"To keep your connections active in the background, please enable notifications for ConnectBot in the system settings."</string>
 
 	<!-- Button text to open ConnectBot app settings page where user can grant notification permission. -->
-	<string name="open_settings">Open settings</string>
+	<string name="open_settings">"Open settings"</string>
+
+	<!-- Snackbar shown on host list when notification permission was denied.
+	     Informs user that connections will drop when app is backgrounded. -->
+	<string name="notification_permission_denied_snackbar">"Connections may drop without notification permission"</string>
+
+	<!-- Snackbar shown on console screen when notification permission is denied and persist connections is enabled. -->
+	<string name="notification_permission_console_warning">"Connection may drop in background"</string>
 
 	<!-- Message shown to user when they're trying to connect to a host on a local network but
 	     have not granted the permission yet. -->

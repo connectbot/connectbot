@@ -71,6 +71,7 @@ class AppViewModelPermissionTest {
     private lateinit var migrator: DatabaseMigrator
     private lateinit var prefs: SharedPreferences
     private lateinit var prefsEditor: SharedPreferences.Editor
+    private lateinit var notificationPermissionHelper: org.connectbot.util.NotificationPermissionHelper
     private lateinit var viewModel: AppViewModel
     private lateinit var context: Context
 
@@ -82,12 +83,14 @@ class AppViewModelPermissionTest {
         prefs = mock()
         prefsEditor = mock()
         context = mock()
+        notificationPermissionHelper = mock()
 
         whenever(migrator.isMigrationNeeded()).thenReturn(false)
         whenever(prefs.edit()).thenReturn(prefsEditor)
         whenever(prefsEditor.putBoolean(any(), any())).thenReturn(prefsEditor)
+        whenever(notificationPermissionHelper.isGranted()).thenReturn(true)
 
-        viewModel = AppViewModel(migrator, prefs, dispatchers)
+        viewModel = AppViewModel(migrator, prefs, dispatchers, notificationPermissionHelper)
         advanceUntilIdle()
     }
 
@@ -126,6 +129,7 @@ class AppViewModelPermissionTest {
         assertEquals("Should return pending URI even when denied", uri, result)
         assertNull("Should clear pending URI", viewModel.pendingConnectionUri.value)
         verify(prefsEditor).putBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), eq(false))
+        verify(prefsEditor).putBoolean(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED), eq(true))
         verify(prefsEditor).apply()
     }
 
@@ -135,7 +139,72 @@ class AppViewModelPermissionTest {
 
         assertNull("Should return null when no pending URI", result)
         verify(prefsEditor).putBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), eq(false))
+        verify(prefsEditor).putBoolean(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED), eq(true))
         verify(prefsEditor).apply()
+    }
+
+    @Test
+    fun onNotificationPermissionResult_Denied_SetsNotificationPermissionDeniedFlag() = runTest {
+        viewModel.onNotificationPermissionResult(isGranted = false)
+
+        verify(prefsEditor).putBoolean(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED), eq(true))
+    }
+
+    @Test
+    fun onNotificationPermissionResult_Granted_ClearsNotificationPermissionDeniedFlag() = runTest {
+        viewModel.onNotificationPermissionResult(isGranted = true)
+
+        verify(prefsEditor).putBoolean(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED), eq(false))
+    }
+
+    // endregion
+
+    // region shouldShowNotificationWarning / hostListSnackbarShownThisLaunch tests
+
+    @Test
+    fun shouldShowNotificationWarning_PermissionNeverRequested_ReturnsFalse() = runTest {
+        whenever(prefs.contains(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(false)
+
+        assertFalse("Should not show warning before permission has ever been requested", viewModel.shouldShowNotificationWarning())
+    }
+
+    @Test
+    fun shouldShowNotificationWarning_ConnPersistFalse_ReturnsTrue() = runTest {
+        whenever(prefs.contains(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(true)
+        whenever(prefs.getBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), any())).thenReturn(false)
+        whenever(notificationPermissionHelper.isGranted()).thenReturn(true)
+
+        assertTrue("Should show warning when connPersist is false", viewModel.shouldShowNotificationWarning())
+    }
+
+    @Test
+    fun shouldShowNotificationWarning_PermissionDenied_ReturnsTrue() = runTest {
+        whenever(prefs.contains(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(true)
+        whenever(prefs.getBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), any())).thenReturn(true)
+        whenever(notificationPermissionHelper.isGranted()).thenReturn(false)
+
+        assertTrue("Should show warning when permission denied", viewModel.shouldShowNotificationWarning())
+    }
+
+    @Test
+    fun shouldShowNotificationWarning_ConnPersistTrueAndPermissionGranted_ReturnsFalse() = runTest {
+        whenever(prefs.contains(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(true)
+        whenever(prefs.getBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), any())).thenReturn(true)
+        whenever(notificationPermissionHelper.isGranted()).thenReturn(true)
+
+        assertFalse("Should not show warning when connPersist is true and permission granted", viewModel.shouldShowNotificationWarning())
+    }
+
+    @Test
+    fun hostListSnackbarShown_FalseByDefault() = runTest {
+        assertFalse("Flag should be false on fresh launch", viewModel.hostListSnackbarShownThisLaunch)
+    }
+
+    @Test
+    fun markHostListSnackbarShown_SetsFlag() = runTest {
+        viewModel.markHostListSnackbarShown()
+
+        assertTrue("Flag should be true after marking shown", viewModel.hostListSnackbarShownThisLaunch)
     }
 
     // endregion

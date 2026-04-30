@@ -25,7 +25,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
-import org.connectbot.util.NotificationPermissionHelper
+import org.connectbot.util.isNotificationPermissionGranted
 
 /**
  * Observes lifecycle events and re-checks notification permission status when the screen resumes.
@@ -43,7 +43,7 @@ fun ObservePermissionOnResume(onPermissionChange: (Boolean) -> Unit) {
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_RESUME) {
                 // Check current permission status - may have changed while user was away
-                val isGranted = NotificationPermissionHelper.isNotificationPermissionGranted(context)
+                val isGranted = isNotificationPermissionGranted(context)
                 currentOnPermissionChanged(isGranted)
             }
         }

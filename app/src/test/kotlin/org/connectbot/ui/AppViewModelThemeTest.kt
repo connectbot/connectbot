@@ -26,6 +26,7 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.connectbot.data.migration.DatabaseMigrator
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.util.NotificationPermissionHelper
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.ThemeMode
 import org.junit.After
@@ -55,6 +56,7 @@ class AppViewModelThemeTest {
     private lateinit var migrator: DatabaseMigrator
     private lateinit var prefs: SharedPreferences
     private lateinit var prefsEditor: SharedPreferences.Editor
+    private lateinit var notificationPermissionHelper: NotificationPermissionHelper
     private lateinit var viewModel: AppViewModel
     private val listenerCaptor = argumentCaptor<SharedPreferences.OnSharedPreferenceChangeListener>()
 
@@ -64,6 +66,7 @@ class AppViewModelThemeTest {
         migrator = mock()
         prefs = mock()
         prefsEditor = mock()
+        notificationPermissionHelper = mock()
 
         whenever(migrator.isMigrationNeeded()).thenReturn(false)
         whenever(prefs.edit()).thenReturn(prefsEditor)
@@ -71,8 +74,9 @@ class AppViewModelThemeTest {
         whenever(prefsEditor.putString(any(), any())).thenReturn(prefsEditor)
         // Default: no theme saved → SYSTEM
         whenever(prefs.getString(eq(PreferenceConstants.THEME_MODE), isNull())).thenReturn("SYSTEM")
+        whenever(notificationPermissionHelper.isGranted()).thenReturn(true)
 
-        viewModel = AppViewModel(migrator, prefs, dispatchers)
+        viewModel = AppViewModel(migrator, prefs, dispatchers, notificationPermissionHelper)
         advanceUntilIdle()
 
         verify(prefs).registerOnSharedPreferenceChangeListener(listenerCaptor.capture())
@@ -91,7 +95,7 @@ class AppViewModelThemeTest {
     @Test
     fun themeMode_initializesFromPreference_whenDarkSaved() = runTest {
         whenever(prefs.getString(eq(PreferenceConstants.THEME_MODE), isNull())).thenReturn("DARK")
-        val vm = AppViewModel(migrator, prefs, dispatchers)
+        val vm = AppViewModel(migrator, prefs, dispatchers, notificationPermissionHelper)
         advanceUntilIdle()
 
         assertEquals(ThemeMode.DARK, vm.themeMode.value)

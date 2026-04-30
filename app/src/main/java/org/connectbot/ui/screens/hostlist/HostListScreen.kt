@@ -61,8 +61,10 @@ import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -103,6 +105,7 @@ fun HostListScreen(
     onNavigateToConsole: (Host) -> Unit,
     onNavigateToEditHost: (Host?) -> Unit,
     onNavigateToSettings: () -> Unit,
+    onNavigateToSettingsHighlightConnPersist: () -> Unit = {},
     onNavigateToPubkeys: () -> Unit,
     onNavigateToPortForwards: (Host) -> Unit,
     onNavigateToProfiles: () -> Unit,
@@ -110,6 +113,8 @@ fun HostListScreen(
     modifier: Modifier = Modifier,
     makingShortcut: Boolean = false,
     onSelectShortcut: (Host, String?, IconStyle) -> Unit = { _, _, _ -> },
+    shouldShowNotificationWarning: () -> Boolean = { false },
+    onNotificationSnackbarShown: () -> Unit = {},
     viewModel: HostListViewModel = hiltViewModel()
 ) {
     val context = LocalContext.current
@@ -244,6 +249,7 @@ fun HostListScreen(
         onSelectShortcut = { host -> shortcutHost = host },
         onNavigateToEditHost = onNavigateToEditHost,
         onNavigateToSettings = onNavigateToSettings,
+        onNavigateToSettingsHighlightConnPersist = onNavigateToSettingsHighlightConnPersist,
         onNavigateToPubkeys = onNavigateToPubkeys,
         onNavigateToPortForwards = onNavigateToPortForwards,
         onNavigateToProfiles = onNavigateToProfiles,
@@ -256,6 +262,8 @@ fun HostListScreen(
         onDisconnectAll = viewModel::disconnectAll,
         onExportHosts = viewModel::exportHosts,
         onImportHosts = { importLauncher.launch(arrayOf("application/json")) },
+        shouldShowNotificationWarning = shouldShowNotificationWarning,
+        onNotificationSnackbarShown = onNotificationSnackbarShown,
         modifier = modifier
     )
 }
@@ -269,6 +277,7 @@ fun HostListScreenContent(
     onSelectShortcut: (Host) -> Unit = {},
     onNavigateToEditHost: (Host?) -> Unit,
     onNavigateToSettings: () -> Unit,
+    onNavigateToSettingsHighlightConnPersist: () -> Unit = {},
     onNavigateToPubkeys: () -> Unit,
     onNavigateToPortForwards: (Host) -> Unit,
     onNavigateToProfiles: () -> Unit,
@@ -281,6 +290,8 @@ fun HostListScreenContent(
     onDisconnectAll: () -> Unit,
     onExportHosts: () -> Unit = {},
     onImportHosts: () -> Unit = {},
+    shouldShowNotificationWarning: () -> Boolean = { false },
+    onNotificationSnackbarShown: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var showMenu by remember { mutableStateOf(false) }
@@ -294,6 +305,25 @@ fun HostListScreenContent(
                 message = error,
                 withDismissAction = true
             )
+        }
+    }
+
+    val notificationDeniedMessage = stringResource(R.string.notification_permission_denied_snackbar)
+    val settingsLabel = stringResource(R.string.list_menu_settings)
+
+    // Show snackbar once per launch when connections won't persist in the background
+    LaunchedEffect(Unit) {
+        if (shouldShowNotificationWarning()) {
+            val result = snackbarHostState.showSnackbar(
+                message = notificationDeniedMessage,
+                actionLabel = settingsLabel,
+                withDismissAction = true,
+                duration = SnackbarDuration.Long
+            )
+            if (result == SnackbarResult.ActionPerformed) {
+                onNavigateToSettingsHighlightConnPersist()
+            }
+            onNotificationSnackbarShown()
         }
     }
 

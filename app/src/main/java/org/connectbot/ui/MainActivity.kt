@@ -60,9 +60,9 @@ import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.navigation.NavDestinations
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.IconStyle
-import org.connectbot.util.NotificationPermissionHelper
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.ShortcutIconGenerator
+import org.connectbot.util.isNotificationPermissionGranted
 import timber.log.Timber
 
 // TODO: Move back to ComponentActivity when https://issuetracker.google.com/issues/178855209 is fixed.
@@ -83,12 +83,12 @@ class MainActivity : AppCompatActivity() {
     private var showDisconnectAllDialog by mutableStateOf(false)
 
     private val requestNotificationPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestPermission()
+        ActivityResultContracts.RequestPermission(),
     ) { _ ->
         // Check the actual permission status instead of relying on the launcher result.
         // If user went to settings and granted permission, the result will be false but
         // the actual permission may be granted.
-        val actuallyGranted = NotificationPermissionHelper.isNotificationPermissionGranted(this)
+        val actuallyGranted = isNotificationPermissionGranted(this)
 
         appViewModel.onNotificationPermissionResult(actuallyGranted)?.let { uri ->
             requestedUri = uri
@@ -122,8 +122,8 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.auto(
                 lightScrim = android.graphics.Color.TRANSPARENT,
-                darkScrim = android.graphics.Color.TRANSPARENT
-            )
+                darkScrim = android.graphics.Color.TRANSPARENT,
+            ),
         )
         super.onCreate(savedInstanceState)
 
@@ -228,7 +228,7 @@ class MainActivity : AppCompatActivity() {
                             Timber.d("User confirmed disconnectAll")
                             showDisconnectAllDialog = false
                             appViewModel.setPendingDisconnectAll(true)
-                        }
+                        },
                     )
                 }
             }
@@ -267,7 +267,7 @@ class MainActivity : AppCompatActivity() {
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                                 requestNotificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
                             }
-                        }
+                        },
                     )
                 }
             }
@@ -280,7 +280,7 @@ class MainActivity : AppCompatActivity() {
                 val prefs = PreferenceManager.getDefaultSharedPreferences(context)
                 val persistConnections = prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)
 
-                if (!persistConnections || NotificationPermissionHelper.isNotificationPermissionGranted(context)) {
+                if (!persistConnections || isNotificationPermissionGranted(context)) {
                     // Either persistence is disabled (no permission needed) or permission granted, navigate immediately
                     navController.navigate("${NavDestinations.CONSOLE}/${host.id}")
                 } else {
@@ -308,7 +308,11 @@ class MainActivity : AppCompatActivity() {
                 onSelectShortcut = { host, color, iconStyle ->
                     createShortcutAndFinish(host, color, iconStyle)
                 },
-                onNavigateToConsole = onNavigateToConsole
+                onNavigateToConsole = onNavigateToConsole,
+                shouldShowNotificationWarning = {
+                    !appViewModel.hostListSnackbarShownThisLaunch && appViewModel.shouldShowNotificationWarning()
+                },
+                onNotificationSnackbarShown = { appViewModel.markHostListSnackbarShown() },
             )
         }
     }
@@ -401,7 +405,7 @@ class MainActivity : AppCompatActivity() {
 @Composable
 private fun NotificationPermissionRationaleDialog(
     onDismiss: () -> Unit,
-    onAllow: () -> Unit
+    onAllow: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -416,6 +420,6 @@ private fun NotificationPermissionRationaleDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.connect_anyway))
             }
-        }
+        },
     )
 }

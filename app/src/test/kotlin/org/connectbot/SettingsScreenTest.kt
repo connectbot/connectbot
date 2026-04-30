@@ -76,4 +76,33 @@ class SettingsScreenTest {
 
         assertTrue(backCalled)
     }
+
+    @Test
+    fun settingsScreen_displaysConnPersistPreference() {
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                SettingsScreen(onNavigateBack = {})
+            }
+        }
+
+        composeTestRule
+            .onNodeWithText("Persist connections")
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun settingsScreen_withHighlightConnPersist_scrollsToAndDisplaysConnPersist() {
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                SettingsScreen(
+                    onNavigateBack = {},
+                    highlightItem = "conn_persist",
+                )
+            }
+        }
+
+        composeTestRule
+            .onNodeWithText("Persist connections")
+            .assertIsDisplayed()
+    }
 }

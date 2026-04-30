@@ -66,8 +66,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -155,6 +157,7 @@ const val AUTO_HIDE_DELAY_MS = 3000L
 fun ConsoleScreen(
     onNavigateBack: () -> Unit,
     onNavigateToPortForwards: (Long) -> Unit,
+    onNavigateToSettings: () -> Unit = {},
     modifier: Modifier = Modifier,
     viewModel: ConsoleViewModel = hiltViewModel(),
 ) {
@@ -396,6 +399,23 @@ fun ConsoleScreen(
     LaunchedEffect(Unit) {
         viewModel.networkStatusMessages.collect { message ->
             snackbarHostState.showSnackbar(message)
+        }
+    }
+
+    // Show snackbar on each open when connections won't persist in background
+    val notificationWarningMessage = stringResource(R.string.notification_permission_console_warning)
+    val settingsLabel = stringResource(R.string.list_menu_settings)
+    LaunchedEffect(Unit) {
+        if (viewModel.shouldShowNotificationWarning()) {
+            val result = snackbarHostState.showSnackbar(
+                message = notificationWarningMessage,
+                actionLabel = settingsLabel,
+                withDismissAction = true,
+                duration = SnackbarDuration.Long,
+            )
+            if (result == SnackbarResult.ActionPerformed) {
+                onNavigateToSettings()
+            }
         }
     }
 

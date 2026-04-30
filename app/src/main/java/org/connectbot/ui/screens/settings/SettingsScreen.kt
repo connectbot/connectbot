@@ -24,11 +24,14 @@ import android.os.Build
 import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -44,6 +47,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -60,9 +64,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.BuildConfig
 import org.connectbot.R
@@ -72,7 +79,7 @@ import org.connectbot.ui.common.getLocalizedFontDisplayName
 import org.connectbot.ui.components.FontDownloadProgressDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.LocalFontProvider
-import org.connectbot.util.NotificationPermissionHelper
+import org.connectbot.util.isNotificationPermissionGranted
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.TerminalFont
 import org.connectbot.util.ThemeMode
@@ -84,6 +91,7 @@ import java.util.Locale
 fun SettingsScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
+    highlightItem: String? = null,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -96,14 +104,14 @@ fun SettingsScreen(
         // Check the actual permission status instead of relying on the launcher result.
         // If user went to settings and granted permission, the result will be false but
         // the actual permission may be granted.
-        val actuallyGranted = NotificationPermissionHelper.isNotificationPermissionGranted(context)
+        val actuallyGranted = isNotificationPermissionGranted(context)
         viewModel.onNotificationPermissionResult(actuallyGranted)
     }
 
     // Listen for permission request events
     LaunchedEffect(Unit) {
         viewModel.requestNotificationPermission.collect {
-            if (NotificationPermissionHelper.isNotificationPermissionGranted(context)) {
+            if (isNotificationPermissionGranted(context)) {
                 // Permission already granted
                 viewModel.onNotificationPermissionResult(true)
             } else {
@@ -153,6 +161,7 @@ fun SettingsScreen(
     SettingsScreenContent(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
+        highlightItem = highlightItem,
         onAuthOnLaunchChange = viewModel::updateAuthOnLaunch,
         onMemkeysChange = viewModel::updateMemkeys,
         onConnPersistChange = viewModel::updateConnPersist,
@@ -197,6 +206,7 @@ fun SettingsScreen(
 fun SettingsScreenContent(
     uiState: SettingsUiState,
     onNavigateBack: () -> Unit,
+    highlightItem: String? = null,
     onAuthOnLaunchChange: (Boolean) -> Unit,
     onMemkeysChange: (Boolean) -> Unit,
     onConnPersistChange: (Boolean) -> Unit,
@@ -247,7 +257,32 @@ fun SettingsScreenContent(
         },
         modifier = modifier,
     ) { padding ->
-        LazyColumn(modifier = Modifier.padding(padding)) {
+        val listState = rememberLazyListState()
+        var highlightConnPersist by remember { mutableStateOf(false) }
+        val connPersistHighlightColor by animateColorAsState(
+            targetValue = if (highlightConnPersist) {
+                MaterialTheme.colorScheme.primaryContainer
+            } else {
+                Color.Transparent
+            },
+            animationSpec = tween(durationMillis = 500),
+            label = "connPersistHighlight"
+        )
+
+        LaunchedEffect(highlightItem) {
+            if (highlightItem == "conn_persist") {
+                // When canAuthenticate: items are [security header, authOnLaunch, memkeys, connPersist]
+                // When !canAuthenticate: items are [memkeys, connPersist]
+                val connPersistIndex = if (uiState.canAuthenticate) 3 else 1
+                listState.animateScrollToItem(connPersistIndex)
+                delay(300)
+                highlightConnPersist = true
+                delay(1500)
+                highlightConnPersist = false
+            }
+        }
+
+        LazyColumn(state = listState, modifier = Modifier.padding(padding)) {
             if (uiState.canAuthenticate) {
                 item {
                     PreferenceCategory(title = stringResource(R.string.pref_security_category))
@@ -278,6 +313,7 @@ fun SettingsScreenContent(
                     summary = stringResource(R.string.pref_conn_persist_summary),
                     checked = uiState.connPersist,
                     onCheckedChange = onConnPersistChange,
+                    highlightColor = connPersistHighlightColor,
                 )
             }
 
@@ -703,6 +739,7 @@ private fun SwitchPreference(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    highlightColor: Color = Color.Transparent,
 ) {
     ListItem(
         headlineContent = { Text(title) },
@@ -713,6 +750,9 @@ private fun SwitchPreference(
                 onCheckedChange = onCheckedChange,
             )
         },
+        colors = ListItemDefaults.colors(
+            containerColor = highlightColor,
+        ),
         modifier = modifier.clickable { onCheckedChange(!checked) },
     )
     HorizontalDivider()
