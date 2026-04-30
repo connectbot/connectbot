@@ -132,6 +132,8 @@
   <string name="pref_volumefont_summary">Velikost písma lze upravit v nastavení pro jednotlivé hostitele</string>
   <string name="pref_memkeys_title">Uchovávat klíče v paměti</string>
   <string name="pref_memkeys_summary">Ponechat odemčené klíče v paměti dokud není ukončena služba na pozadí</string>
+  <string name="pref_conn_persist_title">Zůstaňte připojeni na pozadí</string>
+  <string name="pref_conn_persist_summary">Udržujte svá připojení aktivní, i když přepínáte mezi různými aplikacemi</string>
   <string name="pref_keymode_title">Zkratky adresářů</string>
   <string name="pref_stickymodifiers_title">Lepivé modifikátory</string>
   <string name="only_alt">Pouze alt</string>
@@ -447,6 +449,15 @@
   <string name="hostpref_save_host">Uložit hostitele</string>
   <string name="hostpref_setting_title">Nastavení hostitele</string>
   <string name="pubkey_import_existing">Importovat veřejný klíč</string>
+  <string name="notification_permission_title">Zůstaňte připojeni na pozadí</string>
+  <string name="notification_permission_message">ConnectBot potřebuje oprávnění pro zasílání oznámení, aby udržel vaše připojení aktivní, když přepínáte mezi aplikacemi. Bez tohoto oprávnění může systém vaše připojení ukončit, aby šetřil baterii.</string>
+  <string name="grant_permission">Povolit</string>
+  <string name="connect_anyway">Připojit se i tak</string>
+  <string name="notification_permission_denied_title">Je nutné povolit notifikace</string>
+  <string name="notification_permission_denied_message">Chcete-li, aby vaše připojení zůstala aktivní na pozadí, povolte v nastavení systému oznámení pro aplikaci ConnectBot.</string>
+  <string name="open_settings">Otevřít nastavení</string>
+  <string name="notification_permission_denied_snackbar">Připojení se může neočekávaně přerušit bez předchozího upozornění</string>
+  <string name="notification_permission_console_warning">Připojení se může v pozadí přerušit</string>
   <string name="terminal_no_route">Zkoušíte se připojit k místnímu hostiteli? Udělte oprávnění pro místní síť.</string>
   <string name="loading_message">Načítám…</string>
   <string name="migration_checking">Kontrola databáze…</string>

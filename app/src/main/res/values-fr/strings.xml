@@ -132,6 +132,8 @@
   <string name="pref_volumefont_summary">La taille du texte peu aussi être changé dans les paramètres par hôte</string>
   <string name="pref_memkeys_title">Garder les clés en mémoire</string>
   <string name="pref_memkeys_summary">Garder les clés débloquées en mémoire tant que le service tourne en arrière-plan</string>
+  <string name="pref_conn_persist_title">Restez connecté en arrière-plan</string>
+  <string name="pref_conn_persist_summary">Gardez vos sessions ouvertes même lorsque vous passez à d’autres applications</string>
   <string name="pref_keymode_title">Raccourcis de navigation</string>
   <string name="pref_stickymodifiers_title">Touches de combinaison \"collantes\"</string>
   <string name="only_alt">Uniquement Alt</string>
@@ -447,6 +449,15 @@
   <string name="hostpref_save_host">Enregistrer le serveur</string>
   <string name="hostpref_setting_title">Paramètres de l\'hôte</string>
   <string name="pubkey_import_existing">Importer une clé publique</string>
+  <string name="notification_permission_title">Restez connecté en arrière-plan</string>
+  <string name="notification_permission_message">ConnectBot a besoin de l’autorisation d’envoyer des notifications pour maintenir vos connexions actives lorsque vous changez d’application. Sans cette autorisation, le système risque de couper vos connexions pour économiser la batterie.</string>
+  <string name="grant_permission">Autoriser</string>
+  <string name="connect_anyway">Se connecter quand même</string>
+  <string name="notification_permission_denied_title">L\'autorisation de notification est requise</string>
+  <string name="notification_permission_denied_message">Pour que vos connexions restent actives en arrière-plan, veuillez activer les notifications pour ConnectBot dans les paramètres du système.</string>
+  <string name="open_settings">Ouvrir les paramètres</string>
+  <string name="notification_permission_denied_snackbar">Les connexions peuvent être interrompues sans notification préalable</string>
+  <string name="notification_permission_console_warning">La connexion peut être interrompue en arrière-plan</string>
   <string name="terminal_no_route">Essayez-vous d\'accéder à un hôte local ? Accordez les autorisations de réseau local.</string>
   <string name="loading_message">Chargement…</string>
   <string name="migration_checking">Vérification de la base de données…</string>

@@ -132,6 +132,8 @@
   <string name="pref_volumefont_summary">Es pot canviar la mida de la font a les opcions de cada equip remot</string>
   <string name="pref_memkeys_title">Recorda les claus en memòria</string>
   <string name="pref_memkeys_summary">Manté les claus descarregadesen memòria fins que el servei finalitzi</string>
+  <string name="pref_conn_persist_title">Manteniu-vos connectat en segon pla</string>
+  <string name="pref_conn_persist_summary">Manteniu les vostres sessions actives fins i tot quan canvieu a altres aplicacions</string>
   <string name="pref_keymode_title">Drecera de carpetes</string>
   <string name="pref_stickymodifiers_title">Modificadors enganxosos</string>
   <string name="only_alt">Només Alt</string>
@@ -447,6 +449,15 @@
   <string name="hostpref_save_host">Desa l\'equip remot</string>
   <string name="hostpref_setting_title">Configuració de l\'amfitrió</string>
   <string name="pubkey_import_existing">Importa una clau pública existent</string>
+  <string name="notification_permission_title">Manteniu-vos connectat en segon pla</string>
+  <string name="notification_permission_message">ConnectBot necessita permís per enviar notificacions per tal de mantenir les connexions actives quan canvieu d\'aplicació. Sense aquest permís, el sistema pot tallar les connexions per estalviar bateria.</string>
+  <string name="grant_permission">Permetre</string>
+  <string name="connect_anyway">Connecta de totes maneres</string>
+  <string name="notification_permission_denied_title">Es necessari el permís de notificacions</string>
+  <string name="notification_permission_denied_message">Per mantenir les connexions actives en segon pla, activeu les notificacions de ConnectBot a la configuració del sistema.</string>
+  <string name="open_settings">Obriu la configuració</string>
+  <string name="notification_permission_denied_snackbar">És possible que les connexions es tallin sense que es demani permís</string>
+  <string name="notification_permission_console_warning">La connexió pot tallar-se quan l\'aplicació està en segon pla</string>
   <string name="terminal_no_route">Intenteu accedir a un host local? Doneu permís a la xarxa local.</string>
   <string name="loading_message">S\'està carregant...</string>
   <string name="migration_checking">S\'està comprovant la base de dades…</string>

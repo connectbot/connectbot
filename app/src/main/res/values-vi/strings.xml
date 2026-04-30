@@ -132,6 +132,8 @@
   <string name="pref_volumefont_summary">Kích thước phông chữ cũng có thể được thay đổi trong cài đặt của từng máy chủ</string>
   <string name="pref_memkeys_title">Ghi nhớ khoá trong bộ nhớ</string>
   <string name="pref_memkeys_summary">Giữ các khóa đã mở khóa trong bộ nhớ cho đến khi dịch vụ nền bị huỷ</string>
+  <string name="pref_conn_persist_title">Duy trì kết nối trong nền</string>
+  <string name="pref_conn_persist_summary">Giữ cho các phiên kết nối của bạn luôn mở ngay cả khi bạn chuyển sang các ứng dụng khác</string>
   <string name="pref_keymode_title">Các phím tắt của thư mục</string>
   <string name="pref_stickymodifiers_title">Các thay đổi đỉnh đính lên top</string>
   <string name="only_alt">Chỉ phím Alt</string>
@@ -447,6 +449,15 @@
   <string name="hostpref_save_host">Lưu máy chủ (host)</string>
   <string name="hostpref_setting_title">Cài đặt máy chủ</string>
   <string name="pubkey_import_existing">Import khoá pubkey có sẵn</string>
+  <string name="notification_permission_title">Duy trì kết nối trong nền</string>
+  <string name="notification_permission_message">ConnectBot cần quyền thông báo để duy trì kết nối của bạn khi bạn chuyển đổi giữa các ứng dụng. Nếu không có quyền này, hệ thống có thể ngắt kết nối của bạn để tiết kiệm pin.</string>
+  <string name="grant_permission">Cho phép</string>
+  <string name="connect_anyway">Vẫn kết nối</string>
+  <string name="notification_permission_denied_title">Cần quyền thông báo</string>
+  <string name="notification_permission_denied_message">Để duy trì kết nối của bạn trong nền, vui lòng bật thông báo cho ConnectBot trong cài đặt hệ thống.</string>
+  <string name="open_settings">Mở cài đặt</string>
+  <string name="notification_permission_denied_snackbar">Kết nối có thể bị ngắt mà không có thông báo</string>
+  <string name="notification_permission_console_warning">Kết nối có thể bị ngắt khi ứng dụng chạy ở chế độ nền</string>
   <string name="terminal_no_route">Bạn có đang cố gắng truy cập máy chủ cục bộ không? Hãy cấp quyền truy cập mạng cục bộ.</string>
   <string name="loading_message">Đang tải…</string>
   <string name="migration_checking">Đang kiểm tra cơ sở dữ liệu…</string>

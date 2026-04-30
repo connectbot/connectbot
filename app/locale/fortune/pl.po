@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-29 21:06-0700\n"
-"PO-Revision-Date: 2026-04-11 10:22-0700\n"
+"POT-Creation-Date: 2026-04-29 21:38-0700\n"
+"PO-Revision-Date: 2026-04-29 21:33-0700\n"
 "Last-Translator: Andrzej Pruszyński <Unknown>\n"
 "Language: pl\n"
 "Language-Team: pl <LL@li.org>\n"
@@ -772,14 +772,14 @@ msgstr "Trzymaj odblokowane klucze w pamięci dopóki usługa się nie rozłącz
 #, fuzzy
 msgctxt "pref_conn_persist_title"
 msgid "Stay connected in the background"
-msgstr ""
+msgstr "Pozostań połączony w tle"
 
 #. Summary for the preference that keeps the background service running to
 #. prevent connection drops.
 #, fuzzy
 msgctxt "pref_conn_persist_summary"
 msgid "Keep your sessions open even when you switch to other apps"
-msgstr ""
+msgstr "Utrzymuj sesje aktywne, nawet gdy przełączasz się na inne aplikacje"
 
 #. Name for the keyboard shortcuts preference
 msgctxt "pref_keymode_title"
@@ -2521,7 +2521,7 @@ msgstr "Importuj istniejący klucz publiczny"
 #, fuzzy
 msgctxt "notification_permission_title"
 msgid "Stay connected in the background"
-msgstr ""
+msgstr "Pozostań połączony w tle"
 
 #. Explanation message shown in permission dialog when user tries to connect
 #. to a host.              Explains why notification permission is needed and
@@ -2533,19 +2533,22 @@ msgid ""
 "when you switch apps. Without it, the system may drop your connections to"
 " save battery."
 msgstr ""
+"ConnectBot wymaga uprawnień do wyświetlania powiadomień, aby utrzymać "
+"aktywne połączenia podczas przełączania między aplikacjami. W przeciwnym "
+"razie system może rozłączyć połączenia, aby oszczędzać baterię."
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
 #, fuzzy
 msgctxt "grant_permission"
 msgid "Allow"
-msgstr ""
+msgstr "Zezwól"
 
 #. Button text to proceed with connecting without granting notification
 #. permission.
 msgctxt "connect_anyway"
 msgid "Connect anyway"
-msgstr ""
+msgstr "Połącz się i tak"
 
 #. Title for dialog directing users to app settings when notification
 #. permission was denied.              Shown when user tries to enable persist
@@ -2553,7 +2556,7 @@ msgstr ""
 #, fuzzy
 msgctxt "notification_permission_denied_title"
 msgid "Notification permission needed"
-msgstr ""
+msgstr "Wymagana zgoda na wyświetlanie powiadomień"
 
 #. Message explaining that user must enable notification permission in app
 #. settings.              Shown when notification permission was previously
@@ -2564,24 +2567,28 @@ msgid ""
 "To keep your connections active in the background, please enable "
 "notifications for ConnectBot in the system settings."
 msgstr ""
+"Aby połączenia były aktywne w tle, włącz powiadomienia dla ConnectBot w "
+"ustawieniach systemu."
 
 #. Button text to open ConnectBot app settings page where user can grant
 #. notification permission.
 msgctxt "open_settings"
 msgid "Open settings"
-msgstr ""
+msgstr "Otwórz ustawienia"
 
 #. Snackbar shown on host list when notification permission was denied.
 #. Informs user that connections will drop when app is backgrounded.
 msgctxt "notification_permission_denied_snackbar"
 msgid "Connections may drop without notification permission"
 msgstr ""
+"Połączenia mogą zostać przerwane bez powiadomienia, jeśli nie udzielono "
+"odpowiedniej zgody"
 
 #. Snackbar shown on console screen when notification permission is denied and
 #. persist connections is enabled.
 msgctxt "notification_permission_console_warning"
 msgid "Connection may drop in background"
-msgstr ""
+msgstr "Połączenie może zostać przerwane, gdy aplikacja działa w tle"
 
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.

@@ -132,6 +132,8 @@
   <string name="pref_volumefont_summary">글꼴 크기는 호스트별 설정에서도 변경할 수 있습니다.</string>
   <string name="pref_memkeys_title">메모리에 키를 기억</string>
   <string name="pref_memkeys_summary">백엔드 서비스가 종료되기 전까지 잠금이 풀린 키들을 메모리에 유지합니다</string>
+  <string name="pref_conn_persist_title">백그라운드에서 연결 상태를 유지하세요</string>
+  <string name="pref_conn_persist_summary">다른 앱으로 전환하더라도 세션을 계속 열어 두세요</string>
   <string name="pref_keymode_title">디렉터리 바로 가기</string>
   <string name="pref_stickymodifiers_title">스틱키 수정자</string>
   <string name="only_alt">alt만</string>
@@ -447,6 +449,15 @@
   <string name="hostpref_save_host">호스트 저장</string>
   <string name="hostpref_setting_title">호스트 설정</string>
   <string name="pubkey_import_existing">기존 공개키 가져오기</string>
+  <string name="notification_permission_title">백그라운드에서 연결 상태를 유지하세요</string>
+  <string name="notification_permission_message">ConnectBot은 앱을 전환할 때 연결을 활성 상태로 유지하기 위해 알림 권한이 필요합니다. 이 권한이 없으면 시스템에서 배터리를 절약하기 위해 연결을 끊을 수 있습니다.</string>
+  <string name="grant_permission">허용</string>
+  <string name="connect_anyway">어쨌든 연결합니다</string>
+  <string name="notification_permission_denied_title">알림 권한이 필요합니다</string>
+  <string name="notification_permission_denied_message">백그라운드에서 연결을 유지하려면 시스템 설정에서 ConnectBot의 알림을 활성화하세요.</string>
+  <string name="open_settings">설정 열기</string>
+  <string name="notification_permission_denied_snackbar">연결이 끊어져도 알림이 표시되지 않을 수 있습니다</string>
+  <string name="notification_permission_console_warning">백그라운드에서 연결이 끊길 수 있습니다</string>
   <string name="terminal_no_route">로컬 호스트에 액세스하려고 하십니까? 로컬 네트워크 권한을 부여하십시오.</string>
   <string name="loading_message">로딩중…</string>
   <string name="migration_checking">데이터베이스를 확인하는 중…</string>

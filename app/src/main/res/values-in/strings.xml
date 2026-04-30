@@ -132,6 +132,8 @@
   <string name="pref_volumefont_summary">Ukuran font juga dapat diubah di pengaturan profil</string>
   <string name="pref_memkeys_title">Ingat kunci dalam memori</string>
   <string name="pref_memkeys_summary">Simpan kunci yang terbuka kedalam memori hingga layanan backend berakhir</string>
+  <string name="pref_conn_persist_title">Tetap terhubung di latar belakang</string>
+  <string name="pref_conn_persist_summary">Pertahankan sesi Anda tetap aktif meskipun Anda beralih ke aplikasi lain</string>
   <string name="pref_keymode_title">Jalan pintas direktori</string>
   <string name="pref_stickymodifiers_title">Tombol pengubah yang tetap aktif</string>
   <string name="only_alt">Hanya Alt</string>
@@ -447,6 +449,15 @@
   <string name="hostpref_save_host">Simpan host</string>
   <string name="hostpref_setting_title">Pengaturan host</string>
   <string name="pubkey_import_existing">Impor kunci publik yang sudah ada</string>
+  <string name="notification_permission_title">Tetap terhubung di latar belakang</string>
+  <string name="notification_permission_message">ConnectBot memerlukan izin notifikasi untuk menjaga koneksi Anda tetap aktif saat Anda beralih aplikasi. Tanpa izin ini, sistem mungkin memutuskan koneksi Anda untuk menghemat baterai.</string>
+  <string name="grant_permission">Izinkan</string>
+  <string name="connect_anyway">Tetap sambungkan</string>
+  <string name="notification_permission_denied_title">Izin notifikasi diperlukan</string>
+  <string name="notification_permission_denied_message">Untuk menjaga agar koneksi Anda tetap aktif di latar belakang, silakan aktifkan notifikasi untuk ConnectBot di pengaturan sistem.</string>
+  <string name="open_settings">Buka pengaturan</string>
+  <string name="notification_permission_denied_snackbar">Koneksi dapat terputus tanpa pemberitahuan atau izin</string>
+  <string name="notification_permission_console_warning">Koneksi dapat terputus saat aplikasi berjalan di latar belakang</string>
   <string name="terminal_no_route">Apakah Anda mencoba mengakses host lokal? Berikan izin jaringan lokal.</string>
   <string name="loading_message">Memuat…</string>
   <string name="migration_checking">Memeriksa basis data…</string>

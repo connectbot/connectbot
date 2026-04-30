@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-29 21:06-0700\n"
-"PO-Revision-Date: 2026-04-11 10:21-0700\n"
+"POT-Creation-Date: 2026-04-29 21:38-0700\n"
+"PO-Revision-Date: 2026-04-29 21:31-0700\n"
 "Last-Translator: Tommaso Fonda <fondatommaso2@gmail.com>\n"
 "Language: it\n"
 "Language-Team: it <LL@li.org>\n"
@@ -771,14 +771,14 @@ msgstr "Mantiene le chiavi in memoria finché il servizio non viene terminato"
 #, fuzzy
 msgctxt "pref_conn_persist_title"
 msgid "Stay connected in the background"
-msgstr ""
+msgstr "Rimani connesso in background"
 
 #. Summary for the preference that keeps the background service running to
 #. prevent connection drops.
 #, fuzzy
 msgctxt "pref_conn_persist_summary"
 msgid "Keep your sessions open even when you switch to other apps"
-msgstr ""
+msgstr "Mantieni le sessioni aperte anche quando passi ad altre app"
 
 #. Name for the keyboard shortcuts preference
 msgctxt "pref_keymode_title"
@@ -2310,11 +2310,7 @@ msgstr "Nessun URL trovato nel buffer del terminale"
 #. Default title for console screen when no specific host is connected
 msgctxt "console_default_title"
 msgid "Console"
-msgstr ""
-"Console si riferisce alla finestra del terminale che mostra l'output e "
-"accetta l'input dell'utente per eseguire comandi e interagire con il "
-"sistema operativo o un'applicazione, in questo caso il terminale "
-"emulatore incluso in ConnectBot"
+msgstr "Console"
 
 #. Host editor screen labels
 #. Label for quick connect input field
@@ -2532,7 +2528,7 @@ msgstr "Importa chiave pubblica"
 #, fuzzy
 msgctxt "notification_permission_title"
 msgid "Stay connected in the background"
-msgstr ""
+msgstr "Rimani connesso in background"
 
 #. Explanation message shown in permission dialog when user tries to connect
 #. to a host.              Explains why notification permission is needed and
@@ -2544,19 +2540,22 @@ msgid ""
 "when you switch apps. Without it, the system may drop your connections to"
 " save battery."
 msgstr ""
+"ConnectBot richiede il permesso di inviare notifiche per mantenere attive"
+" le connessioni quando si passa da un'app all'altra. In caso contrario, "
+"il sistema potrebbe interrompere le connessioni per risparmiare batteria."
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
 #, fuzzy
 msgctxt "grant_permission"
 msgid "Allow"
-msgstr ""
+msgstr "Consenti"
 
 #. Button text to proceed with connecting without granting notification
 #. permission.
 msgctxt "connect_anyway"
 msgid "Connect anyway"
-msgstr ""
+msgstr "Connettiti comunque"
 
 #. Title for dialog directing users to app settings when notification
 #. permission was denied.              Shown when user tries to enable persist
@@ -2564,7 +2563,7 @@ msgstr ""
 #, fuzzy
 msgctxt "notification_permission_denied_title"
 msgid "Notification permission needed"
-msgstr ""
+msgstr "È necessario il permesso per le notifiche"
 
 #. Message explaining that user must enable notification permission in app
 #. settings.              Shown when notification permission was previously
@@ -2575,24 +2574,26 @@ msgid ""
 "To keep your connections active in the background, please enable "
 "notifications for ConnectBot in the system settings."
 msgstr ""
+"Per mantenere attive le connessioni in background, abilita le notifiche "
+"per ConnectBot nelle impostazioni di sistema."
 
 #. Button text to open ConnectBot app settings page where user can grant
 #. notification permission.
 msgctxt "open_settings"
 msgid "Open settings"
-msgstr ""
+msgstr "Apri le impostazioni"
 
 #. Snackbar shown on host list when notification permission was denied.
 #. Informs user that connections will drop when app is backgrounded.
 msgctxt "notification_permission_denied_snackbar"
 msgid "Connections may drop without notification permission"
-msgstr ""
+msgstr "Le connessioni potrebbero interrompersi senza preavviso"
 
 #. Snackbar shown on console screen when notification permission is denied and
 #. persist connections is enabled.
 msgctxt "notification_permission_console_warning"
 msgid "Connection may drop in background"
-msgstr ""
+msgstr "La connessione potrebbe interrompersi in background"
 
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.

@@ -132,6 +132,8 @@
   <string name="pref_volumefont_summary">字體大小可以在各主機設定內更改</string>
   <string name="pref_memkeys_title">將金鑰儲存在記憶體</string>
   <string name="pref_memkeys_summary">保持記憶體中的金鑰是解鎖狀態，直到背景服務結束</string>
+  <string name="pref_conn_persist_title">在背景中保持連線</string>
+  <string name="pref_conn_persist_summary">即使切換到其他應用程式，也能讓您的連線維持開啟狀態</string>
   <string name="pref_keymode_title">快捷鍵</string>
   <string name="pref_stickymodifiers_title">粘滯鍵</string>
   <string name="only_alt">只有Alt</string>
@@ -447,6 +449,15 @@
   <string name="hostpref_save_host">儲存主機</string>
   <string name="hostpref_setting_title">主機設定</string>
   <string name="pubkey_import_existing">匯入現有公鑰</string>
+  <string name="notification_permission_title">在背景中保持連線</string>
+  <string name="notification_permission_message">ConnectBot 需要取得通知權限，才能在您切換應用程式時維持連線。如果沒有這個權限，系統可能會為了節省電力而中斷您的連線。</string>
+  <string name="grant_permission">允許</string>
+  <string name="connect_anyway">仍然要連線</string>
+  <string name="notification_permission_denied_title">需要通知權限</string>
+  <string name="notification_permission_denied_message">為了讓您的連線在背景中保持啟用狀態，請在系統設定中啟用 ConnectBot 的通知功能。</string>
+  <string name="open_settings">開啟設定</string>
+  <string name="notification_permission_denied_snackbar">連線可能會在沒有通知的情況下中斷</string>
+  <string name="notification_permission_console_warning">背景執行時，連線可能會中斷</string>
   <string name="terminal_no_route">您是否正在嘗試存取本機主機？請授予本機網路權限。</string>
   <string name="loading_message">正在載入…</string>
   <string name="migration_checking">正在檢查資料庫……</string>

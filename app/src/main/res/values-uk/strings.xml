@@ -132,6 +132,8 @@
   <string name="pref_volumefont_summary">Розмір букв також можна змінити на налаштуваннях хоту</string>
   <string name="pref_memkeys_title">Запам’ятайте ключі в пам’яті</string>
   <string name="pref_memkeys_summary">Утримувати розблоковані ключі в пам\'яті, поки не буде завершено обслуговування бекенду</string>
+  <string name="pref_conn_persist_title">Залишайтеся на зв’язку у фоновому режимі</string>
+  <string name="pref_conn_persist_summary">Залишайте сеанси активними, навіть коли перемикаєтеся на інші програми</string>
   <string name="pref_keymode_title">Швидкий доступ до каталогів</string>
   <string name="pref_stickymodifiers_title">Фіксовані модифікатори</string>
   <string name="only_alt">Лише Alt</string>
@@ -447,6 +449,15 @@
   <string name="hostpref_save_host">Зберегти хост</string>
   <string name="hostpref_setting_title">Налаштування хоста</string>
   <string name="pubkey_import_existing">Імпортувати наявний публічний ключ</string>
+  <string name="notification_permission_title">Залишайтеся на зв’язку у фоновому режимі</string>
+  <string name="notification_permission_message">Щоб підтримувати активність ваших з’єднань під час перемикання між програмами, ConnectBot потребує дозволу на надсилання сповіщень. Без нього система може розірвати з’єднання, щоб заощадити заряд батареї.</string>
+  <string name="grant_permission">Дозволити</string>
+  <string name="connect_anyway">Підключитися все одно</string>
+  <string name="notification_permission_denied_title">Необхідний дозвіл на надсилання сповіщень</string>
+  <string name="notification_permission_denied_message">Щоб забезпечити постійний зв’язок у фоновому режимі, увімкніть сповіщення для ConnectBot у системних налаштуваннях.</string>
+  <string name="open_settings">Відкрити налаштування</string>
+  <string name="notification_permission_denied_snackbar">З’єднання може розірватися без попереднього повідомлення або запиту дозволу</string>
+  <string name="notification_permission_console_warning">З’єднання може розірватися під час роботи у фоновому режимі</string>
   <string name="terminal_no_route">Ви намагаєтеся отримати доступ до локального хоста? Надайте дозволи для локальної мережі.</string>
   <string name="loading_message">Завантаження…</string>
   <string name="migration_checking">Перевірка бази даних…</string>
