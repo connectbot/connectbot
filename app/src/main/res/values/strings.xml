@@ -989,6 +989,9 @@
 	<!-- Send button in floating text input dialog -->
 	<string name="button_send">Send</string>
 
+	<!-- Toggle in floating text input dialog: when on, Send appends Enter and closes the dialog -->
+	<string name="terminal_text_input_auto_enter">Auto-submit on send</string>
+
 	<!-- Common UI button labels -->
 	<!-- Button label for confirming an action -->
 	<string name="button_ok">OK</string>
