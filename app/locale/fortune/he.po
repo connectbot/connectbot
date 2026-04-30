@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-29 21:06-0700\n"
-"PO-Revision-Date: 2026-04-11 10:21-0700\n"
+"POT-Creation-Date: 2026-04-29 21:38-0700\n"
+"PO-Revision-Date: 2026-04-29 21:29-0700\n"
 "Last-Translator: Kenny Root <Unknown>\n"
 "Language: he\n"
 "Language-Team: he <LL@li.org>\n"
@@ -768,14 +768,14 @@ msgstr "להשאיר את המפתחות לאחר השחרור בזיכרון ע
 #, fuzzy
 msgctxt "pref_conn_persist_title"
 msgid "Stay connected in the background"
-msgstr ""
+msgstr "הישארו מחוברים ברקע"
 
 #. Summary for the preference that keeps the background service running to
 #. prevent connection drops.
 #, fuzzy
 msgctxt "pref_conn_persist_summary"
 msgid "Keep your sessions open even when you switch to other apps"
-msgstr ""
+msgstr "שמרו על החיבורים שלכם פתוחים גם כשאתם עוברים לאפליקציות אחרות"
 
 #. Name for the keyboard shortcuts preference
 msgctxt "pref_keymode_title"
@@ -2502,7 +2502,7 @@ msgstr "ייבא מפתח ציבורי קיים"
 #, fuzzy
 msgctxt "notification_permission_title"
 msgid "Stay connected in the background"
-msgstr ""
+msgstr "הישארו מחוברים ברקע"
 
 #. Explanation message shown in permission dialog when user tries to connect
 #. to a host.              Explains why notification permission is needed and
@@ -2514,19 +2514,22 @@ msgid ""
 "when you switch apps. Without it, the system may drop your connections to"
 " save battery."
 msgstr ""
+"אפליקציית ConnectBot זקוקה להרשאת התראות כדי לשמור על החיבורים שלך פעילים"
+" בעת מעבר בין אפליקציות. בלעדיה, המערכת עלולה לנתק את החיבורים שלך כדי "
+"לחסוך בסוללה."
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
 #, fuzzy
 msgctxt "grant_permission"
 msgid "Allow"
-msgstr ""
+msgstr "אפשר"
 
 #. Button text to proceed with connecting without granting notification
 #. permission.
 msgctxt "connect_anyway"
 msgid "Connect anyway"
-msgstr ""
+msgstr "התחבר בכל מקרה"
 
 #. Title for dialog directing users to app settings when notification
 #. permission was denied.              Shown when user tries to enable persist
@@ -2534,7 +2537,7 @@ msgstr ""
 #, fuzzy
 msgctxt "notification_permission_denied_title"
 msgid "Notification permission needed"
-msgstr ""
+msgstr "נדרשת הרשאת התראות"
 
 #. Message explaining that user must enable notification permission in app
 #. settings.              Shown when notification permission was previously
@@ -2545,24 +2548,26 @@ msgid ""
 "To keep your connections active in the background, please enable "
 "notifications for ConnectBot in the system settings."
 msgstr ""
+"כדי לשמור על פעילות החיבורים שלך ברקע, אנא הפעל התראות עבור ConnectBot "
+"בהגדרות המערכת."
 
 #. Button text to open ConnectBot app settings page where user can grant
 #. notification permission.
 msgctxt "open_settings"
 msgid "Open settings"
-msgstr ""
+msgstr "פתח הגדרות"
 
 #. Snackbar shown on host list when notification permission was denied.
 #. Informs user that connections will drop when app is backgrounded.
 msgctxt "notification_permission_denied_snackbar"
 msgid "Connections may drop without notification permission"
-msgstr ""
+msgstr "ייתכן שהחיבורים ינותקו ללא הודעה או בקשת אישור"
 
 #. Snackbar shown on console screen when notification permission is denied and
 #. persist connections is enabled.
 msgctxt "notification_permission_console_warning"
 msgid "Connection may drop in background"
-msgstr ""
+msgstr "ייתכן שהחיבור ינותק בזמן שהוא פועל ברקע"
 
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.

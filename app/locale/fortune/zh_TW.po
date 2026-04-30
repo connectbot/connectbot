@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-29 21:06-0700\n"
-"PO-Revision-Date: 2026-04-11 10:24-0700\n"
+"POT-Creation-Date: 2026-04-29 21:38-0700\n"
+"PO-Revision-Date: 2026-04-29 21:38-0700\n"
 "Last-Translator: Kenny Root <Unknown>\n"
 "Language: zh_Hant_TW\n"
 "Language-Team: zh_Hant_TW <LL@li.org>\n"
@@ -759,14 +759,14 @@ msgstr "保持記憶體中的金鑰是解鎖狀態，直到背景服務結束"
 #, fuzzy
 msgctxt "pref_conn_persist_title"
 msgid "Stay connected in the background"
-msgstr ""
+msgstr "在背景中保持連線"
 
 #. Summary for the preference that keeps the background service running to
 #. prevent connection drops.
 #, fuzzy
 msgctxt "pref_conn_persist_summary"
 msgid "Keep your sessions open even when you switch to other apps"
-msgstr ""
+msgstr "即使切換到其他應用程式，也能讓您的連線維持開啟狀態"
 
 #. Name for the keyboard shortcuts preference
 msgctxt "pref_keymode_title"
@@ -2491,7 +2491,7 @@ msgstr "匯入現有公鑰"
 #, fuzzy
 msgctxt "notification_permission_title"
 msgid "Stay connected in the background"
-msgstr ""
+msgstr "在背景中保持連線"
 
 #. Explanation message shown in permission dialog when user tries to connect
 #. to a host.              Explains why notification permission is needed and
@@ -2502,20 +2502,20 @@ msgid ""
 "ConnectBot needs notification permission to keep your connections active "
 "when you switch apps. Without it, the system may drop your connections to"
 " save battery."
-msgstr ""
+msgstr "ConnectBot 需要取得通知權限，才能在您切換應用程式時維持連線。如果沒有這個權限，系統可能會為了節省電力而中斷您的連線。"
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
 #, fuzzy
 msgctxt "grant_permission"
 msgid "Allow"
-msgstr ""
+msgstr "允許"
 
 #. Button text to proceed with connecting without granting notification
 #. permission.
 msgctxt "connect_anyway"
 msgid "Connect anyway"
-msgstr ""
+msgstr "仍然要連線"
 
 #. Title for dialog directing users to app settings when notification
 #. permission was denied.              Shown when user tries to enable persist
@@ -2523,7 +2523,7 @@ msgstr ""
 #, fuzzy
 msgctxt "notification_permission_denied_title"
 msgid "Notification permission needed"
-msgstr ""
+msgstr "需要通知權限"
 
 #. Message explaining that user must enable notification permission in app
 #. settings.              Shown when notification permission was previously
@@ -2533,25 +2533,25 @@ msgctxt "notification_permission_denied_message"
 msgid ""
 "To keep your connections active in the background, please enable "
 "notifications for ConnectBot in the system settings."
-msgstr ""
+msgstr "為了讓您的連線在背景中保持啟用狀態，請在系統設定中啟用 ConnectBot 的通知功能。"
 
 #. Button text to open ConnectBot app settings page where user can grant
 #. notification permission.
 msgctxt "open_settings"
 msgid "Open settings"
-msgstr ""
+msgstr "開啟設定"
 
 #. Snackbar shown on host list when notification permission was denied.
 #. Informs user that connections will drop when app is backgrounded.
 msgctxt "notification_permission_denied_snackbar"
 msgid "Connections may drop without notification permission"
-msgstr ""
+msgstr "連線可能會在沒有通知的情況下中斷"
 
 #. Snackbar shown on console screen when notification permission is denied and
 #. persist connections is enabled.
 msgctxt "notification_permission_console_warning"
 msgid "Connection may drop in background"
-msgstr ""
+msgstr "背景執行時，連線可能會中斷"
 
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.

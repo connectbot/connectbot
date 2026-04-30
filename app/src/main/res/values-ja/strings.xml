@@ -132,6 +132,8 @@
   <string name="pref_volumefont_summary">フォントサイズはホストごとの設定でも変更することができます</string>
   <string name="pref_memkeys_title">メモリに鍵を保持する</string>
   <string name="pref_memkeys_summary">バックエンドのサービスが終了しない限り、アンロックした鍵をメモリに保持します</string>
+  <string name="pref_conn_persist_title">バックグラウンドで接続を維持</string>
+  <string name="pref_conn_persist_summary">他のアプリに切り替えてもセッションを維持できます</string>
   <string name="pref_keymode_title">ディレクトリショートカット</string>
   <string name="pref_stickymodifiers_title">スティッキー修飾キー</string>
   <string name="only_alt">alt のみ</string>
@@ -447,6 +449,15 @@
   <string name="hostpref_save_host">ホストを保存</string>
   <string name="hostpref_setting_title">ホスト設定</string>
   <string name="pubkey_import_existing">既存の公開鍵をインポート</string>
+  <string name="notification_permission_title">バックグラウンドで接続を維持</string>
+  <string name="notification_permission_message">ConnectBotは、アプリを切り替えたときに接続を維持するために、通知の許可が必要です。許可しない場合、システムはバッテリーを節約するために接続を切断する可能性があります。</string>
+  <string name="grant_permission">許可する</string>
+  <string name="connect_anyway">とにかく接続</string>
+  <string name="notification_permission_denied_title">通知の許可が必要です</string>
+  <string name="notification_permission_denied_message">バックグラウンドで接続を維持するには、システム設定でConnectBotの通知を有効にしてください。</string>
+  <string name="open_settings">設定を開く</string>
+  <string name="notification_permission_denied_snackbar">接続が予期せず切断される場合があり、その旨の通知は行われません</string>
+  <string name="notification_permission_console_warning">バックグラウンドでの接続が切断される可能性があります</string>
   <string name="terminal_no_route">ローカルホストにアクセスしようとしていますか ローカルネットワークのパーミッションを付与してください</string>
   <string name="loading_message">ロード中…</string>
   <string name="migration_checking">データベースを確認中…</string>

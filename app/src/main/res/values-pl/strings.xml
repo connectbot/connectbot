@@ -132,6 +132,8 @@
   <string name="pref_volumefont_summary">Rozmiar czcionki można również zmienić w ustawieniach na poziomie hosta</string>
   <string name="pref_memkeys_title">Zapamiętaj klucze w pamięci</string>
   <string name="pref_memkeys_summary">Trzymaj odblokowane klucze w pamięci dopóki usługa się nie rozłączy</string>
+  <string name="pref_conn_persist_title">Pozostań połączony w tle</string>
+  <string name="pref_conn_persist_summary">Utrzymuj sesje aktywne, nawet gdy przełączasz się na inne aplikacje</string>
   <string name="pref_keymode_title">Skróty klawiaturowe</string>
   <string name="pref_stickymodifiers_title">Modyfikatory przyklejone</string>
   <string name="only_alt">Tylko Alt</string>
@@ -447,6 +449,15 @@
   <string name="hostpref_save_host">Zapisz host</string>
   <string name="hostpref_setting_title">Ustawienia hosta</string>
   <string name="pubkey_import_existing">Importuj istniejący klucz publiczny</string>
+  <string name="notification_permission_title">Pozostań połączony w tle</string>
+  <string name="notification_permission_message">ConnectBot wymaga uprawnień do wyświetlania powiadomień, aby utrzymać aktywne połączenia podczas przełączania między aplikacjami. W przeciwnym razie system może rozłączyć połączenia, aby oszczędzać baterię.</string>
+  <string name="grant_permission">Zezwól</string>
+  <string name="connect_anyway">Połącz się i tak</string>
+  <string name="notification_permission_denied_title">Wymagana zgoda na wyświetlanie powiadomień</string>
+  <string name="notification_permission_denied_message">Aby połączenia były aktywne w tle, włącz powiadomienia dla ConnectBot w ustawieniach systemu.</string>
+  <string name="open_settings">Otwórz ustawienia</string>
+  <string name="notification_permission_denied_snackbar">Połączenia mogą zostać przerwane bez powiadomienia, jeśli nie udzielono odpowiedniej zgody</string>
+  <string name="notification_permission_console_warning">Połączenie może zostać przerwane, gdy aplikacja działa w tle</string>
   <string name="terminal_no_route">Czy próbujesz uzyskać dostęp do lokalnego hosta? Użyj uprawnienia sieci lokalnej.</string>
   <string name="loading_message">Ładowanie…</string>
   <string name="migration_checking">Sprawdzam bazę danych…</string>
