@@ -132,8 +132,6 @@
   <string name="pref_volumefont_summary">De lettergrootte kan ook worden gewijzigd in de profielinstellingen.</string>
   <string name="pref_memkeys_title">Onthoud sleutels in geheugen</string>
   <string name="pref_memkeys_summary">Houd ontgrendelde sleutels in geheugen tot achtergrond service is gestopt</string>
-  <string name="pref_conn_persist_title">Behoud verbindingen</string>
-  <string name="pref_conn_persist_summary">Forceer dat de verbindingen actief blijven op de achtergrond</string>
   <string name="pref_keymode_title">Folder snelkoppelingen</string>
   <string name="pref_stickymodifiers_title">Vaste modifiers</string>
   <string name="only_alt">Alleen Alt</string>
@@ -449,13 +447,6 @@
   <string name="hostpref_save_host">Host opslaan</string>
   <string name="hostpref_setting_title">Hostinstellingen</string>
   <string name="pubkey_import_existing">Bestaande publieke sleutel importeren</string>
-  <string name="notification_permission_title">Houd verbindingen actief</string>
-  <string name="notification_permission_message">Het weergeven van een melding is vereist om verbindingen op de achtergrond actief te houden. Zonder toestemming kunnen verbindingen worden verbroken wanneer u van app wisselt.</string>
-  <string name="grant_permission">Geef toestemming</string>
-  <string name="connect_anyway">Verbind toch</string>
-  <string name="notification_permission_denied_title">Vereiste toestemming</string>
-  <string name="notification_permission_denied_message">Om ervoor te zorgen dat verbindingen op de achtergrond actief blijven, moet je de toestemming voor meldingen inschakelen in de app-instellingen.</string>
-  <string name="open_settings">Open instellingen</string>
   <string name="terminal_no_route">Probeer je toegang te krijgen tot een lokale host? Geef dan toestemming voor toegang tot het lokale netwerk.</string>
   <string name="loading_message">Bezig met laden…</string>
   <string name="migration_checking">Database wordt gecontroleerd…</string>

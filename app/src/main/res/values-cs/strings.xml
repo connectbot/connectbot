@@ -132,8 +132,6 @@
   <string name="pref_volumefont_summary">Velikost písma lze upravit v nastavení pro jednotlivé hostitele</string>
   <string name="pref_memkeys_title">Uchovávat klíče v paměti</string>
   <string name="pref_memkeys_summary">Ponechat odemčené klíče v paměti dokud není ukončena služba na pozadí</string>
-  <string name="pref_conn_persist_title">Trvalá spojení</string>
-  <string name="pref_conn_persist_summary">Vynutit spojení i na pozadí</string>
   <string name="pref_keymode_title">Zkratky adresářů</string>
   <string name="pref_stickymodifiers_title">Lepivé modifikátory</string>
   <string name="only_alt">Pouze alt</string>
@@ -449,13 +447,6 @@
   <string name="hostpref_save_host">Uložit hostitele</string>
   <string name="hostpref_setting_title">Nastavení hostitele</string>
   <string name="pubkey_import_existing">Importovat veřejný klíč</string>
-  <string name="notification_permission_title">Udržet spojení aktivní</string>
-  <string name="notification_permission_message">Zobrazení oznámení je vyžadováno pro udržování spojení na pozadí. Bez povolení se mohou spojení ukončit při přepnutí mezi aplikacemi.</string>
-  <string name="grant_permission">Povolit oprávnění</string>
-  <string name="connect_anyway">Připojit se stejně tak</string>
-  <string name="notification_permission_denied_title">Požadováno oprávnění</string>
-  <string name="notification_permission_denied_message">Abyste udrželi spojení aktivní na pozadí, musíte povolit oprávnění k oznámením v nastavení aplikace.</string>
-  <string name="open_settings">Otevřít nastavení</string>
   <string name="terminal_no_route">Zkoušíte se připojit k místnímu hostiteli? Udělte oprávnění pro místní síť.</string>
   <string name="loading_message">Načítám…</string>
   <string name="migration_checking">Kontrola databáze…</string>

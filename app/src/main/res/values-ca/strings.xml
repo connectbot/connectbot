@@ -132,8 +132,6 @@
   <string name="pref_volumefont_summary">Es pot canviar la mida de la font a les opcions de cada equip remot</string>
   <string name="pref_memkeys_title">Recorda les claus en memòria</string>
   <string name="pref_memkeys_summary">Manté les claus descarregadesen memòria fins que el servei finalitzi</string>
-  <string name="pref_conn_persist_title">Connexions persistents</string>
-  <string name="pref_conn_persist_summary">Manté les connexions mentre l\'aplicació és en segon pla</string>
   <string name="pref_keymode_title">Drecera de carpetes</string>
   <string name="pref_stickymodifiers_title">Modificadors enganxosos</string>
   <string name="only_alt">Només Alt</string>
@@ -449,13 +447,6 @@
   <string name="hostpref_save_host">Desa l\'equip remot</string>
   <string name="hostpref_setting_title">Configuració de l\'amfitrió</string>
   <string name="pubkey_import_existing">Importa una clau pública existent</string>
-  <string name="notification_permission_title">Manteniu les connexions actives</string>
-  <string name="notification_permission_message">Mostrar una notificació és necessari per mantenir les connexions actives en segon pla. Sense aquest permís, les connexions es poden tancar quan canvieu d\'aplicació.</string>
-  <string name="grant_permission">Concedeix permisos</string>
-  <string name="connect_anyway">Connecta de totes maneres</string>
-  <string name="notification_permission_denied_title">Es requereix permís</string>
-  <string name="notification_permission_denied_message">Per mantenir les connexions actives en segon pla, heu d\'activar el permís de notificacions a la configuració de l\'aplicació.</string>
-  <string name="open_settings">Obriu la configuració</string>
   <string name="terminal_no_route">Intenteu accedir a un host local? Doneu permís a la xarxa local.</string>
   <string name="loading_message">S\'està carregant...</string>
   <string name="migration_checking">S\'està comprovant la base de dades…</string>

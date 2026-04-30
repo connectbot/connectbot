@@ -46,8 +46,6 @@
   <string name="pref_fullscreen_summary">Fela stöðustiku þegar tenging er virk</string>
   <string name="pref_memkeys_title">Geyma lykla í minni</string>
   <string name="pref_memkeys_summary">Geyma ólæsta lykla í minni þangað til forritinu er lokað</string>
-  <string name="pref_conn_persist_title">Halda tengingum</string>
-  <string name="pref_conn_persist_summary">Halda tengingum í gangi þegar þær eru í bakgrunni</string>
   <string name="pref_keymode_title">Orðabók</string>
   <string name="pref_camera_title">Myndavéla takkinn</string>
   <string name="pref_keepalive_title">Halda skjánum í gangi</string>

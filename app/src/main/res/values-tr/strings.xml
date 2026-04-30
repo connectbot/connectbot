@@ -63,8 +63,6 @@
   <string name="pref_keyboard_category">Klavye</string>
   <string name="pref_memkeys_title">Anahtarları bellekte tut</string>
   <string name="pref_memkeys_summary">Kilidi açılmış anahtarları arkadaki hizmetler sonlanana kadar bellekte tut</string>
-  <string name="pref_conn_persist_title">Bağlantıları sürekli tut</string>
-  <string name="pref_conn_persist_summary">Arkaplanda iken bağlantıları bağlı tutmaya zorla</string>
   <string name="pref_keymode_title">Dizin kısayolları</string>
   <string name="pref_camera_title">Kamera kısayolu</string>
   <string name="pref_keepalive_title">Ekranı açık tut</string>

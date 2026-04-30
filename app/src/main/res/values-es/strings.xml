@@ -132,8 +132,6 @@
   <string name="pref_volumefont_summary">El tamaño de letra puede cambiarse en la configuración de la conexión al host</string>
   <string name="pref_memkeys_title">Recordar claves en memoria</string>
   <string name="pref_memkeys_summary">Recordar claves en memoria hasta que el servicio en segundo plano termine</string>
-  <string name="pref_conn_persist_title">Conexiones persistentes</string>
-  <string name="pref_conn_persist_summary">Mantener conexiones activas en segundo plano</string>
   <string name="pref_keymode_title">Secuencia de teclas para directorios</string>
   <string name="pref_stickymodifiers_title">Corrección de errores al teclear</string>
   <string name="only_alt">Detener solamente</string>
@@ -449,13 +447,6 @@
   <string name="hostpref_save_host">Guardar host</string>
   <string name="hostpref_setting_title">Configuración del host</string>
   <string name="pubkey_import_existing">Importar clave pública existente</string>
-  <string name="notification_permission_title">Mantener las conexiones vivas</string>
-  <string name="notification_permission_message">Mostrar una notificación es requerido para mantener las conexiones vivas en segundo plano Sin permiso las conexiones pueden cerrarse cuando cambias de aplicaciones</string>
-  <string name="grant_permission">Otorgar permiso</string>
-  <string name="connect_anyway">Conectar de todos modos</string>
-  <string name="notification_permission_denied_title">Permiso requerido</string>
-  <string name="notification_permission_denied_message">Para mantener las conexiones vivas en segundo plano debes habilitar el permiso de notificación en la configuración de la aplicación</string>
-  <string name="open_settings">Abrir configuración</string>
   <string name="terminal_no_route">Estás tratando de acceder a un host local Grant permisos de red local</string>
   <string name="loading_message">Cargando…</string>
   <string name="migration_checking">Comprobando base de datos…</string>

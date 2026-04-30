@@ -132,8 +132,6 @@
   <string name="pref_volumefont_summary">O tamanho da letra pode ser alterado nas definições do servidor</string>
   <string name="pref_memkeys_title">Lembrar chaves em memória</string>
   <string name="pref_memkeys_summary">Mantenha as chaves desbloqueadas na memória até que o serviço de back-end seja encerrado.</string>
-  <string name="pref_conn_persist_title">Ligações persistentes</string>
-  <string name="pref_conn_persist_summary">Forçar ligações a ficarem ligadas quando em segundo plano</string>
   <string name="pref_keymode_title">Teclas de atalho</string>
   <string name="pref_stickymodifiers_title">Modificadores com teclas presas</string>
   <string name="only_alt">Apenas alt</string>
@@ -449,13 +447,6 @@
   <string name="hostpref_save_host">Gravar servidor</string>
   <string name="hostpref_setting_title">Configuração do host</string>
   <string name="pubkey_import_existing">Importar chave publica existente</string>
-  <string name="notification_permission_title">Mantenha as conexões ativas</string>
-  <string name="notification_permission_message">Exibir uma notificação é necessário para manter as conexões ativas em segundo plano. Sem essa permissão, as conexões podem ser encerradas quando você mudar de aplicativo.</string>
-  <string name="grant_permission">Conceder permissão</string>
-  <string name="connect_anyway">Conectar de qualquer forma</string>
-  <string name="notification_permission_denied_title">Permissão necessária</string>
-  <string name="notification_permission_denied_message">Para manter as conexões ativas em segundo plano, você deve ativar a permissão de notificação nas configurações do aplicativo.</string>
-  <string name="open_settings">Abrir configurações</string>
   <string name="terminal_no_route">Você está tentando acessar um host local? Conceda permissões à rede local.</string>
   <string name="loading_message">Carregando…</string>
   <string name="migration_checking">Verificando o banco de dados…</string>

@@ -76,8 +76,6 @@
   <string name="pref_volumefont_summary">Letra-tamaina ostalari bakoitzaren ezarpenetan ere aldatu daiteke</string>
   <string name="pref_memkeys_title">Gorde gakoak memorian</string>
   <string name="pref_memkeys_summary">Gogoratu desblokeatutako gakoak memorian zerbitzua amaitu arte</string>
-  <string name="pref_conn_persist_title">Konexio iraunkorrak</string>
-  <string name="pref_conn_persist_summary">Behartu konexioak aktibo mantentzera atzeko planoko daudenean</string>
   <string name="pref_keymode_title">Direktorien laster-teklak</string>
   <string name="pref_stickymodifiers_title">Aldatzaile itsaskorrak</string>
   <string name="only_alt">Alt soilik</string>

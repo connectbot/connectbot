@@ -60,8 +60,6 @@
   <string name="pref_keyboard_category">Papan tik</string>
   <string name="pref_memkeys_title">Ingat kunci dalam memori</string>
   <string name="pref_memkeys_summary">Simpan kunci yang terbuka kedalam memori hingga layanan backend berakhir</string>
-  <string name="pref_conn_persist_title">Pertahankan koneksi</string>
-  <string name="pref_conn_persist_summary">Paksa koneksi untuk tetap terhubung ketika bekerja di belakang layar</string>
   <string name="pref_keymode_title">Jalan pintas direktori</string>
 	<string name="pref_camera_title">Jalan pintas kamera</string>
 	<string name="pref_keepalive_title">Jaga layar tetap terbuka</string>
