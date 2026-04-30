@@ -132,8 +132,6 @@
   <string name="pref_volumefont_summary">フォントサイズはホストごとの設定でも変更することができます</string>
   <string name="pref_memkeys_title">メモリに鍵を保持する</string>
   <string name="pref_memkeys_summary">バックエンドのサービスが終了しない限り、アンロックした鍵をメモリに保持します</string>
-  <string name="pref_conn_persist_title">持続的接続</string>
-  <string name="pref_conn_persist_summary">バックグラウンドでの実行中に接続の持続を強制する</string>
   <string name="pref_keymode_title">ディレクトリショートカット</string>
   <string name="pref_stickymodifiers_title">スティッキー修飾キー</string>
   <string name="only_alt">alt のみ</string>
@@ -449,13 +447,6 @@
   <string name="hostpref_save_host">ホストを保存</string>
   <string name="hostpref_setting_title">ホスト設定</string>
   <string name="pubkey_import_existing">既存の公開鍵をインポート</string>
-  <string name="notification_permission_title">接続を維持する</string>
-  <string name="notification_permission_message">通知を表示することはバックグラウンドで接続を維持するために必要です。許可なくして、接続はアプリを切り替えたときに閉じることがあります。</string>
-  <string name="grant_permission">許可を与える</string>
-  <string name="connect_anyway">つながる</string>
-  <string name="notification_permission_denied_title">パーミッションが必要です</string>
-  <string name="notification_permission_denied_message">バックグラウンドで接続を維持するにはアプリの設定で通知の許可を有効にする必要があります</string>
-  <string name="open_settings">設定を開く</string>
   <string name="terminal_no_route">ローカルホストにアクセスしようとしていますか ローカルネットワークのパーミッションを付与してください</string>
   <string name="loading_message">ロード中…</string>
   <string name="migration_checking">データベースを確認中…</string>

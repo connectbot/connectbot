@@ -65,8 +65,6 @@
   <string name="pref_ctrlfkeys_title">Ctrl+št so F-tipke</string>
   <string name="pref_memkeys_title">Zapomni ključe v spominu</string>
   <string name="pref_memkeys_summary">Hrani odklenjene ključe v spomnu dokler storitev v zaledju ni zaključena</string>
-  <string name="pref_conn_persist_title">Obstojne povezave</string>
-  <string name="pref_conn_persist_summary">Prisili povezave, da ostanejo povezane v ozadju</string>
   <string name="pref_keymode_title">Bližnjice mape</string>
   <string name="only_alt">Samo alt</string>
   <string name="pref_camera_title">Bližnjica kamere</string>

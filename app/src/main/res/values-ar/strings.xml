@@ -132,8 +132,6 @@
   <string name="pref_volumefont_summary">يمكن أيضًا تغيير حجم الخط في إعدادات الملف الشخصي.</string>
   <string name="pref_memkeys_title">تذكر المفاتيح في الذاكرة</string>
   <string name="pref_memkeys_summary">احتفظ بالمفاتيح التي تم فك قفلها في الذاكرة حتى يتم إنهاء الخدمة الخلفية.</string>
-  <string name="pref_conn_persist_title">حفظ الاتصالات</string>
-  <string name="pref_conn_persist_summary">إجبار الاتصالات على البقاء متصلة أثناء تشغيل التطبيق في الخلفية.</string>
   <string name="pref_keymode_title">اختصارات الدليل</string>
   <string name="pref_stickymodifiers_title">تعديلات ثابتة</string>
   <string name="only_alt">فقط Alt</string>
@@ -449,13 +447,6 @@
   <string name="hostpref_save_host">حفظ المضيف</string>
   <string name="hostpref_setting_title">إعدادات المضيف</string>
   <string name="pubkey_import_existing">استيراد مفتاح عام موجود</string>
-  <string name="notification_permission_title">حافظ على استمرار الاتصالات</string>
-  <string name="notification_permission_message">يجب عرض إشعار للحفاظ على الاتصالات نشطة في الخلفية. بدون هذا الإذن، قد تنقطع الاتصالات عند التبديل بين التطبيقات.</string>
-  <string name="grant_permission">امنح الإذن</string>
-  <string name="connect_anyway">واصل الاتصال على أي حال</string>
-  <string name="notification_permission_denied_title">الموافقة مطلوبة</string>
-  <string name="notification_permission_denied_message">للحفاظ على استمرار الاتصالات في الخلفية، يجب عليك تفعيل إذن الإشعارات في إعدادات التطبيق.</string>
-  <string name="open_settings">افتح الإعدادات</string>
   <string name="terminal_no_route">هل تحاول الوصول إلى جهاز محلي؟ امنح التطبيق إذن الوصول إلى الشبكة المحلية.</string>
   <string name="loading_message">جاري التحميل...</string>
   <string name="migration_checking">جارٍ فحص قاعدة البيانات…</string>

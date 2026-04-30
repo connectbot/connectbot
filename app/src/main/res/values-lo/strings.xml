@@ -76,8 +76,6 @@
   <string name="pref_volumefont_summary">ຂະໜາດຕົວອັກສອນຍັງສາມາດປ່ຽນໄດ້ໃນການຕັ້ງຄ່າຂອງແຕ່ລະໂຮສ</string>
   <string name="pref_memkeys_title">ຈື່ຈຳຄີໃນໜ່ວຍຄວາມຈຳ</string>
   <string name="pref_memkeys_summary">ເກັບຮັກສາຄີທີ່ປົດລັອກແລ້ວໄວ້ໃນໜ່ວຍຄວາມຈຳຈົນກວ່າບໍລິການເບື້ອງຫຼັງຈະຖືກຢຸດ</string>
-  <string name="pref_conn_persist_title">ຮັກສາການເຊື່ອມຕໍ່</string>
-  <string name="pref_conn_persist_summary">ບັງຄັບໃຫ້ການເຊື່ອມຕໍ່ຍັງຄົງຢູ່ ໃນຂະນະທີ່ແອັບເຮັດວຽກເບື້ອງຫຼັງ</string>
   <string name="pref_keymode_title">ທາງລັດ Directory</string>
   <string name="pref_stickymodifiers_title">Modifier ແບບຕິດໜຽວ</string>
   <string name="only_alt">ສະເພາະ Alt</string>

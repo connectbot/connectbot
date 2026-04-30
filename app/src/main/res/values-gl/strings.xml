@@ -76,8 +76,6 @@
   <string name="pref_volumefont_summary">O tamaño da fonte tamén pode cambiarse nas configuracións do servidor</string>
   <string name="pref_memkeys_title">Recordar chaves en memoria</string>
   <string name="pref_memkeys_summary">Manter chaves desbloqueadas en memoria ata que o servicio de backend teña terminado</string>
-  <string name="pref_conn_persist_title">Conexións persistentes</string>
-  <string name="pref_conn_persist_summary">Manter conexións activas en segundo plano</string>
   <string name="pref_keymode_title">Atallos de teclado para directorios</string>
   <string name="pref_stickymodifiers_title">Modificadores aderidos</string>
   <string name="only_alt">Só Alt</string>

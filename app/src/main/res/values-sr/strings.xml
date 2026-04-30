@@ -61,8 +61,6 @@
   <string name="pref_volumefont_summary">Величину фонта такође можете да мењате у поставкама по домаћину</string>
   <string name="pref_memkeys_title">Држи кључеве у меморији</string>
   <string name="pref_memkeys_summary">Држи откључане кључеве у меморији док се позадински сервис не оконча</string>
-  <string name="pref_conn_persist_title">Трајне везе</string>
-  <string name="pref_conn_persist_summary">Присили одржање веза при раду у позадини</string>
   <string name="pref_keymode_title">Пречице директоријума</string>
   <string name="pref_stickymodifiers_title">Лепљиви модификатори</string>
   <string name="only_alt">Само Alt</string>

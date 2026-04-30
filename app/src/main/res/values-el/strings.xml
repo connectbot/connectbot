@@ -76,8 +76,6 @@
   <string name="pref_volumefont_summary">Το μέγεθος της γραμματοσειράς μπορεί επίσης να αλλάξει στις ρυθμίσεις ανά κεντρικό υπολογιστή</string>
   <string name="pref_memkeys_title">Να θυμάμαι τα κλειδιά στη μνήμη μου</string>
   <string name="pref_memkeys_summary">Διατήρηση ξεκλειδωμένων κλειδιών στη μνήμη μέχρι να τερματιστεί η υπηρεσία backend</string>
-  <string name="pref_conn_persist_title">Παραμονή συνδέσεων</string>
-  <string name="pref_conn_persist_summary">Αναγκάστε τις συνδέσεις να παραμένουν συνδεδεμένες ενώ βρίσκονται στο παρασκήνιο</string>
   <string name="pref_keymode_title">Συντομεύσεις καταλόγου</string>
   <string name="pref_stickymodifiers_title">Τα πλήκτρα τροποποίησης να παραμείνουν ενεργά</string>
   <string name="only_alt">Μόνο το alt</string>

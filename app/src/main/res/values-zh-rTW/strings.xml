@@ -132,8 +132,6 @@
   <string name="pref_volumefont_summary">字體大小可以在各主機設定內更改</string>
   <string name="pref_memkeys_title">將金鑰儲存在記憶體</string>
   <string name="pref_memkeys_summary">保持記憶體中的金鑰是解鎖狀態，直到背景服務結束</string>
-  <string name="pref_conn_persist_title">保持連線</string>
-  <string name="pref_conn_persist_summary">在背景執行時仍保持連線狀態</string>
   <string name="pref_keymode_title">快捷鍵</string>
   <string name="pref_stickymodifiers_title">粘滯鍵</string>
   <string name="only_alt">只有Alt</string>
@@ -449,13 +447,6 @@
   <string name="hostpref_save_host">儲存主機</string>
   <string name="hostpref_setting_title">主機設定</string>
   <string name="pubkey_import_existing">匯入現有公鑰</string>
-  <string name="notification_permission_title">維持連線狀態</string>
-  <string name="notification_permission_message">顯示通知是維持背景連線的重要步驟。如果沒有相關權限，在切換應用程式時，連線可能會中斷。</string>
-  <string name="grant_permission">授予權限</string>
-  <string name="connect_anyway">仍然要連線</string>
-  <string name="notification_permission_denied_title">需要權限</string>
-  <string name="notification_permission_denied_message">為了讓應用程式在背景中維持連線，您必須在應用程式設定中啟用通知權限。</string>
-  <string name="open_settings">開啟設定</string>
   <string name="terminal_no_route">您是否正在嘗試存取本機主機？請授予本機網路權限。</string>
   <string name="loading_message">正在載入…</string>
   <string name="migration_checking">正在檢查資料庫……</string>

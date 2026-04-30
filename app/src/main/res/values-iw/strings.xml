@@ -132,8 +132,6 @@
   <string name="pref_volumefont_summary">ניתן לשנות גם את גודל הגופן בהגדרות הפרופיל.</string>
   <string name="pref_memkeys_title">לשמור את המפתחות בזיכרון</string>
   <string name="pref_memkeys_summary">להשאיר את המפתחות לאחר השחרור בזיכרון עד ששירות המנגנון מושבת</string>
-  <string name="pref_conn_persist_title">חיבורים עיקשים</string>
-  <string name="pref_conn_persist_summary">לשמור על החיבורים פעילים ברקע</string>
   <string name="pref_keymode_title">קיצורי ספריות</string>
   <string name="pref_stickymodifiers_title">שינויים קבועים</string>
   <string name="only_alt">רק Alt</string>
@@ -449,13 +447,6 @@
   <string name="hostpref_save_host">שמור מארח</string>
   <string name="hostpref_setting_title">הגדרת מארח</string>
   <string name="pubkey_import_existing">ייבא מפתח ציבורי קיים</string>
-  <string name="notification_permission_title">שמור על חיבורים פעילים</string>
-  <string name="notification_permission_message">הצגת התראה נדרשת כדי לשמור על חיבורים פעילים ברקע. ללא הרשאה, חיבורים עלולים להיסגר בעת מעבר בין אפליקציות.</string>
-  <string name="grant_permission">אשר הרשאה</string>
-  <string name="connect_anyway">התחבר בכל מקרה</string>
-  <string name="notification_permission_denied_title">נדרשת הרשאה</string>
-  <string name="notification_permission_denied_message">כדי לשמור על חיבורים פעילים ברקע, עליך להפעיל את הרשאת ההתראות בהגדרות האפליקציה.</string>
-  <string name="open_settings">פתח הגדרות</string>
   <string name="terminal_no_route">האם אתה מנסה לגשת למחשב מקומי? הענק הרשאות לרשת המקומית.</string>
   <string name="loading_message">טוען...</string>
   <string name="migration_checking">בדיקת מסד הנתונים...</string>
