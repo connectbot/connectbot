@@ -39,6 +39,7 @@ import org.connectbot.data.migration.MigrationResult
 import org.connectbot.data.migration.MigrationState
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalManager
+import org.connectbot.util.NotificationPermissionHelper
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.ThemeMode
 import timber.log.Timber
@@ -63,7 +64,8 @@ sealed class AppUiState {
 class AppViewModel @Inject constructor(
     private val migrator: DatabaseMigrator,
     private val prefs: SharedPreferences,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
+    private val notificationPermissionHelper: NotificationPermissionHelper,
 ) : ViewModel() {
 
     private val _terminalManager = MutableStateFlow<TerminalManager?>(null)
@@ -79,6 +81,9 @@ class AppViewModel @Inject constructor(
 
     private val _requestPermission = Channel<Unit>(Channel.CONFLATED)
     val requestPermission = _requestPermission.receiveAsFlow()
+
+    var hostListSnackbarShownThisLaunch: Boolean = false
+        private set
 
     private val _isAuthenticated = MutableStateFlow(false)
     val isAuthenticated: StateFlow<Boolean> = _isAuthenticated.asStateFlow()
@@ -113,7 +118,7 @@ class AppViewModel @Inject constructor(
         viewModelScope.launch {
             combine(
                 _migrationUiState,
-                _terminalManager
+                _terminalManager,
             ) { migrationState, terminalMgr ->
                 when (migrationState) {
                     is MigrationUiState.Checking -> AppUiState.Loading
@@ -122,7 +127,7 @@ class AppViewModel @Inject constructor(
 
                     is MigrationUiState.Failed -> AppUiState.MigrationFailed(
                         migrationState.error,
-                        migrationState.debugLog
+                        migrationState.debugLog,
                     )
 
                     is MigrationUiState.Completed -> {
@@ -176,7 +181,7 @@ class AppViewModel @Inject constructor(
                         Timber.e(result.error, "Migration failed")
                         _migrationUiState.value = MigrationUiState.Failed(
                             error = result.error.message ?: "Unknown error",
-                            debugLog = latestMigrationState?.debugLog ?: emptyList()
+                            debugLog = latestMigrationState?.debugLog ?: emptyList(),
                         )
                     }
                 }
@@ -184,7 +189,7 @@ class AppViewModel @Inject constructor(
                 Timber.e(e, "Error during migration check/execution")
                 _migrationUiState.value = MigrationUiState.Failed(
                     error = e.message ?: "Unknown error",
-                    debugLog = latestMigrationState?.debugLog ?: emptyList()
+                    debugLog = latestMigrationState?.debugLog ?: emptyList(),
                 )
             }
         }
@@ -259,7 +264,7 @@ class AppViewModel @Inject constructor(
     fun checkAndRequestNotificationPermission(
         context: Context,
         uri: Uri,
-        shouldShowRationale: Boolean
+        shouldShowRationale: Boolean,
     ): Boolean {
         Timber.d("checkAndRequestNotificationPermission: uri=$uri, SDK=${Build.VERSION.SDK_INT}")
 
@@ -270,7 +275,7 @@ class AppViewModel @Inject constructor(
 
         val hasPermission = ContextCompat.checkSelfPermission(
             context,
-            android.Manifest.permission.POST_NOTIFICATIONS
+            android.Manifest.permission.POST_NOTIFICATIONS,
         ) == PackageManager.PERMISSION_GRANTED
 
         Timber.d("Permission check: hasPermission=$hasPermission, shouldShowRationale=$shouldShowRationale")
@@ -316,6 +321,16 @@ class AppViewModel @Inject constructor(
         }
     }
 
+    fun shouldShowNotificationWarning(): Boolean {
+        if (!prefs.contains(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED)) return false
+        val connPersist = prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)
+        return !connPersist || !notificationPermissionHelper.isGranted()
+    }
+
+    fun markHostListSnackbarShown() {
+        hostListSnackbarShownThisLaunch = true
+    }
+
     /**
      * Handle the result of a notification permission request.
      * Returns the pending URI regardless of permission result, so navigation can proceed.
@@ -325,11 +340,14 @@ class AppViewModel @Inject constructor(
     fun onNotificationPermissionResult(isGranted: Boolean): Uri? {
         if (isGranted) {
             Timber.d("Notification permission granted")
+            prefs.edit {
+                putBoolean(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED, false)
+            }
         } else {
             Timber.d("Notification permission denied - connections will work but without notifications")
-            // Disable persist connections setting since notification permission is required for it
             prefs.edit {
                 putBoolean(PreferenceConstants.CONNECTION_PERSIST, false)
+                putBoolean(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED, true)
             }
             Timber.d("Disabled persist connections setting due to permission denial")
         }

@@ -48,6 +48,8 @@ fun ConnectBotApp(
     onRetryMigration: () -> Unit,
     onSelectShortcut: (Host, String?, IconStyle) -> Unit,
     onNavigateToConsole: (Host) -> Unit,
+    shouldShowNotificationWarning: () -> Boolean = { false },
+    onNotificationSnackbarShown: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     ConnectBotTheme(themeMode = themeMode) {
@@ -89,6 +91,8 @@ fun ConnectBotApp(
                             makingShortcut = makingShortcut,
                             onSelectShortcut = onSelectShortcut,
                             onNavigateToConsole = onNavigateToConsole,
+                            shouldShowNotificationWarning = shouldShowNotificationWarning,
+                            onNotificationSnackbarShown = onNotificationSnackbarShown,
                             modifier = modifier
                         )
                     }

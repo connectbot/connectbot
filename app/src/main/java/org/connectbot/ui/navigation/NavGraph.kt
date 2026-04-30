@@ -55,7 +55,9 @@ fun ConnectBotNavHost(
     modifier: Modifier = Modifier,
     startDestination: String = NavDestinations.HOST_LIST,
     makingShortcut: Boolean = false,
-    onSelectShortcut: (Host, String?, IconStyle) -> Unit = { _, _, _ -> }
+    onSelectShortcut: (Host, String?, IconStyle) -> Unit = { _, _, _ -> },
+    shouldShowNotificationWarning: () -> Boolean = { false },
+    onNotificationSnackbarShown: () -> Unit = {},
 ) {
     NavHost(
         navController = navController,
@@ -77,6 +79,9 @@ fun ConnectBotNavHost(
                 onNavigateToSettings = {
                     navController.navigateSafely(NavDestinations.SETTINGS)
                 },
+                onNavigateToSettingsHighlightConnPersist = {
+                    navController.navigateSafely(NavDestinations.SETTINGS_HIGHLIGHT_CONN_PERSIST)
+                },
                 onNavigateToPubkeys = {
                     navController.navigateSafely(NavDestinations.PUBKEY_LIST)
                 },
@@ -88,7 +93,9 @@ fun ConnectBotNavHost(
                 },
                 onNavigateToHelp = {
                     navController.navigateSafely(NavDestinations.HELP)
-                }
+                },
+                shouldShowNotificationWarning = shouldShowNotificationWarning,
+                onNotificationSnackbarShown = onNotificationSnackbarShown
             )
         }
 
@@ -102,6 +109,9 @@ fun ConnectBotNavHost(
                 onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToPortForwards = { hostIdForPortForwards ->
                     navController.navigateSafely("${NavDestinations.PORT_FORWARD_LIST}/$hostIdForPortForwards")
+                },
+                onNavigateToSettings = {
+                    navController.navigateSafely(NavDestinations.SETTINGS_HIGHLIGHT_CONN_PERSIST)
                 }
             )
         }
@@ -158,9 +168,20 @@ fun ConnectBotNavHost(
             )
         }
 
-        composable(NavDestinations.SETTINGS) {
+        composable(
+            route = "${NavDestinations.SETTINGS}?highlight={highlight}",
+            arguments = listOf(
+                navArgument("highlight") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                }
+            )
+        ) {
+            val highlight = it.arguments?.getString("highlight")
             SettingsScreen(
-                onNavigateBack = { navController.safePopBackStack() }
+                onNavigateBack = { navController.safePopBackStack() },
+                highlightItem = highlight
             )
         }
 

@@ -27,6 +27,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.connectbot.ui.screens.hostlist.HostListScreen
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -136,5 +137,80 @@ class HostListScreenTest {
             .performClick()
 
         assert(addHostCalled)
+    }
+
+    @Test
+    fun hostListScreen_showsSnackbar_whenShouldShowWarning() {
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                HostListScreen(
+                    onNavigateToConsole = {},
+                    onNavigateToEditHost = {},
+                    onNavigateToSettings = {},
+                    onNavigateToPubkeys = {},
+                    onNavigateToPortForwards = {},
+                    onNavigateToProfiles = {},
+                    onNavigateToHelp = {},
+                    shouldShowNotificationWarning = { true },
+                    onNotificationSnackbarShown = {},
+                )
+            }
+        }
+
+        composeTestRule
+            .onNodeWithText("Connections will drop without notification permission")
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun hostListScreen_snackbarSettingsAction_navigatesToSettingsHighlight() {
+        var navigatedToSettingsHighlight = false
+
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                HostListScreen(
+                    onNavigateToConsole = {},
+                    onNavigateToEditHost = {},
+                    onNavigateToSettings = {},
+                    onNavigateToSettingsHighlightConnPersist = { navigatedToSettingsHighlight = true },
+                    onNavigateToPubkeys = {},
+                    onNavigateToPortForwards = {},
+                    onNavigateToProfiles = {},
+                    onNavigateToHelp = {},
+                    shouldShowNotificationWarning = { true },
+                    onNotificationSnackbarShown = {},
+                )
+            }
+        }
+
+        composeTestRule
+            .onNodeWithText("Settings")
+            .performClick()
+
+        assertTrue(navigatedToSettingsHighlight)
+    }
+
+    @Test
+    fun hostListScreen_noSnackbar_whenShouldNotShowWarning() {
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                HostListScreen(
+                    onNavigateToConsole = {},
+                    onNavigateToEditHost = {},
+                    onNavigateToSettings = {},
+                    onNavigateToPubkeys = {},
+                    onNavigateToPortForwards = {},
+                    onNavigateToProfiles = {},
+                    onNavigateToHelp = {},
+                    shouldShowNotificationWarning = { false },
+                    onNotificationSnackbarShown = {},
+                )
+            }
+        }
+
+        composeTestRule
+            .onAllNodes(androidx.compose.ui.test.hasText("Connections will drop without notification permission"))
+            .fetchSemanticsNodes()
+            .let { nodes -> assertTrue("Snackbar should not be shown", nodes.isEmpty()) }
     }
 }

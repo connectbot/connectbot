@@ -17,6 +17,7 @@
 
 package org.connectbot.ui.screens.console
 
+import android.content.SharedPreferences
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -34,6 +35,8 @@ import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.terminal.ProgressState
+import org.connectbot.util.NotificationPermissionHelper
+import org.connectbot.util.PreferenceConstants
 import javax.inject.Inject
 
 data class ConsoleUiState(
@@ -45,13 +48,15 @@ data class ConsoleUiState(
     val revision: Int = 0,
     // Progress state from OSC 9;4 escape sequences
     val progressState: ProgressState? = null,
-    val progressValue: Int = 0
+    val progressValue: Int = 0,
 )
 
 @HiltViewModel
 class ConsoleViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
+    private val prefs: SharedPreferences,
+    private val notificationPermissionHelper: NotificationPermissionHelper,
 ) : ViewModel() {
     private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
     private var terminalManager: TerminalManager? = null
@@ -61,6 +66,12 @@ class ConsoleViewModel @Inject constructor(
 
     private val _networkStatusMessages = MutableSharedFlow<String>(extraBufferCapacity = 8)
     val networkStatusMessages: SharedFlow<String> = _networkStatusMessages.asSharedFlow()
+
+    fun shouldShowNotificationWarning(): Boolean {
+        if (!prefs.contains(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED)) return false
+        val connPersist = prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)
+        return !connPersist || !notificationPermissionHelper.isGranted()
+    }
 
     fun setTerminalManager(manager: TerminalManager) {
         if (terminalManager != manager) {
@@ -130,7 +141,7 @@ class ConsoleViewModel @Inject constructor(
                                 } else {
                                     it.copy(
                                         progressState = progressInfo.state,
-                                        progressValue = progressInfo.progress
+                                        progressValue = progressInfo.progress,
                                     )
                                 }
                             }
@@ -173,7 +184,7 @@ class ConsoleViewModel @Inject constructor(
                         _uiState.update {
                             it.copy(
                                 isLoading = false,
-                                error = "Temporary connection not found"
+                                error = "Temporary connection not found",
                             )
                         }
                     } else {
@@ -183,7 +194,7 @@ class ConsoleViewModel @Inject constructor(
                             _uiState.update {
                                 it.copy(
                                     isLoading = false,
-                                    error = "Failed to open connection: host not found"
+                                    error = "Failed to open connection: host not found",
                                 )
                             }
                         }
@@ -193,7 +204,7 @@ class ConsoleViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        error = e.message ?: "Failed to create connection"
+                        error = e.message ?: "Failed to create connection",
                     )
                 }
             }
@@ -231,7 +242,7 @@ class ConsoleViewModel @Inject constructor(
                 bridges = newBridges,
                 currentBridgeIndex = newIndex,
                 isLoading = if (shouldStopLoading) false else it.isLoading,
-                error = null
+                error = null,
             )
         }
     }
