@@ -79,6 +79,9 @@ class MainActivity : AppCompatActivity() {
     private var bound = false
     private var requestedUri: Uri? by mutableStateOf(null)
     private var pendingHostConnection: Host? by mutableStateOf(null)
+
+    // Holds the host waiting for permission result; not compose state so it doesn't trigger navigation.
+    private var hostAwaitingPermission: Host? = null
     internal var makingShortcut by mutableStateOf(false)
     private var showDisconnectAllDialog by mutableStateOf(false)
 
@@ -93,12 +96,12 @@ class MainActivity : AppCompatActivity() {
         appViewModel.onNotificationPermissionResult(actuallyGranted)?.let { uri ->
             requestedUri = uri
         }
-        // Connections do not require notification permission, so a denied permission
-        // does not block any pending host connection. Navigation to, and clearing of,
-        // any pendingHostConnection are handled unconditionally by the LaunchedEffect
-        // in the composable UI that observes this state.
-        if (!actuallyGranted && pendingHostConnection != null) {
-            Timber.d("Permission denied; proceeding with any pending host connection")
+        // Prefs are now written; move the waiting host into pendingHostConnection so
+        // the LaunchedEffect that watches it triggers navigation after the warning state is set.
+        hostAwaitingPermission?.let { host ->
+            Timber.d("Permission result received; proceeding to console for ${host.nickname}")
+            pendingHostConnection = host
+            hostAwaitingPermission = null
         }
     }
 
@@ -211,9 +214,11 @@ class MainActivity : AppCompatActivity() {
 
             // Re-check permission status when activity resumes (e.g., user grants/revokes in Settings)
             ObservePermissionOnResume { isGranted ->
-                if (pendingHostConnection != null) {
-                    // Permission state changed and we have a pending connection
+                if (hostAwaitingPermission != null) {
+                    // Permission state changed while waiting for a connection
                     appViewModel.onNotificationPermissionResult(isGranted)
+                    pendingHostConnection = hostAwaitingPermission
+                    hostAwaitingPermission = null
                 }
             }
 
@@ -255,10 +260,11 @@ class MainActivity : AppCompatActivity() {
                                 requestedUri = uri
                                 appViewModel.clearPendingConnectionUri()
                             }
-                            // Also handle pending host connection
-                            pendingHostConnection?.let { host ->
+                            // Handle host waiting for permission result
+                            hostAwaitingPermission?.let { host ->
+                                appViewModel.onNotificationPermissionResult(isGranted = false)
                                 navController.navigate("${NavDestinations.CONSOLE}/${host.id}")
-                                pendingHostConnection = null
+                                hostAwaitingPermission = null
                             }
                         },
                         onAllow = {
@@ -284,9 +290,11 @@ class MainActivity : AppCompatActivity() {
                     // Either persistence is disabled (no permission needed) or permission granted, navigate immediately
                     navController.navigate("${NavDestinations.CONSOLE}/${host.id}")
                 } else {
-                    // Persistence is enabled but no permission - need to request permission
+                    // Persistence is enabled but no permission - need to request permission.
+                    // Store in hostAwaitingPermission (not compose state) so we don't navigate
+                    // until after the permission result is written to prefs.
                     Timber.d("Requesting notification permission before connection")
-                    pendingHostConnection = host
+                    hostAwaitingPermission = host
                     val shouldShowRationale = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                         this@MainActivity.shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)
                     } else {
