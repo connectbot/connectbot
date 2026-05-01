@@ -321,25 +321,7 @@ class Fido2Manager @Inject constructor(
             Log.d(TAG, "USB PIN authentication successful")
 
             val credMgmt = CredentialManagement(session, protocol, token)
-            val rps = credMgmt.enumerateRps()
-            Log.d(TAG, "USB found ${rps.size} RPs")
-
-            val sshRps = rps.filter { rpData ->
-                val rpId = rpData.rp["id"] as? String
-                rpId == SSH_RP_ID || rpId?.startsWith("ssh:") == true
-            }
-
-            if (sshRps.isEmpty()) {
-                Log.d(TAG, "USB no SSH RP found")
-                return Fido2Result.Success(emptyList())
-            }
-
-            val credentialList = sshRps.flatMap { sshRp ->
-                val rpHash = sshRp.rpIdHash
-                val credentials = credMgmt.enumerateCredentials(rpHash)
-                Log.d(TAG, "USB found ${credentials.size} credentials for RP ${sshRp.rp["id"]}")
-                credentials.map { buildCredentialFromData(it, sshRp) }
-            }
+            val credentialList = enumerateSshCredentials(credMgmt, "USB")
 
             Log.i(TAG, "USB credential enumeration complete: ${credentialList.size} credentials")
             return Fido2Result.Success(credentialList)
@@ -632,28 +614,7 @@ class Fido2Manager @Inject constructor(
                             // Enumerate credentials - ALL on the same thread
                             Timber.d("NFC enumerating credentials on thread $threadName")
                             val credMgmt = CredentialManagement(session, protocol, token)
-
-                            val rps = credMgmt.enumerateRps()
-                            Timber.d("NFC found ${rps.size} RPs")
-
-                            val sshRps = rps.filter { rpData ->
-                                val rpId = rpData.rp["id"] as? String
-                                rpId == SSH_RP_ID || rpId?.startsWith("ssh:") == true
-                            }
-
-                            if (sshRps.isEmpty()) {
-                                Timber.d("NFC no SSH RP found")
-                                session.close()
-                                continuation.resume(Fido2Result.Success(emptyList()))
-                                return@requestConnection
-                            }
-
-                            val credentialList = sshRps.flatMap { sshRp ->
-                                val rpHash = sshRp.rpIdHash
-                                val credentials = credMgmt.enumerateCredentials(rpHash)
-                                Timber.d("NFC found ${credentials.size} credentials for RP ${sshRp.rp["id"]}")
-                                credentials.map { buildCredentialFromData(it, sshRp) }
-                            }
+                            val credentialList = enumerateSshCredentials(credMgmt, "NFC")
 
                             session.close()
                             Timber.i("NFC credential enumeration complete: ${credentialList.size} credentials")
@@ -854,27 +815,7 @@ class Fido2Manager @Inject constructor(
         return try {
             Log.d(TAG, "discoverSshCredentials: enumerating RPs on thread ${Thread.currentThread().name}")
             val credMgmt = CredentialManagement(session, protocol, token)
-
-            // Find SSH relying party
-            val rps = credMgmt.enumerateRps()
-            Log.d(TAG, "discoverSshCredentials: found ${rps.size} RPs")
-            val sshRps = rps.filter { rpData ->
-                val rpId = rpData.rp["id"] as? String
-                rpId == SSH_RP_ID || rpId?.startsWith("ssh:") == true
-            }
-
-            if (sshRps.isEmpty()) {
-                Log.d(TAG, "discoverSshCredentials: no SSH RP found")
-                return Fido2Result.Success(emptyList())
-            }
-
-            // Enumerate credentials for all SSH RPs
-            val result = sshRps.flatMap { sshRp ->
-                val rpHash = sshRp.rpIdHash
-                val credentials = credMgmt.enumerateCredentials(rpHash)
-                Log.d(TAG, "discoverSshCredentials: found ${credentials.size} credentials for RP ${sshRp.rp["id"]}")
-                credentials.map { buildCredentialFromData(it, sshRp) }
-            }
+            val result = enumerateSshCredentials(credMgmt, "discoverSshCredentials")
 
             Log.d(TAG, "discoverSshCredentials: success with ${result.size} credentials")
             Fido2Result.Success(result)
@@ -947,7 +888,7 @@ class Fido2Manager @Inject constructor(
                     return@withContext Fido2Result.Error(ERR_NO_ASSERTION_RETURNED)
                 }
 
-                Fido2Result.Success(buildSignatureResult(assertions[0]))
+                Fido2Result.Success(Fido2SignatureMapper.fromAssertion(assertions[0]))
             } catch (e: Exception) {
                 Timber.e(e, "Failed to get assertion")
                 Fido2Result.Error(e.message ?: "Failed to sign challenge")
@@ -1138,63 +1079,24 @@ class Fido2Manager @Inject constructor(
 
     private fun sha256(data: ByteArray): ByteArray = MessageDigest.getInstance("SHA-256").digest(data)
 
-    /**
-     * Build a [Fido2Credential] from a YubiKit [CredentialManagement.CredentialData].
-     * Centralizes the COSE-algorithm decoding and null-handling shared by the
-     * USB/NFC enumeration paths.
-     */
-    private fun buildCredentialFromData(
-        credData: CredentialManagement.CredentialData,
-        sshRp: CredentialManagement.RpData,
-    ): Fido2Credential {
-        val user = credData.user
-        val credentialId = credData.credentialId["id"] as? ByteArray
-            ?: error(ERR_MISSING_CREDENTIAL_ID)
-        val publicKey = credData.publicKey
+    private fun enumerateSshCredentials(
+        credMgmt: CredentialManagement,
+        logPrefix: String,
+    ): List<Fido2Credential> {
+        val rps = credMgmt.enumerateRps()
+        Timber.d("$logPrefix found ${rps.size} RPs")
 
-        @Suppress("UNCHECKED_CAST")
-        val pubKeyMap = publicKey as? Map<Int, Any>
-        val algValue = pubKeyMap?.get(3)
-        val algorithm = when (algValue) {
-            -7, -7L -> Fido2Algorithm.ES256
-            -8, -8L -> Fido2Algorithm.EDDSA
-            else -> error("Unsupported algorithm: $algValue")
+        val sshRps = rps.filter(Fido2CredentialMapper::isSshRp)
+        if (sshRps.isEmpty()) {
+            Timber.d("$logPrefix no SSH RP found")
+            return emptyList()
         }
 
-        val publicKeyCose = encodeCoseKey(publicKey)
-
-        return Fido2Credential(
-            credentialId = credentialId,
-            rpId = sshRp.rp["id"] as? String ?: SSH_RP_ID,
-            userHandle = user["id"] as? ByteArray,
-            userName = user["name"] as? String,
-            publicKeyCose = publicKeyCose,
-            algorithm = algorithm,
-        )
-    }
-
-    /**
-     * Parse the authenticator-data counter and flags from a YubiKit assertion
-     * and wrap the result as a [Fido2SignatureResult]. Shared by all signing paths.
-     */
-    private fun buildSignatureResult(assertion: Ctap2Session.AssertionData): Fido2SignatureResult {
-        val authData = assertion.authenticatorData
-        val counter = if (authData.size >= 37) {
-            ((authData[33].toInt() and 0xFF) shl 24) or
-                ((authData[34].toInt() and 0xFF) shl 16) or
-                ((authData[35].toInt() and 0xFF) shl 8) or
-                (authData[36].toInt() and 0xFF)
-        } else {
-            0
+        return sshRps.flatMap { sshRp ->
+            val credentials = credMgmt.enumerateCredentials(sshRp.rpIdHash)
+            Timber.d("$logPrefix found ${credentials.size} credentials for RP ${sshRp.rp["id"]}")
+            credentials.map { Fido2CredentialMapper.fromCredentialData(it, sshRp) }
         }
-        val flags = if (authData.size >= 33) authData[32] else 0
-        return Fido2SignatureResult(
-            authenticatorData = authData,
-            signature = assertion.signature,
-            userPresenceVerified = (flags.toInt() and 0x01) != 0,
-            userVerified = (flags.toInt() and 0x04) != 0,
-            counter = counter,
-        )
     }
 
     /**
@@ -1241,7 +1143,7 @@ class Fido2Manager @Inject constructor(
             Fido2Result.Error(ERR_NO_ASSERTION_RETURNED)
         } else {
             Log.i(TAG, "$transport SSH signing successful")
-            Fido2Result.Success(buildSignatureResult(assertions[0]))
+            Fido2Result.Success(Fido2SignatureMapper.fromAssertion(assertions[0]))
         }
     } catch (e: Exception) {
         Log.e(TAG, "$transport SSH signing failed: ${e.message}", e)
@@ -1292,57 +1194,6 @@ class Fido2Manager @Inject constructor(
         }
     }
 
-    /**
-     * Encode a public key map to CBOR bytes.
-     */
-    private fun encodeCoseKey(publicKey: Map<*, *>): ByteArray {
-        // Convert the map to CBOR format
-        val output = java.io.ByteArrayOutputStream()
-        val encoder = co.nstant.`in`.cbor.CborEncoder(output)
-
-        val cborMap = co.nstant.`in`.cbor.model.Map()
-        for ((key, value) in publicKey) {
-            val cborKey = when (key) {
-                is Long -> if (key >= 0) {
-                    co.nstant.`in`.cbor.model.UnsignedInteger(key)
-                } else {
-                    co.nstant.`in`.cbor.model.NegativeInteger(key)
-                }
-
-                is Int -> if (key >= 0) {
-                    co.nstant.`in`.cbor.model.UnsignedInteger(key.toLong())
-                } else {
-                    co.nstant.`in`.cbor.model.NegativeInteger(key.toLong())
-                }
-
-                else -> continue
-            }
-
-            val cborValue = when (value) {
-                is ByteArray -> co.nstant.`in`.cbor.model.ByteString(value)
-
-                is Long -> if (value >= 0) {
-                    co.nstant.`in`.cbor.model.UnsignedInteger(value)
-                } else {
-                    co.nstant.`in`.cbor.model.NegativeInteger(value)
-                }
-
-                is Int -> if (value >= 0) {
-                    co.nstant.`in`.cbor.model.UnsignedInteger(value.toLong())
-                } else {
-                    co.nstant.`in`.cbor.model.NegativeInteger(value.toLong())
-                }
-
-                else -> continue
-            }
-
-            cborMap.put(cborKey, cborValue)
-        }
-
-        encoder.encode(cborMap)
-        return output.toByteArray()
-    }
-
     companion object {
         private const val TAG = "Fido2Manager"
 
@@ -1350,7 +1201,6 @@ class Fido2Manager @Inject constructor(
         const val SSH_RP_ID = "ssh:"
 
         private const val PUBLIC_KEY_TYPE = "public-key"
-        private const val ERR_MISSING_CREDENTIAL_ID = "Missing credential ID"
         private const val ERR_NO_DEVICE_CONNECTED = "No device connected"
         private const val ERR_PROTOCOL_NOT_INITIALIZED = "Protocol not initialized"
         private const val ERR_NO_ASSERTION_RETURNED = "No assertion returned"
