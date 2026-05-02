@@ -1101,6 +1101,24 @@
 	<string name="portforward_destination_placeholder">localhost:80</string>
 	<!-- Error message for invalid destination format -->
 	<string name="portforward_destination_format_error">Format should be host:port (e.g., localhost:80)</string>
+	<!-- Label for the host address spinner shown when type is Remote -->
+	<string name="portforward_host_address">Host address</string>
+	<!-- Host address option: bind to localhost (default) -->
+	<string name="portforward_source_addr_localhost">Localhost</string>
+	<!-- Host address option: bind to 127.0.0.1 (IPv4 loopback only) -->
+	<string name="portforward_source_addr_localhost_ipv4">Localhost (IPv4 only)</string>
+	<!-- Host address option: bind to ::1 (IPv6 loopback only) -->
+	<string name="portforward_source_addr_localhost_ipv6">Localhost (IPv6 only)</string>
+	<!-- Host address option: bind to all interfaces (empty string in SSH) -->
+	<string name="portforward_source_addr_all">All addresses</string>
+	<!-- Host address option: bind to 0.0.0.0 (all IPv4 interfaces) -->
+	<string name="portforward_source_addr_all_ipv4">All IPv4 addresses</string>
+	<!-- Host address option: bind to :: (all IPv6 interfaces) -->
+	<string name="portforward_source_addr_all_ipv6">All IPv6 addresses</string>
+	<!-- Host address option: user enters a specific address manually -->
+	<string name="portforward_source_addr_specific">Specific address</string>
+	<!-- Placeholder for the specific host address text field -->
+	<string name="portforward_source_addr_specific_placeholder">192.168.1.1</string>
 
 	<!-- Port forward list labels -->
 	<!-- Label prefix for displaying port forward type in list -->

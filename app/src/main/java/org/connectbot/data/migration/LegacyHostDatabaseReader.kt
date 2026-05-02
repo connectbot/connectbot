@@ -53,7 +53,7 @@ data class LegacyHost(
     val colorSchemeId: Long,
     val delKey: String,
     val scrollbackLines: Int,
-    val useCtrlAltAsMetaKey: Boolean
+    val useCtrlAltAsMetaKey: Boolean,
 )
 
 /**
@@ -81,7 +81,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
                 null, // no where args
                 null, // no group by
                 null, // no having
-                "nickname ASC" // order by
+                "nickname ASC", // order by
             ).use { cursor ->
                 while (cursor.moveToNext()) {
                     try {
@@ -112,7 +112,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
                 null,
                 null,
                 null,
-                "_id ASC"
+                "_id ASC",
             ).use { cursor ->
                 while (cursor.moveToNext()) {
                     try {
@@ -146,7 +146,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
                 INNER JOIN hosts h ON kh.hostid = h._id
                 ORDER BY kh._id ASC
                 """.trimIndent(),
-                null
+                null,
             ).use { cursor ->
                 while (cursor.moveToNext()) {
                     try {
@@ -180,7 +180,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
                     null,
                     null,
                     null,
-                    "_id ASC"
+                    "_id ASC",
                 ).use { cursor ->
                     while (cursor.moveToNext()) {
                         try {
@@ -214,7 +214,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
                 null,
                 null,
                 null,
-                "scheme ASC, number ASC"
+                "scheme ASC, number ASC",
             ).use { cursor ->
                 while (cursor.moveToNext()) {
                     try {
@@ -279,7 +279,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
             colorSchemeId = if (colorSchemeIdIndex >= 0) cursor.getLong(colorSchemeIdIndex) else 1L,
             delKey = cursor.getString(delKeyIndex) ?: "del",
             scrollbackLines = if (scrollbackLinesIndex >= 0) cursor.getInt(scrollbackLinesIndex) else 140,
-            useCtrlAltAsMetaKey = if (useCtrlAltAsMetaIndex >= 0) cursor.getStringAsBoolean(useCtrlAltAsMetaIndex) else false
+            useCtrlAltAsMetaKey = if (useCtrlAltAsMetaIndex >= 0) cursor.getStringAsBoolean(useCtrlAltAsMetaIndex) else false,
         )
     }
 
@@ -297,9 +297,10 @@ class LegacyHostDatabaseReader(private val context: Context) {
             hostId = cursor.getLong(hostIdIndex),
             nickname = cursor.getString(nicknameIndex) ?: "",
             type = cursor.getString(typeIndex) ?: "local",
+            sourceAddr = "localhost",
             sourcePort = cursor.getInt(sourcePortIndex),
             destAddr = cursor.getString(destAddrIndex) ?: "",
-            destPort = cursor.getInt(destPortIndex)
+            destPort = cursor.getInt(destPortIndex),
         )
     }
 
@@ -332,7 +333,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
             hostname = cursor.getString(hostnameIndex) ?: "",
             port = cursor.getInt(portIndex),
             hostKeyAlgo = hostKeyAlgo,
-            hostKey = hostKey
+            hostKey = hostKey,
         )
     }
 
@@ -350,7 +351,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
             id = id,
             name = name,
             isBuiltIn = true, // Legacy schemes are treated as built-in
-            description = if (descriptionIndex >= 0) cursor.getString(descriptionIndex) ?: "" else ""
+            description = if (descriptionIndex >= 0) cursor.getString(descriptionIndex) ?: "" else "",
         )
     }
 
@@ -362,7 +363,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
         return ColorPalette(
             schemeId = cursor.getInt(schemeIndex).toLong(),
             colorIndex = cursor.getInt(numberIndex),
-            color = cursor.getInt(valueIndex)
+            color = cursor.getInt(valueIndex),
         )
     }
 
@@ -377,7 +378,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
             val db = SQLiteDatabase.openDatabase(
                 dbFile.absolutePath,
                 null,
-                SQLiteDatabase.OPEN_READONLY
+                SQLiteDatabase.OPEN_READONLY,
             )
             try {
                 block(db)

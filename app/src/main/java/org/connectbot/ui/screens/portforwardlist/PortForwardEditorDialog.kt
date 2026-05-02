@@ -17,6 +17,12 @@
 
 package org.connectbot.ui.screens.portforwardlist
 
+import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,7 +44,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -46,24 +51,46 @@ import androidx.compose.ui.unit.dp
 import org.connectbot.R
 import org.connectbot.util.HostConstants
 
+enum class SourceAddressOption(val sshValue: String, @StringRes val labelRes: Int) {
+    LOCALHOST("localhost", R.string.portforward_source_addr_localhost),
+    LOCALHOST_IPV4("127.0.0.1", R.string.portforward_source_addr_localhost_ipv4),
+    LOCALHOST_IPV6("::1", R.string.portforward_source_addr_localhost_ipv6),
+    ALL("", R.string.portforward_source_addr_all),
+    ALL_IPV4("0.0.0.0", R.string.portforward_source_addr_all_ipv4),
+    ALL_IPV6("::", R.string.portforward_source_addr_all_ipv6),
+    SPECIFIC("", R.string.portforward_source_addr_specific),
+    ;
+
+    companion object {
+        fun fromSshValue(value: String?): SourceAddressOption = when (value) {
+            "localhost" -> LOCALHOST
+            "127.0.0.1" -> LOCALHOST_IPV4
+            "::1" -> LOCALHOST_IPV6
+            "" -> ALL
+            "0.0.0.0" -> ALL_IPV4
+            "::" -> ALL_IPV6
+            null -> LOCALHOST
+            else -> SPECIFIC
+        }
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PortForwardEditorDialog(
     onDismiss: () -> Unit,
-    onSave: (nickname: String, type: String, sourcePort: String, destination: String) -> Unit,
+    onSave: (nickname: String, type: String, sourcePort: String, sourceAddr: String, destination: String) -> Unit,
     initialNickname: String = "",
     initialType: String = HostConstants.PORTFORWARD_LOCAL,
     initialSourcePort: String = "",
+    initialSourceAddr: String? = "localhost",
     initialDestination: String = "",
-    isEditing: Boolean = false
+    isEditing: Boolean = false,
 ) {
-    val context = LocalContext.current
-
     var nickname by remember { mutableStateOf(initialNickname) }
     var sourcePort by remember { mutableStateOf(initialSourcePort) }
     var destination by remember { mutableStateOf(initialDestination) }
 
-    // Map initial type string to index
     val initialTypeIndex = when (initialType) {
         HostConstants.PORTFORWARD_LOCAL -> 0
         HostConstants.PORTFORWARD_REMOTE -> 1
@@ -75,7 +102,15 @@ fun PortForwardEditorDialog(
 
     val portForwardTypes = stringArrayResource(R.array.list_portforward_types)
 
-    // Map type index to database type string
+    val initialSourceOption = SourceAddressOption.fromSshValue(initialSourceAddr)
+    var sourceAddressOption by remember { mutableStateOf(initialSourceOption) }
+    var sourceAddressMenuExpanded by remember { mutableStateOf(false) }
+    var specificAddress by remember {
+        mutableStateOf(
+            if (initialSourceOption == SourceAddressOption.SPECIFIC) initialSourceAddr ?: "" else "",
+        )
+    }
+
     val typeString = when (typeIndex) {
         0 -> HostConstants.PORTFORWARD_LOCAL
         1 -> HostConstants.PORTFORWARD_REMOTE
@@ -83,23 +118,23 @@ fun PortForwardEditorDialog(
         else -> HostConstants.PORTFORWARD_LOCAL
     }
 
-    // Dynamic SOCKS proxy doesn't need destination
+    val isRemote = typeIndex == 1
     val needsDestination = typeIndex != 2
 
-    // Validation
     val sourcePortValue = sourcePort.ifEmpty { "8080" }.toIntOrNull()
     val isSourcePortValid = sourcePortValue != null && sourcePortValue in 1..65535
 
     val isDestinationValid = if (needsDestination) {
         val dest = destination.ifEmpty { "localhost:80" }
-        // Basic validation: should contain a colon and have non-empty parts
         val parts = dest.split(":")
         parts.size == 2 && parts[0].isNotEmpty() && parts[1].toIntOrNull() != null
     } else {
-        true // Destination not needed for dynamic SOCKS
+        true
     }
 
-    val canSave = isSourcePortValid && isDestinationValid
+    val isSpecificAddressValid = sourceAddressOption != SourceAddressOption.SPECIFIC || specificAddress.isNotEmpty()
+
+    val canSave = isSourcePortValid && isDestinationValid && (!isRemote || isSpecificAddressValid)
 
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -112,14 +147,14 @@ fun PortForwardEditorDialog(
                     label = { Text(stringResource(R.string.prompt_nickname)) },
                     placeholder = { Text(stringResource(R.string.portforward_nickname_placeholder)) },
                     modifier = Modifier.fillMaxWidth(),
-                    singleLine = true
+                    singleLine = true,
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
 
                 ExposedDropdownMenuBox(
                     expanded = typeMenuExpanded,
-                    onExpandedChange = { typeMenuExpanded = it }
+                    onExpandedChange = { typeMenuExpanded = it },
                 ) {
                     OutlinedTextField(
                         value = portForwardTypes[typeIndex],
@@ -129,11 +164,11 @@ fun PortForwardEditorDialog(
                         trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = typeMenuExpanded) },
                         modifier = Modifier
                             .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
                     )
                     ExposedDropdownMenu(
                         expanded = typeMenuExpanded,
-                        onDismissRequest = { typeMenuExpanded = false }
+                        onDismissRequest = { typeMenuExpanded = false },
                     ) {
                         portForwardTypes.forEachIndexed { index, type ->
                             DropdownMenuItem(
@@ -141,7 +176,61 @@ fun PortForwardEditorDialog(
                                 onClick = {
                                     typeIndex = index
                                     typeMenuExpanded = false
+                                },
+                            )
+                        }
+                    }
+                }
+
+                AnimatedVisibility(
+                    visible = isRemote,
+                    enter = expandVertically() + fadeIn(),
+                    exit = shrinkVertically() + fadeOut(),
+                ) {
+                    Column {
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        ExposedDropdownMenuBox(
+                            expanded = sourceAddressMenuExpanded,
+                            onExpandedChange = { sourceAddressMenuExpanded = it },
+                        ) {
+                            OutlinedTextField(
+                                value = stringResource(sourceAddressOption.labelRes),
+                                onValueChange = {},
+                                readOnly = true,
+                                label = { Text(stringResource(R.string.portforward_host_address)) },
+                                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = sourceAddressMenuExpanded) },
+                                modifier = Modifier
+                                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                                    .fillMaxWidth(),
+                            )
+                            ExposedDropdownMenu(
+                                expanded = sourceAddressMenuExpanded,
+                                onDismissRequest = { sourceAddressMenuExpanded = false },
+                            ) {
+                                SourceAddressOption.entries.forEach { option ->
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(option.labelRes)) },
+                                        onClick = {
+                                            sourceAddressOption = option
+                                            sourceAddressMenuExpanded = false
+                                        },
+                                    )
                                 }
+                            }
+                        }
+
+                        if (sourceAddressOption == SourceAddressOption.SPECIFIC) {
+                            Spacer(modifier = Modifier.height(8.dp))
+
+                            OutlinedTextField(
+                                value = specificAddress,
+                                onValueChange = { specificAddress = it },
+                                label = { Text(stringResource(R.string.portforward_host_address)) },
+                                placeholder = { Text(stringResource(R.string.portforward_source_addr_specific_placeholder)) },
+                                modifier = Modifier.fillMaxWidth(),
+                                singleLine = true,
+                                isError = specificAddress.isEmpty(),
                             )
                         }
                     }
@@ -162,7 +251,7 @@ fun PortForwardEditorDialog(
                         { Text(stringResource(R.string.portforward_port_range_error)) }
                     } else {
                         null
-                    }
+                    },
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -180,7 +269,7 @@ fun PortForwardEditorDialog(
                         { Text(stringResource(R.string.portforward_destination_format_error)) }
                     } else {
                         null
-                    }
+                    },
                 )
             }
         },
@@ -188,14 +277,23 @@ fun PortForwardEditorDialog(
             TextButton(
                 onClick = {
                     val finalSourcePort = sourcePort.ifEmpty { "8080" }
+                    val finalSourceAddr = if (isRemote) {
+                        if (sourceAddressOption == SourceAddressOption.SPECIFIC) {
+                            specificAddress
+                        } else {
+                            sourceAddressOption.sshValue
+                        }
+                    } else {
+                        "localhost"
+                    }
                     val finalDestination = if (needsDestination) {
                         destination.ifEmpty { "localhost:80" }
                     } else {
                         destination
                     }
-                    onSave(nickname, typeString, finalSourcePort, finalDestination)
+                    onSave(nickname, typeString, finalSourcePort, finalSourceAddr, finalDestination)
                 },
-                enabled = canSave
+                enabled = canSave,
             ) {
                 Text(stringResource(if (isEditing) R.string.portforward_save else R.string.portforward_pos))
             }
@@ -204,6 +302,6 @@ fun PortForwardEditorDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.delete_neg))
             }
-        }
+        },
     )
 }

@@ -1080,7 +1080,7 @@ class SSH :
 
             HostConstants.PORTFORWARD_REMOTE -> {
                 try {
-                    connection?.requestRemotePortForwarding("", portForward.sourcePort, portForward.destAddr, portForward.destPort)
+                    connection?.requestRemotePortForwarding(portForward.sourceAddr, portForward.sourcePort, portForward.destAddr, portForward.destPort)
                 } catch (e: Exception) {
                     Timber.e(e, "Could not create remote port forward")
                     return false

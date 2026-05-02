@@ -25,4 +25,14 @@
 		<item>@string/portforward_dynamic</item>
 	</string-array>
 
+	<string-array name="list_portforward_source_addresses">
+		<item>@string/portforward_source_addr_localhost</item>
+		<item>@string/portforward_source_addr_localhost_ipv4</item>
+		<item>@string/portforward_source_addr_localhost_ipv6</item>
+		<item>@string/portforward_source_addr_all</item>
+		<item>@string/portforward_source_addr_all_ipv4</item>
+		<item>@string/portforward_source_addr_all_ipv6</item>
+		<item>@string/portforward_source_addr_specific</item>
+	</string-array>
+
 </resources>
