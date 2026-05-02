@@ -258,6 +258,7 @@ class PortForwardDaoTest {
         hostId = hostId,
         nickname = nickname,
         type = type,
+        sourceAddr = "localhost",
         sourcePort = sourcePort,
         destAddr = destAddr,
         destPort = destPort,

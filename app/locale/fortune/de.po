@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-29 21:38-0700\n"
+"POT-Creation-Date: 2026-05-07 20:20-0700\n"
 "PO-Revision-Date: 2026-04-29 21:25-0700\n"
 "Last-Translator: Kenny Root <Unknown>\n"
 "Language: de\n"
@@ -2460,6 +2460,51 @@ msgctxt "portforward_destination_format_error"
 msgid "Format should be host:port (e.g., localhost:80)"
 msgstr "Das Format sollte host:port sein (z.B. localhost:80)"
 
+#. Label for the host address spinner shown when type is Remote
+msgctxt "portforward_host_address"
+msgid "Host address"
+msgstr ""
+
+#. Host address option: bind to localhost (default)
+msgctxt "portforward_source_addr_localhost"
+msgid "Localhost"
+msgstr ""
+
+#. Host address option: bind to 127.0.0.1 (IPv4 loopback only)
+msgctxt "portforward_source_addr_localhost_ipv4"
+msgid "Localhost (IPv4 only)"
+msgstr ""
+
+#. Host address option: bind to ::1 (IPv6 loopback only)
+msgctxt "portforward_source_addr_localhost_ipv6"
+msgid "Localhost (IPv6 only)"
+msgstr ""
+
+#. Host address option: bind to all interfaces (empty string in SSH)
+msgctxt "portforward_source_addr_all"
+msgid "All addresses"
+msgstr ""
+
+#. Host address option: bind to 0.0.0.0 (all IPv4 interfaces)
+msgctxt "portforward_source_addr_all_ipv4"
+msgid "All IPv4 addresses"
+msgstr ""
+
+#. Host address option: bind to :: (all IPv6 interfaces)
+msgctxt "portforward_source_addr_all_ipv6"
+msgid "All IPv6 addresses"
+msgstr ""
+
+#. Host address option: user enters a specific address manually
+msgctxt "portforward_source_addr_specific"
+msgid "Specific address"
+msgstr ""
+
+#. Placeholder for the specific host address text field
+msgctxt "portforward_source_addr_specific_placeholder"
+msgid "192.168.1.1"
+msgstr ""
+
 #. Port forward list labels
 #. Label prefix for displaying port forward type in list
 #, c-format
@@ -2523,6 +2568,22 @@ msgstr "Host-Einstellung"
 msgctxt "pubkey_import_existing"
 msgid "Import existing pubkey"
 msgstr "Vorhandenen öffentlichen Schlüssel importieren"
+
+#. Text for button which, when clicked, imports a pubkey from the clipboard.
+msgctxt "pubkey_import_from_clipboard"
+msgid "Import from clipboard"
+msgstr ""
+
+#. Label for the key content text field in the import-from-clipboard dialog.
+msgctxt "pubkey_import_clipboard_key_label"
+msgid "Private key content"
+msgstr ""
+
+#. Content description for the paste button in the import-from-clipboard
+#. dialog.
+msgctxt "pubkey_paste_from_clipboard"
+msgid "Paste from clipboard"
+msgstr ""
 
 #. Title for notification permission dialog shown when user first tries to
 #. connect to a host.              Explains that notifications keep SSH

@@ -126,6 +126,7 @@ class PortForwardListViewModelTest {
         hostId = testHostId,
         nickname = nickname,
         type = type,
+        sourceAddr = "localhost",
         sourcePort = sourcePort,
         destAddr = destAddr,
         destPort = destPort,
@@ -190,6 +191,7 @@ class PortForwardListViewModelTest {
             nickname = "new-forward",
             type = "local",
             sourcePort = "9090",
+            sourceAddr = "localhost",
             destination = "example.com:443",
         )
         advanceUntilIdle()
@@ -227,6 +229,7 @@ class PortForwardListViewModelTest {
             nickname = "new-forward",
             type = "local",
             sourcePort = "9090",
+            sourceAddr = "localhost",
             destination = "example.com:443",
         )
         advanceUntilIdle()
@@ -244,6 +247,7 @@ class PortForwardListViewModelTest {
             nickname = "new-forward",
             type = "local",
             sourcePort = "9090",
+            sourceAddr = "localhost",
             destination = "example.com:443",
         )
         advanceUntilIdle()
@@ -264,6 +268,7 @@ class PortForwardListViewModelTest {
             nickname = "updated-forward",
             type = "remote",
             sourcePort = "8888",
+            sourceAddr = "localhost",
             destination = "newhost.com:22",
         )
         advanceUntilIdle()
@@ -306,6 +311,7 @@ class PortForwardListViewModelTest {
             nickname = "updated-forward",
             type = "remote",
             sourcePort = "8888",
+            sourceAddr = "localhost",
             destination = "newhost.com:22",
         )
         advanceUntilIdle()
@@ -418,6 +424,7 @@ class PortForwardListViewModelTest {
             nickname = "test",
             type = "local",
             sourcePort = "8080",
+            sourceAddr = "localhost",
             destination = "example.com:443",
         )
         advanceUntilIdle()
@@ -438,6 +445,7 @@ class PortForwardListViewModelTest {
             nickname = "test",
             type = "local",
             sourcePort = "8080",
+            sourceAddr = "localhost",
             destination = "example.com",
         )
         advanceUntilIdle()
@@ -455,6 +463,7 @@ class PortForwardListViewModelTest {
             nickname = "test",
             type = "local",
             sourcePort = "8080",
+            sourceAddr = "localhost",
             destination = "example.com:invalid",
         )
         advanceUntilIdle()
@@ -472,6 +481,7 @@ class PortForwardListViewModelTest {
             nickname = "test",
             type = "local",
             sourcePort = "invalid",
+            sourceAddr = "localhost",
             destination = "example.com:443",
         )
         advanceUntilIdle()
@@ -489,6 +499,7 @@ class PortForwardListViewModelTest {
             nickname = "test",
             type = "local",
             sourcePort = "70000",
+            sourceAddr = "localhost",
             destination = "example.com:443",
         )
         advanceUntilIdle()
@@ -506,6 +517,7 @@ class PortForwardListViewModelTest {
             nickname = "socks-proxy",
             type = HostConstants.PORTFORWARD_DYNAMIC5,
             sourcePort = "1080",
+            sourceAddr = "localhost",
             destination = "", // Empty destination should be accepted for SOCKS5
         )
         advanceUntilIdle()
@@ -540,6 +552,7 @@ class PortForwardListViewModelTest {
             nickname = "updated-socks",
             type = HostConstants.PORTFORWARD_DYNAMIC5,
             sourcePort = "8080",
+            sourceAddr = "localhost",
             destination = "", // Empty destination should be accepted for SOCKS5
         )
         advanceUntilIdle()

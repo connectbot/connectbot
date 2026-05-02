@@ -100,8 +100,8 @@ fun PortForwardListScreenContent(
     uiState: PortForwardListUiState,
     onNavigateBack: () -> Unit,
     onDeletePortForward: (PortForward) -> Unit,
-    onAddPortForward: (String, String, String, String) -> Unit,
-    onUpdatePortForward: (PortForward, String, String, String, String) -> Unit,
+    onAddPortForward: (String, String, String, String, String) -> Unit,
+    onUpdatePortForward: (PortForward, String, String, String, String, String) -> Unit,
     onEnablePortForward: (PortForward) -> Unit,
     onDisablePortForward: (PortForward) -> Unit,
     modifier: Modifier = Modifier,
@@ -201,9 +201,9 @@ fun PortForwardListScreenContent(
     if (showAddDialog) {
         PortForwardEditorDialog(
             onDismiss = { showAddDialog = false },
-            onSave = { nickname, type, sourcePort, destination ->
+            onSave = { nickname, type, sourcePort, sourceAddr, destination ->
                 showAddDialog = false
-                onAddPortForward(nickname, type, sourcePort, destination)
+                onAddPortForward(nickname, type, sourcePort, sourceAddr, destination)
             },
         )
     }
@@ -217,13 +217,14 @@ fun PortForwardListScreenContent(
 
         PortForwardEditorDialog(
             onDismiss = { editingPortForward = null },
-            onSave = { nickname, type, sourcePort, destination ->
+            onSave = { nickname, type, sourcePort, sourceAddr, destination ->
                 editingPortForward = null
-                onUpdatePortForward(portForward, nickname, type, sourcePort, destination)
+                onUpdatePortForward(portForward, nickname, type, sourcePort, sourceAddr, destination)
             },
             initialNickname = portForward.nickname,
             initialType = portForward.type,
             initialSourcePort = portForward.sourcePort.toString(),
+            initialSourceAddr = portForward.sourceAddr,
             initialDestination = initialDest,
             isEditing = true,
         )
@@ -241,8 +242,8 @@ private fun PortForwardListScreenEmptyPreview() {
             ),
             onNavigateBack = {},
             onDeletePortForward = {},
-            onAddPortForward = { _, _, _, _ -> },
-            onUpdatePortForward = { _, _, _, _, _ -> },
+            onAddPortForward = { _, _, _, _, _ -> },
+            onUpdatePortForward = { _, _, _, _, _, _ -> },
             onEnablePortForward = {},
             onDisablePortForward = {},
         )
@@ -260,8 +261,8 @@ private fun PortForwardListScreenLoadingPreview() {
             ),
             onNavigateBack = {},
             onDeletePortForward = {},
-            onAddPortForward = { _, _, _, _ -> },
-            onUpdatePortForward = { _, _, _, _, _ -> },
+            onAddPortForward = { _, _, _, _, _ -> },
+            onUpdatePortForward = { _, _, _, _, _, _ -> },
             onEnablePortForward = {},
             onDisablePortForward = {},
         )
@@ -280,8 +281,8 @@ private fun PortForwardListScreenErrorPreview() {
             ),
             onNavigateBack = {},
             onDeletePortForward = {},
-            onAddPortForward = { _, _, _, _ -> },
-            onUpdatePortForward = { _, _, _, _, _ -> },
+            onAddPortForward = { _, _, _, _, _ -> },
+            onUpdatePortForward = { _, _, _, _, _, _ -> },
             onEnablePortForward = {},
             onDisablePortForward = {},
         )
@@ -299,6 +300,7 @@ private fun PortForwardListScreenPopulatedPreview() {
                         id = 1,
                         nickname = "MySQL Tunnel",
                         type = "Local",
+                        sourceAddr = "localhost",
                         sourcePort = 3306,
                         destAddr = "db.internal",
                         destPort = 3306,
@@ -308,6 +310,7 @@ private fun PortForwardListScreenPopulatedPreview() {
                         id = 2,
                         nickname = "Web Server",
                         type = "Remote",
+                        sourceAddr = "localhost",
                         sourcePort = 8080,
                         destAddr = "localhost",
                         destPort = 80,
@@ -317,6 +320,7 @@ private fun PortForwardListScreenPopulatedPreview() {
                         id = 3,
                         nickname = "SOCKS Proxy",
                         type = "Dynamic",
+                        sourceAddr = "localhost",
                         sourcePort = 1080,
                         destAddr = "",
                         destPort = 0,
@@ -328,8 +332,8 @@ private fun PortForwardListScreenPopulatedPreview() {
             ),
             onNavigateBack = {},
             onDeletePortForward = {},
-            onAddPortForward = { _, _, _, _ -> },
-            onUpdatePortForward = { _, _, _, _, _ -> },
+            onAddPortForward = { _, _, _, _, _ -> },
+            onUpdatePortForward = { _, _, _, _, _, _ -> },
             onEnablePortForward = {},
             onDisablePortForward = {},
         )
@@ -348,92 +352,99 @@ private fun PortForwardListItem(
     modifier: Modifier = Modifier,
 ) {
     var showMenu by remember { mutableStateOf(false) }
-
-    ListItem(
-        headlineContent = {
-            Text(
-                text = portForward.nickname,
-                fontWeight = FontWeight.Bold,
-            )
-        },
-        supportingContent = {
-            Column {
+    Column(modifier = modifier) {
+        ListItem(
+            headlineContent = {
                 Text(
-                    stringResource(
-                        R.string.portforward_type_label,
-                        portForward.type,
-                    ),
+                    text = portForward.nickname,
+                    fontWeight = FontWeight.Bold,
                 )
-                Text("${portForward.sourcePort} → ${portForward.destAddr}:${portForward.destPort}")
-            }
-        },
-        leadingContent = {
-            if (hasLiveConnection) {
-                Icon(
-                    imageVector = if (isEnabled) Icons.Filled.CheckCircle else Icons.Outlined.Circle,
-                    contentDescription = if (isEnabled) stringResource(R.string.portforward_enabled) else stringResource(R.string.portforward_disabled),
-                    tint = if (isEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                )
-            }
-        },
-        trailingContent = {
-            Box {
-                IconButton(onClick = { showMenu = true }) {
-                    Icon(Icons.Default.MoreVert, stringResource(R.string.button_more_options))
+            },
+            supportingContent = {
+                Column {
+                    Text(
+                        stringResource(
+                            R.string.portforward_type_label,
+                            portForward.type,
+                        ),
+                    )
+                    Text("${portForward.sourcePort} → ${portForward.destAddr}:${portForward.destPort}")
                 }
-                DropdownMenu(
-                    expanded = showMenu,
-                    onDismissRequest = { showMenu = false },
-                ) {
-                    if (hasLiveConnection) {
-                        if (isEnabled) {
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.portforward_disable)) },
-                                onClick = {
-                                    showMenu = false
-                                    onDisable()
-                                },
-                                leadingIcon = {
-                                    Icon(Icons.Outlined.Circle, null)
-                                },
-                            )
+            },
+            leadingContent = {
+                if (hasLiveConnection) {
+                    Icon(
+                        imageVector = if (isEnabled) Icons.Filled.CheckCircle else Icons.Outlined.Circle,
+                        contentDescription = if (isEnabled) {
+                            stringResource(R.string.portforward_enabled)
                         } else {
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.portforward_enable)) },
-                                onClick = {
-                                    showMenu = false
-                                    onEnable()
-                                },
-                                leadingIcon = {
-                                    Icon(Icons.Filled.CheckCircle, null)
-                                },
+                            stringResource(
+                                R.string.portforward_disabled,
                             )
-                        }
-                    }
-                    DropdownMenuItem(
-                        text = { Text(stringResource(R.string.portforward_edit)) },
-                        onClick = {
-                            showMenu = false
-                            onEdit()
                         },
-                        leadingIcon = {
-                            Icon(Icons.Default.Edit, null)
-                        },
-                    )
-                    DropdownMenuItem(
-                        text = { Text(stringResource(R.string.portforward_delete)) },
-                        onClick = {
-                            showMenu = false
-                            onDelete()
-                        },
-                        leadingIcon = {
-                            Icon(Icons.Default.Delete, null)
-                        },
+                        tint = if (isEnabled) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
                     )
                 }
-            }
-        },
-        modifier = modifier.clickable { onEdit() },
-    )
-    HorizontalDivider()
+            },
+            trailingContent = {
+                Box {
+                    IconButton(onClick = { showMenu = true }) {
+                        Icon(Icons.Default.MoreVert, stringResource(R.string.button_more_options))
+                    }
+                    DropdownMenu(
+                        expanded = showMenu,
+                        onDismissRequest = { showMenu = false },
+                    ) {
+                        if (hasLiveConnection) {
+                            if (isEnabled) {
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.portforward_disable)) },
+                                    onClick = {
+                                        showMenu = false
+                                        onDisable()
+                                    },
+                                    leadingIcon = {
+                                        Icon(Icons.Outlined.Circle, null)
+                                    },
+                                )
+                            } else {
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.portforward_enable)) },
+                                    onClick = {
+                                        showMenu = false
+                                        onEnable()
+                                    },
+                                    leadingIcon = {
+                                        Icon(Icons.Filled.CheckCircle, null)
+                                    },
+                                )
+                            }
+                        }
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.portforward_edit)) },
+                            onClick = {
+                                showMenu = false
+                                onEdit()
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.Edit, null)
+                            },
+                        )
+                        DropdownMenuItem(
+                            text = { Text(stringResource(R.string.portforward_delete)) },
+                            onClick = {
+                                showMenu = false
+                                onDelete()
+                            },
+                            leadingIcon = {
+                                Icon(Icons.Default.Delete, null)
+                            },
+                        )
+                    }
+                }
+            },
+            modifier = Modifier.clickable { onEdit() },
+        )
+        HorizontalDivider()
+    }
 }

@@ -34,10 +34,10 @@ import androidx.room.PrimaryKey
             entity = Host::class,
             parentColumns = ["id"],
             childColumns = ["host_id"],
-            onDelete = ForeignKey.CASCADE
-        )
+            onDelete = ForeignKey.CASCADE,
+        ),
     ],
-    indices = [Index("host_id")]
+    indices = [Index("host_id")],
 )
 data class PortForward(
     @PrimaryKey(autoGenerate = true)
@@ -50,6 +50,9 @@ data class PortForward(
 
     val type: String,
 
+    @ColumnInfo(name = "source_addr", defaultValue = "localhost")
+    val sourceAddr: String = "localhost",
+
     @ColumnInfo(name = "source_port")
     val sourcePort: Int,
 
@@ -57,7 +60,7 @@ data class PortForward(
     val destAddr: String?,
 
     @ColumnInfo(name = "dest_port")
-    val destPort: Int
+    val destPort: Int,
 ) {
     // Transient fields (not stored in database)
     @Transient
@@ -105,6 +108,7 @@ data class PortForward(
         if (hostId != other.hostId) return false
         if (nickname != other.nickname) return false
         if (type != other.type) return false
+        if (sourceAddr != other.sourceAddr) return false
         if (sourcePort != other.sourcePort) return false
         if (destAddr != other.destAddr) return false
         if (destPort != other.destPort) return false
@@ -119,6 +123,7 @@ data class PortForward(
         result = 31 * result + hostId.hashCode()
         result = 31 * result + nickname.hashCode()
         result = 31 * result + type.hashCode()
+        result = 31 * result + sourceAddr.hashCode()
         result = 31 * result + sourcePort
         result = 31 * result + (destAddr?.hashCode() ?: 0)
         result = 31 * result + destPort

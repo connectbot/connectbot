@@ -41,14 +41,14 @@ data class PortForwardListUiState(
     val portForwards: List<PortForward> = emptyList(),
     val isLoading: Boolean = false,
     val error: String? = null,
-    val hasLiveConnection: Boolean = false
+    val hasLiveConnection: Boolean = false,
 )
 
 @HiltViewModel
 class PortForwardListViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val repository: HostRepository,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
     private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
     private val _terminalManager = MutableStateFlow<TerminalManager?>(null)
@@ -63,7 +63,7 @@ class PortForwardListViewModel @Inject constructor(
             combine(
                 repository.observePortForwardsForHost(hostId),
                 _terminalManager,
-                _refreshTrigger
+                _refreshTrigger,
             ) { portForwards, terminalManager, _ ->
                 try {
                     // Check TerminalManager's bridges to see if there's an active connection for this host
@@ -98,14 +98,14 @@ class PortForwardListViewModel @Inject constructor(
                         portForwards = updatedPortForwards,
                         isLoading = false,
                         error = null,
-                        hasLiveConnection = hasLiveConnection
+                        hasLiveConnection = hasLiveConnection,
                     )
                 } catch (e: Exception) {
                     PortForwardListUiState(
                         portForwards = emptyList(),
                         isLoading = false,
                         error = e.message ?: "Failed to load port forwards",
-                        hasLiveConnection = false
+                        hasLiveConnection = false,
                     )
                 }
             }.collect { newState ->
@@ -118,7 +118,7 @@ class PortForwardListViewModel @Inject constructor(
         _terminalManager.value = manager
     }
 
-    fun addPortForward(nickname: String, type: String, sourcePort: String, destination: String) {
+    fun addPortForward(nickname: String, type: String, sourcePort: String, sourceAddr: String, destination: String) {
         viewModelScope.launch {
             try {
                 val srcPort = validatePort(sourcePort, "source")
@@ -133,9 +133,10 @@ class PortForwardListViewModel @Inject constructor(
                         hostId = hostId,
                         nickname = nickname,
                         type = type,
+                        sourceAddr = sourceAddr,
                         sourcePort = srcPort,
                         destAddr = parsed.address,
-                        destPort = parsed.port
+                        destPort = parsed.port,
                     )
                     repository.savePortForward(portForward)
                 }
@@ -161,7 +162,8 @@ class PortForwardListViewModel @Inject constructor(
         nickname: String,
         type: String,
         sourcePort: String,
-        destination: String
+        sourceAddr: String,
+        destination: String,
     ) {
         viewModelScope.launch {
             try {
@@ -176,9 +178,10 @@ class PortForwardListViewModel @Inject constructor(
                     val updatedPf = portForward.copy(
                         nickname = nickname,
                         type = type,
+                        sourceAddr = sourceAddr,
                         sourcePort = srcPort,
                         destAddr = parsed.address,
-                        destPort = parsed.port
+                        destPort = parsed.port,
                     )
                     repository.savePortForward(updatedPf)
                     updatedPf

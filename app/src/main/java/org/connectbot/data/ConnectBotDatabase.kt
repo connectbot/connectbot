@@ -71,17 +71,18 @@ import org.connectbot.data.entity.Pubkey
         KnownHost::class,
         ColorScheme::class,
         ColorPalette::class,
-        Profile::class
+        Profile::class,
     ],
-    version = 7,
+    version = 8,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
         AutoMigration(from = 2, to = 4),
         AutoMigration(from = 3, to = 4),
         AutoMigration(from = 5, to = 6),
-        AutoMigration(from = 6, to = 7)
-    ]
+        AutoMigration(from = 6, to = 7),
+        AutoMigration(from = 7, to = 8),
+    ],
 )
 @TypeConverters(Converters::class)
 abstract class ConnectBotDatabase : RoomDatabase() {
@@ -121,7 +122,7 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                         `encoding` TEXT NOT NULL DEFAULT 'UTF-8',
                         `emulation` TEXT NOT NULL DEFAULT 'xterm-256color'
                     )
-                    """.trimIndent()
+                    """.trimIndent(),
                 )
 
                 // Create index on profile name
@@ -132,7 +133,7 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                     """
                     INSERT INTO `profiles` (`id`, `name`, `color_scheme_id`, `font_family`, `font_size`, `del_key`, `encoding`, `emulation`)
                     VALUES (1, 'Default', -1, NULL, 10, 'del', 'UTF-8', 'xterm-256color')
-                    """.trimIndent()
+                    """.trimIndent(),
                 )
 
                 // Create profiles from unique host settings combinations
@@ -144,7 +145,7 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                     SELECT DISTINCT color_scheme_id, font_size, del_key, encoding
                     FROM hosts
                     WHERE NOT (color_scheme_id = 1 AND font_size = 10 AND del_key = 'DEL' AND encoding = 'UTF-8')
-                    """.trimIndent()
+                    """.trimIndent(),
                 )
 
                 db.execSQL(
@@ -157,7 +158,7 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                         del_key,
                         encoding
                     FROM temp_profile_settings
-                    """.trimIndent()
+                    """.trimIndent(),
                 )
 
                 db.execSQL("DROP TABLE temp_profile_settings")
@@ -192,7 +193,7 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                         `jump_host_id` INTEGER,
                         `profile_id` INTEGER
                     )
-                    """.trimIndent()
+                    """.trimIndent(),
                 )
 
                 // Copy data from old table to new table, mapping old columns to profile_id
@@ -220,7 +221,7 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                             LIMIT 1
                         ), 1) as profile_id
                     FROM hosts h
-                    """.trimIndent()
+                    """.trimIndent(),
                 )
 
                 // Drop old table
