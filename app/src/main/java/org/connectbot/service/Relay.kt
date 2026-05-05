@@ -42,7 +42,7 @@ class Relay(
     private val bridge: TerminalBridge,
     private val transport: AbsTransport,
     private val dispatchers: CoroutineDispatchers,
-    encoding: String
+    encoding: String,
 ) {
 
     private var currentCharset: Charset? = null
@@ -121,12 +121,7 @@ class Relay(
                     0
                 }
 
-                if (bytesRead == -1) {
-                    endOfInput = true
-                } else {
-                    // Advance position to reflect new data
-                    sourceBuffer.position(offset + bytesRead)
-                }
+                endOfInput = sourceBuffer.advanceAfterRead(bytesRead, length)
 
                 sourceBuffer.flip()
 
@@ -153,7 +148,7 @@ class Relay(
                                     bridge.terminalEmulator.writeInput(
                                         destBuffer.array(),
                                         0,
-                                        destBuffer.limit()
+                                        destBuffer.limit(),
                                     )
                                 }
                                 destBuffer.clear()
@@ -185,4 +180,20 @@ class Relay(
         private const val TAG = "CB.Relay"
         private const val BUFFER_SIZE = 4096
     }
+}
+
+internal fun ByteBuffer.advanceAfterRead(bytesRead: Int, requestedLength: Int): Boolean {
+    if (bytesRead == -1) {
+        return true
+    }
+
+    if (bytesRead < 0 || bytesRead > requestedLength) {
+        throw IOException(
+            "Transport read returned $bytesRead bytes for a $requestedLength byte request",
+        )
+    }
+
+    // Advance position to reflect new data.
+    position(position() + bytesRead)
+    return false
 }
