@@ -49,6 +49,8 @@ class HostListScreenTest {
 
     @Test
     fun hostListScreen_displaysTitle() {
+        val title = composeTestRule.activity.getString(R.string.app_name)
+
         composeTestRule.setContent {
             ConnectBotTheme {
                 HostListScreen(
@@ -64,12 +66,14 @@ class HostListScreenTest {
         }
 
         composeTestRule
-            .onNodeWithText("ConnectBot")
+            .onNodeWithText(title)
             .assertIsDisplayed()
     }
 
     @Test
     fun hostListScreen_hasAddButton() {
+        val addHost = composeTestRule.activity.getString(R.string.hostpref_add_host)
+
         composeTestRule.setContent {
             ConnectBotTheme {
                 HostListScreen(
@@ -85,12 +89,15 @@ class HostListScreenTest {
         }
 
         composeTestRule
-            .onNodeWithContentDescription("Add host", ignoreCase = true)
+            .onNodeWithContentDescription(addHost, ignoreCase = true)
             .assertIsDisplayed()
     }
 
     @Test
     fun hostListScreen_menuOpensOnClick() {
+        val moreOptions = composeTestRule.activity.getString(R.string.button_more_options)
+        val managePubkeys = composeTestRule.activity.getString(R.string.list_menu_pubkeys)
+
         composeTestRule.setContent {
             ConnectBotTheme {
                 HostListScreen(
@@ -106,17 +113,18 @@ class HostListScreenTest {
         }
 
         composeTestRule
-            .onNodeWithContentDescription("More options")
+            .onNodeWithContentDescription(moreOptions)
             .performClick()
 
         composeTestRule
-            .onNodeWithText("Manage pubkeys")
+            .onNodeWithText(managePubkeys)
             .assertIsDisplayed()
     }
 
     @Test
     fun hostListScreen_addButtonCallsCallback() {
         var addHostCalled = false
+        val addHost = composeTestRule.activity.getString(R.string.hostpref_add_host)
 
         composeTestRule.setContent {
             ConnectBotTheme {
@@ -133,7 +141,7 @@ class HostListScreenTest {
         }
 
         composeTestRule
-            .onNodeWithContentDescription("Add host", ignoreCase = true)
+            .onNodeWithContentDescription(addHost, ignoreCase = true)
             .performClick()
 
         assert(addHostCalled)
@@ -141,6 +149,8 @@ class HostListScreenTest {
 
     @Test
     fun hostListScreen_showsSnackbar_whenShouldShowWarning() {
+        val warning = composeTestRule.activity.getString(R.string.notification_permission_denied_snackbar)
+
         composeTestRule.setContent {
             ConnectBotTheme {
                 HostListScreen(
@@ -158,13 +168,14 @@ class HostListScreenTest {
         }
 
         composeTestRule
-            .onNodeWithText("Connections will drop without notification permission")
+            .onNodeWithText(warning)
             .assertIsDisplayed()
     }
 
     @Test
     fun hostListScreen_snackbarSettingsAction_navigatesToSettingsHighlight() {
         var navigatedToSettingsHighlight = false
+        val settings = composeTestRule.activity.getString(R.string.list_menu_settings)
 
         composeTestRule.setContent {
             ConnectBotTheme {
@@ -184,7 +195,7 @@ class HostListScreenTest {
         }
 
         composeTestRule
-            .onNodeWithText("Settings")
+            .onNodeWithText(settings)
             .performClick()
 
         assertTrue(navigatedToSettingsHighlight)
@@ -192,6 +203,8 @@ class HostListScreenTest {
 
     @Test
     fun hostListScreen_noSnackbar_whenShouldNotShowWarning() {
+        val warning = composeTestRule.activity.getString(R.string.notification_permission_denied_snackbar)
+
         composeTestRule.setContent {
             ConnectBotTheme {
                 HostListScreen(
@@ -209,7 +222,7 @@ class HostListScreenTest {
         }
 
         composeTestRule
-            .onAllNodes(androidx.compose.ui.test.hasText("Connections will drop without notification permission"))
+            .onAllNodes(androidx.compose.ui.test.hasText(warning))
             .fetchSemanticsNodes()
             .let { nodes -> assertTrue("Snackbar should not be shown", nodes.isEmpty()) }
     }

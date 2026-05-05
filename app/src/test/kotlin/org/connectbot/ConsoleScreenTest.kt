@@ -110,6 +110,7 @@ class ConsoleScreenTest {
 
     @Test
     fun consoleScreen_showsNotificationWarningSnackbar_whenConnPersistDisabled() {
+        val warning = composeTestRule.activity.getString(R.string.notification_permission_console_warning)
         val context = ApplicationProvider.getApplicationContext<Context>()
         PreferenceManager.getDefaultSharedPreferences(context).edit()
             .putBoolean(PreferenceConstants.CONNECTION_PERSIST, false)
@@ -120,7 +121,7 @@ class ConsoleScreenTest {
         navigateToConsoleScreen()
 
         composeTestRule
-            .onNodeWithText("Connection may drop: notification permission denied")
+            .onNodeWithText(warning)
             .assertIsDisplayed()
     }
 
@@ -130,6 +131,7 @@ class ConsoleScreenTest {
         // conn_persist defaults to true, so this exercises the permission-revoked-in-settings path.
         if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.TIRAMISU) return
 
+        val warning = composeTestRule.activity.getString(R.string.notification_permission_console_warning)
         val context = ApplicationProvider.getApplicationContext<Context>()
         // Simulate that the permission flow has run before (key exists) but was then revoked in Settings.
         PreferenceManager.getDefaultSharedPreferences(context).edit()
@@ -140,7 +142,7 @@ class ConsoleScreenTest {
         navigateToConsoleScreen()
 
         composeTestRule
-            .onNodeWithText("Connection may drop: notification permission denied")
+            .onNodeWithText(warning)
             .assertIsDisplayed()
     }
 
@@ -149,6 +151,7 @@ class ConsoleScreenTest {
         // On API < 33, POST_NOTIFICATIONS doesn't exist so it's considered granted.
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) return
 
+        val warning = composeTestRule.activity.getString(R.string.notification_permission_console_warning)
         val context = ApplicationProvider.getApplicationContext<Context>()
         PreferenceManager.getDefaultSharedPreferences(context).edit()
             .putBoolean(PreferenceConstants.CONNECTION_PERSIST, true)
@@ -158,7 +161,7 @@ class ConsoleScreenTest {
         navigateToConsoleScreen()
 
         composeTestRule
-            .onAllNodes(androidx.compose.ui.test.hasText("Connection may drop: notification permission denied"))
+            .onAllNodes(androidx.compose.ui.test.hasText(warning))
             .fetchSemanticsNodes()
             .let { nodes -> assertEquals("Snackbar should not be shown when both conditions are clear", 0, nodes.size) }
     }
