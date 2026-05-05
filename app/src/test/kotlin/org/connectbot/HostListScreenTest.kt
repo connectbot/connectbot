@@ -152,7 +152,7 @@ class HostListScreenTest {
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
                     shouldShowNotificationWarning = { true },
-                    onNotificationSnackbarShown = {},
+                    onNotificationSnackbarFinish = {},
                 )
             }
         }
@@ -178,7 +178,7 @@ class HostListScreenTest {
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
                     shouldShowNotificationWarning = { true },
-                    onNotificationSnackbarShown = {},
+                    onNotificationSnackbarFinish = {},
                 )
             }
         }
@@ -203,7 +203,7 @@ class HostListScreenTest {
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
                     shouldShowNotificationWarning = { false },
-                    onNotificationSnackbarShown = {},
+                    onNotificationSnackbarFinish = {},
                 )
             }
         }
