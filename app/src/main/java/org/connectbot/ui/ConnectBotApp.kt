@@ -48,9 +48,9 @@ fun ConnectBotApp(
     onRetryMigration: () -> Unit,
     onSelectShortcut: (Host, String?, IconStyle) -> Unit,
     onNavigateToConsole: (Host) -> Unit,
+    modifier: Modifier = Modifier,
     shouldShowNotificationWarning: () -> Boolean = { false },
-    onNotificationSnackbarShown: () -> Unit = {},
-    modifier: Modifier = Modifier
+    onNotificationSnackbarFinish: () -> Unit = {},
 ) {
     ConnectBotTheme(themeMode = themeMode) {
         when (appUiState) {
@@ -62,7 +62,7 @@ fun ConnectBotApp(
                 MigrationScreen(
                     uiState = MigrationUiState.InProgress(appUiState.state),
                     onRetry = onRetryMigration,
-                    modifier = modifier
+                    modifier = modifier,
                 )
             }
 
@@ -70,10 +70,10 @@ fun ConnectBotApp(
                 MigrationScreen(
                     uiState = MigrationUiState.Failed(
                         appUiState.error,
-                        appUiState.debugLog
+                        appUiState.debugLog,
                     ),
                     onRetry = onRetryMigration,
-                    modifier = modifier
+                    modifier = modifier,
                 )
             }
 
@@ -81,7 +81,7 @@ fun ConnectBotApp(
                 if (authRequired && !isAuthenticated && !makingShortcut) {
                     AuthenticationScreen(
                         onAuthenticationSuccess = onAuthenticationSuccess,
-                        modifier = modifier
+                        modifier = modifier,
                     )
                 } else {
                     CompositionLocalProvider(LocalTerminalManager provides appUiState.terminalManager) {
@@ -92,8 +92,8 @@ fun ConnectBotApp(
                             onSelectShortcut = onSelectShortcut,
                             onNavigateToConsole = onNavigateToConsole,
                             shouldShowNotificationWarning = shouldShowNotificationWarning,
-                            onNotificationSnackbarShown = onNotificationSnackbarShown,
-                            modifier = modifier
+                            onNotificationSnackbarFinish = onNotificationSnackbarFinish,
+                            modifier = modifier,
                         )
                     }
                 }

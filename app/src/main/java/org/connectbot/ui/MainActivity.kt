@@ -320,7 +320,7 @@ class MainActivity : AppCompatActivity() {
                 shouldShowNotificationWarning = {
                     !appViewModel.hostListSnackbarShownThisLaunch && appViewModel.shouldShowNotificationWarning()
                 },
-                onNotificationSnackbarShown = { appViewModel.markHostListSnackbarShown() },
+                onNotificationSnackbarFinish = { appViewModel.markHostListSnackbarShown() },
             )
         }
     }

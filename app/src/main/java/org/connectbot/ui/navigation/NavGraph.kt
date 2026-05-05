@@ -57,12 +57,12 @@ fun ConnectBotNavHost(
     makingShortcut: Boolean = false,
     onSelectShortcut: (Host, String?, IconStyle) -> Unit = { _, _, _ -> },
     shouldShowNotificationWarning: () -> Boolean = { false },
-    onNotificationSnackbarShown: () -> Unit = {},
+    onNotificationSnackbarFinish: () -> Unit = {},
 ) {
     NavHost(
         navController = navController,
         startDestination = startDestination,
-        modifier = modifier
+        modifier = modifier,
     ) {
         composable(NavDestinations.HOST_LIST) {
             HostListScreen(
@@ -95,15 +95,15 @@ fun ConnectBotNavHost(
                     navController.navigateSafely(NavDestinations.HELP)
                 },
                 shouldShowNotificationWarning = shouldShowNotificationWarning,
-                onNotificationSnackbarShown = onNotificationSnackbarShown
+                onNotificationSnackbarFinish = onNotificationSnackbarFinish,
             )
         }
 
         composable(
             route = "${NavDestinations.CONSOLE}/{${NavArgs.HOST_ID}}",
             arguments = listOf(
-                navArgument(NavArgs.HOST_ID) { type = NavType.LongType }
-            )
+                navArgument(NavArgs.HOST_ID) { type = NavType.LongType },
+            ),
         ) {
             ConsoleScreen(
                 onNavigateBack = { navController.safePopBackStack() },
@@ -112,7 +112,7 @@ fun ConnectBotNavHost(
                 },
                 onNavigateToSettings = {
                     navController.navigateSafely(NavDestinations.SETTINGS_HIGHLIGHT_CONN_PERSIST)
-                }
+                },
             )
         }
 
@@ -122,11 +122,11 @@ fun ConnectBotNavHost(
                 navArgument(NavArgs.HOST_ID) {
                     type = NavType.LongType
                     defaultValue = -1L
-                }
-            )
+                },
+            ),
         ) {
             HostEditorScreen(
-                onNavigateBack = { navController.safePopBackStack() }
+                onNavigateBack = { navController.safePopBackStack() },
             )
         }
 
@@ -136,35 +136,35 @@ fun ConnectBotNavHost(
                 onNavigateToGenerate = { navController.navigateSafely(NavDestinations.GENERATE_PUBKEY) },
                 onNavigateToEdit = { pubkey ->
                     navController.navigateSafely("${NavDestinations.PUBKEY_EDITOR}/${pubkey.id}")
-                }
+                },
             )
         }
 
         composable(NavDestinations.GENERATE_PUBKEY) {
             GeneratePubkeyScreen(
-                onNavigateBack = { navController.safePopBackStack() }
+                onNavigateBack = { navController.safePopBackStack() },
             )
         }
 
         composable(
             route = "${NavDestinations.PUBKEY_EDITOR}/{${NavArgs.PUBKEY_ID}}",
             arguments = listOf(
-                navArgument(NavArgs.PUBKEY_ID) { type = NavType.LongType }
-            )
+                navArgument(NavArgs.PUBKEY_ID) { type = NavType.LongType },
+            ),
         ) {
             PubkeyEditorScreen(
-                onNavigateBack = { navController.safePopBackStack() }
+                onNavigateBack = { navController.safePopBackStack() },
             )
         }
 
         composable(
             route = "${NavDestinations.PORT_FORWARD_LIST}/{${NavArgs.HOST_ID}}",
             arguments = listOf(
-                navArgument(NavArgs.HOST_ID) { type = NavType.LongType }
-            )
+                navArgument(NavArgs.HOST_ID) { type = NavType.LongType },
+            ),
         ) {
             PortForwardListScreen(
-                onNavigateBack = { navController.safePopBackStack() }
+                onNavigateBack = { navController.safePopBackStack() },
             )
         }
 
@@ -175,13 +175,13 @@ fun ConnectBotNavHost(
                     type = NavType.StringType
                     nullable = true
                     defaultValue = null
-                }
-            )
+                },
+            ),
         ) {
             val highlight = it.arguments?.getString("highlight")
             SettingsScreen(
                 onNavigateBack = { navController.safePopBackStack() },
-                highlightItem = highlight
+                highlightItem = highlight,
             )
         }
 
@@ -190,15 +190,15 @@ fun ConnectBotNavHost(
                 onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToPaletteEditor = { schemeId ->
                     navController.navigateSafely("${NavDestinations.PALETTE_EDITOR}/$schemeId")
-                }
+                },
             )
         }
 
         composable(
             route = "${NavDestinations.PALETTE_EDITOR}/{${NavArgs.SCHEME_ID}}",
             arguments = listOf(
-                navArgument(NavArgs.SCHEME_ID) { type = NavType.LongType }
-            )
+                navArgument(NavArgs.SCHEME_ID) { type = NavType.LongType },
+            ),
         ) {
             PaletteEditorScreen(
                 onNavigateBack = { navController.safePopBackStack() },
@@ -208,11 +208,11 @@ fun ConnectBotNavHost(
                         navOptions = NavOptions.Builder()
                             .setPopUpTo(
                                 route = "${NavDestinations.PALETTE_EDITOR}/{${NavArgs.SCHEME_ID}}",
-                                inclusive = true
+                                inclusive = true,
                             )
-                            .build()
+                            .build(),
                     )
-                }
+                },
             )
         }
 
@@ -224,21 +224,21 @@ fun ConnectBotNavHost(
                 },
                 onNavigateToColors = {
                     navController.navigateSafely(NavDestinations.COLORS)
-                }
+                },
             )
         }
 
         composable(
             route = "${NavDestinations.PROFILE_EDITOR}/{${NavArgs.PROFILE_ID}}",
             arguments = listOf(
-                navArgument(NavArgs.PROFILE_ID) { type = NavType.LongType }
-            )
+                navArgument(NavArgs.PROFILE_ID) { type = NavType.LongType },
+            ),
         ) {
             ProfileEditorScreen(
                 onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToColors = {
                     navController.navigateSafely(NavDestinations.COLORS)
-                }
+                },
             )
         }
 
@@ -247,25 +247,25 @@ fun ConnectBotNavHost(
                 onNavigateBack = { navController.safePopBackStack() },
                 onNavigateToHints = { navController.navigateSafely(NavDestinations.HINTS) },
                 onNavigateToEula = { navController.navigateSafely(NavDestinations.EULA) },
-                onNavigateToContact = { navController.navigateSafely(NavDestinations.CONTACT) }
+                onNavigateToContact = { navController.navigateSafely(NavDestinations.CONTACT) },
             )
         }
 
         composable(NavDestinations.CONTACT) {
             ContactScreen(
-                onNavigateBack = { navController.safePopBackStack() }
+                onNavigateBack = { navController.safePopBackStack() },
             )
         }
 
         composable(NavDestinations.EULA) {
             EulaScreen(
-                onNavigateBack = { navController.safePopBackStack() }
+                onNavigateBack = { navController.safePopBackStack() },
             )
         }
 
         composable(NavDestinations.HINTS) {
             HintsScreen(
-                onNavigateBack = { navController.safePopBackStack() }
+                onNavigateBack = { navController.safePopBackStack() },
             )
         }
     }
@@ -297,7 +297,7 @@ private fun NavHostController.safePopBackStack() = if (currentBackStackEntry.lif
  */
 fun NavController.navigateSafely(
     route: String,
-    navOptions: NavOptions? = null
+    navOptions: NavOptions? = null,
 ) {
     // Find the destination for the given route.
     val destination = graph.findNode(route)
