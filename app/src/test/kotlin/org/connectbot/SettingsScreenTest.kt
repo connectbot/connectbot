@@ -49,6 +49,8 @@ class SettingsScreenTest {
 
     @Test
     fun settingsScreen_displaysTitle() {
+        val title = composeTestRule.activity.getString(R.string.title_settings)
+
         composeTestRule.setContent {
             ConnectBotTheme {
                 SettingsScreen(onNavigateBack = {})
@@ -56,13 +58,14 @@ class SettingsScreenTest {
         }
 
         composeTestRule
-            .onNodeWithText("Settings")
+            .onNodeWithText(title)
             .assertIsDisplayed()
     }
 
     @Test
     fun settingsScreen_hasBackButton() {
         var backCalled = false
+        val navigateUp = composeTestRule.activity.getString(R.string.button_navigate_up)
 
         composeTestRule.setContent {
             ConnectBotTheme {
@@ -71,7 +74,7 @@ class SettingsScreenTest {
         }
 
         composeTestRule
-            .onNodeWithContentDescription("Navigate up")
+            .onNodeWithContentDescription(navigateUp)
             .performClick()
 
         assertTrue(backCalled)
@@ -79,6 +82,8 @@ class SettingsScreenTest {
 
     @Test
     fun settingsScreen_displaysConnPersistPreference() {
+        val connPersistTitle = composeTestRule.activity.getString(R.string.pref_conn_persist_title)
+
         composeTestRule.setContent {
             ConnectBotTheme {
                 SettingsScreen(onNavigateBack = {})
@@ -86,12 +91,14 @@ class SettingsScreenTest {
         }
 
         composeTestRule
-            .onNodeWithText("Persist connections")
+            .onNodeWithText(connPersistTitle)
             .assertIsDisplayed()
     }
 
     @Test
     fun settingsScreen_withHighlightConnPersist_scrollsToAndDisplaysConnPersist() {
+        val connPersistTitle = composeTestRule.activity.getString(R.string.pref_conn_persist_title)
+
         composeTestRule.setContent {
             ConnectBotTheme {
                 SettingsScreen(
@@ -102,7 +109,7 @@ class SettingsScreenTest {
         }
 
         composeTestRule
-            .onNodeWithText("Persist connections")
+            .onNodeWithText(connPersistTitle)
             .assertIsDisplayed()
     }
 }
