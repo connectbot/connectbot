@@ -28,7 +28,7 @@ jobs:
         run: echo "defined=true" >> $GITHUB_OUTPUT
 
   build:
-    name: Build and test
+    name: Build and unit test
     runs-on: ubuntu-latest
     needs: [check-inputs]
     permissions:
@@ -70,7 +70,88 @@ jobs:
           packages: 'cmdline-tools;latest tools platform-tools'
 
       - name: Build ConnectBot
-        run: ./gradlew build bundle
+        run: ./gradlew build
+
+      - name: Build bundles for release
+        if: ${{ inputs.is_push }}
+        run: ./gradlew bundle
+
+      - name: Prepare release
+        if: ${{ inputs.is_push }}
+        run: |
+          if git describe --exact-match; then \
+            TAGGED=yes
+          fi
+
+          if [[ -n $TAGGED ]]; then
+            GITHUB_TAG="$(git describe)"
+            echo "${GITHUB_TAG}" > tag.txt
+            echo "Release ${GITHUB_TAG}" > release-title.txt
+          else \
+            GITHUB_TAG="git-$(git describe)"
+            GITHUB_TITLE="$(git log -1 --pretty=%B | head -1)"
+            echo "${GITHUB_TAG}" > tag.txt
+            echo "${GITHUB_TAG}: ${GITHUB_TITLE}" > release-title.txt
+          fi
+          cp ./app/build/outputs/apk/oss/release/app-oss-release-unsigned.apk ConnectBot-${GITHUB_TAG}-oss-unsigned.apk
+          cp ./app/build/outputs/apk/google/release/app-google-release-unsigned.apk ConnectBot-${GITHUB_TAG}-google-unsigned.apk
+          cp ./app/build/outputs/bundle/googleRelease/app-google-release.aab ConnectBot-${GITHUB_TAG}-google-unsigned.aab
+          cp ./app/build/outputs/bundle/ossRelease/app-oss-release.aab ConnectBot-${GITHUB_TAG}-oss-unsigned.aab
+          cp ./app/build/outputs/native-debug-symbols/googleRelease/native-debug-symbols.zip ConnectBot-${GITHUB_TAG}-google.native-debug-symbols.zip
+          cp ./app/build/outputs/native-debug-symbols/ossRelease/native-debug-symbols.zip ConnectBot-${GITHUB_TAG}-oss.native-debug-symbols.zip
+          cp ./app/build/outputs/mapping/googleRelease/mapping.txt ConnectBot-${GITHUB_TAG}-google.mapping.txt
+          cp ./app/build/outputs/mapping/ossRelease/mapping.txt ConnectBot-${GITHUB_TAG}-oss.mapping.txt
+          zstd *.mapping.txt
+
+      - name: Store artifacts for upload
+        if: ${{ inputs.is_push }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: apk
+          path: |
+            release-title.txt
+            tag.txt
+            ConnectBot-*-unsigned.apk
+            ConnectBot-*-unsigned.aab
+            ConnectBot-*.native-debug-symbols.zip
+            ConnectBot-*.mapping.txt.zst
+
+  instrumentation:
+    name: Instrumentation tests
+    runs-on: ubuntu-latest
+    needs: [check-inputs]
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout (with history)
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: false
+
+      - name: Set up JDK
+        uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@50e97c2cd7a37755bbfafc9c5b7cafaece252f6e # v6.1.0
+        with:
+          cache-encryption-key: ${{ secrets.GRADLE_CACHE_ENCRYPTION_KEY }}
+          cache-read-only: ${{ github.ref_name != github.event.repository.default_branch }}
+
+      - name: Delete old Android SDK cmdline-tools
+        run: |
+          rm -rf $ANDROID_HOME/cmdline-tools/latest
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@40fd30fb8d7440372e1316f5d1809ec01dcd3699 # v4.0.1
+        with:
+          cmdline-tools-version: '13114758'
+          packages: 'cmdline-tools;latest tools platform-tools'
 
       - name: Enable KVM for emulator and clear up space
         run: |
@@ -126,49 +207,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew :app:sonar -Dsonar.projectVersion=${{ github.sha }}
 
-      - name: Prepare release
-        if: ${{ inputs.is_push }}
-        run: |
-          if git describe --exact-match; then \
-            TAGGED=yes
-          fi
-
-          if [[ -n $TAGGED ]]; then
-            GITHUB_TAG="$(git describe)"
-            echo "${GITHUB_TAG}" > tag.txt
-            echo "Release ${GITHUB_TAG}" > release-title.txt
-          else \
-            GITHUB_TAG="git-$(git describe)"
-            GITHUB_TITLE="$(git log -1 --pretty=%B | head -1)"
-            echo "${GITHUB_TAG}" > tag.txt
-            echo "${GITHUB_TAG}: ${GITHUB_TITLE}" > release-title.txt
-          fi
-          cp ./app/build/outputs/apk/oss/release/app-oss-release-unsigned.apk ConnectBot-${GITHUB_TAG}-oss-unsigned.apk
-          cp ./app/build/outputs/apk/google/release/app-google-release-unsigned.apk ConnectBot-${GITHUB_TAG}-google-unsigned.apk
-          cp ./app/build/outputs/bundle/googleRelease/app-google-release.aab ConnectBot-${GITHUB_TAG}-google-unsigned.aab
-          cp ./app/build/outputs/bundle/ossRelease/app-oss-release.aab ConnectBot-${GITHUB_TAG}-oss-unsigned.aab
-          cp ./app/build/outputs/native-debug-symbols/googleRelease/native-debug-symbols.zip ConnectBot-${GITHUB_TAG}-google.native-debug-symbols.zip
-          cp ./app/build/outputs/native-debug-symbols/ossRelease/native-debug-symbols.zip ConnectBot-${GITHUB_TAG}-oss.native-debug-symbols.zip
-          cp ./app/build/outputs/mapping/googleRelease/mapping.txt ConnectBot-${GITHUB_TAG}-google.mapping.txt
-          cp ./app/build/outputs/mapping/ossRelease/mapping.txt ConnectBot-${GITHUB_TAG}-oss.mapping.txt
-          zstd *.mapping.txt
-
-      - name: Store artifacts for upload
-        if: ${{ inputs.is_push }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: apk
-          path: |
-            release-title.txt
-            tag.txt
-            ConnectBot-*-unsigned.apk
-            ConnectBot-*-unsigned.aab
-            ConnectBot-*.native-debug-symbols.zip
-            ConnectBot-*.mapping.txt.zst
-
   upload:
     name: Upload to GitHub releases
-    needs: build
+    needs: [build, instrumentation]
     if: ${{ inputs.is_push && (github.repository == 'connectbot/connectbot') && ((github.ref == 'refs/heads/main') || startsWith(github.ref, 'refs/tags/v')) }}
     runs-on: ubuntu-latest
     permissions:
