@@ -20,13 +20,16 @@ plugins {
     alias(libs.plugins.spotless)
 }
 
-allprojects {
+subprojects {
     buildscript {
         repositories {
             google()
             mavenCentral()
         }
     }
+}
+
+allprojects {
     repositories {
         mavenLocal()
         google()
