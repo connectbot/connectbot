@@ -191,6 +191,37 @@ ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
 }
 
+val sonarJavaBinaries = objects.listProperty(String::class.java)
+val sonarJavaTestBinaries = objects.listProperty(String::class.java)
+
+androidComponents {
+    onVariants(selector().withBuildType("debug")) { variant ->
+        val variantName = variant.name
+        val variantTaskName = variantName.replaceFirstChar { it.uppercaseChar() }
+
+        sonarJavaBinaries.add(
+            layout.buildDirectory
+                .dir("intermediates/classes/$variantName/jacoco$variantTaskName/dirs")
+                .map { it.asFile.path },
+        )
+        sonarJavaBinaries.add(
+            layout.buildDirectory
+                .dir("intermediates/javac/$variantName/compile${variantTaskName}JavaWithJavac/classes")
+                .map { it.asFile.path },
+        )
+        sonarJavaTestBinaries.add(
+            layout.buildDirectory
+                .dir("intermediates/classes/${variantName}UnitTest/transform${variantTaskName}UnitTestClassesWithAsm/dirs")
+                .map { it.asFile.path },
+        )
+        sonarJavaTestBinaries.add(
+            layout.buildDirectory
+                .dir("intermediates/javac/${variantName}AndroidTest/compile${variantTaskName}AndroidTestJavaWithJavac/classes")
+                .map { it.asFile.path },
+        )
+    }
+}
+
 kover {
     reports {
         filters {
@@ -236,6 +267,23 @@ sonar {
         property("sonar.projectKey", "connectbot_connectbot")
         property("sonar.organization", "connectbot")
         property("sonar.host.url", "https://sonarcloud.io")
+        property(
+            "sonar.coverage.jacoco.xmlReportPaths",
+            """
+            |build/reports/kover/reportOssDebug.xml,
+            |build/reports/kover/reportGoogleDebug.xml,
+            |build/reports/coverage/androidTest/oss/debug/connected/report.xml,
+            |build/reports/coverage/androidTest/google/debug/connected/report.xml,
+            """.trimMargin(),
+        )
+        property(
+            "sonar.java.binaries",
+            sonarJavaBinaries.map { it.joinToString(",") },
+        )
+        property(
+            "sonar.java.test.binaries",
+            sonarJavaTestBinaries.map { it.joinToString(",") },
+        )
     }
 }
 
