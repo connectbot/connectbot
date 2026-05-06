@@ -3,7 +3,6 @@ androidGradlePlugin = "9.2.1"
 
 kotlin = "2.3.21"
 spotless = "8.4.0"
-errorprone = "5.1.0"
 easylauncher = "6.4.1"
 pythonUv = "0.4.7"
 appVersioning = "1.6.0"
@@ -49,7 +48,6 @@ assertj = "3.27.7"
 robolectric = "4.16.1"
 kover = "0.9.8"
 
-errorproneCore = "2.49.0"
 media3CommonKtx = "1.10.0"
 navigationTesting = "2.9.8"
 ui = "1.11.0"
@@ -85,8 +83,6 @@ assertj-core = { module = "org.assertj:assertj-core", version.ref = "assertj" }
 robolectric = { module = "org.robolectric:robolectric", version.ref = "robolectric" }
 kotlinx-coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutines" }
 conscrypt-openjdk-uber = { module = "org.conscrypt:conscrypt-openjdk-uber", version.ref = "conscryptOpenJdk" }
-
-errorprone-core = { module = "com.google.errorprone:error_prone_core", version.ref = "errorproneCore" }
 
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
 androidx-compose-ui = { module = "androidx.compose.ui:ui" }
@@ -124,7 +120,6 @@ ksp-gradle-plugin = { module = "com.google.devtools.ksp:symbol-processing-gradle
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
-errorprone = { id = "net.ltgt.errorprone", version.ref = "errorprone" }
 easylauncher = { id = "com.starter.easylauncher", version.ref = "easylauncher" }
 python-uv = { id = "com.pswidersk.python-uv-plugin", version.ref = "pythonUv" }
 app-versioning = { id = "io.github.reactivecircus.app-versioning", version.ref = "appVersioning"}
