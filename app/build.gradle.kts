@@ -1,13 +1,10 @@
 import io.github.reactivecircus.appversioning.toSemVer
-import net.ltgt.gradle.errorprone.CheckSeverity
-import net.ltgt.gradle.errorprone.errorprone
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.errorprone)
     alias(libs.plugins.app.versioning)
     alias(libs.plugins.easylauncher)
     alias(libs.plugins.spotless)
@@ -294,20 +291,6 @@ kotlin {
     }
 }
 
-tasks.withType<JavaCompile>().configureEach {
-    options.errorprone {
-        checks.put("InvalidInlineTag", CheckSeverity.OFF)
-        checks.put("AlmostJavadoc", CheckSeverity.OFF)
-        checks.put("EmptyBlockTag", CheckSeverity.OFF)
-        checks.put("MissingSummary", CheckSeverity.OFF)
-        checks.put("ClassCanBeStatic", CheckSeverity.OFF)
-        checks.put("ClassNewInstance", CheckSeverity.OFF)
-        checks.put("DefaultCharset", CheckSeverity.OFF)
-        checks.put("SynchronizeOnNonFinalField", CheckSeverity.OFF)
-        excludedPaths.set(".*/src/main/java/de/mud/.*|.*/src/main/java/org/apache/.*|.*/src/main/java/org/keyczar/.*")
-    }
-}
-
 tasks.withType<Test>().configureEach {
     jvmArgs("--add-opens", "java.base/java.lang=ALL-UNNAMED")
 }
@@ -462,6 +445,4 @@ dependencies {
     testCompileOnly(libs.conscrypt.openjdk.uber)
     testRuntimeOnly(libs.conscrypt.android)
     testImplementation(libs.conscrypt.openjdk.uber)
-
-    errorprone(libs.errorprone.core)
 }
