@@ -307,6 +307,25 @@ class TerminalManager :
     }
 
     /**
+     * Disconnect active bridges and queued reconnects for a database host.
+     */
+    fun disconnectHost(hostId: Long) {
+        val bridges = synchronized(_bridges) {
+            _bridges.filter { it.host.id == hostId }
+        }
+
+        synchronized(pendingReconnect) {
+            pendingReconnect.removeAll { ref ->
+                ref.get()?.host?.id == hostId
+            }
+        }
+
+        for (bridge in bridges) {
+            bridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
+        }
+    }
+
+    /**
      * Open a new SSH session using the given parameters.
      */
     private fun openConnection(host: Host): TerminalBridge {

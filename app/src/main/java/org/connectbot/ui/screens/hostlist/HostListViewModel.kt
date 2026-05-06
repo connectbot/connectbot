@@ -38,7 +38,6 @@ import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
-import org.connectbot.service.DisconnectReason
 import org.connectbot.service.ServiceError
 import org.connectbot.service.TerminalManager
 import org.connectbot.util.PreferenceConstants
@@ -47,7 +46,7 @@ import javax.inject.Inject
 enum class ConnectionState {
     UNKNOWN,
     CONNECTED,
-    DISCONNECTED
+    DISCONNECTED,
 }
 
 data class HostListUiState(
@@ -60,19 +59,19 @@ data class HostListUiState(
     val exportResult: ExportResult? = null,
     val importResult: ImportResult? = null,
     val startupKeyPrompt: Pubkey? = null,
-    val startupKeyWrongPassword: Boolean = false
+    val startupKeyWrongPassword: Boolean = false,
 )
 
 data class ImportResult(
     val hostsImported: Int,
     val hostsSkipped: Int,
     val profilesImported: Int,
-    val profilesSkipped: Int
+    val profilesSkipped: Int,
 )
 
 data class ExportResult(
     val hostCount: Int,
-    val profileCount: Int
+    val profileCount: Int,
 )
 
 @HiltViewModel
@@ -80,15 +79,15 @@ class HostListViewModel @Inject constructor(
     @param:ApplicationContext private val context: Context,
     private val repository: HostRepository,
     private val dispatchers: CoroutineDispatchers,
-    private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences,
 ) : ViewModel() {
 
     private var terminalManager: TerminalManager? = null
     private val _uiState = MutableStateFlow(
         HostListUiState(
             isLoading = true,
-            sortedByColor = sharedPreferences.getBoolean(PreferenceConstants.SORT_BY_COLOR, false)
-        )
+            sortedByColor = sharedPreferences.getBoolean(PreferenceConstants.SORT_BY_COLOR, false),
+        ),
     )
     val uiState: StateFlow<HostListUiState> = _uiState.asStateFlow()
 
@@ -162,7 +161,7 @@ class HostListViewModel @Inject constructor(
                 R.string.error_connection_failed,
                 error.hostNickname,
                 error.hostname,
-                error.reason
+                error.reason,
             )
         }
 
@@ -170,7 +169,7 @@ class HostListViewModel @Inject constructor(
             context.getString(
                 R.string.error_port_forward_load_failed,
                 error.hostNickname,
-                error.reason
+                error.reason,
             )
         }
 
@@ -221,6 +220,7 @@ class HostListViewModel @Inject constructor(
     fun deleteHost(host: Host) {
         viewModelScope.launch {
             try {
+                terminalManager?.disconnectHost(host.id)
                 repository.deleteHost(host)
             } catch (e: Exception) {
                 _uiState.update {
@@ -238,7 +238,7 @@ class HostListViewModel @Inject constructor(
                     id = 0L,
                     nickname = context.getString(R.string.host_duplicate_nickname, host.nickname),
                     lastConnect = 0,
-                    hostKeyAlgo = null
+                    hostKeyAlgo = null,
                 )
                 val savedHost = repository.saveHost(newHost)
 
@@ -272,8 +272,7 @@ class HostListViewModel @Inject constructor(
     }
 
     fun disconnectHost(host: Host) {
-        val bridge = terminalManager?.bridgesFlow?.value?.find { it.host.id == host.id }
-        bridge?.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
+        terminalManager?.disconnectHost(host.id)
     }
 
     fun clearError() {
@@ -288,7 +287,7 @@ class HostListViewModel @Inject constructor(
                 }
                 val exportResult = ExportResult(
                     hostCount = exportCounts.hostCount,
-                    profileCount = exportCounts.profileCount
+                    profileCount = exportCounts.profileCount,
                 )
                 _uiState.update { it.copy(exportedJson = json, exportResult = exportResult) }
             } catch (e: Exception) {
@@ -313,7 +312,7 @@ class HostListViewModel @Inject constructor(
                     hostsImported = importCounts.hostsImported,
                     hostsSkipped = importCounts.hostsSkipped,
                     profilesImported = importCounts.profilesImported,
-                    profilesSkipped = importCounts.profilesSkipped
+                    profilesSkipped = importCounts.profilesSkipped,
                 )
                 _uiState.update { it.copy(importResult = importResult) }
             } catch (e: Exception) {
@@ -341,7 +340,7 @@ class HostListViewModel @Inject constructor(
                             false
                         } else {
                             state.startupKeyWrongPassword
-                        }
+                        },
                     )
                 }
             }
