@@ -156,10 +156,10 @@ android {
             assets.directories.add("build/generated/exportSchema")
         }
         getByName("test") {
-            kotlin.srcDir("src/sharedTest/kotlin")
+            kotlin.directories.add("src/sharedTest/kotlin")
         }
         getByName("androidTest") {
-            kotlin.srcDir("src/sharedTest/kotlin")
+            kotlin.directories.add("src/sharedTest/kotlin")
         }
     }
 
