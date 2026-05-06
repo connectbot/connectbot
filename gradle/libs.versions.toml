@@ -50,7 +50,7 @@ kover = "0.9.8"
 
 media3CommonKtx = "1.10.0"
 navigationTesting = "2.9.8"
-ui = "1.11.0"
+ui = "1.11.1"
 biometric = "1.4.0-alpha02"
 core = "1.18.0"
 
