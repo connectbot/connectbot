@@ -3,7 +3,6 @@ androidGradlePlugin = "9.2.1"
 
 kotlin = "2.3.21"
 spotless = "8.4.0"
-versions = "0.54.0"
 errorprone = "5.1.0"
 easylauncher = "6.4.1"
 pythonUv = "0.4.7"
@@ -125,7 +124,6 @@ ksp-gradle-plugin = { module = "com.google.devtools.ksp:symbol-processing-gradle
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 spotless = { id = "com.diffplug.spotless", version.ref = "spotless" }
-versions = { id = "com.github.ben-manes.versions", version.ref = "versions" }
 errorprone = { id = "net.ltgt.errorprone", version.ref = "errorprone" }
 easylauncher = { id = "com.starter.easylauncher", version.ref = "easylauncher" }
 python-uv = { id = "com.pswidersk.python-uv-plugin", version.ref = "pythonUv" }
