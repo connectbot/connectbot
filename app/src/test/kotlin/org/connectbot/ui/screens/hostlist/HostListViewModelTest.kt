@@ -21,6 +21,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -30,15 +31,16 @@ import kotlinx.coroutines.test.setMain
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.service.ServiceError
+import org.connectbot.service.TerminalManager
 import org.connectbot.util.PreferenceConstants
 import org.junit.After
-import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.mockito.kotlin.any
-import org.mockito.kotlin.eq
+import org.mockito.kotlin.inOrder
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
@@ -88,6 +90,16 @@ class HostListViewModelTest {
         whenever(sharedPreferences.getBoolean(PreferenceConstants.SORT_BY_COLOR, false))
             .thenReturn(sortedByColor)
         return HostListViewModel(context, repository, dispatchers, sharedPreferences)
+    }
+
+    private fun createTerminalManager(): TerminalManager {
+        val terminalManager = mock<TerminalManager>()
+        whenever(terminalManager.bridgesFlow).thenReturn(MutableStateFlow(emptyList()))
+        whenever(terminalManager.disconnectedFlow).thenReturn(MutableStateFlow(emptyList()))
+        whenever(terminalManager.hostStatusChangedFlow).thenReturn(MutableSharedFlow())
+        whenever(terminalManager.serviceErrors).thenReturn(MutableSharedFlow<ServiceError>())
+        whenever(terminalManager.pendingStartupKeyPrompts).thenReturn(MutableStateFlow(emptyList()))
+        return terminalManager
     }
 
     /**
@@ -201,5 +213,21 @@ class HostListViewModelTest {
         advanceUntilIdle()
 
         verify(repository).observeHostsSortedByColor()
+    }
+
+    @Test
+    fun deleteHost_disconnectsActiveBridgeBeforeDeletingHost() = runTest {
+        val viewModel = createViewModel()
+        val terminalManager = createTerminalManager()
+        val host = Host(id = 42L, nickname = "test", hostname = "example.com")
+        viewModel.setTerminalManager(terminalManager)
+        advanceUntilIdle()
+
+        viewModel.deleteHost(host)
+        advanceUntilIdle()
+
+        val inOrder = inOrder(terminalManager, repository)
+        inOrder.verify(terminalManager).disconnectHost(host.id)
+        inOrder.verify(repository).deleteHost(host)
     }
 }
