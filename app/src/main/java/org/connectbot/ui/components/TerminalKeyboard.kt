@@ -559,6 +559,7 @@ private fun RepeatableKeyButton(
             detectTapGestures(
                 onPress = {
                     isPressed = true
+                    var sentPress = false
 
                     // Start a job that handles initial delay, first press, and repeat
                     val tapTimeout = ViewConfiguration.getTapTimeout().toLong()
@@ -568,11 +569,13 @@ private fun RepeatableKeyButton(
                         if (!isPressed) return@launch
 
                         // First press after initial tap delay
+                        sentPress = true
                         onPress()
 
                         // Wait before starting repeat
                         delay(500 - tapTimeout)
                         while (isPressed) {
+                            sentPress = true
                             onPress()
                             delay(50) // Repeat interval
                         }
@@ -582,7 +585,7 @@ private fun RepeatableKeyButton(
                     val released = tryAwaitRelease()
                     isPressed = false
 
-                    if (released && repeatJob?.isActive == true) {
+                    if (released && !sentPress) {
                         // User released but key hasn't been sent yet (quick tap) - send it now
                         repeatJob?.cancel()
                         onPress()
