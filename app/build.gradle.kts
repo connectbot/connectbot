@@ -16,6 +16,7 @@ plugins {
     alias(libs.plugins.spotless)
     alias(libs.plugins.hilt.android)
     alias(libs.plugins.kover)
+    alias(libs.plugins.sonarqube)
 }
 
 appVersioning {
@@ -227,6 +228,14 @@ kover {
                 classes("*.BuildConfig")
             }
         }
+    }
+}
+
+sonar {
+    properties {
+        property("sonar.projectKey", "connectbot_connectbot")
+        property("sonar.organization", "connectbot")
+        property("sonar.host.url", "https://sonarcloud.io")
     }
 }
 

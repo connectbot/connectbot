@@ -121,13 +121,10 @@ jobs:
 
       - name: Run SonarQube analysis
         if: needs.check-inputs.outputs.has-sonar-token == 'true'
-        uses: SonarSource/sonarqube-scan-action@59db25f34e16620e48ab4bb9e4a5dce155cb5432 # v8.0.0
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: >
-            -Dsonar.projectVersion=${{ github.sha }}
+        run: ./gradlew :app:sonar -Dsonar.projectVersion=${{ github.sha }}
 
       - name: Prepare release
         if: ${{ inputs.is_push }}
