@@ -193,6 +193,7 @@ ksp {
 
 val sonarJavaBinaries = mutableListOf<Provider<String>>()
 val sonarJavaTestBinaries = mutableListOf<Provider<String>>()
+val sonarAndroidLintReportPaths = mutableListOf<Provider<String>>()
 
 androidComponents {
     onVariants(selector().withBuildType("debug")) { variant ->
@@ -214,6 +215,10 @@ androidComponents {
         sonarJavaTestBinaries +=
             layout.buildDirectory
                 .dir("intermediates/javac/${variantName}AndroidTest/compile${variantTaskName}AndroidTestJavaWithJavac/classes")
+                .map { it.asFile.path }
+        sonarAndroidLintReportPaths +=
+            layout.buildDirectory
+                .file("reports/lint-results-$variantName.xml")
                 .map { it.asFile.path }
     }
 }
@@ -280,6 +285,7 @@ afterEvaluate {
         properties {
             property("sonar.java.binaries", sonarJavaBinaries.joinToString(",") { it.get() })
             property("sonar.java.test.binaries", sonarJavaTestBinaries.joinToString(",") { it.get() })
+            property("sonar.androidLint.reportPaths", sonarAndroidLintReportPaths.joinToString(",") { it.get() })
         }
     }
 }
