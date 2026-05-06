@@ -1,5 +1,3 @@
-import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
-import com.github.benmanes.gradle.versions.updates.resolutionstrategy.ComponentSelectionWithCurrent
 import io.github.reactivecircus.appversioning.toSemVer
 import net.ltgt.gradle.errorprone.CheckSeverity
 import net.ltgt.gradle.errorprone.errorprone
@@ -9,7 +7,6 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.ksp)
-    alias(libs.plugins.versions)
     alias(libs.plugins.errorprone)
     alias(libs.plugins.app.versioning)
     alias(libs.plugins.easylauncher)
@@ -387,37 +384,6 @@ tasks
     }.configureEach {
         dependsOn(generateExportSchema)
     }
-
-// Do not want any release candidates for updates.
-tasks.withType<DependencyUpdatesTask>().configureEach {
-    revision = "release"
-    checkForGradleUpdate = false
-    outputFormatter = "json"
-
-    // Android apparently marks their "alpha" as "release" so we have to reject them.
-    resolutionStrategy {
-        componentSelection {
-            all(
-                Action<ComponentSelectionWithCurrent> {
-                    val rejected =
-                        listOf(
-                            "alpha",
-                            "beta",
-                            "rc",
-                            "cr",
-                            "m",
-                            "preview",
-                        ).any { qualifier ->
-                            candidate.version.matches(Regex("(?i).*[.-]$qualifier[.\\d-]*"))
-                        }
-                    if (rejected) {
-                        reject("Release candidate")
-                    }
-                },
-            )
-        }
-    }
-}
 
 dependencies {
     implementation(libs.sshlib)
