@@ -17,8 +17,12 @@
 
 package org.connectbot.ui.components
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -34,6 +38,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardReturn
 import androidx.compose.material.icons.automirrored.filled.Send
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.OpenInFull
@@ -68,8 +73,6 @@ import androidx.compose.ui.text.input.TransformedText
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Popup
-import androidx.compose.ui.window.PopupProperties
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import org.connectbot.R
@@ -122,6 +125,7 @@ private const val PREF_FLOATING_INPUT_X = "floating_input_x"
 private const val PREF_FLOATING_INPUT_Y = "floating_input_y"
 private const val PREF_FLOATING_INPUT_WIDTH = "floating_input_width"
 private const val PREF_FLOATING_INPUT_HEIGHT = "floating_input_height"
+private const val PREF_FLOATING_INPUT_AUTO_ENTER = "floating_input_auto_enter"
 private const val DEFAULT_X_RATIO = 0.05f
 private const val DEFAULT_Y_RATIO = 0.3f
 private const val DEFAULT_WIDTH_RATIO = 0.9f
@@ -167,6 +171,11 @@ fun FloatingTextInputDialog(
     var windowWidthPx by remember { mutableFloatStateOf(screenWidthPx * savedWidth) }
     var windowHeightPx by remember { mutableFloatStateOf(screenHeightPx * savedHeight) }
 
+    // Auto-Enter toggle: when on, Send appends a real Enter (CR) and closes the dialog
+    var autoEnter by remember {
+        mutableStateOf(prefs.getBoolean(PREF_FLOATING_INPUT_AUTO_ENTER, true))
+    }
+
     // Text state and focus
     var text by remember { mutableStateOf(initialText) }
     val focusRequester = remember { FocusRequester() }
@@ -176,6 +185,8 @@ fun FloatingTextInputDialog(
         focusRequester.requestFocus()
     }
 
+    BackHandler { onDismiss() }
+
     // Save position and size when dialog closes
     DisposableEffect(Unit) {
         onDispose {
@@ -184,6 +195,7 @@ fun FloatingTextInputDialog(
                 putFloat(PREF_FLOATING_INPUT_Y, offsetY / screenHeightPx)
                 putFloat(PREF_FLOATING_INPUT_WIDTH, windowWidthPx / screenWidthPx)
                 putFloat(PREF_FLOATING_INPUT_HEIGHT, windowHeightPx / screenHeightPx)
+                putBoolean(PREF_FLOATING_INPUT_AUTO_ENTER, autoEnter)
             }
         }
     }
@@ -191,32 +203,45 @@ fun FloatingTextInputDialog(
     // Send text helper function
     fun sendText() {
         if (text.isNotEmpty()) {
+            if (autoEnter) {
+                bridge.injectString(text + "\r")
+                text = ""
+                onDismiss()
+                return
+            }
             bridge.injectString(text)
             text = ""
         }
     }
 
-    Popup(
-        onDismissRequest = onDismiss,
-        properties = PopupProperties(focusable = true)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            // Dismiss on tap outside the dialog. The Column below consumes its own
+            // gestures, so taps inside the dialog never reach this clickable.
+            .clickable(
+                interactionSource = remember { MutableInteractionSource() },
+                indication = null,
+                onClick = onDismiss
+            )
+            // Eat drags in the empty modal area so they don't reach the terminal.
+            .pointerInput(Unit) {
+                detectDragGestures { _, _ -> }
+            }
     ) {
-        Box(
+        Column(
             modifier = Modifier
-                .fillMaxSize()
+                .offset { IntOffset(offsetX.roundToInt(), offsetY.roundToInt()) }
+                .width(with(density) { windowWidthPx.toDp() })
+                .background(
+                    MaterialTheme.colorScheme.surface,
+                    RoundedCornerShape(12.dp)
+                )
+                // Consume taps inside the dialog so the outer click-to-dismiss doesn't fire.
                 .pointerInput(Unit) {
-                    // Dismiss when clicking outside
-                    detectDragGestures { _, _ -> }
+                    detectTapGestures { /* swallow */ }
                 }
         ) {
-            Column(
-                modifier = Modifier
-                    .offset { IntOffset(offsetX.roundToInt(), offsetY.roundToInt()) }
-                    .width(with(density) { windowWidthPx.toDp() })
-                    .background(
-                        MaterialTheme.colorScheme.surface,
-                        RoundedCornerShape(12.dp)
-                    )
-            ) {
                 // Draggable header with send and close buttons
                 Row(
                     modifier = Modifier
@@ -249,6 +274,22 @@ fun FloatingTextInputDialog(
                         color = MaterialTheme.colorScheme.onPrimary,
                         modifier = Modifier.weight(1f)
                     )
+
+                    IconButton(
+                        onClick = { autoEnter = !autoEnter },
+                        modifier = Modifier.size(24.dp)
+                    ) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.KeyboardReturn,
+                            contentDescription = stringResource(R.string.terminal_text_input_auto_enter),
+                            tint = if (autoEnter) {
+                                MaterialTheme.colorScheme.onPrimary
+                            } else {
+                                MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.4f)
+                            },
+                            modifier = Modifier.size(18.dp)
+                        )
+                    }
 
                     IconButton(
                         onClick = onDismiss,
@@ -343,4 +384,3 @@ fun FloatingTextInputDialog(
             }
         }
     }
-}
