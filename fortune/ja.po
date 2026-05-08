@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-11 10:25-0700\n"
-"PO-Revision-Date: 2026-04-11 10:21-0700\n"
+"POT-Creation-Date: 2026-04-29 21:38-0700\n"
+"PO-Revision-Date: 2026-04-29 21:30-0700\n"
 "Last-Translator: Naofumi Fukue <naofum@gmail.com>\n"
 "Language: ja\n"
 "Language-Team: ja <LL@li.org>\n"
@@ -752,17 +752,19 @@ msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
 msgstr "バックエンドのサービスが終了しない限り、アンロックした鍵をメモリに保持します"
 
-#. Name for the preference that forces the service to stay running in the
-#. background.
+#. Title for the preference that keeps the background service running to
+#. prevent connection drops.
+#, fuzzy
 msgctxt "pref_conn_persist_title"
-msgid "Persist connections"
-msgstr "持続的接続"
+msgid "Stay connected in the background"
+msgstr "バックグラウンドで接続を維持"
 
-#. Summary for the preference that forces the service to stay running in the
-#. background.
+#. Summary for the preference that keeps the background service running to
+#. prevent connection drops.
+#, fuzzy
 msgctxt "pref_conn_persist_summary"
-msgid "Force connections to stay connected while in background"
-msgstr "バックグラウンドでの実行中に接続の持続を強制する"
+msgid "Keep your sessions open even when you switch to other apps"
+msgstr "他のアプリに切り替えてもセッションを維持できます"
 
 #. Name for the keyboard shortcuts preference
 msgctxt "pref_keymode_title"
@@ -2480,53 +2482,70 @@ msgstr "既存の公開鍵をインポート"
 #. Title for notification permission dialog shown when user first tries to
 #. connect to a host.              Explains that notifications keep SSH
 #. connections alive.
+#, fuzzy
 msgctxt "notification_permission_title"
-msgid "Keep connections alive"
-msgstr "接続を維持する"
+msgid "Stay connected in the background"
+msgstr "バックグラウンドで接続を維持"
 
 #. Explanation message shown in permission dialog when user tries to connect
 #. to a host.              Explains why notification permission is needed and
 #. what happens without it.
+#, fuzzy
 msgctxt "notification_permission_message"
 msgid ""
-"Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch "
-"apps."
-msgstr "通知を表示することはバックグラウンドで接続を維持するために必要です。許可なくして、接続はアプリを切り替えたときに閉じることがあります。"
+"ConnectBot needs notification permission to keep your connections active "
+"when you switch apps. Without it, the system may drop your connections to"
+" save battery."
+msgstr "ConnectBotは、アプリを切り替えたときに接続を維持するために、通知の許可が必要です。許可しない場合、システムはバッテリーを節約するために接続を切断する可能性があります。"
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
+#, fuzzy
 msgctxt "grant_permission"
-msgid "Grant permission"
-msgstr "許可を与える"
+msgid "Allow"
+msgstr "許可する"
 
 #. Button text to proceed with connecting without granting notification
 #. permission.
 msgctxt "connect_anyway"
 msgid "Connect anyway"
-msgstr "つながる"
+msgstr "とにかく接続"
 
 #. Title for dialog directing users to app settings when notification
 #. permission was denied.              Shown when user tries to enable persist
 #. connections after denying permission.
+#, fuzzy
 msgctxt "notification_permission_denied_title"
-msgid "Permission required"
-msgstr "パーミッションが必要です"
+msgid "Notification permission needed"
+msgstr "通知の許可が必要です"
 
 #. Message explaining that user must enable notification permission in app
 #. settings.              Shown when notification permission was previously
 #. denied and user tries to enable persist connections.
+#, fuzzy
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification"
-" permission in app settings."
-msgstr "バックグラウンドで接続を維持するにはアプリの設定で通知の許可を有効にする必要があります"
+"To keep your connections active in the background, please enable "
+"notifications for ConnectBot in the system settings."
+msgstr "バックグラウンドで接続を維持するには、システム設定でConnectBotの通知を有効にしてください。"
 
 #. Button text to open ConnectBot app settings page where user can grant
 #. notification permission.
 msgctxt "open_settings"
 msgid "Open settings"
 msgstr "設定を開く"
+
+#. Snackbar shown on host list when notification permission was denied.
+#. Informs user that connections will drop when app is backgrounded.
+msgctxt "notification_permission_denied_snackbar"
+msgid "Connections may drop without notification permission"
+msgstr "接続が予期せず切断される場合があり、その旨の通知は行われません"
+
+#. Snackbar shown on console screen when notification permission is denied and
+#. persist connections is enabled.
+msgctxt "notification_permission_console_warning"
+msgid "Connection may drop in background"
+msgstr "バックグラウンドでの接続が切断される可能性があります"
 
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
@@ -3071,3 +3090,4 @@ msgstr "ConnectBotのロックを解除"
 msgctxt "auth_prompt_subtitle"
 msgid "Verify your identity to continue"
 msgstr "本人確認を行い、続行してください。"
+

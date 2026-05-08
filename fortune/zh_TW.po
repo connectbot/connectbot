@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-11 10:25-0700\n"
-"PO-Revision-Date: 2026-04-11 10:24-0700\n"
+"POT-Creation-Date: 2026-04-29 21:38-0700\n"
+"PO-Revision-Date: 2026-04-29 21:38-0700\n"
 "Last-Translator: Kenny Root <Unknown>\n"
 "Language: zh_Hant_TW\n"
 "Language-Team: zh_Hant_TW <LL@li.org>\n"
@@ -754,17 +754,19 @@ msgctxt "pref_memkeys_summary"
 msgid "Keep unlocked keys in memory until backend service is terminated"
 msgstr "保持記憶體中的金鑰是解鎖狀態，直到背景服務結束"
 
-#. Name for the preference that forces the service to stay running in the
-#. background.
+#. Title for the preference that keeps the background service running to
+#. prevent connection drops.
+#, fuzzy
 msgctxt "pref_conn_persist_title"
-msgid "Persist connections"
-msgstr "保持連線"
+msgid "Stay connected in the background"
+msgstr "在背景中保持連線"
 
-#. Summary for the preference that forces the service to stay running in the
-#. background.
+#. Summary for the preference that keeps the background service running to
+#. prevent connection drops.
+#, fuzzy
 msgctxt "pref_conn_persist_summary"
-msgid "Force connections to stay connected while in background"
-msgstr "在背景執行時仍保持連線狀態"
+msgid "Keep your sessions open even when you switch to other apps"
+msgstr "即使切換到其他應用程式，也能讓您的連線維持開啟狀態"
 
 #. Name for the keyboard shortcuts preference
 msgctxt "pref_keymode_title"
@@ -2486,25 +2488,28 @@ msgstr "匯入現有公鑰"
 #. Title for notification permission dialog shown when user first tries to
 #. connect to a host.              Explains that notifications keep SSH
 #. connections alive.
+#, fuzzy
 msgctxt "notification_permission_title"
-msgid "Keep connections alive"
-msgstr "維持連線狀態"
+msgid "Stay connected in the background"
+msgstr "在背景中保持連線"
 
 #. Explanation message shown in permission dialog when user tries to connect
 #. to a host.              Explains why notification permission is needed and
 #. what happens without it.
+#, fuzzy
 msgctxt "notification_permission_message"
 msgid ""
-"Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch "
-"apps."
-msgstr "顯示通知是維持背景連線的重要步驟。如果沒有相關權限，在切換應用程式時，連線可能會中斷。"
+"ConnectBot needs notification permission to keep your connections active "
+"when you switch apps. Without it, the system may drop your connections to"
+" save battery."
+msgstr "ConnectBot 需要取得通知權限，才能在您切換應用程式時維持連線。如果沒有這個權限，系統可能會為了節省電力而中斷您的連線。"
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
+#, fuzzy
 msgctxt "grant_permission"
-msgid "Grant permission"
-msgstr "授予權限"
+msgid "Allow"
+msgstr "允許"
 
 #. Button text to proceed with connecting without granting notification
 #. permission.
@@ -2515,24 +2520,38 @@ msgstr "仍然要連線"
 #. Title for dialog directing users to app settings when notification
 #. permission was denied.              Shown when user tries to enable persist
 #. connections after denying permission.
+#, fuzzy
 msgctxt "notification_permission_denied_title"
-msgid "Permission required"
-msgstr "需要權限"
+msgid "Notification permission needed"
+msgstr "需要通知權限"
 
 #. Message explaining that user must enable notification permission in app
 #. settings.              Shown when notification permission was previously
 #. denied and user tries to enable persist connections.
+#, fuzzy
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification"
-" permission in app settings."
-msgstr "為了讓應用程式在背景中維持連線，您必須在應用程式設定中啟用通知權限。"
+"To keep your connections active in the background, please enable "
+"notifications for ConnectBot in the system settings."
+msgstr "為了讓您的連線在背景中保持啟用狀態，請在系統設定中啟用 ConnectBot 的通知功能。"
 
 #. Button text to open ConnectBot app settings page where user can grant
 #. notification permission.
 msgctxt "open_settings"
 msgid "Open settings"
 msgstr "開啟設定"
+
+#. Snackbar shown on host list when notification permission was denied.
+#. Informs user that connections will drop when app is backgrounded.
+msgctxt "notification_permission_denied_snackbar"
+msgid "Connections may drop without notification permission"
+msgstr "連線可能會在沒有通知的情況下中斷"
+
+#. Snackbar shown on console screen when notification permission is denied and
+#. persist connections is enabled.
+msgctxt "notification_permission_console_warning"
+msgid "Connection may drop in background"
+msgstr "背景執行時，連線可能會中斷"
 
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.

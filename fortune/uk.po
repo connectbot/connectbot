@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2026-04-11 10:25-0700\n"
-"PO-Revision-Date: 2026-04-11 10:23-0700\n"
+"POT-Creation-Date: 2026-04-29 21:38-0700\n"
+"PO-Revision-Date: 2026-04-29 21:36-0700\n"
 "Last-Translator: Roman Isko <iskoroman@gmail.com>\n"
 "Language: uk\n"
 "Language-Team: uk <LL@li.org>\n"
@@ -777,19 +777,19 @@ msgstr ""
 "Утримувати розблоковані ключі в пам'яті, поки не буде завершено "
 "обслуговування бекенду"
 
-#. Name for the preference that forces the service to stay running in the
-#. background.
+#. Title for the preference that keeps the background service running to
+#. prevent connection drops.
+#, fuzzy
 msgctxt "pref_conn_persist_title"
-msgid "Persist connections"
-msgstr "Постійні  з'єднання"
+msgid "Stay connected in the background"
+msgstr "Залишайтеся на зв’язку у фоновому режимі"
 
-#. Summary for the preference that forces the service to stay running in the
-#. background.
+#. Summary for the preference that keeps the background service running to
+#. prevent connection drops.
+#, fuzzy
 msgctxt "pref_conn_persist_summary"
-msgid "Force connections to stay connected while in background"
-msgstr ""
-"Підтримуйте з’єднання активним, навіть коли програма працює у фоновому "
-"режимі"
+msgid "Keep your sessions open even when you switch to other apps"
+msgstr "Залишайте сеанси активними, навіть коли перемикаєтеся на інші програми"
 
 #. Name for the keyboard shortcuts preference
 msgctxt "pref_keymode_title"
@@ -2538,28 +2538,31 @@ msgstr "Імпортувати наявний публічний ключ"
 #. Title for notification permission dialog shown when user first tries to
 #. connect to a host.              Explains that notifications keep SSH
 #. connections alive.
+#, fuzzy
 msgctxt "notification_permission_title"
-msgid "Keep connections alive"
-msgstr "Підтримуйте з’єднання активними"
+msgid "Stay connected in the background"
+msgstr "Залишайтеся на зв’язку у фоновому режимі"
 
 #. Explanation message shown in permission dialog when user tries to connect
 #. to a host.              Explains why notification permission is needed and
 #. what happens without it.
+#, fuzzy
 msgctxt "notification_permission_message"
 msgid ""
-"Displaying a notification is required keep connections alive in the "
-"background. Without permission, connections may close when you switch "
-"apps."
+"ConnectBot needs notification permission to keep your connections active "
+"when you switch apps. Without it, the system may drop your connections to"
+" save battery."
 msgstr ""
-"Для підтримки активних з’єднань у фоновому режимі необхідно відображати "
-"сповіщення. Без відповідного дозволу з’єднання можуть розриватися під час"
-" перемикання між програмами."
+"Щоб підтримувати активність ваших з’єднань під час перемикання між "
+"програмами, ConnectBot потребує дозволу на надсилання сповіщень. Без "
+"нього система може розірвати з’єднання, щоб заощадити заряд батареї."
 
 #. Button text to grant notification permission in the permission explanation
 #. dialog.
+#, fuzzy
 msgctxt "grant_permission"
-msgid "Grant permission"
-msgstr "Надати дозвіл"
+msgid "Allow"
+msgstr "Дозволити"
 
 #. Button text to proceed with connecting without granting notification
 #. permission.
@@ -2570,26 +2573,42 @@ msgstr "Підключитися все одно"
 #. Title for dialog directing users to app settings when notification
 #. permission was denied.              Shown when user tries to enable persist
 #. connections after denying permission.
+#, fuzzy
 msgctxt "notification_permission_denied_title"
-msgid "Permission required"
-msgstr "Необхідно надати дозвіл"
+msgid "Notification permission needed"
+msgstr "Необхідний дозвіл на надсилання сповіщень"
 
 #. Message explaining that user must enable notification permission in app
 #. settings.              Shown when notification permission was previously
 #. denied and user tries to enable persist connections.
+#, fuzzy
 msgctxt "notification_permission_denied_message"
 msgid ""
-"To keep connections alive in the background, you must enable notification"
-" permission in app settings."
+"To keep your connections active in the background, please enable "
+"notifications for ConnectBot in the system settings."
 msgstr ""
-"Щоб підтримувати активність з’єднань у фоновому режимі, потрібно "
-"ввімкнути дозвіл на надсилання сповіщень у налаштуваннях програми."
+"Щоб забезпечити постійний зв’язок у фоновому режимі, увімкніть сповіщення"
+" для ConnectBot у системних налаштуваннях."
 
 #. Button text to open ConnectBot app settings page where user can grant
 #. notification permission.
 msgctxt "open_settings"
 msgid "Open settings"
 msgstr "Відкрити налаштування"
+
+#. Snackbar shown on host list when notification permission was denied.
+#. Informs user that connections will drop when app is backgrounded.
+msgctxt "notification_permission_denied_snackbar"
+msgid "Connections may drop without notification permission"
+msgstr ""
+"З’єднання може розірватися без попереднього повідомлення або запиту "
+"дозволу"
+
+#. Snackbar shown on console screen when notification permission is denied and
+#. persist connections is enabled.
+msgctxt "notification_permission_console_warning"
+msgid "Connection may drop in background"
+msgstr "З’єднання може розірватися під час роботи у фоновому режимі"
 
 #. Message shown to user when they're trying to connect to a host on a local
 #. network but              have not granted the permission yet.
