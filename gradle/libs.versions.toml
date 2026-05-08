@@ -28,7 +28,7 @@ playServicesBasement = "18.10.0"
 playFeatureDelivery = "2.1.0"
 conscrypt = "2.5.3"
 conscryptOpenJdk = "2.5.2"
-coroutines = "1.10.2"
+coroutines = "1.11.0"
 timber = "5.0.1"
 
 recyclerview = "1.4.0"
