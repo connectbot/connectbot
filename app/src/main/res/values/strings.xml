@@ -271,6 +271,10 @@
 	<string name="pref_language_title">Language</string>
 	<!-- Default option for language preference that uses the system locale -->
 	<string name="pref_language_system_default">System default</string>
+	<!-- Description of clickable icon shown on language pack list item when it has not been downloaded. -->
+	<string name="pref_language_download">Download language pack</string>
+	<!-- Description of error icon shown on language pack list item when download failed. -->
+	<string name="pref_language_download_failed">Download failed, tap to retry</string>
 
 	<!-- Title of the theme mode selector preference in the User Interface settings section -->
 	<string name="pref_theme_title">Theme</string>

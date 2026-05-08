@@ -41,6 +41,8 @@ import kotlinx.coroutines.withContext
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.util.LanguageDownloadState
+import org.connectbot.util.LanguagePackManager
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.TerminalFontProvider
@@ -84,6 +86,8 @@ data class SettingsUiState(
     val fontDownloadInProgress: Boolean = false,
     val themeMode: ThemeMode = ThemeMode.SYSTEM,
     val language: String = "",
+    val languageDownloadStates: Map<String, LanguageDownloadState> = emptyMap(),
+    val installedLanguages: Set<String> = emptySet(),
     val defaultProfileId: Long = 0L,
     val availableProfiles: List<Profile> = emptyList(),
 )
@@ -94,6 +98,7 @@ class SettingsViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
     @ApplicationContext private val context: Context,
     private val dispatchers: CoroutineDispatchers,
+    private val languagePackManager: LanguagePackManager,
 ) : ViewModel() {
     private val fontProvider = TerminalFontProvider(context, dispatchers.io)
     private val localFontProvider = LocalFontProvider(context)
@@ -115,12 +120,48 @@ class SettingsViewModel @Inject constructor(
 
     init {
         loadProfiles()
+        refreshInstalledLanguages()
     }
 
     private fun loadProfiles() {
         viewModelScope.launch {
             val profiles = profileRepository.getAll()
             _uiState.update { it.copy(availableProfiles = profiles) }
+        }
+    }
+
+    private fun refreshInstalledLanguages() {
+        viewModelScope.launch {
+            val languages = withContext(dispatchers.io) {
+                languagePackManager.getInstalledLanguages()
+            }
+            _uiState.update { it.copy(installedLanguages = it.installedLanguages + languages) }
+        }
+    }
+
+    fun requestLanguage(languageTag: String) {
+        val state = _uiState.value
+        if (languageTag.isEmpty() || state.installedLanguages.contains(languageTag)) {
+            updateLanguage(languageTag)
+            return
+        }
+        if (state.languageDownloadStates[languageTag] is LanguageDownloadState.Downloading) return
+        _uiState.update { it.copy(languageDownloadStates = it.languageDownloadStates + (languageTag to LanguageDownloadState.Downloading)) }
+        languagePackManager.requestLanguagePack(languageTag) { success ->
+            viewModelScope.launch {
+                if (success) {
+                    updateLanguage(languageTag)
+                    _uiState.update {
+                        it.copy(
+                            languageDownloadStates = it.languageDownloadStates - languageTag,
+                            installedLanguages = it.installedLanguages + languageTag,
+                        )
+                    }
+                    refreshInstalledLanguages()
+                } else {
+                    _uiState.update { it.copy(languageDownloadStates = it.languageDownloadStates + (languageTag to LanguageDownloadState.Failed)) }
+                }
+            }
         }
     }
 

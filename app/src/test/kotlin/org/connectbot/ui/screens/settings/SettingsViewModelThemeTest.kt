@@ -24,6 +24,7 @@ import kotlinx.coroutines.test.runTest
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.di.FakeLanguagePackManager
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.ThemeMode
 import org.junit.Assert.assertEquals
@@ -75,6 +76,7 @@ class SettingsViewModelThemeTest {
             profileRepository,
             RuntimeEnvironment.getApplication(),
             dispatchers,
+            FakeLanguagePackManager(),
         )
         advanceUntilIdle()
     }
@@ -92,6 +94,7 @@ class SettingsViewModelThemeTest {
             profileRepository,
             RuntimeEnvironment.getApplication(),
             dispatchers,
+            FakeLanguagePackManager(),
         )
         advanceUntilIdle()
 
