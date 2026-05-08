@@ -1,5 +1,4 @@
-import com.pswidersk.gradle.python.uv.UvxTask
-import org.gradle.api.tasks.bundling.Tar
+import com.pswidersk.gradle.python.uv.UvTask
 
 plugins {
     alias(libs.plugins.python.uv)
@@ -27,80 +26,17 @@ pythonUvPlugin {
 }
 
 val appDir = "../app/"
-val localeDir = file(appDir + "locale")
-val launchpadImportFile = "launchpad-import.tar.gz"
-val launchpadExportFile = rootProject.file("launchpad-export.tar.gz")
 
-val android2poArgs =
-    listOf(
-        "--groups",
-        "strings",
-        "--android",
-        file(appDir + "src/main/res").toString(),
-        "--gettext",
-        localeDir.toString(),
-        "--template",
-        "fortune/fortune.pot",
-        "--layout",
-        "fortune/%(locale)s.po",
-    )
-
-val a2poArgs =
-    listOf(
-        "--python",
-        "3.9",
-        "--from",
-        "git+https://github.com/miracle2k/android2po.git#egg=android2po",
-        "a2po",
-    )
-
-val a2poTask =
-    tasks.register<UvxTask>("a2po") {
-        args = a2poArgs
-    }
-
-tasks.register<Copy>("untarTranslations") {
-    from(tarTree(resources.gzip(launchpadExportFile)))
-    into(localeDir)
-
-    // Unsupported Android locales
-    exclude("**/oc.po", "**/ca@valencia.po")
-}
-
-tasks.register<UvxTask>("importToAndroid") {
+tasks.register<UvTask>("translateStrings") {
     group = "Translations"
-    description = "Import translations into ConnectBot from app/locale directory."
+    description = "Translate missing Android strings using the local Ollama LLM."
 
-    args = listOf(a2poArgs, listOf("import"), android2poArgs).flatten()
-}
-
-tasks.register("translationsImport") {
-    group = "Translations"
-    description = "Import translations from a Launchpad export tarball."
-
-    dependsOn("untarTranslations", "importToAndroid")
-}
-
-tasks.register<UvxTask>("exportFromAndroid") {
-    group = "Translations"
-    description = "Export translations from ConnectBot into the app/locale directory."
-
-    args = listOf(a2poArgs, listOf("export"), android2poArgs).flatten()
-}
-
-tasks.register<Tar>("translationsExport") {
-    group = "Translations"
-    description = "Export translations from ConnectBot in a format suitable to import into Launchpad"
-
-    dependsOn("exportFromAndroid")
-    destinationDirectory.set(file("$rootDir"))
-    archiveFileName.set(launchpadImportFile)
-    from(localeDir)
-    compression = Compression.GZIP
-    doLast {
-        println()
-        println("Import file into Launchpad:")
-        println(archiveFile.get().asFile)
-        println()
-    }
+    workingDir = projectDir
+    args =
+        listOf(
+            "run",
+            "python",
+            file("translate.py").toString(),
+            file(appDir + "src/main/res").toString(),
+        )
 }
