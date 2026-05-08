@@ -25,6 +25,7 @@ activityCompose = "1.13.0"
 sshlib = "2.2.46"
 termlib = "0.0.39"
 playServicesBasement = "18.10.0"
+playFeatureDelivery = "2.1.0"
 conscrypt = "2.5.3"
 conscryptOpenJdk = "2.5.2"
 coroutines = "1.10.2"
@@ -58,6 +59,7 @@ core = "1.18.0"
 sshlib = { module = "org.connectbot:sshlib", version.ref = "sshlib" }
 termlib = { module = "org.connectbot:termlib", version.ref = "termlib" }
 play-services-basement = { module = "com.google.android.gms:play-services-basement", version.ref = "playServicesBasement" }
+play-feature-delivery = { module = "com.google.android.play:feature-delivery-ktx", version.ref = "playFeatureDelivery" }
 conscrypt-android = { module = "org.conscrypt:conscrypt-android", version.ref = "conscrypt" }
 
 androidx-recyclerview = { module = "androidx.recyclerview:recyclerview", version.ref = "recyclerview" }

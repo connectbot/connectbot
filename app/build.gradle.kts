@@ -72,7 +72,7 @@ android {
 
     bundle {
         language {
-            enableSplit = false
+            enableSplit = true
         }
     }
 
@@ -150,6 +150,12 @@ android {
             assets.directories.add("build/generated/exportSchema")
         }
         getByName("test") {
+            kotlin.directories.add("src/sharedTest/kotlin")
+        }
+        getByName("testOss") {
+            kotlin.directories.add("src/sharedTest/kotlin")
+        }
+        getByName("testGoogle") {
             kotlin.directories.add("src/sharedTest/kotlin")
         }
         getByName("androidTest") {
@@ -375,6 +381,8 @@ dependencies {
     implementation(libs.androidx.navigation.testing)
     implementation(libs.androidx.ui)
     "googleImplementation"(libs.play.services.basement)
+    "googleImplementation"(libs.play.feature.delivery)
+    testImplementation(libs.play.feature.delivery)
     "ossImplementation"(libs.conscrypt.android)
 
     implementation(libs.androidx.recyclerview)

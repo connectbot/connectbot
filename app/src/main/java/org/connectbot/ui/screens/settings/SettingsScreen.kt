@@ -30,6 +30,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
@@ -38,10 +39,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material.icons.filled.Download
+import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.FontDownload
 import androidx.compose.material.icons.filled.Terminal
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -78,6 +82,7 @@ import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.common.getLocalizedFontDisplayName
 import org.connectbot.ui.components.FontDownloadProgressDialog
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.LanguageDownloadState
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.TerminalFont
@@ -178,7 +183,7 @@ fun SettingsScreen(
         onDeleteLocalFont = viewModel::deleteLocalFont,
         onClearImportError = viewModel::clearFontImportError,
         onDefaultProfileChange = viewModel::updateDefaultProfile,
-        onLanguageChange = viewModel::updateLanguage,
+        onLanguageChange = viewModel::requestLanguage,
         onThemeModeChange = viewModel::updateThemeMode,
         onRotationChange = viewModel::updateRotation,
         onFullscreenChange = viewModel::updateFullscreen,
@@ -447,12 +452,14 @@ fun SettingsScreenContent(
                     languageEntries.find { it.first == uiState.language }?.second
                         ?: uiState.language
                 }
-                ListPreference(
+                LanguageListPreference(
                     title = stringResource(R.string.pref_language_title),
                     summary = currentLabel,
                     value = uiState.language,
                     entries = languageEntries.map { (tag, label) -> label to tag },
-                    onValueChange = onLanguageChange,
+                    downloadStates = uiState.languageDownloadStates,
+                    installedLanguages = uiState.installedLanguages,
+                    onEntryClick = onLanguageChange,
                 )
             }
 
@@ -876,6 +883,127 @@ private fun ListPreferenceDialog(
                     ListItem(
                         headlineContent = { Text(label) },
                         modifier = Modifier.clickable { onConfirm(entryValue) },
+                    )
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.delete_neg))
+            }
+        },
+    )
+}
+
+@Composable
+private fun LanguageListPreference(
+    title: String,
+    summary: String,
+    value: String,
+    entries: List<Pair<String, String>>,
+    downloadStates: Map<String, LanguageDownloadState>,
+    installedLanguages: Set<String>,
+    onEntryClick: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var showDialog by remember { mutableStateOf(false) }
+    var pendingDownloadTag by remember { mutableStateOf<String?>(null) }
+
+    // Close dialog once a pending download completes successfully (download state cleared + language installed)
+    LaunchedEffect(downloadStates, installedLanguages) {
+        val pendingTag = pendingDownloadTag
+        if (pendingTag != null && downloadStates[pendingTag] == null && installedLanguages.contains(pendingTag)) {
+            showDialog = false
+            pendingDownloadTag = null
+        }
+    }
+
+    Column(modifier = modifier) {
+        ListItem(
+            headlineContent = { Text(title) },
+            supportingContent = { Text(summary) },
+            modifier = Modifier.clickable { showDialog = true },
+        )
+        HorizontalDivider()
+
+        if (showDialog) {
+            LanguageListPreferenceDialog(
+                title = title,
+                value = value,
+                entries = entries,
+                downloadStates = downloadStates,
+                installedLanguages = installedLanguages,
+                onDismiss = {
+                    showDialog = false
+                    pendingDownloadTag = null
+                },
+                onEntryClick = { tag ->
+                    val needsDownload = tag.isNotEmpty() && !installedLanguages.contains(tag)
+                    onEntryClick(tag)
+                    if (needsDownload) {
+                        pendingDownloadTag = tag
+                    } else {
+                        showDialog = false
+                    }
+                },
+            )
+        }
+    }
+}
+
+@Composable
+private fun LanguageListPreferenceDialog(
+    title: String,
+    value: String,
+    entries: List<Pair<String, String>>,
+    downloadStates: Map<String, LanguageDownloadState>,
+    installedLanguages: Set<String>,
+    onDismiss: () -> Unit,
+    onEntryClick: (String) -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(title) },
+        text = {
+            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                entries.forEach { (label, tag) ->
+                    val state = downloadStates[tag]
+                    val isDownloading = state is LanguageDownloadState.Downloading
+                    val needsDownload = tag.isNotEmpty() && !installedLanguages.contains(tag)
+                    ListItem(
+                        headlineContent = { Text(label) },
+                        trailingContent = when {
+                            isDownloading -> {
+                                {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.size(24.dp),
+                                        strokeWidth = 2.dp,
+                                    )
+                                }
+                            }
+
+                            state is LanguageDownloadState.Failed -> {
+                                {
+                                    Icon(
+                                        imageVector = Icons.Filled.Error,
+                                        contentDescription = stringResource(R.string.pref_language_download_failed),
+                                        tint = MaterialTheme.colorScheme.error,
+                                    )
+                                }
+                            }
+
+                            needsDownload -> {
+                                {
+                                    Icon(
+                                        imageVector = Icons.Filled.Download,
+                                        contentDescription = stringResource(R.string.pref_language_download),
+                                    )
+                                }
+                            }
+
+                            else -> null
+                        },
+                        modifier = if (isDownloading) Modifier else Modifier.clickable { onEntryClick(tag) },
                     )
                 }
             }
