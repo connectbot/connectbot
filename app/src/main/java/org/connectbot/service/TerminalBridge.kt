@@ -132,9 +132,9 @@ class TerminalBridge {
     val terminalEmulator: TerminalEmulator
 
     /**
-     * Callback invoked when text input dialog is requested (e.g., from camera button)
+     * Callback invoked to request the text input dialog (e.g., from camera button)
      */
-    var onTextInputRequested: (() -> Unit)? = null
+    var onTextInputRequest: (() -> Unit)? = null
 
     private val _bellEvents = MutableSharedFlow<Unit>(replay = 0, extraBufferCapacity = 10)
     val bellEvents: SharedFlow<Unit> = _bellEvents.asSharedFlow()
@@ -577,7 +577,7 @@ class TerminalBridge {
      * Called from hardware camera button or other triggers.
      */
     fun requestOpenTextInput() {
-        onTextInputRequested?.invoke()
+        onTextInputRequest?.invoke()
     }
 
     /**

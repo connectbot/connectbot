@@ -318,7 +318,7 @@ private fun ConsoleTerminalPage(
         )
 
         SideEffect {
-            bridge.onTextInputRequested = onTextInputRequest
+            bridge.onTextInputRequest = onTextInputRequest
         }
 
         if (isActive) {
