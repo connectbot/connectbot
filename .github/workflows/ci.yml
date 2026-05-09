@@ -10,19 +10,8 @@ on:
       - 'LICENSE'
       - '.java-version'
       - 'icons/**'
-  pull_request:
-    branches: [ main ]
-    paths-ignore:
-      - '**.md'
-      - '.gitignore'
-      - '.gitattributes'
-      - 'LICENSE'
-      - '.java-version'
-      - 'icons/**'
   schedule:
     - cron: "0 7 */3 * *"
-  merge_group:
-    types: [ checks_requested ]
 
 concurrency:
   group: ci-main-${{ github.sha }}
