@@ -40,7 +40,7 @@ import org.json.JSONObject
  */
 class SchemaBasedExporter(
     private val database: RoomDatabase,
-    private val schema: DatabaseSchema
+    private val schema: DatabaseSchema,
 ) {
 
     /**
@@ -66,7 +66,7 @@ class SchemaBasedExporter(
                 .map { it.columnName }
 
             val cursor = db.query(
-                "SELECT ${columns.joinToString(", ")} FROM $tableName"
+                "SELECT ${columns.joinToString(", ")} FROM $tableName",
             )
 
             cursor.use {
@@ -85,19 +85,18 @@ class SchemaBasedExporter(
     /**
      * Import data from JSON into database tables.
      *
+     * The JSON version is treated as advisory. Import is intentionally
+     * permissive so exports from nearby branch-specific schemas can still be
+     * restored when the fields used by this app version are compatible.
+     * Unknown tables and row fields are ignored by processing only the
+     * requested tables and the fields present in the current schema.
+     *
      * @param jsonString JSON string containing table data
      * @param tableNames List of table names to import (in order - parent tables first)
      * @return Map of table name to Pair of (inserted count, skipped count)
      */
     fun importFromJson(jsonString: String, tableNames: List<String>): Map<String, Pair<Int, Int>> {
         val json = JSONObject(jsonString)
-        val version = json.optInt("version", 1)
-
-        if (version > schema.version) {
-            throw IllegalArgumentException(
-                "Unsupported schema version: $version (max supported: ${schema.version})"
-            )
-        }
 
         val db = database.openHelper.writableDatabase
         val results = mutableMapOf<String, Pair<Int, Int>>()
@@ -195,7 +194,7 @@ class SchemaBasedExporter(
         row: JSONObject,
         foreignKeys: List<ForeignKeySchema>,
         idMappings: Map<String, Map<Long, Long>>,
-        entitySchema: EntitySchema
+        entitySchema: EntitySchema,
     ): JSONObject {
         val remapped = JSONObject(row.toString())
 
@@ -230,7 +229,7 @@ class SchemaBasedExporter(
         tableName: String,
         row: JSONObject,
         uniqueFields: List<String>,
-        entitySchema: EntitySchema
+        entitySchema: EntitySchema,
     ): Long? {
         val conditions = mutableListOf<String>()
         val args = mutableListOf<String>()
@@ -247,7 +246,7 @@ class SchemaBasedExporter(
 
         val cursor = db.query(
             "SELECT id FROM $tableName WHERE ${conditions.joinToString(" AND ")}",
-            args.toTypedArray()
+            args.toTypedArray(),
         )
 
         return cursor.use {
@@ -262,7 +261,7 @@ class SchemaBasedExporter(
         db: androidx.sqlite.db.SupportSQLiteDatabase,
         tableName: String,
         row: JSONObject,
-        entitySchema: EntitySchema
+        entitySchema: EntitySchema,
     ): Long {
         val values = jsonToContentValues(row, entitySchema, excludeId = true)
         return db.insert(tableName, 0, values)
@@ -276,7 +275,7 @@ class SchemaBasedExporter(
         tableName: String,
         id: Long,
         row: JSONObject,
-        entitySchema: EntitySchema
+        entitySchema: EntitySchema,
     ) {
         val values = jsonToContentValues(row, entitySchema, excludeId = true)
         db.update(tableName, 0, values, "id = ?", arrayOf(id.toString()))
@@ -290,7 +289,7 @@ class SchemaBasedExporter(
         tableName: String,
         entitySchema: EntitySchema,
         idMapping: Map<Long, Long>,
-        originalRows: JSONArray
+        originalRows: JSONArray,
     ) {
         // Find self-referencing fields (foreign keys that reference the same table)
         val selfRefFields = entitySchema.fields.filter { field ->
@@ -327,7 +326,7 @@ class SchemaBasedExporter(
 
                 db.execSQL(
                     "UPDATE $tableName SET ${field.columnName} = ? WHERE id = ?",
-                    arrayOf(newRefId, newId)
+                    arrayOf(newRefId, newId),
                 )
             }
         }
@@ -339,7 +338,7 @@ class SchemaBasedExporter(
     private fun jsonToContentValues(
         row: JSONObject,
         entitySchema: EntitySchema,
-        excludeId: Boolean
+        excludeId: Boolean,
     ): ContentValues {
         val values = ContentValues()
 
