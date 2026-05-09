@@ -44,6 +44,7 @@ jobs:
 
           needs_ci=false
           needs_docs=false
+          merge_base="$(git merge-base "${BASE_SHA}" "${HEAD_SHA}")"
 
           while IFS= read -r file; do
             case "${file}" in
@@ -54,7 +55,7 @@ jobs:
                 needs_ci=true
                 ;;
             esac
-          done < <(git diff --name-only "${BASE_SHA}" "${HEAD_SHA}")
+          done < <(git diff --name-only "${merge_base}" "${HEAD_SHA}")
 
           echo "needs_ci=${needs_ci}" >> "$GITHUB_OUTPUT"
           echo "needs_docs=${needs_docs}" >> "$GITHUB_OUTPUT"
@@ -87,12 +88,18 @@ jobs:
     steps:
       - name: Check required jobs
         env:
+          CHANGES_RESULT: ${{ needs.changes.result }}
           NEEDS_CI: ${{ needs.changes.outputs.needs_ci }}
           NEEDS_DOCS: ${{ needs.changes.outputs.needs_docs }}
           CI_RESULT: ${{ needs.ci.result }}
           DOCS_RESULT: ${{ needs.docs.result }}
         run: |
           failed=false
+
+          if [[ "${CHANGES_RESULT}" != "success" ]]; then
+            echo "Changed file detection result was ${CHANGES_RESULT}"
+            failed=true
+          fi
 
           if [[ "${NEEDS_DOCS}" == "true" && "${DOCS_RESULT}" != "success" ]]; then
             echo "Documentation lint result was ${DOCS_RESULT}"
