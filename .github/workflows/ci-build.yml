@@ -25,7 +25,7 @@ jobs:
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         if: "${{ env.SONAR_TOKEN != '' }}"
-        run: echo "defined=true" >> $GITHUB_OUTPUT
+        run: echo "defined=true" >> "$GITHUB_OUTPUT"
 
   build:
     name: Build and unit test
@@ -61,7 +61,7 @@ jobs:
 
       - name: Delete old Android SDK cmdline-tools
         run: |
-          rm -rf $ANDROID_HOME/cmdline-tools/latest
+          rm -rf "$ANDROID_HOME/cmdline-tools/latest"
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@40fd30fb8d7440372e1316f5d1809ec01dcd3699 # v4.0.1
@@ -83,7 +83,7 @@ jobs:
             TAGGED=yes
           fi
 
-          if [[ -n $TAGGED ]]; then
+          if [[ -n "${TAGGED}" ]]; then
             GITHUB_TAG="$(git describe)"
             echo "${GITHUB_TAG}" > tag.txt
             echo "Release ${GITHUB_TAG}" > release-title.txt
@@ -93,15 +93,15 @@ jobs:
             echo "${GITHUB_TAG}" > tag.txt
             echo "${GITHUB_TAG}: ${GITHUB_TITLE}" > release-title.txt
           fi
-          cp ./app/build/outputs/apk/oss/release/app-oss-release-unsigned.apk ConnectBot-${GITHUB_TAG}-oss-unsigned.apk
-          cp ./app/build/outputs/apk/google/release/app-google-release-unsigned.apk ConnectBot-${GITHUB_TAG}-google-unsigned.apk
-          cp ./app/build/outputs/bundle/googleRelease/app-google-release.aab ConnectBot-${GITHUB_TAG}-google-unsigned.aab
-          cp ./app/build/outputs/bundle/ossRelease/app-oss-release.aab ConnectBot-${GITHUB_TAG}-oss-unsigned.aab
-          cp ./app/build/outputs/native-debug-symbols/googleRelease/native-debug-symbols.zip ConnectBot-${GITHUB_TAG}-google.native-debug-symbols.zip
-          cp ./app/build/outputs/native-debug-symbols/ossRelease/native-debug-symbols.zip ConnectBot-${GITHUB_TAG}-oss.native-debug-symbols.zip
-          cp ./app/build/outputs/mapping/googleRelease/mapping.txt ConnectBot-${GITHUB_TAG}-google.mapping.txt
-          cp ./app/build/outputs/mapping/ossRelease/mapping.txt ConnectBot-${GITHUB_TAG}-oss.mapping.txt
-          zstd *.mapping.txt
+          cp ./app/build/outputs/apk/oss/release/app-oss-release-unsigned.apk "ConnectBot-${GITHUB_TAG}-oss-unsigned.apk"
+          cp ./app/build/outputs/apk/google/release/app-google-release-unsigned.apk "ConnectBot-${GITHUB_TAG}-google-unsigned.apk"
+          cp ./app/build/outputs/bundle/googleRelease/app-google-release.aab "ConnectBot-${GITHUB_TAG}-google-unsigned.aab"
+          cp ./app/build/outputs/bundle/ossRelease/app-oss-release.aab "ConnectBot-${GITHUB_TAG}-oss-unsigned.aab"
+          cp ./app/build/outputs/native-debug-symbols/googleRelease/native-debug-symbols.zip "ConnectBot-${GITHUB_TAG}-google.native-debug-symbols.zip"
+          cp ./app/build/outputs/native-debug-symbols/ossRelease/native-debug-symbols.zip "ConnectBot-${GITHUB_TAG}-oss.native-debug-symbols.zip"
+          cp ./app/build/outputs/mapping/googleRelease/mapping.txt "ConnectBot-${GITHUB_TAG}-google.mapping.txt"
+          cp ./app/build/outputs/mapping/ossRelease/mapping.txt "ConnectBot-${GITHUB_TAG}-oss.mapping.txt"
+          zstd -- ./*.mapping.txt
 
       - name: Store artifacts for upload
         if: ${{ inputs.is_push }}
@@ -145,7 +145,7 @@ jobs:
 
       - name: Delete old Android SDK cmdline-tools
         run: |
-          rm -rf $ANDROID_HOME/cmdline-tools/latest
+          rm -rf "$ANDROID_HOME/cmdline-tools/latest"
 
       - name: Setup Android SDK
         uses: android-actions/setup-android@40fd30fb8d7440372e1316f5d1809ec01dcd3699 # v4.0.1
