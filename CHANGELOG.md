@@ -2,6 +2,26 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.10.7][1.10.7]
+### Added
+- Downloadable language packs to reduce install size; users can also download languages from Settings
+- Source address field for port forwards
+- Import private key from clipboard via text dialog
+- Edit key nickname at import time
+- Context menu paste in console screen
+
+### Fixed
+- Double press on special keys
+- Disconnect host when deleting it
+- Telnet connections no longer crash the app when violating internal contracts
+- Warning shown when notification permission is denied, explaining background connection loss
+- Scroll position no longer drifts when new output arrives while scrolled up in history
+- Enter key now works correctly when typed as a newline character from some IMEs
+- Clear scrollback (ESC[3J) now works correctly
+
+### Changed
+- Terminal rendering performance improved by only redrawing changed rows and aligning updates with vsync
+
 ## [1.10.6][1.10.6]
 ### Fixed
 - Better network connection tracking for reconnects
@@ -287,6 +307,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Color picker color numbers are now localized
 
 
+[1.10.7]: https://github.com/connectbot/connectbot/compare/v1.10.6...v1.10.7
 [1.10.6]: https://github.com/connectbot/connectbot/compare/v1.10.5...v1.10.6
 [1.10.5]: https://github.com/connectbot/connectbot/compare/v1.10.4...v1.10.5
 [1.10.4]: https://github.com/connectbot/connectbot/compare/v1.10.3...v1.10.4
