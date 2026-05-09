@@ -10,15 +10,10 @@ on:
       - 'LICENSE'
       - '.java-version'
       - 'icons/**'
-  pull_request:
-    branches: [ main ]
-    paths:
-      - '**.md'
-      - '.gitignore'
-      - '.gitattributes'
-      - 'LICENSE'
-      - '.java-version'
-      - 'icons/**'
+  workflow_call:
+    secrets:
+      GRADLE_CACHE_ENCRYPTION_KEY:
+        required: false
 
 jobs:
   lint:
