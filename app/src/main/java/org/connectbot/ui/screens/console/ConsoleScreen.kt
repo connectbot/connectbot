@@ -29,6 +29,8 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -98,6 +100,9 @@ import androidx.compose.ui.input.key.isShiftPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -137,6 +142,8 @@ import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.UrlUtils
 import org.connectbot.util.rememberTerminalTypefaceResultFromStoredValue
 import timber.log.Timber
+import kotlin.math.abs
+import kotlin.math.max
 
 /**
  * Check if a hardware keyboard is currently attached to the device.
@@ -155,6 +162,89 @@ private fun rememberHasHardwareKeyboard(): Boolean {
 
 @VisibleForTesting
 const val AUTO_HIDE_DELAY_MS = 3000L
+
+@VisibleForTesting
+internal fun sessionSwipeTarget(
+    currentIndex: Int,
+    sessionCount: Int,
+    dragX: Float,
+    dragY: Float,
+    viewportWidth: Int,
+    touchSlop: Float,
+): Int? {
+    if (sessionCount < 2 || viewportWidth <= 0) {
+        return null
+    }
+
+    val minimumSwipeDistance = max(touchSlop * 3f, viewportWidth * 0.18f)
+    if (abs(dragX) < minimumSwipeDistance || abs(dragX) < abs(dragY) * 1.5f) {
+        return null
+    }
+
+    val targetIndex = if (dragX < 0f) {
+        (currentIndex + 1).coerceAtMost(sessionCount - 1)
+    } else {
+        (currentIndex - 1).coerceAtLeast(0)
+    }
+
+    return targetIndex.takeIf { it != currentIndex }
+}
+
+private fun Modifier.sessionSwipeNavigation(
+    currentIndex: Int,
+    sessionCount: Int,
+    onSwipeToSession: (Int) -> Unit,
+    onInteraction: () -> Unit,
+): Modifier = pointerInput(currentIndex, sessionCount) {
+    awaitEachGesture {
+        val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+        val pointerId = down.id
+        var dragX = 0f
+        var dragY = 0f
+        var horizontalSwipeLocked = false
+        var verticalGestureLocked = false
+
+        while (true) {
+            val event = awaitPointerEvent(PointerEventPass.Initial)
+            val change = event.changes.firstOrNull { it.id == pointerId } ?: break
+            if (!change.pressed) {
+                break
+            }
+
+            val delta = change.positionChange()
+            dragX += delta.x
+            dragY += delta.y
+
+            if (!horizontalSwipeLocked && !verticalGestureLocked) {
+                val absX = abs(dragX)
+                val absY = abs(dragY)
+                if (absX > viewConfiguration.touchSlop && absX > absY * 1.5f) {
+                    horizontalSwipeLocked = true
+                } else if (absY > viewConfiguration.touchSlop && absY > absX) {
+                    verticalGestureLocked = true
+                }
+            }
+
+            if (horizontalSwipeLocked) {
+                change.consume()
+            }
+        }
+
+        if (horizontalSwipeLocked) {
+            sessionSwipeTarget(
+                currentIndex = currentIndex,
+                sessionCount = sessionCount,
+                dragX = dragX,
+                dragY = dragY,
+                viewportWidth = size.width,
+                touchSlop = viewConfiguration.touchSlop,
+            )?.let { target ->
+                onInteraction()
+                onSwipeToSession(target)
+            }
+        }
+    }
+}
 
 @Composable
 private fun ConsoleTerminalPage(
@@ -778,7 +868,15 @@ fun ConsoleScreen(
 
                             HorizontalPager(
                                 state = pagerState,
-                                modifier = Modifier.fillMaxSize(),
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .sessionSwipeNavigation(
+                                        currentIndex = uiState.currentBridgeIndex,
+                                        sessionCount = uiState.bridges.size,
+                                        onSwipeToSession = { index -> viewModel.selectBridge(index) },
+                                        onInteraction = { handleTerminalInteraction(isTerminalTap = true) },
+                                    ),
+                                userScrollEnabled = false,
                                 key = { page -> uiState.bridges[page].host.id },
                             ) { page ->
                                 val pageBridge = uiState.bridges[page]
