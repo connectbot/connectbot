@@ -268,20 +268,6 @@ class SchemaBasedExporter(
     }
 
     /**
-     * Update an existing row in the database.
-     */
-    private fun updateRow(
-        db: androidx.sqlite.db.SupportSQLiteDatabase,
-        tableName: String,
-        id: Long,
-        row: JSONObject,
-        entitySchema: EntitySchema,
-    ) {
-        val values = jsonToContentValues(row, entitySchema, excludeId = true)
-        db.update(tableName, 0, values, "id = ?", arrayOf(id.toString()))
-    }
-
-    /**
      * Update self-referencing foreign keys after all rows are imported.
      */
     private fun updateSelfReferences(
