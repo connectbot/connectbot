@@ -152,7 +152,7 @@ class ConsoleViewModel @Inject constructor(
     private fun syncBridgeJobs(
         bridges: List<TerminalBridge>,
         jobs: MutableMap<Long, Job>,
-        createJob: (TerminalBridge) -> Job
+        createJob: (TerminalBridge) -> Job,
     ) {
         val activeHostIds = bridges.map { it.host.id }.toSet()
 
@@ -175,7 +175,7 @@ class ConsoleViewModel @Inject constructor(
             } else {
                 it.copy(
                     progressState = progressInfo.state,
-                    progressValue = progressInfo.progress
+                    progressValue = progressInfo.progress,
                 )
             }
         }
@@ -183,7 +183,7 @@ class ConsoleViewModel @Inject constructor(
 
     private fun updateCurrentBridgeProgress(
         bridges: List<TerminalBridge> = _uiState.value.bridges,
-        currentIndex: Int = _uiState.value.currentBridgeIndex
+        currentIndex: Int = _uiState.value.currentBridgeIndex,
     ) {
         val progressInfo = bridges.getOrNull(currentIndex)?.progressState?.value
         updateProgressState(progressInfo)
@@ -224,7 +224,7 @@ class ConsoleViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 isLoading = false,
-                error = message
+                error = message,
             )
         }
     }
@@ -280,7 +280,7 @@ class ConsoleViewModel @Inject constructor(
                 bridges = allBridges,
                 currentBridgeIndex = newIndex,
                 isLoading = waitingForRequestedHost,
-                error = null
+                error = null,
             )
         }
 

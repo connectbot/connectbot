@@ -536,7 +536,7 @@ fun SettingsScreenContent(
                     title = stringResource(R.string.pref_swipe_sessions_title),
                     summary = stringResource(R.string.pref_swipe_sessions_summary),
                     checked = uiState.swipeSessions,
-                    onCheckedChange = onSwipeSessionsChange
+                    onCheckedChange = onSwipeSessionsChange,
                 )
             }
 
