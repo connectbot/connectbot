@@ -320,11 +320,11 @@ private fun ConsoleTerminalPage(
     imeVisible: Boolean,
     handleTerminalInteraction: () -> Unit,
     onShowSoftwareKeyboardChange: (Boolean) -> Unit,
-    onImeVisibilityChanged: (Boolean) -> Unit,
-    onTextInputRequested: () -> Unit,
-    onDisconnectRequested: () -> Unit,
+    onImeVisibilityChange: (Boolean) -> Unit,
+    onTextInputRequest: () -> Unit,
+    onDisconnectRequest: () -> Unit,
     onKeyboardScrollInProgressChange: (Boolean) -> Unit,
-    onSelectionControllerAvailable: (SelectionController) -> Unit,
+    onSelectionControllerChange: (SelectionController) -> Unit,
     onOpenUrl: (String) -> Unit,
     onPasteRequest: () -> Unit,
     onInterceptKey: (KeyEvent) -> Boolean,
@@ -365,13 +365,13 @@ private fun ConsoleTerminalPage(
             modifierManager = bridge.keyHandler,
             onSelectionControllerAvailable = { controller ->
                 if (isActive) {
-                    onSelectionControllerAvailable(controller)
+                    onSelectionControllerChange(controller)
                 }
             },
             onTerminalTap = { handleTerminalInteraction() },
             onImeVisibilityChanged = { visible ->
                 if (isActive) {
-                    onImeVisibilityChanged(visible)
+                    onImeVisibilityChange(visible)
                 }
             },
             onHyperlinkClick = onOpenUrl,
@@ -381,7 +381,7 @@ private fun ConsoleTerminalPage(
         )
 
         SideEffect {
-            bridge.onTextInputRequested = onTextInputRequested
+            bridge.onTextInputRequested = onTextInputRequest
         }
 
         if (isActive) {
@@ -402,7 +402,7 @@ private fun ConsoleTerminalPage(
                     onShowIme = {
                         onShowSoftwareKeyboardChange(true)
                     },
-                    onOpenTextInput = onTextInputRequested,
+                    onOpenTextInput = onTextInputRequest,
                     onScrollInProgressChange = onKeyboardScrollInProgressChange,
                     imeVisible = imeVisible,
                     playAnimation = !hasPlayedKeyboardAnimation,
@@ -448,7 +448,7 @@ private fun ConsoleTerminalPage(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.End,
                     ) {
-                        TextButton(onClick = onDisconnectRequested) {
+                        TextButton(onClick = onDisconnectRequest) {
                             Text(
                                 stringResource(R.string.console_menu_close),
                                 color = terminalColors.overlayText,
@@ -885,16 +885,16 @@ fun ConsoleScreen(
                                     imeVisible = imeVisible,
                                     handleTerminalInteraction = { handleTerminalInteraction(isTerminalTap = true) },
                                     onShowSoftwareKeyboardChange = { showSoftwareKeyboard = it },
-                                    onImeVisibilityChanged = { imeVisible = it },
-                                    onTextInputRequested = { showTextInputDialog = true },
-                                    onDisconnectRequested = {
+                                    onImeVisibilityChange = { imeVisible = it },
+                                    onTextInputRequest = { showTextInputDialog = true },
+                                    onDisconnectRequest = {
                                         pageBridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
                                     },
                                     onKeyboardScrollInProgressChange = { inProgress ->
                                         keyboardScrollInProgress = inProgress
                                         handleTerminalInteraction()
                                     },
-                                    onSelectionControllerAvailable = { selectionController = it },
+                                    onSelectionControllerChange = { selectionController = it },
                                     onOpenUrl = ::openUrl,
                                     onPasteRequest = ::pasteClipboardContents,
                                     onInterceptKey = handleShortcut,
@@ -917,16 +917,16 @@ fun ConsoleScreen(
                                 imeVisible = imeVisible,
                                 handleTerminalInteraction = { handleTerminalInteraction(isTerminalTap = true) },
                                 onShowSoftwareKeyboardChange = { showSoftwareKeyboard = it },
-                                onImeVisibilityChanged = { imeVisible = it },
-                                onTextInputRequested = { showTextInputDialog = true },
-                                onDisconnectRequested = {
+                                onImeVisibilityChange = { imeVisible = it },
+                                onTextInputRequest = { showTextInputDialog = true },
+                                onDisconnectRequest = {
                                     bridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
                                 },
                                 onKeyboardScrollInProgressChange = { inProgress ->
                                     keyboardScrollInProgress = inProgress
                                     handleTerminalInteraction()
                                 },
-                                onSelectionControllerAvailable = { selectionController = it },
+                                onSelectionControllerChange = { selectionController = it },
                                 onOpenUrl = ::openUrl,
                                 onPasteRequest = ::pasteClipboardContents,
                                 onInterceptKey = handleShortcut,
