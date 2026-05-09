@@ -95,12 +95,6 @@ abstract class ConnectBotDatabase : RoomDatabase() {
 
     companion object {
         /**
-         * Current database schema version.
-         * This is also used for JSON export/import versioning.
-         */
-        const val SCHEMA_VERSION = 7
-
-        /**
          * Migration from version 4 to 5: Add profiles table and profile_id to hosts.
          * Also creates profiles from existing host settings and migrates hosts to use them.
          */

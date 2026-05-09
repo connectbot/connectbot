@@ -307,20 +307,21 @@ val generateExportSchema by tasks.registering {
     val exportTables = setOf("profiles", "hosts", "port_forwards")
     val excludedFields = setOf("last_connect", "host_key_algo")
 
-    // Read schema version from ConnectBotDatabase.kt to avoid duplicate definitions
+    // Read schema version from Room's @Database annotation.
     val databaseFile = file("src/main/java/org/connectbot/data/ConnectBotDatabase.kt")
     val schemaVersion =
         databaseFile
             .readText()
-            .let { Regex("""const val SCHEMA_VERSION\s*=\s*(\d+)""").find(it) }
+            .let { Regex("""@Database\s*\([\s\S]*?version\s*=\s*(\d+)""").find(it) }
             ?.groupValues
             ?.get(1)
             ?.toInt()
-            ?: error("Could not find SCHEMA_VERSION in $databaseFile")
+            ?: error("Could not find @Database version in $databaseFile")
     val inputFile = file("schemas/org.connectbot.data.ConnectBotDatabase/$schemaVersion.json")
     val outputDir = file("build/generated/exportSchema")
     val outputFile = file("$outputDir/export_schema.json")
 
+    inputs.file(databaseFile)
     inputs.file(inputFile)
     outputs.file(outputFile)
 
