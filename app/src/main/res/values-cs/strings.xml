@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">Jednoduchý, všestranný, open-source SSH klient</string>
   <string name="service_desc">Správa SSH spojení a nahraných klíčů</string>
   <string name="app_copyright">Autorská práva © Kenny Root</string>
@@ -558,4 +558,18 @@
   <string name="auth_screen_unlock_button">Klepnutím odemkněte</string>
   <string name="auth_prompt_title">Odemkněte ConnectBot</string>
   <string name="auth_prompt_subtitle">Ověřte svou identitu a pokračujte</string>
+  <string name="pref_language_download" tools:machine_translated="true">Stáhnout jazykový balíček</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">Stahování se nezdařilo, klepnutím můžete zkusit znovu.</string>
+  <string name="portforward_host_address" tools:machine_translated="true">Adresa hostitele</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">Lokální hostitel</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Lokální hostitel (pouze IPv4)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">Lokální hostitel (pouze IPv6)</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">Všechny adresy</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Všechny adresy IPv4</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Všechny adresy IPv6</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">Konkrétní adresa</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importovat z schránky</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Obsah soukromého klíče</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Vložit z schránky</string>
 </resources>

@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">Vienkāršs, funkcionāls atvērtā pirmkoda SSH klients.</string>
   <string name="service_desc">Pārvalda SSH savienojumus un ielādētās publiskās atslēgas</string>
   <string name="title_pubkey_list">Publiskās atslēgas</string>
@@ -78,4 +78,498 @@
   <string name="hostpref_add_host">Pievienot serveri</string>
   <string name="hostpref_save_host">Saglabāt serveri</string>
   <string name="pubkey_import_existing">Ievietot esošu publisko atslēgu</string>
+  <string name="app_copyright" tools:machine_translated="true">Autortiesības © Kenijs Rūts</string>
+  <string name="title_port_forwards_list" tools:machine_translated="true">Portu pāradresācijas</string>
+  <string name="title_eula" tools:machine_translated="true">Licence</string>
+  <string name="title_pubkey_generate" tools:machine_translated="true">Ģenerēt</string>
+  <string name="terms_and_conditions" tools:machine_translated="true">Noteikumi un nosacījumi</string>
+  <string name="hints" tools:machine_translated="true">Padomi</string>
+  <string name="pubkey_generate" tools:machine_translated="true">Ģenerēt</string>
+  <string name="pubkey_gather_entropy" tools:machine_translated="true">Entropijas vākšana</string>
+  <string name="pubkey_touch_prompt" tools:machine_translated="true">Pieskarieties šai lodziņai, lai iegūtu nejaušus datus: %1$d%% pabeigts.</string>
+  <string name="pubkey_touch_hint" tools:machine_translated="true">Lai nodrošinātu nejaušību, ģenerējot atslēgu, pārvietojiet pirkstu nejauši pa zemāk redzamajā laukumā.</string>
+  <string name="pubkey_generating" tools:machine_translated="true">Tiek ģenerēta atslēgu pāris…</string>
+  <string name="pubkey_copy_private_openssh" tools:machine_translated="true">Kopēt privāto atslēgu (OpenSSH)</string>
+  <string name="pubkey_copy_private_pem" tools:machine_translated="true">Kopēt privāto atslēgu (PEM formātā)</string>
+  <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">Kopēt privāto atslēgu (šifrētu)</string>
+  <string name="pubkey_export_public" tools:machine_translated="true">Eksportēt publisko atslēgu</string>
+  <string name="pubkey_export_private" tools:machine_translated="true">Eksportēt privāto atslēgu.</string>
+  <string name="pubkey_export_private_openssh" tools:machine_translated="true">Eksportēt privāto atslēgu (OpenSSH formātā)</string>
+  <string name="pubkey_export_private_pem" tools:machine_translated="true">Eksportēt privāto atslēgu (PEM formātā)</string>
+  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">Eksportēt privāto atslēgu (šifrētu).</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Iestatiet paroles frāzi eksportēšanai.</string>
+  <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Ievadiet paroles frāzi, lai šifrētu eksportēto atslēgu.</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Apstipriniet paroles frāzi.</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Paroļu frāzes nesakrīt.</string>
+  <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Importēt šifrētu atslēgu.</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Ievadiet paroli, lai atšifrētu atslēgu \'%1$s\' (%2$s).</string>
+  <string name="pubkey_import_button" tools:machine_translated="true">Importēt</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Šifrēt atslēgu, lai to varētu saglabāt.</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Izmantojiet to pašu paroli šifrēšanai.</string>
+  <string name="pubkey_import_new_password" tools:machine_translated="true">Jauna parole</string>
+  <string name="pubkey_import_confirm_password" tools:machine_translated="true">Apstipriniet paroli.</string>
+  <string name="pubkey_list_empty" tools:machine_translated="true">Pieskarieties pogai “Izvēlne”, lai izveidotu\nvai importētu atslēgu pārus.</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">Nezināms formāts.</string>
+  <string name="pubkey_unlock" tools:machine_translated="true">Atbloķēt atslēgu</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">Ievadiet paroli, lai atbloķētu atslēgu \'%1$s\'.</string>
+  <string name="pubkey_nickname_exists" tools:machine_translated="true">Šīm atslēgas vārda kombinācijai jau ir piešķirts cits nosaukums.</string>
+  <string name="pubkey_load_on_start" tools:machine_translated="true">Ielādēt atslēgu programmas palaišanas laikā.</string>
+  <string name="pubkey_confirm_use" tools:machine_translated="true">Apstipriniet pirms lietošanas.</string>
+  <string name="portforward_edit" tools:machine_translated="true">Rediģēt portu pāradresāciju</string>
+  <string name="portforward_delete" tools:machine_translated="true">Dzēst portu pāradresāciju</string>
+  <string name="prompt_source_port" tools:machine_translated="true">Avota ports:</string>
+  <string name="prompt_destination" tools:machine_translated="true">Galamērķis:</string>
+  <string name="prompt_old_password" tools:machine_translated="true">Vecā parole:</string>
+  <string name="prompt_username" tools:machine_translated="true">Lietotājvārds:</string>
+  <string name="prompt_again" tools:machine_translated="true">(vēlreiz)</string>
+  <string name="prompt_type" tools:machine_translated="true">Tips:</string>
+  <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">Atļaut attālajai ierīcei izmantot atslēgu \'%1$s\'?</string>
+  <string name="host_verification_failure_warning_header" tools:machine_translated="true">BRĪDINĀJUMS: ATTĀLINĀTĀS SISTĒMAS IDENTIFIKĀCIJA IR MAINĪTA!</string>
+  <string name="host_verification_failure_warning" tools:machine_translated="true">IESPĒJAMS, KA KĀDS CENŠAS IZDARĪT KĀDU NELABU!\nIespējams, kāds šobrīd slepus vēro jūsu darbības (uzbrukums, kurā iejaucas trešā puse)!\nIespējams arī, ka tikko ir mainīta servera atslēga.</string>
+  <string name="prompt_host_disconnected" tools:machine_translated="true">Attālinātais serveris ir atvienojies.\nAizvērt sesiju?</string>
+  <string name="prompt_continue_connecting" tools:machine_translated="true">Vai tiešām vēlaties turpināt izveidot savienojumu?</string>
+  <string name="host_authenticity_warning" tools:machine_translated="true">Nevar pārbaudīt resursa \'%1$s\' autentiskumu.</string>
+  <string name="host_fingerprint" tools:machine_translated="true">Resursa %1$s atslēgas kriptogrāfiskā atspīduma vērtība ir %2$s.</string>
+  <string name="host_key_verification_title" tools:machine_translated="true">Resursdatora atslēgas verifikācija</string>
+  <string name="fingerprint_format_header" tools:machine_translated="true">Pirkstu nospiedumu formāts</string>
+  <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d biti</string>
+  <string name="fingerprint_copy_description" tools:machine_translated="true">Kopēt pirkstu nospieduma datus starplaikā.</string>
+  <string name="alert_disconnect_msg" tools:machine_translated="true">Savienojums pārtraukts.</string>
+  <string name="network_lost_grace_period" tools:machine_translated="true">Tīkla savienojums pārtraukts, notiek mēģinājums atjaunot savienojumu…</string>
+  <string name="network_grace_period_expired" tools:machine_translated="true">Tīkls nav atjaunots, notiek atvienošana…</string>
+  <string name="network_restored_same_ip" tools:machine_translated="true">Tīkls atjaunots, savienojums uzturēts.</string>
+  <string name="network_restored_ip_changed" tools:machine_translated="true">Tīkls atjaunots, taču IP adrese mainīta, notiek atkārtots savienojums…</string>
+  <string name="network_restored_no_previous_state" tools:machine_translated="true">Tīkls atjaunots, notiek savienojuma pārbaude…</string>
+  <string name="pref_emulation_category" tools:machine_translated="true">Termināla emulācijas iestatījumi.</string>
+  <string name="pref_emulation_title" tools:machine_translated="true">Emulācijas režīms</string>
+  <string name="pref_scrollback_title" tools:machine_translated="true">Atpakaļrullēšanas izmērs</string>
+  <string name="pref_scrollback_summary" tools:machine_translated="true">Atmiņā saglabājamā žurnāla (vēstures) bufera izmērs katrai konsolei.</string>
+  <string name="pref_fontfamily_title" tools:machine_translated="true">Šrifts</string>
+  <string name="pref_customfont_title" tools:machine_translated="true">Pievienot pielāgotu fontu.</string>
+  <string name="pref_customfont_summary" tools:machine_translated="true">Pievienojiet fontu no Google Fonts, norādot tā nosaukumu.</string>
+  <string name="dialog_customfont_title" tools:machine_translated="true">Pievienot pielāgotu fontu</string>
+  <string name="dialog_customfont_hint" tools:machine_translated="true">Google Fonts fonta nosaukums (piemēram, Cascadia Code)</string>
+  <string name="button_add" tools:machine_translated="true">Pievienot</string>
+  <string name="button_remove" tools:machine_translated="true">Noņemt</string>
+  <string name="font_validating" tools:machine_translated="true">Notiek fonta pārbaude…</string>
+  <string name="font_downloading" tools:machine_translated="true">Notiek fonta lejupielāde…</string>
+  <string name="pref_localfont_title" tools:machine_translated="true">Importēt lokālu fontu.</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Importējiet fonta failu no krātuves (TTF, OTF).</string>
+  <string name="dialog_localfont_title" tools:machine_translated="true">Importēt fontu</string>
+  <string name="dialog_localfont_hint" tools:machine_translated="true">Fonta parādāmais nosaukums.</string>
+  <string name="button_import" tools:machine_translated="true">Importēt</string>
+  <string name="font_importing" tools:machine_translated="true">Fonta tiek ielādēts…</string>
+  <string name="pref_backupkeys_summary" tools:machine_translated="true">Veiciet privāto atslēgu dublējumu, izmantojot Android dublēšanas mehānismu.</string>
+  <string name="pref_language_title" tools:machine_translated="true">Valoda</string>
+  <string name="pref_language_system_default" tools:machine_translated="true">Sistemā iestatītais noklusējums</string>
+  <string name="pref_language_download" tools:machine_translated="true">Lejupielādēt valodu paketi</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">Lejupielāde neizdevās, pieskarieties, lai mēģinātu vēlreiz.</string>
+  <string name="pref_theme_title" tools:machine_translated="true">Tēma</string>
+  <string name="pref_theme_system" tools:machine_translated="true">Sistemātiski noteikts.</string>
+  <string name="pref_theme_light" tools:machine_translated="true">Gaišs</string>
+  <string name="pref_theme_dark" tools:machine_translated="true">Tumšs</string>
+  <string name="pref_titlebarhide_title" tools:machine_translated="true">Automātiski paslēpt virsraksta joslu.</string>
+  <string name="pref_titlebarhide_summary" tools:machine_translated="true">Pieskarieties konsoles ikonai, lai parādītu virsraksta joslu un piekļūtu izvēlnei.</string>
+  <string name="pref_alwaysvisible_title" tools:machine_translated="true">Īpašās taustiņu funkcijas vienmēr redzamas.</string>
+  <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">Žests, lai pārlūkotu lapu uz augšu/uz leju.</string>
+  <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">Pavelciet ar pirkstu pa kreiso trešdaļu ekrāna, lai nosūtītu komandu “pg up/dn” terminālim.</string>
+  <string name="pref_fullscreen_title" tools:machine_translated="true">Pilnekrāna režīms</string>
+  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift+cipari ir funkciju taustiņi.</string>
+  <string name="pref_shiftfkeys_summary" tools:machine_translated="true">Datoru tastatūrās, nospiežot skaitļu taustiņus, tiek nosūtīti signāli F1–F10, izmantojot taustiņu “Shift”.</string>
+  <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl+num — funkciju taustiņi.</string>
+  <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Programmatūras tastatūrās ciparu taustiņi, nospiežot tos kopā ar taustiņu Ctrl, aktivizē funkciju taustiņus F1–F10.</string>
+  <string name="pref_volumefont_summary" tools:machine_translated="true">Varat mainīt arī fonta izmēru profila iestatījumos.</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">Atcerēties taustiņus atmiņā.</string>
+  <string name="pref_memkeys_summary" tools:machine_translated="true">Saglabājiet atslēgas atmiņā, kamēr darbību nav pārtraucis fona pakalpojums.</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">Uzturiet savienojumu fonrežīmā.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Atstājiet savas sesijas atvērtas arī tad, kad pārslēdzaties uz citām lietotnēm.</string>
+  <string name="pref_keymode_title" tools:machine_translated="true">Saīsinājumtaustiņi direktorijām</string>
+  <string name="pref_stickymodifiers_title" tools:machine_translated="true">Fiksētie modifikatori</string>
+  <string name="only_alt" tools:machine_translated="true">Tikai Alt</string>
+  <string name="pref_camera_title" tools:machine_translated="true">Kameras ātrā piekļuve</string>
+  <string name="pref_keepalive_title" tools:machine_translated="true">Atļaut ekrānam palikt ieslēgtam.</string>
+  <string name="pref_keepalive_summary" tools:machine_translated="true">Neļaujiet ekrānam izslēgties, strādājot konsolē.</string>
+  <string name="pref_wifilock_title" tools:machine_translated="true">Atstājiet Wi-Fi savienojumu ieslēgtu.</string>
+  <string name="pref_wifilock_summary" tools:machine_translated="true">Nodrošiniet, lai Wi-Fi neatslēgtos, kad ir aktīva sesija.</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Reljefa bultiņas</string>
+  <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibrējiet, kad tiek nospiestas bultiņu pogas; noderīgi, ja ir lēns savienojums.</string>
+  <string name="pref_bell_category" tools:machine_translated="true">Termināļa signāls</string>
+  <string name="pref_bell_title" tools:machine_translated="true">Skaņas signāls</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">Atskaņot skaņu, kad tiek aktivizēts termināļa brīdinājums.</string>
+  <string name="pref_bell_volume_title" tools:machine_translated="true">Zvana skaļums</string>
+  <string name="pref_bell_vibrate_title" tools:machine_translated="true">Vibrēt, kad atskan zvans.</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Vibrēt, kad tiek aktivizēta termināļa brīdinājuma funkcija.</string>
+  <string name="pref_bell_notification_title" tools:machine_translated="true">Fona paziņojumi</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">Nosūtiet paziņojumu, kad fona režīmā darbojošā termināla skaņas signāls atskan.</string>
+  <string name="list_keymode_right" tools:machine_translated="true">Izmantojiet tastatūras labās puses taustiņus.</string>
+  <string name="list_keymode_left" tools:machine_translated="true">Izmantojiet kreisās puses taustiņus.</string>
+  <string name="list_pubkeyids_none" tools:machine_translated="true">Neizmantojiet atslēgas.</string>
+  <string name="list_pubkeyids_any" tools:machine_translated="true">Izmantojiet jebkuru atbloķētu atslēgu.</string>
+  <string name="hostpref_nickname_title" tools:machine_translated="true">Lietotājvārds</string>
+  <string name="hostpref_color_title" tools:machine_translated="true">Krāsu kategorija</string>
+  <string name="color_red" tools:machine_translated="true">Sarkans</string>
+  <string name="color_pink" tools:machine_translated="true">Rozā</string>
+  <string name="color_purple" tools:machine_translated="true">Violets</string>
+  <string name="color_deep_purple" tools:machine_translated="true">Tumši purpursarkans</string>
+  <string name="color_indigo" tools:machine_translated="true">Indigo krāsa</string>
+  <string name="color_blue" tools:machine_translated="true">Zils</string>
+  <string name="color_light_blue" tools:machine_translated="true">Gaiši zils</string>
+  <string name="color_cyan" tools:machine_translated="true">Ciankrāsa</string>
+  <string name="color_teal" tools:machine_translated="true">Zilganzaļš</string>
+  <string name="color_green" tools:machine_translated="true">Zaļš</string>
+  <string name="color_light_green" tools:machine_translated="true">Gaiši zaļa</string>
+  <string name="color_lime" tools:machine_translated="true">Gaiši zaļa krāsa.</string>
+  <string name="color_yellow" tools:machine_translated="true">Dzeltens</string>
+  <string name="color_amber" tools:machine_translated="true">Dzintara krāsa</string>
+  <string name="color_orange" tools:machine_translated="true">Oranžs</string>
+  <string name="color_gray" tools:machine_translated="true">Pelēks</string>
+  <string name="hostpref_fontfamily_title" tools:machine_translated="true">Fonts.</string>
+  <string name="hostpref_colorscheme_title" tools:machine_translated="true">Termināļa krāsu shēma</string>
+  <string name="hostpref_pubkeyid_title" tools:machine_translated="true">Izmantojiet publisko atslēgu autentifikāciju.</string>
+  <string name="hostpref_postlogin_title" tools:machine_translated="true">Automatizācija pēc pieteikšanās</string>
+  <string name="hostpref_postlogin_summary" tools:machine_translated="true">Komandas, kas jāizpilda attālinātajā serverī pēc veiksmīgas autentifikācijas.</string>
+  <string name="hostpref_compression_title" tools:machine_translated="true">Kompresija</string>
+  <string name="hostpref_compression_summary" tools:machine_translated="true">Tas var palīdzēt, ja izmantojat lēnākus tīklus.</string>
+  <string name="hostpref_wantsession_title" tools:machine_translated="true">Palaidiet komandrindas sesiju.</string>
+  <string name="hostpref_wantsession_summary" tools:machine_translated="true">Atspējojiet šo iestatni, lai izmantotu tikai portu pāradresāciju.</string>
+  <string name="hostpref_stayconnected_title" tools:machine_translated="true">Palieciet savienojumā.</string>
+  <string name="hostpref_stayconnected_summary" tools:machine_translated="true">Mēģiniet atjaunot savienojumu ar serveri, ja savienojums ir pārtrūcis.</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Aizvērt pēc atvienošanās.</string>
+  <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Aizvērt nekavējoties pēc attālinātās sesijas pārtraukšanas, neuzrādot nekādus brīdinājumus.</string>
+  <string name="hostpref_delkey_title" tools:machine_translated="true">DELETE taustiņš</string>
+  <string name="hostpref_encoding_title" tools:machine_translated="true">Kodēšana</string>
+  <string name="hostpref_save_password_summary" tools:machine_translated="true">Droši saglabājiet pieteikšanās paroli, lai nodrošinātu automātisku autentifikāciju.</string>
+  <string name="hostpref_password_title" tools:machine_translated="true">Parole</string>
+  <string name="hostpref_password_unchanged" tools:machine_translated="true">Parole (nemainīta)</string>
+  <string name="hostpref_clear_password" tools:machine_translated="true">Dzēst saglabāto paroli</string>
+  <string name="hostpref_profile_title" tools:machine_translated="true">Profils</string>
+  <string name="hostpref_profile_summary" tools:machine_translated="true">Izvēlieties profilu, lai lietotu tā termināļa iestatījumus.</string>
+  <string name="hostpref_profile_none" tools:machine_translated="true">Neviens (izmanto konkrētā servera iestatījumus)</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">Pārvalda profils.</string>
+  <string name="font_use_default" tools:machine_translated="true">Izmantot noklusējuma opciju.</string>
+  <string name="font_system_default" tools:machine_translated="true">Pēc noklusējuma (monospaces fonts)</string>
+  <string name="pubkey_unknown" tools:machine_translated="true">Nepazīstama atslēga.</string>
+  <string name="colorscheme_default" tools:machine_translated="true">Pēc noklusējuma</string>
+  <string name="profile_editor_title_new" tools:machine_translated="true">Jauns profils</string>
+  <string name="profile_editor_title_edit" tools:machine_translated="true">Rediģēt profilu</string>
+  <string name="profile_editor_save" tools:machine_translated="true">Saglabāt</string>
+  <string name="profile_editor_name_label" tools:machine_translated="true">Profila nosaukums</string>
+  <string name="profile_editor_section_icon_color" tools:machine_translated="true">Ikonas krāsa</string>
+  <string name="profile_editor_section_color_scheme" tools:machine_translated="true">Krāsu shēma</string>
+  <string name="profile_editor_section_font" tools:machine_translated="true">Fonts.</string>
+  <string name="profile_editor_section_terminal" tools:machine_translated="true">Termināls</string>
+  <string name="profile_editor_font_family_title" tools:machine_translated="true">Fontu grupa</string>
+  <string name="profile_editor_font_size_title" tools:machine_translated="true">Fonta izmērs: %d</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Spēka izmērs</string>
+  <string name="profile_editor_force_size_summary" tools:machine_translated="true">Piespiediet terminālim izmantot noteiktu izmēru (kolonnas x rindas), nevis automātiski pielāgoties ekrāna izmēram.</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">Ieslēgt automātisko izmēra pielāgošanu.</string>
+  <string name="profile_editor_force_size_columns" tools:machine_translated="true">Kolonnas</string>
+  <string name="profile_editor_force_size_rows" tools:machine_translated="true">Rindas</string>
+  <string name="profile_icon_color_none" tools:machine_translated="true">Neviens (izmantot noklusējuma krāsu)</string>
+  <string name="profile_list_title" tools:machine_translated="true">Profilu saraksts</string>
+  <string name="profile_list_create_profile" tools:machine_translated="true">Izveidot profilu</string>
+  <string name="profile_list_empty_message" tools:machine_translated="true">Vēl nav izveidots neviens profils. Pieskarieties pogai +, lai izveidotu.</string>
+  <string name="profile_list_more_options" tools:machine_translated="true">Vairāk opciju</string>
+  <string name="profile_list_duplicate" tools:machine_translated="true">Dublēt</string>
+  <string name="profile_list_delete" tools:machine_translated="true">Dzēst</string>
+  <string name="profile_create_dialog_title" tools:machine_translated="true">Izveidot profilu</string>
+  <string name="profile_create_name_label" tools:machine_translated="true">Profila nosaukums</string>
+  <string name="profile_create_button" tools:machine_translated="true">Izveidot</string>
+  <string name="profile_create_cancel" tools:machine_translated="true">Atcelt</string>
+  <string name="profile_delete_dialog_title" tools:machine_translated="true">Dzēst profilu</string>
+  <string name="profile_delete_dialog_message" tools:machine_translated="true">Vai tiešām vēlaties dzēst \'%s\'?</string>
+  <string name="profile_delete_button" tools:machine_translated="true">Dzēst</string>
+  <string name="profile_delete_cancel" tools:machine_translated="true">Atcelt</string>
+  <string name="profile_summary_font" tools:machine_translated="true">Fonts: %1$s %2$d punkti</string>
+  <string name="profile_summary_emulation" tools:machine_translated="true">Emulācija: %s</string>
+  <string name="console_menu_reconnect" tools:machine_translated="true">Atjaunot savienojumu.</string>
+  <string name="console_menu_portforwards" tools:machine_translated="true">Portu pāradresācijas</string>
+  <string name="console_menu_resize" tools:machine_translated="true">Iestatiet izmēru manuāli.</string>
+  <string name="console_menu_urlscan" tools:machine_translated="true">URL pārbaude</string>
+  <string name="console_url_no_handler" tools:machine_translated="true">Nav pieejama neviena lietotne, kas varētu atvērt šo tīmekļa adresi.</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">Šis URL tips netiek atbalstīts.</string>
+  <string name="portforward_local" tools:machine_translated="true">Lokāls</string>
+  <string name="portforward_remote" tools:machine_translated="true">Attālināts</string>
+  <string name="portforward_dynamic" tools:machine_translated="true">Dinamisks (SOCKS)</string>
+  <string name="portforward_pos" tools:machine_translated="true">Izveidot portu pāradresāciju.</string>
+  <string name="portforward_save" tools:machine_translated="true">Saglabāt</string>
+  <string name="list_menu_disconnect" tools:machine_translated="true">Atvienot visus</string>
+  <string name="list_host_disconnect" tools:machine_translated="true">Atvienoties</string>
+  <string name="list_host_portforwards" tools:machine_translated="true">Rediģēt portu pāradresācijas iestatījumus.</string>
+  <string name="list_host_duplicate" tools:machine_translated="true">Dublēt serveri</string>
+  <string name="list_host_forget_keys" tools:machine_translated="true">Aizmirstiet saglabātās resursdatora atslēgas.</string>
+  <string name="list_camera_ctrlaspace" tools:machine_translated="true">Ctrl+A, pēc tam – atstarpe.</string>
+  <string name="list_camera_ctrla" tools:machine_translated="true">Ctrl+A</string>
+  <string name="list_camera_esc" tools:machine_translated="true">Esc</string>
+  <string name="list_camera_esc_a" tools:machine_translated="true">Esc+A</string>
+  <string name="list_camera_none" tools:machine_translated="true">Neviens.</string>
+  <string name="list_camera_text_input" tools:machine_translated="true">Teksta ievades lauks</string>
+  <string name="terminal_connecting" tools:ignore="PluralsCandidate" tools:machine_translated="true">Izveido savienojumu ar %1$s:%2$d, izmantojot %3$s.</string>
+  <string name="terminal_sucess" tools:machine_translated="true">Apstiprināta resursdatora \'%1$s\' atslēga: %2$s</string>
+  <string name="terminal_failed" tools:machine_translated="true">Resursdatora atslēgas pārbaude neizdevās.</string>
+  <string name="terminal_using_s2c_algorithm" tools:machine_translated="true">Algoritms, ko izmanto servera un klienta savstarpējai saziņai: %1$s %2$s</string>
+  <string name="terminal_using_c2s_algorithm" tools:machine_translated="true">Klienta un servera algoritms: %1$s %2$s</string>
+  <string name="terminal_using_algorithm" tools:machine_translated="true">Izmantotais algoritms: %1$s %2$s</string>
+  <string name="terminal_kex_algorithm" tools:machine_translated="true">Atslēgu apmaiņas algoritms: %s</string>
+  <string name="terminal_auth" tools:machine_translated="true">Tiek mēģināta autentifikācija.</string>
+  <string name="terminal_auth_pass" tools:machine_translated="true">Tiek mēģināta paroles autentifikācija.</string>
+  <string name="terminal_auth_pass_fail" tools:machine_translated="true">Autentifikācijas metode “parole” nedarbojas.</string>
+  <string name="terminal_auth_saved_password" tools:machine_translated="true">Tiek mēģināta saglabātā paroles autentifikācija…</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Saglabātās paroles autentifikācija neizdevās.</string>
+  <string name="terminal_auth_pubkey_any" tools:machine_translated="true">Tiek mēģināta autentifikācija, izmantojot “publisko atslēgu” metodi, izmantojot visas pieejamās atslēgas, kas ir saglabātas atmiņā.</string>
+  <string name="terminal_auth_pubkey_invalid" tools:machine_translated="true">Izvēlētā publiskā atslēga ir nederīga, lūdzu, mēģiniet vēlreiz izvēlēties atslēgu redaktorā.</string>
+  <string name="terminal_auth_pubkey_specific" tools:machine_translated="true">Tiek mēģināta autentifikācija, izmantojot “publickey” metodi un konkrētu publisko atslēgu.</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">Pieprasot biometrisku autentifikāciju, lai atbloķētu atslēgu \'%1$s\'.</string>
+  <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">Biometriskā atslēga \'%1$s\' ir deaktivizēta. Tas var notikt, kad ierīcē tiek reģistrētas jaunas pirkstu nospiedes. Lūdzu, ģenerējiet jaunu atslēgu.</string>
+  <string name="terminal_auth_pubkey_fail" tools:machine_translated="true">Autentifikācijas metode “publiskā atslēga” ar atslēgu “%1$s” nedarbojas.</string>
+  <string name="terminal_auth_ki" tools:machine_translated="true">Tiek mēģināta “klaviatūras interaktīvā” autentifikācija.</string>
+  <string name="terminal_auth_ki_fail" tools:machine_translated="true">Autentifikācijas metode “klaviatūras interakcija” nedarbojas.</string>
+  <string name="terminal_auth_fail" tools:machine_translated="true">[Jūsu serveris neatbalsta autentifikācijas metodi “parole” vai “interaktīva tastatūra”.]</string>
+  <string name="terminal_no_session" tools:machine_translated="true">Sesija netiks uzsākta, jo lietotājs to ir atspējojis hostas iestatījumos.</string>
+  <string name="terminal_enable_portfoward" tools:machine_translated="true">Ieslēgt portu pāradresāciju: %1$s</string>
+  <string name="local_shell_unavailable" tools:machine_translated="true">Kļūda! Vietējā komandrinda šajā telefonā nav pieejama.</string>
+  <string name="notification_text" tools:machine_translated="true">%1$s vēlas pievērst jūsu uzmanību.</string>
+  <string name="no" tools:machine_translated="true">Nē.</string>
+  <string name="yes" tools:machine_translated="true">Jā</string>
+  <string name="list_color_schemes" tools:machine_translated="true">Krāsu shēmas</string>
+  <string name="button_manage_schemes" tools:machine_translated="true">Pārvaldīt krāsu shēmas.</string>
+  <string name="title_scheme_manager" tools:machine_translated="true">Pārvaldiet krāsu shēmas.</string>
+  <string name="button_new_scheme" tools:machine_translated="true">Jauna krāsu shēma</string>
+  <string name="button_duplicate_scheme" tools:machine_translated="true">Dublēt</string>
+  <string name="button_rename_scheme" tools:machine_translated="true">Pārdēvēt</string>
+  <string name="button_delete_scheme" tools:machine_translated="true">Dzēst</string>
+  <string name="dialog_title_new_scheme" tools:machine_translated="true">Jauna krāsu palete</string>
+  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Pārdēvējiet krāsu shēmu.</string>
+  <string name="label_scheme_name" tools:machine_translated="true">Shēmas nosaukums</string>
+  <string name="label_scheme_description" tools:machine_translated="true">Apraksts (nav obligāti)</string>
+  <string name="dialog_title_delete_scheme" tools:machine_translated="true">Dzēst shēmu?</string>
+  <string name="dialog_message_delete_scheme" tools:machine_translated="true">Vai tiešām vēlaties dzēst \"%1$s\"? Šo darbību nevar atcelt.</string>
+  <string name="button_confirm" tools:machine_translated="true">Apstiprināt</string>
+  <string name="button_cancel" tools:machine_translated="true">Atcelt</string>
+  <string name="label_built_in_scheme" tools:machine_translated="true">Iebūvēts.</string>
+  <string name="label_custom_scheme" tools:machine_translated="true">Pielāgots</string>
+  <string name="empty_custom_schemes" tools:machine_translated="true">Nav pieejamas pielāgotas shēmas. Pieskarieties pogai “Jauna shēma”, lai izveidotu jaunu.</string>
+  <string name="button_edit_palette" tools:machine_translated="true">Rediģēt paleti</string>
+  <string name="button_export_scheme" tools:machine_translated="true">Eksportēt krāsu shēmu</string>
+  <string name="button_import_scheme" tools:machine_translated="true">Importēt krāsu shēmu</string>
+  <string name="message_export_success" tools:machine_translated="true">%1$s eksportēts.</string>
+  <string name="message_import_success" tools:machine_translated="true">Shēma ir veiksmīgi importēta.</string>
+  <string name="error_export_failed" tools:machine_translated="true">Shēmas eksportēšana neizdevās: %1$s</string>
+  <string name="error_import_failed" tools:machine_translated="true">Shēmas importēšana neizdevās: %1$s</string>
+  <string name="error_invalid_json" tools:machine_translated="true">Nederīga JSON datne.</string>
+  <string name="title_palette_editor" tools:machine_translated="true">Rediģēt krāsu paleti</string>
+  <string name="button_reset_all_colors" tools:machine_translated="true">Atjaunot visu</string>
+  <string name="section_ansi_colors" tools:machine_translated="true">ANSI krāsas (0–15)</string>
+  <string name="dialog_title_edit_color" tools:machine_translated="true">Rediģēt krāsu %1$d</string>
+  <string name="dialog_title_reset_all" tools:machine_translated="true">Atjaunot visas krāsas?</string>
+  <string name="dialog_message_reset_all" tools:machine_translated="true">Šī darbība atjaunos visas 256 krāsas, atgriežot tās sākotnējās vērtībās. Šo darbību nevar atcelt.</string>
+  <string name="app_is_running" tools:machine_translated="true">ConnectBot ir aktivizēts.</string>
+  <string name="label_red" tools:machine_translated="true">Sarkans</string>
+  <string name="label_green" tools:machine_translated="true">Zaļš</string>
+  <string name="label_blue" tools:machine_translated="true">Zils</string>
+  <string name="label_hex_color" tools:machine_translated="true">Heksadecimāla krāsa</string>
+  <string name="colors_fg_label" tools:machine_translated="true">FG: %1$d</string>
+  <string name="color_bg_label" tools:machine_translated="true">Fona krāsa: %1$d</string>
+  <string name="section_fg_bg_colors" tools:machine_translated="true">Priekšplāna un fona krāsa</string>
+  <string name="label_foreground_color" tools:machine_translated="true">Priekšplāna krāsa.</string>
+  <string name="label_background_color" tools:machine_translated="true">Fona krāsa</string>
+  <string name="label_base_scheme" tools:machine_translated="true">Pamatschēma:</string>
+  <string name="menu_manage_colors" tools:machine_translated="true">Pārvaldiet krāsu shēmas.</string>
+  <string name="palette_editor_builtin_note" tools:machine_translated="true">Iebūvētos veidnes nevar rediģēt. Lai pielāgotu, izveidojiet kopiju.</string>
+  <string name="section_color_preview" tools:machine_translated="true">Priekšskatījums</string>
+  <string name="image_description_connected" tools:machine_translated="true">Izveidots savienojums.</string>
+  <string name="image_description_disconnected" tools:machine_translated="true">Atvienots.</string>
+  <string name="image_description_toggle_control_character" tools:machine_translated="true">Pārslēgt vadības simbolu.</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">Nosūtīt speciālo simbolu.</string>
+  <string name="image_description_send_tab_character" tools:machine_translated="true">Nosūtīt TAB simbolu.</string>
+  <string name="image_description_hide_keyboard" tools:machine_translated="true">Paslēpt tastatūru.</string>
+  <string name="image_description_show_keyboard" tools:machine_translated="true">Rādīt tastatūru.</string>
+  <string name="image_description_up" tools:machine_translated="true">Bulta uz augšu</string>
+  <string name="image_description_down" tools:machine_translated="true">Bulta uz leju</string>
+  <string name="image_description_left" tools:machine_translated="true">Bulta pa kreisi</string>
+  <string name="image_description_right" tools:machine_translated="true">Bulta pa labi</string>
+  <string name="button_key_esc" tools:machine_translated="true">Esc</string>
+  <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="button_key_home" tools:machine_translated="true">Sākums</string>
+  <string name="button_key_end" tools:machine_translated="true">Beigt</string>
+  <string name="button_key_pgup" tools:machine_translated="true">Lapa augšup</string>
+  <string name="button_key_pgdn" tools:machine_translated="true">Nākamā lapa</string>
+  <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">Teksta ievadīšana</string>
+  <string name="terminal_text_input_dialog_title" tools:machine_translated="true">Teksta ievades lauks</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">Ievadiet tekstu, ko vēlaties nosūtīt terminālim.</string>
+  <string name="terminal_text_input_resize_handle" tools:machine_translated="true">Mainīt izmēru</string>
+  <string name="console_menu_text_input" tools:machine_translated="true">Teksta ievadīšana</string>
+  <string name="button_send" tools:machine_translated="true">Sūtīt</string>
+  <string name="button_ok" tools:machine_translated="true">Labi.</string>
+  <string name="button_close" tools:machine_translated="true">Aizvērt</string>
+  <string name="button_back" tools:machine_translated="true">Atpakaļ</string>
+  <string name="button_navigate_up" tools:machine_translated="true">Pārvietoties augšup</string>
+  <string name="button_more_options" tools:machine_translated="true">Vairāk opciju</string>
+  <string name="button_host_options" tools:machine_translated="true">Mājinieka opcijas</string>
+  <string name="button_collapse" tools:machine_translated="true">Sakļaut</string>
+  <string name="error_key_load_failed" tools:machine_translated="true">Neizdevās ielādēt atslēgu \'%1$s\': %2$s</string>
+  <string name="error_connection_failed" tools:machine_translated="true">Neizdevās izveidot savienojumu ar %1$s (%2$s): %3$s</string>
+  <string name="error_port_forward_load_failed" tools:machine_translated="true">Neizdevās ielādēt portu pāradresācijas iestatījumus ierīcei %1$s: %2$s.</string>
+  <string name="error_host_save_failed" tools:machine_translated="true">Neizdevās saglabāt resursa konfigurāciju %1$s: %2$s.</string>
+  <string name="error_color_scheme_load_failed" tools:machine_translated="true">Neizdevās ielādēt krāsu shēmu: %s</string>
+  <string name="host_duplicate_nickname" tools:machine_translated="true">%1$s (kopija)</string>
+  <string name="empty_hosts_message" tools:machine_translated="true">Nav konfigurēts neviens resursdators.</string>
+  <string name="empty_pubkeys_message" tools:machine_translated="true">Atslēgas netika atrastas.</string>
+  <string name="empty_port_forwards_message" tools:machine_translated="true">Nav konfigurēti nevienu portu pāradresēšanas iestatījumi.</string>
+  <string name="empty_urls_message" tools:machine_translated="true">Terminālī nav atrasts neviens URL.</string>
+  <string name="console_default_title" tools:machine_translated="true">Konsole</string>
+  <string name="host_editor_quick_connect_label" tools:machine_translated="true">Ātra savienošana</string>
+  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">lietotājs\@servera_nosaukums:ports</string>
+  <string name="host_editor_quick_connect_example" tools:machine_translated="true">Piemērs: root\@192.168.1.1:22</string>
+  <string name="host_editor_show_advanced" tools:machine_translated="true">Rādīt papildu opcijas.</string>
+  <string name="host_editor_hide_advanced" tools:machine_translated="true">Paslēpt papildu opcijas.</string>
+  <string name="resize_width_label" tools:machine_translated="true">Platums (kolonnas)</string>
+  <string name="resize_height_label" tools:machine_translated="true">Augstums (rindas)</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">Atspējiet fiksēto izmēru.</string>
+  <string name="pubkey_editor_key_type_label" tools:machine_translated="true">Atslēgas tips</string>
+  <string name="pubkey_editor_options_label" tools:machine_translated="true">Opcijas</string>
+  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Šifrētās atslēgas nevar atbloķēt programmas palaišanas laikā.</string>
+  <string name="pubkey_type_label" tools:machine_translated="true">Tips: %s</string>
+  <string name="pubkey_encrypted_description" tools:machine_translated="true">Šifrēts</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Nav šifrēts.</string>
+  <string name="pubkey_biometric_protection" tools:machine_translated="true">Pirkstu nospiedumu aizsardzība</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">Aizsargājiet šo atslēgu, izmantojot savu pirkstu nospiedumu.</string>
+  <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Nav reģistrēta neviena pirkstu nospieda. Lai izmantotu šo funkciju, iestatiet pirkstu nospiedu ierīces iestatījumos.</string>
+  <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Pirkstu nospiedumu aizsardzība ir pieejama tikai RSA un EC atslēgām.</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Apstipriniet, lai izmantotu atslēgu.</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Pieskarieties pirkstu nolasīšanas sensoram, lai atbloķētu ierīci \'%1$s\'.</string>
+  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Aizsargāts ar pirkstu nospiedumu.</string>
+  <string name="pubkey_biometric_not_available" tools:machine_translated="true">Pirkstu nospiedumu autentifikācija šobrīd nav pieejama.</string>
+  <string name="portforward_nickname_placeholder" tools:machine_translated="true">Iekšējais tīmekļa serveris</string>
+  <string name="portforward_port_range_error" tools:machine_translated="true">Porta numuram jābūt robežās no 1 līdz 65535.</string>
+  <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">Formātam jābūt šādam: host:ports (piemēram, localhost:80).</string>
+  <string name="portforward_host_address" tools:machine_translated="true">Resursdatora adrese</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">Lokālais dators</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Lokālais tīkls (tikai IPv4)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">Lokālais tīkls (tikai IPv6)</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">Visas adreses</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Visas IPv4 adreses</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Visas IPv6 adreses</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">Konkrēta adrese</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="portforward_type_label" tools:machine_translated="true">Tips: %s</string>
+  <string name="portforward_enable" tools:machine_translated="true">Ieslēgt</string>
+  <string name="portforward_disable" tools:machine_translated="true">Atspējot</string>
+  <string name="portforward_enabled" tools:machine_translated="true">Porta pāradresācija ir aktivizēta.</string>
+  <string name="portforward_disabled" tools:machine_translated="true">Porta pāradresācija atspējota.</string>
+  <string name="hostpref_authagent_with_confirmation" tools:machine_translated="true">prasa apstiprinājumu</string>
+  <string name="hostpref_setting_title" tools:machine_translated="true">Resursa iestatījumi</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importēt no starpspraudes</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Privātās atslēgas saturs</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Ielīmēt no starpspraudes</string>
+  <string name="notification_permission_title" tools:machine_translated="true">Uzturiet savienojumu fonrežīmā.</string>
+  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot nepieciešama atļauja nosūtīt paziņojumus, lai uzturētu savienojumus aktīvus, kad pārslēdzaties starp lietotnēm. Ja šī atļauja nav piešķirta, sistēma var atvienot savienojumus, lai taupītu akumulatora enerģiju.</string>
+  <string name="grant_permission" tools:machine_translated="true">Atļaut</string>
+  <string name="connect_anyway" tools:machine_translated="true">Turpināt savienojumu.</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">Nepieciešama atļauja saņemt paziņojumus.</string>
+  <string name="notification_permission_denied_message" tools:machine_translated="true">Lai nodrošinātu, ka jūsu savienojumi darbojas fonā, lūdzu, aktivizējiet paziņojumus lietotnei ConnectBot sistēmas iestatījumos.</string>
+  <string name="open_settings" tools:machine_translated="true">Atvērt iestatījumus</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Savienojumi var tikt pārtraukti, ja nav piešķirta atļauja saņemt paziņojumus.</string>
+  <string name="notification_permission_console_warning" tools:machine_translated="true">Savienojums var tikt pārtraukts, kad lietotne darbojas fonā.</string>
+  <string name="terminal_no_route" tools:machine_translated="true">Vai mēģināt piekļūt lokālajam serverim? Piešķiriet atļaujas lokālajam tīklam.</string>
+  <string name="loading_message" tools:machine_translated="true">Ielādē…</string>
+  <string name="migration_checking" tools:machine_translated="true">Notiek datubāzes pārbaude…</string>
+  <string name="migration_title" tools:machine_translated="true">Datubāzes migrācija</string>
+  <string name="migration_warning" tools:machine_translated="true">Lūdzu, neaizveriet lietotni migrācijas laikā.</string>
+  <string name="migration_stats_hosts" tools:machine_translated="true">Pārvietoto serveru skaits: %d</string>
+  <string name="migration_stats_pubkeys" tools:machine_translated="true">Pārvietoto SSH atslēgu skaits: %d</string>
+  <string name="migration_stats_port_forwards" tools:machine_translated="true">Pārvirzīto portu skaits: %d</string>
+  <string name="migration_stats_known_hosts" tools:machine_translated="true">Pārvietoto zināmo serveru skaits: %d</string>
+  <string name="migration_failed_title" tools:machine_translated="true">Migrācija neizdevās.</string>
+  <string name="migration_failed_message" tools:machine_translated="true">Migrēšanas procesā datubāzē radās kļūda: %s</string>
+  <string name="migration_retry" tools:machine_translated="true">Mēģināt vēlreiz</string>
+  <string name="migration_failed_help" tools:machine_translated="true">Ja problēma turpinās, lūdzu, ziņojiet par to vietnē %1$s, pievienojot iepriekš norādīto kļūdu žurnālu.</string>
+  <string name="migration_warnings_title" tools:machine_translated="true">Brīdinājumi par datu migrāciju</string>
+  <string name="migration_copy_warnings" tools:machine_translated="true">Kopēt brīdinājumus</string>
+  <string name="migration_debug_log_title" tools:machine_translated="true">Atkļūdošanas žurnāls</string>
+  <string name="migration_copy_debug_log" tools:machine_translated="true">Kopēt atskaišu žurnālu</string>
+  <string name="disconnect_host_alert" tools:machine_translated="true">Vai tiešām vēlaties atvienoties no \'%1$s\'?</string>
+  <string name="delete_host_confirm" tools:machine_translated="true">Vai tiešām vēlaties dzēst resursu \'%1$s\'?</string>
+  <string name="forget_host_keys_confirm" tools:machine_translated="true">Vai tiešām vēlaties dzēst saglabātās resursdatora atslēgas resursdatoram \'%1$s\'? Nākamajā savienojuma reizē jums tiks piedāvāts pārbaudīt resursdatora atslēgu.</string>
+  <string name="list_pubkey_edit" tools:machine_translated="true">Rediģēt publisko atslēgu</string>
+  <string name="hostpref_ipversion_title" tools:machine_translated="true">IP versija</string>
+  <string name="hostpref_ipversion_summary" tools:machine_translated="true">Izvēlieties, kuru IP adreses versiju izmantot, veidojot savienojumu.</string>
+  <string name="ipversion_auto" tools:machine_translated="true">Automātisks</string>
+  <string name="ipversion_ipv4" tools:machine_translated="true">Tikai IPv4.</string>
+  <string name="ipversion_ipv6" tools:machine_translated="true">Tikai IPv6.</string>
+  <string name="hostpref_jumphost_title" tools:machine_translated="true">Pārejas serveris (ProxyJump)</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">Izveidojiet savienojumu, izmantojot citu SSH serveri.</string>
+  <string name="list_jumphost_none" tools:machine_translated="true">Neviens (tiešs savienojums)</string>
+  <string name="terminal_connecting_via_jump" tools:machine_translated="true">Izveido savienojumu, izmantojot starpserveri: %s</string>
+  <string name="terminal_jump_connected" tools:machine_translated="true">Izveidots savienojums ar starpserveri: %s</string>
+  <string name="terminal_jump_authenticated" tools:machine_translated="true">Veiksmīgi izveidots savienojums ar starpserveri: %s</string>
+  <string name="terminal_jump_failed" tools:machine_translated="true">Neizdevās izveidot savienojumu ar starpserveri %1$s: %2$s.</string>
+  <string name="terminal_jump_auth_failed" tools:machine_translated="true">Autentifikācija starpserverim neizdevās: %s</string>
+  <string name="terminal_jump_not_found" tools:machine_translated="true">Atrastais starpserveris nav atrasts saglabāto serveru sarakstā.</string>
+  <string name="terminal_jump_password" tools:machine_translated="true">Paroles ievadīšanas lauks, kas paredzēts, lai piekļūtu starpserverim %s:</string>
+  <string name="view_logs" tools:machine_translated="true">Skatīt žurnālus</string>
+  <string name="logs_title" tools:machine_translated="true">Lietojumprogrammas žurnāli</string>
+  <string name="copy_logs" tools:machine_translated="true">Kopēt žurnālus</string>
+  <string name="logs_copied" tools:machine_translated="true">Žurnāla ieraksti kopēti starplaikā.</string>
+  <string name="logs_bug_report_info" tools:machine_translated="true">Lai ziņotu par kļūdu, kopējiet šos žurnāla ierakstus un atveriet jaunu ziņojumu vietnē https://connectbot.org/bug.</string>
+  <string name="no_logs_available" tools:machine_translated="true">Nav pieejami žurnāla ieraksti.</string>
+  <string name="help_section_about" tools:machine_translated="true">Par programmu</string>
+  <string name="title_contact" tools:machine_translated="true">Kontakti un atbalsts</string>
+  <string name="help_section_contact" tools:machine_translated="true">Kontaktinformācija un atbalsts</string>
+  <string name="help_website" tools:machine_translated="true">Mājaslapa</string>
+  <string name="help_github" tools:machine_translated="true">Avota kods</string>
+  <string name="help_report_bug" tools:machine_translated="true">Ziņojiet par kļūdu.</string>
+  <string name="help_section_donate" tools:machine_translated="true">Atbalstiet izstrādi.</string>
+  <string name="help_donate_github" tools:machine_translated="true">GitHub atbalstītāji</string>
+  <string name="help_donate_coffee" tools:machine_translated="true">Atbalstiet mani, iegādājoties man kafiju.</string>
+  <string name="colorscheme_default_description" tools:machine_translated="true">Pēc noklusējuma iestatītās termināļa krāsas</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Precīzas krāsas gan mašīnām, gan cilvēkiem.</string>
+  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarized krāsu shēma ar gaišu fonu.</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">Tumša krāsu shēma terminālim.</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">Arktiska, ziemeļu tonī nokrāsota krāsu palete.</string>
+  <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Retro stila krāsu shēma.</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">Tēma, kas iedvesmota no Sublime Text.</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Pārskatāms un ērts tumšais vizuālais noformējums.</string>
+  <string name="pref_profiles_category" tools:machine_translated="true">Profilu iestatījumi</string>
+  <string name="pref_default_profile_title" tools:machine_translated="true">Pēc noklusējuma iestatītais profils</string>
+  <string name="pref_default_profile_none" tools:machine_translated="true">Neviens (izmantot datora iestatījumus)</string>
+  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">Nodrošiniet, lai īpašās pogas vienmēr būtu redzamas.</string>
+  <string name="pref_customterminal_title" tools:machine_translated="true">Pielāgotu termināļu tipi</string>
+  <string name="pref_customterminal_summary" tools:machine_translated="true">Pievienojiet pielāgotas TERM vērtības attālajiem serveriem.</string>
+  <string name="dialog_customterminal_title" tools:machine_translated="true">Pievienot pielāgotu termināļa tipu.</string>
+  <string name="dialog_customterminal_hint" tools:machine_translated="true">Termināla tips (piemēram, rxvt-unicode)</string>
+  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Pārvaldiet pielāgotos termināļu tipus.</string>
+  <string name="button_add_custom" tools:machine_translated="true">Pievienot pielāgotu…</string>
+  <string name="button_manage_custom" tools:machine_translated="true">Pārvaldīt pielāgotos…</string>
+  <string name="dialog_custom_value_label" tools:machine_translated="true">Ievadiet pielāgoto vērtību.</string>
+  <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, pēc tam atstarpe</string>
+  <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
+  <string name="list_camera_esc_description" tools:machine_translated="true">Esc</string>
+  <string name="list_camera_esc_a_description" tools:machine_translated="true">Esc+A</string>
+  <string name="list_camera_none_description" tools:machine_translated="true">Neviens</string>
+  <string name="list_camera_text_input_description" tools:machine_translated="true">Teksta ievades lauks</string>
+  <string name="list_menu_export_hosts" tools:machine_translated="true">Eksportēt saimniekdatorus</string>
+  <string name="list_menu_import_hosts" tools:machine_translated="true">Importēt saimniekierīces</string>
+  <string name="export_hosts_success" tools:machine_translated="true">Eksportēti %1$d resursi un %2$d profili.</string>
+  <string name="import_hosts_success" tools:machine_translated="true">Importēti %1$d resursdatori (%2$d izlaisti) un %3$d profili (%4$d izlaisti).</string>
+  <string name="export_hosts_failed" tools:machine_translated="true">Neizdevās eksportēt resursdatorus: %s</string>
+  <string name="import_hosts_failed" tools:machine_translated="true">Neizdevās importēt saimniekdatorus: %s</string>
+  <string name="export_hosts_title" tools:machine_translated="true">Eksportēt serveru sarakstu</string>
+  <string name="shortcut_customize_title" tools:machine_translated="true">Pielāgo īsceļu.</string>
+  <string name="shortcut_icon_color" tools:machine_translated="true">Ikonas krāsa</string>
+  <string name="shortcut_icon_style" tools:machine_translated="true">Ikonu stils</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">Izmantot servera konfigurēto krāsu.</string>
+  <string name="shortcut_create" tools:machine_translated="true">Izveidot saīsni</string>
+  <string name="icon_style_terminal" tools:machine_translated="true">Terminālis</string>
+  <string name="icon_style_server" tools:machine_translated="true">Serveris</string>
+  <string name="icon_style_cloud" tools:machine_translated="true">Mākonis</string>
+  <string name="icon_style_key" tools:machine_translated="true">Atslēga</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Pieslēgšanās programmas palaišanas laikā.</string>
+  <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Lietotnes atvēršanai pieprasiet pirkstu nospieduma, sejas atpazīšanas vai ierīces PIN kodu.</string>
+  <string name="pref_security_category" tools:machine_translated="true">Drošība</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot ir bloķēts.</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">Pieskarieties, lai atbloķētu.</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">Atbloķējiet ConnectBot.</string>
+  <string name="auth_prompt_subtitle" tools:machine_translated="true">Apstipriniet savu identitāti, lai turpinātu.</string>
 </resources>

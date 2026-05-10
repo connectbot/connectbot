@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">Jednoduchý, výkonný, open-source SSH klient.</string>
   <string name="service_desc">Spravuje SSH spojenia a načítané verejné kľúče</string>
   <string name="title_pubkey_list">Verejné kľúče</string>
@@ -145,4 +145,431 @@
   <string name="yes">Áno</string>
   <string name="menu_colors_reset">Pôvodné</string>
   <string name="app_is_running">ConnectBot je spustený</string>
+  <string name="app_copyright" tools:machine_translated="true">Autorské práva © Kenny Root</string>
+  <string name="title_eula" tools:machine_translated="true">Licencia</string>
+  <string name="title_color_picker" tools:machine_translated="true">Vyberte farbu.</string>
+  <string name="title_settings" tools:machine_translated="true">Nastavenia</string>
+  <string name="title_pubkey_generate" tools:machine_translated="true">Generovať</string>
+  <string name="terms_and_conditions" tools:machine_translated="true">Podmienky používania</string>
+  <string name="hints" tools:machine_translated="true">Tipy a rady</string>
+  <string name="keyboard_shortcuts" tools:machine_translated="true">Klávesové skratky</string>
+  <string name="increase_font_size" tools:machine_translated="true">Zväčšiť veľkosť písma</string>
+  <string name="increase_font_shortcut" tools:machine_translated="true">Ctrl a +</string>
+  <string name="decrease_font_size" tools:machine_translated="true">Zmenšiť veľkosť písma</string>
+  <string name="decrease_font_shortcut" tools:machine_translated="true">Ctrl a -</string>
+  <string name="paste_shortcut" tools:machine_translated="true">Ctrl+Shift+V</string>
+  <string name="pubkey_copy_private_openssh" tools:machine_translated="true">Kopírovať súkromný kľúč (formát OpenSSH)</string>
+  <string name="pubkey_copy_private_pem" tools:machine_translated="true">Kopírovať súkromný kľúč (formát PEM)</string>
+  <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">Kopírovať súkromný kľúč (zašifrovaný)</string>
+  <string name="pubkey_export_public" tools:machine_translated="true">Exportovať verejný kľúč</string>
+  <string name="pubkey_export_private" tools:machine_translated="true">Exportovať privátny kľúč</string>
+  <string name="pubkey_export_private_openssh" tools:machine_translated="true">Exportovať privátny kľúč (formát OpenSSH)</string>
+  <string name="pubkey_export_private_pem" tools:machine_translated="true">Exportovať privátny kľúč (formát PEM)</string>
+  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">Exportovať súkromný kľúč (zašifrovaný)</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Nastavte heslo na export.</string>
+  <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Zadajte heslo, ktoré sa použije na zašifrovanie exportovaného kľúča.</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Potvrďte heslovú frázu.</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Heslá sa nezhodujú.</string>
+  <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Importovať šifrovaný kľúč.</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Zadajte heslo na dešifrovanie kľúča „%1$s“ (%2$s).</string>
+  <string name="pubkey_import_button" tools:machine_translated="true">Importovať</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Zašifrovať kľúč pre uloženie.</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Použite rovnaké heslo na šifrovanie.</string>
+  <string name="pubkey_import_new_password" tools:machine_translated="true">Nové heslo</string>
+  <string name="pubkey_import_confirm_password" tools:machine_translated="true">Potvrďte heslo.</string>
+  <string name="pubkey_list_empty" tools:machine_translated="true">Ťuknite na možnosť „Ponuka“, aby ste vytvorili alebo importovali páry kľúčov.</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">Neznámy formát.</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">Zadajte heslo na odomknutie šifrovaného kľúča „%1$s“.</string>
+  <string name="pubkey_nickname_exists" tools:machine_translated="true">Kľúč s týmto prezývkou už existuje.</string>
+  <string name="prompt_username" tools:machine_translated="true">Používateľské meno:</string>
+  <string name="host_key_verification_title" tools:machine_translated="true">Overenie hostiteľského kľúča</string>
+  <string name="fingerprint_format_header" tools:machine_translated="true">Formát odtlačku prsta</string>
+  <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d bitov</string>
+  <string name="fingerprint_copy_description" tools:machine_translated="true">Skopírujte otlačok prsta do schránky.</string>
+  <string name="network_lost_grace_period" tools:machine_translated="true">Strata sieťového pripojenia, čaká sa na obnovenie…</string>
+  <string name="network_grace_period_expired" tools:machine_translated="true">Sieť sa nepodarilo obnoviť, odpojujem…</string>
+  <string name="network_restored_same_ip" tools:machine_translated="true">Sieť bola obnovená, pripojenie je stále aktívne.</string>
+  <string name="network_restored_ip_changed" tools:machine_translated="true">Sieť bola obnovená, ale IP adresa sa zmenila, prebieha opätovné pripojenie…</string>
+  <string name="network_restored_no_previous_state" tools:machine_translated="true">Sieť bola obnovená, overuje sa pripojenie…</string>
+  <string name="pref_fontfamily_title" tools:machine_translated="true">Písmo</string>
+  <string name="pref_customfont_title" tools:machine_translated="true">Pridať vlastné písmo.</string>
+  <string name="pref_customfont_summary" tools:machine_translated="true">Pridajte písmo zo služby Google Fonts podľa názvu.</string>
+  <string name="dialog_customfont_title" tools:machine_translated="true">Pridať vlastné písmo</string>
+  <string name="dialog_customfont_hint" tools:machine_translated="true">Názov písma Google Fonts (napr. Cascadia Code)</string>
+  <string name="button_add" tools:machine_translated="true">Pridať</string>
+  <string name="button_remove" tools:machine_translated="true">Odstrániť</string>
+  <string name="font_validating" tools:machine_translated="true">Overujem sa font…</string>
+  <string name="font_downloading" tools:machine_translated="true">Sťahujem font…</string>
+  <string name="pref_localfont_title" tools:machine_translated="true">Importovať lokálne písmo.</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Importujte súbor písma z úložiska (formáty TTF, OTF).</string>
+  <string name="dialog_localfont_title" tools:machine_translated="true">Importovať písmo</string>
+  <string name="dialog_localfont_hint" tools:machine_translated="true">Zobrazovaný názov písma.</string>
+  <string name="button_import" tools:machine_translated="true">Importovať</string>
+  <string name="font_importing" tools:machine_translated="true">Importujem písmo…</string>
+  <string name="pref_backupkeys_title" tools:machine_translated="true">Zálohovať verejné kľúče</string>
+  <string name="pref_backupkeys_summary" tools:machine_translated="true">Uchovávajte zálohy súkromných kľúčov pomocou mechanizmu zálohovania systému Android.</string>
+  <string name="pref_language_title" tools:machine_translated="true">Jazyk</string>
+  <string name="pref_language_system_default" tools:machine_translated="true">Predvolené nastavenie systému</string>
+  <string name="pref_language_download" tools:machine_translated="true">Stiahnite si jazykový balíček.</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">Sťahovanie zlyhalo, klepnite na tlačidlo, aby ste sa pokúsili o nové stiahnutie.</string>
+  <string name="pref_theme_title" tools:machine_translated="true">Vzhľad</string>
+  <string name="pref_theme_system" tools:machine_translated="true">Predvolené nastavenie systému.</string>
+  <string name="pref_theme_light" tools:machine_translated="true">Svetlý</string>
+  <string name="pref_theme_dark" tools:machine_translated="true">Tmavý.</string>
+  <string name="pref_titlebarhide_title" tools:machine_translated="true">Automatické skrytie titulkového panela</string>
+  <string name="pref_titlebarhide_summary" tools:machine_translated="true">Ťuknite na konzolu, aby sa zobrazil panel s názvom a otvorila sa ponuka.</string>
+  <string name="pref_alwaysvisible_title" tools:machine_translated="true">Špeciálne klávesy sú vždy viditeľné.</string>
+  <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">Gesto na posúvanie stránky nahor/nadol.</string>
+  <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">Potiahnite prstom po ľavej tretine obrazovky, aby ste odoslali príkaz „pg up/dn“ do terminálu.</string>
+  <string name="pref_keyboard_category" tools:machine_translated="true">Klávesnica</string>
+  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Klávesy Shift a číselné klávesy fungujú ako funkčné klávesy (F-klávesy).</string>
+  <string name="pref_shiftfkeys_summary" tools:machine_translated="true">Na hardvérových klávesniciach tlačidlá s číslami pri stlačení klávesu Shift odošlú signály F1 až F10.</string>
+  <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Klávesová skratka Ctrl+číslo aktivuje funkčné klávesy.</string>
+  <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Na softvérových klávesniciach tlačidlá čísel posielajú kombinácie kláves F1 až F10 spolu s klávesom Ctrl.</string>
+  <string name="pref_volumefont_title" tools:machine_translated="true">Tlačidlá na ovládanie hlasitosti menia veľkosť písma.</string>
+  <string name="pref_volumefont_summary" tools:machine_translated="true">Veľkosť písma sa dá zmeniť aj v nastaveniach profilu.</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">Zostaňte pripojení aj na pozadí.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Udržujte svoje relácie aktívne aj pri prepínaní medzi rôznymi aplikáciami.</string>
+  <string name="pref_stickymodifiers_title" tools:machine_translated="true">Trvalé modifikátory</string>
+  <string name="only_alt" tools:machine_translated="true">Len kláves Alt</string>
+  <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibrujte pri odosielaní príkazov pomocou šípkových kláves; užitočné pri pomalom pripojení.</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">Prehrať zvuk pri spustení upozornenia v termináli.</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Vibrujte pri upozornení terminálu.</string>
+  <string name="color_red" tools:machine_translated="true">Červená</string>
+  <string name="color_pink" tools:machine_translated="true">Ružová</string>
+  <string name="color_purple" tools:machine_translated="true">Fialová</string>
+  <string name="color_deep_purple" tools:machine_translated="true">Hlboká fialová</string>
+  <string name="color_indigo" tools:machine_translated="true">Indigová</string>
+  <string name="color_blue" tools:machine_translated="true">Modrá</string>
+  <string name="color_light_blue" tools:machine_translated="true">Svetlomodrá</string>
+  <string name="color_cyan" tools:machine_translated="true">Azúrová</string>
+  <string name="color_teal" tools:machine_translated="true">Námorná modrá</string>
+  <string name="color_green" tools:machine_translated="true">Zelená</string>
+  <string name="color_light_green" tools:machine_translated="true">Svetlozelená</string>
+  <string name="color_lime" tools:machine_translated="true">Zelená farba (odtieň limetky)</string>
+  <string name="color_yellow" tools:machine_translated="true">Žltá</string>
+  <string name="color_amber" tools:machine_translated="true">Jantárová</string>
+  <string name="color_orange" tools:machine_translated="true">Oranžová</string>
+  <string name="color_gray" tools:machine_translated="true">Šedá</string>
+  <string name="hostpref_fontfamily_title" tools:machine_translated="true">Písmo</string>
+  <string name="hostpref_colorscheme_title" tools:machine_translated="true">Farebná schéma terminálu</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Pri odpojení zobraz notifikáciu o ukončení.</string>
+  <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Okamžite sa zatvorí po odpojení od vzdialeného systému, bez zobrazovania akýchkoľvek upozornení.</string>
+  <string name="hostpref_save_password_summary" tools:machine_translated="true">Bezpečne uložte heslo na prihlásenie, aby sa zabezpečila automatická autentifikácia.</string>
+  <string name="hostpref_password_title" tools:machine_translated="true">Heslo</string>
+  <string name="hostpref_password_unchanged" tools:machine_translated="true">Heslo (nezmenené)</string>
+  <string name="hostpref_clear_password" tools:machine_translated="true">Vymazať uložené heslo</string>
+  <string name="hostpref_profile_title" tools:machine_translated="true">Profil</string>
+  <string name="hostpref_profile_summary" tools:machine_translated="true">Vyberte profil, aby ste použili jeho nastavenia terminálu.</string>
+  <string name="hostpref_profile_none" tools:machine_translated="true">Žiadne (použiť nastavenia hostiteľa)</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">Ovláda ho profil.</string>
+  <string name="font_use_default" tools:machine_translated="true">Použiť predvolené nastavenie.</string>
+  <string name="font_system_default" tools:machine_translated="true">Predvolené (monošírkové písmo)</string>
+  <string name="pubkey_unknown" tools:machine_translated="true">Neznámy kľúč.</string>
+  <string name="colorscheme_default" tools:machine_translated="true">Predvolené</string>
+  <string name="profile_editor_title_new" tools:machine_translated="true">Nový profil</string>
+  <string name="profile_editor_title_edit" tools:machine_translated="true">Upraviť profil</string>
+  <string name="profile_editor_save" tools:machine_translated="true">Uložiť</string>
+  <string name="profile_editor_name_label" tools:machine_translated="true">Názov profilu</string>
+  <string name="profile_editor_section_icon_color" tools:machine_translated="true">Farba ikony</string>
+  <string name="profile_editor_section_color_scheme" tools:machine_translated="true">Farebná schéma</string>
+  <string name="profile_editor_section_font" tools:machine_translated="true">Písmo</string>
+  <string name="profile_editor_section_terminal" tools:machine_translated="true">Terminál</string>
+  <string name="profile_editor_font_family_title" tools:machine_translated="true">Typ písma</string>
+  <string name="profile_editor_font_size_title" tools:machine_translated="true">Veľkosť písma: %d</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Veľkosť sily</string>
+  <string name="profile_editor_force_size_summary" tools:machine_translated="true">Nastavte terminálu konkrétnu veľkosť (počet stĺpcov x počet riadkov) namiesto automatického prispôsobovania veľkosti obrazovke.</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">Povoliť vynútenú veľkosť</string>
+  <string name="profile_editor_force_size_columns" tools:machine_translated="true">Stĺpce</string>
+  <string name="profile_editor_force_size_rows" tools:machine_translated="true">Riadky</string>
+  <string name="profile_icon_color_none" tools:machine_translated="true">Žiadna (použiť farbu hostiteľa)</string>
+  <string name="profile_list_title" tools:machine_translated="true">Profily</string>
+  <string name="profile_list_create_profile" tools:machine_translated="true">Vytvoriť profil</string>
+  <string name="profile_list_empty_message" tools:machine_translated="true">Zatiaľ nie sú vytvorené žiadne profily. Klepnite na tlačidlo +, aby ste vytvorili nový profil.</string>
+  <string name="profile_list_more_options" tools:machine_translated="true">Ďalšie možnosti</string>
+  <string name="profile_list_duplicate" tools:machine_translated="true">Duplikovať</string>
+  <string name="profile_list_delete" tools:machine_translated="true">Vymazať</string>
+  <string name="profile_create_dialog_title" tools:machine_translated="true">Vytvoriť profil</string>
+  <string name="profile_create_name_label" tools:machine_translated="true">Názov profilu</string>
+  <string name="profile_create_button" tools:machine_translated="true">Vytvoriť</string>
+  <string name="profile_create_cancel" tools:machine_translated="true">Zrušiť</string>
+  <string name="profile_delete_dialog_title" tools:machine_translated="true">Vymazať profil</string>
+  <string name="profile_delete_dialog_message" tools:machine_translated="true">Ste si istý, že chcete odstrániť profil „%s“?</string>
+  <string name="profile_delete_button" tools:machine_translated="true">Vymazať</string>
+  <string name="profile_delete_cancel" tools:machine_translated="true">Zrušiť</string>
+  <string name="profile_summary_font" tools:machine_translated="true">Písmo: %1$s, veľkosť: %2$d bodov</string>
+  <string name="profile_summary_emulation" tools:machine_translated="true">Emulácia: %s</string>
+  <string name="console_menu_reconnect" tools:machine_translated="true">Znovu sa pripojte.</string>
+  <string name="console_url_no_handler" tools:machine_translated="true">Žiadna aplikácia nie je dostupná na otvorenie tejto webovej adresy.</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">Tento typ URL nie je podporovaný.</string>
+  <string name="portforward_save" tools:machine_translated="true">Uložiť</string>
+  <string name="list_menu_disconnect" tools:machine_translated="true">Odpojiť všetko</string>
+  <string name="list_host_duplicate" tools:machine_translated="true">Duplikovať hostiteľa</string>
+  <string name="list_host_forget_keys" tools:machine_translated="true">Odstrániť uložené hostiteľské kľúče.</string>
+  <string name="list_camera_text_input" tools:machine_translated="true">Vstupný text</string>
+  <string name="disconnect_all_message" tools:machine_translated="true">Ste si istý, že sa chcete odpojiť od všetkých pripojených hostiteľov?</string>
+  <string name="disconnect_all_pos" tools:machine_translated="true">Áno, odpojiť.</string>
+  <string name="disconnect_all_neg" tools:machine_translated="true">Zrušiť</string>
+  <string name="terminal_kex_algorithm" tools:machine_translated="true">Algoritmus výmeny kľúčov: %s</string>
+  <string name="terminal_auth_saved_password" tools:machine_translated="true">Pokus o overenie pomocou uloženého hesla…</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Overenie uloženého hesla zlyhalo.</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">Vyžaduje sa biometrická autentifikácia pre kľúč „%1$s“.</string>
+  <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">Biometrický kľúč „%1$s“ bol deaktivovaný. K tomu môže dôjsť, keď sa do zariadenia pridajú nové otlačky prstov. Vytvorte si, prosím, nový kľúč.</string>
+  <string name="list_color_schemes" tools:machine_translated="true">Farebné schémy</string>
+  <string name="button_manage_schemes" tools:machine_translated="true">Spravovať schémy.</string>
+  <string name="title_scheme_manager" tools:machine_translated="true">Spravovať farebné schémy</string>
+  <string name="button_new_scheme" tools:machine_translated="true">Nová schéma</string>
+  <string name="button_duplicate_scheme" tools:machine_translated="true">Duplikovať</string>
+  <string name="button_rename_scheme" tools:machine_translated="true">Premenovať</string>
+  <string name="button_delete_scheme" tools:machine_translated="true">Odstrániť</string>
+  <string name="dialog_title_new_scheme" tools:machine_translated="true">Nová farebná schéma</string>
+  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Premenovať farebnú schému</string>
+  <string name="label_scheme_name" tools:machine_translated="true">Názov schémy</string>
+  <string name="label_scheme_description" tools:machine_translated="true">Popis (voliteľné)</string>
+  <string name="dialog_title_delete_scheme" tools:machine_translated="true">Vymazať schému?</string>
+  <string name="dialog_message_delete_scheme" tools:machine_translated="true">Ste si istý, že chcete odstrániť položku „%1$s“? Túto operáciu nie je možné vrátiť.</string>
+  <string name="button_confirm" tools:machine_translated="true">Potvrdiť</string>
+  <string name="button_cancel" tools:machine_translated="true">Zrušiť</string>
+  <string name="label_built_in_scheme" tools:machine_translated="true">Integrované.</string>
+  <string name="label_custom_scheme" tools:machine_translated="true">Vlastné/užívateľské</string>
+  <string name="empty_custom_schemes" tools:machine_translated="true">Nenájdené žiadne vlastné schémy. Klepnite na možnosť „Nová schéma“ a vytvorte si ju.</string>
+  <string name="button_edit_palette" tools:machine_translated="true">Upraviť paletu</string>
+  <string name="button_export_scheme" tools:machine_translated="true">Exportovať schému.</string>
+  <string name="button_import_scheme" tools:machine_translated="true">Importovať schému.</string>
+  <string name="message_export_success" tools:machine_translated="true">Úspešne exportované %1$s</string>
+  <string name="message_import_success" tools:machine_translated="true">Úspešne importované %1$s</string>
+  <string name="error_export_failed" tools:machine_translated="true">Export schémy sa nepodaril: %1$s</string>
+  <string name="error_import_failed" tools:machine_translated="true">Import schémy sa nepodaril: %1$s</string>
+  <string name="error_invalid_json" tools:machine_translated="true">Neplatný súbor JSON.</string>
+  <string name="title_palette_editor" tools:machine_translated="true">Upraviť farebnú paletu</string>
+  <string name="button_reset_all_colors" tools:machine_translated="true">Obnoviť všetko</string>
+  <string name="section_ansi_colors" tools:machine_translated="true">ANSI farby (0 – 15)</string>
+  <string name="dialog_title_edit_color" tools:machine_translated="true">Upraviť farbu %1$d</string>
+  <string name="dialog_title_reset_all" tools:machine_translated="true">Obnoviť všetky farby?</string>
+  <string name="dialog_message_reset_all" tools:machine_translated="true">Týmto sa všetky farby (celkovo 256) resetujú na ich predvolené hodnoty. Túto operáciu nie je možné vrátiť.</string>
+  <string name="label_red" tools:machine_translated="true">Červená</string>
+  <string name="label_green" tools:machine_translated="true">Zelená</string>
+  <string name="label_blue" tools:machine_translated="true">Modrá</string>
+  <string name="label_hex_color" tools:machine_translated="true">Hexadecimálna farba</string>
+  <string name="colors_fg_label" tools:machine_translated="true">FG: %1$d</string>
+  <string name="color_bg_label" tools:machine_translated="true">BG: %1$d</string>
+  <string name="section_fg_bg_colors" tools:machine_translated="true">Farba popredia a pozadia</string>
+  <string name="label_foreground_color" tools:machine_translated="true">Popredné farby</string>
+  <string name="label_background_color" tools:machine_translated="true">Pozadie</string>
+  <string name="label_base_scheme" tools:machine_translated="true">Základná schéma:</string>
+  <string name="menu_manage_colors" tools:machine_translated="true">Spravovať farebné schémy</string>
+  <string name="palette_editor_builtin_note" tools:machine_translated="true">Preddefinované schémy sú chránené proti úpravám. Ak chcete schému upraviť, vytvorte jej kópiu.</string>
+  <string name="section_color_preview" tools:machine_translated="true">Ukážka</string>
+  <string name="image_description_connected" tools:machine_translated="true">Pripojené.</string>
+  <string name="image_description_disconnected" tools:machine_translated="true">Odpojené.</string>
+  <string name="image_description_toggle_control_character" tools:machine_translated="true">Prepnite ovládací znak.</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">Odoslať riadiaci znak.</string>
+  <string name="image_description_send_tab_character" tools:machine_translated="true">Odoslať znak TAB.</string>
+  <string name="image_description_hide_keyboard" tools:machine_translated="true">Skryť klávesnicu.</string>
+  <string name="image_description_show_keyboard" tools:machine_translated="true">Zobraziť klávesnicu.</string>
+  <string name="image_description_up" tools:machine_translated="true">Šípka smerujúca nahor.</string>
+  <string name="image_description_down" tools:machine_translated="true">Šípka smerujúca nadol</string>
+  <string name="image_description_left" tools:machine_translated="true">Šípka smerujúca doľava</string>
+  <string name="image_description_right" tools:machine_translated="true">Šípka smerujúca doprava</string>
+  <string name="button_key_esc" tools:machine_translated="true">Esc</string>
+  <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="button_key_home" tools:machine_translated="true">Domov</string>
+  <string name="button_key_end" tools:machine_translated="true">Koniec</string>
+  <string name="button_key_pgup" tools:machine_translated="true">Strana nahor</string>
+  <string name="button_key_pgdn" tools:machine_translated="true">Strana nadol</string>
+  <string name="button_key_f1" tools:machine_translated="true">F1</string>
+  <string name="button_key_f2" tools:machine_translated="true">F2</string>
+  <string name="button_key_f3" tools:machine_translated="true">F3</string>
+  <string name="button_key_f4" tools:machine_translated="true">F4</string>
+  <string name="button_key_f5" tools:machine_translated="true">F5</string>
+  <string name="button_key_f6" tools:machine_translated="true">F6</string>
+  <string name="button_key_f7" tools:machine_translated="true">F7</string>
+  <string name="button_key_f8" tools:machine_translated="true">F8</string>
+  <string name="button_key_f9" tools:machine_translated="true">F9</string>
+  <string name="button_key_f10" tools:machine_translated="true">F10</string>
+  <string name="button_key_f11" tools:machine_translated="true">F11</string>
+  <string name="button_key_f12" tools:machine_translated="true">F12</string>
+  <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">Vstup textu</string>
+  <string name="terminal_text_input_dialog_title" tools:machine_translated="true">Vstupný text</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">Zadajte text, ktorý sa má odoslať do terminálu.</string>
+  <string name="terminal_text_input_resize_handle" tools:machine_translated="true">Zmeniť veľkosť</string>
+  <string name="console_menu_text_input" tools:machine_translated="true">Vstupný text</string>
+  <string name="button_send" tools:machine_translated="true">Odoslať</string>
+  <string name="button_ok" tools:machine_translated="true">Dobre.</string>
+  <string name="button_close" tools:machine_translated="true">Zavrieť</string>
+  <string name="button_back" tools:machine_translated="true">Späť</string>
+  <string name="button_navigate_up" tools:machine_translated="true">Prejsť nahor</string>
+  <string name="button_more_options" tools:machine_translated="true">Ďalšie možnosti</string>
+  <string name="button_host_options" tools:machine_translated="true">Možnosti pre hostiteľa</string>
+  <string name="button_collapse" tools:machine_translated="true">Zbaliť</string>
+  <string name="error_key_load_failed" tools:machine_translated="true">Nepodarilo sa načítať kľúč „%1$s“: %2$s</string>
+  <string name="error_connection_failed" tools:machine_translated="true">Nepodarilo sa nadviazať spojenie so serverom %1$s (%2$s): %3$s</string>
+  <string name="error_port_forward_load_failed" tools:machine_translated="true">Nepodarilo sa načítať nastavenia pre smerovanie portov pre %1$s: %2$s</string>
+  <string name="error_host_save_failed" tools:machine_translated="true">Nepodarilo sa uložiť konfiguráciu hostiteľa %1$s: %2$s</string>
+  <string name="error_color_scheme_load_failed" tools:machine_translated="true">Nepodarilo sa načítať farebnú schému: %s</string>
+  <string name="host_duplicate_nickname" tools:machine_translated="true">%1$s (kópia)</string>
+  <string name="empty_hosts_message" tools:machine_translated="true">Neboli nakonfigurované žiadne hostiteľské systémy.</string>
+  <string name="empty_pubkeys_message" tools:machine_translated="true">Nenašli sa žiadne kľúče.</string>
+  <string name="empty_port_forwards_message" tools:machine_translated="true">Neboli nakonfigurované žiadne presmerovania portov.</string>
+  <string name="empty_urls_message" tools:machine_translated="true">V pamäti terminálu neboli nájdené žiadne URL adresy.</string>
+  <string name="console_default_title" tools:machine_translated="true">Konzola</string>
+  <string name="host_editor_quick_connect_label" tools:machine_translated="true">Rýchle pripojenie</string>
+  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">používateľ\@názovservera:port</string>
+  <string name="host_editor_quick_connect_example" tools:machine_translated="true">Príklad: root\@192.168.1.1:22</string>
+  <string name="host_editor_show_advanced" tools:machine_translated="true">Zobraziť rozšírené možnosti</string>
+  <string name="host_editor_hide_advanced" tools:machine_translated="true">Skryť rozšírené možnosti</string>
+  <string name="resize_width_label" tools:machine_translated="true">Šírka (počet stĺpcov)</string>
+  <string name="resize_height_label" tools:machine_translated="true">Výška (počet riadkov)</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">Zakázať vynútenú veľkosť.</string>
+  <string name="pubkey_editor_key_type_label" tools:machine_translated="true">Typ kľúča</string>
+  <string name="pubkey_editor_options_label" tools:machine_translated="true">Možnosti</string>
+  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Šifrované kľúče sa nedajú odomknúť pri spustení systému.</string>
+  <string name="pubkey_type_label" tools:machine_translated="true">Typ: %s</string>
+  <string name="pubkey_encrypted_description" tools:machine_translated="true">Zašifrované</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Nešifrované</string>
+  <string name="pubkey_biometric_protection" tools:machine_translated="true">Ochrana pomocou odtlačku prsta</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">Chráňte tento kľúč pomocou odtlačku prsta.</string>
+  <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Neboli zaregistrované žiadne údaje o odtlačkoch prstov. Ak chcete používať túto funkciu, nastavte odtlačky prstov v nastaveniach zariadenia.</string>
+  <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Ochrana pomocou odtlačku prsta je dostupná iba pre kľúče RSA a EC.</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Overte sa, aby ste mohli použiť kľúč.</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Dotknite sa snímača odtlačkov prstov, aby ste odomkli zariadenie „%1$s“.</string>
+  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Chránené pomocou snímača odtlačkov prstov.</string>
+  <string name="pubkey_biometric_not_available" tools:machine_translated="true">Overenie pomocou odtlačku prsta nie je v súčasnosti dostupné.</string>
+  <string name="portforward_nickname_placeholder" tools:machine_translated="true">Interný webový server</string>
+  <string name="portforward_port_range_error" tools:machine_translated="true">Číslo portu musí byť v rozsahu od 1 do 65 535.</string>
+  <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">Formát by mal byť hostiteľ:port (napr. localhost:80).</string>
+  <string name="portforward_host_address" tools:machine_translated="true">Adresa hostiteľa</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">Lokálny hostiteľ</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Lokálny hostiteľ (iba IPv4)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">Lokálny hostiteľ (iba IPv6)</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">Všetky adresy</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Všetky adresy IPv4</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Všetky adresy IPv6</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">Konkrétna adresa</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="portforward_type_label" tools:machine_translated="true">Typ: %s</string>
+  <string name="portforward_enable" tools:machine_translated="true">Povoliť</string>
+  <string name="portforward_disable" tools:machine_translated="true">Zakázať</string>
+  <string name="portforward_enabled" tools:machine_translated="true">Prepustenie portu je povolené.</string>
+  <string name="portforward_disabled" tools:machine_translated="true">Funkcia preposielania portov je vypnutá.</string>
+  <string name="protocol_spinner_label" tools:machine_translated="true">Protokol</string>
+  <string name="expand" tools:machine_translated="true">Rozbaliť</string>
+  <string name="hostpref_authagent_with_confirmation" tools:machine_translated="true">vyžaduje potvrdenie</string>
+  <string name="hostpref_add_host" tools:machine_translated="true">Pridať hostiteľa</string>
+  <string name="hostpref_save_host" tools:machine_translated="true">Uložiť hostiteľa</string>
+  <string name="hostpref_setting_title" tools:machine_translated="true">Nastavenia hostiteľa</string>
+  <string name="pubkey_import_existing" tools:machine_translated="true">Importovať existujúci verejný kľúč.</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importovať z schránky</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Obsah súkromného kľúča</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Vložiť z schránky</string>
+  <string name="notification_permission_title" tools:machine_translated="true">Zostaňte pripojení na pozadí.</string>
+  <string name="notification_permission_message" tools:machine_translated="true">Aplikácia ConnectBot potrebuje povolenie na zobrazovanie upozornení, aby udržala vaše pripojenia aktívne, keď prepínate medzi aplikáciami. Bez tohto povolenia môže systém vaše pripojenia prerušiť, aby šetril batériu.</string>
+  <string name="grant_permission" tools:machine_translated="true">Povoliť</string>
+  <string name="connect_anyway" tools:machine_translated="true">Pripojte sa aj tak.</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">Potrebné povolenie pre upozornenia.</string>
+  <string name="notification_permission_denied_message" tools:machine_translated="true">Ak chcete, aby vaše pripojenia zostali aktívne aj na pozadí, povoľte prosím upozornenia pre aplikáciu ConnectBot v nastaveniach systému.</string>
+  <string name="open_settings" tools:machine_translated="true">Otvoriť nastavenia</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Pripojenia sa môžu prerušiť, ak neudelite povolenie na zobrazovanie upozornení.</string>
+  <string name="notification_permission_console_warning" tools:machine_translated="true">Pripojenie sa môže v pozadí prerušiť.</string>
+  <string name="terminal_no_route" tools:machine_translated="true">Pokúšate sa pripojiť k lokálnemu hostiteľovi? Povolenie pre lokálnu sieť musíte udeliť.</string>
+  <string name="loading_message" tools:machine_translated="true">Načítava sa…</string>
+  <string name="migration_checking" tools:machine_translated="true">Prebieha kontrola databázy…</string>
+  <string name="migration_title" tools:machine_translated="true">Migrácia databázy.</string>
+  <string name="migration_warning" tools:machine_translated="true">Počas migrácie, prosím, nezatvárajte aplikáciu.</string>
+  <string name="migration_stats_hosts" tools:machine_translated="true">Počet presunutých hostiteľov: %d</string>
+  <string name="migration_stats_pubkeys" tools:machine_translated="true">Migrované SSH kľúče: %d</string>
+  <string name="migration_stats_port_forwards" tools:machine_translated="true">Počet prenesených pravidiel pre smerovanie portov: %d</string>
+  <string name="migration_stats_known_hosts" tools:machine_translated="true">Počet presunutých známych hostiteľov: %d</string>
+  <string name="migration_failed_title" tools:machine_translated="true">Migrácia sa nepodarila.</string>
+  <string name="migration_failed_message" tools:machine_translated="true">Počas migrácie databázy došlo k chybe: %s</string>
+  <string name="migration_retry" tools:machine_translated="true">Skúsiť znova</string>
+  <string name="migration_failed_help" tools:machine_translated="true">Ak problém pretrváva, nahláste ho na %1$s a priložte k tomu aj skopírovaný protokol ladenia.</string>
+  <string name="migration_warnings_title" tools:machine_translated="true">Upozornenia počas migrácie</string>
+  <string name="migration_copy_warnings" tools:machine_translated="true">Kopírovať upozornenia</string>
+  <string name="migration_debug_log_title" tools:machine_translated="true">Protokol ladenia</string>
+  <string name="migration_copy_debug_log" tools:machine_translated="true">Skopírovať protokol ladenia</string>
+  <string name="disconnect_host_alert" tools:machine_translated="true">Ste si istý, že sa chcete odpojiť od servera „%1$s“?</string>
+  <string name="delete_host_confirm" tools:machine_translated="true">Ste si istý, že chcete odstrániť hosta s názvom „%1$s“?</string>
+  <string name="forget_host_keys_confirm" tools:machine_translated="true">Ste si istý, že chcete odstrániť uložené kľúče hostiteľa pre „%1$s“? Pri ďalšom pripojení budete vyzvaní na overenie kľúča hostiteľa.</string>
+  <string name="list_pubkey_edit" tools:machine_translated="true">Upraviť verejný kľúč</string>
+  <string name="hostpref_ipversion_title" tools:machine_translated="true">Verzia protokolu IP</string>
+  <string name="hostpref_ipversion_summary" tools:machine_translated="true">Vyberte, ktorú verziu IP adresy použiť pri pripájaní.</string>
+  <string name="ipversion_auto" tools:machine_translated="true">Automatický</string>
+  <string name="ipversion_ipv4" tools:machine_translated="true">iba IPv4</string>
+  <string name="ipversion_ipv6" tools:machine_translated="true">iba IPv6</string>
+  <string name="hostpref_jumphost_title" tools:machine_translated="true">Prechodný server (ProxyJump)</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">Pripojte sa prostredníctvom iného servera SSH.</string>
+  <string name="list_jumphost_none" tools:machine_translated="true">Žiadny (priame pripojenie)</string>
+  <string name="terminal_connecting_via_jump" tools:machine_translated="true">Pripojenie cez prechodový server: %s</string>
+  <string name="terminal_jump_connected" tools:machine_translated="true">Pripojené k prechodovému serveru: %s</string>
+  <string name="terminal_jump_authenticated" tools:machine_translated="true">Úspešne overená identita pri pripojení k prechodovému serveru: %s</string>
+  <string name="terminal_jump_failed" tools:machine_translated="true">Nepodarilo sa nadviazať spojenie so serverom %1$s: %2$s.</string>
+  <string name="terminal_jump_auth_failed" tools:machine_translated="true">Overenie prihlásenia na prechodnom serveri zlyhalo: %s</string>
+  <string name="terminal_jump_not_found" tools:machine_translated="true">Nenašli sa žiadne uložené hostiteľské systémy, ktoré by sa dali použiť ako jump host.</string>
+  <string name="terminal_jump_password" tools:machine_translated="true">Heslo pre server na vzdialený prístup %s:</string>
+  <string name="view_logs" tools:machine_translated="true">Zobraziť protokoly</string>
+  <string name="logs_title" tools:machine_translated="true">Logy aplikácií</string>
+  <string name="copy_logs" tools:machine_translated="true">Kopírovať záznamy</string>
+  <string name="logs_copied" tools:machine_translated="true">Protokoly boli skopírované do schránky.</string>
+  <string name="logs_bug_report_info" tools:machine_translated="true">Ak chcete nahlásiť chybu, skopírujte tieto záznamy a vytvorte nové hlásenie na adrese https://connectbot.org/bug.</string>
+  <string name="no_logs_available" tools:machine_translated="true">Žiadne záznamy nie sú k dispozícii.</string>
+  <string name="help_section_about" tools:machine_translated="true">O programe</string>
+  <string name="title_contact" tools:machine_translated="true">Kontakt a podpora</string>
+  <string name="help_section_contact" tools:machine_translated="true">Kontakt a podpora</string>
+  <string name="help_website" tools:machine_translated="true">Webová stránka</string>
+  <string name="help_github" tools:machine_translated="true">Zdrojový kód</string>
+  <string name="help_report_bug" tools:machine_translated="true">Nahlásiť chybu</string>
+  <string name="help_section_donate" tools:machine_translated="true">Podporte vývoj.</string>
+  <string name="help_donate_github" tools:machine_translated="true">GitHub – program podpory</string>
+  <string name="help_donate_coffee" tools:machine_translated="true">Podporte nás kúpou virtuálneho „kávy“.</string>
+  <string name="colorscheme_default_description" tools:machine_translated="true">Predvolené farby terminálu</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Presné farby pre stroje a ľudí.</string>
+  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarizované s jasným pozadím.</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">Tmavá téma pre terminál.</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">Arktická farebná schéma s odtieňmi severnej modrej.</string>
+  <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Retro farebná schéma.</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">Motív inšpirovaný programom Sublime Text.</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Elegantná a príjemná tmavá téma.</string>
+  <string name="pref_profiles_category" tools:machine_translated="true">Profily</string>
+  <string name="pref_default_profile_title" tools:machine_translated="true">Predvolený profil</string>
+  <string name="pref_default_profile_none" tools:machine_translated="true">Žiadne (použiť nastavenia hostiteľa)</string>
+  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">Zobrazuj špeciálne klávesy priebežne.</string>
+  <string name="pref_customterminal_title" tools:machine_translated="true">Vlastné typy terminálov</string>
+  <string name="pref_customterminal_summary" tools:machine_translated="true">Pridajte vlastné hodnoty premennej TERM pre vzdialené servery.</string>
+  <string name="dialog_customterminal_title" tools:machine_translated="true">Pridať vlastný typ terminálu</string>
+  <string name="dialog_customterminal_hint" tools:machine_translated="true">Typ terminálu (napr. rxvt-unicode)</string>
+  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Spravujte vlastné typy terminálov.</string>
+  <string name="button_add_custom" tools:machine_translated="true">Pridať vlastnú položku…</string>
+  <string name="button_manage_custom" tools:machine_translated="true">Spravovať vlastné…</string>
+  <string name="dialog_custom_value_label" tools:machine_translated="true">Zadajte vlastnú hodnotu.</string>
+  <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, potom kláves Space.</string>
+  <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
+  <string name="list_camera_esc_description" tools:machine_translated="true">Esc</string>
+  <string name="list_camera_esc_a_description" tools:machine_translated="true">Esc+A</string>
+  <string name="list_camera_none_description" tools:machine_translated="true">Žiadna</string>
+  <string name="list_camera_text_input_description" tools:machine_translated="true">Textové pole na zadávanie textu.</string>
+  <string name="list_menu_export_hosts" tools:machine_translated="true">Exportovať hostiteľov</string>
+  <string name="list_menu_import_hosts" tools:machine_translated="true">Importovať hosty</string>
+  <string name="export_hosts_success" tools:machine_translated="true">Exportovali sa %1$d hostiteľov a %2$d profilov.</string>
+  <string name="import_hosts_success" tools:machine_translated="true">Importovali sa %1$d hostiteľov (%2$d sa preskočilo) a %3$d profilov (%4$d sa preskočilo).</string>
+  <string name="export_hosts_failed" tools:machine_translated="true">Export hostov sa nepodaril: %s</string>
+  <string name="import_hosts_failed" tools:machine_translated="true">Import hostov sa nepodaril: %s</string>
+  <string name="export_hosts_title" tools:machine_translated="true">Exportovať hostiteľov</string>
+  <string name="shortcut_customize_title" tools:machine_translated="true">Prispôsobiť skratku</string>
+  <string name="shortcut_icon_color" tools:machine_translated="true">Farba ikony</string>
+  <string name="shortcut_icon_style" tools:machine_translated="true">Štýl ikony</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">Použiť farbu hostiteľa.</string>
+  <string name="shortcut_create" tools:machine_translated="true">Vytvoriť skratku</string>
+  <string name="icon_style_terminal" tools:machine_translated="true">Terminál</string>
+  <string name="icon_style_server" tools:machine_translated="true">Server</string>
+  <string name="icon_style_cloud" tools:machine_translated="true">Oblak</string>
+  <string name="icon_style_key" tools:machine_translated="true">Kľúč</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Overenie pri spustení.</string>
+  <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Pri otváraní aplikácie vyžadujte overenie pomocou snímača odtlačkov prstov, rozpoznávania tváre alebo PIN kódu zariadenia.</string>
+  <string name="pref_security_category" tools:machine_translated="true">Zabezpečenie</string>
+  <string name="auth_screen_title" tools:machine_translated="true">Aplikácia ConnectBot je uzamknutá.</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">Ťuknite na obrazovku, aby ste odomkli zariadenie.</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">Odomknite ConnectBot.</string>
+  <string name="auth_prompt_subtitle" tools:machine_translated="true">Overte svoju identitu, aby ste mohli pokračovať.</string>
 </resources>

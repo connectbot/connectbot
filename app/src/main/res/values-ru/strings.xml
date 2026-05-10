@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">Простой и мощный SSH-клиент с открытым исходным кодом.</string>
   <string name="service_desc">Управление SSH-подключениями и загруженными публичными ключами</string>
   <string name="app_copyright">Авторские права © Kenny Root</string>
@@ -558,4 +558,18 @@
   <string name="auth_screen_unlock_button">Нажмите, чтобы разблокировать</string>
   <string name="auth_prompt_title">Разблокируйте ConnectBot</string>
   <string name="auth_prompt_subtitle">Подтвердите свою личность, чтобы продолжить</string>
+  <string name="pref_language_download" tools:machine_translated="true">Загрузить языковой пакет.</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">Загрузка не удалась, нажмите, чтобы повторить попытку.</string>
+  <string name="portforward_host_address" tools:machine_translated="true">Адрес хоста</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">Локальный хост</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Локальный хост (только IPv4)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">Локальный хост (только IPv6)</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">Все адреса</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Все IPv4-адреса.</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Все IPv6-адреса</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">Конкретный адрес</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Импортировать из буфера обмена</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Содержимое закрытого ключа</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Вставить из буфера обмена</string>
 </resources>

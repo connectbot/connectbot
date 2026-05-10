@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">Prosty, wszechstronny i otwarty klient SSH</string>
   <string name="service_desc">Zarządza połączeniami SSH i załadowanymi kluczami publicznymi</string>
   <string name="app_copyright">Prawa autorskie © Kenny Root</string>
@@ -558,4 +558,18 @@
   <string name="auth_screen_unlock_button">Dotknij, aby odblokować</string>
   <string name="auth_prompt_title">Odblokuj ConnectBot</string>
   <string name="auth_prompt_subtitle">Aby kontynuować, zweryfikuj swoją tożsamość.</string>
+  <string name="pref_language_download" tools:machine_translated="true">Pobierz pakiet językowy.</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">Pobieranie nie powiodło się, dotknij, aby spróbować ponownie.</string>
+  <string name="portforward_host_address" tools:machine_translated="true">Adres hosta</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">Adres lokalny (localhost)</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Lokalny adres (tylko IPv4)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">Lokalny host (tylko IPv6)</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">Wszystkie adresy.</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Wszystkie adresy IPv4.</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Wszystkie adresy IPv6</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">Konkretny adres</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importuj z schowka.</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Zawartość klucza prywatnego</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Wklej z schowka</string>
 </resources>

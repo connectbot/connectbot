@@ -1,2 +1,575 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources/>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <string name="app_desc" tools:machine_translated="true">簡單、強大、開源的 SSH 用戶端。</string>
+  <string name="service_desc" tools:machine_translated="true">維護 SSH 連線，並載入公鑰。</string>
+  <string name="app_copyright" tools:machine_translated="true">版權所有 © 肯尼·魯特</string>
+  <string name="title_pubkey_list" tools:machine_translated="true">公鑰列表</string>
+  <string name="title_port_forwards_list" tools:machine_translated="true">端口轉發</string>
+  <string name="title_help" tools:machine_translated="true">說明</string>
+  <string name="title_eula" tools:machine_translated="true">授權合約</string>
+  <string name="title_colors" tools:machine_translated="true">顏色</string>
+  <string name="title_color_picker" tools:machine_translated="true">選擇顏色</string>
+  <string name="title_settings" tools:machine_translated="true">設定</string>
+  <string name="title_pubkey_generate" tools:machine_translated="true">產生</string>
+  <string name="terms_and_conditions" tools:machine_translated="true">使用條款及細則</string>
+  <string name="hints" tools:machine_translated="true">提示</string>
+  <string name="keyboard_shortcuts" tools:machine_translated="true">鍵盤快捷鍵</string>
+  <string name="increase_font_size" tools:machine_translated="true">增大字體大小</string>
+  <string name="increase_font_shortcut" tools:machine_translated="true">Ctrl 鍵和 + 鍵</string>
+  <string name="decrease_font_size" tools:machine_translated="true">減少字體大小</string>
+  <string name="decrease_font_shortcut" tools:machine_translated="true">Ctrl 鍵和 - 鍵</string>
+  <string name="paste_shortcut" tools:machine_translated="true">Ctrl + Shift + V</string>
+  <string name="pubkey_generate" tools:machine_translated="true">產生</string>
+  <string name="pubkey_delete" tools:machine_translated="true">刪除金鑰</string>
+  <string name="pubkey_gather_entropy" tools:machine_translated="true">收集隨機數據</string>
+  <string name="pubkey_touch_prompt" tools:machine_translated="true">點擊此方塊以收集隨機數據：%1$d%% 已完成</string>
+  <string name="pubkey_touch_hint" tools:machine_translated="true">為了確保在產生密鑰時具有足夠的隨機性，請隨意地在下面的方框上移動您的手指。</string>
+  <string name="pubkey_generating" tools:machine_translated="true">正在產生金鑰對……</string>
+  <string name="pubkey_copy_private" tools:machine_translated="true">複製私鑰</string>
+  <string name="pubkey_copy_private_openssh" tools:machine_translated="true">複製私鑰（OpenSSH 格式）</string>
+  <string name="pubkey_copy_private_pem" tools:machine_translated="true">複製私鑰（PEM 格式）</string>
+  <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">複製私鑰（已加密）</string>
+  <string name="pubkey_copy_public" tools:machine_translated="true">複製公鑰</string>
+  <string name="pubkey_export_public" tools:machine_translated="true">匯出公鑰</string>
+  <string name="pubkey_export_private" tools:machine_translated="true">匯出私鑰</string>
+  <string name="pubkey_export_private_openssh" tools:machine_translated="true">匯出私鑰（OpenSSH 格式）</string>
+  <string name="pubkey_export_private_pem" tools:machine_translated="true">匯出私鑰（PEM 格式）</string>
+  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">匯出私鑰（已加密）</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">設定匯出密碼。</string>
+  <string name="pubkey_export_passphrase_message" tools:machine_translated="true">輸入密碼以加密即將匯出的金鑰。</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">確認密碼。</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">密語不符。</string>
+  <string name="pubkey_import_encrypted_title" tools:machine_translated="true">匯入加密金鑰</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">請輸入密碼以解密金鑰「%1$s」（%2$s）。</string>
+  <string name="pubkey_import_button" tools:machine_translated="true">匯入</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">加密金鑰以供儲存</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">使用相同的密碼進行加密</string>
+  <string name="pubkey_import_new_password" tools:machine_translated="true">新密碼</string>
+  <string name="pubkey_import_confirm_password" tools:machine_translated="true">確認密碼</string>
+  <string name="pubkey_list_empty" tools:machine_translated="true">點擊「選單」以建立或匯入金鑰配對。</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">未知格式</string>
+  <string name="pubkey_change_password" tools:machine_translated="true">更改密碼</string>
+  <string name="pubkey_unlock" tools:machine_translated="true">解鎖金鑰</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">請輸入密碼以解鎖金鑰「%1$s」。</string>
+  <string name="pubkey_nickname_exists" tools:machine_translated="true">這個名稱的密鑰已經存在。</string>
+  <string name="pubkey_load_on_start" tools:machine_translated="true">啟動應用程式時載入金鑰</string>
+  <string name="pubkey_confirm_use" tools:machine_translated="true">使用前請確認。</string>
+  <string name="portforward_edit" tools:machine_translated="true">編輯端口轉發設定</string>
+  <string name="portforward_delete" tools:machine_translated="true">刪除端口轉發</string>
+  <string name="prompt_nickname" tools:machine_translated="true">暱稱：</string>
+  <string name="prompt_source_port" tools:machine_translated="true">來源端口：</string>
+  <string name="prompt_destination" tools:machine_translated="true">目標：</string>
+  <string name="prompt_old_password" tools:machine_translated="true">舊密碼：</string>
+  <string name="prompt_username" tools:machine_translated="true">用戶名稱：</string>
+  <string name="prompt_password" tools:machine_translated="true">密碼：</string>
+  <string name="prompt_again" tools:machine_translated="true">（再次輸入）</string>
+  <string name="prompt_type" tools:machine_translated="true">類型：</string>
+  <string name="prompt_password_can_be_blank" tools:machine_translated="true">提示：密碼欄位可以留空。</string>
+  <string name="prompt_bits" tools:machine_translated="true">位數：</string>
+  <string name="prompt_pubkey_password" tools:machine_translated="true">用於解鎖金鑰 \'%1$s\' 的密碼。</string>
+  <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">是否允許遠端主機使用金鑰「%1$s」？</string>
+  <string name="host_verification_failure_warning_header" tools:machine_translated="true">警告：遠端主機識別資訊已變更！</string>
+  <string name="host_verification_failure_warning" tools:machine_translated="true">可能有人正在進行惡意行為！\n現在可能有人正在竊聽你的通訊（中間人攻擊）！\n也有可能只是主機金鑰剛被更換。</string>
+  <string name="prompt_host_disconnected" tools:machine_translated="true">主機已斷線。\n是否關閉會話？</string>
+  <string name="prompt_continue_connecting" tools:machine_translated="true">您確定要繼續連接嗎？</string>
+  <string name="host_authenticity_warning" tools:machine_translated="true">無法驗證主機 \'%1$s\' 的真實性。</string>
+  <string name="host_fingerprint" tools:machine_translated="true">主機 %1$s 的金鑰指紋為 %2$s。</string>
+  <string name="host_key_verification_title" tools:machine_translated="true">驗證主機金鑰</string>
+  <string name="fingerprint_format_header" tools:machine_translated="true">指紋格式</string>
+  <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d 位</string>
+  <string name="fingerprint_copy_description" tools:machine_translated="true">將指紋資訊複製到剪貼簿</string>
+  <string name="alert_passwords_do_not_match_msg" tools:machine_translated="true">輸入的密碼不一致！</string>
+  <string name="alert_wrong_password_msg" tools:machine_translated="true">密碼錯誤！</string>
+  <string name="button_resize" tools:machine_translated="true">調整大小</string>
+  <string name="alert_disconnect_msg" tools:machine_translated="true">連線已斷開。</string>
+  <string name="network_lost_grace_period" tools:machine_translated="true">網路已斷線，正在嘗試重新連接……</string>
+  <string name="network_grace_period_expired" tools:machine_translated="true">網路未恢復，正在斷線……</string>
+  <string name="network_restored_same_ip" tools:machine_translated="true">網絡已恢復，連線已維持。</string>
+  <string name="network_restored_ip_changed" tools:machine_translated="true">網絡已恢復，但 IP 位址已變更，正在重新連接……</string>
+  <string name="network_restored_no_previous_state" tools:machine_translated="true">網絡已恢復，正在驗證連線……</string>
+  <string name="pref_emulation_category" tools:machine_translated="true">終端模擬</string>
+  <string name="pref_emulation_title" tools:machine_translated="true">模擬模式</string>
+  <string name="pref_scrollback_title" tools:machine_translated="true">滾動歷史記錄大小</string>
+  <string name="pref_scrollback_summary" tools:machine_translated="true">每個控制台應保留在記憶體中的捲動記錄緩衝區大小。</string>
+  <string name="pref_fontfamily_title" tools:machine_translated="true">字體</string>
+  <string name="pref_customfont_title" tools:machine_translated="true">新增自訂字體</string>
+  <string name="pref_customfont_summary" tools:machine_translated="true">從 Google Fonts 庫中，按名稱添加字體。</string>
+  <string name="dialog_customfont_title" tools:machine_translated="true">新增自訂字體</string>
+  <string name="dialog_customfont_hint" tools:machine_translated="true">Google 字體名稱（例如：Cascadia Code）</string>
+  <string name="button_add" tools:machine_translated="true">新增</string>
+  <string name="button_remove" tools:machine_translated="true">移除</string>
+  <string name="font_validating" tools:machine_translated="true">正在驗證字體……</string>
+  <string name="font_downloading" tools:machine_translated="true">正在下載字體……</string>
+  <string name="pref_localfont_title" tools:machine_translated="true">匯入本地字體</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">從儲存空間匯入字體檔案（TTF、OTF）。</string>
+  <string name="dialog_localfont_title" tools:machine_translated="true">匯入字體</string>
+  <string name="dialog_localfont_hint" tools:machine_translated="true">字體的顯示名稱</string>
+  <string name="button_import" tools:machine_translated="true">匯入</string>
+  <string name="font_importing" tools:machine_translated="true">正在匯入字體……</string>
+  <string name="pref_backupkeys_title" tools:machine_translated="true">備份公鑰</string>
+  <string name="pref_backupkeys_summary" tools:machine_translated="true">使用 Android 的備份機制來備份私鑰。</string>
+  <string name="pref_ui_category" tools:machine_translated="true">使用者介面</string>
+  <string name="pref_language_title" tools:machine_translated="true">語言</string>
+  <string name="pref_language_system_default" tools:machine_translated="true">系統預設</string>
+  <string name="pref_language_download" tools:machine_translated="true">下載語言套件</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">下載失敗，點擊以重新嘗試。</string>
+  <string name="pref_theme_title" tools:machine_translated="true">主題</string>
+  <string name="pref_theme_system" tools:machine_translated="true">系統預設</string>
+  <string name="pref_theme_light" tools:machine_translated="true">淺色主題</string>
+  <string name="pref_theme_dark" tools:machine_translated="true">深色</string>
+  <string name="pref_rotation_title" tools:machine_translated="true">旋轉模式</string>
+  <string name="pref_titlebarhide_title" tools:machine_translated="true">自動隱藏標題欄</string>
+  <string name="pref_titlebarhide_summary" tools:machine_translated="true">點擊控制台以顯示標題欄並開啟選單。</string>
+  <string name="pref_alwaysvisible_title" tools:machine_translated="true">特殊按鍵始終可見</string>
+  <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">向上/向下滑動手勢</string>
+  <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">在螢幕左側三分之一處滑動，以將「向上/向下」的頁面指令傳送到終端。</string>
+  <string name="pref_fullscreen_title" tools:machine_translated="true">全螢幕</string>
+  <string name="pref_fullscreen_summary" tools:machine_translated="true">在控制台中隱藏狀態欄。</string>
+  <string name="pref_keyboard_category" tools:machine_translated="true">鍵盤</string>
+  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift 鍵加上數字鍵會變成功能鍵。</string>
+  <string name="pref_shiftfkeys_summary" tools:machine_translated="true">在硬體鍵盤上，數字鍵在按住 Shift 鍵時會發送 F1-F10 鍵的訊號。</string>
+  <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl 鍵加上數字鍵，相當於功能鍵。</string>
+  <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">在軟體鍵盤上，按下數字鍵時，會配合 Ctrl 鍵發送 F1 到 F10 的指令。</string>
+  <string name="pref_volumefont_title" tools:machine_translated="true">音量按鈕可調整字體大小。</string>
+  <string name="pref_volumefont_summary" tools:machine_translated="true">字體大小也可以在個人資料設定中更改。</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">將按鍵儲存在記憶體中</string>
+  <string name="pref_memkeys_summary" tools:machine_translated="true">將已解鎖的密鑰儲存在記憶體中，直到後端服務終止為止。</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">保持背景連線。</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">即使切換到其他應用程式，也能讓您的連線保持開啟。</string>
+  <string name="pref_keymode_title" tools:machine_translated="true">目錄快捷鍵</string>
+  <string name="pref_stickymodifiers_title" tools:machine_translated="true">固定修改器</string>
+  <string name="only_alt" tools:machine_translated="true">僅限 Alt 鍵</string>
+  <string name="pref_camera_title" tools:machine_translated="true">相機快捷鍵</string>
+  <string name="pref_keepalive_title" tools:machine_translated="true">保持螢幕開啟</string>
+  <string name="pref_keepalive_summary" tools:machine_translated="true">防止螢幕在操作控制台時自動關閉。</string>
+  <string name="pref_wifilock_title" tools:machine_translated="true">保持 Wi-Fi 連線狀態</string>
+  <string name="pref_wifilock_summary" tools:machine_translated="true">在進行 Wi-Fi 連線時，防止 Wi-Fi 自動關閉。</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">帶有觸覺回饋的箭頭</string>
+  <string name="pref_bumpyarrows_summary" tools:machine_translated="true">發送箭頭按鍵時震動；對於連線不穩的情況，這會很有幫助。</string>
+  <string name="pref_bell_category" tools:machine_translated="true">終端鈴聲</string>
+  <string name="pref_bell_title" tools:machine_translated="true">啟用聲音提示</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">當終端警報觸發時，播放聲音。</string>
+  <string name="pref_bell_volume_title" tools:machine_translated="true">鈴聲音量</string>
+  <string name="pref_bell_vibrate_title" tools:machine_translated="true">收到提示時震動</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">當收到終端警報時，手機會震動。</string>
+  <string name="pref_bell_notification_title" tools:machine_translated="true">背景通知</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">當背景運行的應用程式發出提示音時，發送通知。</string>
+  <string name="list_keymode_right" tools:machine_translated="true">使用鍵盤右側按鍵</string>
+  <string name="list_keymode_left" tools:machine_translated="true">使用鍵盤左側按鍵</string>
+  <string name="list_keymode_none" tools:machine_translated="true">停用</string>
+  <string name="list_pubkeyids_none" tools:machine_translated="true">請勿使用金鑰。</string>
+  <string name="list_pubkeyids_any" tools:machine_translated="true">使用任何已解鎖的金鑰。</string>
+  <string name="hostpref_nickname_title" tools:machine_translated="true">暱稱</string>
+  <string name="hostpref_color_title" tools:machine_translated="true">顏色分類</string>
+  <string name="color_red" tools:machine_translated="true">紅色</string>
+  <string name="color_pink" tools:machine_translated="true">粉紅色</string>
+  <string name="color_purple" tools:machine_translated="true">紫色</string>
+  <string name="color_deep_purple" tools:machine_translated="true">深紫色</string>
+  <string name="color_indigo" tools:machine_translated="true">靛藍色</string>
+  <string name="color_blue" tools:machine_translated="true">藍色</string>
+  <string name="color_light_blue" tools:machine_translated="true">淺藍色</string>
+  <string name="color_cyan" tools:machine_translated="true">青色</string>
+  <string name="color_teal" tools:machine_translated="true">青綠色</string>
+  <string name="color_green" tools:machine_translated="true">綠色</string>
+  <string name="color_light_green" tools:machine_translated="true">淺綠色</string>
+  <string name="color_lime" tools:machine_translated="true">青檸色</string>
+  <string name="color_yellow" tools:machine_translated="true">黃色</string>
+  <string name="color_amber" tools:machine_translated="true">琥珀色</string>
+  <string name="color_orange" tools:machine_translated="true">橙色</string>
+  <string name="color_gray" tools:machine_translated="true">灰色</string>
+  <string name="hostpref_fontsize_title" tools:machine_translated="true">字體大小（點）</string>
+  <string name="hostpref_fontfamily_title" tools:machine_translated="true">字體</string>
+  <string name="hostpref_colorscheme_title" tools:machine_translated="true">終端機配色方案</string>
+  <string name="hostpref_pubkeyid_title" tools:machine_translated="true">使用公鑰驗證</string>
+  <string name="hostpref_authagent_title" tools:machine_translated="true">使用 SSH 驗證代理。</string>
+  <string name="hostpref_postlogin_title" tools:machine_translated="true">登入後自動執行</string>
+  <string name="hostpref_postlogin_summary" tools:machine_translated="true">驗證成功後，要在遠端伺服器上執行的指令</string>
+  <string name="hostpref_compression_title" tools:machine_translated="true">壓縮</string>
+  <string name="hostpref_compression_summary" tools:machine_translated="true">這可能有助於改善在較慢的網絡環境下的使用體驗。</string>
+  <string name="hostpref_wantsession_title" tools:machine_translated="true">啟動 Shell 工作階段</string>
+  <string name="hostpref_wantsession_summary" tools:machine_translated="true">停用此設定，僅使用端口轉發。</string>
+  <string name="hostpref_stayconnected_title" tools:machine_translated="true">保持連線。</string>
+  <string name="hostpref_stayconnected_summary" tools:machine_translated="true">如果與主機斷開連接，請嘗試重新連接。</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">斷線後提示關閉。</string>
+  <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">在遠端連線中斷後，控制台會立即關閉，且不會顯示任何提示訊息。</string>
+  <string name="hostpref_delkey_title" tools:machine_translated="true">「刪除」鍵</string>
+  <string name="hostpref_encoding_title" tools:machine_translated="true">編碼</string>
+  <string name="hostpref_username_title" tools:machine_translated="true">用戶名稱</string>
+  <string name="hostpref_save_password_summary" tools:machine_translated="true">安全地儲存登入密碼，以便進行自動驗證。</string>
+  <string name="hostpref_password_title" tools:machine_translated="true">密碼</string>
+  <string name="hostpref_password_unchanged" tools:machine_translated="true">密碼（維持不變）</string>
+  <string name="hostpref_clear_password" tools:machine_translated="true">清除已儲存的密碼</string>
+  <string name="hostpref_hostname_title" tools:machine_translated="true">主機名稱</string>
+  <string name="hostpref_port_title" tools:machine_translated="true">連接埠</string>
+  <string name="hostpref_profile_title" tools:machine_translated="true">設定檔</string>
+  <string name="hostpref_profile_summary" tools:machine_translated="true">選擇一個設定檔，以使用其終端設定。</string>
+  <string name="hostpref_profile_none" tools:machine_translated="true">無 (使用主機設定)</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">由設定檔控制</string>
+  <string name="font_use_default" tools:machine_translated="true">使用預設字體</string>
+  <string name="font_system_default" tools:machine_translated="true">預設（等寬字體）</string>
+  <string name="pubkey_unknown" tools:machine_translated="true">未知的金鑰</string>
+  <string name="colorscheme_default" tools:machine_translated="true">預設</string>
+  <string name="profile_editor_title_new" tools:machine_translated="true">新增個人檔案</string>
+  <string name="profile_editor_title_edit" tools:machine_translated="true">編輯個人資料</string>
+  <string name="profile_editor_save" tools:machine_translated="true">儲存</string>
+  <string name="profile_editor_name_label" tools:machine_translated="true">個人檔案名稱</string>
+  <string name="profile_editor_section_icon_color" tools:machine_translated="true">圖示顏色</string>
+  <string name="profile_editor_section_color_scheme" tools:machine_translated="true">色彩方案</string>
+  <string name="profile_editor_section_font" tools:machine_translated="true">字體</string>
+  <string name="profile_editor_section_terminal" tools:machine_translated="true">終端機</string>
+  <string name="profile_editor_font_family_title" tools:machine_translated="true">字體系列</string>
+  <string name="profile_editor_font_size_title" tools:machine_translated="true">字體大小：%d</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">力度大小設定</string>
+  <string name="profile_editor_force_size_summary" tools:machine_translated="true">強制將終端機調整為特定大小（欄數 x 列數），而不是自動調整以適應螢幕。</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">啟用強制調整大小</string>
+  <string name="profile_editor_force_size_columns" tools:machine_translated="true">欄位</string>
+  <string name="profile_editor_force_size_rows" tools:machine_translated="true">列數</string>
+  <string name="profile_icon_color_none" tools:machine_translated="true">不套用（使用主機顏色）</string>
+  <string name="profile_list_title" tools:machine_translated="true">個人檔案</string>
+  <string name="profile_list_create_profile" tools:machine_translated="true">建立個人檔案</string>
+  <string name="profile_list_empty_message" tools:machine_translated="true">目前沒有任何個人資料。點擊「+」按鈕以建立個人資料。</string>
+  <string name="profile_list_more_options" tools:machine_translated="true">更多選項</string>
+  <string name="profile_list_duplicate" tools:machine_translated="true">複製</string>
+  <string name="profile_list_delete" tools:machine_translated="true">刪除</string>
+  <string name="profile_create_dialog_title" tools:machine_translated="true">建立個人檔案</string>
+  <string name="profile_create_name_label" tools:machine_translated="true">個人檔案名稱</string>
+  <string name="profile_create_button" tools:machine_translated="true">建立</string>
+  <string name="profile_create_cancel" tools:machine_translated="true">取消</string>
+  <string name="profile_delete_dialog_title" tools:machine_translated="true">刪除個人資料</string>
+  <string name="profile_delete_dialog_message" tools:machine_translated="true">你確定要刪除「%s」嗎？</string>
+  <string name="profile_delete_button" tools:machine_translated="true">刪除</string>
+  <string name="profile_delete_cancel" tools:machine_translated="true">取消</string>
+  <string name="profile_summary_font" tools:machine_translated="true">字體：%1$s %2$d點</string>
+  <string name="profile_summary_emulation" tools:machine_translated="true">模擬： %s</string>
+  <string name="console_menu_reconnect" tools:machine_translated="true">重新連接</string>
+  <string name="console_menu_close" tools:machine_translated="true">關閉</string>
+  <string name="console_menu_paste" tools:machine_translated="true">貼上</string>
+  <string name="console_menu_portforwards" tools:machine_translated="true">轉發端口</string>
+  <string name="console_menu_resize" tools:machine_translated="true">強制設定大小</string>
+  <string name="console_menu_urlscan" tools:machine_translated="true">掃描網址</string>
+  <string name="console_url_no_handler" tools:machine_translated="true">沒有應用程式可以開啟此網址。</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">此網址類型不受支援。</string>
+  <string name="button_yes" tools:machine_translated="true">是</string>
+  <string name="button_no" tools:machine_translated="true">否</string>
+  <string name="portforward_local" tools:machine_translated="true">本地</string>
+  <string name="portforward_remote" tools:machine_translated="true">遠端</string>
+  <string name="portforward_dynamic" tools:machine_translated="true">動態（SOCKS）</string>
+  <string name="portforward_pos" tools:machine_translated="true">建立端口轉發</string>
+  <string name="portforward_save" tools:machine_translated="true">儲存</string>
+  <string name="format_username" tools:machine_translated="true">用戶名稱</string>
+  <string name="format_hostname" tools:machine_translated="true">主機名稱</string>
+  <string name="format_port" tools:machine_translated="true">端口</string>
+  <string name="list_menu_pubkeys" tools:machine_translated="true">管理公鑰</string>
+  <string name="list_menu_sortcolor" tools:machine_translated="true">按顏色排序</string>
+  <string name="list_menu_sortname" tools:machine_translated="true">按名稱排序</string>
+  <string name="list_menu_disconnect" tools:machine_translated="true">斷開所有連線</string>
+  <string name="list_menu_settings" tools:machine_translated="true">設定</string>
+  <string name="list_host_disconnect" tools:machine_translated="true">斷開連線</string>
+  <string name="list_host_edit" tools:machine_translated="true">編輯主機</string>
+  <string name="list_host_portforwards" tools:machine_translated="true">編輯端口轉發設定</string>
+  <string name="list_host_delete" tools:machine_translated="true">刪除主機</string>
+  <string name="list_host_duplicate" tools:machine_translated="true">複製主機</string>
+  <string name="list_host_forget_keys" tools:machine_translated="true">刪除已儲存的主機金鑰</string>
+  <string name="list_rotation_default" tools:machine_translated="true">預設</string>
+  <string name="list_rotation_land" tools:machine_translated="true">強制橫向顯示</string>
+  <string name="list_rotation_port" tools:machine_translated="true">強制使用直向模式</string>
+  <string name="list_rotation_auto" tools:machine_translated="true">自動</string>
+  <string name="list_camera_ctrlaspace" tools:machine_translated="true">先按 Ctrl+A，然後按空格鍵。</string>
+  <string name="list_camera_ctrla" tools:machine_translated="true">Ctrl+A</string>
+  <string name="list_camera_esc" tools:machine_translated="true">Esc</string>
+  <string name="list_camera_esc_a" tools:machine_translated="true">按下相機按鈕時，應發送「Esc+A」信號。</string>
+  <string name="list_camera_none" tools:machine_translated="true">無</string>
+  <string name="list_camera_text_input" tools:machine_translated="true">文字輸入</string>
+  <string name="delete_message" tools:machine_translated="true">您確定要刪除「%1$s」嗎？</string>
+  <string name="delete_pos" tools:machine_translated="true">是，刪除。</string>
+  <string name="delete_neg" tools:machine_translated="true">取消</string>
+  <string name="disconnect_all_message" tools:machine_translated="true">您確定要斷開與所有已連接的主機的連線嗎？</string>
+  <string name="disconnect_all_pos" tools:machine_translated="true">是，斷開連接。</string>
+  <string name="disconnect_all_neg" tools:machine_translated="true">取消</string>
+  <string name="terminal_connecting" tools:ignore="PluralsCandidate" tools:machine_translated="true">正在透過 %3$s 連接至 %1$s：%2$d。</string>
+  <string name="terminal_sucess" tools:machine_translated="true">已驗證的主機「%1$s」的密鑰：%2$s</string>
+  <string name="terminal_failed" tools:machine_translated="true">主機金鑰驗證失敗。</string>
+  <string name="terminal_using_s2c_algorithm" tools:machine_translated="true">伺服器到客戶端演算法：%1$s %2$s</string>
+  <string name="terminal_using_c2s_algorithm" tools:machine_translated="true">用戶端到伺服器的演算法：%1$s %2$s</string>
+  <string name="terminal_using_algorithm" tools:machine_translated="true">正在使用演算法：%1$s %2$s</string>
+  <string name="terminal_kex_algorithm" tools:machine_translated="true">金鑰交換演算法：%s</string>
+  <string name="terminal_auth" tools:machine_translated="true">正在嘗試進行身份驗證。</string>
+  <string name="terminal_auth_pass" tools:machine_translated="true">正在嘗試使用「密碼」進行驗證。</string>
+  <string name="terminal_auth_pass_fail" tools:machine_translated="true">「密碼」驗證方法失敗。</string>
+  <string name="terminal_auth_saved_password" tools:machine_translated="true">正在嘗試使用已儲存的密碼……</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">已儲存的密碼驗證失敗。</string>
+  <string name="terminal_auth_pubkey_any" tools:machine_translated="true">嘗試使用任何可用的內存公鑰進行「公鑰」驗證。</string>
+  <string name="terminal_auth_pubkey_invalid" tools:machine_translated="true">選定的公開金鑰無效，請嘗試在主機編輯器中重新選擇金鑰。</string>
+  <string name="terminal_auth_pubkey_specific" tools:machine_translated="true">嘗試使用特定公鑰進行「公鑰」驗證。</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">正在為金鑰「%1$s」請求生物識別驗證。</string>
+  <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">生物識別金鑰「%1$s」已失效。當在裝置上註冊新的指紋時，可能會發生這種情況。請產生一個新的金鑰。</string>
+  <string name="terminal_auth_pubkey_fail" tools:machine_translated="true">使用金鑰「%1$s」的「公鑰」驗證方法失敗。</string>
+  <string name="terminal_auth_ki" tools:machine_translated="true">正在嘗試使用「鍵盤互動」驗證方法。</string>
+  <string name="terminal_auth_ki_fail" tools:machine_translated="true">「鍵盤互動」驗證方法失敗。</string>
+  <string name="terminal_auth_fail" tools:machine_translated="true">[您的伺服器不支援「密碼」或「鍵盤互動」驗證方式。]</string>
+  <string name="terminal_no_session" tools:machine_translated="true">由於主機設定，本會話將不會啟動。</string>
+  <string name="terminal_enable_portfoward" tools:machine_translated="true">已啟用端口轉發：%1$s</string>
+  <string name="local_shell_unavailable" tools:machine_translated="true">錯誤！此手機上無法使用本地終端。</string>
+  <string name="notification_text" tools:machine_translated="true">%1$s 希望引起您的注意。</string>
+  <string name="no" tools:machine_translated="true">否</string>
+  <string name="yes" tools:machine_translated="true">是。</string>
+  <string name="list_color_schemes" tools:machine_translated="true">色彩方案</string>
+  <string name="menu_colors_reset" tools:machine_translated="true">重設</string>
+  <string name="button_manage_schemes" tools:machine_translated="true">管理配色方案</string>
+  <string name="title_scheme_manager" tools:machine_translated="true">管理色彩方案</string>
+  <string name="button_new_scheme" tools:machine_translated="true">新增配色方案</string>
+  <string name="button_duplicate_scheme" tools:machine_translated="true">複製</string>
+  <string name="button_rename_scheme" tools:machine_translated="true">重新命名</string>
+  <string name="button_delete_scheme" tools:machine_translated="true">刪除</string>
+  <string name="dialog_title_new_scheme" tools:machine_translated="true">新增配色方案</string>
+  <string name="dialog_title_rename_scheme" tools:machine_translated="true">重新命名配色方案</string>
+  <string name="label_scheme_name" tools:machine_translated="true">方案名稱</string>
+  <string name="label_scheme_description" tools:machine_translated="true">描述（可選）</string>
+  <string name="dialog_title_delete_scheme" tools:machine_translated="true">確認刪除方案？</string>
+  <string name="dialog_message_delete_scheme" tools:machine_translated="true">您確定要刪除「%1$s」嗎？此操作無法撤銷。</string>
+  <string name="button_confirm" tools:machine_translated="true">確認</string>
+  <string name="button_cancel" tools:machine_translated="true">取消</string>
+  <string name="label_built_in_scheme" tools:machine_translated="true">內建</string>
+  <string name="label_custom_scheme" tools:machine_translated="true">自訂</string>
+  <string name="empty_custom_schemes" tools:machine_translated="true">沒有自訂方案。點擊「新增方案」以建立一個。</string>
+  <string name="button_edit_palette" tools:machine_translated="true">編輯調色板</string>
+  <string name="button_export_scheme" tools:machine_translated="true">匯出配色方案</string>
+  <string name="button_import_scheme" tools:machine_translated="true">匯入配色方案</string>
+  <string name="message_export_success" tools:machine_translated="true">已匯出 %1$s。</string>
+  <string name="message_import_success" tools:machine_translated="true">已匯入 %1$s。</string>
+  <string name="error_export_failed" tools:machine_translated="true">匯出方案失敗：%1$s</string>
+  <string name="error_import_failed" tools:machine_translated="true">匯入方案失敗：%1$s</string>
+  <string name="error_invalid_json" tools:machine_translated="true">JSON 檔案無效。</string>
+  <string name="title_palette_editor" tools:machine_translated="true">編輯調色板</string>
+  <string name="button_reset_all_colors" tools:machine_translated="true">重設全部</string>
+  <string name="section_ansi_colors" tools:machine_translated="true">ANSI 顏色（0–15）</string>
+  <string name="dialog_title_edit_color" tools:machine_translated="true">編輯顏色 %1$d</string>
+  <string name="dialog_title_reset_all" tools:machine_translated="true">是否重設所有顏色？</string>
+  <string name="dialog_message_reset_all" tools:machine_translated="true">這將會將所有 256 種顏色重設為其預設值。此操作無法撤銷。</string>
+  <string name="app_is_running" tools:machine_translated="true">ConnectBot 正在執行。</string>
+  <string name="label_red" tools:machine_translated="true">紅色</string>
+  <string name="label_green" tools:machine_translated="true">綠色</string>
+  <string name="label_blue" tools:machine_translated="true">藍色</string>
+  <string name="label_hex_color" tools:machine_translated="true">十六進制顏色</string>
+  <string name="colors_fg_label" tools:machine_translated="true">前景顏色：%1$d</string>
+  <string name="color_bg_label" tools:machine_translated="true">背景顏色：%1$d</string>
+  <string name="section_fg_bg_colors" tools:machine_translated="true">前景與背景</string>
+  <string name="label_foreground_color" tools:machine_translated="true">前景顏色</string>
+  <string name="label_background_color" tools:machine_translated="true">背景色</string>
+  <string name="label_base_scheme" tools:machine_translated="true">基礎配色方案：</string>
+  <string name="menu_manage_colors" tools:machine_translated="true">管理色彩方案</string>
+  <string name="palette_editor_builtin_note" tools:machine_translated="true">內建主題為唯讀模式。如需自訂，請複製一份。</string>
+  <string name="section_color_preview" tools:machine_translated="true">預覽</string>
+  <string name="image_description_connected" tools:machine_translated="true">已連線。</string>
+  <string name="image_description_disconnected" tools:machine_translated="true">已斷線。</string>
+  <string name="image_description_toggle_control_character" tools:machine_translated="true">切換控制字元。</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">傳送轉義字元。</string>
+  <string name="image_description_send_tab_character" tools:machine_translated="true">傳送「Tab」字元。</string>
+  <string name="image_description_hide_keyboard" tools:machine_translated="true">隱藏鍵盤。</string>
+  <string name="image_description_show_keyboard" tools:machine_translated="true">顯示鍵盤。</string>
+  <string name="image_description_up" tools:machine_translated="true">向上箭頭</string>
+  <string name="image_description_down" tools:machine_translated="true">向下箭頭</string>
+  <string name="image_description_left" tools:machine_translated="true">向左箭頭</string>
+  <string name="image_description_right" tools:machine_translated="true">向右箭頭</string>
+  <string name="button_key_esc" tools:machine_translated="true">退出</string>
+  <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="button_key_home" tools:machine_translated="true">主頁</string>
+  <string name="button_key_end" tools:machine_translated="true">結束</string>
+  <string name="button_key_pgup" tools:machine_translated="true">頁面向上</string>
+  <string name="button_key_pgdn" tools:machine_translated="true">向下翻頁</string>
+  <string name="button_key_f1" tools:machine_translated="true">F1</string>
+  <string name="button_key_f2" tools:machine_translated="true">F2</string>
+  <string name="button_key_f3" tools:machine_translated="true">F3</string>
+  <string name="button_key_f4" tools:machine_translated="true">F4</string>
+  <string name="button_key_f5" tools:machine_translated="true">F5</string>
+  <string name="button_key_f6" tools:machine_translated="true">F6</string>
+  <string name="button_key_f7" tools:machine_translated="true">F7</string>
+  <string name="button_key_f8" tools:machine_translated="true">F8</string>
+  <string name="button_key_f9" tools:machine_translated="true">F9</string>
+  <string name="button_key_f10" tools:machine_translated="true">F10</string>
+  <string name="button_key_f11" tools:machine_translated="true">F11</string>
+  <string name="button_key_f12" tools:machine_translated="true">F12</string>
+  <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">文字輸入</string>
+  <string name="terminal_text_input_dialog_title" tools:machine_translated="true">文字輸入</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">輸入文字以傳送到終端機</string>
+  <string name="terminal_text_input_resize_handle" tools:machine_translated="true">調整大小</string>
+  <string name="console_menu_text_input" tools:machine_translated="true">文字輸入</string>
+  <string name="button_send" tools:machine_translated="true">發送</string>
+  <string name="button_ok" tools:machine_translated="true">確定</string>
+  <string name="button_close" tools:machine_translated="true">關閉</string>
+  <string name="button_back" tools:machine_translated="true">返回</string>
+  <string name="button_navigate_up" tools:machine_translated="true">向上移動</string>
+  <string name="button_more_options" tools:machine_translated="true">更多選項</string>
+  <string name="button_host_options" tools:machine_translated="true">主機選項</string>
+  <string name="button_collapse" tools:machine_translated="true">摺疊</string>
+  <string name="error_key_load_failed" tools:machine_translated="true">無法載入金鑰 \'%1$s\'：%2$s</string>
+  <string name="error_connection_failed" tools:machine_translated="true">無法連接至 %1$s (%2$s)：%3$s</string>
+  <string name="error_port_forward_load_failed" tools:machine_translated="true">無法載入 %1$s 的端口轉發設定：%2$s</string>
+  <string name="error_host_save_failed" tools:machine_translated="true">儲存主機 %1$s 時發生錯誤：%2$s</string>
+  <string name="error_color_scheme_load_failed" tools:machine_translated="true">載入色彩方案失敗：%s</string>
+  <string name="host_duplicate_nickname" tools:machine_translated="true">%1$s（複製版）</string>
+  <string name="empty_hosts_message" tools:machine_translated="true">尚未設定任何主機。</string>
+  <string name="empty_pubkeys_message" tools:machine_translated="true">未找到任何金鑰。</string>
+  <string name="empty_port_forwards_message" tools:machine_translated="true">尚未設定任何端口轉發規則。</string>
+  <string name="empty_urls_message" tools:machine_translated="true">在終端緩存中未找到任何網址。</string>
+  <string name="console_default_title" tools:machine_translated="true">控制台</string>
+  <string name="host_editor_quick_connect_label" tools:machine_translated="true">快速連接</string>
+  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">用戶名\@主機名稱：端口號</string>
+  <string name="host_editor_quick_connect_example" tools:machine_translated="true">範例：root\@192.168.1.1:22</string>
+  <string name="host_editor_show_advanced" tools:machine_translated="true">顯示進階選項</string>
+  <string name="host_editor_hide_advanced" tools:machine_translated="true">隱藏進階選項</string>
+  <string name="resize_width_label" tools:machine_translated="true">寬度（欄數）</string>
+  <string name="resize_height_label" tools:machine_translated="true">高度（行數）</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">停用強制調整大小</string>
+  <string name="pubkey_editor_key_type_label" tools:machine_translated="true">金鑰類型</string>
+  <string name="pubkey_editor_options_label" tools:machine_translated="true">選項</string>
+  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">加密金鑰無法在啟動時解鎖。</string>
+  <string name="pubkey_type_label" tools:machine_translated="true">類型：%s</string>
+  <string name="pubkey_encrypted_description" tools:machine_translated="true">已加密</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">未加密</string>
+  <string name="pubkey_biometric_protection" tools:machine_translated="true">指紋保護</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">使用您的指紋來保護此密鑰。</string>
+  <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">未登記指紋。請在裝置設定中設定指紋，以使用此功能。</string>
+  <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">指紋保護功能僅適用於 RSA 和 EC 類型的金鑰。</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">驗證身份以使用金鑰</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">觸碰指紋感應器以解鎖「%1$s」。</string>
+  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">以指紋保護</string>
+  <string name="pubkey_biometric_not_available" tools:machine_translated="true">指紋驗證功能目前無法使用。</string>
+  <string name="portforward_nickname_placeholder" tools:machine_translated="true">內部網頁伺服器</string>
+  <string name="portforward_port_range_error" tools:machine_translated="true">端口號碼必須介於 1 和 65535 之間。</string>
+  <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">格式應為「主機：端口」（例如：localhost:80）。</string>
+  <string name="portforward_host_address" tools:machine_translated="true">主機位址</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">本地主機</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">本機（僅限 IPv4）</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">本機位址（僅限 IPv6）</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">所有位址</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">所有 IPv4 位址</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">所有 IPv6 位址</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">特定位址</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="portforward_type_label" tools:machine_translated="true">類型：%s</string>
+  <string name="portforward_enable" tools:machine_translated="true">啟用</string>
+  <string name="portforward_disable" tools:machine_translated="true">停用</string>
+  <string name="portforward_enabled" tools:machine_translated="true">已啟用端口轉發。</string>
+  <string name="portforward_disabled" tools:machine_translated="true">已停用端口轉發。</string>
+  <string name="protocol_spinner_label" tools:machine_translated="true">通訊協定</string>
+  <string name="expand" tools:machine_translated="true">展開</string>
+  <string name="hostpref_authagent_with_confirmation" tools:machine_translated="true">需要確認</string>
+  <string name="hostpref_add_host" tools:machine_translated="true">新增主機</string>
+  <string name="hostpref_save_host" tools:machine_translated="true">儲存主機</string>
+  <string name="hostpref_setting_title" tools:machine_translated="true">主機設定</string>
+  <string name="pubkey_import_existing" tools:machine_translated="true">匯入現有公鑰</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">從剪貼簿匯入</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">私鑰內容</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">從剪貼簿貼上</string>
+  <string name="notification_permission_title" tools:machine_translated="true">在背景中保持連線。</string>
+  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot 需要通知權限，以便在您切換應用程式時，保持您的連線處於活躍狀態。如果沒有此權限，系統可能會中斷您的連線，以節省電池電力。</string>
+  <string name="grant_permission" tools:machine_translated="true">允許</string>
+  <string name="connect_anyway" tools:machine_translated="true">繼續連接</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">需要通知權限。</string>
+  <string name="notification_permission_denied_message" tools:machine_translated="true">為了讓您的連線在背景中保持啟動狀態，請在系統設定中啟用 ConnectBot 的通知功能。</string>
+  <string name="open_settings" tools:machine_translated="true">開啟設定</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">如果未授權通知權限，連接可能會中斷。</string>
+  <string name="notification_permission_console_warning" tools:machine_translated="true">應用程式在背景執行時，連接可能會中斷。</string>
+  <string name="terminal_no_route" tools:machine_translated="true">您是否正在嘗試連接至本機網路上的主機？請授予本機網路權限。</string>
+  <string name="loading_message" tools:machine_translated="true">正在載入中…</string>
+  <string name="migration_checking" tools:machine_translated="true">正在檢查資料庫……</string>
+  <string name="migration_title" tools:machine_translated="true">正在進行資料庫遷移。</string>
+  <string name="migration_warning" tools:machine_translated="true">請勿在資料遷移期間關閉應用程式。</string>
+  <string name="migration_stats_hosts" tools:machine_translated="true">已遷移的主機：%d</string>
+  <string name="migration_stats_pubkeys" tools:machine_translated="true">已遷移的 SSH 金鑰：%d</string>
+  <string name="migration_stats_port_forwards" tools:machine_translated="true">已轉移的端口轉發規則：%d</string>
+  <string name="migration_stats_known_hosts" tools:machine_translated="true">已遷移的已知主機：%d</string>
+  <string name="migration_failed_title" tools:machine_translated="true">遷移失敗。</string>
+  <string name="migration_failed_message" tools:machine_translated="true">資料庫遷移過程中發生錯誤：%s</string>
+  <string name="migration_retry" tools:machine_translated="true">重新嘗試</string>
+  <string name="migration_failed_help" tools:machine_translated="true">如果問題仍然存在，請在 %1$s 上提交問題報告，並附上上面複製的除錯日誌。</string>
+  <string name="migration_warnings_title" tools:machine_translated="true">資料庫遷移期間的警告訊息</string>
+  <string name="migration_copy_warnings" tools:machine_translated="true">複製警告訊息</string>
+  <string name="migration_debug_log_title" tools:machine_translated="true">除錯日誌</string>
+  <string name="migration_copy_debug_log" tools:machine_translated="true">複製除錯日誌</string>
+  <string name="disconnect_host_alert" tools:machine_translated="true">您確定要從「%1$s」斷開連接嗎？</string>
+  <string name="delete_host_confirm" tools:machine_translated="true">您確定要刪除主機「%1$s」嗎？</string>
+  <string name="forget_host_keys_confirm" tools:machine_translated="true">您確定要忘記為「%1$s」儲存的主機金鑰嗎？下次建立連線時，系統會提示您驗證主機金鑰。</string>
+  <string name="list_pubkey_edit" tools:machine_translated="true">編輯公鑰</string>
+  <string name="hostpref_ipversion_title" tools:machine_translated="true">IP 版本</string>
+  <string name="hostpref_ipversion_summary" tools:machine_translated="true">選擇連接時要使用的 IP 位址版本。</string>
+  <string name="ipversion_auto" tools:machine_translated="true">自動</string>
+  <string name="ipversion_ipv4" tools:machine_translated="true">僅限 IPv4</string>
+  <string name="ipversion_ipv6" tools:machine_translated="true">僅限 IPv6</string>
+  <string name="hostpref_jumphost_title" tools:machine_translated="true">跳躍主機（ProxyJump）</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">透過另一個 SSH 主機進行連接。</string>
+  <string name="list_jumphost_none" tools:machine_translated="true">無（直接連接）</string>
+  <string name="terminal_connecting_via_jump" tools:machine_translated="true">正在透過跳板主機連接：%s</string>
+  <string name="terminal_jump_connected" tools:machine_translated="true">已連接至跳板伺服器：%s</string>
+  <string name="terminal_jump_authenticated" tools:machine_translated="true">已成功驗證並連接至跳板伺服器：%s</string>
+  <string name="terminal_jump_failed" tools:machine_translated="true">無法連接至跳板主機 %1$s：%2$s</string>
+  <string name="terminal_jump_auth_failed" tools:machine_translated="true">跳板主機驗證失敗：%s</string>
+  <string name="terminal_jump_not_found" tools:machine_translated="true">無法在已儲存的主機列表中找到跳板主機。</string>
+  <string name="terminal_jump_password" tools:machine_translated="true">跳躍主機的密碼：%s：</string>
+  <string name="view_logs" tools:machine_translated="true">檢視日誌</string>
+  <string name="logs_title" tools:machine_translated="true">應用程式日誌</string>
+  <string name="copy_logs" tools:machine_translated="true">複製日誌</string>
+  <string name="logs_copied" tools:machine_translated="true">日誌已複製到剪貼簿。</string>
+  <string name="logs_bug_report_info" tools:machine_translated="true">如要報告錯誤，請複製這些日誌，然後在 https://connectbot.org/bug 開啟一個新的問題。</string>
+  <string name="no_logs_available" tools:machine_translated="true">沒有可用的日誌。</string>
+  <string name="help_section_about" tools:machine_translated="true">關於</string>
+  <string name="title_contact" tools:machine_translated="true">聯絡我們及支援</string>
+  <string name="help_section_contact" tools:machine_translated="true">聯絡方式與支援</string>
+  <string name="help_website" tools:machine_translated="true">網站</string>
+  <string name="help_github" tools:machine_translated="true">原始碼</string>
+  <string name="help_report_bug" tools:machine_translated="true">報告錯誤</string>
+  <string name="help_section_donate" tools:machine_translated="true">支持開發工作</string>
+  <string name="help_donate_github" tools:machine_translated="true">GitHub 贊助者</string>
+  <string name="help_donate_coffee" tools:machine_translated="true">贊助我一杯咖啡</string>
+  <string name="colorscheme_default_description" tools:machine_translated="true">預設終端機顏色</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">為機器和使用者提供精準的色彩。</string>
+  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">採用淺色背景的 Solarized 配色方案</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">一個深色主題，適用於終端機。</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">一種帶有北極色彩的藍色色調。</string>
+  <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">復古風格配色方案</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">靈感來自 Sublime Text 的主題。</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">一個簡潔舒適的深色主題。</string>
+  <string name="pref_profiles_category" tools:machine_translated="true">個人檔案</string>
+  <string name="pref_default_profile_title" tools:machine_translated="true">預設設定檔</string>
+  <string name="pref_default_profile_none" tools:machine_translated="true">無（使用主機設定）</string>
+  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">始終顯示特殊按鍵。</string>
+  <string name="pref_customterminal_title" tools:machine_translated="true">自訂終端類型</string>
+  <string name="pref_customterminal_summary" tools:machine_translated="true">為遠端伺服器新增自訂的「TERM」值。</string>
+  <string name="dialog_customterminal_title" tools:machine_translated="true">新增自訂終端類型</string>
+  <string name="dialog_customterminal_hint" tools:machine_translated="true">終端類型（例如：rxvt-unicode）</string>
+  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">管理自訂終端類型</string>
+  <string name="button_add_custom" tools:machine_translated="true">新增自訂項目…</string>
+  <string name="button_manage_custom" tools:machine_translated="true">管理自訂項目…</string>
+  <string name="dialog_custom_value_label" tools:machine_translated="true">輸入自訂值</string>
+  <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">先按 Ctrl+A，然後按空格鍵</string>
+  <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
+  <string name="list_camera_esc_description" tools:machine_translated="true">退出</string>
+  <string name="list_camera_esc_a_description" tools:machine_translated="true">按下 Esc 鍵 + A 鍵時的相機按鈕動作。</string>
+  <string name="list_camera_none_description" tools:machine_translated="true">無</string>
+  <string name="list_camera_text_input_description" tools:machine_translated="true">文字輸入</string>
+  <string name="list_menu_export_hosts" tools:machine_translated="true">匯出所有主機</string>
+  <string name="list_menu_import_hosts" tools:machine_translated="true">匯入主機</string>
+  <string name="export_hosts_success" tools:machine_translated="true">已匯出 %1$d 個主機和 %2$d 個設定檔。</string>
+  <string name="import_hosts_success" tools:machine_translated="true">已匯入 %1$d 個主機（跳過 %2$d 個），以及 %3$d 個設定檔（跳過 %4$d 個）。</string>
+  <string name="export_hosts_failed" tools:machine_translated="true">匯出主機時發生錯誤：%s</string>
+  <string name="import_hosts_failed" tools:machine_translated="true">匯入主機失敗：%s</string>
+  <string name="export_hosts_title" tools:machine_translated="true">匯出主機列表</string>
+  <string name="shortcut_customize_title" tools:machine_translated="true">自訂快捷方式</string>
+  <string name="shortcut_icon_color" tools:machine_translated="true">圖示顏色</string>
+  <string name="shortcut_icon_style" tools:machine_translated="true">圖示樣式</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">使用主機設定的顏色</string>
+  <string name="shortcut_create" tools:machine_translated="true">建立快捷方式</string>
+  <string name="icon_style_terminal" tools:machine_translated="true">終端機</string>
+  <string name="icon_style_server" tools:machine_translated="true">伺服器</string>
+  <string name="icon_style_cloud" tools:machine_translated="true">雲端</string>
+  <string name="icon_style_key" tools:machine_translated="true">密鑰</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">啟動時的驗證</string>
+  <string name="pref_auth_on_launch_summary" tools:machine_translated="true">開啟應用程式時，需要使用指紋、面部識別或裝置密碼進行驗證。</string>
+  <string name="pref_security_category" tools:machine_translated="true">安全性</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot 已鎖定。</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">點擊以解鎖</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">解鎖 ConnectBot</string>
+  <string name="auth_prompt_subtitle" tools:machine_translated="true">請驗證您的身份以繼續。</string>
+</resources>

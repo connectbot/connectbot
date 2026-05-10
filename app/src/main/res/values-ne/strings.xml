@@ -1,2 +1,575 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources/>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+  <string name="app_desc" tools:machine_translated="true">सरल, शक्तिशाली, खुला स्रोतको SSH क्लाइन्ट।</string>
+  <string name="service_desc" tools:machine_translated="true">एसएसएच जडानहरू कायम राख्छ र सार्वजनिक कुञ्जीहरू लोड गर्छ।</string>
+  <string name="app_copyright" tools:machine_translated="true">प्रतिलिपि अधिकार © केनी रूट</string>
+  <string name="title_pubkey_list" tools:machine_translated="true">सार्वजनिक कुञ्जीहरू</string>
+  <string name="title_port_forwards_list" tools:machine_translated="true">पोर्ट फार्वर्डहरू</string>
+  <string name="title_help" tools:machine_translated="true">सहायता</string>
+  <string name="title_eula" tools:machine_translated="true">लाइसेन्स</string>
+  <string name="title_colors" tools:machine_translated="true">रङहरू</string>
+  <string name="title_color_picker" tools:machine_translated="true">रङ छान्नुहोस्।</string>
+  <string name="title_settings" tools:machine_translated="true">सेटिङहरू</string>
+  <string name="title_pubkey_generate" tools:machine_translated="true">उत्पन्न गर्नुहोस्</string>
+  <string name="terms_and_conditions" tools:machine_translated="true">नियम र सर्तहरू</string>
+  <string name="hints" tools:machine_translated="true">सुझावहरू</string>
+  <string name="keyboard_shortcuts" tools:machine_translated="true">कीबोर्ड सर्टकटहरू</string>
+  <string name="increase_font_size" tools:machine_translated="true">अक्षरको आकार बढाउनुहोस्</string>
+  <string name="increase_font_shortcut" tools:machine_translated="true">कन्ट्रोल र प्लस चिन्ह</string>
+  <string name="decrease_font_size" tools:machine_translated="true">अक्षरको आकार घटाउनुहोस्</string>
+  <string name="decrease_font_shortcut" tools:machine_translated="true">कन्ट्रोल र माइनस चिन्ह</string>
+  <string name="paste_shortcut" tools:machine_translated="true">कन्ट्रोल-शिफ्ट-भी</string>
+  <string name="pubkey_generate" tools:machine_translated="true">नयाँ एसएसएच सार्वजनिक/निजी कुञ्जी जोडी सिर्जना गर्नुहोस्।</string>
+  <string name="pubkey_delete" tools:machine_translated="true">कुञ्जी मेटाउनुहोस्</string>
+  <string name="pubkey_gather_entropy" tools:machine_translated="true">यादृच्छिक बिटहरू सङ्कलन गर्दै।</string>
+  <string name="pubkey_touch_prompt" tools:machine_translated="true">या बक्समा छोएर अनियमित डेटा सङ्कलन गर्नुहोस्: %1$d%% सम्पन्न।</string>
+  <string name="pubkey_touch_hint" tools:machine_translated="true">कुञ्जी उत्पन्न गर्ने क्रममा अनियमितता सुनिश्चित गर्न, आफ्नो औँलालाई तल दिइएको क्षेत्रमा अनियमित रूपमा घुमाउनुहोस्।</string>
+  <string name="pubkey_generating" tools:machine_translated="true">कुञ्जी जोडी तयार भइरहेको छ…</string>
+  <string name="pubkey_copy_private" tools:machine_translated="true">निजी कुञ्जी प्रतिलिपि गर्नुहोस्</string>
+  <string name="pubkey_copy_private_openssh" tools:machine_translated="true">निजी कुञ्जी (ओपनएसएसएच) प्रतिलिपि गर्नुहोस्</string>
+  <string name="pubkey_copy_private_pem" tools:machine_translated="true">निजी कुञ्जी (पीईएम) प्रतिलिपि गर्नुहोस्</string>
+  <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">निजी कुञ्जी (गुप्तीकृत) प्रतिलिपि गर्नुहोस्</string>
+  <string name="pubkey_copy_public" tools:machine_translated="true">सार्वजनिक कुञ्जी प्रतिलिपि गर्नुहोस्</string>
+  <string name="pubkey_export_public" tools:machine_translated="true">सार्वजनिक कुञ्जीलाई फाइलमा निर्यात गर्नुहोस्।</string>
+  <string name="pubkey_export_private" tools:machine_translated="true">निजी कुञ्जी निर्यात गर्नुहोस्</string>
+  <string name="pubkey_export_private_openssh" tools:machine_translated="true">निजी कुञ्जी (ओपनएसएसएच) निर्यात गर्नुहोस्।</string>
+  <string name="pubkey_export_private_pem" tools:machine_translated="true">निजी कुञ्जी (पीईएम) निर्यात गर्नुहोस्।</string>
+  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">गुप्चीकृत निजी कुञ्जीलाई फाइलमा निर्यात गर्नुहोस्।</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">कुञ्जी निर्यात गर्दा पासफ्रेज सेट गर्नुहोस्।</string>
+  <string name="pubkey_export_passphrase_message" tools:machine_translated="true">निर्यात गरिने कुञ्जीलाई सुरक्षित गर्न एउटा पासफ्रेज प्रविष्ट गर्नुहोस्।</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">पासफ्रेज दोहोर्याएर पुष्टि गर्नुहोस्।</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">पासफ्रेजहरू मिल्दैनन्।</string>
+  <string name="pubkey_import_encrypted_title" tools:machine_translated="true">गुप्तीकृत कुञ्जी आयात गर्नुहोस्।</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">आयात गरिएको कुञ्जी फाइललाई अनलक गर्न पासवर्ड प्रविष्ट गर्नुहोस्: \'%1$s\' (%2$s)।</string>
+  <string name="pubkey_import_button" tools:machine_translated="true">आयात गर्नुहोस्</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">भण्डारणका लागि कुञ्जीलाई एन्क्रिप्ट गर्नुहोस्।</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">समान पासवर्ड प्रयोग गर्नुहोस्।</string>
+  <string name="pubkey_import_new_password" tools:machine_translated="true">नयाँ पासवर्ड</string>
+  <string name="pubkey_import_confirm_password" tools:machine_translated="true">पासवर्ड दोहोर्याउनुहोस्</string>
+  <string name="pubkey_list_empty" tools:machine_translated="true">“मेनु” मा ट्याप गर्नुहोस् र कुञ्जी जोडीहरू बनाउनुहोस् वा आयात गर्नुहोस्।</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">अज्ञात ढाँचा</string>
+  <string name="pubkey_change_password" tools:machine_translated="true">पासवर्ड परिवर्तन गर्नुहोस्</string>
+  <string name="pubkey_unlock" tools:machine_translated="true">कुञ्जी अनलक गर्नुहोस्</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">गुप्तीकृत कुञ्जी \'%1$s\' खोल्न पासवर्ड प्रविष्ट गर्नुहोस्।</string>
+  <string name="pubkey_nickname_exists" tools:machine_translated="true">यस उपनाम भएको कुञ्जी पहिले नै अस्तित्वमा छ।</string>
+  <string name="pubkey_load_on_start" tools:machine_translated="true">एप सुरु हुँदा कुञ्जी लोड गर्नुहोस्।</string>
+  <string name="pubkey_confirm_use" tools:machine_translated="true">प्रयोग गर्नुअघि पुष्टिकरण गर्नुहोस्।</string>
+  <string name="portforward_edit" tools:machine_translated="true">पोर्ट फर्वार्ड सम्पादन गर्नुहोस्</string>
+  <string name="portforward_delete" tools:machine_translated="true">चयन गरिएको पोर्ट फार्वर्ड हटाउनुहोस्।</string>
+  <string name="prompt_nickname" tools:machine_translated="true">उपनाम:</string>
+  <string name="prompt_source_port" tools:machine_translated="true">स्रोत पोर्ट:</string>
+  <string name="prompt_destination" tools:machine_translated="true">गन्तव्य:</string>
+  <string name="prompt_old_password" tools:machine_translated="true">पुरानो पासवर्ड:</string>
+  <string name="prompt_username" tools:machine_translated="true">प्रयोगकर्ता नाम:</string>
+  <string name="prompt_password" tools:machine_translated="true">पासवर्ड:</string>
+  <string name="prompt_again" tools:machine_translated="true">(फेरि)</string>
+  <string name="prompt_type" tools:machine_translated="true">प्रकार:</string>
+  <string name="prompt_password_can_be_blank" tools:machine_translated="true">नोट: पासवर्ड खाली राख्न सकिन्छ।</string>
+  <string name="prompt_bits" tools:machine_translated="true">बिट्स:</string>
+  <string name="prompt_pubkey_password" tools:machine_translated="true">कुनै विशेष सार्वजनिक कुञ्जी खोल्नका लागि पासवर्ड: \'%1$s\'</string>
+  <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">दूरस्थ होस्टलाई \'%1$s\' कुञ्जी प्रयोग गर्न अनुमति दिने?</string>
+  <string name="host_verification_failure_warning_header" tools:machine_translated="true">चेतावनी: टाँसको होस्ट पहिचान परिवर्तन भएको छ!</string>
+  <string name="host_verification_failure_warning" tools:machine_translated="true">यो सम्भव छ कि कसैले केही नराम्रो काम गरिरहेको छ!\nकसैले अहिले नै तपाईंको कुराकानी सुनि रहनुपर्छ (मध्यस्थ आक्रमण)!\nत्यसैले, होस्ट कुञ्जी हालै परिवर्तन गरिएको पनि हुन सक्छ।</string>
+  <string name="prompt_host_disconnected" tools:machine_translated="true">होस्टले जडान तोडेको छ।\nसत्र बन्द गर्नुहुन्छ?</string>
+  <string name="prompt_continue_connecting" tools:machine_translated="true">के तपाईं निश्चित हुनुहुन्छ कि तपाईं जडान जारी राख्न चाहनुहुन्छ?</string>
+  <string name="host_authenticity_warning" tools:machine_translated="true">होस्ट \'%1$s\' को प्रामाणिकता स्थापित गर्न सकिँदैन।</string>
+  <string name="host_fingerprint" tools:machine_translated="true">होस्ट %1$s को कुञ्जीको फिंगरप्रिन्ट %2$s हो।</string>
+  <string name="host_key_verification_title" tools:machine_translated="true">होस्ट कुञ्जी प्रमाणीकरण</string>
+  <string name="fingerprint_format_header" tools:machine_translated="true">औँठाछाप ढाँचा</string>
+  <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d बिट्स</string>
+  <string name="fingerprint_copy_description" tools:machine_translated="true">फिंगरप्रिन्टलाई क्लिपबोर्डमा प्रतिलिपि गर्नुहोस्।</string>
+  <string name="alert_passwords_do_not_match_msg" tools:machine_translated="true">पासवर्डहरू मिल्दैनन्!</string>
+  <string name="alert_wrong_password_msg" tools:machine_translated="true">गलत पासवर्ड!</string>
+  <string name="button_resize" tools:machine_translated="true">आकार परिवर्तन गर्नुहोस्</string>
+  <string name="alert_disconnect_msg" tools:machine_translated="true">जडान विच्छेद भयो।</string>
+  <string name="network_lost_grace_period" tools:machine_translated="true">नेटवर्क जडान भएन, पुन: जडान हुनको लागि प्रतिक्षा गरिँदैछ…</string>
+  <string name="network_grace_period_expired" tools:machine_translated="true">नेटवर्क पुनर्स्थापित भएन, जडान विच्छेद हुँदैछ…</string>
+  <string name="network_restored_same_ip" tools:machine_translated="true">नेटवर्क पुनर्स्थापित गरियो, जडान कायम राखिएको छ।</string>
+  <string name="network_restored_ip_changed" tools:machine_translated="true">नेटवर्क पुनःस्थापित भयो, तर आईपी ठेगाना परिवर्तन भयो, पुन: जडान भइरहेको छ…</string>
+  <string name="network_restored_no_previous_state" tools:machine_translated="true">नेटवर्क पुनःस्थापित भयो, जडान जाँच भइरहेको छ…</string>
+  <string name="pref_emulation_category" tools:machine_translated="true">टर्मिनल अनुकरण</string>
+  <string name="pref_emulation_title" tools:machine_translated="true">अनुकरण मोड</string>
+  <string name="pref_scrollback_title" tools:machine_translated="true">स्क्रोलब्याक आकार</string>
+  <string name="pref_scrollback_summary" tools:machine_translated="true">प्रत्येक कन्सोलका लागि मेमोरीमा राख्न सकिने स्क्रोलब्याक बफरको आकार।</string>
+  <string name="pref_fontfamily_title" tools:machine_translated="true">अक्षरशैली</string>
+  <string name="pref_customfont_title" tools:machine_translated="true">कस्टम फन्ट थप्नुहोस्</string>
+  <string name="pref_customfont_summary" tools:machine_translated="true">गुगल फन्टहरूबाट नाम अनुसार कुनै फन्ट थप्नुहोस्।</string>
+  <string name="dialog_customfont_title" tools:machine_translated="true">कस्टम फन्ट थप्नुहोस्</string>
+  <string name="dialog_customfont_hint" tools:machine_translated="true">गुगल फन्टको नाम (उदाहरणका लागि, क्यास्केडिया कोड)</string>
+  <string name="button_add" tools:machine_translated="true">जोड्नुहोस्</string>
+  <string name="button_remove" tools:machine_translated="true">हटाउनुहोस्</string>
+  <string name="font_validating" tools:machine_translated="true">फॉन्ट जाँच भइरहेको छ…</string>
+  <string name="font_downloading" tools:machine_translated="true">फोन्ट डाउनलोड भइरहेको छ…</string>
+  <string name="pref_localfont_title" tools:machine_translated="true">स्थानीय फन्ट आयात गर्नुहोस्</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">भण्डारबाट (TTF, OTF) फन्ट फाइल आयात गर्नुहोस्।</string>
+  <string name="dialog_localfont_title" tools:machine_translated="true">स्थानीय फन्ट आयात गर्नुहोस्</string>
+  <string name="dialog_localfont_hint" tools:machine_translated="true">फॉन्टको लागि प्रदर्शन नाम</string>
+  <string name="button_import" tools:machine_translated="true">आयात गर्नुहोस्</string>
+  <string name="font_importing" tools:machine_translated="true">फोन्ट आयात भइरहेको छ…</string>
+  <string name="pref_backupkeys_title" tools:machine_translated="true">पब्लिक कुञ्जीहरूको ब्याकअप लिनुहोस्</string>
+  <string name="pref_backupkeys_summary" tools:machine_translated="true">एन्ड्रोइडको ब्याकअप प्रणाली प्रयोग गरेर निजी कुञ्जीहरूको ब्याकअप राख्नुहोस्।</string>
+  <string name="pref_ui_category" tools:machine_translated="true">प्रयोगकर्ता इन्टरफेस</string>
+  <string name="pref_language_title" tools:machine_translated="true">भाषा</string>
+  <string name="pref_language_system_default" tools:machine_translated="true">सिस्टमको पूर्वनिर्धारित विकल्प</string>
+  <string name="pref_language_download" tools:machine_translated="true">भाषा प्याक डाउनलोड गर्नुहोस्</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">डाउनलोड गर्न सकेन, फेरि प्रयास गर्न ट्याप गर्नुहोस्।</string>
+  <string name="pref_theme_title" tools:machine_translated="true">थीम</string>
+  <string name="pref_theme_system" tools:machine_translated="true">सिस्टमको पूर्वनिर्धारित सेटिङ</string>
+  <string name="pref_theme_light" tools:machine_translated="true">हल्का</string>
+  <string name="pref_theme_dark" tools:machine_translated="true">अँध्यारो</string>
+  <string name="pref_rotation_title" tools:machine_translated="true">घुमाउने मोड</string>
+  <string name="pref_titlebarhide_title" tools:machine_translated="true">टाइटल बारलाई स्वतः लुकाउने विकल्प</string>
+  <string name="pref_titlebarhide_summary" tools:machine_translated="true">टाइटल बार देखाउन र मेनु खोल्न कन्सोलमा ट्याप गर्नुहोस्।</string>
+  <string name="pref_alwaysvisible_title" tools:machine_translated="true">विशेष कुञ्जीहरू सधैँ देखिने गरी राख्नुहोस्।</string>
+  <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">पृष्ठ माथि/तल स्वाइप गर्ने इशारा</string>
+  <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">स्क्रिनको बायाँ भागको एक तिहाई भागमा स्वाइप गर्नुहोस्, जसले टर्मिनलमा पृष्ठ माथि/तल पठाउनेछ।</string>
+  <string name="pref_fullscreen_title" tools:machine_translated="true">पूर्ण स्क्रिन</string>
+  <string name="pref_fullscreen_summary" tools:machine_translated="true">कन्सोलमा हुँदा स्टेटस बार लुकाउनुहोस्।</string>
+  <string name="pref_keyboard_category" tools:machine_translated="true">कीबोर्ड</string>
+  <string name="pref_shiftfkeys_title" tools:machine_translated="true">शिफ्ट+संख्याका कुञ्जीहरू एफ-कुञ्जीहरू हुन्।</string>
+  <string name="pref_shiftfkeys_summary" tools:machine_translated="true">हार्डवेयर किबोर्डमा, नम्बर कुञ्जीहरूले ‘शिफ्ट’ दबाउँदा F1 देखि F10 सम्मका कुञ्जीहरू पठाउँछ।</string>
+  <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl+संख्याहरू F-कुञ्जीहरू हुन्।</string>
+  <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">सफ्टवेयर कीबोर्डमा, नम्बर कुञ्जीहरूले Ctrl दबाउँदा F1-F10 पठाउँछ।</string>
+  <string name="pref_volumefont_title" tools:machine_translated="true">भলিউम कुञ्जीहरूले फन्ट आकार परिवर्तन गर्छ।</string>
+  <string name="pref_volumefont_summary" tools:machine_translated="true">प्रोफाइल सेटिङहरूमा फन्टको आकार पनि परिवर्तन गर्न सकिन्छ।</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">स्मृतिमा कुञ्जीहरू सम्झनुहोस्।</string>
+  <string name="pref_memkeys_summary" tools:machine_translated="true">ब्याकएन्ड सेवा बन्द नभएसम्म अनलक गरिएका कुञ्जीहरू मेमोरीमा राख्नुहोस्।</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">पृष्ठभूमिमा जडान कायम राख्नुहोस्।</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">अन्य एपहरूमा स्विच गर्दा पनि आफ्नो सत्रहरू खुला राख्नुहोस्।</string>
+  <string name="pref_keymode_title" tools:machine_translated="true">फोल्डरका सर्टकटहरू</string>
+  <string name="pref_stickymodifiers_title" tools:machine_translated="true">स्थायी रूपमा लागू हुने परिवर्तनहरू</string>
+  <string name="only_alt" tools:machine_translated="true">केबल Alt कुञ्जी</string>
+  <string name="pref_camera_title" tools:machine_translated="true">क्यामेराको छोटो बाटो</string>
+  <string name="pref_keepalive_title" tools:machine_translated="true">स्क्रिनलाई सक्रिय राख्नुहोस्</string>
+  <string name="pref_keepalive_summary" tools:machine_translated="true">कन्सोलमा काम गर्दा स्क्रिन बन्द हुनबाट रोक्नुहोस्।</string>
+  <string name="pref_wifilock_title" tools:machine_translated="true">वाई-फाई सक्रिय राख्नुहोस्।</string>
+  <string name="pref_wifilock_summary" tools:machine_translated="true">जब कुनै सत्र सक्रिय हुन्छ, त्यतिबेला वाइ-फाई बन्द हुनबाट रोक्नुहोस्।</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">उबड-खुबड तीरहरू</string>
+  <string name="pref_bumpyarrows_summary" tools:machine_translated="true">तीर कुञ्जीहरू पठाउँदा कम्पन गराउनुहोस्; ढिलो जडान भएका अवस्थामा उपयोगी।</string>
+  <string name="pref_bell_category" tools:machine_translated="true">टर्मिनल घण्टी</string>
+  <string name="pref_bell_title" tools:machine_translated="true">श्रव्य घण्टी</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">टर्मिनल अलर्ट सक्रिय हुँदा ध्वनि बजाउनुहोस्।</string>
+  <string name="pref_bell_volume_title" tools:machine_translated="true">घण्टीको आवाज</string>
+  <string name="pref_bell_vibrate_title" tools:machine_translated="true">बेल बज्दा कम्पन गराउने विकल्प</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">टर्मिनल अलर्ट हुँदा फोन कम्पन गरोस्।</string>
+  <string name="pref_bell_notification_title" tools:machine_translated="true">पृष्ठभूमि सूचनाहरू</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">पृष्ठभूमिमा चलिरहेको टर्मिनलले घण्टी बजाउँदा सूचना पठाउनुहोस्।</string>
+  <string name="list_keymode_right" tools:machine_translated="true">दायाँ पक्षका कुञ्जीहरू प्रयोग गर्नुहोस्।</string>
+  <string name="list_keymode_left" tools:machine_translated="true">बायाँ पक्षका कुञ्जीहरू प्रयोग गर्नुहोस्।</string>
+  <string name="list_keymode_none" tools:machine_translated="true">निष्क्रिय गर्नुहोस्</string>
+  <string name="list_pubkeyids_none" tools:machine_translated="true">कुनै पनि कुञ्जी प्रयोग नगर्नुहोस्।</string>
+  <string name="list_pubkeyids_any" tools:machine_translated="true">कुनै पनि अनलक गरिएको कुञ्जी प्रयोग गर्नुहोस्।</string>
+  <string name="hostpref_nickname_title" tools:machine_translated="true">उपनाम</string>
+  <string name="hostpref_color_title" tools:machine_translated="true">रङको श्रेणी</string>
+  <string name="color_red" tools:machine_translated="true">रातो</string>
+  <string name="color_pink" tools:machine_translated="true">गुलाबी</string>
+  <string name="color_purple" tools:machine_translated="true">बैंगनी</string>
+  <string name="color_deep_purple" tools:machine_translated="true">गहिरो बैगुनी</string>
+  <string name="color_indigo" tools:machine_translated="true">इन्डिगो</string>
+  <string name="color_blue" tools:machine_translated="true">नीलो</string>
+  <string name="color_light_blue" tools:machine_translated="true">हल्का निलो</string>
+  <string name="color_cyan" tools:machine_translated="true">सियान</string>
+  <string name="color_teal" tools:machine_translated="true">हरियो-नीलो रंग</string>
+  <string name="color_green" tools:machine_translated="true">हरियो</string>
+  <string name="color_light_green" tools:machine_translated="true">हल्का हरियो</string>
+  <string name="color_lime" tools:machine_translated="true">लाइम (हरियो रंग)</string>
+  <string name="color_yellow" tools:machine_translated="true">पहेंलो</string>
+  <string name="color_amber" tools:machine_translated="true">एम्बर (एउटा रंग)</string>
+  <string name="color_orange" tools:machine_translated="true">नारंगी</string>
+  <string name="color_gray" tools:machine_translated="true">धूसर</string>
+  <string name="hostpref_fontsize_title" tools:machine_translated="true">अक्षरको आकार (पॉइन्ट)</string>
+  <string name="hostpref_fontfamily_title" tools:machine_translated="true">अक्षरशैली</string>
+  <string name="hostpref_colorscheme_title" tools:machine_translated="true">टर्मिनलको रङ योजना</string>
+  <string name="hostpref_pubkeyid_title" tools:machine_translated="true">पब्लिक की प्रमाणीकरण प्रयोग गर्नुहोस्।</string>
+  <string name="hostpref_authagent_title" tools:machine_translated="true">एसएसएच प्रमाणीकरण एजेन्ट प्रयोग गर्नुहोस्।</string>
+  <string name="hostpref_postlogin_title" tools:machine_translated="true">लগ इन गरेपछि स्वचालित कार्य</string>
+  <string name="hostpref_postlogin_summary" tools:machine_translated="true">प्रमाणीकरण गरिसकेपछि रिमोट सर्भरमा चलाउनका लागि आदेशहरू</string>
+  <string name="hostpref_compression_title" tools:machine_translated="true">संकुचन</string>
+  <string name="hostpref_compression_summary" tools:machine_translated="true">यसले कम गति भएका नेटवर्कहरूमा मद्दत गर्न सक्छ।</string>
+  <string name="hostpref_wantsession_title" tools:machine_translated="true">शेल सत्र सुरु गर्नुहोस्</string>
+  <string name="hostpref_wantsession_summary" tools:machine_translated="true">यो प्राथमिकतालाई अक्षम गर्नुहोस् र केवल पोर्ट फार्वर्डहरू प्रयोग गर्नुहोस्।</string>
+  <string name="hostpref_stayconnected_title" tools:machine_translated="true">जुडिरहनुहोस्।</string>
+  <string name="hostpref_stayconnected_summary" tools:machine_translated="true">यदि जडान काटिएको छ भने, होस्टसँग पुन: जडान गर्ने प्रयास गर्नुहोस्।</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">जडान विच्छेद भएपछि बन्द गर्नुहोस्।</string>
+  <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">जडान टुटेपछि कुनै सूचना नदिई तुरुन्तै बन्द गर्नुहोस्।</string>
+  <string name="hostpref_delkey_title" tools:machine_translated="true">डेल कुञ्जी</string>
+  <string name="hostpref_encoding_title" tools:machine_translated="true">एन्कोडिङ</string>
+  <string name="hostpref_username_title" tools:machine_translated="true">प्रयोगकर्ता नाम</string>
+  <string name="hostpref_save_password_summary" tools:machine_translated="true">स्वचालित प्रमाणीकरणका लागि लगइन पासवर्ड सुरक्षित रूपमा भण्डार गर्नुहोस्।</string>
+  <string name="hostpref_password_title" tools:machine_translated="true">पासवर्ड</string>
+  <string name="hostpref_password_unchanged" tools:machine_translated="true">पासवर्ड (परिवर्तन गरिएन)</string>
+  <string name="hostpref_clear_password" tools:machine_translated="true">भण्डार गरिएको पासवर्ड हटाउनुहोस्</string>
+  <string name="hostpref_hostname_title" tools:machine_translated="true">होस्ट</string>
+  <string name="hostpref_port_title" tools:machine_translated="true">पोर्ट</string>
+  <string name="hostpref_profile_title" tools:machine_translated="true">प्रोफाइल</string>
+  <string name="hostpref_profile_summary" tools:machine_translated="true">प्रोफाइल चयन गर्नुहोस् र त्यसको टर्मिनल सेटिङहरू प्रयोग गर्नुहोस्।</string>
+  <string name="hostpref_profile_none" tools:machine_translated="true">कुनै पनि छैन (होस्ट सेटिङहरू प्रयोग गर्नुहोस्)</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">प्रोफाइलद्वारा नियन्त्रित</string>
+  <string name="font_use_default" tools:machine_translated="true">पूर्वनिर्धारित प्रयोग गर्नुहोस्</string>
+  <string name="font_system_default" tools:machine_translated="true">पूर्वनिर्धारित (मोनोस्पेस)</string>
+  <string name="pubkey_unknown" tools:machine_translated="true">अज्ञात कुञ्जी</string>
+  <string name="colorscheme_default" tools:machine_translated="true">पूर्वनिर्धारित</string>
+  <string name="profile_editor_title_new" tools:machine_translated="true">नयाँ प्रोफाइल</string>
+  <string name="profile_editor_title_edit" tools:machine_translated="true">प्रोफाइल सम्पादन गर्नुहोस्</string>
+  <string name="profile_editor_save" tools:machine_translated="true">सेभ गर्नुहोस्</string>
+  <string name="profile_editor_name_label" tools:machine_translated="true">प्रोफाइल नाम</string>
+  <string name="profile_editor_section_icon_color" tools:machine_translated="true">आइकन रङ</string>
+  <string name="profile_editor_section_color_scheme" tools:machine_translated="true">रङ योजना</string>
+  <string name="profile_editor_section_font" tools:machine_translated="true">अक्षरशैली</string>
+  <string name="profile_editor_section_terminal" tools:machine_translated="true">टर्मिनल</string>
+  <string name="profile_editor_font_family_title" tools:machine_translated="true">फॉन्ट परिवार</string>
+  <string name="profile_editor_font_size_title" tools:machine_translated="true">अक्षरको आकार: %d</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">बलको आकार</string>
+  <string name="profile_editor_force_size_summary" tools:machine_translated="true">टर्मिनललाई स्वचालित रूपमा आकार परिवर्तन गरेर स्क्रिनमा फिट गर्ने सट्टा, यसलाई निश्चित आकार (स्तम्भ × पङ्क्ति) मा राख्नुहोस्।</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">आकार परिवर्तन गर्ने सुविधा सक्रिय गर्नुहोस्।</string>
+  <string name="profile_editor_force_size_columns" tools:machine_translated="true">स्तम्भहरू</string>
+  <string name="profile_editor_force_size_rows" tools:machine_translated="true">पंक्तिहरू</string>
+  <string name="profile_icon_color_none" tools:machine_translated="true">कुनै पनि छैन (होस्टको रङ प्रयोग गर्नुहोस्)</string>
+  <string name="profile_list_title" tools:machine_translated="true">प्रोफाइलहरू</string>
+  <string name="profile_list_create_profile" tools:machine_translated="true">नयाँ प्रोफाइल बनाउनुहोस्</string>
+  <string name="profile_list_empty_message" tools:machine_translated="true">अहिले सम्म कुनै प्रोफाइल छैन। एउटा प्रोफाइल बनाउन \"+\" मा ट्याप गर्नुहोस्।</string>
+  <string name="profile_list_more_options" tools:machine_translated="true">थप विकल्पहरू</string>
+  <string name="profile_list_duplicate" tools:machine_translated="true">प्रतिलिपि बनाउनुहोस्</string>
+  <string name="profile_list_delete" tools:machine_translated="true">हटाउनुहोस्</string>
+  <string name="profile_create_dialog_title" tools:machine_translated="true">नयाँ प्रोफाइल बनाउनुहोस्</string>
+  <string name="profile_create_name_label" tools:machine_translated="true">प्रोफाइल नाम</string>
+  <string name="profile_create_button" tools:machine_translated="true">सिर्जना गर्नुहोस्</string>
+  <string name="profile_create_cancel" tools:machine_translated="true">रद्द गर्नुहोस्</string>
+  <string name="profile_delete_dialog_title" tools:machine_translated="true">प्रोफाइल मेट्नुहोस्</string>
+  <string name="profile_delete_dialog_message" tools:machine_translated="true">के तपाईं साँच्चै \'%s\' प्रोफाइल हटाउन चाहनुहुन्छ?</string>
+  <string name="profile_delete_button" tools:machine_translated="true">हटाउनुहोस्</string>
+  <string name="profile_delete_cancel" tools:machine_translated="true">रद्द गर्नुहोस्</string>
+  <string name="profile_summary_font" tools:machine_translated="true">फॉन्ट: %1$s %2$d प्वाइन्ट</string>
+  <string name="profile_summary_emulation" tools:machine_translated="true">अनुकरण: %s</string>
+  <string name="console_menu_reconnect" tools:machine_translated="true">फेरि जोड्नुहोस्</string>
+  <string name="console_menu_close" tools:machine_translated="true">बन्द गर्नुहोस्</string>
+  <string name="console_menu_paste" tools:machine_translated="true">पेस्ट गर्नुहोस्</string>
+  <string name="console_menu_portforwards" tools:machine_translated="true">पोर्ट फरवार्डहरू</string>
+  <string name="console_menu_resize" tools:machine_translated="true">आकार परिवर्तन गर्नुहोस्</string>
+  <string name="console_menu_urlscan" tools:machine_translated="true">यूआरएल स्क्यान गर्नुहोस्</string>
+  <string name="console_url_no_handler" tools:machine_translated="true">यो यूआरएल खोल्न सक्ने कुनै एप उपलब्ध छैन।</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">यो यूआरएल प्रकार समर्थित छैन।</string>
+  <string name="button_yes" tools:machine_translated="true">हो</string>
+  <string name="button_no" tools:machine_translated="true">होइन</string>
+  <string name="portforward_local" tools:machine_translated="true">स्थानीय</string>
+  <string name="portforward_remote" tools:machine_translated="true">दूरस्थ</string>
+  <string name="portforward_dynamic" tools:machine_translated="true">गतिशील (सक्स)</string>
+  <string name="portforward_pos" tools:machine_translated="true">पोर्ट फार्वर्ड बनाउनुहोस्</string>
+  <string name="portforward_save" tools:machine_translated="true">सेभ गर्नुहोस्</string>
+  <string name="format_username" tools:machine_translated="true">प्रयोगकर्ता नाम</string>
+  <string name="format_hostname" tools:machine_translated="true">होस्टनेम</string>
+  <string name="format_port" tools:machine_translated="true">पोर्ट</string>
+  <string name="list_menu_pubkeys" tools:machine_translated="true">पब्लिक कुञ्जीहरू व्यवस्थापन गर्नुहोस्</string>
+  <string name="list_menu_sortcolor" tools:machine_translated="true">रङ अनुसार क्रमबद्ध गर्नुहोस्</string>
+  <string name="list_menu_sortname" tools:machine_translated="true">नाम अनुसार क्रमबद्ध गर्नुहोस्</string>
+  <string name="list_menu_disconnect" tools:machine_translated="true">सबैलाई विच्छेद गर्नुहोस्</string>
+  <string name="list_menu_settings" tools:machine_translated="true">सेटिङहरू</string>
+  <string name="list_host_disconnect" tools:machine_translated="true">जडान विच्छेद गर्नुहोस्</string>
+  <string name="list_host_edit" tools:machine_translated="true">होस्ट सम्पादन गर्नुहोस्</string>
+  <string name="list_host_portforwards" tools:machine_translated="true">चयन गरिएको होस्टका लागि पोर्ट फर्वार्डहरू सम्पादन गर्नुहोस्।</string>
+  <string name="list_host_delete" tools:machine_translated="true">चयन गरिएको होस्ट हटाउनुहोस्।</string>
+  <string name="list_host_duplicate" tools:machine_translated="true">चयन गरिएको होस्टको प्रतिलिपि बनाउनुहोस्</string>
+  <string name="list_host_forget_keys" tools:machine_translated="true">चयन गरिएको होस्टका लागि भण्डारण गरिएका होस्ट कुञ्जीहरू बिर्सनुहोस्।</string>
+  <string name="list_rotation_default" tools:machine_translated="true">पूर्वनिर्धारित</string>
+  <string name="list_rotation_land" tools:machine_translated="true">ल्यान्डस्केप मोडमा सेट गर्नुहोस्।</string>
+  <string name="list_rotation_port" tools:machine_translated="true">पोर्ट्रेट मोडमा राख्नुहोस्।</string>
+  <string name="list_rotation_auto" tools:machine_translated="true">स्वचालित</string>
+  <string name="list_camera_ctrlaspace" tools:machine_translated="true">कन्ट्रोल+ए, त्यसपछि स्पेसबार थिच्नुहोस्।</string>
+  <string name="list_camera_ctrla" tools:machine_translated="true">Ctrl+A</string>
+  <string name="list_camera_esc" tools:machine_translated="true">एस्केप</string>
+  <string name="list_camera_esc_a" tools:machine_translated="true">एस्केप+ए</string>
+  <string name="list_camera_none" tools:machine_translated="true">कुनै पनि होइन</string>
+  <string name="list_camera_text_input" tools:machine_translated="true">पाठ प्रविष्ट गर्नुहोस्</string>
+  <string name="delete_message" tools:machine_translated="true">के तपाईं साँच्चै \'%1$s\' मेट्न चाहनुहुन्छ?</string>
+  <string name="delete_pos" tools:machine_translated="true">हो, मेट्नुहोस्।</string>
+  <string name="delete_neg" tools:machine_translated="true">रद्द गर्नुहोस्</string>
+  <string name="disconnect_all_message" tools:machine_translated="true">के तपाईं साँच्चै सबै जोडिएका होस्टहरूबाट जडान विच्छेद गर्न चाहनुहुन्छ?</string>
+  <string name="disconnect_all_pos" tools:machine_translated="true">हो, जडान विच्छेद गर्नुहोस्।</string>
+  <string name="disconnect_all_neg" tools:machine_translated="true">रद्द गर्नुहोस्</string>
+  <string name="terminal_connecting" tools:ignore="PluralsCandidate" tools:machine_translated="true">%3$s मार्फत %1$s:%2$d मा जडान भइरहेको छ।</string>
+  <string name="terminal_sucess" tools:machine_translated="true">सत्यापित होस्ट \'%1$s\' कुञ्जी: %2$s</string>
+  <string name="terminal_failed" tools:machine_translated="true">होस्ट कुञ्जी प्रमाणीकरण असफल भयो।</string>
+  <string name="terminal_using_s2c_algorithm" tools:machine_translated="true">सर्भरदेखि क्लाइन्टसम्मको एल्गोरिदम: %1$s %2$s</string>
+  <string name="terminal_using_c2s_algorithm" tools:machine_translated="true">क्लायन्टदेखि सर्भरसम्मको एल्गोरिदम: %1$s %2$s</string>
+  <string name="terminal_using_algorithm" tools:machine_translated="true">प्रयोग गरिएको एल्गोरिदम: %1$s %2$s</string>
+  <string name="terminal_kex_algorithm" tools:machine_translated="true">कुञ्जी आदानप्रदान एल्गोरिदम: %s</string>
+  <string name="terminal_auth" tools:machine_translated="true">प्रमाणीकरण गर्ने प्रयास भइरहेको छ।</string>
+  <string name="terminal_auth_pass" tools:machine_translated="true">‘पासवर्ड’ प्रमाणीकरण गर्ने प्रयास भइरहेको छ।</string>
+  <string name="terminal_auth_pass_fail" tools:machine_translated="true">पासवर्ड प्रमाणीकरण विधि असफल भयो।</string>
+  <string name="terminal_auth_saved_password" tools:machine_translated="true">संग्रहित पासवर्ड प्रयोग गर्ने प्रयास भइरहेको छ…</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">संग्रहित पासवर्ड प्रमाणीकरण असफल भयो।</string>
+  <string name="terminal_auth_pubkey_any" tools:machine_translated="true">उपलब्ध कुनै पनि सार्वजनिक कुञ्जी प्रयोग गरेर ‘पब्लिककी’ प्रमाणीकरण गर्ने प्रयास भइरहेको छ।</string>
+  <string name="terminal_auth_pubkey_invalid" tools:machine_translated="true">चयन गरिएको सार्वजनिक कुञ्जी अमान्य छ, कृपया होस्ट सम्पादकमा कुञ्जी पुन: चयन गर्नुहोस्।</string>
+  <string name="terminal_auth_pubkey_specific" tools:machine_translated="true">निर्दिष्ट सार्वजनिक कुञ्जी प्रयोग गरेर ‘पब्लिककी’ प्रमाणीकरण गर्ने प्रयास भइरहेको छ।</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">कुञ्जी \'%1$s\' खोल्न बायोमेट्रिक प्रमाणीकरण अनुरोध गरिएको छ।</string>
+  <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">बायोमेट्रिक कुञ्जी \'%1$s\' अब मान्य छैन। यस्तो तब हुन सक्छ जब उपकरणमा नयाँ औँठाछापहरू दर्ता गरिन्छ। कृपया नयाँ कुञ्जी उत्पन्न गर्नुहोस्।</string>
+  <string name="terminal_auth_pubkey_fail" tools:machine_translated="true">कुञ्जी \'%1$s\' सहितको \'पब्लिककी\' प्रमाणीकरण विधि असफल भयो।</string>
+  <string name="terminal_auth_ki" tools:machine_translated="true">‘कीबोर्ड-इन्टरेक्टिभ’ प्रमाणीकरण गर्ने प्रयास भइरहेको छ।</string>
+  <string name="terminal_auth_ki_fail" tools:machine_translated="true">‘कीबोर्ड-इन्टरेक्टिभ’ प्रमाणीकरण विधि असफल भयो।</string>
+  <string name="terminal_auth_fail" tools:machine_translated="true">[तपाईंको सर्भरले ‘पासवर्ड’ वा ‘कीबोर्ड-आधारित अन्तरक्रियात्मक’ प्रमाणीकरण विधिहरूलाई समर्थन गर्दैन।]</string>
+  <string name="terminal_no_session" tools:machine_translated="true">होस्ट सेटिङमा प्रयोगकर्ताले यसलाई अक्षम गरेकाले सत्र सुरु गरिने छैन।</string>
+  <string name="terminal_enable_portfoward" tools:machine_translated="true">पोर्ट फर्वार्ड सक्रिय गरियो: %1$s</string>
+  <string name="local_shell_unavailable" tools:machine_translated="true">असफल! यो फोनमा स्थानीय शेल उपलब्ध छैन।</string>
+  <string name="notification_text" tools:machine_translated="true">%1$s ले तपाईंको ध्यान चाहन्छ।</string>
+  <string name="no" tools:machine_translated="true">होइन</string>
+  <string name="yes" tools:machine_translated="true">हो।</string>
+  <string name="list_color_schemes" tools:machine_translated="true">रङ योजनाहरू</string>
+  <string name="menu_colors_reset" tools:machine_translated="true">पुनःसेट गर्नुहोस्</string>
+  <string name="button_manage_schemes" tools:machine_translated="true">रङ योजनाहरू व्यवस्थापन गर्नुहोस्</string>
+  <string name="title_scheme_manager" tools:machine_translated="true">रङ योजनाहरू व्यवस्थापन गर्नुहोस्</string>
+  <string name="button_new_scheme" tools:machine_translated="true">नयाँ योजना</string>
+  <string name="button_duplicate_scheme" tools:machine_translated="true">दोहोर्याउनुहोस्</string>
+  <string name="button_rename_scheme" tools:machine_translated="true">रङ योजनाको नाम परिवर्तन गर्नुहोस्</string>
+  <string name="button_delete_scheme" tools:machine_translated="true">हटाउनुहोस्</string>
+  <string name="dialog_title_new_scheme" tools:machine_translated="true">नयाँ रङ योजना</string>
+  <string name="dialog_title_rename_scheme" tools:machine_translated="true">रङ योजनाको नाम परिवर्तन गर्नुहोस्</string>
+  <string name="label_scheme_name" tools:machine_translated="true">योजनाको नाम</string>
+  <string name="label_scheme_description" tools:machine_translated="true">विवरण (वैकल्पिक)</string>
+  <string name="dialog_title_delete_scheme" tools:machine_translated="true">स्कीम मेट्नुहुन्छ?</string>
+  <string name="dialog_message_delete_scheme" tools:machine_translated="true">के तपाईं साँच्चै \"%1$s\" मेट्न चाहनुहुन्छ? यो कार्यपछि यो फिर्ता गर्न मिल्दैन।</string>
+  <string name="button_confirm" tools:machine_translated="true">पुष्टि गर्नुहोस्</string>
+  <string name="button_cancel" tools:machine_translated="true">रद्द गर्नुहोस्</string>
+  <string name="label_built_in_scheme" tools:machine_translated="true">निर्मित</string>
+  <string name="label_custom_scheme" tools:machine_translated="true">अनुकूलित/प्रयोगकर्ताद्वारा निर्मित</string>
+  <string name="empty_custom_schemes" tools:machine_translated="true">कुनै पनि अनुकूलित योजना छैन। नयाँ योजना बनाउन \"नयाँ योजना\" मा ट्याप गर्नुहोस्।</string>
+  <string name="button_edit_palette" tools:machine_translated="true">रङको प्यालेट सम्पादन गर्नुहोस्</string>
+  <string name="button_export_scheme" tools:machine_translated="true">स्कीम निर्यात गर्नुहोस्</string>
+  <string name="button_import_scheme" tools:machine_translated="true">स्कीम आयात गर्नुहोस्</string>
+  <string name="message_export_success" tools:machine_translated="true">%1$s सफलतापूर्वक निर्यात गरियो।</string>
+  <string name="message_import_success" tools:machine_translated="true">%1$s सफलतापूर्वक आयात गरियो।</string>
+  <string name="error_export_failed" tools:machine_translated="true">स्कीम निर्यात गर्न असफल भयो: %1$s</string>
+  <string name="error_import_failed" tools:machine_translated="true">स्कीम आयात गर्न असफल भयो: %1$s</string>
+  <string name="error_invalid_json" tools:machine_translated="true">मान्य नभएको JSON फाइल।</string>
+  <string name="title_palette_editor" tools:machine_translated="true">रङ प्यालेट सम्पादन गर्नुहोस्</string>
+  <string name="button_reset_all_colors" tools:machine_translated="true">सबै पूर्वनिर्धारित अवस्थामा फर्काउनुहोस्</string>
+  <string name="section_ansi_colors" tools:machine_translated="true">एएनएसआई रंगहरू (०–१५)</string>
+  <string name="dialog_title_edit_color" tools:machine_translated="true">रङ %1$d सम्पादन गर्नुहोस्</string>
+  <string name="dialog_title_reset_all" tools:machine_translated="true">सबै रङहरू रिसेट (पुनःसेट) गर्नुहुन्छ?</string>
+  <string name="dialog_message_reset_all" tools:machine_translated="true">यसले सबै २५६ रङहरूलाई तिनीहरूको पूर्वनिर्धारित मानमा फर्काउनेछ। यो कार्यलाई पूर्ववत गर्न सकिँदैन।</string>
+  <string name="app_is_running" tools:machine_translated="true">कनेक्टबट चलिरहेको छ।</string>
+  <string name="label_red" tools:machine_translated="true">रातो</string>
+  <string name="label_green" tools:machine_translated="true">हरियो</string>
+  <string name="label_blue" tools:machine_translated="true">नीलो</string>
+  <string name="label_hex_color" tools:machine_translated="true">हेक्स रंग</string>
+  <string name="colors_fg_label" tools:machine_translated="true">एफजी: %1$d</string>
+  <string name="color_bg_label" tools:machine_translated="true">पृष्ठभूमि: %1$d</string>
+  <string name="section_fg_bg_colors" tools:machine_translated="true">अग्रभूमि र पृष्ठभूमि</string>
+  <string name="label_foreground_color" tools:machine_translated="true">अग्रभूमि</string>
+  <string name="label_background_color" tools:machine_translated="true">पृष्ठभूमि</string>
+  <string name="label_base_scheme" tools:machine_translated="true">आधार योजना:</string>
+  <string name="menu_manage_colors" tools:machine_translated="true">रङ योजनाहरू व्यवस्थापन गर्नुहोस्</string>
+  <string name="palette_editor_builtin_note" tools:machine_translated="true">निर्मित योजनाहरू केवल पढ्न सकिन्छन्। अनुकूलन गर्न प्रतिलिपि गर्नुहोस्।</string>
+  <string name="section_color_preview" tools:machine_translated="true">पूर्वावलोकन</string>
+  <string name="image_description_connected" tools:machine_translated="true">जुडिएको।</string>
+  <string name="image_description_disconnected" tools:machine_translated="true">जडान भएन।</string>
+  <string name="image_description_toggle_control_character" tools:machine_translated="true">नियन्त्रण क्यारेक्टर परिवर्तन गर्नुहोस्।</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">एस्केप क्यारेक्टर पठाउनुहोस्।</string>
+  <string name="image_description_send_tab_character" tools:machine_translated="true">ट्याब क्यारेक्टर पठाउनुहोस्।</string>
+  <string name="image_description_hide_keyboard" tools:machine_translated="true">कीबोर्ड लुकाउनुहोस्।</string>
+  <string name="image_description_show_keyboard" tools:machine_translated="true">कीबोर्ड देखाउनुहोस्।</string>
+  <string name="image_description_up" tools:machine_translated="true">माथिल्लो तीर</string>
+  <string name="image_description_down" tools:machine_translated="true">तलतिर तीर</string>
+  <string name="image_description_left" tools:machine_translated="true">बायाँ तीर</string>
+  <string name="image_description_right" tools:machine_translated="true">दायाँ तीर</string>
+  <string name="button_key_esc" tools:machine_translated="true">एस्केप</string>
+  <string name="button_key_ctrl" tools:machine_translated="true">कन्ट्रोल</string>
+  <string name="button_key_home" tools:machine_translated="true">मुख्य पृष्ठ</string>
+  <string name="button_key_end" tools:machine_translated="true">समाप्त गर्नुहोस्</string>
+  <string name="button_key_pgup" tools:machine_translated="true">पृष्ठ माथि</string>
+  <string name="button_key_pgdn" tools:machine_translated="true">पृष्ठ तल</string>
+  <string name="button_key_f1" tools:machine_translated="true">एफ १</string>
+  <string name="button_key_f2" tools:machine_translated="true">एफ २</string>
+  <string name="button_key_f3" tools:machine_translated="true">एफ3</string>
+  <string name="button_key_f4" tools:machine_translated="true">एफ४</string>
+  <string name="button_key_f5" tools:machine_translated="true">एफ पाँच</string>
+  <string name="button_key_f6" tools:machine_translated="true">एफ छ</string>
+  <string name="button_key_f7" tools:machine_translated="true">एफ ७</string>
+  <string name="button_key_f8" tools:machine_translated="true">एफ८</string>
+  <string name="button_key_f9" tools:machine_translated="true">एफ९</string>
+  <string name="button_key_f10" tools:machine_translated="true">एफ१०</string>
+  <string name="button_key_f11" tools:machine_translated="true">एफ ११</string>
+  <string name="button_key_f12" tools:machine_translated="true">एफ १२</string>
+  <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">पाठ प्रविष्ट गर्नुहोस्</string>
+  <string name="terminal_text_input_dialog_title" tools:machine_translated="true">पाठ प्रविष्ट गर्नुहोस्</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">टर्मिनलमा पठाउनका लागि पाठ प्रविष्ट गर्नुहोस्।</string>
+  <string name="terminal_text_input_resize_handle" tools:machine_translated="true">आकार परिवर्तन गर्नुहोस्</string>
+  <string name="console_menu_text_input" tools:machine_translated="true">पाठ प्रविष्ट गर्नुहोस्</string>
+  <string name="button_send" tools:machine_translated="true">पठाउनुहोस्</string>
+  <string name="button_ok" tools:machine_translated="true">ठीक छ</string>
+  <string name="button_close" tools:machine_translated="true">बन्द गर्नुहोस्</string>
+  <string name="button_back" tools:machine_translated="true">पछाडि</string>
+  <string name="button_navigate_up" tools:machine_translated="true">माथिल्लो दिशामा जानुहोस्</string>
+  <string name="button_more_options" tools:machine_translated="true">थप विकल्पहरू</string>
+  <string name="button_host_options" tools:machine_translated="true">होस्ट विकल्पहरू</string>
+  <string name="button_collapse" tools:machine_translated="true">सङ्कुचित गर्नुहोस्</string>
+  <string name="error_key_load_failed" tools:machine_translated="true">कुञ्जी \'%1$s\' लोड गर्न असफल: %2$s</string>
+  <string name="error_connection_failed" tools:machine_translated="true">%1$s (%2$s) मा जडान गर्न असफल भयो: %3$s</string>
+  <string name="error_port_forward_load_failed" tools:machine_translated="true">%1$s का लागि पोर्ट फार्वर्डहरू लोड गर्न असफल: %2$s</string>
+  <string name="error_host_save_failed" tools:machine_translated="true">होस्ट %1$s लाई बचत गर्न असफल भयो: %2$s</string>
+  <string name="error_color_scheme_load_failed" tools:machine_translated="true">रङ योजना लोड गर्न असफल भयो: %s</string>
+  <string name="host_duplicate_nickname" tools:machine_translated="true">%1$s (प्रतिलिपि)</string>
+  <string name="empty_hosts_message" tools:machine_translated="true">कुनै होस्टहरू पनि सेट गरिएको छैन।</string>
+  <string name="empty_pubkeys_message" tools:machine_translated="true">कुनै पनि कुञ्जी फेला परेन।</string>
+  <string name="empty_port_forwards_message" tools:machine_translated="true">कुनै पनि पोर्ट फरवार्डहरू सेट गरिएको छैन।</string>
+  <string name="empty_urls_message" tools:machine_translated="true">टर्मिनल बफरमा कुनै पनि यूआरएल फेला परेन।</string>
+  <string name="console_default_title" tools:machine_translated="true">कन्सोल</string>
+  <string name="host_editor_quick_connect_label" tools:machine_translated="true">छिटो जडान गर्नुहोस्</string>
+  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">प्रयोगकर्ता\@होस्टनेम:पोर्ट</string>
+  <string name="host_editor_quick_connect_example" tools:machine_translated="true">उदाहरण: root\@192.168.1.1:22</string>
+  <string name="host_editor_show_advanced" tools:machine_translated="true">अतिरिक्त विकल्पहरू देखाउनुहोस्</string>
+  <string name="host_editor_hide_advanced" tools:machine_translated="true">उन्नत विकल्पहरू लुकाउनुहोस्</string>
+  <string name="resize_width_label" tools:machine_translated="true">चौडाइ (स्तम्भहरू)</string>
+  <string name="resize_height_label" tools:machine_translated="true">उचाइ (पंक्तिहरू)</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">आवश्यक आकार निश्चित गर्ने सुविधा बन्द गर्नुहोस्।</string>
+  <string name="pubkey_editor_key_type_label" tools:machine_translated="true">कुञ्जीको प्रकार</string>
+  <string name="pubkey_editor_options_label" tools:machine_translated="true">विकल्पहरू</string>
+  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">गुप्तीकृत कुञ्जीहरू प्रणाली सुरु हुँदा खोल्न सकिँदैन।</string>
+  <string name="pubkey_type_label" tools:machine_translated="true">प्रकार: %s</string>
+  <string name="pubkey_encrypted_description" tools:machine_translated="true">गुप्तीकृत</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">कूटबद्ध गरिएको छैन</string>
+  <string name="pubkey_biometric_protection" tools:machine_translated="true">औँठाछाप सुरक्षा</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">तपाईंको औंठाको छाप प्रयोग गरेर यो कुञ्जीलाई सुरक्षित गर्नुहोस्।</string>
+  <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">कुनै औँठाछाप दर्ता गरिएको छैन। यो सुविधा प्रयोग गर्न, उपकरणको सेटिङमा औँठाछाप दर्ता गर्नुहोस्।</string>
+  <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">फिंगरप्रिन्ट सुरक्षा केवल RSA र EC कुञ्जीहरूका लागि उपलब्ध छ।</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">कुञ्जी प्रयोग गर्न प्रमाणीकरण गर्नुहोस्।</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">’%1$s’ अनलक गर्न औँठाको छाप स्क्यानरमा औँठा राख्नुहोस्।</string>
+  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">औँठाको छापद्वारा सुरक्षित</string>
+  <string name="pubkey_biometric_not_available" tools:machine_translated="true">औँठाको छापबाट प्रमाणीकरण उपलब्ध छैन।</string>
+  <string name="portforward_nickname_placeholder" tools:machine_translated="true">आन्तरिक वेब सर्भर</string>
+  <string name="portforward_port_range_error" tools:machine_translated="true">पोर्टको मान १ र ६५५३५ बीच हुनुपर्छ।</string>
+  <string name="portforward_destination_placeholder" tools:machine_translated="true">लोकलहोस्ट:८०</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">ढाँचा यस्तो हुनुपर्छ: होस्ट:पोर्ट (उदाहरणका लागि, localhost:80)</string>
+  <string name="portforward_host_address" tools:machine_translated="true">होस्ट ठेगाना</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">लोकलहोस्ट</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">लोकलहोस्ट (केवल IPv4)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">लोकलहोस्ट (केवल IPv6)</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">सबै ठेगानाहरू</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">सबै IPv4 ठेगानाहरू</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">सबै IPv6 ठेगानाहरू</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">विशेष ठेगाना</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">१९२.१६८.१.१</string>
+  <string name="portforward_type_label" tools:machine_translated="true">प्रकार: %s</string>
+  <string name="portforward_enable" tools:machine_translated="true">सक्रिय गर्नुहोस्</string>
+  <string name="portforward_disable" tools:machine_translated="true">निष्क्रिय गर्नुहोस्</string>
+  <string name="portforward_enabled" tools:machine_translated="true">पोर्ट फार्वर्ड सक्रिय गरिएको छ।</string>
+  <string name="portforward_disabled" tools:machine_translated="true">पोर्ट फार्वर्ड असक्षम गरिएको छ।</string>
+  <string name="protocol_spinner_label" tools:machine_translated="true">प्रोटोकल</string>
+  <string name="expand" tools:machine_translated="true">विस्तार गर्नुहोस्</string>
+  <string name="hostpref_authagent_with_confirmation" tools:machine_translated="true">पुष्टि आवश्यक पर्छ</string>
+  <string name="hostpref_add_host" tools:machine_translated="true">नयाँ होस्ट थप्नुहोस्</string>
+  <string name="hostpref_save_host" tools:machine_translated="true">होस्टलाई सुरक्षित गर्नुहोस्</string>
+  <string name="hostpref_setting_title" tools:machine_translated="true">होस्ट सेटिङ</string>
+  <string name="pubkey_import_existing" tools:machine_translated="true">अस्तित्वमा रहेको पबकी आयात गर्नुहोस्</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">क्लिपबोर्डबाट आयात गर्नुहोस्</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">निजी कुञ्जी सामग्री</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">क्लिपबोर्डबाट टाँस्नुहोस्</string>
+  <string name="notification_permission_title" tools:machine_translated="true">पृष्ठभूमिमा जडान कायम राख्नुहोस्।</string>
+  <string name="notification_permission_message" tools:machine_translated="true">कनेक्टबोटलाई तपाईंले एपहरू बीच स्विच गर्दा तपाईंको जडानहरू सक्रिय राख्न सूचना अनुमति चाहिन्छ। यदि अनुमति दिइएन भने, प्रणालीले ब्याट्री बचत गर्न तपाईंको जडानहरू विच्छेद गर्न सक्छ।</string>
+  <string name="grant_permission" tools:machine_translated="true">अनुमति दिनुहोस्</string>
+  <string name="connect_anyway" tools:machine_translated="true">यसैसँग जोड्नुहोस्</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">सूचना अनुमति आवश्यक छ।</string>
+  <string name="notification_permission_denied_message" tools:machine_translated="true">पृष्ठभूमिमा तपाईंको जडानहरू सक्रिय राख्न, कृपया प्रणाली सेटिङहरूमा कनेक्टबटको लागि सूचनाहरू सक्रिय गर्नुहोस्।</string>
+  <string name="open_settings" tools:machine_translated="true">सेटिंग्स खोल्नुहोस्</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">सूचना अनुमति नदिइएमा जडानहरू विच्छेद हुन सक्छ।</string>
+  <string name="notification_permission_console_warning" tools:machine_translated="true">पृष्ठभूमिमा हुँदा जडान विच्छेद हुन सक्छ।</string>
+  <string name="terminal_no_route" tools:machine_translated="true">के तपाईं स्थानीय नेटवर्कमा रहेको कुनै उपकरणमा पहुँच गर्न खोज्दै हुनुहुन्छ? कृपया स्थानीय नेटवर्कको अनुमति दिनुहोस्।</string>
+  <string name="loading_message" tools:machine_translated="true">लोड भइरहेको छ…</string>
+  <string name="migration_checking" tools:machine_translated="true">डेटाबेस जाँच भइरहेको छ…</string>
+  <string name="migration_title" tools:machine_translated="true">डेटाबेस सार्दै</string>
+  <string name="migration_warning" tools:machine_translated="true">कृपया स्थानान्तरणको समयमा एप बन्द नगर्नुहोस्।</string>
+  <string name="migration_stats_hosts" tools:machine_translated="true">स्थानान्तर गरिएका होस्टहरूको संख्या: %d</string>
+  <string name="migration_stats_pubkeys" tools:machine_translated="true">स्थानान्तरण गरिएका SSH कुञ्जीहरू: %d</string>
+  <string name="migration_stats_port_forwards" tools:machine_translated="true">पोर्ट फार्वर्डहरू स्थानान्तरण गरियो: %d</string>
+  <string name="migration_stats_known_hosts" tools:machine_translated="true">सक्रिय होस्टहरू स्थानान्तरण गरियो: %d</string>
+  <string name="migration_failed_title" tools:machine_translated="true">स्थानान्तरण असफल भयो।</string>
+  <string name="migration_failed_message" tools:machine_translated="true">डेटाबेस माइग्रेसनको क्रममा त्रुटि भयो: %s</string>
+  <string name="migration_retry" tools:machine_translated="true">फेरि प्रयास गर्नुहोस्</string>
+  <string name="migration_failed_help" tools:machine_translated="true">यदि समस्या जारी रह्यो भने, कृपया माथिल्लो भागमा प्रतिलिपि गरिएको डिबग लगसहित %1$s मा यो समस्याको बारेमा जानकारी दिनुहोस्।</string>
+  <string name="migration_warnings_title" tools:machine_translated="true">डाटाबेस स्थानान्तरणको क्रममा देखिने चेतावनी खण्डको शीर्षक</string>
+  <string name="migration_copy_warnings" tools:machine_translated="true">चेतावनीहरू प्रतिलिपि गर्नुहोस्</string>
+  <string name="migration_debug_log_title" tools:machine_translated="true">डीबग लग</string>
+  <string name="migration_copy_debug_log" tools:machine_translated="true">डीबग लग प्रतिलिपि गर्नुहोस्</string>
+  <string name="disconnect_host_alert" tools:machine_translated="true">के तपाईं साँच्चै \'%1$s\' बाट जडान विच्छेद गर्न चाहनुहुन्छ?</string>
+  <string name="delete_host_confirm" tools:machine_translated="true">के तपाईं साँच्चै \'%1$s\' नामक होस्टलाई हटाउन चाहनुहुन्छ?</string>
+  <string name="forget_host_keys_confirm" tools:machine_translated="true">के तपाईं निश्चित हुनुहुन्छ कि तपाईं \'%1$s\' का लागि भण्डार गरिएको होस्ट कुञ्जीहरू बिर्सन चाहनुहुन्छ? तपाईंलाई अर्को जडानमा होस्ट कुञ्जी प्रमाणित गर्न अनुरोध गरिनेछ।</string>
+  <string name="list_pubkey_edit" tools:machine_translated="true">पब्लिक की विवरण (जस्तै, उपनाम) सम्पादन गर्नुहोस्।</string>
+  <string name="hostpref_ipversion_title" tools:machine_translated="true">आईपी संस्करण</string>
+  <string name="hostpref_ipversion_summary" tools:machine_translated="true">जडान गर्दा कुन आईपी ठेगाना संस्करण प्रयोग गर्ने, छनौट गर्नुहोस्।</string>
+  <string name="ipversion_auto" tools:machine_translated="true">स्वचालित</string>
+  <string name="ipversion_ipv4" tools:machine_translated="true">केवल IPv4 मात्र</string>
+  <string name="ipversion_ipv6" tools:machine_translated="true">केवल IPv6 मात्र</string>
+  <string name="hostpref_jumphost_title" tools:machine_translated="true">जम्प होस्ट (प्रক্সি जम्प)</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">अर्को SSH होस्ट मार्फत जडान गर्नुहोस्।</string>
+  <string name="list_jumphost_none" tools:machine_translated="true">कुनै पनि होइन (सीधा जडान)</string>
+  <string name="terminal_connecting_via_jump" tools:machine_translated="true">जम्प होस्ट मार्फत जडान भइरहेको छ: %s</string>
+  <string name="terminal_jump_connected" tools:machine_translated="true">जम्प होस्टसँग जोडिएको: %s</string>
+  <string name="terminal_jump_authenticated" tools:machine_translated="true">जम्प होस्टमा सफलतापूर्वक लग इन गरियो: %s</string>
+  <string name="terminal_jump_failed" tools:machine_translated="true">जम्प होस्ट %1$s मा जडान गर्न असफल: %2$s</string>
+  <string name="terminal_jump_auth_failed" tools:machine_translated="true">जम्प होस्टको प्रमाणीकरण असफल भयो: %s</string>
+  <string name="terminal_jump_not_found" tools:machine_translated="true">संग्रहीत होस्टहरूमा जम्प होस्ट फेला परेन।</string>
+  <string name="terminal_jump_password" tools:machine_translated="true">जम्प होस्टका लागि पासवर्ड: %s</string>
+  <string name="view_logs" tools:machine_translated="true">लगहरू हेर्नुहोस्</string>
+  <string name="logs_title" tools:machine_translated="true">एप्लिकेसन लगहरू</string>
+  <string name="copy_logs" tools:machine_translated="true">लॉगहरू प्रतिलिपि गर्नुहोस्</string>
+  <string name="logs_copied" tools:machine_translated="true">लॉगहरू क्लिपबोर्डमा प्रतिलिपि गरियो।</string>
+  <string name="logs_bug_report_info" tools:machine_translated="true">त्रुटि रिपोर्ट गर्न, यी लगहरू प्रतिलिपि गर्नुहोस् र https://connectbot.org/bug मा नयाँ मुद्दा खोल्नुहोस्।</string>
+  <string name="no_logs_available" tools:machine_translated="true">कुनै पनि लग उपलब्ध छैन।</string>
+  <string name="help_section_about" tools:machine_translated="true">कार्यक्रमको बारेमा</string>
+  <string name="title_contact" tools:machine_translated="true">सम्पर्क र सहयोग</string>
+  <string name="help_section_contact" tools:machine_translated="true">सम्पर्क र सहयोग</string>
+  <string name="help_website" tools:machine_translated="true">वेबसाइट</string>
+  <string name="help_github" tools:machine_translated="true">स्रोत कोड</string>
+  <string name="help_report_bug" tools:machine_translated="true">समस्याको रिपोर्ट गर्नुहोस्</string>
+  <string name="help_section_donate" tools:machine_translated="true">विकासमा सहयोग गर्नुहोस्।</string>
+  <string name="help_donate_github" tools:machine_translated="true">गिटहब प्रायोजकहरू</string>
+  <string name="help_donate_coffee" tools:machine_translated="true">मलाई कफी किनिदिनुहोस्</string>
+  <string name="colorscheme_default_description" tools:machine_translated="true">पूर्वनिर्धारित टर्मिनल रङहरू</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">मेशिन र मानिसहरूका लागि सटीक रङहरू</string>
+  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">हल्का पृष्ठभूमि भएको सोलराइज गरिएको।</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">टर्मिनलका लागि एउटा अँध्यारो विषयवस्तु।</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">आर्कटिक, उत्तरी भागमा पाइने निलो रंगको मिश्रण भएको रङ योजना।</string>
+  <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">पुरानो शैलीको आकर्षक रङ योजना</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">सबलाइम टेक्स्टबाट प्रेरित विषयवस्तु</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">एक सफा र आरामदायक गाढा विषयवस्तु</string>
+  <string name="pref_profiles_category" tools:machine_translated="true">प्रोफाइलहरू</string>
+  <string name="pref_default_profile_title" tools:machine_translated="true">पूर्वनिर्धारित प्रोफाइल</string>
+  <string name="pref_default_profile_none" tools:machine_translated="true">कुनै पनि छैन (होस्ट सेटिङहरू प्रयोग गर्नुहोस्)</string>
+  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">विशेष कुञ्जीहरू सधैँ देखिने बनाउनुहोस्।</string>
+  <string name="pref_customterminal_title" tools:machine_translated="true">अनुकूल टर्मिनल प्रकारहरू</string>
+  <string name="pref_customterminal_summary" tools:machine_translated="true">दूरस्थ सर्भरहरूका लागि अनुकूल टर्मिनल मानहरू थप्नुहोस्।</string>
+  <string name="dialog_customterminal_title" tools:machine_translated="true">कस्टम टर्मिनल प्रकार थप्नुहोस्</string>
+  <string name="dialog_customterminal_hint" tools:machine_translated="true">टर्मिनलको प्रकार (उदाहरणका लागि, rxvt-unicode)</string>
+  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">अनुकूलित टर्मिनल प्रकारहरू व्यवस्थापन गर्नुहोस्</string>
+  <string name="button_add_custom" tools:machine_translated="true">कस्टम वस्तु थप्नुहोस्…</string>
+  <string name="button_manage_custom" tools:machine_translated="true">अनुकूलित वस्तुहरू व्यवस्थापन गर्नुहोस्…</string>
+  <string name="dialog_custom_value_label" tools:machine_translated="true">आफ्नो इच्छानुसारको मान प्रविष्ट गर्नुहोस्।</string>
+  <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, त्यसपछि स्पेस (Space) थिच्नुहोस्।</string>
+  <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
+  <string name="list_camera_esc_description" tools:machine_translated="true">एस्केप</string>
+  <string name="list_camera_esc_a_description" tools:machine_translated="true">एस्केप+ए</string>
+  <string name="list_camera_none_description" tools:machine_translated="true">कुनै पनि होइन</string>
+  <string name="list_camera_text_input_description" tools:machine_translated="true">पाठ प्रविष्ट गर्नुहोस्</string>
+  <string name="list_menu_export_hosts" tools:machine_translated="true">सबै होस्टहरूलाई JSON फाइलमा निर्यात गर्नुहोस्।</string>
+  <string name="list_menu_import_hosts" tools:machine_translated="true">JSON फाइलबाट होस्टहरू आयात गर्नुहोस्।</string>
+  <string name="export_hosts_success" tools:machine_translated="true">%1$d होस्टहरू र %2$d प्रोफाइलहरू सफलतापूर्वक निर्यात गरियो।</string>
+  <string name="import_hosts_success" tools:machine_translated="true">%1$d होस्टहरू आयात गरियो (%2$d होस्टहरू छाडियो) र %3$d प्रोफाइलहरू आयात गरियो (%4$d प्रोफाइलहरू छाडियो)।</string>
+  <string name="export_hosts_failed" tools:machine_translated="true">होस्टहरू निर्यात गर्न असफल भयो: %s</string>
+  <string name="import_hosts_failed" tools:machine_translated="true">होस्टहरू आयात गर्न असफल भयो: %s</string>
+  <string name="export_hosts_title" tools:machine_translated="true">निर्यात गरिएका होस्टहरू</string>
+  <string name="shortcut_customize_title" tools:machine_translated="true">शटकट अनुकूलित गर्नुहोस्</string>
+  <string name="shortcut_icon_color" tools:machine_translated="true">आइकन रङ</string>
+  <string name="shortcut_icon_style" tools:machine_translated="true">आइकन शैली</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">होस्टले सेट गरेको रङ प्रयोग गर्नुहोस्।</string>
+  <string name="shortcut_create" tools:machine_translated="true">अनुकूलित सर्टकट बनाउनुहोस्</string>
+  <string name="icon_style_terminal" tools:machine_translated="true">टर्मिनल</string>
+  <string name="icon_style_server" tools:machine_translated="true">सर्भर</string>
+  <string name="icon_style_cloud" tools:machine_translated="true">बादल</string>
+  <string name="icon_style_key" tools:machine_translated="true">कुञ्जी</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">सुरु गर्दा प्रमाणीकरण</string>
+  <string name="pref_auth_on_launch_summary" tools:machine_translated="true">एप खोल्दा औँठाको छाप, अनुहार, वा उपकरणको पिन आवश्यक पर्छ।</string>
+  <string name="pref_security_category" tools:machine_translated="true">सुरक्षा</string>
+  <string name="auth_screen_title" tools:machine_translated="true">कनेक्टबोट लक गरिएको छ।</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">अनलक गर्न ट्याप गर्नुहोस्।</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">कनेक्टबट खोल्नुहोस्।</string>
+  <string name="auth_prompt_subtitle" tools:machine_translated="true">जारी राख्न आफ्नो पहिचान प्रमाणित गर्नुहोस्।</string>
+</resources>

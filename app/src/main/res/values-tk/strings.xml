@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">Ýönekeý, güýçli, açyk çeşme SSH müşderisi</string>
   <string name="service_desc">SSH birikmelerini we ýüklenen pubkeýleri saklaýar</string>
   <string name="title_pubkey_list">Pubkeys</string>
@@ -11,4 +11,565 @@
   <string name="title_pubkey_generate">Dörediň</string>
   <string name="terms_and_conditions">Şertler</string>
   <string name="hints">Maslahat</string>
+  <string name="app_copyright" tools:machine_translated="true">Awtorlyk hukugy © Kenny Root</string>
+  <string name="title_eula" tools:machine_translated="true">Lisenziýa</string>
+  <string name="keyboard_shortcuts" tools:machine_translated="true">Klawiaturanyň gysga ýollary</string>
+  <string name="increase_font_size" tools:machine_translated="true">Şriftiň ululygyny artdyr</string>
+  <string name="increase_font_shortcut" tools:machine_translated="true">Ctrl we +</string>
+  <string name="decrease_font_size" tools:machine_translated="true">Şriftiň ululygyny azaldyň.</string>
+  <string name="decrease_font_shortcut" tools:machine_translated="true">Ctrl we -</string>
+  <string name="paste_shortcut" tools:machine_translated="true">Ctrl-Shift-V</string>
+  <string name="pubkey_generate" tools:machine_translated="true">Ýaradyň</string>
+  <string name="pubkey_delete" tools:machine_translated="true">Saklanan açary öçüriň</string>
+  <string name="pubkey_gather_entropy" tools:machine_translated="true">Entropiýany toplamak</string>
+  <string name="pubkey_touch_prompt" tools:machine_translated="true">Şu çykgyja degip, täzel ýygyndyň: %1$d%% tamamlandy.</string>
+  <string name="pubkey_touch_hint" tools:machine_translated="true">Giriş açaryny döretmek prosesinde täzelik ýetirilmegini üpjün etmek üçin, barmagyňyzy aşakdaky çyzgyda täzel ýagdaýda hereketlendirip geçiň.</string>
+  <string name="pubkey_generating" tools:machine_translated="true">Täze SSH açar topary döredilýär…</string>
+  <string name="pubkey_copy_private" tools:machine_translated="true">Gyzyl açary göçürip al</string>
+  <string name="pubkey_copy_private_openssh" tools:machine_translated="true">Özel açary kopyalaň (OpenSSH).</string>
+  <string name="pubkey_copy_private_pem" tools:machine_translated="true">Ýörite açary (PEM formatynda) kopyala.</string>
+  <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">Şifrelenen hususy açary göçürip al</string>
+  <string name="pubkey_copy_public" tools:machine_translated="true">Açyk açary göçürmek</string>
+  <string name="pubkey_export_public" tools:machine_translated="true">Açyk açary faýla eksport etmek</string>
+  <string name="pubkey_export_private" tools:machine_translated="true">Özel açary faýla eksport etmek.</string>
+  <string name="pubkey_export_private_openssh" tools:machine_translated="true">Özel açary (OpenSSH) eksport etmek.</string>
+  <string name="pubkey_export_private_pem" tools:machine_translated="true">Özel açary (PEM) formatynda eksport etmek.</string>
+  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">Şifrelenen hususy açary faýla eksport etmek.</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Çykarmak üçin parol belgiläň.</string>
+  <string name="pubkey_export_passphrase_message" tools:machine_translated="true">eksport edilýän açary şifrlamak üçin parol giriziň.</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Paroly tassyklaň.</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Giriş sözleri deň gelmeýär.</string>
+  <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Şifrlenmiş açary import etmek.</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Import edilen açar faýlyny açmak üçin parol giriziň: \'%1$s\' (%2$s).</string>
+  <string name="pubkey_import_button" tools:machine_translated="true">İmport etmek</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Gurnama üçin açary şifreleň.</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Şifrelemek üçin şol bir parol ulanyň.</string>
+  <string name="pubkey_import_new_password" tools:machine_translated="true">Jaňy parol</string>
+  <string name="pubkey_import_confirm_password" tools:machine_translated="true">Paroly tassyklaň</string>
+  <string name="pubkey_list_empty" tools:machine_translated="true">\"Menýu\" düwmä basyp, açar jübüri ýasap bilersiňiz ýa-da ony import edip bilersiňiz.</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">Bilnmäýän format</string>
+  <string name="pubkey_change_password" tools:machine_translated="true">Paroly üýtget</string>
+  <string name="pubkey_unlock" tools:machine_translated="true">Guralan açary açyň.</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">Şifrelenen açary açmak üçin parol giriziň: \'%1$s\'</string>
+  <string name="pubkey_nickname_exists" tools:machine_translated="true">Şeýle at bilen beýleki açar bar.</string>
+  <string name="pubkey_load_on_start" tools:machine_translated="true">Program açylanda açary ýükle.</string>
+  <string name="pubkey_confirm_use" tools:machine_translated="true">Ulanmazdan öň tassyklaň.</string>
+  <string name="portforward_edit" tools:machine_translated="true">Saýlanan porty üýtgetmek</string>
+  <string name="portforward_delete" tools:machine_translated="true">Saýlanan port ýoly öçüriň.</string>
+  <string name="prompt_nickname" tools:machine_translated="true">Lakaby:</string>
+  <string name="prompt_source_port" tools:machine_translated="true">Çeşme porty:</string>
+  <string name="prompt_destination" tools:machine_translated="true">Gutaryş nokady:</string>
+  <string name="prompt_old_password" tools:machine_translated="true">Ilki parolyňyz:</string>
+  <string name="prompt_username" tools:machine_translated="true">Ulanyjy ady:</string>
+  <string name="prompt_password" tools:machine_translated="true">Parol:</string>
+  <string name="prompt_again" tools:machine_translated="true">(gaýtadan)</string>
+  <string name="prompt_type" tools:machine_translated="true">Tipi:</string>
+  <string name="prompt_password_can_be_blank" tools:machine_translated="true">Bellik: parol boş galyp bolar.</string>
+  <string name="prompt_bits" tools:machine_translated="true">Bit:</string>
+  <string name="prompt_pubkey_password" tools:machine_translated="true">\'%1$s\' açary üçin parol</string>
+  <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">Daşky serweri \'%1$s\' açaryny ulanmaga rugsat bering?</string>
+  <string name="host_verification_failure_warning_header" tools:machine_translated="true">ESGERI: DAŞKY SERVERIŇ IDENTIFIKASIÝASY ÜZGÄRDI!</string>
+  <string name="host_verification_failure_warning" tools:machine_translated="true">ŞOL, KIMDIR BIR ZAT EDÝÄR DÜŞÜP BILÝÄR!\nŞahsy maglumatlaryňyz şu wagtda ýapyşyp bilinýär (aralykda duran şahsy hüjüm)!\nŞeýle-de, mümkin, serwer açary täze üýtgedildi.</string>
+  <string name="prompt_host_disconnected" tools:machine_translated="true">Serwer baglanyşygyny kesdi.\nGirişi ýapmak isleýäňizmi?</string>
+  <string name="prompt_continue_connecting" tools:machine_translated="true">Ähli zady ýaly, baglanyşygy dowam etdirjekdigiňize göz ýetirýäňizmi?</string>
+  <string name="host_authenticity_warning" tools:machine_translated="true">\'%1$s\' serweriniň dogrulygy anyklap bilinýär.</string>
+  <string name="host_fingerprint" tools:machine_translated="true">%1$s host-yň açarynyň unikal sanawy %2$s.</string>
+  <string name="host_key_verification_title" tools:machine_translated="true">Hosta açaryny tassyklaýş</string>
+  <string name="fingerprint_format_header" tools:machine_translated="true">Barmağıň nusgasy</string>
+  <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d bit</string>
+  <string name="fingerprint_copy_description" tools:machine_translated="true">Barmağıň nusgasyny klippboarda kopyalap alyň.</string>
+  <string name="alert_passwords_do_not_match_msg" tools:machine_translated="true">Girizilen şyfr we şyfr tassyklaýşy deň däldir!</string>
+  <string name="alert_wrong_password_msg" tools:machine_translated="true">Nädogry parol!</string>
+  <string name="button_resize" tools:machine_translated="true">Ölçegini üýtgetmek</string>
+  <string name="alert_disconnect_msg" tools:machine_translated="true">Baglanşyk bozuldy</string>
+  <string name="network_lost_grace_period" tools:machine_translated="true">Tor baýdap galdy, gaýtadan birleşmäni garaýar…</string>
+  <string name="network_grace_period_expired" tools:machine_translated="true">Tor baýdama ýüzlendi, baglanyş kesilýär…</string>
+  <string name="network_restored_same_ip" tools:machine_translated="true">Tor ulgam dikeldildi, baglanyşyk saklandy.</string>
+  <string name="network_restored_ip_changed" tools:machine_translated="true">Tor baýdan täzeden ulanylyp başlady, emma IP adresiniň üýtgäp galmagy sebäpli, gaýtadan birleşýär…</string>
+  <string name="network_restored_no_previous_state" tools:machine_translated="true">Tor baýdan, baglanyşyk barlanylýar…</string>
+  <string name="pref_emulation_category" tools:machine_translated="true">Terminal emulyasiýasy</string>
+  <string name="pref_emulation_title" tools:machine_translated="true">Emulýasiýa reżimi</string>
+  <string name="pref_scrollback_title" tools:machine_translated="true">Geri gaýtarýan sahypalaryň ululygy</string>
+  <string name="pref_scrollback_summary" tools:machine_translated="true">Her bir konsol üçin ýadyňda saklanjak skrollbar buferiniň ululygy.</string>
+  <string name="pref_fontfamily_title" tools:machine_translated="true">Şrift</string>
+  <string name="pref_customfont_title" tools:machine_translated="true">Özel şrifti goşmak</string>
+  <string name="pref_customfont_summary" tools:machine_translated="true">Google Fonts-dan ady boýunça şrifti goş.</string>
+  <string name="dialog_customfont_title" tools:machine_translated="true">Özel şrifti goşmak</string>
+  <string name="dialog_customfont_hint" tools:machine_translated="true">Google şriftleriniň ady (mysal üçin, Cascadia Code)</string>
+  <string name="button_add" tools:machine_translated="true">Goşmak</string>
+  <string name="button_remove" tools:machine_translated="true">Aýyrmak</string>
+  <string name="font_validating" tools:machine_translated="true">Şrift barlanýar…</string>
+  <string name="font_downloading" tools:machine_translated="true">Şrift yüklenýär…</string>
+  <string name="pref_localfont_title" tools:machine_translated="true">Ýerli şrifti import etmek</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Saklaýan ýerden şrift faýlyny import ediň (TTF, OTF).</string>
+  <string name="dialog_localfont_title" tools:machine_translated="true">Ýerli şrifti import etmek</string>
+  <string name="dialog_localfont_hint" tools:machine_translated="true">Şriftiň görnüşiniň ady</string>
+  <string name="button_import" tools:machine_translated="true">Import etmek</string>
+  <string name="font_importing" tools:machine_translated="true">Şrift yüklenilýär…</string>
+  <string name="pref_backupkeys_title" tools:machine_translated="true">Jemgyýýet açarlaryny saklamak üçin ýardam berýän ýa-da ýardam bermejek ýaly edilýän saýlama</string>
+  <string name="pref_backupkeys_summary" tools:machine_translated="true">Android-iň ýadygörlük ulgamyny ulgalamak arkaly hususy açarlaryň ýadygörlük nusgalaryny saklaň.</string>
+  <string name="pref_ui_category" tools:machine_translated="true">Ulanyjyň interfeýsi</string>
+  <string name="pref_language_title" tools:machine_translated="true">Dil</string>
+  <string name="pref_language_system_default" tools:machine_translated="true">Sistem tarapyndan bellenen standart görnüş</string>
+  <string name="pref_language_download" tools:machine_translated="true">Dil paketini ýükleň</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">Ýüklemek başarasyz, gaýtadan ýüklemek üçin dokuning.</string>
+  <string name="pref_theme_title" tools:machine_translated="true">Tema</string>
+  <string name="pref_theme_system" tools:machine_translated="true">Sistem tarapyndan bellenen standart görnüş</string>
+  <string name="pref_theme_light" tools:machine_translated="true">Ýagty</string>
+  <string name="pref_theme_dark" tools:machine_translated="true">Gara</string>
+  <string name="pref_rotation_title" tools:machine_translated="true">Aýlanyş režimi</string>
+  <string name="pref_titlebarhide_title" tools:machine_translated="true">Awomatik saklanylýan başlyk çyşgyry</string>
+  <string name="pref_titlebarhide_summary" tools:machine_translated="true">Baş sarpawyň üstiňe dokunyň, şonuň öňünde baş sarpawy göräzip we menýuga geçiň.</string>
+  <string name="pref_alwaysvisible_title" tools:machine_translated="true">Aýratyn düwmeler daş-daşdan görünýär.</string>
+  <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">Sahapany ýokary/aşa hereket etdirýän ýagdaý</string>
+  <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">Ekranyň çep bölegini ýokary ýa-da aşak süpürläp, “pg up/dn” buýrugyny terminala ugratyň.</string>
+  <string name="pref_fullscreen_title" tools:machine_translated="true">Doluly ekran</string>
+  <string name="pref_fullscreen_summary" tools:machine_translated="true">Konsolda işleýärkä, ýagdaý çygyryny gizle.</string>
+  <string name="pref_keyboard_category" tools:machine_translated="true">Klawiatur</string>
+  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift+sanlar F-klawişlar.</string>
+  <string name="pref_shiftfkeys_summary" tools:machine_translated="true">Dastgawur klawiaturalarda, san klawişlary Shift düwmesi bilen basylanda F1-F10 sanly düwmelerini ugratýar.</string>
+  <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl+sanlar F-klawişlar.</string>
+  <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Programma üsti klawiaturalarda, san düwmeleri Ctrl düwmesi bilen birlikde F1-F10 düwmelerini ugratýar.</string>
+  <string name="pref_volumefont_title" tools:machine_translated="true">Ses ulaldyp/azaldylýan düwmeler şriftiň ululygyny üýtgedýär.</string>
+  <string name="pref_volumefont_summary" tools:machine_translated="true">Şriftiň ululygy profiliň sazlama bölümlerinde hem üýtgedilip bilner.</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">Ýadyňda saklaýan düwmeler</string>
+  <string name="pref_memkeys_summary" tools:machine_translated="true">Açyk galan açarlary, serwer hyzmaty togtadylana çenli, ýadyňyzda saklaň.</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">Arka planda baglanyşygy saklaň.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Başga programmalara geçseñiz hem, sesýalaryňyzy açyk saklaň.</string>
+  <string name="pref_keymode_title" tools:machine_translated="true">Kataloga giden gysga ýollar</string>
+  <string name="pref_stickymodifiers_title" tools:machine_translated="true">Özgerdişli täsir ediji amiller</string>
+  <string name="only_alt" tools:machine_translated="true">Diňe Alt</string>
+  <string name="pref_camera_title" tools:machine_translated="true">Kamera üçin çalt geçiş</string>
+  <string name="pref_keepalive_title" tools:machine_translated="true">Ekrany işde sakla</string>
+  <string name="pref_keepalive_summary" tools:machine_translated="true">Konsolda işleýärkä, ekranyň öçülmeginiň öňüni al.</string>
+  <string name="pref_wifilock_title" tools:machine_translated="true">Wi-Fi-ni işleýär ýagdaýda saklaň.</string>
+  <string name="pref_wifilock_summary" tools:machine_translated="true">Wi-Fi ulgamynyň işli sesýa wagtynda awtomatiki öçülmeginiň öňüni al.</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Tizgiler bilen görnüşli oklar</string>
+  <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Ugurlary ugratylanda titräň; ulgamda ýuwaş hereket edýän ýagdaýlarda peýdaly.</string>
+  <string name="pref_bell_category" tools:machine_translated="true">Terminal ýaňy</string>
+  <string name="pref_bell_title" tools:machine_translated="true">Sesli signal</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">Terminalda ýüze çykanda ses çalyň.</string>
+  <string name="pref_bell_volume_title" tools:machine_translated="true">Ses derejesi</string>
+  <string name="pref_bell_vibrate_title" tools:machine_translated="true">Terminaldaky sesde ýygyryň</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Terminalda ýüze çykanda telefon titräsin.</string>
+  <string name="pref_bell_notification_title" tools:machine_translated="true">Fona salynan habarlar</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">Terminalda fon reżiminde işleýän wagty ses berilende habarny iberiň.</string>
+  <string name="list_keymode_right" tools:machine_translated="true">Sağ tarapdaky düwmeleri ulanýaň.</string>
+  <string name="list_keymode_left" tools:machine_translated="true">Klawiaturanyň çep tarapyndaky dükmeleri ulan</string>
+  <string name="list_keymode_none" tools:machine_translated="true">Öçürmek</string>
+  <string name="list_pubkeyids_none" tools:machine_translated="true">Açarlary ulgalamagyň.</string>
+  <string name="list_pubkeyids_any" tools:machine_translated="true">Her bir açylan açary ulanýaň.</string>
+  <string name="hostpref_nickname_title" tools:machine_translated="true">Lakap</string>
+  <string name="hostpref_color_title" tools:machine_translated="true">Reňk kategoriýasy</string>
+  <string name="color_red" tools:machine_translated="true">Gyrmyzy</string>
+  <string name="color_pink" tools:machine_translated="true">Çyryş reňk</string>
+  <string name="color_purple" tools:machine_translated="true">Mor reňk</string>
+  <string name="color_deep_purple" tools:machine_translated="true">Göýçügül mor reňk</string>
+  <string name="color_indigo" tools:machine_translated="true">Indigo (çeper öwren ýa-da gök reňk)</string>
+  <string name="color_blue" tools:machine_translated="true">Göý</string>
+  <string name="color_light_blue" tools:machine_translated="true">Açyk gök</string>
+  <string name="color_cyan" tools:machine_translated="true">Göý reňk</string>
+  <string name="color_teal" tools:machine_translated="true">Ýaşyl-göge bakýan reňk</string>
+  <string name="color_green" tools:machine_translated="true">Ýaşyl</string>
+  <string name="color_light_green" tools:machine_translated="true">Açyk ýaşyl</string>
+  <string name="color_lime" tools:machine_translated="true">Aşyk reňk</string>
+  <string name="color_yellow" tools:machine_translated="true">Sary</string>
+  <string name="color_amber" tools:machine_translated="true">Gyzyl-sary reňk</string>
+  <string name="color_orange" tools:machine_translated="true">Gyzyl-sary</string>
+  <string name="color_gray" tools:machine_translated="true">gyzyl-gyzyl reňk</string>
+  <string name="hostpref_fontsize_title" tools:machine_translated="true">Şriftiň ululygy (pt)</string>
+  <string name="hostpref_fontfamily_title" tools:machine_translated="true">Şrift</string>
+  <string name="hostpref_colorscheme_title" tools:machine_translated="true">Terminal üçin reňler paletrasy</string>
+  <string name="hostpref_pubkeyid_title" tools:machine_translated="true">Açaryň ulanylmagy boýunça tassyklaýyş usulyny ulan.</string>
+  <string name="hostpref_authagent_title" tools:machine_translated="true">SSH awtentifikasiýa agentini ulanýň.</string>
+  <string name="hostpref_postlogin_title" tools:machine_translated="true">Girizilenden soňky awtomatlaşdyrylan işlem.</string>
+  <string name="hostpref_postlogin_summary" tools:machine_translated="true">Awtorizasiýadan soň uzak serwerde ýerine ýetiriljek buýruklar.</string>
+  <string name="hostpref_compression_title" tools:machine_translated="true">Sykyltmak</string>
+  <string name="hostpref_compression_summary" tools:machine_translated="true">Bu, ýuwaş internet ulgamlarında peýdaly bolup biler.</string>
+  <string name="hostpref_wantsession_title" tools:machine_translated="true">Serwer bilen baglanyşyk saklanylanda, täze sesýa açylmaly</string>
+  <string name="hostpref_wantsession_summary" tools:machine_translated="true">Bu mümküniňi işden çykarmak bilen, diňe port ýöneldirmesini ulanmak isleýärsiň.</string>
+  <string name="hostpref_stayconnected_title" tools:machine_translated="true">Baglanyşygy saklaň.</string>
+  <string name="hostpref_stayconnected_summary" tools:machine_translated="true">Baglanandan soň, serwere gaýtadan birikmäge synanyşyň.</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Baglanşyk kesilende ýapylsın.</string>
+  <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Ulgam bilen baglanyşyk kesilenden soňra, esgerlik etmän, şeýle-de gyssagly ýapyň.</string>
+  <string name="hostpref_delkey_title" tools:machine_translated="true">DEL düwmesi</string>
+  <string name="hostpref_encoding_title" tools:machine_translated="true">Kodyrowka</string>
+  <string name="hostpref_username_title" tools:machine_translated="true">Ulanyjy ady</string>
+  <string name="hostpref_save_password_summary" tools:machine_translated="true">Awtomatik awtentifikasiýa üçin ulanyjy ady we paroly gowy gorap saklaň.</string>
+  <string name="hostpref_password_title" tools:machine_translated="true">Parol</string>
+  <string name="hostpref_password_unchanged" tools:machine_translated="true">Parol (üýtgemedik)</string>
+  <string name="hostpref_clear_password" tools:machine_translated="true">Saklanan parol boşadyl</string>
+  <string name="hostpref_hostname_title" tools:machine_translated="true">Host</string>
+  <string name="hostpref_port_title" tools:machine_translated="true">Port</string>
+  <string name="hostpref_profile_title" tools:machine_translated="true">Profil</string>
+  <string name="hostpref_profile_summary" tools:machine_translated="true">Profil saýlap alyň, şol profiliň terminal ulgamynyň gurnalyşlaryny ulanmak üçin.</string>
+  <string name="hostpref_profile_none" tools:machine_translated="true">Hiç biri (serweriň sazlamalaryny ulan)</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">Profil tarapyndan dolandyrylýar.</string>
+  <string name="font_use_default" tools:machine_translated="true">Standart ulanyň</string>
+  <string name="font_system_default" tools:machine_translated="true">Standart (Monospasiýa)</string>
+  <string name="pubkey_unknown" tools:machine_translated="true">Bilnenok açar</string>
+  <string name="colorscheme_default" tools:machine_translated="true">Standart</string>
+  <string name="profile_editor_title_new" tools:machine_translated="true">Jaňy profil</string>
+  <string name="profile_editor_title_edit" tools:machine_translated="true">Profil üçin üýtgetmeler giriziň</string>
+  <string name="profile_editor_save" tools:machine_translated="true">Sakla</string>
+  <string name="profile_editor_name_label" tools:machine_translated="true">Profil ady</string>
+  <string name="profile_editor_section_icon_color" tools:machine_translated="true">Ikonuň öwüti</string>
+  <string name="profile_editor_section_color_scheme" tools:machine_translated="true">Reňler paletrasy</string>
+  <string name="profile_editor_section_font" tools:machine_translated="true">Şrift</string>
+  <string name="profile_editor_section_terminal" tools:machine_translated="true">Terminal</string>
+  <string name="profile_editor_font_family_title" tools:machine_translated="true">Şrift maşynasy</string>
+  <string name="profile_editor_font_size_title" tools:machine_translated="true">Şriftiň ululygy: %d</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Gözegçilik ululygy</string>
+  <string name="profile_editor_force_size_summary" tools:machine_translated="true">Terminaliň ululygyny kesgitli görnüşde (sütler x hatarlar) düzmek üçin, ekranyň ululygyna laýyk otomatiki ulaldyryp-kiçeldilmegiň ýerine, şol ululyga görä düzmek isleýärsiňiz.</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">Ölçegleri zorla ulgamak</string>
+  <string name="profile_editor_force_size_columns" tools:machine_translated="true">Sütunlar</string>
+  <string name="profile_editor_force_size_rows" tools:machine_translated="true">Hatlar</string>
+  <string name="profile_icon_color_none" tools:machine_translated="true">Hiç biri (serweriň öwüşgini ulan)</string>
+  <string name="profile_list_title" tools:machine_translated="true">Profiller</string>
+  <string name="profile_list_create_profile" tools:machine_translated="true">Täze profil döretmek</string>
+  <string name="profile_list_empty_message" tools:machine_translated="true">Häzirçe profil ýok. Täze profil döretmek üçin \"+\" belgisine basyň.</string>
+  <string name="profile_list_more_options" tools:machine_translated="true">Köpräk mümküçilikler</string>
+  <string name="profile_list_duplicate" tools:machine_translated="true">Kopýalaň</string>
+  <string name="profile_list_delete" tools:machine_translated="true">Aýyrmak</string>
+  <string name="profile_create_dialog_title" tools:machine_translated="true">Täze profil döretmek</string>
+  <string name="profile_create_name_label" tools:machine_translated="true">Profil ady</string>
+  <string name="profile_create_button" tools:machine_translated="true">Ýaratmak</string>
+  <string name="profile_create_cancel" tools:machine_translated="true">Yatyr</string>
+  <string name="profile_delete_dialog_title" tools:machine_translated="true">Profil ýuwmak</string>
+  <string name="profile_delete_dialog_message" tools:machine_translated="true">\'%s\' profiliňi ýok etmek isleýändigizden ynanýarsyňyzmy?</string>
+  <string name="profile_delete_button" tools:machine_translated="true">Aýyrmak</string>
+  <string name="profile_delete_cancel" tools:machine_translated="true">Yatyry</string>
+  <string name="profile_summary_font" tools:machine_translated="true">Şrift: %1$s %2$d punkt</string>
+  <string name="profile_summary_emulation" tools:machine_translated="true">Emulyasiýa: %s</string>
+  <string name="console_menu_reconnect" tools:machine_translated="true">Gaýtadan birleşdir</string>
+  <string name="console_menu_close" tools:machine_translated="true">Ýapmak</string>
+  <string name="console_menu_paste" tools:machine_translated="true">Göçürmek</string>
+  <string name="console_menu_portforwards" tools:machine_translated="true">Port ýönlendirmeleri</string>
+  <string name="console_menu_resize" tools:machine_translated="true">Ölçegini özgertmek</string>
+  <string name="console_menu_urlscan" tools:machine_translated="true">URL-leri barlamak</string>
+  <string name="console_url_no_handler" tools:machine_translated="true">Bu URL-i açmak üçin enýän programma tapylmady.</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">Bu URL ulgamyny goldamak mümkin däl.</string>
+  <string name="button_yes" tools:machine_translated="true">Hawa</string>
+  <string name="button_no" tools:machine_translated="true">Ýok</string>
+  <string name="portforward_local" tools:machine_translated="true">Ýerli</string>
+  <string name="portforward_remote" tools:machine_translated="true">Daşky</string>
+  <string name="portforward_dynamic" tools:machine_translated="true">Dinamiki (SOCKS)</string>
+  <string name="portforward_pos" tools:machine_translated="true">Port ýoly döretmek</string>
+  <string name="portforward_save" tools:machine_translated="true">Sakla</string>
+  <string name="format_username" tools:machine_translated="true">ulanyjy ady</string>
+  <string name="format_hostname" tools:machine_translated="true">serwer ady</string>
+  <string name="format_port" tools:machine_translated="true">port</string>
+  <string name="list_menu_pubkeys" tools:machine_translated="true">Açaryň dolandyrylmagy</string>
+  <string name="list_menu_sortcolor" tools:machine_translated="true">Öwüşýänligi boýunça tertipleyin.</string>
+  <string name="list_menu_sortname" tools:machine_translated="true">Ady boýunça tertipleyin.</string>
+  <string name="list_menu_disconnect" tools:machine_translated="true">Barlygyndan aýryň</string>
+  <string name="list_menu_settings" tools:machine_translated="true">Gurnama</string>
+  <string name="list_host_disconnect" tools:machine_translated="true">Baglanşygy kesmek</string>
+  <string name="list_host_edit" tools:machine_translated="true">Saýlanan host-yň konfigurasiýasyny üýtgetmek</string>
+  <string name="list_host_portforwards" tools:machine_translated="true">Saýlanan host üçin port ýöneldirmelerini üýtgetmek</string>
+  <string name="list_host_delete" tools:machine_translated="true">Saýlanan serweri ýok etmek</string>
+  <string name="list_host_duplicate" tools:machine_translated="true">Saýlanan serweri kopyalamak</string>
+  <string name="list_host_forget_keys" tools:machine_translated="true">Saýlanan serwer üçin saklanan açarlary unutmak</string>
+  <string name="list_rotation_default" tools:machine_translated="true">Standart</string>
+  <string name="list_rotation_land" tools:machine_translated="true">Gorizontal görnüşi talap etmek</string>
+  <string name="list_rotation_port" tools:machine_translated="true">Dik görnüşi talap etmek</string>
+  <string name="list_rotation_auto" tools:machine_translated="true">Awomatiki</string>
+  <string name="list_camera_ctrlaspace" tools:machine_translated="true">Ctrl+A, soňra boşluk düwmesi</string>
+  <string name="list_camera_ctrla" tools:machine_translated="true">Ctrl+A</string>
+  <string name="list_camera_esc" tools:machine_translated="true">Esc</string>
+  <string name="list_camera_esc_a" tools:machine_translated="true">Esc+A</string>
+  <string name="list_camera_none" tools:machine_translated="true">Hiç hili däl</string>
+  <string name="list_camera_text_input" tools:machine_translated="true">Teksti girizmek üçin</string>
+  <string name="delete_message" tools:machine_translated="true">\'%1$s\'-i ýok etmek isleýändigizden ynanýarsyňyzmy?</string>
+  <string name="delete_pos" tools:machine_translated="true">Hawa, ýok et.</string>
+  <string name="delete_neg" tools:machine_translated="true">Ýatyr</string>
+  <string name="disconnect_all_message" tools:machine_translated="true">Ähli ulgamdan aýrylmagyňyzy hakykatdan-da isleýäňizmi?</string>
+  <string name="disconnect_all_pos" tools:machine_translated="true">Hawa, baglanyşygy kesiň.</string>
+  <string name="disconnect_all_neg" tools:machine_translated="true">Yatyryň</string>
+  <string name="terminal_connecting" tools:ignore="PluralsCandidate" tools:machine_translated="true">%3$s arkaly %1$s:%2$d bilen baglanyşyk ýola goýulýar.</string>
+  <string name="terminal_sucess" tools:machine_translated="true">Barlanylan \'%1$s\' serweri açary: %2$s</string>
+  <string name="terminal_failed" tools:machine_translated="true">Host açaryny barlamak başarasyz boldy.</string>
+  <string name="terminal_using_s2c_algorithm" tools:machine_translated="true">Serwerden kliende algoritm: %1$s %2$s</string>
+  <string name="terminal_using_c2s_algorithm" tools:machine_translated="true">Müşteri-serwer algoritmi: %1$s %2$s</string>
+  <string name="terminal_using_algorithm" tools:machine_translated="true">Ulanylýan algoritmler: %1$s %2$s</string>
+  <string name="terminal_kex_algorithm" tools:machine_translated="true">Giriş algorytmy: %s</string>
+  <string name="terminal_auth" tools:machine_translated="true">Awtentifikasi etmeklige synanmak</string>
+  <string name="terminal_auth_pass" tools:machine_translated="true">‘Parol’ awtenti­kasiýasy synanýar.</string>
+  <string name="terminal_auth_pass_fail" tools:machine_translated="true">‘Parol’ awtenti­kasiýa usuly başar­syz boldy.</string>
+  <string name="terminal_auth_saved_password" tools:machine_translated="true">Saklanan parol ulanylýar…</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">saklanan parol bilen bellenilýän ulgamy işlemedi.</string>
+  <string name="terminal_auth_pubkey_any" tools:machine_translated="true">El bilen saklanýan ähli açarlary ulanmak bilen \'jemgyýýet açary\' awtentifikasiýasyna synanmak.</string>
+  <string name="terminal_auth_pubkey_invalid" tools:machine_translated="true">Saýlanan jemgyýýetçilik açary ýalňyş, host redaktorynda täzeden saýlap görmek bilen synap geçiň.</string>
+  <string name="terminal_auth_pubkey_specific" tools:machine_translated="true">Kesgitli açar ulanyp, \'jemgyýýet açary\' arkaly awtentifikasiýa etmeklige synanysh</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">\'%1$s\' açaryny açmak üçin biometriki awtentişikasyzlyk talap edilýär.</string>
+  <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">Biometrik açar \'%1$s\' geçersiz edildi. Bu, enjamda täze parmak izleri hasaba alnynda bolanda bolup biler. Diňe bir täze açar döredip bilersiňiz.</string>
+  <string name="terminal_auth_pubkey_fail" tools:machine_translated="true">\'%1$s\' açary bilen \'jemgyýýet açary\' awtenti­kasiýa usuly başarmazlyga uçrady.</string>
+  <string name="terminal_auth_ki" tools:machine_translated="true">\'Klawiaturanyň üsti bilen özara hereket edýän\' awtentifikasiýa usulyna synanşylýar.</string>
+  <string name="terminal_auth_ki_fail" tools:machine_translated="true">«Klawiaturanyň üsti bilen barlanýan» awtentikasiýa usuly başarmazlyga uçrady.</string>
+  <string name="terminal_auth_fail" tools:machine_translated="true">[Siziň serweriňiz \'parol\' ýa-da \'klawiaturanyň üsti bilen täsir edýän\' awtentifikasiýa usullaryndan hiç birini goldamaýar.]</string>
+  <string name="terminal_no_session" tools:machine_translated="true">Seans başlanmaz, çünki bu, serweriň sazlamalarynda ulanyjy tarapyndan öňünden bellenipdir.</string>
+  <string name="terminal_enable_portfoward" tools:machine_translated="true">Port ýoly açyldy: %1$s</string>
+  <string name="local_shell_unavailable" tools:machine_translated="true">Başarmadyk! Bu telefon üçin ýerli terminal ulgamy ýok.</string>
+  <string name="notification_text" tools:machine_translated="true">%1$s-iň size üns bermegini isleýär.</string>
+  <string name="no" tools:machine_translated="true">Ýok</string>
+  <string name="yes" tools:machine_translated="true">Hawa</string>
+  <string name="list_color_schemes" tools:machine_translated="true">Reňk paletralary</string>
+  <string name="menu_colors_reset" tools:machine_translated="true">Düzgün görnüşe getir</string>
+  <string name="button_manage_schemes" tools:machine_translated="true">Reň şemalaryny dolandyryň</string>
+  <string name="title_scheme_manager" tools:machine_translated="true">Reň şemalaryny dolandyryň</string>
+  <string name="button_new_scheme" tools:machine_translated="true">Jaňy paletra</string>
+  <string name="button_duplicate_scheme" tools:machine_translated="true">Kopýala</string>
+  <string name="button_rename_scheme" tools:machine_translated="true">Adyny üýtgetmek</string>
+  <string name="button_delete_scheme" tools:machine_translated="true">Aýyrmak</string>
+  <string name="dialog_title_new_scheme" tools:machine_translated="true">Täze reňler paletrasy</string>
+  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Reň paletrasynyň adyny üýtgetmek</string>
+  <string name="label_scheme_name" tools:machine_translated="true">Skema ady</string>
+  <string name="label_scheme_description" tools:machine_translated="true">Görnüşiň düşündirilişi (häsiýetli däl)</string>
+  <string name="dialog_title_delete_scheme" tools:machine_translated="true">Skemany ýok etmek?</string>
+  <string name="dialog_message_delete_scheme" tools:machine_translated="true">\"%1$s\" -ny ýok etmek isleýändigizden ynanýarsyňyzmy? Bu hereket yzyna gaýtarylmaýar.</string>
+  <string name="button_confirm" tools:machine_translated="true">Täsdiqläň</string>
+  <string name="button_cancel" tools:machine_translated="true">Yatyr</string>
+  <string name="label_built_in_scheme" tools:machine_translated="true">Önünden ýasaýan</string>
+  <string name="label_custom_scheme" tools:machine_translated="true">Özelleşdirilen</string>
+  <string name="empty_custom_schemes" tools:machine_translated="true">Kesgitli şemalar ýok. Täze şema döretmek üçin \"Täze Şema\" düwmä basyň.</string>
+  <string name="button_edit_palette" tools:machine_translated="true">Reň paletrasyny üýtgetmek</string>
+  <string name="button_export_scheme" tools:machine_translated="true">Reňler paletrasyny eksport etmek</string>
+  <string name="button_import_scheme" tools:machine_translated="true">Reňler paletrasyny import etmek</string>
+  <string name="message_export_success" tools:machine_translated="true">%1$s eksport edildi.</string>
+  <string name="message_import_success" tools:machine_translated="true">%1$s import edildi.</string>
+  <string name="error_export_failed" tools:machine_translated="true">Skema eksport edilmedi: %1$s</string>
+  <string name="error_import_failed" tools:machine_translated="true">Skema import etmek başartmady: %1$s</string>
+  <string name="error_invalid_json" tools:machine_translated="true">Dogry däl JSON faýly</string>
+  <string name="title_palette_editor" tools:machine_translated="true">Reň paletrasyny üýtgetmek</string>
+  <string name="button_reset_all_colors" tools:machine_translated="true">Barlygyny dikeldin</string>
+  <string name="section_ansi_colors" tools:machine_translated="true">ANSI öwleri (0–15)</string>
+  <string name="dialog_title_edit_color" tools:machine_translated="true">%1$d reňki üýtgetmek</string>
+  <string name="dialog_title_reset_all" tools:machine_translated="true">Barlyk reňkleri dikeldip bereli?</string>
+  <string name="dialog_message_reset_all" tools:machine_translated="true">Bu, ähli 256 reňki ilki başlangyç ýagdaýyna getirýär. Bu işlem yzyna gaýtarylmaýar.</string>
+  <string name="app_is_running" tools:machine_translated="true">ConnectBot işleýär.</string>
+  <string name="label_red" tools:machine_translated="true">Gyrmyzy</string>
+  <string name="label_green" tools:machine_translated="true">Ýaşyl</string>
+  <string name="label_blue" tools:machine_translated="true">Göý</string>
+  <string name="label_hex_color" tools:machine_translated="true">On altynjy reňk kody</string>
+  <string name="colors_fg_label" tools:machine_translated="true">FG: %1$d</string>
+  <string name="color_bg_label" tools:machine_translated="true">Arka plan öwüti: %1$d</string>
+  <string name="section_fg_bg_colors" tools:machine_translated="true">Öňki plan we arkaplan</string>
+  <string name="label_foreground_color" tools:machine_translated="true">Öňki plan</string>
+  <string name="label_background_color" tools:machine_translated="true">Fona öwüşdirilen</string>
+  <string name="label_base_scheme" tools:machine_translated="true">Esasy şema:</string>
+  <string name="menu_manage_colors" tools:machine_translated="true">Reň şemalaryny dolandyryň.</string>
+  <string name="palette_editor_builtin_note" tools:machine_translated="true">Önünden ýasaýan temalar üýtgedilip bilinmez. Özelleştirmek üçin nusgasyny ýasaň.</string>
+  <string name="section_color_preview" tools:machine_translated="true">Önüni görmek</string>
+  <string name="image_description_connected" tools:machine_translated="true">Baglanyşykda.</string>
+  <string name="image_description_disconnected" tools:machine_translated="true">Baglanyşyk kesildi.</string>
+  <string name="image_description_toggle_control_character" tools:machine_translated="true">Kontrol simwolyny üýtget.</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">Çykarmak üçin ýörite simwol ugrat.</string>
+  <string name="image_description_send_tab_character" tools:machine_translated="true">“TAB” belgisi ugrat.</string>
+  <string name="image_description_hide_keyboard" tools:machine_translated="true">Klawiaturany gizle.</string>
+  <string name="image_description_show_keyboard" tools:machine_translated="true">Klawiaturany göräz.</string>
+  <string name="image_description_up" tools:machine_translated="true">Öňe ok</string>
+  <string name="image_description_down" tools:machine_translated="true">Aşak ok</string>
+  <string name="image_description_left" tools:machine_translated="true">Çep tarapa ok</string>
+  <string name="image_description_right" tools:machine_translated="true">Sağa tarap ok</string>
+  <string name="button_key_esc" tools:machine_translated="true">Çyk</string>
+  <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="button_key_home" tools:machine_translated="true">Baş sahypa</string>
+  <string name="button_key_end" tools:machine_translated="true">Gutarmak</string>
+  <string name="button_key_pgup" tools:machine_translated="true">Sahapany ýokary süýşürmek</string>
+  <string name="button_key_pgdn" tools:machine_translated="true">Sahapany aşak süýşürmek</string>
+  <string name="button_key_f1" tools:machine_translated="true">F1</string>
+  <string name="button_key_f2" tools:machine_translated="true">F2</string>
+  <string name="button_key_f3" tools:machine_translated="true">F3</string>
+  <string name="button_key_f4" tools:machine_translated="true">F4</string>
+  <string name="button_key_f5" tools:machine_translated="true">F5</string>
+  <string name="button_key_f6" tools:machine_translated="true">F6</string>
+  <string name="button_key_f7" tools:machine_translated="true">F7</string>
+  <string name="button_key_f8" tools:machine_translated="true">F8</string>
+  <string name="button_key_f9" tools:machine_translated="true">F9</string>
+  <string name="button_key_f10" tools:machine_translated="true">F10</string>
+  <string name="button_key_f11" tools:machine_translated="true">F11</string>
+  <string name="button_key_f12" tools:machine_translated="true">F12</string>
+  <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">Teksti girizmek</string>
+  <string name="terminal_text_input_dialog_title" tools:machine_translated="true">Tekstiň girizilmegi</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">Terminala iberiljek teksti ýazyp giriziň.</string>
+  <string name="terminal_text_input_resize_handle" tools:machine_translated="true">Ölçegini üýtgetmek</string>
+  <string name="console_menu_text_input" tools:machine_translated="true">Teksti girizmek</string>
+  <string name="button_send" tools:machine_translated="true">Ibermek</string>
+  <string name="button_ok" tools:machine_translated="true">Dogry</string>
+  <string name="button_close" tools:machine_translated="true">Ýapmak</string>
+  <string name="button_back" tools:machine_translated="true">Yza</string>
+  <string name="button_navigate_up" tools:machine_translated="true">Ýokary tarapa geçiň</string>
+  <string name="button_more_options" tools:machine_translated="true">Beýleki mümkinçilikler</string>
+  <string name="button_host_options" tools:machine_translated="true">Eýe-hoş ýörite saýarlary</string>
+  <string name="button_collapse" tools:machine_translated="true">Gyçyr</string>
+  <string name="error_key_load_failed" tools:machine_translated="true">\'%1$s\' açary ýüklemekde ýalňyşlyk ýüze çykdy: %2$s</string>
+  <string name="error_connection_failed" tools:machine_translated="true">%1$s-e (%2$s) birikmek başarmady: %3$s</string>
+  <string name="error_port_forward_load_failed" tools:machine_translated="true">%1$s üçin port ýöneldirmelerini ýüklemekde ýalňyşlyk ýüze çykdy: %2$s</string>
+  <string name="error_host_save_failed" tools:machine_translated="true">Hosta %1$s-i saklamak başarasyz: %2$s</string>
+  <string name="error_color_scheme_load_failed" tools:machine_translated="true">Reň paletrasyny ýüklemekde ýalňyşlyk ýüze çykdy: %s</string>
+  <string name="host_duplicate_nickname" tools:machine_translated="true">%1$s (kopyýasy)</string>
+  <string name="empty_hosts_message" tools:machine_translated="true">Häzirçä hiç bir serwer gurnamaýar</string>
+  <string name="empty_pubkeys_message" tools:machine_translated="true">Hiç bir açar tapylmady.</string>
+  <string name="empty_port_forwards_message" tools:machine_translated="true">Hiç bir port ýönlendiriş gurnamaýan.</string>
+  <string name="empty_urls_message" tools:machine_translated="true">URL-leri gözden geçirişde terminal bufferynda URL tapylmady.</string>
+  <string name="console_default_title" tools:machine_translated="true">Konsol</string>
+  <string name="host_editor_quick_connect_label" tools:machine_translated="true">Çalt birikdir</string>
+  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">ulanyjy\@serwerady:port</string>
+  <string name="host_editor_quick_connect_example" tools:machine_translated="true">Mysal: root\@192.168.1.1:22</string>
+  <string name="host_editor_show_advanced" tools:machine_translated="true">Öňurýatan beýleýinleri göräz</string>
+  <string name="host_editor_hide_advanced" tools:machine_translated="true">Öňki ýyllyklary gizle</string>
+  <string name="resize_width_label" tools:machine_translated="true">Giňlik (sütünler)</string>
+  <string name="resize_height_label" tools:machine_translated="true">Beýikligi (setirler)</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">Ölçegleri öz-özünden ulaldyp ýa-da kiçeldip bilmäni ýatyryň.</string>
+  <string name="pubkey_editor_key_type_label" tools:machine_translated="true">Kiçliň görnüşi</string>
+  <string name="pubkey_editor_options_label" tools:machine_translated="true">Saýlap alar ýaly ýagdaýlar</string>
+  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Şifrelenen açarlar başlangyçda açylamaz.</string>
+  <string name="pubkey_type_label" tools:machine_translated="true">Tipi: %s</string>
+  <string name="pubkey_encrypted_description" tools:machine_translated="true">Şifrlenýän</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Şifrlenmedik</string>
+  <string name="pubkey_biometric_protection" tools:machine_translated="true">Barmağıň yzynyň goraglygy</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">Bu açary öz barmaňyzyň yzyny ulgaly bilen gorap saklaň.</string>
+  <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Barmağıň yzuny ulanyp şeýle usuly işledip bolmaýar. Bu ulgamdan peýdalanmak üçin enjamyň sazlamalarynda barmağıň yzuny ulanyp işläp bolýan ýagdaýy ýaratmalydyr.</string>
+  <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Barmağıň izi bilen goramak diňe RSA we EC açarlary üçin ulanylýar.</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Kiltdy açmak üçin şahsyýeti tassyklaň.</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">\'%1$s\'-i açmak üçin barmağıňyz bilen barmağıň yzyny anyklap bilýän sensora degiň.</string>
+  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Barmağıň yzyny ulgaly bilen goraýar.</string>
+  <string name="pubkey_biometric_not_available" tools:machine_translated="true">Barmağıň izi arkaly awtomatiki barlag şu wagtda mümkin däl.</string>
+  <string name="portforward_nickname_placeholder" tools:machine_translated="true">Içki web-serwer</string>
+  <string name="portforward_port_range_error" tools:machine_translated="true">Port san 1 bilen 65535 aralygynda bolmaly.</string>
+  <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">Format şu ýaly bolmaly: host:port (mysal üçin, localhost:80).</string>
+  <string name="portforward_host_address" tools:machine_translated="true">Hojayyn adresi</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">Lokal serwer</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Lokal host (diňe IPv4 ulanylar)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">Lokal host (diňe IPv6 ulanylar)</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">Barlyk adresler</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Barlyk IPv4 adresleri</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Barlygy IPv6 adresleri</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">Kesgitli salgy</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="portforward_type_label" tools:machine_translated="true">Tipi: %s</string>
+  <string name="portforward_enable" tools:machine_translated="true">Aktiwleşdiriň</string>
+  <string name="portforward_disable" tools:machine_translated="true">Öçürmek</string>
+  <string name="portforward_enabled" tools:machine_translated="true">Port ýoly işläp durýar.</string>
+  <string name="portforward_disabled" tools:machine_translated="true">Port ýoly işden çykaryldy.</string>
+  <string name="protocol_spinner_label" tools:machine_translated="true">Protokol</string>
+  <string name="expand" tools:machine_translated="true">Giňeltmek</string>
+  <string name="hostpref_authagent_with_confirmation" tools:machine_translated="true">tassyk etmek talyp edilýär</string>
+  <string name="hostpref_add_host" tools:machine_translated="true">Jaňy host goşmak</string>
+  <string name="hostpref_save_host" tools:machine_translated="true">Saklaň</string>
+  <string name="hostpref_setting_title" tools:machine_translated="true">Hosta degişiklikleri</string>
+  <string name="pubkey_import_existing" tools:machine_translated="true">Bar bolan açary import etmek</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Klippbordan import etmek</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Şahsy açar maglumatlary</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Kesip alnan maglumatdan göçürmek</string>
+  <string name="notification_permission_title" tools:machine_translated="true">Arka planda baglanyşykda gal.</string>
+  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot-a, programlar arasynda geçiş edýärkä, baglanyşygyňyzy aktiw saklamak üçin habarnama rugsatlygy gerekdir. Rugsat berilmedik ýagdaýda, ulgam batareýany tygışly ulanmak üçin baglanyşygyňyzy kesip biler.</string>
+  <string name="grant_permission" tools:machine_translated="true">Rugsat ber</string>
+  <string name="connect_anyway" tools:machine_translated="true">Şeýle-de birleşiň.</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">Bildirişleriň ugrunda rugsat talyp edilýär.</string>
+  <string name="notification_permission_denied_message" tools:machine_translated="true">Arka planda baglanyşyklaryňyzy aktiw saklamak üçin, ulgam tertiblerinde ConnectBot üçin habarnamalary ýörite ýerini açyň.</string>
+  <string name="open_settings" tools:machine_translated="true">Sazlamalary açyň</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Baglanşyklar habarlyň berilmegi mümkinçiligi bolmazdan kesilip biler.</string>
+  <string name="notification_permission_console_warning" tools:machine_translated="true">Baglanyşyk fon reżiminde kesilip biler.</string>
+  <string name="terminal_no_route" tools:machine_translated="true">Siz ýerli serwere ýa-da ulgama ýetmek isleýäňizmi? Ýerli ulgam üçin rugsat ber.</string>
+  <string name="loading_message" tools:machine_translated="true">Yüklenýär…</string>
+  <string name="migration_checking" tools:machine_translated="true">Maglumat bazasy barlanýar…</string>
+  <string name="migration_title" tools:machine_translated="true">Maglumat bazasyny geçirýär</string>
+  <string name="migration_warning" tools:machine_translated="true">Köçüriş wagtynda programma üçin ýapyň.</string>
+  <string name="migration_stats_hosts" tools:machine_translated="true">Köçürilen serwerleriň sany: %d</string>
+  <string name="migration_stats_pubkeys" tools:machine_translated="true">Köçürilen SSH açarlar: %d</string>
+  <string name="migration_stats_port_forwards" tools:machine_translated="true">Köçürilen port ýöneldirmeleri: %d</string>
+  <string name="migration_stats_known_hosts" tools:machine_translated="true">Köçürilen belläp bilyan serwerleriň sany: %d</string>
+  <string name="migration_failed_title" tools:machine_translated="true">Migrasiýa amala aşyrylmady.</string>
+  <string name="migration_failed_message" tools:machine_translated="true">Maglumat bazasyny geçirýän wagtynda ýalňyşlyk ýüze çykdy: %s</string>
+  <string name="migration_retry" tools:machine_translated="true">Gaýtadan synap görmek</string>
+  <string name="migration_failed_help" tools:machine_translated="true">Eger problem dowam etse, iltimas, bu meseläni %1$s-de, ýokarda görkezilen barlag logynyň nusgasyny goşup, habar ediň.</string>
+  <string name="migration_warnings_title" tools:machine_translated="true">Migrasiýa bilen bagly duýdurmalaryň bölüminiň başlygy</string>
+  <string name="migration_copy_warnings" tools:machine_translated="true">Duýdurmalary kopyalaň</string>
+  <string name="migration_debug_log_title" tools:machine_translated="true">Barlag logy</string>
+  <string name="migration_copy_debug_log" tools:machine_translated="true">Kölňeşmäniň maglumatlaryny kopyalap alyň.</string>
+  <string name="disconnect_host_alert" tools:machine_translated="true">\'%1$s\'-dan baglanyşyňy kesmek isleýändigizden ynanýarsyňyzmy?</string>
+  <string name="delete_host_confirm" tools:machine_translated="true">‘%1$s’ hostyny ýok etmek isleýändigizden ynanýarsyňyzmy?</string>
+  <string name="forget_host_keys_confirm" tools:machine_translated="true">\'%1$s\' üçin saklanan host açarlaryny unutmaga ynaýjakmy? Kişi, soňky birleşmäde host açaryny tassyklaýar.</string>
+  <string name="list_pubkey_edit" tools:machine_translated="true">Pubkey-i üýtgetmek</string>
+  <string name="hostpref_ipversion_title" tools:machine_translated="true">IP-nyň wersiýasy</string>
+  <string name="hostpref_ipversion_summary" tools:machine_translated="true">Birikende ulanyjak IP salgy adresiniň nusgasyny saýlaň.</string>
+  <string name="ipversion_auto" tools:machine_translated="true">Awomatiki</string>
+  <string name="ipversion_ipv4" tools:machine_translated="true">Diňe IPv4 ulanyň</string>
+  <string name="ipversion_ipv6" tools:machine_translated="true">Diňe IPv6 ulanyň</string>
+  <string name="hostpref_jumphost_title" tools:machine_translated="true">Aralyk serwer (ProxyJump)</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">Başga bir SSH serweri arkaly birleşiň.</string>
+  <string name="list_jumphost_none" tools:machine_translated="true">Hiç biri (dogrudan baglanyşyk)</string>
+  <string name="terminal_connecting_via_jump" tools:machine_translated="true">Aralyk serwer arkaly baglanyşýar: %s</string>
+  <string name="terminal_jump_connected" tools:machine_translated="true">“Jump host”-a birikdirildi: %s</string>
+  <string name="terminal_jump_authenticated" tools:machine_translated="true">Bäşleýji serweri bilen baglanyşyk ýola salyndy: %s</string>
+  <string name="terminal_jump_failed" tools:machine_translated="true">%1$s serwerine birikmek başarmady: %2$s</string>
+  <string name="terminal_jump_auth_failed" tools:machine_translated="true">“Jump host”-a ulgam girizmek başarasyz boldy: %s</string>
+  <string name="terminal_jump_not_found" tools:machine_translated="true">Saklanan sanawda tapylmadyk \"jump host\".</string>
+  <string name="terminal_jump_password" tools:machine_translated="true">“Jump host” ulgam üçin parol: %s:</string>
+  <string name="view_logs" tools:machine_translated="true">Köne ýazgylary görmek</string>
+  <string name="logs_title" tools:machine_translated="true">Programmyň loglary</string>
+  <string name="copy_logs" tools:machine_translated="true">Log-lary kopyala</string>
+  <string name="logs_copied" tools:machine_translated="true">Loglar klipborda köçürildi.</string>
+  <string name="logs_bug_report_info" tools:machine_translated="true">Nädogurlygy habar etmek üçin, şu loglary kopyalap, https://connectbot.org/bug salgynda täze mesele açyň.</string>
+  <string name="no_logs_available" tools:machine_translated="true">Jurnal ýazylmadyk.</string>
+  <string name="help_section_about" tools:machine_translated="true">Hakynda</string>
+  <string name="title_contact" tools:machine_translated="true">Aragatnaşyk we Goldaw</string>
+  <string name="help_section_contact" tools:machine_translated="true">Aragatnaşyk we goldaw</string>
+  <string name="help_website" tools:machine_translated="true">Web-saýt</string>
+  <string name="help_github" tools:machine_translated="true">Çeşme kody</string>
+  <string name="help_report_bug" tools:machine_translated="true">Nädogurlygy habar edin.</string>
+  <string name="help_section_donate" tools:machine_translated="true">Ösüşi Goldaň</string>
+  <string name="help_donate_github" tools:machine_translated="true">GitHub Goldawçylar</string>
+  <string name="help_donate_coffee" tools:machine_translated="true">Maňa kofe satyn alyp goldaň</string>
+  <string name="colorscheme_default_description" tools:machine_translated="true">Standart terminaliň öwüşginleri</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Enjamlar we adamlar üçin anyk reňler.</string>
+  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Ýagty fon bilen Solarized temasy</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">Terminal üçin garalyň reňki temasy.</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">Arktika ýaly, demirgöwüň öňündäki gök reňklerden ybarat reňk paletrasy.</string>
+  <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Retro usulynda işlenip bejerilen reňler toplumy</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">Sublime Text-iň usulynda döredilen tema</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">arassa we rahat garaňky reňkler paletasy</string>
+  <string name="pref_profiles_category" tools:machine_translated="true">Profiller</string>
+  <string name="pref_default_profile_title" tools:machine_translated="true">Standart profil</string>
+  <string name="pref_default_profile_none" tools:machine_translated="true">Hiç biri (serweriň sazlamalaryny ulan).</string>
+  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">Özel düwmeleri her wagt görünýän ýagdaýda saklaň.</string>
+  <string name="pref_customterminal_title" tools:machine_translated="true">Kesgitli terminal ulgam görnüşleri</string>
+  <string name="pref_customterminal_summary" tools:machine_translated="true">Daşky serwerler üçin kesgitli TERM ulgamyny goşmak.</string>
+  <string name="dialog_customterminal_title" tools:machine_translated="true">Özel terminal ulgamyny goşmak</string>
+  <string name="dialog_customterminal_hint" tools:machine_translated="true">Terminal ulgamynyň görnüşi (mysal üçin, rxvt-unicode)</string>
+  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Kesgitli terminal ulgamçalaryny dolandyryň.</string>
+  <string name="button_add_custom" tools:machine_translated="true">Kesgitli zat goşmak</string>
+  <string name="button_manage_custom" tools:machine_translated="true">Kesgitli elementleri dolandyryň…</string>
+  <string name="dialog_custom_value_label" tools:machine_translated="true">Kesgitli bähany giriziň.</string>
+  <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, soňra boşluk düwmesi</string>
+  <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
+  <string name="list_camera_esc_description" tools:machine_translated="true">Esc</string>
+  <string name="list_camera_esc_a_description" tools:machine_translated="true">Esc+A</string>
+  <string name="list_camera_none_description" tools:machine_translated="true">Hiç biri</string>
+  <string name="list_camera_text_input_description" tools:machine_translated="true">Teksti girizmek</string>
+  <string name="list_menu_export_hosts" tools:machine_translated="true">Barlyk hostlary eksport etmek</string>
+  <string name="list_menu_import_hosts" tools:machine_translated="true">JSON faýlyndan hostlary import etmek</string>
+  <string name="export_hosts_success" tools:machine_translated="true">%1$d sanyndaky hostlar we %2$d sanyndaky profiller eksport edildi.</string>
+  <string name="import_hosts_success" tools:machine_translated="true">%1$d sanyndaky hostlar we %3$d sanyndaky profiller import edildi (%2$d sanyndaky hostlar we %4$d sanyndaky profiller göz ýumuldy).</string>
+  <string name="export_hosts_failed" tools:machine_translated="true">Hosta eksport etmek başartmady: %s</string>
+  <string name="import_hosts_failed" tools:machine_translated="true">Hosta import etmekde ýalňyşlyk ýüze çykdy: %s</string>
+  <string name="export_hosts_title" tools:machine_translated="true">Eksport ediljek hostlar</string>
+  <string name="shortcut_customize_title" tools:machine_translated="true">Gysga ýol ikonyny özelleşdiriň</string>
+  <string name="shortcut_icon_color" tools:machine_translated="true">Ikonuň öwüşgini</string>
+  <string name="shortcut_icon_style" tools:machine_translated="true">Ikon usuly</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">Serweriň bellenen reňgini ulan.</string>
+  <string name="shortcut_create" tools:machine_translated="true">Kesel ýol ýaratmak</string>
+  <string name="icon_style_terminal" tools:machine_translated="true">Terminal</string>
+  <string name="icon_style_server" tools:machine_translated="true">Serwer</string>
+  <string name="icon_style_cloud" tools:machine_translated="true">Bulut</string>
+  <string name="icon_style_key" tools:machine_translated="true">Kilidiň nyşany</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Gurnama wagtynda awtentifikasiýa.</string>
+  <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Programmany açanda, barmağıň yzyny, ýüzüňi ýa-da enjamyň PIN kodyny girizmegi talep ediň.</string>
+  <string name="pref_security_category" tools:machine_translated="true">Howpsuzlyk</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot ulgam ýapyk.</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">Kilidi açmak üçin dokuning.</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">ConnectBot-y açyň.</string>
+  <string name="auth_prompt_subtitle" tools:machine_translated="true">Öňe geçmek üçin özüňizi tassyklaň.</string>
 </resources>

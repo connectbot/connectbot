@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">عميل SSH بسيط وقوي ومفتوح المصدر.</string>
   <string name="service_desc">يحافظ على اتصالات SSH ويقوم بتحميل مفاتيح SSH العامة.</string>
   <string name="app_copyright">حقوق النشر © كيني روت</string>
@@ -558,4 +558,18 @@
   <string name="auth_screen_unlock_button">اضغط لفتح القفل</string>
   <string name="auth_prompt_title">افتح ConnectBot</string>
   <string name="auth_prompt_subtitle">تحقق من هويتك للمتابعة.</string>
+  <string name="pref_language_download" tools:machine_translated="true">تنزيل حزمة اللغة</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">فشل التنزيل، اضغط لإعادة المحاولة.</string>
+  <string name="portforward_host_address" tools:machine_translated="true">عنوان المضيف</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">عنوان الجهاز المحلي</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">الخادم المحلي (إصدار IPv4 فقط)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">الخادم المحلي (فقط بروتوكول IPv6)</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">جميع العناوين</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">جميع عناوين بروتوكول الإنترنت الإصدار الرابع (IPv4)</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">جميع عناوين بروتوكول الإنترنت الإصدار السادس (IPv6)</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">عنوان محدد</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">استيراد من الحافظة</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">محتوى المفتاح الخاص</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">لصق من الحافظة</string>
 </resources>
