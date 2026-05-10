@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">Cliente SSH simple, potente e open-source</string>
   <string name="service_desc">Mantén as conexións SSH e as chaves cargadas</string>
   <string name="title_pubkey_list">Chaves públicas</string>
@@ -216,4 +216,360 @@
   <string name="hostpref_add_host">Engadir servidor</string>
   <string name="hostpref_save_host">Gardar servidor</string>
   <string name="pubkey_import_existing">Importar chave pública existente</string>
+  <string name="app_copyright" tools:machine_translated="true">Copyright © Kenny Root</string>
+  <string name="title_eula" tools:machine_translated="true">Licenza</string>
+  <string name="pubkey_copy_private_openssh" tools:machine_translated="true">Copiar a clave privada (OpenSSH)</string>
+  <string name="pubkey_copy_private_pem" tools:machine_translated="true">Copiar a clave privada (PEM)</string>
+  <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">Copiar a clave privada (encriptada)</string>
+  <string name="pubkey_export_public" tools:machine_translated="true">Exportar a clave pública</string>
+  <string name="pubkey_export_private" tools:machine_translated="true">Exportar a clave privada</string>
+  <string name="pubkey_export_private_openssh" tools:machine_translated="true">Exportar a clave privada (formato OpenSSH)</string>
+  <string name="pubkey_export_private_pem" tools:machine_translated="true">Exportar a clave privada (PEM)</string>
+  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">Exportar a clave privada (encriptada)</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Definir a frase de contrasinha para a exportación.</string>
+  <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Introduza unha frase secreta para cifrar a clave que se está exportando.</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Confirme a frase secreta.</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">As frases de contrasinal non coinciden.</string>
+  <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Importar clave cifrada</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Introduza a contrasinal para descifrar a clave \'%1$s\' (%2$s).</string>
+  <string name="pubkey_import_button" tools:machine_translated="true">Importar</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Cifrar a clave para o seu almacenamento.</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Use a mesma contrasinal para o cifrado.</string>
+  <string name="pubkey_import_new_password" tools:machine_translated="true">Nova contrasinal</string>
+  <string name="pubkey_import_confirm_password" tools:machine_translated="true">Confirme o contrasinal</string>
+  <string name="pubkey_list_empty" tools:machine_translated="true">Toca en «Menú» para crear ou importar pares de claves.</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">Formato descoñecido.</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">Introduza a contrasinal para desbloquear a clave \'%1$s\'.</string>
+  <string name="pubkey_nickname_exists" tools:machine_translated="true">Xa existe unha clave con este alcume.</string>
+  <string name="prompt_username" tools:machine_translated="true">Nome de usuario:</string>
+  <string name="host_key_verification_title" tools:machine_translated="true">Verificación da clave do host.</string>
+  <string name="fingerprint_format_header" tools:machine_translated="true">Formato da pegada dixital</string>
+  <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d bits</string>
+  <string name="fingerprint_copy_description" tools:machine_translated="true">Copiar a pegada dixital ao portapapeles.</string>
+  <string name="network_lost_grace_period" tools:machine_translated="true">Perdeuse a conexión de rede, agardando a reconectar…</string>
+  <string name="network_grace_period_expired" tools:machine_translated="true">A rede non se restableceu, desconectando…</string>
+  <string name="network_restored_same_ip" tools:machine_translated="true">A rede foi restablecida, a conexión mantense.</string>
+  <string name="network_restored_ip_changed" tools:machine_translated="true">A rede foi restablecida, pero a dirección IP cambiou, reconectando…</string>
+  <string name="network_restored_no_previous_state" tools:machine_translated="true">A rede foi restablecida, comprobando a conexión…</string>
+  <string name="pref_fontfamily_title" tools:machine_translated="true">Tipo de letra</string>
+  <string name="pref_customfont_title" tools:machine_translated="true">Engadir unha fonte personalizada</string>
+  <string name="pref_customfont_summary" tools:machine_translated="true">Engade unha fonte de Google Fonts por nome.</string>
+  <string name="dialog_customfont_title" tools:machine_translated="true">Engadir fonte personalizada</string>
+  <string name="dialog_customfont_hint" tools:machine_translated="true">Nome da fonte de Google Fonts (por exemplo, Cascadia Code)</string>
+  <string name="button_add" tools:machine_translated="true">Engadir</string>
+  <string name="button_remove" tools:machine_translated="true">Eliminar</string>
+  <string name="font_validating" tools:machine_translated="true">Validando a fonte…</string>
+  <string name="font_downloading" tools:machine_translated="true">Descargando a fonte…</string>
+  <string name="pref_localfont_title" tools:machine_translated="true">Importar fonte local</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Importa un ficheiro de fonte desde o almacenamento (TTF, OTF).</string>
+  <string name="dialog_localfont_title" tools:machine_translated="true">Importar fonte</string>
+  <string name="dialog_localfont_hint" tools:machine_translated="true">Nome que se mostrará para a fonte.</string>
+  <string name="button_import" tools:machine_translated="true">Importar</string>
+  <string name="font_importing" tools:machine_translated="true">Importando a fonte…</string>
+  <string name="pref_language_title" tools:machine_translated="true">Idioma</string>
+  <string name="pref_language_system_default" tools:machine_translated="true">Predeterminación do sistema</string>
+  <string name="pref_language_download" tools:machine_translated="true">Descargar o paquete de idiomas</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">A descarga fallou, toque para tentar de novo.</string>
+  <string name="pref_theme_title" tools:machine_translated="true">Tema</string>
+  <string name="pref_theme_system" tools:machine_translated="true">Configuración predeterminada do sistema</string>
+  <string name="pref_theme_light" tools:machine_translated="true">Claro</string>
+  <string name="pref_theme_dark" tools:machine_translated="true">Escuro</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">Mantéñase conectado en segundo plano.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Manteña as súas sesións activas aínda que cambie a outras aplicacións.</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Frechas con textura</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">Reproducir son ao activarse a alerta do terminal.</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Vibrar ao recibir unha alerta do terminal.</string>
+  <string name="color_red" tools:machine_translated="true">Vermello</string>
+  <string name="color_pink" tools:machine_translated="true">Rosa</string>
+  <string name="color_purple" tools:machine_translated="true">Púrpura</string>
+  <string name="color_deep_purple" tools:machine_translated="true">Púrpura intenso</string>
+  <string name="color_indigo" tools:machine_translated="true">Índigo</string>
+  <string name="color_blue" tools:machine_translated="true">Azul</string>
+  <string name="color_light_blue" tools:machine_translated="true">Azul claro</string>
+  <string name="color_cyan" tools:machine_translated="true">Cian</string>
+  <string name="color_teal" tools:machine_translated="true">Verde azulado</string>
+  <string name="color_green" tools:machine_translated="true">Verde</string>
+  <string name="color_light_green" tools:machine_translated="true">Verde claro</string>
+  <string name="color_lime" tools:machine_translated="true">Verde limón</string>
+  <string name="color_yellow" tools:machine_translated="true">Amarelo</string>
+  <string name="color_amber" tools:machine_translated="true">Ámbar</string>
+  <string name="color_orange" tools:machine_translated="true">Laranxa</string>
+  <string name="color_gray" tools:machine_translated="true">Gris</string>
+  <string name="hostpref_fontfamily_title" tools:machine_translated="true">Tipo de letra</string>
+  <string name="hostpref_colorscheme_title" tools:machine_translated="true">Esquema de cores do terminal</string>
+  <string name="hostpref_save_password_summary" tools:machine_translated="true">Garda de forma segura a contrasinal de inicio de sesión para a autenticación automática.</string>
+  <string name="hostpref_password_title" tools:machine_translated="true">Contrasinal</string>
+  <string name="hostpref_password_unchanged" tools:machine_translated="true">Contrasinal (sen cambios)</string>
+  <string name="hostpref_clear_password" tools:machine_translated="true">Eliminar a contrasinal gardada</string>
+  <string name="hostpref_profile_title" tools:machine_translated="true">Perfil</string>
+  <string name="hostpref_profile_summary" tools:machine_translated="true">Seleccione un perfil para utilizar a configuración do terminal asociada.</string>
+  <string name="hostpref_profile_none" tools:machine_translated="true">Ningún (utilizar a configuración do servidor)</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">Controlado polo perfil.</string>
+  <string name="font_use_default" tools:machine_translated="true">Usar a configuración predeterminada</string>
+  <string name="font_system_default" tools:machine_translated="true">Predeterminado (tipo de letra de ancho fixo)</string>
+  <string name="pubkey_unknown" tools:machine_translated="true">Clave descoñecida.</string>
+  <string name="colorscheme_default" tools:machine_translated="true">Predeterminado</string>
+  <string name="profile_editor_title_new" tools:machine_translated="true">Novo perfil</string>
+  <string name="profile_editor_title_edit" tools:machine_translated="true">Editar perfil</string>
+  <string name="profile_editor_save" tools:machine_translated="true">Gardar</string>
+  <string name="profile_editor_name_label" tools:machine_translated="true">Nome do perfil</string>
+  <string name="profile_editor_section_icon_color" tools:machine_translated="true">Cor da icona</string>
+  <string name="profile_editor_section_color_scheme" tools:machine_translated="true">Esquema de cores</string>
+  <string name="profile_editor_section_font" tools:machine_translated="true">Tipo de letra</string>
+  <string name="profile_editor_section_terminal" tools:machine_translated="true">Terminal</string>
+  <string name="profile_editor_font_family_title" tools:machine_translated="true">Familia de fontes</string>
+  <string name="profile_editor_font_size_title" tools:machine_translated="true">Tamaño da letra: %d</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Tamaño da forza</string>
+  <string name="profile_editor_force_size_summary" tools:machine_translated="true">Forza a que o terminal adopte un tamaño específico (columnas x filas) en lugar de axustarse automaticamente para adaptarse á pantalla.</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">Activar o axuste forzado do tamaño</string>
+  <string name="profile_editor_force_size_columns" tools:machine_translated="true">Columnas</string>
+  <string name="profile_editor_force_size_rows" tools:machine_translated="true">Filas</string>
+  <string name="profile_icon_color_none" tools:machine_translated="true">Ningún (usar a cor do host)</string>
+  <string name="profile_list_title" tools:machine_translated="true">Perfis</string>
+  <string name="profile_list_create_profile" tools:machine_translated="true">Crear perfil</string>
+  <string name="profile_list_empty_message" tools:machine_translated="true">Aínda non hai perfís. Toca no signo + para crear un.</string>
+  <string name="profile_list_more_options" tools:machine_translated="true">Máis opcións</string>
+  <string name="profile_list_duplicate" tools:machine_translated="true">Duplicar</string>
+  <string name="profile_list_delete" tools:machine_translated="true">Eliminar</string>
+  <string name="profile_create_dialog_title" tools:machine_translated="true">Crear perfil</string>
+  <string name="profile_create_name_label" tools:machine_translated="true">Nome do perfil</string>
+  <string name="profile_create_button" tools:machine_translated="true">Crear</string>
+  <string name="profile_create_cancel" tools:machine_translated="true">Cancelar</string>
+  <string name="profile_delete_dialog_title" tools:machine_translated="true">Eliminar perfil</string>
+  <string name="profile_delete_dialog_message" tools:machine_translated="true">Está seguro de que quere eliminar \'%s\'?</string>
+  <string name="profile_delete_button" tools:machine_translated="true">Eliminar</string>
+  <string name="profile_delete_cancel" tools:machine_translated="true">Cancelar</string>
+  <string name="profile_summary_font" tools:machine_translated="true">Fonte: %1$s %2$d pt</string>
+  <string name="profile_summary_emulation" tools:machine_translated="true">Emulación: %s</string>
+  <string name="console_menu_reconnect" tools:machine_translated="true">Volver conectar</string>
+  <string name="console_url_no_handler" tools:machine_translated="true">Non hai ningunha aplicación instalada para abrir esta ligazón.</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">Este tipo de URL non é compatible.</string>
+  <string name="portforward_save" tools:machine_translated="true">Gardar</string>
+  <string name="list_host_duplicate" tools:machine_translated="true">Duplicar host</string>
+  <string name="list_host_forget_keys" tools:machine_translated="true">Eliminar as claves do host</string>
+  <string name="list_camera_text_input" tools:machine_translated="true">Introdución de texto</string>
+  <string name="terminal_auth_saved_password" tools:machine_translated="true">Intentando usar a contrasinal gardada…</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">A autenticación coa contrasinal gardada fallou.</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">Solicitando a autenticación biométrica para a clave \'%1$s\'.</string>
+  <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">A clave biométrica \'%1$s\' foi invalidada. Isto pode ocorrer cando se engadixen novas impresións dixitais no dispositivo. Xere unha nova clave.</string>
+  <string name="list_color_schemes" tools:machine_translated="true">Esquemas de cores</string>
+  <string name="button_manage_schemes" tools:machine_translated="true">Xestionar esquemas</string>
+  <string name="title_scheme_manager" tools:machine_translated="true">Xestionar esquemas de cores</string>
+  <string name="button_new_scheme" tools:machine_translated="true">Novo esquema</string>
+  <string name="button_duplicate_scheme" tools:machine_translated="true">Duplicar</string>
+  <string name="button_rename_scheme" tools:machine_translated="true">Cambiar o nome</string>
+  <string name="button_delete_scheme" tools:machine_translated="true">Eliminar</string>
+  <string name="dialog_title_new_scheme" tools:machine_translated="true">Novo esquema de cores</string>
+  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Cambiar o nome do esquema de cores</string>
+  <string name="label_scheme_name" tools:machine_translated="true">Nome do esquema</string>
+  <string name="label_scheme_description" tools:machine_translated="true">Descrición (opcional)</string>
+  <string name="dialog_title_delete_scheme" tools:machine_translated="true">Eliminar o esquema?</string>
+  <string name="dialog_message_delete_scheme" tools:machine_translated="true">Está seguro de que quere eliminar \"%1$s\"? Esta acción non se pode desfacer.</string>
+  <string name="button_confirm" tools:machine_translated="true">Confirmar</string>
+  <string name="button_cancel" tools:machine_translated="true">Cancelar</string>
+  <string name="label_built_in_scheme" tools:machine_translated="true">Integrado</string>
+  <string name="label_custom_scheme" tools:machine_translated="true">Personalizado</string>
+  <string name="empty_custom_schemes" tools:machine_translated="true">Non hai esquemas personalizados. Toca en \"Novo esquema\" para crear un.</string>
+  <string name="button_edit_palette" tools:machine_translated="true">Editar a paleta</string>
+  <string name="button_export_scheme" tools:machine_translated="true">Exportar esquema</string>
+  <string name="button_import_scheme" tools:machine_translated="true">Importar esquema</string>
+  <string name="message_export_success" tools:machine_translated="true">%1$s exportado.</string>
+  <string name="message_import_success" tools:machine_translated="true">Importado %1$s</string>
+  <string name="error_export_failed" tools:machine_translated="true">Fallou a exportación do esquema: %1$s</string>
+  <string name="error_import_failed" tools:machine_translated="true">Fallou a importación do esquema: %1$s</string>
+  <string name="error_invalid_json" tools:machine_translated="true">Arquivo JSON non válido.</string>
+  <string name="title_palette_editor" tools:machine_translated="true">Editar a paleta de cores</string>
+  <string name="button_reset_all_colors" tools:machine_translated="true">Restablecer todo</string>
+  <string name="section_ansi_colors" tools:machine_translated="true">Cores ANSI (0–15)</string>
+  <string name="dialog_title_edit_color" tools:machine_translated="true">Editar cor %1$d</string>
+  <string name="dialog_title_reset_all" tools:machine_translated="true">Restaurar todas as cores?</string>
+  <string name="dialog_message_reset_all" tools:machine_translated="true">Isto restablecerá as 256 cores aos seus valores predeterminados. Esta acción non se pode desfacer.</string>
+  <string name="label_red" tools:machine_translated="true">Vermello</string>
+  <string name="label_green" tools:machine_translated="true">Verde</string>
+  <string name="label_blue" tools:machine_translated="true">Azul</string>
+  <string name="label_hex_color" tools:machine_translated="true">Cor hexadecimal</string>
+  <string name="section_fg_bg_colors" tools:machine_translated="true">Cor de primeiro plano e cor de fondo</string>
+  <string name="label_foreground_color" tools:machine_translated="true">Cor de primeiro plano</string>
+  <string name="label_background_color" tools:machine_translated="true">Cor de fondo</string>
+  <string name="label_base_scheme" tools:machine_translated="true">Esquema base:</string>
+  <string name="menu_manage_colors" tools:machine_translated="true">Xestionar esquemas de cores</string>
+  <string name="palette_editor_builtin_note" tools:machine_translated="true">Os esquemas predefinidos só poden consultarse. Duplícaos para personalizalos.</string>
+  <string name="section_color_preview" tools:machine_translated="true">Vista previa</string>
+  <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">Introdución de texto</string>
+  <string name="terminal_text_input_dialog_title" tools:machine_translated="true">Introdución de texto</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">Introduza o texto que quere enviar ao terminal.</string>
+  <string name="terminal_text_input_resize_handle" tools:machine_translated="true">Redimensionar</string>
+  <string name="console_menu_text_input" tools:machine_translated="true">Introdución de texto</string>
+  <string name="button_send" tools:machine_translated="true">Enviar</string>
+  <string name="button_ok" tools:machine_translated="true">De acordo / Ben / Está ben</string>
+  <string name="button_close" tools:machine_translated="true">Pechar</string>
+  <string name="button_back" tools:machine_translated="true">Atrás</string>
+  <string name="button_navigate_up" tools:machine_translated="true">Desprazarse cara arriba</string>
+  <string name="button_more_options" tools:machine_translated="true">Máis opcións</string>
+  <string name="button_host_options" tools:machine_translated="true">Opcións do anfitrión</string>
+  <string name="button_collapse" tools:machine_translated="true">Pechar</string>
+  <string name="error_key_load_failed" tools:machine_translated="true">Non foi posible cargar a clave \'%1$s\': %2$s</string>
+  <string name="error_connection_failed" tools:machine_translated="true">Non foi posible establecer a conexión con %1$s (%2$s): %3$s</string>
+  <string name="error_port_forward_load_failed" tools:machine_translated="true">Non foi posible cargar as regras de reenvío de portos para %1$s: %2$s</string>
+  <string name="error_host_save_failed" tools:machine_translated="true">Non foi posible gardar a configuración do host %1$s: %2$s</string>
+  <string name="error_color_scheme_load_failed" tools:machine_translated="true">Fallou a carga do esquema de cores: %s</string>
+  <string name="host_duplicate_nickname" tools:machine_translated="true">%1$s (copia)</string>
+  <string name="empty_hosts_message" tools:machine_translated="true">Non se configuraron hosts.</string>
+  <string name="empty_pubkeys_message" tools:machine_translated="true">Non se atoparon claves.</string>
+  <string name="empty_port_forwards_message" tools:machine_translated="true">Non se configuraron reenvíos de portos.</string>
+  <string name="empty_urls_message" tools:machine_translated="true">Non se atoparon URL no búfer do terminal.</string>
+  <string name="console_default_title" tools:machine_translated="true">Consola</string>
+  <string name="host_editor_quick_connect_label" tools:machine_translated="true">Conectar rapidamente</string>
+  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">usuario\@nome do servidor:porta</string>
+  <string name="host_editor_quick_connect_example" tools:machine_translated="true">Exemplo: root\@192.168.1.1:22</string>
+  <string name="host_editor_show_advanced" tools:machine_translated="true">Mostrar opcións avanzadas</string>
+  <string name="host_editor_hide_advanced" tools:machine_translated="true">Ocultar opcións avanzadas</string>
+  <string name="resize_width_label" tools:machine_translated="true">Ancho (columnas)</string>
+  <string name="resize_height_label" tools:machine_translated="true">Altura (liñas)</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">Desactivar o tamaño fixo</string>
+  <string name="pubkey_editor_key_type_label" tools:machine_translated="true">Tipo de clave</string>
+  <string name="pubkey_editor_options_label" tools:machine_translated="true">Opcións</string>
+  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">As claves cifradas non poden ser desbloqueadas ao iniciar o sistema.</string>
+  <string name="pubkey_type_label" tools:machine_translated="true">Tipo: %s</string>
+  <string name="pubkey_encrypted_description" tools:machine_translated="true">Cifrado</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Non cifrado</string>
+  <string name="pubkey_biometric_protection" tools:machine_translated="true">Protección mediante pegada dixital</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">Protexe esta clave coa súa pegada dixital.</string>
+  <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Non se rexistrou ningunha pegada. Configure a pegada nas configuracións do dispositivo para utilizar esta función.</string>
+  <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">A protección mediante pegada dixital só está dispoñible para as claves RSA e EC.</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Autentícase para usar a clave.</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Toca o sensor de pegadas para desbloquear \'%1$s\'.</string>
+  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Protexido mediante a pegada dixital.</string>
+  <string name="pubkey_biometric_not_available" tools:machine_translated="true">A autenticación por pegada dixital non está dispoñible.</string>
+  <string name="portforward_nickname_placeholder" tools:machine_translated="true">Servidor web interno</string>
+  <string name="portforward_port_range_error" tools:machine_translated="true">O porto debe estar entre 1 e 65535.</string>
+  <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">O formato debe ser host:porto (por exemplo, localhost:80).</string>
+  <string name="portforward_host_address" tools:machine_translated="true">Enderezo do servidor</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">localhost</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Localhost (só IPv4)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">Localhost (só IPv6)</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">Todos os enderezos</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Todos os enderezos IPv4</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Todos os enderezos IPv6</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">Enderezo específico</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="portforward_type_label" tools:machine_translated="true">Tipo: %s</string>
+  <string name="portforward_enable" tools:machine_translated="true">Activar</string>
+  <string name="portforward_disable" tools:machine_translated="true">Desactivar</string>
+  <string name="portforward_enabled" tools:machine_translated="true">Reenvío de porto activado.</string>
+  <string name="portforward_disabled" tools:machine_translated="true">O reenvío de portos está desactivado.</string>
+  <string name="hostpref_setting_title" tools:machine_translated="true">Configuración do host</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importar desde a área de recorte</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Contido da clave privada</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Pegar desde a área de recorte</string>
+  <string name="notification_permission_title" tools:machine_translated="true">Mantéñase conectado en segundo plano.</string>
+  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot necesita permiso para enviar notificacións para manter as túas conexións activas cando cambias de aplicación. Sen este permiso, o sistema pode interromper as túas conexións para aforrar batería.</string>
+  <string name="grant_permission" tools:machine_translated="true">Permitir</string>
+  <string name="connect_anyway" tools:machine_translated="true">Conectar de todos xeitos.</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">É necesario conceder o permiso de notificación.</string>
+  <string name="notification_permission_denied_message" tools:machine_translated="true">Para manter as túas conexións activas en segundo plano, activa as notificacións para ConnectBot na configuración do sistema.</string>
+  <string name="open_settings" tools:machine_translated="true">Abrir configuración</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">As conexións poden interromperse se non se concede o permiso de notificación.</string>
+  <string name="notification_permission_console_warning" tools:machine_translated="true">A conexión pode interromperse en segundo plano.</string>
+  <string name="terminal_no_route" tools:machine_translated="true">Está intentando acceder a un host local? Conceda os permisos da rede local.</string>
+  <string name="loading_message" tools:machine_translated="true">Cargando…</string>
+  <string name="migration_checking" tools:machine_translated="true">Comprobando a base de datos…</string>
+  <string name="migration_title" tools:machine_translated="true">Migrando a base de datos</string>
+  <string name="migration_warning" tools:machine_translated="true">Por favor, non peche a aplicación durante a migración.</string>
+  <string name="migration_stats_hosts" tools:machine_translated="true">Hosts migrados: %d</string>
+  <string name="migration_stats_pubkeys" tools:machine_translated="true">Chaves SSH migradas: %d</string>
+  <string name="migration_stats_port_forwards" tools:machine_translated="true">Reenvíos de portos migrados: %d</string>
+  <string name="migration_stats_known_hosts" tools:machine_translated="true">Número de hosts migrados: %d</string>
+  <string name="migration_failed_title" tools:machine_translated="true">A migración fallou.</string>
+  <string name="migration_failed_message" tools:machine_translated="true">Produciuse un erro durante a migración da base de datos: %s</string>
+  <string name="migration_retry" tools:machine_translated="true">Tentar de novo</string>
+  <string name="migration_failed_help" tools:machine_translated="true">Se o problema persiste, por favor, informa deste problema en %1$s e inclúe o rexistro de depuración que aparece máis arriba.</string>
+  <string name="migration_warnings_title" tools:machine_translated="true">Avisos sobre a migración</string>
+  <string name="migration_copy_warnings" tools:machine_translated="true">Copiar avisos</string>
+  <string name="migration_debug_log_title" tools:machine_translated="true">Rexistro de depuración</string>
+  <string name="migration_copy_debug_log" tools:machine_translated="true">Copiar o rexistro de depuración</string>
+  <string name="disconnect_host_alert" tools:machine_translated="true">Está seguro de que quere desconectarse de \'%1$s\'?</string>
+  <string name="delete_host_confirm" tools:machine_translated="true">Está seguro de que quere eliminar o host \'%1$s\'?</string>
+  <string name="forget_host_keys_confirm" tools:machine_translated="true">Está seguro de que quere eliminar as claves de host almacenadas para \'%1$s\'? Solicitaráselle que verifique a clave de host na seguinte conexión.</string>
+  <string name="list_pubkey_edit" tools:machine_translated="true">Editar a clave pública</string>
+  <string name="hostpref_ipversion_title" tools:machine_translated="true">Versión de IP</string>
+  <string name="hostpref_ipversion_summary" tools:machine_translated="true">Seleccione a versión do enderezo IP que se utilizará ao establecer a conexión.</string>
+  <string name="ipversion_auto" tools:machine_translated="true">Automático</string>
+  <string name="ipversion_ipv4" tools:machine_translated="true">Só IPv4</string>
+  <string name="ipversion_ipv6" tools:machine_translated="true">Só IPv6</string>
+  <string name="hostpref_jumphost_title" tools:machine_translated="true">Host de salto (ProxyJump)</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">Conéctese a través de outro servidor SSH.</string>
+  <string name="list_jumphost_none" tools:machine_translated="true">Ningún (conexión directa)</string>
+  <string name="terminal_connecting_via_jump" tools:machine_translated="true">Conectando a través do servidor intermedio: %s</string>
+  <string name="terminal_jump_connected" tools:machine_translated="true">Conectado ao servidor de acceso: %s</string>
+  <string name="terminal_jump_authenticated" tools:machine_translated="true">Autenticado no servidor de acceso: %s</string>
+  <string name="terminal_jump_failed" tools:machine_translated="true">Non foi posible establecer a conexión co servidor intermedio %1$s: %2$s</string>
+  <string name="terminal_jump_auth_failed" tools:machine_translated="true">Fallou a autenticación para o servidor de acceso: %s</string>
+  <string name="terminal_jump_not_found" tools:machine_translated="true">Non se atopa o host de acceso na lista de hosts gardados.</string>
+  <string name="terminal_jump_password" tools:machine_translated="true">Contrasinal para o servidor de acceso rápido %s:</string>
+  <string name="view_logs" tools:machine_translated="true">Ver os rexistros</string>
+  <string name="logs_title" tools:machine_translated="true">Rexistros da aplicación</string>
+  <string name="copy_logs" tools:machine_translated="true">Copiar rexistros</string>
+  <string name="logs_copied" tools:machine_translated="true">Os rexistros foron copiados ao portapapeles.</string>
+  <string name="logs_bug_report_info" tools:machine_translated="true">Para informar dun erro, copie estes rexistros e abra un novo informe en https://connectbot.org/bug</string>
+  <string name="no_logs_available" tools:machine_translated="true">Non hai rexistros dispoñibles.</string>
+  <string name="help_section_about" tools:machine_translated="true">Sobre</string>
+  <string name="title_contact" tools:machine_translated="true">Contacto e asistencia</string>
+  <string name="help_section_contact" tools:machine_translated="true">Contacto e asistencia</string>
+  <string name="help_website" tools:machine_translated="true">Sitio web</string>
+  <string name="help_github" tools:machine_translated="true">Código fonte</string>
+  <string name="help_report_bug" tools:machine_translated="true">Informar dun erro</string>
+  <string name="help_section_donate" tools:machine_translated="true">Axude ao desenvolvemento.</string>
+  <string name="help_donate_github" tools:machine_translated="true">Patrocinadores de GitHub</string>
+  <string name="help_donate_coffee" tools:machine_translated="true">Invítame a un café.</string>
+  <string name="colorscheme_default_description" tools:machine_translated="true">Cores predeterminadas do terminal</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Cores precisas para máquinas e persoas.</string>
+  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarizado con fondo claro.</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">Un tema escuro para o terminal.</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">Unha paleta de cores ártica, cun ton azulado do norte.</string>
+  <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Esquema de cores de estilo retro</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">Tema inspirado en Sublime Text.</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Un tema escuro, limpo e cómodo.</string>
+  <string name="pref_profiles_category" tools:machine_translated="true">Perfis</string>
+  <string name="pref_default_profile_title" tools:machine_translated="true">Perfil predeterminado</string>
+  <string name="pref_default_profile_none" tools:machine_translated="true">Ningún (utilizar a configuración do servidor)</string>
+  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">Manteña as teclas especiais sempre visibles.</string>
+  <string name="pref_customterminal_title" tools:machine_translated="true">Tipos de terminal personalizados</string>
+  <string name="pref_customterminal_summary" tools:machine_translated="true">Engade valores personalizados de TERM para os servidores remotos.</string>
+  <string name="dialog_customterminal_title" tools:machine_translated="true">Engadir tipo de terminal personalizado</string>
+  <string name="dialog_customterminal_hint" tools:machine_translated="true">Tipo de terminal (por exemplo, rxvt-unicode)</string>
+  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Xestionar tipos de terminal personalizados</string>
+  <string name="button_add_custom" tools:machine_translated="true">Engadir elemento personalizado…</string>
+  <string name="button_manage_custom" tools:machine_translated="true">Xestionar elementos personalizados…</string>
+  <string name="dialog_custom_value_label" tools:machine_translated="true">Introduza un valor personalizado.</string>
+  <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A e logo a tecla Espacio</string>
+  <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
+  <string name="list_camera_esc_description" tools:machine_translated="true">Esc</string>
+  <string name="list_camera_esc_a_description" tools:machine_translated="true">Esc+A</string>
+  <string name="list_camera_none_description" tools:machine_translated="true">Ningún</string>
+  <string name="list_camera_text_input_description" tools:machine_translated="true">Entrada de texto</string>
+  <string name="list_menu_export_hosts" tools:machine_translated="true">Exportar hosts</string>
+  <string name="list_menu_import_hosts" tools:machine_translated="true">Importar hosts</string>
+  <string name="export_hosts_success" tools:machine_translated="true">Exportáronse %1$d hosts e %2$d perfís.</string>
+  <string name="import_hosts_success" tools:machine_translated="true">Importáronse %1$d hosts (%2$d ignorados) e %3$d perfís (%4$d ignorados).</string>
+  <string name="export_hosts_failed" tools:machine_translated="true">Fallou a exportación dos hosts: %s</string>
+  <string name="import_hosts_failed" tools:machine_translated="true">Fallou a importación dos hosts: %s</string>
+  <string name="export_hosts_title" tools:machine_translated="true">Exportar hosts</string>
+  <string name="shortcut_customize_title" tools:machine_translated="true">Personalizar atallo</string>
+  <string name="shortcut_icon_color" tools:machine_translated="true">Cor da icona</string>
+  <string name="shortcut_icon_style" tools:machine_translated="true">Estilo do icono</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">Usar a cor configurada no servidor.</string>
+  <string name="shortcut_create" tools:machine_translated="true">Crear acceso directo</string>
+  <string name="icon_style_terminal" tools:machine_translated="true">Terminal</string>
+  <string name="icon_style_server" tools:machine_translated="true">Servidor</string>
+  <string name="icon_style_cloud" tools:machine_translated="true">Nuve</string>
+  <string name="icon_style_key" tools:machine_translated="true">Chave</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Autenticación ao iniciar a aplicación.</string>
+  <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Require a pegada, o recoñecemento facial ou un código PIN do dispositivo ao abrir a aplicación.</string>
+  <string name="pref_security_category" tools:machine_translated="true">Seguridade</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot está bloqueado.</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">Toca para desbloquear.</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">Desbloquear ConnectBot</string>
+  <string name="auth_prompt_subtitle" tools:machine_translated="true">Verifica a túa identidade para continuar.</string>
 </resources>

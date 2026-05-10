@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">Einfacher, mächtiger, open-source SSH client.</string>
   <string name="service_desc">Hält SSH-Verbindungen und geladene öffentliche Schlüssel aufrecht</string>
   <string name="app_copyright">Urheberrecht © Kenny Root</string>
@@ -558,4 +558,18 @@
   <string name="auth_screen_unlock_button">Tippen Sie, um zu entsperren</string>
   <string name="auth_prompt_title">ConnectBot entsperren</string>
   <string name="auth_prompt_subtitle">Bestätigen Sie Ihre Identität, um fortzufahren</string>
+  <string name="pref_language_download" tools:machine_translated="true">Sprachpaket herunterladen</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">Download fehlgeschlagen, tippen Sie, um es erneut zu versuchen.</string>
+  <string name="portforward_host_address" tools:machine_translated="true">Host-Adresse</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">Lokaler Host</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Lokaler Host (nur IPv4)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">Lokaler Host (nur IPv6)</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">Alle Adressen</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Alle IPv4-Adressen</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Alle IPv6-Adressen</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">Spezifische Adresse</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Aus der Zwischenablage importieren</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Inhalt des privaten Schlüssels</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Aus der Zwischenablage einfügen</string>
 </resources>

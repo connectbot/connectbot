@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">简洁、强大、开源的SSH客户端。</string>
   <string name="service_desc">维护 SSH 连接和已加载的公钥</string>
   <string name="app_copyright">版权所有 © Kenny Root</string>
@@ -558,4 +558,18 @@
   <string name="auth_screen_unlock_button">点击以解锁</string>
   <string name="auth_prompt_title">解锁 ConnectBot</string>
   <string name="auth_prompt_subtitle">请验证您的身份以继续</string>
+  <string name="pref_language_download" tools:machine_translated="true">下载语言包</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">下载失败，点击重试。</string>
+  <string name="portforward_host_address" tools:machine_translated="true">主机地址</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">本地主机</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">本地主机（仅 IPv4）</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">本地主机（仅 IPv6）</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">所有地址</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">所有 IPv4 地址</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">所有 IPv6 地址</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">特定地址</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">从剪贴板导入</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">私钥内容</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">从剪贴板粘贴</string>
 </resources>

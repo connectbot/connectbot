@@ -1,13 +1,13 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">לקוח SSH פשוט, עצמתי ובקוד פתוח.</string>
   <string name="service_desc">מתפעל חיבורי SSH ומפתחות ציבוריים שנטענים</string>
-	<string name="title_pubkey_list">מפתחות ציבוריים</string>
+  <string name="title_pubkey_list">מפתחות ציבוריים</string>
   <string name="title_port_forwards_list">הפניית פתחות</string>
-	<string name="title_help">עזרה</string>
+  <string name="title_help">עזרה</string>
   <string name="title_colors">צבעים</string>
   <string name="title_color_picker">בחירת צבע</string>
-	<string name="pubkey_generate">יצירה</string>
+  <string name="pubkey_generate">יצירה</string>
   <string name="pubkey_delete">מחיקת מפתח</string>
   <string name="pubkey_gather_entropy">נאסף גיבוב</string>
   <string name="pubkey_touch_prompt">יש לגעת בתיבה זו כדי לאסוף נתונים אקראיים: %1$d%% הושלמו</string>
@@ -15,14 +15,14 @@
   <string name="pubkey_generating">צמד המפתחות נוצר…</string>
   <string name="pubkey_copy_private">העתקת המפתח הפרטי</string>
   <string name="pubkey_copy_public">העתקת המפתח הציבורי</string>
-	<string name="pubkey_change_password">החלפת הססמה</string>
-	<string name="pubkey_unlock">שחרור המפתח</string>
-	<string name="pubkey_load_on_start">טעינת המפתח עם ההפעלה</string>
+  <string name="pubkey_change_password">החלפת הססמה</string>
+  <string name="pubkey_unlock">שחרור המפתח</string>
+  <string name="pubkey_load_on_start">טעינת המפתח עם ההפעלה</string>
   <string name="pubkey_confirm_use">לאמת לפני השימוש</string>
-	<string name="portforward_edit">עריכת הפניית הפתחות</string>
+  <string name="portforward_edit">עריכת הפניית הפתחות</string>
   <string name="portforward_delete">מחיקת הפניית הפתחות</string>
   <string name="prompt_nickname">כינוי:</string>
-	<string name="prompt_source_port">פתחת המקור:</string>
+  <string name="prompt_source_port">פתחת המקור:</string>
   <string name="prompt_destination">יעד:</string>
   <string name="prompt_old_password">ססמה ישנה:</string>
   <string name="prompt_password">ססמה:</string>
@@ -40,21 +40,21 @@
   <string name="host_fingerprint">טביעת האצבע של המפתח שלהמארח %1$s היא %2$s</string>
   <string name="alert_passwords_do_not_match_msg">הססמאות אינן תואמות!</string>
   <string name="alert_wrong_password_msg">ססמה שגויה!</string>
-	<string name="button_resize">שינוי גודל</string>
+  <string name="button_resize">שינוי גודל</string>
   <string name="alert_disconnect_msg">החיבור אבד</string>
-	<string name="pref_emulation_category">הדמיית מסוף</string>
+  <string name="pref_emulation_category">הדמיית מסוף</string>
   <string name="pref_emulation_title">מצב הדמיה</string>
-	<string name="pref_scrollback_title">גודל גלילה אחורה</string>
+  <string name="pref_scrollback_title">גודל גלילה אחורה</string>
   <string name="pref_scrollback_summary">גודל מטמון הגלילה שיישאר בזיכרון בכל מסוף</string>
   <string name="pref_ui_category">מנשק משתמש</string>
   <string name="pref_rotation_title">מצב סיבוב</string>
-	<string name="pref_fullscreen_title">מסך מלא</string>
+  <string name="pref_fullscreen_title">מסך מלא</string>
   <string name="pref_fullscreen_summary">להסתיר את שורת המצב בעת השימוש במסוף</string>
   <string name="pref_memkeys_title">לשמור את המפתחות בזיכרון</string>
   <string name="pref_memkeys_summary">להשאיר את המפתחות לאחר השחרור בזיכרון עד ששירות המנגנון מושבת</string>
   <string name="pref_keymode_title">קיצורי ספריות</string>
-	<string name="pref_camera_title">קיצור דרך מצלמה</string>
-	<string name="pref_keepalive_title">להשאיר את המסך פעיל</string>
+  <string name="pref_camera_title">קיצור דרך מצלמה</string>
+  <string name="pref_keepalive_title">להשאיר את המסך פעיל</string>
   <string name="pref_keepalive_summary">למנוע את כיבוי המסך בעת העבודה עם המסוף</string>
   <string name="pref_wifilock_title">להשאיר את הרשת האלחוטית פעילה</string>
   <string name="pref_wifilock_summary">למנוע את כיבוי מתאם הרשת האלחוטית כאשר ישנו חלון פעיל</string>
@@ -88,8 +88,8 @@
   <string name="hostpref_username_title">שם משתמש</string>
   <string name="hostpref_hostname_title">מארח</string>
   <string name="hostpref_port_title">פתחה</string>
-	<string name="console_menu_close">סגירה</string>
-	<string name="console_menu_paste">הדבקה</string>
+  <string name="console_menu_close">סגירה</string>
+  <string name="console_menu_paste">הדבקה</string>
   <string name="console_menu_portforwards">הפניית פתחות</string>
   <string name="console_menu_resize">אילוץ גודל</string>
   <string name="console_menu_urlscan">סריקת כתובות</string>
@@ -99,7 +99,7 @@
   <string name="portforward_remote">מרוחק</string>
   <string name="portforward_dynamic">דינמי (SOCKS)</string>
   <string name="portforward_pos">יצירת הפניית פתחות</string>
-	<string name="format_username">username</string>
+  <string name="format_username">username</string>
   <string name="format_hostname">hostname</string>
   <string name="format_port">port</string>
   <string name="list_menu_pubkeys">ניהול מפתחות ציבוריים</string>
@@ -110,7 +110,7 @@
   <string name="list_host_edit">עריכת מארח</string>
   <string name="list_host_portforwards">עריכת הפניית פתחות</string>
   <string name="list_host_delete">מחיקת מארח</string>
-	<string name="list_rotation_default">בררת מחדל</string>
+  <string name="list_rotation_default">בררת מחדל</string>
   <string name="list_rotation_land">אילוץ מצב אופקי</string>
   <string name="list_rotation_port">אילוץ מצב אנכי</string>
   <string name="list_rotation_auto">אוטומטי</string>
@@ -119,10 +119,10 @@
   <string name="list_camera_esc">Esc</string>
   <string name="list_camera_esc_a">Esc+A</string>
   <string name="list_camera_none">ללא</string>
-	<string name="delete_message">האם אכן למחוק את \'%1$s\'?</string>
+  <string name="delete_message">האם אכן למחוק את \'%1$s\'?</string>
   <string name="delete_pos">כן, למחוק</string>
   <string name="delete_neg">ביטול</string>
-	<string name="terminal_connecting">מתבצעת התחברות אל %1$s:%2$d דרך %3$s</string>
+  <string name="terminal_connecting">מתבצעת התחברות אל %1$s:%2$d דרך %3$s</string>
   <string name="terminal_sucess">מפתח של המארח המאומת \'%1$s\'‏: %2$s</string>
   <string name="terminal_failed">אימות מפתח המארח נכשל.</string>
   <string name="terminal_using_s2c_algorithm">אלגוריתם שרת ללקוח: %1$s %2$s</string>
@@ -146,10 +146,430 @@
   <string name="yes">כן</string>
   <string name="menu_colors_reset">איפוס</string>
   <string name="app_is_running">ConnectBot פעיל</string>
-	<string name="colors_fg_label">קדמה:%1$d</string>
+  <string name="colors_fg_label">קדמה:%1$d</string>
   <string name="color_bg_label">רקע:%1$d</string>
   <string name="image_description_connected">יש חיבור.</string>
-	<string name="image_description_toggle_control_character">החלפת מצב תווי בקרה.</string>
+  <string name="image_description_toggle_control_character">החלפת מצב תווי בקרה.</string>
   <string name="image_description_send_escape_character">שליחת תו סליקה.</string>
   <string name="image_description_show_keyboard">הצגת מקלדת.</string>
+  <string name="app_copyright" tools:machine_translated="true">זכויות יוצרים © קני רוט</string>
+  <string name="title_eula" tools:machine_translated="true">רישיון</string>
+  <string name="title_settings" tools:machine_translated="true">הגדרות</string>
+  <string name="title_pubkey_generate" tools:machine_translated="true">צור</string>
+  <string name="terms_and_conditions" tools:machine_translated="true">תנאים והגבלות</string>
+  <string name="hints" tools:machine_translated="true">טיפים</string>
+  <string name="keyboard_shortcuts" tools:machine_translated="true">קיצורי מקלדת</string>
+  <string name="increase_font_size" tools:machine_translated="true">הגדל את גודל הגופן</string>
+  <string name="increase_font_shortcut" tools:machine_translated="true">Ctrl ו- +</string>
+  <string name="decrease_font_size" tools:machine_translated="true">הקטן את גודל הגופן</string>
+  <string name="decrease_font_shortcut" tools:machine_translated="true">Ctrl ו- -</string>
+  <string name="paste_shortcut" tools:machine_translated="true">Ctrl+Shift+V</string>
+  <string name="pubkey_copy_private_openssh" tools:machine_translated="true">העתק מפתח פרטי (פורמט OpenSSH)</string>
+  <string name="pubkey_copy_private_pem" tools:machine_translated="true">העתק מפתח פרטי (פורמט PEM)</string>
+  <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">העתק מפתח פרטי (מוצפן)</string>
+  <string name="pubkey_export_public" tools:machine_translated="true">ייצא את המפתח הציבורי</string>
+  <string name="pubkey_export_private" tools:machine_translated="true">ייצא מפתח פרטי</string>
+  <string name="pubkey_export_private_openssh" tools:machine_translated="true">ייצא מפתח פרטי (פורמט OpenSSH)</string>
+  <string name="pubkey_export_private_pem" tools:machine_translated="true">ייצא מפתח פרטי (פורמט PEM)</string>
+  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">ייצא מפתח פרטי (מוצפן)</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">הגדר סיסמה לייצוא.</string>
+  <string name="pubkey_export_passphrase_message" tools:machine_translated="true">הזן סיסמה כדי להצפין את המפתח המיוצא.</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">אשר את הסיסמה החלופית</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">הביטויים הסודיים אינם תואמים.</string>
+  <string name="pubkey_import_encrypted_title" tools:machine_translated="true">ייבא מפתח מוצפן.</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">הזן את הסיסמה כדי לפענח את המפתח \'%1$s\' (סוג: %2$s).</string>
+  <string name="pubkey_import_button" tools:machine_translated="true">ייבא</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">הצפן את המפתח לצורך אחסון.</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">השתמש באותה סיסמה להצפנה.</string>
+  <string name="pubkey_import_new_password" tools:machine_translated="true">סיסמה חדשה</string>
+  <string name="pubkey_import_confirm_password" tools:machine_translated="true">אמת את הסיסמה</string>
+  <string name="pubkey_list_empty" tools:machine_translated="true">הקישו על \"תפריט\" כדי ליצור או לייבא צמדי מפתחות.</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">פורמט לא ידוע</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">הזן את הסיסמה כדי לפתוח את המפתח \'%1$s\'.</string>
+  <string name="pubkey_nickname_exists" tools:machine_translated="true">מפתח עם הכינוי הזה כבר קיים.</string>
+  <string name="prompt_username" tools:machine_translated="true">שם משתמש:</string>
+  <string name="host_key_verification_title" tools:machine_translated="true">אימות מפתח המארח</string>
+  <string name="fingerprint_format_header" tools:machine_translated="true">פורמט טביעת אצבע</string>
+  <string name="host_key_type_and_size" tools:machine_translated="true">%1$s, %2$d ביטים</string>
+  <string name="fingerprint_copy_description" tools:machine_translated="true">העתק את טביעת האצבע ללוח הגזירים.</string>
+  <string name="network_lost_grace_period" tools:machine_translated="true">אבדה ההתחברות לרשת, ממתינים לחיבור מחדש…</string>
+  <string name="network_grace_period_expired" tools:machine_translated="true">הרשת לא שוחזרה, מתנתקים…</string>
+  <string name="network_restored_same_ip" tools:machine_translated="true">החיבור לרשת שוחזר, החיבור נשמר.</string>
+  <string name="network_restored_ip_changed" tools:machine_translated="true">החיבור לרשת שוחזר, אך כתובת ה-IP השתנתה, מתבצע חיבור מחדש…</string>
+  <string name="network_restored_no_previous_state" tools:machine_translated="true">החיבור לרשת שוחזר, בודקים את החיבור…</string>
+  <string name="pref_fontfamily_title" tools:machine_translated="true">גופן</string>
+  <string name="pref_customfont_title" tools:machine_translated="true">הוסף גופן מותאם אישית</string>
+  <string name="pref_customfont_summary" tools:machine_translated="true">הוסף גופן מתוך Google Fonts לפי שם.</string>
+  <string name="dialog_customfont_title" tools:machine_translated="true">הוסף גופן מותאם אישית</string>
+  <string name="dialog_customfont_hint" tools:machine_translated="true">שם הגופן של Google (לדוגמה, Cascadia Code)</string>
+  <string name="button_add" tools:machine_translated="true">הוסף</string>
+  <string name="button_remove" tools:machine_translated="true">הסר</string>
+  <string name="font_validating" tools:machine_translated="true">בדיקת הגופן…</string>
+  <string name="font_downloading" tools:machine_translated="true">מוריד גופן…</string>
+  <string name="pref_localfont_title" tools:machine_translated="true">ייבא גופן מקומי</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">ייבא קובץ גופן מהאחסון (TTF, OTF).</string>
+  <string name="dialog_localfont_title" tools:machine_translated="true">ייבא גופן</string>
+  <string name="dialog_localfont_hint" tools:machine_translated="true">שם תצוגה עבור הגופן.</string>
+  <string name="button_import" tools:machine_translated="true">ייבא</string>
+  <string name="font_importing" tools:machine_translated="true">ייבוא גופן…</string>
+  <string name="pref_backupkeys_title" tools:machine_translated="true">גיבוי מפתחות ציבוריים</string>
+  <string name="pref_backupkeys_summary" tools:machine_translated="true">שמרו עותקים של המפתחות הפרטיים באמצעות מנגנון הגיבוי של אנדרואיד.</string>
+  <string name="pref_language_title" tools:machine_translated="true">שפה</string>
+  <string name="pref_language_system_default" tools:machine_translated="true">ברירת המחדל של המערכת</string>
+  <string name="pref_language_download" tools:machine_translated="true">הורד חבילת שפה</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">ההורדה נכשלה, לחצו כדי לנסות שוב.</string>
+  <string name="pref_theme_title" tools:machine_translated="true">עיצוב</string>
+  <string name="pref_theme_system" tools:machine_translated="true">ברירת המחדל של המערכת</string>
+  <string name="pref_theme_light" tools:machine_translated="true">בהיר</string>
+  <string name="pref_theme_dark" tools:machine_translated="true">כהה</string>
+  <string name="pref_titlebarhide_title" tools:machine_translated="true">הסתר אוטומטי של סרגל הכותרת</string>
+  <string name="pref_titlebarhide_summary" tools:machine_translated="true">הקש על הקונסולה כדי להציג את סרגל הכותרת ולגשת לתפריט.</string>
+  <string name="pref_alwaysvisible_title" tools:machine_translated="true">מקשים מיוחדים – תמיד גלויים</string>
+  <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">תנועת גלילה למעלה/למטה בדף</string>
+  <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">החלקו את השליש השמאלי של המסך כדי לשלוח את הפקודות \"העלה דף\" או \"הורד דף\" למסוף.</string>
+  <string name="pref_keyboard_category" tools:machine_translated="true">מקלדת</string>
+  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift + מקש מספר הם מקשי F.</string>
+  <string name="pref_shiftfkeys_summary" tools:machine_translated="true">במקלדות פיזיות, לחיצה על מקשי המספרים בשילוב עם מקש ה-Shift שולחת את הפקודות F1-F10.</string>
+  <string name="pref_ctrlfkeys_title" tools:machine_translated="true">השילוב של Ctrl ומקש מספר הוא מקש פונקציה.</string>
+  <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">במקלדות תוכנה, לחיצה על מקשי המספרים בשילוב עם מקש Ctrl שולחת את הפקודות F1 עד F10.</string>
+  <string name="pref_volumefont_title" tools:machine_translated="true">לחצני עוצמת הקול משנים את גודל הגופן.</string>
+  <string name="pref_volumefont_summary" tools:machine_translated="true">ניתן לשנות גם את גודל הגופן בהגדרות הפרופיל.</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">הישאר מחובר ברקע.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">שמרו על החיבורים שלכם פעילים גם כשאתם עוברים לאפליקציות אחרות.</string>
+  <string name="pref_stickymodifiers_title" tools:machine_translated="true">שינויים קבועים</string>
+  <string name="only_alt" tools:machine_translated="true">רק Alt</string>
+  <string name="pref_bumpyarrows_summary" tools:machine_translated="true">הפעל רטט בעת שליחת פקודות באמצעות מקשי החצים; שימושי במיוחד במקרים של חיבור איטי.</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">הפעל צליל בעת הפעלת התראה במסוף.</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">רטט בעת קבלת התראה ממכשיר הקצה.</string>
+  <string name="color_red" tools:machine_translated="true">אדום</string>
+  <string name="color_pink" tools:machine_translated="true">ורוד</string>
+  <string name="color_purple" tools:machine_translated="true">סגול</string>
+  <string name="color_deep_purple" tools:machine_translated="true">סגול כהה</string>
+  <string name="color_indigo" tools:machine_translated="true">אינדיגו</string>
+  <string name="color_blue" tools:machine_translated="true">כחול</string>
+  <string name="color_light_blue" tools:machine_translated="true">תכלת בהיר</string>
+  <string name="color_cyan" tools:machine_translated="true">תכלת</string>
+  <string name="color_teal" tools:machine_translated="true">גוון טורקיז</string>
+  <string name="color_green" tools:machine_translated="true">ירוק</string>
+  <string name="color_light_green" tools:machine_translated="true">ירוק בהיר</string>
+  <string name="color_lime" tools:machine_translated="true">ירוק ליים</string>
+  <string name="color_yellow" tools:machine_translated="true">צהוב</string>
+  <string name="color_amber" tools:machine_translated="true">צבע ענברי</string>
+  <string name="color_orange" tools:machine_translated="true">כתום</string>
+  <string name="color_gray" tools:machine_translated="true">אפור</string>
+  <string name="hostpref_fontfamily_title" tools:machine_translated="true">גופן</string>
+  <string name="hostpref_colorscheme_title" tools:machine_translated="true">ערכת צבעים עבור הטרמינל</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">סגור לאחר ניתוק</string>
+  <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">סגור באופן מיידי לאחר ניתוק החיבור מרחוק, ללא הודעה.</string>
+  <string name="hostpref_save_password_summary" tools:machine_translated="true">שמור את הסיסמה לכניסה בצורה מאובטחת לצורך אימות אוטומטי.</string>
+  <string name="hostpref_password_title" tools:machine_translated="true">סיסמה</string>
+  <string name="hostpref_password_unchanged" tools:machine_translated="true">סיסמה (ללא שינוי)</string>
+  <string name="hostpref_clear_password" tools:machine_translated="true">נקה סיסמה שמורה</string>
+  <string name="hostpref_profile_title" tools:machine_translated="true">פרופיל</string>
+  <string name="hostpref_profile_summary" tools:machine_translated="true">בחרו פרופיל כדי להשתמש בהגדרות הטרמינל שלו.</string>
+  <string name="hostpref_profile_none" tools:machine_translated="true">אף אחד (השתמש בהגדרות המארח)</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">נשלט על ידי פרופיל.</string>
+  <string name="font_use_default" tools:machine_translated="true">השתמש בברירת המחדל</string>
+  <string name="font_system_default" tools:machine_translated="true">ברירת מחדל (גופן ברוחב קבוע)</string>
+  <string name="pubkey_unknown" tools:machine_translated="true">מפתח לא ידוע.</string>
+  <string name="colorscheme_default" tools:machine_translated="true">ברירת מחדל</string>
+  <string name="profile_editor_title_new" tools:machine_translated="true">פרופיל חדש</string>
+  <string name="profile_editor_title_edit" tools:machine_translated="true">ערוך פרופיל</string>
+  <string name="profile_editor_save" tools:machine_translated="true">שמור</string>
+  <string name="profile_editor_name_label" tools:machine_translated="true">שם פרופיל</string>
+  <string name="profile_editor_section_icon_color" tools:machine_translated="true">צבע אייקון</string>
+  <string name="profile_editor_section_color_scheme" tools:machine_translated="true">ערכת צבעים</string>
+  <string name="profile_editor_section_font" tools:machine_translated="true">גופן</string>
+  <string name="profile_editor_section_terminal" tools:machine_translated="true">מסוף</string>
+  <string name="profile_editor_font_family_title" tools:machine_translated="true">משפחת גופנים</string>
+  <string name="profile_editor_font_size_title" tools:machine_translated="true">גודל גופן: %d</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">גודל כוח</string>
+  <string name="profile_editor_force_size_summary" tools:machine_translated="true">הגדר גודל ספציפי לחלון הטרמינל (מספר עמודות כפול מספר שורות) במקום לאפשר לו להתאים את גודלו באופן אוטומטי לגודל המסך.</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">הפעל הגדרת גודל קבוע.</string>
+  <string name="profile_editor_force_size_columns" tools:machine_translated="true">עמודות</string>
+  <string name="profile_editor_force_size_rows" tools:machine_translated="true">שורות</string>
+  <string name="profile_icon_color_none" tools:machine_translated="true">אף אחד (השתמש בצבע ברירת המחדל)</string>
+  <string name="profile_list_title" tools:machine_translated="true">פרופילים</string>
+  <string name="profile_list_create_profile" tools:machine_translated="true">צור פרופיל</string>
+  <string name="profile_list_empty_message" tools:machine_translated="true">טרם נוצרו פרופילים. לחצו על \"+\" כדי ליצור פרופיל.</string>
+  <string name="profile_list_more_options" tools:machine_translated="true">אפשרויות נוספות</string>
+  <string name="profile_list_duplicate" tools:machine_translated="true">שכפל</string>
+  <string name="profile_list_delete" tools:machine_translated="true">מחק</string>
+  <string name="profile_create_dialog_title" tools:machine_translated="true">צור פרופיל</string>
+  <string name="profile_create_name_label" tools:machine_translated="true">שם פרופיל</string>
+  <string name="profile_create_button" tools:machine_translated="true">צור</string>
+  <string name="profile_create_cancel" tools:machine_translated="true">בטל</string>
+  <string name="profile_delete_dialog_title" tools:machine_translated="true">מחק פרופיל</string>
+  <string name="profile_delete_dialog_message" tools:machine_translated="true">האם אתה בטוח שאתה רוצה למחוק את \'%s\'?</string>
+  <string name="profile_delete_button" tools:machine_translated="true">מחק</string>
+  <string name="profile_delete_cancel" tools:machine_translated="true">בטל</string>
+  <string name="profile_summary_font" tools:machine_translated="true">גופן: %1$s, גודל: %2$d נקודות</string>
+  <string name="profile_summary_emulation" tools:machine_translated="true">אמולציה: %s</string>
+  <string name="console_menu_reconnect" tools:machine_translated="true">התחבר מחדש</string>
+  <string name="console_url_no_handler" tools:machine_translated="true">אין אפליקציה זמינה לפתיחת כתובת האתר הזו.</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">סוג כתובת האתר הזה אינו נתמך.</string>
+  <string name="portforward_save" tools:machine_translated="true">שמור</string>
+  <string name="list_menu_disconnect" tools:machine_translated="true">נתק את כולם</string>
+  <string name="list_host_duplicate" tools:machine_translated="true">שכפל את המארח</string>
+  <string name="list_host_forget_keys" tools:machine_translated="true">מחק מפתחות מארח שמורים</string>
+  <string name="list_camera_text_input" tools:machine_translated="true">הזנת טקסט</string>
+  <string name="disconnect_all_message" tools:machine_translated="true">האם אתה בטוח שברצונך להתנתק מכל המארחים המחוברים?</string>
+  <string name="disconnect_all_pos" tools:machine_translated="true">כן, נתק.</string>
+  <string name="disconnect_all_neg" tools:machine_translated="true">בטל</string>
+  <string name="terminal_kex_algorithm" tools:machine_translated="true">אלגוריתם להחלפת מפתחות: %s</string>
+  <string name="terminal_auth_saved_password" tools:machine_translated="true">מנסה להשתמש בסיסמה השמורה…</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">אימות הסיסמה השמורה נכשל.</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">מבוקשת אימות ביומטרי עבור המפתח \'%1$s\'.</string>
+  <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">המפתח הביומטרי \'%1$s\' בוטל. הדבר עלול לקרות כאשר טביעות אצבע חדשות נרשמות במכשיר. אנא צרו מפתח חדש.</string>
+  <string name="list_color_schemes" tools:machine_translated="true">ערכות צבעים</string>
+  <string name="button_manage_schemes" tools:machine_translated="true">ניהול ערכות צבעים</string>
+  <string name="title_scheme_manager" tools:machine_translated="true">ניהול ערכות צבעים</string>
+  <string name="button_new_scheme" tools:machine_translated="true">ערכת צבעים חדשה</string>
+  <string name="button_duplicate_scheme" tools:machine_translated="true">שכפל</string>
+  <string name="button_rename_scheme" tools:machine_translated="true">שנה שם</string>
+  <string name="button_delete_scheme" tools:machine_translated="true">מחק</string>
+  <string name="dialog_title_new_scheme" tools:machine_translated="true">ערכת צבעים חדשה</string>
+  <string name="dialog_title_rename_scheme" tools:machine_translated="true">שנה שם של ערכת צבעים</string>
+  <string name="label_scheme_name" tools:machine_translated="true">שם התוכנית</string>
+  <string name="label_scheme_description" tools:machine_translated="true">תיאור (אופציונלי)</string>
+  <string name="dialog_title_delete_scheme" tools:machine_translated="true">למחוק תבנית?</string>
+  <string name="dialog_message_delete_scheme" tools:machine_translated="true">האם אתה בטוח שברצונך למחוק את \"%1$s\"? פעולה זו אינה ניתנת לביטול.</string>
+  <string name="button_confirm" tools:machine_translated="true">אשר</string>
+  <string name="button_cancel" tools:machine_translated="true">בטל</string>
+  <string name="label_built_in_scheme" tools:machine_translated="true">מובנה</string>
+  <string name="label_custom_scheme" tools:machine_translated="true">מותאם אישית</string>
+  <string name="empty_custom_schemes" tools:machine_translated="true">לא קיימות תוכניות מותאמות אישית. לחצו על \"תוכנית חדשה\" כדי ליצור אחת.</string>
+  <string name="button_edit_palette" tools:machine_translated="true">ערוך את הפלטה</string>
+  <string name="button_export_scheme" tools:machine_translated="true">ייצא ערכת צבעים</string>
+  <string name="button_import_scheme" tools:machine_translated="true">ייבא ערכת צבעים</string>
+  <string name="message_export_success" tools:machine_translated="true">יוצא ל-%1$s</string>
+  <string name="message_import_success" tools:machine_translated="true">הסכמה %1$s יובאה בהצלחה.</string>
+  <string name="error_export_failed" tools:machine_translated="true">הייצוא של התוכנית נכשל: %1$s</string>
+  <string name="error_import_failed" tools:machine_translated="true">הייבוא של התוכנית נכשל: %1$s</string>
+  <string name="error_invalid_json" tools:machine_translated="true">קובץ JSON לא תקין.</string>
+  <string name="title_palette_editor" tools:machine_translated="true">ערוך את פלטת הצבעים</string>
+  <string name="button_reset_all_colors" tools:machine_translated="true">אפס את הכל</string>
+  <string name="section_ansi_colors" tools:machine_translated="true">צבעי ANSI (0–15)</string>
+  <string name="dialog_title_edit_color" tools:machine_translated="true">ערוך צבע %1$d</string>
+  <string name="dialog_title_reset_all" tools:machine_translated="true">לאפס את כל הצבעים?</string>
+  <string name="dialog_message_reset_all" tools:machine_translated="true">פעולה זו תאפס את כל 256 הצבעים לערכים המוגדרים כברירת מחדל. לא ניתן לבטל פעולה זו.</string>
+  <string name="label_red" tools:machine_translated="true">אדום</string>
+  <string name="label_green" tools:machine_translated="true">ירוק</string>
+  <string name="label_blue" tools:machine_translated="true">כחול</string>
+  <string name="label_hex_color" tools:machine_translated="true">צבע הקסדצימלי</string>
+  <string name="section_fg_bg_colors" tools:machine_translated="true">צבע רקע וצבע אובייקט</string>
+  <string name="label_foreground_color" tools:machine_translated="true">צבע רקע ראשי</string>
+  <string name="label_background_color" tools:machine_translated="true">צבע רקע</string>
+  <string name="label_base_scheme" tools:machine_translated="true">ערכת צבעים בסיסית:</string>
+  <string name="menu_manage_colors" tools:machine_translated="true">ניהול ערכות צבעים</string>
+  <string name="palette_editor_builtin_note" tools:machine_translated="true">ערכות צבעים מובנות ניתנות לצפייה בלבד. צרו עותק כדי להתאים אישית.</string>
+  <string name="section_color_preview" tools:machine_translated="true">תצוגה מקדימה</string>
+  <string name="image_description_disconnected" tools:machine_translated="true">מנותק.</string>
+  <string name="image_description_send_tab_character" tools:machine_translated="true">שלח את תו הטאב.</string>
+  <string name="image_description_hide_keyboard" tools:machine_translated="true">הסתר את המקלדת.</string>
+  <string name="image_description_up" tools:machine_translated="true">חץ למעלה</string>
+  <string name="image_description_down" tools:machine_translated="true">חץ כלפי מטה</string>
+  <string name="image_description_left" tools:machine_translated="true">חץ שמאלה</string>
+  <string name="image_description_right" tools:machine_translated="true">חץ ימינה</string>
+  <string name="button_key_esc" tools:machine_translated="true">Esc (מקש בריחה)</string>
+  <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="button_key_home" tools:machine_translated="true">בית</string>
+  <string name="button_key_end" tools:machine_translated="true">סיום</string>
+  <string name="button_key_pgup" tools:machine_translated="true">עמוד קודם</string>
+  <string name="button_key_pgdn" tools:machine_translated="true">דף למטה</string>
+  <string name="button_key_f1" tools:machine_translated="true">F1</string>
+  <string name="button_key_f2" tools:machine_translated="true">F2</string>
+  <string name="button_key_f3" tools:machine_translated="true">F3</string>
+  <string name="button_key_f4" tools:machine_translated="true">F4</string>
+  <string name="button_key_f5" tools:machine_translated="true">F5</string>
+  <string name="button_key_f6" tools:machine_translated="true">F6</string>
+  <string name="button_key_f7" tools:machine_translated="true">F7</string>
+  <string name="button_key_f8" tools:machine_translated="true">F8</string>
+  <string name="button_key_f9" tools:machine_translated="true">F9</string>
+  <string name="button_key_f10" tools:machine_translated="true">F10</string>
+  <string name="button_key_f11" tools:machine_translated="true">F11</string>
+  <string name="button_key_f12" tools:machine_translated="true">F12</string>
+  <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">הזנת טקסט</string>
+  <string name="terminal_text_input_dialog_title" tools:machine_translated="true">הזנת טקסט</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">הזן את הטקסט שברצונך לשלוח למסוף.</string>
+  <string name="terminal_text_input_resize_handle" tools:machine_translated="true">שנה גודל</string>
+  <string name="console_menu_text_input" tools:machine_translated="true">הזנת טקסט</string>
+  <string name="button_send" tools:machine_translated="true">שלח</string>
+  <string name="button_ok" tools:machine_translated="true">בסדר</string>
+  <string name="button_close" tools:machine_translated="true">סגור</string>
+  <string name="button_back" tools:machine_translated="true">חזרה</string>
+  <string name="button_navigate_up" tools:machine_translated="true">ניווט למעלה</string>
+  <string name="button_more_options" tools:machine_translated="true">אפשרויות נוספות</string>
+  <string name="button_host_options" tools:machine_translated="true">אפשרויות מארח</string>
+  <string name="button_collapse" tools:machine_translated="true">כווץ</string>
+  <string name="error_key_load_failed" tools:machine_translated="true">נכשלה טעינת המפתח \'%1$s\': %2$s</string>
+  <string name="error_connection_failed" tools:machine_translated="true">לא ניתן להתחבר ל-%1$s (%2$s): %3$s</string>
+  <string name="error_port_forward_load_failed" tools:machine_translated="true">לא ניתן לטעון את הגדרות העברת הפורטים עבור %1$s: %2$s</string>
+  <string name="error_host_save_failed" tools:machine_translated="true">נכשלה שמירת תצורת המארח %1$s: %2$s</string>
+  <string name="error_color_scheme_load_failed" tools:machine_translated="true">לא ניתן לטעון את ערכת הצבעים: %s</string>
+  <string name="host_duplicate_nickname" tools:machine_translated="true">%1$s (עותק)</string>
+  <string name="empty_hosts_message" tools:machine_translated="true">לא הוגדרו מארחים.</string>
+  <string name="empty_pubkeys_message" tools:machine_translated="true">לא נמצאו מפתחות.</string>
+  <string name="empty_port_forwards_message" tools:machine_translated="true">לא הוגדרו העברות פורטים.</string>
+  <string name="empty_urls_message" tools:machine_translated="true">לא נמצאו כתובות URL בחיץ הטרמינל.</string>
+  <string name="console_default_title" tools:machine_translated="true">מסוף</string>
+  <string name="host_editor_quick_connect_label" tools:machine_translated="true">חיבור מהיר</string>
+  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">משתמש\@שם-מארח:פורט</string>
+  <string name="host_editor_quick_connect_example" tools:machine_translated="true">דוגמה: root\@192.168.1.1:22</string>
+  <string name="host_editor_show_advanced" tools:machine_translated="true">הצג אפשרויות מתקדמות</string>
+  <string name="host_editor_hide_advanced" tools:machine_translated="true">הסתר אפשרויות מתקדמות</string>
+  <string name="resize_width_label" tools:machine_translated="true">רוחב (עמודות)</string>
+  <string name="resize_height_label" tools:machine_translated="true">גובה (שורות)</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">בטל את הגדרת הגודל הקבוע.</string>
+  <string name="pubkey_editor_key_type_label" tools:machine_translated="true">סוג מפתח</string>
+  <string name="pubkey_editor_options_label" tools:machine_translated="true">אפשרויות</string>
+  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">לא ניתן לפתוח מפתחות מוצפנים בעת הפעלת המערכת.</string>
+  <string name="pubkey_type_label" tools:machine_translated="true">סוג: %s</string>
+  <string name="pubkey_encrypted_description" tools:machine_translated="true">מוצפן</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">לא מוצפן</string>
+  <string name="pubkey_biometric_protection" tools:machine_translated="true">הגנה באמצעות טביעת אצבע</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">הגנו על המפתח הזה באמצעות טביעת האצבע שלכם.</string>
+  <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">לא רשומה טביעת אצבע. הגדירו טביעת אצבע בהגדרות המכשיר כדי להשתמש בתכונה זו.</string>
+  <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">הגנה באמצעות טביעת אצבע זמינה רק עבור מפתחות RSA ו-EC.</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">אמת את זהותך כדי להשתמש במפתח.</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">הניחו את האצבע על חיישן טביעת האצבע כדי לפתוח את \'%1$s\'.</string>
+  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">מוגן באמצעות טביעת אצבע</string>
+  <string name="pubkey_biometric_not_available" tools:machine_translated="true">אימות באמצעות טביעת אצבע אינו זמין.</string>
+  <string name="portforward_nickname_placeholder" tools:machine_translated="true">שרת אינטרנט פנימי</string>
+  <string name="portforward_port_range_error" tools:machine_translated="true">המספר של הפורט חייב להיות בין 1 ל-65535.</string>
+  <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">הפורמט צריך להיות שם מארח:פורט (לדוגמה, localhost:80).</string>
+  <string name="portforward_host_address" tools:machine_translated="true">כתובת המארח</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">מארח מקומי</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">מארח מקומי (גרסת IPv4 בלבד)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">מארח מקומי (רק IPv6)</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">כל הכתובות</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">כל כתובות ה-IPv4</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">כל כתובות ה-IPv6</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">כתובת ספציפית</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="portforward_type_label" tools:machine_translated="true">סוג: %s</string>
+  <string name="portforward_enable" tools:machine_translated="true">הפעל</string>
+  <string name="portforward_disable" tools:machine_translated="true">בטל</string>
+  <string name="portforward_enabled" tools:machine_translated="true">העברת פורטים מופעלת.</string>
+  <string name="portforward_disabled" tools:machine_translated="true">העברת פורטים מושבתת.</string>
+  <string name="protocol_spinner_label" tools:machine_translated="true">פרוטוקול</string>
+  <string name="expand" tools:machine_translated="true">הרחב</string>
+  <string name="hostpref_authagent_with_confirmation" tools:machine_translated="true">דורש אישור</string>
+  <string name="hostpref_add_host" tools:machine_translated="true">הוסף מארח</string>
+  <string name="hostpref_save_host" tools:machine_translated="true">שמור מארח</string>
+  <string name="hostpref_setting_title" tools:machine_translated="true">הגדרות מארח</string>
+  <string name="pubkey_import_existing" tools:machine_translated="true">ייבא מפתח ציבורי קיים</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">ייבא מלוח הגזירים</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">תוכן המפתח הפרטי</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">הדבק מלוח הגזירים</string>
+  <string name="notification_permission_title" tools:machine_translated="true">הישארו מחוברים ברקע.</string>
+  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot זקוק לאישור הודעות כדי לשמור על חיבורי הרשת שלך פעילים כשאתה עובר בין אפליקציות. בלעדיו, ייתכן שהמערכת תנתק את החיבורים שלך כדי לחסוך בסוללה.</string>
+  <string name="grant_permission" tools:machine_translated="true">אפשר.</string>
+  <string name="connect_anyway" tools:machine_translated="true">התחבר בכל מקרה.</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">יש צורך באישור להצגת התראות.</string>
+  <string name="notification_permission_denied_message" tools:machine_translated="true">כדי לשמור על חיבורי הרשת שלך פעילים ברקע, אנא הפעל התראות עבור ConnectBot בהגדרות המערכת.</string>
+  <string name="open_settings" tools:machine_translated="true">פתח הגדרות</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">ייתכן שהחיבורים ינותקו ללא אישור להצגת התראות.</string>
+  <string name="notification_permission_console_warning" tools:machine_translated="true">ייתכן שהחיבור ינותק בזמן שהאפליקציה פועלת ברקע.</string>
+  <string name="terminal_no_route" tools:machine_translated="true">האם אתם מנסים להתחבר למחשב ברשת המקומית? אנא העניקו הרשאות לרשת המקומית.</string>
+  <string name="loading_message" tools:machine_translated="true">טוען…</string>
+  <string name="migration_checking" tools:machine_translated="true">בדיקת מסד הנתונים...</string>
+  <string name="migration_title" tools:machine_translated="true">העברת מסד נתונים.</string>
+  <string name="migration_warning" tools:machine_translated="true">אנא אל תסגרו את האפליקציה במהלך תהליך ההעברה.</string>
+  <string name="migration_stats_hosts" tools:machine_translated="true">מספר המארחים שהועברו: %d</string>
+  <string name="migration_stats_pubkeys" tools:machine_translated="true">מספר מפתחות SSH שהועברו: %d</string>
+  <string name="migration_stats_port_forwards" tools:machine_translated="true">מספר העברת הפורטים שהושלמה: %d</string>
+  <string name="migration_stats_known_hosts" tools:machine_translated="true">מספר המארחים הידועים שהועברו: %d</string>
+  <string name="migration_failed_title" tools:machine_translated="true">ההעברה נכשלה.</string>
+  <string name="migration_failed_message" tools:machine_translated="true">אירעה שגיאה במהלך העברת הנתונים למסד הנתונים: %s</string>
+  <string name="migration_retry" tools:machine_translated="true">נסה שוב</string>
+  <string name="migration_failed_help" tools:machine_translated="true">אם הבעיה נמשכת, אנא דווחו על כך ב-%1$s וצרפו את קובץ הלוג המצורף.</string>
+  <string name="migration_warnings_title" tools:machine_translated="true">אזהרות בנוגע להעברה</string>
+  <string name="migration_copy_warnings" tools:machine_translated="true">העתק אזהרות</string>
+  <string name="migration_debug_log_title" tools:machine_translated="true">יומן ניפוי באגים</string>
+  <string name="migration_copy_debug_log" tools:machine_translated="true">העתק יומן ניפוי באגים</string>
+  <string name="disconnect_host_alert" tools:machine_translated="true">האם אתה בטוח שברצונך להתנתק מ-%1$s?</string>
+  <string name="delete_host_confirm" tools:machine_translated="true">האם אתה בטוח שברצונך למחוק את המארח \'%1$s\'?</string>
+  <string name="forget_host_keys_confirm" tools:machine_translated="true">האם אתה בטוח שברצונך למחוק את מפתחות המארח השמורים עבור \'%1$s\'? תתבקש לאמת את מפתח המארח בחיבור הבא.</string>
+  <string name="list_pubkey_edit" tools:machine_translated="true">ערוך מפתח ציבורי</string>
+  <string name="hostpref_ipversion_title" tools:machine_translated="true">גרסת IP</string>
+  <string name="hostpref_ipversion_summary" tools:machine_translated="true">בחרו באיזו גרסה של כתובת IP להשתמש בעת ההתחברות.</string>
+  <string name="ipversion_auto" tools:machine_translated="true">אוטומטי</string>
+  <string name="ipversion_ipv4" tools:machine_translated="true">רק IPv4</string>
+  <string name="ipversion_ipv6" tools:machine_translated="true">רק IPv6</string>
+  <string name="hostpref_jumphost_title" tools:machine_translated="true">מחשב קפיצה (ProxyJump)</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">התחברו דרך שרת SSH אחר.</string>
+  <string name="list_jumphost_none" tools:machine_translated="true">אף אחד (חיבור ישיר)</string>
+  <string name="terminal_connecting_via_jump" tools:machine_translated="true">מתחברים דרך שרת ביניים: %s</string>
+  <string name="terminal_jump_connected" tools:machine_translated="true">התחברות למחשב ביניים בוצעה: %s</string>
+  <string name="terminal_jump_authenticated" tools:machine_translated="true">המשתמש אושר והתחבר למחשב המאפשר גישה: %s</string>
+  <string name="terminal_jump_failed" tools:machine_translated="true">לא ניתן להתחבר למחשב הגישור %1$s: %2$s</string>
+  <string name="terminal_jump_auth_failed" tools:machine_translated="true">האימות עבור שרת הגישה נכשל: %s</string>
+  <string name="terminal_jump_not_found" tools:machine_translated="true">לא נמצא מחשב גישה ברשימת המחשבים השמורים.</string>
+  <string name="terminal_jump_password" tools:machine_translated="true">סיסמה עבור שרת הגישה %s:</string>
+  <string name="view_logs" tools:machine_translated="true">הצג יומני רישום</string>
+  <string name="logs_title" tools:machine_translated="true">יומני רישום של היישום</string>
+  <string name="copy_logs" tools:machine_translated="true">העתק יומנים</string>
+  <string name="logs_copied" tools:machine_translated="true">היומנים הועתקו ללוח הגזירים.</string>
+  <string name="logs_bug_report_info" tools:machine_translated="true">כדי לדווח על תקלה, העתיקו את קבצי הרישום הללו ופתחו דיווח חדש בכתובת https://connectbot.org/bug.</string>
+  <string name="no_logs_available" tools:machine_translated="true">אין רישומי מערכת זמינים.</string>
+  <string name="help_section_about" tools:machine_translated="true">אודות</string>
+  <string name="title_contact" tools:machine_translated="true">צור קשר ותמיכה</string>
+  <string name="help_section_contact" tools:machine_translated="true">צור קשר ותמיכה</string>
+  <string name="help_website" tools:machine_translated="true">אתר אינטרנט</string>
+  <string name="help_github" tools:machine_translated="true">קוד המקור</string>
+  <string name="help_report_bug" tools:machine_translated="true">דווח על תקלה</string>
+  <string name="help_section_donate" tools:machine_translated="true">תמכו בפיתוח</string>
+  <string name="help_donate_github" tools:machine_translated="true">תומכי GitHub</string>
+  <string name="help_donate_coffee" tools:machine_translated="true">תמכו בי ותקנו לי קפה.</string>
+  <string name="colorscheme_default_description" tools:machine_translated="true">צבעי ברירת המחדל של הטרמינל</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">צבעים מדויקים למכונות ולאנשים.</string>
+  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">ערכת הצבעים \"סולאריזד\" עם רקע בהיר.</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">ערכת צבעים כהה עבור מסוף הטקסט.</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">פלטת צבעים ארקטית, בגוונים כחלחלים המזכירים את הצפון.</string>
+  <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">ערכת צבעים בסגנון רטרו</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">ערכת עיצוב בהשראת Sublime Text.</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">ערכת צבעים כהה, נקייה ונעימה לעין.</string>
+  <string name="pref_profiles_category" tools:machine_translated="true">פרופילים</string>
+  <string name="pref_default_profile_title" tools:machine_translated="true">פרופיל ברירת מחדל</string>
+  <string name="pref_default_profile_none" tools:machine_translated="true">אף אחד (השתמש בהגדרות המארח)</string>
+  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">הצג תמיד את המקשים המיוחדים.</string>
+  <string name="pref_customterminal_title" tools:machine_translated="true">סוגי מסופים מותאמים אישית</string>
+  <string name="pref_customterminal_summary" tools:machine_translated="true">הוסף ערכי TERM מותאמים אישית עבור שרתים מרוחקים.</string>
+  <string name="dialog_customterminal_title" tools:machine_translated="true">הוסף סוג מסוף מותאם אישית</string>
+  <string name="dialog_customterminal_hint" tools:machine_translated="true">סוג מסוף (לדוגמה, rxvt-unicode)</string>
+  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">ניהול סוגי מסופים מותאמים אישית</string>
+  <string name="button_add_custom" tools:machine_translated="true">הוסף פריט מותאם אישית...</string>
+  <string name="button_manage_custom" tools:machine_translated="true">נהל פריטים מותאמים אישית...</string>
+  <string name="dialog_custom_value_label" tools:machine_translated="true">הזן ערך מותאם אישית</string>
+  <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, ואז מקש הרווח.</string>
+  <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
+  <string name="list_camera_esc_description" tools:machine_translated="true">Esc</string>
+  <string name="list_camera_esc_a_description" tools:machine_translated="true">Esc+A</string>
+  <string name="list_camera_none_description" tools:machine_translated="true">אף אחד</string>
+  <string name="list_camera_text_input_description" tools:machine_translated="true">הזנת טקסט</string>
+  <string name="list_menu_export_hosts" tools:machine_translated="true">ייצא רשימת מארחים</string>
+  <string name="list_menu_import_hosts" tools:machine_translated="true">ייבא מארחים</string>
+  <string name="export_hosts_success" tools:machine_translated="true">יוצאו %1$d מארחים ו-%2$d פרופילים.</string>
+  <string name="import_hosts_success" tools:machine_translated="true">יובאו %1$d מארחים (%2$d נדחו) ו-%3$d פרופילים (%4$d נדחו).</string>
+  <string name="export_hosts_failed" tools:machine_translated="true">הייצוא של המארחים נכשל: %s</string>
+  <string name="import_hosts_failed" tools:machine_translated="true">היבוא של רשימת המארחים נכשל: %s</string>
+  <string name="export_hosts_title" tools:machine_translated="true">ייצוא רשימת מארחים</string>
+  <string name="shortcut_customize_title" tools:machine_translated="true">התאמה אישית של קיצור דרך</string>
+  <string name="shortcut_icon_color" tools:machine_translated="true">צבע הסמל</string>
+  <string name="shortcut_icon_style" tools:machine_translated="true">סגנון אייקון</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">השתמש בצבע שהוגדר במערכת המארחת.</string>
+  <string name="shortcut_create" tools:machine_translated="true">צור קיצור דרך</string>
+  <string name="icon_style_terminal" tools:machine_translated="true">טרמינל</string>
+  <string name="icon_style_server" tools:machine_translated="true">שרת</string>
+  <string name="icon_style_cloud" tools:machine_translated="true">ענן</string>
+  <string name="icon_style_key" tools:machine_translated="true">מפתח</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">אימות בעת הפעלת האפליקציה</string>
+  <string name="pref_auth_on_launch_summary" tools:machine_translated="true">יש לדרוש טביעת אצבע, זיהוי פנים או קוד PIN של המכשיר בעת פתיחת האפליקציה.</string>
+  <string name="pref_security_category" tools:machine_translated="true">אבטחה</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot נעול.</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">הקש כדי לפתוח את הנעילה.</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">אפשר את ConnectBot.</string>
+  <string name="auth_prompt_subtitle" tools:machine_translated="true">אמת את זהותך כדי להמשיך.</string>
 </resources>

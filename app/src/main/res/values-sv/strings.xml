@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">Enkel och kraftfull SSH-klient baserad på öppen källkod.</string>
   <string name="service_desc">Upprätthåller SSH-anslutningar och laddade publika nycklar</string>
   <string name="title_pubkey_list">Publika nycklar</string>
@@ -145,4 +145,431 @@
   <string name="yes">Ja</string>
   <string name="menu_colors_reset">Återställ</string>
   <string name="app_is_running">ConnectBot är igång</string>
+  <string name="app_copyright" tools:machine_translated="true">Copyright © Kenny Root</string>
+  <string name="title_eula" tools:machine_translated="true">Licens</string>
+  <string name="title_color_picker" tools:machine_translated="true">Välj en färg.</string>
+  <string name="title_settings" tools:machine_translated="true">Inställningar</string>
+  <string name="title_pubkey_generate" tools:machine_translated="true">Generera</string>
+  <string name="terms_and_conditions" tools:machine_translated="true">Användarvillkor</string>
+  <string name="hints" tools:machine_translated="true">Tips</string>
+  <string name="keyboard_shortcuts" tools:machine_translated="true">Tangentbordsgenvägar</string>
+  <string name="increase_font_size" tools:machine_translated="true">Öka teckenstorleken</string>
+  <string name="increase_font_shortcut" tools:machine_translated="true">Ctrl och +</string>
+  <string name="decrease_font_size" tools:machine_translated="true">Minska teckenstorleken</string>
+  <string name="decrease_font_shortcut" tools:machine_translated="true">Ctrl och -</string>
+  <string name="paste_shortcut" tools:machine_translated="true">Ctrl+Shift+V</string>
+  <string name="pubkey_copy_private_openssh" tools:machine_translated="true">Kopiera privat nyckel (OpenSSH)</string>
+  <string name="pubkey_copy_private_pem" tools:machine_translated="true">Kopiera privat nyckel (PEM)</string>
+  <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">Kopiera privat nyckel (krypterad)</string>
+  <string name="pubkey_export_public" tools:machine_translated="true">Exportera den offentliga nyckeln.</string>
+  <string name="pubkey_export_private" tools:machine_translated="true">Exportera privat nyckel</string>
+  <string name="pubkey_export_private_openssh" tools:machine_translated="true">Exportera privat nyckel (OpenSSH)</string>
+  <string name="pubkey_export_private_pem" tools:machine_translated="true">Exportera privat nyckel (PEM)</string>
+  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">Exportera privat nyckel (krypterad)</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Ange lösenfras för export.</string>
+  <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Ange en lösenfras för att kryptera den exporterade nyckeln.</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Bekräfta lösenfrasen.</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Lösenfraserna stämmer inte överens.</string>
+  <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Importera krypterad nyckel</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Ange lösenord för att dekryptera nyckeln \"%1$s\" (%2$s).</string>
+  <string name="pubkey_import_button" tools:machine_translated="true">Importera</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Kryptera nyckeln för lagring.</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Använd samma lösenord för kryptering.</string>
+  <string name="pubkey_import_new_password" tools:machine_translated="true">Nytt lösenord</string>
+  <string name="pubkey_import_confirm_password" tools:machine_translated="true">Bekräfta lösenord</string>
+  <string name="pubkey_list_empty" tools:machine_translated="true">Tryck på ”Meny” för att skapa eller importera nyckelpar.</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">Okänt format</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">Ange lösenord för att låsa upp nyckeln \"%1$s\".</string>
+  <string name="pubkey_nickname_exists" tools:machine_translated="true">En nyckel med detta alias finns redan.</string>
+  <string name="prompt_username" tools:machine_translated="true">Användarnamn:</string>
+  <string name="host_key_verification_title" tools:machine_translated="true">Verifiering av värdnyckel</string>
+  <string name="fingerprint_format_header" tools:machine_translated="true">Fingeravtrycksformat</string>
+  <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d bitar</string>
+  <string name="fingerprint_copy_description" tools:machine_translated="true">Kopiera fingeravtrycket till urklipp.</string>
+  <string name="network_lost_grace_period" tools:machine_translated="true">Nätverksanslutningen har försvunnit, väntar på att återansluta …</string>
+  <string name="network_grace_period_expired" tools:machine_translated="true">Nätverket har inte återställts, kopplar bort…</string>
+  <string name="network_restored_same_ip" tools:machine_translated="true">Nätverket är återställt, anslutningen upprätthålls.</string>
+  <string name="network_restored_ip_changed" tools:machine_translated="true">Nätverket är återställt, men IP-adressen har ändrats. Ansluter igen …</string>
+  <string name="network_restored_no_previous_state" tools:machine_translated="true">Nätverket är återställt, kontrollerar anslutningen …</string>
+  <string name="pref_fontfamily_title" tools:machine_translated="true">Teckensnitt</string>
+  <string name="pref_customfont_title" tools:machine_translated="true">Lägg till ett anpassat typsnitt</string>
+  <string name="pref_customfont_summary" tools:machine_translated="true">Lägg till ett typsnitt från Google Fonts genom att ange dess namn.</string>
+  <string name="dialog_customfont_title" tools:machine_translated="true">Lägg till anpassat teckensnitt</string>
+  <string name="dialog_customfont_hint" tools:machine_translated="true">Namn på Google-teckensnitt (t.ex. Cascadia Code)</string>
+  <string name="button_add" tools:machine_translated="true">Lägg till</string>
+  <string name="button_remove" tools:machine_translated="true">Ta bort</string>
+  <string name="font_validating" tools:machine_translated="true">Kontrollerar teckensnittet …</string>
+  <string name="font_downloading" tools:machine_translated="true">Laddar ner typsnitt…</string>
+  <string name="pref_localfont_title" tools:machine_translated="true">Importera lokalt teckensnitt</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Importera en typsnittsfil från lagringen (TTF, OTF).</string>
+  <string name="dialog_localfont_title" tools:machine_translated="true">Importera teckensnitt</string>
+  <string name="dialog_localfont_hint" tools:machine_translated="true">Visningsnamn för typsnittet</string>
+  <string name="button_import" tools:machine_translated="true">Importera</string>
+  <string name="font_importing" tools:machine_translated="true">Importerar teckensnitt …</string>
+  <string name="pref_backupkeys_title" tools:machine_translated="true">Säkerhetskopiera publika nycklar</string>
+  <string name="pref_backupkeys_summary" tools:machine_translated="true">Spara säkerhetskopior av de privata nycklarna med hjälp av Androids säkerhetskopieringsfunktion.</string>
+  <string name="pref_language_title" tools:machine_translated="true">Språk</string>
+  <string name="pref_language_system_default" tools:machine_translated="true">Systemets standardinställning</string>
+  <string name="pref_language_download" tools:machine_translated="true">Ladda ner språkpaket</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">Nedladdningen misslyckades, tryck för att försöka igen.</string>
+  <string name="pref_theme_title" tools:machine_translated="true">Tema</string>
+  <string name="pref_theme_system" tools:machine_translated="true">Systemets standardinställning</string>
+  <string name="pref_theme_light" tools:machine_translated="true">Ljust läge</string>
+  <string name="pref_theme_dark" tools:machine_translated="true">Mörkt</string>
+  <string name="pref_titlebarhide_title" tools:machine_translated="true">Dölj automatiskt titelfältet</string>
+  <string name="pref_titlebarhide_summary" tools:machine_translated="true">Tryck på konsolen för att visa titelraden och öppna menyn.</string>
+  <string name="pref_alwaysvisible_title" tools:machine_translated="true">Visa alltid specialtangenter</string>
+  <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">Gesten för att bläddra uppåt/nedåt på sidan.</string>
+  <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">Dra med fingret över den vänstra tredjedelen av skärmen för att skicka kommandon för att bläddra uppåt/nedåt i terminalen.</string>
+  <string name="pref_keyboard_category" tools:machine_translated="true">Tangentbord</string>
+  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift + siffertangenterna motsvarar funktionstangenterna.</string>
+  <string name="pref_shiftfkeys_summary" tools:machine_translated="true">På fysiska tangentbord skickar siffertangenterna F1–F10 när skift-tangenten hålls nedtryckt.</string>
+  <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl+siffror motsvarar funktionsknapparna.</string>
+  <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">På programvarubaserade tangentbord skickar siffertangenterna F1–F10 när Ctrl-tangenten hålls nedtryckt.</string>
+  <string name="pref_volumefont_title" tools:machine_translated="true">Volymknapparna ändrar teckenstorleken.</string>
+  <string name="pref_volumefont_summary" tools:machine_translated="true">Teckenstorleken kan också ändras i profilinställningarna.</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">Fortsätt vara ansluten i bakgrunden.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Håll dina sessioner aktiva även när du växlar till andra appar.</string>
+  <string name="pref_stickymodifiers_title" tools:machine_translated="true">Modifierare som fastnar</string>
+  <string name="only_alt" tools:machine_translated="true">Endast Alt</string>
+  <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibrera när du använder piltangenterna; användbart vid långsamma anslutningar.</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">Spela upp ett ljud när ett terminalmeddelande visas.</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Vibrera vid terminalvarning.</string>
+  <string name="color_red" tools:machine_translated="true">Röd</string>
+  <string name="color_pink" tools:machine_translated="true">Rosa</string>
+  <string name="color_purple" tools:machine_translated="true">Lila</string>
+  <string name="color_deep_purple" tools:machine_translated="true">Mörk lila</string>
+  <string name="color_indigo" tools:machine_translated="true">Indigoblå</string>
+  <string name="color_blue" tools:machine_translated="true">Blå</string>
+  <string name="color_light_blue" tools:machine_translated="true">Ljusblå</string>
+  <string name="color_cyan" tools:machine_translated="true">Cyan</string>
+  <string name="color_teal" tools:machine_translated="true">Turkosgrön</string>
+  <string name="color_green" tools:machine_translated="true">Grön</string>
+  <string name="color_light_green" tools:machine_translated="true">Ljusgrön</string>
+  <string name="color_lime" tools:machine_translated="true">Limegrön</string>
+  <string name="color_yellow" tools:machine_translated="true">Gul</string>
+  <string name="color_amber" tools:machine_translated="true">bärnstensfärgad</string>
+  <string name="color_orange" tools:machine_translated="true">Orange</string>
+  <string name="color_gray" tools:machine_translated="true">Grå</string>
+  <string name="hostpref_fontfamily_title" tools:machine_translated="true">Teckensnitt</string>
+  <string name="hostpref_colorscheme_title" tools:machine_translated="true">Färgtema för terminalen</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Stäng när anslutningen bryts.</string>
+  <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Stäng av omedelbart efter att fjärranslutningen har avslutats, utan att visa någon varning.</string>
+  <string name="hostpref_save_password_summary" tools:machine_translated="true">Spara inloggningslösenordet på ett säkert sätt för automatisk autentisering.</string>
+  <string name="hostpref_password_title" tools:machine_translated="true">Lösenord</string>
+  <string name="hostpref_password_unchanged" tools:machine_translated="true">Lösenord (oförändrat)</string>
+  <string name="hostpref_clear_password" tools:machine_translated="true">Ta bort sparade lösenord</string>
+  <string name="hostpref_profile_title" tools:machine_translated="true">Profil</string>
+  <string name="hostpref_profile_summary" tools:machine_translated="true">Välj en profil för att använda dess terminalinställningar.</string>
+  <string name="hostpref_profile_none" tools:machine_translated="true">Ingen (använd värdens inställningar)</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">Styrs av en profil.</string>
+  <string name="font_use_default" tools:machine_translated="true">Använd standardinställningen.</string>
+  <string name="font_system_default" tools:machine_translated="true">Standard (monospace-teckensnitt)</string>
+  <string name="pubkey_unknown" tools:machine_translated="true">Okänd nyckel</string>
+  <string name="colorscheme_default" tools:machine_translated="true">Standard</string>
+  <string name="profile_editor_title_new" tools:machine_translated="true">Ny profil</string>
+  <string name="profile_editor_title_edit" tools:machine_translated="true">Redigera profil</string>
+  <string name="profile_editor_save" tools:machine_translated="true">Spara</string>
+  <string name="profile_editor_name_label" tools:machine_translated="true">Profilnamn</string>
+  <string name="profile_editor_section_icon_color" tools:machine_translated="true">Ikonfärg</string>
+  <string name="profile_editor_section_color_scheme" tools:machine_translated="true">Färgtema</string>
+  <string name="profile_editor_section_font" tools:machine_translated="true">Teckensnitt</string>
+  <string name="profile_editor_section_terminal" tools:machine_translated="true">Terminal</string>
+  <string name="profile_editor_font_family_title" tools:machine_translated="true">Teckensnittsfamilj</string>
+  <string name="profile_editor_font_size_title" tools:machine_translated="true">Teckenstorlek: %d</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Storlek på kraftfältet</string>
+  <string name="profile_editor_force_size_summary" tools:machine_translated="true">Tvinga terminalen att använda en specifik storlek (antal kolumner x antal rader) istället för att automatiskt anpassa sig till skärmens storlek.</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">Aktivera tvångsinställning av storlek.</string>
+  <string name="profile_editor_force_size_columns" tools:machine_translated="true">Kolumner</string>
+  <string name="profile_editor_force_size_rows" tools:machine_translated="true">Rader</string>
+  <string name="profile_icon_color_none" tools:machine_translated="true">Ingen (använd värdserverns färg)</string>
+  <string name="profile_list_title" tools:machine_translated="true">Profiler</string>
+  <string name="profile_list_create_profile" tools:machine_translated="true">Skapa profil</string>
+  <string name="profile_list_empty_message" tools:machine_translated="true">Inga profiler hittades. Tryck på + för att skapa en.</string>
+  <string name="profile_list_more_options" tools:machine_translated="true">Fler alternativ</string>
+  <string name="profile_list_duplicate" tools:machine_translated="true">Duplicera</string>
+  <string name="profile_list_delete" tools:machine_translated="true">Ta bort</string>
+  <string name="profile_create_dialog_title" tools:machine_translated="true">Skapa profil</string>
+  <string name="profile_create_name_label" tools:machine_translated="true">Profilnamn</string>
+  <string name="profile_create_button" tools:machine_translated="true">Skapa</string>
+  <string name="profile_create_cancel" tools:machine_translated="true">Avbryt</string>
+  <string name="profile_delete_dialog_title" tools:machine_translated="true">Radera profil</string>
+  <string name="profile_delete_dialog_message" tools:machine_translated="true">Är du säker på att du vill ta bort \"%s\"?</string>
+  <string name="profile_delete_button" tools:machine_translated="true">Radera</string>
+  <string name="profile_delete_cancel" tools:machine_translated="true">Avbryt</string>
+  <string name="profile_summary_font" tools:machine_translated="true">Teckensnitt: %1$s %2$d punkter</string>
+  <string name="profile_summary_emulation" tools:machine_translated="true">Emulering: %s</string>
+  <string name="console_menu_reconnect" tools:machine_translated="true">Återanslut</string>
+  <string name="console_url_no_handler" tools:machine_translated="true">Ingen app hittades som kan öppna den här webbadressen.</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">Den här typen av webbadress stöds inte.</string>
+  <string name="portforward_save" tools:machine_translated="true">Spara</string>
+  <string name="list_menu_disconnect" tools:machine_translated="true">Koppla bort alla</string>
+  <string name="list_host_duplicate" tools:machine_translated="true">Duplicera värd.</string>
+  <string name="list_host_forget_keys" tools:machine_translated="true">Ta bort sparade värdnycklar.</string>
+  <string name="list_camera_text_input" tools:machine_translated="true">Textinmatning</string>
+  <string name="disconnect_all_message" tools:machine_translated="true">Är du säker på att du vill koppla bort alla anslutna värdar?</string>
+  <string name="disconnect_all_pos" tools:machine_translated="true">Ja, koppla bort.</string>
+  <string name="disconnect_all_neg" tools:machine_translated="true">Avbryt</string>
+  <string name="terminal_kex_algorithm" tools:machine_translated="true">Algoritm för nyckelutbyte: %s</string>
+  <string name="terminal_auth_saved_password" tools:machine_translated="true">Försöker använda det sparade lösenordet …</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Autentiseringen med det sparade lösenordet misslyckades.</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">Begär biometrisk autentisering för nyckeln \"%1$s\".</string>
+  <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">Den biometriska nyckeln \'%1$s\' har ogiltigförklarats. Detta kan hända när nya fingeravtryck registreras på enheten. Vänligen skapa en ny nyckel.</string>
+  <string name="list_color_schemes" tools:machine_translated="true">Färgteman</string>
+  <string name="button_manage_schemes" tools:machine_translated="true">Hantera färgteman</string>
+  <string name="title_scheme_manager" tools:machine_translated="true">Hantera färgteman</string>
+  <string name="button_new_scheme" tools:machine_translated="true">Nytt färgtema</string>
+  <string name="button_duplicate_scheme" tools:machine_translated="true">Duplicera</string>
+  <string name="button_rename_scheme" tools:machine_translated="true">Byt namn</string>
+  <string name="button_delete_scheme" tools:machine_translated="true">Ta bort</string>
+  <string name="dialog_title_new_scheme" tools:machine_translated="true">Nytt färgschema</string>
+  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Byt namn på färgtema</string>
+  <string name="label_scheme_name" tools:machine_translated="true">Schemats namn</string>
+  <string name="label_scheme_description" tools:machine_translated="true">Beskrivning (valfritt)</string>
+  <string name="dialog_title_delete_scheme" tools:machine_translated="true">Vill du ta bort schemat?</string>
+  <string name="dialog_message_delete_scheme" tools:machine_translated="true">Är du säker på att du vill ta bort \"%1$s\"? Den här åtgärden kan inte ångras.</string>
+  <string name="button_confirm" tools:machine_translated="true">Bekräfta</string>
+  <string name="button_cancel" tools:machine_translated="true">Avbryt</string>
+  <string name="label_built_in_scheme" tools:machine_translated="true">Inbyggd</string>
+  <string name="label_custom_scheme" tools:machine_translated="true">Anpassad</string>
+  <string name="empty_custom_schemes" tools:machine_translated="true">Inga anpassade scheman finns. Tryck på ”Nytt schema” för att skapa ett.</string>
+  <string name="button_edit_palette" tools:machine_translated="true">Redigera färgpalett</string>
+  <string name="button_export_scheme" tools:machine_translated="true">Exportera färgtema</string>
+  <string name="button_import_scheme" tools:machine_translated="true">Importera färgtema</string>
+  <string name="message_export_success" tools:machine_translated="true">%1$s har exporterats.</string>
+  <string name="message_import_success" tools:machine_translated="true">%1$s har importerats.</string>
+  <string name="error_export_failed" tools:machine_translated="true">Det gick inte att exportera schemat: %1$s</string>
+  <string name="error_import_failed" tools:machine_translated="true">Det gick inte att importera schemat: %1$s</string>
+  <string name="error_invalid_json" tools:machine_translated="true">Ogiltig JSON-fil.</string>
+  <string name="title_palette_editor" tools:machine_translated="true">Redigera färgpaletten</string>
+  <string name="button_reset_all_colors" tools:machine_translated="true">Återställ alla</string>
+  <string name="section_ansi_colors" tools:machine_translated="true">ANSI-färger (0–15)</string>
+  <string name="dialog_title_edit_color" tools:machine_translated="true">Redigera färg %1$d</string>
+  <string name="dialog_title_reset_all" tools:machine_translated="true">Vill du återställa alla färger?</string>
+  <string name="dialog_message_reset_all" tools:machine_translated="true">Detta återställer alla 256 färger till deras standardvärden. Åtgärden kan inte ångras.</string>
+  <string name="label_red" tools:machine_translated="true">Röd</string>
+  <string name="label_green" tools:machine_translated="true">Grön</string>
+  <string name="label_blue" tools:machine_translated="true">Blå</string>
+  <string name="label_hex_color" tools:machine_translated="true">Hex-färgkod</string>
+  <string name="colors_fg_label" tools:machine_translated="true">Förgrundsfärg: %1$d</string>
+  <string name="color_bg_label" tools:machine_translated="true">Bakgrundsfärg: %1$d</string>
+  <string name="section_fg_bg_colors" tools:machine_translated="true">Förgrunds- och bakgrundsfärg</string>
+  <string name="label_foreground_color" tools:machine_translated="true">Förgrundsfärg</string>
+  <string name="label_background_color" tools:machine_translated="true">Bakgrundsfärg</string>
+  <string name="label_base_scheme" tools:machine_translated="true">Grundläggande färgtema:</string>
+  <string name="menu_manage_colors" tools:machine_translated="true">Hantera färgteman</string>
+  <string name="palette_editor_builtin_note" tools:machine_translated="true">De fördefinierade färgpaletterna är skrivskyddade. Du kan skapa en kopia för att anpassa dem.</string>
+  <string name="section_color_preview" tools:machine_translated="true">Förhandsvisning</string>
+  <string name="image_description_connected" tools:machine_translated="true">Ansluten.</string>
+  <string name="image_description_disconnected" tools:machine_translated="true">Frånkopplad.</string>
+  <string name="image_description_toggle_control_character" tools:machine_translated="true">Växla kontrolltecken.</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">Skicka escape-tecken.</string>
+  <string name="image_description_send_tab_character" tools:machine_translated="true">Skicka TAB-tecknet.</string>
+  <string name="image_description_hide_keyboard" tools:machine_translated="true">Dölj tangentbordet.</string>
+  <string name="image_description_show_keyboard" tools:machine_translated="true">Visa tangentbord.</string>
+  <string name="image_description_up" tools:machine_translated="true">Pil upp</string>
+  <string name="image_description_down" tools:machine_translated="true">Pil ned</string>
+  <string name="image_description_left" tools:machine_translated="true">Pil åt vänster</string>
+  <string name="image_description_right" tools:machine_translated="true">Pil åt höger</string>
+  <string name="button_key_esc" tools:machine_translated="true">Esc</string>
+  <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="button_key_home" tools:machine_translated="true">Hem</string>
+  <string name="button_key_end" tools:machine_translated="true">Avsluta</string>
+  <string name="button_key_pgup" tools:machine_translated="true">Bläddra uppåt</string>
+  <string name="button_key_pgdn" tools:machine_translated="true">Nedåt</string>
+  <string name="button_key_f1" tools:machine_translated="true">F1</string>
+  <string name="button_key_f2" tools:machine_translated="true">F2</string>
+  <string name="button_key_f3" tools:machine_translated="true">F3</string>
+  <string name="button_key_f4" tools:machine_translated="true">F4</string>
+  <string name="button_key_f5" tools:machine_translated="true">F5</string>
+  <string name="button_key_f6" tools:machine_translated="true">F6</string>
+  <string name="button_key_f7" tools:machine_translated="true">F7</string>
+  <string name="button_key_f8" tools:machine_translated="true">F8</string>
+  <string name="button_key_f9" tools:machine_translated="true">F9</string>
+  <string name="button_key_f10" tools:machine_translated="true">F10</string>
+  <string name="button_key_f11" tools:machine_translated="true">F11</string>
+  <string name="button_key_f12" tools:machine_translated="true">F12</string>
+  <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">Textinmatning</string>
+  <string name="terminal_text_input_dialog_title" tools:machine_translated="true">Textinmatning</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">Ange text som ska skickas till terminalen.</string>
+  <string name="terminal_text_input_resize_handle" tools:machine_translated="true">Ändra storlek</string>
+  <string name="console_menu_text_input" tools:machine_translated="true">Textinmatning</string>
+  <string name="button_send" tools:machine_translated="true">Skicka</string>
+  <string name="button_ok" tools:machine_translated="true">OK</string>
+  <string name="button_close" tools:machine_translated="true">Stäng</string>
+  <string name="button_back" tools:machine_translated="true">Tillbaka</string>
+  <string name="button_navigate_up" tools:machine_translated="true">Navigera uppåt</string>
+  <string name="button_more_options" tools:machine_translated="true">Fler alternativ</string>
+  <string name="button_host_options" tools:machine_translated="true">Alternativ för värden</string>
+  <string name="button_collapse" tools:machine_translated="true">Dölj</string>
+  <string name="error_key_load_failed" tools:machine_translated="true">Kunde inte läsa in nyckeln \"%1$s\": %2$s</string>
+  <string name="error_connection_failed" tools:machine_translated="true">Kunde inte ansluta till %1$s (%2$s): %3$s</string>
+  <string name="error_port_forward_load_failed" tools:machine_translated="true">Kunde inte läsa in portvidarebefordringsinställningarna för %1$s: %2$s</string>
+  <string name="error_host_save_failed" tools:machine_translated="true">Kunde inte spara konfigurationen för värden %1$s: %2$s</string>
+  <string name="error_color_scheme_load_failed" tools:machine_translated="true">Kunde inte ladda färgtema: %s</string>
+  <string name="host_duplicate_nickname" tools:machine_translated="true">%1$s (kopia)</string>
+  <string name="empty_hosts_message" tools:machine_translated="true">Inga värdar har konfigurerats.</string>
+  <string name="empty_pubkeys_message" tools:machine_translated="true">Inga nycklar hittades.</string>
+  <string name="empty_port_forwards_message" tools:machine_translated="true">Inga portvidarebefordringar har konfigurerats.</string>
+  <string name="empty_urls_message" tools:machine_translated="true">Inga webbadresser hittades i terminalbufferten.</string>
+  <string name="console_default_title" tools:machine_translated="true">Konsol</string>
+  <string name="host_editor_quick_connect_label" tools:machine_translated="true">Snabbanslutning</string>
+  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">användare\@värdnamn:port</string>
+  <string name="host_editor_quick_connect_example" tools:machine_translated="true">Exempel: root\@192.168.1.1:22</string>
+  <string name="host_editor_show_advanced" tools:machine_translated="true">Visa avancerade alternativ</string>
+  <string name="host_editor_hide_advanced" tools:machine_translated="true">Dölj avancerade inställningar</string>
+  <string name="resize_width_label" tools:machine_translated="true">Bredd (kolumner)</string>
+  <string name="resize_height_label" tools:machine_translated="true">Höjd (rader)</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">Inaktivera fast storlek.</string>
+  <string name="pubkey_editor_key_type_label" tools:machine_translated="true">Nyckeltyp</string>
+  <string name="pubkey_editor_options_label" tools:machine_translated="true">Alternativ</string>
+  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Krypterade nycklar kan inte låsas upp vid uppstart.</string>
+  <string name="pubkey_type_label" tools:machine_translated="true">Typ: %s</string>
+  <string name="pubkey_encrypted_description" tools:machine_translated="true">Krypterad</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Ej krypterad</string>
+  <string name="pubkey_biometric_protection" tools:machine_translated="true">Fingeravtrycksskydd</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">Skydda den här nyckeln med ditt fingeravtryck.</string>
+  <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Inget fingeravtryck är registrerat. Konfigurera fingeravtrycksigenkänning i enhetens inställningar för att använda den här funktionen.</string>
+  <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Fingeravtrycksskydd är endast tillgängligt för RSA- och EC-nycklar.</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Verifiera för att använda nyckeln.</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Placera fingret på fingeravtryckssensorn för att låsa upp \"%1$s\".</string>
+  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Skyddad med fingeravtryck</string>
+  <string name="pubkey_biometric_not_available" tools:machine_translated="true">Fingeravtrycksautentisering är inte tillgänglig.</string>
+  <string name="portforward_nickname_placeholder" tools:machine_translated="true">Intern webbserver</string>
+  <string name="portforward_port_range_error" tools:machine_translated="true">Portnumret måste vara mellan 1 och 65535.</string>
+  <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">Formatet ska vara värdnamn:port (t.ex. localhost:80).</string>
+  <string name="portforward_host_address" tools:machine_translated="true">Värdadress</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">Lokaldatorn</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Lokalvärd (endast IPv4)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">Lokalvärd (endast IPv6)</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">Alla adresser</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Alla IPv4-adresser</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Alla IPv6-adresser</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">Specifik adress</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="portforward_type_label" tools:machine_translated="true">Typ: %s</string>
+  <string name="portforward_enable" tools:machine_translated="true">Aktivera</string>
+  <string name="portforward_disable" tools:machine_translated="true">Inaktivera</string>
+  <string name="portforward_enabled" tools:machine_translated="true">Portvidarebefordran aktiverad</string>
+  <string name="portforward_disabled" tools:machine_translated="true">Portvidarebefordran är inaktiverad.</string>
+  <string name="protocol_spinner_label" tools:machine_translated="true">Protokoll</string>
+  <string name="expand" tools:machine_translated="true">Visa mer</string>
+  <string name="hostpref_authagent_with_confirmation" tools:machine_translated="true">kräver bekräftelse</string>
+  <string name="hostpref_add_host" tools:machine_translated="true">Lägg till värd</string>
+  <string name="hostpref_save_host" tools:machine_translated="true">Spara värd.</string>
+  <string name="hostpref_setting_title" tools:machine_translated="true">Hostinställningar</string>
+  <string name="pubkey_import_existing" tools:machine_translated="true">Importera befintlig publik nyckel</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importera från urklipp</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Innehåll i den privata nyckeln</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Klistra in från urklipp.</string>
+  <string name="notification_permission_title" tools:machine_translated="true">Håll anslutningen aktiv i bakgrunden.</string>
+  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot behöver tillåtelse att skicka aviseringar för att hålla dina anslutningar aktiva när du byter app. Utan den tillåtelsen kan systemet bryta anslutningarna för att spara batteri.</string>
+  <string name="grant_permission" tools:machine_translated="true">Tillåt</string>
+  <string name="connect_anyway" tools:machine_translated="true">Anslut ändå.</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">Behöver tillstånd för aviseringar.</string>
+  <string name="notification_permission_denied_message" tools:machine_translated="true">För att dina anslutningar ska förbli aktiva i bakgrunden, aktivera notifikationer för ConnectBot i systeminställningarna.</string>
+  <string name="open_settings" tools:machine_translated="true">Öppna inställningar</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Anslutningar kan brytas utan att användaren har gett tillstånd för aviseringar.</string>
+  <string name="notification_permission_console_warning" tools:machine_translated="true">Anslutningen kan brytas när appen körs i bakgrunden.</string>
+  <string name="terminal_no_route" tools:machine_translated="true">Försöker du ansluta till en enhet i det lokala nätverket? Ge programmet tillstånd att använda det lokala nätverket.</string>
+  <string name="loading_message" tools:machine_translated="true">Laddar…</string>
+  <string name="migration_checking" tools:machine_translated="true">Kontrollerar databasen …</string>
+  <string name="migration_title" tools:machine_translated="true">Databasen flyttas.</string>
+  <string name="migration_warning" tools:machine_translated="true">Stäng inte appen under migreringen.</string>
+  <string name="migration_stats_hosts" tools:machine_translated="true">Antal migrerade värdar: %d</string>
+  <string name="migration_stats_pubkeys" tools:machine_translated="true">Antal migrerade SSH-nycklar: %d</string>
+  <string name="migration_stats_port_forwards" tools:machine_translated="true">Antal vidarebefordrade portar som har migrerats: %d</string>
+  <string name="migration_stats_known_hosts" tools:machine_translated="true">Antal kända värdar som har migrerats: %d</string>
+  <string name="migration_failed_title" tools:machine_translated="true">Migreringen misslyckades.</string>
+  <string name="migration_failed_message" tools:machine_translated="true">Ett fel uppstod under databasöverföringen: %s</string>
+  <string name="migration_retry" tools:machine_translated="true">Försök igen</string>
+  <string name="migration_failed_help" tools:machine_translated="true">Om problemet kvarstår, vänligen rapportera det på %1$s och bifoga den felsökningslogg som du kopierade ovan.</string>
+  <string name="migration_warnings_title" tools:machine_translated="true">Varningar under databasöverföringen</string>
+  <string name="migration_copy_warnings" tools:machine_translated="true">Kopiera varningar</string>
+  <string name="migration_debug_log_title" tools:machine_translated="true">Felsökningslogg</string>
+  <string name="migration_copy_debug_log" tools:machine_translated="true">Kopiera felsökningslogg</string>
+  <string name="disconnect_host_alert" tools:machine_translated="true">Är du säker på att du vill koppla bort dig från \"%1$s\"?</string>
+  <string name="delete_host_confirm" tools:machine_translated="true">Är du säker på att du vill ta bort värden \'%1$s\'?</string>
+  <string name="forget_host_keys_confirm" tools:machine_translated="true">Är du säker på att du vill ta bort de sparade värdnycklarna för \"%1$s\"? Du kommer att bli ombedd att verifiera värdnyckeln vid nästa anslutning.</string>
+  <string name="list_pubkey_edit" tools:machine_translated="true">Redigera pubnyckel</string>
+  <string name="hostpref_ipversion_title" tools:machine_translated="true">IP-version</string>
+  <string name="hostpref_ipversion_summary" tools:machine_translated="true">Välj vilken version av IP-adress som ska användas när du ansluter.</string>
+  <string name="ipversion_auto" tools:machine_translated="true">Automatiskt</string>
+  <string name="ipversion_ipv4" tools:machine_translated="true">Endast IPv4</string>
+  <string name="ipversion_ipv6" tools:machine_translated="true">Endast IPv6</string>
+  <string name="hostpref_jumphost_title" tools:machine_translated="true">Hoppvärd (ProxyJump)</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">Anslut via en annan SSH-server.</string>
+  <string name="list_jumphost_none" tools:machine_translated="true">Ingen (direkt anslutning)</string>
+  <string name="terminal_connecting_via_jump" tools:machine_translated="true">Ansluter via mellanliggande värd: %s</string>
+  <string name="terminal_jump_connected" tools:machine_translated="true">Ansluten till mellanliggande värd: %s</string>
+  <string name="terminal_jump_authenticated" tools:machine_translated="true">Användaren har autentiserats och är ansluten till mellanliggande server: %s</string>
+  <string name="terminal_jump_failed" tools:machine_translated="true">Kunde inte ansluta till mellanliggande värd %1$s: %2$s</string>
+  <string name="terminal_jump_auth_failed" tools:machine_translated="true">Autentiseringen misslyckades för mellanliggande värd: %s</string>
+  <string name="terminal_jump_not_found" tools:machine_translated="true">Hoppvärd hittades inte i listan över sparade värdar.</string>
+  <string name="terminal_jump_password" tools:machine_translated="true">Lösenord för mellanvärd %s:</string>
+  <string name="view_logs" tools:machine_translated="true">Visa loggar</string>
+  <string name="logs_title" tools:machine_translated="true">Programloggar</string>
+  <string name="copy_logs" tools:machine_translated="true">Kopiera loggar</string>
+  <string name="logs_copied" tools:machine_translated="true">Loggarna har kopierats till urklipp.</string>
+  <string name="logs_bug_report_info" tools:machine_translated="true">För att rapportera ett fel, kopiera dessa loggar och öppna ett nytt ärende på https://connectbot.org/bug.</string>
+  <string name="no_logs_available" tools:machine_translated="true">Inga loggar tillgängliga.</string>
+  <string name="help_section_about" tools:machine_translated="true">Om</string>
+  <string name="title_contact" tools:machine_translated="true">Kontakta oss och få support</string>
+  <string name="help_section_contact" tools:machine_translated="true">Kontakt och support</string>
+  <string name="help_website" tools:machine_translated="true">Webbplats</string>
+  <string name="help_github" tools:machine_translated="true">Källkod</string>
+  <string name="help_report_bug" tools:machine_translated="true">Rapportera ett fel</string>
+  <string name="help_section_donate" tools:machine_translated="true">Stöd utvecklingen</string>
+  <string name="help_donate_github" tools:machine_translated="true">GitHub-sponsorer</string>
+  <string name="help_donate_coffee" tools:machine_translated="true">Skänk en liten summa</string>
+  <string name="colorscheme_default_description" tools:machine_translated="true">Standardfärger för terminalen</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Exakta färger för maskiner och människor.</string>
+  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarized med ljus bakgrund</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">Ett mörkt tema för terminalen.</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">En färgpalett med arktiska, nordliga blå nyanser.</string>
+  <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Färgschema med retroinspirerad stil</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">Tema inspirerat av Sublime Text.</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Ett stilrent och behagligt mörkt tema.</string>
+  <string name="pref_profiles_category" tools:machine_translated="true">Profiler</string>
+  <string name="pref_default_profile_title" tools:machine_translated="true">Standardprofil</string>
+  <string name="pref_default_profile_none" tools:machine_translated="true">Ingen (använd värdens inställningar)</string>
+  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">Visa alltid de speciella tangenterna.</string>
+  <string name="pref_customterminal_title" tools:machine_translated="true">Anpassade terminaltyper</string>
+  <string name="pref_customterminal_summary" tools:machine_translated="true">Lägg till anpassade TERM-värden för fjärrservrar.</string>
+  <string name="dialog_customterminal_title" tools:machine_translated="true">Lägg till en anpassad terminaltyp</string>
+  <string name="dialog_customterminal_hint" tools:machine_translated="true">Terminaltyp (t.ex. rxvt-unicode)</string>
+  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Hantera anpassade terminaltyper</string>
+  <string name="button_add_custom" tools:machine_translated="true">Lägg till anpassad…</string>
+  <string name="button_manage_custom" tools:machine_translated="true">Hantera anpassade…</string>
+  <string name="dialog_custom_value_label" tools:machine_translated="true">Ange ett anpassat värde.</string>
+  <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A följt av mellanslagstangenten</string>
+  <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
+  <string name="list_camera_esc_description" tools:machine_translated="true">Esc</string>
+  <string name="list_camera_esc_a_description" tools:machine_translated="true">Esc+A</string>
+  <string name="list_camera_none_description" tools:machine_translated="true">Ingen</string>
+  <string name="list_camera_text_input_description" tools:machine_translated="true">Textinmatning</string>
+  <string name="list_menu_export_hosts" tools:machine_translated="true">Exportera värdar</string>
+  <string name="list_menu_import_hosts" tools:machine_translated="true">Importera värdar</string>
+  <string name="export_hosts_success" tools:machine_translated="true">%1$d värdar och %2$d profiler har exporterats.</string>
+  <string name="import_hosts_success" tools:machine_translated="true">Importerade %1$d värdar (%2$d hoppades över) och %3$d profiler (%4$d hoppades över).</string>
+  <string name="export_hosts_failed" tools:machine_translated="true">Det gick inte att exportera värdar: %s</string>
+  <string name="import_hosts_failed" tools:machine_translated="true">Det gick inte att importera värdar: %s</string>
+  <string name="export_hosts_title" tools:machine_translated="true">Exportera värdar</string>
+  <string name="shortcut_customize_title" tools:machine_translated="true">Anpassa snabbkommando</string>
+  <string name="shortcut_icon_color" tools:machine_translated="true">Ikonfärg</string>
+  <string name="shortcut_icon_style" tools:machine_translated="true">Ikonstil</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">Använd värdens färginställning.</string>
+  <string name="shortcut_create" tools:machine_translated="true">Skapa genväg</string>
+  <string name="icon_style_terminal" tools:machine_translated="true">Terminalfönster</string>
+  <string name="icon_style_server" tools:machine_translated="true">Server</string>
+  <string name="icon_style_cloud" tools:machine_translated="true">Moln</string>
+  <string name="icon_style_key" tools:machine_translated="true">Nyckel</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Autentisering vid uppstart</string>
+  <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Kräv fingeravtryck, ansiktsigenkänning eller enhets-PIN-kod när appen öppnas.</string>
+  <string name="pref_security_category" tools:machine_translated="true">Säkerhet</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot är låst.</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">Tryck för att låsa upp.</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">Lås upp ConnectBot.</string>
+  <string name="auth_prompt_subtitle" tools:machine_translated="true">Verifiera din identitet för att fortsätta.</string>
 </resources>

@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">ໂປຣແກຣມລູກຂ່າຍ SSH ແບບ open-source ທີ່ງ່າຍດາຍ ແລະ ມີປະສິດທິພາບ.</string>
   <string name="service_desc">ຮັກສາການເຊື່ອມຕໍ່ SSH ແລະ pubkeys ທີ່ໂຫຼດໄວ້</string>
   <string name="title_pubkey_list">ຄີສາທາລະນະ</string>
@@ -217,4 +217,359 @@
   <string name="hostpref_add_host">ເພີ່ມໂຮສ</string>
   <string name="hostpref_save_host">ບັນທຶກໂຮສ</string>
   <string name="pubkey_import_existing">ນຳເຂົ້າ pubkey ທີ່ມີຢູ່</string>
+  <string name="app_copyright" tools:machine_translated="true">ລິຂະສິດ © ເຄນນີ້ ຮູດ</string>
+  <string name="title_eula" tools:machine_translated="true">ໃບອະນຸຍາດ</string>
+  <string name="pubkey_copy_private_openssh" tools:machine_translated="true">ຄັດລອກກະແຈສ່ວນຕົວ (OpenSSH)</string>
+  <string name="pubkey_copy_private_pem" tools:machine_translated="true">ຄັດລອກກະແຈສ່ວນຕົວ (ຮູບແບບ PEM)</string>
+  <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">ຄັດລອກກະແຈສ່ວນຕົວ (ທີ່ຖືກເຂົ້າລະຫັດ)</string>
+  <string name="pubkey_export_public" tools:machine_translated="true">ສົ່ງອອກກະແຈສາທາລະນະ</string>
+  <string name="pubkey_export_private" tools:machine_translated="true">ສົ່ງອອກກະແຈສ່ວນຕົວ</string>
+  <string name="pubkey_export_private_openssh" tools:machine_translated="true">ສົ່ງອອກກະແຈສ່ວນຕົວ (OpenSSH)</string>
+  <string name="pubkey_export_private_pem" tools:machine_translated="true">ສົ່ງອອກກະແຈສ່ວນຕົວ (ຮູບແບບ PEM)</string>
+  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">ສົ່ງອອກກະແຈສ່ວນຕົວ (ທີ່ຖືກເຂົ້າລະຫັດ)</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">ກຳນົດລະຫັດລັບສຳລັບການສົ່ງອອກ</string>
+  <string name="pubkey_export_passphrase_message" tools:machine_translated="true">ປ້ອນລະຫັດລັບເພື່ອເຂົ້າລະຫັດກ່ອນທີ່ຈະສົ່ງອອກຄີ</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">ຢືນຢັນລະຫັດລັບ</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">ລະຫັດລັບບໍ່ສອດຄ່ອງກັນ</string>
+  <string name="pubkey_import_encrypted_title" tools:machine_translated="true">ນຳເຂົ້າກະແຈທີ່ຖືກເຂົ້າລະຫັດ</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">ປ້ອນລະຫັດຜ່ານເພື່ອຖອດລະຫັດຂອງໄຟລ໌ກຸນແຈທີ່ນຳເຂົ້າມາ \'%1$s\' (%2$s)</string>
+  <string name="pubkey_import_button" tools:machine_translated="true">ນຳເຂົ້າ</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">ເຂົ້າລະຫັດກ່ອນບັນທຶກ</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">ໃຊ້ລະຫັດຜ່ານດຽວກັນສໍາລັບການເຂົ້າລະຫັດ</string>
+  <string name="pubkey_import_new_password" tools:machine_translated="true">ລະຫັດຜ່ານໃໝ່</string>
+  <string name="pubkey_import_confirm_password" tools:machine_translated="true">ຢືນຢັນລະຫັດຜ່ານ</string>
+  <string name="pubkey_list_empty" tools:machine_translated="true">ແຕະທີ່ \"ເມນູ\" ເພື່ອສ້າງ\nຫຼື ນຳເຂົ້າຄູ່ກະແຈ.</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">ຮູບແບບທີ່ບໍ່ຮູ້ຈັກ</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">ປ້ອນລະຫັດຜ່ານເພື່ອປົດລັອກກະແຈ \'%1$s\'</string>
+  <string name="pubkey_nickname_exists" tools:machine_translated="true">ມີຄີທີ່ໃຊ້ຊື່ຫຼິ້ນນີ້ແລ້ວ</string>
+  <string name="prompt_username" tools:machine_translated="true">ຊື່ຜູ້ໃຊ້:</string>
+  <string name="host_key_verification_title" tools:machine_translated="true">ກວດສອບລະຫັດກຸນແຈຂອງເຈົ້າພາບ</string>
+  <string name="fingerprint_format_header" tools:machine_translated="true">ຮູບແບບຂອງລາຍນິ້ວມື</string>
+  <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d ບິດ</string>
+  <string name="fingerprint_copy_description" tools:machine_translated="true">ຄັດລອກຂໍ້ມູນລາຍນິ້ວມືໄປໃສ່ກະດານ</string>
+  <string name="network_lost_grace_period" tools:machine_translated="true">ສັນຍານເຄືອຂາດ, ກໍາລັງລໍຖ້າເພື່ອເຊື່ອມຕໍ່ຄືນ…</string>
+  <string name="network_grace_period_expired" tools:machine_translated="true">ບໍ່ສາມາດຟື້ນຟູເຄືອນຂ່າຍໄດ້, ກຳລັງຕັດການເຊື່ອມຕໍ່...</string>
+  <string name="network_restored_same_ip" tools:machine_translated="true">ເຄືອນຂ່າຍຟື້ນຟູແລ້ວ, ການເຊື່ອມຕໍ່ຍັງຄົງຢູ່.</string>
+  <string name="network_restored_ip_changed" tools:machine_translated="true">ເຄືອນຂ່າຍກັບມາເປັນປົກກະຕິແລ້ວ ແຕ່ IP ໄດ້ປ່ຽນແປງ, ກໍາລັງເຊື່ອມຕໍ່ຄືນໃໝ່...</string>
+  <string name="network_restored_no_previous_state" tools:machine_translated="true">ເຄືອນຂ່າຍໄດ້ຮັບການຟື້ນຟູ, ກໍາລັງກວດສອບການເຊື່ອມຕໍ່...</string>
+  <string name="pref_fontfamily_title" tools:machine_translated="true">ຕົວອັກສອນ</string>
+  <string name="pref_customfont_title" tools:machine_translated="true">ເພີ່ມຕົວອັກສອນທີ່ກຳນົດເອງ</string>
+  <string name="pref_customfont_summary" tools:machine_translated="true">ເພີ່ມຕົວອັກສອນຈາກ Google Fonts ໂດຍໃຊ້ຊື່</string>
+  <string name="dialog_customfont_title" tools:machine_translated="true">ເພີ່ມຕົວອັກສອນທີ່ກຳນົດເອງ</string>
+  <string name="dialog_customfont_hint" tools:machine_translated="true">ຊື່ຕົວອັກສອນຂອງ Google Fonts (ຕົວຢ່າງ: Cascadia Code)</string>
+  <string name="button_add" tools:machine_translated="true">ເພີ່ມ</string>
+  <string name="button_remove" tools:machine_translated="true">ລຶບອອກ</string>
+  <string name="font_validating" tools:machine_translated="true">ກຳລັງກວດສອບຕົວອັກສອນ…</string>
+  <string name="font_downloading" tools:machine_translated="true">ກຳລັງດາວໂຫຼດຕົວອັກສອນ…</string>
+  <string name="pref_localfont_title" tools:machine_translated="true">ນຳເຂົ້າຟອນທີ່ຢູ່ໃນເຄື່ອງ</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">ນຳເຂົ້າໄຟລ໌ຕົວອັກສອນຈາກບ່ອນເກັບຮັກສາ (TTF, OTF)</string>
+  <string name="dialog_localfont_title" tools:machine_translated="true">ນຳເຂົ້າຕົວອັກສອນ</string>
+  <string name="dialog_localfont_hint" tools:machine_translated="true">ຊື່ທີ່ສະແດງອອກສຳລັບຕົວອັກສອນ</string>
+  <string name="button_import" tools:machine_translated="true">ນຳເຂົ້າ</string>
+  <string name="font_importing" tools:machine_translated="true">ກຳລັງນຳເຂົ້າຟອນ…</string>
+  <string name="pref_language_title" tools:machine_translated="true">ພາສາ</string>
+  <string name="pref_language_system_default" tools:machine_translated="true">ຄ່າເລີ່ມຕົ້ນຂອງລະບົບ</string>
+  <string name="pref_language_download" tools:machine_translated="true">ດາວໂຫຼດຊຸດພາສາ</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">ດາວໂຫຼດບໍ່ສຳເລັດ, ແຕະເພື່ອລອງໃຫມ່</string>
+  <string name="pref_theme_title" tools:machine_translated="true">ຮູບແບບ</string>
+  <string name="pref_theme_system" tools:machine_translated="true">ຄ່າເລີ່ມຕົ້ນຂອງລະບົບ</string>
+  <string name="pref_theme_light" tools:machine_translated="true">ສີອ່ອນ</string>
+  <string name="pref_theme_dark" tools:machine_translated="true">ສີເຂັ້ມ</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">ຮັກສາການເຊື່ອມຕໍ່ໄວ້ໃນພື້ນຫຼັງ</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">ຮັກສາການເຊື່ອມຕໍ່ໄວ້ເຖິງແມ່ນວ່າທ່ານຈະປ່ຽນໄປໃຊ້ແອັບຯອື່ນໆ</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">ຫຼີ້ນສຽງເມື່ອມີການແຈ້ງເຕືອນໃນໜ້າຈໍ</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">ສັ່ນເມື່ອມີການແຈ້ງເຕືອນຈາກອຸປະກອນ</string>
+  <string name="color_red" tools:machine_translated="true">ສີແດງ</string>
+  <string name="color_pink" tools:machine_translated="true">ສີບົວ</string>
+  <string name="color_purple" tools:machine_translated="true">ສີມ່ວງ</string>
+  <string name="color_deep_purple" tools:machine_translated="true">ສີມ່ວງເຂັ້ມ</string>
+  <string name="color_indigo" tools:machine_translated="true">ສີຟ້າເຂັ້ມ</string>
+  <string name="color_blue" tools:machine_translated="true">ສີຟ້າ</string>
+  <string name="color_light_blue" tools:machine_translated="true">ສີຟ້າອ່ອນ</string>
+  <string name="color_cyan" tools:machine_translated="true">ສີຟ້າອ່ອນ</string>
+  <string name="color_teal" tools:machine_translated="true">ສີເທົາເຂັ້ມ</string>
+  <string name="color_green" tools:machine_translated="true">ສີຂຽວ</string>
+  <string name="color_light_green" tools:machine_translated="true">ສີຂຽວອ່ອນ</string>
+  <string name="color_lime" tools:machine_translated="true">ສີສົ້ມສົ້ມ</string>
+  <string name="color_yellow" tools:machine_translated="true">ສີເຫຼືອງ</string>
+  <string name="color_amber" tools:machine_translated="true">ສີອຳເບີ</string>
+  <string name="color_orange" tools:machine_translated="true">ສີສົ້ມ</string>
+  <string name="color_gray" tools:machine_translated="true">ສີເທົາ</string>
+  <string name="hostpref_fontfamily_title" tools:machine_translated="true">ຕົວອັກສອນ</string>
+  <string name="hostpref_colorscheme_title" tools:machine_translated="true">ຮູບແບບສີຂອງໜ້າຈໍ</string>
+  <string name="hostpref_save_password_summary" tools:machine_translated="true">ບັນທຶກລະຫັດຜ່ານເພື່ອເຂົ້າສູ່ລະບົບໄວ້ຢ່າງປອດໄພ ເພື່ອໃຫ້ສາມາດເຂົ້າສູ່ລະບົບໂດຍອັດຕະໂນມັດ</string>
+  <string name="hostpref_password_title" tools:machine_translated="true">ລະຫັດຜ່ານ</string>
+  <string name="hostpref_password_unchanged" tools:machine_translated="true">ລະຫັດຜ່ານ (ບໍ່ມີການປ່ຽນແປງ)</string>
+  <string name="hostpref_clear_password" tools:machine_translated="true">ລຶບລະຫັດຜ່ານທີ່ບັນທຶກໄວ້</string>
+  <string name="hostpref_profile_title" tools:machine_translated="true">ໂປຣໄຟล์</string>
+  <string name="hostpref_profile_summary" tools:machine_translated="true">ເລືອກໂປຣໄຟລ໌ເພື່ອໃຊ້ການຕັ້ງຄ່າຂອງມັນ</string>
+  <string name="hostpref_profile_none" tools:machine_translated="true">ບໍ່ມີ (ໃຊ້ການຕັ້ງຄ່າຂອງເຈົ້າພາບ)</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">ຖືກຄວບຄຸມໂດຍໂປຣໄຟล์</string>
+  <string name="font_use_default" tools:machine_translated="true">ໃຊ້ຕົວອັກສອນເລີ່ມຕົ້ນ</string>
+  <string name="font_system_default" tools:machine_translated="true">ຄ່າເລີ່ມຕົ້ນ (ຕົວອັກສອນແບບບໍ່ມີຊ່ອງຫວ່າງ)</string>
+  <string name="pubkey_unknown" tools:machine_translated="true">ກະແຈທີ່ບໍ່ຮູ້ຈັກ</string>
+  <string name="colorscheme_default" tools:machine_translated="true">ຄ່າເລີ່ມຕົ້ນ</string>
+  <string name="profile_editor_title_new" tools:machine_translated="true">ໂປຣໄຟລ໌ໃໝ່</string>
+  <string name="profile_editor_title_edit" tools:machine_translated="true">ແກ້ໄຂຂໍ້ມູນສ່ວນຕົວ</string>
+  <string name="profile_editor_save" tools:machine_translated="true">ບັນທຶກ</string>
+  <string name="profile_editor_name_label" tools:machine_translated="true">ຊື່ໂປຣໄຟล์</string>
+  <string name="profile_editor_section_icon_color" tools:machine_translated="true">ສີຂອງໄອຄອນ</string>
+  <string name="profile_editor_section_color_scheme" tools:machine_translated="true">ແບບສີ</string>
+  <string name="profile_editor_section_font" tools:machine_translated="true">ຕົວອັກສອນ</string>
+  <string name="profile_editor_section_terminal" tools:machine_translated="true">ທຳການຕັ້ງຄ່າ</string>
+  <string name="profile_editor_font_family_title" tools:machine_translated="true">ໝວດຕົວອັກສອນ</string>
+  <string name="profile_editor_font_size_title" tools:machine_translated="true">ຂະໜາດຕົວອັກສອນ: %d</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">ຂະໜາດຂອງແຮງ</string>
+  <string name="profile_editor_force_size_summary" tools:machine_translated="true">ກຳນົດຂະໜາດຂອງໜ້າຈໍ (ຈຳນວນຄໍລຳ ແລະ ຈຳນວນແຖວ) ແທນທີ່ຈະປັບຂະໜາດໂດຍອັດຕະໂນມັດເພື່ອໃຫ້ພໍດີກັບໜ້າຈໍ.</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">ເປີດໃຊ້ຟັງຊັນປັບຂະໜາດ</string>
+  <string name="profile_editor_force_size_columns" tools:machine_translated="true">ຄໍລຳ</string>
+  <string name="profile_editor_force_size_rows" tools:machine_translated="true">ແຖວ</string>
+  <string name="profile_icon_color_none" tools:machine_translated="true">ບໍ່ມີ (ໃຊ້ສີຕົ້ນຕໍ)</string>
+  <string name="profile_list_title" tools:machine_translated="true">ບັນຊີຜູ້ໃຊ້</string>
+  <string name="profile_list_create_profile" tools:machine_translated="true">ສ້າງໂປຼໄຟລ໌</string>
+  <string name="profile_list_empty_message" tools:machine_translated="true">ຍັງບໍ່ມີຂໍ້ມູນສ່ວນຕົວ. ກົດທີ່ປຸ່ມ \"+\" ເພື່ອສ້າງຂໍ້ມູນສ່ວນຕົວ.</string>
+  <string name="profile_list_more_options" tools:machine_translated="true">ຕົວເລືອກເພີ່ມເຕີມ</string>
+  <string name="profile_list_duplicate" tools:machine_translated="true">ຄັດລອກ</string>
+  <string name="profile_list_delete" tools:machine_translated="true">ລຶບ</string>
+  <string name="profile_create_dialog_title" tools:machine_translated="true">ສ້າງໂປຼໄຟລ໌</string>
+  <string name="profile_create_name_label" tools:machine_translated="true">ຊື່ໂປຣໄຟล์</string>
+  <string name="profile_create_button" tools:machine_translated="true">ສ້າງ</string>
+  <string name="profile_create_cancel" tools:machine_translated="true">ຍົກເລີກ</string>
+  <string name="profile_delete_dialog_title" tools:machine_translated="true">ລຶບຂໍ້ມູນສ່ວນຕົວ</string>
+  <string name="profile_delete_dialog_message" tools:machine_translated="true">ທ່ານແນ່ໃຈບໍວ່າຕ້ອງການລຶບ \'%s\'?</string>
+  <string name="profile_delete_button" tools:machine_translated="true">ລຶບ</string>
+  <string name="profile_delete_cancel" tools:machine_translated="true">ຍົກເລີກ</string>
+  <string name="profile_summary_font" tools:machine_translated="true">ຕົວອັກສອນ: %1$s %2$d ພິກເຊລ</string>
+  <string name="profile_summary_emulation" tools:machine_translated="true">ການຈຳລອງ: %s</string>
+  <string name="console_menu_reconnect" tools:machine_translated="true">ເຊື່ອມຕໍ່ຄືນ</string>
+  <string name="console_url_no_handler" tools:machine_translated="true">ບໍ່ມີແອັບຯໃດທີ່ສາມາດເປີດ URL ນີ້ໄດ້</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">ປະເພດ URL ນີ້ບໍ່ໄດ້ຮັບການຮອງຮັບ</string>
+  <string name="portforward_save" tools:machine_translated="true">ບັນທຶກ</string>
+  <string name="list_host_duplicate" tools:machine_translated="true">ສ້າງສຳເນົາຂອງໂຮສ</string>
+  <string name="list_host_forget_keys" tools:machine_translated="true">ລຶບຄີຂອງເຈົ້າພາບ</string>
+  <string name="list_camera_text_input" tools:machine_translated="true">ປ້ອນຂໍ້ຄວາມ</string>
+  <string name="terminal_auth_saved_password" tools:machine_translated="true">ກຳລັງພະຍາຍາມໃຊ້ລະຫັດຜ່ານທີ່ບັນທຶກໄວ້...</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">ການກວດສອບລະຫັດຜ່ານທີ່ບັນທຶກໄວ້ບໍ່ສຳເລັດ</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">ກຳລັງຮ້ອງຂໍການຢືນຢັນທາງຊີວະມິຕິເພື່ອປົດລັອກກະແຈ \'%1$s\'</string>
+  <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">ລະບົບກວດກາລາຍນິ້ວມື \'%1$s\' ບໍ່ສາມາດນຳໃຊ້ໄດ້ແລ້ວ. ສິ່ງນີ້ອາດຈະເກີດຂຶ້ນເມື່ອມີການເພີ່ມລາຍນິ້ວມືໃໝ່ເຂົ້າໃນອຸປະກອນ. ກະລຸນາສ້າງລະບົບກວດກາລາຍນິ້ວມືໃໝ່.</string>
+  <string name="list_color_schemes" tools:machine_translated="true">ແຜນສີ</string>
+  <string name="button_manage_schemes" tools:machine_translated="true">ຈັດການແຜນສີ</string>
+  <string name="title_scheme_manager" tools:machine_translated="true">ຈັດການແຜນສີ</string>
+  <string name="button_new_scheme" tools:machine_translated="true">ສ້າງແຜນສີໃໝ່</string>
+  <string name="button_duplicate_scheme" tools:machine_translated="true">ສ້າງແບບສີຄືນ</string>
+  <string name="button_rename_scheme" tools:machine_translated="true">ປ່ຽນຊື່</string>
+  <string name="button_delete_scheme" tools:machine_translated="true">ລຶບ</string>
+  <string name="dialog_title_new_scheme" tools:machine_translated="true">ສ້າງແຜນສີໃໝ່</string>
+  <string name="dialog_title_rename_scheme" tools:machine_translated="true">ປ່ຽນຊື່ແຜນສີ</string>
+  <string name="label_scheme_name" tools:machine_translated="true">ຊື່ຂອງໂຄງການ</string>
+  <string name="label_scheme_description" tools:machine_translated="true">ຄຳອະທິບາຍ (ທາງເລືອກ)</string>
+  <string name="dialog_title_delete_scheme" tools:machine_translated="true">ຕ້ອງການລຶບແຜນບໍ?</string>
+  <string name="dialog_message_delete_scheme" tools:machine_translated="true">ທ່ານແນ່ໃຈບໍວ່າຕ້ອງການລຶບ \"%1$s\"? ການກະທຳນີ້ບໍ່ສາມາດຍົກເລີກໄດ້.</string>
+  <string name="button_confirm" tools:machine_translated="true">ຢືນຢັນ</string>
+  <string name="button_cancel" tools:machine_translated="true">ຍົກເລີກ</string>
+  <string name="label_built_in_scheme" tools:machine_translated="true">ຕິດຕັ້ງໄວ້ໃນລະບົບ</string>
+  <string name="label_custom_scheme" tools:machine_translated="true">ທີ່ຜູ້ໃຊ້ສ້າງຂຶ້ນ</string>
+  <string name="empty_custom_schemes" tools:machine_translated="true">ບໍ່ມີແຜນທີ່ກຳນົດເອງ. ແຕະທີ່ \"ສ້າງແຜນທີ່ໃໝ່\" ເພື່ອສ້າງແຜນທີ່.</string>
+  <string name="button_edit_palette" tools:machine_translated="true">ແກ້ໄຂສີ</string>
+  <string name="button_export_scheme" tools:machine_translated="true">ສົ່ງອອກແຜນສີ</string>
+  <string name="button_import_scheme" tools:machine_translated="true">ນຳເຂົ້າແຜນສີ</string>
+  <string name="message_export_success" tools:machine_translated="true">ສົ່ງອອກ %1$s ສຳເລັດແລ້ວ</string>
+  <string name="message_import_success" tools:machine_translated="true">ນຳເຂົ້າ %1$s ສຳເລັດແລ້ວ</string>
+  <string name="error_export_failed" tools:machine_translated="true">ສົ່ງອອກຂໍ້ມູນບໍ່ສຳເລັດ: %1$s</string>
+  <string name="error_import_failed" tools:machine_translated="true">ບໍ່ສາມາດນຳເຂົ້າຂໍ້ມູນໄດ້: %1$s</string>
+  <string name="error_invalid_json" tools:machine_translated="true">ໄຟລ໌ JSON ບໍ່ຖືກຕ້ອງ</string>
+  <string name="title_palette_editor" tools:machine_translated="true">ແກ້ໄຂສີທີ່ໃຊ້</string>
+  <string name="button_reset_all_colors" tools:machine_translated="true">ຣີເຊັດທັງໝົດ</string>
+  <string name="section_ansi_colors" tools:machine_translated="true">ສີ ANSI (0–15)</string>
+  <string name="dialog_title_edit_color" tools:machine_translated="true">ແກ້ໄຂສີ %1$d</string>
+  <string name="dialog_title_reset_all" tools:machine_translated="true">ຢືນຢັນການຣີເຊັດສີທັງໝົດບໍ?</string>
+  <string name="dialog_message_reset_all" tools:machine_translated="true">ການກະທຳນີ້ຈະກູ້ຄືນສີທັງໝົດ 256 ສີ ໃຫ້ກັບຄືນໄປເປັນຄ່າເລີ່ມຕົ້ນ. ບໍ່ສາມາດຍົກເລີກການກະທຳນີ້ໄດ້.</string>
+  <string name="label_red" tools:machine_translated="true">ສີແດງ</string>
+  <string name="label_green" tools:machine_translated="true">ສີຂຽວ</string>
+  <string name="label_blue" tools:machine_translated="true">ສີຟ້າ</string>
+  <string name="label_hex_color" tools:machine_translated="true">ລະຫັດສີຮິັກ</string>
+  <string name="section_fg_bg_colors" tools:machine_translated="true">ສີພື້ນໜ້າ ແລະ ສີພື້ນຫຼັງ</string>
+  <string name="label_foreground_color" tools:machine_translated="true">ສີພື້ນໜ້າ</string>
+  <string name="label_background_color" tools:machine_translated="true">ສີພື້ນຫຼັງ</string>
+  <string name="label_base_scheme" tools:machine_translated="true">ແບບເລີ່ມຕົ້ນ:</string>
+  <string name="menu_manage_colors" tools:machine_translated="true">ຈັດການແຜນສີ</string>
+  <string name="palette_editor_builtin_note" tools:machine_translated="true">ໂຄງການທີ່ຕິດຕັ້ງໄວ້ແລ້ວບໍ່ສາມາດແກ້ໄຂໄດ້. ສ້າງສຳເນົາເພື່ອປັບແຕ່ງ.</string>
+  <string name="section_color_preview" tools:machine_translated="true">ຕົວຢ່າງ</string>
+  <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">ປ້ອນຂໍ້ຄວາມ</string>
+  <string name="terminal_text_input_dialog_title" tools:machine_translated="true">ປ້ອນຂໍ້ຄວາມ</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">ປ້ອນຂໍ້ຄວາມເພື່ອສົ່ງໄປຍັງໜ້າຈໍ</string>
+  <string name="terminal_text_input_resize_handle" tools:machine_translated="true">ປັບຂະໜາດ</string>
+  <string name="console_menu_text_input" tools:machine_translated="true">ປ້ອນຂໍ້ຄວາມ</string>
+  <string name="button_send" tools:machine_translated="true">ສົ່ງ</string>
+  <string name="button_ok" tools:machine_translated="true">ຕົກລົງ</string>
+  <string name="button_close" tools:machine_translated="true">ປິດ</string>
+  <string name="button_back" tools:machine_translated="true">ກັບຄືນ</string>
+  <string name="button_navigate_up" tools:machine_translated="true">ເລື່ອນຂຶ້ນ</string>
+  <string name="button_more_options" tools:machine_translated="true">ຕົວເລືອກເພີ່ມເຕີມ</string>
+  <string name="button_host_options" tools:machine_translated="true">ຕົວເລືອກສໍາລັບເຈົ້າພາບ</string>
+  <string name="button_collapse" tools:machine_translated="true">ຫົດລົງ</string>
+  <string name="error_key_load_failed" tools:machine_translated="true">ບໍ່ສາມາດໂຫຼດຄີ \'%1$s\' ໄດ້: %2$s</string>
+  <string name="error_connection_failed" tools:machine_translated="true">ບໍ່ສາມາດເຊື່ອມຕໍ່ກັບ %1$s (%2$s) ໄດ້: %3$s</string>
+  <string name="error_port_forward_load_failed" tools:machine_translated="true">ບໍ່ສາມາດໂຫຼດການສົ່ງຕໍ່ພອດສໍາລັບ %1$s: %2$s</string>
+  <string name="error_host_save_failed" tools:machine_translated="true">ບໍ່ສາມາດບັນທຶກການຕັ້ງຄ່າຂອງເຄື່ອງແມ່ຂ່າຍ %1$s: %2$s</string>
+  <string name="error_color_scheme_load_failed" tools:machine_translated="true">ບໍ່ສາມາດໂຫຼດແຜນສີໄດ້: %s</string>
+  <string name="host_duplicate_nickname" tools:machine_translated="true">%1$s (ສຳເນົາ)</string>
+  <string name="empty_hosts_message" tools:machine_translated="true">ຍັງບໍ່ມີເຄື່ອງແມ່ຂ່າຍໃດຖືກຕັ້ງຄ່າໄວ້</string>
+  <string name="empty_pubkeys_message" tools:machine_translated="true">ບໍ່ພົບກະແຈ້.</string>
+  <string name="empty_port_forwards_message" tools:machine_translated="true">ບໍ່ມີການຕັ້ງຄ່າການສົ່ງຕໍ່ພອດ.</string>
+  <string name="empty_urls_message" tools:machine_translated="true">ບໍ່ພົບ URL ໃດໆໃນບ່ອນເກັບຂໍ້ມູນຂອງ terminal</string>
+  <string name="console_default_title" tools:machine_translated="true">ໜ້າຈໍຄອນໂຊນ</string>
+  <string name="host_editor_quick_connect_label" tools:machine_translated="true">ເຊື່ອມຕໍ່ໄວ</string>
+  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">ຜູ້ໃຊ້\@ຊື່ເຄື່ອງ:ພອດ</string>
+  <string name="host_editor_quick_connect_example" tools:machine_translated="true">ຕົວຢ່າງ: root\@192.168.1.1:22</string>
+  <string name="host_editor_show_advanced" tools:machine_translated="true">ສະແດງຕົວເລືອກຂັ້ນສູງ</string>
+  <string name="host_editor_hide_advanced" tools:machine_translated="true">ເຊື່ອງຕົວເລືອກຂັ້ນສູງ</string>
+  <string name="resize_width_label" tools:machine_translated="true">ຄວາມກວ້າງ (ຈໍານວນຄໍ)</string>
+  <string name="resize_height_label" tools:machine_translated="true">ຄວາມສູງ (ຈຳນວນແຖວ)</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">ປິດການກຳນົດຂະໜາດ ແລະກັບໄປໃຊ້ຂະໜາດອັດຕະໂນມັດ</string>
+  <string name="pubkey_editor_key_type_label" tools:machine_translated="true">ປະເພດຂອງກະແຈ</string>
+  <string name="pubkey_editor_options_label" tools:machine_translated="true">ຕົວເລືອກ</string>
+  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">ບໍ່ສາມາດປົດລັອກກະແຈທີ່ຖືກເຂົ້າລະຫັດໃນເວລາທີ່ລະບົບເປີດເຄື່ອງໄດ້</string>
+  <string name="pubkey_type_label" tools:machine_translated="true">ປະເພດ: %s</string>
+  <string name="pubkey_encrypted_description" tools:machine_translated="true">ຖືກເຂົ້າລະຫັດ</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">ບໍ່ໄດ້ເຂົ້າລະຫັດ</string>
+  <string name="pubkey_biometric_protection" tools:machine_translated="true">ການປົກປ້ອງດ້ວຍລາຍມື</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">ປົກປ້ອງລະຫັດນີ້ດ້ວຍລາຍມືຂອງທ່ານ</string>
+  <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">ບໍ່ມີຂໍ້ມູນລາຍນິ້ວມືທີ່ບັນທຶກໄວ້. ກະລຸນາຕັ້ງຄ່າລາຍນິ້ວມືໃນການຕັ້ງຄ່າຂອງອຸປະກອນເພື່ອໃຊ້ຄຸນສົມບັດນີ້.</string>
+  <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">ການປົກປ້ອງດ້ວຍລາຍນິ້ວມືມີພຽງສຳລັບຄີປະເພດ RSA ແລະ EC ເທົ່ານັ້ນ</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">ຢືນຢັນເພື່ອໃຊ້ລະຫັດລັບ</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">ແຕະທີ່ອຸປະກອນກວດລາຍນິ້ວມືເພື່ອປົດລັອກ \'%1$s\'</string>
+  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">ປົກປ້ອງດ້ວຍລາຍມື</string>
+  <string name="pubkey_biometric_not_available" tools:machine_translated="true">ການຢືນຢັນດ້ວຍລາຍມືບໍ່ສາມາດໃຊ້ໄດ້ໃນປັດຈຸບັນ</string>
+  <string name="portforward_nickname_placeholder" tools:machine_translated="true">ເວັບເຊີເວີພາຍໃນ</string>
+  <string name="portforward_port_range_error" tools:machine_translated="true">ພອດຕ້ອງຢູ່ໃນລະຫວ່າງ 1 ແລະ 65535</string>
+  <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">ຮູບແບບຕ້ອງເປັນ host:port (ຕົວຢ່າງ: localhost:80)</string>
+  <string name="portforward_host_address" tools:machine_translated="true">ທີ່ຢູ່ຂອງເຄື່ອງແມ່ຂ່າຍ</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">ທີ່ຢູ່ຂອງເຄື່ອງແມ່ຂ່າຍ: ຜູກເຂົ້າກັບ localhost (ຄ່າເລີ່ມຕົ້ນ)</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">ໂຮສທ໌ທ້ອງຖິ່ນ (ພຽງແຕ່ IPv4)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">ໂຮສທ໌ທ້ອງຖິ່ນ (ພຽງແຕ່ IPv6)</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">ທີ່ຢູ່ທັງໝົດ</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">ທີ່ຢູ່ IPv4 ທັງໝົດ</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">ທີ່ຢູ່ IPv6 ທັງໝົດ</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">ທີ່ຢູ່ທີ່ລະບຸໄວ້</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="portforward_type_label" tools:machine_translated="true">ປະເພດ: %s</string>
+  <string name="portforward_enable" tools:machine_translated="true">ເປີດໃຊ້</string>
+  <string name="portforward_disable" tools:machine_translated="true">ປິດການໃຊ້ງານ</string>
+  <string name="portforward_enabled" tools:machine_translated="true">ເປີດການສົ່ງຕໍ່ພອດແລ້ວ</string>
+  <string name="portforward_disabled" tools:machine_translated="true">ຖືກປິດການໃຊ້ງານຂອງການສົ່ງຕໍ່ພອດ</string>
+  <string name="hostpref_setting_title" tools:machine_translated="true">ການຕັ້ງຄ່າເຈົ້າພາບ</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">ນຳເຂົ້າຈາກກະເດັນ</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">ເນື້ອໃນຂອງກະແຈສ່ວນຕົວ</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">ຄັດລອກຈາກກະດານ</string>
+  <string name="notification_permission_title" tools:machine_translated="true">ຮັກສາການເຊື່ອມຕໍ່ໄວ້ໃນພື້ນຫຼັງ</string>
+  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot ຕ້ອງໄດ້ຮັບອະນຸຍາດສົ່ງການແຈ້ງເຕືອນ ເພື່ອຮັກສາການເຊື່ອມຕໍ່ຂອງທ່ານໃຫ້ຢູ່ສະພາບເຄື່ອນໄຫວ ເມື່ອທ່ານປ່ຽນໄປໃຊ້ແອັບຯອື່ນໆ. ຖ້າບໍ່ມີອະນຸຍາດນີ້, ລະບົບອາດຈະຕັດການເຊື່ອມຕໍ່ຂອງທ່ານ ເພື່ອປະຢັດພະລັງງານຂອງແບັດເຕີຣີ.</string>
+  <string name="grant_permission" tools:machine_translated="true">ອະນຸຍາດ</string>
+  <string name="connect_anyway" tools:machine_translated="true">ເຊື່ອມຕໍ່ຕໍ່ໄປເຖິງແມ່ນວ່າບໍ່ໄດ້ອະນຸຍາດໃຫ້ສົ່ງການແຈ້ງເຕືອນ</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">ຕ້ອງໄດ້ຮັບອະນຸຍາດສຳລັບການແຈ້ງເຕືອນ</string>
+  <string name="notification_permission_denied_message" tools:machine_translated="true">ເພື່ອຮັກສາການເຊື່ອມຕໍ່ຂອງທ່ານໃຫ້ເຄື່ອນໄຫວຢູ່ເບື້ອງຫຼັງ, ກະລຸນາເປີດການແຈ້ງເຕືອນສໍາລັບ ConnectBot ໃນການຕັ້ງຄ່າຂອງລະບົບ.</string>
+  <string name="open_settings" tools:machine_translated="true">ເປີດການຕັ້ງຄ່າ</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">ການເຊື່ອມຕໍ່ອາດຈະຖືກຕັດການເຊື່ອມຕໍ່ໂດຍບໍ່ຕ້ອງມີການອະນຸຍາດສຳລັບການແຈ້ງເຕືອນ</string>
+  <string name="notification_permission_console_warning" tools:machine_translated="true">ການເຊື່ອມຕໍ່ອາດຈະຖືກຕັດເມື່ອແອັບພລິເຄຊັນເຮັດວຽກຢູ່ພື້ນຫຼັງ</string>
+  <string name="terminal_no_route" tools:machine_translated="true">ທ່ານກໍາລັງພະຍາຍາມເຂົ້າເຖິງເຄື່ອງແມ່ຂ່າຍໃນເຄືອນຂ່າຍທ້ອງຖິ່ນບໍ? ກະລຸນາອະນຸຍາດສິດໃນເຄືອນຂ່າຍທ້ອງຖິ່ນ.</string>
+  <string name="loading_message" tools:machine_translated="true">ກຳລັງໂຫຼດ…</string>
+  <string name="migration_checking" tools:machine_translated="true">ກຳລັງກວດສອບຖານຂໍ້ມູນ…</string>
+  <string name="migration_title" tools:machine_translated="true">ກຳລັງໂອນຍ້າຍຖານຂໍ້ມູນ</string>
+  <string name="migration_warning" tools:machine_translated="true">ກະລຸນາຢ່າປິດແອັບໃນຂະນະທີ່ກຳລັງປ່ຽນແປງຂໍ້ມູນ</string>
+  <string name="migration_stats_hosts" tools:machine_translated="true">ຈຳນວນໂຮສທີ່ໄດ້ຍ້າຍ: %d</string>
+  <string name="migration_stats_pubkeys" tools:machine_translated="true">ຈຳນວນ SSH keys ທີ່ໄດ້ຖືກຍ້າຍ: %d</string>
+  <string name="migration_stats_port_forwards" tools:machine_translated="true">ຈຳນວນການສົ່ງຕໍ່ພອດທີ່ໄດ້ຍ້າຍ: %d</string>
+  <string name="migration_stats_known_hosts" tools:machine_translated="true">ຈຳນວນໂຮສท์ທີ່ຖືກຍ້າຍ: %d</string>
+  <string name="migration_failed_title" tools:machine_translated="true">ການຍ້າຍຂໍ້ມູນບໍ່ສຳເລັດ</string>
+  <string name="migration_failed_message" tools:machine_translated="true">ເກີດຄວາມຜິດພາດໃນຂະນະທີ່ກຳລັງໂອນຂໍ້ມູນຈາກຖານຂໍ້ມູນເກົ່າໄປຍັງຖານຂໍ້ມູນໃໝ່: %s</string>
+  <string name="migration_retry" tools:machine_translated="true">ລອງເຮັດໃຫມ່</string>
+  <string name="migration_failed_help" tools:machine_translated="true">ຖ້າບັນຫາຫຍັງຍັງຄົງຢູ່, ກະລຸນາລາຍງານບັນຫານີ້ທີ່ %1$s ພ້ອມທັງສົ່ງບັນທຶກການແກ້ໄຂບັນຫາ (debug log) ທີ່ໄດ້ກັອບປີໄວ້ຂ້າງເທິງ.</string>
+  <string name="migration_warnings_title" tools:machine_translated="true">ຄຳເຕືອນກ່ຽວກັບການຍ້າຍຖານຂໍ້ມູນ</string>
+  <string name="migration_copy_warnings" tools:machine_translated="true">ຄັດລອກຂໍ້ຄວາມເຕືອນ</string>
+  <string name="migration_debug_log_title" tools:machine_translated="true">ບັນທຶກການແກ້ໄຂບັນຫາ</string>
+  <string name="migration_copy_debug_log" tools:machine_translated="true">ຄັດລອກບັນທຶກການແກ້ໄຂບັນຫາ</string>
+  <string name="disconnect_host_alert" tools:machine_translated="true">ທ່ານແນ່ໃຈບໍວ່າຕ້ອງການຕັດການເຊື່ອມຕໍ່ຈາກ \'%1$s\'?</string>
+  <string name="delete_host_confirm" tools:machine_translated="true">ທ່ານແນ່ໃຈບໍວ່າຕ້ອງການລຶບຂໍ້ມູນຂອງເຄື່ອງແມ່ຂ່າຍ \'%1$s\'?</string>
+  <string name="forget_host_keys_confirm" tools:machine_translated="true">ທ່ານແນ່ໃຈບໍວ່າຕ້ອງການລຶບຄີຂອງເຈົ້າພາບທີ່ບັນທຶກໄວ້ສຳລັບ \'%1$s\'? ຫຼັງຈາກນັ້ນ, ທ່ານຈະຖືກແຈ້ງໃຫ້ກວດສອບຄີຂອງເຈົ້າພາບໃນການເຊື່ອມຕໍ່ຄັ້ງຕໍ່ໄປ.</string>
+  <string name="list_pubkey_edit" tools:machine_translated="true">ແກ້ໄຂຂໍ້ມູນກ່ຽວກັບຄີສາທາລະນະ</string>
+  <string name="hostpref_ipversion_title" tools:machine_translated="true">ສະບັບ IP</string>
+  <string name="hostpref_ipversion_summary" tools:machine_translated="true">ເລືອກວ່າຈະໃຊ້ສະບັບຂອງ IP address ໃດ ເມື່ອເຊື່ອມຕໍ່</string>
+  <string name="ipversion_auto" tools:machine_translated="true">ໂດຍອັດຕະໂນມັດ</string>
+  <string name="ipversion_ipv4" tools:machine_translated="true">ໃຊ້ພຽງ IPv4 ເທົ່ານັ້ນ</string>
+  <string name="ipversion_ipv6" tools:machine_translated="true">ໃຊ້ພຽງ IPv6 ເທົ່ານັ້ນ</string>
+  <string name="hostpref_jumphost_title" tools:machine_translated="true">ເລືອກເຄື່ອງແມ່ຂ່າຍທີ່ຈະໃຊ້ເປັນຈຸດເຂົ້າເຖິງ (ProxyJump)</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">ເຊື່ອມຕໍ່ຜ່ານເຄື່ອງແມ່ຂ່າຍ SSH ອື່ນ</string>
+  <string name="list_jumphost_none" tools:machine_translated="true">ບໍ່ມີ (ເຊື່ອມຕໍ່ໂດຍກົງ)</string>
+  <string name="terminal_connecting_via_jump" tools:machine_translated="true">ກຳລັງເຊື່ອມຕໍ່ຜ່ານເຄື່ອງແມ່ຂ່າຍໂຕແທນ: %s</string>
+  <string name="terminal_jump_connected" tools:machine_translated="true">ເຊື່ອມຕໍ່ກັບເຄື່ອງແມ່ຂ່າຍ: %s</string>
+  <string name="terminal_jump_authenticated" tools:machine_translated="true">ໄດ້ຮັບການຢັ້ງຢືນເພື່ອເຂົ້າສູ່ເຄື່ອງແມ່ຂ່າຍ: %s</string>
+  <string name="terminal_jump_failed" tools:machine_translated="true">ບໍ່ສາມາດເຊື່ອມຕໍ່ກັບເຄື່ອງຈຳນອງ %1$s: %2$s</string>
+  <string name="terminal_jump_auth_failed" tools:machine_translated="true">ການຢືນຢັນຕົວຕົນສໍາລັບເຄື່ອງແມ່ຂ່າຍທີ່ໃຊ້ເຂົ້າສູ່ລະບົບບໍ່ສຳເລັດ: %s</string>
+  <string name="terminal_jump_not_found" tools:machine_translated="true">ບໍ່ພົບ Jump host ໃນບັນຊີລາຍຊື່ທີ່ບັນທຶກໄວ້</string>
+  <string name="terminal_jump_password" tools:machine_translated="true">ລະຫັດຜ່ານສໍາລັບເຄື່ອງຈໍາລອງ %s:</string>
+  <string name="view_logs" tools:machine_translated="true">ເບິ່ງບັນທຶກ</string>
+  <string name="logs_title" tools:machine_translated="true">ບັນທຶກການເຮັດວຽກຂອງໂປຼແກຼມ</string>
+  <string name="copy_logs" tools:machine_translated="true">ຄັດລອກບັນທຶກ</string>
+  <string name="logs_copied" tools:machine_translated="true">ບັນທຶກໄດ້ຖືກຄັດລອກໄປໄວ້ໃນກະດານຄັດລອກ</string>
+  <string name="logs_bug_report_info" tools:machine_translated="true">ເພື່ອລາຍງານບັນຫາ, ໃຫ້ຄັດລອກບັນທຶກເຫຼົ່ານີ້ ແລະເປີດບັນຫາໃໝ່ທີ່ https://connectbot.org/bug</string>
+  <string name="no_logs_available" tools:machine_translated="true">ບໍ່ມີຂໍ້ມູນບັນທຶກ</string>
+  <string name="help_section_about" tools:machine_translated="true">ກ່ຽວກັບ</string>
+  <string name="title_contact" tools:machine_translated="true">ຕິດຕໍ່ ແລະ ສະໜັບສະໜູນ</string>
+  <string name="help_section_contact" tools:machine_translated="true">ຕິດຕໍ່ ແລະ ການສະໜັບສະໜູນ</string>
+  <string name="help_website" tools:machine_translated="true">ເວັບໄຊท์</string>
+  <string name="help_github" tools:machine_translated="true">ລະຫັດແຫຼ່ງ</string>
+  <string name="help_report_bug" tools:machine_translated="true">ລາຍງານບັນຫາ</string>
+  <string name="help_section_donate" tools:machine_translated="true">ສະໜັບສະໜູນການພັດທະນາ</string>
+  <string name="help_donate_github" tools:machine_translated="true">ຜູ້ສະໜັບສະໜູນ GitHub</string>
+  <string name="help_donate_coffee" tools:machine_translated="true">ບໍລິຈາກໃຫ້ຂ້ອຍເພື່ອຊື້ກາแฟ</string>
+  <string name="colorscheme_default_description" tools:machine_translated="true">ສີເລີ່ມຕົ້ນຂອງໜ້າຈໍຄຳສັ່ງ</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">ສີທີ່ຖືກຕ້ອງ ແລະ ສອດຄ່ອງສຳລັບເຄື່ອງຈັກ ແລະ ຜູ້ຄົນ</string>
+  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarized ທີ່ມີພື້ນຫຼັງສີອ່ອນ</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">ຮູບແບບສີເຂັ້ມສຳລັບໜ້າຈໍ</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">ສີທີ່ເປັນສີຟ້າອ່ອນໆ ທີ່ໄດ້ຮັບແຮງບັນດານໃຈຈາກຂົ້ວໂລກເໜືອ</string>
+  <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">ສີທີ່ອອກແບບມາໃນຮູບແບບແບບເກົ່າ</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">ຮູບແບບທີ່ໄດ້ຮັບແຮງບັນດານໃຈຈາກ Sublime Text</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">ຮູບແບບສີເຂັ້ມທີ່ສວຍງາມ ແລະ ໃຫ້ຄວາມສະດວກสบาย</string>
+  <string name="pref_profiles_category" tools:machine_translated="true">ຂໍ້ມູນສ່ວນຕົວ</string>
+  <string name="pref_default_profile_title" tools:machine_translated="true">ໂປຣໄຟລ໌ເລີ່ມຕົ້ນ</string>
+  <string name="pref_default_profile_none" tools:machine_translated="true">ບໍ່ມີ (ໃຊ້ການຕັ້ງຄ່າຂອງເຄື່ອງແມ່ຂ່າຍ)</string>
+  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">ເຮັດໃຫ້ປຸ່ມພິເສດເຫຼົ່ານີ້ສະແດງຢູ່ຕະຫຼອດເວລາ</string>
+  <string name="pref_customterminal_title" tools:machine_translated="true">ປະເພດ Terminal ທີ່ກຳນົດເອງ</string>
+  <string name="pref_customterminal_summary" tools:machine_translated="true">ເພີ່ມຄ່າ TERM ທີ່ກຳນົດເອງສຳລັບເຄື່ອງແມ່ຂ່າຍທາງໄກ</string>
+  <string name="dialog_customterminal_title" tools:machine_translated="true">ເພີ່ມປະເພດ Terminal ທີ່ກຳນົດເອງ</string>
+  <string name="dialog_customterminal_hint" tools:machine_translated="true">ປະເພດຂອງ terminal (ຕົວຢ່າງ: rxvt-unicode)</string>
+  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">ຈັດການປະເພດ Terminal ທີ່ກຳນົດເອງ</string>
+  <string name="button_add_custom" tools:machine_translated="true">ເພີ່ມສິ່ງຂອງທີ່ກຳນົດເອງ...</string>
+  <string name="button_manage_custom" tools:machine_translated="true">ຈັດການສິນຄ້າທີ່ກຳນົດເອງ...</string>
+  <string name="dialog_custom_value_label" tools:machine_translated="true">ປ້ອນຄ່າທີ່ກຳນົດເອງ</string>
+  <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">ກົດ Ctrl+A ຫຼັງຈາກນັ້ນກົດປຸ່ມ Space</string>
+  <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
+  <string name="list_camera_esc_description" tools:machine_translated="true">ເອັສຊີ</string>
+  <string name="list_camera_esc_a_description" tools:machine_translated="true">Esc+A</string>
+  <string name="list_camera_none_description" tools:machine_translated="true">ບໍ່ມີ</string>
+  <string name="list_camera_text_input_description" tools:machine_translated="true">ປ້ອນຂໍ້ຄວາມ</string>
+  <string name="list_menu_export_hosts" tools:machine_translated="true">ສົ່ງອອກບັນຊີລາຍຊື່ເຄື່ອງແມ່ຂ່າຍ</string>
+  <string name="list_menu_import_hosts" tools:machine_translated="true">ນຳເຂົ້າຂໍ້ມູນເຄື່ອງແມ່ຂ່າຍ</string>
+  <string name="export_hosts_success" tools:machine_translated="true">ສົ່ງອອກຂໍ້ມູນ %1$d ຂອງບັນຊີ ແລະ %2$d ຂອງຂໍ້ມູນສ່ວນຕົວແລ້ວ</string>
+  <string name="import_hosts_success" tools:machine_translated="true">ໄດ້ນຳເຂົ້າເຄື່ອງຈັກ %1$d ເຄື່ອງ (ບໍ່ໄດ້ນຳເຂົ້າ %2$d ເຄື່ອງ) ແລະ ໂປຣໄຟລ໌ %3$d (ບໍ່ໄດ້ນຳເຂົ້າ %4$d ໂປຣໄຟລ໌)</string>
+  <string name="export_hosts_failed" tools:machine_translated="true">ສົ່ງອອກຂໍ້ມູນເຈົ້າພາບບໍ່ສຳເລັດ: %s</string>
+  <string name="import_hosts_failed" tools:machine_translated="true">ບໍ່ສາມາດນຳເຂົ້າຂໍ້ມູນເຈົ້າພາບໄດ້: %s</string>
+  <string name="export_hosts_title" tools:machine_translated="true">ສົ່ງອອກບັນຊີລາຍຊື່ໂຮສຕ໌</string>
+  <string name="shortcut_customize_title" tools:machine_translated="true">ປັບແຕ່ງທາງລັດ</string>
+  <string name="shortcut_icon_color" tools:machine_translated="true">ສີຂອງໄອຄອນ</string>
+  <string name="shortcut_icon_style" tools:machine_translated="true">ຮູບແບບໄອຄອນ</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">ໃຊ້ສີທີ່ເຄື່ອງແມ່ຂ່າຍກຳນົດໄວ້</string>
+  <string name="shortcut_create" tools:machine_translated="true">ສ້າງທາງລັດ</string>
+  <string name="icon_style_terminal" tools:machine_translated="true">ປາຍທາງ</string>
+  <string name="icon_style_server" tools:machine_translated="true">ເຊີເວີ</string>
+  <string name="icon_style_cloud" tools:machine_translated="true">ເມກ</string>
+  <string name="icon_style_key" tools:machine_translated="true">ກະແຈ</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">ການກວດສອບເມື່ອເປີດໂປຼແກຼມ</string>
+  <string name="pref_auth_on_launch_summary" tools:machine_translated="true">ຕ້ອງກຳນົດໃຫ້ໃຊ້ລາຍນິ້ວມື, ຮູບໜ້າ ຫຼືລະຫັດ PIN ຂອງອຸປະກອນ ເມື່ອເປີດແອັບ</string>
+  <string name="pref_security_category" tools:machine_translated="true">ຄວາມປອດໄພ</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot ຖືກລັອກແລ້ວ</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">ແຕະເພື່ອປົດລັອກ</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">ປົດລັອກ ConnectBot</string>
+  <string name="auth_prompt_subtitle" tools:machine_translated="true">ກວດສອບຂໍ້ມູນສ່ວນຕົວຂອງທ່ານເພື່ອດຳເນີນການຕໍ່ໄປ</string>
 </resources>

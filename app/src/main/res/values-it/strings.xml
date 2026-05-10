@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">Un client SSH semplice, potente ed open source.</string>
   <string name="service_desc">Mantieni le connessioni SSH e le chiavi pubbliche caricate</string>
   <string name="app_copyright">Copyright © Kenny Root</string>
@@ -558,4 +558,18 @@
   <string name="auth_screen_unlock_button">Tocca per sbloccare</string>
   <string name="auth_prompt_title">Sblocca ConnectBot</string>
   <string name="auth_prompt_subtitle">Verifica la tua identità per continuare</string>
+  <string name="pref_language_download" tools:machine_translated="true">Scarica il pacchetto lingue.</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">Download non riuscito, toccare per riprovare.</string>
+  <string name="portforward_host_address" tools:machine_translated="true">Indirizzo host</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">localhost</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">localhost (solo IPv4)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">localhost (solo IPv6)</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">Tutti gli indirizzi</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Tutti gli indirizzi IPv4</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Tutti gli indirizzi IPv6</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">Indirizzo specifico</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importa dagli appunti</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Contenuto della chiave privata</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Incolla dagli appunti</string>
 </resources>

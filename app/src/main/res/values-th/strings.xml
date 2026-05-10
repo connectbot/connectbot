@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">ใช้ง่าย, มีประสิทธิภาพ, โอเพนซอร์ส SSH ไคลเอนท์</string>
   <string name="service_desc">จัดการการเชื่อมต่อ SSH และใส่กุญแจสาธารณะ</string>
   <string name="title_pubkey_list">กุญแจสาธารณะ</string>
@@ -11,4 +11,565 @@
   <string name="title_pubkey_generate">สร้าง</string>
   <string name="terms_and_conditions">เงื่อนไขและข้อตกลงต่างๆ</string>
   <string name="hints">ข้อแนะนำ</string>
+  <string name="app_copyright" tools:machine_translated="true">สงวนลิขสิทธิ์ © เคนนี รูท</string>
+  <string name="title_eula" tools:machine_translated="true">ใบอนุญาต</string>
+  <string name="keyboard_shortcuts" tools:machine_translated="true">ทางลัดบนแป้นพิมพ์</string>
+  <string name="increase_font_size" tools:machine_translated="true">เพิ่มขนาดตัวอักษร</string>
+  <string name="increase_font_shortcut" tools:machine_translated="true">Ctrl และเครื่องหมายบวก (+)</string>
+  <string name="decrease_font_size" tools:machine_translated="true">ลดขนาดตัวอักษร</string>
+  <string name="decrease_font_shortcut" tools:machine_translated="true">Ctrl และเครื่องหมายลบ (-)</string>
+  <string name="paste_shortcut" tools:machine_translated="true">Ctrl+Shift+V</string>
+  <string name="pubkey_generate" tools:machine_translated="true">สร้าง</string>
+  <string name="pubkey_delete" tools:machine_translated="true">ลบกุญแจ</string>
+  <string name="pubkey_gather_entropy" tools:machine_translated="true">รวบรวมข้อมูลเพื่อสร้างความสุ่ม</string>
+  <string name="pubkey_touch_prompt" tools:machine_translated="true">แตะที่ช่องนี้เพื่อรวบรวมข้อมูลแบบสุ่ม: ดำเนินการไปแล้ว %1$d%%</string>
+  <string name="pubkey_touch_hint" tools:machine_translated="true">เพื่อให้มั่นใจว่าการสร้างคีย์จะเป็นไปอย่างสุ่ม ให้เลื่อนนิ้วของคุณไปมาแบบสุ่มๆ บนพื้นที่สี่เหลี่ยมด้านล่างนี้</string>
+  <string name="pubkey_generating" tools:machine_translated="true">กำลังสร้างคู่คีย์…</string>
+  <string name="pubkey_copy_private" tools:machine_translated="true">คัดลอกคีย์ส่วนตัว</string>
+  <string name="pubkey_copy_private_openssh" tools:machine_translated="true">คัดลอกคีย์ส่วนตัว (รูปแบบ OpenSSH)</string>
+  <string name="pubkey_copy_private_pem" tools:machine_translated="true">คัดลอกคีย์ส่วนตัว (รูปแบบ PEM)</string>
+  <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">คัดลอกคีย์ส่วนตัว (เข้ารหัส)</string>
+  <string name="pubkey_copy_public" tools:machine_translated="true">คัดลอกคีย์สาธารณะ</string>
+  <string name="pubkey_export_public" tools:machine_translated="true">ส่งออกคีย์สาธารณะ</string>
+  <string name="pubkey_export_private" tools:machine_translated="true">ส่งออกคีย์ส่วนตัว</string>
+  <string name="pubkey_export_private_openssh" tools:machine_translated="true">ส่งออกคีย์ส่วนตัว (รูปแบบ OpenSSH)</string>
+  <string name="pubkey_export_private_pem" tools:machine_translated="true">ส่งออกคีย์ส่วนตัว (รูปแบบ PEM)</string>
+  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">ส่งออกคีย์ส่วนตัว (เข้ารหัส)</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">ตั้งค่ารหัสผ่านสำหรับการส่งออก</string>
+  <string name="pubkey_export_passphrase_message" tools:machine_translated="true">ป้อนวลีผ่านเพื่อเข้ารหัสคีย์ที่กำลังส่งออก</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">ยืนยันรหัสผ่าน</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">วลีผ่านเข้ารหัสไม่ตรงกัน</string>
+  <string name="pubkey_import_encrypted_title" tools:machine_translated="true">นำเข้าคีย์ที่เข้ารหัส</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">กรุณากรอกรหัสผ่านเพื่อถอดรหัสไฟล์คีย์ \'%1$s\' (%2$s)</string>
+  <string name="pubkey_import_button" tools:machine_translated="true">นำเข้า</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">เข้ารหัสคีย์เพื่อจัดเก็บ</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">ใช้รหัสผ่านเดิมสำหรับการเข้ารหัส</string>
+  <string name="pubkey_import_new_password" tools:machine_translated="true">รหัสผ่านใหม่</string>
+  <string name="pubkey_import_confirm_password" tools:machine_translated="true">ยืนยันรหัสผ่าน</string>
+  <string name="pubkey_list_empty" tools:machine_translated="true">แตะที่ \"เมนู\" เพื่อสร้างหรือนำเข้าคู่คีย์</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">รูปแบบไม่รู้จัก</string>
+  <string name="pubkey_change_password" tools:machine_translated="true">เปลี่ยนรหัสผ่าน</string>
+  <string name="pubkey_unlock" tools:machine_translated="true">ปลดล็อกคีย์</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">กรุณากรอกรหัสผ่านเพื่อปลดล็อกคีย์ \'%1$s\'</string>
+  <string name="pubkey_nickname_exists" tools:machine_translated="true">มีคีย์ที่มีชื่อเล่นนี้อยู่แล้ว</string>
+  <string name="pubkey_load_on_start" tools:machine_translated="true">โหลดคีย์เมื่อเริ่มต้นโปรแกรม</string>
+  <string name="pubkey_confirm_use" tools:machine_translated="true">ยืนยันก่อนใช้งาน</string>
+  <string name="portforward_edit" tools:machine_translated="true">แก้ไขการตั้งค่าส่งต่อพอร์ต</string>
+  <string name="portforward_delete" tools:machine_translated="true">ลบการตั้งค่าส่งต่อพอร์ต</string>
+  <string name="prompt_nickname" tools:machine_translated="true">ชื่อเล่น:</string>
+  <string name="prompt_source_port" tools:machine_translated="true">พอร์ตต้นทาง:</string>
+  <string name="prompt_destination" tools:machine_translated="true">ปลายทาง:</string>
+  <string name="prompt_old_password" tools:machine_translated="true">รหัสผ่านเดิม:</string>
+  <string name="prompt_username" tools:machine_translated="true">ชื่อผู้ใช้:</string>
+  <string name="prompt_password" tools:machine_translated="true">รหัสผ่าน:</string>
+  <string name="prompt_again" tools:machine_translated="true">(อีกครั้ง)</string>
+  <string name="prompt_type" tools:machine_translated="true">ประเภท:</string>
+  <string name="prompt_password_can_be_blank" tools:machine_translated="true">หมายเหตุ: สามารถเว้นช่องรหัสผ่านไว้ได้</string>
+  <string name="prompt_bits" tools:machine_translated="true">จำนวนบิต:</string>
+  <string name="prompt_pubkey_password" tools:machine_translated="true">รหัสผ่านสำหรับคีย์ \'%1$s\'</string>
+  <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">อนุญาตให้เครื่องโฮสต์ระยะไกลใช้คีย์ \'%1$s\' หรือไม่</string>
+  <string name="host_verification_failure_warning_header" tools:machine_translated="true">คำเตือน: การระบุตัวตนของเซิร์ฟเวอร์ระยะไกลมีการเปลี่ยนแปลง!</string>
+  <string name="host_verification_failure_warning" tools:machine_translated="true">เป็นไปได้ว่ามีใครบางคนกำลังทำเรื่องที่ไม่ดี!\nอาจมีใครบางคนกำลังแอบฟังหรือดักจับข้อมูลของคุณอยู่ตอนนี้ (การโจมตีแบบ Man-in-the-Middle)!\nนอกจากนี้ ยังเป็นไปได้ว่าคีย์ของโฮสต์เพิ่งถูกเปลี่ยนไป</string>
+  <string name="prompt_host_disconnected" tools:machine_translated="true">เซิร์ฟเวอร์ได้ตัดการเชื่อมต่อแล้ว\nต้องการปิดเซสชันหรือไม่</string>
+  <string name="prompt_continue_connecting" tools:machine_translated="true">คุณแน่ใจหรือไม่ว่าต้องการเชื่อมต่อต่อไป?</string>
+  <string name="host_authenticity_warning" tools:machine_translated="true">ไม่สามารถยืนยันความถูกต้องของโฮสต์ \'%1$s\' ได้</string>
+  <string name="host_fingerprint" tools:machine_translated="true">ค่าแฮชของคีย์สำหรับโฮสต์ %1$s คือ %2$s</string>
+  <string name="host_key_verification_title" tools:machine_translated="true">การตรวจสอบลายนิ้วมือของคีย์โฮสต์</string>
+  <string name="fingerprint_format_header" tools:machine_translated="true">รูปแบบลายนิ้วมือ</string>
+  <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d บิต</string>
+  <string name="fingerprint_copy_description" tools:machine_translated="true">คัดลอกข้อมูลลายนิ้วมือไปยังคลิปบอร์ด</string>
+  <string name="alert_passwords_do_not_match_msg" tools:machine_translated="true">รหัสผ่านไม่ตรงกัน!</string>
+  <string name="alert_wrong_password_msg" tools:machine_translated="true">รหัสผ่านไม่ถูกต้อง!</string>
+  <string name="button_resize" tools:machine_translated="true">ปรับขนาด</string>
+  <string name="alert_disconnect_msg" tools:machine_translated="true">การเชื่อมต่อขาดหายไป</string>
+  <string name="network_lost_grace_period" tools:machine_translated="true">ไม่สามารถเชื่อมต่อเครือข่ายได้ กำลังรอเชื่อมต่อใหม่อยู่…</string>
+  <string name="network_grace_period_expired" tools:machine_translated="true">ไม่สามารถเชื่อมต่อเครือข่ายได้ กำลังตัดการเชื่อมต่อ…</string>
+  <string name="network_restored_same_ip" tools:machine_translated="true">เครือข่ายกลับมาใช้งานได้ตามปกติ การเชื่อมต่อยังคงอยู่</string>
+  <string name="network_restored_ip_changed" tools:machine_translated="true">เครือข่ายกลับมาใช้งานได้ แต่ที่อยู่ IP เปลี่ยน กำลังเชื่อมต่อใหม่อยู่…</string>
+  <string name="network_restored_no_previous_state" tools:machine_translated="true">เครือข่ายกลับมาใช้งานได้แล้ว กำลังตรวจสอบการเชื่อมต่อ…</string>
+  <string name="pref_emulation_category" tools:machine_translated="true">การจำลองการทำงานของเทอร์มินัล</string>
+  <string name="pref_emulation_title" tools:machine_translated="true">โหมดจำลอง</string>
+  <string name="pref_scrollback_title" tools:machine_translated="true">ขนาดของส่วนที่แสดงประวัติการเลื่อน</string>
+  <string name="pref_scrollback_summary" tools:machine_translated="true">ขนาดของส่วนเก็บข้อมูลที่ใช้สำหรับแสดงประวัติการเลื่อนในแต่ละหน้าต่าง</string>
+  <string name="pref_fontfamily_title" tools:machine_translated="true">แบบอักษร</string>
+  <string name="pref_customfont_title" tools:machine_translated="true">เพิ่มฟอนต์ที่กำหนดเอง</string>
+  <string name="pref_customfont_summary" tools:machine_translated="true">เพิ่มฟอนต์จาก Google Fonts โดยระบุชื่อ</string>
+  <string name="dialog_customfont_title" tools:machine_translated="true">เพิ่มฟอนต์ที่กำหนดเอง</string>
+  <string name="dialog_customfont_hint" tools:machine_translated="true">ชื่อฟอนต์ของ Google Fonts (เช่น Cascadia Code)</string>
+  <string name="button_add" tools:machine_translated="true">เพิ่ม</string>
+  <string name="button_remove" tools:machine_translated="true">ลบออก</string>
+  <string name="font_validating" tools:machine_translated="true">กำลังตรวจสอบรูปแบบตัวอักษร…</string>
+  <string name="font_downloading" tools:machine_translated="true">กำลังดาวน์โหลดฟอนต์…</string>
+  <string name="pref_localfont_title" tools:machine_translated="true">นำเข้าฟอนต์ที่ติดตั้งในเครื่อง</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">นำเข้าไฟล์ฟอนต์จากที่เก็บข้อมูล (TTF, OTF)</string>
+  <string name="dialog_localfont_title" tools:machine_translated="true">นำเข้าฟอนต์</string>
+  <string name="dialog_localfont_hint" tools:machine_translated="true">ชื่อที่แสดงสำหรับฟอนต์</string>
+  <string name="button_import" tools:machine_translated="true">นำเข้า</string>
+  <string name="font_importing" tools:machine_translated="true">กำลังนำเข้าฟอนต์…</string>
+  <string name="pref_backupkeys_title" tools:machine_translated="true">สำรองข้อมูลคีย์สาธารณะ</string>
+  <string name="pref_backupkeys_summary" tools:machine_translated="true">สำรองข้อมูลคีย์ส่วนตัวโดยใช้ระบบสำรองข้อมูลของ Android</string>
+  <string name="pref_ui_category" tools:machine_translated="true">ส่วนติดต่อผู้ใช้</string>
+  <string name="pref_language_title" tools:machine_translated="true">ภาษา</string>
+  <string name="pref_language_system_default" tools:machine_translated="true">ค่าเริ่มต้นของระบบ</string>
+  <string name="pref_language_download" tools:machine_translated="true">ดาวน์โหลดชุดภาษา</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">ดาวน์โหลดไม่สำเร็จ แตะเพื่อลองใหม่อีกครั้ง</string>
+  <string name="pref_theme_title" tools:machine_translated="true">รูปแบบ</string>
+  <string name="pref_theme_system" tools:machine_translated="true">ค่าเริ่มต้นของระบบ</string>
+  <string name="pref_theme_light" tools:machine_translated="true">ธีมสีอ่อน</string>
+  <string name="pref_theme_dark" tools:machine_translated="true">สีเข้ม</string>
+  <string name="pref_rotation_title" tools:machine_translated="true">โหมดการหมุน</string>
+  <string name="pref_titlebarhide_title" tools:machine_translated="true">ซ่อนแถบชื่อหน้าต่างโดยอัตโนมัติ</string>
+  <string name="pref_titlebarhide_summary" tools:machine_translated="true">แตะที่ส่วนคอนโซลเพื่อแสดงแถบชื่อเรื่องและเข้าถึงเมนู</string>
+  <string name="pref_alwaysvisible_title" tools:machine_translated="true">แสดงปุ่มพิเศษไว้เสมอ</string>
+  <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">ท่าทางเลื่อนหน้าขึ้น/ลง</string>
+  <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">ปัดนิ้วไปทางด้านซ้ายของหน้าจอหนึ่งในสามส่วน เพื่อส่งคำสั่งเลื่อนหน้าขึ้น/ลงไปยังเทอร์มินัล</string>
+  <string name="pref_fullscreen_title" tools:machine_translated="true">แสดงเต็มหน้าจอ</string>
+  <string name="pref_fullscreen_summary" tools:machine_translated="true">ซ่อนแถบสถานะเมื่ออยู่ในโหมดคอนโซล</string>
+  <string name="pref_keyboard_category" tools:machine_translated="true">แป้นพิมพ์</string>
+  <string name="pref_shiftfkeys_title" tools:machine_translated="true">การกด Shift พร้อมกับปุ่มตัวเลข จะทำหน้าที่เหมือนปุ่มฟังก์ชัน (F-keys)</string>
+  <string name="pref_shiftfkeys_summary" tools:machine_translated="true">สำหรับคีย์บอร์ดแบบมีสาย ปุ่มตัวเลขจะส่งสัญญาณ F1-F10 เมื่อกดปุ่ม Shift ค้างไว้</string>
+  <string name="pref_ctrlfkeys_title" tools:machine_translated="true">การกดปุ่ม Ctrl พร้อมกับปุ่มตัวเลข จะทำหน้าที่เหมือนปุ่มฟังก์ชัน (F-keys)</string>
+  <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">บนแป้นพิมพ์เสมือนของซอฟต์แวร์ เมื่อกดปุ่มตัวเลข จะส่งสัญญาณ F1-F10 พร้อมกับการกดปุ่ม Ctrl</string>
+  <string name="pref_volumefont_title" tools:machine_translated="true">ปุ่มปรับระดับเสียงจะเปลี่ยนขนาดตัวอักษร</string>
+  <string name="pref_volumefont_summary" tools:machine_translated="true">นอกจากนี้ คุณยังสามารถปรับขนาดตัวอักษรได้ในการตั้งค่าโปรไฟล์</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">บันทึกปุ่มที่ใช้บ่อยไว้ในหน่วยความจำ</string>
+  <string name="pref_memkeys_summary" tools:machine_translated="true">เก็บรักษาคีย์ที่ไม่ได้ล็อกไว้ในหน่วยความจำ จนกว่าบริการส่วนหลัง (backend service) จะหยุดทำงาน</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">คงการเชื่อมต่อไว้ในเบื้องหลัง</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">รักษาการเชื่อมต่อไว้ แม้ว่าคุณจะสลับไปใช้งานแอปพลิเคชันอื่น</string>
+  <string name="pref_keymode_title" tools:machine_translated="true">ทางลัดสำหรับโฟลเดอร์</string>
+  <string name="pref_stickymodifiers_title" tools:machine_translated="true">ตัวปรับแต่งแบบคงที่</string>
+  <string name="only_alt" tools:machine_translated="true">เฉพาะปุ่ม Alt</string>
+  <string name="pref_camera_title" tools:machine_translated="true">ทางลัดสำหรับกล้อง</string>
+  <string name="pref_keepalive_title" tools:machine_translated="true">เปิดหน้าจอไว้ตลอดเวลา</string>
+  <string name="pref_keepalive_summary" tools:machine_translated="true">ป้องกันไม่ให้หน้าจอดับเมื่อใช้งานในโหมดคอนโซล</string>
+  <string name="pref_wifilock_title" tools:machine_translated="true">เปิดใช้งาน Wi-Fi ไว้</string>
+  <string name="pref_wifilock_summary" tools:machine_translated="true">ป้องกันไม่ให้ Wi-Fi ปิดใช้งานเมื่อมีการใช้งานอยู่</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">ลูกศรที่มีพื้นผิวขรุขระ</string>
+  <string name="pref_bumpyarrows_summary" tools:machine_translated="true">สั่นเมื่อส่งสัญญาณปุ่มลูกศร เหมาะสำหรับใช้ในกรณีที่การเชื่อมต่อไม่เสถียร</string>
+  <string name="pref_bell_category" tools:machine_translated="true">เสียงแจ้งเตือนของเทอร์มินัล</string>
+  <string name="pref_bell_title" tools:machine_translated="true">เปิด/ปิดเสียงสัญญาณเตือน</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">เปิดเสียงเมื่อมีการแจ้งเตือนที่อุปกรณ์</string>
+  <string name="pref_bell_volume_title" tools:machine_translated="true">ระดับเสียงกระดิ่ง</string>
+  <string name="pref_bell_vibrate_title" tools:machine_translated="true">สั่นเมื่อมีเสียงแจ้งเตือน</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">สั่นเมื่อมีการแจ้งเตือนจากอุปกรณ์</string>
+  <string name="pref_bell_notification_title" tools:machine_translated="true">การแจ้งเตือนแบบเบื้องหลัง</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">ส่งการแจ้งเตือนเมื่อโปรแกรมที่ทำงานอยู่เบื้องหลังส่งเสียงสัญญาณ</string>
+  <string name="list_keymode_right" tools:machine_translated="true">ใช้ปุ่มด้านขวา</string>
+  <string name="list_keymode_left" tools:machine_translated="true">ใช้ปุ่มด้านซ้ายของแป้นพิมพ์</string>
+  <string name="list_keymode_none" tools:machine_translated="true">ปิดใช้งาน</string>
+  <string name="list_pubkeyids_none" tools:machine_translated="true">ห้ามใช้คีย์</string>
+  <string name="list_pubkeyids_any" tools:machine_translated="true">ใช้คีย์ที่ไม่ได้ล็อกอยู่ก็ได้</string>
+  <string name="hostpref_nickname_title" tools:machine_translated="true">ชื่อเล่น</string>
+  <string name="hostpref_color_title" tools:machine_translated="true">หมวดหมู่สี</string>
+  <string name="color_red" tools:machine_translated="true">สีแดง</string>
+  <string name="color_pink" tools:machine_translated="true">สีชมพู</string>
+  <string name="color_purple" tools:machine_translated="true">สีม่วง</string>
+  <string name="color_deep_purple" tools:machine_translated="true">สีม่วงเข้ม</string>
+  <string name="color_indigo" tools:machine_translated="true">สีคราม</string>
+  <string name="color_blue" tools:machine_translated="true">สีน้ำเงิน</string>
+  <string name="color_light_blue" tools:machine_translated="true">สีฟ้าอ่อน</string>
+  <string name="color_cyan" tools:machine_translated="true">สีฟ้าอมเขียว</string>
+  <string name="color_teal" tools:machine_translated="true">สีเขียวอมฟ้า</string>
+  <string name="color_green" tools:machine_translated="true">สีเขียว</string>
+  <string name="color_light_green" tools:machine_translated="true">สีเขียวอ่อน</string>
+  <string name="color_lime" tools:machine_translated="true">สีเขียวมะนาว</string>
+  <string name="color_yellow" tools:machine_translated="true">สีเหลือง</string>
+  <string name="color_amber" tools:machine_translated="true">สีอำพัน</string>
+  <string name="color_orange" tools:machine_translated="true">สีส้ม</string>
+  <string name="color_gray" tools:machine_translated="true">สีเทา</string>
+  <string name="hostpref_fontsize_title" tools:machine_translated="true">ขนาดตัวอักษร (จุด)</string>
+  <string name="hostpref_fontfamily_title" tools:machine_translated="true">แบบอักษร</string>
+  <string name="hostpref_colorscheme_title" tools:machine_translated="true">รูปแบบสีสำหรับหน้าต่างเทอร์มินัล</string>
+  <string name="hostpref_pubkeyid_title" tools:machine_translated="true">ใช้การยืนยันตัวตนด้วยคีย์สาธารณะ</string>
+  <string name="hostpref_authagent_title" tools:machine_translated="true">ใช้ตัวแทนการรับรองความถูกต้องของ SSH</string>
+  <string name="hostpref_postlogin_title" tools:machine_translated="true">การทำงานอัตโนมัติหลังเข้าสู่ระบบ</string>
+  <string name="hostpref_postlogin_summary" tools:machine_translated="true">คำสั่งที่จะรันบนเซิร์ฟเวอร์ระยะไกลหลังจากยืนยันตัวตนแล้ว</string>
+  <string name="hostpref_compression_title" tools:machine_translated="true">การบีบอัด</string>
+  <string name="hostpref_compression_summary" tools:machine_translated="true">วิธีนี้อาจช่วยให้การใช้งานบนเครือข่ายที่ช้าลงเป็นไปได้ด้วยดี</string>
+  <string name="hostpref_wantsession_title" tools:machine_translated="true">เริ่มเซสชันเชลล์</string>
+  <string name="hostpref_wantsession_summary" tools:machine_translated="true">ปิดการใช้งานตัวเลือกนี้เพื่อใช้เฉพาะการส่งต่อพอร์ตเท่านั้น</string>
+  <string name="hostpref_stayconnected_title" tools:machine_translated="true">เชื่อมต่ออยู่เสมอ</string>
+  <string name="hostpref_stayconnected_summary" tools:machine_translated="true">ลองเชื่อมต่อกับโฮสต์อีกครั้งหากการเชื่อมต่อถูกตัดขาด</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">ปิดเมื่อตัดการเชื่อมต่อ</string>
+  <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">ปิดโปรแกรมทันทีหลังจากตัดการเชื่อมต่อระยะไกล โดยไม่แสดงข้อความแจ้งเตือน</string>
+  <string name="hostpref_delkey_title" tools:machine_translated="true">ปุ่ม DEL</string>
+  <string name="hostpref_encoding_title" tools:machine_translated="true">การเข้ารหัส</string>
+  <string name="hostpref_username_title" tools:machine_translated="true">ชื่อผู้ใช้</string>
+  <string name="hostpref_save_password_summary" tools:machine_translated="true">จัดเก็บรหัสผ่านสำหรับเข้าสู่ระบบไว้อย่างปลอดภัย เพื่อใช้สำหรับการยืนยันตัวตนโดยอัตโนมัติ</string>
+  <string name="hostpref_password_title" tools:machine_translated="true">รหัสผ่าน</string>
+  <string name="hostpref_password_unchanged" tools:machine_translated="true">รหัสผ่าน (ไม่เปลี่ยนแปลง)</string>
+  <string name="hostpref_clear_password" tools:machine_translated="true">ลบรหัสผ่านที่บันทึกไว้</string>
+  <string name="hostpref_hostname_title" tools:machine_translated="true">ชื่อโฮสต์</string>
+  <string name="hostpref_port_title" tools:machine_translated="true">พอร์ต</string>
+  <string name="hostpref_profile_title" tools:machine_translated="true">โปรไฟล์</string>
+  <string name="hostpref_profile_summary" tools:machine_translated="true">เลือกโปรไฟล์เพื่อใช้การตั้งค่าเทอร์มินัลของโปรไฟล์นั้น</string>
+  <string name="hostpref_profile_none" tools:machine_translated="true">ไม่มี (ใช้การตั้งค่าของโฮสต์)</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">ควบคุมโดยโปรไฟล์</string>
+  <string name="font_use_default" tools:machine_translated="true">ใช้แบบเริ่มต้น</string>
+  <string name="font_system_default" tools:machine_translated="true">ค่าเริ่มต้น (แบบตัวอักษรความกว้างเท่ากัน)</string>
+  <string name="pubkey_unknown" tools:machine_translated="true">ไม่พบข้อมูลคีย์</string>
+  <string name="colorscheme_default" tools:machine_translated="true">ค่าเริ่มต้น</string>
+  <string name="profile_editor_title_new" tools:machine_translated="true">โปรไฟล์ใหม่</string>
+  <string name="profile_editor_title_edit" tools:machine_translated="true">แก้ไขข้อมูลส่วนตัว</string>
+  <string name="profile_editor_save" tools:machine_translated="true">บันทึก</string>
+  <string name="profile_editor_name_label" tools:machine_translated="true">ชื่อโปรไฟล์</string>
+  <string name="profile_editor_section_icon_color" tools:machine_translated="true">สีของไอคอน</string>
+  <string name="profile_editor_section_color_scheme" tools:machine_translated="true">รูปแบบสี</string>
+  <string name="profile_editor_section_font" tools:machine_translated="true">แบบอักษร</string>
+  <string name="profile_editor_section_terminal" tools:machine_translated="true">เทอร์มินัล</string>
+  <string name="profile_editor_font_family_title" tools:machine_translated="true">กลุ่มแบบอักษร</string>
+  <string name="profile_editor_font_size_title" tools:machine_translated="true">ขนาดตัวอักษร: %d</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">ขนาดที่กำหนด</string>
+  <string name="profile_editor_force_size_summary" tools:machine_translated="true">บังคับให้หน้าต่างมีขนาดที่กำหนด (จำนวนคอลัมน์ x จำนวนแถว) แทนที่จะปรับขนาดโดยอัตโนมัติให้พอดีกับหน้าจอ</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">เปิดใช้งานการบังคับขนาด</string>
+  <string name="profile_editor_force_size_columns" tools:machine_translated="true">คอลัมน์</string>
+  <string name="profile_editor_force_size_rows" tools:machine_translated="true">จำนวนแถว</string>
+  <string name="profile_icon_color_none" tools:machine_translated="true">ไม่ระบุ (ใช้สีเริ่มต้น)</string>
+  <string name="profile_list_title" tools:machine_translated="true">รายการโปรไฟล์</string>
+  <string name="profile_list_create_profile" tools:machine_translated="true">สร้างโปรไฟล์</string>
+  <string name="profile_list_empty_message" tools:machine_translated="true">ยังไม่มีโปรไฟล์ใดๆ โปรดแตะที่เครื่องหมาย \"+\" เพื่อสร้างโปรไฟล์</string>
+  <string name="profile_list_more_options" tools:machine_translated="true">ตัวเลือกเพิ่มเติม</string>
+  <string name="profile_list_duplicate" tools:machine_translated="true">ทำสำเนา</string>
+  <string name="profile_list_delete" tools:machine_translated="true">ลบ</string>
+  <string name="profile_create_dialog_title" tools:machine_translated="true">สร้างโปรไฟล์</string>
+  <string name="profile_create_name_label" tools:machine_translated="true">ชื่อโปรไฟล์</string>
+  <string name="profile_create_button" tools:machine_translated="true">สร้าง</string>
+  <string name="profile_create_cancel" tools:machine_translated="true">ยกเลิก</string>
+  <string name="profile_delete_dialog_title" tools:machine_translated="true">ลบโปรไฟล์</string>
+  <string name="profile_delete_dialog_message" tools:machine_translated="true">คุณแน่ใจหรือไม่ว่าต้องการลบ \'%s\'?</string>
+  <string name="profile_delete_button" tools:machine_translated="true">ลบ</string>
+  <string name="profile_delete_cancel" tools:machine_translated="true">ยกเลิก</string>
+  <string name="profile_summary_font" tools:machine_translated="true">แบบอักษร: %1$s ขนาด: %2$d พอยต์</string>
+  <string name="profile_summary_emulation" tools:machine_translated="true">การจำลอง: %s</string>
+  <string name="console_menu_reconnect" tools:machine_translated="true">เชื่อมต่อใหม่อีกครั้ง</string>
+  <string name="console_menu_close" tools:machine_translated="true">ปิด</string>
+  <string name="console_menu_paste" tools:machine_translated="true">วาง</string>
+  <string name="console_menu_portforwards" tools:machine_translated="true">รายการการส่งต่อพอร์ต</string>
+  <string name="console_menu_resize" tools:machine_translated="true">กำหนดขนาด</string>
+  <string name="console_menu_urlscan" tools:machine_translated="true">สแกน URL</string>
+  <string name="console_url_no_handler" tools:machine_translated="true">ไม่มีแอปพลิเคชันใดที่สามารถเปิดลิงก์นี้ได้</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">ระบบไม่รองรับรูปแบบ URL นี้</string>
+  <string name="button_yes" tools:machine_translated="true">ใช่</string>
+  <string name="button_no" tools:machine_translated="true">ไม่</string>
+  <string name="portforward_local" tools:machine_translated="true">ภายในเครื่อง</string>
+  <string name="portforward_remote" tools:machine_translated="true">ระยะไกล</string>
+  <string name="portforward_dynamic" tools:machine_translated="true">แบบไดนามิก (SOCKS)</string>
+  <string name="portforward_pos" tools:machine_translated="true">สร้างการส่งต่อพอร์ต</string>
+  <string name="portforward_save" tools:machine_translated="true">บันทึก</string>
+  <string name="format_username" tools:machine_translated="true">ชื่อผู้ใช้</string>
+  <string name="format_hostname" tools:machine_translated="true">ชื่อโฮสต์</string>
+  <string name="format_port" tools:machine_translated="true">พอร์ต</string>
+  <string name="list_menu_pubkeys" tools:machine_translated="true">จัดการคีย์สาธารณะ</string>
+  <string name="list_menu_sortcolor" tools:machine_translated="true">เรียงตามสี</string>
+  <string name="list_menu_sortname" tools:machine_translated="true">เรียงตามชื่อ</string>
+  <string name="list_menu_disconnect" tools:machine_translated="true">ตัดการเชื่อมต่อทั้งหมด</string>
+  <string name="list_menu_settings" tools:machine_translated="true">การตั้งค่า</string>
+  <string name="list_host_disconnect" tools:machine_translated="true">ตัดการเชื่อมต่อ</string>
+  <string name="list_host_edit" tools:machine_translated="true">แก้ไขการตั้งค่าโฮสต์</string>
+  <string name="list_host_portforwards" tools:machine_translated="true">แก้ไขการตั้งค่าส่งต่อพอร์ต</string>
+  <string name="list_host_delete" tools:machine_translated="true">ลบโฮสต์</string>
+  <string name="list_host_duplicate" tools:machine_translated="true">ทำสำเนาโฮสต์</string>
+  <string name="list_host_forget_keys" tools:machine_translated="true">ลบข้อมูลคีย์โฮสต์ที่บันทึกไว้</string>
+  <string name="list_rotation_default" tools:machine_translated="true">ค่าเริ่มต้น</string>
+  <string name="list_rotation_land" tools:machine_translated="true">บังคับให้แสดงผลในแนวนอน</string>
+  <string name="list_rotation_port" tools:machine_translated="true">บังคับให้แสดงผลในแนวนอน</string>
+  <string name="list_rotation_auto" tools:machine_translated="true">อัตโนมัติ</string>
+  <string name="list_camera_ctrlaspace" tools:machine_translated="true">กด Ctrl+A แล้วตามด้วยปุ่ม Space</string>
+  <string name="list_camera_ctrla" tools:machine_translated="true">Ctrl+A</string>
+  <string name="list_camera_esc" tools:machine_translated="true">Esc</string>
+  <string name="list_camera_esc_a" tools:machine_translated="true">Esc+A</string>
+  <string name="list_camera_none" tools:machine_translated="true">ไม่มี</string>
+  <string name="list_camera_text_input" tools:machine_translated="true">ช่องสำหรับใส่ข้อความ</string>
+  <string name="delete_message" tools:machine_translated="true">คุณแน่ใจหรือไม่ว่าต้องการลบ \'%1$s\'?</string>
+  <string name="delete_pos" tools:machine_translated="true">ใช่ ลบ</string>
+  <string name="delete_neg" tools:machine_translated="true">ยกเลิก</string>
+  <string name="disconnect_all_message" tools:machine_translated="true">คุณต้องการตัดการเชื่อมต่อจากอุปกรณ์ทั้งหมดที่เชื่อมต่ออยู่จริง ๆ หรือ</string>
+  <string name="disconnect_all_pos" tools:machine_translated="true">ใช่, ตัดการเชื่อมต่อ</string>
+  <string name="disconnect_all_neg" tools:machine_translated="true">ยกเลิก</string>
+  <string name="terminal_connecting" tools:ignore="PluralsCandidate" tools:machine_translated="true">กำลังเชื่อมต่อกับ %1$s:%2$d ผ่าน %3$s</string>
+  <string name="terminal_sucess" tools:machine_translated="true">ตรวจสอบคีย์โฮสต์ \'%1$s\' แล้ว: %2$s</string>
+  <string name="terminal_failed" tools:machine_translated="true">การตรวจสอบคีย์โฮสต์ล้มเหลว</string>
+  <string name="terminal_using_s2c_algorithm" tools:machine_translated="true">อัลกอริทึมที่ใช้ในการสื่อสารระหว่างเซิร์ฟเวอร์และไคลเอนต์: %1$s %2$s</string>
+  <string name="terminal_using_c2s_algorithm" tools:machine_translated="true">อัลกอริทึมที่ใช้ในการสื่อสารระหว่างไคลเอนต์และเซิร์ฟเวอร์: %1$s %2$s</string>
+  <string name="terminal_using_algorithm" tools:machine_translated="true">กำลังใช้อัลกอริทึม: %1$s %2$s</string>
+  <string name="terminal_kex_algorithm" tools:machine_translated="true">อัลกอริทึมสำหรับการแลกเปลี่ยนคีย์: %s</string>
+  <string name="terminal_auth" tools:machine_translated="true">กำลังเริ่มกระบวนการยืนยันตัวตน</string>
+  <string name="terminal_auth_pass" tools:machine_translated="true">กำลังพยายามใช้การยืนยันตัวตนด้วย \'รหัสผ่าน\'</string>
+  <string name="terminal_auth_pass_fail" tools:machine_translated="true">วิธีการยืนยันตัวตนด้วยรหัสผ่านไม่สำเร็จ</string>
+  <string name="terminal_auth_saved_password" tools:machine_translated="true">กำลังลองใช้รหัสผ่านที่บันทึกไว้…</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">การตรวจสอบสิทธิ์ด้วยรหัสผ่านที่บันทึกไว้ล้มเหลว</string>
+  <string name="terminal_auth_pubkey_any" tools:machine_translated="true">กำลังพยายามใช้การยืนยันตัวตนด้วย \'คีย์สาธารณะ\' โดยใช้คีย์สาธารณะที่มีอยู่ในระบบ</string>
+  <string name="terminal_auth_pubkey_invalid" tools:machine_translated="true">คีย์สาธารณะที่เลือกไว้ไม่ถูกต้อง โปรดลองเลือกคีย์ใหม่อีกครั้งในตัวแก้ไขของโฮสต์</string>
+  <string name="terminal_auth_pubkey_specific" tools:machine_translated="true">กำลังพยายามตรวจสอบสิทธิ์โดยใช้คีย์สาธารณะเฉพาะ</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">กำลังขอการยืนยันตัวตนด้วยข้อมูลชีวภาพเพื่อปลดล็อกคีย์ \'%1$s\'</string>
+  <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">คีย์ไบโอเมตริก \'%1$s\' ถูกยกเลิกการใช้งานแล้ว ซึ่งอาจเกิดขึ้นเมื่อมีการลงทะเบียนลายนิ้วมือใหม่บนอุปกรณ์ โปรดสร้างคีย์ใหม่</string>
+  <string name="terminal_auth_pubkey_fail" tools:machine_translated="true">การตรวจสอบสิทธิ์ด้วยวิธี \'publickey\' โดยใช้คีย์ \'%1$s\' ล้มเหลว</string>
+  <string name="terminal_auth_ki" tools:machine_translated="true">กำลังพยายามใช้การยืนยันตัวตนแบบ \'โต้ตอบผ่านแป้นพิมพ์\'</string>
+  <string name="terminal_auth_ki_fail" tools:machine_translated="true">วิธีการยืนยันตัวตนแบบ \'keyboard-interactive\' ล้มเหลว</string>
+  <string name="terminal_auth_fail" tools:machine_translated="true">[เซิร์ฟเวอร์ของคุณไม่รองรับวิธีการยืนยันตัวตนแบบ \'รหัสผ่าน\' หรือ \'แบบโต้ตอบกับแป้นพิมพ์\']</string>
+  <string name="terminal_no_session" tools:machine_translated="true">ระบบจะไม่เริ่มเซสชันเนื่องจากมีการตั้งค่าไว้ในส่วนของโฮสต์</string>
+  <string name="terminal_enable_portfoward" tools:machine_translated="true">เปิดใช้งานการส่งต่อพอร์ต: %1$s</string>
+  <string name="local_shell_unavailable" tools:machine_translated="true">เกิดข้อผิดพลาด! ไม่สามารถเปิดใช้งานเชลล์ในเครื่องบนโทรศัพท์นี้ได้</string>
+  <string name="notification_text" tools:machine_translated="true">%1$s ต้องการให้คุณใส่ใจ</string>
+  <string name="no" tools:machine_translated="true">ไม่</string>
+  <string name="yes" tools:machine_translated="true">ใช่</string>
+  <string name="list_color_schemes" tools:machine_translated="true">ชุดสี</string>
+  <string name="menu_colors_reset" tools:machine_translated="true">รีเซ็ต</string>
+  <string name="button_manage_schemes" tools:machine_translated="true">จัดการชุดสี</string>
+  <string name="title_scheme_manager" tools:machine_translated="true">จัดการชุดสี</string>
+  <string name="button_new_scheme" tools:machine_translated="true">สร้างชุดสีใหม่</string>
+  <string name="button_duplicate_scheme" tools:machine_translated="true">ทำซ้ำ</string>
+  <string name="button_rename_scheme" tools:machine_translated="true">เปลี่ยนชื่อ</string>
+  <string name="button_delete_scheme" tools:machine_translated="true">ลบ</string>
+  <string name="dialog_title_new_scheme" tools:machine_translated="true">ชุดสีใหม่</string>
+  <string name="dialog_title_rename_scheme" tools:machine_translated="true">เปลี่ยนชื่อชุดสี</string>
+  <string name="label_scheme_name" tools:machine_translated="true">ชื่อแผนงาน</string>
+  <string name="label_scheme_description" tools:machine_translated="true">คำอธิบาย (ไม่บังคับ)</string>
+  <string name="dialog_title_delete_scheme" tools:machine_translated="true">ต้องการลบแผนผังหรือไม่</string>
+  <string name="dialog_message_delete_scheme" tools:machine_translated="true">คุณแน่ใจหรือไม่ว่าต้องการลบ \"%1$s\"? การดำเนินการนี้ไม่สามารถยกเลิกได้</string>
+  <string name="button_confirm" tools:machine_translated="true">ยืนยัน</string>
+  <string name="button_cancel" tools:machine_translated="true">ยกเลิก</string>
+  <string name="label_built_in_scheme" tools:machine_translated="true">เป็นส่วนหนึ่งของระบบ</string>
+  <string name="label_custom_scheme" tools:machine_translated="true">ปรับแต่งเอง</string>
+  <string name="empty_custom_schemes" tools:machine_translated="true">ไม่มีรูปแบบที่กำหนดเอง หากต้องการสร้างรูปแบบใหม่ ให้แตะที่ \"รูปแบบใหม่\"</string>
+  <string name="button_edit_palette" tools:machine_translated="true">แก้ไขชุดสี</string>
+  <string name="button_export_scheme" tools:machine_translated="true">ส่งออกชุดสี</string>
+  <string name="button_import_scheme" tools:machine_translated="true">นำเข้าชุดสี</string>
+  <string name="message_export_success" tools:machine_translated="true">ส่งออก %1$s เรียบร้อยแล้ว</string>
+  <string name="message_import_success" tools:machine_translated="true">นำเข้า %1$s สำเร็จ</string>
+  <string name="error_export_failed" tools:machine_translated="true">ไม่สามารถส่งออกข้อมูลได้: %1$s</string>
+  <string name="error_import_failed" tools:machine_translated="true">ไม่สามารถนำเข้าข้อมูลได้: %1$s</string>
+  <string name="error_invalid_json" tools:machine_translated="true">ไฟล์ JSON ไม่ถูกต้อง</string>
+  <string name="title_palette_editor" tools:machine_translated="true">แก้ไขชุดสี</string>
+  <string name="button_reset_all_colors" tools:machine_translated="true">รีเซ็ตทั้งหมด</string>
+  <string name="section_ansi_colors" tools:machine_translated="true">สี ANSI (0–15)</string>
+  <string name="dialog_title_edit_color" tools:machine_translated="true">แก้ไขสี %1$d</string>
+  <string name="dialog_title_reset_all" tools:machine_translated="true">ต้องการรีเซ็ตสีทั้งหมดหรือไม่</string>
+  <string name="dialog_message_reset_all" tools:machine_translated="true">การดำเนินการนี้จะรีเซ็ตสีทั้งหมด 256 สีให้กลับไปเป็นค่าเริ่มต้น และไม่สามารถยกเลิกการดำเนินการนี้ได้</string>
+  <string name="app_is_running" tools:machine_translated="true">ConnectBot กำลังทำงาน</string>
+  <string name="label_red" tools:machine_translated="true">สีแดง</string>
+  <string name="label_green" tools:machine_translated="true">สีเขียว</string>
+  <string name="label_blue" tools:machine_translated="true">สีน้ำเงิน</string>
+  <string name="label_hex_color" tools:machine_translated="true">รหัสสีฐานสิบหก</string>
+  <string name="colors_fg_label" tools:machine_translated="true">สีพื้นหน้า: %1$d</string>
+  <string name="color_bg_label" tools:machine_translated="true">สีพื้นหลัง: %1$d</string>
+  <string name="section_fg_bg_colors" tools:machine_translated="true">สีพื้นหน้าและสีพื้นหลัง</string>
+  <string name="label_foreground_color" tools:machine_translated="true">สีพื้นหน้า</string>
+  <string name="label_background_color" tools:machine_translated="true">พื้นหลัง</string>
+  <string name="label_base_scheme" tools:machine_translated="true">รูปแบบเริ่มต้น:</string>
+  <string name="menu_manage_colors" tools:machine_translated="true">จัดการชุดสี</string>
+  <string name="palette_editor_builtin_note" tools:machine_translated="true">ชุดรูปแบบเริ่มต้นจะไม่สามารถแก้ไขได้ หากต้องการปรับแต่ง ให้ทำสำเนาชุดรูปแบบก่อน</string>
+  <string name="section_color_preview" tools:machine_translated="true">ตัวอย่าง</string>
+  <string name="image_description_connected" tools:machine_translated="true">เชื่อมต่อแล้ว</string>
+  <string name="image_description_disconnected" tools:machine_translated="true">ตัดการเชื่อมต่อแล้ว</string>
+  <string name="image_description_toggle_control_character" tools:machine_translated="true">สลับอักขระควบคุม</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">ส่งอักขระควบคุม</string>
+  <string name="image_description_send_tab_character" tools:machine_translated="true">ส่งอักขระ TAB</string>
+  <string name="image_description_hide_keyboard" tools:machine_translated="true">ซ่อนแป้นพิมพ์</string>
+  <string name="image_description_show_keyboard" tools:machine_translated="true">แสดงแป้นพิมพ์</string>
+  <string name="image_description_up" tools:machine_translated="true">ลูกศรชี้ขึ้น</string>
+  <string name="image_description_down" tools:machine_translated="true">ลูกศรชี้ลง</string>
+  <string name="image_description_left" tools:machine_translated="true">ลูกศรชี้ไปทางซ้าย</string>
+  <string name="image_description_right" tools:machine_translated="true">ลูกศรชี้ไปทางขวา</string>
+  <string name="button_key_esc" tools:machine_translated="true">Esc</string>
+  <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
+  <string name="button_key_home" tools:machine_translated="true">หน้าหลัก</string>
+  <string name="button_key_end" tools:machine_translated="true">สิ้นสุด</string>
+  <string name="button_key_pgup" tools:machine_translated="true">เลื่อนหน้าขึ้น</string>
+  <string name="button_key_pgdn" tools:machine_translated="true">เลื่อนหน้าลง</string>
+  <string name="button_key_f1" tools:machine_translated="true">F1</string>
+  <string name="button_key_f2" tools:machine_translated="true">F2</string>
+  <string name="button_key_f3" tools:machine_translated="true">F3</string>
+  <string name="button_key_f4" tools:machine_translated="true">F4</string>
+  <string name="button_key_f5" tools:machine_translated="true">F5</string>
+  <string name="button_key_f6" tools:machine_translated="true">F6</string>
+  <string name="button_key_f7" tools:machine_translated="true">F7</string>
+  <string name="button_key_f8" tools:machine_translated="true">F8</string>
+  <string name="button_key_f9" tools:machine_translated="true">F9</string>
+  <string name="button_key_f10" tools:machine_translated="true">F10</string>
+  <string name="button_key_f11" tools:machine_translated="true">F11</string>
+  <string name="button_key_f12" tools:machine_translated="true">F12</string>
+  <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">ช่องป้อนข้อความ</string>
+  <string name="terminal_text_input_dialog_title" tools:machine_translated="true">ช่องป้อนข้อความ</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">พิมพ์ข้อความเพื่อส่งไปยังเทอร์มินัล</string>
+  <string name="terminal_text_input_resize_handle" tools:machine_translated="true">ปรับขนาด</string>
+  <string name="console_menu_text_input" tools:machine_translated="true">ช่องสำหรับป้อนข้อความ</string>
+  <string name="button_send" tools:machine_translated="true">ส่ง</string>
+  <string name="button_ok" tools:machine_translated="true">ตกลง</string>
+  <string name="button_close" tools:machine_translated="true">ปิด</string>
+  <string name="button_back" tools:machine_translated="true">ย้อนกลับ</string>
+  <string name="button_navigate_up" tools:machine_translated="true">เลื่อนขึ้น</string>
+  <string name="button_more_options" tools:machine_translated="true">ตัวเลือกเพิ่มเติม</string>
+  <string name="button_host_options" tools:machine_translated="true">ตัวเลือกสำหรับผู้จัดงาน</string>
+  <string name="button_collapse" tools:machine_translated="true">ย่อส่วน</string>
+  <string name="error_key_load_failed" tools:machine_translated="true">ไม่สามารถโหลดคีย์ \'%1$s\' ได้: %2$s</string>
+  <string name="error_connection_failed" tools:machine_translated="true">ไม่สามารถเชื่อมต่อกับ %1$s (%2$s) ได้: %3$s</string>
+  <string name="error_port_forward_load_failed" tools:machine_translated="true">ไม่สามารถโหลดการตั้งค่าการส่งต่อพอร์ตสำหรับ %1$s: %2$s</string>
+  <string name="error_host_save_failed" tools:machine_translated="true">ไม่สามารถบันทึกการตั้งค่าของโฮสต์ %1$s ได้: %2$s</string>
+  <string name="error_color_scheme_load_failed" tools:machine_translated="true">ไม่สามารถโหลดชุดสีได้: %s</string>
+  <string name="host_duplicate_nickname" tools:machine_translated="true">%1$s (สำเนา)</string>
+  <string name="empty_hosts_message" tools:machine_translated="true">ยังไม่ได้กำหนดค่าโฮสต์</string>
+  <string name="empty_pubkeys_message" tools:machine_translated="true">ไม่พบคีย์ใดๆ</string>
+  <string name="empty_port_forwards_message" tools:machine_translated="true">ยังไม่ได้ตั้งค่าการส่งต่อพอร์ต</string>
+  <string name="empty_urls_message" tools:machine_translated="true">ไม่พบ URL ใดๆ ในบัฟเฟอร์ของเทอร์มินัล</string>
+  <string name="console_default_title" tools:machine_translated="true">หน้าจอคอนโซล</string>
+  <string name="host_editor_quick_connect_label" tools:machine_translated="true">เชื่อมต่ออย่างรวดเร็ว</string>
+  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">ผู้ใช้\@ชื่อโฮสต์:พอร์ต</string>
+  <string name="host_editor_quick_connect_example" tools:machine_translated="true">ตัวอย่าง: root\@192.168.1.1:22</string>
+  <string name="host_editor_show_advanced" tools:machine_translated="true">แสดงตัวเลือกขั้นสูง</string>
+  <string name="host_editor_hide_advanced" tools:machine_translated="true">ซ่อนตัวเลือกขั้นสูง</string>
+  <string name="resize_width_label" tools:machine_translated="true">ความกว้าง (จำนวนคอลัมน์)</string>
+  <string name="resize_height_label" tools:machine_translated="true">ความสูง (จำนวนแถว)</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">ปิดใช้งานการกำหนดขนาดคงที่</string>
+  <string name="pubkey_editor_key_type_label" tools:machine_translated="true">ประเภทของคีย์</string>
+  <string name="pubkey_editor_options_label" tools:machine_translated="true">ตัวเลือก</string>
+  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">ไม่สามารถปลดล็อกคีย์ที่เข้ารหัสไว้เมื่อเริ่มต้นระบบ</string>
+  <string name="pubkey_type_label" tools:machine_translated="true">ประเภท: %s</string>
+  <string name="pubkey_encrypted_description" tools:machine_translated="true">มีการเข้ารหัส</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">ไม่ได้เข้ารหัส</string>
+  <string name="pubkey_biometric_protection" tools:machine_translated="true">การป้องกันด้วยลายนิ้วมือ</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">ใช้ลายนิ้วมือเพื่อป้องกันรหัสผ่านนี้</string>
+  <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">ยังไม่ได้ลงทะเบียนลายนิ้วมือ กรุณาตั้งค่าลายนิ้วมือในส่วนการตั้งค่าของอุปกรณ์ เพื่อใช้งานคุณสมบัตินี้</string>
+  <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">การป้องกันด้วยลายนิ้วมือมีให้ใช้งานเฉพาะกับคีย์ RSA และ EC เท่านั้น</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">ยืนยันตัวตนเพื่อใช้คีย์</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">แตะที่เซ็นเซอร์ลายนิ้วมือเพื่อปลดล็อก \'%1$s\'</string>
+  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">ป้องกันด้วยลายนิ้วมือ</string>
+  <string name="pubkey_biometric_not_available" tools:machine_translated="true">ไม่สามารถใช้การยืนยันตัวตนด้วยลายนิ้วมือได้</string>
+  <string name="portforward_nickname_placeholder" tools:machine_translated="true">เว็บเซิร์ฟเวอร์ภายใน</string>
+  <string name="portforward_port_range_error" tools:machine_translated="true">หมายเลขพอร์ตต้องอยู่ระหว่าง 1 ถึง 65535</string>
+  <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">รูปแบบที่ถูกต้องคือ โฮสต์:พอร์ต (เช่น localhost:80)</string>
+  <string name="portforward_host_address" tools:machine_translated="true">ที่อยู่ของโฮสต์</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">โฮสต์เครื่องภายใน</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">เครื่องคอมพิวเตอร์เครื่องนี้ (รองรับเฉพาะ IPv4)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">เครื่องคอมพิวเตอร์ภายในเครื่อง (รองรับเฉพาะ IPv6)</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">ที่อยู่ทั้งหมด</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">ที่อยู่ IPv4 ทั้งหมด</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">ที่อยู่ IPv6 ทั้งหมด</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">ที่อยู่เฉพาะ</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="portforward_type_label" tools:machine_translated="true">ประเภท: %s</string>
+  <string name="portforward_enable" tools:machine_translated="true">เปิดใช้งาน</string>
+  <string name="portforward_disable" tools:machine_translated="true">ปิดใช้งาน</string>
+  <string name="portforward_enabled" tools:machine_translated="true">เปิดใช้งานการส่งต่อพอร์ตแล้ว</string>
+  <string name="portforward_disabled" tools:machine_translated="true">ปิดใช้งานการส่งต่อพอร์ต</string>
+  <string name="protocol_spinner_label" tools:machine_translated="true">โปรโตคอล</string>
+  <string name="expand" tools:machine_translated="true">ขยาย</string>
+  <string name="hostpref_authagent_with_confirmation" tools:machine_translated="true">ต้องมีการยืนยัน</string>
+  <string name="hostpref_add_host" tools:machine_translated="true">เพิ่มโฮสต์</string>
+  <string name="hostpref_save_host" tools:machine_translated="true">บันทึกข้อมูลโฮสต์</string>
+  <string name="hostpref_setting_title" tools:machine_translated="true">การตั้งค่าโฮสต์</string>
+  <string name="pubkey_import_existing" tools:machine_translated="true">นำเข้าคีย์สาธารณะที่มีอยู่แล้ว</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">นำเข้าจากคลิปบอร์ด</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">เนื้อหาของคีย์ส่วนตัว</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">วางเนื้อหาจากคลิปบอร์ด</string>
+  <string name="notification_permission_title" tools:machine_translated="true">เชื่อมต่อในเบื้องหลังต่อไป</string>
+  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot จำเป็นต้องได้รับสิทธิ์ในการส่งการแจ้งเตือน เพื่อให้การเชื่อมต่อของคุณยังคงทำงานอยู่เมื่อคุณสลับไปใช้แอปอื่น หากไม่มีสิทธิ์นี้ ระบบอาจตัดการเชื่อมต่อของคุณเพื่อประหยัดพลังงานแบตเตอรี่</string>
+  <string name="grant_permission" tools:machine_translated="true">อนุญาต</string>
+  <string name="connect_anyway" tools:machine_translated="true">เชื่อมต่อโดยไม่ให้สิทธิ์การแจ้งเตือน</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">จำเป็นต้องให้สิทธิ์การแจ้งเตือน</string>
+  <string name="notification_permission_denied_message" tools:machine_translated="true">เพื่อให้การเชื่อมต่อของคุณยังคงทำงานอยู่เบื้องหลัง โปรดเปิดการแจ้งเตือนสำหรับ ConnectBot ในการตั้งค่าของระบบ</string>
+  <string name="open_settings" tools:machine_translated="true">เปิดการตั้งค่า</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">การเชื่อมต่ออาจถูกตัดการเชื่อมต่อหากไม่ได้ให้สิทธิ์การแจ้งเตือน</string>
+  <string name="notification_permission_console_warning" tools:machine_translated="true">การเชื่อมต่ออาจถูกตัดเมื่อแอปทำงานอยู่เบื้องหลัง</string>
+  <string name="terminal_no_route" tools:machine_translated="true">คุณกำลังพยายามเข้าถึงเครื่องในเครือข่ายท้องถิ่นใช่หรือไม่ โปรดอนุญาตสิทธิ์การเข้าถึงเครือข่ายท้องถิ่น</string>
+  <string name="loading_message" tools:machine_translated="true">กำลังโหลด…</string>
+  <string name="migration_checking" tools:machine_translated="true">กำลังตรวจสอบฐานข้อมูล…</string>
+  <string name="migration_title" tools:machine_translated="true">กำลังย้ายฐานข้อมูล</string>
+  <string name="migration_warning" tools:machine_translated="true">โปรดอย่าปิดแอปพลิเคชันระหว่างการดำเนินการเปลี่ยนแปลงระบบ</string>
+  <string name="migration_stats_hosts" tools:machine_translated="true">จำนวนโฮสต์ที่ย้าย: %d</string>
+  <string name="migration_stats_pubkeys" tools:machine_translated="true">จำนวนคีย์ SSH ที่ย้ายแล้ว: %d</string>
+  <string name="migration_stats_port_forwards" tools:machine_translated="true">จำนวนการส่งต่อพอร์ตที่ย้ายแล้ว: %d</string>
+  <string name="migration_stats_known_hosts" tools:machine_translated="true">จำนวนโฮสต์ที่ย้ายแล้ว: %d</string>
+  <string name="migration_failed_title" tools:machine_translated="true">การย้ายข้อมูลล้มเหลว</string>
+  <string name="migration_failed_message" tools:machine_translated="true">เกิดข้อผิดพลาดระหว่างการย้ายข้อมูลฐานข้อมูล: %s</string>
+  <string name="migration_retry" tools:machine_translated="true">ลองใหม่อีกครั้ง</string>
+  <string name="migration_failed_help" tools:machine_translated="true">หากปัญหายังคงอยู่ โปรดแจ้งปัญหาดังกล่าวที่ %1$s พร้อมแนบไฟล์บันทึกการแก้ไขปัญหาที่คัดลอกไว้ด้านบน</string>
+  <string name="migration_warnings_title" tools:machine_translated="true">คำเตือนเกี่ยวกับการย้ายข้อมูล</string>
+  <string name="migration_copy_warnings" tools:machine_translated="true">คัดลอกคำเตือน</string>
+  <string name="migration_debug_log_title" tools:machine_translated="true">บันทึกการแก้ไขข้อผิดพลาด</string>
+  <string name="migration_copy_debug_log" tools:machine_translated="true">คัดลอกบันทึกการแก้ไขข้อผิดพลาด</string>
+  <string name="disconnect_host_alert" tools:machine_translated="true">คุณแน่ใจหรือไม่ว่าต้องการตัดการเชื่อมต่อจาก \'%1$s\'?</string>
+  <string name="delete_host_confirm" tools:machine_translated="true">คุณแน่ใจหรือไม่ว่าต้องการลบโฮสต์ \'%1$s\'?</string>
+  <string name="forget_host_keys_confirm" tools:machine_translated="true">คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลคีย์โฮสต์ที่บันทึกไว้สำหรับ \'%1$s\'? ระบบจะแจ้งให้คุณตรวจสอบคีย์โฮสต์ในการเชื่อมต่อครั้งถัดไป</string>
+  <string name="list_pubkey_edit" tools:machine_translated="true">แก้ไขข้อมูลคีย์สาธารณะ</string>
+  <string name="hostpref_ipversion_title" tools:machine_translated="true">รุ่นของ IP</string>
+  <string name="hostpref_ipversion_summary" tools:machine_translated="true">เลือกเวอร์ชันของที่อยู่ IP ที่ต้องการใช้เมื่อเชื่อมต่อ</string>
+  <string name="ipversion_auto" tools:machine_translated="true">อัตโนมัติ</string>
+  <string name="ipversion_ipv4" tools:machine_translated="true">ใช้เฉพาะ IPv4</string>
+  <string name="ipversion_ipv6" tools:machine_translated="true">ใช้เฉพาะ IPv6</string>
+  <string name="hostpref_jumphost_title" tools:machine_translated="true">โฮสต์สำหรับเชื่อมต่อ (ProxyJump)</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">เชื่อมต่อผ่านโฮสต์ SSH อื่น</string>
+  <string name="list_jumphost_none" tools:machine_translated="true">ไม่มี (เชื่อมต่อโดยตรง)</string>
+  <string name="terminal_connecting_via_jump" tools:machine_translated="true">กำลังเชื่อมต่อผ่านเซิร์ฟเวอร์ตัวกลาง: %s</string>
+  <string name="terminal_jump_connected" tools:machine_translated="true">เชื่อมต่อกับเซิร์ฟเวอร์หลักแล้ว: %s</string>
+  <string name="terminal_jump_authenticated" tools:machine_translated="true">ยืนยันตัวตนเพื่อเข้าสู่เซิร์ฟเวอร์หลักแล้ว: %s</string>
+  <string name="terminal_jump_failed" tools:machine_translated="true">ไม่สามารถเชื่อมต่อกับเซิร์ฟเวอร์ %1$s ได้: %2$s</string>
+  <string name="terminal_jump_auth_failed" tools:machine_translated="true">การตรวจสอบสิทธิ์สำหรับเครื่องเซิร์ฟเวอร์หลักล้มเหลว: %s</string>
+  <string name="terminal_jump_not_found" tools:machine_translated="true">ไม่พบโฮสต์ที่ใช้สำหรับเชื่อมต่อในรายการโฮสต์ที่บันทึกไว้</string>
+  <string name="terminal_jump_password" tools:machine_translated="true">รหัสผ่านสำหรับเครื่องเซิร์ฟเวอร์ %s:</string>
+  <string name="view_logs" tools:machine_translated="true">ดูบันทึก</string>
+  <string name="logs_title" tools:machine_translated="true">บันทึกการทำงานของแอปพลิเคชัน</string>
+  <string name="copy_logs" tools:machine_translated="true">คัดลอกบันทึก</string>
+  <string name="logs_copied" tools:machine_translated="true">คัดลอกบันทึกไปยังคลิปบอร์ดแล้ว</string>
+  <string name="logs_bug_report_info" tools:machine_translated="true">หากต้องการรายงานข้อผิดพลาด โปรดคัดลอกข้อมูลบันทึกเหล่านี้ และเปิดรายงานปัญหาใหม่ได้ที่ https://connectbot.org/bug</string>
+  <string name="no_logs_available" tools:machine_translated="true">ไม่มีข้อมูลบันทึก</string>
+  <string name="help_section_about" tools:machine_translated="true">เกี่ยวกับ</string>
+  <string name="title_contact" tools:machine_translated="true">ติดต่อและขอความช่วยเหลือ</string>
+  <string name="help_section_contact" tools:machine_translated="true">ติดต่อและขอความช่วยเหลือ</string>
+  <string name="help_website" tools:machine_translated="true">เว็บไซต์</string>
+  <string name="help_github" tools:machine_translated="true">ซอร์สโค้ด</string>
+  <string name="help_report_bug" tools:machine_translated="true">รายงานข้อผิดพลาด</string>
+  <string name="help_section_donate" tools:machine_translated="true">สนับสนุนการพัฒนา</string>
+  <string name="help_donate_github" tools:machine_translated="true">GitHub Sponsors</string>
+  <string name="help_donate_coffee" tools:machine_translated="true">สนับสนุนด้วยการซื้อกาแฟให้ฉัน</string>
+  <string name="colorscheme_default_description" tools:machine_translated="true">สีเริ่มต้นของเทอร์มินัล</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">สีที่แม่นยำสำหรับเครื่องจักรและผู้คน</string>
+  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">ใช้ชุดสี Solarized โดยมีพื้นหลังสีอ่อน</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">ธีมสีเข้มสำหรับเทอร์มินัล</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">ชุดสีโทนสีฟ้าอมเทาแบบขั้วโลกเหนือ</string>
+  <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">รูปแบบสีแบบย้อนยุค</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">ธีมที่ได้แรงบันดาลใจจาก Sublime Text</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">ธีมสีเข้มที่ดูสะอาดตาและใช้งานสบาย</string>
+  <string name="pref_profiles_category" tools:machine_translated="true">โปรไฟล์</string>
+  <string name="pref_default_profile_title" tools:machine_translated="true">โปรไฟล์เริ่มต้น</string>
+  <string name="pref_default_profile_none" tools:machine_translated="true">ไม่มี (ใช้การตั้งค่าของโฮสต์)</string>
+  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">แสดงปุ่มพิเศษไว้เสมอ</string>
+  <string name="pref_customterminal_title" tools:machine_translated="true">ประเภทเทอร์มินัลที่กำหนดเอง</string>
+  <string name="pref_customterminal_summary" tools:machine_translated="true">เพิ่มค่า TERM ที่กำหนดเองสำหรับเซิร์ฟเวอร์ระยะไกล</string>
+  <string name="dialog_customterminal_title" tools:machine_translated="true">เพิ่มประเภทเทอร์มินัลที่กำหนดเอง</string>
+  <string name="dialog_customterminal_hint" tools:machine_translated="true">ประเภทของเทอร์มินัล (เช่น rxvt-unicode)</string>
+  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">จัดการประเภทเทอร์มินัลที่กำหนดเอง</string>
+  <string name="button_add_custom" tools:machine_translated="true">เพิ่มรายการที่กำหนดเอง…</string>
+  <string name="button_manage_custom" tools:machine_translated="true">จัดการรายการที่กำหนดเอง…</string>
+  <string name="dialog_custom_value_label" tools:machine_translated="true">ป้อนค่าที่กำหนดเอง</string>
+  <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">กด Ctrl+A แล้วตามด้วยปุ่ม Space</string>
+  <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
+  <string name="list_camera_esc_description" tools:machine_translated="true">Esc</string>
+  <string name="list_camera_esc_a_description" tools:machine_translated="true">Esc+A</string>
+  <string name="list_camera_none_description" tools:machine_translated="true">ไม่มี</string>
+  <string name="list_camera_text_input_description" tools:machine_translated="true">ช่องสำหรับป้อนข้อความ</string>
+  <string name="list_menu_export_hosts" tools:machine_translated="true">ส่งออกรายการโฮสต์</string>
+  <string name="list_menu_import_hosts" tools:machine_translated="true">นำเข้าข้อมูลเครื่อง (โฮสต์)</string>
+  <string name="export_hosts_success" tools:machine_translated="true">ส่งออกโฮสต์จำนวน %1$d รายการ และโปรไฟล์จำนวน %2$d รายการ</string>
+  <string name="import_hosts_success" tools:machine_translated="true">นำเข้าโฮสต์จำนวน %1$d รายการ (ข้ามไป %2$d รายการ) และโปรไฟล์จำนวน %3$d รายการ (ข้ามไป %4$d รายการ)</string>
+  <string name="export_hosts_failed" tools:machine_translated="true">ไม่สามารถส่งออกข้อมูลโฮสต์ได้: %s</string>
+  <string name="import_hosts_failed" tools:machine_translated="true">ไม่สามารถนำเข้าข้อมูลโฮสต์ได้: %s</string>
+  <string name="export_hosts_title" tools:machine_translated="true">ส่งออกรายการโฮสต์</string>
+  <string name="shortcut_customize_title" tools:machine_translated="true">ปรับแต่งทางลัด</string>
+  <string name="shortcut_icon_color" tools:machine_translated="true">สีไอคอน</string>
+  <string name="shortcut_icon_style" tools:machine_translated="true">รูปแบบไอคอน</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">ใช้สีที่กำหนดไว้ในระบบของโฮสต์</string>
+  <string name="shortcut_create" tools:machine_translated="true">สร้างทางลัด</string>
+  <string name="icon_style_terminal" tools:machine_translated="true">เทอร์มินัล</string>
+  <string name="icon_style_server" tools:machine_translated="true">เซิร์ฟเวอร์</string>
+  <string name="icon_style_cloud" tools:machine_translated="true">คลาวด์</string>
+  <string name="icon_style_key" tools:machine_translated="true">กุญแจ</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">การยืนยันตัวตนเมื่อเปิดใช้งาน</string>
+  <string name="pref_auth_on_launch_summary" tools:machine_translated="true">กำหนดให้ต้องใช้ลายนิ้วมือ, การจดจำใบหน้า หรือรหัส PIN ของอุปกรณ์ เมื่อเปิดแอป</string>
+  <string name="pref_security_category" tools:machine_translated="true">การรักษาความปลอดภัย</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot ถูกล็อกแล้ว</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">แตะเพื่อปลดล็อก</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">ปลดล็อก ConnectBot</string>
+  <string name="auth_prompt_subtitle" tools:machine_translated="true">ยืนยันตัวตนของคุณเพื่อดำเนินการต่อ</string>
 </resources>

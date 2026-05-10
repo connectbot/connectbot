@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">シンプルでパワフルなオープンソースのSSHクライアント</string>
   <string name="service_desc">SSH接続とロードされた公開鍵の管理</string>
   <string name="app_copyright">Copyright © Kenny Root</string>
@@ -558,4 +558,18 @@
   <string name="auth_screen_unlock_button">アンロックするためにタップしてください</string>
   <string name="auth_prompt_title">ConnectBotのロックを解除</string>
   <string name="auth_prompt_subtitle">本人確認を行い、続行してください。</string>
+  <string name="pref_language_download" tools:machine_translated="true">言語パックをダウンロード</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">ダウンロードに失敗しました。再試行するにはタップしてください。</string>
+  <string name="portforward_host_address" tools:machine_translated="true">ホストのアドレス</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">ローカルホスト</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">ローカルホスト（IPv4のみ）</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">ローカルホスト（IPv6のみ）</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">すべてのホストアドレス</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">すべてのIPv4アドレス</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">すべてのIPv6アドレス</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">特定の住所</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">クリップボードからインポート</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">秘密鍵の内容</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">クリップボードから貼り付け</string>
 </resources>
