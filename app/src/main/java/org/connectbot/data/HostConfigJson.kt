@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import org.json.JSONObject
  */
 data class ExportCounts(
     val hostCount: Int,
-    val profileCount: Int
+    val profileCount: Int,
 )
 
 /**
@@ -44,7 +44,7 @@ data class ImportCounts(
     val hostsImported: Int,
     val hostsSkipped: Int,
     val profilesImported: Int,
-    val profilesSkipped: Int
+    val profilesSkipped: Int,
 )
 
 /**
@@ -111,7 +111,7 @@ object HostConfigJson {
             hostsImported = hostCounts.first,
             hostsSkipped = hostCounts.second,
             profilesImported = profileCounts.first,
-            profilesSkipped = profileCounts.second
+            profilesSkipped = profileCounts.second,
         )
     }
 }

@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,8 +30,8 @@ import androidx.room.PrimaryKey
     tableName = "hosts",
     indices = [
         Index(value = ["nickname"], unique = true),
-        Index(value = ["protocol", "username", "hostname", "port"])
-    ]
+        Index(value = ["protocol", "username", "hostname", "port"]),
+    ],
 )
 data class Host(
     @PrimaryKey(autoGenerate = true)
@@ -104,7 +104,7 @@ data class Host(
      * Values: "IPV4_AND_IPV6" (default), "IPV4_ONLY", "IPV6_ONLY"
      */
     @ColumnInfo(name = "ip_version", defaultValue = "IPV4_AND_IPV6")
-    val ipVersion: String = "IPV4_AND_IPV6"
+    val ipVersion: String = "IPV4_AND_IPV6",
 ) {
     /**
      * Check if this host is temporary (not saved to database).
@@ -158,7 +158,7 @@ data class Host(
             protocol = "ssh",
             username = username,
             hostname = hostname,
-            port = port
+            port = port,
         )
 
         /**
@@ -171,7 +171,7 @@ data class Host(
             protocol = "telnet",
             username = "",
             hostname = hostname,
-            port = port
+            port = port,
         )
 
         /**
@@ -184,7 +184,7 @@ data class Host(
             protocol = "local",
             username = "",
             hostname = "",
-            port = 0
+            port = 0,
         )
     }
 }

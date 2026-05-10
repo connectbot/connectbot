@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -31,7 +31,7 @@ data class ColorSchemeJson(
     val name: String,
     val description: String = "",
     val version: Int = 1,
-    val colors: Map<Int, String>
+    val colors: Map<Int, String>,
 ) {
     companion object {
         const val CURRENT_VERSION = 1

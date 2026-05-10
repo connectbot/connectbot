@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ data class HostEditorUiState(
     val password: String = "",
     val hasExistingPassword: Boolean = false,
     val isLoading: Boolean = false,
-    val error: String? = null
+    val error: String? = null,
 )
 
 @HiltViewModel
@@ -71,7 +71,7 @@ class HostEditorViewModel @Inject constructor(
     private val pubkeyRepository: PubkeyRepository,
     private val profileRepository: ProfileRepository,
     private val prefs: android.content.SharedPreferences,
-    private val securePasswordStorage: SecurePasswordStorage
+    private val securePasswordStorage: SecurePasswordStorage,
 ) : ViewModel() {
 
     private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
@@ -150,7 +150,7 @@ class HostEditorViewModel @Inject constructor(
                             jumpHostId = host.jumpHostId,
                             ipVersion = host.ipVersion,
                             hasExistingPassword = hasPassword,
-                            isLoading = false
+                            isLoading = false,
                         )
                     }
                 } else {
@@ -202,7 +202,7 @@ class HostEditorViewModel @Inject constructor(
                 it.copy(
                     username = username.ifBlank { "" },
                     hostname = hostname,
-                    port = port.ifBlank { "22" }
+                    port = port.ifBlank { "22" },
                 )
             }
         }
@@ -302,7 +302,7 @@ class HostEditorViewModel @Inject constructor(
                     scrollbackLines = existingHost?.scrollbackLines ?: 140,
                     useCtrlAltAsMetaKey = existingHost?.useCtrlAltAsMetaKey ?: false,
                     jumpHostId = jumpHostId,
-                    ipVersion = state.ipVersion
+                    ipVersion = state.ipVersion,
                 )
 
                 val savedHost = repository.saveHost(host)

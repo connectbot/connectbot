@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,8 +43,8 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "profiles",
     indices = [
-        Index(value = ["name"], unique = true)
-    ]
+        Index(value = ["name"], unique = true),
+    ],
     // Note: No foreign key to color_schemes because built-in color schemes use negative IDs
     // and are virtual (not stored in the database). Only custom schemes have positive IDs.
 )
@@ -79,7 +79,7 @@ data class Profile(
     val forceSizeRows: Int? = null,
 
     @ColumnInfo(name = "force_size_columns")
-    val forceSizeColumns: Int? = null
+    val forceSizeColumns: Int? = null,
 ) {
     companion object {
         /**
@@ -87,7 +87,7 @@ data class Profile(
          */
         fun createDefault(): Profile = Profile(
             id = 0,
-            name = "Default"
+            name = "Default",
         )
     }
 }

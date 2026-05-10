@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,13 +33,13 @@ import androidx.room.PrimaryKey
             entity = Host::class,
             parentColumns = ["id"],
             childColumns = ["host_id"],
-            onDelete = ForeignKey.CASCADE
-        )
+            onDelete = ForeignKey.CASCADE,
+        ),
     ],
     indices = [
         Index("host_id"),
-        Index(value = ["host_id", "host_key"])
-    ]
+        Index(value = ["host_id", "host_key"]),
+    ],
 )
 data class KnownHost(
     @PrimaryKey(autoGenerate = true)
@@ -56,7 +56,7 @@ data class KnownHost(
     val hostKeyAlgo: String,
 
     @ColumnInfo(name = "host_key", typeAffinity = ColumnInfo.BLOB)
-    val hostKey: ByteArray
+    val hostKey: ByteArray,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

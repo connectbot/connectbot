@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -49,7 +49,7 @@ data class PaletteEditorUiState(
     val foregroundColorIndex: Int = HostConstants.DEFAULT_FG_COLOR,
     val backgroundColorIndex: Int = HostConstants.DEFAULT_BG_COLOR,
     val isBuiltIn: Boolean = false,
-    val showDuplicateDialog: Boolean = false
+    val showDuplicateDialog: Boolean = false,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -94,7 +94,7 @@ data class PaletteEditorUiState(
 class PaletteEditorViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val repository: ColorSchemeRepository,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
 
     private val schemeId = savedStateHandle.get<Long>("schemeId") ?: 0
@@ -121,7 +121,7 @@ class PaletteEditorViewModel @Inject constructor(
                                 schemeName = scheme.name,
                                 schemeDescription = scheme.description,
                                 isBuiltIn = scheme.isBuiltIn,
-                                error = null
+                                error = null,
                             )
                         }
                     } else {
@@ -143,7 +143,7 @@ class PaletteEditorViewModel @Inject constructor(
                         it.copy(
                             palette = palette,
                             isLoading = false,
-                            error = null
+                            error = null,
                         )
                     }
                 }
@@ -159,7 +159,7 @@ class PaletteEditorViewModel @Inject constructor(
                         it.copy(
                             foregroundColorIndex = defaults.first,
                             backgroundColorIndex = defaults.second,
-                            error = null
+                            error = null,
                         )
                     }
                 }
@@ -228,7 +228,7 @@ class PaletteEditorViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         error = e.message ?: "Failed to reset palette",
-                        showResetAllDialog = false
+                        showResetAllDialog = false,
                     )
                 }
             }
@@ -259,7 +259,7 @@ class PaletteEditorViewModel @Inject constructor(
                 repository.setDefaultColorsForScheme(
                     schemeId,
                     _uiState.value.foregroundColorIndex,
-                    _uiState.value.backgroundColorIndex
+                    _uiState.value.backgroundColorIndex,
                 )
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message ?: "Failed to save colors") }
@@ -282,7 +282,7 @@ class PaletteEditorViewModel @Inject constructor(
                 repository.renameScheme(
                     schemeId,
                     _uiState.value.schemeName,
-                    _uiState.value.schemeDescription
+                    _uiState.value.schemeDescription,
                 )
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message ?: "Failed to save name") }

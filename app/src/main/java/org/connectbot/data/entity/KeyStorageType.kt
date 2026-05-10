@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root, Jeffrey Sharkey
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,5 +34,5 @@ enum class KeyStorageType {
      * Private key material never leaves the secure hardware.
      * Cannot be backed up or exported.
      */
-    ANDROID_KEYSTORE
+    ANDROID_KEYSTORE,
 }

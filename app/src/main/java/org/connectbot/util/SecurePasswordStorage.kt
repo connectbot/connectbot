@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,7 +40,7 @@ import javax.inject.Singleton
  */
 @Singleton
 class SecurePasswordStorage @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
 ) {
     private val prefs: SharedPreferences by lazy {
         context.getSharedPreferences(PREFS_FILE_NAME, Context.MODE_PRIVATE)
@@ -60,18 +60,18 @@ class SecurePasswordStorage @Inject constructor(
 
         val keyGenerator = KeyGenerator.getInstance(
             KeyProperties.KEY_ALGORITHM_AES,
-            ANDROID_KEYSTORE
+            ANDROID_KEYSTORE,
         )
 
         keyGenerator.init(
             KeyGenParameterSpec.Builder(
                 KEY_ALIAS,
-                KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT
+                KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT,
             )
                 .setBlockModes(KeyProperties.BLOCK_MODE_GCM)
                 .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
                 .setKeySize(256)
-                .build()
+                .build(),
         )
 
         return keyGenerator.generateKey()

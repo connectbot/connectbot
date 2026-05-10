@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ import org.connectbot.ui.components.EntropyGatherer
 @Composable
 fun EntropyGatherDialog(
     onGatherEntropy: (ByteArray?) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     var progress by remember { mutableIntStateOf(0) }
 
@@ -51,13 +51,13 @@ fun EntropyGatherDialog(
         text = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Text(stringResource(R.string.pubkey_touch_hint))
 
                 Text(
                     text = stringResource(R.string.pubkey_touch_prompt, progress),
-                    modifier = Modifier.padding(vertical = 16.dp)
+                    modifier = Modifier.padding(vertical = 16.dp),
                 )
 
                 EntropyGatherer(
@@ -67,12 +67,12 @@ fun EntropyGatherDialog(
                     onProgressUpdate = { newProgress ->
                         progress = newProgress
                     },
-                    modifier = Modifier.padding(vertical = 8.dp)
+                    modifier = Modifier.padding(vertical = 8.dp),
                 )
             }
         },
         confirmButton = {},
-        dismissButton = {}
+        dismissButton = {},
     )
 }
 
@@ -84,14 +84,14 @@ fun GeneratingKeyDialog() {
         text = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 CircularProgressIndicator(
-                    modifier = Modifier.padding(top = 16.dp)
+                    modifier = Modifier.padding(top = 16.dp),
                 )
             }
         },
         confirmButton = {},
-        dismissButton = {}
+        dismissButton = {},
     )
 }

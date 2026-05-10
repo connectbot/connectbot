@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ private val lightScheme = lightColorScheme(
     outline = md_theme_light_outline,
     inverseOnSurface = md_theme_light_inverseOnSurface,
     inverseSurface = md_theme_light_inverseSurface,
-    inversePrimary = md_theme_light_inversePrimary
+    inversePrimary = md_theme_light_inversePrimary,
 )
 
 private val darkScheme = darkColorScheme(
@@ -87,7 +87,7 @@ private val darkScheme = darkColorScheme(
     outline = md_theme_dark_outline,
     inverseOnSurface = md_theme_dark_inverseOnSurface,
     inverseSurface = md_theme_dark_inverseSurface,
-    inversePrimary = md_theme_dark_inversePrimary
+    inversePrimary = md_theme_dark_inversePrimary,
 )
 
 @Composable
@@ -95,7 +95,7 @@ fun ConnectBotTheme(
     themeMode: ThemeMode = ThemeMode.SYSTEM,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     val darkTheme = when (themeMode) {
         ThemeMode.LIGHT -> false
@@ -127,7 +127,7 @@ fun ConnectBotTheme(
     MaterialTheme(
         colorScheme = colorScheme,
         typography = AppTypography,
-        content = content
+        content = content,
     )
 }
 
@@ -138,13 +138,13 @@ fun ConnectBotTheme(
 data class TerminalColors(
     val overlayBackground: Color,
     val overlayText: Color,
-    val overlayTextSecondary: Color
+    val overlayTextSecondary: Color,
 )
 
 private val terminalColors = TerminalColors(
     overlayBackground = TerminalOverlayBackground,
     overlayText = TerminalOverlayText,
-    overlayTextSecondary = TerminalOverlayTextSecondary
+    overlayTextSecondary = TerminalOverlayTextSecondary,
 )
 
 /**

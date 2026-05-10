@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,12 +46,12 @@ enum class KeyType(
     val dbName: String,
     val minBits: Int,
     val maxBits: Int,
-    val defaultBits: Int
+    val defaultBits: Int,
 ) {
     RSA("RSA", 1024, 16384, 2048),
     DSA("DSA", 1024, 1024, 1024),
     EC("EC", 256, 521, 256),
-    ED25519("Ed25519", 255, 255, 255)
+    ED25519("Ed25519", 255, 255, 255),
 }
 
 data class GeneratePubkeyUiState(
@@ -72,7 +72,7 @@ data class GeneratePubkeyUiState(
     // Biometric authentication options
     val useBiometric: Boolean = false,
     val biometricAvailable: Boolean = false,
-    val biometricNotEnrolled: Boolean = false
+    val biometricNotEnrolled: Boolean = false,
 ) {
     val passwordMismatch: Boolean
         get() = password1 != password2 && password2.isNotEmpty()
@@ -91,7 +91,7 @@ data class GeneratePubkeyUiState(
 class GeneratePubkeyViewModel @Inject constructor(
     private val repository: PubkeyRepository,
     private val biometricKeyManager: BiometricKeyManager,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
     companion object {
         private val ECDSA_SIZES = intArrayOf(256, 384, 521)
@@ -106,8 +106,8 @@ class GeneratePubkeyViewModel @Inject constructor(
         GeneratePubkeyUiState(
             ecdsaAvailable = Security.getProviders("KeyPairGenerator.EC") != null,
             biometricAvailable = biometricKeyManager.isBiometricAvailable() == BiometricAvailability.AVAILABLE,
-            biometricNotEnrolled = biometricKeyManager.isBiometricAvailable() == BiometricAvailability.NOT_ENROLLED
-        )
+            biometricNotEnrolled = biometricKeyManager.isBiometricAvailable() == BiometricAvailability.NOT_ENROLLED,
+        ),
     )
     val uiState: StateFlow<GeneratePubkeyUiState> = _uiState.asStateFlow()
 
@@ -152,7 +152,7 @@ class GeneratePubkeyViewModel @Inject constructor(
                 minBits = keyType.minBits,
                 maxBits = keyType.maxBits,
                 allowBitStrengthChange = allowBitStrengthChange,
-                useBiometric = if (BiometricKeyManager.supportsBiometric(keyType)) currentState.useBiometric else false
+                useBiometric = if (BiometricKeyManager.supportsBiometric(keyType)) currentState.useBiometric else false,
             )
         }
     }
@@ -170,7 +170,7 @@ class GeneratePubkeyViewModel @Inject constructor(
                 password1 = if (useBiometric) "" else it.password1,
                 password2 = if (useBiometric) "" else it.password2,
                 // Biometric keys can't be auto-loaded at startup
-                unlockAtStartup = if (useBiometric) false else it.unlockAtStartup
+                unlockAtStartup = if (useBiometric) false else it.unlockAtStartup,
             )
         }
     }
@@ -237,7 +237,7 @@ class GeneratePubkeyViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 showEntropyDialog = false,
-                isGenerating = false
+                isGenerating = false,
             )
         }
         pendingEntropy = null
@@ -256,7 +256,7 @@ class GeneratePubkeyViewModel @Inject constructor(
                     generateKeyPair(
                         currentState.keyType,
                         currentState.bits,
-                        entropy
+                        entropy,
                     )
                 }
 
@@ -281,7 +281,7 @@ class GeneratePubkeyViewModel @Inject constructor(
                     val publicKey = biometricKeyManager.generateKey(
                         alias = alias,
                         keyType = currentState.keyType.dbName,
-                        keySize = currentState.bits
+                        keySize = currentState.bits,
                     )
                     Pair(publicKey, alias)
                 }
@@ -310,7 +310,7 @@ class GeneratePubkeyViewModel @Inject constructor(
     private suspend fun saveKeyPair(
         keyPair: KeyPair,
         state: GeneratePubkeyUiState,
-        onSuccess: (() -> Unit)?
+        onSuccess: (() -> Unit)?,
     ) {
         withContext(dispatchers.io) {
             try {
@@ -325,7 +325,7 @@ class GeneratePubkeyViewModel @Inject constructor(
                     encrypted = encrypted,
                     startup = state.unlockAtStartup,
                     confirmation = state.confirmUse,
-                    createdDate = System.currentTimeMillis()
+                    createdDate = System.currentTimeMillis(),
                 )
 
                 repository.save(pubkey)
@@ -349,7 +349,7 @@ class GeneratePubkeyViewModel @Inject constructor(
         publicKey: java.security.PublicKey,
         keystoreAlias: String,
         state: GeneratePubkeyUiState,
-        onSuccess: (() -> Unit)?
+        onSuccess: (() -> Unit)?,
     ) {
         withContext(dispatchers.io) {
             try {
@@ -365,7 +365,7 @@ class GeneratePubkeyViewModel @Inject constructor(
                     createdDate = System.currentTimeMillis(),
                     storageType = KeyStorageType.ANDROID_KEYSTORE,
                     allowBackup = false, // Keystore keys can't be backed up
-                    keystoreAlias = keystoreAlias
+                    keystoreAlias = keystoreAlias,
                 )
 
                 repository.save(pubkey)
