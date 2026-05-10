@@ -12,9 +12,9 @@ hilt = "2.59.2"
 hiltNavigationCompose = "1.3.0"
 sonarqube = "7.3.0.8198"
 
-compileSdk = "36"
+compileSdk = "37"
 minSdk = "24"
-targetSdk = "35"
+targetSdk = "36"
 
 composeBom = "2026.05.00"
 material3 = "1.5.0-alpha18"
