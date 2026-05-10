@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,7 +90,7 @@ fun ColorsScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     onNavigateToPaletteEditor: (Long) -> Unit = {},
-    viewModel: ColorSchemeManagerViewModel = hiltViewModel()
+    viewModel: ColorSchemeManagerViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
@@ -100,7 +100,7 @@ fun ColorsScreen(
     var exportingSchemeId by remember { mutableLongStateOf(-1L) }
 
     val exportLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.CreateDocument("application/json")
+        contract = ActivityResultContracts.CreateDocument("application/json"),
     ) { uri ->
         uri?.let { fileUri ->
             scope.launch {
@@ -113,18 +113,18 @@ fun ColorsScreen(
                         context,
                         context.getString(
                             R.string.message_export_success,
-                            schemeJson.name
+                            schemeJson.name,
                         ),
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_SHORT,
                     ).show()
                 } catch (e: Exception) {
                     Toast.makeText(
                         context,
                         context.getString(
                             R.string.error_export_failed,
-                            e.message
+                            e.message,
                         ),
-                        Toast.LENGTH_LONG
+                        Toast.LENGTH_LONG,
                     ).show()
                 }
             }
@@ -132,7 +132,7 @@ fun ColorsScreen(
     }
 
     val importLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.OpenDocument()
+        contract = ActivityResultContracts.OpenDocument(),
     ) { uri ->
         uri?.let { fileUri ->
             scope.launch {
@@ -151,24 +151,24 @@ fun ColorsScreen(
                         context,
                         context.getString(
                             R.string.message_import_success,
-                            importedScheme?.name ?: "scheme"
+                            importedScheme?.name ?: "scheme",
                         ),
-                        Toast.LENGTH_SHORT
+                        Toast.LENGTH_SHORT,
                     ).show()
                 } catch (e: org.json.JSONException) {
                     Toast.makeText(
                         context,
                         context.getString(R.string.error_invalid_json),
-                        Toast.LENGTH_LONG
+                        Toast.LENGTH_LONG,
                     ).show()
                 } catch (e: Exception) {
                     Toast.makeText(
                         context,
                         context.getString(
                             R.string.error_import_failed,
-                            e.message
+                            e.message,
                         ),
-                        Toast.LENGTH_LONG
+                        Toast.LENGTH_LONG,
                     ).show()
                 }
             }
@@ -192,9 +192,9 @@ fun ColorsScreen(
                         context,
                         context.getString(
                             R.string.error_export_failed,
-                            e.message
+                            e.message,
                         ),
-                        Toast.LENGTH_LONG
+                        Toast.LENGTH_LONG,
                     ).show()
                 }
             }
@@ -209,7 +209,7 @@ fun ColorsScreen(
         onCreateNewScheme = viewModel::createNewScheme,
         onHideNewSchemeDialog = viewModel::hideNewSchemeDialog,
         onDeleteScheme = viewModel::deleteScheme,
-        onHideDeleteDialog = viewModel::hideDeleteDialog
+        onHideDeleteDialog = viewModel::hideDeleteDialog,
     )
 }
 
@@ -229,7 +229,7 @@ fun ColorsScreenContent(
     onHideNewSchemeDialog: () -> Unit,
     onDeleteScheme: (Long) -> Unit,
     onHideDeleteDialog: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
     val currentOnClearError by rememberUpdatedState(onClearError)
@@ -238,7 +238,7 @@ fun ColorsScreenContent(
         uiState.error?.let { error ->
             snackbarHostState.showSnackbar(
                 message = error,
-                withDismissAction = true
+                withDismissAction = true,
             )
             currentOnClearError()
         }
@@ -253,7 +253,7 @@ fun ColorsScreenContent(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.button_navigate_up)
+                            contentDescription = stringResource(R.string.button_navigate_up),
                         )
                     }
                 },
@@ -261,34 +261,34 @@ fun ColorsScreenContent(
                     IconButton(onClick = onImportScheme) {
                         Icon(
                             Icons.Default.FileUpload,
-                            contentDescription = stringResource(R.string.button_import_scheme)
+                            contentDescription = stringResource(R.string.button_import_scheme),
                         )
                     }
-                }
+                },
             )
         },
         floatingActionButton = {
             FloatingActionButton(
                 onClick = onShowNewSchemeDialog,
-                modifier = Modifier.padding(end = 16.dp, bottom = 16.dp)
+                modifier = Modifier.padding(end = 16.dp, bottom = 16.dp),
             ) {
                 Icon(
                     Icons.Default.Add,
-                    contentDescription = stringResource(R.string.button_new_scheme)
+                    contentDescription = stringResource(R.string.button_new_scheme),
                 )
             }
         },
-        modifier = modifier
+        modifier = modifier,
     ) { padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .padding(padding),
         ) {
             when {
                 uiState.isLoading -> {
                     CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
+                        modifier = Modifier.align(Alignment.Center),
                     )
                 }
 
@@ -299,7 +299,7 @@ fun ColorsScreenContent(
                             .align(Alignment.Center)
                             .padding(16.dp),
                         style = MaterialTheme.typography.bodyLarge,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
 
@@ -310,9 +310,9 @@ fun ColorsScreenContent(
                             start = 16.dp,
                             end = 16.dp,
                             top = 16.dp,
-                            bottom = 104.dp
+                            bottom = 104.dp,
                         ),
-                        verticalArrangement = Arrangement.spacedBy(8.dp)
+                        verticalArrangement = Arrangement.spacedBy(8.dp),
                     ) {
                         items(uiState.schemes) { scheme ->
                             SchemeItem(
@@ -328,7 +328,7 @@ fun ColorsScreenContent(
                                 onDuplicate = {
                                     onSelectScheme(scheme.id)
                                     onShowNewSchemeDialog()
-                                }
+                                },
                             )
                         }
                     }
@@ -349,7 +349,7 @@ fun ColorsScreenContent(
             onConfirm = { name, description, baseSchemeId ->
                 onCreateNewScheme(name, description, baseSchemeId)
             },
-            onDismiss = onHideNewSchemeDialog
+            onDismiss = onHideNewSchemeDialog,
         )
     }
 
@@ -359,7 +359,7 @@ fun ColorsScreenContent(
             DeleteSchemeDialog(
                 schemeName = scheme.name,
                 onConfirm = { onDeleteScheme(scheme.id) },
-                onDismiss = onHideDeleteDialog
+                onDismiss = onHideDeleteDialog,
             )
         }
     }
@@ -372,7 +372,7 @@ private fun ColorsScreenEmptyPreview() {
         ColorsScreenContent(
             uiState = SchemeManagerUiState(
                 schemes = emptyList(),
-                isLoading = false
+                isLoading = false,
             ),
             onNavigateBack = {},
             onNavigateToPaletteEditor = {},
@@ -385,7 +385,7 @@ private fun ColorsScreenEmptyPreview() {
             onCreateNewScheme = { _, _, _ -> },
             onHideNewSchemeDialog = {},
             onDeleteScheme = {},
-            onHideDeleteDialog = {}
+            onHideDeleteDialog = {},
         )
     }
 }
@@ -397,7 +397,7 @@ private fun ColorsScreenLoadingPreview() {
         ColorsScreenContent(
             uiState = SchemeManagerUiState(
                 schemes = emptyList(),
-                isLoading = true
+                isLoading = true,
             ),
             onNavigateBack = {},
             onNavigateToPaletteEditor = {},
@@ -410,7 +410,7 @@ private fun ColorsScreenLoadingPreview() {
             onCreateNewScheme = { _, _, _ -> },
             onHideNewSchemeDialog = {},
             onDeleteScheme = {},
-            onHideDeleteDialog = {}
+            onHideDeleteDialog = {},
         )
     }
 }
@@ -426,22 +426,22 @@ private fun ColorsScreenPopulatedPreview() {
                         id = 1,
                         name = "Solarized Dark",
                         description = "Popular dark theme",
-                        isBuiltIn = true
+                        isBuiltIn = true,
                     ),
                     ColorScheme(
                         id = 2,
                         name = "Monokai",
                         description = "Vibrant color scheme",
-                        isBuiltIn = true
+                        isBuiltIn = true,
                     ),
                     ColorScheme(
                         id = 3,
                         name = "My Custom Theme",
                         description = "Personal customization",
-                        isBuiltIn = false
-                    )
+                        isBuiltIn = false,
+                    ),
                 ),
-                isLoading = false
+                isLoading = false,
             ),
             onNavigateBack = {},
             onNavigateToPaletteEditor = {},
@@ -454,7 +454,7 @@ private fun ColorsScreenPopulatedPreview() {
             onCreateNewScheme = { _, _, _ -> },
             onHideNewSchemeDialog = {},
             onDeleteScheme = {},
-            onHideDeleteDialog = {}
+            onHideDeleteDialog = {},
         )
     }
 }
@@ -469,34 +469,34 @@ private fun SchemeItem(
     onExport: () -> Unit,
     onDelete: () -> Unit,
     onDuplicate: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Card(
         modifier = modifier.fillMaxWidth().clickable(onClick = onClick),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant
-        )
+            containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        ),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(
-                modifier = Modifier.weight(1f)
+                modifier = Modifier.weight(1f),
             ) {
                 Text(
                     text = scheme.name,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
                 val localizedDescription = getLocalizedColorSchemeDescription(scheme)
                 if (localizedDescription.isNotEmpty()) {
                     Text(
                         text = localizedDescription,
                         style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
                 Text(
@@ -510,7 +510,7 @@ private fun SchemeItem(
                         MaterialTheme.colorScheme.primary
                     } else {
                         MaterialTheme.colorScheme.secondary
-                    }
+                    },
                 )
             }
 
@@ -520,13 +520,13 @@ private fun SchemeItem(
                 IconButton(onClick = { showMenu = true }) {
                     Icon(
                         Icons.Default.MoreVert,
-                        contentDescription = stringResource(R.string.button_more_options)
+                        contentDescription = stringResource(R.string.button_more_options),
                     )
                 }
 
                 DropdownMenu(
                     expanded = showMenu,
-                    onDismissRequest = { showMenu = false }
+                    onDismissRequest = { showMenu = false },
                 ) {
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.button_export_scheme)) },
@@ -537,9 +537,9 @@ private fun SchemeItem(
                         leadingIcon = {
                             Icon(
                                 Icons.Default.FileDownload,
-                                contentDescription = null
+                                contentDescription = null,
                             )
-                        }
+                        },
                     )
 
                     DropdownMenuItem(
@@ -551,9 +551,9 @@ private fun SchemeItem(
                         leadingIcon = {
                             Icon(
                                 Icons.Default.ContentCopy,
-                                contentDescription = null
+                                contentDescription = null,
                             )
-                        }
+                        },
                     )
 
                     if (!scheme.isBuiltIn) {
@@ -567,9 +567,9 @@ private fun SchemeItem(
                                 Icon(
                                     Icons.Default.Delete,
                                     contentDescription = null,
-                                    tint = MaterialTheme.colorScheme.error
+                                    tint = MaterialTheme.colorScheme.error,
                                 )
-                            }
+                            },
                         )
                     }
                 }
@@ -588,7 +588,7 @@ private fun NewSchemeDialog(
     onConfirm: (name: String, description: String, baseSchemeId: Long) -> Unit,
     onDismiss: () -> Unit,
     preselectedSchemeId: Long? = null,
-    suggestedName: String? = null
+    suggestedName: String? = null,
 ) {
     var name by remember { mutableStateOf(suggestedName ?: "") }
     var description by remember { mutableStateOf("") }
@@ -601,7 +601,7 @@ private fun NewSchemeDialog(
         title = { Text(stringResource(R.string.dialog_title_new_scheme)) },
         text = {
             Column(
-                verticalArrangement = Arrangement.spacedBy(8.dp)
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 OutlinedTextField(
                     value = name,
@@ -609,7 +609,7 @@ private fun NewSchemeDialog(
                     label = { Text(stringResource(R.string.label_scheme_name)) },
                     singleLine = true,
                     isError = error != null,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
 
                 OutlinedTextField(
@@ -617,13 +617,13 @@ private fun NewSchemeDialog(
                     onValueChange = { description = it },
                     label = { Text(stringResource(R.string.label_scheme_description)) },
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
 
                 Text(
                     text = stringResource(R.string.label_base_scheme),
                     style = MaterialTheme.typography.labelMedium,
-                    modifier = Modifier.padding(top = 8.dp)
+                    modifier = Modifier.padding(top = 8.dp),
                 )
 
                 Column {
@@ -633,15 +633,15 @@ private fun NewSchemeDialog(
                                 .fillMaxWidth()
                                 .clickable { selectedBaseSchemeId = scheme.id }
                                 .padding(8.dp),
-                            verticalAlignment = Alignment.CenterVertically
+                            verticalAlignment = Alignment.CenterVertically,
                         ) {
                             RadioButton(
                                 selected = selectedBaseSchemeId == scheme.id,
-                                onClick = { selectedBaseSchemeId = scheme.id }
+                                onClick = { selectedBaseSchemeId = scheme.id },
                             )
                             Text(
                                 text = scheme.name,
-                                modifier = Modifier.padding(start = 8.dp)
+                                modifier = Modifier.padding(start = 8.dp),
                             )
                         }
                     }
@@ -651,14 +651,14 @@ private fun NewSchemeDialog(
                     Text(
                         text = error,
                         color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
                     )
                 }
             }
         },
         confirmButton = {
             TextButton(
-                onClick = { onConfirm(name, description, selectedBaseSchemeId) }
+                onClick = { onConfirm(name, description, selectedBaseSchemeId) },
             ) {
                 Text(stringResource(R.string.button_confirm))
             }
@@ -667,7 +667,7 @@ private fun NewSchemeDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.button_cancel))
             }
-        }
+        },
     )
 }
 
@@ -678,7 +678,7 @@ private fun NewSchemeDialog(
 private fun DeleteSchemeDialog(
     schemeName: String,
     onConfirm: () -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -690,7 +690,7 @@ private fun DeleteSchemeDialog(
             TextButton(onClick = onConfirm) {
                 Text(
                     stringResource(R.string.button_delete_scheme),
-                    color = MaterialTheme.colorScheme.error
+                    color = MaterialTheme.colorScheme.error,
                 )
             }
         },
@@ -698,6 +698,6 @@ private fun DeleteSchemeDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.button_cancel))
             }
-        }
+        },
     )
 }

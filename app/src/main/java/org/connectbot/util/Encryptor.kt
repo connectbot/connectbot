@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2007 Kenny Root
+ * Copyright 2007-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.connectbot.util
 
 import java.security.MessageDigest
@@ -78,7 +79,7 @@ object Encryptor {
         salt: ByteArray,
         iterations: Int,
         password: String,
-        cleartext: ByteArray?
+        cleartext: ByteArray?,
     ): ByteArray? {
         /* generate salt randomly */
         SecureRandom.getInstance(RNG_ALGORITHM).nextBytes(salt)
@@ -113,7 +114,7 @@ object Encryptor {
         cipher.init(
             Cipher.ENCRYPT_MODE,
             SecretKeySpec(key, KEY_ALGORITHM),
-            IvParameterSpec(iv)
+            IvParameterSpec(iv),
         )
 
         Arrays.fill(key, 0x00.toByte())
@@ -149,7 +150,7 @@ object Encryptor {
         salt: ByteArray,
         iterations: Int,
         password: String,
-        ciphertext: ByteArray?
+        ciphertext: ByteArray?,
     ): ByteArray? {
         /* compute key and initialization vector */
         val shaDigest = MessageDigest.getInstance(DIGEST_ALGORITHM)
@@ -181,7 +182,7 @@ object Encryptor {
         cipher.init(
             Cipher.DECRYPT_MODE,
             SecretKeySpec(key, KEY_ALGORITHM),
-            IvParameterSpec(iv)
+            IvParameterSpec(iv),
         )
 
         Arrays.fill(key, 0x00.toByte())

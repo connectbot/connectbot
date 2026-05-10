@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,7 @@ enum class IconStyle(@DrawableRes val drawableRes: Int) {
     TERMINAL(R.drawable.ic_shortcut_foreground),
     SERVER(R.drawable.ic_shortcut_server),
     CLOUD(R.drawable.ic_shortcut_cloud),
-    KEY(R.drawable.ic_shortcut_key)
+    KEY(R.drawable.ic_shortcut_key),
 }
 
 /**
@@ -56,12 +56,12 @@ object ShortcutIconGenerator {
     fun generateShortcutIcon(
         context: Context,
         backgroundColor: String?,
-        style: IconStyle
+        style: IconStyle,
     ): IconCompat {
         val bitmap = Bitmap.createBitmap(
             ADAPTIVE_ICON_SIZE,
             ADAPTIVE_ICON_SIZE,
-            Bitmap.Config.ARGB_8888
+            Bitmap.Config.ARGB_8888,
         )
         val canvas = Canvas(bitmap)
 
@@ -82,7 +82,7 @@ object ShortcutIconGenerator {
             ADAPTIVE_ICON_SIZE / 2f,
             ADAPTIVE_ICON_SIZE / 2f,
             INNER_CIRCLE_SIZE / 2f,
-            paint
+            paint,
         )
 
         val drawable = ContextCompat.getDrawable(context, style.drawableRes)
@@ -107,7 +107,7 @@ object ShortcutIconGenerator {
         context: Context,
         backgroundColor: String?,
         style: IconStyle,
-        sizePx: Int
+        sizePx: Int,
     ): Bitmap {
         val bitmap = Bitmap.createBitmap(sizePx, sizePx, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)

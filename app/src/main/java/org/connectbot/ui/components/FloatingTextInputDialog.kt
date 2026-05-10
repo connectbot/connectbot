@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -142,7 +142,7 @@ private const val MIN_HEIGHT_DP = 80f
 fun FloatingTextInputDialog(
     bridge: TerminalBridge,
     initialText: String = "",
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     val context = LocalContext.current
     val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
@@ -198,7 +198,7 @@ fun FloatingTextInputDialog(
 
     Popup(
         onDismissRequest = onDismiss,
-        properties = PopupProperties(focusable = true)
+        properties = PopupProperties(focusable = true),
     ) {
         Box(
             modifier = Modifier
@@ -206,7 +206,7 @@ fun FloatingTextInputDialog(
                 .pointerInput(Unit) {
                     // Dismiss when clicking outside
                     detectDragGestures { _, _ -> }
-                }
+                },
         ) {
             Column(
                 modifier = Modifier
@@ -214,8 +214,8 @@ fun FloatingTextInputDialog(
                     .width(with(density) { windowWidthPx.toDp() })
                     .background(
                         MaterialTheme.colorScheme.surface,
-                        RoundedCornerShape(12.dp)
-                    )
+                        RoundedCornerShape(12.dp),
+                    ),
             ) {
                 // Draggable header with send and close buttons
                 Row(
@@ -224,41 +224,41 @@ fun FloatingTextInputDialog(
                         .height(36.dp)
                         .background(
                             MaterialTheme.colorScheme.primary,
-                            RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp)
+                            RoundedCornerShape(topStart = 12.dp, topEnd = 12.dp),
                         )
                         .pointerInput(Unit) {
                             detectDragGestures { change, dragAmount ->
                                 change.consume()
                                 offsetX = (offsetX + dragAmount.x).coerceIn(
                                     0f,
-                                    screenWidthPx - windowWidthPx
+                                    screenWidthPx - windowWidthPx,
                                 )
                                 offsetY = (offsetY + dragAmount.y).coerceIn(
                                     0f,
-                                    screenHeightPx - windowHeightPx
+                                    screenHeightPx - windowHeightPx,
                                 )
                             }
                         }
                         .padding(horizontal = 12.dp),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceBetween
+                    horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     Text(
                         text = stringResource(R.string.terminal_text_input_dialog_title),
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier.weight(1f),
                     )
 
                     IconButton(
                         onClick = onDismiss,
-                        modifier = Modifier.size(24.dp)
+                        modifier = Modifier.size(24.dp),
                     ) {
                         Icon(
                             Icons.Default.Close,
                             contentDescription = stringResource(R.string.button_close),
                             tint = MaterialTheme.colorScheme.onPrimary,
-                            modifier = Modifier.size(18.dp)
+                            modifier = Modifier.size(18.dp),
                         )
                     }
                 }
@@ -267,7 +267,7 @@ fun FloatingTextInputDialog(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(with(density) { (windowHeightPx - 36.dp.toPx()).coerceAtLeast(minHeightPx).toDp() })
+                        .height(with(density) { (windowHeightPx - 36.dp.toPx()).coerceAtLeast(minHeightPx).toDp() }),
                 ) {
                     TextField(
                         value = text,
@@ -276,20 +276,20 @@ fun FloatingTextInputDialog(
                             Text(stringResource(R.string.terminal_text_input_dialog_label))
                         },
                         keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Text
+                            keyboardType = KeyboardType.Text,
                         ),
                         visualTransformation = SpecialCharVisualTransformation,
                         colors = TextFieldDefaults.colors(
                             focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                             unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
                             focusedIndicatorColor = Color.Transparent,
-                            unfocusedIndicatorColor = Color.Transparent
+                            unfocusedIndicatorColor = Color.Transparent,
                         ),
                         shape = RoundedCornerShape(bottomStart = 12.dp),
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxHeight()
-                            .focusRequester(focusRequester)
+                            .focusRequester(focusRequester),
                     )
 
                     Column(
@@ -297,19 +297,19 @@ fun FloatingTextInputDialog(
                             .fillMaxHeight()
                             .background(
                                 MaterialTheme.colorScheme.surfaceVariant,
-                                RoundedCornerShape(bottomEnd = 12.dp)
+                                RoundedCornerShape(bottomEnd = 12.dp),
                             ),
                         verticalArrangement = Arrangement.SpaceBetween,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = Alignment.CenterHorizontally,
                     ) {
                         IconButton(
                             onClick = { sendText() },
-                            modifier = Modifier.size(48.dp)
+                            modifier = Modifier.size(48.dp),
                         ) {
                             Icon(
                                 Icons.AutoMirrored.Filled.Send,
                                 contentDescription = stringResource(R.string.button_send),
-                                tint = MaterialTheme.colorScheme.primary
+                                tint = MaterialTheme.colorScheme.primary,
                             )
                         }
 
@@ -321,21 +321,21 @@ fun FloatingTextInputDialog(
                                         change.consume()
                                         windowWidthPx = (windowWidthPx + dragAmount.x).coerceIn(
                                             minWidthPx,
-                                            screenWidthPx - offsetX
+                                            screenWidthPx - offsetX,
                                         )
                                         windowHeightPx = (windowHeightPx + dragAmount.y).coerceIn(
                                             minHeightPx,
-                                            screenHeightPx - offsetY
+                                            screenHeightPx - offsetY,
                                         )
                                     }
                                 },
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             Icon(
                                 Icons.Default.OpenInFull,
                                 contentDescription = stringResource(R.string.terminal_text_input_resize_handle),
                                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.size(16.dp)
+                                modifier = Modifier.size(16.dp),
                             )
                         }
                     }

@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -59,7 +59,7 @@ class DatabaseMigrator @Inject constructor(
     private val roomDatabase: ConnectBotDatabase,
     private val legacyHostReader: LegacyHostDatabaseReader,
     private val legacyPubkeyReader: LegacyPubkeyDatabaseReader,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
 ) {
     companion object {
         private const val LEGACY_HOSTS_DB = "hosts"
@@ -85,7 +85,7 @@ class DatabaseMigrator @Inject constructor(
         _migrationState.update { state ->
             state.copy(
                 warnings = state.warnings + message,
-                debugLog = state.debugLog + "WARNING: $message"
+                debugLog = state.debugLog + "WARNING: $message",
             )
         }
     }
@@ -189,7 +189,7 @@ class DatabaseMigrator @Inject constructor(
                 it.copy(
                     status = MigrationStatus.COMPLETED,
                     currentStep = "No migration needed",
-                    progress = 1.0f
+                    progress = 1.0f,
                 )
             }
             return@withContext MigrationResult.Success(
@@ -197,7 +197,7 @@ class DatabaseMigrator @Inject constructor(
                 pubkeysMigrated = 0,
                 portForwardsMigrated = 0,
                 knownHostsMigrated = 0,
-                colorSchemesMigrated = 0
+                colorSchemesMigrated = 0,
             )
         }
 
@@ -254,7 +254,7 @@ class DatabaseMigrator @Inject constructor(
                     pubkeysMigrated = legacyData.pubkeys.size,
                     portForwardsMigrated = legacyData.portForwards.size,
                     knownHostsMigrated = legacyData.knownHosts.size,
-                    colorSchemesMigrated = legacyData.colorSchemes.size
+                    colorSchemesMigrated = legacyData.colorSchemes.size,
                 )
             }
 
@@ -263,7 +263,7 @@ class DatabaseMigrator @Inject constructor(
                 pubkeysMigrated = legacyData.pubkeys.size,
                 portForwardsMigrated = legacyData.portForwards.size,
                 knownHostsMigrated = legacyData.knownHosts.size,
-                colorSchemesMigrated = legacyData.colorSchemes.size
+                colorSchemesMigrated = legacyData.colorSchemes.size,
             )
         } catch (e: Exception) {
             logError("Migration failed", e)
@@ -271,7 +271,7 @@ class DatabaseMigrator @Inject constructor(
                 it.copy(
                     status = MigrationStatus.FAILED,
                     currentStep = "Migration failed: ${e.message}",
-                    error = e.message
+                    error = e.message,
                 )
             }
             return@withContext MigrationResult.Failure(e)
@@ -321,7 +321,7 @@ class DatabaseMigrator @Inject constructor(
             knownHosts = knownHosts,
             colorSchemes = colorSchemes,
             colorPalettes = colorPalettes,
-            pubkeys = pubkeys
+            pubkeys = pubkeys,
         )
     }
 
@@ -390,7 +390,7 @@ class DatabaseMigrator @Inject constructor(
         val colorSchemeId: Long,
         val fontSize: Int,
         val delKey: String,
-        val encoding: String
+        val encoding: String,
     )
 
     private fun transformToRoomEntities(legacy: LegacyData): TransformedData {
@@ -410,7 +410,7 @@ class DatabaseMigrator @Inject constructor(
                 id = schemeId,
                 name = "Recovered Scheme $schemeId",
                 isBuiltIn = false,
-                description = "Auto-generated during migration to recover orphaned color palette entries"
+                description = "Auto-generated during migration to recover orphaned color palette entries",
             )
         }
 
@@ -446,7 +446,7 @@ class DatabaseMigrator @Inject constructor(
             colorSchemeId = -1L,
             fontSize = 10,
             delKey = "del",
-            encoding = "UTF-8"
+            encoding = "UTF-8",
         )
 
         // Group hosts by terminal settings
@@ -455,7 +455,7 @@ class DatabaseMigrator @Inject constructor(
                 colorSchemeId = host.colorSchemeId,
                 fontSize = host.fontSize,
                 delKey = host.delKey,
-                encoding = host.encoding
+                encoding = host.encoding,
             )
         }
 
@@ -467,8 +467,8 @@ class DatabaseMigrator @Inject constructor(
                 colorSchemeId = -1L,
                 fontSize = 10,
                 delKey = "del",
-                encoding = "UTF-8"
-            )
+                encoding = "UTF-8",
+            ),
         )
 
         // Create additional profiles for non-default settings
@@ -487,8 +487,8 @@ class DatabaseMigrator @Inject constructor(
                         colorSchemeId = key.colorSchemeId,
                         fontSize = key.fontSize,
                         delKey = key.delKey,
-                        encoding = key.encoding
-                    )
+                        encoding = key.encoding,
+                    ),
                 )
                 logDebug("Created profile '$profileId' for settings: $key")
             }
@@ -500,7 +500,7 @@ class DatabaseMigrator @Inject constructor(
                 colorSchemeId = legacyHost.colorSchemeId,
                 fontSize = legacyHost.fontSize,
                 delKey = legacyHost.delKey,
-                encoding = legacyHost.encoding
+                encoding = legacyHost.encoding,
             )
             val profileId = settingsToProfileId[settingsKey] ?: 1L
 
@@ -524,7 +524,7 @@ class DatabaseMigrator @Inject constructor(
                 quickDisconnect = legacyHost.quickDisconnect,
                 scrollbackLines = legacyHost.scrollbackLines,
                 useCtrlAltAsMetaKey = legacyHost.useCtrlAltAsMetaKey,
-                profileId = profileId
+                profileId = profileId,
             )
         }
 
@@ -584,7 +584,7 @@ class DatabaseMigrator @Inject constructor(
             colorSchemes = allColorSchemes,
             colorPalettes = legacy.colorPalettes,
             pubkeys = fixedPubkeys,
-            profiles = profiles
+            profiles = profiles,
         )
     }
 
@@ -594,7 +594,7 @@ class DatabaseMigrator @Inject constructor(
      */
     private fun <T> makeNicknamesUnique(
         items: List<T>,
-        getNickname: (T) -> String
+        getNickname: (T) -> String,
     ): List<Pair<T, String>> {
         val nicknameCount = mutableMapOf<String, Int>()
         val result = mutableListOf<Pair<T, String>>()
@@ -700,7 +700,7 @@ class DatabaseMigrator @Inject constructor(
 
                 val remappedHost = host.copy(
                     pubkeyId = newPubkeyId,
-                    profileId = newProfileId
+                    profileId = newProfileId,
                 )
                 val newId = roomDatabase.hostDao().insert(remappedHost)
                 hostIdMap[oldId] = newId
@@ -754,7 +754,7 @@ class DatabaseMigrator @Inject constructor(
 
         return VerificationResult(
             success = errors.isEmpty(),
-            errors = errors
+            errors = errors,
         )
     }
 
@@ -797,7 +797,7 @@ data class LegacyData(
     val knownHosts: List<KnownHost>,
     val colorSchemes: List<ColorScheme>,
     val colorPalettes: List<ColorPalette>,
-    val pubkeys: List<Pubkey>
+    val pubkeys: List<Pubkey>,
 )
 
 /**
@@ -810,7 +810,7 @@ data class TransformedData(
     val colorSchemes: List<ColorScheme>,
     val colorPalettes: List<ColorPalette>,
     val pubkeys: List<Pubkey>,
-    val profiles: List<Profile>
+    val profiles: List<Profile>,
 )
 
 /**
@@ -827,14 +827,14 @@ data class MigrationState(
     val colorSchemesMigrated: Int = 0,
     val error: String? = null,
     val warnings: List<String> = emptyList(),
-    val debugLog: List<String> = emptyList()
+    val debugLog: List<String> = emptyList(),
 )
 
 enum class MigrationStatus {
     NOT_STARTED,
     IN_PROGRESS,
     COMPLETED,
-    FAILED
+    FAILED,
 }
 
 /**
@@ -842,7 +842,7 @@ enum class MigrationStatus {
  */
 data class VerificationResult(
     val success: Boolean,
-    val errors: List<String>
+    val errors: List<String>,
 )
 
 /**
@@ -854,7 +854,7 @@ sealed class MigrationResult {
         val pubkeysMigrated: Int,
         val portForwardsMigrated: Int,
         val knownHostsMigrated: Int,
-        val colorSchemesMigrated: Int
+        val colorSchemesMigrated: Int,
     ) : MigrationResult()
 
     data class Failure(val error: Throwable) : MigrationResult()

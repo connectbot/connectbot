@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -35,7 +35,7 @@ import javax.inject.Singleton
 @Singleton
 class ProfileRepository @Inject constructor(
     private val profileDao: ProfileDao,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
 ) {
     /**
      * Observe all profiles.
@@ -77,7 +77,7 @@ class ProfileRepository @Inject constructor(
      */
     suspend fun create(
         name: String,
-        basedOnProfileId: Long? = null
+        basedOnProfileId: Long? = null,
     ): Long = withContext(dispatchers.io) {
         val baseProfile = if (basedOnProfileId != null) {
             profileDao.getById(basedOnProfileId) ?: Profile.createDefault()
@@ -87,7 +87,7 @@ class ProfileRepository @Inject constructor(
 
         val newProfile = baseProfile.copy(
             id = 0, // Auto-generate
-            name = name
+            name = name,
         )
         profileDao.insert(newProfile)
     }
@@ -171,7 +171,7 @@ class ProfileRepository @Inject constructor(
         val source = profileDao.getById(sourceProfileId) ?: Profile.createDefault()
         val newProfile = source.copy(
             id = 0,
-            name = newName
+            name = newName,
         )
         profileDao.insert(newProfile)
     }

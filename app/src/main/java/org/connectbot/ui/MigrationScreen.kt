@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -68,18 +68,18 @@ import org.connectbot.ui.theme.ConnectBotTheme
 fun MigrationScreen(
     uiState: MigrationUiState,
     onRetry: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Surface(
         modifier = modifier.fillMaxSize(),
-        color = MaterialTheme.colorScheme.background // Surface uses this by default
+        color = MaterialTheme.colorScheme.background, // Surface uses this by default
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(32.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.Center,
         ) {
             when (uiState) {
                 is MigrationUiState.Checking -> {
@@ -94,7 +94,7 @@ fun MigrationScreen(
                     MigrationFailedContent(
                         error = uiState.error,
                         debugLog = uiState.debugLog,
-                        onRetry = onRetry
+                        onRetry = onRetry,
                     )
                 }
 
@@ -114,13 +114,13 @@ private fun CheckingMigrationContent() {
                 .size(48.dp)
                 .semantics {
                     contentDescription = "Checking database migration status"
-                }
+                },
         )
         Spacer(modifier = Modifier.height(16.dp))
         Text(
             text = stringResource(R.string.migration_checking),
             style = MaterialTheme.typography.bodyLarge,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
     }
 }
@@ -134,19 +134,19 @@ private fun MigrationInProgressContent(state: MigrationState) {
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = stringResource(R.string.migration_title),
             style = MaterialTheme.typography.headlineMedium,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
         Spacer(modifier = Modifier.height(24.dp))
 
         LinearProgressIndicator(
             progress = { state.progress },
-            modifier = Modifier.padding(horizontal = 16.dp)
+            modifier = Modifier.padding(horizontal = 16.dp),
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -155,7 +155,7 @@ private fun MigrationInProgressContent(state: MigrationState) {
             text = state.currentStep,
             style = MaterialTheme.typography.bodyMedium,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
 
         if (state.status == MigrationStatus.IN_PROGRESS) {
@@ -165,32 +165,32 @@ private fun MigrationInProgressContent(state: MigrationState) {
             if (state.hostsMigrated > 0 || state.pubkeysMigrated > 0) {
                 Column(
                     horizontalAlignment = Alignment.Start,
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
                 ) {
                     Text(
                         text = stringResource(R.string.migration_stats_hosts, state.hostsMigrated),
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
                     )
                     Text(
                         text = stringResource(R.string.migration_stats_pubkeys, state.pubkeysMigrated),
-                        style = MaterialTheme.typography.bodySmall
+                        style = MaterialTheme.typography.bodySmall,
                     )
                     if (state.portForwardsMigrated > 0) {
                         Text(
                             text = stringResource(
                                 R.string.migration_stats_port_forwards,
-                                state.portForwardsMigrated
+                                state.portForwardsMigrated,
                             ),
-                            style = MaterialTheme.typography.bodySmall
+                            style = MaterialTheme.typography.bodySmall,
                         )
                     }
                     if (state.knownHostsMigrated > 0) {
                         Text(
                             text = stringResource(
                                 R.string.migration_stats_known_hosts,
-                                state.knownHostsMigrated
+                                state.knownHostsMigrated,
                             ),
-                            style = MaterialTheme.typography.bodySmall
+                            style = MaterialTheme.typography.bodySmall,
                         )
                     }
                 }
@@ -205,27 +205,27 @@ private fun MigrationInProgressContent(state: MigrationState) {
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.errorContainer
-                    )
+                        containerColor = MaterialTheme.colorScheme.errorContainer,
+                    ),
                 ) {
                     Column(
-                        modifier = Modifier.padding(16.dp)
+                        modifier = Modifier.padding(16.dp),
                     ) {
                         Row(
                             verticalAlignment = Alignment.CenterVertically,
-                            modifier = Modifier.padding(bottom = 8.dp)
+                            modifier = Modifier.padding(bottom = 8.dp),
                         ) {
                             Icon(
                                 imageVector = Icons.Default.Warning,
                                 contentDescription = stringResource(R.string.migration_warnings_title),
                                 tint = MaterialTheme.colorScheme.error,
-                                modifier = Modifier.size(20.dp)
+                                modifier = Modifier.size(20.dp),
                             )
                             Spacer(modifier = Modifier.size(8.dp))
                             Text(
                                 text = stringResource(R.string.migration_warnings_title),
                                 style = MaterialTheme.typography.titleSmall,
-                                color = MaterialTheme.colorScheme.onErrorContainer
+                                color = MaterialTheme.colorScheme.onErrorContainer,
                             )
                         }
 
@@ -234,7 +234,7 @@ private fun MigrationInProgressContent(state: MigrationState) {
                                 text = "• $warning",
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onErrorContainer,
-                                modifier = Modifier.padding(vertical = 4.dp)
+                                modifier = Modifier.padding(vertical = 4.dp),
                             )
                         }
 
@@ -245,11 +245,11 @@ private fun MigrationInProgressContent(state: MigrationState) {
                                 val warningsText = state.warnings.joinToString("\n") { "• $it" }
                                 scope.launch {
                                     clipboard.setClipEntry(
-                                        ClipData.newPlainText("warnings", warningsText).toClipEntry()
+                                        ClipData.newPlainText("warnings", warningsText).toClipEntry(),
                                     )
                                 }
                             },
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
                         ) {
                             Text(stringResource(R.string.migration_copy_warnings))
                         }
@@ -264,7 +264,7 @@ private fun MigrationInProgressContent(state: MigrationState) {
             text = stringResource(R.string.migration_warning),
             style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -273,7 +273,7 @@ private fun MigrationInProgressContent(state: MigrationState) {
 private fun MigrationFailedContent(
     error: String,
     debugLog: List<String>,
-    onRetry: () -> Unit
+    onRetry: () -> Unit,
 ) {
     val clipboard = LocalClipboard.current
     val scope = rememberCoroutineScope()
@@ -282,13 +282,13 @@ private fun MigrationFailedContent(
         modifier = Modifier
             .fillMaxWidth()
             .verticalScroll(rememberScrollState()),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
             text = stringResource(R.string.migration_failed_title),
             style = MaterialTheme.typography.headlineMedium,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.error
+            color = MaterialTheme.colorScheme.error,
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -296,7 +296,7 @@ private fun MigrationFailedContent(
         Text(
             text = stringResource(R.string.migration_failed_message, error),
             style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
         )
 
         if (debugLog.isNotEmpty()) {
@@ -307,17 +307,17 @@ private fun MigrationFailedContent(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp),
                 colors = CardDefaults.cardColors(
-                    containerColor = MaterialTheme.colorScheme.surfaceVariant
-                )
+                    containerColor = MaterialTheme.colorScheme.surfaceVariant,
+                ),
             ) {
                 Column(
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
                 ) {
                     Text(
                         text = stringResource(R.string.migration_debug_log_title),
                         style = MaterialTheme.typography.titleSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(bottom = 8.dp)
+                        modifier = Modifier.padding(bottom = 8.dp),
                     )
 
                     debugLog.forEach { logEntry ->
@@ -326,7 +326,7 @@ private fun MigrationFailedContent(
                             style = MaterialTheme.typography.bodySmall,
                             fontFamily = FontFamily.Monospace,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
-                            modifier = Modifier.padding(vertical = 2.dp)
+                            modifier = Modifier.padding(vertical = 2.dp),
                         )
                     }
 
@@ -337,11 +337,11 @@ private fun MigrationFailedContent(
                             val logText = debugLog.joinToString("\n")
                             scope.launch {
                                 clipboard.setClipEntry(
-                                    ClipData.newPlainText("debug_log", logText).toClipEntry()
+                                    ClipData.newPlainText("debug_log", logText).toClipEntry(),
                                 )
                             }
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(stringResource(R.string.migration_copy_debug_log))
                     }
@@ -373,7 +373,7 @@ private fun MigrationFailedContent(
             text = annotatedString,
             style = MaterialTheme.typography.bodySmall,
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -384,7 +384,7 @@ private fun MigrationScreenCheckingPreview() {
     ConnectBotTheme {
         MigrationScreen(
             uiState = MigrationUiState.Checking,
-            onRetry = {}
+            onRetry = {},
         )
     }
 }
@@ -405,11 +405,11 @@ private fun MigrationScreenInProgressPreview() {
                     knownHostsMigrated = 25,
                     warnings = listOf(
                         "Found 2 duplicate host nickname(s): server, backup. Appending suffixes to make them unique.",
-                        "Found 1 duplicate SSH key nickname(s): myKey. Appending suffixes to make them unique."
-                    )
-                )
+                        "Found 1 duplicate SSH key nickname(s): myKey. Appending suffixes to make them unique.",
+                    ),
+                ),
             ),
-            onRetry = {}
+            onRetry = {},
         )
     }
 }
@@ -427,10 +427,10 @@ private fun MigrationScreenInProgressEmptyPreview() {
                     hostsMigrated = 0,
                     pubkeysMigrated = 0,
                     portForwardsMigrated = 0,
-                    knownHostsMigrated = 0
-                )
+                    knownHostsMigrated = 0,
+                ),
             ),
-            onRetry = {}
+            onRetry = {},
         )
     }
 }
@@ -450,10 +450,10 @@ private fun MigrationScreenFailedPreview() {
                     "WARNING: Found 1 duplicate host nickname(s): server. Appending suffixes to make them unique.",
                     "Step 3: Transforming data to Room entities",
                     "Step 4: Writing to new database",
-                    "ERROR: Migration failed: Database corruption detected"
-                )
+                    "ERROR: Migration failed: Database corruption detected",
+                ),
             ),
-            onRetry = {}
+            onRetry = {},
         )
     }
 }

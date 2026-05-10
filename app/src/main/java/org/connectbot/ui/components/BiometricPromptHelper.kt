@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -42,7 +42,7 @@ class BiometricPromptState(
     private val activity: FragmentActivity,
     private val onSuccess: (BiometricPrompt.AuthenticationResult) -> Unit,
     private val onError: (Int, CharSequence) -> Unit,
-    private val onFail: () -> Unit
+    private val onFail: () -> Unit,
 ) {
     private var biometricPrompt: BiometricPrompt? = null
     var isAuthenticating by mutableStateOf(false)
@@ -86,7 +86,7 @@ class BiometricPromptState(
         title: String,
         subtitle: String,
         negativeButtonText: String,
-        cryptoObject: BiometricPrompt.CryptoObject? = null
+        cryptoObject: BiometricPrompt.CryptoObject? = null,
     ) {
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
             .setTitle(title)
@@ -131,7 +131,7 @@ class BiometricPromptState(
 fun rememberBiometricPromptState(
     onSuccess: (BiometricPrompt.AuthenticationResult) -> Unit,
     onError: (Int, CharSequence) -> Unit,
-    onFail: () -> Unit = {}
+    onFail: () -> Unit = {},
 ): BiometricPromptState? {
     val context = LocalContext.current
     val activity = context.findFragmentActivity()
@@ -146,7 +146,7 @@ fun rememberBiometricPromptState(
             activity = activity,
             onSuccess = onSuccess,
             onError = onError,
-            onFail = onFail
+            onFail = onFail,
         )
     }
 

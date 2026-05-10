@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ object TestUriBuilder {
         username: String = "testuser",
         hostname: String = "example.com",
         port: Int = 22,
-        nickname: String = "test"
+        nickname: String = "test",
     ): Uri = Uri.parse("ssh://$username@$hostname:$port/#$nickname")
 
     fun local(nickname: String = "Local"): Uri = Uri.parse("local://#$nickname")

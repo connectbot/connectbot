@@ -1,12 +1,12 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2007 Kenny Root
+ * Copyright 2007-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- *	 http://www.apache.org/licenses/LICENSE-2.0
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.connectbot.util
 
 import com.trilead.ssh2.crypto.PEMDecoder
@@ -104,7 +105,7 @@ object PubkeyUtils {
     fun decodePrivate(encoded: ByteArray, keyType: String?, secret: String?): PrivateKey? = if (secret != null && secret.isNotEmpty()) {
         decodePrivate(
             decrypt(encoded, secret),
-            keyType
+            keyType,
         )
     } else {
         decodePrivate(encoded, keyType)
@@ -124,7 +125,7 @@ object PubkeyUtils {
             try {
                 return PEMDecoder.decode(
                     String(pubkey.privateKey!!, charset("UTF-8")).toCharArray(),
-                    password
+                    password,
                 )
             } catch (e: Exception) {
                 Timber.e(e, "Cannot decode imported key")

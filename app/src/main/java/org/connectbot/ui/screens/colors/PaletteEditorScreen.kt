@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -85,7 +85,7 @@ import org.connectbot.ui.components.RgbColorPickerDialog
 fun PaletteEditorScreen(
     onNavigateBack: () -> Unit,
     viewModel: PaletteEditorViewModel = hiltViewModel(),
-    onNavigateToDuplicate: (Long) -> Unit
+    onNavigateToDuplicate: (Long) -> Unit,
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -119,7 +119,7 @@ fun PaletteEditorScreen(
         onHideDuplicateDialog = viewModel::hideDuplicateDialog,
         onDuplicateScheme = viewModel::duplicateScheme,
         uiState = uiState,
-        snackbarHostState = snackbarHostState
+        snackbarHostState = snackbarHostState,
     )
 }
 
@@ -144,7 +144,7 @@ fun PaletteEditorScreenContent(
     onDuplicateScheme: (String) -> Unit,
     uiState: PaletteEditorUiState,
     snackbarHostState: SnackbarHostState,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     var showForegroundPicker by remember { mutableStateOf(false) }
     var showBackgroundPicker by remember { mutableStateOf(false) }
@@ -154,7 +154,7 @@ fun PaletteEditorScreenContent(
         uiState.error?.let { error ->
             snackbarHostState.showSnackbar(
                 message = error,
-                withDismissAction = true
+                withDismissAction = true,
             )
             currentOnClearError()
         }
@@ -170,7 +170,7 @@ fun PaletteEditorScreenContent(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.button_navigate_up)
+                            contentDescription = stringResource(R.string.button_navigate_up),
                         )
                     }
                 },
@@ -180,19 +180,19 @@ fun PaletteEditorScreenContent(
                             Text(stringResource(R.string.button_reset_all_colors))
                         }
                     }
-                }
+                },
             )
-        }
+        },
     ) { padding ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(padding)
+                .padding(padding),
         ) {
             when {
                 uiState.isLoading -> {
                     CircularProgressIndicator(
-                        modifier = Modifier.align(Alignment.Center)
+                        modifier = Modifier.align(Alignment.Center),
                     )
                 }
 
@@ -200,7 +200,7 @@ fun PaletteEditorScreenContent(
                     LazyColumn(
                         modifier = Modifier.fillMaxSize(),
                         contentPadding = PaddingValues(16.dp),
-                        verticalArrangement = Arrangement.spacedBy(16.dp)
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
                     ) {
                         item {
                             SchemeInfoSection(
@@ -210,7 +210,7 @@ fun PaletteEditorScreenContent(
                                 onUpdateName = onUpdateName,
                                 onUpdateDescription = onUpdateDescription,
                                 onSave = onSaveNameAndDescription,
-                                onDuplicateClick = onShowDuplicateDialog
+                                onDuplicateClick = onShowDuplicateDialog,
                             )
                         }
 
@@ -221,7 +221,7 @@ fun PaletteEditorScreenContent(
                                 palette = uiState.palette,
                                 isBuiltIn = uiState.isBuiltIn,
                                 onForegroundClick = { showForegroundPicker = true },
-                                onBackgroundClick = { showBackgroundPicker = true }
+                                onBackgroundClick = { showBackgroundPicker = true },
                             )
                         }
 
@@ -230,7 +230,7 @@ fun PaletteEditorScreenContent(
                                 title = stringResource(R.string.section_ansi_colors),
                                 colorIndices = 0..15,
                                 palette = uiState.palette,
-                                onColorClick = { if (!uiState.isBuiltIn) onEditColor(it) }
+                                onColorClick = { if (!uiState.isBuiltIn) onEditColor(it) },
                             )
                         }
 
@@ -238,7 +238,7 @@ fun PaletteEditorScreenContent(
                             TerminalPreview(
                                 foregroundColorIndex = uiState.foregroundColorIndex,
                                 backgroundColorIndex = uiState.backgroundColorIndex,
-                                palette = uiState.palette
+                                palette = uiState.palette,
                             )
                         }
                     }
@@ -255,7 +255,7 @@ fun PaletteEditorScreenContent(
             onSelectColor = { newColor ->
                 onUpdateColor(colorIndex, newColor)
             },
-            onDismiss = { onCloseColorEditor() }
+            onDismiss = { onCloseColorEditor() },
         )
     }
 
@@ -268,7 +268,7 @@ fun PaletteEditorScreenContent(
                 onUpdateForegroundColor(colorIndex)
                 showForegroundPicker = false
             },
-            onDismiss = { showForegroundPicker = false }
+            onDismiss = { showForegroundPicker = false },
         )
     }
 
@@ -281,7 +281,7 @@ fun PaletteEditorScreenContent(
                 onUpdateBackgroundColor(colorIndex)
                 showBackgroundPicker = false
             },
-            onDismiss = { showBackgroundPicker = false }
+            onDismiss = { showBackgroundPicker = false },
         )
     }
 
@@ -294,7 +294,7 @@ fun PaletteEditorScreenContent(
                 TextButton(onClick = { onResetAllColors() }) {
                     Text(
                         stringResource(R.string.button_reset_all_colors),
-                        color = MaterialTheme.colorScheme.error
+                        color = MaterialTheme.colorScheme.error,
                     )
                 }
             },
@@ -302,7 +302,7 @@ fun PaletteEditorScreenContent(
                 TextButton(onClick = { onHideResetAllDialog() }) {
                     Text(stringResource(R.string.button_cancel))
                 }
-            }
+            },
         )
     }
 
@@ -310,7 +310,7 @@ fun PaletteEditorScreenContent(
         DuplicateSchemeDialog(
             baseName = uiState.schemeName,
             onConfirm = onDuplicateScheme,
-            onDismiss = onHideDuplicateDialog
+            onDismiss = onHideDuplicateDialog,
         )
     }
 }
@@ -324,22 +324,22 @@ private fun SchemeInfoSection(
     onUpdateDescription: (String) -> Unit,
     onSave: () -> Unit,
     onDuplicateClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         if (isBuiltIn) {
             Text(
                 text = schemeName,
-                style = MaterialTheme.typography.titleLarge
+                style = MaterialTheme.typography.titleLarge,
             )
             if (schemeDescription.isNotEmpty()) {
                 Text(
                     text = schemeDescription,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
             Button(onClick = onDuplicateClick) {
@@ -353,7 +353,7 @@ private fun SchemeInfoSection(
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
                 keyboardActions = KeyboardActions(onNext = { onSave() }),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
             OutlinedTextField(
                 value = schemeDescription,
@@ -362,7 +362,7 @@ private fun SchemeInfoSection(
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
                 keyboardActions = KeyboardActions(onDone = { onSave() }),
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
@@ -376,35 +376,35 @@ private fun ForegroundBackgroundSection(
     isBuiltIn: Boolean,
     onForegroundClick: () -> Unit,
     onBackgroundClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
             text = stringResource(R.string.section_fg_bg_colors),
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
 
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
         ) {
             FgBgColorCell(
                 label = stringResource(R.string.label_foreground_color),
                 colorIndex = foregroundColorIndex,
                 palette = palette,
                 enabled = !isBuiltIn,
-                onClick = onForegroundClick
+                onClick = onForegroundClick,
             )
             FgBgColorCell(
                 label = stringResource(R.string.label_background_color),
                 colorIndex = backgroundColorIndex,
                 palette = palette,
                 enabled = !isBuiltIn,
-                onClick = onBackgroundClick
+                onClick = onBackgroundClick,
             )
         }
     }
@@ -417,7 +417,7 @@ private fun FgBgColorCell(
     palette: IntArray,
     enabled: Boolean,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val cellModifier = if (enabled) {
         modifier.width(80.dp).clickable(onClick = onClick)
@@ -428,7 +428,7 @@ private fun FgBgColorCell(
     Column(
         modifier = cellModifier,
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(4.dp)
+        verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Box(
             modifier = Modifier
@@ -436,18 +436,18 @@ private fun FgBgColorCell(
                 .aspectRatio(1f)
                 .background(
                     color = Color(palette[colorIndex]),
-                    shape = RoundedCornerShape(4.dp)
+                    shape = RoundedCornerShape(4.dp),
                 )
                 .border(
                     width = 1.dp,
                     color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
-                    shape = RoundedCornerShape(4.dp)
-                )
+                    shape = RoundedCornerShape(4.dp),
+                ),
         )
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
         )
     }
 }
@@ -457,7 +457,7 @@ private fun TerminalPreview(
     foregroundColorIndex: Int,
     backgroundColorIndex: Int,
     palette: IntArray,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     // ANSI color roles used in the preview
     fun c(index: Int) = SpanStyle(color = Color(palette[index]))
@@ -515,17 +515,17 @@ private fun TerminalPreview(
         buildAnnotatedString {
             withStyle(red) { append("error: ") }
             withStyle(fg) { append("file not found: missing.txt") }
-        }
+        },
     )
 
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
             text = stringResource(R.string.section_color_preview),
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
 
         Box(
@@ -533,14 +533,14 @@ private fun TerminalPreview(
                 .fillMaxWidth()
                 .background(
                     color = Color(palette[backgroundColorIndex]),
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(8.dp),
                 )
                 .border(
                     width = 1.dp,
                     color = MaterialTheme.colorScheme.outline,
-                    shape = RoundedCornerShape(8.dp)
+                    shape = RoundedCornerShape(8.dp),
                 )
-                .padding(12.dp)
+                .padding(12.dp),
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 lines.forEach { line ->
@@ -548,7 +548,7 @@ private fun TerminalPreview(
                         text = line,
                         fontFamily = FontFamily.Monospace,
                         fontSize = 13.sp,
-                        lineHeight = 18.sp
+                        lineHeight = 18.sp,
                     )
                 }
             }
@@ -566,16 +566,16 @@ private fun ColorSection(
     palette: IntArray,
     onColorClick: (Int) -> Unit,
     modifier: Modifier = Modifier,
-    columns: Int = 8
+    columns: Int = 8,
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(8.dp)
+        verticalArrangement = Arrangement.spacedBy(8.dp),
     ) {
         Text(
             text = title,
             style = MaterialTheme.typography.titleMedium,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
         )
 
         val colorList = colorIndices.toList()
@@ -583,19 +583,19 @@ private fun ColorSection(
 
         Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+            verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             rows.forEach { rowColors ->
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(4.dp)
+                    horizontalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     rowColors.forEach { colorIndex ->
                         ColorCell(
                             colorIndex = colorIndex,
                             color = palette[colorIndex],
                             onClick = { onColorClick(colorIndex) },
-                            modifier = Modifier.weight(1f)
+                            modifier = Modifier.weight(1f),
                         )
                     }
                     repeat(columns - rowColors.size) {
@@ -615,22 +615,22 @@ private fun ColorCell(
     colorIndex: Int,
     color: Int,
     onClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier = modifier
             .aspectRatio(1f)
             .background(
                 color = Color(color),
-                shape = RoundedCornerShape(4.dp)
+                shape = RoundedCornerShape(4.dp),
             )
             .border(
                 width = 1.dp,
                 color = MaterialTheme.colorScheme.outline.copy(alpha = 0.5f),
-                shape = RoundedCornerShape(4.dp)
+                shape = RoundedCornerShape(4.dp),
             )
             .clickable(onClick = onClick),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.Center,
     ) {
         if (colorIndex < 16) {
             Text(
@@ -640,7 +640,7 @@ private fun ColorCell(
                     Color.White
                 } else {
                     Color.Black
-                }
+                },
             )
         }
     }
@@ -650,7 +650,7 @@ private fun ColorCell(
 private fun DuplicateSchemeDialog(
     baseName: String,
     onConfirm: (String) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     var name by remember { mutableStateOf("Copy of $baseName") }
 
@@ -663,13 +663,13 @@ private fun DuplicateSchemeDialog(
                 onValueChange = { name = it },
                 label = { Text(stringResource(R.string.label_scheme_name)) },
                 singleLine = true,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
             )
         },
         confirmButton = {
             TextButton(
                 onClick = { onConfirm(name) },
-                enabled = name.isNotBlank()
+                enabled = name.isNotBlank(),
             ) {
                 Text(stringResource(R.string.button_confirm))
             }
@@ -678,7 +678,7 @@ private fun DuplicateSchemeDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.button_cancel))
             }
-        }
+        },
     )
 }
 
@@ -703,6 +703,6 @@ private fun PaletteEditorScreenPreview() {
         onSaveNameAndDescription = {},
         onShowDuplicateDialog = {},
         onHideDuplicateDialog = {},
-        onDuplicateScheme = {}
+        onDuplicateScheme = {},
     )
 }

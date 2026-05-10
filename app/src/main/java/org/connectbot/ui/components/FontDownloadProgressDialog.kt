@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,19 +38,19 @@ import org.connectbot.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FontDownloadProgressDialog(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     BasicAlertDialog(
         onDismissRequest = {},
-        modifier = modifier
+        modifier = modifier,
     ) {
         Surface(
             shape = MaterialTheme.shapes.extraLarge,
-            tonalElevation = 6.dp
+            tonalElevation = 6.dp,
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(24.dp)
+                modifier = Modifier.padding(24.dp),
             ) {
                 CircularProgressIndicator()
                 Spacer(modifier = Modifier.width(16.dp))

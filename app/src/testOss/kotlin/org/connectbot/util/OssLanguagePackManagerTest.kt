@@ -14,6 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.connectbot.util
 
 import org.assertj.core.api.Assertions.assertThat

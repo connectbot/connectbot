@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -72,7 +72,7 @@ fun ProfileListScreen(
     onNavigateToEdit: (Profile) -> Unit,
     modifier: Modifier = Modifier,
     onNavigateToColors: () -> Unit = {},
-    viewModel: ProfileListViewModel = hiltViewModel()
+    viewModel: ProfileListViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -85,7 +85,7 @@ fun ProfileListScreen(
                     IconButton(onClick = onNavigateBack) {
                         Icon(
                             imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.button_navigate_up)
+                            contentDescription = stringResource(R.string.button_navigate_up),
                         )
                     }
                 },
@@ -93,46 +93,46 @@ fun ProfileListScreen(
                     IconButton(onClick = onNavigateToColors) {
                         Icon(
                             Icons.Default.Palette,
-                            contentDescription = stringResource(R.string.menu_manage_colors)
+                            contentDescription = stringResource(R.string.menu_manage_colors),
                         )
                     }
-                }
+                },
             )
         },
         floatingActionButton = {
             FloatingActionButton(onClick = { viewModel.showCreateDialog() }) {
                 Icon(
                     imageVector = Icons.Default.Add,
-                    contentDescription = stringResource(R.string.profile_list_create_profile)
+                    contentDescription = stringResource(R.string.profile_list_create_profile),
                 )
             }
-        }
+        },
     ) { paddingValues ->
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
+                .padding(paddingValues),
         ) {
             if (uiState.isLoading) {
                 CircularProgressIndicator(
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center),
                 )
             } else if (uiState.profiles.isEmpty()) {
                 Text(
                     text = stringResource(R.string.profile_list_empty_message),
                     modifier = Modifier.align(Alignment.Center),
-                    style = MaterialTheme.typography.bodyLarge
+                    style = MaterialTheme.typography.bodyLarge,
                 )
             } else {
                 LazyColumn(
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
                 ) {
                     items(uiState.profiles, key = { it.id }) { profile ->
                         ProfileListItem(
                             profile = profile,
                             onClick = { onNavigateToEdit(profile) },
                             onDuplicate = { viewModel.duplicateProfile(profile) },
-                            onDelete = { viewModel.showDeleteDialog(profile) }
+                            onDelete = { viewModel.showDeleteDialog(profile) },
                         )
                     }
                 }
@@ -145,7 +145,7 @@ fun ProfileListScreen(
         CreateProfileDialog(
             error = uiState.createError,
             onDismiss = { viewModel.hideCreateDialog() },
-            onConfirm = { name -> viewModel.createProfile(name) }
+            onConfirm = { name -> viewModel.createProfile(name) },
         )
     }
 
@@ -157,7 +157,7 @@ fun ProfileListScreen(
             text = { Text(stringResource(R.string.profile_delete_dialog_message, profile.name)) },
             confirmButton = {
                 TextButton(
-                    onClick = { viewModel.deleteProfile(profile) }
+                    onClick = { viewModel.deleteProfile(profile) },
                 ) {
                     Text(stringResource(R.string.profile_delete_button))
                 }
@@ -166,7 +166,7 @@ fun ProfileListScreen(
                 TextButton(onClick = { viewModel.hideDeleteDialog() }) {
                     Text(stringResource(R.string.profile_delete_cancel))
                 }
-            }
+            },
         )
     }
 }
@@ -176,7 +176,7 @@ private fun ProfileListItem(
     profile: Profile,
     onClick: () -> Unit,
     onDuplicate: () -> Unit,
-    onDelete: () -> Unit
+    onDelete: () -> Unit,
 ) {
     var showMenu by remember { mutableStateOf(false) }
 
@@ -184,18 +184,18 @@ private fun ProfileListItem(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 16.dp, vertical = 4.dp)
-            .clickable(onClick = onClick)
+            .clickable(onClick = onClick),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = profile.name,
-                    style = MaterialTheme.typography.titleMedium
+                    style = MaterialTheme.typography.titleMedium,
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 ProfileSummaryText(profile = profile)
@@ -205,12 +205,12 @@ private fun ProfileListItem(
                 IconButton(onClick = { showMenu = true }) {
                     Icon(
                         imageVector = Icons.Default.MoreVert,
-                        contentDescription = stringResource(R.string.profile_list_more_options)
+                        contentDescription = stringResource(R.string.profile_list_more_options),
                     )
                 }
                 DropdownMenu(
                     expanded = showMenu,
-                    onDismissRequest = { showMenu = false }
+                    onDismissRequest = { showMenu = false },
                 ) {
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.profile_list_duplicate)) },
@@ -220,7 +220,7 @@ private fun ProfileListItem(
                         },
                         leadingIcon = {
                             Icon(Icons.Default.ContentCopy, contentDescription = null)
-                        }
+                        },
                     )
                     DropdownMenuItem(
                         text = { Text(stringResource(R.string.profile_list_delete)) },
@@ -230,7 +230,7 @@ private fun ProfileListItem(
                         },
                         leadingIcon = {
                             Icon(Icons.Default.Delete, contentDescription = null)
-                        }
+                        },
                     )
                 }
             }
@@ -242,7 +242,7 @@ private fun ProfileListItem(
 private fun CreateProfileDialog(
     error: String?,
     onDismiss: () -> Unit,
-    onConfirm: (String) -> Unit
+    onConfirm: (String) -> Unit,
 ) {
     var name by remember { mutableStateOf("") }
 
@@ -257,14 +257,14 @@ private fun CreateProfileDialog(
                     label = { Text(stringResource(R.string.profile_create_name_label)) },
                     singleLine = true,
                     isError = error != null,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
                 if (error != null) {
                     Text(
                         text = error,
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(top = 4.dp)
+                        modifier = Modifier.padding(top = 4.dp),
                     )
                 }
             }
@@ -272,7 +272,7 @@ private fun CreateProfileDialog(
         confirmButton = {
             TextButton(
                 onClick = { onConfirm(name) },
-                enabled = name.isNotBlank()
+                enabled = name.isNotBlank(),
             ) {
                 Text(stringResource(R.string.profile_create_button))
             }
@@ -281,7 +281,7 @@ private fun CreateProfileDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.profile_create_cancel))
             }
-        }
+        },
     )
 }
 
@@ -299,6 +299,6 @@ private fun ProfileSummaryText(profile: Profile) {
     Text(
         text = parts.joinToString(" | "),
         style = MaterialTheme.typography.bodySmall,
-        color = MaterialTheme.colorScheme.onSurfaceVariant
+        color = MaterialTheme.colorScheme.onSurfaceVariant,
     )
 }

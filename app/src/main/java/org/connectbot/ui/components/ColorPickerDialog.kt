@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ fun ColorPickerDialog(
     selectedColorIndex: Int,
     onSelectColor: (Int) -> Unit,
     onDismiss: () -> Unit,
-    palette: IntArray = ColorSchemePresets.default.colors
+    palette: IntArray = ColorSchemePresets.default.colors,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -67,14 +67,14 @@ fun ColorPickerDialog(
                 Text(
                     text = stringResource(R.string.title_color_picker),
                     style = MaterialTheme.typography.bodyMedium,
-                    modifier = Modifier.padding(bottom = 16.dp)
+                    modifier = Modifier.padding(bottom = 16.dp),
                 )
 
                 // Grid of 16 colors (8 columns)
                 LazyVerticalGrid(
                     columns = GridCells.Fixed(8),
                     contentPadding = PaddingValues(4.dp),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     items(palette.size) { index ->
                         val color = palette[index]
@@ -86,7 +86,7 @@ fun ColorPickerDialog(
                                 .aspectRatio(1f)
                                 .background(
                                     color = Color(color),
-                                    shape = RoundedCornerShape(4.dp)
+                                    shape = RoundedCornerShape(4.dp),
                                 )
                                 .border(
                                     width = if (isSelected) 3.dp else 1.dp,
@@ -95,13 +95,13 @@ fun ColorPickerDialog(
                                     } else {
                                         Color.Gray.copy(alpha = 0.5f)
                                     },
-                                    shape = RoundedCornerShape(4.dp)
+                                    shape = RoundedCornerShape(4.dp),
                                 )
                                 .clickable {
                                     onSelectColor(index)
                                     onDismiss()
                                 },
-                            contentAlignment = Alignment.Center
+                            contentAlignment = Alignment.Center,
                         ) {
                             // Show index for first 16 ANSI colors for easier identification
                             if (index < 16 && isSelected) {
@@ -112,7 +112,7 @@ fun ColorPickerDialog(
                                         Color.White
                                     } else {
                                         Color.Black
-                                    }
+                                    },
                                 )
                             }
                         }
@@ -124,6 +124,6 @@ fun ColorPickerDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.button_close))
             }
-        }
+        },
     )
 }

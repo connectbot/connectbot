@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,12 +34,12 @@ data class ProfileListUiState(
     val isLoading: Boolean = true,
     val showCreateDialog: Boolean = false,
     val showDeleteDialog: Profile? = null,
-    val createError: String? = null
+    val createError: String? = null,
 )
 
 @HiltViewModel
 class ProfileListViewModel @Inject constructor(
-    private val profileRepository: ProfileRepository
+    private val profileRepository: ProfileRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ProfileListUiState())

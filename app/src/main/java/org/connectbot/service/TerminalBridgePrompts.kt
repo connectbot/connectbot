@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import timber.log.Timber
  */
 fun TerminalBridge.requestBooleanPrompt(
     instructions: String?,
-    message: String
+    message: String,
 ): Boolean? {
     return try {
         runBlocking {
@@ -62,7 +62,7 @@ fun TerminalBridge.requestBooleanPrompt(
 fun TerminalBridge.requestStringPrompt(
     instructions: String?,
     hint: String?,
-    isPassword: Boolean = false
+    isPassword: Boolean = false,
 ): String? {
     return try {
         runBlocking {
@@ -84,7 +84,7 @@ fun TerminalBridge.requestStringPrompt(
  */
 fun TerminalBridge.requestBiometricAuth(
     keyNickname: String,
-    keystoreAlias: String
+    keystoreAlias: String,
 ): Boolean {
     return try {
         runBlocking {
@@ -118,7 +118,7 @@ fun TerminalBridge.requestHostKeyFingerprintPrompt(
     randomArt: String,
     bubblebabble: String,
     sha256: String,
-    md5: String
+    md5: String,
 ): Boolean? {
     return try {
         runBlocking {
@@ -130,7 +130,7 @@ fun TerminalBridge.requestHostKeyFingerprintPrompt(
                 randomArt,
                 bubblebabble,
                 sha256,
-                md5
+                md5,
             )
         }
     } catch (e: CancellationException) {

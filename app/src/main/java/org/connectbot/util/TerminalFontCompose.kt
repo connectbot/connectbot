@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ sealed class FontLoadingState {
 @Composable
 fun rememberTerminalFontState(
     font: TerminalFont,
-    fallback: Typeface = Typeface.MONOSPACE
+    fallback: Typeface = Typeface.MONOSPACE,
 ): FontLoadingState {
     val context = LocalContext.current
     val fontProvider = remember { TerminalFontProvider(context) }
@@ -92,7 +92,7 @@ fun rememberTerminalFontState(
 @Composable
 fun rememberTerminalTypeface(
     font: TerminalFont,
-    fallback: Typeface = Typeface.MONOSPACE
+    fallback: Typeface = Typeface.MONOSPACE,
 ): Typeface {
     val state = rememberTerminalFontState(font, fallback)
     return when (state) {
@@ -109,7 +109,7 @@ data class TerminalTypefaceResult(
     val typeface: Typeface,
     val isLoading: Boolean,
     val loadFailed: Boolean,
-    val requestedFontName: String?
+    val requestedFontName: String?,
 )
 
 /**
@@ -123,7 +123,7 @@ data class TerminalTypefaceResult(
 @Composable
 fun rememberTerminalTypefaceResultFromStoredValue(
     storedValue: String?,
-    fallback: Typeface = Typeface.MONOSPACE
+    fallback: Typeface = Typeface.MONOSPACE,
 ): TerminalTypefaceResult {
     val context = LocalContext.current
     val fontProvider = remember { TerminalFontProvider(context) }
@@ -196,7 +196,7 @@ fun rememberTerminalTypefaceResultFromStoredValue(
         typeface = typeface,
         isLoading = isLoading,
         loadFailed = loadFailed,
-        requestedFontName = requestedFontName
+        requestedFontName = requestedFontName,
     )
 }
 
@@ -211,7 +211,7 @@ fun rememberTerminalTypefaceResultFromStoredValue(
 @Composable
 fun rememberTerminalTypefaceFromStoredValue(
     storedValue: String?,
-    fallback: Typeface = Typeface.MONOSPACE
+    fallback: Typeface = Typeface.MONOSPACE,
 ): Typeface = rememberTerminalTypefaceResultFromStoredValue(storedValue, fallback).typeface
 
 /**

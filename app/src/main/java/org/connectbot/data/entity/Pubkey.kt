@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,8 +38,8 @@ import androidx.room.PrimaryKey
     indices = [
         Index(value = ["nickname"], unique = true),
         Index(value = ["storage_type"]),
-        Index(value = ["allow_backup"])
-    ]
+        Index(value = ["allow_backup"]),
+    ],
 )
 data class Pubkey(
     @PrimaryKey(autoGenerate = true)
@@ -71,7 +71,7 @@ data class Pubkey(
     val allowBackup: Boolean = true,
 
     @ColumnInfo(name = "keystore_alias")
-    val keystoreAlias: String? = null
+    val keystoreAlias: String? = null,
 ) {
     /** Whether this key is stored in Android Keystore with biometric protection */
     val isBiometric: Boolean

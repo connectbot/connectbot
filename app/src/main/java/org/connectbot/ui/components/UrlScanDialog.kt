@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import org.connectbot.R
 fun UrlScanDialog(
     urls: List<String>,
     onDismiss: () -> Unit,
-    onUrlClick: (String) -> Unit
+    onUrlClick: (String) -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -46,7 +46,7 @@ fun UrlScanDialog(
             if (urls.isEmpty()) {
                 Text(
                     text = stringResource(R.string.empty_urls_message),
-                    modifier = Modifier.padding(16.dp)
+                    modifier = Modifier.padding(16.dp),
                 )
             } else {
                 LazyColumn {
@@ -58,7 +58,7 @@ fun UrlScanDialog(
                                 .clickable {
                                     onUrlClick(url)
                                     onDismiss()
-                                }
+                                },
                         )
                         HorizontalDivider()
                     }
@@ -69,6 +69,6 @@ fun UrlScanDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.button_close))
             }
-        }
+        },
     )
 }

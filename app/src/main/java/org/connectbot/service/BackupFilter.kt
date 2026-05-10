@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ class BackupFilter(
     private val context: Context,
     private val hostRepository: HostRepository,
     private val colorSchemeRepository: ColorSchemeRepository,
-    private val pubkeyRepository: PubkeyRepository
+    private val pubkeyRepository: PubkeyRepository,
 ) {
     /**
      * Build a filtered database containing only backupable data.
@@ -52,7 +52,7 @@ class BackupFilter(
         val tempDb = Room.databaseBuilder(
             context,
             ConnectBotDatabase::class.java,
-            tempDbFile.name
+            tempDbFile.name,
         )
             .allowMainThreadQueries() // Backup runs on backup thread
             .build()
@@ -97,8 +97,8 @@ class BackupFilter(
                             org.connectbot.data.entity.ColorPalette(
                                 schemeId = scheme.id,
                                 colorIndex = index,
-                                color = color
-                            )
+                                color = color,
+                            ),
                         )
                     }
                 }
@@ -126,7 +126,7 @@ class BackupFilter(
         if (!isBackupable) {
             Timber.d(
                 "Filtering out pubkey: ${pubkey.nickname} " +
-                    "(allowBackup=${pubkey.allowBackup}, storageType=${pubkey.storageType})"
+                    "(allowBackup=${pubkey.allowBackup}, storageType=${pubkey.storageType})",
             )
         }
 

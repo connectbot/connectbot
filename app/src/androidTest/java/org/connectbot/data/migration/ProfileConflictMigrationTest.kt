@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -201,7 +201,7 @@ class ProfileConflictMigrationTest {
                     scrollbacklines INTEGER DEFAULT 140,
                     usectrlaltasmeta TEXT DEFAULT 'false'
                 )
-                """.trimIndent()
+                """.trimIndent(),
             )
 
             // Create portforwards table
@@ -216,7 +216,7 @@ class ProfileConflictMigrationTest {
                     destaddr TEXT NOT NULL,
                     destport INTEGER NOT NULL
                 )
-                """.trimIndent()
+                """.trimIndent(),
             )
 
             // Create knownhosts table
@@ -228,7 +228,7 @@ class ProfileConflictMigrationTest {
                     hostkeyalgo TEXT NOT NULL,
                     hostkey BLOB NOT NULL
                 )
-                """.trimIndent()
+                """.trimIndent(),
             )
 
             // Create colorSchemes table
@@ -239,7 +239,7 @@ class ProfileConflictMigrationTest {
                     name TEXT NOT NULL,
                     description TEXT
                 )
-                """.trimIndent()
+                """.trimIndent(),
             )
 
             // Create colors table (color palette)
@@ -251,7 +251,7 @@ class ProfileConflictMigrationTest {
                     number INTEGER NOT NULL,
                     value INTEGER NOT NULL
                 )
-                """.trimIndent()
+                """.trimIndent(),
             )
 
             Timber.d("Created empty legacy hosts database at: ${dbFile.absolutePath}")
@@ -284,7 +284,7 @@ class ProfileConflictMigrationTest {
                     confirmuse INTEGER NOT NULL DEFAULT 0,
                     lifetime INTEGER NOT NULL DEFAULT 0
                 )
-                """.trimIndent()
+                """.trimIndent(),
             )
 
             Timber.d("Created empty legacy pubkeys database at: ${dbFile.absolutePath}")

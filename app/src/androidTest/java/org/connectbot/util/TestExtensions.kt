@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,7 +29,7 @@ import org.connectbot.ui.MainActivity
  * Returns the Ready state when bound.
  */
 suspend fun MainActivity.waitUntilServiceBound(
-    timeoutMillis: Long = 5000
+    timeoutMillis: Long = 5000,
 ): AppUiState.Ready {
     return withTimeout(timeoutMillis) {
         while (true) {
@@ -48,7 +48,7 @@ suspend fun MainActivity.waitUntilServiceBound(
  */
 suspend fun TerminalManager.waitForBridge(
     predicate: (TerminalBridge) -> Boolean,
-    timeoutMillis: Long = 5000
+    timeoutMillis: Long = 5000,
 ): TerminalBridge = withTimeout(timeoutMillis) {
     var foundBridge: TerminalBridge? = null
     while (foundBridge == null) {
@@ -63,5 +63,5 @@ suspend fun TerminalManager.waitForBridge(
  */
 suspend fun TerminalManager.waitForBridgeByNickname(
     nickname: String,
-    timeoutMillis: Long = 5000
+    timeoutMillis: Long = 5000,
 ): TerminalBridge = waitForBridge({ it.host.nickname == nickname }, timeoutMillis)

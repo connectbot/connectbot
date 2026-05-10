@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,7 +61,7 @@ fun RgbColorPickerDialog(
     title: String,
     initialColor: Int,
     onSelectColor: (Int) -> Unit,
-    onDismiss: () -> Unit
+    onDismiss: () -> Unit,
 ) {
     // Extract RGB components from ARGB Int
     val initialRed = (initialColor shr 16) and 0xFF
@@ -95,7 +95,7 @@ fun RgbColorPickerDialog(
         title = { Text(title) },
         text = {
             Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 // Color preview
                 Box(
@@ -104,13 +104,13 @@ fun RgbColorPickerDialog(
                         .height(80.dp)
                         .background(
                             color = Color(currentColor),
-                            shape = RoundedCornerShape(8.dp)
+                            shape = RoundedCornerShape(8.dp),
                         )
                         .border(
                             width = 1.dp,
                             color = MaterialTheme.colorScheme.outline,
-                            shape = RoundedCornerShape(8.dp)
-                        )
+                            shape = RoundedCornerShape(8.dp),
+                        ),
                 )
 
                 // Hex value input
@@ -138,9 +138,9 @@ fun RgbColorPickerDialog(
                     prefix = { Text("#") },
                     singleLine = true,
                     keyboardOptions = KeyboardOptions(
-                        capitalization = KeyboardCapitalization.Characters
+                        capitalization = KeyboardCapitalization.Characters,
                     ),
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
 
                 // Red slider
@@ -148,7 +148,7 @@ fun RgbColorPickerDialog(
                     label = stringResource(R.string.label_red),
                     value = red,
                     color = Color.Red,
-                    onValueChange = { red = it }
+                    onValueChange = { red = it },
                 )
 
                 // Green slider
@@ -156,7 +156,7 @@ fun RgbColorPickerDialog(
                     label = stringResource(R.string.label_green),
                     value = green,
                     color = Color.Green,
-                    onValueChange = { green = it }
+                    onValueChange = { green = it },
                 )
 
                 // Blue slider
@@ -164,7 +164,7 @@ fun RgbColorPickerDialog(
                     label = stringResource(R.string.label_blue),
                     value = blue,
                     color = Color.Blue,
-                    onValueChange = { blue = it }
+                    onValueChange = { blue = it },
                 )
             }
         },
@@ -180,7 +180,7 @@ fun RgbColorPickerDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.button_cancel))
             }
-        }
+        },
     )
 }
 
@@ -192,24 +192,24 @@ private fun ColorSliderRow(
     label: String,
     value: Float,
     color: Color,
-    onValueChange: (Float) -> Unit
+    onValueChange: (Float) -> Unit,
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth()
+        modifier = Modifier.fillMaxWidth(),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
+            verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
                 text = label,
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.bodyMedium,
             )
             Text(
                 text = value.toInt().toString(),
                 style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.primary,
             )
         }
 
@@ -217,7 +217,7 @@ private fun ColorSliderRow(
             value = value,
             onValueChange = onValueChange,
             valueRange = 0f..255f,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
         )
     }
 }

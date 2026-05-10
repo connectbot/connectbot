@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,12 +36,12 @@ data class SchemeManagerUiState(
     val error: String? = null,
     val showNewSchemeDialog: Boolean = false,
     val showDeleteDialog: Boolean = false,
-    val dialogError: String? = null
+    val dialogError: String? = null,
 )
 
 @HiltViewModel
 class ColorSchemeManagerViewModel @Inject constructor(
-    val repository: ColorSchemeRepository
+    val repository: ColorSchemeRepository,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(SchemeManagerUiState())
@@ -60,7 +60,7 @@ class ColorSchemeManagerViewModel @Inject constructor(
                         it.copy(
                             schemes = schemes,
                             isLoading = false,
-                            error = null
+                            error = null,
                         )
                     }
                 }
@@ -68,7 +68,7 @@ class ColorSchemeManagerViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        error = e.message ?: "Failed to load schemes"
+                        error = e.message ?: "Failed to load schemes",
                     )
                 }
             }
@@ -78,7 +78,7 @@ class ColorSchemeManagerViewModel @Inject constructor(
     fun selectScheme(schemeId: Long) {
         _uiState.update {
             it.copy(
-                selectedSchemeId = if (it.selectedSchemeId == schemeId) null else schemeId
+                selectedSchemeId = if (it.selectedSchemeId == schemeId) null else schemeId,
             )
         }
     }
@@ -87,7 +87,7 @@ class ColorSchemeManagerViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 showNewSchemeDialog = true,
-                dialogError = null
+                dialogError = null,
             )
         }
     }
@@ -96,7 +96,7 @@ class ColorSchemeManagerViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 showNewSchemeDialog = false,
-                dialogError = null
+                dialogError = null,
             )
         }
     }
@@ -105,7 +105,7 @@ class ColorSchemeManagerViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 showDeleteDialog = true,
-                dialogError = null
+                dialogError = null,
             )
         }
     }
@@ -114,7 +114,7 @@ class ColorSchemeManagerViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 showDeleteDialog = false,
-                dialogError = null
+                dialogError = null,
             )
         }
     }

@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root, Jeffrey Sharkey
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,13 +34,13 @@ import androidx.room.PrimaryKey
             entity = ColorScheme::class,
             parentColumns = ["id"],
             childColumns = ["scheme_id"],
-            onDelete = ForeignKey.CASCADE
-        )
+            onDelete = ForeignKey.CASCADE,
+        ),
     ],
     indices = [
         Index("scheme_id"),
-        Index(value = ["scheme_id", "color_index"], unique = true)
-    ]
+        Index(value = ["scheme_id", "color_index"], unique = true),
+    ],
 )
 data class ColorPalette(
     @PrimaryKey(autoGenerate = true)
@@ -52,5 +52,5 @@ data class ColorPalette(
     @ColumnInfo(name = "color_index")
     val colorIndex: Int,
 
-    val color: Int
+    val color: Int,
 )

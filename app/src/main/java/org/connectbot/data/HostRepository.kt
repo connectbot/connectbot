@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ class HostRepository @Inject constructor(
     private val hostDao: HostDao,
     private val portForwardDao: PortForwardDao,
     private val knownHostDao: KnownHostDao,
-    private val securePasswordStorage: SecurePasswordStorage
+    private val securePasswordStorage: SecurePasswordStorage,
 ) {
 
     // ============================================================================
@@ -240,7 +240,7 @@ class HostRepository @Inject constructor(
         hostname: String,
         port: Int,
         serverHostKeyAlgorithm: String,
-        serverHostKey: ByteArray
+        serverHostKey: ByteArray,
     ) {
         // Temporary hosts (negative ids) are never inserted into the hosts
         // table, so persisting a known_hosts row keyed by host.id would break
@@ -252,7 +252,7 @@ class HostRepository @Inject constructor(
         val existing = knownHostDao.getByHostIdAlgoAndKey(
             host.id,
             serverHostKeyAlgorithm,
-            serverHostKey
+            serverHostKey,
         )
         // If it does not exist or exists but has a different hostname and port, add it.
         if (existing == null || existing.hostname != hostname || existing.port != port) {
@@ -262,7 +262,7 @@ class HostRepository @Inject constructor(
                 hostname = hostname,
                 port = port,
                 hostKeyAlgo = serverHostKeyAlgorithm,
-                hostKey = serverHostKey
+                hostKey = serverHostKey,
             )
             knownHostDao.insert(knownHost)
         }
@@ -278,13 +278,13 @@ class HostRepository @Inject constructor(
     suspend fun removeKnownHost(
         hostId: Long,
         serverHostKeyAlgorithm: String,
-        serverHostKey: ByteArray
+        serverHostKey: ByteArray,
     ) {
         // Find the exact key to remove
         val knownHost = knownHostDao.getByHostIdAlgoAndKey(
             hostId,
             serverHostKeyAlgorithm,
-            serverHostKey
+            serverHostKey,
         )
         if (knownHost != null) {
             knownHostDao.delete(knownHost)
@@ -341,7 +341,7 @@ class HostRepository @Inject constructor(
         hostname: String,
         port: Int,
         serverHostKeyAlgorithm: String,
-        serverHostKey: ByteArray
+        serverHostKey: ByteArray,
     ) = runBlocking {
         saveKnownHost(host, hostname, port, serverHostKeyAlgorithm, serverHostKey)
     }
@@ -366,7 +366,7 @@ class HostRepository @Inject constructor(
     fun removeKnownHostBlocking(
         hostId: Long,
         serverHostKeyAlgorithm: String,
-        serverHostKey: ByteArray
+        serverHostKey: ByteArray,
     ) = runBlocking {
         removeKnownHost(hostId, serverHostKeyAlgorithm, serverHostKey)
     }

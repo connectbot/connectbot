@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -135,23 +135,25 @@ private fun ContactLinkItem(
     url: String,
     onClick: (String) -> Unit,
 ) {
-    ListItem(
-        headlineContent = {
-            Text(
-                text = label,
-                style = MaterialTheme.typography.titleMedium,
-            )
-        },
-        supportingContent = {
-            Text(
-                text = url,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.primary,
-            )
-        },
-        modifier = Modifier.clickable { onClick(url) },
-    )
-    HorizontalDivider()
+    Column {
+        ListItem(
+            headlineContent = {
+                Text(
+                    text = label,
+                    style = MaterialTheme.typography.titleMedium,
+                )
+            },
+            supportingContent = {
+                Text(
+                    text = url,
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            },
+            modifier = Modifier.clickable { onClick(url) },
+        )
+        HorizontalDivider()
+    }
 }
 
 @PreviewScreen
