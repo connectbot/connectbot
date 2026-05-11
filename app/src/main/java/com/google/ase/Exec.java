@@ -63,6 +63,24 @@ public class Exec {
    */
   public static native int waitFor(int processId);
 
+  /**
+   * Set an environment variable.
+   *
+   * @param name The name of the environment variable
+   * @param value The value to set
+   * @return 0 on success, -1 on failure
+   */
+  public static native int setenv(String name, String value);
+
+  /**
+   * Send a signal to a process.
+   *
+   * @param pid The process ID
+   * @param signal The signal number to send
+   * @return 0 on success, -1 on failure
+   */
+  public static native int kill(int pid, int signal);
+
   static {
     System.loadLibrary("com_google_ase_Exec");
   }
