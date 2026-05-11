@@ -118,6 +118,9 @@ fun HostEditorScreen(
         onIpVersionChange = viewModel::updateIpVersion,
         onPasswordChange = viewModel::updatePassword,
         onClearPassword = viewModel::clearSavedPassword,
+        onMoshPortChange = viewModel::updateMoshPort,
+        onMoshServerChange = viewModel::updateMoshServer,
+        onLocaleChange = viewModel::updateLocale,
         onSaveHost = { expandedMode -> viewModel.saveHost(expandedMode) },
         modifier = modifier,
     )
@@ -149,6 +152,9 @@ fun HostEditorScreenContent(
     onIpVersionChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onClearPassword: () -> Unit,
+    onMoshPortChange: (String) -> Unit = {},
+    onMoshServerChange: (String) -> Unit = {},
+    onLocaleChange: (String) -> Unit = {},
     onSaveHost: suspend (Boolean) -> Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -161,7 +167,11 @@ fun HostEditorScreenContent(
     var expandedMode by remember(uiState.isLoading) {
         mutableStateOf(hostId != -1L && !uiState.isNicknameMatching)
     }
-    val protocols = listOf("ssh", "telnet", "local")
+    val protocols = if (uiState.moshSupport || uiState.protocol == "mosh") {
+        listOf("ssh", "mosh", "telnet", "local")
+    } else {
+        listOf("ssh", "telnet", "local")
+    }
     val canSave = if (expandedMode) {
         uiState.protocol == "local" || uiState.hostname.isNotBlank()
     } else {
@@ -329,15 +339,18 @@ fun HostEditorScreenContent(
 
                 // Only show username, hostname, and port for non-local protocols
                 if (uiState.protocol != "local") {
-                    OutlinedTextField(
-                        value = uiState.username,
-                        onValueChange = onUsernameChange,
-                        label = { Text(stringResource(R.string.hostpref_username_title)) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp),
-                        singleLine = true,
-                    )
+                    // Show username field for SSH and Mosh protocols
+                    if (uiState.protocol == "ssh" || uiState.protocol == "mosh") {
+                        OutlinedTextField(
+                            value = uiState.username,
+                            onValueChange = onUsernameChange,
+                            label = { Text(stringResource(R.string.hostpref_username_title)) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp),
+                            singleLine = true,
+                        )
+                    }
 
                     OutlinedTextField(
                         value = uiState.hostname,
@@ -368,8 +381,44 @@ fun HostEditorScreenContent(
                         modifier = Modifier.padding(top = 8.dp),
                     )
 
-                    // Save password section (SSH only)
-                    if (uiState.protocol == "ssh") {
+                    // Mosh-specific fields
+                    if (uiState.protocol == "mosh") {
+                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+                        OutlinedTextField(
+                            value = uiState.moshServer,
+                            onValueChange = onMoshServerChange,
+                            label = { Text(stringResource(R.string.hostpref_mosh_server_title)) },
+                            supportingText = { Text(stringResource(R.string.hostpref_mosh_server_summary)) },
+                            modifier = Modifier.fillMaxWidth(),
+                            singleLine = true,
+                        )
+
+                        OutlinedTextField(
+                            value = uiState.moshPort,
+                            onValueChange = onMoshPortChange,
+                            label = { Text(stringResource(R.string.hostpref_mosh_port_title)) },
+                            supportingText = { Text(stringResource(R.string.hostpref_mosh_port_summary)) },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp),
+                            singleLine = true,
+                        )
+
+                        OutlinedTextField(
+                            value = uiState.locale,
+                            onValueChange = onLocaleChange,
+                            label = { Text(stringResource(R.string.hostpref_locale_title)) },
+                            supportingText = { Text(stringResource(R.string.hostpref_locale_summary)) },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp),
+                            singleLine = true,
+                        )
+                    }
+
+                    // Save password section (SSH and Mosh)
+                    if (uiState.protocol == "ssh" || uiState.protocol == "mosh") {
                         HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
                         OutlinedTextField(
                             value = uiState.password,
@@ -428,8 +477,8 @@ fun HostEditorScreenContent(
                 onEditProfile = onNavigateToProfile,
             )
 
-            // Jump host selector (only for SSH protocol)
-            if (uiState.protocol == "ssh") {
+            // Jump host selector (for SSH and Mosh protocols)
+            if (uiState.protocol == "ssh" || uiState.protocol == "mosh") {
                 HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
                 JumpHostSelector(
                     jumpHostId = uiState.jumpHostId,

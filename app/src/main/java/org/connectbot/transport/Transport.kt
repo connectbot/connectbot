@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -103,6 +103,21 @@ sealed class Transport {
         override fun parseUri(input: String): Uri? = org.connectbot.transport.Local.getUri(input)
     }
 
+    /**
+     * Mosh transport - Mobile shell (uses SSH for initial connection, then UDP)
+     */
+    object Mosh : Transport() {
+        override val protocolName = "mosh"
+        override val defaultPort = 22 // SSH port for initial connection
+        override val usesNetwork = true
+
+        override fun getFormatHint(context: Context): String = org.connectbot.transport.Mosh.getFormatHint(context)
+
+        override fun createInstance(): AbsTransport = org.connectbot.transport.Mosh()
+
+        override fun parseUri(input: String): Uri? = org.connectbot.transport.Mosh.getUri(input)
+    }
+
     companion object {
         /**
          * Get a transport by its protocol name.
@@ -111,6 +126,7 @@ sealed class Transport {
         @JvmStatic
         fun fromProtocol(protocol: String?): Transport? = when (protocol) {
             "ssh" -> Ssh
+            "mosh" -> Mosh
             "telnet" -> Telnet
             "local" -> Local
             else -> null
@@ -120,7 +136,7 @@ sealed class Transport {
          * Get all available transports
          */
         @JvmStatic
-        fun allTransports(): List<Transport> = listOf(Ssh, Telnet, Local)
+        fun allTransports(): List<Transport> = listOf(Ssh, Mosh, Telnet, Local)
 
         /**
          * Get transport from a URI

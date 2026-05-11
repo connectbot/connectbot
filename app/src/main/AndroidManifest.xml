@@ -71,6 +71,7 @@
 				<category android:name="android.intent.category.DEFAULT"/>
 
 				<data android:scheme="ssh"/>
+				<data android:scheme="mosh"/>
 				<data android:scheme="telnet"/>
 				<data android:scheme="local"/>
 			</intent-filter>
@@ -81,9 +82,11 @@
 				<category android:name="android.intent.category.BROWSABLE"/>
 
 				<data android:scheme="ssh"/>
+				<data android:scheme="mosh"/>
 				<data android:scheme="telnet"/>
 				<data android:scheme="local"/>
 				<!-- format:  ssh://user@host:port/#nickname  -->
+				<!-- format:  mosh://user@host:port/#nickname  -->
 				<!-- format:  telnet://host:port/#nickname  -->
 				<!-- format:  local://  -->
 			</intent-filter>

@@ -206,6 +206,7 @@ fun SettingsScreen(
         onBellVolumeChange = viewModel::updateBellVolume,
         onBellVibrateChange = viewModel::updateBellVibrate,
         onBellNotificationChange = viewModel::updateBellNotification,
+        onMoshSupportChange = viewModel::updateMoshSupport,
         modifier = modifier,
     )
 }
@@ -253,9 +254,12 @@ fun SettingsScreenContent(
     onBellVolumeChange: (Float) -> Unit,
     onBellVibrateChange: (Boolean) -> Unit,
     onBellNotificationChange: (Boolean) -> Unit,
+    onMoshSupportChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     highlightItem: String? = null,
 ) {
+    var showMoshConfirmDialog by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -344,6 +348,25 @@ fun SettingsScreenContent(
                     summary = stringResource(R.string.pref_backupkeys_summary),
                     checked = uiState.backupkeys,
                     onCheckedChange = onBackupkeysChange,
+                )
+            }
+
+            item {
+                SwitchPreference(
+                    title = stringResource(R.string.pref_mosh_support_title),
+                    summary = when {
+                        uiState.moshInstallInProgress -> stringResource(R.string.pref_mosh_installing)
+                        uiState.moshInstallError != null -> uiState.moshInstallError.orEmpty()
+                        else -> stringResource(R.string.pref_mosh_support_summary)
+                    },
+                    checked = uiState.moshSupport,
+                    onCheckedChange = { enabled ->
+                        if (enabled) {
+                            showMoshConfirmDialog = true
+                        } else {
+                            onMoshSupportChange(false)
+                        }
+                    },
                 )
             }
 
@@ -740,6 +763,29 @@ fun SettingsScreenContent(
 
     if (uiState.fontDownloadInProgress) {
         FontDownloadProgressDialog()
+    }
+
+    if (showMoshConfirmDialog) {
+        AlertDialog(
+            onDismissRequest = { showMoshConfirmDialog = false },
+            title = { Text(stringResource(R.string.pref_mosh_confirm_title)) },
+            text = { Text(stringResource(R.string.pref_mosh_confirm_message)) },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        showMoshConfirmDialog = false
+                        onMoshSupportChange(true)
+                    },
+                ) {
+                    Text(stringResource(R.string.pref_mosh_confirm_enable))
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showMoshConfirmDialog = false }) {
+                    Text(stringResource(R.string.pref_mosh_confirm_cancel))
+                }
+            },
+        )
     }
 }
 
@@ -1637,6 +1683,7 @@ private fun SettingsScreenPreview() {
             onBellVolumeChange = {},
             onBellVibrateChange = {},
             onBellNotificationChange = {},
+            onMoshSupportChange = {},
         )
     }
 }
