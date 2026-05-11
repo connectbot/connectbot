@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,6 +60,7 @@ import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.navigation.NavDestinations
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.IconStyle
+import org.connectbot.util.InstallMosh
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.ShortcutIconGenerator
 import org.connectbot.util.isNotificationPermissionGranted
@@ -146,6 +147,12 @@ class MainActivity : AppCompatActivity() {
 
         val serviceIntent = Intent(this, TerminalManager::class.java)
         bindService(serviceIntent, connection, BIND_AUTO_CREATE)
+
+        // Mosh is optional because its client binary is GPL-licensed and
+        // downloaded separately from mosh4android after explicit user consent.
+        if (InstallMosh.isMoshSupportEnabled(this)) {
+            InstallMosh.startInstall(this)
+        }
 
         setContent {
             val appUiState by appViewModel.uiState.collectAsState()
