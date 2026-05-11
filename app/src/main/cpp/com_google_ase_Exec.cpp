@@ -18,6 +18,7 @@
 
 #include <errno.h>
 #include <fcntl.h>
+#include <signal.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/ioctl.h>
@@ -197,4 +198,22 @@ JNIEXPORT jint Java_com_google_ase_Exec_waitFor(JNIEnv* env, jclass clazz,
     result = WEXITSTATUS(status);
   }
   return result;
+}
+
+JNIEXPORT jint Java_com_google_ase_Exec_setenv(JNIEnv* env, jclass clazz,
+                                               jstring name, jstring value) {
+  char* name_8 = JNU_GetStringNativeChars(env, name);
+  char* value_8 = JNU_GetStringNativeChars(env, value);
+
+  int result = setenv(name_8, value_8, 1);
+
+  free(name_8);
+  free(value_8);
+
+  return result;
+}
+
+JNIEXPORT jint Java_com_google_ase_Exec_kill(JNIEnv* env, jclass clazz,
+                                             jint pid, jint signal) {
+  return kill(pid, signal);
 }
