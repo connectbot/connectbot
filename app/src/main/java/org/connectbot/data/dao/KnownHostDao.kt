@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,6 +71,12 @@ interface KnownHostDao {
      */
     @Delete
     suspend fun delete(knownHost: KnownHost)
+
+    /**
+     * Delete all known hosts for a host configuration and algorithm.
+     */
+    @Query("DELETE FROM known_hosts WHERE host_id = :hostId AND host_key_algo = :algo")
+    suspend fun deleteByHostIdAndAlgo(hostId: Long, algo: String)
 
     /**
      * Delete a known host by hostname and port.

@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,5 +98,105 @@ class HostRepositoryKnownHostTest {
         // hosts table is still empty and no dangling known_hosts row exists.
         assertThat(database.hostDao().getAll()).isEmpty()
         assertThat(database.knownHostDao().getAll()).isEmpty()
+    }
+
+    @Test
+    fun getHostKeyAlgorithmsForHost_withRsaKey_includesSha2Variants() = runTest {
+        val host = Host(
+            nickname = "rsa",
+            protocol = "ssh",
+            username = "root",
+            hostname = "example.com",
+            port = 22,
+        )
+        val hostId = database.hostDao().insert(host)
+        val savedHost = host.copy(id = hostId)
+
+        repository.saveKnownHost(
+            host = savedHost,
+            hostname = "example.com",
+            port = 22,
+            serverHostKeyAlgorithm = "ssh-rsa",
+            serverHostKey = "server-rsa-key".toByteArray(),
+        )
+
+        assertThat(repository.getHostKeyAlgorithmsForHost(hostId))
+            .containsExactlyInAnyOrder("rsa-sha2-512", "rsa-sha2-256", "ssh-rsa")
+    }
+
+    @Test
+    fun getHostKeyAlgorithmsForHost_withNoKnownHosts_returnsEmptyList() = runTest {
+        assertThat(repository.getHostKeyAlgorithmsForHost(123L)).isEmpty()
+    }
+
+    @Test
+    fun getHostKeyAlgorithmsForHost_withMixedKeys_expandsOnlyRsaKey() = runTest {
+        val host = Host(
+            nickname = "mixed",
+            protocol = "ssh",
+            username = "root",
+            hostname = "example.com",
+            port = 22,
+        )
+        val hostId = database.hostDao().insert(host)
+        val savedHost = host.copy(id = hostId)
+
+        repository.saveKnownHost(
+            host = savedHost,
+            hostname = "example.com",
+            port = 22,
+            serverHostKeyAlgorithm = "rsa-sha2-256",
+            serverHostKey = "server-rsa-key".toByteArray(),
+        )
+        repository.saveKnownHost(
+            host = savedHost,
+            hostname = "example.com",
+            port = 22,
+            serverHostKeyAlgorithm = "ssh-ed25519",
+            serverHostKey = "server-ed25519-key".toByteArray(),
+        )
+
+        assertThat(repository.getHostKeyAlgorithmsForHost(hostId))
+            .containsExactly("rsa-sha2-512", "rsa-sha2-256", "ssh-rsa", "ssh-ed25519")
+    }
+
+    @Test
+    fun removeKnownHost_withNullRsaKey_removesAllRsaAlgorithmVariants() = runTest {
+        val host = Host(
+            nickname = "rsa",
+            protocol = "ssh",
+            username = "root",
+            hostname = "example.com",
+            port = 22,
+        )
+        val hostId = database.hostDao().insert(host)
+        val savedHost = host.copy(id = hostId)
+
+        repository.saveKnownHost(
+            host = savedHost,
+            hostname = "example.com",
+            port = 22,
+            serverHostKeyAlgorithm = "ssh-rsa",
+            serverHostKey = "server-rsa-key".toByteArray(),
+        )
+        repository.saveKnownHost(
+            host = savedHost,
+            hostname = "example.com",
+            port = 22,
+            serverHostKeyAlgorithm = "rsa-sha2-256",
+            serverHostKey = "server-rsa-sha2-key".toByteArray(),
+        )
+        repository.saveKnownHost(
+            host = savedHost,
+            hostname = "example.com",
+            port = 22,
+            serverHostKeyAlgorithm = "ssh-ed25519",
+            serverHostKey = "server-ed25519-key".toByteArray(),
+        )
+
+        repository.removeKnownHost(hostId, "rsa-sha2-512", null)
+
+        val remaining = database.knownHostDao().getByHostId(hostId)
+        assertThat(remaining.map { it.hostKeyAlgo }).containsExactly("ssh-ed25519")
     }
 }
