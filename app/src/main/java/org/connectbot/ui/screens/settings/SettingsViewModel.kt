@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -65,6 +65,7 @@ data class SettingsUiState(
     val volumefont: Boolean = true,
     val keepalive: Boolean = true,
     val alwaysvisible: Boolean = false,
+    val imeTogglekey: Boolean = true,
     val shiftfkeys: Boolean = false,
     val ctrlfkeys: Boolean = false,
     val stickymodifiers: String = "no",
@@ -202,6 +203,7 @@ class SettingsViewModel @Inject constructor(
             volumefont = prefs.getBoolean("volumefont", true),
             keepalive = prefs.getBoolean("keepalive", true),
             alwaysvisible = prefs.getBoolean("alwaysvisible", false),
+            imeTogglekey = prefs.getBoolean(PreferenceConstants.IME_TOGGLE_KEY, true),
             shiftfkeys = prefs.getBoolean("shiftfkeys", false),
             ctrlfkeys = prefs.getBoolean("ctrlfkeys", false),
             stickymodifiers = prefs.getString("stickymodifiers", "no") ?: "no",
@@ -321,6 +323,10 @@ class SettingsViewModel @Inject constructor(
 
     fun updateAlwaysVisible(value: Boolean) {
         updateBooleanPref(PreferenceConstants.KEY_ALWAYS_VISIBLE, value) { copy(alwaysvisible = value) }
+    }
+
+    fun updateImeToggleKey(value: Boolean) {
+        updateBooleanPref(PreferenceConstants.IME_TOGGLE_KEY, value) { copy(imeTogglekey = value) }
     }
 
     fun updateShiftFkeys(value: Boolean) {

@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,6 +109,9 @@ fun TerminalKeyboard(
     onScrollInProgressChange: (Boolean) -> Unit = {},
     imeVisible: Boolean = false,
     playAnimation: Boolean = false,
+    showImeToggleKey: Boolean = true,
+    isComposeModeActive: Boolean = false,
+    onToggleComposeMode: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
@@ -144,6 +147,9 @@ fun TerminalKeyboard(
         imeVisible = imeVisible,
         playAnimation = playAnimation,
         bumpyArrows = bumpyArrows,
+        showImeToggleKey = showImeToggleKey,
+        isComposeModeActive = isComposeModeActive,
+        onToggleComposeMode = onToggleComposeMode,
         modifier = modifier,
     )
 }
@@ -167,6 +173,9 @@ private fun TerminalKeyboardContent(
     imeVisible: Boolean,
     playAnimation: Boolean,
     bumpyArrows: Boolean,
+    showImeToggleKey: Boolean = true,
+    isComposeModeActive: Boolean = false,
+    onToggleComposeMode: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val scrollState = rememberScrollState()
@@ -421,6 +430,30 @@ private fun TerminalKeyboardContent(
                         modifier = Modifier.height(TERMINAL_KEYBOARD_CONTENT_SIZE_DP.dp),
                     )
                 }
+            }
+
+            // IME toggle key (sits next to the input field key, optional via setting)
+            if (showImeToggleKey) {
+                val imeBackgroundColor = if (isComposeModeActive) {
+                    MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
+                } else {
+                    MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY)
+                }
+                val imeTextColor = if (isComposeModeActive) {
+                    MaterialTheme.colorScheme.onPrimary
+                } else {
+                    MaterialTheme.colorScheme.onSurface
+                }
+                KeyButton(
+                    text = stringResource(R.string.button_key_ime),
+                    contentDescription = stringResource(R.string.image_description_toggle_compose_mode),
+                    onClick = {
+                        onToggleComposeMode()
+                        onInteraction()
+                    },
+                    backgroundColor = imeBackgroundColor,
+                    tint = imeTextColor,
+                )
             }
 
             // Keyboard toggle button (always visible on right)
