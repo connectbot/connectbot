@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2007 Kenny Root
+ * Copyright 2007-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import android.content.Context
 import android.net.Uri
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.UserNotAuthenticatedException
+import androidx.annotation.VisibleForTesting
 import androidx.core.net.toUri
 import com.trilead.ssh2.AuthAgentCallback
 import com.trilead.ssh2.ChannelCondition
@@ -126,7 +127,7 @@ class SSH :
 
     private fun decodePublicKey(algorithm: String, keyBlob: ByteArray): PublicKey? = try {
         when (algorithm) {
-            "ssh-rsa" -> RSASHA1Verify.get().decodePublicKey(keyBlob)
+            "ssh-rsa", "rsa-sha2-256", "rsa-sha2-512" -> RSASHA1Verify.get().decodePublicKey(keyBlob)
             "ssh-dss" -> DSASHA1Verify.get().decodePublicKey(keyBlob)
             "ssh-ed25519" -> Ed25519Verify.get().decodePublicKey(keyBlob)
             "ecdsa-sha2-nistp256" -> ECDSASHA2Verify.ECDSASHA2NISTP256Verify.get().decodePublicKey(keyBlob)
@@ -147,16 +148,12 @@ class SSH :
         else -> 0
     }
 
-    private fun getKeyType(openSshKeyType: String): String? = if (openSshKeyType == "ssh-rsa") {
-        "RSA"
-    } else if (openSshKeyType == "ssh-dss") {
-        "DSA"
-    } else if (openSshKeyType == "ssh-ed25519") {
-        "Ed25519"
-    } else if (openSshKeyType.startsWith("ecdsa-sha2-")) {
-        "EC"
-    } else {
-        null
+    @VisibleForTesting
+    internal fun getKeyType(openSshKeyType: String): String? = when (openSshKeyType) {
+        "ssh-rsa", "rsa-sha2-256", "rsa-sha2-512" -> "RSA"
+        "ssh-dss" -> "DSA"
+        "ssh-ed25519" -> "Ed25519"
+        else -> if (openSshKeyType.startsWith("ecdsa-sha2-")) "EC" else null
     }
 
     inner class HostKeyVerifier(private val verifyHost: Host? = host) : ExtendedServerHostKeyVerifier() {
@@ -303,7 +300,7 @@ class SSH :
             manager?.hostRepository?.getHostKeyAlgorithmsForHostBlocking(hostId)
         }
 
-        override fun removeServerHostKey(host: String, port: Int, algorithm: String, hostKey: ByteArray) {
+        override fun removeServerHostKey(host: String, port: Int, algorithm: String, hostKey: ByteArray?) {
             verifyHost?.id?.let { hostId ->
                 manager?.hostRepository?.removeKnownHostBlocking(hostId, algorithm, hostKey)
             }

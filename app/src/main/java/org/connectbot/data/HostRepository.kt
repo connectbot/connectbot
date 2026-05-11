@@ -50,6 +50,9 @@ class HostRepository @Inject constructor(
     private val knownHostDao: KnownHostDao,
     private val securePasswordStorage: SecurePasswordStorage,
 ) {
+    private companion object {
+        val RSA_HOST_KEY_ALGORITHMS = listOf("rsa-sha2-512", "rsa-sha2-256", "ssh-rsa")
+    }
 
     // ============================================================================
     // Host Operations
@@ -223,7 +226,14 @@ class HostRepository @Inject constructor(
      */
     suspend fun getHostKeyAlgorithmsForHost(hostId: Long): List<String> {
         val knownHosts = knownHostDao.getByHostId(hostId)
-        return knownHosts.map { it.hostKeyAlgo }.distinct()
+        return knownHosts
+            .flatMap { expandHostKeyAlgorithms(it.hostKeyAlgo) }
+            .distinct()
+    }
+
+    private fun expandHostKeyAlgorithms(algorithm: String): List<String> = when (algorithm) {
+        "rsa-sha2-512", "rsa-sha2-256", "ssh-rsa" -> RSA_HOST_KEY_ALGORITHMS
+        else -> listOf(algorithm)
     }
 
     /**
@@ -273,13 +283,19 @@ class HostRepository @Inject constructor(
      *
      * @param hostId The host ID
      * @param serverHostKeyAlgorithm The key algorithm
-     * @param serverHostKey The public key bytes
+     * @param serverHostKey The public key bytes, or null to remove all keys for the algorithm
      */
     suspend fun removeKnownHost(
         hostId: Long,
         serverHostKeyAlgorithm: String,
-        serverHostKey: ByteArray,
+        serverHostKey: ByteArray?,
     ) {
+        if (serverHostKey == null) {
+            expandHostKeyAlgorithms(serverHostKeyAlgorithm)
+                .forEach { knownHostDao.deleteByHostIdAndAlgo(hostId, it) }
+            return
+        }
+
         // Find the exact key to remove
         val knownHost = knownHostDao.getByHostIdAlgoAndKey(
             hostId,
@@ -366,7 +382,7 @@ class HostRepository @Inject constructor(
     fun removeKnownHostBlocking(
         hostId: Long,
         serverHostKeyAlgorithm: String,
-        serverHostKey: ByteArray,
+        serverHostKey: ByteArray?,
     ) = runBlocking {
         removeKnownHost(hostId, serverHostKeyAlgorithm, serverHostKey)
     }
