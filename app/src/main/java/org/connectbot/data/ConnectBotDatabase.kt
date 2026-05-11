@@ -59,6 +59,7 @@ import org.connectbot.data.entity.Pubkey
  * - Version 7: Added ip_version column to hosts for IP version preference (AutoMigration)
  * - Version 8: Added source_addr to port forwards, defaulting to localhost (AutoMigration)
  * - Version 9: Added inline_images to profiles, defaulting to Ask (AutoMigration)
+ * - Version 10: Added mosh_port, mosh_server, and locale columns to hosts for Mosh support (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -75,7 +76,7 @@ import org.connectbot.data.entity.Pubkey
         ColorPalette::class,
         Profile::class,
     ],
-    version = 9,
+    version = 10,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -85,6 +86,7 @@ import org.connectbot.data.entity.Pubkey
         AutoMigration(from = 6, to = 7),
         AutoMigration(from = 7, to = 8),
         AutoMigration(from = 8, to = 9),
+        AutoMigration(from = 9, to = 10),
     ],
 )
 @TypeConverters(Converters::class)
@@ -97,6 +99,12 @@ abstract class ConnectBotDatabase : RoomDatabase() {
     abstract fun profileDao(): ProfileDao
 
     companion object {
+        /**
+         * Current database schema version.
+         * This is also used for JSON export/import versioning.
+         */
+        const val SCHEMA_VERSION = 10
+
         /**
          * Migration from version 4 to 5: Add profiles table and profile_id to hosts.
          * Also creates profiles from existing host settings and migrates hosts to use them.
