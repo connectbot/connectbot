@@ -499,10 +499,13 @@ class SettingsViewModel @Inject constructor(
         keyBarRepo.update(current)
     }
 
-    fun setBuiltinVisible(index: Int, visible: Boolean) {
+    fun setEntryVisible(index: Int, visible: Boolean) {
         val current = _uiState.value.keyBarConfig.toMutableList()
-        val entry = current.getOrNull(index) as? KeyEntry.Builtin ?: return
-        current[index] = entry.copy(visible = visible)
+        current[index] = when (val entry = current.getOrNull(index)) {
+            is KeyEntry.Builtin -> entry.copy(visible = visible)
+            is KeyEntry.Macro -> entry.copy(visible = visible)
+            null -> return
+        }
         keyBarRepo.update(current)
     }
 

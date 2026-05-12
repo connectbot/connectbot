@@ -20,10 +20,18 @@ package org.connectbot.util.keybar
  * One entry in the user's on-screen key bar configuration.
  */
 sealed class KeyEntry {
+    /**
+     * Whether this entry is currently shown on the bar. Hidden entries
+     * remain in the configuration (preserving their position so re-
+     * enabling restores the prior order) but are filtered out by the
+     * runtime renderer.
+     */
+    abstract val visible: Boolean
+
     /** A built-in key (modifier, control key, navigation, or function). */
     data class Builtin(
         val id: BuiltinKeyId,
-        val visible: Boolean,
+        override val visible: Boolean,
     ) : KeyEntry()
 
     /**
@@ -38,6 +46,7 @@ sealed class KeyEntry {
         val label: String,
         val text: String,
         val id: String = java.util.UUID.randomUUID().toString(),
+        override val visible: Boolean = true,
     ) : KeyEntry()
 }
 

@@ -126,4 +126,32 @@ class KeyBarConfigJsonTest {
         assertThat(macro.text).isEqualTo("hello")
         assertThat(macro.id).isNotEmpty()
     }
+
+    @Test
+    fun `round-trips hidden macros`() {
+        val original = listOf(
+            KeyEntry.Macro(label = "hidden", text = "x", visible = false),
+        )
+        val json = KeyBarConfigJson.encode(original)
+        assertThat(json).contains("\"v\":false")
+        val decoded = KeyBarConfigJson.decode(json).single() as KeyEntry.Macro
+        assertThat(decoded.visible).isFalse()
+        assertThat(decoded.label).isEqualTo("hidden")
+        assertThat(decoded.text).isEqualTo("x")
+    }
+
+    @Test
+    fun `macro visible flag defaults to true when absent in legacy JSON`() {
+        val json = """[{"t":"m","l":"hi","x":"hello"}]"""
+        val macro = KeyBarConfigJson.decode(json).single() as KeyEntry.Macro
+        assertThat(macro.visible).isTrue()
+    }
+
+    @Test
+    fun `omits macro visible flag when true`() {
+        val json = KeyBarConfigJson.encode(
+            listOf(KeyEntry.Macro(label = "L", text = "X", visible = true)),
+        )
+        assertThat(json).doesNotContain("\"v\":")
+    }
 }

@@ -46,6 +46,7 @@ object KeyBarConfigJson {
                     obj.put("l", entry.label)
                     obj.put("x", entry.text)
                     obj.put("u", entry.id)
+                    if (!entry.visible) obj.put("v", false)
                 }
             }
             arr.put(obj)
@@ -82,6 +83,7 @@ object KeyBarConfigJson {
                 label = obj.optString("l"),
                 text = obj.optString("x"),
                 id = storedId,
+                visible = obj.optBoolean("v", true),
             )
         }
         else -> null

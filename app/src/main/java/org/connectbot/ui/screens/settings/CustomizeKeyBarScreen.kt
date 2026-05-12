@@ -18,7 +18,6 @@
 package org.connectbot.ui.screens.settings
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -106,7 +105,7 @@ fun CustomizeKeyBarScreen(
             KeyBarEntryList(
                 entries = ui.keyBarConfig,
                 onMove = viewModel::moveKeyBarEntry,
-                onToggleVisible = viewModel::setBuiltinVisible,
+                onToggleVisible = viewModel::setEntryVisible,
                 onEditMacro = { editingMacroIndex = it },
                 onDeleteMacro = viewModel::deleteKeyBarEntry,
                 modifier = Modifier
@@ -249,7 +248,7 @@ private fun ReorderableCollectionItemScope.KeyBarEntryRow(
                 Text(text = stringResource(builtinLabelRes(entry.id)), modifier = Modifier.weight(1f))
             }
             is KeyEntry.Macro -> {
-                Box(modifier = Modifier.size(48.dp))  // align with checkbox column
+                Checkbox(checked = entry.visible, onCheckedChange = onToggleVisible)
                 Text(text = entry.label, modifier = Modifier.weight(1f))
                 IconButton(onClick = onEditMacro) {
                     Icon(

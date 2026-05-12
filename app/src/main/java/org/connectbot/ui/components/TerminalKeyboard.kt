@@ -237,6 +237,7 @@ private fun TerminalKeyboardContent(
                             )
                         }
                         is KeyEntry.Macro -> {
+                            if (!entry.visible) return@forEach
                             BarMacroButton(
                                 entry = entry,
                                 onClick = { onMacroPress(entry) },
