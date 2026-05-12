@@ -79,6 +79,14 @@ fun BuiltinKeyId.dispatch(): BuiltinKeyDispatch = when (this) {
 
     // termlib 0.0.39 doesn't expose constants for these — fall back
     // to standard xterm sequences which every terminal app understands.
+    //
+    // KNOWN LIMITATION: ByteSequence dispatch in TerminalKeyListener
+    // does NOT compose sticky-modifier state (the bytes encode their
+    // own semantics). Practical impact: sticky-Ctrl + Backspace will
+    // send a plain Backspace and silently consume the Ctrl. If
+    // termlib later adds BACKSPACE/DELETE/INSERT constants, this
+    // branch should migrate to VTerm dispatch which composes via
+    // modifiersForTerminal.
     BuiltinKeyId.BACKSPACE -> BuiltinKeyDispatch.ByteSequence(byteArrayOf(0x7F))
     BuiltinKeyId.DELETE    -> BuiltinKeyDispatch.ByteSequence(ESC_LBR_3_TILDE)
     BuiltinKeyId.INSERT    -> BuiltinKeyDispatch.ByteSequence(ESC_LBR_2_TILDE)

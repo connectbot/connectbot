@@ -269,9 +269,8 @@ private fun ReorderableCollectionItemScope.KeyBarEntryRow(
 }
 
 /**
- * Single source of truth for built-in key labels. Reused by the
- * runtime [org.connectbot.ui.components.TerminalKeyboard] in a
- * later bundle.
+ * Mapping from [BuiltinKeyId] to its display-label string resource.
+ * Used by the editor screen to render row labels.
  */
 internal fun builtinLabelRes(id: BuiltinKeyId): Int = when (id) {
     BuiltinKeyId.CTRL -> R.string.button_key_ctrl
