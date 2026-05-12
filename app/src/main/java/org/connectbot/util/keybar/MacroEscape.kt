@@ -1,3 +1,19 @@
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2026 Kenny Root
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package org.connectbot.util.keybar
 
 import java.io.ByteArrayOutputStream
@@ -38,6 +54,15 @@ object MacroEscape {
         return out.toByteArray()
     }
 
+    /**
+     * Validates the macro grammar without writing any bytes.
+     *
+     * Returns [ValidationResult.Invalid] at the position of the
+     * first malformed escape, or [ValidationResult.Ok] if the
+     * entire string parses. Later errors are not reported — the
+     * editor's UX is to flag the first issue, let the user fix it,
+     * and re-validate.
+     */
     fun validate(text: String): ValidationResult {
         var result: ValidationResult = ValidationResult.Ok
         parse(
@@ -55,7 +80,7 @@ object MacroEscape {
         text: String,
         crossinline onByte: (Byte) -> Unit,
         crossinline onText: (String) -> Unit,
-        onError: (Int, String) -> Unit,
+        crossinline onError: (Int, String) -> Unit,
     ) {
         var i = 0
         val buf = StringBuilder()
