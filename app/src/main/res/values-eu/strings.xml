@@ -254,7 +254,7 @@
   <string name="network_restored_no_previous_state" tools:machine_translated="true">Sarea berreskuratuta, konexioa egiazten…</string>
   <string name="pref_fontfamily_title" tools:machine_translated="true">Letra-tipo</string>
   <string name="pref_customfont_title" tools:machine_translated="true">Gehitu letra-itxura pertsonalizatua.</string>
-  <string name="pref_customfont_summary" tools:machine_translated="true">Gehitu Google Fonts-eko letra-tipo bat, izenez.</string>
+  <string name="pref_customfont_summary" tools:machine_translated="true">Gehitu Google Fonts-eko letra-tipo bat, izenez</string>
   <string name="dialog_customfont_title" tools:machine_translated="true">Gehitu letra-tipo pertsonalizatua</string>
   <string name="dialog_customfont_hint" tools:machine_translated="true">Google Fonts-en izena (adibidez, Cascadia Code)</string>
   <string name="button_add" tools:machine_translated="true">Gehitu</string>
@@ -262,7 +262,7 @@
   <string name="font_validating" tools:machine_translated="true">Letra-itxura egiaztatzen…</string>
   <string name="font_downloading" tools:machine_translated="true">Letra-itxura deskargatzen…</string>
   <string name="pref_localfont_title" tools:machine_translated="true">Tokiko letra-itxura inportatu</string>
-  <string name="pref_localfont_summary" tools:machine_translated="true">Inportatu letra-tipo fitxategi bat biltegitik (TTF, OTF).</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Inportatu letra-tipo fitxategi bat biltegitik (TTF, OTF)</string>
   <string name="dialog_localfont_title" tools:machine_translated="true">Fonta inportatu</string>
   <string name="dialog_localfont_hint" tools:machine_translated="true">Letra-tipoaren bistaratze-izen</string>
   <string name="button_import" tools:machine_translated="true">Inportatu</string>
@@ -278,7 +278,7 @@
   <string name="pref_conn_persist_title" tools:machine_translated="true">Mantendu konektatuta atzeplanean.</string>
   <string name="pref_conn_persist_summary" tools:machine_translated="true">Mantendu saioak irekita, baita beste aplikazioetara aldatzen zarenean ere.</string>
   <string name="pref_bell_summary" tools:machine_translated="true">Erreproduzitu soinu bat terminaleko alertan.</string>
-  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Bibratu terminaleko alertan.</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Bibratu terminaleko alertan</string>
   <string name="color_red" tools:machine_translated="true">Gorria</string>
   <string name="color_pink" tools:machine_translated="true">Arrosaren kolorea</string>
   <string name="color_purple" tools:machine_translated="true">Morea</string>
@@ -304,7 +304,7 @@
   <string name="hostpref_profile_title" tools:machine_translated="true">Profila</string>
   <string name="hostpref_profile_summary" tools:machine_translated="true">Hautatu profil bat, eta erabili profil horren terminalaren ezarpenak.</string>
   <string name="hostpref_profile_none" tools:machine_translated="true">Bat ere ez (ostalari-ezarpenak erabili)</string>
-  <string name="profile_controlled_setting" tools:machine_translated="true">Profilak kontrolatzen du.</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">Profilak kontrolatzen du</string>
   <string name="font_use_default" tools:machine_translated="true">Lehenetsitako aukera erabili</string>
   <string name="font_system_default" tools:machine_translated="true">Lehenetsia (monospazioa)</string>
   <string name="pubkey_unknown" tools:machine_translated="true">Ezagutzen ez den gakoa</string>
@@ -373,8 +373,8 @@
   <string name="button_edit_palette" tools:machine_translated="true">Paleta aldatu</string>
   <string name="button_export_scheme" tools:machine_translated="true">Esportatu eskema</string>
   <string name="button_import_scheme" tools:machine_translated="true">Esportatu eskema</string>
-  <string name="message_export_success" tools:machine_translated="true">%1$s esportatu da.</string>
-  <string name="message_import_success" tools:machine_translated="true">%1$s inportatu da.</string>
+  <string name="message_export_success" tools:machine_translated="true">%1$s esportatu da</string>
+  <string name="message_import_success" tools:machine_translated="true">%1$s inportatu da</string>
   <string name="error_export_failed" tools:machine_translated="true">Esportazioa porrot egin du: %1$s</string>
   <string name="error_import_failed" tools:machine_translated="true">Esquema inportatzeko huts egin du: %1$s</string>
   <string name="error_invalid_json" tools:machine_translated="true">JSON fitxategi ez balioduna.</string>
@@ -520,16 +520,16 @@
   <string name="help_website" tools:machine_translated="true">Webgunea</string>
   <string name="help_github" tools:machine_translated="true">Iturburu-kodea</string>
   <string name="help_report_bug" tools:machine_translated="true">Arazo bat jakinarazi</string>
-  <string name="help_section_donate" tools:machine_translated="true">Garapenari lagundu.</string>
+  <string name="help_section_donate" tools:machine_translated="true">Garapenari lagundu</string>
   <string name="help_donate_github" tools:machine_translated="true">GitHub-eko babesleak</string>
   <string name="help_donate_coffee" tools:machine_translated="true">Eman kafe bat oparitzat</string>
   <string name="colorscheme_default_description" tools:machine_translated="true">Terminalaren kolore lehenetsiak</string>
   <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Makina eta pertsonentzat zehatzak diren koloreak.</string>
-  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Atzeko plano argia duen Solarized eskema.</string>
+  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Atzeko plano argia duen Solarized eskema</string>
   <string name="colorscheme_dracula_description" tools:machine_translated="true">Gai iluna terminalerako.</string>
   <string name="colorscheme_nord_description" tools:machine_translated="true">Iparraldeko, izotz-koloreko paleta.</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Estilo retroko kolore-eskema</string>
-  <string name="colorscheme_monokai_description" tools:machine_translated="true">Sublime Text-en inspirazioa jaso duen gai bat.</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">Sublime Text-en inspirazioa jaso duen gai bat</string>
   <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Diseinu garbi eta erosoa, iluneko tonuak dituena.</string>
   <string name="pref_profiles_category" tools:machine_translated="true">Profilak</string>
   <string name="pref_default_profile_title" tools:machine_translated="true">Lehenetsitako profila</string>
@@ -541,7 +541,7 @@
   <string name="dialog_customterminal_hint" tools:machine_translated="true">Terminalaren mota (adibidez, rxvt-unicode)</string>
   <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Terminal mota pertsonalizatuak kudeatu</string>
   <string name="button_add_custom" tools:machine_translated="true">Gehitu elementu pertsonalizatua…</string>
-  <string name="button_manage_custom" tools:machine_translated="true">Pertsonalizatutako elementuak kudeatu</string>
+  <string name="button_manage_custom" tools:machine_translated="true">Pertsonalizatutako elementuak kudeatu…</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">Sartu balio pertsonalizatua.</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, gero Espazio-barra.</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
@@ -565,7 +565,7 @@
   <string name="icon_style_server" tools:machine_translated="true">Zerbitzaria</string>
   <string name="icon_style_cloud" tools:machine_translated="true">Hodeia</string>
   <string name="icon_style_key" tools:machine_translated="true">Gako</string>
-  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Aplikazioa abiatzean egiaztapena.</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Aplikazioa abiatzean egiaztapena</string>
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Eskaera egin hatz-marka, aurpegia edo gailuaren PINa erabiltzea aplikazioa irekitzean.</string>
   <string name="pref_security_category" tools:machine_translated="true">Segurtasuna</string>
   <string name="auth_screen_title" tools:machine_translated="true">ConnectBot blokeatuta dago.</string>

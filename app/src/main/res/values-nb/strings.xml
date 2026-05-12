@@ -170,18 +170,18 @@
   <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Angi passord for eksport.</string>
   <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Skriv inn en passfrase for å kryptere nøkkelen som eksporteres.</string>
   <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Bekreft passordfrase</string>
-  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Passordfrasene stemmer ikke overens.</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Passordfrasene stemmer ikke overens</string>
   <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Importer kryptert nøkkel</string>
-  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Skriv inn passordet for å dekryptere nøkkelen \'%1$s\' (%2$s).</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Skriv inn passordet for å dekryptere nøkkelen \'%1$s\' (%2$s)</string>
   <string name="pubkey_import_button" tools:machine_translated="true">Importer</string>
-  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Krypter nøkkelen for lagring.</string>
-  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Bruk samme passord for kryptering.</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Krypter nøkkelen for lagring</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Bruk samme passord for kryptering</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Nytt passord</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Bekreft passord</string>
   <string name="pubkey_list_empty" tools:machine_translated="true">Trykk på «Meny» for å opprette\neller importere nøkkelpar.</string>
   <string name="pubkey_unknown_format" tools:machine_translated="true">Ukjent format</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Skriv inn passord for å låse opp nøkkelen \'%1$s\'.</string>
-  <string name="pubkey_nickname_exists" tools:machine_translated="true">En nøkkel med dette kallenavnet finnes allerede.</string>
+  <string name="pubkey_nickname_exists" tools:machine_translated="true">En nøkkel med dette kallenavnet finnes allerede</string>
   <string name="prompt_username" tools:machine_translated="true">Brukernavn:</string>
   <string name="host_key_verification_title" tools:machine_translated="true">Verifisering av verts-nøkkel</string>
   <string name="fingerprint_format_header" tools:machine_translated="true">Fingeravtrykksformat</string>
@@ -201,8 +201,8 @@
   <string name="button_remove" tools:machine_translated="true">Fjern</string>
   <string name="font_validating" tools:machine_translated="true">Validerer skrifttype …</string>
   <string name="font_downloading" tools:machine_translated="true">Laster ned font …</string>
-  <string name="pref_localfont_title" tools:machine_translated="true">Importer lokal font.</string>
-  <string name="pref_localfont_summary" tools:machine_translated="true">Importer en skrifttypefil fra lagringsenheten (TTF, OTF).</string>
+  <string name="pref_localfont_title" tools:machine_translated="true">Importer lokal font</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Importer en skrifttypefil fra lagringsenheten (TTF, OTF)</string>
   <string name="dialog_localfont_title" tools:machine_translated="true">Importer skrifttype</string>
   <string name="dialog_localfont_hint" tools:machine_translated="true">Visningsnavn for skrifttypen</string>
   <string name="button_import" tools:machine_translated="true">Importer</string>
@@ -226,15 +226,15 @@
   <string name="pref_shiftfkeys_summary" tools:machine_translated="true">På fysiske tastaturer sender talltastene F1–F10 når «Shift»-tasten holdes inne.</string>
   <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl+talltast er funksjonstaster.</string>
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">På virtuelle tastaturer sender talltastene F1–F10 når Ctrl-tasten holdes inne.</string>
-  <string name="pref_volumefont_title" tools:machine_translated="true">Volumtastene endrer skriftstørrelsen.</string>
+  <string name="pref_volumefont_title" tools:machine_translated="true">Volumtastene endrer skriftstørrelsen</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Skriftstørrelsen kan også endres i profilinnstillingene.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Oppretthold tilkoblingen i bakgrunnen.</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">Oppretthold tilkoblingen i bakgrunnen</string>
   <string name="pref_conn_persist_summary" tools:machine_translated="true">Hold øktene åpne selv når du bytter til andre apper.</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Faste modifikatorer</string>
   <string name="only_alt" tools:machine_translated="true">Bare Alt</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Gi haptisk tilbakemelding (vibrasjon) når pilknappene brukes; nyttig ved tregere tilkoblinger.</string>
-  <string name="pref_bell_summary" tools:machine_translated="true">Spill av lyd når terminalvarsel utløses.</string>
-  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Vibrer ved terminalvarsel.</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">Spill av lyd når terminalvarsel utløses</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Vibrer ved terminalvarsel</string>
   <string name="color_red" tools:machine_translated="true">Rød</string>
   <string name="color_pink" tools:machine_translated="true">Rosa</string>
   <string name="color_purple" tools:machine_translated="true">Lilla</string>
@@ -262,7 +262,7 @@
   <string name="hostpref_profile_title" tools:machine_translated="true">Profil</string>
   <string name="hostpref_profile_summary" tools:machine_translated="true">Velg en profil for å bruke de tilhørende terminalinnstillingene.</string>
   <string name="hostpref_profile_none" tools:machine_translated="true">Ingen (bruk vertsinnstillinger)</string>
-  <string name="profile_controlled_setting" tools:machine_translated="true">Styres av profil.</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">Styres av profil</string>
   <string name="font_use_default" tools:machine_translated="true">Bruk standardverdi</string>
   <string name="font_system_default" tools:machine_translated="true">Standard (fast bredde)</string>
   <string name="pubkey_unknown" tools:machine_translated="true">Ukjent nøkkel</string>
@@ -300,19 +300,19 @@
   <string name="profile_summary_font" tools:machine_translated="true">Skrifttype: %1$s %2$d punkt</string>
   <string name="profile_summary_emulation" tools:machine_translated="true">Emulering: %s</string>
   <string name="console_menu_reconnect" tools:machine_translated="true">Koble til igjen</string>
-  <string name="console_url_no_handler" tools:machine_translated="true">Ingen app er tilgjengelig for å åpne denne URL-en.</string>
-  <string name="console_url_not_supported" tools:machine_translated="true">Denne URL-typen støttes ikke.</string>
+  <string name="console_url_no_handler" tools:machine_translated="true">Ingen app er tilgjengelig for å åpne denne URL-en</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">Denne URL-typen støttes ikke</string>
   <string name="portforward_save" tools:machine_translated="true">Lagre</string>
   <string name="list_menu_disconnect" tools:machine_translated="true">Koble fra alle</string>
   <string name="list_host_duplicate" tools:machine_translated="true">Dupliser vert.</string>
-  <string name="list_host_forget_keys" tools:machine_translated="true">Fjern lagrede vertsnøkler.</string>
+  <string name="list_host_forget_keys" tools:machine_translated="true">Fjern lagrede vertsnøkler</string>
   <string name="list_camera_text_input" tools:machine_translated="true">Tekstinndata</string>
   <string name="disconnect_all_message" tools:machine_translated="true">Er du sikker på at du vil koble fra alle tilkoblede enheter?</string>
-  <string name="disconnect_all_pos" tools:machine_translated="true">Ja, koble fra.</string>
+  <string name="disconnect_all_pos" tools:machine_translated="true">Ja, koble fra</string>
   <string name="disconnect_all_neg" tools:machine_translated="true">Avbryt</string>
   <string name="terminal_kex_algorithm" tools:machine_translated="true">Algoritme for nøkkelutveksling: %s</string>
   <string name="terminal_auth_saved_password" tools:machine_translated="true">Prøver å bruke lagret passord …</string>
-  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Autentiseringen med lagret passord mislyktes.</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Autentiseringen med lagret passord mislyktes</string>
   <string name="terminal_auth_biometric" tools:machine_translated="true">Ber om biometrisk autentisering for nøkkelen «%1$s».</string>
   <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">Den biometriske nøkkelen \'%1$s\' er ugyldiggjort. Dette kan skje når nye fingeravtrykk registreres på enheten. Vennligst generer en ny nøkkel.</string>
   <string name="list_color_schemes" tools:machine_translated="true">Fargepaletter</string>
@@ -336,8 +336,8 @@
   <string name="button_edit_palette" tools:machine_translated="true">Rediger fargepalett</string>
   <string name="button_export_scheme" tools:machine_translated="true">Eksporter fargepalett</string>
   <string name="button_import_scheme" tools:machine_translated="true">Importer fargepalett</string>
-  <string name="message_export_success" tools:machine_translated="true">%1$s er eksportert.</string>
-  <string name="message_import_success" tools:machine_translated="true">%1$s er importert.</string>
+  <string name="message_export_success" tools:machine_translated="true">%1$s er eksportert</string>
+  <string name="message_import_success" tools:machine_translated="true">%1$s er importert</string>
   <string name="error_export_failed" tools:machine_translated="true">Kunne ikke eksportere skjema: %1$s</string>
   <string name="error_import_failed" tools:machine_translated="true">Kunne ikke importere skjema: %1$s</string>
   <string name="error_invalid_json" tools:machine_translated="true">Ugyldig JSON-fil</string>
@@ -391,7 +391,7 @@
   <string name="button_key_f12" tools:machine_translated="true">F12</string>
   <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">Tekstinndata</string>
   <string name="terminal_text_input_dialog_title" tools:machine_translated="true">Tekstinndata</string>
-  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">Skriv inn teksten du vil sende til terminalen.</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">Skriv inn teksten du vil sende til terminalen</string>
   <string name="terminal_text_input_resize_handle" tools:machine_translated="true">Endre størrelse</string>
   <string name="console_menu_text_input" tools:machine_translated="true">Tekstinndata</string>
   <string name="button_send" tools:machine_translated="true">Send</string>
@@ -408,10 +408,10 @@
   <string name="error_host_save_failed" tools:machine_translated="true">Kunne ikke lagre konfigurasjonen for vert %1$s: %2$s</string>
   <string name="error_color_scheme_load_failed" tools:machine_translated="true">Kunne ikke laste inn fargepalett: %s</string>
   <string name="host_duplicate_nickname" tools:machine_translated="true">%1$s (kopi)</string>
-  <string name="empty_hosts_message" tools:machine_translated="true">Ingen verter er konfigurert.</string>
+  <string name="empty_hosts_message" tools:machine_translated="true">Ingen verter er konfigurert</string>
   <string name="empty_pubkeys_message" tools:machine_translated="true">Ingen nøkler funnet.</string>
   <string name="empty_port_forwards_message" tools:machine_translated="true">Ingen portvideresendinger er konfigurert.</string>
-  <string name="empty_urls_message" tools:machine_translated="true">Ingen URL-er funnet i terminalbufferen.</string>
+  <string name="empty_urls_message" tools:machine_translated="true">Ingen URL-er funnet i terminalbufferen</string>
   <string name="console_default_title" tools:machine_translated="true">Konsoll</string>
   <string name="host_editor_quick_connect_label" tools:machine_translated="true">Hurtigkobling</string>
   <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">bruker\@vertsnavn:port</string>
@@ -420,7 +420,7 @@
   <string name="host_editor_hide_advanced" tools:machine_translated="true">Skjul avanserte alternativer</string>
   <string name="resize_width_label" tools:machine_translated="true">Bredde (kolonner)</string>
   <string name="resize_height_label" tools:machine_translated="true">Høyde (antall rader)</string>
-  <string name="resize_disable_force_size" tools:machine_translated="true">Deaktiver fast størrelse.</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">Deaktiver fast størrelse</string>
   <string name="pubkey_editor_key_type_label" tools:machine_translated="true">Nøkkeltype</string>
   <string name="pubkey_editor_options_label" tools:machine_translated="true">Alternativer</string>
   <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Krypterte nøkler kan ikke låses opp ved oppstart.</string>
@@ -452,7 +452,7 @@
   <string name="portforward_enable" tools:machine_translated="true">Aktiver</string>
   <string name="portforward_disable" tools:machine_translated="true">Deaktiver</string>
   <string name="portforward_enabled" tools:machine_translated="true">Portvideresending aktivert</string>
-  <string name="portforward_disabled" tools:machine_translated="true">Portvideresending deaktivert.</string>
+  <string name="portforward_disabled" tools:machine_translated="true">Portvideresending deaktivert</string>
   <string name="protocol_spinner_label" tools:machine_translated="true">Protokoll</string>
   <string name="expand" tools:machine_translated="true">Vis mer</string>
   <string name="hostpref_authagent_with_confirmation" tools:machine_translated="true">krever bekreftelse</string>
@@ -463,11 +463,11 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importer fra utklippstavlen</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Innhold i privat nøkkel</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Lim inn fra utklippstavlen</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Hold forbindelsen aktiv i bakgrunnen.</string>
+  <string name="notification_permission_title" tools:machine_translated="true">Hold forbindelsen aktiv i bakgrunnen</string>
   <string name="notification_permission_message" tools:machine_translated="true">ConnectBot trenger tillatelse til å sende varsler for å opprettholde aktive tilkoblinger når du bytter mellom apper. Uten denne tillatelsen kan systemet avslutte tilkoblingene dine for å spare batteri.</string>
   <string name="grant_permission" tools:machine_translated="true">Tillat</string>
-  <string name="connect_anyway" tools:machine_translated="true">Fortsett likevel.</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Tillatelse for varsler kreves.</string>
+  <string name="connect_anyway" tools:machine_translated="true">Fortsett likevel</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">Tillatelse for varsler kreves</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">For å holde tilkoblingene dine aktive i bakgrunnen, må du aktivere varsler for ConnectBot i systeminnstillingene.</string>
   <string name="open_settings" tools:machine_translated="true">Åpne innstillinger</string>
   <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Tilkoblinger kan bli avbrutt uten tillatelse til å sende varsler.</string>
@@ -475,13 +475,13 @@
   <string name="terminal_no_route" tools:machine_translated="true">Prøver du å få tilgang til en enhet på det lokale nettverket? Gi tillatelse for tilgang til det lokale nettverket.</string>
   <string name="loading_message" tools:machine_translated="true">Laster…</string>
   <string name="migration_checking" tools:machine_translated="true">Sjekker databasen …</string>
-  <string name="migration_title" tools:machine_translated="true">Databasen overføres.</string>
-  <string name="migration_warning" tools:machine_translated="true">Vennligst ikke lukk appen under overføringen.</string>
+  <string name="migration_title" tools:machine_translated="true">Databasen overføres</string>
+  <string name="migration_warning" tools:machine_translated="true">Vennligst ikke lukk appen under overføringen</string>
   <string name="migration_stats_hosts" tools:machine_translated="true">Antall overførte verter: %d</string>
   <string name="migration_stats_pubkeys" tools:machine_translated="true">Antall SSH-nøkler som er overført: %d</string>
   <string name="migration_stats_port_forwards" tools:machine_translated="true">Antall overførte portvideresendinger: %d</string>
   <string name="migration_stats_known_hosts" tools:machine_translated="true">Antall kjente verter som er migrert: %d</string>
-  <string name="migration_failed_title" tools:machine_translated="true">Migreringen mislyktes.</string>
+  <string name="migration_failed_title" tools:machine_translated="true">Migreringen mislyktes</string>
   <string name="migration_failed_message" tools:machine_translated="true">Det oppstod en feil under databasemigreringen: %s</string>
   <string name="migration_retry" tools:machine_translated="true">Prøv igjen</string>
   <string name="migration_failed_help" tools:machine_translated="true">Hvis problemet vedvarer, vennligst rapporter dette på %1$s og legg ved feilsøkingsloggen som er kopiert ovenfor.</string>
@@ -511,9 +511,9 @@
   <string name="view_logs" tools:machine_translated="true">Vis logger</string>
   <string name="logs_title" tools:machine_translated="true">Programlogger</string>
   <string name="copy_logs" tools:machine_translated="true">Kopier logger</string>
-  <string name="logs_copied" tools:machine_translated="true">Loggene er kopiert til utklippstavlen.</string>
-  <string name="logs_bug_report_info" tools:machine_translated="true">For å rapportere en feil, kopier disse loggene og opprett en ny sak på https://connectbot.org/bug.</string>
-  <string name="no_logs_available" tools:machine_translated="true">Ingen logger tilgjengelig.</string>
+  <string name="logs_copied" tools:machine_translated="true">Loggene er kopiert til utklippstavlen</string>
+  <string name="logs_bug_report_info" tools:machine_translated="true">For å rapportere en feil, kopier disse loggene og opprett en ny sak på https://connectbot.org/bug</string>
+  <string name="no_logs_available" tools:machine_translated="true">Ingen logger tilgjengelig</string>
   <string name="help_section_about" tools:machine_translated="true">Om</string>
   <string name="title_contact" tools:machine_translated="true">Kontakt og støtte</string>
   <string name="help_section_contact" tools:machine_translated="true">Kontakt og støtte</string>
@@ -524,17 +524,17 @@
   <string name="help_donate_github" tools:machine_translated="true">GitHub-sponsorer</string>
   <string name="help_donate_coffee" tools:machine_translated="true">Gi meg en kaffe</string>
   <string name="colorscheme_default_description" tools:machine_translated="true">Standardfarger for terminalen</string>
-  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Nøyaktige farger for maskiner og mennesker.</string>
-  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarized med lys bakgrunn.</string>
-  <string name="colorscheme_dracula_description" tools:machine_translated="true">Et mørkt fargetema for terminalen.</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Nøyaktige farger for maskiner og mennesker</string>
+  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarized med lys bakgrunn</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">Et mørkt fargetema for terminalen</string>
   <string name="colorscheme_nord_description" tools:machine_translated="true">Et arktisk fargepalett med nordlige, blåaktige toner.</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Fargepalett i retrostil</string>
   <string name="colorscheme_monokai_description" tools:machine_translated="true">Et tema inspirert av Sublime Text.</string>
-  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Et stilrent og behagelig mørkt tema.</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Et stilrent og behagelig mørkt tema</string>
   <string name="pref_profiles_category" tools:machine_translated="true">Profiler</string>
   <string name="pref_default_profile_title" tools:machine_translated="true">Standardprofil</string>
   <string name="pref_default_profile_none" tools:machine_translated="true">Ingen (bruk vertsinnstillingene)</string>
-  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">Vis spesialtastene hele tiden.</string>
+  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">Vis spesialtastene hele tiden</string>
   <string name="pref_customterminal_title" tools:machine_translated="true">Egendefinerte terminaltyper</string>
   <string name="pref_customterminal_summary" tools:machine_translated="true">Legg til egendefinerte TERM-verdier for eksterne servere.</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">Legg til en egendefinert terminaltype</string>
@@ -559,7 +559,7 @@
   <string name="shortcut_customize_title" tools:machine_translated="true">Tilpass snarvei</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Ikonfarge</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Ikonstil</string>
-  <string name="shortcut_use_host_color" tools:machine_translated="true">Bruk vertsmaskinens farge.</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">Bruk vertsmaskinens farge</string>
   <string name="shortcut_create" tools:machine_translated="true">Opprett snarvei</string>
   <string name="icon_style_terminal" tools:machine_translated="true">Terminal</string>
   <string name="icon_style_server" tools:machine_translated="true">Server</string>
@@ -568,8 +568,8 @@
   <string name="pref_auth_on_launch_title" tools:machine_translated="true">Autentisering ved oppstart</string>
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Krev at brukeren bruker fingeravtrykk, ansiktsgjenkjenning eller enhets-PIN-kode når appen åpnes.</string>
   <string name="pref_security_category" tools:machine_translated="true">Sikkerhet</string>
-  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot er låst.</string>
-  <string name="auth_screen_unlock_button" tools:machine_translated="true">Trykk for å låse opp.</string>
-  <string name="auth_prompt_title" tools:machine_translated="true">Lås opp ConnectBot.</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot er låst</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">Trykk for å låse opp</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">Lås opp ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Bekreft identiteten din for å fortsette.</string>
 </resources>

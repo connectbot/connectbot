@@ -23,7 +23,7 @@
   <string name="hostpref_hostname_title">புரவல்கணினி</string>
   <string name="console_menu_close">மூடுக</string>
   <string name="app_desc" tools:machine_translated="true">எளிமையான, சக்திவாய்ந்த, திறந்த மூல எஸ்.எஸ்.எச் (SSH) பயன்பாடு.</string>
-  <string name="service_desc" tools:machine_translated="true">எஸ்எஸ்எச் இணைப்புகளைப் பராமரிக்கிறது மற்றும் பதிவேற்றப்பட்ட பொது விசைகளை சேமிக்கிறது.</string>
+  <string name="service_desc" tools:machine_translated="true">எஸ்எஸ்எச் இணைப்புகளைப் பராமரிக்கிறது மற்றும் பதிவேற்றப்பட்ட பொது விசைகளை சேமிக்கிறது</string>
   <string name="app_copyright" tools:machine_translated="true">பதிப்புரிமை © கென்னி ரூட்</string>
   <string name="title_pubkey_list" tools:machine_translated="true">பொது விசைகள்</string>
   <string name="title_port_forwards_list" tools:machine_translated="true">போர்ட் ஃபார்வர்டுகள்</string>
@@ -32,78 +32,78 @@
   <string name="terms_and_conditions" tools:machine_translated="true">விதிமுறைகள் மற்றும் நிபந்தனைகள்</string>
   <string name="hints" tools:machine_translated="true">உதவிக்குறிப்புகள்</string>
   <string name="increase_font_shortcut" tools:machine_translated="true">கண்ட்ரோல் மற்றும் பிளஸ் (+)</string>
-  <string name="decrease_font_shortcut" tools:machine_translated="true">கண்ட்ரோல் மற்றும் மைனஸ் (-)</string>
+  <string name="decrease_font_shortcut" tools:machine_translated="true">கண்ட்ரோல் மற்றும் மைனஸ் -</string>
   <string name="paste_shortcut" tools:machine_translated="true">கண்ட்ரோல்-ஷிஃப்ட்-வி</string>
   <string name="pubkey_delete" tools:machine_translated="true">சேமித்த பொது விசையை நீக்கு</string>
   <string name="pubkey_gather_entropy" tools:machine_translated="true">சீரற்றத் தரவுகளைச் சேகரித்தல்</string>
-  <string name="pubkey_touch_prompt" tools:machine_translated="true">சீரற்ற தரவுகளைச் சேகரித்து, முக்கிய குறியீட்டை உருவாக்க இந்த பெட்டியைத் தொடுங்கள்: %1$d%% முடிந்தது.</string>
+  <string name="pubkey_touch_prompt" tools:machine_translated="true">சீரற்ற தரவுகளைச் சேகரித்து, முக்கிய குறியீட்டை உருவாக்க இந்த பெட்டியைத் தொடுங்கள்: %1$d%% முடிந்தது</string>
   <string name="pubkey_touch_hint" tools:machine_translated="true">குறியீட்டை உருவாக்கும்போது, சீரற்ற தன்மையை உறுதிப்படுத்த, உங்கள் விரலை கீழே உள்ள பெட்டியின் மீது சீரற்ற முறையில் நகர்த்தவும்.</string>
   <string name="pubkey_generating" tools:machine_translated="true">புதிய SSH சாவி ஜோடியை உருவாக்கும் பணி நடைபெறுகிறது…</string>
   <string name="pubkey_copy_private" tools:machine_translated="true">தனிப்பட்ட திறவுகோலை நகலெடுக்கவும்</string>
-  <string name="pubkey_copy_private_openssh" tools:machine_translated="true">தனிப்பட்ட திறவுகோலை (OpenSSH) நகலெடுக்கவும்.</string>
-  <string name="pubkey_copy_private_pem" tools:machine_translated="true">தனிப்பட்ட திறவுகோலை (PEM வடிவில்) நகலெடுக்கவும்.</string>
-  <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">மறைக்கப்பட்ட தனிப்பட்ட திறவுகோலை நகலெடுக்கவும்.</string>
+  <string name="pubkey_copy_private_openssh" tools:machine_translated="true">தனிப்பட்ட திறவுகோலை (OpenSSH) நகலெடுக்கவும்</string>
+  <string name="pubkey_copy_private_pem" tools:machine_translated="true">தனிப்பட்ட திறவுகோலை (PEM வடிவில்) நகலெடுக்கவும்</string>
+  <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">மறைக்கப்பட்ட தனிப்பட்ட திறவுகோலை நகலெடுக்கவும்</string>
   <string name="pubkey_copy_public" tools:machine_translated="true">பொது விசையை நகலெடுக்கவும்</string>
   <string name="pubkey_export_public" tools:machine_translated="true">பொது விசையை ஒரு கோப்பாக ஏற்றுமதி செய்க</string>
-  <string name="pubkey_export_private" tools:machine_translated="true">தனிப்பட்ட திறவுக்கோவை ஏற்றுமதி செய்.</string>
+  <string name="pubkey_export_private" tools:machine_translated="true">தனிப்பட்ட திறவுக்கோவை ஏற்றுமதி செய்</string>
   <string name="pubkey_export_private_openssh" tools:machine_translated="true">தனிப்பட்ட திறவுக்கோவை ஏற்றுமதி (ஓப்பன்எஸ்எஸ்எச்)</string>
-  <string name="pubkey_export_private_pem" tools:machine_translated="true">தனிப்பட்ட திறவுக்கோவை (PEM) வடிவத்தில் ஏற்றுமதி செய்.</string>
-  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">மறைக்கப்பட்ட தனிப்பட்ட திறவுக்கோவை கோப்பாக ஏற்றுமதி செய்க.</string>
-  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">ஏற்றுமதிக்கு கடவுச்சொல்லை அமைக்கவும்.</string>
+  <string name="pubkey_export_private_pem" tools:machine_translated="true">தனிப்பட்ட திறவுக்கோவை (PEM) வடிவத்தில் ஏற்றுமதி செய்</string>
+  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">மறைக்கப்பட்ட தனிப்பட்ட திறவுக்கோவை கோப்பாக ஏற்றுமதி செய்க</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">ஏற்றுமதிக்கு கடவுச்சொல்லை அமைக்கவும்</string>
   <string name="pubkey_export_passphrase_message" tools:machine_translated="true">ஏற்றுமதி செய்யப்படும் குறியீட்டை மறையாக்க, ஒரு கடவுச்சொல்லை உள்ளிடவும்.</string>
-  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">கடவுச்சொல்லை மீண்டும் உள்ளிட்டு உறுதிப்படுத்தவும்.</string>
-  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">கடவுச்சொற்கள் பொருந்தவில்லை.</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">கடவுச்சொல்லை மீண்டும் உள்ளிட்டு உறுதிப்படுத்தவும்</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">கடவுச்சொற்கள் பொருந்தவில்லை</string>
   <string name="pubkey_import_encrypted_title" tools:machine_translated="true">குறியாக்கம் செய்யப்பட்ட திறவுகோலை இறக்குமதி செய்க</string>
   <string name="pubkey_import_encrypted_message" tools:machine_translated="true">இறக்குமதி செய்யப்பட்ட முக்கியக் கோப்பை மறைகுறியீடு நீக்கம் செய்ய கடவுச்சொல்லை உள்ளிடவும்: \'%1$s\' (%2$s)</string>
   <string name="pubkey_import_button" tools:machine_translated="true">இறக்குமதி செய்</string>
-  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">சேமிப்பிற்காக குறியாக்கப்பட்ட விசையை உருவாக்கு.</string>
-  <string name="pubkey_import_reuse_password" tools:machine_translated="true">அதே கடவுச்சொல்லை மறையாக்கத்திற்குப் பயன்படுத்தவும்.</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">சேமிப்பிற்காக குறியாக்கப்பட்ட விசையை உருவாக்கு</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">அதே கடவுச்சொல்லை மறையாக்கத்திற்குப் பயன்படுத்தவும்</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">புதிய கடவுச்சொல்</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">கடவுச்சொல்லை மீண்டும் உள்ளிடவும்</string>
   <string name="pubkey_list_empty" tools:machine_translated="true">\"மெனு\" என்பதைத் தட்டி, புதிய ஜோடி விசைகளை உருவாக்கவும் அல்லது ஏற்கனவே உள்ளவற்றை இறக்குமதி செய்யவும்.</string>
   <string name="pubkey_unknown_format" tools:machine_translated="true">தெரியாத வடிவம் / அடையாளம் காண முடியாத வடிவம்</string>
   <string name="pubkey_unlock" tools:machine_translated="true">பூட்டப்பட்ட குறியீட்டைத் திறக்கவும்</string>
-  <string name="pubkey_unlock_message" tools:machine_translated="true">குறியாக்கம் செய்யப்பட்ட \'%1$s\' என்ற திறவுகோலைத் திறக்க கடவுச்சொல்லை உள்ளிடவும்.</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">குறியாக்கம் செய்யப்பட்ட \'%1$s\' என்ற திறவுகோலைத் திறக்க கடவுச்சொல்லை உள்ளிடவும்</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">இந்த புனைப்பெயர் ஏற்கனவே வேறொரு அடையாளத்துடன் பயன்படுத்தப்படுகிறது.</string>
-  <string name="pubkey_load_on_start" tools:machine_translated="true">செயலி தொடங்கும்போது இந்த பொது விசையை ஏற்றவும்.</string>
-  <string name="pubkey_confirm_use" tools:machine_translated="true">பயன்படுத்துவதற்கு முன் உறுதிப்படுத்தவும்.</string>
-  <string name="portforward_edit" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட போர்ட் ஃபார்வர்டை மாற்றவும்.</string>
-  <string name="portforward_delete" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட போர்ட் ஃபார்வர்டை நீக்கு.</string>
+  <string name="pubkey_load_on_start" tools:machine_translated="true">செயலி தொடங்கும்போது இந்த பொது விசையை ஏற்றவும்</string>
+  <string name="pubkey_confirm_use" tools:machine_translated="true">பயன்படுத்துவதற்கு முன் உறுதிப்படுத்தவும்</string>
+  <string name="portforward_edit" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட போர்ட் ஃபார்வர்டை மாற்றவும்</string>
+  <string name="portforward_delete" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட போர்ட் ஃபார்வர்டை நீக்கு</string>
   <string name="prompt_source_port" tools:machine_translated="true">மூல போர்ட்:</string>
   <string name="prompt_destination" tools:machine_translated="true">சேரும் இடம்:</string>
   <string name="prompt_old_password" tools:machine_translated="true">பழைய கடவுச்சொல்:</string>
   <string name="prompt_username" tools:machine_translated="true">பயனர்பெயர்:</string>
-  <string name="prompt_again" tools:machine_translated="true">மீண்டும்</string>
+  <string name="prompt_again" tools:machine_translated="true">(மீண்டும்)</string>
   <string name="prompt_type" tools:machine_translated="true">வகை:</string>
-  <string name="prompt_password_can_be_blank" tools:machine_translated="true">குறிப்பு: கடவுச்சொல் புலத்தை காலியாக விடலாம்.</string>
+  <string name="prompt_password_can_be_blank" tools:machine_translated="true">குறிப்பு: கடவுச்சொல் புலத்தை காலியாக விடலாம்</string>
   <string name="prompt_bits" tools:machine_translated="true">பிட்கள்:</string>
   <string name="prompt_pubkey_password" tools:machine_translated="true">\'%1$s\' என்ற சாவிக்கான கடவுச்சொல்</string>
   <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">தொலைதூர ஹோஸ்ட் \'%1$s\' என்ற குறிப்பிட்ட விசையைப் பயன்படுத்த அனுமதிக்கவா?</string>
   <string name="host_verification_failure_warning_header" tools:machine_translated="true">எச்சரிக்கை: தொலைநிலை சேவையக அடையாளங்காட்டி மாற்றப்பட்டுள்ளது!</string>
   <string name="host_verification_failure_warning" tools:machine_translated="true">யாரோ கெட்ட காரியத்தைச் செய்து கொண்டிருக்கலாம்!\nயாரோ உங்களைப் பற்றி இப்போது ரகசியமாகக் கேட்டுக்கொண்டிருக்கலாம் (நடுவில் புகுந்து தாக்குதல்)!\nமேலும், ஹோஸ்ட் கீ (host key) இப்போது மாற்றப்பட்டிருக்கவும் வாய்ப்புள்ளது.</string>
   <string name="prompt_host_disconnected" tools:machine_translated="true">சேவையகம் துண்டிக்கப்பட்டது. அமர்வை முடிக்கவா?</string>
-  <string name="prompt_continue_connecting" tools:machine_translated="true">தொடர்ந்து இணைக்க விரும்புகிறீர்களா என்பதை உறுதிப்படுத்தவும்.</string>
+  <string name="prompt_continue_connecting" tools:machine_translated="true">தொடர்ந்து இணைக்க விரும்புகிறீர்களா என்பதை உறுதிப்படுத்தவும்?</string>
   <string name="host_authenticity_warning" tools:machine_translated="true">\'%1$s\' என்ற ஹோஸ்டின் நம்பகத்தன்மையை உறுதிப்படுத்த முடியவில்லை.</string>
-  <string name="host_fingerprint" tools:machine_translated="true">ஹோஸ்ட் %1$s-ன் முக்கிய கைரேகை %2$s ஆகும்.</string>
+  <string name="host_fingerprint" tools:machine_translated="true">ஹோஸ்ட் %1$s-ன் முக்கிய கைரேகை %2$s ஆகும்</string>
   <string name="host_key_verification_title" tools:machine_translated="true">ஹோஸ்ட் சாவி சரிபார்ப்பு</string>
   <string name="fingerprint_format_header" tools:machine_translated="true">கைரேகை வடிவம்</string>
   <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d பிட்கள்</string>
   <string name="fingerprint_copy_description" tools:machine_translated="true">கைரேகை நகலை கிளிப்போர்டுக்கு நகலெடுக்கவும்</string>
   <string name="alert_passwords_do_not_match_msg" tools:machine_translated="true">நீங்கள் உள்ளிட்ட கடவுச்சொல் மற்றும் உறுதிப்படுத்தலுக்கான கடவுச்சொல் பொருந்தவில்லை!</string>
   <string name="alert_wrong_password_msg" tools:machine_translated="true">தவறான கடவுச்சொல்!</string>
-  <string name="alert_disconnect_msg" tools:machine_translated="true">இணைப்பு துண்டிக்கப்பட்டது.</string>
+  <string name="alert_disconnect_msg" tools:machine_translated="true">இணைப்பு துண்டிக்கப்பட்டது</string>
   <string name="network_lost_grace_period" tools:machine_translated="true">நெட்வொர்க் இணைப்பு துண்டிக்கப்பட்டது, மீண்டும் இணைக்கக் காத்திருக்கிறது…</string>
   <string name="network_grace_period_expired" tools:machine_translated="true">பிணையம் மீண்டும் இணைக்கப்படவில்லை, இணைப்பு துண்டிக்கப்படுகிறது…</string>
-  <string name="network_restored_same_ip" tools:machine_translated="true">பிணையம் மீண்டும் இணைக்கப்பட்டது, இணைப்பு தொடர்கிறது.</string>
+  <string name="network_restored_same_ip" tools:machine_translated="true">பிணையம் மீண்டும் இணைக்கப்பட்டது, இணைப்பு தொடர்கிறது</string>
   <string name="network_restored_ip_changed" tools:machine_translated="true">பிணையம் மீண்டும் இணைக்கப்பட்டது, ஆனால் ஐபி முகவரி மாறியது, மீண்டும் இணைக்கப்படுகிறது…</string>
   <string name="network_restored_no_previous_state" tools:machine_translated="true">பிணையம் மீண்டும் இணைக்கப்பட்டது, இணைப்பு சரிபார்க்கப்படுகிறது…</string>
   <string name="pref_emulation_category" tools:machine_translated="true">டெர்மினல் எமுலேஷன்</string>
   <string name="pref_emulation_title" tools:machine_translated="true">எமுலேஷன் முறை</string>
   <string name="pref_scrollback_title" tools:machine_translated="true">சுருள் பதிவின் அளவு</string>
-  <string name="pref_scrollback_summary" tools:machine_translated="true">ஒவ்வொரு கன்சோலுக்கும் நினைவகத்தில் வைத்திருக்க வேண்டிய ஸ்க்ரோல்பேக் இடையகத்தின் அளவு.</string>
+  <string name="pref_scrollback_summary" tools:machine_translated="true">ஒவ்வொரு கன்சோலுக்கும் நினைவகத்தில் வைத்திருக்க வேண்டிய ஸ்க்ரோல்பேக் இடையகத்தின் அளவு</string>
   <string name="pref_fontfamily_title" tools:machine_translated="true">எழுத்துரு</string>
   <string name="pref_customfont_title" tools:machine_translated="true">தனிப்பயன் எழுத்துருவைச் சேர்</string>
-  <string name="pref_customfont_summary" tools:machine_translated="true">கூகிள் எழுத்துருக்களிலிருந்து ஒரு எழுத்துருவை அதன் பெயரைக் கொண்டு சேர்க்கவும்.</string>
+  <string name="pref_customfont_summary" tools:machine_translated="true">கூகிள் எழுத்துருக்களிலிருந்து ஒரு எழுத்துருவை அதன் பெயரைக் கொண்டு சேர்க்கவும்</string>
   <string name="dialog_customfont_title" tools:machine_translated="true">தனிப்பயன் எழுத்துருவைச் சேர்</string>
   <string name="dialog_customfont_hint" tools:machine_translated="true">கூகிள் எழுத்துருவின் பெயர் (எ.கா., காஸ்கேடியா கோட்)</string>
   <string name="button_add" tools:machine_translated="true">சேர்</string>
@@ -111,18 +111,18 @@
   <string name="font_validating" tools:machine_translated="true">எழுத்துரு சரிபார்க்கப்படுகிறது…</string>
   <string name="font_downloading" tools:machine_translated="true">எழுத்துரு பதிவிறக்கம் செய்யப்படுகிறது…</string>
   <string name="pref_localfont_title" tools:machine_translated="true">உள்ளூர் எழுத்துருவை இறக்குமதி செய்க</string>
-  <string name="pref_localfont_summary" tools:machine_translated="true">சேமிப்பகத்திலிருந்து ஒரு எழுத்துருக் கோப்பை இறக்குமதி செய்க (TTF, OTF).</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">சேமிப்பகத்திலிருந்து ஒரு எழுத்துருக் கோப்பை இறக்குமதி செய்க (TTF, OTF)</string>
   <string name="dialog_localfont_title" tools:machine_translated="true">உள்ளூர் எழுத்துருவை இறக்குமதி செய்</string>
   <string name="dialog_localfont_hint" tools:machine_translated="true">எழுத்துருவுக்கான காட்சிப் பெயர்</string>
   <string name="button_import" tools:machine_translated="true">இறக்குமதி செய்</string>
   <string name="font_importing" tools:machine_translated="true">எழுத்துருவை இறக்குமதி செய்கிறது…</string>
   <string name="pref_backupkeys_title" tools:machine_translated="true">பொது விசைகளை காப்புப் பிரதி எடுப்பது</string>
-  <string name="pref_backupkeys_summary" tools:machine_translated="true">ஆண்ட்ராய்டின் காப்புப் பிரதி அமைப்பைப் பயன்படுத்தி, தனிப்பட்ட விசைகளின் காப்புப் பிரதிகளைப் பாதுகாக்கவும்.</string>
+  <string name="pref_backupkeys_summary" tools:machine_translated="true">ஆண்ட்ராய்டின் காப்புப் பிரதி அமைப்பைப் பயன்படுத்தி, தனிப்பட்ட விசைகளின் காப்புப் பிரதிகளைப் பாதுகாக்கவும்</string>
   <string name="pref_ui_category" tools:machine_translated="true">பயனர் இடைமுகம்</string>
   <string name="pref_language_title" tools:machine_translated="true">மொழி</string>
   <string name="pref_language_system_default" tools:machine_translated="true">அமைப்பின் இயல்புநிலை</string>
   <string name="pref_language_download" tools:machine_translated="true">மொழிப் பொதியை பதிவிறக்கவும்</string>
-  <string name="pref_language_download_failed" tools:machine_translated="true">பதிவிறக்கம் தோல்வியடைந்தது, மீண்டும் முயற்சிக்க தட்டவும்.</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">பதிவிறக்கம் தோல்வியடைந்தது, மீண்டும் முயற்சிக்க தட்டவும்</string>
   <string name="pref_theme_title" tools:machine_translated="true">வடிவமைப்பு</string>
   <string name="pref_theme_system" tools:machine_translated="true">அமைப்பு இயல்புநிலை</string>
   <string name="pref_theme_light" tools:machine_translated="true">ஒளி</string>
@@ -130,42 +130,42 @@
   <string name="pref_rotation_title" tools:machine_translated="true">சுழற்சி முறை</string>
   <string name="pref_titlebarhide_title" tools:machine_translated="true">தானாக மறைக்கும் தலைப்புப் பட்டை</string>
   <string name="pref_titlebarhide_summary" tools:machine_translated="true">தலைப்புப் பட்டியை காண்பிக்கவும், மெனுவை அணுகவும் கன்சோலைத் தட்டவும்.</string>
-  <string name="pref_alwaysvisible_title" tools:machine_translated="true">சிறப்பு விசைகள் எப்போதும் தெரியும் வகையில் இருக்க வேண்டும்.</string>
+  <string name="pref_alwaysvisible_title" tools:machine_translated="true">சிறப்பு விசைகள் எப்போதும் தெரியும் வகையில் இருக்க வேண்டும்</string>
   <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">பக்கத்தை மேலே/கீழே நகர்த்தும் சைகை</string>
   <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">திரையின் இடது பக்கத்தில் மூன்றில் ஒரு பகுதியை இடமிருந்து வலமாகத் தட்டினால், \"pg up/dn\" கட்டளையை டெர்மினலுக்கு அனுப்பலாம்.</string>
-  <string name="pref_fullscreen_summary" tools:machine_translated="true">கன்சோல் பயன்முறையில் இருக்கும்போது நிலைப் பட்டியை மறைக்கவும்.</string>
-  <string name="pref_shiftfkeys_title" tools:machine_translated="true">ஷிஃப்ட்+எண் விசைகள், எஃப்-விசைகளாக செயல்படும்.</string>
+  <string name="pref_fullscreen_summary" tools:machine_translated="true">கன்சோல் பயன்முறையில் இருக்கும்போது நிலைப் பட்டியை மறைக்கவும்</string>
+  <string name="pref_shiftfkeys_title" tools:machine_translated="true">ஷிஃப்ட்+எண் விசைகள், எஃப்-விசைகளாக செயல்படும்</string>
   <string name="pref_shiftfkeys_summary" tools:machine_translated="true">வன்பொருள் விசைப்பலகைகளில், எண் விசைகள் ஷிஃப்ட் விசையுடன் அழுத்தப்படும்போது F1-F10 விசைகளை அனுப்புகின்றன.</string>
-  <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl மற்றும் எண் விசைகள் F-விசைகளாக செயல்படும்.</string>
+  <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl மற்றும் எண் விசைகள் F-விசைகளாக செயல்படும்</string>
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">மென்பொருள் விசைப்பலகைகளில், எண் விசைகள் Ctrl விசையுடன் இணைந்து F1 முதல் F10 வரையிலான செயல்பாடுகளைச் செய்கின்றன.</string>
-  <string name="pref_volumefont_title" tools:machine_translated="true">ஒலி அளவு பொத்தான்கள் எழுத்துரு அளவை மாற்றும்.</string>
+  <string name="pref_volumefont_title" tools:machine_translated="true">ஒலி அளவு பொத்தான்கள் எழுத்துரு அளவை மாற்றும்</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">எழுத்துரு அளவை சுயவிவர அமைப்புகளில் மாற்றலாம்.</string>
   <string name="pref_memkeys_title" tools:machine_translated="true">நினைவகத்தில் உள்ள விசைகளை நினைவில் கொள்க</string>
-  <string name="pref_memkeys_summary" tools:machine_translated="true">பின்புல சேவை நிறுத்தப்படும் வரை, திறந்த நிலையில் உள்ள சாவிகளை நினைவகத்தில் வைத்திருங்கள்.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">பின்புலத்தில் இணைப்பில் வைத்திருங்கள்.</string>
+  <string name="pref_memkeys_summary" tools:machine_translated="true">பின்புல சேவை நிறுத்தப்படும் வரை, திறந்த நிலையில் உள்ள சாவிகளை நினைவகத்தில் வைத்திருங்கள்</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">பின்புலத்தில் இணைப்பில் வைத்திருங்கள்</string>
   <string name="pref_conn_persist_summary" tools:machine_translated="true">நீங்கள் பிற செயலிகளுக்கு மாறினாலும், உங்கள் அமர்வுகளைத் தொடர்ந்து இயங்க வைக்கவும்.</string>
   <string name="pref_keymode_title" tools:machine_translated="true">கோப்புறை குறுக்குவழிகள்</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">ஒட்டும் மாற்றிகள்</string>
-  <string name="only_alt" tools:machine_translated="true">அல்ட் விசையை மட்டும் பயன்படுத்தவும்.</string>
+  <string name="only_alt" tools:machine_translated="true">அல்ட் விசையை மட்டும் பயன்படுத்தவும்</string>
   <string name="pref_camera_title" tools:machine_translated="true">கேமரா குறுக்குவழி</string>
-  <string name="pref_keepalive_title" tools:machine_translated="true">திரையை எப்போதும் இயங்க வைக்கவும்.</string>
+  <string name="pref_keepalive_title" tools:machine_translated="true">திரையை எப்போதும் இயங்க வைக்கவும்</string>
   <string name="pref_keepalive_summary" tools:machine_translated="true">கன்சோலில் வேலை செய்யும் போது, திரை தானாக அணைவதைத் தடுக்கவும்.</string>
-  <string name="pref_wifilock_title" tools:machine_translated="true">வைஃபை இணைப்பை எப்போதும் இயங்க வைக்கவும்.</string>
+  <string name="pref_wifilock_title" tools:machine_translated="true">வைஃபை இணைப்பை எப்போதும் இயங்க வைக்கவும்</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">செயல்பாடு இருக்கும்போது வைஃபை தானாக அணைவதைத் தடுக்கவும்.</string>
   <string name="pref_bumpyarrows_title" tools:machine_translated="true">மேடு பள்ளமான அம்புகள்</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">அம்பு விசைகளை அனுப்பும்போது அதிர்வு ஏற்படும்; இது தாமதமான இணைய இணைப்புகளுக்குப் பயனுள்ளதாக இருக்கும்.</string>
   <string name="pref_bell_category" tools:machine_translated="true">டெர்மினல் ஒலிப்பான்</string>
   <string name="pref_bell_title" tools:machine_translated="true">ஒலி எழுப்பும் மணி</string>
-  <string name="pref_bell_summary" tools:machine_translated="true">டெர்மினல் எச்சரிக்கை ஒலிக்கும்போது ஒலியை இயக்கவும்.</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">டெர்மினல் எச்சரிக்கை ஒலிக்கும்போது ஒலியை இயக்கவும்</string>
   <string name="pref_bell_volume_title" tools:machine_translated="true">மணி ஒலி அளவு</string>
   <string name="pref_bell_vibrate_title" tools:machine_translated="true">ஒலிப்பானில் அதிர்வு</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">சாதன எச்சரிக்கை ஒலிக்கும்போது அதிர்வுறும்</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">பின்புல அறிவிப்புகள்</string>
   <string name="pref_bell_notification_summary" tools:machine_translated="true">பின்புலத்தில் இயங்கும் ஒரு டெர்மினலில் அலாரம் ஒலிக்கும்போது அறிவிப்பை அனுப்பவும்.</string>
-  <string name="list_keymode_right" tools:machine_translated="true">வலது பக்க விசைகளைப் பயன்படுத்தவும்.</string>
-  <string name="list_keymode_left" tools:machine_translated="true">கீபோர்டின் இடது பக்கத்தில் உள்ள விசைகளைப் பயன்படுத்தவும்.</string>
-  <string name="list_pubkeyids_none" tools:machine_translated="true">சாவிளைப் பயன்படுத்த வேண்டாம்.</string>
-  <string name="list_pubkeyids_any" tools:machine_translated="true">எந்தவொரு திறக்கப்பட்ட விசையையும் பயன்படுத்தவும்.</string>
+  <string name="list_keymode_right" tools:machine_translated="true">வலது பக்க விசைகளைப் பயன்படுத்தவும்</string>
+  <string name="list_keymode_left" tools:machine_translated="true">கீபோர்டின் இடது பக்கத்தில் உள்ள விசைகளைப் பயன்படுத்தவும்</string>
+  <string name="list_pubkeyids_none" tools:machine_translated="true">சாவிளைப் பயன்படுத்த வேண்டாம்</string>
+  <string name="list_pubkeyids_any" tools:machine_translated="true">எந்தவொரு திறக்கப்பட்ட விசையையும் பயன்படுத்தவும்</string>
   <string name="hostpref_color_title" tools:machine_translated="true">நிற வகை</string>
   <string name="color_red" tools:machine_translated="true">சிவப்பு</string>
   <string name="color_pink" tools:machine_translated="true">இளஞ்சிவப்பு</string>
@@ -186,26 +186,26 @@
   <string name="hostpref_fontsize_title" tools:machine_translated="true">எழுத்துரு அளவு (புள்ளி)</string>
   <string name="hostpref_fontfamily_title" tools:machine_translated="true">எழுத்துரு</string>
   <string name="hostpref_colorscheme_title" tools:machine_translated="true">டெர்மினலுக்கான வண்ணத் திட்டம்</string>
-  <string name="hostpref_pubkeyid_title" tools:machine_translated="true">பொது விசையைப் பயன்படுத்தி அங்கீகரிக்கவும்.</string>
-  <string name="hostpref_authagent_title" tools:machine_translated="true">எஸ்எஸ்எச் அங்கீகார முகவரைப் பயன்படுத்தவும்.</string>
+  <string name="hostpref_pubkeyid_title" tools:machine_translated="true">பொது விசையைப் பயன்படுத்தி அங்கீகரிக்கவும்</string>
+  <string name="hostpref_authagent_title" tools:machine_translated="true">எஸ்எஸ்எச் அங்கீகார முகவரைப் பயன்படுத்தவும்</string>
   <string name="hostpref_postlogin_title" tools:machine_translated="true">உள்நுழைந்த பிறகு தானியங்கி செயல்பாடு</string>
   <string name="hostpref_postlogin_summary" tools:machine_translated="true">அங்கீகரிக்கப்பட்ட பிறகு தொலைநிலை சேவையகத்தில் இயக்க வேண்டிய கட்டளைகள்</string>
-  <string name="hostpref_compression_summary" tools:machine_translated="true">இது மெதுவான இணைய இணைப்புகளில் உதவக்கூடும்.</string>
+  <string name="hostpref_compression_summary" tools:machine_translated="true">இது மெதுவான இணைய இணைப்புகளில் உதவக்கூடும்</string>
   <string name="hostpref_wantsession_title" tools:machine_translated="true">ஷெல் அமர்வைத் தொடங்குக</string>
   <string name="hostpref_wantsession_summary" tools:machine_translated="true">இந்த விருப்பத்தை முடக்குவதன் மூலம், இணைப்பு ஏற்பட்டவுடன் ஷெல் அமர்வை (shell session) தொடங்காமல், போர்ட் ஃபார்வர்டிங்கை மட்டும் பயன்படுத்தலாம்.</string>
-  <string name="hostpref_stayconnected_summary" tools:machine_translated="true">இணைப்பு துண்டிக்கப்பட்டால், மீண்டும் ஹோஸ்டுடன் இணைக்க முயற்சிக்கவும்.</string>
-  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">இணைப்பு துண்டிக்கப்பட்டதும் மூடவும்.</string>
+  <string name="hostpref_stayconnected_summary" tools:machine_translated="true">இணைப்பு துண்டிக்கப்பட்டால், மீண்டும் ஹோஸ்டுடன் இணைக்க முயற்சிக்கவும்</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">இணைப்பு துண்டிக்கப்பட்டதும் மூடவும்</string>
   <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">இணைப்பு துண்டிக்கப்பட்டவுடன், எந்தவித முன்னறிவிப்பும் இல்லாமல் உடனடியாக மூடப்படும்.</string>
   <string name="hostpref_delkey_title" tools:machine_translated="true">டெல் (DEL) பொத்தான்</string>
-  <string name="hostpref_save_password_summary" tools:machine_translated="true">தானியங்கி அங்கீகாரத்திற்காக உள்நுழைவு கடவுச்சொல்லைப் பாதுகாப்பாகச் சேமிக்கவும்.</string>
+  <string name="hostpref_save_password_summary" tools:machine_translated="true">தானியங்கி அங்கீகாரத்திற்காக உள்நுழைவு கடவுச்சொல்லைப் பாதுகாப்பாகச் சேமிக்கவும்</string>
   <string name="hostpref_password_title" tools:machine_translated="true">கடவுச்சொல்</string>
   <string name="hostpref_password_unchanged" tools:machine_translated="true">கடவுச்சொல் (மாற்றப்படவில்லை)</string>
   <string name="hostpref_clear_password" tools:machine_translated="true">சேமித்த கடவுச்சொல்லை நீக்கு</string>
   <string name="hostpref_port_title" tools:machine_translated="true">போர்ட்</string>
   <string name="hostpref_profile_title" tools:machine_translated="true">வடிவமைப்பு</string>
-  <string name="hostpref_profile_summary" tools:machine_translated="true">ஒரு சுயவிவரத்தைத் தேர்ந்தெடுப்பதன் மூலம், அதன் டெர்மினல் அமைப்புகளைப் பயன்படுத்தலாம்.</string>
+  <string name="hostpref_profile_summary" tools:machine_translated="true">ஒரு சுயவிவரத்தைத் தேர்ந்தெடுப்பதன் மூலம், அதன் டெர்மினல் அமைப்புகளைப் பயன்படுத்தலாம்</string>
   <string name="hostpref_profile_none" tools:machine_translated="true">எதுவுமில்லை (விருந்தினர் கணினியின் அமைப்புகளைப் பயன்படுத்து)</string>
-  <string name="profile_controlled_setting" tools:machine_translated="true">வடிவமைப்பால் கட்டுப்படுத்தப்படுகிறது.</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">வடிவமைப்பால் கட்டுப்படுத்தப்படுகிறது</string>
   <string name="font_use_default" tools:machine_translated="true">இயல்புநிலையைப் பயன்படுத்து</string>
   <string name="font_system_default" tools:machine_translated="true">இயல்புநிலை (சீரான இடைவெளி எழுத்துரு)</string>
   <string name="pubkey_unknown" tools:machine_translated="true">தெரியாத சாவி</string>
@@ -222,7 +222,7 @@
   <string name="profile_editor_font_size_title" tools:machine_translated="true">எழுத்துரு அளவு: %d</string>
   <string name="profile_editor_force_size_title" tools:machine_translated="true">விசை அளவு</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">திரையின் அளவுக்கு ஏற்ப தானாகவே அளவை மாற்றாமல், குறிப்பிட்ட அளவுள்ள (நிரல்கள் x வரிசைகள்) ஒரு அளவுக்கு முனையத்தின் அளவை மாற்றியமைக்கவும்.</string>
-  <string name="profile_editor_force_size_enable" tools:machine_translated="true">அளவை கட்டாயமாகப் பயன்படுத்துவதற்கான விருப்பத்தை இயக்கு.</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">அளவை கட்டாயமாகப் பயன்படுத்துவதற்கான விருப்பத்தை இயக்கு</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">நிரல்கள்</string>
   <string name="profile_editor_force_size_rows" tools:machine_translated="true">வரிசைகள்</string>
   <string name="profile_icon_color_none" tools:machine_translated="true">எதுவுமில்லை (விருப்பமான வண்ணத்தைப் பயன்படுத்த வேண்டாம், இயல்புநிலை வண்ணத்தைப் பயன்படுத்துங்கள்)</string>
@@ -248,13 +248,13 @@
   <string name="console_menu_resize" tools:machine_translated="true">விருப்பமான அளவை அமை</string>
   <string name="console_menu_urlscan" tools:machine_translated="true">URL ஐ ஸ்கேன் செய்</string>
   <string name="console_url_no_handler" tools:machine_translated="true">இந்த இணைய முகவரியைத் திறக்க எந்த பயன்பாடும் கிடைக்கவில்லை.</string>
-  <string name="console_url_not_supported" tools:machine_translated="true">இந்த இணைய முகவரி வகை ஆதரிக்கப்படவில்லை.</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">இந்த இணைய முகவரி வகை ஆதரிக்கப்படவில்லை</string>
   <string name="button_yes" tools:machine_translated="true">ஆம்</string>
   <string name="button_no" tools:machine_translated="true">இல்லை</string>
   <string name="portforward_local" tools:machine_translated="true">உள்ளூர்</string>
   <string name="portforward_remote" tools:machine_translated="true">தொலைதூர</string>
   <string name="portforward_dynamic" tools:machine_translated="true">மாறும் (சாக்கஸ்)</string>
-  <string name="portforward_pos" tools:machine_translated="true">போர்ட் ஃபார்வர்டை உருவாக்கு.</string>
+  <string name="portforward_pos" tools:machine_translated="true">போர்ட் ஃபார்வர்டை உருவாக்குவது</string>
   <string name="portforward_save" tools:machine_translated="true">சேமி</string>
   <string name="format_username" tools:machine_translated="true">பயனர்பெயர்</string>
   <string name="format_hostname" tools:machine_translated="true">ஹோஸ்ட் பெயர்</string>
@@ -262,50 +262,50 @@
   <string name="list_menu_pubkeys" tools:machine_translated="true">பொது விசைகளை நிர்வகி</string>
   <string name="list_menu_sortcolor" tools:machine_translated="true">நிறத்தின் அடிப்படையில் வரிசைப்படுத்து.</string>
   <string name="list_menu_sortname" tools:machine_translated="true">பெயரின் அடிப்படையில் வரிசைப்படுத்து.</string>
-  <string name="list_menu_disconnect" tools:machine_translated="true">எல்லா சாதனங்களையும் துண்டிக்கவும்.</string>
+  <string name="list_menu_disconnect" tools:machine_translated="true">எல்லா சாதனங்களையும் துண்டிக்கவும்</string>
   <string name="list_menu_settings" tools:machine_translated="true">அமைப்புகள்</string>
   <string name="list_host_disconnect" tools:machine_translated="true">இணைப்பைத் துண்டிக்கவும்</string>
-  <string name="list_host_edit" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட ஹோஸ்டின் அமைப்பைத் திருத்து.</string>
-  <string name="list_host_portforwards" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட ஹோஸ்டுக்கான போர்ட் ஃபார்வர்ட்களைத் திருத்து.</string>
+  <string name="list_host_edit" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட ஹோஸ்டின் அமைப்பைத் திருத்து</string>
+  <string name="list_host_portforwards" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட ஹோஸ்டுக்கான போர்ட் ஃபார்வர்ட்களைத் திருத்து</string>
   <string name="list_host_delete" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட ஹோஸ்டை நீக்கு</string>
   <string name="list_host_duplicate" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட ஹோஸ்டை நகலெடு</string>
-  <string name="list_host_forget_keys" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட ஹோஸ்டுக்கான சேமிக்கப்பட்ட ஹோஸ்ட் விசைகளை நீக்கு.</string>
+  <string name="list_host_forget_keys" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட ஹோஸ்டுக்கான சேமிக்கப்பட்ட ஹோஸ்ட் விசைகளை நீக்கு</string>
   <string name="list_rotation_default" tools:machine_translated="true">இயல்புநிலை</string>
   <string name="list_rotation_land" tools:machine_translated="true">கிடைமட்டக் காட்சிக்கு முன்னுரிமை கொடு</string>
-  <string name="list_rotation_port" tools:machine_translated="true">செங்குத்துத் திசையில் கட்டாயமாக மாற்றவும்.</string>
+  <string name="list_rotation_port" tools:machine_translated="true">செங்குத்துத் திசையில் கட்டாயமாக மாற்றவும்</string>
   <string name="list_rotation_auto" tools:machine_translated="true">தானியங்கி</string>
-  <string name="list_camera_ctrlaspace" tools:machine_translated="true">முதலில் Ctrl+A ஐ அழுத்தி, பின்னர் இடைவெளி விசையை அழுத்தவும்.</string>
-  <string name="list_camera_ctrla" tools:machine_translated="true">கட்டுப்பாட்டு (Ctrl) மற்றும் ஏ (A) ஆகிய விசைகளை ஒரே நேரத்தில் அழுத்தவும்.</string>
+  <string name="list_camera_ctrlaspace" tools:machine_translated="true">முதலில் Ctrl+A ஐ அழுத்தி, பின்னர் இடைவெளி விசையை அழுத்தவும்</string>
+  <string name="list_camera_ctrla" tools:machine_translated="true">கட்டுப்பாட்டு (Ctrl) மற்றும் ஏ (A) ஆகிய விசைகளை ஒரே நேரத்தில் அழுத்தவும்</string>
   <string name="list_camera_esc" tools:machine_translated="true">எஸ்க்</string>
   <string name="list_camera_esc_a" tools:machine_translated="true">எஸ்க்+ஏ</string>
-  <string name="list_camera_none" tools:machine_translated="true">எதுவுமில்லை.</string>
+  <string name="list_camera_none" tools:machine_translated="true">எதுவுமில்லை</string>
   <string name="list_camera_text_input" tools:machine_translated="true">உரை உள்ளீடு</string>
   <string name="delete_message" tools:machine_translated="true">\'%1$s\' என்பதை நீக்க விரும்புகிறீர்களா?</string>
-  <string name="delete_pos" tools:machine_translated="true">ஆம், நீக்கு.</string>
+  <string name="delete_pos" tools:machine_translated="true">ஆம், நீக்கு</string>
   <string name="delete_neg" tools:machine_translated="true">ரத்து செய்</string>
-  <string name="disconnect_all_message" tools:machine_translated="true">நீங்கள் இணைக்கப்பட்டிருக்கும் அனைத்து சேவையகங்களிலிருந்தும் துண்டிக்க விரும்புகிறீர்களா என்பதை உறுதிப்படுத்தவும்.</string>
-  <string name="disconnect_all_pos" tools:machine_translated="true">ஆம், இணைப்பைத் துண்டிக்கவும்.</string>
+  <string name="disconnect_all_message" tools:machine_translated="true">நீங்கள் இணைக்கப்பட்டிருக்கும் அனைத்து சேவையகங்களிலிருந்தும் துண்டிக்க விரும்புகிறீர்களா என்பதை உறுதிப்படுத்தவும்?</string>
+  <string name="disconnect_all_pos" tools:machine_translated="true">ஆம், இணைப்பைத் துண்டிக்கவும்</string>
   <string name="disconnect_all_neg" tools:machine_translated="true">ரத்து செய்</string>
-  <string name="terminal_connecting" tools:ignore="PluralsCandidate" tools:machine_translated="true">%3$s வழியாக %1$s:%2$d உடன் இணைக்கப்படுகிறது.</string>
+  <string name="terminal_connecting" tools:ignore="PluralsCandidate" tools:machine_translated="true">%3$s வழியாக %1$s:%2$d உடன் இணைக்கப்படுகிறது</string>
   <string name="terminal_sucess" tools:machine_translated="true">சரிபார்க்கப்பட்ட ஹோஸ்ட் \'%1$s\' சாவி: %2$s</string>
   <string name="terminal_failed" tools:machine_translated="true">ஹோஸ்ட் சாவி சரிபார்ப்பு தோல்வியடைந்தது.</string>
   <string name="terminal_using_s2c_algorithm" tools:machine_translated="true">சேவையகத்திலிருந்து வாடிக்கையாளருக்கான வழிமுறை: %1$s %2$s</string>
   <string name="terminal_using_c2s_algorithm" tools:machine_translated="true">வாடிக்கையாளர்-சேவையக வழிமுறை: %1$s %2$s</string>
   <string name="terminal_using_algorithm" tools:machine_translated="true">பயன்படுத்தப்படும் வழிமுறை: %1$s %2$s</string>
   <string name="terminal_kex_algorithm" tools:machine_translated="true">ரகசியப் பரிமாற்ற வழிமுறை: %s</string>
-  <string name="terminal_auth" tools:machine_translated="true">அங்கீகார செயல்முறையைத் தொடங்க முயற்சிக்கிறது.</string>
-  <string name="terminal_auth_pass" tools:machine_translated="true">‘கடவுச்சொல்’ அங்கீகார முறையை முயற்சி செய்கிறது.</string>
-  <string name="terminal_auth_pass_fail" tools:machine_translated="true">கடவுச்சொல் மூலம் அங்கீகரிக்கும் முறை தோல்வியடைந்தது.</string>
+  <string name="terminal_auth" tools:machine_translated="true">அங்கீகார செயல்முறையைத் தொடங்க முயற்சிக்கிறது</string>
+  <string name="terminal_auth_pass" tools:machine_translated="true">‘கடவுச்சொல்’ அங்கீகார முறையை முயற்சி செய்கிறது</string>
+  <string name="terminal_auth_pass_fail" tools:machine_translated="true">கடவுச்சொல் மூலம் அங்கீகரிக்கும் முறை தோல்வியடைந்தது</string>
   <string name="terminal_auth_saved_password" tools:machine_translated="true">சேமித்த கடவுச்சொல்லைப் பயன்படுத்தி உள்நுழைய முயற்சிக்கிறது…</string>
-  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">சேமிக்கப்பட்ட கடவுச்சொல் அங்கீகாரம் தோல்வியடைந்தது.</string>
-  <string name="terminal_auth_pubkey_any" tools:machine_translated="true">கிடைக்கக்கூடிய எந்தவொரு பொது விசையைப் பயன்படுத்தி \'பொது விசை\' அங்கீகாரத்தை செயல்படுத்த முயற்சித்தல்.</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">சேமிக்கப்பட்ட கடவுச்சொல் அங்கீகாரம் தோல்வியடைந்தது</string>
+  <string name="terminal_auth_pubkey_any" tools:machine_translated="true">கிடைக்கக்கூடிய எந்தவொரு பொது விசையைப் பயன்படுத்தி \'பொது விசை\' அங்கீகாரத்தை செயல்படுத்த முயற்சித்தல்</string>
   <string name="terminal_auth_pubkey_invalid" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட பொது விசை செல்லாததாக உள்ளது, ஹோஸ்ட் எடிட்டரில் விசையை மீண்டும் தேர்ந்தெடுத்து முயற்சிக்கவும்.</string>
-  <string name="terminal_auth_pubkey_specific" tools:machine_translated="true">குறிப்பிட்ட பொது விசையைப் பயன்படுத்தி \'பொது விசை\' அங்கீகாரத்தை செயல்படுத்த முயற்சித்தல்.</string>
-  <string name="terminal_auth_biometric" tools:machine_translated="true">\'%1$s\' என்ற சாவிக்கான உயிரியல் அங்கீகாரத்தை கோருகிறோம்.</string>
+  <string name="terminal_auth_pubkey_specific" tools:machine_translated="true">குறிப்பிட்ட பொது விசையைப் பயன்படுத்தி \'பொது விசை\' அங்கீகாரத்தை செயல்படுத்த முயற்சித்தல்</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">\'%1$s\' என்ற சாவிக்கான உயிரியல் அங்கீகாரத்தை கோருகிறோம்</string>
   <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">உயிரியல் சார்ந்த சாவி \'%1$s\' செயலிழக்கச் செய்யப்பட்டுள்ளது. புதிய கைரேகைகள் சாதனத்தில் பதிவு செய்யப்படும்போது இது நிகழலாம். தயவுசெய்து புதிய சாவியை உருவாக்கவும்.</string>
-  <string name="terminal_auth_pubkey_fail" tools:machine_translated="true">‘பொது விசை’ என்ற அங்கீகார முறை, ‘%1$s’ என்ற விசையைப் பயன்படுத்தி தோல்வியடைந்தது.</string>
-  <string name="terminal_auth_ki" tools:machine_translated="true">‘விசைப்பலகை-உள்ளீட்டு’ முறையில் அங்கீகாரத்தை செயல்படுத்த முயற்சித்தல்.</string>
-  <string name="terminal_auth_ki_fail" tools:machine_translated="true">‘விசைப்பலகை-உள்ளீட்டு’ அங்கீகார முறை தோல்வியடைந்தது.</string>
+  <string name="terminal_auth_pubkey_fail" tools:machine_translated="true">‘பொது விசை’ என்ற அங்கீகார முறை, ‘%1$s’ என்ற விசையைப் பயன்படுத்தி தோல்வியடைந்தது</string>
+  <string name="terminal_auth_ki" tools:machine_translated="true">‘விசைப்பலகை-உள்ளீட்டு’ முறையில் அங்கீகாரத்தை செயல்படுத்த முயற்சித்தல்</string>
+  <string name="terminal_auth_ki_fail" tools:machine_translated="true">‘விசைப்பலகை-உள்ளீட்டு’ அங்கீகார முறை தோல்வியடைந்தது</string>
   <string name="terminal_auth_fail" tools:machine_translated="true">[உங்கள் சேவையகம் ‘கடவுச்சொல்’ அல்லது ‘விசைப்பலகை-உள்ளீட்டு’ அங்கீகார முறையை ஆதரிக்கவில்லை.]</string>
   <string name="terminal_no_session" tools:machine_translated="true">உள்ளமைவு விருப்பத்தேர்வு காரணமாக, அமர்வு தொடங்கப்படாது.</string>
   <string name="terminal_enable_portfoward" tools:machine_translated="true">போர்ட் ஃபார்வர்டை இயக்கு: %1$s</string>
@@ -314,7 +314,7 @@
   <string name="no" tools:machine_translated="true">இல்லை</string>
   <string name="yes" tools:machine_translated="true">ஆம்</string>
   <string name="list_color_schemes" tools:machine_translated="true">வண்ணத் திட்டங்கள்</string>
-  <string name="menu_colors_reset" tools:machine_translated="true">மீட்டமை.</string>
+  <string name="menu_colors_reset" tools:machine_translated="true">மீட்டமை</string>
   <string name="button_manage_schemes" tools:machine_translated="true">வடிவமைப்பு விருப்பங்களை நிர்வகி</string>
   <string name="title_scheme_manager" tools:machine_translated="true">வண்ணத் திட்டங்களை நிர்வகி</string>
   <string name="button_new_scheme" tools:machine_translated="true">புதிய வண்ணத் திட்டம்</string>
@@ -335,18 +335,18 @@
   <string name="button_edit_palette" tools:machine_translated="true">வண்ணத் தட்டினைத் திருத்து</string>
   <string name="button_export_scheme" tools:machine_translated="true">வடிவமைப்பை ஏற்றுமதி செய்</string>
   <string name="button_import_scheme" tools:machine_translated="true">வடிவமைப்பை இறக்குமதி செய்</string>
-  <string name="message_export_success" tools:machine_translated="true">%1$s வெற்றிகரமாக ஏற்றுமதி செய்யப்பட்டது.</string>
-  <string name="message_import_success" tools:machine_translated="true">%1$s வெற்றிகரமாக இறக்குமதி செய்யப்பட்டது.</string>
+  <string name="message_export_success" tools:machine_translated="true">%1$s வெற்றிகரமாக ஏற்றுமதி செய்யப்பட்டது</string>
+  <string name="message_import_success" tools:machine_translated="true">%1$s வெற்றிகரமாக இறக்குமதி செய்யப்பட்டது</string>
   <string name="error_export_failed" tools:machine_translated="true">ஏற்றுமதி தோல்வியடைந்தது: %1$s</string>
   <string name="error_import_failed" tools:machine_translated="true">திட்டத்தை இறக்குமதி செய்வதில் தோல்வி: %1$s</string>
-  <string name="error_invalid_json" tools:machine_translated="true">தவறான JSON கோப்பு.</string>
+  <string name="error_invalid_json" tools:machine_translated="true">தவறான JSON கோப்பு</string>
   <string name="title_palette_editor" tools:machine_translated="true">வண்ணத் தட்டு திருத்தி</string>
   <string name="button_reset_all_colors" tools:machine_translated="true">அனைத்தையும் மீட்டமை</string>
   <string name="section_ansi_colors" tools:machine_translated="true">ANSI வண்ணங்கள் (0–15)</string>
   <string name="dialog_title_edit_color" tools:machine_translated="true">குறிப்பிட்ட நிறத்தை மாற்றுக</string>
   <string name="dialog_title_reset_all" tools:machine_translated="true">எல்லா வண்ணங்களையும் மீட்டமைக்கவா?</string>
   <string name="dialog_message_reset_all" tools:machine_translated="true">இது, தற்போதுள்ள அனைத்து 256 வண்ணங்களையும் அவற்றின் இயல்புநிலை மதிப்புகளுக்கு மீட்டமைக்கும். இந்தச் செயலைத் திரும்பச் செய்ய முடியாது.</string>
-  <string name="app_is_running" tools:machine_translated="true">கனெக்ட் பாட் இயங்குகிறது.</string>
+  <string name="app_is_running" tools:machine_translated="true">கனெக்ட் பாட் இயங்குகிறது</string>
   <string name="label_red" tools:machine_translated="true">சிவப்பு</string>
   <string name="label_green" tools:machine_translated="true">பச்சை</string>
   <string name="label_blue" tools:machine_translated="true">நீலம்</string>
@@ -391,7 +391,7 @@
   <string name="button_key_f12" tools:machine_translated="true">எஃப்12</string>
   <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">உரை உள்ளீடு</string>
   <string name="terminal_text_input_dialog_title" tools:machine_translated="true">உரை உள்ளீடு</string>
-  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">டெர்மினலுக்கு அனுப்ப வேண்டிய உரையை உள்ளிடவும்.</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">டெர்மினலுக்கு அனுப்ப வேண்டிய உரையை உள்ளிடவும்</string>
   <string name="terminal_text_input_resize_handle" tools:machine_translated="true">அளவை மாற்றவும்</string>
   <string name="console_menu_text_input" tools:machine_translated="true">உரை உள்ளீடு</string>
   <string name="button_send" tools:machine_translated="true">அனுப்பு</string>
@@ -408,10 +408,10 @@
   <string name="error_host_save_failed" tools:machine_translated="true">ஹோஸ்ட் %1$s-ஐ சேமிப்பதில் தோல்வி: %2$s</string>
   <string name="error_color_scheme_load_failed" tools:machine_translated="true">வண்ணத் திட்டத்தை ஏற்றுவதில் பிழை: %s</string>
   <string name="host_duplicate_nickname" tools:machine_translated="true">%1$s (நகல்)</string>
-  <string name="empty_hosts_message" tools:machine_translated="true">எந்தவொரு ஹோஸ்ட்களும் இன்னும் கட்டமைக்கப்படவில்லை.</string>
+  <string name="empty_hosts_message" tools:machine_translated="true">எந்தவொரு ஹோஸ்ட்களும் இன்னும் கட்டமைக்கப்படவில்லை</string>
   <string name="empty_pubkeys_message" tools:machine_translated="true">எந்த சாவிளும் கிடைக்கவில்லை.</string>
   <string name="empty_port_forwards_message" tools:machine_translated="true">எந்த போர்ட் ஃபார்வர்டுகளும் கட்டமைக்கப்படவில்லை.</string>
-  <string name="empty_urls_message" tools:machine_translated="true">டெர்மினல் நினைவகத்தில் எந்த இணைய முகவரிகளும் காணப்படவில்லை.</string>
+  <string name="empty_urls_message" tools:machine_translated="true">டெர்மினல் நினைவகத்தில் எந்த இணைய முகவரிகளும் காணப்படவில்லை</string>
   <string name="console_default_title" tools:machine_translated="true">கட்டுப்பாட்டுத் திரை</string>
   <string name="host_editor_quick_connect_label" tools:machine_translated="true">விரைவாக இணைக்கவும்</string>
   <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">பயனர்\@ஹோஸ்ட்பெயர்:போர்ட்</string>
@@ -420,23 +420,23 @@
   <string name="host_editor_hide_advanced" tools:machine_translated="true">மேம்பட்ட விருப்பங்களை மறை</string>
   <string name="resize_width_label" tools:machine_translated="true">அகலம் (நிரல்கள்)</string>
   <string name="resize_height_label" tools:machine_translated="true">உயரம் (வரிசைகள்)</string>
-  <string name="resize_disable_force_size" tools:machine_translated="true">கட்டாய அளவு மாற்றத்தை நிறுத்து.</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">கட்டாய அளவு மாற்றத்தை நிறுத்து</string>
   <string name="pubkey_editor_key_type_label" tools:machine_translated="true">சாவி வகை</string>
   <string name="pubkey_editor_options_label" tools:machine_translated="true">தேர்வுகள்</string>
   <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">குறியாக்கம் செய்யப்பட்ட விசைகளை துவக்கத்தின்போது திறக்க முடியாது.</string>
   <string name="pubkey_type_label" tools:machine_translated="true">வகை: %s</string>
   <string name="pubkey_encrypted_description" tools:machine_translated="true">குறியாக்கம் செய்யப்பட்ட</string>
-  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">குறியாக்கம் செய்யப்படவில்லை.</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">குறியாக்கம் செய்யப்படவில்லை</string>
   <string name="pubkey_biometric_protection" tools:machine_translated="true">கைரேகை பாதுகாப்பு</string>
-  <string name="pubkey_biometric_description" tools:machine_translated="true">உங்கள் கைரேகையைப் பயன்படுத்தி இந்த முக்கியப் பாதுகாப்பை உறுதிப்படுத்தவும்.</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">உங்கள் கைரேகையைப் பயன்படுத்தி இந்த முக்கியப் பாதுகாப்பை உறுதிப்படுத்தவும்</string>
   <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">கைரேகை எதுவும் பதிவு செய்யப்படவில்லை. இந்த அம்சத்தைப் பயன்படுத்த, சாதன அமைப்புகளில் கைரேகைப் பதிவைச் சேர்க்கவும்.</string>
-  <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">கைரேகை பாதுகாப்பு, RSA மற்றும் EC விசைகளுக்கு மட்டுமே கிடைக்கும்.</string>
-  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">சாவி பயன்படுத்த அங்கீகரிக்கவும்.</string>
-  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">கைரேகை சென்சாரைத் தொட்டு \'%1$s\'-ஐ திறக்கவும்.</string>
+  <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">கைரேகை பாதுகாப்பு, RSA மற்றும் EC விசைகளுக்கு மட்டுமே கிடைக்கும்</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">சாவி பயன்படுத்த அங்கீகரிக்கவும்</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">கைரேகை சென்சாரைத் தொட்டு \'%1$s\'-ஐ திறக்கவும்</string>
   <string name="pubkey_biometric_description_icon" tools:machine_translated="true">கைரேகை மூலம் பாதுகாக்கப்பட்டது</string>
-  <string name="pubkey_biometric_not_available" tools:machine_translated="true">கைரேகை அங்கீகாரம் தற்போது கிடைக்கவில்லை.</string>
+  <string name="pubkey_biometric_not_available" tools:machine_translated="true">கைரேகை அங்கீகாரம் தற்போது கிடைக்கவில்லை</string>
   <string name="portforward_nickname_placeholder" tools:machine_translated="true">உள் வலை சேவையகம்</string>
-  <string name="portforward_port_range_error" tools:machine_translated="true">போர்ட் எண் 1 முதல் 65535 வரை இருக்க வேண்டும்.</string>
+  <string name="portforward_port_range_error" tools:machine_translated="true">போர்ட் எண் 1 முதல் 65535 வரை இருக்க வேண்டும்</string>
   <string name="portforward_destination_placeholder" tools:machine_translated="true">லோக்கல்ஹோஸ்ட்:80</string>
   <string name="portforward_destination_format_error" tools:machine_translated="true">வடிவம் இவ்வாறு இருக்க வேண்டும்: முகவரி:போர்ட் (எடுத்துக்காட்டாக, localhost:80)</string>
   <string name="portforward_host_address" tools:machine_translated="true">ஹோஸ்ட் முகவரி</string>
@@ -451,8 +451,8 @@
   <string name="portforward_type_label" tools:machine_translated="true">வகை: %s</string>
   <string name="portforward_enable" tools:machine_translated="true">செயல்படுத்து</string>
   <string name="portforward_disable" tools:machine_translated="true">செயலிழக்கச் செய்</string>
-  <string name="portforward_enabled" tools:machine_translated="true">போர்ட் ஃபார்வர்டு இயக்கப்பட்டிருக்கிறது.</string>
-  <string name="portforward_disabled" tools:machine_translated="true">போர்ட் ஃபார்வர்டு முடக்கப்பட்டது.</string>
+  <string name="portforward_enabled" tools:machine_translated="true">போர்ட் ஃபார்வர்டு இயக்கப்பட்டிருக்கிறது</string>
+  <string name="portforward_disabled" tools:machine_translated="true">போர்ட் ஃபார்வர்டு முடக்கப்பட்டது</string>
   <string name="protocol_spinner_label" tools:machine_translated="true">நெறிமுறை</string>
   <string name="expand" tools:machine_translated="true">விரிவுபடுத்து</string>
   <string name="hostpref_authagent_with_confirmation" tools:machine_translated="true">உறுதிப்படுத்தல் தேவை</string>
@@ -463,15 +463,15 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">கிளிப்போர்டிலிருந்து இறக்குமதி செய்</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">தனிப்பட்ட திறவுகோல் உள்ளடக்கம்</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">கிளிப்போர்டிலிருந்து ஒட்டவும்</string>
-  <string name="notification_permission_title" tools:machine_translated="true">பின்னணியில் இணைப்பில் தொடர்ந்து இருங்கள்.</string>
+  <string name="notification_permission_title" tools:machine_translated="true">பின்னணியில் இணைப்பில் தொடர்ந்து இருங்கள்</string>
   <string name="notification_permission_message" tools:machine_translated="true">நீங்கள் பயன்பாடுகளை மாற்றும்போது, உங்கள் இணைப்புகளைச் செயலில் வைத்திருக்க கனெக்ட் போட்-க்கு அறிவிப்பு அனுமதி தேவை. அந்த அனுமதி இல்லையென்றால், பேட்டரியைச் சேமிக்க, கணினி உங்கள் இணைப்புகளைத் துண்டிக்கலாம்.</string>
   <string name="grant_permission" tools:machine_translated="true">அனுமதி</string>
   <string name="connect_anyway" tools:machine_translated="true">அறிவிப்பு அனுமதியை வழங்காமல் இணைக்கவும்</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">அறிவிப்புக்கான அனுமதி தேவை.</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">அறிவிப்புக்கான அனுமதி தேவை</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">பின்னணியில் உங்கள் இணைப்புகளைச் செயல்பட வைப்பதற்கு, கணினி அமைப்புகளில் ConnectBot-க்கான அறிவிப்புகளை இயக்கவும்.</string>
   <string name="open_settings" tools:machine_translated="true">அமைப்புகளைத் திறக்கவும்</string>
   <string name="notification_permission_denied_snackbar" tools:machine_translated="true">அறிவிப்பு அனுமதி வழங்கப்படாவிட்டால், இணைப்புகள் துண்டிக்கப்படலாம்.</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">பின்னணியில் இணைப்பு துண்டிக்கப்படலாம்.</string>
+  <string name="notification_permission_console_warning" tools:machine_translated="true">பின்னணியில் இணைப்பு துண்டிக்கப்படலாம்</string>
   <string name="terminal_no_route" tools:machine_translated="true">உள்ளூர் நெட்வொர்க்கில் உள்ள ஒரு சேவையகத்தை அணுக முயற்சிக்கிறீர்களா? உள்ளூர் நெட்வொர்க் அனுமதிகளை வழங்கவும்.</string>
   <string name="loading_message" tools:machine_translated="true">ஏற்றுகிறது…</string>
   <string name="migration_checking" tools:machine_translated="true">தரவுத்தளத்தை சரிபார்க்கிறது…</string>
@@ -481,7 +481,7 @@
   <string name="migration_stats_pubkeys" tools:machine_translated="true">மாற்றப்பட்ட SSH விசைகளின் எண்ணிக்கை: %d</string>
   <string name="migration_stats_port_forwards" tools:machine_translated="true">மாற்றப்பட்ட போர்ட் ஃபார்வர்டுகளின் எண்ணிக்கை: %d</string>
   <string name="migration_stats_known_hosts" tools:machine_translated="true">இதுவரை கண்டறியப்பட்ட, இடமாற்றம் செய்யப்பட்ட சேவையகங்களின் எண்ணிக்கை: %d</string>
-  <string name="migration_failed_title" tools:machine_translated="true">தரவு இடமாற்றம் தோல்வியடைந்தது.</string>
+  <string name="migration_failed_title" tools:machine_translated="true">தரவு இடமாற்றம் தோல்வியடைந்தது</string>
   <string name="migration_failed_message" tools:machine_translated="true">தரவுத்தளத்தை மாற்றும் போது பிழை ஏற்பட்டது: %s</string>
   <string name="migration_retry" tools:machine_translated="true">மீண்டும் முயற்சிக்கவும்</string>
   <string name="migration_failed_help" tools:machine_translated="true">சிக்கல் தொடர்ந்தால், மேலே கொடுக்கப்பட்டுள்ள பிழைத்திருத்த பதிவை நகலெடுத்து, அதை %1$s என்ற முகவரியில் பதிவிடவும்.</string>
@@ -492,58 +492,58 @@
   <string name="disconnect_host_alert" tools:machine_translated="true">\'%1$s\' இலிருந்து துண்டிக்கப்படுவதை நீங்கள் உறுதிப்படுத்த விரும்புகிறீர்களா?</string>
   <string name="delete_host_confirm" tools:machine_translated="true">\'%1$s\' என்ற ஹோஸ்டை நீக்க விரும்புகிறீர்களா?</string>
   <string name="forget_host_keys_confirm" tools:machine_translated="true">\'%1$s\'-க்கான சேமிக்கப்பட்ட ஹோஸ்ட் விசைகளை நீக்க விரும்புகிறீர்களா? அடுத்த முறை இணைக்கும்போது ஹோஸ்ட் விசையைச் சரிபார்க்கும்படி கேட்கப்படுவீர்கள்.</string>
-  <string name="list_pubkey_edit" tools:machine_translated="true">பொது விசைக் குறியீட்டைத் திருத்து.</string>
+  <string name="list_pubkey_edit" tools:machine_translated="true">பொது விசைக் குறியீட்டைத் திருத்து</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">ஐபி பதிப்பு</string>
-  <string name="hostpref_ipversion_summary" tools:machine_translated="true">இணைக்கும்போது எந்த ஐபி முகவரி பதிப்பை பயன்படுத்த வேண்டும் என்பதைத் தேர்ந்தெடுக்கவும்.</string>
+  <string name="hostpref_ipversion_summary" tools:machine_translated="true">இணைக்கும்போது எந்த ஐபி முகவரி பதிப்பை பயன்படுத்த வேண்டும் என்பதைத் தேர்ந்தெடுக்கவும்</string>
   <string name="ipversion_auto" tools:machine_translated="true">தானியங்கி</string>
   <string name="ipversion_ipv4" tools:machine_translated="true">IPv4 மட்டும்</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">IPv6 மட்டும்</string>
   <string name="hostpref_jumphost_title" tools:machine_translated="true">ஜம்ப் ஹோஸ்ட் (ப்ராக்ஸி ஜம்ப்)</string>
-  <string name="hostpref_jumphost_summary" tools:machine_translated="true">மற்றொரு SSH சேவையகத்தின் மூலம் இணைக்கவும்.</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">மற்றொரு SSH சேவையகத்தின் மூலம் இணைக்கவும்</string>
   <string name="list_jumphost_none" tools:machine_translated="true">எதுவுமில்லை (நேரடி இணைப்பு)</string>
   <string name="terminal_connecting_via_jump" tools:machine_translated="true">ஜம்ப் ஹோஸ்ட் வழியாக இணைக்கப்படுகிறது: %s</string>
   <string name="terminal_jump_connected" tools:machine_translated="true">ஜம்ப் ஹோஸ்டுடன் இணைக்கப்பட்டது: %s</string>
   <string name="terminal_jump_authenticated" tools:machine_translated="true">ஜம்ப் ஹோஸ்டில் வெற்றிகரமாக உள்நுழைந்தது: %s</string>
   <string name="terminal_jump_failed" tools:machine_translated="true">ஜம்ப் ஹோஸ்டான %1$s உடன் இணைவதில் தோல்வி: %2$s</string>
   <string name="terminal_jump_auth_failed" tools:machine_translated="true">ஜம்ப் ஹோஸ்டுக்கான அங்கீகாரம் தோல்வியடைந்தது: %s</string>
-  <string name="terminal_jump_not_found" tools:machine_translated="true">சேமிக்கப்பட்ட ஹோஸ்ட்களில் ஜம்ப் ஹோஸ்ட் கிடைக்கவில்லை.</string>
+  <string name="terminal_jump_not_found" tools:machine_translated="true">சேமிக்கப்பட்ட ஹோஸ்ட்களில் ஜம்ப் ஹோஸ்ட் கிடைக்கவில்லை</string>
   <string name="terminal_jump_password" tools:machine_translated="true">ஜம்ப் ஹோஸ்டுக்கான கடவுச்சொல்: %s:</string>
   <string name="view_logs" tools:machine_translated="true">பதிவுகளைக் காண்க</string>
   <string name="logs_title" tools:machine_translated="true">செயலி பதிவுகள்</string>
   <string name="copy_logs" tools:machine_translated="true">பிழைக் குறித்து அறிக்கை சமர்ப்பிக்கும்போது, பதிவுகளை நகலெடுத்து, ஒட்டக்கூடிய வகையில் மாற்றவும்.</string>
-  <string name="logs_copied" tools:machine_translated="true">பதிவுகள் கிளிப்போர்டுக்கு நகலெடுக்கப்பட்டன.</string>
+  <string name="logs_copied" tools:machine_translated="true">பதிவுகள் கிளிப்போர்டுக்கு நகலெடுக்கப்பட்டன்</string>
   <string name="logs_bug_report_info" tools:machine_translated="true">பிழையைப் புகாரளிக்க, இந்த பதிவுகளை நகலெடுத்து, https://connectbot.org/bug என்ற முகவரியில் புதிய பிழை அறிக்கையைத் திறக்கவும்.</string>
-  <string name="no_logs_available" tools:machine_translated="true">பதிவுகள் எதுவும் கிடைக்கவில்லை.</string>
+  <string name="no_logs_available" tools:machine_translated="true">பதிவுகள் எதுவும் கிடைக்கவில்லை</string>
   <string name="help_section_about" tools:machine_translated="true">பற்றி</string>
   <string name="title_contact" tools:machine_translated="true">தொடர்பு மற்றும் உதவி</string>
   <string name="help_section_contact" tools:machine_translated="true">தொடர்பு கொள்ளவும் &amp; உதவி</string>
   <string name="help_website" tools:machine_translated="true">வலைத்தளம்</string>
   <string name="help_github" tools:machine_translated="true">மூலக் குறியீடு</string>
   <string name="help_report_bug" tools:machine_translated="true">பிழையைப் புகாரளிக்கவும்</string>
-  <string name="help_section_donate" tools:machine_translated="true">வளர்ச்சிக்கு உதவுங்கள்.</string>
+  <string name="help_section_donate" tools:machine_translated="true">வளர்ச்சிக்கு உதவுங்கள்</string>
   <string name="help_donate_github" tools:machine_translated="true">கிட்ஹப் ஸ்பான்சர்ஸ்</string>
-  <string name="help_donate_coffee" tools:machine_translated="true">எனக்கு ஒரு காபி வாங்கிக் கொடுங்கள்.</string>
+  <string name="help_donate_coffee" tools:machine_translated="true">எனக்கு ஒரு காபி வாங்கிக் கொடுங்கள்</string>
   <string name="colorscheme_default_description" tools:machine_translated="true">இயல்புநிலை டெர்மினல் வண்ணங்கள்</string>
-  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">இயந்திரங்கள் மற்றும் மனிதர்களுக்கான துல்லியமான வண்ணங்கள்.</string>
-  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">வெளிர் பின்னணியுடன் கூடிய சோலரைஸ்டு தீம்.</string>
-  <string name="colorscheme_dracula_description" tools:machine_translated="true">டெர்மினலுக்கான கருமையான தோற்றம்.</string>
-  <string name="colorscheme_nord_description" tools:machine_translated="true">ஆர்க்டிக் பிரதேசம் சார்ந்த, வடக்குப் பகுதியில் காணப்படும் நீல நிறம் கலந்த வண்ணத் திட்டம்.</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">இயந்திரங்கள் மற்றும் மனிதர்களுக்கான துல்லியமான வண்ணங்கள்</string>
+  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">வெளிர் பின்னணியுடன் கூடிய சோலரைஸ்டு தீம்</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">டெர்மினலுக்கான கருமையான தோற்றம்</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">ஆர்க்டிக் பிரதேசம் சார்ந்த, வடக்குப் பகுதியில் காணப்படும் நீல நிறம் கலந்த வண்ணத் திட்டம்</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">பழைய பாணியிலான, கவர்ச்சியான வண்ணத் திட்டம்</string>
   <string name="colorscheme_monokai_description" tools:machine_translated="true">சப்ளைம் டெக்ஸ்ட்டால் ஈர்க்கப்பட்ட கருப்பொருள்</string>
-  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">சுத்தமான மற்றும் வசதியான கருப்பு நிறத் தோற்றம்.</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">சுத்தமான மற்றும் வசதியான கருப்பு நிறத் தோற்றம்</string>
   <string name="pref_profiles_category" tools:machine_translated="true">சுயவிவரங்கள்</string>
   <string name="pref_default_profile_title" tools:machine_translated="true">இயல்புநிலை விவரக்குறிப்பு</string>
   <string name="pref_default_profile_none" tools:machine_translated="true">எதுவுமில்லை (ஹோஸ்ட் அமைப்புகளைப் பயன்படுத்தவும்)</string>
-  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">சிறப்பு விசைகளை எப்போதும் தெரியும் வகையில் வைத்திருங்கள்.</string>
+  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">சிறப்பு விசைகளை எப்போதும் தெரியும் வகையில் வைத்திருங்கள்</string>
   <string name="pref_customterminal_title" tools:machine_translated="true">தனிப்பயனாக்கப்பட்ட டெர்மினல் வகைகள்</string>
-  <string name="pref_customterminal_summary" tools:machine_translated="true">தொலைதூர சேவையகங்களுக்கான தனிப்பயன் TERM மதிப்புகளைச் சேர்க்கவும்.</string>
+  <string name="pref_customterminal_summary" tools:machine_translated="true">தொலைதூர சேவையகங்களுக்கான தனிப்பயன் TERM மதிப்புகளைச் சேர்க்கவும்</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">தனிப்பயன் டெர்மினல் வகையைச் சேர்</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">டெர்மினல் வகை (எ.கா., rxvt-unicode)</string>
   <string name="dialog_manage_customterminal_title" tools:machine_translated="true">தனிப்பயன் டெர்மினல் வகைகளை நிர்வகி</string>
-  <string name="button_add_custom" tools:machine_translated="true">தனிப்பயன் உருப்படியைச் சேர்.</string>
+  <string name="button_add_custom" tools:machine_translated="true">தனிப்பயன் உருப்படியைச் சேர்…</string>
   <string name="button_manage_custom" tools:machine_translated="true">தனிப்பயனாக்கப்பட்ட விருப்பங்களை நிர்வகிக்கவும்…</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">தனிப்பயன் மதிப்பீட்டை உள்ளிடவும்</string>
-  <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, பின்னர் இடைவெளி (Space) பட்டனை அழுத்தவும்.</string>
+  <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, பின்னர் இடைவெளி (Space) பட்டனை அழுத்தவும்</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
   <string name="list_camera_esc_description" tools:machine_translated="true">எஸ்கேப்</string>
   <string name="list_camera_esc_a_description" tools:machine_translated="true">எஸ்கேப் + ஏ</string>
@@ -552,24 +552,24 @@
   <string name="list_menu_export_hosts" tools:machine_translated="true">அனைத்து ஹோஸ்ட்களையும் ஏற்றுமதி செய்க</string>
   <string name="list_menu_import_hosts" tools:machine_translated="true">JSON கோப்பிலிருந்து ஹோஸ்ட்களை இறக்குமதி செய்க</string>
   <string name="export_hosts_success" tools:machine_translated="true">%1$d எண்ணிக்கையிலான ஹோஸ்ட்களும், %2$d எண்ணிக்கையிலான சுயவிவரங்களும் கோப்பில் ஏற்றுமதி செய்யப்பட்டன.</string>
-  <string name="import_hosts_success" tools:machine_translated="true">%1$d எண்ணிக்கையிலான கணினிகள் வெற்றிகரமாக இறக்குமதி செய்யப்பட்டன (%2$d கணினிகள் தவிர்க்கப்பட்டன), மேலும் %3$d சுயவிவரங்கள் (%4$d சுயவிவரங்கள் தவிர்க்கப்பட்டன) இறக்குமதி செய்யப்பட்டன.</string>
+  <string name="import_hosts_success" tools:machine_translated="true">%1$d எண்ணிக்கையிலான கணினிகள் வெற்றிகரமாக இறக்குமதி செய்யப்பட்டன (%2$d கணினிகள் தவிர்க்கப்பட்டன), மேலும் %3$d சுயவிவரங்கள் (%4$d சுயவிவரங்கள் தவிர்க்கப்பட்டன) இறக்குமதி செய்யப்பட்டன</string>
   <string name="export_hosts_failed" tools:machine_translated="true">ஹோஸ்ட்களை ஏற்றுமதி செய்வதில் தோல்வி: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">ஹோஸ்ட்களை இறக்குமதி செய்வதில் தோல்வி: %s</string>
-  <string name="export_hosts_title" tools:machine_translated="true">ஏற்றுமதி செய்ய வேண்டிய ஹோஸ்ட்களைத் தேர்ந்தெடுக்கவும்.</string>
+  <string name="export_hosts_title" tools:machine_translated="true">ஏற்றுமதி செய்ய வேண்டிய ஹோஸ்ட்களைத் தேர்ந்தெடுக்கவும்</string>
   <string name="shortcut_customize_title" tools:machine_translated="true">குறுக்குவழி ஐகானை விருப்பப்படி மாற்றியமைக்கவும்</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">ஐகான் நிறம்</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">சின்னத்தின் பாணி</string>
-  <string name="shortcut_use_host_color" tools:machine_translated="true">ஹோஸ்ட்டின் அமைக்கப்பட்ட நிறத்தைப் பயன்படுத்தவும்.</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">ஹோஸ்ட்டின் அமைக்கப்பட்ட நிறத்தைப் பயன்படுத்தவும்</string>
   <string name="shortcut_create" tools:machine_translated="true">தனிப்பயனாக்கப்பட்ட குறுக்குவழியை உருவாக்கு</string>
   <string name="icon_style_terminal" tools:machine_translated="true">டெர்மினல்</string>
   <string name="icon_style_server" tools:machine_translated="true">சேவையகம்</string>
   <string name="icon_style_cloud" tools:machine_translated="true">மேகம்</string>
   <string name="icon_style_key" tools:machine_translated="true">சாவி</string>
-  <string name="pref_auth_on_launch_title" tools:machine_translated="true">தொடங்கும் போது அங்கீகாரம்.</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">தொடங்கும் போது அங்கீகாரம்</string>
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">பயன்பாட்டைத் திறக்கும்போது கைரேகை, முக அங்கீகாரம் அல்லது சாதனத்திற்கான கடவுச்சொல்லைக் கட்டாயமாக்குங்கள்.</string>
   <string name="pref_security_category" tools:machine_translated="true">பாதுகாப்பு</string>
-  <string name="auth_screen_title" tools:machine_translated="true">கனெக்ட் போட் பூட்டப்பட்டுள்ளது.</string>
+  <string name="auth_screen_title" tools:machine_translated="true">கனெக்ட் போட் பூட்டப்பட்டுள்ளது</string>
   <string name="auth_screen_unlock_button" tools:machine_translated="true">தட்டி திறக்கவும்</string>
   <string name="auth_prompt_title" tools:machine_translated="true">கனெக்ட் பாட்டை திறக்கவும்</string>
-  <string name="auth_prompt_subtitle" tools:machine_translated="true">தொடர, உங்கள் அடையாளத்தை உறுதிப்படுத்தவும்.</string>
+  <string name="auth_prompt_subtitle" tools:machine_translated="true">தொடர, உங்கள் அடையாளத்தை உறுதிப்படுத்தவும்</string>
 </resources>

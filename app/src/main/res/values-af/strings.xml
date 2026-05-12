@@ -27,7 +27,7 @@
   <string name="service_desc" tools:machine_translated="true">Onderhou SSH-verbindings en laai publieke sleutels.</string>
   <string name="app_copyright" tools:machine_translated="true">Kopiereg © Kenny Root</string>
   <string name="title_eula" tools:machine_translated="true">Lisensie</string>
-  <string name="title_color_picker" tools:machine_translated="true">Kies ’n kleur.</string>
+  <string name="title_color_picker" tools:machine_translated="true">Kies ’n kleur</string>
   <string name="title_settings" tools:machine_translated="true">Instellings</string>
   <string name="title_pubkey_generate" tools:machine_translated="true">Genereer</string>
   <string name="terms_and_conditions" tools:machine_translated="true">Voorwaardes en bepalings</string>
@@ -41,27 +41,27 @@
   <string name="pubkey_generating" tools:machine_translated="true">Besig om sleutelpaar te genereer…</string>
   <string name="pubkey_copy_private_openssh" tools:machine_translated="true">Kopieer die private sleutel (OpenSSH)</string>
   <string name="pubkey_copy_private_pem" tools:machine_translated="true">Kopieer die private sleutel (PEM)</string>
-  <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">Kopieer die private sleutel (geënkripteer).</string>
+  <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">Kopieer die private sleutel (geënkripteer)</string>
   <string name="pubkey_export_public" tools:machine_translated="true">Publieke sleutel uitvoer</string>
-  <string name="pubkey_export_private" tools:machine_translated="true">Voer die private sleutel uit.</string>
+  <string name="pubkey_export_private" tools:machine_translated="true">Voer die private sleutel uit</string>
   <string name="pubkey_export_private_openssh" tools:machine_translated="true">Voer die privaat sleutel uit (OpenSSH)</string>
-  <string name="pubkey_export_private_pem" tools:machine_translated="true">Voer die privaat sleutel uit (PEM-formaat).</string>
+  <string name="pubkey_export_private_pem" tools:machine_translated="true">Voer die privaat sleutel uit (PEM)</string>
   <string name="pubkey_export_private_encrypted" tools:machine_translated="true">Voer die private sleutel (geënkripteer) uit.</string>
-  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Stel die wagwoord vir die uitvoer in.</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Stel die wagwoord vir die uitvoer in</string>
   <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Voer ’n wagwoord in om die uitgevoerde sleutel te enkripteer.</string>
-  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Bevestig wagwoord.</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Bevestig wagwoord</string>
   <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Die wagfrases stem nie ooreen nie.</string>
-  <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Voer versleutelde sleutel in.</string>
+  <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Voer versleutelde sleutel in</string>
   <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Voer wagwoord in om die sleutel \'%1$s\' (%2$s) te ontsleutel.</string>
   <string name="pubkey_import_button" tools:machine_translated="true">Invoer</string>
-  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Enkripteer sleutel vir berging.</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Enkripteer sleutel vir berging</string>
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">Gebruik dieselfde wagwoord vir enkripsie.</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Nuwe wagwoord</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Bevestig wagwoord</string>
   <string name="pubkey_list_empty" tools:machine_translated="true">Tik op “Kieslys” om sleutelpare te skep\nof in te voer.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">Onbekende formaat.</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">Onbekende formaat</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Voer wagwoord in om die sleutel \'%1$s\' te ontsluit.</string>
-  <string name="pubkey_nickname_exists" tools:machine_translated="true">’n Sleutel met hierdie bynaam bestaan reeds.</string>
+  <string name="pubkey_nickname_exists" tools:machine_translated="true">’n Sleutel met hierdie bynaam bestaan reeds</string>
   <string name="pubkey_load_on_start" tools:machine_translated="true">Laai sleutel tydens die begin van die toepassing.</string>
   <string name="prompt_username" tools:machine_translated="true">Gebruikersnaam:</string>
   <string name="prompt_again" tools:machine_translated="true">(weer)</string>
@@ -77,10 +77,10 @@
   <string name="host_key_verification_title" tools:machine_translated="true">Verifikasie van die gasheersleutel</string>
   <string name="fingerprint_format_header" tools:machine_translated="true">Vingerafdrukformaat</string>
   <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d bits</string>
-  <string name="fingerprint_copy_description" tools:machine_translated="true">Kopieer die vingerafdruk na die knipbord.</string>
+  <string name="fingerprint_copy_description" tools:machine_translated="true">Kopieer die vingerafdruk na die knipbord</string>
   <string name="alert_passwords_do_not_match_msg" tools:machine_translated="true">Wagwoorde stem nie ooreen nie!</string>
   <string name="alert_wrong_password_msg" tools:machine_translated="true">Verkeerde wagwoord!</string>
-  <string name="button_resize" tools:machine_translated="true">Verander die grootte.</string>
+  <string name="button_resize" tools:machine_translated="true">Verander die grootte</string>
   <string name="alert_disconnect_msg" tools:machine_translated="true">Verbinding onderbreek.</string>
   <string name="network_lost_grace_period" tools:machine_translated="true">Netwerkverbinding is verlore, wag om weer te verbind…</string>
   <string name="network_grace_period_expired" tools:machine_translated="true">Netwerk nie herstel nie, ontkoppel tans…</string>
@@ -92,21 +92,21 @@
   <string name="pref_scrollback_title" tools:machine_translated="true">Grootte van die terugrolarea</string>
   <string name="pref_scrollback_summary" tools:machine_translated="true">Grootte van die geheuebuffer vir die terugrolfunksie wat vir elke konsole gehou word.</string>
   <string name="pref_fontfamily_title" tools:machine_translated="true">Lettertipe</string>
-  <string name="pref_customfont_title" tools:machine_translated="true">Voeg pasgemaakte lettertipe by.</string>
-  <string name="pref_customfont_summary" tools:machine_translated="true">Voeg ’n lettertipe van Google Fonts by, deur die naam te gebruik.</string>
-  <string name="dialog_customfont_title" tools:machine_translated="true">Voeg pasgemaakte lettertipe by.</string>
+  <string name="pref_customfont_title" tools:machine_translated="true">Voeg pasgemaakte lettertipe by</string>
+  <string name="pref_customfont_summary" tools:machine_translated="true">Voeg ’n lettertipe van Google Fonts by, deur die naam te gebruik</string>
+  <string name="dialog_customfont_title" tools:machine_translated="true">Voeg pasgemaakte lettertipe by</string>
   <string name="dialog_customfont_hint" tools:machine_translated="true">Naam van Google-lettertipe (bv. Cascadia Code)</string>
   <string name="button_add" tools:machine_translated="true">Voeg by</string>
   <string name="button_remove" tools:machine_translated="true">Verwyder</string>
   <string name="font_validating" tools:machine_translated="true">Besig om die lettertipe te verifieer…</string>
   <string name="font_downloading" tools:machine_translated="true">Besig om lettertipe af te laai…</string>
-  <string name="pref_localfont_title" tools:machine_translated="true">Plaaslike lettertipe invoer.</string>
-  <string name="pref_localfont_summary" tools:machine_translated="true">Voer ’n lettertipe-lêer vanaf die berging in (TTF, OTF).</string>
+  <string name="pref_localfont_title" tools:machine_translated="true">Plaaslike lettertipe invoer</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Voer ’n lettertipe-lêer vanaf die berging in (TTF, OTF)</string>
   <string name="dialog_localfont_title" tools:machine_translated="true">Plaas lettertipe in</string>
-  <string name="dialog_localfont_hint" tools:machine_translated="true">Vertoonnaam vir die lettertipe.</string>
+  <string name="dialog_localfont_hint" tools:machine_translated="true">Vertoonnaam vir die lettertipe</string>
   <string name="button_import" tools:machine_translated="true">Invoer</string>
   <string name="font_importing" tools:machine_translated="true">Besig om lettertipe in te voer…</string>
-  <string name="pref_backupkeys_title" tools:machine_translated="true">Maak ’n rugsteunkopie van die publieke sleutels.</string>
+  <string name="pref_backupkeys_title" tools:machine_translated="true">Maak ’n rugsteunkopie van die publieke sleutels</string>
   <string name="pref_backupkeys_summary" tools:machine_translated="true">Maak rugsteunkopies van die private sleutels met behulp van Android se rugsteunstelsel.</string>
   <string name="pref_ui_category" tools:machine_translated="true">Gebruikerskoppelvlak</string>
   <string name="pref_language_title" tools:machine_translated="true">Taal</string>
@@ -118,13 +118,13 @@
   <string name="pref_theme_light" tools:machine_translated="true">Lig</string>
   <string name="pref_theme_dark" tools:machine_translated="true">Donker</string>
   <string name="pref_rotation_title" tools:machine_translated="true">Rotasiemodus</string>
-  <string name="pref_titlebarhide_title" tools:machine_translated="true">Outomaties die titelbalk wegsteek.</string>
+  <string name="pref_titlebarhide_title" tools:machine_translated="true">Outomaties die titelbalk wegsteek</string>
   <string name="pref_titlebarhide_summary" tools:machine_translated="true">Tik op die konsol om die titelbalk te wys en toegang tot die spyskaart te verkry.</string>
   <string name="pref_alwaysvisible_title" tools:machine_translated="true">Spesiale sleutels is altyd sigbaar.</string>
   <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">Gebaar om bladsy op/af te blaai</string>
   <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">Veeg oor die linker derde van die skerm om die op- of af-bevel na die terminaal te stuur.</string>
   <string name="pref_fullscreen_title" tools:machine_translated="true">Volskerm</string>
-  <string name="pref_fullscreen_summary" tools:machine_translated="true">Verberg die statusbalk terwyl jy in die konsole is.</string>
+  <string name="pref_fullscreen_summary" tools:machine_translated="true">Verberg die statusbalk terwyl jy in die konsole is</string>
   <string name="pref_keyboard_category" tools:machine_translated="true">Sleutelbord</string>
   <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift+getal is F-sleutel</string>
   <string name="pref_shiftfkeys_summary" tools:machine_translated="true">Op hardeware-sleutelborde stuur die nommersleutels F1-F10 wanneer die Shift-sleutel ingedruk word.</string>
@@ -132,39 +132,39 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Op sagteware-sleutelbord stuur die nommersleutels F1-F10 wanneer die Ctrl-sleutel ingedruk word.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Die volume-knoppies verander die lettergrootte.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Die lettergrootte kan ook in die profielinstellings verander word.</string>
-  <string name="pref_memkeys_title" tools:machine_translated="true">Onthou sleutels in die geheue.</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">Onthou sleutels in die geheue</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Hou ontgrendelde sleutels in die geheue totdat die agtergronddiens beëindig word.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Bly aan die gang terwyl die program op die agtergrond loop.</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">Bly aan die gang terwyl die program op die agtergrond loop</string>
   <string name="pref_conn_persist_summary" tools:machine_translated="true">Hou jou sessies oop, selfs wanneer jy na ander toepassings oorskakel.</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Kortpadtoetse vir die lêergids</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Kleefmodifikators</string>
   <string name="only_alt" tools:machine_translated="true">Slegs Alt</string>
   <string name="pref_camera_title" tools:machine_translated="true">Kamera-vinnige toegang</string>
-  <string name="pref_keepalive_title" tools:machine_translated="true">Hou die skerm aan.</string>
+  <string name="pref_keepalive_title" tools:machine_translated="true">Hou die skerm aan</string>
   <string name="pref_keepalive_summary" tools:machine_translated="true">Verhoed dat die skerm afskakel wanneer jy in ’n konsole werk.</string>
-  <string name="pref_wifilock_title" tools:machine_translated="true">Hou Wi-Fi aktief.</string>
+  <string name="pref_wifilock_title" tools:machine_translated="true">Hou Wi-Fi aktief</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">Verhoed dat Wi-Fi afskakel wanneer ’n sessie aktief is.</string>
   <string name="pref_bumpyarrows_title" tools:machine_translated="true">Gerimpelde pyltjies</string>
-  <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibreer wanneer pyltjiesleutels gestuur word; nuttig vir stadige verbindings.</string>
+  <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibreer wanneer pyltjiesleutels gestuur word; nuttig vir stadige verbindings</string>
   <string name="pref_bell_category" tools:machine_translated="true">Terminaal-klok</string>
   <string name="pref_bell_title" tools:machine_translated="true">Hoorbare sein</string>
   <string name="pref_bell_summary" tools:machine_translated="true">Speel klank af wanneer die terminaalwaarskuwing geaktiveer word.</string>
   <string name="pref_bell_volume_title" tools:machine_translated="true">Volume van die bel</string>
-  <string name="pref_bell_vibrate_title" tools:machine_translated="true">Vibreer wanneer die sein klink.</string>
+  <string name="pref_bell_vibrate_title" tools:machine_translated="true">Vibreer wanneer die sein klink</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Laat die foon vibreer wanneer ’n terminalwaarskuwing geaktiveer word.</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">Agtergrondkennisgewings</string>
   <string name="pref_bell_notification_summary" tools:machine_translated="true">Stuur ’n kennisgewing wanneer ’n terminaal wat op die agtergrond loop, ’n sein toon.</string>
   <string name="list_keymode_right" tools:machine_translated="true">Gebruik die sleutels aan die regterkant.</string>
   <string name="list_keymode_left" tools:machine_translated="true">Gebruik die sleutels aan die linkerkant.</string>
   <string name="list_keymode_none" tools:machine_translated="true">Deaktiveer</string>
-  <string name="list_pubkeyids_none" tools:machine_translated="true">Moenie sleutels gebruik nie.</string>
+  <string name="list_pubkeyids_none" tools:machine_translated="true">Moenie sleutels gebruik nie</string>
   <string name="list_pubkeyids_any" tools:machine_translated="true">Gebruik enige ontgrendelde sleutel.</string>
   <string name="hostpref_nickname_title" tools:machine_translated="true">Bynaam</string>
   <string name="hostpref_color_title" tools:machine_translated="true">Kleurbeskrywing</string>
   <string name="color_red" tools:machine_translated="true">Rooi</string>
   <string name="color_pink" tools:machine_translated="true">Pienk</string>
   <string name="color_purple" tools:machine_translated="true">Pers</string>
-  <string name="color_deep_purple" tools:machine_translated="true">Donkerpers.</string>
+  <string name="color_deep_purple" tools:machine_translated="true">Donkerpers</string>
   <string name="color_indigo" tools:machine_translated="true">Indigo</string>
   <string name="color_blue" tools:machine_translated="true">Blou</string>
   <string name="color_light_blue" tools:machine_translated="true">Ligtblou</string>
@@ -180,17 +180,17 @@
   <string name="hostpref_fontsize_title" tools:machine_translated="true">Lettergrootte (pt)</string>
   <string name="hostpref_fontfamily_title" tools:machine_translated="true">Lettertipe</string>
   <string name="hostpref_colorscheme_title" tools:machine_translated="true">Terminaal se kleurskema</string>
-  <string name="hostpref_pubkeyid_title" tools:machine_translated="true">Gebruik publieke sleutelverifikasie.</string>
-  <string name="hostpref_authagent_title" tools:machine_translated="true">Gebruik SSH-verifikasie-agent.</string>
+  <string name="hostpref_pubkeyid_title" tools:machine_translated="true">Gebruik publieke sleutelverifikasie</string>
+  <string name="hostpref_authagent_title" tools:machine_translated="true">Gebruik SSH-verifikasie-agent</string>
   <string name="hostpref_postlogin_title" tools:machine_translated="true">Outomatisering ná aanmelding</string>
-  <string name="hostpref_postlogin_summary" tools:machine_translated="true">Opdragte wat op die afgeleë bediener moet uitgevoer word nadat die gebruiker verifieer is.</string>
+  <string name="hostpref_postlogin_summary" tools:machine_translated="true">Opdragte wat op die afgeleë bediener moet uitgevoer word nadat die gebruiker verifieer is</string>
   <string name="hostpref_compression_title" tools:machine_translated="true">Komprimering</string>
-  <string name="hostpref_compression_summary" tools:machine_translated="true">Dit kan moontlik help met stadiger netwerke.</string>
-  <string name="hostpref_wantsession_title" tools:machine_translated="true">Begin die dop-sessie.</string>
+  <string name="hostpref_compression_summary" tools:machine_translated="true">Dit kan moontlik help met stadiger netwerke</string>
+  <string name="hostpref_wantsession_title" tools:machine_translated="true">Begin die dop-sessie</string>
   <string name="hostpref_wantsession_summary" tools:machine_translated="true">Deaktiveer hierdie voorkeur om slegs poort-oordrag te gebruik.</string>
-  <string name="hostpref_stayconnected_title" tools:machine_translated="true">Bly aanlyn.</string>
-  <string name="hostpref_stayconnected_summary" tools:machine_translated="true">Probeer om weer met die gasheerrekenaar te verbind as die verbinding onderbreek is.</string>
-  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Sluit wanneer die verbinding onderbreek word.</string>
+  <string name="hostpref_stayconnected_title" tools:machine_translated="true">Bly aanlyn</string>
+  <string name="hostpref_stayconnected_summary" tools:machine_translated="true">Probeer om weer met die gasheerrekenaar te verbind as die verbinding onderbreek is</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Sluit wanneer die verbinding onderbreek word</string>
   <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Sluit onmiddellik nadat die afstandverbinding verbreek is, sonder om ’n boodskap te wys.</string>
   <string name="hostpref_delkey_title" tools:machine_translated="true">DEL-sleutel</string>
   <string name="hostpref_encoding_title" tools:machine_translated="true">Enkodering</string>
@@ -239,7 +239,7 @@
   <string name="profile_delete_dialog_message" tools:machine_translated="true">Is jy seker dat jy \'%s\' wil uitvee?</string>
   <string name="profile_delete_button" tools:machine_translated="true">Deël</string>
   <string name="profile_delete_cancel" tools:machine_translated="true">Kanselleer</string>
-  <string name="profile_summary_font" tools:machine_translated="true">Lettertipe: %1$s %2$d pt.</string>
+  <string name="profile_summary_font" tools:machine_translated="true">Lettertipe: %1$s %2$dpt</string>
   <string name="profile_summary_emulation" tools:machine_translated="true">Emulasie: %s</string>
   <string name="console_menu_reconnect" tools:machine_translated="true">Maak weer verbinding</string>
   <string name="console_menu_close" tools:machine_translated="true">Sluit</string>
@@ -248,7 +248,7 @@
   <string name="console_menu_resize" tools:machine_translated="true">Dwing grootte af</string>
   <string name="console_menu_urlscan" tools:machine_translated="true">URL-skandering</string>
   <string name="console_url_no_handler" tools:machine_translated="true">Geen program beskikbaar om hierdie URL oop te maak nie.</string>
-  <string name="console_url_not_supported" tools:machine_translated="true">Hierdie URL-tipe word nie ondersteun nie.</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">Hierdie URL-tipe word nie ondersteun nie</string>
   <string name="button_yes" tools:machine_translated="true">Ja</string>
   <string name="button_no" tools:machine_translated="true">Nee</string>
   <string name="portforward_local" tools:machine_translated="true">Plaaslik</string>
@@ -259,49 +259,49 @@
   <string name="format_username" tools:machine_translated="true">gebruikersnaam</string>
   <string name="format_hostname" tools:machine_translated="true">gasheernaam</string>
   <string name="format_port" tools:machine_translated="true">poort</string>
-  <string name="list_menu_pubkeys" tools:machine_translated="true">Bestuur publieke sleutels.</string>
-  <string name="list_menu_sortcolor" tools:machine_translated="true">Sorteer volgens kleur.</string>
-  <string name="list_menu_sortname" tools:machine_translated="true">Sorteer volgens naam.</string>
-  <string name="list_menu_disconnect" tools:machine_translated="true">Ontkoppel alles.</string>
+  <string name="list_menu_pubkeys" tools:machine_translated="true">Bestuur publieke sleutels</string>
+  <string name="list_menu_sortcolor" tools:machine_translated="true">Sorteer volgens kleur</string>
+  <string name="list_menu_sortname" tools:machine_translated="true">Sorteer volgens naam</string>
+  <string name="list_menu_disconnect" tools:machine_translated="true">Ontkoppel alles</string>
   <string name="list_menu_settings" tools:machine_translated="true">Instellings</string>
   <string name="list_host_disconnect" tools:machine_translated="true">Ontkoppel</string>
   <string name="list_host_edit" tools:machine_translated="true">Wysig gasheer</string>
   <string name="list_host_portforwards" tools:machine_translated="true">Wysig poortvoorstellinge</string>
   <string name="list_host_delete" tools:machine_translated="true">Verwyder gasheer</string>
   <string name="list_host_duplicate" tools:machine_translated="true">Dupliseer gasheer</string>
-  <string name="list_host_forget_keys" tools:machine_translated="true">Vergeet die gasheerse sleutels.</string>
+  <string name="list_host_forget_keys" tools:machine_translated="true">Vergeet die gasheerse sleutels</string>
   <string name="list_rotation_default" tools:machine_translated="true">Standaard</string>
-  <string name="list_rotation_land" tools:machine_translated="true">Dwing landskapmodus af.</string>
-  <string name="list_rotation_port" tools:machine_translated="true">Dwing portretmodus af.</string>
+  <string name="list_rotation_land" tools:machine_translated="true">Dwing landskapmodus af</string>
+  <string name="list_rotation_port" tools:machine_translated="true">Dwing portretmodus af</string>
   <string name="list_rotation_auto" tools:machine_translated="true">Outomaties</string>
-  <string name="list_camera_ctrlaspace" tools:machine_translated="true">Ctrl+A, en dan die spasiebalk.</string>
+  <string name="list_camera_ctrlaspace" tools:machine_translated="true">Ctrl+A, en dan die spasiebalk</string>
   <string name="list_camera_ctrla" tools:machine_translated="true">Ctrl+A</string>
   <string name="list_camera_esc" tools:machine_translated="true">Esc</string>
   <string name="list_camera_esc_a" tools:machine_translated="true">Esc+A</string>
   <string name="list_camera_none" tools:machine_translated="true">Geen</string>
   <string name="list_camera_text_input" tools:machine_translated="true">Teksinvoering</string>
   <string name="delete_message" tools:machine_translated="true">Is jy seker dat jy \'%1$s\' wil uitvee?</string>
-  <string name="delete_pos" tools:machine_translated="true">Ja, verwyder.</string>
+  <string name="delete_pos" tools:machine_translated="true">Ja, verwyder</string>
   <string name="delete_neg" tools:machine_translated="true">Kanselleer</string>
   <string name="disconnect_all_message" tools:machine_translated="true">Is jy seker dat jy van alle gekoppelde gasheere wil ontkoppel?</string>
-  <string name="disconnect_all_pos" tools:machine_translated="true">Ja, ontkoppel.</string>
+  <string name="disconnect_all_pos" tools:machine_translated="true">Ja, ontkoppel</string>
   <string name="disconnect_all_neg" tools:machine_translated="true">Kanselleer</string>
-  <string name="terminal_connecting" tools:ignore="PluralsCandidate" tools:machine_translated="true">Maak verbinding met %1$s:%2$d via %3$s.</string>
+  <string name="terminal_connecting" tools:ignore="PluralsCandidate" tools:machine_translated="true">Maak verbinding met %1$s:%2$d via %3$s</string>
   <string name="terminal_sucess" tools:machine_translated="true">Geverifieerde gasheersleutel vir \'%1$s\': %2$s</string>
   <string name="terminal_failed" tools:machine_translated="true">Die verifikasie van die gasheersleutel het misluk.</string>
   <string name="terminal_using_s2c_algorithm" tools:machine_translated="true">Algoritme van bediener na kliënt: %1$s %2$s</string>
   <string name="terminal_using_c2s_algorithm" tools:machine_translated="true">Algoritme van kliënt na bediener: %1$s %2$s</string>
   <string name="terminal_using_algorithm" tools:machine_translated="true">Algoritme wat gebruik word: %1$s %2$s</string>
   <string name="terminal_kex_algorithm" tools:machine_translated="true">Sleuteluitruilalgoritme: %s</string>
-  <string name="terminal_auth" tools:machine_translated="true">Besig om te verifieer.</string>
+  <string name="terminal_auth" tools:machine_translated="true">Besig om te verifieer</string>
   <string name="terminal_auth_pass" tools:machine_translated="true">Probeer om met die ‘wagwoord’-metode te verifieer.</string>
   <string name="terminal_auth_pass_fail" tools:machine_translated="true">Die verifikasiemetode vir ‘wagwoord’ het misluk.</string>
   <string name="terminal_auth_saved_password" tools:machine_translated="true">Besig om gestoorde wagwoord te probeer…</string>
-  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Verifikasie met die gestoorde wagwoord het misluk.</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Verifikasie met die gestoorde wagwoord het misluk</string>
   <string name="terminal_auth_pubkey_any" tools:machine_translated="true">Probeer om met behulp van enige beskikbare publieke sleutels wat in die geheue is, met die \'publieke sleutel\'-metode aan te meld.</string>
   <string name="terminal_auth_pubkey_invalid" tools:machine_translated="true">Die gekose publieke sleutel is ongeldig; probeer om die sleutel weer in die gasheerreëdigprogram te kies.</string>
   <string name="terminal_auth_pubkey_specific" tools:machine_translated="true">Probeer om met ’n spesifieke publieke sleutel met “publieke sleutel”-verifikasie in te log.</string>
-  <string name="terminal_auth_biometric" tools:machine_translated="true">Besig om biometriese verifikasie aan te vra vir die sleutel \'%1$s\'.</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">Besig om biometriese verifikasie aan te vra vir sleutel \'%1$s\'</string>
   <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">Die biometriese sleutel \'%1$s\' is ongeldig gemaak. Dit kan gebeur wanneer nuwe vingerafdrukke op die toestel geregistreer word. Genereer asseblief ’n nuwe sleutel.</string>
   <string name="terminal_auth_pubkey_fail" tools:machine_translated="true">Die verifikasiemetode ‘publieksleutel’ met sleutel \'%1$s\' het misluk.</string>
   <string name="terminal_auth_ki" tools:machine_translated="true">Besig om die \'sleutelbordinteraktiewe\' verifikasiemetode te probeer.</string>
@@ -315,14 +315,14 @@
   <string name="yes" tools:machine_translated="true">Ja</string>
   <string name="list_color_schemes" tools:machine_translated="true">Kleurskemas</string>
   <string name="menu_colors_reset" tools:machine_translated="true">Herstel</string>
-  <string name="button_manage_schemes" tools:machine_translated="true">Bestuur kleurskemas.</string>
-  <string name="title_scheme_manager" tools:machine_translated="true">Bestuur kleurskemas.</string>
+  <string name="button_manage_schemes" tools:machine_translated="true">Bestuur kleurskemas</string>
+  <string name="title_scheme_manager" tools:machine_translated="true">Bestuur kleurskemas</string>
   <string name="button_new_scheme" tools:machine_translated="true">Nuwe skema</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">Dupliseer</string>
   <string name="button_rename_scheme" tools:machine_translated="true">Hernoem</string>
   <string name="button_delete_scheme" tools:machine_translated="true">Verwyder</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">Nuwe kleurskema</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Hernoem kleurskema.</string>
+  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Hernoem kleurskema</string>
   <string name="label_scheme_name" tools:machine_translated="true">Skema-naam</string>
   <string name="label_scheme_description" tools:machine_translated="true">Beskrywing (opsioneel)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">Skema uitvee?</string>
@@ -339,14 +339,14 @@
   <string name="message_import_success" tools:machine_translated="true">%1$s is geïmporteer.</string>
   <string name="error_export_failed" tools:machine_translated="true">Kon nie die skema uitvoer nie: %1$s</string>
   <string name="error_import_failed" tools:machine_translated="true">Kon nie die skema invoer nie: %1$s</string>
-  <string name="error_invalid_json" tools:machine_translated="true">Ongeldige JSON-lêer.</string>
+  <string name="error_invalid_json" tools:machine_translated="true">Ongeldige JSON-lêer</string>
   <string name="title_palette_editor" tools:machine_translated="true">Wysig kleurepalet</string>
-  <string name="button_reset_all_colors" tools:machine_translated="true">Stel alles terug na die verstekinstellings.</string>
+  <string name="button_reset_all_colors" tools:machine_translated="true">Stel alles terug na die verstekinstellings</string>
   <string name="section_ansi_colors" tools:machine_translated="true">ANSI-kleure (0–15)</string>
   <string name="dialog_title_edit_color" tools:machine_translated="true">Wysig kleur %1$d</string>
   <string name="dialog_title_reset_all" tools:machine_translated="true">Wil jy al die kleure terugstel?</string>
   <string name="dialog_message_reset_all" tools:machine_translated="true">Dit sal al 256 kleure na hul standaardwaardes terugstel. Hierdie aksie kan nie ongedaan gemaak word nie.</string>
-  <string name="app_is_running" tools:machine_translated="true">ConnectBot is besig om te werk.</string>
+  <string name="app_is_running" tools:machine_translated="true">ConnectBot is besig om te werk</string>
   <string name="label_red" tools:machine_translated="true">Rooi</string>
   <string name="label_green" tools:machine_translated="true">Groen</string>
   <string name="label_blue" tools:machine_translated="true">Blou</string>
@@ -357,7 +357,7 @@
   <string name="label_foreground_color" tools:machine_translated="true">Voorgrond</string>
   <string name="label_background_color" tools:machine_translated="true">Agtergrond</string>
   <string name="label_base_scheme" tools:machine_translated="true">Basisskema:</string>
-  <string name="menu_manage_colors" tools:machine_translated="true">Bestuur kleurskemas.</string>
+  <string name="menu_manage_colors" tools:machine_translated="true">Bestuur kleurskemas</string>
   <string name="palette_editor_builtin_note" tools:machine_translated="true">Ingeslote skemas is slegs vir leesdoeleindes. Dupliseer om aan te pas.</string>
   <string name="section_color_preview" tools:machine_translated="true">Voorbeeld</string>
   <string name="image_description_connected" tools:machine_translated="true">Verbind.</string>
@@ -395,7 +395,7 @@
   <string name="terminal_text_input_resize_handle" tools:machine_translated="true">Verander grootte</string>
   <string name="console_menu_text_input" tools:machine_translated="true">Teksinvoering</string>
   <string name="button_send" tools:machine_translated="true">Stuur</string>
-  <string name="button_ok" tools:machine_translated="true">Goed.</string>
+  <string name="button_ok" tools:machine_translated="true">Goed</string>
   <string name="button_close" tools:machine_translated="true">Sluit</string>
   <string name="button_back" tools:machine_translated="true">Terug</string>
   <string name="button_navigate_up" tools:machine_translated="true">Blaai opwaarts</string>
@@ -411,19 +411,19 @@
   <string name="empty_hosts_message" tools:machine_translated="true">Geen gasheere gekonfigureer nie.</string>
   <string name="empty_pubkeys_message" tools:machine_translated="true">Geen sleutels gevind nie.</string>
   <string name="empty_port_forwards_message" tools:machine_translated="true">Geen poortdoorgang nie.</string>
-  <string name="empty_urls_message" tools:machine_translated="true">Geen URL’s in die terminaalbuffer gevind nie.</string>
+  <string name="empty_urls_message" tools:machine_translated="true">Geen URL’s in die terminaalbuffer gevind nie</string>
   <string name="console_default_title" tools:machine_translated="true">Konsole</string>
   <string name="host_editor_quick_connect_label" tools:machine_translated="true">Vinnige verbinding</string>
   <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">gebruiker\@gasheernaam:poort</string>
   <string name="host_editor_quick_connect_example" tools:machine_translated="true">Voorbeeld: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced" tools:machine_translated="true">Wys gevorderde opsies</string>
-  <string name="host_editor_hide_advanced" tools:machine_translated="true">Verberg gevorderde opsies.</string>
+  <string name="host_editor_hide_advanced" tools:machine_translated="true">Verberg gevorderde opsies</string>
   <string name="resize_width_label" tools:machine_translated="true">Breedte (kolomme)</string>
   <string name="resize_height_label" tools:machine_translated="true">Hoogte (rye)</string>
   <string name="resize_disable_force_size" tools:machine_translated="true">Deaktiveer die gedwonge grootte.</string>
   <string name="pubkey_editor_key_type_label" tools:machine_translated="true">Sleuteltipe</string>
   <string name="pubkey_editor_options_label" tools:machine_translated="true">Opsies</string>
-  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Versleutelde sleutels kan nie tydens die opstartproses ontsluit word nie.</string>
+  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Versleutelde sleutels kan nie tydens die opstartproses ontsluit word nie</string>
   <string name="pubkey_type_label" tools:machine_translated="true">Tipe: %s</string>
   <string name="pubkey_encrypted_description" tools:machine_translated="true">Geënkripteer</string>
   <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Nie geënkripteer nie</string>
@@ -431,9 +431,9 @@
   <string name="pubkey_biometric_description" tools:machine_translated="true">Beskerm hierdie sleutel met jou vingerafdruk.</string>
   <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Geen vingerafdruk geregistreer nie. Stel vingerafdruk in die toestelinstellings op om hierdie funksie te gebruik.</string>
   <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Vingerafdrukbeskerming is slegs beskikbaar vir RSA- en EC-sleutels.</string>
-  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Verifieer om die sleutel te gebruik.</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Verifieer om die sleutel te gebruik</string>
   <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Raak die vingerafdruksensor aan om \'%1$s\' te ontsluit.</string>
-  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Beskerm deur vingerafdruk.</string>
+  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Beskerm deur vingerafdruk</string>
   <string name="pubkey_biometric_not_available" tools:machine_translated="true">Vingerafdrukverifikasie is nie beskikbaar nie.</string>
   <string name="portforward_nickname_placeholder" tools:machine_translated="true">Interne webbediener</string>
   <string name="portforward_port_range_error" tools:machine_translated="true">Die poortnommer moet tussen 1 en 65535 wees.</string>
@@ -445,38 +445,38 @@
   <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">Plaaslike gasheer (slegs IPv6)</string>
   <string name="portforward_source_addr_all" tools:machine_translated="true">Alle adresse</string>
   <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Alle IPv4-adresse</string>
-  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Alle IPv6-adresse.</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Alle IPv6-adresse</string>
   <string name="portforward_source_addr_specific" tools:machine_translated="true">Spesifieke adres</string>
   <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
   <string name="portforward_type_label" tools:machine_translated="true">Tipe: %s</string>
   <string name="portforward_enable" tools:machine_translated="true">Aktiveer</string>
   <string name="portforward_disable" tools:machine_translated="true">Deaktiveer</string>
-  <string name="portforward_enabled" tools:machine_translated="true">Poortdoorgang geaktiveer.</string>
-  <string name="portforward_disabled" tools:machine_translated="true">Poortdoorgang gedeaktiveer.</string>
+  <string name="portforward_enabled" tools:machine_translated="true">Poortdoorgang geaktiveer</string>
+  <string name="portforward_disabled" tools:machine_translated="true">Poortdoorgang gedeaktiveer</string>
   <string name="protocol_spinner_label" tools:machine_translated="true">Protokol</string>
-  <string name="expand" tools:machine_translated="true">Vou uit.</string>
+  <string name="expand" tools:machine_translated="true">Vou uit</string>
   <string name="hostpref_authagent_with_confirmation" tools:machine_translated="true">vereis bevestiging</string>
   <string name="hostpref_add_host" tools:machine_translated="true">Voeg gasheer by</string>
   <string name="hostpref_save_host" tools:machine_translated="true">Bespaar gasheer</string>
   <string name="hostpref_setting_title" tools:machine_translated="true">Gasheere se instellings</string>
   <string name="pubkey_import_existing" tools:machine_translated="true">Voer bestaande publieke sleutel in</string>
-  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Invoer vanaf die knipbord.</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Invoer vanaf die knipbord</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Inhoud van die private sleutel</string>
-  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Plak vanaf die knipbord.</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Bly in die agtergrond verbind.</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Plak vanaf die knipbord</string>
+  <string name="notification_permission_title" tools:machine_translated="true">Bly in die agtergrond verbind</string>
   <string name="notification_permission_message" tools:machine_translated="true">ConnectBot benodig toestemming vir kennisgewings om jou verbindings aktief te hou wanneer jy tussen toepassings oorskakel. Sonder dit, kan die stelsel jou verbindings verbreek om battery te spaar.</string>
   <string name="grant_permission" tools:machine_translated="true">Toelaat</string>
-  <string name="connect_anyway" tools:machine_translated="true">Gaan voort met die verbinding.</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Toestemming vir kennisgewings vereis.</string>
+  <string name="connect_anyway" tools:machine_translated="true">Verbind tog</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">Toestemming vir kennisgewings vereis</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Om jou konneksies in die agtergrond aktief te hou, aktiveer asseblief die kennisgewings vir ConnectBot in die stelselinstellings.</string>
-  <string name="open_settings" tools:machine_translated="true">Maak instellings oop.</string>
+  <string name="open_settings" tools:machine_translated="true">Maak instellings oop</string>
   <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Verbindings kan afgekoppel word sonder toestemming vir kennisgewings.</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Die verbinding kan in die agtergrond onderbreek word.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Probeer jy om toegang tot ’n plaaslike gasheer te verkry? Verleen toestemming vir die plaaslike netwerk.</string>
   <string name="loading_message" tools:machine_translated="true">Besig om te laai…</string>
   <string name="migration_checking" tools:machine_translated="true">Databasis word nagesien…</string>
-  <string name="migration_title" tools:machine_translated="true">Databasis word oorgedra.</string>
-  <string name="migration_warning" tools:machine_translated="true">Sluit asseblief nie die toepassing tydens die migrasie nie.</string>
+  <string name="migration_title" tools:machine_translated="true">Databasis word oorgedra</string>
+  <string name="migration_warning" tools:machine_translated="true">Sluit asseblief nie die toepassing tydens die migrasie nie</string>
   <string name="migration_stats_hosts" tools:machine_translated="true">Aantal gasheere wat oorgedra is: %d</string>
   <string name="migration_stats_pubkeys" tools:machine_translated="true">SSH-sleutels oorgedra: %d</string>
   <string name="migration_stats_port_forwards" tools:machine_translated="true">Aantal poortvoorwaardings wat oorgedra is: %d</string>
@@ -494,7 +494,7 @@
   <string name="forget_host_keys_confirm" tools:machine_translated="true">Is jy seker dat jy die gestoorde gasheersleutels vir \'%1$s\' wil uitvee? Jy sal gevra word om die gasheersleutel by die volgende verbinding te bevestig.</string>
   <string name="list_pubkey_edit" tools:machine_translated="true">Wysig publieke sleutel</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">IP-weergawe</string>
-  <string name="hostpref_ipversion_summary" tools:machine_translated="true">Kies watter weergawe van die IP-adres om te gebruik wanneer jy verbind.</string>
+  <string name="hostpref_ipversion_summary" tools:machine_translated="true">Kies watter weergawe van die IP-adres om te gebruik wanneer jy verbind</string>
   <string name="ipversion_auto" tools:machine_translated="true">Outomaties</string>
   <string name="ipversion_ipv4" tools:machine_translated="true">Slegs IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">Slegs IPv6</string>
@@ -519,18 +519,18 @@
   <string name="help_section_contact" tools:machine_translated="true">Kontak en ondersteuning</string>
   <string name="help_website" tools:machine_translated="true">Webwerf</string>
   <string name="help_github" tools:machine_translated="true">Bronkode</string>
-  <string name="help_report_bug" tools:machine_translated="true">Meld ’n fout.</string>
-  <string name="help_section_donate" tools:machine_translated="true">Ondersteun ontwikkeling.</string>
+  <string name="help_report_bug" tools:machine_translated="true">Meld ’n fout</string>
+  <string name="help_section_donate" tools:machine_translated="true">Ondersteun ontwikkeling</string>
   <string name="help_donate_github" tools:machine_translated="true">GitHub-borgenators</string>
   <string name="help_donate_coffee" tools:machine_translated="true">Gee vir my ’n koffie (as donasie)</string>
   <string name="colorscheme_default_description" tools:machine_translated="true">Standaardkleure vir die terminaal</string>
-  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Presiese kleure vir masjiene en mense.</string>
-  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarized met ’n ligte agtergrond.</string>
-  <string name="colorscheme_dracula_description" tools:machine_translated="true">’n Donker tema vir die terminaal.</string>
-  <string name="colorscheme_nord_description" tools:machine_translated="true">’n Arktiese, noordelike bloukleurskema.</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Presiese kleure vir masjiene en mense</string>
+  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarized met ’n ligte agtergrond</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">’n Donker tema vir die terminaal</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">’n Arktiese, noordelike bloukleurskema</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Retro-kleurskema</string>
-  <string name="colorscheme_monokai_description" tools:machine_translated="true">Tema wat deur Sublime Text geïnspireer is.</string>
-  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">’n Netjiese en gerieflike donker tema.</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">Tema wat deur Sublime Text geïnspireer is</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">’n Netjiese en gerieflike donker tema</string>
   <string name="pref_profiles_category" tools:machine_translated="true">Profiele</string>
   <string name="pref_default_profile_title" tools:machine_translated="true">Standaardprofiel</string>
   <string name="pref_default_profile_none" tools:machine_translated="true">Geen (gebruik die instellings van die gasheerrekenaar)</string>
@@ -539,11 +539,11 @@
   <string name="pref_customterminal_summary" tools:machine_translated="true">Voeg pasgemaakte TERM-waardes vir afstandbedieners by.</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">Voeg pasgemaakte terminaaltipe by.</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">Terminaaltipe (bv. rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Bestuur pasgemaakte terminaaltypes.</string>
+  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Bestuur pasgemaakte terminaaltypes</string>
   <string name="button_add_custom" tools:machine_translated="true">Voeg pasgemaakte…</string>
   <string name="button_manage_custom" tools:machine_translated="true">Bestuur pasgemaakte…</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">Voer pasgemaakte waarde in.</string>
-  <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, en dan die spasiebalk.</string>
+  <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, en dan die spasiebalk</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
   <string name="list_camera_esc_description" tools:machine_translated="true">Ontsnap</string>
   <string name="list_camera_esc_a_description" tools:machine_translated="true">Esc+A</string>
@@ -556,7 +556,7 @@
   <string name="export_hosts_failed" tools:machine_translated="true">Kon nie die gasheere uitvoer nie: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">Kon nie die gasheere invoer nie: %s</string>
   <string name="export_hosts_title" tools:machine_translated="true">Eksporteer gasheere</string>
-  <string name="shortcut_customize_title" tools:machine_translated="true">Pas die snelkoppeling aan.</string>
+  <string name="shortcut_customize_title" tools:machine_translated="true">Pas die snelkoppeling aan</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Ikoonkleur</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Ikoonstyl</string>
   <string name="shortcut_use_host_color" tools:machine_translated="true">Gebruik die kleur van die gasheerrekenaar.</string>
@@ -565,11 +565,11 @@
   <string name="icon_style_server" tools:machine_translated="true">Bedienermasjien</string>
   <string name="icon_style_cloud" tools:machine_translated="true">Wolk</string>
   <string name="icon_style_key" tools:machine_translated="true">Sleutel</string>
-  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Verifikasie tydens bekendstelling.</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Verifikasie tydens bekendstelling</string>
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Vereis vingerafdruk, gesigherkenning of toestel-PIN wanneer die toepassing oopgemaak word.</string>
   <string name="pref_security_category" tools:machine_translated="true">Veiligheid</string>
-  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot is gesluit.</string>
-  <string name="auth_screen_unlock_button" tools:machine_translated="true">Tik om te ontsluit.</string>
-  <string name="auth_prompt_title" tools:machine_translated="true">Ontsluit ConnectBot.</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot is gesluit</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">Tik om te ontsluit</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">Ontsluit ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Bevestig u identiteit om voort te gaan.</string>
 </resources>

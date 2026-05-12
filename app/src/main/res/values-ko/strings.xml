@@ -559,7 +559,7 @@
   <string name="auth_prompt_title">ConnectBot 잠금 해제</string>
   <string name="auth_prompt_subtitle">계속하려면 본인 정보를 확인하세요</string>
   <string name="pref_language_download" tools:machine_translated="true">언어팩 다운로드</string>
-  <string name="pref_language_download_failed" tools:machine_translated="true">다운로드에 실패했습니다. 다시 시도하려면 탭하세요.</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">다운로드에 실패했습니다. 다시 시도하려면 탭하세요</string>
   <string name="portforward_host_address" tools:machine_translated="true">호스트 주소</string>
   <string name="portforward_source_addr_localhost" tools:machine_translated="true">로컬 호스트</string>
   <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">로컬 호스트(IPv4만 해당)</string>

@@ -226,21 +226,21 @@
   <string name="pubkey_export_private" tools:machine_translated="true">Εξαγωγή ιδιωτικού κλειδιού</string>
   <string name="pubkey_export_private_openssh" tools:machine_translated="true">Εξαγωγή ιδιωτικού κλειδιού (OpenSSH)</string>
   <string name="pubkey_export_private_pem" tools:machine_translated="true">Εξαγωγή ιδιωτικού κλειδιού (σε μορφή PEM)</string>
-  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">Εξαγωγή του ιδιωτικού κλειδιού (κρυπτογραφημένο).</string>
+  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">Εξαγωγή του ιδιωτικού κλειδιού (κρυπτογραφημένο)</string>
   <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Ορίστε φράση πρόσβασης για εξαγωγή.</string>
   <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Εισαγάγετε μια φράση-κλειδί για να κρυπτογραφήσετε το κλειδί που πρόκειται να εξαχθεί.</string>
-  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Επιβεβαιώστε τον κωδικό πρόσβασης.</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Επιβεβαιώστε τον κωδικό πρόσβασης</string>
   <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Οι φράσεις πρόσβασης δεν ταιριάζουν.</string>
   <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Εισαγωγή κρυπτογραφημένου κλειδιού</string>
   <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Εισαγάγετε τον κωδικό πρόσβασης για να αποκρυπτογραφήσετε το κλειδί \'%1$s\' (τύπος: %2$s).</string>
   <string name="pubkey_import_button" tools:machine_translated="true">Εισαγωγή</string>
   <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Κρυπτογραφήστε το κλειδί για αποθήκευση.</string>
-  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Χρησιμοποιήστε τον ίδιο κωδικό πρόσβασης για την κρυπτογράφηση.</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Χρησιμοποιήστε τον ίδιο κωδικό πρόσβασης για την κρυπτογράφηση</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Νέος κωδικός πρόσβασης</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Επιβεβαιώστε τον κωδικό πρόσβασης</string>
   <string name="pubkey_list_empty" tools:machine_translated="true">Πατήστε «Μενού» για να δημιουργήσετε\nή να εισαγάγετε ζεύγη κλειδιών.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">Άγνωστη μορφή.</string>
-  <string name="pubkey_unlock_message" tools:machine_translated="true">Εισαγάγετε τον κωδικό πρόσβασης για να ξεκλειδώσετε το κλειδί \'%1$s\'.</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">Άγνωστη μορφή</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">Εισαγάγετε τον κωδικό πρόσβασης για να ξεκλειδώσετε το κλειδί \'%1$s\'</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">Υπάρχει ήδη ένα κλειδί με αυτό το ψευδώνυμο.</string>
   <string name="prompt_username" tools:machine_translated="true">Όνομα χρήστη:</string>
   <string name="host_key_verification_title" tools:machine_translated="true">Επαλήθευση κλειδιού κεντρικού υπολογιστή</string>
@@ -262,9 +262,9 @@
   <string name="font_validating" tools:machine_translated="true">Ελέγχεται η γραμματοσειρά…</string>
   <string name="font_downloading" tools:machine_translated="true">Λήψη γραμματοσειράς…</string>
   <string name="pref_localfont_title" tools:machine_translated="true">Εισαγωγή τοπικής γραμματοσειράς</string>
-  <string name="pref_localfont_summary" tools:machine_translated="true">Εισαγωγή ενός αρχείου γραμματοσειράς από την αποθηκευτική μονάδα (TTF, OTF).</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Εισαγωγή ενός αρχείου γραμματοσειράς από την αποθηκευτική μονάδα (TTF, OTF)</string>
   <string name="dialog_localfont_title" tools:machine_translated="true">Εισαγωγή γραμματοσειράς</string>
-  <string name="dialog_localfont_hint" tools:machine_translated="true">Όνομα εμφάνισης για τη γραμματοσειρά.</string>
+  <string name="dialog_localfont_hint" tools:machine_translated="true">Όνομα εμφάνισης για τη γραμματοσειρά</string>
   <string name="button_import" tools:machine_translated="true">Εισαγωγή</string>
   <string name="font_importing" tools:machine_translated="true">Εισαγωγή γραμματοσειράς…</string>
   <string name="pref_language_title" tools:machine_translated="true">Γλώσσα</string>
@@ -275,10 +275,10 @@
   <string name="pref_theme_system" tools:machine_translated="true">Προεπιλεγμένες ρυθμίσεις συστήματος</string>
   <string name="pref_theme_light" tools:machine_translated="true">Ανοιχτόχρωμο</string>
   <string name="pref_theme_dark" tools:machine_translated="true">Σκοτεινό</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Διατηρήστε τη σύνδεση στο παρασκήνιο.</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">Διατηρήστε τη σύνδεση στο παρασκήνιο</string>
   <string name="pref_conn_persist_summary" tools:machine_translated="true">Διατηρήστε τις συνεδρίες σας ενεργές, ακόμη και όταν μεταβαίνετε σε άλλες εφαρμογές.</string>
   <string name="pref_bell_summary" tools:machine_translated="true">Αναπαραγωγή ήχου κατά την εμφάνιση ειδοποίησης στο τερματικό.</string>
-  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Δόνηση κατά την εμφάνιση ειδοποίησης τερματικού.</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Δόνηση κατά την εμφάνιση ειδοποίησης τερματικού</string>
   <string name="color_red" tools:machine_translated="true">Κόκκινο</string>
   <string name="color_pink" tools:machine_translated="true">Ροζ</string>
   <string name="color_purple" tools:machine_translated="true">Μωβ</string>
@@ -346,11 +346,11 @@
   <string name="console_url_not_supported" tools:machine_translated="true">Αυτός ο τύπος διεύθυνσης URL δεν υποστηρίζεται.</string>
   <string name="portforward_save" tools:machine_translated="true">Αποθήκευση</string>
   <string name="list_host_duplicate" tools:machine_translated="true">Αντιγραφή κεντρικού υπολογιστή</string>
-  <string name="list_host_forget_keys" tools:machine_translated="true">Διαγραφή αποθηκευμένων κλειδιών για τον επιλεγμένο κεντρικό υπολογιστή.</string>
+  <string name="list_host_forget_keys" tools:machine_translated="true">Διαγραφή αποθηκευμένων κλειδιών για τον επιλεγμένο κεντρικό υπολογιστή</string>
   <string name="list_camera_text_input" tools:machine_translated="true">Εισαγωγή κειμένου</string>
   <string name="terminal_auth_saved_password" tools:machine_translated="true">Προσπαθώ να χρησιμοποιήσω τον αποθηκευμένο κωδικό πρόσβασης…</string>
   <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Η διαδικασία ελέγχου ταυτότητας με χρήση του αποθηκευμένου κωδικού πρόσβασης απέτυχε.</string>
-  <string name="terminal_auth_biometric" tools:machine_translated="true">Ζητείται βιομετρικός έλεγχος ταυτότητας για το κλειδί \'%1$s\'.</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">Ζητείται βιομετρικός έλεγχος ταυτότητας για το κλειδί \'%1$s\'</string>
   <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">Το βιομετρικό κλειδί \'%1$s\' έχει καταργηθεί. Αυτό μπορεί να συμβεί όταν καταχωρούνται νέα αποτυπώματα δακτύλων στη συσκευή. Παρακαλούμε, δημιουργήστε ένα νέο κλειδί.</string>
   <string name="list_color_schemes" tools:machine_translated="true">Χρωματικά θέματα</string>
   <string name="button_manage_schemes" tools:machine_translated="true">Διαχείριση χρωματικών θεμάτων</string>
@@ -373,11 +373,11 @@
   <string name="button_edit_palette" tools:machine_translated="true">Επεξεργασία παλέτας χρωμάτων</string>
   <string name="button_export_scheme" tools:machine_translated="true">Εξαγωγή χρωματικού συνόλου</string>
   <string name="button_import_scheme" tools:machine_translated="true">Εισαγωγή χρωματικού συνόλου</string>
-  <string name="message_export_success" tools:machine_translated="true">Εξήχθη το %1$s.</string>
-  <string name="message_import_success" tools:machine_translated="true">Εισήχθη το %1$s.</string>
+  <string name="message_export_success" tools:machine_translated="true">Εξήχθη το %1$s</string>
+  <string name="message_import_success" tools:machine_translated="true">Εισήχθη το %1$s</string>
   <string name="error_export_failed" tools:machine_translated="true">Αποfailed η εξαγωγή του σχεδίου: %1$s</string>
   <string name="error_import_failed" tools:machine_translated="true">Απέτυχε η εισαγωγή του προτύπου: %1$s</string>
-  <string name="error_invalid_json" tools:machine_translated="true">Μη έγκυρο αρχείο JSON.</string>
+  <string name="error_invalid_json" tools:machine_translated="true">Μη έγκυρο αρχείο JSON</string>
   <string name="title_palette_editor" tools:machine_translated="true">Επεξεργασία χρωματικής παλέτας</string>
   <string name="button_reset_all_colors" tools:machine_translated="true">Επαναφορά όλων στις προεπιλεγμένες ρυθμίσεις</string>
   <string name="section_ansi_colors" tools:machine_translated="true">Χρώματα ANSI (0–15)</string>
@@ -397,7 +397,7 @@
   <string name="section_color_preview" tools:machine_translated="true">Προεπισκόπηση</string>
   <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">Εισαγωγή κειμένου</string>
   <string name="terminal_text_input_dialog_title" tools:machine_translated="true">Εισαγωγή κειμένου</string>
-  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">Εισαγάγετε το κείμενο που θέλετε να στείλετε στην κονσόλα.</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">Εισαγάγετε το κείμενο που θέλετε να στείλετε στην κονσόλα</string>
   <string name="terminal_text_input_resize_handle" tools:machine_translated="true">Αλλαγή μεγέθους</string>
   <string name="console_menu_text_input" tools:machine_translated="true">Εισαγωγή κειμένου</string>
   <string name="button_send" tools:machine_translated="true">Αποστολή</string>
@@ -432,7 +432,7 @@
   <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Τα κρυπτογραφημένα κλειδιά δεν μπορούν να ξεκλειδωθούν κατά την εκκίνηση.</string>
   <string name="pubkey_type_label" tools:machine_translated="true">Τύπος: %s</string>
   <string name="pubkey_encrypted_description" tools:machine_translated="true">Κρυπτογραφημένο</string>
-  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Δεν είναι κρυπτογραφημένο.</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Δεν είναι κρυπτογραφημένο</string>
   <string name="pubkey_biometric_protection" tools:machine_translated="true">Προστασία μέσω δακτυλικού αποτυπώματος</string>
   <string name="pubkey_biometric_description" tools:machine_translated="true">Προστατέψτε αυτό το κλειδί χρησιμοποιώντας το δακτυλικό σας αποτύπωμα.</string>
   <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Δεν έχει καταχωριστεί κανένα δακτυλικό αποτύπωμα. Ρυθμίστε την καταχώριση δακτυλικού αποτυπώματος στις ρυθμίσεις της συσκευής για να χρησιμοποιήσετε αυτήν τη λειτουργία.</string>
@@ -444,7 +444,7 @@
   <string name="portforward_nickname_placeholder" tools:machine_translated="true">Εσωτερικός διακομιστής ιστού</string>
   <string name="portforward_port_range_error" tools:machine_translated="true">Η θύρα πρέπει να έχει τιμή μεταξύ 1 και 65535.</string>
   <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
-  <string name="portforward_destination_format_error" tools:machine_translated="true">Η μορφή πρέπει να είναι: διεύθυνση_διακομιστή:θύρα (π.χ., localhost:80).</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">Η μορφή πρέπει να είναι: διεύθυνση_διακομιστή:θύρα (π.χ., localhost:80)</string>
   <string name="portforward_host_address" tools:machine_translated="true">Διεύθυνση κεντρικού υπολογιστή</string>
   <string name="portforward_source_addr_localhost" tools:machine_translated="true">Τοπικός υπολογιστής</string>
   <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Τοπικός υπολογιστής (μόνο IPv4)</string>
@@ -463,10 +463,10 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Εισαγωγή από το πρόχειρο</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Περιεχόμενο του ιδιωτικού κλειδιού</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Επικόλληση από το πρόχειρο</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Διατηρήστε τη σύνδεση στο παρασκήνιο.</string>
+  <string name="notification_permission_title" tools:machine_translated="true">Διατηρήστε τη σύνδεση στο παρασκήνιο</string>
   <string name="notification_permission_message" tools:machine_translated="true">Το ConnectBot χρειάζεται άδεια για την αποστολή ειδοποιήσεων, ώστε να διατηρεί τις συνδέσεις σας ενεργές όταν αλλάζετε εφαρμογές. Χωρίς αυτήν, το σύστημα ενδέχεται να διακόψει τις συνδέσεις σας για να εξοικονομήσει μπαταρία.</string>
   <string name="grant_permission" tools:machine_translated="true">Επιτρέψτε</string>
-  <string name="connect_anyway" tools:machine_translated="true">Συνδέστε ούτως ή άλλως.</string>
+  <string name="connect_anyway" tools:machine_translated="true">Συνδέστε ούτως ή άλλως</string>
   <string name="notification_permission_denied_title" tools:machine_translated="true">Απαιτείται άδεια για τις ειδοποιήσεις.</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Για να διατηρήσετε τις συνδέσεις σας ενεργές στο παρασκήνιο, ενεργοποιήστε τις ειδοποιήσεις για την εφαρμογή ConnectBot στις ρυθμίσεις του συστήματος.</string>
   <string name="open_settings" tools:machine_translated="true">Άνοιγμα ρυθμίσεων</string>
@@ -499,7 +499,7 @@
   <string name="ipversion_ipv4" tools:machine_translated="true">Μόνο IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">Μόνο IPv6</string>
   <string name="hostpref_jumphost_title" tools:machine_translated="true">Κεντρικός διακομιστής σύνδεσης (ProxyJump)</string>
-  <string name="hostpref_jumphost_summary" tools:machine_translated="true">Συνδεθείτε μέσω ενός άλλου διακομιστή SSH.</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">Συνδεθείτε μέσω ενός άλλου διακομιστή SSH</string>
   <string name="list_jumphost_none" tools:machine_translated="true">Καμία (άμεση σύνδεση)</string>
   <string name="terminal_connecting_via_jump" tools:machine_translated="true">Σύνδεση μέσω ενδιάμεσου διακομιστή: %s</string>
   <string name="terminal_jump_connected" tools:machine_translated="true">Συνδέθηκα στον διακομιστή-γέφυρα: %s</string>
@@ -520,16 +520,16 @@
   <string name="help_website" tools:machine_translated="true">Ιστότοπος</string>
   <string name="help_github" tools:machine_translated="true">Κώδικας πηγής</string>
   <string name="help_report_bug" tools:machine_translated="true">Αναφέρετε ένα σφάλμα.</string>
-  <string name="help_section_donate" tools:machine_translated="true">Υποστηρίξτε την ανάπτυξη.</string>
+  <string name="help_section_donate" tools:machine_translated="true">Υποστηρίξτε την ανάπτυξη</string>
   <string name="help_donate_github" tools:machine_translated="true">Υποστηρικτές του GitHub</string>
-  <string name="help_donate_coffee" tools:machine_translated="true">Κάντε μια δωρεά για να με κεράσετε έναν καφέ.</string>
+  <string name="help_donate_coffee" tools:machine_translated="true">Κάντε μια δωρεά για να με κεράσετε έναν καφέ</string>
   <string name="colorscheme_default_description" tools:machine_translated="true">Προεπιλεγμένα χρώματα τερματικού</string>
   <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Ακριβή χρωματική απόδοση για μηχανές και ανθρώπους.</string>
   <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Χρωματική παλέτα Solarized με ανοιχτόχρωμο φόντο.</string>
   <string name="colorscheme_dracula_description" tools:machine_translated="true">Ένα σκούρο θέμα για το τερματικό.</string>
   <string name="colorscheme_nord_description" tools:machine_translated="true">Μια παλέτα χρωμάτων με αποχρώσεις του άσπρου, του μπλε και του γκρι, που θυμίζει το βόρειο σέλας.</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Χρωματική παλέτα σε ρετρό στυλ</string>
-  <string name="colorscheme_monokai_description" tools:machine_translated="true">Θέμα εμπνευσμένο από το Sublime Text.</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">Θέμα εμπνευσμένο από το Sublime Text</string>
   <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Ένα κομψό και άνετο σκούρο θέμα.</string>
   <string name="pref_profiles_category" tools:machine_translated="true">Προφίλ</string>
   <string name="pref_default_profile_title" tools:machine_translated="true">Προεπιλεγμένο προφίλ</string>
@@ -542,7 +542,7 @@
   <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Διαχείριση προσαρμοσμένων τύπων τερματικού</string>
   <string name="button_add_custom" tools:machine_translated="true">Προσθήκη προσαρμοσμένου…</string>
   <string name="button_manage_custom" tools:machine_translated="true">Διαχείριση προσαρμοσμένων…</string>
-  <string name="dialog_custom_value_label" tools:machine_translated="true">Εισαγάγετε μια προσαρμοσμένη τιμή.</string>
+  <string name="dialog_custom_value_label" tools:machine_translated="true">Εισαγάγετε μια προσαρμοσμένη τιμή</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A και μετά το πλήκτρο διαστήματος.</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
   <string name="list_camera_esc_description" tools:machine_translated="true">Esc</string>
@@ -565,11 +565,11 @@
   <string name="icon_style_server" tools:machine_translated="true">Διακομιστής</string>
   <string name="icon_style_cloud" tools:machine_translated="true">Σύννεφο</string>
   <string name="icon_style_key" tools:machine_translated="true">Κλειδί</string>
-  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Έλεγχος ταυτότητας κατά την εκκίνηση.</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Έλεγχος ταυτότητας κατά την εκκίνηση</string>
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Απαιτείται η χρήση δακτυλικού αποτυπώματος, αναγνώρισης προσώπου ή κωδικού PIN της συσκευής κατά το άνοιγμα της εφαρμογής.</string>
   <string name="pref_security_category" tools:machine_translated="true">Ασφάλεια</string>
   <string name="auth_screen_title" tools:machine_translated="true">Το ConnectBot είναι κλειδωμένο.</string>
-  <string name="auth_screen_unlock_button" tools:machine_translated="true">Πατήστε για να ξεκλειδώσετε.</string>
-  <string name="auth_prompt_title" tools:machine_translated="true">Ξεκλειδώστε το ConnectBot.</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">Πατήστε για να ξεκλειδώσετε</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">Ξεκλειδώστε το ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Επαληθεύστε την ταυτότητά σας για να συνεχίσετε.</string>
 </resources>

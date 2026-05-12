@@ -181,41 +181,41 @@
   <string name="pubkey_import_existing">Tuo nykyinen julkinen avain</string>
   <string name="app_copyright" tools:machine_translated="true">Tekijänoikeus © Kenny Root</string>
   <string name="title_eula" tools:machine_translated="true">Lisenssi</string>
-  <string name="title_color_picker" tools:machine_translated="true">Valitse väri.</string>
+  <string name="title_color_picker" tools:machine_translated="true">Valitse väri</string>
   <string name="keyboard_shortcuts" tools:machine_translated="true">Näppäinkomennot</string>
   <string name="increase_font_size" tools:machine_translated="true">Suurenna fonttikokoa</string>
   <string name="increase_font_shortcut" tools:machine_translated="true">Ctrl- ja plus-näppäin</string>
   <string name="decrease_font_size" tools:machine_translated="true">Pienennä fonttikokoa</string>
-  <string name="decrease_font_shortcut" tools:machine_translated="true">Ctrl-näppäin ja miinusmerkki (-)</string>
+  <string name="decrease_font_shortcut" tools:machine_translated="true">Ctrl-näppäin ja miinusmerkki -</string>
   <string name="paste_shortcut" tools:machine_translated="true">Ctrl+Shift+V</string>
   <string name="pubkey_copy_private_openssh" tools:machine_translated="true">Kopioi yksityinen avain (OpenSSH)</string>
   <string name="pubkey_copy_private_pem" tools:machine_translated="true">Kopioi yksityinen avain (PEM-muodossa)</string>
   <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">Kopioi yksityinen avain (salattu)</string>
   <string name="pubkey_export_public" tools:machine_translated="true">Vie julkinen avain tiedostoon.</string>
-  <string name="pubkey_export_private" tools:machine_translated="true">Vie yksityinen avain.</string>
+  <string name="pubkey_export_private" tools:machine_translated="true">Vie yksityinen avain</string>
   <string name="pubkey_export_private_openssh" tools:machine_translated="true">Vie yksityinen avain (OpenSSH-muodossa)</string>
   <string name="pubkey_export_private_pem" tools:machine_translated="true">Vie yksityinen avain (PEM-muodossa)</string>
-  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">Vie salattu yksityinen avain tiedostoon.</string>
-  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Määritä vientisalasana.</string>
+  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">Vie salattu yksityinen avain tiedostoon</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Määritä vientisalasana</string>
   <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Syötä salasana, jolla salataan vietävä avain.</string>
-  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Vahvista salasana.</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Vahvista salasana</string>
   <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Salasanat eivät täsmää.</string>
   <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Tuo salattu avain</string>
   <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Syötä salasana, jotta tuotu avaintiedosto \'%1$s\' (%2$s) voidaan purkaa.</string>
   <string name="pubkey_import_button" tools:machine_translated="true">Tuo avain</string>
-  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Salaa avain tallennusta varten.</string>
-  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Käytä samaa salasanaa salaukseen.</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Salaa avain tallennusta varten</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Käytä samaa salasanaa salaukseen</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Uusi salasana</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Vahvista salasana</string>
   <string name="pubkey_list_empty" tools:machine_translated="true">Napauta ”Valikko”, jotta voit luoda tai tuoda avainpareja.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">Tuntematon tiedostomuoto.</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">Tuntematon tiedostomuoto</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Syötä salasana avataksesi salatun avaimen \'%1$s\'.</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">Tällä nimellä on jo olemassa oleva avain.</string>
   <string name="prompt_username" tools:machine_translated="true">Käyttäjänimi:</string>
   <string name="host_key_verification_title" tools:machine_translated="true">Isäntäavaimen tarkistus</string>
   <string name="fingerprint_format_header" tools:machine_translated="true">Sormenjälkitiedostomuoto</string>
   <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d bittiä</string>
-  <string name="fingerprint_copy_description" tools:machine_translated="true">Kopioi sormenjälkitiedot leikepöydälle.</string>
+  <string name="fingerprint_copy_description" tools:machine_translated="true">Kopioi sormenjälkitiedot leikepöydälle</string>
   <string name="network_lost_grace_period" tools:machine_translated="true">Yhteys katkaistu, yritetään muodostaa yhteys uudelleen…</string>
   <string name="network_grace_period_expired" tools:machine_translated="true">Verkkoyhteyttä ei ole palautettu, katkaistaan yhteys…</string>
   <string name="network_restored_same_ip" tools:machine_translated="true">Verkkoyhteys palautettu, yhteys säilytetty</string>
@@ -231,7 +231,7 @@
   <string name="font_validating" tools:machine_translated="true">Fontin tarkistus käynnissä…</string>
   <string name="font_downloading" tools:machine_translated="true">Ladataan fonttia…</string>
   <string name="pref_localfont_title" tools:machine_translated="true">Tuo paikallinen fontti</string>
-  <string name="pref_localfont_summary" tools:machine_translated="true">Tuo fonttitiedosto paikallisesta tallennustilasta (TTF, OTF).</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Tuo fonttitiedosto paikallisesta tallennustilasta (TTF, OTF)</string>
   <string name="dialog_localfont_title" tools:machine_translated="true">Tuo fontti</string>
   <string name="dialog_localfont_hint" tools:machine_translated="true">Fontin näkyvä nimi</string>
   <string name="button_import" tools:machine_translated="true">Tuo sisään</string>
@@ -257,7 +257,7 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Ohjelmistopohjaisissa näppäimistöissä numeronäppäimet lähettävät yhdessä Ctrl-näppäimen kanssa F1–F10-näppäinkomentoja.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Äänenvoimakkuuspainikkeilla muutetaan fontin kokoa.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Fonttikokoa voi muuttaa myös profiiliasetuksissa.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Pidä yhteys yllä taustalla.</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">Pidä yhteys yllä taustalla</string>
   <string name="pref_conn_persist_summary" tools:machine_translated="true">Pidä istuntosi aktiivisena, vaikka vaihtaisit muihin sovelluksiin.</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Kiinteät muokkaimet</string>
   <string name="only_alt" tools:machine_translated="true">Vain Alt-näppäin</string>
@@ -282,7 +282,7 @@
   <string name="color_gray" tools:machine_translated="true">Harmaa</string>
   <string name="hostpref_fontfamily_title" tools:machine_translated="true">Fontti</string>
   <string name="hostpref_colorscheme_title" tools:machine_translated="true">Pääteohjelman väriteema</string>
-  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Sulje yhteys katketessaan.</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Sulje yhteys katketessaan</string>
   <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Sulje välittömästi etäyhteyden katkeamisen jälkeen ilman erillistä kehotetta.</string>
   <string name="hostpref_save_password_summary" tools:machine_translated="true">Tallenna kirjautumissalasana turvallisesti, jotta automaattinen tunnistautuminen on mahdollista.</string>
   <string name="hostpref_password_title" tools:machine_translated="true">Salasana</string>
@@ -291,7 +291,7 @@
   <string name="hostpref_profile_title" tools:machine_translated="true">Profiili</string>
   <string name="hostpref_profile_summary" tools:machine_translated="true">Valitse profiili, jotta voit käyttää sen terminaaliasetuksia.</string>
   <string name="hostpref_profile_none" tools:machine_translated="true">Ei valittu (käytetään isäntäkohtaisia asetuksia)</string>
-  <string name="profile_controlled_setting" tools:machine_translated="true">Hallinnoidaan profiilin kautta.</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">Hallinnoidaan profiilin kautta</string>
   <string name="font_use_default" tools:machine_translated="true">Käytä oletusarvoa</string>
   <string name="font_system_default" tools:machine_translated="true">Oletus (kiinteälevyinen)</string>
   <string name="pubkey_unknown" tools:machine_translated="true">Tuntematon avain</string>
@@ -330,14 +330,14 @@
   <string name="profile_summary_emulation" tools:machine_translated="true">Emulointi: %s</string>
   <string name="console_menu_reconnect" tools:machine_translated="true">Yhdistä uudelleen</string>
   <string name="console_url_no_handler" tools:machine_translated="true">Laitteessa ei ole sovellusta, joka voisi avata tämän linkin.</string>
-  <string name="console_url_not_supported" tools:machine_translated="true">Tämä URL-tyyppi ei ole tuettu.</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">Tämä URL-tyyppi ei ole tuettu</string>
   <string name="portforward_save" tools:machine_translated="true">Tallenna</string>
   <string name="list_menu_disconnect" tools:machine_translated="true">Katkaise yhteys kaikista</string>
   <string name="list_host_duplicate" tools:machine_translated="true">Luo kopio isännästä</string>
   <string name="list_host_forget_keys" tools:machine_translated="true">Poista tallennetut isäntäavaimet</string>
   <string name="list_camera_text_input" tools:machine_translated="true">Tekstin syöttö</string>
   <string name="disconnect_all_message" tools:machine_translated="true">Oletko varma, että haluat katkaista yhteyden kaikkiin yhdistettyihin palvelimiin?</string>
-  <string name="disconnect_all_pos" tools:machine_translated="true">Kyllä, katkaise yhteys.</string>
+  <string name="disconnect_all_pos" tools:machine_translated="true">Kyllä, katkaise yhteys</string>
   <string name="disconnect_all_neg" tools:machine_translated="true">Peruuta</string>
   <string name="terminal_kex_algorithm" tools:machine_translated="true">Avaintenvaihtoalgoritmi: %s</string>
   <string name="terminal_auth_saved_password" tools:machine_translated="true">Yritetään käyttää tallennettua salasanaa…</string>
@@ -366,10 +366,10 @@
   <string name="button_export_scheme" tools:machine_translated="true">Vie värimaailma</string>
   <string name="button_import_scheme" tools:machine_translated="true">Tuo värimaailma</string>
   <string name="message_export_success" tools:machine_translated="true">%1$s on viety onnistuneesti.</string>
-  <string name="message_import_success" tools:machine_translated="true">%1$s on tuotu onnistuneesti.</string>
+  <string name="message_import_success" tools:machine_translated="true">%1$s on tuotu onnistuneesti</string>
   <string name="error_export_failed" tools:machine_translated="true">Mallin vienti epäonnistui: %1$s</string>
   <string name="error_import_failed" tools:machine_translated="true">Mallin tuonti epäonnistui: %1$s</string>
-  <string name="error_invalid_json" tools:machine_translated="true">Virheellinen JSON-tiedosto.</string>
+  <string name="error_invalid_json" tools:machine_translated="true">Virheellinen JSON-tiedosto</string>
   <string name="title_palette_editor" tools:machine_translated="true">Muokkaa väripalettia</string>
   <string name="button_reset_all_colors" tools:machine_translated="true">Palauta kaikki oletusasetuksiin</string>
   <string name="section_ansi_colors" tools:machine_translated="true">ANSI-värit (0–15)</string>
@@ -432,19 +432,19 @@
   <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Salattuja avaimia ei voida avata käynnistyksen yhteydessä.</string>
   <string name="pubkey_type_label" tools:machine_translated="true">Tyyppi: %s</string>
   <string name="pubkey_encrypted_description" tools:machine_translated="true">Salattu</string>
-  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Ei ole salattu.</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Ei ole salattu</string>
   <string name="pubkey_biometric_protection" tools:machine_translated="true">Sormenjälkitunnistus</string>
-  <string name="pubkey_biometric_description" tools:machine_translated="true">Suojaa tämä salasana sormenjäljelläsi.</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">Suojaa tämä salasana sormenjäljelläsi</string>
   <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Sormenjälkitietoja ei ole tallennettu. Määritä sormenjälkitunnistus laitteen asetuksissa, jotta voit käyttää tätä toimintoa.</string>
   <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Sormenjälkitunnistus on käytettävissä vain RSA- ja EC-avaimille.</string>
   <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Vahvista henkilöllisyytesi, jotta voit käyttää avainta.</string>
   <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Kosketa sormenjälkitunnistinta avataksesi \'%1$s\'.</string>
-  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Suojattu sormenjälkitunnistuksella.</string>
+  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Suojattu sormenjälkitunnistuksella</string>
   <string name="pubkey_biometric_not_available" tools:machine_translated="true">Sormenjälkitunnistus ei ole käytettävissä.</string>
   <string name="portforward_nickname_placeholder" tools:machine_translated="true">Sisäinen verkkopalvelin</string>
   <string name="portforward_port_range_error" tools:machine_translated="true">Portin arvon tulee olla välillä 1–65535.</string>
   <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
-  <string name="portforward_destination_format_error" tools:machine_translated="true">Muodon tulee olla host:portti (esim. localhost:80).</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">Muodon tulee olla host:portti (esim. localhost:80)</string>
   <string name="portforward_host_address" tools:machine_translated="true">Palvelimen osoite</string>
   <string name="portforward_source_addr_localhost" tools:machine_translated="true">Paikallinen palvelin</string>
   <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Paikallinen palvelin (vain IPv4)</string>
@@ -463,11 +463,11 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Tuo leikepöydältä</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Yksityisen avaimen sisältö</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Liitä leikepöydältä</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Yhteys säilytetään taustalla.</string>
+  <string name="notification_permission_title" tools:machine_translated="true">Yhteys säilytetään taustalla</string>
   <string name="notification_permission_message" tools:machine_translated="true">ConnectBot tarvitsee ilmoitusluvan, jotta yhteytesi pysyvät aktiivisina, kun vaihdat sovelluksia. Ilman tätä järjestelmä saattaa katkaista yhteytesi säästääkseen akkua.</string>
   <string name="grant_permission" tools:machine_translated="true">Salli</string>
   <string name="connect_anyway" tools:machine_translated="true">Jatka yhdistämistä, vaikka ilmoitusoikeutta ei myönnetä.</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Ilmoituslupa vaaditaan.</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">Ilmoituslupa vaaditaan</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Jotta yhteytesi pysyisivät aktiivisina taustalla, ota käyttöön ConnectBot-sovelluksen ilmoitukset järjestelmäasetuksissa.</string>
   <string name="open_settings" tools:machine_translated="true">Avaa asetukset</string>
   <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Yhteydet voivat katkaista ilman ilmoituslupaa.</string>
@@ -475,13 +475,13 @@
   <string name="terminal_no_route" tools:machine_translated="true">Yritätkö muodostaa yhteyttä paikalliseen palvelimeen? Anna paikallisen verkon käyttöoikeudet.</string>
   <string name="loading_message" tools:machine_translated="true">Ladataan…</string>
   <string name="migration_checking" tools:machine_translated="true">Tarkistetaan tietokantaa…</string>
-  <string name="migration_title" tools:machine_translated="true">Tietokannan siirto.</string>
+  <string name="migration_title" tools:machine_translated="true">Tietokannan siirto</string>
   <string name="migration_warning" tools:machine_translated="true">Älä sulje sovellusta siirron aikana.</string>
   <string name="migration_stats_hosts" tools:machine_translated="true">Siirrettyjen palvelimien määrä: %d</string>
   <string name="migration_stats_pubkeys" tools:machine_translated="true">Siirrettyjen SSH-avaimien määrä: %d</string>
   <string name="migration_stats_port_forwards" tools:machine_translated="true">Siirrettyjen porttiohjauksien määrä: %d</string>
   <string name="migration_stats_known_hosts" tools:machine_translated="true">Siirrettyjen tunnettujen palvelimien määrä: %d</string>
-  <string name="migration_failed_title" tools:machine_translated="true">Siirto epäonnistui.</string>
+  <string name="migration_failed_title" tools:machine_translated="true">Siirto epäonnistui</string>
   <string name="migration_failed_message" tools:machine_translated="true">Tietokannan siirron aikana tapahtui virhe: %s</string>
   <string name="migration_retry" tools:machine_translated="true">Yritä uudelleen</string>
   <string name="migration_failed_help" tools:machine_translated="true">Jos ongelma jatkuu, ilmoita siitä osoitteessa %1$s ja liitä mukaan yllä oleva virheenkorjausloki.</string>
@@ -511,9 +511,9 @@
   <string name="view_logs" tools:machine_translated="true">Näytä lokitiedot</string>
   <string name="logs_title" tools:machine_translated="true">Sovelluksen lokit</string>
   <string name="copy_logs" tools:machine_translated="true">Kopioi lokitiedot</string>
-  <string name="logs_copied" tools:machine_translated="true">Lokit kopioitu leikepöydälle.</string>
+  <string name="logs_copied" tools:machine_translated="true">Lokit kopioitu leikepöydälle</string>
   <string name="logs_bug_report_info" tools:machine_translated="true">Ilmoittaaksesi virheestä, kopioi nämä lokitiedostot ja luo uusi ongelmaraportti osoitteessa https://connectbot.org/bug.</string>
-  <string name="no_logs_available" tools:machine_translated="true">Lokitiedostoja ei ole saatavilla.</string>
+  <string name="no_logs_available" tools:machine_translated="true">Lokitiedostoja ei ole saatavilla</string>
   <string name="help_section_about" tools:machine_translated="true">Tietoja</string>
   <string name="title_contact" tools:machine_translated="true">Ota yhteyttä ja pyydä tukea</string>
   <string name="help_section_contact" tools:machine_translated="true">Yhteystiedot ja tuki</string>
@@ -526,11 +526,11 @@
   <string name="colorscheme_default_description" tools:machine_translated="true">Oletusvärit terminaalissa</string>
   <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Tarkat värit koneille ja ihmisille</string>
   <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarized-väriteema, jossa on vaalea tausta.</string>
-  <string name="colorscheme_dracula_description" tools:machine_translated="true">Tumma teema terminaalille.</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">Tumma teema terminaalille</string>
   <string name="colorscheme_nord_description" tools:machine_translated="true">Arktinen, pohjoisen siniseen vivahtava väripaletti.</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Retro-tyylinen värimaailma</string>
-  <string name="colorscheme_monokai_description" tools:machine_translated="true">Sublime Text -ohjelmasta inspiroitunut teema.</string>
-  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Selkeä ja miellyttävä tumma teema.</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">Sublime Text -ohjelmasta inspiroitunut teema</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Selkeä ja miellyttävä tumma teema</string>
   <string name="pref_profiles_category" tools:machine_translated="true">Profiilit</string>
   <string name="pref_default_profile_title" tools:machine_translated="true">Oletusprofiili</string>
   <string name="pref_default_profile_none" tools:machine_translated="true">Ei mitään (käytä isäntäjärjestelmän asetuksia)</string>
@@ -559,7 +559,7 @@
   <string name="shortcut_customize_title" tools:machine_translated="true">Muokkaa pikakuvaketta</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Ikonin väri</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Ikonin tyyli</string>
-  <string name="shortcut_use_host_color" tools:machine_translated="true">Käytä isännän määrittämää väriä.</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">Käytä isännän määrittämää väriä</string>
   <string name="shortcut_create" tools:machine_translated="true">Luo pikakuvake</string>
   <string name="icon_style_terminal" tools:machine_translated="true">Pääte</string>
   <string name="icon_style_server" tools:machine_translated="true">Palvelin</string>
@@ -568,8 +568,8 @@
   <string name="pref_auth_on_launch_title" tools:machine_translated="true">Vahvistus sovelluksen käynnistyessä</string>
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Vaadi sormenjälkitunnistus, kasvojentunnistus tai laitteen PIN-koodi, kun sovellus avataan.</string>
   <string name="pref_security_category" tools:machine_translated="true">Turvallisuus</string>
-  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot on lukittu.</string>
-  <string name="auth_screen_unlock_button" tools:machine_translated="true">Napauta avataksesi.</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot on lukittu</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">Napauta avataksesi</string>
   <string name="auth_prompt_title" tools:machine_translated="true">Avaa ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Vahvista henkilöllisyytesi jatkaaksesi.</string>
 </resources>

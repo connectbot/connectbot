@@ -151,15 +151,15 @@
   <string name="image_description_show_keyboard">Billentyűzet megmutatása</string>
   <string name="app_copyright" tools:machine_translated="true">Szerzői jog © Kenny Root</string>
   <string name="title_eula" tools:machine_translated="true">Licenc</string>
-  <string name="title_color_picker" tools:machine_translated="true">Válassz ki egy színt!</string>
+  <string name="title_color_picker" tools:machine_translated="true">Válassz ki egy színt</string>
   <string name="title_settings" tools:machine_translated="true">Beállítások</string>
   <string name="title_pubkey_generate" tools:machine_translated="true">Generálás</string>
   <string name="terms_and_conditions" tools:machine_translated="true">Felhasználási feltételek</string>
   <string name="hints" tools:machine_translated="true">Tippek</string>
   <string name="keyboard_shortcuts" tools:machine_translated="true">Billentyűparancsok</string>
-  <string name="increase_font_size" tools:machine_translated="true">Növeld a betűméretet.</string>
+  <string name="increase_font_size" tools:machine_translated="true">Növeld a betűméretet</string>
   <string name="increase_font_shortcut" tools:machine_translated="true">Ctrl és +</string>
-  <string name="decrease_font_size" tools:machine_translated="true">Csökkentse a betűméretet.</string>
+  <string name="decrease_font_size" tools:machine_translated="true">Csökkentse a betűméretet</string>
   <string name="decrease_font_shortcut" tools:machine_translated="true">Ctrl és a mínuszjel (-)</string>
   <string name="paste_shortcut" tools:machine_translated="true">Ctrl+Shift+V</string>
   <string name="pubkey_copy_private_openssh" tools:machine_translated="true">Másold a privát kulcsot (OpenSSH formátumban)</string>
@@ -169,16 +169,16 @@
   <string name="pubkey_export_private" tools:machine_translated="true">Exportálja a privát kulcsot</string>
   <string name="pubkey_export_private_openssh" tools:machine_translated="true">Magánkulcs exportálása (OpenSSH formátumban)</string>
   <string name="pubkey_export_private_pem" tools:machine_translated="true">Magánkulcs exportálása (PEM formátumban)</string>
-  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">Exportálja a privát kulcsot (titkosítva).</string>
-  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Állíts be egy exportálási jelszót.</string>
+  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">Exportálja a privát kulcsot (titkosítva)</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Állíts be egy exportálási jelszót</string>
   <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Adjon meg egy jelszót a kivitt kulcs titkosításához.</string>
   <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Megerősítés: adjuk meg újra a jelszót.</string>
   <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">A jelszavak nem egyeznek.</string>
   <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Titkosított kulcs importálása</string>
   <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Adja meg a jelszót a(z) \'%1$s\' (%2$s) típusú kulcsfájl visszafejtéséhez.</string>
   <string name="pubkey_import_button" tools:machine_translated="true">Importálás</string>
-  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Titkosítsa a kulcsot a tárolás előtt.</string>
-  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Használja ugyanazt a jelszót a titkosításhoz.</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Titkosítsa a kulcsot a tárolás előtt</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Használja ugyanazt a jelszót a titkosításhoz</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Új jelszó</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Jelszó megerősítése</string>
   <string name="pubkey_list_empty" tools:machine_translated="true">Érintse meg a „Menü” gombot a kulcspárok létrehozásához vagy importálásához.</string>
@@ -186,7 +186,7 @@
   <string name="pubkey_unlock_message" tools:machine_translated="true">Adja meg a jelszót a(z) \'%1$s\' kulcs feloldásához.</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">Már létezik egy kulcs ezzel a felhasználónévvel.</string>
   <string name="prompt_username" tools:machine_translated="true">Felhasználónév:</string>
-  <string name="host_key_verification_title" tools:machine_translated="true">A szerverkulcs ellenőrzése.</string>
+  <string name="host_key_verification_title" tools:machine_translated="true">A szerverkulcs ellenőrzése</string>
   <string name="fingerprint_format_header" tools:machine_translated="true">Ujjlenyomat-formátum</string>
   <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d bit</string>
   <string name="fingerprint_copy_description" tools:machine_translated="true">Másold a digitális ujjlenyomatot a vágólapra.</string>
@@ -207,7 +207,7 @@
   <string name="pref_localfont_title" tools:machine_translated="true">Helyi betűtípus importálása</string>
   <string name="pref_localfont_summary" tools:machine_translated="true">Töltsön be egy betűtípus-fájlt a tárolóból (TTF, OTF).</string>
   <string name="dialog_localfont_title" tools:machine_translated="true">Betűtípus importálása</string>
-  <string name="dialog_localfont_hint" tools:machine_translated="true">A betűtípus megjelenítendő neve.</string>
+  <string name="dialog_localfont_hint" tools:machine_translated="true">A betűtípus megjelenítendő neve</string>
   <string name="button_import" tools:machine_translated="true">Betöltés</string>
   <string name="font_importing" tools:machine_translated="true">A betűtípus importálása…</string>
   <string name="pref_backupkeys_title" tools:machine_translated="true">Publikus kulcsok biztonsági másolata</string>
@@ -232,13 +232,13 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">A szoftveres billentyűzeteken a számbillentyűk a Ctrl billentyűvel együtt az F1–F10 funkcióbillentyűket aktiválják.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">A hangerőszabályzó gombokkal megváltoztatható a betűméret.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">A betűméret a profilbeállításokban is módosítható.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Maradjon kapcsolódva a háttérben.</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">Maradjon kapcsolódva a háttérben</string>
   <string name="pref_conn_persist_summary" tools:machine_translated="true">Tartsa nyitva a munkameneteit még akkor is, ha más alkalmazásokra vált.</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Rögzített módosítók</string>
   <string name="only_alt" tools:machine_translated="true">Csak az Alt billentyű</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">A nyílbillentyűk használatakor vibráljon a készülék; hasznos lehet, ha a kapcsolat lassú.</string>
   <string name="pref_bell_summary" tools:machine_translated="true">Játsszon le hangot, amikor a terminál riasztása aktiválódik.</string>
-  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Vibrálás terminális riasztás esetén.</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Vibrálás terminális riasztás esetén</string>
   <string name="color_red" tools:machine_translated="true">Piros</string>
   <string name="color_pink" tools:machine_translated="true">Rózsaszín</string>
   <string name="color_purple" tools:machine_translated="true">Lila</string>
@@ -262,14 +262,14 @@
   <string name="hostpref_save_password_summary" tools:machine_translated="true">Tárolja biztonságosan a bejelentkezési jelszót az automatikus hitelesítéshez.</string>
   <string name="hostpref_password_title" tools:machine_translated="true">Jelszó</string>
   <string name="hostpref_password_unchanged" tools:machine_translated="true">Jelszó (nem változott)</string>
-  <string name="hostpref_clear_password" tools:machine_translated="true">Törölje a mentett jelszót.</string>
+  <string name="hostpref_clear_password" tools:machine_translated="true">Törölje a mentett jelszót</string>
   <string name="hostpref_profile_title" tools:machine_translated="true">Profil</string>
   <string name="hostpref_profile_summary" tools:machine_translated="true">Válasszon ki egy profilt, hogy az adott profil beállításai kerüljenek alkalmazásra.</string>
   <string name="hostpref_profile_none" tools:machine_translated="true">Nincs (a rendszer a szerver beállításait használja)</string>
-  <string name="profile_controlled_setting" tools:machine_translated="true">A profil által vezérelt.</string>
-  <string name="font_use_default" tools:machine_translated="true">Használd az alapértelmezett beállítást.</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">A profil által vezérelt</string>
+  <string name="font_use_default" tools:machine_translated="true">Használd az alapértelmezett beállítást</string>
   <string name="font_system_default" tools:machine_translated="true">Alapértelmezett (egységes szélességű betűtípus)</string>
-  <string name="pubkey_unknown" tools:machine_translated="true">Ismeretlen kulcs.</string>
+  <string name="pubkey_unknown" tools:machine_translated="true">Ismeretlen kulcs</string>
   <string name="colorscheme_default" tools:machine_translated="true">Alapértelmezett</string>
   <string name="profile_editor_title_new" tools:machine_translated="true">Új profil</string>
   <string name="profile_editor_title_edit" tools:machine_translated="true">Profil szerkesztése</string>
@@ -305,7 +305,7 @@
   <string name="profile_summary_emulation" tools:machine_translated="true">Emuláció: %s</string>
   <string name="console_menu_reconnect" tools:machine_translated="true">Újrakapcsolódás</string>
   <string name="console_url_no_handler" tools:machine_translated="true">Nincs olyan alkalmazás az eszközön, amely meg tudná nyitni ezt az URL-t.</string>
-  <string name="console_url_not_supported" tools:machine_translated="true">Ez az URL-típus nem támogatott.</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">Ez az URL-típus nem támogatott</string>
   <string name="portforward_save" tools:machine_translated="true">Mentés</string>
   <string name="list_menu_disconnect" tools:machine_translated="true">Minden kapcsolat bontása</string>
   <string name="list_host_duplicate" tools:machine_translated="true">A kiválasztott gazdagép másolása</string>
@@ -340,11 +340,11 @@
   <string name="button_edit_palette" tools:machine_translated="true">Színpaletta szerkesztése</string>
   <string name="button_export_scheme" tools:machine_translated="true">Színséma exportálása</string>
   <string name="button_import_scheme" tools:machine_translated="true">Színséma importálása</string>
-  <string name="message_export_success" tools:machine_translated="true">A(z) %1$s sikeresen exportálva.</string>
-  <string name="message_import_success" tools:machine_translated="true">A(z) %1$s sikeresen importálva.</string>
+  <string name="message_export_success" tools:machine_translated="true">A(z) %1$s sikeresen exportálva</string>
+  <string name="message_import_success" tools:machine_translated="true">A(z) %1$s sikeresen importálva</string>
   <string name="error_export_failed" tools:machine_translated="true">A séma exportálása sikertelen: %1$s</string>
   <string name="error_import_failed" tools:machine_translated="true">A séma importálása sikertelen: %1$s</string>
-  <string name="error_invalid_json" tools:machine_translated="true">Érvénytelen JSON-fájl.</string>
+  <string name="error_invalid_json" tools:machine_translated="true">Érvénytelen JSON-fájl</string>
   <string name="title_palette_editor" tools:machine_translated="true">Színpaletta szerkesztése</string>
   <string name="button_reset_all_colors" tools:machine_translated="true">Állíts vissza mindent az alapértelmezett értékekre.</string>
   <string name="section_ansi_colors" tools:machine_translated="true">ANSI színek (0–15)</string>
@@ -395,10 +395,10 @@
   <string name="terminal_text_input_resize_handle" tools:machine_translated="true">Átméretezés</string>
   <string name="console_menu_text_input" tools:machine_translated="true">Szöveges bemenet</string>
   <string name="button_send" tools:machine_translated="true">Küldés</string>
-  <string name="button_ok" tools:machine_translated="true">Rendben.</string>
+  <string name="button_ok" tools:machine_translated="true">Rendben</string>
   <string name="button_close" tools:machine_translated="true">Bezárás</string>
   <string name="button_back" tools:machine_translated="true">Vissza</string>
-  <string name="button_navigate_up" tools:machine_translated="true">Lépjen egy szinttel fel!</string>
+  <string name="button_navigate_up" tools:machine_translated="true">Lépjen egy szinttel fel</string>
   <string name="button_more_options" tools:machine_translated="true">További lehetőségek</string>
   <string name="button_host_options" tools:machine_translated="true">Vendéglátói beállítások</string>
   <string name="button_collapse" tools:machine_translated="true">Összecsukás</string>
@@ -426,9 +426,9 @@
   <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">A titkosított kulcsok nem nyithatók meg a rendszerindításkor.</string>
   <string name="pubkey_type_label" tools:machine_translated="true">Típus: %s</string>
   <string name="pubkey_encrypted_description" tools:machine_translated="true">Titkosított</string>
-  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Nincs titkosítva.</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Nincs titkosítva</string>
   <string name="pubkey_biometric_protection" tools:machine_translated="true">Ujjlenyomat-védelem</string>
-  <string name="pubkey_biometric_description" tools:machine_translated="true">Védje ezt a kulcsot ujjlenyomatával.</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">Védje ezt a kulcsot ujjlenyomatával</string>
   <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Nincs bejegyzett ujjlenyomat. A funkció használatához állítsa be az ujjlenyomat-azonosítást az eszköz beállításai között.</string>
   <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Az ujjlenyomat-védelem csak RSA és EC kulcsokhoz érhető el.</string>
   <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">A kulcs használatához hitelesítse magát.</string>
@@ -438,7 +438,7 @@
   <string name="portforward_nickname_placeholder" tools:machine_translated="true">Belső webszerver</string>
   <string name="portforward_port_range_error" tools:machine_translated="true">A portszám 1 és 65535 között kell, hogy legyen.</string>
   <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
-  <string name="portforward_destination_format_error" tools:machine_translated="true">A formátum a következő kell, hogy legyen: hosztnév:port (pl. localhost:80).</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">A formátum a következő kell, hogy legyen: hosztnév:port (pl. localhost:80)</string>
   <string name="portforward_host_address" tools:machine_translated="true">Szerver címe</string>
   <string name="portforward_source_addr_localhost" tools:machine_translated="true">Helyi hoszt</string>
   <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Helyi hálózat (csak IPv4)</string>
@@ -452,7 +452,7 @@
   <string name="portforward_enable" tools:machine_translated="true">Engedélyezés</string>
   <string name="portforward_disable" tools:machine_translated="true">Tiltás</string>
   <string name="portforward_enabled" tools:machine_translated="true">A portátadás engedélyezve.</string>
-  <string name="portforward_disabled" tools:machine_translated="true">A portátalakítás letiltva.</string>
+  <string name="portforward_disabled" tools:machine_translated="true">A portátalakítás letiltva</string>
   <string name="protocol_spinner_label" tools:machine_translated="true">Protokoll</string>
   <string name="expand" tools:machine_translated="true">Bontsd ki</string>
   <string name="hostpref_authagent_with_confirmation" tools:machine_translated="true">igényli a megerősítést</string>
@@ -463,13 +463,13 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Másolás a vágólapról</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Privát kulcs tartalma</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Másolás a vágólapról</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Maradjon kapcsolódva a háttérben.</string>
+  <string name="notification_permission_title" tools:machine_translated="true">Maradjon kapcsolódva a háttérben</string>
   <string name="notification_permission_message" tools:machine_translated="true">A ConnectBot alkalmazásnak értesítési engedélyre van szüksége ahhoz, hogy a kapcsolatok aktívak maradjanak, amikor alkalmazásokat váltasz. Enélkül a rendszer leállíthatja a kapcsolatokat az akkumulátor élettartamának megőrzése érdekében.</string>
   <string name="grant_permission" tools:machine_translated="true">Engedélyezem</string>
-  <string name="connect_anyway" tools:machine_translated="true">Csatlakozzon így is.</string>
+  <string name="connect_anyway" tools:machine_translated="true">Csatlakozzon így is</string>
   <string name="notification_permission_denied_title" tools:machine_translated="true">Szükséges a push-értesítések engedélyezése.</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Ahhoz, hogy a ConnectBot alkalmazás a háttérben is fenntarthassa a kapcsolatot, kérjük, engedélyezze az értesítéseket a rendszerbeállításokban.</string>
-  <string name="open_settings" tools:machine_translated="true">Nyissa meg a beállításokat.</string>
+  <string name="open_settings" tools:machine_translated="true">Nyissa meg a beállításokat</string>
   <string name="notification_permission_denied_snackbar" tools:machine_translated="true">A kapcsolatok megszakadhatnak, ha nem adod meg az értesítési engedélyt.</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">A kapcsolat megszakadhat, ha az alkalmazás háttérben fut.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Szeretne hozzáférni egy helyi hálózaton lévő számítógéphez? Engedélyezze a helyi hálózati jogosultságokat.</string>
@@ -481,7 +481,7 @@
   <string name="migration_stats_pubkeys" tools:machine_translated="true">Áttelepített SSH-kulcsok: %d</string>
   <string name="migration_stats_port_forwards" tools:machine_translated="true">Áttelepített porttovábbítások: %d</string>
   <string name="migration_stats_known_hosts" tools:machine_translated="true">Áttelepített ismert szerverek száma: %d</string>
-  <string name="migration_failed_title" tools:machine_translated="true">A migrálás sikertelen volt.</string>
+  <string name="migration_failed_title" tools:machine_translated="true">A migrálás sikertelen volt</string>
   <string name="migration_failed_message" tools:machine_translated="true">Hiba történt az adatbázis migrálása során: %s</string>
   <string name="migration_retry" tools:machine_translated="true">Újrapróbál</string>
   <string name="migration_failed_help" tools:machine_translated="true">Ha a probléma továbbra is fennáll, kérjük, jelezze azt a %1$s oldalon, és csatolja hozzá a fent másolt hibakeresési naplót.</string>
@@ -499,7 +499,7 @@
   <string name="ipversion_ipv4" tools:machine_translated="true">Csak IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">Csak IPv6</string>
   <string name="hostpref_jumphost_title" tools:machine_translated="true">Ugró szerver (ProxyJump)</string>
-  <string name="hostpref_jumphost_summary" tools:machine_translated="true">Csatlakozzon egy másik SSH-hoszton keresztül.</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">Csatlakozzon egy másik SSH-hoszton keresztül</string>
   <string name="list_jumphost_none" tools:machine_translated="true">Nincs (közvetlen kapcsolat)</string>
   <string name="terminal_connecting_via_jump" tools:machine_translated="true">Csatlakozás egy átmeneti szerveren keresztül: %s</string>
   <string name="terminal_jump_connected" tools:machine_translated="true">Csatlakozás a hálózati átjáróhoz: %s</string>
@@ -513,23 +513,23 @@
   <string name="copy_logs" tools:machine_translated="true">Másold a naplóbejegyzéseket</string>
   <string name="logs_copied" tools:machine_translated="true">A naplófájlok másolva lettek a vágólapra.</string>
   <string name="logs_bug_report_info" tools:machine_translated="true">A hiba bejelentéséhez másolja be ezeket a naplóbejegyzéseket, és nyisson egy új bejelentést a következő címen: https://connectbot.org/bug</string>
-  <string name="no_logs_available" tools:machine_translated="true">Nincs elérhető naplóbejegyzés.</string>
+  <string name="no_logs_available" tools:machine_translated="true">Nincs elérhető naplóbejegyzés</string>
   <string name="help_section_about" tools:machine_translated="true">A programról</string>
   <string name="title_contact" tools:machine_translated="true">Kapcsolat és támogatás</string>
   <string name="help_section_contact" tools:machine_translated="true">Kapcsolat és támogatás</string>
   <string name="help_website" tools:machine_translated="true">Weboldal</string>
   <string name="help_github" tools:machine_translated="true">Forráskód</string>
-  <string name="help_report_bug" tools:machine_translated="true">Jelentsen hibát!</string>
-  <string name="help_section_donate" tools:machine_translated="true">Támogassa a fejlesztést!</string>
+  <string name="help_report_bug" tools:machine_translated="true">Jelentsen hibát</string>
+  <string name="help_section_donate" tools:machine_translated="true">Támogassa a fejlesztést</string>
   <string name="help_donate_github" tools:machine_translated="true">GitHub támogatói program</string>
-  <string name="help_donate_coffee" tools:machine_translated="true">Támogasd a munkámat egy kávéval!</string>
+  <string name="help_donate_coffee" tools:machine_translated="true">Támogasd a munkámat egy kávéval</string>
   <string name="colorscheme_default_description" tools:machine_translated="true">Alapértelmezett terminál színek</string>
   <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Pontos színek gépekhez és emberekhez.</string>
   <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarized – világos háttérrel</string>
-  <string name="colorscheme_dracula_description" tools:machine_translated="true">Sötét színvilág a terminálhoz.</string>
-  <string name="colorscheme_nord_description" tools:machine_translated="true">Északi, hideg, kékes árnyalatú színpaletta.</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">Sötét színvilág a terminálhoz</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">Északi, hideg, kékes árnyalatú színpaletta</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Régi stílusú, vibráló színséma</string>
-  <string name="colorscheme_monokai_description" tools:machine_translated="true">A Sublime Text által ihletett témák.</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">A Sublime Text által ihletett témák</string>
   <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Egy letisztult és kényelmes, sötét színvilág.</string>
   <string name="pref_profiles_category" tools:machine_translated="true">Profilok</string>
   <string name="pref_default_profile_title" tools:machine_translated="true">Alapértelmezett profil</string>
@@ -559,17 +559,17 @@
   <string name="shortcut_customize_title" tools:machine_translated="true">Testreszabás: Gyorsbillentyű</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Ikon színe</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Ikonstílus</string>
-  <string name="shortcut_use_host_color" tools:machine_translated="true">Használd a rendszer színét.</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">Használd a rendszer színét</string>
   <string name="shortcut_create" tools:machine_translated="true">Saját parancsikon létrehozása</string>
   <string name="icon_style_terminal" tools:machine_translated="true">Terminál</string>
   <string name="icon_style_server" tools:machine_translated="true">Szerver</string>
   <string name="icon_style_cloud" tools:machine_translated="true">Felhő</string>
   <string name="icon_style_key" tools:machine_translated="true">Kulcs</string>
-  <string name="pref_auth_on_launch_title" tools:machine_translated="true">A program indításakor történő hitelesítés.</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">A program indításakor történő hitelesítés</string>
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Kötelezővé teendő az ujjlenyomat-, arcfelismerés- vagy eszköz-PIN-kód használata az alkalmazás megnyitásakor.</string>
   <string name="pref_security_category" tools:machine_translated="true">Biztonság</string>
-  <string name="auth_screen_title" tools:machine_translated="true">A ConnectBot zárolva van.</string>
+  <string name="auth_screen_title" tools:machine_translated="true">A ConnectBot zárolva van</string>
   <string name="auth_screen_unlock_button" tools:machine_translated="true">Érintse meg a zárat a feloldáshoz.</string>
-  <string name="auth_prompt_title" tools:machine_translated="true">Nyissa meg a ConnectBotot.</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">Nyissa meg a ConnectBotot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">A folytatáshoz igazolja azonosítását.</string>
 </resources>

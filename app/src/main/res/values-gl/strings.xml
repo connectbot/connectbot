@@ -231,15 +231,15 @@
   <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Confirme a frase secreta.</string>
   <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">As frases de contrasinal non coinciden.</string>
   <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Importar clave cifrada</string>
-  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Introduza a contrasinal para descifrar a clave \'%1$s\' (%2$s).</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Introduza a contrasinal para descifrar a clave \'%1$s\' (%2$s)</string>
   <string name="pubkey_import_button" tools:machine_translated="true">Importar</string>
   <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Cifrar a clave para o seu almacenamento.</string>
-  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Use a mesma contrasinal para o cifrado.</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Use a mesma contrasinal para o cifrado</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Nova contrasinal</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Confirme o contrasinal</string>
   <string name="pubkey_list_empty" tools:machine_translated="true">Toca en «Menú» para crear ou importar pares de claves.</string>
   <string name="pubkey_unknown_format" tools:machine_translated="true">Formato descoñecido.</string>
-  <string name="pubkey_unlock_message" tools:machine_translated="true">Introduza a contrasinal para desbloquear a clave \'%1$s\'.</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">Introduza a contrasinal para desbloquear a clave \'%1$s\'</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">Xa existe unha clave con este alcume.</string>
   <string name="prompt_username" tools:machine_translated="true">Nome de usuario:</string>
   <string name="host_key_verification_title" tools:machine_translated="true">Verificación da clave do host.</string>
@@ -277,7 +277,7 @@
   <string name="pref_conn_persist_title" tools:machine_translated="true">Mantéñase conectado en segundo plano.</string>
   <string name="pref_conn_persist_summary" tools:machine_translated="true">Manteña as súas sesións activas aínda que cambie a outras aplicacións.</string>
   <string name="pref_bumpyarrows_title" tools:machine_translated="true">Frechas con textura</string>
-  <string name="pref_bell_summary" tools:machine_translated="true">Reproducir son ao activarse a alerta do terminal.</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">Reproducir son ao activarse a alerta do terminal</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Vibrar ao recibir unha alerta do terminal.</string>
   <string name="color_red" tools:machine_translated="true">Vermello</string>
   <string name="color_pink" tools:machine_translated="true">Rosa</string>
@@ -304,7 +304,7 @@
   <string name="hostpref_profile_title" tools:machine_translated="true">Perfil</string>
   <string name="hostpref_profile_summary" tools:machine_translated="true">Seleccione un perfil para utilizar a configuración do terminal asociada.</string>
   <string name="hostpref_profile_none" tools:machine_translated="true">Ningún (utilizar a configuración do servidor)</string>
-  <string name="profile_controlled_setting" tools:machine_translated="true">Controlado polo perfil.</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">Controlado polo perfil</string>
   <string name="font_use_default" tools:machine_translated="true">Usar a configuración predeterminada</string>
   <string name="font_system_default" tools:machine_translated="true">Predeterminado (tipo de letra de ancho fixo)</string>
   <string name="pubkey_unknown" tools:machine_translated="true">Clave descoñecida.</string>
@@ -350,7 +350,7 @@
   <string name="list_camera_text_input" tools:machine_translated="true">Introdución de texto</string>
   <string name="terminal_auth_saved_password" tools:machine_translated="true">Intentando usar a contrasinal gardada…</string>
   <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">A autenticación coa contrasinal gardada fallou.</string>
-  <string name="terminal_auth_biometric" tools:machine_translated="true">Solicitando a autenticación biométrica para a clave \'%1$s\'.</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">Solicitando a autenticación biométrica para a clave \'%1$s\'</string>
   <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">A clave biométrica \'%1$s\' foi invalidada. Isto pode ocorrer cando se engadixen novas impresións dixitais no dispositivo. Xere unha nova clave.</string>
   <string name="list_color_schemes" tools:machine_translated="true">Esquemas de cores</string>
   <string name="button_manage_schemes" tools:machine_translated="true">Xestionar esquemas</string>
@@ -373,11 +373,11 @@
   <string name="button_edit_palette" tools:machine_translated="true">Editar a paleta</string>
   <string name="button_export_scheme" tools:machine_translated="true">Exportar esquema</string>
   <string name="button_import_scheme" tools:machine_translated="true">Importar esquema</string>
-  <string name="message_export_success" tools:machine_translated="true">%1$s exportado.</string>
+  <string name="message_export_success" tools:machine_translated="true">Exportado %1$s</string>
   <string name="message_import_success" tools:machine_translated="true">Importado %1$s</string>
   <string name="error_export_failed" tools:machine_translated="true">Fallou a exportación do esquema: %1$s</string>
   <string name="error_import_failed" tools:machine_translated="true">Fallou a importación do esquema: %1$s</string>
-  <string name="error_invalid_json" tools:machine_translated="true">Arquivo JSON non válido.</string>
+  <string name="error_invalid_json" tools:machine_translated="true">Arquivo JSON non válido</string>
   <string name="title_palette_editor" tools:machine_translated="true">Editar a paleta de cores</string>
   <string name="button_reset_all_colors" tools:machine_translated="true">Restablecer todo</string>
   <string name="section_ansi_colors" tools:machine_translated="true">Cores ANSI (0–15)</string>
@@ -437,14 +437,14 @@
   <string name="pubkey_biometric_description" tools:machine_translated="true">Protexe esta clave coa súa pegada dixital.</string>
   <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Non se rexistrou ningunha pegada. Configure a pegada nas configuracións do dispositivo para utilizar esta función.</string>
   <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">A protección mediante pegada dixital só está dispoñible para as claves RSA e EC.</string>
-  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Autentícase para usar a clave.</string>
-  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Toca o sensor de pegadas para desbloquear \'%1$s\'.</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Autentícase para usar a clave</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Toca o sensor de pegadas para desbloquear \'%1$s\'</string>
   <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Protexido mediante a pegada dixital.</string>
   <string name="pubkey_biometric_not_available" tools:machine_translated="true">A autenticación por pegada dixital non está dispoñible.</string>
   <string name="portforward_nickname_placeholder" tools:machine_translated="true">Servidor web interno</string>
   <string name="portforward_port_range_error" tools:machine_translated="true">O porto debe estar entre 1 e 65535.</string>
   <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
-  <string name="portforward_destination_format_error" tools:machine_translated="true">O formato debe ser host:porto (por exemplo, localhost:80).</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">O formato debe ser host:porto (por exemplo, localhost:80)</string>
   <string name="portforward_host_address" tools:machine_translated="true">Enderezo do servidor</string>
   <string name="portforward_source_addr_localhost" tools:machine_translated="true">localhost</string>
   <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Localhost (só IPv4)</string>
@@ -457,7 +457,7 @@
   <string name="portforward_type_label" tools:machine_translated="true">Tipo: %s</string>
   <string name="portforward_enable" tools:machine_translated="true">Activar</string>
   <string name="portforward_disable" tools:machine_translated="true">Desactivar</string>
-  <string name="portforward_enabled" tools:machine_translated="true">Reenvío de porto activado.</string>
+  <string name="portforward_enabled" tools:machine_translated="true">Reenvío de porto activado</string>
   <string name="portforward_disabled" tools:machine_translated="true">O reenvío de portos está desactivado.</string>
   <string name="hostpref_setting_title" tools:machine_translated="true">Configuración do host</string>
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importar desde a área de recorte</string>
@@ -513,7 +513,7 @@
   <string name="copy_logs" tools:machine_translated="true">Copiar rexistros</string>
   <string name="logs_copied" tools:machine_translated="true">Os rexistros foron copiados ao portapapeles.</string>
   <string name="logs_bug_report_info" tools:machine_translated="true">Para informar dun erro, copie estes rexistros e abra un novo informe en https://connectbot.org/bug</string>
-  <string name="no_logs_available" tools:machine_translated="true">Non hai rexistros dispoñibles.</string>
+  <string name="no_logs_available" tools:machine_translated="true">Non hai rexistros dispoñibles</string>
   <string name="help_section_about" tools:machine_translated="true">Sobre</string>
   <string name="title_contact" tools:machine_translated="true">Contacto e asistencia</string>
   <string name="help_section_contact" tools:machine_translated="true">Contacto e asistencia</string>
@@ -522,14 +522,14 @@
   <string name="help_report_bug" tools:machine_translated="true">Informar dun erro</string>
   <string name="help_section_donate" tools:machine_translated="true">Axude ao desenvolvemento.</string>
   <string name="help_donate_github" tools:machine_translated="true">Patrocinadores de GitHub</string>
-  <string name="help_donate_coffee" tools:machine_translated="true">Invítame a un café.</string>
+  <string name="help_donate_coffee" tools:machine_translated="true">Invítame a un café</string>
   <string name="colorscheme_default_description" tools:machine_translated="true">Cores predeterminadas do terminal</string>
   <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Cores precisas para máquinas e persoas.</string>
   <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarizado con fondo claro.</string>
   <string name="colorscheme_dracula_description" tools:machine_translated="true">Un tema escuro para o terminal.</string>
   <string name="colorscheme_nord_description" tools:machine_translated="true">Unha paleta de cores ártica, cun ton azulado do norte.</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Esquema de cores de estilo retro</string>
-  <string name="colorscheme_monokai_description" tools:machine_translated="true">Tema inspirado en Sublime Text.</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">Tema inspirado en Sublime Text</string>
   <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Un tema escuro, limpo e cómodo.</string>
   <string name="pref_profiles_category" tools:machine_translated="true">Perfis</string>
   <string name="pref_default_profile_title" tools:machine_translated="true">Perfil predeterminado</string>
@@ -542,7 +542,7 @@
   <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Xestionar tipos de terminal personalizados</string>
   <string name="button_add_custom" tools:machine_translated="true">Engadir elemento personalizado…</string>
   <string name="button_manage_custom" tools:machine_translated="true">Xestionar elementos personalizados…</string>
-  <string name="dialog_custom_value_label" tools:machine_translated="true">Introduza un valor personalizado.</string>
+  <string name="dialog_custom_value_label" tools:machine_translated="true">Introduza un valor personalizado</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A e logo a tecla Espacio</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
   <string name="list_camera_esc_description" tools:machine_translated="true">Esc</string>
@@ -565,11 +565,11 @@
   <string name="icon_style_server" tools:machine_translated="true">Servidor</string>
   <string name="icon_style_cloud" tools:machine_translated="true">Nuve</string>
   <string name="icon_style_key" tools:machine_translated="true">Chave</string>
-  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Autenticación ao iniciar a aplicación.</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Autenticación ao iniciar a aplicación</string>
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Require a pegada, o recoñecemento facial ou un código PIN do dispositivo ao abrir a aplicación.</string>
   <string name="pref_security_category" tools:machine_translated="true">Seguridade</string>
-  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot está bloqueado.</string>
-  <string name="auth_screen_unlock_button" tools:machine_translated="true">Toca para desbloquear.</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot está bloqueado</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">Toca para desbloquear</string>
   <string name="auth_prompt_title" tools:machine_translated="true">Desbloquear ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Verifica a túa identidade para continuar.</string>
 </resources>
