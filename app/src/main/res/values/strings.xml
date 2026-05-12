@@ -361,6 +361,10 @@
 	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
 	<string name="pref_bumpyarrows_summary">"Vibrate when sending arrow keys; useful for laggy connections"</string>
 
+	<!-- Customize key bar — Settings entry. -->
+	<string name="pref_keybar_title">Customize key bar</string>
+	<string name="pref_keybar_summary">Choose which keys appear on the on-screen key row</string>
+
 	<!-- Customize key bar — macro add/edit dialog. -->
 	<string name="keybar_macro_dialog_title_add">Add custom button</string>
 	<string name="keybar_macro_dialog_title_edit">Edit custom button</string>
