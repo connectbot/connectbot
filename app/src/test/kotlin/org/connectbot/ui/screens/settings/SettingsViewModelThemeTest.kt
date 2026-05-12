@@ -21,12 +21,15 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.di.FakeLanguagePackManager
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.ThemeMode
+import org.connectbot.util.keybar.KeyBarConfigRepository
+import org.connectbot.util.keybar.KeyEntry
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -53,6 +56,7 @@ class SettingsViewModelThemeTest {
     private lateinit var prefs: SharedPreferences
     private lateinit var prefsEditor: SharedPreferences.Editor
     private lateinit var profileRepository: ProfileRepository
+    private lateinit var keyBarRepo: KeyBarConfigRepository
     private lateinit var viewModel: SettingsViewModel
 
     @Before
@@ -60,6 +64,8 @@ class SettingsViewModelThemeTest {
         prefs = mock()
         prefsEditor = mock()
         profileRepository = mock()
+        keyBarRepo = mock()
+        whenever(keyBarRepo.config).thenReturn(MutableStateFlow(emptyList<KeyEntry>()))
 
         whenever(prefs.edit()).thenReturn(prefsEditor)
         whenever(prefsEditor.putString(any(), any())).thenReturn(prefsEditor)
@@ -77,6 +83,7 @@ class SettingsViewModelThemeTest {
             RuntimeEnvironment.getApplication(),
             dispatchers,
             FakeLanguagePackManager(),
+            keyBarRepo,
         )
         advanceUntilIdle()
     }
@@ -95,6 +102,7 @@ class SettingsViewModelThemeTest {
             RuntimeEnvironment.getApplication(),
             dispatchers,
             FakeLanguagePackManager(),
+            keyBarRepo,
         )
         advanceUntilIdle()
 

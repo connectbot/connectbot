@@ -47,6 +47,8 @@ import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.TerminalFontProvider
 import org.connectbot.util.ThemeMode
+import org.connectbot.util.keybar.KeyBarConfigRepository
+import org.connectbot.util.keybar.KeyEntry
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -90,6 +92,7 @@ data class SettingsUiState(
     val installedLanguages: Set<String> = emptySet(),
     val defaultProfileId: Long = 0L,
     val availableProfiles: List<Profile> = emptyList(),
+    val keyBarConfig: List<KeyEntry> = emptyList(),
 )
 
 @HiltViewModel
@@ -99,6 +102,7 @@ class SettingsViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val dispatchers: CoroutineDispatchers,
     private val languagePackManager: LanguagePackManager,
+    private val keyBarRepo: KeyBarConfigRepository,
 ) : ViewModel() {
     private val fontProvider = TerminalFontProvider(context, dispatchers.io)
     private val localFontProvider = LocalFontProvider(context)
@@ -121,6 +125,11 @@ class SettingsViewModel @Inject constructor(
     init {
         loadProfiles()
         refreshInstalledLanguages()
+        viewModelScope.launch {
+            keyBarRepo.config.collect { entries ->
+                _uiState.update { it.copy(keyBarConfig = entries) }
+            }
+        }
     }
 
     private fun loadProfiles() {
@@ -478,6 +487,49 @@ class SettingsViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    /* ----- key bar mutators ----- */
+
+    fun moveKeyBarEntry(from: Int, to: Int) {
+        val current = _uiState.value.keyBarConfig.toMutableList()
+        if (from !in current.indices || to !in current.indices) return
+        val item = current.removeAt(from)
+        current.add(to, item)
+        keyBarRepo.update(current)
+    }
+
+    fun setBuiltinVisible(index: Int, visible: Boolean) {
+        val current = _uiState.value.keyBarConfig.toMutableList()
+        val entry = current.getOrNull(index) as? KeyEntry.Builtin ?: return
+        current[index] = entry.copy(visible = visible)
+        keyBarRepo.update(current)
+    }
+
+    fun addMacro(label: String, text: String) {
+        val current = _uiState.value.keyBarConfig.toMutableList()
+        current.add(KeyEntry.Macro(label, text))
+        keyBarRepo.update(current)
+    }
+
+    fun updateMacro(index: Int, label: String, text: String) {
+        val current = _uiState.value.keyBarConfig.toMutableList()
+        if (current.getOrNull(index) !is KeyEntry.Macro) return
+        current[index] = KeyEntry.Macro(label, text)
+        keyBarRepo.update(current)
+    }
+
+    fun deleteKeyBarEntry(index: Int) {
+        val current = _uiState.value.keyBarConfig.toMutableList()
+        val entry = current.getOrNull(index) ?: return
+        // Built-ins are not deletable — toggle visibility instead.
+        if (entry is KeyEntry.Builtin) return
+        current.removeAt(index)
+        keyBarRepo.update(current)
+    }
+
+    fun resetKeyBar() {
+        keyBarRepo.reset()
     }
 
     fun importLocalFont(uri: Uri, displayName: String) {
