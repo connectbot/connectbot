@@ -41,6 +41,7 @@ object KeyBarConfigJson {
                     obj.put("id", entry.id.name)
                     if (!entry.visible) obj.put("v", false)
                 }
+
                 is KeyEntry.Macro -> {
                     obj.put("t", "m")
                     obj.put("l", entry.label)
@@ -77,6 +78,7 @@ object KeyBarConfigJson {
             val id = enumValues<BuiltinKeyId>().firstOrNull { it.name == idName }
             id?.let { KeyEntry.Builtin(it, visible = obj.optBoolean("v", true)) }
         }
+
         "m" -> {
             val storedId = obj.optString("u").ifEmpty { java.util.UUID.randomUUID().toString() }
             KeyEntry.Macro(
@@ -86,6 +88,7 @@ object KeyBarConfigJson {
                 visible = obj.optBoolean("v", true),
             )
         }
+
         else -> null
     }
 }

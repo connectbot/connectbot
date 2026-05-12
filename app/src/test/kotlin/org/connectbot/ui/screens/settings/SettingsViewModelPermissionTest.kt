@@ -20,12 +20,12 @@ package org.connectbot.ui.screens.settings
 import android.content.Context
 import android.content.SharedPreferences
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.flow.MutableStateFlow
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers

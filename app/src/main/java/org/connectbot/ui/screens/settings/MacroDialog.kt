@@ -56,10 +56,10 @@ import org.connectbot.util.keybar.MacroEscape
 @Composable
 fun MacroDialog(
     isEdit: Boolean,
-    initialLabel: String = "",
-    initialText: String = "",
     onDismiss: () -> Unit,
     onSave: (label: String, text: String) -> Unit,
+    initialLabel: String = "",
+    initialText: String = "",
 ) {
     // Pre-compute string resources so `stringResource(...)` is never
     // called from inside a conditional branch downstream — a Compose
@@ -71,12 +71,16 @@ fun MacroDialog(
     var text by remember { mutableStateOf(initialText) }
 
     val labelError: String? = when {
-        label.isEmpty() -> null  // allowed while typing; just disables Save
+        label.isEmpty() -> null
+
+        // allowed while typing; just disables Save
         label.length > LABEL_MAX -> labelTooLongMsg
+
         else -> null
     }
     val textError: String? = when (MacroEscape.validate(text)) {
         is MacroEscape.ValidationResult.Ok -> null
+
         is MacroEscape.ValidationResult.Invalid ->
             if (text.isEmpty()) null else invalidEscapeMsg
     }
@@ -94,8 +98,11 @@ fun MacroDialog(
         title = {
             Text(
                 stringResource(
-                    if (isEdit) R.string.keybar_macro_dialog_title_edit
-                    else R.string.keybar_macro_dialog_title_add,
+                    if (isEdit) {
+                        R.string.keybar_macro_dialog_title_edit
+                    } else {
+                        R.string.keybar_macro_dialog_title_add
+                    },
                 ),
             )
         },

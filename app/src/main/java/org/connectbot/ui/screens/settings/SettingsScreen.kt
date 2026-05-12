@@ -38,9 +38,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Download
-import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material.icons.filled.FolderOpen
 import androidx.compose.material.icons.filled.FontDownload
@@ -249,7 +249,7 @@ fun SettingsScreenContent(
     onBellVolumeChange: (Float) -> Unit,
     onBellVibrateChange: (Boolean) -> Unit,
     onBellNotificationChange: (Boolean) -> Unit,
-    onNavigateToCustomizeKeyBar: () -> Unit = {},
+    onNavigateToCustomizeKeyBar: () -> Unit,
     modifier: Modifier = Modifier,
     highlightItem: String? = null,
 ) {
@@ -1635,6 +1635,7 @@ private fun SettingsScreenPreview() {
             onBellVolumeChange = {},
             onBellVibrateChange = {},
             onBellNotificationChange = {},
+            onNavigateToCustomizeKeyBar = {},
         )
     }
 }

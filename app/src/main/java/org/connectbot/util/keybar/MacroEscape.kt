@@ -100,16 +100,56 @@ object MacroEscape {
                 return
             }
             when (val n = text[i + 1]) {
-                'a' -> { onByte(0x07); i += 2 }
-                'b' -> { onByte(0x08); i += 2 }
-                'e' -> { onByte(0x1B); i += 2 }
-                'f' -> { onByte(0x0C); i += 2 }
-                'n' -> { onByte(0x0A); i += 2 }
-                'r' -> { onByte(0x0D); i += 2 }
-                't' -> { onByte(0x09); i += 2 }
-                'v' -> { onByte(0x0B); i += 2 }
-                '0' -> { onByte(0x00); i += 2 }
-                '\\' -> { onByte(0x5C); i += 2 }
+                'a' -> {
+                    onByte(0x07)
+                    i += 2
+                }
+
+                'b' -> {
+                    onByte(0x08)
+                    i += 2
+                }
+
+                'e' -> {
+                    onByte(0x1B)
+                    i += 2
+                }
+
+                'f' -> {
+                    onByte(0x0C)
+                    i += 2
+                }
+
+                'n' -> {
+                    onByte(0x0A)
+                    i += 2
+                }
+
+                'r' -> {
+                    onByte(0x0D)
+                    i += 2
+                }
+
+                't' -> {
+                    onByte(0x09)
+                    i += 2
+                }
+
+                'v' -> {
+                    onByte(0x0B)
+                    i += 2
+                }
+
+                '0' -> {
+                    onByte(0x00)
+                    i += 2
+                }
+
+                '\\' -> {
+                    onByte(0x5C)
+                    i += 2
+                }
+
                 'x' -> {
                     if (i + 3 >= text.length) {
                         onError(i, "\\x needs two hex digits")
@@ -125,6 +165,7 @@ object MacroEscape {
                     onByte(value.toByte())
                     i += 4
                 }
+
                 else -> {
                     onError(i, "unknown escape \\$n")
                     return
@@ -136,8 +177,7 @@ object MacroEscape {
         }
     }
 
-    private fun Char.isHexDigit(): Boolean =
-        this in '0'..'9' || this in 'a'..'f' || this in 'A'..'F'
+    private fun Char.isHexDigit(): Boolean = this in '0'..'9' || this in 'a'..'f' || this in 'A'..'F'
 
     private fun digit(c: Char): Int = when (c) {
         in '0'..'9' -> c.code - '0'.code

@@ -32,11 +32,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.KeyboardHide
 import androidx.compose.material3.Icon
@@ -236,6 +236,7 @@ private fun TerminalKeyboardContent(
                                 onClick = { onBuiltinPress(entry.id) },
                             )
                         }
+
                         is KeyEntry.Macro -> {
                             if (!entry.visible) return@forEach
                             BarMacroButton(
@@ -333,12 +334,14 @@ private fun BarBuiltinButton(
             modifierLevel = modifierState.ctrlState,
             onClick = onClick,
         )
+
         BuiltinKeyId.ALT -> ModifierKeyButton(
             text = stringResource(R.string.button_key_alt),
             contentDescription = stringResource(R.string.image_description_send_alt_character),
             modifierLevel = modifierState.altState,
             onClick = onClick,
         )
+
         BuiltinKeyId.SHIFT -> ModifierKeyButton(
             text = stringResource(R.string.button_key_shift),
             contentDescription = stringResource(R.string.image_description_send_shift_character),
@@ -351,26 +354,31 @@ private fun BarBuiltinButton(
             contentDescription = stringResource(R.string.image_description_send_escape_character),
             onClick = onClick,
         )
+
         BuiltinKeyId.TAB -> KeyButton(
             text = "⇥",
             contentDescription = stringResource(R.string.image_description_send_tab_character),
             onClick = onClick,
         )
+
         BuiltinKeyId.ENTER -> KeyButton(
             text = stringResource(R.string.button_key_enter),
             contentDescription = null,
             onClick = onClick,
         )
+
         BuiltinKeyId.BACKSPACE -> KeyButton(
             text = stringResource(R.string.button_key_backspace),
             contentDescription = null,
             onClick = onClick,
         )
+
         BuiltinKeyId.DELETE -> KeyButton(
             text = stringResource(R.string.button_key_delete),
             contentDescription = null,
             onClick = onClick,
         )
+
         BuiltinKeyId.INSERT -> KeyButton(
             text = stringResource(R.string.button_key_insert),
             contentDescription = null,
@@ -380,22 +388,37 @@ private fun BarBuiltinButton(
         BuiltinKeyId.UP -> RepeatableKeyButton(
             icon = Icons.Default.KeyboardArrowUp,
             contentDescription = stringResource(R.string.image_description_up),
-            onPress = { onClick(); maybeBump(bumpyArrows, view) },
+            onPress = {
+                onClick()
+                maybeBump(bumpyArrows, view)
+            },
         )
+
         BuiltinKeyId.DOWN -> RepeatableKeyButton(
             icon = Icons.Default.KeyboardArrowDown,
             contentDescription = stringResource(R.string.image_description_down),
-            onPress = { onClick(); maybeBump(bumpyArrows, view) },
+            onPress = {
+                onClick()
+                maybeBump(bumpyArrows, view)
+            },
         )
+
         BuiltinKeyId.LEFT -> RepeatableKeyButton(
-            icon = Icons.Default.KeyboardArrowLeft,
+            icon = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
             contentDescription = stringResource(R.string.image_description_left),
-            onPress = { onClick(); maybeBump(bumpyArrows, view) },
+            onPress = {
+                onClick()
+                maybeBump(bumpyArrows, view)
+            },
         )
+
         BuiltinKeyId.RIGHT -> RepeatableKeyButton(
-            icon = Icons.Default.KeyboardArrowRight,
+            icon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
             contentDescription = stringResource(R.string.image_description_right),
-            onPress = { onClick(); maybeBump(bumpyArrows, view) },
+            onPress = {
+                onClick()
+                maybeBump(bumpyArrows, view)
+            },
         )
 
         BuiltinKeyId.HOME -> KeyButton(
@@ -403,16 +426,19 @@ private fun BarBuiltinButton(
             contentDescription = null,
             onClick = onClick,
         )
+
         BuiltinKeyId.END -> KeyButton(
             text = stringResource(R.string.button_key_end),
             contentDescription = null,
             onClick = onClick,
         )
+
         BuiltinKeyId.PG_UP -> KeyButton(
             text = stringResource(R.string.button_key_pgup),
             contentDescription = null,
             onClick = onClick,
         )
+
         BuiltinKeyId.PG_DN -> KeyButton(
             text = stringResource(R.string.button_key_pgdn),
             contentDescription = null,
@@ -420,16 +446,27 @@ private fun BarBuiltinButton(
         )
 
         BuiltinKeyId.F1 -> KeyButton(text = stringResource(R.string.button_key_f1), contentDescription = null, onClick = onClick)
+
         BuiltinKeyId.F2 -> KeyButton(text = stringResource(R.string.button_key_f2), contentDescription = null, onClick = onClick)
+
         BuiltinKeyId.F3 -> KeyButton(text = stringResource(R.string.button_key_f3), contentDescription = null, onClick = onClick)
+
         BuiltinKeyId.F4 -> KeyButton(text = stringResource(R.string.button_key_f4), contentDescription = null, onClick = onClick)
+
         BuiltinKeyId.F5 -> KeyButton(text = stringResource(R.string.button_key_f5), contentDescription = null, onClick = onClick)
+
         BuiltinKeyId.F6 -> KeyButton(text = stringResource(R.string.button_key_f6), contentDescription = null, onClick = onClick)
+
         BuiltinKeyId.F7 -> KeyButton(text = stringResource(R.string.button_key_f7), contentDescription = null, onClick = onClick)
+
         BuiltinKeyId.F8 -> KeyButton(text = stringResource(R.string.button_key_f8), contentDescription = null, onClick = onClick)
+
         BuiltinKeyId.F9 -> KeyButton(text = stringResource(R.string.button_key_f9), contentDescription = null, onClick = onClick)
+
         BuiltinKeyId.F10 -> KeyButton(text = stringResource(R.string.button_key_f10), contentDescription = null, onClick = onClick)
+
         BuiltinKeyId.F11 -> KeyButton(text = stringResource(R.string.button_key_f11), contentDescription = null, onClick = onClick)
+
         BuiltinKeyId.F12 -> KeyButton(text = stringResource(R.string.button_key_f12), contentDescription = null, onClick = onClick)
     }
 }
@@ -441,7 +478,7 @@ private fun BarMacroButton(
 ) {
     KeyButton(
         text = entry.label,
-        contentDescription = entry.label,  // label is the user-chosen description
+        contentDescription = entry.label, // label is the user-chosen description
         onClick = onClick,
     )
 }

@@ -41,8 +41,7 @@ sealed class BuiltinKeyDispatch {
     data class Modifier(val ourMask: Int) : BuiltinKeyDispatch()
     data class VTerm(val key: Int) : BuiltinKeyDispatch()
     data class ByteSequence(val bytes: ByteArray) : BuiltinKeyDispatch() {
-        override fun equals(other: Any?): Boolean =
-            other is ByteSequence && bytes.contentEquals(other.bytes)
+        override fun equals(other: Any?): Boolean = other is ByteSequence && bytes.contentEquals(other.bytes)
         override fun hashCode(): Int = bytes.contentHashCode()
     }
 }
@@ -57,24 +56,34 @@ private val ESC_LBR_3_TILDE = byteArrayOf(0x1B, '['.code.toByte(), '3'.code.toBy
 private val ESC_LBR_2_TILDE = byteArrayOf(0x1B, '['.code.toByte(), '2'.code.toByte(), '~'.code.toByte())
 
 fun BuiltinKeyId.dispatch(): BuiltinKeyDispatch = when (this) {
-    BuiltinKeyId.CTRL  -> BuiltinKeyDispatch.Modifier(CTRL_ON)
-    BuiltinKeyId.ALT   -> BuiltinKeyDispatch.Modifier(ALT_ON)
+    BuiltinKeyId.CTRL -> BuiltinKeyDispatch.Modifier(CTRL_ON)
+
+    BuiltinKeyId.ALT -> BuiltinKeyDispatch.Modifier(ALT_ON)
+
     BuiltinKeyId.SHIFT -> BuiltinKeyDispatch.Modifier(SHIFT_ON)
 
-    BuiltinKeyId.ESC   -> BuiltinKeyDispatch.VTerm(VTermKey.ESCAPE)
-    BuiltinKeyId.TAB   -> BuiltinKeyDispatch.VTerm(VTermKey.TAB)
+    BuiltinKeyId.ESC -> BuiltinKeyDispatch.VTerm(VTermKey.ESCAPE)
+
+    BuiltinKeyId.TAB -> BuiltinKeyDispatch.VTerm(VTermKey.TAB)
 
     // Enter: a literal CR matches what the IME path already sends
     // and avoids surprising terminal apps that watch for 0x0D.
     BuiltinKeyId.ENTER -> BuiltinKeyDispatch.ByteSequence(byteArrayOf(0x0D))
 
-    BuiltinKeyId.UP    -> BuiltinKeyDispatch.VTerm(VTermKey.UP)
-    BuiltinKeyId.DOWN  -> BuiltinKeyDispatch.VTerm(VTermKey.DOWN)
-    BuiltinKeyId.LEFT  -> BuiltinKeyDispatch.VTerm(VTermKey.LEFT)
+    BuiltinKeyId.UP -> BuiltinKeyDispatch.VTerm(VTermKey.UP)
+
+    BuiltinKeyId.DOWN -> BuiltinKeyDispatch.VTerm(VTermKey.DOWN)
+
+    BuiltinKeyId.LEFT -> BuiltinKeyDispatch.VTerm(VTermKey.LEFT)
+
     BuiltinKeyId.RIGHT -> BuiltinKeyDispatch.VTerm(VTermKey.RIGHT)
-    BuiltinKeyId.HOME  -> BuiltinKeyDispatch.VTerm(VTermKey.HOME)
-    BuiltinKeyId.END   -> BuiltinKeyDispatch.VTerm(VTermKey.END)
+
+    BuiltinKeyId.HOME -> BuiltinKeyDispatch.VTerm(VTermKey.HOME)
+
+    BuiltinKeyId.END -> BuiltinKeyDispatch.VTerm(VTermKey.END)
+
     BuiltinKeyId.PG_UP -> BuiltinKeyDispatch.VTerm(VTermKey.PAGEUP)
+
     BuiltinKeyId.PG_DN -> BuiltinKeyDispatch.VTerm(VTermKey.PAGEDOWN)
 
     // termlib 0.0.39 doesn't expose constants for these — fall back
@@ -88,19 +97,32 @@ fun BuiltinKeyId.dispatch(): BuiltinKeyDispatch = when (this) {
     // branch should migrate to VTerm dispatch which composes via
     // modifiersForTerminal.
     BuiltinKeyId.BACKSPACE -> BuiltinKeyDispatch.ByteSequence(byteArrayOf(0x7F))
-    BuiltinKeyId.DELETE    -> BuiltinKeyDispatch.ByteSequence(ESC_LBR_3_TILDE)
-    BuiltinKeyId.INSERT    -> BuiltinKeyDispatch.ByteSequence(ESC_LBR_2_TILDE)
 
-    BuiltinKeyId.F1  -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_1)
-    BuiltinKeyId.F2  -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_2)
-    BuiltinKeyId.F3  -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_3)
-    BuiltinKeyId.F4  -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_4)
-    BuiltinKeyId.F5  -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_5)
-    BuiltinKeyId.F6  -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_6)
-    BuiltinKeyId.F7  -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_7)
-    BuiltinKeyId.F8  -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_8)
-    BuiltinKeyId.F9  -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_9)
+    BuiltinKeyId.DELETE -> BuiltinKeyDispatch.ByteSequence(ESC_LBR_3_TILDE)
+
+    BuiltinKeyId.INSERT -> BuiltinKeyDispatch.ByteSequence(ESC_LBR_2_TILDE)
+
+    BuiltinKeyId.F1 -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_1)
+
+    BuiltinKeyId.F2 -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_2)
+
+    BuiltinKeyId.F3 -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_3)
+
+    BuiltinKeyId.F4 -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_4)
+
+    BuiltinKeyId.F5 -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_5)
+
+    BuiltinKeyId.F6 -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_6)
+
+    BuiltinKeyId.F7 -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_7)
+
+    BuiltinKeyId.F8 -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_8)
+
+    BuiltinKeyId.F9 -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_9)
+
     BuiltinKeyId.F10 -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_10)
+
     BuiltinKeyId.F11 -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_11)
+
     BuiltinKeyId.F12 -> BuiltinKeyDispatch.VTerm(VTermKey.FUNCTION_12)
 }

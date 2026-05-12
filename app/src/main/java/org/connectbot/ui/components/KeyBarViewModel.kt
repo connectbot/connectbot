@@ -19,13 +19,13 @@ package org.connectbot.ui.components
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.keybar.KeyBarConfigRepository
 import org.connectbot.util.keybar.KeyEntry
+import javax.inject.Inject
 
 /**
  * View-model surface for the on-screen key bar in the terminal
@@ -49,7 +49,7 @@ class KeyBarViewModel @Inject constructor(
     private val _bumpyArrows = MutableStateFlow(readBumpyArrows())
     val bumpyArrows: StateFlow<Boolean> = _bumpyArrows.asStateFlow()
 
-    @Suppress("unused")  // Held to keep the listener alive for this VM's lifetime.
+    @Suppress("unused") // Held to keep the listener alive for this VM's lifetime.
     private val listener =
         SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
             if (key == PreferenceConstants.BUMPY_ARROWS) {
@@ -57,6 +57,5 @@ class KeyBarViewModel @Inject constructor(
             }
         }.also { prefs.registerOnSharedPreferenceChangeListener(it) }
 
-    private fun readBumpyArrows(): Boolean =
-        prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, false)
+    private fun readBumpyArrows(): Boolean = prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, false)
 }

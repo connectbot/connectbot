@@ -52,8 +52,11 @@ class DefaultKeyBarConfigTest {
             .filter { !it.visible }
             .map { it.id }
         assertThat(hidden).containsExactly(
-            BuiltinKeyId.ALT, BuiltinKeyId.SHIFT,
-            BuiltinKeyId.BACKSPACE, BuiltinKeyId.DELETE, BuiltinKeyId.INSERT,
+            BuiltinKeyId.ALT,
+            BuiltinKeyId.SHIFT,
+            BuiltinKeyId.BACKSPACE,
+            BuiltinKeyId.DELETE,
+            BuiltinKeyId.INSERT,
         )
     }
 

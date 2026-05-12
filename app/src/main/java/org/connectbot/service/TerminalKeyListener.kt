@@ -121,8 +121,10 @@ class TerminalKeyListener(
         when (val action = id.dispatch()) {
             is BuiltinKeyDispatch.Modifier ->
                 metaPress(action.ourMask, forceSticky = true)
+
             is BuiltinKeyDispatch.VTerm ->
                 sendPressedKey(action.key)
+
             is BuiltinKeyDispatch.ByteSequence -> {
                 byteSink(action.bytes)
                 clearTransients()

@@ -77,6 +77,7 @@ import sh.calvin.reorderable.rememberReorderableLazyListState
 @Composable
 fun CustomizeKeyBarScreen(
     onBack: () -> Unit,
+    modifier: Modifier = Modifier,
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val ui by viewModel.uiState.collectAsState()
@@ -87,6 +88,7 @@ fun CustomizeKeyBarScreen(
     var showResetConfirm by remember { mutableStateOf(false) }
 
     Scaffold(
+        modifier = modifier,
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.keybar_screen_title)) },
@@ -241,10 +243,20 @@ private fun ReorderableCollectionItemScope.KeyBarEntryRow(
             .semantics {
                 customActions = buildList {
                     onMoveUp?.let {
-                        add(CustomAccessibilityAction(moveUpLabel) { it(); true })
+                        add(
+                            CustomAccessibilityAction(moveUpLabel) {
+                                it()
+                                true
+                            },
+                        )
                     }
                     onMoveDown?.let {
-                        add(CustomAccessibilityAction(moveDownLabel) { it(); true })
+                        add(
+                            CustomAccessibilityAction(moveDownLabel) {
+                                it()
+                                true
+                            },
+                        )
                     }
                 }
             },
@@ -263,6 +275,7 @@ private fun ReorderableCollectionItemScope.KeyBarEntryRow(
                 Checkbox(checked = entry.visible, onCheckedChange = onToggleVisible)
                 Text(text = stringResource(builtinLabelRes(entry.id)), modifier = Modifier.weight(1f))
             }
+
             is KeyEntry.Macro -> {
                 Checkbox(checked = entry.visible, onCheckedChange = onToggleVisible)
                 Text(text = entry.label, modifier = Modifier.weight(1f))

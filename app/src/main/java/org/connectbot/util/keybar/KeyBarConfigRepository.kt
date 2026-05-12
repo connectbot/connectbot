@@ -18,12 +18,12 @@ package org.connectbot.util.keybar
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import javax.inject.Inject
-import javax.inject.Singleton
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.connectbot.util.PreferenceConstants
+import javax.inject.Inject
+import javax.inject.Singleton
 
 /**
  * Single source of truth for the user's on-screen key bar
@@ -44,7 +44,7 @@ class KeyBarConfigRepository @Inject constructor(
     private val _config = MutableStateFlow(load())
     val config: StateFlow<List<KeyEntry>> = _config.asStateFlow()
 
-    @Suppress("unused")  // Held to keep the listener alive for the repo's lifetime.
+    @Suppress("unused") // Held to keep the listener alive for the repo's lifetime.
     private val listener =
         SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
             if (key == PreferenceConstants.KEY_BAR_CONFIG) {
