@@ -14,7 +14,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.connectbot.util.keybar
+package org.connectbot.ui.components
 
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
@@ -24,6 +24,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.keybar.KeyBarConfigRepository
+import org.connectbot.util.keybar.KeyEntry
 
 /**
  * View-model surface for the on-screen key bar in the terminal
@@ -33,11 +35,11 @@ import org.connectbot.util.PreferenceConstants
  *    enabling/disabling it from Settings updates the running bar
  *    without recomposition tricks.
  *
- * Hilt-scoped to the [TerminalKeyboard] composable via
+ * Hilt-scoped to the [KeyBarViewModel] composable via
  * `hiltViewModel()`; one instance per terminal screen.
  */
 @HiltViewModel
-class KeyBarUiVm @Inject constructor(
+class KeyBarViewModel @Inject constructor(
     keyBarRepo: KeyBarConfigRepository,
     private val prefs: SharedPreferences,
 ) : ViewModel() {

@@ -72,7 +72,6 @@ import org.connectbot.service.ModifierLevel
 import org.connectbot.service.ModifierState
 import org.connectbot.service.TerminalBridge
 import org.connectbot.util.keybar.BuiltinKeyId
-import org.connectbot.util.keybar.KeyBarUiVm
 import org.connectbot.util.keybar.KeyEntry
 import org.connectbot.util.keybar.MacroEscape
 import timber.log.Timber
@@ -110,7 +109,7 @@ fun TerminalKeyboard(
     onScrollInProgressChange: (Boolean) -> Unit = {},
     imeVisible: Boolean = false,
     playAnimation: Boolean = false,
-    keyBarVm: KeyBarUiVm = hiltViewModel(),
+    keyBarVm: KeyBarViewModel = hiltViewModel(),
 ) {
     val keyHandler = bridge.keyHandler
     val modifierState by keyHandler.modifierState.collectAsState()
