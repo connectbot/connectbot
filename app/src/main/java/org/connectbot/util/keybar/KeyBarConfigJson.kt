@@ -16,10 +16,10 @@
  */
 package org.connectbot.util.keybar
 
-import android.util.Log
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject
+import timber.log.Timber
 
 /**
  * Serializes / deserializes [KeyEntry] lists for the
@@ -30,8 +30,6 @@ import org.json.JSONObject
  * version doesn't crash.
  */
 object KeyBarConfigJson {
-
-    private const val TAG = "KeyBarConfigJson"
 
     fun encode(entries: List<KeyEntry>): String {
         val arr = JSONArray()
@@ -66,7 +64,7 @@ object KeyBarConfigJson {
                 }
             }
         } catch (e: JSONException) {
-            Log.w(TAG, "Malformed key bar config; returning empty list", e)
+            Timber.w(e, "Malformed key bar config; returning empty list")
             emptyList()
         }
     }
