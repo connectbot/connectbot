@@ -61,19 +61,24 @@ fun MacroDialog(
     onDismiss: () -> Unit,
     onSave: (label: String, text: String) -> Unit,
 ) {
+    // Pre-compute string resources so `stringResource(...)` is never
+    // called from inside a conditional branch downstream — a Compose
+    // best practice that also helps the slot-stability fix below.
+    val labelTooLongMsg = stringResource(R.string.keybar_macro_label_too_long, LABEL_MAX)
+    val invalidEscapeMsg = stringResource(R.string.keybar_macro_invalid_escape)
+
     var label by remember { mutableStateOf(initialLabel) }
     var text by remember { mutableStateOf(initialText) }
 
     val labelError: String? = when {
         label.isEmpty() -> null  // allowed while typing; just disables Save
-        label.length > LABEL_MAX -> stringResource(R.string.keybar_macro_label_too_long, LABEL_MAX)
+        label.length > LABEL_MAX -> labelTooLongMsg
         else -> null
     }
     val textError: String? = when (MacroEscape.validate(text)) {
         is MacroEscape.ValidationResult.Ok -> null
         is MacroEscape.ValidationResult.Invalid ->
-            if (text.isEmpty()) null
-            else stringResource(R.string.keybar_macro_invalid_escape)
+            if (text.isEmpty()) null else invalidEscapeMsg
     }
     val canSave by remember(label, text) {
         derivedStateOf {
@@ -101,7 +106,12 @@ fun MacroDialog(
                     onValueChange = { label = it },
                     label = { Text(stringResource(R.string.keybar_macro_label_field)) },
                     isError = labelError != null,
-                    supportingText = labelError?.let { msg -> { Text(msg) } },
+                    supportingText = {
+                        // Always-present slot prevents IME from closing on
+                        // validation state changes (Material3 alpha quirk).
+                        // Content varies; the slot itself is stable.
+                        Text(labelError.orEmpty())
+                    },
                     singleLine = true,
                 )
                 OutlinedTextField(
@@ -109,7 +119,9 @@ fun MacroDialog(
                     onValueChange = { text = it },
                     label = { Text(stringResource(R.string.keybar_macro_sends_field)) },
                     isError = textError != null,
-                    supportingText = textError?.let { msg -> { Text(msg) } },
+                    supportingText = {
+                        Text(textError.orEmpty())
+                    },
                     minLines = 3,
                     maxLines = 6,
                 )
