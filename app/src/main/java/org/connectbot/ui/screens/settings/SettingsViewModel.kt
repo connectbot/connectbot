@@ -491,12 +491,22 @@ class SettingsViewModel @Inject constructor(
 
     /* ----- key bar mutators ----- */
 
+    // Match the prefs-write pattern used by updateBooleanPref / updateStringPref
+    // below: every persist runs inside viewModelScope so tests can drain it via
+    // the injected dispatchers, and we avoid doing the JSON encode synchronously
+    // from a Compose onClick frame.
+    private fun persistKeyBar(entries: List<KeyEntry>) {
+        viewModelScope.launch {
+            keyBarRepo.update(entries)
+        }
+    }
+
     fun moveKeyBarEntry(from: Int, to: Int) {
         val current = _uiState.value.keyBarConfig.toMutableList()
         if (from !in current.indices || to !in current.indices) return
         val item = current.removeAt(from)
         current.add(to, item)
-        keyBarRepo.update(current)
+        persistKeyBar(current)
     }
 
     fun setEntryVisible(index: Int, visible: Boolean) {
@@ -506,20 +516,20 @@ class SettingsViewModel @Inject constructor(
             is KeyEntry.Macro -> entry.copy(visible = visible)
             null -> return
         }
-        keyBarRepo.update(current)
+        persistKeyBar(current)
     }
 
     fun addMacro(label: String, text: String) {
         val current = _uiState.value.keyBarConfig.toMutableList()
         current.add(KeyEntry.Macro(label, text))
-        keyBarRepo.update(current)
+        persistKeyBar(current)
     }
 
     fun updateMacro(index: Int, label: String, text: String) {
         val current = _uiState.value.keyBarConfig.toMutableList()
         val existing = current.getOrNull(index) as? KeyEntry.Macro ?: return
         current[index] = existing.copy(label = label, text = text)
-        keyBarRepo.update(current)
+        persistKeyBar(current)
     }
 
     fun deleteKeyBarEntry(index: Int) {
@@ -528,11 +538,13 @@ class SettingsViewModel @Inject constructor(
         // Built-ins are not deletable — toggle visibility instead.
         if (entry is KeyEntry.Builtin) return
         current.removeAt(index)
-        keyBarRepo.update(current)
+        persistKeyBar(current)
     }
 
     fun resetKeyBar() {
-        keyBarRepo.reset()
+        viewModelScope.launch {
+            keyBarRepo.reset()
+        }
     }
 
     fun importLocalFont(uri: Uri, displayName: String) {
