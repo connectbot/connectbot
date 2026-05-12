@@ -75,6 +75,7 @@ import org.connectbot.util.keybar.BuiltinKeyId
 import org.connectbot.util.keybar.KeyBarUiVm
 import org.connectbot.util.keybar.KeyEntry
 import org.connectbot.util.keybar.MacroEscape
+import timber.log.Timber
 
 private const val UI_OPACITY = 0.5f
 
@@ -124,7 +125,11 @@ fun TerminalKeyboard(
             onInteraction()
         },
         onMacroPress = { macro ->
-            bridge.sendBytes(MacroEscape.expand(macro.text))
+            runCatching { MacroEscape.expand(macro.text) }
+                .onSuccess { bytes -> bridge.sendBytes(bytes) }
+                .onFailure { e ->
+                    Timber.w(e, "Failed to expand macro %s; ignoring tap", macro.label)
+                }
             onInteraction()
         },
         onInteraction = onInteraction,
