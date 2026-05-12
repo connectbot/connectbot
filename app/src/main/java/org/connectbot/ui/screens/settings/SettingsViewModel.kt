@@ -514,8 +514,8 @@ class SettingsViewModel @Inject constructor(
 
     fun updateMacro(index: Int, label: String, text: String) {
         val current = _uiState.value.keyBarConfig.toMutableList()
-        if (current.getOrNull(index) !is KeyEntry.Macro) return
-        current[index] = KeyEntry.Macro(label, text)
+        val existing = current.getOrNull(index) as? KeyEntry.Macro ?: return
+        current[index] = existing.copy(label = label, text = text)
         keyBarRepo.update(current)
     }
 

@@ -67,11 +67,13 @@ class KeyBarConfigJsonTest {
     @Test
     fun `unknown entry type is skipped on load`() {
         val json = """[{"t":"b","id":"CTRL"},{"t":"future","payload":"x"},{"t":"m","l":"L","x":"X"}]"""
-        assertThat(KeyBarConfigJson.decode(json))
-            .containsExactly(
-                KeyEntry.Builtin(BuiltinKeyId.CTRL, visible = true),
-                KeyEntry.Macro(label = "L", text = "X"),
-            )
+        val decoded = KeyBarConfigJson.decode(json)
+        assertThat(decoded).hasSize(2)
+        assertThat(decoded[0]).isEqualTo(KeyEntry.Builtin(BuiltinKeyId.CTRL, visible = true))
+        val macro = decoded[1] as KeyEntry.Macro
+        assertThat(macro.label).isEqualTo("L")
+        assertThat(macro.text).isEqualTo("X")
+        assertThat(macro.id).isNotEmpty()
     }
 
     @Test
@@ -95,6 +97,7 @@ class KeyBarConfigJsonTest {
         assertThat(json).contains("\"t\":\"m\"")
         assertThat(json).contains("\"l\":\"L\"")
         assertThat(json).contains("\"x\":\"X\"")
+        assertThat(json).contains("\"u\":")
     }
 
     @Test
@@ -111,5 +114,16 @@ class KeyBarConfigJsonTest {
             listOf(KeyEntry.Builtin(BuiltinKeyId.CTRL, visible = false)),
         )
         assertThat(json).contains("\"v\":false")
+    }
+
+    @Test
+    fun `decode generates id for legacy macros missing the u field`() {
+        // Old-format JSON with no "u" field — should decode with a fresh id.
+        val json = """[{"t":"m","l":"hi","x":"hello"}]"""
+        val entries = KeyBarConfigJson.decode(json)
+        val macro = entries.single() as KeyEntry.Macro
+        assertThat(macro.label).isEqualTo("hi")
+        assertThat(macro.text).isEqualTo("hello")
+        assertThat(macro.id).isNotEmpty()
     }
 }

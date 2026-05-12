@@ -185,9 +185,9 @@ private fun KeyBarEntryList(
     LazyColumn(state = lazyListState, modifier = modifier) {
         itemsIndexed(
             items = entries,
-            key = { index, entry -> entryKey(index, entry) },
+            key = { _, entry -> entryKey(entry) },
         ) { index, entry ->
-            ReorderableItem(reorderState, key = entryKey(index, entry)) { _ ->
+            ReorderableItem(reorderState, key = entryKey(entry)) { _ ->
                 KeyBarEntryRow(
                     entry = entry,
                     onToggleVisible = { v -> onToggleVisible(index, v) },
@@ -201,18 +201,10 @@ private fun KeyBarEntryList(
     }
 }
 
-/**
- * Stable key for [LazyColumn] / [ReorderableItem]. For built-ins
- * the id is sufficient; for macros we fall back to identity hash
- * because two macros may share label + text and be at different
- * positions. (Index alone is unstable across reorder — it would
- * cause Compose to re-key items mid-drag.)
- */
-private fun entryKey(@Suppress("UNUSED_PARAMETER") index: Int, entry: KeyEntry): Any =
-    when (entry) {
-        is KeyEntry.Builtin -> "b:${entry.id}"
-        is KeyEntry.Macro -> "m:${System.identityHashCode(entry)}"
-    }
+private fun entryKey(entry: KeyEntry): String = when (entry) {
+    is KeyEntry.Builtin -> "b:${entry.id}"
+    is KeyEntry.Macro -> "m:${entry.id}"
+}
 
 @Composable
 private fun ReorderableCollectionItemScope.KeyBarEntryRow(

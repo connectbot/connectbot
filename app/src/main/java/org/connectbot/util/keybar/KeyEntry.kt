@@ -26,10 +26,18 @@ sealed class KeyEntry {
         val visible: Boolean,
     ) : KeyEntry()
 
-    /** A user-defined button that sends a byte stream (with C-style escapes). */
+    /**
+     * A user-defined button that sends a byte stream (with C-style escapes).
+     *
+     * @property id a stable identifier preserved across edit/save cycles so
+     *   Compose can key list items reliably during drag-reorder. Generated
+     *   at construction time; round-tripped through JSON; backfilled for
+     *   legacy entries that pre-date this field.
+     */
     data class Macro(
         val label: String,
         val text: String,
+        val id: String = java.util.UUID.randomUUID().toString(),
     ) : KeyEntry()
 }
 
