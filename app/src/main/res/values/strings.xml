@@ -381,6 +381,10 @@
     <string name="keybar_reset_confirm_title">Reset key bar?</string>
     <string name="keybar_reset_confirm_message">This will remove your custom buttons and restore the original key order.</string>
 
+    <!-- Customize key bar — delete macro confirmation. -->
+    <string name="keybar_delete_confirm_title">Delete custom button?</string>
+    <string name="keybar_delete_confirm_message">Delete \"%1$s\"? This cannot be undone.</string>
+
     <!-- Customize key bar — accessibility. -->
     <string name="keybar_a11y_drag_handle">Drag to reorder; double-tap and hold</string>
     <string name="keybar_a11y_move_up">Move up</string>

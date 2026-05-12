@@ -83,6 +83,7 @@ fun CustomizeKeyBarScreen(
 
     var showAddMacro by remember { mutableStateOf(false) }
     var editingMacroIndex by remember { mutableStateOf<Int?>(null) }
+    var deletingMacroIndex by remember { mutableStateOf<Int?>(null) }
     var showResetConfirm by remember { mutableStateOf(false) }
 
     Scaffold(
@@ -107,7 +108,7 @@ fun CustomizeKeyBarScreen(
                 onMove = viewModel::moveKeyBarEntry,
                 onToggleVisible = viewModel::setEntryVisible,
                 onEditMacro = { editingMacroIndex = it },
-                onDeleteMacro = viewModel::deleteKeyBarEntry,
+                onDeleteMacro = { deletingMacroIndex = it },
                 modifier = Modifier
                     .weight(1f)
                     .fillMaxWidth(),
@@ -153,6 +154,21 @@ fun CustomizeKeyBarScreen(
                 onSave = { label, text ->
                     viewModel.updateMacro(idx, label, text)
                     editingMacroIndex = null
+                },
+            )
+        }
+    }
+    deletingMacroIndex?.let { idx ->
+        val entry = ui.keyBarConfig.getOrNull(idx) as? KeyEntry.Macro
+        if (entry == null) {
+            deletingMacroIndex = null
+        } else {
+            DeleteMacroConfirmDialog(
+                macroLabel = entry.label,
+                onDismiss = { deletingMacroIndex = null },
+                onConfirm = {
+                    viewModel.deleteKeyBarEntry(idx)
+                    deletingMacroIndex = null
                 },
             )
         }
@@ -312,6 +328,29 @@ private fun ResetConfirmDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.keybar_reset_confirm_title)) },
         text = { Text(stringResource(R.string.keybar_reset_confirm_message)) },
+        confirmButton = {
+            TextButton(onClick = onConfirm) {
+                Text(stringResource(android.R.string.ok))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        },
+    )
+}
+
+@Composable
+private fun DeleteMacroConfirmDialog(
+    macroLabel: String,
+    onDismiss: () -> Unit,
+    onConfirm: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.keybar_delete_confirm_title)) },
+        text = { Text(stringResource(R.string.keybar_delete_confirm_message, macroLabel)) },
         confirmButton = {
             TextButton(onClick = onConfirm) {
                 Text(stringResource(android.R.string.ok))
