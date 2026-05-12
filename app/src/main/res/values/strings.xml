@@ -953,6 +953,10 @@
 	     accessibility purposes. -->
 	<string name="image_description_toggle_control_character">Toggle control character.</string>
 
+	<!-- Customize key bar — modifier toggles. -->
+	<string name="image_description_send_alt_character">Toggle Alt modifier.</string>
+	<string name="image_description_send_shift_character">Toggle Shift modifier.</string>
+
 	<!-- Describes the icon of the "send escape character" button in the terminal view for
 	     accessibility purposes. -->
 	<string name="image_description_send_escape_character">Send escape character.</string>
