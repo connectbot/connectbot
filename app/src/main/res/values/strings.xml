@@ -370,6 +370,41 @@
 	<string name="keybar_macro_label_too_long">Label is too long (max %1$d characters)</string>
 	<string name="keybar_macro_invalid_escape">Invalid escape sequence</string>
 
+    <!-- Customize key bar — editor screen. -->
+    <string name="keybar_screen_title">Customize key bar</string>
+    <string name="keybar_add_custom">Add custom button</string>
+    <string name="keybar_reset">Reset to defaults</string>
+    <string name="keybar_reset_confirm_title">Reset key bar?</string>
+    <string name="keybar_reset_confirm_message">This will remove your custom buttons and restore the original key order.</string>
+
+    <!-- Customize key bar — accessibility. -->
+    <string name="keybar_a11y_drag_handle">Drag to reorder; double-tap and hold</string>
+    <string name="keybar_a11y_move_up">Move up</string>
+    <string name="keybar_a11y_move_down">Move down</string>
+    <string name="keybar_a11y_edit_macro">Edit custom button</string>
+    <string name="keybar_a11y_delete_macro">Delete custom button</string>
+
+    <!-- Customize key bar — built-in catalog labels added by this PR. -->
+    <!-- Text for the "Alt" button in virtual keyboard. -->
+    <string name="button_key_alt">Alt</string>
+    <!-- Text for the "Shift" button in virtual keyboard. -->
+    <string name="button_key_shift">Shift</string>
+    <!-- Text for the "Tab" button in virtual keyboard. -->
+    <string name="button_key_tab">Tab</string>
+    <!-- Text for the "Enter" button in virtual keyboard. -->
+    <string name="button_key_enter">Enter</string>
+    <!-- Text for the "Backspace" button in virtual keyboard. -->
+    <string name="button_key_backspace">Backspace</string>
+    <!-- Text for the "Delete" button in virtual keyboard. -->
+    <string name="button_key_delete">Delete</string>
+    <!-- Text for the "Insert" button in virtual keyboard. -->
+    <string name="button_key_insert">Insert</string>
+    <!-- Text for the arrow buttons in virtual keyboard (used by the editor). -->
+    <string name="button_key_up">Up</string>
+    <string name="button_key_down">Down</string>
+    <string name="button_key_left">Left</string>
+    <string name="button_key_right">Right</string>
+
 	<!-- Category title for the Terminal Bell preferences -->
 	<string name="pref_bell_category">"Terminal bell"</string>
 
