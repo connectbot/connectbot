@@ -559,7 +559,7 @@
   <string name="auth_prompt_title">آنلاک کردن ConnectBot</string>
   <string name="auth_prompt_subtitle">برای ادامه، هویت خود را تأیید کنید.</string>
   <string name="pref_language_download" tools:machine_translated="true">دانلود بسته‌ی زبانی</string>
-  <string name="pref_language_download_failed" tools:machine_translated="true">دانلود با خطا مواجه شد، برای تلاش مجدد ضربه بزنید.</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">دانلود با خطا مواجه شد، برای تلاش مجدد ضربه بزنید</string>
   <string name="portforward_host_address" tools:machine_translated="true">آدرس میزبان</string>
   <string name="portforward_source_addr_localhost" tools:machine_translated="true">آدرس محلی</string>
   <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">لوکال‌هاست (فقط IPv4)</string>

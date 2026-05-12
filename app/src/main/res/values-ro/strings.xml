@@ -40,7 +40,7 @@
   <string name="terms_and_conditions" tools:machine_translated="true">Termeni și condiții</string>
   <string name="hints" tools:machine_translated="true">Sfaturi</string>
   <string name="keyboard_shortcuts" tools:machine_translated="true">Comenzi rapide de la tastatură</string>
-  <string name="increase_font_size" tools:machine_translated="true">Mărește dimensiunea fontului.</string>
+  <string name="increase_font_size" tools:machine_translated="true">Mărește dimensiunea fontului</string>
   <string name="increase_font_shortcut" tools:machine_translated="true">Ctrl și +</string>
   <string name="decrease_font_size" tools:machine_translated="true">Micșorează dimensiunea fontului.</string>
   <string name="decrease_font_shortcut" tools:machine_translated="true">Ctrl și -</string>
@@ -48,22 +48,22 @@
   <string name="pubkey_copy_private_openssh" tools:machine_translated="true">Copiază cheia privată (OpenSSH)</string>
   <string name="pubkey_copy_private_pem" tools:machine_translated="true">Copiază cheia privată (format PEM)</string>
   <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">Copiază cheia privată (criptată)</string>
-  <string name="pubkey_export_public" tools:machine_translated="true">Exportă cheia publică.</string>
-  <string name="pubkey_export_private" tools:machine_translated="true">Exportă cheia privată.</string>
+  <string name="pubkey_export_public" tools:machine_translated="true">Exportă cheia publică</string>
+  <string name="pubkey_export_private" tools:machine_translated="true">Exportă cheia privată</string>
   <string name="pubkey_export_private_openssh" tools:machine_translated="true">Exportă cheia privată (format OpenSSH)</string>
   <string name="pubkey_export_private_pem" tools:machine_translated="true">Exportă cheia privată (format PEM)</string>
   <string name="pubkey_export_private_encrypted" tools:machine_translated="true">Exportă cheia privată (criptată)</string>
   <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Stabiliți parola pentru export.</string>
   <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Introduceți o parolă pentru a cripta cheia exportată.</string>
-  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Confirmă parola.</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Confirmă parola</string>
   <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Frazele de acces nu se potrivesc.</string>
-  <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Importă cheia criptată.</string>
+  <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Importă cheia criptată</string>
   <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Introduceți parola pentru a decripta cheia „%1$s” (%2$s).</string>
   <string name="pubkey_import_button" tools:machine_translated="true">Importă</string>
   <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Criptează cheia pentru stocare.</string>
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">Utilizați aceeași parolă pentru criptare.</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Parolă nouă</string>
-  <string name="pubkey_import_confirm_password" tools:machine_translated="true">Confirmă parola.</string>
+  <string name="pubkey_import_confirm_password" tools:machine_translated="true">Confirmă parola</string>
   <string name="pubkey_list_empty" tools:machine_translated="true">Atingeți „Meniu” pentru a crea sau a importa perechi de chei.</string>
   <string name="pubkey_unknown_format" tools:machine_translated="true">Format necunoscut.</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Introduceți parola pentru a debloca cheia „%1$s”.</string>
@@ -77,7 +77,7 @@
   <string name="host_key_verification_title" tools:machine_translated="true">Verificarea cheii gazdă.</string>
   <string name="fingerprint_format_header" tools:machine_translated="true">Formatul amprentei digitale</string>
   <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d biți</string>
-  <string name="fingerprint_copy_description" tools:machine_translated="true">Copiază amprenta digitală în clipboard.</string>
+  <string name="fingerprint_copy_description" tools:machine_translated="true">Copiază amprenta digitală în clipboard</string>
   <string name="alert_passwords_do_not_match_msg" tools:machine_translated="true">Parolele nu se potrivesc!</string>
   <string name="alert_wrong_password_msg" tools:machine_translated="true">Parolă incorectă!</string>
   <string name="button_resize" tools:machine_translated="true">Redimensionează</string>
@@ -89,7 +89,7 @@
   <string name="network_restored_no_previous_state" tools:machine_translated="true">Rețeaua a fost restabilită, se verifică conexiunea…</string>
   <string name="pref_emulation_category" tools:machine_translated="true">Emulare terminal</string>
   <string name="pref_emulation_title" tools:machine_translated="true">Mod de emulare</string>
-  <string name="pref_scrollback_title" tools:machine_translated="true">Dimensiunea zonei de defilare.</string>
+  <string name="pref_scrollback_title" tools:machine_translated="true">Dimensiunea zonei de defilare</string>
   <string name="pref_scrollback_summary" tools:machine_translated="true">Dimensiunea bufferului de memorie pentru istoricul derulării, care va fi păstrat pentru fiecare consolă.</string>
   <string name="pref_fontfamily_title" tools:machine_translated="true">Font</string>
   <string name="pref_customfont_title" tools:machine_translated="true">Adăugați un font personalizat.</string>
@@ -101,8 +101,8 @@
   <string name="font_validating" tools:machine_translated="true">Se verifică fontul…</string>
   <string name="font_downloading" tools:machine_translated="true">Se descarcă fontul…</string>
   <string name="pref_localfont_title" tools:machine_translated="true">Importă font local.</string>
-  <string name="pref_localfont_summary" tools:machine_translated="true">Importați un fișier cu fonturi din memoria dispozitivului (TTF, OTF).</string>
-  <string name="dialog_localfont_title" tools:machine_translated="true">Importă fontul.</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Importați un fișier cu fonturi din memoria dispozitivului (TTF, OTF)</string>
+  <string name="dialog_localfont_title" tools:machine_translated="true">Importă fontul</string>
   <string name="dialog_localfont_hint" tools:machine_translated="true">Numele afișat pentru font.</string>
   <string name="button_import" tools:machine_translated="true">Importă</string>
   <string name="font_importing" tools:machine_translated="true">Se importă fontul…</string>
@@ -118,9 +118,9 @@
   <string name="pref_theme_light" tools:machine_translated="true">Temă deschisă</string>
   <string name="pref_theme_dark" tools:machine_translated="true">Întunecat</string>
   <string name="pref_rotation_title" tools:machine_translated="true">Mod de rotire</string>
-  <string name="pref_titlebarhide_title" tools:machine_translated="true">Ascunde automat bara de titlu.</string>
+  <string name="pref_titlebarhide_title" tools:machine_translated="true">Ascunde automat bara de titlu</string>
   <string name="pref_titlebarhide_summary" tools:machine_translated="true">Atingeți consola pentru a afișa bara de titlu și pentru a accesa meniul.</string>
-  <string name="pref_alwaysvisible_title" tools:machine_translated="true">Afișează întotdeauna tastele speciale.</string>
+  <string name="pref_alwaysvisible_title" tools:machine_translated="true">Afișează întotdeauna tastele speciale</string>
   <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">Gestul de navigare în sus/în jos pe pagină.</string>
   <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">Glisați cu degetul pe partea stângă a ecranului pentru a trimite comenzile „pg up”/„pg dn” către terminal.</string>
   <string name="pref_fullscreen_title" tools:machine_translated="true">Ecran complet</string>
@@ -132,7 +132,7 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Pe tastaturile virtuale, apăsarea tastelor numerice trimite comenzile F1-F10, împreună cu tasta Ctrl.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Butoanele de volum modifică dimensiunea fontului.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Dimensiunea fontului poate fi modificată și în setările profilului.</string>
-  <string name="pref_memkeys_title" tools:machine_translated="true">Salvează tastele în memorie.</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">Salvează tastele în memorie</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Păstrați cheile deblocate în memorie până la închiderea serviciului de bază.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Menține conexiunea în fundal.</string>
   <string name="pref_conn_persist_summary" tools:machine_translated="true">Menține sesiunile active chiar și atunci când treci la alte aplicații.</string>
@@ -140,9 +140,9 @@
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Modificatori permanenți</string>
   <string name="only_alt" tools:machine_translated="true">Doar Alt</string>
   <string name="pref_camera_title" tools:machine_translated="true">Scurtătură pentru cameră</string>
-  <string name="pref_keepalive_title" tools:machine_translated="true">Menține ecranul activ.</string>
+  <string name="pref_keepalive_title" tools:machine_translated="true">Menține ecranul activ</string>
   <string name="pref_keepalive_summary" tools:machine_translated="true">Împiedicați ecranul să se oprească atunci când lucrați într-o consolă.</string>
-  <string name="pref_wifilock_title" tools:machine_translated="true">Menține Wi-Fi-ul activ.</string>
+  <string name="pref_wifilock_title" tools:machine_translated="true">Menține Wi-Fi-ul activ</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">Împiedicați dezactivarea Wi-Fi-ului în timpul unei sesiuni active.</string>
   <string name="pref_bumpyarrows_title" tools:machine_translated="true">Săgeți cu textură</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Activează vibrația la apăsarea tastelor săgeată; util în cazul conexiunilor instabile.</string>
@@ -158,7 +158,7 @@
   <string name="list_keymode_left" tools:machine_translated="true">Utilizați tastele din partea stângă.</string>
   <string name="list_keymode_none" tools:machine_translated="true">Dezactivează</string>
   <string name="list_pubkeyids_none" tools:machine_translated="true">Nu folosiți chei.</string>
-  <string name="list_pubkeyids_any" tools:machine_translated="true">Utilizați orice cheie deblocată.</string>
+  <string name="list_pubkeyids_any" tools:machine_translated="true">Utilizați orice cheie deblocată</string>
   <string name="hostpref_nickname_title" tools:machine_translated="true">Pseudonim</string>
   <string name="hostpref_color_title" tools:machine_translated="true">Categorie de culoare</string>
   <string name="color_red" tools:machine_translated="true">Roșu</string>
@@ -179,16 +179,16 @@
   <string name="color_gray" tools:machine_translated="true">Gri</string>
   <string name="hostpref_fontsize_title" tools:machine_translated="true">Dimensiunea fontului (pt)</string>
   <string name="hostpref_fontfamily_title" tools:machine_translated="true">Font</string>
-  <string name="hostpref_colorscheme_title" tools:machine_translated="true">Schema de culori pentru terminal.</string>
+  <string name="hostpref_colorscheme_title" tools:machine_translated="true">Schema de culori pentru terminal</string>
   <string name="hostpref_pubkeyid_title" tools:machine_translated="true">Utilizați autentificarea cu cheie publică.</string>
-  <string name="hostpref_authagent_title" tools:machine_translated="true">Utilizați agentul de autentificare SSH.</string>
+  <string name="hostpref_authagent_title" tools:machine_translated="true">Utilizați agentul de autentificare SSH</string>
   <string name="hostpref_postlogin_title" tools:machine_translated="true">Automatizare după autentificare.</string>
   <string name="hostpref_postlogin_summary" tools:machine_translated="true">Comenzi care se vor executa pe serverul de la distanță după autentificare.</string>
   <string name="hostpref_compression_title" tools:machine_translated="true">Compresie</string>
   <string name="hostpref_compression_summary" tools:machine_translated="true">Acest lucru poate îmbunătăți performanța pe rețelele mai lente.</string>
   <string name="hostpref_wantsession_title" tools:machine_translated="true">Pornește sesiunea în terminal.</string>
   <string name="hostpref_wantsession_summary" tools:machine_translated="true">Dezactivați această opțiune pentru a utiliza doar redirecționarea porturilor.</string>
-  <string name="hostpref_stayconnected_title" tools:machine_translated="true">Rămâneți conectați.</string>
+  <string name="hostpref_stayconnected_title" tools:machine_translated="true">Rămâneți conectați</string>
   <string name="hostpref_stayconnected_summary" tools:machine_translated="true">Încearcă să te reconectezi la server dacă conexiunea este întreruptă.</string>
   <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Închide după deconectare.</string>
   <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Închide automat imediat după deconectarea de la distanță, fără a afișa vreo solicitare.</string>
@@ -198,14 +198,14 @@
   <string name="hostpref_save_password_summary" tools:machine_translated="true">Salvează în siguranță parola de autentificare pentru a permite autentificarea automată.</string>
   <string name="hostpref_password_title" tools:machine_translated="true">Parolă</string>
   <string name="hostpref_password_unchanged" tools:machine_translated="true">Parolă (nemonificată)</string>
-  <string name="hostpref_clear_password" tools:machine_translated="true">Șterge parola salvată.</string>
+  <string name="hostpref_clear_password" tools:machine_translated="true">Șterge parola salvată</string>
   <string name="hostpref_hostname_title" tools:machine_translated="true">Nume de host</string>
   <string name="hostpref_port_title" tools:machine_translated="true">Port</string>
   <string name="hostpref_profile_title" tools:machine_translated="true">Profil</string>
   <string name="hostpref_profile_summary" tools:machine_translated="true">Selectați un profil pentru a utiliza setările acestuia pentru terminal.</string>
   <string name="hostpref_profile_none" tools:machine_translated="true">Niciunul (se vor utiliza setările specifice gazdei)</string>
-  <string name="profile_controlled_setting" tools:machine_translated="true">Controlat de profil.</string>
-  <string name="font_use_default" tools:machine_translated="true">Utilizează fontul implicit.</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">Controlat de profil</string>
+  <string name="font_use_default" tools:machine_translated="true">Utilizează fontul implicit</string>
   <string name="font_system_default" tools:machine_translated="true">Implicit (Font cu lățime fixă)</string>
   <string name="pubkey_unknown" tools:machine_translated="true">Cheie necunoscută.</string>
   <string name="colorscheme_default" tools:machine_translated="true">Implicit</string>
@@ -219,7 +219,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Terminal</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Familie de fonturi</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Dimensiunea fontului: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Dimensiunea forței.</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Dimensiunea forței</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Forțează terminalul să aibă o dimensiune specifică (număr de coloane x număr de rânduri) în loc să se adapteze automat la dimensiunea ecranului.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">Activează opțiunea de forțare a dimensiunii.</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Coloane</string>
@@ -235,7 +235,7 @@
   <string name="profile_create_name_label" tools:machine_translated="true">Numele profilului</string>
   <string name="profile_create_button" tools:machine_translated="true">Creează</string>
   <string name="profile_create_cancel" tools:machine_translated="true">Anulează</string>
-  <string name="profile_delete_dialog_title" tools:machine_translated="true">Șterge profilul.</string>
+  <string name="profile_delete_dialog_title" tools:machine_translated="true">Șterge profilul</string>
   <string name="profile_delete_dialog_message" tools:machine_translated="true">Ești sigur că vrei să ștergi profilul „%s”?</string>
   <string name="profile_delete_button" tools:machine_translated="true">Șterge</string>
   <string name="profile_delete_cancel" tools:machine_translated="true">Anulează</string>
@@ -248,11 +248,11 @@
   <string name="console_menu_resize" tools:machine_translated="true">Setează dimensiunea manual.</string>
   <string name="console_menu_urlscan" tools:machine_translated="true">Analizarea adreselor URL</string>
   <string name="console_url_no_handler" tools:machine_translated="true">Nicio aplicație disponibilă pentru a deschide acest link.</string>
-  <string name="console_url_not_supported" tools:machine_translated="true">Acest tip de adresă URL nu este acceptat.</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">Acest tip de adresă URL nu este acceptat</string>
   <string name="button_yes" tools:machine_translated="true">Da</string>
   <string name="button_no" tools:machine_translated="true">Nu</string>
   <string name="portforward_local" tools:machine_translated="true">Local</string>
-  <string name="portforward_remote" tools:machine_translated="true">De la distanță.</string>
+  <string name="portforward_remote" tools:machine_translated="true">De la distanță</string>
   <string name="portforward_dynamic" tools:machine_translated="true">Dinamic (SOCKS)</string>
   <string name="portforward_pos" tools:machine_translated="true">Creează redirecționare de port.</string>
   <string name="portforward_save" tools:machine_translated="true">Salvează</string>
@@ -260,28 +260,28 @@
   <string name="format_hostname" tools:machine_translated="true">nume de host</string>
   <string name="format_port" tools:machine_translated="true">port</string>
   <string name="list_menu_pubkeys" tools:machine_translated="true">Gestionează cheile publice.</string>
-  <string name="list_menu_sortcolor" tools:machine_translated="true">Sortează după culoare.</string>
-  <string name="list_menu_sortname" tools:machine_translated="true">Sortează după nume.</string>
+  <string name="list_menu_sortcolor" tools:machine_translated="true">Sortează după culoare</string>
+  <string name="list_menu_sortname" tools:machine_translated="true">Sortează după nume</string>
   <string name="list_menu_disconnect" tools:machine_translated="true">Deconectează toate.</string>
   <string name="list_menu_settings" tools:machine_translated="true">Setări</string>
   <string name="list_host_disconnect" tools:machine_translated="true">Deconectare</string>
   <string name="list_host_edit" tools:machine_translated="true">Editează configurația hostului.</string>
-  <string name="list_host_portforwards" tools:machine_translated="true">Editează redirecționările de porturi.</string>
-  <string name="list_host_delete" tools:machine_translated="true">Șterge gazda.</string>
-  <string name="list_host_duplicate" tools:machine_translated="true">Duplică gazda.</string>
+  <string name="list_host_portforwards" tools:machine_translated="true">Editează redirecționările de porturi</string>
+  <string name="list_host_delete" tools:machine_translated="true">Șterge gazda</string>
+  <string name="list_host_duplicate" tools:machine_translated="true">Duplică gazda</string>
   <string name="list_host_forget_keys" tools:machine_translated="true">Șterge cheile de host salvate.</string>
   <string name="list_rotation_default" tools:machine_translated="true">Implicit/Standard</string>
   <string name="list_rotation_land" tools:machine_translated="true">Forțează orientarea pe orizontală.</string>
-  <string name="list_rotation_port" tools:machine_translated="true">Forțează orientarea pe verticală.</string>
+  <string name="list_rotation_port" tools:machine_translated="true">Forțează orientarea pe verticală</string>
   <string name="list_rotation_auto" tools:machine_translated="true">Automat</string>
   <string name="list_camera_ctrlaspace" tools:machine_translated="true">Ctrl+A, apoi tasta Spațiu.</string>
   <string name="list_camera_ctrla" tools:machine_translated="true">Ctrl+A</string>
   <string name="list_camera_esc" tools:machine_translated="true">Esc</string>
   <string name="list_camera_esc_a" tools:machine_translated="true">Esc+A</string>
-  <string name="list_camera_none" tools:machine_translated="true">Niciunul.</string>
+  <string name="list_camera_none" tools:machine_translated="true">Niciunul</string>
   <string name="list_camera_text_input" tools:machine_translated="true">Introducere text</string>
   <string name="delete_message" tools:machine_translated="true">Ești sigur că vrei să ștergi elementul „%1$s”?</string>
-  <string name="delete_pos" tools:machine_translated="true">Da, șterge.</string>
+  <string name="delete_pos" tools:machine_translated="true">Da, șterge</string>
   <string name="delete_neg" tools:machine_translated="true">Anulează</string>
   <string name="disconnect_all_message" tools:machine_translated="true">Ești sigur că vrei să te deconectezi de la toți serverele la care ești conectat?</string>
   <string name="disconnect_all_pos" tools:machine_translated="true">Da, deconectați.</string>
@@ -293,11 +293,11 @@
   <string name="terminal_using_c2s_algorithm" tools:machine_translated="true">Algoritm de comunicare între client și server: %1$s %2$s</string>
   <string name="terminal_using_algorithm" tools:machine_translated="true">Se utilizează algoritmul: %1$s %2$s</string>
   <string name="terminal_kex_algorithm" tools:machine_translated="true">Algoritm de schimb de chei: %s</string>
-  <string name="terminal_auth" tools:machine_translated="true">Se încearcă autentificarea.</string>
+  <string name="terminal_auth" tools:machine_translated="true">Se încearcă autentificarea</string>
   <string name="terminal_auth_pass" tools:machine_translated="true">Se încearcă autentificarea prin parolă.</string>
-  <string name="terminal_auth_pass_fail" tools:machine_translated="true">Metoda de autentificare „parolă” a eșuat.</string>
+  <string name="terminal_auth_pass_fail" tools:machine_translated="true">Metoda de autentificare „parolă” a eșuat</string>
   <string name="terminal_auth_saved_password" tools:machine_translated="true">Se încearcă autentificarea cu parola salvată…</string>
-  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Autentificarea cu parola salvată a eșuat.</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Autentificarea cu parola salvată a eșuat</string>
   <string name="terminal_auth_pubkey_any" tools:machine_translated="true">Se încearcă autentificarea prin metoda „cheie publică” folosind oricare dintre cheile publice disponibile în memorie.</string>
   <string name="terminal_auth_pubkey_invalid" tools:machine_translated="true">Cheia publică selectată este invalidă, încercați să selectați din nou cheia în editorul serverului.</string>
   <string name="terminal_auth_pubkey_specific" tools:machine_translated="true">Se încearcă autentificarea prin metoda „cheie publică” folosind o cheie publică specifică.</string>
@@ -311,18 +311,18 @@
   <string name="terminal_enable_portfoward" tools:machine_translated="true">Activare redirecționare port: %1$s</string>
   <string name="local_shell_unavailable" tools:machine_translated="true">Eroare! Interfața locală nu este disponibilă pe acest telefon.</string>
   <string name="notification_text" tools:machine_translated="true">%1$s vrea să vă atragă atenția.</string>
-  <string name="no" tools:machine_translated="true">Nu.</string>
+  <string name="no" tools:machine_translated="true">Nu</string>
   <string name="yes" tools:machine_translated="true">Da</string>
   <string name="list_color_schemes" tools:machine_translated="true">Scheme de culori</string>
-  <string name="menu_colors_reset" tools:machine_translated="true">Restabilește valorile implicite.</string>
-  <string name="button_manage_schemes" tools:machine_translated="true">Gestionează schemele de culori.</string>
-  <string name="title_scheme_manager" tools:machine_translated="true">Gestionați schemele de culori.</string>
+  <string name="menu_colors_reset" tools:machine_translated="true">Restabilește valorile implicite</string>
+  <string name="button_manage_schemes" tools:machine_translated="true">Gestionează schemele de culori</string>
+  <string name="title_scheme_manager" tools:machine_translated="true">Gestionați schemele de culori</string>
   <string name="button_new_scheme" tools:machine_translated="true">Schemă nouă</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">Duplică</string>
   <string name="button_rename_scheme" tools:machine_translated="true">Redenumiți</string>
   <string name="button_delete_scheme" tools:machine_translated="true">Șterge</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">Schemă de culori nouă</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Redenumiți schema de culori.</string>
+  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Redenumiți schema de culori</string>
   <string name="label_scheme_name" tools:machine_translated="true">Numele schemei</string>
   <string name="label_scheme_description" tools:machine_translated="true">Descriere (opțional)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">Șterge schema?</string>
@@ -333,20 +333,20 @@
   <string name="label_custom_scheme" tools:machine_translated="true">Personalizat</string>
   <string name="empty_custom_schemes" tools:machine_translated="true">Nu există scheme personalizate. Atingeți „Schemă nouă” pentru a crea una.</string>
   <string name="button_edit_palette" tools:machine_translated="true">Editează paleta de culori</string>
-  <string name="button_export_scheme" tools:machine_translated="true">Exportă schema de culori.</string>
-  <string name="button_import_scheme" tools:machine_translated="true">Importă schema de culori.</string>
-  <string name="message_export_success" tools:machine_translated="true">%1$s a fost exportat cu succes.</string>
-  <string name="message_import_success" tools:machine_translated="true">%1$s a fost importat cu succes.</string>
+  <string name="button_export_scheme" tools:machine_translated="true">Exportă schema de culori</string>
+  <string name="button_import_scheme" tools:machine_translated="true">Importă schema de culori</string>
+  <string name="message_export_success" tools:machine_translated="true">%1$s a fost exportat cu succes</string>
+  <string name="message_import_success" tools:machine_translated="true">%1$s a fost importat cu succes</string>
   <string name="error_export_failed" tools:machine_translated="true">Exportarea schemei a eșuat: %1$s</string>
   <string name="error_import_failed" tools:machine_translated="true">Importarea schemei a eșuat: %1$s</string>
-  <string name="error_invalid_json" tools:machine_translated="true">Fișier JSON invalid.</string>
+  <string name="error_invalid_json" tools:machine_translated="true">Fișier JSON invalid</string>
   <string name="title_palette_editor" tools:machine_translated="true">Editează paleta de culori.</string>
-  <string name="button_reset_all_colors" tools:machine_translated="true">Resetează totul.</string>
+  <string name="button_reset_all_colors" tools:machine_translated="true">Resetează totul</string>
   <string name="section_ansi_colors" tools:machine_translated="true">Culori ANSI (0–15)</string>
   <string name="dialog_title_edit_color" tools:machine_translated="true">Editează culoarea %1$d</string>
   <string name="dialog_title_reset_all" tools:machine_translated="true">Resetați toate culorile?</string>
   <string name="dialog_message_reset_all" tools:machine_translated="true">Această acțiune va reseta toate cele 256 de culori la valorile lor implicite. Această operație nu poate fi anulată.</string>
-  <string name="app_is_running" tools:machine_translated="true">ConnectBot este în funcțiune.</string>
+  <string name="app_is_running" tools:machine_translated="true">ConnectBot este în funcțiune</string>
   <string name="label_red" tools:machine_translated="true">Roșu</string>
   <string name="label_green" tools:machine_translated="true">Verde</string>
   <string name="label_blue" tools:machine_translated="true">Albastru</string>
@@ -357,7 +357,7 @@
   <string name="label_foreground_color" tools:machine_translated="true">Prim-plan</string>
   <string name="label_background_color" tools:machine_translated="true">Fundal</string>
   <string name="label_base_scheme" tools:machine_translated="true">Schema de bază:</string>
-  <string name="menu_manage_colors" tools:machine_translated="true">Gestionează schemele de culori.</string>
+  <string name="menu_manage_colors" tools:machine_translated="true">Gestionează schemele de culori</string>
   <string name="palette_editor_builtin_note" tools:machine_translated="true">Schemele predefinite sunt doar pentru vizualizare. Pentru a le personaliza, creați o copie.</string>
   <string name="section_color_preview" tools:machine_translated="true">Previzualizare</string>
   <string name="image_description_connected" tools:machine_translated="true">Conectat.</string>
@@ -395,10 +395,10 @@
   <string name="terminal_text_input_resize_handle" tools:machine_translated="true">Redimensionează</string>
   <string name="console_menu_text_input" tools:machine_translated="true">Introducere text</string>
   <string name="button_send" tools:machine_translated="true">Trimite</string>
-  <string name="button_ok" tools:machine_translated="true">Bine.</string>
+  <string name="button_ok" tools:machine_translated="true">Bine</string>
   <string name="button_close" tools:machine_translated="true">Închide</string>
   <string name="button_back" tools:machine_translated="true">Înapoi</string>
-  <string name="button_navigate_up" tools:machine_translated="true">Navighează în sus.</string>
+  <string name="button_navigate_up" tools:machine_translated="true">Navighează în sus</string>
   <string name="button_more_options" tools:machine_translated="true">Mai multe opțiuni</string>
   <string name="button_host_options" tools:machine_translated="true">Opțiuni pentru gazdă</string>
   <string name="button_collapse" tools:machine_translated="true">Ascunde</string>
@@ -416,8 +416,8 @@
   <string name="host_editor_quick_connect_label" tools:machine_translated="true">Conectare rapidă</string>
   <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">utilizator\@numehost:port</string>
   <string name="host_editor_quick_connect_example" tools:machine_translated="true">Exemplu: root\@192.168.1.1:22</string>
-  <string name="host_editor_show_advanced" tools:machine_translated="true">Afișează opțiunile avansate.</string>
-  <string name="host_editor_hide_advanced" tools:machine_translated="true">Ascunde opțiunile avansate.</string>
+  <string name="host_editor_show_advanced" tools:machine_translated="true">Afișează opțiunile avansate</string>
+  <string name="host_editor_hide_advanced" tools:machine_translated="true">Ascunde opțiunile avansate</string>
   <string name="resize_width_label" tools:machine_translated="true">Lățime (coloane)</string>
   <string name="resize_height_label" tools:machine_translated="true">Înălțime (număr de rânduri)</string>
   <string name="resize_disable_force_size" tools:machine_translated="true">Dezactivează dimensiunea fixă.</string>
@@ -426,19 +426,19 @@
   <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Cheile criptate nu pot fi deblocate la pornirea sistemului.</string>
   <string name="pubkey_type_label" tools:machine_translated="true">Tip: %s</string>
   <string name="pubkey_encrypted_description" tools:machine_translated="true">Criptat</string>
-  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Necriptat.</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Necriptat</string>
   <string name="pubkey_biometric_protection" tools:machine_translated="true">Protecție prin amprentă digitală</string>
   <string name="pubkey_biometric_description" tools:machine_translated="true">Protejați această cheie cu ajutorul amprentei dumneavoastră.</string>
   <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Nu a fost înregistrată nicio amprentă. Configurați înregistrarea amprentei în setările dispozitivului pentru a utiliza această funcție.</string>
   <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Protecția prin amprentă este disponibilă doar pentru cheile RSA și EC.</string>
-  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Autentificați-vă pentru a utiliza cheia.</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Autentificați-vă pentru a utiliza cheia</string>
   <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Atingeți senzorul de amprentă pentru a debloca „%1$s”.</string>
   <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Protejat prin amprentă.</string>
   <string name="pubkey_biometric_not_available" tools:machine_translated="true">Autentificarea prin amprentă nu este disponibilă.</string>
   <string name="portforward_nickname_placeholder" tools:machine_translated="true">Server web intern</string>
   <string name="portforward_port_range_error" tools:machine_translated="true">Portul trebuie să fie între 1 și 65535.</string>
   <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
-  <string name="portforward_destination_format_error" tools:machine_translated="true">Formatul trebuie să fie host:port (de exemplu, localhost:80).</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">Formatul trebuie să fie host:port (de exemplu, localhost:80)</string>
   <string name="portforward_host_address" tools:machine_translated="true">Adresa serverului</string>
   <string name="portforward_source_addr_localhost" tools:machine_translated="true">Adresa localhost</string>
   <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Adresa locală (doar IPv4)</string>
@@ -451,7 +451,7 @@
   <string name="portforward_type_label" tools:machine_translated="true">Tip: %s</string>
   <string name="portforward_enable" tools:machine_translated="true">Activează</string>
   <string name="portforward_disable" tools:machine_translated="true">Dezactivează</string>
-  <string name="portforward_enabled" tools:machine_translated="true">Redirecționarea porturilor activată.</string>
+  <string name="portforward_enabled" tools:machine_translated="true">Redirecționarea porturilor activată</string>
   <string name="portforward_disabled" tools:machine_translated="true">Redirecționarea porturilor a fost dezactivată.</string>
   <string name="protocol_spinner_label" tools:machine_translated="true">Protocol</string>
   <string name="expand" tools:machine_translated="true">Extinde</string>
@@ -459,29 +459,29 @@
   <string name="hostpref_add_host" tools:machine_translated="true">Adaugă gazdă</string>
   <string name="hostpref_save_host" tools:machine_translated="true">Salvează gazda</string>
   <string name="hostpref_setting_title" tools:machine_translated="true">Setări gazdă</string>
-  <string name="pubkey_import_existing" tools:machine_translated="true">Importă cheia publică existentă.</string>
-  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importă din clipboard.</string>
+  <string name="pubkey_import_existing" tools:machine_translated="true">Importă cheia publică existentă</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importă din clipboard</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Conținutul cheii private</string>
-  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Copiază din zona de lucru.</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Copiază din zona de lucru</string>
   <string name="notification_permission_title" tools:machine_translated="true">Menține conexiunea activă în fundal.</string>
   <string name="notification_permission_message" tools:machine_translated="true">ConnectBot are nevoie de permisiunea de a trimite notificări pentru a menține conexiunile active atunci când schimbați aplicațiile. În caz contrar, sistemul poate întrerupe conexiunile pentru a economisi bateria.</string>
   <string name="grant_permission" tools:machine_translated="true">Permite</string>
-  <string name="connect_anyway" tools:machine_translated="true">Conectează-te oricum.</string>
+  <string name="connect_anyway" tools:machine_translated="true">Conectează-te oricum</string>
   <string name="notification_permission_denied_title" tools:machine_translated="true">Este necesar să acordați permisiunea pentru notificări.</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Pentru a menține conexiunile active în fundal, vă rugăm să activați notificările pentru ConnectBot în setările sistemului.</string>
-  <string name="open_settings" tools:machine_translated="true">Deschide setările.</string>
+  <string name="open_settings" tools:machine_translated="true">Deschide setările</string>
   <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Conexiunile pot fi întrerupte dacă nu se acordă permisiunea pentru notificări.</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Conexiunea se poate întrerupe în fundal.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Încercați să accesați un host din rețeaua locală? Acordați permisiunile necesare pentru rețeaua locală.</string>
   <string name="loading_message" tools:machine_translated="true">Se încarcă…</string>
   <string name="migration_checking" tools:machine_translated="true">Se verifică baza de date…</string>
-  <string name="migration_title" tools:machine_translated="true">Migrarea bazei de date.</string>
+  <string name="migration_title" tools:machine_translated="true">Migrarea bazei de date</string>
   <string name="migration_warning" tools:machine_translated="true">Vă rugăm să nu închideți aplicația în timpul procesului de migrare.</string>
   <string name="migration_stats_hosts" tools:machine_translated="true">Numărul de servere migrate: %d</string>
   <string name="migration_stats_pubkeys" tools:machine_translated="true">Chei SSH migrate: %d</string>
   <string name="migration_stats_port_forwards" tools:machine_translated="true">Numărul de redirecționări de porturi migrate: %d</string>
   <string name="migration_stats_known_hosts" tools:machine_translated="true">Numărul de gazde cunoscute migrate: %d</string>
-  <string name="migration_failed_title" tools:machine_translated="true">Migrarea a eșuat.</string>
+  <string name="migration_failed_title" tools:machine_translated="true">Migrarea a eșuat</string>
   <string name="migration_failed_message" tools:machine_translated="true">A apărut o eroare în timpul migrării bazei de date: %s</string>
   <string name="migration_retry" tools:machine_translated="true">Reîncearcă</string>
   <string name="migration_failed_help" tools:machine_translated="true">Dacă problema persistă, vă rugăm să raportați această problemă la %1$s, adăugând jurnalul de depanare copiat mai sus.</string>
@@ -492,7 +492,7 @@
   <string name="disconnect_host_alert" tools:machine_translated="true">Ești sigur că vrei să te deconectezi de la „%1$s”?</string>
   <string name="delete_host_confirm" tools:machine_translated="true">Ești sigur că vrei să ștergi gazda „%1$s”?</string>
   <string name="forget_host_keys_confirm" tools:machine_translated="true">Ești sigur că vrei să ștergi cheile de host stocate pentru „%1$s”? Vei fi solicitat să verifici cheia de host la următoarea conexiune.</string>
-  <string name="list_pubkey_edit" tools:machine_translated="true">Editează cheia publică.</string>
+  <string name="list_pubkey_edit" tools:machine_translated="true">Editează cheia publică</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">Versiunea IP</string>
   <string name="hostpref_ipversion_summary" tools:machine_translated="true">Selectați versiunea de adresă IP care va fi utilizată la conectare.</string>
   <string name="ipversion_auto" tools:machine_translated="true">Automat</string>
@@ -504,7 +504,7 @@
   <string name="terminal_connecting_via_jump" tools:machine_translated="true">Se realizează conexiunea prin intermediul serverului intermediar: %s</string>
   <string name="terminal_jump_connected" tools:machine_translated="true">Conectat la serverul intermediar: %s</string>
   <string name="terminal_jump_authenticated" tools:machine_translated="true">Autentificat cu serverul intermediar: %s</string>
-  <string name="terminal_jump_failed" tools:machine_translated="true">Nu s-a putut stabili conexiunea cu serverul intermediar %1$s: %2$s.</string>
+  <string name="terminal_jump_failed" tools:machine_translated="true">Nu s-a putut stabili conexiunea cu serverul intermediar %1$s: %2$s</string>
   <string name="terminal_jump_auth_failed" tools:machine_translated="true">Autentificarea pentru serverul intermediar a eșuat: %s</string>
   <string name="terminal_jump_not_found" tools:machine_translated="true">Serverul intermediar nu a fost găsit în lista de servere salvate.</string>
   <string name="terminal_jump_password" tools:machine_translated="true">Parola pentru serverul de acces %s:</string>
@@ -519,21 +519,21 @@
   <string name="help_section_contact" tools:machine_translated="true">Contact și asistență</string>
   <string name="help_website" tools:machine_translated="true">Site web</string>
   <string name="help_github" tools:machine_translated="true">Codul sursă</string>
-  <string name="help_report_bug" tools:machine_translated="true">Raportează o eroare.</string>
-  <string name="help_section_donate" tools:machine_translated="true">Susține dezvoltarea.</string>
+  <string name="help_report_bug" tools:machine_translated="true">Raportează o eroare</string>
+  <string name="help_section_donate" tools:machine_translated="true">Susține dezvoltarea</string>
   <string name="help_donate_github" tools:machine_translated="true">Programul GitHub Sponsors</string>
   <string name="help_donate_coffee" tools:machine_translated="true">Oferă-mi o cafea (ca donație)</string>
   <string name="colorscheme_default_description" tools:machine_translated="true">Culorile implicite ale terminalului</string>
-  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Culori precise pentru mașini și oameni.</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Culori precise pentru mașini și oameni</string>
   <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarized cu fundal deschis.</string>
   <string name="colorscheme_dracula_description" tools:machine_translated="true">O temă întunecată pentru terminal.</string>
   <string name="colorscheme_nord_description" tools:machine_translated="true">O paletă de culori în tonuri arctice, albăstrui, specifice nordului.</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Schemă de culori în stil retro</string>
-  <string name="colorscheme_monokai_description" tools:machine_translated="true">Temă inspirată de Sublime Text.</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">Temă inspirată de Sublime Text</string>
   <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Un design întunecat, elegant și confortabil.</string>
   <string name="pref_profiles_category" tools:machine_translated="true">Profiluri</string>
   <string name="pref_default_profile_title" tools:machine_translated="true">Profil implicit</string>
-  <string name="pref_default_profile_none" tools:machine_translated="true">Niciunul (utilizați setările sistemului).</string>
+  <string name="pref_default_profile_none" tools:machine_translated="true">Niciunul (utilizați setările sistemului)</string>
   <string name="pref_alwaysvisible_summary" tools:machine_translated="true">Menține tastele speciale vizibile în permanență.</string>
   <string name="pref_customterminal_title" tools:machine_translated="true">Tipuri de terminal personalizate</string>
   <string name="pref_customterminal_summary" tools:machine_translated="true">Adăugați valori personalizate pentru variabila TERM pentru serverele la distanță.</string>
@@ -556,7 +556,7 @@
   <string name="export_hosts_failed" tools:machine_translated="true">Exportul gazdelor a eșuat: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">Importarea gazdelor a eșuat: %s</string>
   <string name="export_hosts_title" tools:machine_translated="true">Exportă gazdele.</string>
-  <string name="shortcut_customize_title" tools:machine_translated="true">Personalizați comanda rapidă.</string>
+  <string name="shortcut_customize_title" tools:machine_translated="true">Personalizați comanda rapidă</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Culoarea pictogramei</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Stilul iconiței</string>
   <string name="shortcut_use_host_color" tools:machine_translated="true">Utilizați culoarea configurată pentru server.</string>
@@ -565,11 +565,11 @@
   <string name="icon_style_server" tools:machine_translated="true">Server</string>
   <string name="icon_style_cloud" tools:machine_translated="true">Cloud (iconiță cu imaginea unui nor)</string>
   <string name="icon_style_key" tools:machine_translated="true">Cheie</string>
-  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Autentificare la pornire.</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Autentificare la pornire</string>
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Solicită utilizarea amprentei, a recunoașterii faciale sau a codului PIN al dispozitivului la deschiderea aplicației.</string>
   <string name="pref_security_category" tools:machine_translated="true">Securitate</string>
   <string name="auth_screen_title" tools:machine_translated="true">ConnectBot este blocat.</string>
   <string name="auth_screen_unlock_button" tools:machine_translated="true">Atingeți pentru a debloca.</string>
-  <string name="auth_prompt_title" tools:machine_translated="true">Deblochează ConnectBot.</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">Deblochează ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Verificați-vă identitatea pentru a continua.</string>
 </resources>

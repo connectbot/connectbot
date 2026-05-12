@@ -178,10 +178,10 @@
   <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Şifrelenmiş anahtarı içe aktar</string>
   <string name="pubkey_import_encrypted_message" tools:machine_translated="true">İçe aktarılan anahtar dosyasının şifresini çözmek için lütfen şifreyi girin: \'%1$s\' (%2$s)</string>
   <string name="pubkey_import_button" tools:machine_translated="true">İçe Aktar</string>
-  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Anahtarı şifreleyerek sakla.</string>
-  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Şifreleme için aynı parolayı kullanın.</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Anahtarı şifreleyerek sakla</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Şifreleme için aynı parolayı kullanın</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Yeni parola</string>
-  <string name="pubkey_import_confirm_password" tools:machine_translated="true">Şifreyi tekrar girin.</string>
+  <string name="pubkey_import_confirm_password" tools:machine_translated="true">Şifreyi tekrar girin</string>
   <string name="pubkey_list_empty" tools:machine_translated="true">\"Menü\"ye dokunarak anahtar çifti oluşturun veya içe aktarın.</string>
   <string name="pubkey_unknown_format" tools:machine_translated="true">Bilinmeyen format</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Şifrelenmiş anahtar \'%1$s\'yi açmak için şifreyi girin.</string>
@@ -206,7 +206,7 @@
   <string name="font_validating" tools:machine_translated="true">Font doğrulanıyor…</string>
   <string name="font_downloading" tools:machine_translated="true">Yazı tipi indiriliyor…</string>
   <string name="pref_localfont_title" tools:machine_translated="true">Yerel yazı tipini içe aktar</string>
-  <string name="pref_localfont_summary" tools:machine_translated="true">Depolama alanından bir yazı tipi dosyası içe aktarın (TTF, OTF).</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Depolama alanından bir yazı tipi dosyası içe aktarın (TTF, OTF)</string>
   <string name="dialog_localfont_title" tools:machine_translated="true">Fontu Yükle</string>
   <string name="dialog_localfont_hint" tools:machine_translated="true">Yazı tipinin görünen adı</string>
   <string name="button_import" tools:machine_translated="true">İçe Aktar</string>
@@ -257,7 +257,7 @@
   <string name="color_gray" tools:machine_translated="true">Gri</string>
   <string name="hostpref_fontfamily_title" tools:machine_translated="true">Yazı tipi</string>
   <string name="hostpref_colorscheme_title" tools:machine_translated="true">Terminal renk teması</string>
-  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Bağlantı kesildiğinde kapatma seçeneğini göster.</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Bağlantı kesildiğinde kapatma seçeneğini göster</string>
   <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Bağlantı kesildikten sonra herhangi bir uyarı göstermeden hemen kapatın.</string>
   <string name="hostpref_save_password_summary" tools:machine_translated="true">Oturum açma parolasını güvenli bir şekilde saklayarak otomatik kimlik doğrulamayı etkinleştirin.</string>
   <string name="hostpref_password_title" tools:machine_translated="true">Şifre</string>
@@ -312,11 +312,11 @@
   <string name="list_host_forget_keys" tools:machine_translated="true">Kaydedilmiş ana bilgisayar anahtarlarını sil</string>
   <string name="list_camera_text_input" tools:machine_translated="true">Metin Girişi</string>
   <string name="disconnect_all_message" tools:machine_translated="true">Tüm bağlı sunuculardan bağlantıyı kesmek istediğinizden emin misiniz?</string>
-  <string name="disconnect_all_pos" tools:machine_translated="true">Evet, bağlantıyı kes.</string>
+  <string name="disconnect_all_pos" tools:machine_translated="true">Evet, bağlantıyı kes</string>
   <string name="disconnect_all_neg" tools:machine_translated="true">İptal Et</string>
   <string name="terminal_kex_algorithm" tools:machine_translated="true">Anahtar değişim algoritması: %s</string>
   <string name="terminal_auth_saved_password" tools:machine_translated="true">Kaydedilmiş parolayı kullanmaya çalışılıyor…</string>
-  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Kaydedilmiş parola ile kimlik doğrulama başarısız oldu.</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Kaydedilmiş parola ile kimlik doğrulama başarısız oldu</string>
   <string name="terminal_auth_biometric" tools:machine_translated="true">\'%1$s\' anahtarının kilidini açmak için biyometrik kimlik doğrulama işlemi başlatılıyor.</string>
   <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">Biyometrik anahtar \'%1$s\' geçersiz hale getirildi. Bu, cihaza yeni parmak izleri kaydedildiğinde meydana gelebilir. Lütfen yeni bir anahtar oluşturun.</string>
   <string name="list_color_schemes" tools:machine_translated="true">Renk şemaları</string>
@@ -344,7 +344,7 @@
   <string name="message_import_success" tools:machine_translated="true">%1$s başarıyla içe aktarıldı.</string>
   <string name="error_export_failed" tools:machine_translated="true">Şema dışa aktarımı başarısız oldu: %1$s</string>
   <string name="error_import_failed" tools:machine_translated="true">Şema içe aktarımı başarısız oldu: %1$s</string>
-  <string name="error_invalid_json" tools:machine_translated="true">Geçersiz JSON dosyası.</string>
+  <string name="error_invalid_json" tools:machine_translated="true">Geçersiz JSON dosyası</string>
   <string name="title_palette_editor" tools:machine_translated="true">Renk Paleti Düzenle</string>
   <string name="button_reset_all_colors" tools:machine_translated="true">Tümünü Sıfırla</string>
   <string name="section_ansi_colors" tools:machine_translated="true">ANSI Renkleri (0–15)</string>
@@ -428,17 +428,17 @@
   <string name="pubkey_encrypted_description" tools:machine_translated="true">Şifrelenmiş</string>
   <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Şifrelenmemiş</string>
   <string name="pubkey_biometric_protection" tools:machine_translated="true">Parmak iziyle koruma</string>
-  <string name="pubkey_biometric_description" tools:machine_translated="true">Bu anahtarı parmak izinizle koruyun.</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">Bu anahtarı parmak izinizle koruyun</string>
   <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Parmak izi kaydı bulunamadı. Bu özelliği kullanmak için cihaz ayarlarından parmak izi kaydı yapın.</string>
   <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Parmak izi koruması yalnızca RSA ve EC anahtarları için kullanılabilir.</string>
-  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Anahtarı kullanmak için kimliğinizi doğrulayın.</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Anahtarı kullanmak için kimliğinizi doğrulayın</string>
   <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">\'%1$s\' cihazının kilidini açmak için parmak izi sensörüne dokunun.</string>
   <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Parmak izi ile korunan</string>
   <string name="pubkey_biometric_not_available" tools:machine_translated="true">Parmak izi kimlik doğrulaması şu anda kullanılamıyor.</string>
   <string name="portforward_nickname_placeholder" tools:machine_translated="true">Dahili Web Sunucusu</string>
   <string name="portforward_port_range_error" tools:machine_translated="true">Port numarası 1 ile 65535 arasında olmalıdır.</string>
   <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
-  <string name="portforward_destination_format_error" tools:machine_translated="true">Format şu şekilde olmalıdır: ana bilgisayar:port (örneğin, localhost:80).</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">Format şu şekilde olmalıdır: ana bilgisayar:port (örneğin, localhost:80)</string>
   <string name="portforward_host_address" tools:machine_translated="true">Ana bilgisayar adresi</string>
   <string name="portforward_source_addr_localhost" tools:machine_translated="true">Yerel ana bilgisayar</string>
   <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Yerel ağ (yalnızca IPv4)</string>
@@ -451,7 +451,7 @@
   <string name="portforward_type_label" tools:machine_translated="true">Tür: %s</string>
   <string name="portforward_enable" tools:machine_translated="true">Etkinleştir</string>
   <string name="portforward_disable" tools:machine_translated="true">Devre dışı bırak</string>
-  <string name="portforward_enabled" tools:machine_translated="true">Port yönlendirme etkinleştirildi.</string>
+  <string name="portforward_enabled" tools:machine_translated="true">Port yönlendirme etkinleştirildi</string>
   <string name="portforward_disabled" tools:machine_translated="true">Port yönlendirme devre dışı bırakıldı.</string>
   <string name="protocol_spinner_label" tools:machine_translated="true">Protokol</string>
   <string name="expand" tools:machine_translated="true">Genişlet</string>
@@ -466,8 +466,8 @@
   <string name="notification_permission_title" tools:machine_translated="true">Arka planda bağlantıda kalın.</string>
   <string name="notification_permission_message" tools:machine_translated="true">ConnectBot’un, uygulamalar arasında geçiş yaparken bağlantılarınızın aktif kalması için bildirim iznine ihtiyacı vardır. Bu izin verilmezse, sistem pil ömrünü korumak için bağlantılarınızı kesebilir.</string>
   <string name="grant_permission" tools:machine_translated="true">İzin Ver</string>
-  <string name="connect_anyway" tools:machine_translated="true">Yine de bağlanın.</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Bildirim izni gerekiyor.</string>
+  <string name="connect_anyway" tools:machine_translated="true">Yine de bağlanın</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">Bildirim izni gerekiyor</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Arka planda bağlantılarınızın aktif kalmasını sağlamak için lütfen sistem ayarlarında ConnectBot için bildirimleri etkinleştirin.</string>
   <string name="open_settings" tools:machine_translated="true">Ayarları aç</string>
   <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Bildirim izni verilmezse bağlantılar kesilebilir.</string>
@@ -499,7 +499,7 @@
   <string name="ipversion_ipv4" tools:machine_translated="true">Yalnızca IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">Yalnızca IPv6</string>
   <string name="hostpref_jumphost_title" tools:machine_translated="true">Atlama sunucusu (ProxyJump)</string>
-  <string name="hostpref_jumphost_summary" tools:machine_translated="true">Başka bir SSH sunucusu üzerinden bağlanın.</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">Başka bir SSH sunucusu üzerinden bağlanın</string>
   <string name="list_jumphost_none" tools:machine_translated="true">Yok (doğrudan bağlantı)</string>
   <string name="terminal_connecting_via_jump" tools:machine_translated="true">Ara sunucu üzerinden bağlantı kuruluyor: %s</string>
   <string name="terminal_jump_connected" tools:machine_translated="true">Ara sunucuya bağlandı: %s</string>
@@ -527,22 +527,22 @@
   <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Makine ve insanlar için hassas renkler</string>
   <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Açık renkli arka plana sahip Solarized teması.</string>
   <string name="colorscheme_dracula_description" tools:machine_translated="true">Terminal için koyu renkli bir tema.</string>
-  <string name="colorscheme_nord_description" tools:machine_translated="true">Arktik, kuzeye dönük mavimsi bir renk paleti.</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">Arktik, kuzeye dönük mavimsi bir renk paleti</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Retro tarzı renk teması</string>
-  <string name="colorscheme_monokai_description" tools:machine_translated="true">Sublime Text\'ten esinlenilerek oluşturulan tema.</string>
-  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Temiz ve kullanışlı bir koyu tema.</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">Sublime Text\'ten esinlenilerek oluşturulan tema</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Temiz ve kullanışlı bir koyu tema</string>
   <string name="pref_profiles_category" tools:machine_translated="true">Profiller</string>
   <string name="pref_default_profile_title" tools:machine_translated="true">Varsayılan Profil</string>
   <string name="pref_default_profile_none" tools:machine_translated="true">Yok (ana bilgisayar ayarlarını kullan)</string>
-  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">Özel tuşları her zaman görünür durumda tutun.</string>
+  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">Özel tuşları her zaman görünür durumda tutun</string>
   <string name="pref_customterminal_title" tools:machine_translated="true">Özel Terminal Türleri</string>
   <string name="pref_customterminal_summary" tools:machine_translated="true">Uzak sunucular için özel TERM değerleri ekleyin.</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">Özel Terminal Türü Ekle</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">Terminal türü (örneğin, rxvt-unicode)</string>
   <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Özel Terminal Türlerini Yönet</string>
   <string name="button_add_custom" tools:machine_translated="true">Özel öğe ekle…</string>
-  <string name="button_manage_custom" tools:machine_translated="true">Özel öğeleri yönet</string>
-  <string name="dialog_custom_value_label" tools:machine_translated="true">Özel değeri girin.</string>
+  <string name="button_manage_custom" tools:machine_translated="true">Özel öğeleri yönet…</string>
+  <string name="dialog_custom_value_label" tools:machine_translated="true">Özel değeri girin</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, ardından Boşluk tuşu</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
   <string name="list_camera_esc_description" tools:machine_translated="true">Esc</string>
@@ -568,8 +568,8 @@
   <string name="pref_auth_on_launch_title" tools:machine_translated="true">Uygulama başlatıldığında kimlik doğrulama</string>
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Uygulamayı açarken parmak izi, yüz tanıma veya cihaz PIN\'i gerektir.</string>
   <string name="pref_security_category" tools:machine_translated="true">Güvenlik</string>
-  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot kilitlendi.</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot kilitlendi</string>
   <string name="auth_screen_unlock_button" tools:machine_translated="true">Kilidini açmak için dokunun.</string>
   <string name="auth_prompt_title" tools:machine_translated="true">ConnectBot\'un kilidini açın</string>
-  <string name="auth_prompt_subtitle" tools:machine_translated="true">Devam etmek için kimliğinizi doğrulayın.</string>
+  <string name="auth_prompt_subtitle" tools:machine_translated="true">Devam etmek için kimliğinizi doğrulayın</string>
 </resources>

@@ -24,7 +24,7 @@
   <string name="pubkey_gather_entropy" tools:machine_translated="true">收集隨機數據</string>
   <string name="pubkey_touch_prompt" tools:machine_translated="true">點擊此方塊以收集隨機數據：%1$d%% 已完成</string>
   <string name="pubkey_touch_hint" tools:machine_translated="true">為了確保在產生密鑰時具有足夠的隨機性，請隨意地在下面的方框上移動您的手指。</string>
-  <string name="pubkey_generating" tools:machine_translated="true">正在產生金鑰對……</string>
+  <string name="pubkey_generating" tools:machine_translated="true">正在產生金鑰對…</string>
   <string name="pubkey_copy_private" tools:machine_translated="true">複製私鑰</string>
   <string name="pubkey_copy_private_openssh" tools:machine_translated="true">複製私鑰（OpenSSH 格式）</string>
   <string name="pubkey_copy_private_pem" tools:machine_translated="true">複製私鑰（PEM 格式）</string>
@@ -82,11 +82,11 @@
   <string name="alert_wrong_password_msg" tools:machine_translated="true">密碼錯誤！</string>
   <string name="button_resize" tools:machine_translated="true">調整大小</string>
   <string name="alert_disconnect_msg" tools:machine_translated="true">連線已斷開。</string>
-  <string name="network_lost_grace_period" tools:machine_translated="true">網路已斷線，正在嘗試重新連接……</string>
+  <string name="network_lost_grace_period" tools:machine_translated="true">網路已斷線，正在嘗試重新連接…</string>
   <string name="network_grace_period_expired" tools:machine_translated="true">網路未恢復，正在斷線……</string>
   <string name="network_restored_same_ip" tools:machine_translated="true">網絡已恢復，連線已維持。</string>
-  <string name="network_restored_ip_changed" tools:machine_translated="true">網絡已恢復，但 IP 位址已變更，正在重新連接……</string>
-  <string name="network_restored_no_previous_state" tools:machine_translated="true">網絡已恢復，正在驗證連線……</string>
+  <string name="network_restored_ip_changed" tools:machine_translated="true">網絡已恢復，但 IP 位址已變更，正在重新連接…</string>
+  <string name="network_restored_no_previous_state" tools:machine_translated="true">網絡已恢復，正在驗證連線…</string>
   <string name="pref_emulation_category" tools:machine_translated="true">終端模擬</string>
   <string name="pref_emulation_title" tools:machine_translated="true">模擬模式</string>
   <string name="pref_scrollback_title" tools:machine_translated="true">滾動歷史記錄大小</string>
@@ -98,14 +98,14 @@
   <string name="dialog_customfont_hint" tools:machine_translated="true">Google 字體名稱（例如：Cascadia Code）</string>
   <string name="button_add" tools:machine_translated="true">新增</string>
   <string name="button_remove" tools:machine_translated="true">移除</string>
-  <string name="font_validating" tools:machine_translated="true">正在驗證字體……</string>
-  <string name="font_downloading" tools:machine_translated="true">正在下載字體……</string>
+  <string name="font_validating" tools:machine_translated="true">正在驗證字體…</string>
+  <string name="font_downloading" tools:machine_translated="true">正在下載字體…</string>
   <string name="pref_localfont_title" tools:machine_translated="true">匯入本地字體</string>
   <string name="pref_localfont_summary" tools:machine_translated="true">從儲存空間匯入字體檔案（TTF、OTF）。</string>
   <string name="dialog_localfont_title" tools:machine_translated="true">匯入字體</string>
   <string name="dialog_localfont_hint" tools:machine_translated="true">字體的顯示名稱</string>
   <string name="button_import" tools:machine_translated="true">匯入</string>
-  <string name="font_importing" tools:machine_translated="true">正在匯入字體……</string>
+  <string name="font_importing" tools:machine_translated="true">正在匯入字體…</string>
   <string name="pref_backupkeys_title" tools:machine_translated="true">備份公鑰</string>
   <string name="pref_backupkeys_summary" tools:machine_translated="true">使用 Android 的備份機制來備份私鑰。</string>
   <string name="pref_ui_category" tools:machine_translated="true">使用者介面</string>
@@ -474,7 +474,7 @@
   <string name="notification_permission_console_warning" tools:machine_translated="true">應用程式在背景執行時，連接可能會中斷。</string>
   <string name="terminal_no_route" tools:machine_translated="true">您是否正在嘗試連接至本機網路上的主機？請授予本機網路權限。</string>
   <string name="loading_message" tools:machine_translated="true">正在載入中…</string>
-  <string name="migration_checking" tools:machine_translated="true">正在檢查資料庫……</string>
+  <string name="migration_checking" tools:machine_translated="true">正在檢查資料庫…</string>
   <string name="migration_title" tools:machine_translated="true">正在進行資料庫遷移。</string>
   <string name="migration_warning" tools:machine_translated="true">請勿在資料遷移期間關閉應用程式。</string>
   <string name="migration_stats_hosts" tools:machine_translated="true">已遷移的主機：%d</string>

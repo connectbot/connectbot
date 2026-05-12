@@ -1,14 +1,14 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc" tools:machine_translated="true">Просты, магутны кліент SSH з адкрытым зыходным кодам.</string>
-  <string name="service_desc" tools:machine_translated="true">Падтрымлівае SSH-злучэнні і загружаныя публічныя ключы.</string>
-  <string name="app_copyright" tools:machine_translated="true">Аўтарскае права © Кені Рут.</string>
+  <string name="service_desc" tools:machine_translated="true">Падтрымлівае SSH-злучэнні і загружаныя публічныя ключы</string>
+  <string name="app_copyright" tools:machine_translated="true">Аўтарскае права © Кені Рут</string>
   <string name="title_pubkey_list" tools:machine_translated="true">Публічныя ключы</string>
   <string name="title_port_forwards_list" tools:machine_translated="true">Перанакіраванне портаў</string>
   <string name="title_help" tools:machine_translated="true">Даведка</string>
   <string name="title_eula" tools:machine_translated="true">Ліцэнзія</string>
   <string name="title_colors" tools:machine_translated="true">Колеры</string>
-  <string name="title_color_picker" tools:machine_translated="true">Абярыце колер.</string>
+  <string name="title_color_picker" tools:machine_translated="true">Абярыце колер</string>
   <string name="title_settings" tools:machine_translated="true">Налады</string>
   <string name="title_pubkey_generate" tools:machine_translated="true">Стварыць</string>
   <string name="terms_and_conditions" tools:machine_translated="true">Палажэнні і ўмовы</string>
@@ -17,44 +17,44 @@
   <string name="increase_font_size" tools:machine_translated="true">Павялічыць памер шрыфта</string>
   <string name="increase_font_shortcut" tools:machine_translated="true">Ctrl і +</string>
   <string name="decrease_font_size" tools:machine_translated="true">Зменшыць памер шрыфта</string>
-  <string name="decrease_font_shortcut" tools:machine_translated="true">Ctrl і мінус</string>
+  <string name="decrease_font_shortcut" tools:machine_translated="true">Ctrl і мінус -</string>
   <string name="paste_shortcut" tools:machine_translated="true">Ctrl+Shift+V</string>
   <string name="pubkey_generate" tools:machine_translated="true">Стварыць</string>
   <string name="pubkey_delete" tools:machine_translated="true">Выдаліць ключ</string>
-  <string name="pubkey_gather_entropy" tools:machine_translated="true">Збор энтрапіі.</string>
-  <string name="pubkey_touch_prompt" tools:machine_translated="true">Націсніце на гэта поле, каб збіраць выпадковыя даныя: выканана %1$d%%.</string>
+  <string name="pubkey_gather_entropy" tools:machine_translated="true">Збор энтрапіі</string>
+  <string name="pubkey_touch_prompt" tools:machine_translated="true">Націсніце на гэта поле, каб збіраць выпадковыя даныя: выканана %1$d%%</string>
   <string name="pubkey_touch_hint" tools:machine_translated="true">Каб забяспечыць выпадковасць падчас генерацыі ключа, хаатычна правядзіце пальцам па прамавугольніку, размешчаным ніжэй.</string>
   <string name="pubkey_generating" tools:machine_translated="true">Генерацыя пары ключоў…</string>
-  <string name="pubkey_copy_private" tools:machine_translated="true">Скапіяваць прыватны ключ.</string>
+  <string name="pubkey_copy_private" tools:machine_translated="true">Скапіяваць прыватны ключ</string>
   <string name="pubkey_copy_private_openssh" tools:machine_translated="true">Скапіяваць прыватны ключ (OpenSSH)</string>
   <string name="pubkey_copy_private_pem" tools:machine_translated="true">Скапіяваць прыватны ключ (фармат PEM)</string>
   <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">Скапіяваць прыватны ключ (зашыфраваны)</string>
   <string name="pubkey_copy_public" tools:machine_translated="true">Скапіяваць публічны ключ</string>
-  <string name="pubkey_export_public" tools:machine_translated="true">Экспартаваць публічны ключ.</string>
-  <string name="pubkey_export_private" tools:machine_translated="true">Экспартаваць прыватны ключ.</string>
+  <string name="pubkey_export_public" tools:machine_translated="true">Экспартаваць публічны ключ</string>
+  <string name="pubkey_export_private" tools:machine_translated="true">Экспартаваць прыватны ключ</string>
   <string name="pubkey_export_private_openssh" tools:machine_translated="true">Экспартаваць прыватны ключ (фармат OpenSSH)</string>
   <string name="pubkey_export_private_pem" tools:machine_translated="true">Экспартаваць прыватны ключ (фармат PEM)</string>
   <string name="pubkey_export_private_encrypted" tools:machine_translated="true">Экспартаваць прыватны ключ (зашыфраваны)</string>
-  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Усталяваць пароль для экспарту.</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Усталяваць пароль для экспарту</string>
   <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Увядзіце пароль, каб зашыфраваць экспартаваны ключ.</string>
-  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Пацвердзіце пароль.</string>
-  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Фразы пароля не супадаюць.</string>
-  <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Імпартаваць зашыфраваны ключ.</string>
-  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Увядзіце пароль, каб расшыфраваць ключ \'%1$s\' (%2$s).</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Пацвердзіце пароль</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Фразы пароля не супадаюць</string>
+  <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Імпартаваць зашыфраваны ключ</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Увядзіце пароль, каб расшыфраваць ключ \'%1$s\' (%2$s)</string>
   <string name="pubkey_import_button" tools:machine_translated="true">Імпартаваць</string>
-  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Зашыфраваць ключ для захавання.</string>
-  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Выкарыстоўвайце той жа пароль для шыфравання.</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Зашыфраваць ключ для захавання</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Выкарыстоўвайце той жа пароль для шыфравання</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Новы пароль</string>
-  <string name="pubkey_import_confirm_password" tools:machine_translated="true">Пацвердзіце пароль.</string>
+  <string name="pubkey_import_confirm_password" tools:machine_translated="true">Пацвердзіце пароль</string>
   <string name="pubkey_list_empty" tools:machine_translated="true">Націсніце «Меню», каб стварыць\nабо імпартаваць пары ключоў.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">Невядомы фармат.</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">Невядомы фармат</string>
   <string name="pubkey_change_password" tools:machine_translated="true">Змяніць пароль</string>
-  <string name="pubkey_unlock" tools:machine_translated="true">Разблакіраваць ключ.</string>
-  <string name="pubkey_unlock_message" tools:machine_translated="true">Увядзіце пароль, каб разблакіраваць ключ \'%1$s\'.</string>
-  <string name="pubkey_nickname_exists" tools:machine_translated="true">Ключ з такім жа нікнеймам ужо існуе.</string>
-  <string name="pubkey_load_on_start" tools:machine_translated="true">Загружаць ключ пры запуску праграмы.</string>
-  <string name="pubkey_confirm_use" tools:machine_translated="true">Пацвердзіце перад выкарыстаннем.</string>
-  <string name="portforward_edit" tools:machine_translated="true">Рэдагаваць налады пераадрасацыі порта.</string>
+  <string name="pubkey_unlock" tools:machine_translated="true">Разблакіраваць ключ</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">Увядзіце пароль, каб разблакіраваць ключ \'%1$s\'</string>
+  <string name="pubkey_nickname_exists" tools:machine_translated="true">Ключ з такім жа нікнеймам ужо існуе</string>
+  <string name="pubkey_load_on_start" tools:machine_translated="true">Загружаць ключ пры запуску праграмы</string>
+  <string name="pubkey_confirm_use" tools:machine_translated="true">Пацвердзіце перад выкарыстаннем</string>
+  <string name="portforward_edit" tools:machine_translated="true">Рэдагаваць налады пераадрасацыі порта</string>
   <string name="portforward_delete" tools:machine_translated="true">Выдаліць накіраванне порта</string>
   <string name="prompt_nickname" tools:machine_translated="true">Псеўданім:</string>
   <string name="prompt_source_port" tools:machine_translated="true">Зыходны порт:</string>
@@ -64,7 +64,7 @@
   <string name="prompt_password" tools:machine_translated="true">Пароль:</string>
   <string name="prompt_again" tools:machine_translated="true">(зноў)</string>
   <string name="prompt_type" tools:machine_translated="true">Тып:</string>
-  <string name="prompt_password_can_be_blank" tools:machine_translated="true">Звярніце ўвагу: поле пароля можна пакінуць пустым.</string>
+  <string name="prompt_password_can_be_blank" tools:machine_translated="true">Звярніце ўвагу: поле пароля можна пакінуць пустым</string>
   <string name="prompt_bits" tools:machine_translated="true">Біты:</string>
   <string name="prompt_pubkey_password" tools:machine_translated="true">Пароль для ключа «%1$s»</string>
   <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">Дазволіць аддаленаму хосту выкарыстоўваць ключ «%1$s»?</string>
@@ -74,91 +74,91 @@
   <string name="prompt_continue_connecting" tools:machine_translated="true">Ці ўпэўнены вы, што хочаце працягваць падключэнне?</string>
   <string name="host_authenticity_warning" tools:machine_translated="true">Не ўдалося пацвердзіць сапраўднасць хоста «%1$s».</string>
   <string name="host_fingerprint" tools:machine_translated="true">Адбіткі ключа хоста %1$s: %2$s</string>
-  <string name="host_key_verification_title" tools:machine_translated="true">Пацвярджэнне ключа хоста.</string>
+  <string name="host_key_verification_title" tools:machine_translated="true">Пацвярджэнне ключа хоста</string>
   <string name="fingerprint_format_header" tools:machine_translated="true">Формат адбітка пальца</string>
   <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d біт</string>
   <string name="fingerprint_copy_description" tools:machine_translated="true">Скапіяваць адбіткі пальцаў у буфер абмену</string>
   <string name="alert_passwords_do_not_match_msg" tools:machine_translated="true">Паролі не супадаюць!</string>
   <string name="alert_wrong_password_msg" tools:machine_translated="true">Неправільны пароль!</string>
   <string name="button_resize" tools:machine_translated="true">Змяніць памер</string>
-  <string name="alert_disconnect_msg" tools:machine_translated="true">Злучэнне страчана.</string>
+  <string name="alert_disconnect_msg" tools:machine_translated="true">Злучэнне страчана</string>
   <string name="network_lost_grace_period" tools:machine_translated="true">Злучэнне з сеткай страчана, чакаем паўновага злучэння…</string>
   <string name="network_grace_period_expired" tools:machine_translated="true">Злучэнне з сеткай не адноўлена, адключаецца…</string>
-  <string name="network_restored_same_ip" tools:machine_translated="true">Злучэнне з сеткай адноўлена, падключэнне захавана.</string>
+  <string name="network_restored_same_ip" tools:machine_translated="true">Злучэнне з сеткай адноўлена, падключэнне захавана</string>
   <string name="network_restored_ip_changed" tools:machine_translated="true">Злучэнне з сеткай адноўлена, але IP-адрас зменены, ідзе паўновае падключэнне…</string>
   <string name="network_restored_no_previous_state" tools:machine_translated="true">Злучэнне з сеткай адноўлена, праводзіцца праверка злучэння…</string>
-  <string name="pref_emulation_category" tools:machine_translated="true">Налады эмуляцыі тэрмінала.</string>
-  <string name="pref_emulation_title" tools:machine_translated="true">Рэжым эмуляцыі.</string>
+  <string name="pref_emulation_category" tools:machine_translated="true">Налады эмуляцыі тэрмінала</string>
+  <string name="pref_emulation_title" tools:machine_translated="true">Рэжым эмуляцыі</string>
   <string name="pref_scrollback_title" tools:machine_translated="true">Памер гісторыі пракруткі</string>
   <string name="pref_scrollback_summary" tools:machine_translated="true">Памер буфера гісторыі пракруткі, які захоўваецца ў памяці для кожнай кансолі.</string>
   <string name="pref_fontfamily_title" tools:machine_translated="true">Шрыфт</string>
-  <string name="pref_customfont_title" tools:machine_translated="true">Дадаць карыстальніцкі шрыфт.</string>
-  <string name="pref_customfont_summary" tools:machine_translated="true">Дадайце шрыфт з Google Fonts па назве.</string>
-  <string name="dialog_customfont_title" tools:machine_translated="true">Дадаць карыстальніцкі шрыфт.</string>
+  <string name="pref_customfont_title" tools:machine_translated="true">Дадаць карыстальніцкі шрыфт</string>
+  <string name="pref_customfont_summary" tools:machine_translated="true">Дадайце шрыфт з Google Fonts па назве</string>
+  <string name="dialog_customfont_title" tools:machine_translated="true">Дадаць карыстальніцкі шрыфт</string>
   <string name="dialog_customfont_hint" tools:machine_translated="true">Назва шрыфта Google Fonts (напрыклад, Cascadia Code)</string>
   <string name="button_add" tools:machine_translated="true">Дадаць</string>
   <string name="button_remove" tools:machine_translated="true">Выдаліць</string>
   <string name="font_validating" tools:machine_translated="true">Праверка шрыфта…</string>
   <string name="font_downloading" tools:machine_translated="true">Загрузка шрыфта…</string>
-  <string name="pref_localfont_title" tools:machine_translated="true">Імпартаваць лакальны шрыфт.</string>
-  <string name="pref_localfont_summary" tools:machine_translated="true">Імпартуйце файл шрыфта з месца захоўвання (TTF, OTF).</string>
+  <string name="pref_localfont_title" tools:machine_translated="true">Імпартаваць лакальны шрыфт</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Імпартуйце файл шрыфта з месца захоўвання (TTF, OTF)</string>
   <string name="dialog_localfont_title" tools:machine_translated="true">Імпартаваць шрыфт</string>
-  <string name="dialog_localfont_hint" tools:machine_translated="true">Назва шрыфта для адлюстравання.</string>
+  <string name="dialog_localfont_hint" tools:machine_translated="true">Назва шрыфта для адлюстравання</string>
   <string name="button_import" tools:machine_translated="true">Імпартаваць</string>
   <string name="font_importing" tools:machine_translated="true">Імпарт шрыфта…</string>
-  <string name="pref_backupkeys_title" tools:machine_translated="true">Рэзервовае капіяванне публічных ключоў.</string>
+  <string name="pref_backupkeys_title" tools:machine_translated="true">Рэзервовае капіяванне публічных ключоў</string>
   <string name="pref_backupkeys_summary" tools:machine_translated="true">Стварайце рэзервовыя копіі прыватных ключоў, выкарыстоўваючы механізм рэзервовага капіявання Android.</string>
   <string name="pref_ui_category" tools:machine_translated="true">Карыстальніцкі інтэрфейс</string>
   <string name="pref_language_title" tools:machine_translated="true">Мова</string>
-  <string name="pref_language_system_default" tools:machine_translated="true">Налады па змаўчанні сістэмы.</string>
+  <string name="pref_language_system_default" tools:machine_translated="true">Налады па змаўчанні сістэмы</string>
   <string name="pref_language_download" tools:machine_translated="true">Загрузіць моўны пакет</string>
-  <string name="pref_language_download_failed" tools:machine_translated="true">Загрузка не ўдалася, націсніце, каб паўтарыць спробу.</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">Загрузка не ўдалася, націсніце, каб паўтарыць спробу</string>
   <string name="pref_theme_title" tools:machine_translated="true">Тэма</string>
-  <string name="pref_theme_system" tools:machine_translated="true">Налады па змаўчанні сістэмы.</string>
+  <string name="pref_theme_system" tools:machine_translated="true">Налады па змаўчанні сістэмы</string>
   <string name="pref_theme_light" tools:machine_translated="true">Светлая тэма</string>
   <string name="pref_theme_dark" tools:machine_translated="true">Цёмная</string>
   <string name="pref_rotation_title" tools:machine_translated="true">Рэжым павароту</string>
-  <string name="pref_titlebarhide_title" tools:machine_translated="true">Аўтаматычнае схаванне панэлі загалоўка.</string>
-  <string name="pref_titlebarhide_summary" tools:machine_translated="true">Націсніце на кансоль, каб паказаць панэль загалоўка і адкрыць меню.</string>
-  <string name="pref_alwaysvisible_title" tools:machine_translated="true">Спецыяльныя клавішы заўсёды бачныя.</string>
-  <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">Жэст для перагортвання старонак уверх/ўніз.</string>
+  <string name="pref_titlebarhide_title" tools:machine_translated="true">Аўтаматычнае схаванне панэлі загалоўка</string>
+  <string name="pref_titlebarhide_summary" tools:machine_translated="true">Націсніце на кансоль, каб паказаць панэль загалоўка і адкрыць меню</string>
+  <string name="pref_alwaysvisible_title" tools:machine_translated="true">Спецыяльныя клавішы заўсёды бачныя</string>
+  <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">Жэст для перагортвання старонак уверх/ўніз</string>
   <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">Правядзіце пальцам па левай трэці экрана, каб адправіць каманды «перагортаць старонку ўверх/ўніз» у тэрмінал.</string>
   <string name="pref_fullscreen_title" tools:machine_translated="true">Поўнаэкранны рэжым</string>
-  <string name="pref_fullscreen_summary" tools:machine_translated="true">Схавай панэль стану, калі працуеш у кансолі.</string>
+  <string name="pref_fullscreen_summary" tools:machine_translated="true">Схавай панэль стану, калі працуеш у кансолі</string>
   <string name="pref_keyboard_category" tools:machine_translated="true">Клавіятура</string>
-  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift + лічбавыя клавішы — гэта функцыянальныя клавішы (F-клавішы).</string>
+  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift + лічбавыя клавішы — гэта функцыянальныя клавішы (F-клавішы)</string>
   <string name="pref_shiftfkeys_summary" tools:machine_translated="true">На апаратных клавіятурах пры націсканні клавіш з лічбамі разам з клавішай Shift адпраўляюцца сігналы F1–F10.</string>
-  <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Кантроль + лічбавыя клавішы — гэта функцыянальныя клавішы.</string>
+  <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Кантроль + лічбавыя клавішы — гэта функцыянальныя клавішы</string>
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">На віртуальных клавіятурах пры націсканні клавіш з лічбамі адпраўляюцца сігналы F1–F10 у спалучэнні з клавішай Ctrl.</string>
-  <string name="pref_volumefont_title" tools:machine_translated="true">Кнопкі рэгулявання гучнасці змяняюць памер шрыфта.</string>
-  <string name="pref_volumefont_summary" tools:machine_translated="true">Памер шрыфта таксама можна змяніць у наладках профілю.</string>
-  <string name="pref_memkeys_title" tools:machine_translated="true">Запамінаць клавішы ў памяці.</string>
-  <string name="pref_memkeys_summary" tools:machine_translated="true">Захоўвайце разблакаваныя ключы ў памяці да спынення працы бэкэнд-сэрвіса.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Забяспечце пастаяннае злучэнне ў фонавым рэжыме.</string>
+  <string name="pref_volumefont_title" tools:machine_translated="true">Кнопкі рэгулявання гучнасці змяняюць памер шрыфта</string>
+  <string name="pref_volumefont_summary" tools:machine_translated="true">Памер шрыфта таксама можна змяніць у наладках профілю</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">Запамінаць клавішы ў памяці</string>
+  <string name="pref_memkeys_summary" tools:machine_translated="true">Захоўвайце разблакаваныя ключы ў памяці да спынення працы бэкэнд-сэрвіса</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">Забяспечце пастаяннае злучэнне ў фонавым рэжыме</string>
   <string name="pref_conn_persist_summary" tools:machine_translated="true">Захоўвайце актыўныя сесіі, нават калі пераключаецеся на іншыя праграмы.</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Кароткія клавішныя камбінацыі для каталогаў</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Замацаваныя мадыфікатары</string>
   <string name="only_alt" tools:machine_translated="true">Толькі Alt</string>
   <string name="pref_camera_title" tools:machine_translated="true">Хуткі доступ да камеры</string>
-  <string name="pref_keepalive_title" tools:machine_translated="true">Захаваць экран у працоўным стане.</string>
+  <string name="pref_keepalive_title" tools:machine_translated="true">Захаваць экран у працоўным стане</string>
   <string name="pref_keepalive_summary" tools:machine_translated="true">Запавольце выключэнне экрана падчас працы ў кансолі.</string>
   <string name="pref_wifilock_title" tools:machine_translated="true">Захоўвайце Wi-Fi у актыўным стане.</string>
-  <string name="pref_wifilock_summary" tools:machine_translated="true">Запавольце адключэнне Wi-Fi падчас актыўнай сесіі.</string>
-  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Стрылкападобныя элементы тактыльнай зваротнай сувязі.</string>
-  <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Вібрацыя пры адпраўцы клавіш са стрэлкамі; карысна пры нестабільным злучэнні.</string>
+  <string name="pref_wifilock_summary" tools:machine_translated="true">Запавольце адключэнне Wi-Fi падчас актыўнай сесіі</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Стрылкападобныя элементы тактыльнай зваротнай сувязі</string>
+  <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Вібрацыя пры адпраўцы клавіш са стрэлкамі; карысна пры нестабільным злучэнні</string>
   <string name="pref_bell_category" tools:machine_translated="true">Званок тэрмінала</string>
   <string name="pref_bell_title" tools:machine_translated="true">Гукавы сігнал</string>
-  <string name="pref_bell_summary" tools:machine_translated="true">Уключыць гук пры атрыманні паведамлення ў тэрмінале.</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">Уключыць гук пры атрыманні паведамлення ў тэрмінале</string>
   <string name="pref_bell_volume_title" tools:machine_translated="true">Гучнасць сігналу</string>
-  <string name="pref_bell_vibrate_title" tools:machine_translated="true">Вібрацыя пры гукавым сігнале.</string>
-  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Вібрацыя пры атрыманні сігналу ад тэрмінала.</string>
+  <string name="pref_bell_vibrate_title" tools:machine_translated="true">Вібрацыя пры гукавым сігнале</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Вібрацыя пры атрыманні сігналу ад тэрмінала</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">Фанавыя апавяшчэнні</string>
   <string name="pref_bell_notification_summary" tools:machine_translated="true">Адпраўляць апавяшчэнне, калі тэрмінал, які працуе ў фонавым рэжыме, выдае гукавы сігнал.</string>
-  <string name="list_keymode_right" tools:machine_translated="true">Выкарыстоўвайце клавішы з правага боку клавіятуры.</string>
+  <string name="list_keymode_right" tools:machine_translated="true">Выкарыстоўвайце клавішы з правага боку клавіятуры</string>
   <string name="list_keymode_left" tools:machine_translated="true">Выкарыстоўвайце клавішы з левага боку клавіятуры.</string>
   <string name="list_keymode_none" tools:machine_translated="true">Адключыць</string>
-  <string name="list_pubkeyids_none" tools:machine_translated="true">Не выкарыстоўвайце ключы.</string>
-  <string name="list_pubkeyids_any" tools:machine_translated="true">Выкарыстоўвайце любы даступны ключ.</string>
+  <string name="list_pubkeyids_none" tools:machine_translated="true">Не выкарыстоўвайце ключы</string>
+  <string name="list_pubkeyids_any" tools:machine_translated="true">Выкарыстоўвайце любы даступны ключ</string>
   <string name="hostpref_nickname_title" tools:machine_translated="true">Нікнейм</string>
   <string name="hostpref_color_title" tools:machine_translated="true">Катэгорыя колераў</string>
   <string name="color_red" tools:machine_translated="true">Чырвоны</string>
@@ -179,35 +179,35 @@
   <string name="color_gray" tools:machine_translated="true">Шэры</string>
   <string name="hostpref_fontsize_title" tools:machine_translated="true">Памер шрыфта (пункты)</string>
   <string name="hostpref_fontfamily_title" tools:machine_translated="true">Шрыфт</string>
-  <string name="hostpref_colorscheme_title" tools:machine_translated="true">Каляровая схема тэрмінала.</string>
-  <string name="hostpref_pubkeyid_title" tools:machine_translated="true">Выкарыстоўвайце аўтэнтыфікацыю з дапамогай публічнага ключа.</string>
-  <string name="hostpref_authagent_title" tools:machine_translated="true">Выкарыстоўвайце агента аўтэнтыфікацыі SSH.</string>
-  <string name="hostpref_postlogin_title" tools:machine_translated="true">Аўтаматызацыя пасля ўваходу ў сістэму.</string>
+  <string name="hostpref_colorscheme_title" tools:machine_translated="true">Каляровая схема тэрмінала</string>
+  <string name="hostpref_pubkeyid_title" tools:machine_translated="true">Выкарыстоўвайце аўтэнтыфікацыю з дапамогай публічнага ключа</string>
+  <string name="hostpref_authagent_title" tools:machine_translated="true">Выкарыстоўвайце агента аўтэнтыфікацыі SSH</string>
+  <string name="hostpref_postlogin_title" tools:machine_translated="true">Аўтаматызацыя пасля ўваходу ў сістэму</string>
   <string name="hostpref_postlogin_summary" tools:machine_translated="true">Каманды, якія трэба выканаць на аддаленым серверы пасля паспяховай аўтэнтыфікацыі.</string>
   <string name="hostpref_compression_title" tools:machine_translated="true">Сцісканне</string>
-  <string name="hostpref_compression_summary" tools:machine_translated="true">Гэта можа дапамагчы ў выпадку павольных сетак.</string>
-  <string name="hostpref_wantsession_title" tools:machine_translated="true">Запусціць сеанс у тэрмінале.</string>
-  <string name="hostpref_wantsession_summary" tools:machine_translated="true">Адключыце гэтую опцыю, каб выкарыстоўваць толькі пераадрасацыю портаў.</string>
-  <string name="hostpref_stayconnected_title" tools:machine_translated="true">Заставайцеся на сувязі.</string>
-  <string name="hostpref_stayconnected_summary" tools:machine_translated="true">Паспрабуйце паўторна падключыцца да хоста, калі адбылося адключэнне.</string>
-  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Запытваць зачыненне пасля адключэння.</string>
+  <string name="hostpref_compression_summary" tools:machine_translated="true">Гэта можа дапамагчы ў выпадку павольных сетак</string>
+  <string name="hostpref_wantsession_title" tools:machine_translated="true">Запусціць сеанс у тэрмінале</string>
+  <string name="hostpref_wantsession_summary" tools:machine_translated="true">Адключыце гэтую опцыю, каб выкарыстоўваць толькі пераадрасацыю портаў</string>
+  <string name="hostpref_stayconnected_title" tools:machine_translated="true">Заставайцеся на сувязі</string>
+  <string name="hostpref_stayconnected_summary" tools:machine_translated="true">Паспрабуйце паўторна падключыцца да хоста, калі адбылося адключэнне</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Запытваць зачыненне пасля адключэння</string>
   <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Неадкладна закрыць пасля адключэння ад выдаленага сервера без паведамлення.</string>
   <string name="hostpref_delkey_title" tools:machine_translated="true">Клавіша DEL</string>
   <string name="hostpref_encoding_title" tools:machine_translated="true">Кадзіраванне</string>
   <string name="hostpref_username_title" tools:machine_translated="true">Імя карыстальніка</string>
-  <string name="hostpref_save_password_summary" tools:machine_translated="true">Захоўвайце пароль для ўваходу ў бяспечным выглядзе для аўтаматычнай аўтэнтыфікацыі.</string>
+  <string name="hostpref_save_password_summary" tools:machine_translated="true">Захоўвайце пароль для ўваходу ў бяспечным выглядзе для аўтаматычнай аўтэнтыфікацыі</string>
   <string name="hostpref_password_title" tools:machine_translated="true">Пароль</string>
   <string name="hostpref_password_unchanged" tools:machine_translated="true">Пароль (не зменены)</string>
-  <string name="hostpref_clear_password" tools:machine_translated="true">Выдаліць захаваны пароль.</string>
+  <string name="hostpref_clear_password" tools:machine_translated="true">Выдаліць захаваны пароль</string>
   <string name="hostpref_hostname_title" tools:machine_translated="true">Хост</string>
   <string name="hostpref_port_title" tools:machine_translated="true">Порт</string>
   <string name="hostpref_profile_title" tools:machine_translated="true">Профіль</string>
   <string name="hostpref_profile_summary" tools:machine_translated="true">Абярыце профіль, каб выкарыстоўваць яго налады тэрмінала.</string>
   <string name="hostpref_profile_none" tools:machine_translated="true">Нічога (выкарыстоўваць налады хоста)</string>
-  <string name="profile_controlled_setting" tools:machine_translated="true">Кіруецца праз профіль.</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">Кіруецца праз профіль</string>
   <string name="font_use_default" tools:machine_translated="true">Выкарыстоўваць стандартны.</string>
   <string name="font_system_default" tools:machine_translated="true">Па змаўчанні (шрыфт з фіксаванай шырынёй сімвалаў)</string>
-  <string name="pubkey_unknown" tools:machine_translated="true">Невядомы ключ.</string>
+  <string name="pubkey_unknown" tools:machine_translated="true">Невядомы ключ</string>
   <string name="colorscheme_default" tools:machine_translated="true">Па змаўчанні</string>
   <string name="profile_editor_title_new" tools:machine_translated="true">Новы профіль</string>
   <string name="profile_editor_title_edit" tools:machine_translated="true">Рэдагаваць профіль</string>
@@ -221,7 +221,7 @@
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Памер шрыфта: %d</string>
   <string name="profile_editor_force_size_title" tools:machine_translated="true">Памер сілы</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Прымусьце тэрмінал адлюстроўвацца ў пэўным памеры (колькасць слупкоў x колькасць радкоў), а не аўтаматычна падлаштоўвацца пад памер экрана.</string>
-  <string name="profile_editor_force_size_enable" tools:machine_translated="true">Уключыць прымусовае заданне памеру.</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">Уключыць прымусовае заданне памеру</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Калонкі</string>
   <string name="profile_editor_force_size_rows" tools:machine_translated="true">Рады</string>
   <string name="profile_icon_color_none" tools:machine_translated="true">Нічога (выкарыстоўваць колер хоста)</string>
@@ -239,40 +239,40 @@
   <string name="profile_delete_dialog_message" tools:machine_translated="true">Ці ўпэўнены вы, што хочаце выдаліць \'%s\'?</string>
   <string name="profile_delete_button" tools:machine_translated="true">Выдаліць</string>
   <string name="profile_delete_cancel" tools:machine_translated="true">Скасаваць</string>
-  <string name="profile_summary_font" tools:machine_translated="true">Шрыфт: %1$s, памер: %2$d пунктаў.</string>
+  <string name="profile_summary_font" tools:machine_translated="true">Шрыфт: %1$s %2$dpt</string>
   <string name="profile_summary_emulation" tools:machine_translated="true">Эмуляцыя: %s</string>
   <string name="console_menu_reconnect" tools:machine_translated="true">Падключыцца паўторна</string>
   <string name="console_menu_close" tools:machine_translated="true">Закрыць</string>
   <string name="console_menu_paste" tools:machine_translated="true">Уставіць</string>
   <string name="console_menu_portforwards" tools:machine_translated="true">Перанакіраванне портаў</string>
-  <string name="console_menu_resize" tools:machine_translated="true">Устанавіць памер уручную.</string>
+  <string name="console_menu_resize" tools:machine_translated="true">Устанавіць памер уручную</string>
   <string name="console_menu_urlscan" tools:machine_translated="true">Праверка URL-адрасоў</string>
   <string name="console_url_no_handler" tools:machine_translated="true">Няма даступных праграм для адкрыцця гэтай вэб-старонкі.</string>
-  <string name="console_url_not_supported" tools:machine_translated="true">Гэты тып URL-адрасы не падтрымліваецца.</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">Гэты тып URL-адрасы не падтрымліваецца</string>
   <string name="button_yes" tools:machine_translated="true">Так</string>
   <string name="button_no" tools:machine_translated="true">Не</string>
   <string name="portforward_local" tools:machine_translated="true">Лакальны</string>
-  <string name="portforward_remote" tools:machine_translated="true">Аддалены.</string>
+  <string name="portforward_remote" tools:machine_translated="true">Аддалены</string>
   <string name="portforward_dynamic" tools:machine_translated="true">Дынамічны (SOCKS)</string>
-  <string name="portforward_pos" tools:machine_translated="true">Стварыць правіла пераадрасацыі порта.</string>
+  <string name="portforward_pos" tools:machine_translated="true">Стварыць правіла пераадрасацыі порта</string>
   <string name="portforward_save" tools:machine_translated="true">Захаваць</string>
   <string name="format_username" tools:machine_translated="true">імя карыстальніка</string>
   <string name="format_hostname" tools:machine_translated="true">імя хоста</string>
   <string name="format_port" tools:machine_translated="true">порт</string>
   <string name="list_menu_pubkeys" tools:machine_translated="true">Кіраванне публічнымі ключамі</string>
-  <string name="list_menu_sortcolor" tools:machine_translated="true">Сартаваць па колеры.</string>
-  <string name="list_menu_sortname" tools:machine_translated="true">Сартаваць па імені.</string>
+  <string name="list_menu_sortcolor" tools:machine_translated="true">Сартаваць па колеры</string>
+  <string name="list_menu_sortname" tools:machine_translated="true">Сартаваць па імені</string>
   <string name="list_menu_disconnect" tools:machine_translated="true">Адключыць усе</string>
   <string name="list_menu_settings" tools:machine_translated="true">Налады</string>
   <string name="list_host_disconnect" tools:machine_translated="true">Адключыцца</string>
   <string name="list_host_edit" tools:machine_translated="true">Рэдагаваць параметры хоста</string>
   <string name="list_host_portforwards" tools:machine_translated="true">Рэдагаваць накіраванні портаў</string>
-  <string name="list_host_delete" tools:machine_translated="true">Выдаліць хост.</string>
+  <string name="list_host_delete" tools:machine_translated="true">Выдаліць хост</string>
   <string name="list_host_duplicate" tools:machine_translated="true">Дублікаваць хост</string>
-  <string name="list_host_forget_keys" tools:machine_translated="true">Выдаліць захаваныя ключы хоста.</string>
+  <string name="list_host_forget_keys" tools:machine_translated="true">Выдаліць захаваныя ключы хоста</string>
   <string name="list_rotation_default" tools:machine_translated="true">Па змаўчанні</string>
-  <string name="list_rotation_land" tools:machine_translated="true">Замацаваць гарызантальную арыентацыю.</string>
-  <string name="list_rotation_port" tools:machine_translated="true">Зафіксаваць у вертыкальным рэжыме.</string>
+  <string name="list_rotation_land" tools:machine_translated="true">Замацаваць гарызантальную арыентацыю</string>
+  <string name="list_rotation_port" tools:machine_translated="true">Зафіксаваць у вертыкальным рэжыме</string>
   <string name="list_rotation_auto" tools:machine_translated="true">Аўтаматычны</string>
   <string name="list_camera_ctrlaspace" tools:machine_translated="true">Ctrl+A, затым клавіша прабелу.</string>
   <string name="list_camera_ctrla" tools:machine_translated="true">Ctrl+A</string>
@@ -281,24 +281,24 @@
   <string name="list_camera_none" tools:machine_translated="true">Нічога</string>
   <string name="list_camera_text_input" tools:machine_translated="true">Увод тэксту</string>
   <string name="delete_message" tools:machine_translated="true">Ці ўпэўнены вы, што хочаце выдаліць \'%1$s\'?</string>
-  <string name="delete_pos" tools:machine_translated="true">Так, выдаліць.</string>
+  <string name="delete_pos" tools:machine_translated="true">Так, выдаліць</string>
   <string name="delete_neg" tools:machine_translated="true">Адмяніць</string>
   <string name="disconnect_all_message" tools:machine_translated="true">Ці ўпэўнены вы, што хочаце адключыцца ад усіх падлучаных сервераў?</string>
-  <string name="disconnect_all_pos" tools:machine_translated="true">Так, адключыцца.</string>
+  <string name="disconnect_all_pos" tools:machine_translated="true">Так, адключыцца</string>
   <string name="disconnect_all_neg" tools:machine_translated="true">Скасаваць</string>
-  <string name="terminal_connecting" tools:ignore="PluralsCandidate" tools:machine_translated="true">Падключэнне да %1$s:%2$d праз %3$s.</string>
+  <string name="terminal_connecting" tools:ignore="PluralsCandidate" tools:machine_translated="true">Падключэнне да %1$s:%2$d праз %3$s</string>
   <string name="terminal_sucess" tools:machine_translated="true">Пацверджаны ключ хоста \'%1$s\': %2$s</string>
   <string name="terminal_failed" tools:machine_translated="true">Праверка ключа хоста не ўдалася.</string>
   <string name="terminal_using_s2c_algorithm" tools:machine_translated="true">Алгоритм ад серверa да кліента: %1$s %2$s</string>
   <string name="terminal_using_c2s_algorithm" tools:machine_translated="true">Алгоритм для злучэння кліента і сервера: %1$s %2$s</string>
   <string name="terminal_using_algorithm" tools:machine_translated="true">Выкарыстоўваецца алгарытм: %1$s %2$s</string>
   <string name="terminal_kex_algorithm" tools:machine_translated="true">Алгарытм абмену ключамі: %s</string>
-  <string name="terminal_auth" tools:machine_translated="true">Пачатак працэсу аўтэнтыфікацыі.</string>
+  <string name="terminal_auth" tools:machine_translated="true">Пачатак працэсу аўтэнтыфікацыі</string>
   <string name="terminal_auth_pass" tools:machine_translated="true">Выконваецца спроба аўтэнтыфікацыі з дапамогай «пароля».</string>
   <string name="terminal_auth_pass_fail" tools:machine_translated="true">Метад аўтэнтыфікацыі «пароль» не спрацаваў.</string>
   <string name="terminal_auth_saved_password" tools:machine_translated="true">Выконваецца спроба аўтэнтыфікацыі з выкарыстаннем захаванага пароля…</string>
-  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Аўтэнтыфікацыя з выкарыстаннем захаванага пароля не ўдалася.</string>
-  <string name="terminal_auth_pubkey_any" tools:machine_translated="true">Выконваецца спроба аўтэнтыфікацыі з дапамогай публічнага ключа, выкарыстоўваючы любы з даступных публічных ключоў, якія знаходзяцца ў памяці.</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Аўтэнтыфікацыя з выкарыстаннем захаванага пароля не ўдалася</string>
+  <string name="terminal_auth_pubkey_any" tools:machine_translated="true">Выконваецца спроба аўтэнтыфікацыі з дапамогай публічнага ключа, выкарыстоўваючы любы з даступных публічных ключоў, якія знаходзяцца ў памяці</string>
   <string name="terminal_auth_pubkey_invalid" tools:machine_translated="true">Абраны публічны ключ несапраўдны, паспрабуйце выбраць ключ паўторна ў рэдактары хоста.</string>
   <string name="terminal_auth_pubkey_specific" tools:machine_translated="true">Выконваецца спроба аўтэнтыфікацыі з выкарыстаннем публічнага ключа.</string>
   <string name="terminal_auth_biometric" tools:machine_translated="true">Запытваецца біяметрычная аўтэнтыфікацыя для ключа «%1$s».</string>
@@ -311,12 +311,12 @@
   <string name="terminal_enable_portfoward" tools:machine_translated="true">Уключаем пераадпраўленне порта: %1$s</string>
   <string name="local_shell_unavailable" tools:machine_translated="true">Памылка! Лакальная абалонка недаступная на гэтым тэлефоне.</string>
   <string name="notification_text" tools:machine_translated="true">%1$s хоча, каб вы звярнулі на гэта ўвагу.</string>
-  <string name="no" tools:machine_translated="true">Не.</string>
+  <string name="no" tools:machine_translated="true">Не</string>
   <string name="yes" tools:machine_translated="true">Так</string>
   <string name="list_color_schemes" tools:machine_translated="true">Каляровыя схемы</string>
-  <string name="menu_colors_reset" tools:machine_translated="true">Скінуць налады па змаўчанні.</string>
+  <string name="menu_colors_reset" tools:machine_translated="true">Скінуць налады па змаўчанні</string>
   <string name="button_manage_schemes" tools:machine_translated="true">Кіраванне схе́мамі</string>
-  <string name="title_scheme_manager" tools:machine_translated="true">Кіраванне каляровымі схемамі.</string>
+  <string name="title_scheme_manager" tools:machine_translated="true">Кіраванне каляровымі схемамі</string>
   <string name="button_new_scheme" tools:machine_translated="true">Новая схема</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">Дублікаваць</string>
   <string name="button_rename_scheme" tools:machine_translated="true">Пераназваць</string>
@@ -329,24 +329,24 @@
   <string name="dialog_message_delete_scheme" tools:machine_translated="true">Ці ўпэўнены вы, што хочаце выдаліць \"%1$s\"? Гэтае дзеянне нельга адмяніць.</string>
   <string name="button_confirm" tools:machine_translated="true">Пацвярдзіць</string>
   <string name="button_cancel" tools:machine_translated="true">Адмяніць</string>
-  <string name="label_built_in_scheme" tools:machine_translated="true">Убудаваны.</string>
+  <string name="label_built_in_scheme" tools:machine_translated="true">Убудаваны</string>
   <string name="label_custom_scheme" tools:machine_translated="true">Карыстальніцкі/ствараны карыстальнікам</string>
   <string name="empty_custom_schemes" tools:machine_translated="true">Не знойдзена ніводнай карыстальніцкай схемы. Націсніце «Стварыць новую схему», каб дадаць яе.</string>
   <string name="button_edit_palette" tools:machine_translated="true">Рэдагаваць палітру</string>
   <string name="button_export_scheme" tools:machine_translated="true">Экспартаваць схему</string>
   <string name="button_import_scheme" tools:machine_translated="true">Імпартаваць схему</string>
-  <string name="message_export_success" tools:machine_translated="true">Схема паспяхова экспартавана.</string>
-  <string name="message_import_success" tools:machine_translated="true">Схема %1$s паспяхова імпартавана.</string>
+  <string name="message_export_success" tools:machine_translated="true">Экспартавана %1$s</string>
+  <string name="message_import_success" tools:machine_translated="true">Імпартавана %1$s</string>
   <string name="error_export_failed" tools:machine_translated="true">Не ўдалося экспартаваць схему: %1$s</string>
   <string name="error_import_failed" tools:machine_translated="true">Не ўдалося імпартаваць схему: %1$s</string>
-  <string name="error_invalid_json" tools:machine_translated="true">Несапраўдны JSON-файл.</string>
-  <string name="title_palette_editor" tools:machine_translated="true">Рэдагаваць каляровую палітру.</string>
-  <string name="button_reset_all_colors" tools:machine_translated="true">Скінуць усе налады па змаўчанні.</string>
+  <string name="error_invalid_json" tools:machine_translated="true">Несапраўдны JSON-файл</string>
+  <string name="title_palette_editor" tools:machine_translated="true">Рэдагаваць каляровую палітру</string>
+  <string name="button_reset_all_colors" tools:machine_translated="true">Скінуць усе налады па змаўчанні</string>
   <string name="section_ansi_colors" tools:machine_translated="true">Колеры ANSI (0–15)</string>
   <string name="dialog_title_edit_color" tools:machine_translated="true">Рэдагаваць колер %1$d</string>
   <string name="dialog_title_reset_all" tools:machine_translated="true">Скінуць усе колеры?</string>
   <string name="dialog_message_reset_all" tools:machine_translated="true">Гэта скіне ўсе 256 колераў да іх пачатковых значэнняў. Гэтае дзеянне нельга адмяніць.</string>
-  <string name="app_is_running" tools:machine_translated="true">ConnectBot працуе.</string>
+  <string name="app_is_running" tools:machine_translated="true">ConnectBot працуе</string>
   <string name="label_red" tools:machine_translated="true">Чырвоны</string>
   <string name="label_green" tools:machine_translated="true">Зялёны</string>
   <string name="label_blue" tools:machine_translated="true">Сіні</string>
@@ -391,7 +391,7 @@
   <string name="button_key_f12" tools:machine_translated="true">F12</string>
   <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">Увод тэксту</string>
   <string name="terminal_text_input_dialog_title" tools:machine_translated="true">Увод тэксту</string>
-  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">Увядзіце тэкст, які трэба адправіць у тэрмінал.</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">Увядзіце тэкст, які трэба адправіць у тэрмінал</string>
   <string name="terminal_text_input_resize_handle" tools:machine_translated="true">Змяніць памер</string>
   <string name="console_menu_text_input" tools:machine_translated="true">Увод тэксту</string>
   <string name="button_send" tools:machine_translated="true">Адправіць</string>
@@ -404,11 +404,11 @@
   <string name="button_collapse" tools:machine_translated="true">Згарнуць</string>
   <string name="error_key_load_failed" tools:machine_translated="true">Не ўдалося загрузіць ключ \'%1$s\': %2$s</string>
   <string name="error_connection_failed" tools:machine_translated="true">Не ўдалося падключыцца да %1$s (%2$s): %3$s</string>
-  <string name="error_port_forward_load_failed" tools:machine_translated="true">Не ўдалося загрузіць налады пераадрасацыі портаў для %1$s: %2$s.</string>
-  <string name="error_host_save_failed" tools:machine_translated="true">Не ўдалося захаваць канфігурацыю хоста %1$s: %2$s.</string>
+  <string name="error_port_forward_load_failed" tools:machine_translated="true">Не ўдалося загрузіць налады пераадрасацыі портаў для %1$s: %2$s</string>
+  <string name="error_host_save_failed" tools:machine_translated="true">Не ўдалося захаваць хост %1$s: %2$s</string>
   <string name="error_color_scheme_load_failed" tools:machine_translated="true">Не ўдалося загрузіць каляровую схему: %s</string>
   <string name="host_duplicate_nickname" tools:machine_translated="true">%1$s (копія)</string>
-  <string name="empty_hosts_message" tools:machine_translated="true">Не наладжана ніводнага хоста.</string>
+  <string name="empty_hosts_message" tools:machine_translated="true">Не наладжана ніводнага хоста</string>
   <string name="empty_pubkeys_message" tools:machine_translated="true">Не знойдзены ключы.</string>
   <string name="empty_port_forwards_message" tools:machine_translated="true">Не наладжана ніводнага перакіравання портаў.</string>
   <string name="empty_urls_message" tools:machine_translated="true">У буферы тэрмінала не знойдзены URL-адрасы.</string>
@@ -417,75 +417,75 @@
   <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">карыстальнік\@імяхоста:порт</string>
   <string name="host_editor_quick_connect_example" tools:machine_translated="true">Прыклад: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced" tools:machine_translated="true">Паказаць дадатковыя параметры</string>
-  <string name="host_editor_hide_advanced" tools:machine_translated="true">Схаваць дадатковыя параметры.</string>
+  <string name="host_editor_hide_advanced" tools:machine_translated="true">Схаваць дадатковыя параметры</string>
   <string name="resize_width_label" tools:machine_translated="true">Шырыня (у слупках)</string>
   <string name="resize_height_label" tools:machine_translated="true">Вышыня (колькасць радкоў)</string>
-  <string name="resize_disable_force_size" tools:machine_translated="true">Адключыць фіксаваны памер.</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">Адключыць фіксаваны памер</string>
   <string name="pubkey_editor_key_type_label" tools:machine_translated="true">Тып ключа</string>
   <string name="pubkey_editor_options_label" tools:machine_translated="true">Параметры</string>
   <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Зашыфраваныя ключы нельга разблакіраваць пры запуску сістэмы.</string>
   <string name="pubkey_type_label" tools:machine_translated="true">Тып: %s</string>
   <string name="pubkey_encrypted_description" tools:machine_translated="true">Зашыфраваны</string>
-  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Не зашыфравана.</string>
-  <string name="pubkey_biometric_protection" tools:machine_translated="true">Захист з дапамогай адбіткаў пальцаў.</string>
-  <string name="pubkey_biometric_description" tools:machine_translated="true">Абараніце гэты ключ з дапамогай вашага адбітка пальца.</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Не зашыфравана</string>
+  <string name="pubkey_biometric_protection" tools:machine_translated="true">Захист з дапамогай адбіткаў пальцаў</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">Абараніце гэты ключ з дапамогай вашага адбітка пальца</string>
   <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Не зарэгістраваны адбіткі пальцаў. Наладзьце распознаванне адбіткаў пальцаў у наладках прылады, каб выкарыстоўваць гэтую функцыю.</string>
   <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Захист з дапамогай адбіткаў пальцаў даступны толькі для ключоў RSA і EC.</string>
-  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Пацвердзіце, каб выкарыстоўваць ключ.</string>
-  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Дакраніцеся да датчыка адбіткаў пальцаў, каб разблакіраваць «%1$s».</string>
-  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Захишчаны з дапамогай адбітка пальца.</string>
-  <string name="pubkey_biometric_not_available" tools:machine_translated="true">Аўтэнтыфікацыя па адбітках пальцаў недаступная.</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Пацвердзіце, каб выкарыстоўваць ключ</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Дакраніцеся да датчыка адбіткаў пальцаў, каб разблакіраваць \"%1$s\"</string>
+  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Захішчаны з дапамогай адбітка пальца</string>
+  <string name="pubkey_biometric_not_available" tools:machine_translated="true">Аўтэнтыфікацыя па адбітках пальцаў недаступная</string>
   <string name="portforward_nickname_placeholder" tools:machine_translated="true">Унутраны вэб-сервер</string>
   <string name="portforward_port_range_error" tools:machine_translated="true">Нумар порта павінен быць у дыяпазоне ад 1 да 65535.</string>
   <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
-  <string name="portforward_destination_format_error" tools:machine_translated="true">Формат павінен быць наступным: хост:порт (напрыклад, localhost:80).</string>
+  <string name="portforward_destination_format_error" tools:machine_translated="true">Формат павінен быць наступным: хост:порт (напрыклад localhost:80)</string>
   <string name="portforward_host_address" tools:machine_translated="true">Адрас хоста</string>
   <string name="portforward_source_addr_localhost" tools:machine_translated="true">Лакальны хост</string>
   <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Лакальны хост (толькі IPv4)</string>
   <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">Лакальны хост (толькі IPv6)</string>
   <string name="portforward_source_addr_all" tools:machine_translated="true">Усе адрасы</string>
-  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Усе IPv4-адрасы.</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Усе IPv4-адрасы</string>
   <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Усе адрасы IPv6</string>
   <string name="portforward_source_addr_specific" tools:machine_translated="true">Канкрэтны адрас</string>
   <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
   <string name="portforward_type_label" tools:machine_translated="true">Тып: %s</string>
   <string name="portforward_enable" tools:machine_translated="true">Уключыць</string>
   <string name="portforward_disable" tools:machine_translated="true">Адключыць</string>
-  <string name="portforward_enabled" tools:machine_translated="true">Функцыя пераадрасацыі порта ўключана.</string>
-  <string name="portforward_disabled" tools:machine_translated="true">Функцыя пераадрасацыі порта адключана.</string>
+  <string name="portforward_enabled" tools:machine_translated="true">Функцыя пераадрасацыі порта ўключана</string>
+  <string name="portforward_disabled" tools:machine_translated="true">Функцыя пераадрасацыі порта адключана</string>
   <string name="protocol_spinner_label" tools:machine_translated="true">Пратакол</string>
   <string name="expand" tools:machine_translated="true">Разгарнуць</string>
   <string name="hostpref_authagent_with_confirmation" tools:machine_translated="true">патрабуе пацвярджэння</string>
   <string name="hostpref_add_host" tools:machine_translated="true">Дадаць хост</string>
   <string name="hostpref_save_host" tools:machine_translated="true">Захаваць хост</string>
   <string name="hostpref_setting_title" tools:machine_translated="true">Налады хоста</string>
-  <string name="pubkey_import_existing" tools:machine_translated="true">Імпартаваць існуючы публічны ключ.</string>
+  <string name="pubkey_import_existing" tools:machine_translated="true">Імпартаваць існуючы публічны ключ</string>
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Імпартаваць з буфера абмену</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Змест прыватнага ключа</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Уставіць з буфера абмену</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Заставайцеся на сувязі ў фонавым рэжыме.</string>
+  <string name="notification_permission_title" tools:machine_translated="true">Заставайцеся на сувязі ў фонавым рэжыме</string>
   <string name="notification_permission_message" tools:machine_translated="true">ConnectBot патрабуе дазволу на адпраўку апавяшчэнняў, каб падтрымліваць актыўнасць вашых злучэнняў пры пераключэнні паміж праграмамі. Без гэтага дазволу сістэма можа адключыць вашы злучэнні, каб эканоміць зарад батарэі.</string>
   <string name="grant_permission" tools:machine_translated="true">Дазволіць</string>
   <string name="connect_anyway" tools:machine_translated="true">Усё роўна падключыцца</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Неабходна даць дазвол на адпраўку апавяшчэнняў.</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">Неабходна даць дазвол на адпраўку апавяшчэнняў</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Каб забяспечыць працу злучэнняў у фонавым рэжыме, уключыце атрыманне апавяшчэнняў для ConnectBot у наладках сістэмы.</string>
   <string name="open_settings" tools:machine_translated="true">Адкрыць налады</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Злучэнні могуць разрывацца без атрымання дазволу на адпраўку апавяшчэнняў.</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Злучэнне можа перарвацца ў фонавым рэжыме.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Злучэнні могуць разрывацца без атрымання дазволу на адпраўку апавяшчэнняў</string>
+  <string name="notification_permission_console_warning" tools:machine_translated="true">Злучэнне можа перарвацца ў фонавым рэжыме</string>
   <string name="terminal_no_route" tools:machine_translated="true">Вы спрабуеце падключыцца да хоста ў лакальнай сетцы? Дайце дазвол на доступ да лакальнай сеткі.</string>
   <string name="loading_message" tools:machine_translated="true">Загрузка…</string>
   <string name="migration_checking" tools:machine_translated="true">Праверка базы даных…</string>
-  <string name="migration_title" tools:machine_translated="true">Міграцыя базы даных.</string>
+  <string name="migration_title" tools:machine_translated="true">Міграцыя базы даных</string>
   <string name="migration_warning" tools:machine_translated="true">Калі ласка, не закрывайце праграму падчас працэсу пераносу даных.</string>
   <string name="migration_stats_hosts" tools:machine_translated="true">Колькасць перанесеных хостаў: %d</string>
   <string name="migration_stats_pubkeys" tools:machine_translated="true">Перанесены ключы SSH: %d</string>
   <string name="migration_stats_port_forwards" tools:machine_translated="true">Колькасць перанесеных налад пераадрасацыі портаў: %d</string>
   <string name="migration_stats_known_hosts" tools:machine_translated="true">Колькасць вядомых хостаў, якія былі перанесены: %d</string>
-  <string name="migration_failed_title" tools:machine_translated="true">Міграцыя не ўдалася.</string>
+  <string name="migration_failed_title" tools:machine_translated="true">Міграцыя не ўдалася</string>
   <string name="migration_failed_message" tools:machine_translated="true">Узнікла памылка падчас міграцыі базы даных: %s</string>
   <string name="migration_retry" tools:machine_translated="true">Паўтарыць спробу</string>
   <string name="migration_failed_help" tools:machine_translated="true">Калі праблема не знікае, калі ласка, паведаміце пра яе па спасылцы %1$s, далучыўшы копію журнала адладкі, прадстаўленага вышэй.</string>
-  <string name="migration_warnings_title" tools:machine_translated="true">Паведамленні аб папярэджаннях падчас міграцыі.</string>
+  <string name="migration_warnings_title" tools:machine_translated="true">Паведамленні аб папярэджаннях падчас міграцыі</string>
   <string name="migration_copy_warnings" tools:machine_translated="true">Капіяваць паведамленні аб памылках</string>
   <string name="migration_debug_log_title" tools:machine_translated="true">Журнал адладкі</string>
   <string name="migration_copy_debug_log" tools:machine_translated="true">Скапіяваць журнал адладкі</string>
@@ -499,50 +499,50 @@
   <string name="ipversion_ipv4" tools:machine_translated="true">Толькі IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">Толькі IPv6</string>
   <string name="hostpref_jumphost_title" tools:machine_translated="true">Сервер для пераходу (ProxyJump)</string>
-  <string name="hostpref_jumphost_summary" tools:machine_translated="true">Падключыцеся праз іншы SSH-сервер.</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">Падключыцеся праз іншы SSH-сервер</string>
   <string name="list_jumphost_none" tools:machine_translated="true">Нічога (прамое злучэнне)</string>
   <string name="terminal_connecting_via_jump" tools:machine_translated="true">Падключэнне праз прамежкавы сервер: %s</string>
   <string name="terminal_jump_connected" tools:machine_translated="true">Падлучана да прамежкавага сервера: %s</string>
   <string name="terminal_jump_authenticated" tools:machine_translated="true">Аўтэнтыфікацыя на серверы для пераходу завершана: %s</string>
-  <string name="terminal_jump_failed" tools:machine_translated="true">Не ўдалося падключыцца да прамежкавага сервера %1$s: %2$s.</string>
+  <string name="terminal_jump_failed" tools:machine_translated="true">Не ўдалося падключыцца да прамежкавага сервера %1$s: %2$s</string>
   <string name="terminal_jump_auth_failed" tools:machine_translated="true">Аўтэнтыфікацыя для прамежкавага сервера не ўдалася: %s</string>
-  <string name="terminal_jump_not_found" tools:machine_translated="true">Знойдзены хост не знойдзены ў спісе захаваных хостаў.</string>
+  <string name="terminal_jump_not_found" tools:machine_translated="true">Знойдзены хост не знойдзены ў спісе захаваных хостаў</string>
   <string name="terminal_jump_password" tools:machine_translated="true">Пароль для пераходнага хоста %s:</string>
   <string name="view_logs" tools:machine_translated="true">Праглядзіць журналы</string>
-  <string name="logs_title" tools:machine_translated="true">Журналы праграм.</string>
+  <string name="logs_title" tools:machine_translated="true">Журналы праграм</string>
   <string name="copy_logs" tools:machine_translated="true">Капіяваць журналы</string>
-  <string name="logs_copied" tools:machine_translated="true">Журналы скапіяваны ў буфер абмену.</string>
-  <string name="logs_bug_report_info" tools:machine_translated="true">Каб паведаміць пра памылку, скапіюйце гэтыя журналы і адкрыйце новае зваротнае запытанне на сайце https://connectbot.org/bug.</string>
-  <string name="no_logs_available" tools:machine_translated="true">Даступныя журналы адсутнічаюць.</string>
+  <string name="logs_copied" tools:machine_translated="true">Журналы скапіяваны ў буфер абмену</string>
+  <string name="logs_bug_report_info" tools:machine_translated="true">Каб паведаміць пра памылку, скапіюйце гэтыя журналы і адкрыйце новае зваротнае запытанне на сайце https://connectbot.org/bug</string>
+  <string name="no_logs_available" tools:machine_translated="true">Даступныя журналы адсутнічаюць</string>
   <string name="help_section_about" tools:machine_translated="true">Пра праграму</string>
   <string name="title_contact" tools:machine_translated="true">Кантакты і падтрымка</string>
   <string name="help_section_contact" tools:machine_translated="true">Кантактная інфармацыя і падтрымка</string>
   <string name="help_website" tools:machine_translated="true">Вэб-сайт</string>
   <string name="help_github" tools:machine_translated="true">Зыходны код</string>
-  <string name="help_report_bug" tools:machine_translated="true">Паведаміце пра памылку.</string>
-  <string name="help_section_donate" tools:machine_translated="true">Падтрымайце развіццё.</string>
+  <string name="help_report_bug" tools:machine_translated="true">Паведаміце пра памылку</string>
+  <string name="help_section_donate" tools:machine_translated="true">Падтрымайце развіццё</string>
   <string name="help_donate_github" tools:machine_translated="true">GitHub Sponsors</string>
   <string name="help_donate_coffee" tools:machine_translated="true">Паставіце мне кубак кавы</string>
   <string name="colorscheme_default_description" tools:machine_translated="true">Стандартныя колеры тэрмінала</string>
-  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Дакладныя колеры для тэхнікі і людзей.</string>
-  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Саларызаваная схема з светлым фонам.</string>
-  <string name="colorscheme_dracula_description" tools:machine_translated="true">Цёмная тэма для тэрмінала.</string>
-  <string name="colorscheme_nord_description" tools:machine_translated="true">Арктычная, паўночна-блакітная каляровая гама.</string>
-  <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Рэтра-стыль, насычаная каляровая схема.</string>
-  <string name="colorscheme_monokai_description" tools:machine_translated="true">Тэма, створаная пад уплывам стылю Sublime Text.</string>
-  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Стыльная і зручная цёмная тэма.</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Дакладныя колеры для машын і людзей</string>
+  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Саларызаваная схема з светлым фонам</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">Цёмная тэма для тэрмінала</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">Арктычная, паўночна-блакітная каляровая гама</string>
+  <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Рэтра-стыль, насычаная каляровая схема</string>
+  <string name="colorscheme_monokai_description" tools:machine_translated="true">Тэма, створаная пад уплывам стылю Sublime Text</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Стыльная і зручная цёмная тэма</string>
   <string name="pref_profiles_category" tools:machine_translated="true">Профілі</string>
   <string name="pref_default_profile_title" tools:machine_translated="true">Профіль па змаўчанні</string>
   <string name="pref_default_profile_none" tools:machine_translated="true">Нічога (выкарыстоўвайце налады хоста)</string>
-  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">Заўсёды паказвайце спецыяльныя клавішы.</string>
+  <string name="pref_alwaysvisible_summary" tools:machine_translated="true">Заўсёды паказвайце спецыяльныя клавішы</string>
   <string name="pref_customterminal_title" tools:machine_translated="true">Карыстальніцкія тыпы тэрміналаў</string>
   <string name="pref_customterminal_summary" tools:machine_translated="true">Дадайце карыстальніцкія значэнні TERM для аддаленых сервераў.</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">Дадаць карыстальніцкі тып тэрмінала</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">Тып тэрмінала (напрыклад, rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Кіраванне тыпамі карыстальніцкіх тэрміналаў.</string>
+  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Кіраванне тыпамі карыстальніцкіх тэрміналаў</string>
   <string name="button_add_custom" tools:machine_translated="true">Дадаць карыстальніцкі…</string>
   <string name="button_manage_custom" tools:machine_translated="true">Кіраванне індывідуальнымі…</string>
-  <string name="dialog_custom_value_label" tools:machine_translated="true">Увядзіце карыстальніцкае значэнне.</string>
+  <string name="dialog_custom_value_label" tools:machine_translated="true">Увядзіце карыстальніцкае значэнне</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, затым клавіша «Прабел»</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
   <string name="list_camera_esc_description" tools:machine_translated="true">Esc</string>
@@ -551,8 +551,8 @@
   <string name="list_camera_text_input_description" tools:machine_translated="true">Тэкставы ўвод</string>
   <string name="list_menu_export_hosts" tools:machine_translated="true">Экспартаваць спіс хостаў</string>
   <string name="list_menu_import_hosts" tools:machine_translated="true">Імпартаваць спіс хостаў</string>
-  <string name="export_hosts_success" tools:machine_translated="true">Экспартавана %1$d хостаў і %2$d профіляў.</string>
-  <string name="import_hosts_success" tools:machine_translated="true">Імпартавана %1$d хастоў (%2$d прапушчана) і %3$d профіляў (%4$d прапушчана).</string>
+  <string name="export_hosts_success" tools:machine_translated="true">Экспартавана %1$d хостаў і %2$d профіляў</string>
+  <string name="import_hosts_success" tools:machine_translated="true">Імпартавана %1$d хастоў (%2$d прапушчана) і %3$d профіляў (%4$d прапушчана)</string>
   <string name="export_hosts_failed" tools:machine_translated="true">Не ўдалося экспартаваць спіс хостаў: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">Не ўдалося імпартаваць спіс хостаў: %s</string>
   <string name="export_hosts_title" tools:machine_translated="true">Экспарт спісу хостаў</string>
@@ -565,11 +565,11 @@
   <string name="icon_style_server" tools:machine_translated="true">Сервер</string>
   <string name="icon_style_cloud" tools:machine_translated="true">Хмара</string>
   <string name="icon_style_key" tools:machine_translated="true">Ключ</string>
-  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Аўтэнтыфікацыя пры запуску.</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Аўтэнтыфікацыя пры запуску</string>
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Запытайце пацвярджэнне па адбітках пальцаў, распазнаванне твару або PIN-код прылады пры адкрыцці праграмы.</string>
   <string name="pref_security_category" tools:machine_translated="true">Бяспека</string>
-  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot заблакаваны.</string>
-  <string name="auth_screen_unlock_button" tools:machine_translated="true">Націсніце, каб разблакіраваць.</string>
-  <string name="auth_prompt_title" tools:machine_translated="true">Адкрыць ConnectBot.</string>
-  <string name="auth_prompt_subtitle" tools:machine_translated="true">Пацвердзіце сваю асобу, каб працягнуць.</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot заблакаваны</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">Націсніце, каб разблакіраваць</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">Адкрыць ConnectBot</string>
+  <string name="auth_prompt_subtitle" tools:machine_translated="true">Пацвердзіце сваю асобу, каб працягнуць</string>
 </resources>
