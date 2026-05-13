@@ -1,5 +1,5 @@
-<?xml version='1.0' encoding='utf-8'?>
-<resources>
+<?xml version='1.0' encoding='UTF-8'?>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">Sederhana, tangguh, klien SSH dengan kode terbuka.</string>
   <string name="service_desc">"Mengelola koneksi SSH dan kunci publik  yang terrekam"</string>
   <string name="app_copyright">Hak Cipta © Kenny Root</string>
@@ -558,4 +558,18 @@
   <string name="auth_screen_unlock_button">Ketuk untuk membuka kunci</string>
   <string name="auth_prompt_title">Buka ConnectBot</string>
   <string name="auth_prompt_subtitle">Verifikasi identitas Anda untuk melanjutkan</string>
+  <string name="pref_language_download" tools:machine_translated="true">Unduh paket bahasa</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">Pengunduhan gagal, ketuk untuk mencoba lagi</string>
+  <string name="portforward_host_address" tools:machine_translated="true">Alamat host</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">Alamat host lokal</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Host lokal (hanya IPv4)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">localhost (hanya IPv6)</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">Semua alamat</string>
+  <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Semua alamat IPv4</string>
+  <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Semua alamat IPv6</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">Alamat spesifik</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Impor dari papan klip</string>
+  <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Isi kunci pribadi</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Tempel dari papan klip</string>
 </resources>

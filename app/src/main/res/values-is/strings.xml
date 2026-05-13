@@ -190,7 +190,7 @@
   <string name="pref_language_system_default" tools:machine_translated="true">Sjálfgefið kerfisstilling</string>
   <string name="pref_language_download" tools:machine_translated="true">Sæktu tungumálapakka</string>
   <string name="pref_language_download_failed" tools:machine_translated="true">Ekki tókst að hlaða niður, smelltu til að reyna aftur.</string>
-  <string name="pref_theme_title" tools:machine_translated="true">Litrún.</string>
+  <string name="pref_theme_title" tools:machine_translated="true">Litrún</string>
   <string name="pref_theme_system" tools:machine_translated="true">Sjálfgefið kerfisstilling</string>
   <string name="pref_theme_light" tools:machine_translated="true">Ljóst</string>
   <string name="pref_theme_dark" tools:machine_translated="true">Dökkur</string>
@@ -530,7 +530,7 @@
   <string name="colorscheme_nord_description" tools:machine_translated="true">Litapaletta sem er í ætt við norðlæga, bláa litatóna.</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Litríkt og nostalgískt litaharmóní</string>
   <string name="colorscheme_monokai_description" tools:machine_translated="true">Litríki sem er innblásið af Sublime Text.</string>
-  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Snyrtilegt og þægilegt myrkt útlit.</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Snyrtilegt og þægilegt myrkt útlit</string>
   <string name="pref_profiles_category" tools:machine_translated="true">Stillingar fyrir prófíl</string>
   <string name="pref_default_profile_title" tools:machine_translated="true">Sjálfgefið prófíl</string>
   <string name="pref_default_profile_none" tools:machine_translated="true">Engin (nota stillingar tölvunnar)</string>
@@ -565,7 +565,7 @@
   <string name="icon_style_server" tools:machine_translated="true">Netþjónn</string>
   <string name="icon_style_cloud" tools:machine_translated="true">Ský</string>
   <string name="icon_style_key" tools:machine_translated="true">Lykill</string>
-  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Staðfesting við upphaf.</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Staðfesting við upphaf</string>
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Krefst þess að notandi noti fingrafar, andlitsþekkingarforrit eða PIN-númer tækisins þegar hann opnar appið.</string>
   <string name="pref_security_category" tools:machine_translated="true">Öryggi</string>
   <string name="auth_screen_title" tools:machine_translated="true">ConnectBot er læst</string>

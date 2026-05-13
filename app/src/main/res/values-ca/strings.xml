@@ -571,5 +571,5 @@
   <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importa des del portapapers</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Contingut de la clau privada</string>
-  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Enganxa des del portall papers</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Enganxa des del portapapers</string>
 </resources>

@@ -192,7 +192,7 @@
   <string name="pubkey_list_empty" tools:machine_translated="true">Tapnite »Meni«, da ustvarite\nali uvozite par ključev.</string>
   <string name="pubkey_unknown_format" tools:machine_translated="true">Neznana oblika</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Vnesite geslo, da odklenete ključ »%1$s«.</string>
-  <string name="pubkey_nickname_exists" tools:machine_translated="true">Ključ z istim vzdevkom že obstaja.</string>
+  <string name="pubkey_nickname_exists" tools:machine_translated="true">Ključ z istim vzdevkom že obstaja</string>
   <string name="prompt_username" tools:machine_translated="true">Uporabniško ime:</string>
   <string name="host_key_verification_title" tools:machine_translated="true">Preverjanje ključa gostitelja</string>
   <string name="fingerprint_format_header" tools:machine_translated="true">Format odtisa prsta</string>
@@ -213,7 +213,7 @@
   <string name="font_validating" tools:machine_translated="true">Poteka preverjanje pisave …</string>
   <string name="font_downloading" tools:machine_translated="true">Prenos pisave poteka …</string>
   <string name="pref_localfont_title" tools:machine_translated="true">Uvoz lokalne pisave</string>
-  <string name="pref_localfont_summary" tools:machine_translated="true">Uvozite datoteko pisave iz pomnilnika (TTF, OTF).</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Uvozite datoteko pisave iz pomnilnika (TTF, OTF)</string>
   <string name="dialog_localfont_title" tools:machine_translated="true">Uvozi pisavo</string>
   <string name="dialog_localfont_hint" tools:machine_translated="true">Prikaži ime za pisavo</string>
   <string name="button_import" tools:machine_translated="true">Uvozi</string>
@@ -345,7 +345,7 @@
   <string name="button_rename_scheme" tools:machine_translated="true">Preimenuj</string>
   <string name="button_delete_scheme" tools:machine_translated="true">Izbriši</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">Nova barvna shema</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Preimenuj barvno shemo.</string>
+  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Preimenuj barvno shemo</string>
   <string name="label_scheme_name" tools:machine_translated="true">Ime sheme</string>
   <string name="label_scheme_description" tools:machine_translated="true">Opis (neobvezno)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">Želite izbrisati shemo?</string>

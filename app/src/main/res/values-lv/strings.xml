@@ -99,7 +99,7 @@
   <string name="pubkey_export_private_encrypted" tools:machine_translated="true">Eksportēt privāto atslēgu (šifrētu)</string>
   <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Iestatiet paroles frāzi eksportēšanai.</string>
   <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Ievadiet paroles frāzi, lai šifrētu eksportēto atslēgu.</string>
-  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Apstipriniet paroles frāzi.</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Apstipriniet paroles frāzi</string>
   <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Paroļu frāzes nesakrīt.</string>
   <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Importēt šifrētu atslēgu</string>
   <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Ievadiet paroli, lai atšifrētu atslēgu \'%1$s\' (%2$s)</string>
@@ -189,7 +189,7 @@
   <string name="pref_camera_title" tools:machine_translated="true">Kameras ātrā piekļuve</string>
   <string name="pref_keepalive_title" tools:machine_translated="true">Atļaut ekrānam palikt ieslēgtam</string>
   <string name="pref_keepalive_summary" tools:machine_translated="true">Neļaujiet ekrānam izslēgties, strādājot konsolē.</string>
-  <string name="pref_wifilock_title" tools:machine_translated="true">Atstājiet Wi-Fi savienojumu ieslēgtu.</string>
+  <string name="pref_wifilock_title" tools:machine_translated="true">Atstājiet Wi-Fi savienojumu ieslēgtu</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">Nodrošiniet, lai Wi-Fi neatslēgtos, kad ir aktīva sesija.</string>
   <string name="pref_bumpyarrows_title" tools:machine_translated="true">Reljefa bultiņas</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibrējiet, kad tiek nospiestas bultiņu pogas; noderīgi, ja ir lēns savienojums.</string>
@@ -524,7 +524,7 @@
   <string name="help_donate_github" tools:machine_translated="true">GitHub atbalstītāji</string>
   <string name="help_donate_coffee" tools:machine_translated="true">Atbalstiet mani, iegādājoties man kafiju.</string>
   <string name="colorscheme_default_description" tools:machine_translated="true">Pēc noklusējuma iestatītās termināļa krāsas</string>
-  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Precīzas krāsas gan mašīnām, gan cilvēkiem.</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Precīzas krāsas gan mašīnām, gan cilvēkiem</string>
   <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarized krāsu shēma ar gaišu fonu.</string>
   <string name="colorscheme_dracula_description" tools:machine_translated="true">Tumša krāsu shēma terminālim.</string>
   <string name="colorscheme_nord_description" tools:machine_translated="true">Arktiska, ziemeļu tonī nokrāsota krāsu palete.</string>

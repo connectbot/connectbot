@@ -136,7 +136,7 @@
   <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Комбинацията Ctrl+цифра представлява функционален клавиш</string>
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">При софтуерните клавиатури, натискането на клавишите с цифри изпраща сигнали за клавишите F1-F10, когато е натиснат клавишът Ctrl.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Бутоните за силата на звука променят размера на шрифта.</string>
-  <string name="pref_volumefont_summary" tools:machine_translated="true">Размерът на шрифта може да бъде променен и в настройките на профила.</string>
+  <string name="pref_volumefont_summary" tools:machine_translated="true">Размерът на шрифта може да бъде променен и в настройките на профила</string>
   <string name="pref_memkeys_title" tools:machine_translated="true">Запомняне на клавишите в паметта</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Запазете отключените клавиши в паметта, докато не бъде прекратена работата на основната услуга.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Поддържайте връзката във фонов режим</string>

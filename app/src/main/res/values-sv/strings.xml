@@ -263,7 +263,7 @@
   <string name="hostpref_profile_summary" tools:machine_translated="true">Välj en profil för att använda dess terminalinställningar.</string>
   <string name="hostpref_profile_none" tools:machine_translated="true">Ingen (använd värdens inställningar)</string>
   <string name="profile_controlled_setting" tools:machine_translated="true">Styrs av en profil</string>
-  <string name="font_use_default" tools:machine_translated="true">Använd standardinställningen.</string>
+  <string name="font_use_default" tools:machine_translated="true">Använd standardinställningen</string>
   <string name="font_system_default" tools:machine_translated="true">Standard (monospace-teckensnitt)</string>
   <string name="pubkey_unknown" tools:machine_translated="true">Okänd nyckel</string>
   <string name="colorscheme_default" tools:machine_translated="true">Standard</string>

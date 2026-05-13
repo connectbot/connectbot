@@ -180,7 +180,7 @@
   <string name="pubkey_list_empty" tools:machine_translated="true">Tryk på \"Menu\" for at oprette eller importere nøglepar.</string>
   <string name="pubkey_unknown_format" tools:machine_translated="true">Ukendt format</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Indtast adgangskoden for at låse nøglen \'%1$s\' op.</string>
-  <string name="pubkey_nickname_exists" tools:machine_translated="true">En nøgle med dette kaldenavn findes allerede.</string>
+  <string name="pubkey_nickname_exists" tools:machine_translated="true">En nøgle med dette kaldenavn findes allerede</string>
   <string name="prompt_username" tools:machine_translated="true">Brugernavn:</string>
   <string name="host_key_verification_title" tools:machine_translated="true">Bekræftelse af værtsnøgle</string>
   <string name="fingerprint_format_header" tools:machine_translated="true">Fingeraftryksformat</string>
@@ -222,7 +222,7 @@
   <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">Bevægelse for at gå til næste/forrige side</string>
   <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">Stryk hen over den venstre tredjedel af skærmen for at sende kommandoen \"pg up/dn\" til terminalen.</string>
   <string name="pref_keyboard_category" tools:machine_translated="true">Tastatur</string>
-  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift+tal er funktionsknapper.</string>
+  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift+tal er funktionsknapper</string>
   <string name="pref_shiftfkeys_summary" tools:machine_translated="true">På fysiske tastaturer sender tal-tasterne F1-F10, når Shift-tasten holdes nede.</string>
   <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl+tal er funktionstaster.</string>
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">På virtuelle tastaturer sender tal-tasterne F1-F10, når Ctrl-tasten holdes nede.</string>

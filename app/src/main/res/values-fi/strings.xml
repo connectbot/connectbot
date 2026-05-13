@@ -512,7 +512,7 @@
   <string name="logs_title" tools:machine_translated="true">Sovelluksen lokit</string>
   <string name="copy_logs" tools:machine_translated="true">Kopioi lokitiedot</string>
   <string name="logs_copied" tools:machine_translated="true">Lokit kopioitu leikepöydälle</string>
-  <string name="logs_bug_report_info" tools:machine_translated="true">Ilmoittaaksesi virheestä, kopioi nämä lokitiedostot ja luo uusi ongelmaraportti osoitteessa https://connectbot.org/bug.</string>
+  <string name="logs_bug_report_info" tools:machine_translated="true">Ilmoittaaksesi virheestä, kopioi nämä lokitiedostot ja luo uusi ongelmaraportti osoitteessa https://connectbot.org/bug</string>
   <string name="no_logs_available" tools:machine_translated="true">Lokitiedostoja ei ole saatavilla</string>
   <string name="help_section_about" tools:machine_translated="true">Tietoja</string>
   <string name="title_contact" tools:machine_translated="true">Ota yhteyttä ja pyydä tukea</string>
@@ -527,7 +527,7 @@
   <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Tarkat värit koneille ja ihmisille</string>
   <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarized-väriteema, jossa on vaalea tausta.</string>
   <string name="colorscheme_dracula_description" tools:machine_translated="true">Tumma teema terminaalille</string>
-  <string name="colorscheme_nord_description" tools:machine_translated="true">Arktinen, pohjoisen siniseen vivahtava väripaletti.</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">Arktinen, pohjoisen siniseen vivahtava väripaletti</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Retro-tyylinen värimaailma</string>
   <string name="colorscheme_monokai_description" tools:machine_translated="true">Sublime Text -ohjelmasta inspiroitunut teema</string>
   <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Selkeä ja miellyttävä tumma teema</string>

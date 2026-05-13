@@ -149,7 +149,7 @@
   <string name="only_alt" tools:machine_translated="true">அல்ட் விசையை மட்டும் பயன்படுத்தவும்</string>
   <string name="pref_camera_title" tools:machine_translated="true">கேமரா குறுக்குவழி</string>
   <string name="pref_keepalive_title" tools:machine_translated="true">திரையை எப்போதும் இயங்க வைக்கவும்</string>
-  <string name="pref_keepalive_summary" tools:machine_translated="true">கன்சோலில் வேலை செய்யும் போது, திரை தானாக அணைவதைத் தடுக்கவும்.</string>
+  <string name="pref_keepalive_summary" tools:machine_translated="true">கன்சோலில் வேலை செய்யும் போது, திரை தானாக அணைவதைத் தடுக்கவும்</string>
   <string name="pref_wifilock_title" tools:machine_translated="true">வைஃபை இணைப்பை எப்போதும் இயங்க வைக்கவும்</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">செயல்பாடு இருக்கும்போது வைஃபை தானாக அணைவதைத் தடுக்கவும்.</string>
   <string name="pref_bumpyarrows_title" tools:machine_translated="true">மேடு பள்ளமான அம்புகள்</string>
@@ -476,7 +476,7 @@
   <string name="loading_message" tools:machine_translated="true">ஏற்றுகிறது…</string>
   <string name="migration_checking" tools:machine_translated="true">தரவுத்தளத்தை சரிபார்க்கிறது…</string>
   <string name="migration_title" tools:machine_translated="true">தரவுத்தளத்தை நகர்த்துகிறது</string>
-  <string name="migration_warning" tools:machine_translated="true">தரவு மாற்றத்தின்போது, பயன்பாட்டை மூட வேண்டாம்.</string>
+  <string name="migration_warning" tools:machine_translated="true">தரவு மாற்றத்தின்போது, பயன்பாட்டை மூட வேண்டாம்</string>
   <string name="migration_stats_hosts" tools:machine_translated="true">இடமாற்றம் செய்யப்பட்ட சேவையகங்களின் எண்ணிக்கை: %d</string>
   <string name="migration_stats_pubkeys" tools:machine_translated="true">மாற்றப்பட்ட SSH விசைகளின் எண்ணிக்கை: %d</string>
   <string name="migration_stats_port_forwards" tools:machine_translated="true">மாற்றப்பட்ட போர்ட் ஃபார்வர்டுகளின் எண்ணிக்கை: %d</string>
