@@ -301,7 +301,7 @@
   <string name="terminal_auth_pubkey_any" tools:machine_translated="true">Се обидува да се изврши автентикација со „јавен клуч“ со кој било од достапните јавни клучови што се зачувани во меморијата.</string>
   <string name="terminal_auth_pubkey_invalid" tools:machine_translated="true">Избраниот јавен клуч е невалиден, обидете се повторно да го изберете клучот во уредувачот на хостот.</string>
   <string name="terminal_auth_pubkey_specific" tools:machine_translated="true">Се обидува да се изврши автентикација со помош на јавен клуч, користејќи го специфичниот јавен клуч.</string>
-  <string name="terminal_auth_biometric" tools:machine_translated="true">Барање за биометрична потврда за клучот „%1$s“.</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">Барање за биометрична потврда за клучот „%1$s“</string>
   <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">Биометрискиот клуч „%1$s“ е невалиден. Ова може да се случи кога на уредот се регистрираат нови отпечатоци. Ве молиме, генерирајте нов клуч.</string>
   <string name="terminal_auth_pubkey_fail" tools:machine_translated="true">Методот за автентикација „јавен клуч“ со клуч „%1$s“ не успеа.</string>
   <string name="terminal_auth_ki" tools:machine_translated="true">Се обидувам да се изврши автентикација преку „интерактивна тастатура“.</string>
@@ -433,7 +433,7 @@
   <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Заштита со отпечаток од прст е достапна само за RSA и EC клучеви.</string>
   <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Потврдете ја автентичноста за да го користите клучот.</string>
   <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Допрете го сензорот за отпечаток од прст за да го отклучите „%1$s“.</string>
-  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Заштитено со отпечаток од прст.</string>
+  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Заштитено со отпечаток од прст</string>
   <string name="pubkey_biometric_not_available" tools:machine_translated="true">Биометриската автентикација со отпечаток од прст не е достапна.</string>
   <string name="portforward_nickname_placeholder" tools:machine_translated="true">Внатрешен веб-сервер</string>
   <string name="portforward_port_range_error" tools:machine_translated="true">Бројот на портата мора да биде помеѓу 1 и 65535</string>
@@ -559,7 +559,7 @@
   <string name="shortcut_customize_title" tools:machine_translated="true">Прилагодете ја прекуShortcut-от</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Боја на иконата</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Стил на икона</string>
-  <string name="shortcut_use_host_color" tools:machine_translated="true">Користете ја бојата на хостот.</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">Користете ја бојата на хостот</string>
   <string name="shortcut_create" tools:machine_translated="true">Креирај преку пат</string>
   <string name="icon_style_terminal" tools:machine_translated="true">Терминал</string>
   <string name="icon_style_server" tools:machine_translated="true">Сервер</string>

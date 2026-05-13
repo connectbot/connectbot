@@ -524,7 +524,7 @@
   <string name="help_donate_github" tools:machine_translated="true">Patrocinadores de GitHub</string>
   <string name="help_donate_coffee" tools:machine_translated="true">Invítame a un café</string>
   <string name="colorscheme_default_description" tools:machine_translated="true">Cores predeterminadas do terminal</string>
-  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Cores precisas para máquinas e persoas.</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Cores precisas para máquinas e persoas</string>
   <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarizado con fondo claro.</string>
   <string name="colorscheme_dracula_description" tools:machine_translated="true">Un tema escuro para o terminal.</string>
   <string name="colorscheme_nord_description" tools:machine_translated="true">Unha paleta de cores ártica, cun ton azulado do norte.</string>

@@ -232,7 +232,7 @@
   <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Επιβεβαιώστε τον κωδικό πρόσβασης</string>
   <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Οι φράσεις πρόσβασης δεν ταιριάζουν.</string>
   <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Εισαγωγή κρυπτογραφημένου κλειδιού</string>
-  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Εισαγάγετε τον κωδικό πρόσβασης για να αποκρυπτογραφήσετε το κλειδί \'%1$s\' (τύπος: %2$s).</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Εισαγάγετε τον κωδικό πρόσβασης για να αποκρυπτογραφήσετε το κλειδί \'%1$s\' (%2$s)</string>
   <string name="pubkey_import_button" tools:machine_translated="true">Εισαγωγή</string>
   <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Κρυπτογραφήστε το κλειδί για αποθήκευση.</string>
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">Χρησιμοποιήστε τον ίδιο κωδικό πρόσβασης για την κρυπτογράφηση</string>
@@ -426,7 +426,7 @@
   <string name="host_editor_hide_advanced" tools:machine_translated="true">Απόκρυψη προηγμένων επιλογών</string>
   <string name="resize_width_label" tools:machine_translated="true">Πλάτος (στήλες)</string>
   <string name="resize_height_label" tools:machine_translated="true">Ύψος (γραμμές)</string>
-  <string name="resize_disable_force_size" tools:machine_translated="true">Απενεργοποίηση της αυτόματης προσαρμογής μεγέθους.</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">Απενεργοποίηση της αυτόματης προσαρμογής μεγέθους</string>
   <string name="pubkey_editor_key_type_label" tools:machine_translated="true">Τύπος κλειδιού</string>
   <string name="pubkey_editor_options_label" tools:machine_translated="true">Επιλογές</string>
   <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Τα κρυπτογραφημένα κλειδιά δεν μπορούν να ξεκλειδωθούν κατά την εκκίνηση.</string>
@@ -512,14 +512,14 @@
   <string name="logs_title" tools:machine_translated="true">Αρχεία καταγραφής εφαρμογών</string>
   <string name="copy_logs" tools:machine_translated="true">Αντιγραφή αρχείων καταγραφής</string>
   <string name="logs_copied" tools:machine_translated="true">Τα αρχεία καταγραφής αντιγράφηκαν στο πρόχειρο.</string>
-  <string name="logs_bug_report_info" tools:machine_translated="true">Για να αναφέρετε ένα σφάλμα, αντιγράψτε αυτά τα αρχεία καταγραφής και δημιουργήστε ένα νέο αίτημα στην ιστοσελίδα https://connectbot.org/bug.</string>
+  <string name="logs_bug_report_info" tools:machine_translated="true">Για να αναφέρετε ένα σφάλμα, αντιγράψτε αυτά τα αρχεία καταγραφής και δημιουργήστε ένα νέο αίτημα στην ιστοσελίδα https://connectbot.org/bug</string>
   <string name="no_logs_available" tools:machine_translated="true">Δεν υπάρχουν διαθέσιμα αρχεία καταγραφής.</string>
   <string name="help_section_about" tools:machine_translated="true">Σχετικά με</string>
   <string name="title_contact" tools:machine_translated="true">Επικοινωνία και Υποστήριξη</string>
   <string name="help_section_contact" tools:machine_translated="true">Επικοινωνία και Υποστήριξη</string>
   <string name="help_website" tools:machine_translated="true">Ιστότοπος</string>
   <string name="help_github" tools:machine_translated="true">Κώδικας πηγής</string>
-  <string name="help_report_bug" tools:machine_translated="true">Αναφέρετε ένα σφάλμα.</string>
+  <string name="help_report_bug" tools:machine_translated="true">Αναφέρετε ένα σφάλμα</string>
   <string name="help_section_donate" tools:machine_translated="true">Υποστηρίξτε την ανάπτυξη</string>
   <string name="help_donate_github" tools:machine_translated="true">Υποστηρικτές του GitHub</string>
   <string name="help_donate_coffee" tools:machine_translated="true">Κάντε μια δωρεά για να με κεράσετε έναν καφέ</string>

@@ -259,7 +259,7 @@
   <string name="hostpref_colorscheme_title" tools:machine_translated="true">Terminal renk teması</string>
   <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Bağlantı kesildiğinde kapatma seçeneğini göster</string>
   <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Bağlantı kesildikten sonra herhangi bir uyarı göstermeden hemen kapatın.</string>
-  <string name="hostpref_save_password_summary" tools:machine_translated="true">Oturum açma parolasını güvenli bir şekilde saklayarak otomatik kimlik doğrulamayı etkinleştirin.</string>
+  <string name="hostpref_save_password_summary" tools:machine_translated="true">Oturum açma parolasını güvenli bir şekilde saklayarak otomatik kimlik doğrulamayı etkinleştirin</string>
   <string name="hostpref_password_title" tools:machine_translated="true">Şifre</string>
   <string name="hostpref_password_unchanged" tools:machine_translated="true">Şifre (değiştirilmedi)</string>
   <string name="hostpref_clear_password" tools:machine_translated="true">Kaydedilmiş parolayı sil</string>

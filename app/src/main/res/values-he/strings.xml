@@ -526,7 +526,7 @@
   <string name="colorscheme_default_description" tools:machine_translated="true">צבעי ברירת המחדל של הטרמינל</string>
   <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">צבעים מדויקים למכונות ולאנשים</string>
   <string name="colorscheme_solarized_light_description" tools:machine_translated="true">ערכת הצבעים \"סולאריזד\" עם רקע בהיר.</string>
-  <string name="colorscheme_dracula_description" tools:machine_translated="true">ערכת צבעים כהה עבור מסוף הטקסט.</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">ערכת צבעים כהה עבור מסוף הטקסט</string>
   <string name="colorscheme_nord_description" tools:machine_translated="true">פלטת צבעים ארקטית, בגוונים כחלחלים המזכירים את הצפון.</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">ערכת צבעים בסגנון רטרו</string>
   <string name="colorscheme_monokai_description" tools:machine_translated="true">ערכת עיצוב בהשראת Sublime Text</string>

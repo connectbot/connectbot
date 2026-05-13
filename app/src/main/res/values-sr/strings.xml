@@ -181,7 +181,7 @@
   <string name="pubkey_copy_private_openssh" tools:machine_translated="true">Копирај приватни кључ (OpenSSH)</string>
   <string name="pubkey_copy_private_pem" tools:machine_translated="true">Копирај приватни кључ (PEM)</string>
   <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">Копирај приватни кључ (шифрован)</string>
-  <string name="pubkey_export_public" tools:machine_translated="true">Извезите јавни кључ.</string>
+  <string name="pubkey_export_public" tools:machine_translated="true">Извезите јавни кључ</string>
   <string name="pubkey_export_private" tools:machine_translated="true">Извезите приватни кључ</string>
   <string name="pubkey_export_private_openssh" tools:machine_translated="true">Извезите приватни кључ (OpenSSH)</string>
   <string name="pubkey_export_private_pem" tools:machine_translated="true">Извезите приватни кључ (PEM)</string>
@@ -492,7 +492,7 @@
   <string name="disconnect_host_alert" tools:machine_translated="true">Da li ste sigurni da želite da se isključite sa \'%1$s\'?</string>
   <string name="delete_host_confirm" tools:machine_translated="true">Da li ste sigurni da želite da obrišete uređaj „%1$s“?</string>
   <string name="forget_host_keys_confirm" tools:machine_translated="true">Da li ste sigurni da želite da izbrišete sačuvane ključeve za server \'%1$s\'? Bićete podstaknuti da potvrdite ključ servera pri sledećoj konekciji.</string>
-  <string name="list_pubkey_edit" tools:machine_translated="true">Uredi javni ključ.</string>
+  <string name="list_pubkey_edit" tools:machine_translated="true">Uredi javni ključ</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">Верзија IP протокола</string>
   <string name="hostpref_ipversion_summary" tools:machine_translated="true">Изаберите верзију IP адресе која ће се користити при повезивању.</string>
   <string name="ipversion_auto" tools:machine_translated="true">Аутоматски</string>
@@ -506,7 +506,7 @@
   <string name="terminal_jump_authenticated" tools:machine_translated="true">Успешно се успоставила веза са серверom за приступање: %s</string>
   <string name="terminal_jump_failed" tools:machine_translated="true">Неуспеšno uspostavljanje veze sa posredničkim serverom %1$s: %2$s</string>
   <string name="terminal_jump_auth_failed" tools:machine_translated="true">Аутентификација за помоћни сервер није успела: %s</string>
-  <string name="terminal_jump_not_found" tools:machine_translated="true">Не пронађен хост за приступање у сачуваној листи хостова.</string>
+  <string name="terminal_jump_not_found" tools:machine_translated="true">Не пронађен хост за приступање у сачуваној листи хостова</string>
   <string name="terminal_jump_password" tools:machine_translated="true">Лозинка за приступни сервер %s:</string>
   <string name="view_logs" tools:machine_translated="true">Прикажи дневнике</string>
   <string name="logs_title" tools:machine_translated="true">Evidencije aplikacije</string>

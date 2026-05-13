@@ -62,7 +62,7 @@
   <string name="pubkey_unknown_format" tools:machine_translated="true">Onbekende formaat</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Voer wagwoord in om die sleutel \'%1$s\' te ontsluit.</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">’n Sleutel met hierdie bynaam bestaan reeds</string>
-  <string name="pubkey_load_on_start" tools:machine_translated="true">Laai sleutel tydens die begin van die toepassing.</string>
+  <string name="pubkey_load_on_start" tools:machine_translated="true">Laai sleutel tydens die begin van die toepassing</string>
   <string name="prompt_username" tools:machine_translated="true">Gebruikersnaam:</string>
   <string name="prompt_again" tools:machine_translated="true">(weer)</string>
   <string name="prompt_bits" tools:machine_translated="true">Bite:</string>
@@ -506,7 +506,7 @@
   <string name="terminal_jump_authenticated" tools:machine_translated="true">Aangemeld by die sprongbediener: %s</string>
   <string name="terminal_jump_failed" tools:machine_translated="true">Kon nie verbind nie met die tussenknooppunt %1$s: %2$s</string>
   <string name="terminal_jump_auth_failed" tools:machine_translated="true">Verifikasie vir die oorskakelingserver het misluk: %s</string>
-  <string name="terminal_jump_not_found" tools:machine_translated="true">Springgasheer nie in die gestoorde lys gevind nie.</string>
+  <string name="terminal_jump_not_found" tools:machine_translated="true">Springgasheer nie in die gestoorde lys gevind nie</string>
   <string name="terminal_jump_password" tools:machine_translated="true">Wagwoord vir die toegangspunt %s:</string>
   <string name="view_logs" tools:machine_translated="true">Beskou logboeke</string>
   <string name="logs_title" tools:machine_translated="true">Toepassingslogboeke</string>
@@ -536,7 +536,7 @@
   <string name="pref_default_profile_none" tools:machine_translated="true">Geen (gebruik die instellings van die gasheerrekenaar)</string>
   <string name="pref_alwaysvisible_summary" tools:machine_translated="true">Maak spesiale sleutels altyd sigbaar.</string>
   <string name="pref_customterminal_title" tools:machine_translated="true">Aangepaste terminaaltypes</string>
-  <string name="pref_customterminal_summary" tools:machine_translated="true">Voeg pasgemaakte TERM-waardes vir afstandbedieners by.</string>
+  <string name="pref_customterminal_summary" tools:machine_translated="true">Voeg pasgemaakte TERM-waardes vir afstandbedieners by</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">Voeg pasgemaakte terminaaltipe by.</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">Terminaaltipe (bv. rxvt-unicode)</string>
   <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Bestuur pasgemaakte terminaaltypes</string>

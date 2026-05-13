@@ -38,7 +38,7 @@
   <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Nustatykite eksporto slaptažodį.</string>
   <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Įveskite slaptažodį, kad užšifruotumėte eksportuojamą raktą.</string>
   <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Patvirtinkite slaptažodį.</string>
-  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Slaptažodžiai nesutampa.</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Slaptažodžiai nesutampa</string>
   <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Įkelti užšifruotą raktą.</string>
   <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Įveskite slaptažodį, kad atšifruotumėte rakto failą „%1$s“ (%2$s).</string>
   <string name="pubkey_import_button" tools:machine_translated="true">Importuoti</string>
@@ -47,13 +47,13 @@
   <string name="pubkey_import_new_password" tools:machine_translated="true">Naujas slaptažodis</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Patvirtinkite slaptažodį.</string>
   <string name="pubkey_list_empty" tools:machine_translated="true">Palieskite „Meniu“, kad sukurtumėte arba įkeltumėte raktų poras.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">Nežinomas formatas.</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">Nežinomas formatas</string>
   <string name="pubkey_change_password" tools:machine_translated="true">Pakeisti slaptažodį</string>
   <string name="pubkey_unlock" tools:machine_translated="true">Atrakinti raktą</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Įveskite slaptažodį, kad atrakintumėte šifruotą raktą „%1$s“.</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">Šis slaptasis raktas su šiuo pseudonimu jau egzistuoja.</string>
   <string name="pubkey_load_on_start" tools:machine_translated="true">Įkelti raktą paleidžiant programą.</string>
-  <string name="pubkey_confirm_use" tools:machine_translated="true">Prieš naudojimą patvirtinkite.</string>
+  <string name="pubkey_confirm_use" tools:machine_translated="true">Prieš naudojimą patvirtinkite</string>
   <string name="portforward_edit" tools:machine_translated="true">Redaguoti prievado nukreipimą</string>
   <string name="portforward_delete" tools:machine_translated="true">Ištrinti nukreipto prievado taisyklę.</string>
   <string name="prompt_nickname" tools:machine_translated="true">Slapyvardis:</string>
@@ -186,7 +186,7 @@
   <string name="hostpref_postlogin_summary" tools:machine_translated="true">Komandos, kurias reikia vykdyti nuotoliniame serveryje, kai vartotojas prisijungia.</string>
   <string name="hostpref_compression_title" tools:machine_translated="true">Suspaudimas</string>
   <string name="hostpref_compression_summary" tools:machine_translated="true">Tai gali padėti, jei tinklas veikia lėčiau.</string>
-  <string name="hostpref_wantsession_title" tools:machine_translated="true">Paleisti komandų interpretatoriaus sesiją.</string>
+  <string name="hostpref_wantsession_title" tools:machine_translated="true">Paleisti komandų interpretatoriaus sesiją</string>
   <string name="hostpref_wantsession_summary" tools:machine_translated="true">Atjunkite šią parinktį, jei norite naudoti tik prievadų nukreipimą.</string>
   <string name="hostpref_stayconnected_title" tools:machine_translated="true">Išlikite prisijungę.</string>
   <string name="hostpref_stayconnected_summary" tools:machine_translated="true">Pabandykite vėl prisijungti prie serverio, jei ryšys nutrūko.</string>
@@ -204,7 +204,7 @@
   <string name="hostpref_profile_title" tools:machine_translated="true">Profilis</string>
   <string name="hostpref_profile_summary" tools:machine_translated="true">Pasirinkite profilį, kad būtų taikomi jo nustatyti terminalo parametrai.</string>
   <string name="hostpref_profile_none" tools:machine_translated="true">Nėra (naudokite konkretaus serverio nustatymus)</string>
-  <string name="profile_controlled_setting" tools:machine_translated="true">Valdoma per profilį.</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">Valdoma per profilį</string>
   <string name="font_use_default" tools:machine_translated="true">Naudoti numatytąjį šriftą</string>
   <string name="font_system_default" tools:machine_translated="true">Numatytasis (monospaced šriftas)</string>
   <string name="pubkey_unknown" tools:machine_translated="true">Nežinomas raktas.</string>
@@ -459,7 +459,7 @@
   <string name="hostpref_add_host" tools:machine_translated="true">Pridėti serverį</string>
   <string name="hostpref_save_host" tools:machine_translated="true">Išsaugoti įrašą</string>
   <string name="hostpref_setting_title" tools:machine_translated="true">Šeimininko nustatymas</string>
-  <string name="pubkey_import_existing" tools:machine_translated="true">Įkelti esamą viešąjį raktą.</string>
+  <string name="pubkey_import_existing" tools:machine_translated="true">Įkelti esamą viešąjį raktą</string>
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Įkelti iš iškarpinės</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Privataus rakto turinys</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Įklijuoti iš iškarpinės</string>

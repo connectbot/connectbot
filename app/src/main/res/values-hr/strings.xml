@@ -134,7 +134,7 @@
   <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">Gestikulacija za pomicanje stranice gore/dolje</string>
   <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">Prijeđite prstom po lijevoj trećini zaslona kako biste poslali naredbu za pomicanje stranice prema gore/dolje u terminal.</string>
   <string name="pref_keyboard_category" tools:machine_translated="true">Tipkovnica</string>
-  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Tipka Shift i brojčana tipkovnica aktiviraju funkcijske tipke.</string>
+  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift+num su F-tipke</string>
   <string name="pref_shiftfkeys_summary" tools:machine_translated="true">Na tipkovnicama, tipke s brojevima šalju signale F1-F10 kada se pritisne tipka Shift.</string>
   <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl + broj su funkcijski tipke.</string>
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Na virtualnim tipkovnicama, brojne tipke šalju F1-F10 s Ctrl</string>
@@ -180,7 +180,7 @@
   <string name="hostpref_fontsize_title" tools:machine_translated="true">Veličina fonta (pt)</string>
   <string name="hostpref_fontfamily_title" tools:machine_translated="true">Font.</string>
   <string name="hostpref_colorscheme_title" tools:machine_translated="true">Shema boja terminala</string>
-  <string name="hostpref_pubkeyid_title" tools:machine_translated="true">Koristite autentifikaciju pomoću javnog ključa.</string>
+  <string name="hostpref_pubkeyid_title" tools:machine_translated="true">Koristite autentifikaciju pomoću javnog ključa</string>
   <string name="hostpref_authagent_title" tools:machine_translated="true">Koristite SSH agent za autentifikaciju</string>
   <string name="hostpref_postlogin_title" tools:machine_translated="true">Automatizacija nakon prijave</string>
   <string name="hostpref_postlogin_summary" tools:machine_translated="true">Naredbe koje se izvršavaju na udaljenom poslužitelju nakon uspješne autentifikacije.</string>
@@ -190,7 +190,7 @@
   <string name="hostpref_wantsession_summary" tools:machine_translated="true">Isključite ovu postavku kako biste koristili samo prosljeđivanje portova.</string>
   <string name="hostpref_stayconnected_title" tools:machine_translated="true">Ostanite povezani</string>
   <string name="hostpref_stayconnected_summary" tools:machine_translated="true">Pokušajte ponovno uspostaviti vezu sa serverom ako je veza prekinuta.</string>
-  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Zatvori nakon prekida veze.</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Zatvori nakon prekida veze</string>
   <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Odmah se zatvorite nakon prekida udaljene veze, bez ikakvih obavijesti.</string>
   <string name="hostpref_delkey_title" tools:machine_translated="true">Tipka DEL</string>
   <string name="hostpref_encoding_title" tools:machine_translated="true">Kodiranje</string>
@@ -278,7 +278,7 @@
   <string name="list_camera_ctrla" tools:machine_translated="true">Ctrl+A</string>
   <string name="list_camera_esc" tools:machine_translated="true">Esc</string>
   <string name="list_camera_esc_a" tools:machine_translated="true">Esc+A</string>
-  <string name="list_camera_none" tools:machine_translated="true">Ništa.</string>
+  <string name="list_camera_none" tools:machine_translated="true">Ništa</string>
   <string name="list_camera_text_input" tools:machine_translated="true">Unos teksta</string>
   <string name="delete_message" tools:machine_translated="true">Jeste li sigurni da želite izbrisati \'%1$s\'?</string>
   <string name="delete_pos" tools:machine_translated="true">Da, izbriši</string>
@@ -294,7 +294,7 @@
   <string name="terminal_using_algorithm" tools:machine_translated="true">Koristi se algoritam: %1$s %2$s</string>
   <string name="terminal_kex_algorithm" tools:machine_translated="true">Algoritam za razmjenu ključeva: %s</string>
   <string name="terminal_auth" tools:machine_translated="true">Pokušavam se autentificirati</string>
-  <string name="terminal_auth_pass" tools:machine_translated="true">Pokušava se autentifikacija pomoću lozinke.</string>
+  <string name="terminal_auth_pass" tools:machine_translated="true">Pokušava se autentifikacija pomoću lozinke</string>
   <string name="terminal_auth_pass_fail" tools:machine_translated="true">Metoda autentifikacije „lozinka” nije uspjela.</string>
   <string name="terminal_auth_saved_password" tools:machine_translated="true">Pokušavam koristiti pohranjenu lozinku…</string>
   <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Provjera pohranjenog zapamćenog zaporke nije uspjela.</string>
@@ -340,7 +340,7 @@
   <string name="error_export_failed" tools:machine_translated="true">Izvoz predloška nije uspio: %1$s</string>
   <string name="error_import_failed" tools:machine_translated="true">Uvoz šeme nije uspio: %1$s</string>
   <string name="error_invalid_json" tools:machine_translated="true">Neispravna JSON datoteka</string>
-  <string name="title_palette_editor" tools:machine_translated="true">Uredi paletu boja.</string>
+  <string name="title_palette_editor" tools:machine_translated="true">Uredi paletu boja</string>
   <string name="button_reset_all_colors" tools:machine_translated="true">Vrati na zadane postavke</string>
   <string name="section_ansi_colors" tools:machine_translated="true">ANSI boje (0–15)</string>
   <string name="dialog_title_edit_color" tools:machine_translated="true">Uredi boju %1$d</string>
@@ -459,7 +459,7 @@
   <string name="hostpref_add_host" tools:machine_translated="true">Dodaj novi host</string>
   <string name="hostpref_save_host" tools:machine_translated="true">Spremi host</string>
   <string name="hostpref_setting_title" tools:machine_translated="true">Postavke domaćina</string>
-  <string name="pubkey_import_existing" tools:machine_translated="true">Uvezi postojeći javni ključ.</string>
+  <string name="pubkey_import_existing" tools:machine_translated="true">Uvezi postojeći javni ključ</string>
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Uvezi iz međuspremnika</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Sadržaj privatnog ključa</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Ulijepi iz međuspremnika</string>
@@ -559,7 +559,7 @@
   <string name="shortcut_customize_title" tools:machine_translated="true">Prilagodite prečac</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Boja ikone</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Stil ikone</string>
-  <string name="shortcut_use_host_color" tools:machine_translated="true">Koristi boju postavljenu na računalu.</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">Koristi boju postavljenu na računalu</string>
   <string name="shortcut_create" tools:machine_translated="true">Kreiraj prečac</string>
   <string name="icon_style_terminal" tools:machine_translated="true">Terminal</string>
   <string name="icon_style_server" tools:machine_translated="true">Poslužitelj</string>

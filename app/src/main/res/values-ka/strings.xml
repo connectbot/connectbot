@@ -208,7 +208,7 @@
   <string name="pref_fullscreen_summary" tools:machine_translated="true">დამალეთ სტატუსის ზოლი კონსოლის რეჟიმში მუშაობის დროს.</string>
   <string name="pref_shiftfkeys_summary" tools:machine_translated="true">ფიზიკურ კლავიატურებზე, ციფრული კლავიშები Shift-თან ერთად F1-F10-ს სიგნალს აგზავნიან.</string>
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">სოფტმობილურ კლავიატურებზე, ციფრული კლავიშები Ctrl-თან ერთად F1-F10 ფუნქციებს ააქტივებს.</string>
-  <string name="pref_volumefont_title" tools:machine_translated="true">ხმის დაგაზრდის/დაკლების ღილაკები ფონტის ზომას ცვლის.</string>
+  <string name="pref_volumefont_title" tools:machine_translated="true">ხმის დაგაზრდის/დაკლების ღილაკები ფონტის ზომას ცვლის</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">შრიფტის ზომას ასევე შეგიძლიათ შეცვალოთ პროფილის პარამეტრებში.</string>
   <string name="pref_memkeys_title" tools:machine_translated="true">შენახული კლავიშები</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">შენახული გასაღებები შეინახეთ მეხსიერებაში, სანამ ბექენდ-სერვისი არ დაიხურება.</string>
@@ -434,7 +434,7 @@
   <string name="pubkey_encrypted_description" tools:machine_translated="true">შიფრირებული</string>
   <string name="pubkey_not_encrypted_description" tools:machine_translated="true">შიფრი არ არის გამოყენებული</string>
   <string name="pubkey_biometric_protection" tools:machine_translated="true">ნაბიჯის ბეჭედის დაცვა</string>
-  <string name="pubkey_biometric_description" tools:machine_translated="true">დაიცავით ეს გასაღები თქვენი თითის ანაბეჭდის გამოყენებით.</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">დაიცავით ეს გასაღები თქვენი თითის ანაბეჭდის გამოყენებით</string>
   <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">ბიომეტრიული მონაცემები არ არის რეგისტრირებული. ამ ფუნქციის გამოყენებისთვის, მოაწყვეთ თითის ბიომეტრიული მონაცემები მოწყობილობის პარამეტრებში.</string>
   <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">ბიომეტრიული დაცვა ხელმისაწვდომია მხოლოდ RSA და EC ტიპის გასაღებებისთვის.</string>
   <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">დაიწყეთ ავტორიზაცია, რათა გამოიყენოთ გასაღები</string>
@@ -526,7 +526,7 @@
   <string name="colorscheme_default_description" tools:machine_translated="true">ტერმინალის სტანდარტული ფერები</string>
   <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">პრეკიზული ფერები, რომლებიც განკუთვნილია მანქანებისთვის და ადამიანებისთვის</string>
   <string name="colorscheme_solarized_light_description" tools:machine_translated="true">სოლარიზებული, ღია ფონის ჩრდილებით</string>
-  <string name="colorscheme_dracula_description" tools:machine_translated="true">მუქი ფერების სქემა ტერმინალისთვის.</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">მუქი ფერების სქემა ტერმინალისთვის</string>
   <string name="colorscheme_nord_description" tools:machine_translated="true">არქტიკული, ჩრდილოეთის ფერთა გამა</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">რეტრო სტილის ფერების გამა</string>
   <string name="colorscheme_monokai_description" tools:machine_translated="true">„Sublime Text“-ის სტილით შექმნილი თემა.</string>

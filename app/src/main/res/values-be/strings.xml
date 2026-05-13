@@ -141,7 +141,7 @@
   <string name="only_alt" tools:machine_translated="true">Толькі Alt</string>
   <string name="pref_camera_title" tools:machine_translated="true">Хуткі доступ да камеры</string>
   <string name="pref_keepalive_title" tools:machine_translated="true">Захаваць экран у працоўным стане</string>
-  <string name="pref_keepalive_summary" tools:machine_translated="true">Запавольце выключэнне экрана падчас працы ў кансолі.</string>
+  <string name="pref_keepalive_summary" tools:machine_translated="true">Запавольце выключэнне экрана падчас працы ў кансолі</string>
   <string name="pref_wifilock_title" tools:machine_translated="true">Захоўвайце Wi-Fi у актыўным стане.</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">Запавольце адключэнне Wi-Fi падчас актыўнай сесіі</string>
   <string name="pref_bumpyarrows_title" tools:machine_translated="true">Стрылкападобныя элементы тактыльнай зваротнай сувязі</string>
