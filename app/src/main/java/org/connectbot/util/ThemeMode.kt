@@ -14,12 +14,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package org.connectbot.util
 
 enum class ThemeMode {
     SYSTEM,
     LIGHT,
-    DARK;
+    DARK,
+    ;
 
     companion object {
         fun fromString(value: String?) = entries.firstOrNull { it.name == value } ?: SYSTEM

@@ -559,10 +559,10 @@
   <string name="auth_prompt_title">افتح ConnectBot</string>
   <string name="auth_prompt_subtitle">تحقق من هويتك للمتابعة.</string>
   <string name="pref_language_download" tools:machine_translated="true">تنزيل حزمة اللغة</string>
-  <string name="pref_language_download_failed" tools:machine_translated="true">فشل التنزيل، اضغط لإعادة المحاولة.</string>
+  <string name="pref_language_download_failed" tools:machine_translated="true">فشل التنزيل، اضغط لإعادة المحاولة</string>
   <string name="portforward_host_address" tools:machine_translated="true">عنوان المضيف</string>
   <string name="portforward_source_addr_localhost" tools:machine_translated="true">عنوان الجهاز المحلي</string>
-  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">الخادم المحلي (إصدار IPv4 فقط)</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">الخادم المحلي (IPv4 فقط)</string>
   <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">الخادم المحلي (فقط بروتوكول IPv6)</string>
   <string name="portforward_source_addr_all" tools:machine_translated="true">جميع العناوين</string>
   <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">جميع عناوين بروتوكول الإنترنت الإصدار الرابع (IPv4)</string>

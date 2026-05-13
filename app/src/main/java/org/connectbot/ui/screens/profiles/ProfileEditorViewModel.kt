@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -60,7 +60,7 @@ data class ProfileEditorUiState(
     val isLoading: Boolean = true,
     val isSaving: Boolean = false,
     val saveError: String? = null,
-    val fontDownloadInProgress: Boolean = false
+    val fontDownloadInProgress: Boolean = false,
 )
 
 @HiltViewModel
@@ -70,7 +70,7 @@ class ProfileEditorViewModel @Inject constructor(
     private val colorSchemeRepository: ColorSchemeRepository,
     private val prefs: SharedPreferences,
     @ApplicationContext private val context: Context,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
 
     val commonEncodings: List<String> = listOf(
@@ -78,7 +78,7 @@ class ProfileEditorViewModel @Inject constructor(
         "ISO-8859-1",
         "US-ASCII",
         "windows-1252",
-        "CP437"
+        "CP437",
     )
 
     val allEncodings: List<String> = run {
@@ -157,7 +157,7 @@ class ProfileEditorViewModel @Inject constructor(
                         forceSizeEnabled = forceSizeEnabled,
                         forceSizeRows = profile.forceSizeRows ?: 24,
                         forceSizeColumns = profile.forceSizeColumns ?: 80,
-                        isLoading = false
+                        isLoading = false,
                     )
                 }
             } else {
@@ -254,7 +254,7 @@ class ProfileEditorViewModel @Inject constructor(
                 encoding = state.encoding,
                 emulation = state.emulation,
                 forceSizeRows = if (state.forceSizeEnabled) state.forceSizeRows else null,
-                forceSizeColumns = if (state.forceSizeEnabled) state.forceSizeColumns else null
+                forceSizeColumns = if (state.forceSizeEnabled) state.forceSizeColumns else null,
             )
 
             profileRepository.save(profile)

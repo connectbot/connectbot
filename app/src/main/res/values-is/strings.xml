@@ -145,21 +145,21 @@
   <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Staðfestu lykilorðið</string>
   <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Lykiorðin eru ekki samsvarandi.</string>
   <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Flytja inn dulkóðaða lykil.</string>
-  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Sláðu inn lykilorðið til að afkóða lykilinn \'%1$s\' (%2$s).</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Sláðu inn lykilorðið til að afkóða lykilinn \'%1$s\' (%2$s)</string>
   <string name="pubkey_import_button" tools:machine_translated="true">Innflutningur</string>
-  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Dulkóða lykilinn til geymslu.</string>
-  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Nota sama lykilorðið til að dulkóða.</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Dulkóða lykilinn til geymslu</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Nota sama lykilorðið til að dulkóða</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Nýtt lykilorð</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Staðfestu lykilorðið</string>
   <string name="pubkey_list_empty" tools:machine_translated="true">Smelltu á „Valmynd“ til að búa til\neða flytja inn lykjarúmsmynd.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">Óþekkt snið.</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">Óþekkt snið</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Sláðu inn lykilorðið til að opna lykilinn \'%1$s\'.</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">Lykill með þetta nafn er þegar í notkun.</string>
   <string name="prompt_username" tools:machine_translated="true">Notendarnafn:</string>
   <string name="host_key_verification_title" tools:machine_translated="true">Staðfesting á lykli fyrir þjóninn</string>
-  <string name="fingerprint_format_header" tools:machine_translated="true">Format fyrir fingrafar.</string>
+  <string name="fingerprint_format_header" tools:machine_translated="true">Fingrafarformat</string>
   <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d bitar</string>
-  <string name="fingerprint_copy_description" tools:machine_translated="true">Afritaðu fingrafar til klippiborðsins.</string>
+  <string name="fingerprint_copy_description" tools:machine_translated="true">Afritaðu fingrafar til klippiborðsins</string>
   <string name="network_lost_grace_period" tools:machine_translated="true">Tengingin er lost, bíður eftir að tengjast aftur…</string>
   <string name="network_grace_period_expired" tools:machine_translated="true">Tengingin endurheimtist ekki, verðum að aftengja…</string>
   <string name="network_restored_same_ip" tools:machine_translated="true">Netið er endurvirkjað, tengingin er viðhöfð.</string>
@@ -167,7 +167,7 @@
   <string name="network_restored_no_previous_state" tools:machine_translated="true">Tenging við netið endurheimt, staðfesting á tengingu er í gangi…</string>
   <string name="pref_emulation_category" tools:machine_translated="true">Stillingar fyrir emuleringu terminaltækja.</string>
   <string name="pref_emulation_title" tools:machine_translated="true">Eftirhermingarstilling</string>
-  <string name="pref_scrollback_title" tools:machine_translated="true">Stærð á skjalasafni.</string>
+  <string name="pref_scrollback_title" tools:machine_translated="true">Stærð á skjalasafni</string>
   <string name="pref_scrollback_summary" tools:machine_translated="true">Stærð minnisins sem er úthlutuð til að geyma sögulega útgáfu fyrir hvert tengi.</string>
   <string name="pref_fontfamily_title" tools:machine_translated="true">Leturstíll</string>
   <string name="pref_customfont_title" tools:machine_translated="true">Bæta við sérsniðnu letri</string>
@@ -179,7 +179,7 @@
   <string name="font_validating" tools:machine_translated="true">Er staðfest að leturinn sé í lagi…</string>
   <string name="font_downloading" tools:machine_translated="true">Sæki leturgerð…</string>
   <string name="pref_localfont_title" tools:machine_translated="true">Flytja inn staðbundið letur</string>
-  <string name="pref_localfont_summary" tools:machine_translated="true">Flyt inn letursniðaskrá úr geymslunni (TTF, OTF).</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Flyt inn letursniðaskrá úr geymslunni (TTF, OTF)</string>
   <string name="dialog_localfont_title" tools:machine_translated="true">Flytja inn letur</string>
   <string name="dialog_localfont_hint" tools:machine_translated="true">Sýnilegt nafn fyrir leturinn</string>
   <string name="button_import" tools:machine_translated="true">Flytja inn</string>
@@ -187,11 +187,11 @@
   <string name="pref_backupkeys_title" tools:machine_translated="true">Gerðu afrit af opinberum lyklum</string>
   <string name="pref_backupkeys_summary" tools:machine_translated="true">Geymdu afrit af einkalyklunum með því að nota kerfi Android til að taka öryggisafrit.</string>
   <string name="pref_language_title" tools:machine_translated="true">Tungumál</string>
-  <string name="pref_language_system_default" tools:machine_translated="true">Sjálfgefið kerfisstilling.</string>
+  <string name="pref_language_system_default" tools:machine_translated="true">Sjálfgefið kerfisstilling</string>
   <string name="pref_language_download" tools:machine_translated="true">Sæktu tungumálapakka</string>
   <string name="pref_language_download_failed" tools:machine_translated="true">Ekki tókst að hlaða niður, smelltu til að reyna aftur.</string>
-  <string name="pref_theme_title" tools:machine_translated="true">Litrún.</string>
-  <string name="pref_theme_system" tools:machine_translated="true">Sjálfgefið kerfisstilling.</string>
+  <string name="pref_theme_title" tools:machine_translated="true">Litrún</string>
+  <string name="pref_theme_system" tools:machine_translated="true">Sjálfgefið kerfisstilling</string>
   <string name="pref_theme_light" tools:machine_translated="true">Ljóst</string>
   <string name="pref_theme_dark" tools:machine_translated="true">Dökkur</string>
   <string name="pref_titlebarhide_title" tools:machine_translated="true">Sjálfvirkt felja titlarútu</string>
@@ -200,13 +200,13 @@
   <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">Hreyfing til að skoða næstu/fyrri síðu.</string>
   <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">Dragðu fingrinum yfir þriðjunginn vinstra megin á skjánum til að senda skipunina „pg up/dn“ til tölvunnar.</string>
   <string name="pref_keyboard_category" tools:machine_translated="true">Tastatur</string>
-  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift + tölustafir eru F-takkarnir.</string>
+  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift + tölustafir eru F-takkarnir</string>
   <string name="pref_shiftfkeys_summary" tools:machine_translated="true">Á vélbúnaðartastaturum senda tölutakkarnir F1-F10 þegar Shift-takinn er halinn niðri.</string>
-  <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl+tölustafir eru F-takkarnir.</string>
+  <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl+tölustafir eru F-takkarnir</string>
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Á birtu- og snertitöflum senda tölutakkarnir F1-F10 táknin þegar þeir eru notuð með Ctrl-takkanum.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Með því að nota hnappana til að stýra hljóðstyrknum er hægt að breyta leturstærð.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Hægt er einnig að breyta leturstærð í stillingum fyrir notendaperfil.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Haltu tengingunni við áfram í bakgrunninum.</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">Haltu tengingunni við áfram í bakgrunninum</string>
   <string name="pref_conn_persist_summary" tools:machine_translated="true">Haltu tengingum þínum virkum, jafnvel þegar þú skiptir yfir í önnur forrit.</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Stillt breytir</string>
   <string name="only_alt" tools:machine_translated="true">Aðeins Alt-takinn</string>
@@ -232,7 +232,7 @@
   <string name="color_gray" tools:machine_translated="true">Grár</string>
   <string name="hostpref_fontfamily_title" tools:machine_translated="true">Leturgerð</string>
   <string name="hostpref_colorscheme_title" tools:machine_translated="true">Litauppsetning fyrir skjáinn</string>
-  <string name="hostpref_authagent_title" tools:machine_translated="true">Notaðu SSH auðkenningaraðila.</string>
+  <string name="hostpref_authagent_title" tools:machine_translated="true">Notaðu SSH auðkenningaraðila</string>
   <string name="hostpref_postlogin_title" tools:machine_translated="true">Sjálfvirkni eftir innskráningu.</string>
   <string name="hostpref_wantsession_title" tools:machine_translated="true">Ræstu skeljarþjónustu.</string>
   <string name="hostpref_wantsession_summary" tools:machine_translated="true">Slökktu á þessari stillingu til að nota aðeins portsendingu.</string>
@@ -246,7 +246,7 @@
   <string name="hostpref_profile_title" tools:machine_translated="true">Stillingar</string>
   <string name="hostpref_profile_summary" tools:machine_translated="true">Veldu prófíl til að nota stillingar þess fyrir tengitækið.</string>
   <string name="hostpref_profile_none" tools:machine_translated="true">Engin (nota stillingar fyrir þennan tækjabúnað)</string>
-  <string name="profile_controlled_setting" tools:machine_translated="true">Stýrt af stillingarsniði.</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">Stýrt af stillingarsniði</string>
   <string name="font_use_default" tools:machine_translated="true">Notaðu sjálfgefið</string>
   <string name="font_system_default" tools:machine_translated="true">Sjálfgefið (leturstafir með fastri breidd)</string>
   <string name="pubkey_unknown" tools:machine_translated="true">Óþekkt lykill</string>
@@ -261,7 +261,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Staðsetning</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Letursnið</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Leturstærð: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Stærð áherslu.</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Stærð áherslu</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Stilltu því að terminalinn taki ákveðið stærðarmál (breidd x hæð) í stað þess að hann stækki sjálfkrafa til að passa við skjáinn.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">Virkaðu stillinguna fyrir ákveðna stærð.</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Dálkar</string>
@@ -273,7 +273,7 @@
   <string name="profile_list_more_options" tools:machine_translated="true">Fleiri valkostir</string>
   <string name="profile_list_duplicate" tools:machine_translated="true">Afrita</string>
   <string name="profile_list_delete" tools:machine_translated="true">Eyða</string>
-  <string name="profile_create_dialog_title" tools:machine_translated="true">Búa til nýja prófíl.</string>
+  <string name="profile_create_dialog_title" tools:machine_translated="true">Búa til nýja prófíl</string>
   <string name="profile_create_name_label" tools:machine_translated="true">Nafn á notendaperfili</string>
   <string name="profile_create_button" tools:machine_translated="true">Búa til</string>
   <string name="profile_create_cancel" tools:machine_translated="true">Hætta við</string>
@@ -291,28 +291,28 @@
   <string name="portforward_remote" tools:machine_translated="true">Fjarstýrt</string>
   <string name="portforward_save" tools:machine_translated="true">Vista</string>
   <string name="list_menu_pubkeys" tools:machine_translated="true">Stýra almannlegum lyklum</string>
-  <string name="list_menu_disconnect" tools:machine_translated="true">Raftengja öll tækin.</string>
+  <string name="list_menu_disconnect" tools:machine_translated="true">Raftengja öll tækin</string>
   <string name="list_host_duplicate" tools:machine_translated="true">Afrita valda tæki</string>
   <string name="list_host_forget_keys" tools:machine_translated="true">Ekki nota geymda lykla fyrir þennan tækjabúnað.</string>
   <string name="list_camera_text_input" tools:machine_translated="true">Textinnslingsreitur</string>
   <string name="disconnect_all_message" tools:machine_translated="true">Ertu viss um að þú viljir aftengja þig frá öllum tengdu tölvum?</string>
-  <string name="disconnect_all_pos" tools:machine_translated="true">Já, aftengja.</string>
+  <string name="disconnect_all_pos" tools:machine_translated="true">Já, aftengja</string>
   <string name="disconnect_all_neg" tools:machine_translated="true">Hætta við</string>
   <string name="terminal_sucess" tools:machine_translated="true">Staðfest keyri fyrir vefþjóninn \'%1$s\': %2$s</string>
   <string name="terminal_using_s2c_algorithm" tools:machine_translated="true">Dulkóðunaralgoritmur frá netþjóni til notanda: %1$s %2$s</string>
   <string name="terminal_using_c2s_algorithm" tools:machine_translated="true">Dulkóðunaralgoritmur milli viðmóts og þjóns: %1$s %2$s</string>
   <string name="terminal_kex_algorithm" tools:machine_translated="true">Algoritmur fyrir skipti á auðkenningarlyklum: %s</string>
   <string name="terminal_auth_saved_password" tools:machine_translated="true">Reyni að nota geymda aðgangsorðið…</string>
-  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Staðfesting með geymdu lykilorðinu mistókst.</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Staðfesting með geymdu lykilorðinu mistókst</string>
   <string name="terminal_auth_pubkey_any" tools:machine_translated="true">Reynt er að nota \'publickey\'-staðfestingu með öllum tiltækum opinberum lyklum sem eru í minni.</string>
   <string name="terminal_auth_pubkey_invalid" tools:machine_translated="true">Valinn almannlega lykill er ógildur, reyndu að velja lykilinn aftur í ritstjóranum.</string>
   <string name="terminal_auth_pubkey_specific" tools:machine_translated="true">Reynt er að nota almannlega lykil til að staðfesta notanda með tilteknu almannlega lykli.</string>
-  <string name="terminal_auth_biometric" tools:machine_translated="true">Beið um líffræðilega auðkenningu til að opna lykilinn \'%1$s\'.</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">Beið um líffræðilega auðkenningu til að opna lykilinn \'%1$s\'</string>
   <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">Auðkennislykillinn \'%1$s\' er ógildur. Þetta getur gerst þegar ný fingraför eru skráð á tækið. Vinsamlegast búðu til nýjan lykil.</string>
   <string name="terminal_auth_pubkey_fail" tools:machine_translated="true">Staðfestingaraðferðin „opinber lykill“ með lyklinum „%1$s“ mistókst.</string>
   <string name="terminal_auth_ki" tools:machine_translated="true">Reynt er að nota „lyklaborðs- og samskiptaaðferðina“ til auðkenningar.</string>
-  <string name="terminal_auth_ki_fail" tools:machine_translated="true">Staðfestingaraðferðin „keyboard-interactive“ mistókst.</string>
-  <string name="terminal_auth_fail" tools:machine_translated="true">[Netþjónninn þinn styður ekki kennsluaðferðirnar „lykilorð“ eða „tastatur-viðburðarkennd“.</string>
+  <string name="terminal_auth_ki_fail" tools:machine_translated="true">Staðfestingaraðferðin „keyboard-interactive“ mistókst</string>
+  <string name="terminal_auth_fail" tools:machine_translated="true">[Netþjónninn þinn styður ekki kennsluaðferðirnar „lykilorð“ eða „tastatur-viðburðarkennd“.]</string>
   <string name="terminal_no_session" tools:machine_translated="true">Hægt er ekki að hefja lotu þar sem notandinn hefur slökkt á henni í stillingum tölvunnar.</string>
   <string name="local_shell_unavailable" tools:machine_translated="true">Ekki tókst! Lokaðu kerfisforritið er ekki tiltækt á þessari símtæki.</string>
   <string name="list_color_schemes" tools:machine_translated="true">Litapallettur</string>
@@ -337,7 +337,7 @@
   <string name="button_export_scheme" tools:machine_translated="true">Senda litapallett í JSON-skrá</string>
   <string name="button_import_scheme" tools:machine_translated="true">Flytja inn litapalettu</string>
   <string name="message_export_success" tools:machine_translated="true">Útfærslan %1$s hefur verið send út.</string>
-  <string name="message_import_success" tools:machine_translated="true">Innflutningur %1$s tókst.</string>
+  <string name="message_import_success" tools:machine_translated="true">Innflutningur %1$s tókst</string>
   <string name="error_export_failed" tools:machine_translated="true">Ekki tókst að flytja út skipulagið: %1$s</string>
   <string name="error_import_failed" tools:machine_translated="true">Ekki tókst að flytja inn skipulag: %1$s</string>
   <string name="error_invalid_json" tools:machine_translated="true">Ógild JSON-skrá</string>
@@ -367,10 +367,10 @@
   <string name="image_description_send_tab_character" tools:machine_translated="true">Sendir TAB-stafirinn.</string>
   <string name="image_description_hide_keyboard" tools:machine_translated="true">Fela lyklaborðið.</string>
   <string name="image_description_show_keyboard" tools:machine_translated="true">Sýna lyklaborðið.</string>
-  <string name="image_description_up" tools:machine_translated="true">Pílurinn beinist upp.</string>
+  <string name="image_description_up" tools:machine_translated="true">Pílurinn beinist upp</string>
   <string name="image_description_down" tools:machine_translated="true">Pílur niður</string>
-  <string name="image_description_left" tools:machine_translated="true">Vinstri ör.</string>
-  <string name="image_description_right" tools:machine_translated="true">Hliðandi ör.</string>
+  <string name="image_description_left" tools:machine_translated="true">Vinstri ör</string>
+  <string name="image_description_right" tools:machine_translated="true">Hliðandi ör →</string>
   <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
   <string name="button_key_home" tools:machine_translated="true">Heim</string>
@@ -389,11 +389,11 @@
   <string name="button_key_f10" tools:machine_translated="true">F10</string>
   <string name="button_key_f11" tools:machine_translated="true">F11</string>
   <string name="button_key_f12" tools:machine_translated="true">F12</string>
-  <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">Textinnslir.</string>
-  <string name="terminal_text_input_dialog_title" tools:machine_translated="true">Textinnslur.</string>
-  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">Sláðu inn texta sem á að senda til kerfisins.</string>
+  <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">Textinnslir</string>
+  <string name="terminal_text_input_dialog_title" tools:machine_translated="true">Textinnslur</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">Sláðu inn texta sem á að senda til kerfisins</string>
   <string name="terminal_text_input_resize_handle" tools:machine_translated="true">Stærðarbreyta</string>
-  <string name="console_menu_text_input" tools:machine_translated="true">Textinnslir.</string>
+  <string name="console_menu_text_input" tools:machine_translated="true">Textinnslir</string>
   <string name="button_send" tools:machine_translated="true">Senda</string>
   <string name="button_ok" tools:machine_translated="true">Í lagi</string>
   <string name="button_close" tools:machine_translated="true">Loka</string>
@@ -425,14 +425,14 @@
   <string name="pubkey_editor_options_label" tools:machine_translated="true">Valkostir</string>
   <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Ekki er hægt að opna dulkóðaða lykla við ræsingu kerfisins.</string>
   <string name="pubkey_type_label" tools:machine_translated="true">Gerð: %s</string>
-  <string name="pubkey_encrypted_description" tools:machine_translated="true">Dulkóðað.</string>
-  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Ekki dulkóðað.</string>
+  <string name="pubkey_encrypted_description" tools:machine_translated="true">Dulkóðað</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Ekki dulkóðað</string>
   <string name="pubkey_biometric_protection" tools:machine_translated="true">Auðkenni með fingrafar.</string>
   <string name="pubkey_biometric_description" tools:machine_translated="true">Notaðu fingrafar til að vernda þennan lykil.</string>
   <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Engin fingrafar skrár. Settu upp fingrafar í stillingum tækisins til að nota þessa virkni.</string>
   <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Aðeins er hægt að nota fingrafarþekju fyrir RSA- og EC-lykla.</string>
   <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Staðfestu síðan til að nota lykilinn.</string>
-  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Snertu fingrafaraskannann til að opna \'%1$s\'.</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Snertu fingrafaraskannann til að opna \'%1$s\'</string>
   <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Verndað með fingrafar.</string>
   <string name="pubkey_biometric_not_available" tools:machine_translated="true">Auðkenni með þumprinti er ekki í boði.</string>
   <string name="portforward_nickname_placeholder" tools:machine_translated="true">Innri vefþjón</string>
@@ -463,19 +463,19 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Flytja inn úr klippiborðinu</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Innihald einkalýkilsins</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Límdu inn úr klippiborðinu</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Haldtu tengingunni virka í bakgrunninum.</string>
+  <string name="notification_permission_title" tools:machine_translated="true">Haldtu tengingunni virka í bakgrunninum</string>
   <string name="notification_permission_message" tools:machine_translated="true">ConnectBot þarfnast leyfis til að senda tilkynningar til þess að viðhalda virkum tengingum þínum þegar þú skiptir um forrit. Ef þú veitir ekki þetta leyfi gæti kerfið aftur tengt þig til að spara rafhlögu.</string>
   <string name="grant_permission" tools:machine_translated="true">Leyfa</string>
   <string name="connect_anyway" tools:machine_translated="true">Hafðu samt sem áður samband</string>
   <string name="notification_permission_denied_title" tools:machine_translated="true">Þarf að veita leyfi fyrir tilkynningum.</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Til þess að viðhalda virkum tengingum þínum þegar þú ert ekki að nota appið, vinsamlegast virkjaðu tilkynningar fyrir ConnectBot í stillingum kerfisins.</string>
-  <string name="open_settings" tools:machine_translated="true">Opnaðu stillingar.</string>
+  <string name="open_settings" tools:machine_translated="true">Opnaðu stillingar</string>
   <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Tengingar gætu rofnað ef ekki er veitt leyfi til að senda tilkynningar.</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Tengingin gæti rofnað þegar forritið er í bakgrunni.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Ertu að reyna að tengjast tæki á staðarnetinu? Gefðu leyfi fyrir aðgang að staðarnetinu.</string>
   <string name="loading_message" tools:machine_translated="true">Er verið að hlaða…</string>
   <string name="migration_checking" tools:machine_translated="true">Er verið að athuga gagnagrunninn…</string>
-  <string name="migration_title" tools:machine_translated="true">Gagnaflytja gagnagrunn.</string>
+  <string name="migration_title" tools:machine_translated="true">Gagnaflytja gagnagrunn</string>
   <string name="migration_warning" tools:machine_translated="true">Vinsamlegast ekki loka forritinu meðan á flutningu stendur.</string>
   <string name="migration_stats_hosts" tools:machine_translated="true">Fjöldi fluttra þjóna: %d</string>
   <string name="migration_stats_pubkeys" tools:machine_translated="true">Fjöldi SSH-lykla sem hafa verið fluttir: %d</string>
@@ -484,7 +484,7 @@
   <string name="migration_failed_title" tools:machine_translated="true">Flutningurinn mistókst.</string>
   <string name="migration_failed_message" tools:machine_translated="true">Kom upp villa við flutning gagnagrunns: %s</string>
   <string name="migration_retry" tools:machine_translated="true">Reyndu aftur</string>
-  <string name="migration_failed_help" tools:machine_translated="true">Ef vandamálið heldur áfram, vinsamlegast tilkynntu um það á %1$s og settu inn afrit af villuskráinni sem er efst í textanum.</string>
+  <string name="migration_failed_help" tools:machine_translated="true">Ef vandamálið heldur áfram, vinsamlegast tilkynntu um það á %1$s með villuskýrsluna sem er afrituð hér fyrir ofan</string>
   <string name="migration_warnings_title" tools:machine_translated="true">Viðvaranir um gagnagrunnsflutning</string>
   <string name="migration_copy_warnings" tools:machine_translated="true">Afrita viðvaranir</string>
   <string name="migration_debug_log_title" tools:machine_translated="true">Villuleitarlogg</string>
@@ -524,13 +524,13 @@
   <string name="help_donate_github" tools:machine_translated="true">GitHub styrktaraðilar</string>
   <string name="help_donate_coffee" tools:machine_translated="true">Styrktu mig með kaffi</string>
   <string name="colorscheme_default_description" tools:machine_translated="true">Sjálfgefin litapaletta fyrir terminalinn</string>
-  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Nákvæmar litir fyrir vélar og fólk.</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Nákvæmar litir fyrir vélar og fólk</string>
   <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarized, með ljósum bakgrunni.</string>
-  <string name="colorscheme_dracula_description" tools:machine_translated="true">Dökkur litahönnun fyrir skjáinn.</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">Dökkur litahönnun fyrir skjáinn</string>
   <string name="colorscheme_nord_description" tools:machine_translated="true">Litapaletta sem er í ætt við norðlæga, bláa litatóna.</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Litríkt og nostalgískt litaharmóní</string>
   <string name="colorscheme_monokai_description" tools:machine_translated="true">Litríki sem er innblásið af Sublime Text.</string>
-  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Snyrtilegt og þægilegt myrkt útlit.</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Snyrtilegt og þægilegt myrkt útlit</string>
   <string name="pref_profiles_category" tools:machine_translated="true">Stillingar fyrir prófíl</string>
   <string name="pref_default_profile_title" tools:machine_translated="true">Sjálfgefið prófíl</string>
   <string name="pref_default_profile_none" tools:machine_translated="true">Engin (nota stillingar tölvunnar)</string>
@@ -565,11 +565,11 @@
   <string name="icon_style_server" tools:machine_translated="true">Netþjónn</string>
   <string name="icon_style_cloud" tools:machine_translated="true">Ský</string>
   <string name="icon_style_key" tools:machine_translated="true">Lykill</string>
-  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Staðfesting við upphaf.</string>
+  <string name="pref_auth_on_launch_title" tools:machine_translated="true">Staðfesting við upphaf</string>
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Krefst þess að notandi noti fingrafar, andlitsþekkingarforrit eða PIN-númer tækisins þegar hann opnar appið.</string>
   <string name="pref_security_category" tools:machine_translated="true">Öryggi</string>
-  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot er læst.</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot er læst</string>
   <string name="auth_screen_unlock_button" tools:machine_translated="true">Snertu til að opna.</string>
   <string name="auth_prompt_title" tools:machine_translated="true">Opna ConnectBot</string>
-  <string name="auth_prompt_subtitle" tools:machine_translated="true">Staðfestu auðkenni þitt til að halda áfram.</string>
+  <string name="auth_prompt_subtitle" tools:machine_translated="true">Staðfestu auðkenni þitt til að halda áfram</string>
 </resources>

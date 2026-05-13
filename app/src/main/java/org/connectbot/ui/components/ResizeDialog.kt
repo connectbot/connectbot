@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ fun ResizeDialog(
     isForced: Boolean,
     onDismiss: () -> Unit,
     onResize: (Int, Int) -> Unit,
-    onDisableForceSize: () -> Unit
+    onDisableForceSize: () -> Unit,
 ) {
     val dimensions = currentBridge.terminalEmulator.dimensions
 
@@ -59,7 +59,7 @@ fun ResizeDialog(
         text = {
             Column(
                 modifier = Modifier.padding(vertical = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(16.dp),
             ) {
                 OutlinedTextField(
                     value = widthText,
@@ -71,7 +71,7 @@ fun ResizeDialog(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     isError = widthError,
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
 
                 OutlinedTextField(
@@ -84,7 +84,7 @@ fun ResizeDialog(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     isError = heightError,
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 )
 
                 if (isForced) {
@@ -93,7 +93,7 @@ fun ResizeDialog(
                             onDisableForceSize()
                             onDismiss()
                         },
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier.fillMaxWidth(),
                     ) {
                         Text(stringResource(R.string.resize_disable_force_size))
                     }
@@ -112,7 +112,7 @@ fun ResizeDialog(
                     }
                 },
                 enabled = !widthError && !heightError &&
-                    widthText.isNotEmpty() && heightText.isNotEmpty()
+                    widthText.isNotEmpty() && heightText.isNotEmpty(),
             ) {
                 Text(stringResource(R.string.button_resize))
             }
@@ -121,6 +121,6 @@ fun ResizeDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(R.string.delete_neg))
             }
-        }
+        },
     )
 }

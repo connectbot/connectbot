@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,7 +47,7 @@ private const val MILLIS_BETWEEN_INPUTS = 50L
 fun EntropyGatherer(
     onGatherEntropy: (ByteArray) -> Unit,
     onProgressUpdate: (Int) -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val entropyGenerator = remember { DragEntropyGenerator() }
     val backgroundColor = MaterialTheme.colorScheme.surfaceVariant
@@ -76,12 +76,12 @@ fun EntropyGatherer(
                         onGatherEntropy(finalEntropy)
                     }
                 }
-            }
+            },
     ) {
         // Draw background to indicate touchable area
         drawRect(
             color = backgroundColor,
-            style = Fill
+            style = Fill,
         )
 
         // Draw emojis to indicate touch/mouse interaction
@@ -90,8 +90,8 @@ fun EntropyGatherer(
             text = emojiText,
             style = TextStyle(
                 fontSize = 48.sp,
-                color = textColor
-            )
+                color = textColor,
+            ),
         )
 
         val centerX = size.width / 2f
@@ -101,8 +101,8 @@ fun EntropyGatherer(
             textLayoutResult = textLayoutResult,
             topLeft = Offset(
                 x = centerX - textLayoutResult.size.width / 2f,
-                y = centerY - textLayoutResult.size.height / 2f
-            )
+                y = centerY - textLayoutResult.size.height / 2f,
+            ),
         )
     }
 }

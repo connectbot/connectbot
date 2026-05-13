@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ annotation class IoDispatcher
 data class CoroutineDispatchers(
     val default: CoroutineDispatcher,
     val io: CoroutineDispatcher,
-    val main: CoroutineDispatcher
+    val main: CoroutineDispatcher,
 )
 
 @Module
@@ -50,6 +50,6 @@ object DispatcherModule {
     fun provideCoroutineDispatchers(): CoroutineDispatchers = CoroutineDispatchers(
         default = Dispatchers.Default,
         io = Dispatchers.IO,
-        main = Dispatchers.Main
+        main = Dispatchers.Main,
     )
 }

@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -64,7 +64,7 @@ import org.connectbot.util.ShortcutIconGenerator
 fun ShortcutCustomizationDialog(
     host: Host,
     onDismiss: () -> Unit,
-    onConfirm: (color: String?, iconStyle: IconStyle) -> Unit
+    onConfirm: (color: String?, iconStyle: IconStyle) -> Unit,
 ) {
     val context = LocalContext.current
     val density = LocalDensity.current
@@ -92,12 +92,12 @@ fun ShortcutCustomizationDialog(
         text = {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
+                horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Image(
                     bitmap = previewBitmap.asImageBitmap(),
                     contentDescription = null,
-                    modifier = Modifier.size(72.dp)
+                    modifier = Modifier.size(72.dp),
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -108,12 +108,12 @@ fun ShortcutCustomizationDialog(
                         .fillMaxWidth()
                         .clickable(enabled = host.color != null) {
                             useHostColor = !useHostColor
-                        }
+                        },
                 ) {
                     Checkbox(
                         checked = useHostColor,
                         onCheckedChange = null,
-                        enabled = host.color != null
+                        enabled = host.color != null,
                     )
                     Spacer(modifier = Modifier.width(8.dp))
                     Text(
@@ -123,7 +123,7 @@ fun ShortcutCustomizationDialog(
                             MaterialTheme.colorScheme.onSurface
                         } else {
                             MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-                        }
+                        },
                     )
                 }
 
@@ -132,7 +132,7 @@ fun ShortcutCustomizationDialog(
                 ExposedDropdownMenuBox(
                     expanded = colorDropdownExpanded,
                     onExpandedChange = { if (!useHostColor) colorDropdownExpanded = it },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     OutlinedTextField(
                         value = selectedColorDisplay,
@@ -147,12 +147,12 @@ fun ShortcutCustomizationDialog(
                         colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                         modifier = Modifier
                             .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
                     )
 
                     ExposedDropdownMenu(
                         expanded = colorDropdownExpanded,
-                        onDismissRequest = { colorDropdownExpanded = false }
+                        onDismissRequest = { colorDropdownExpanded = false },
                     ) {
                         iconColors.forEach { color ->
                             DropdownMenuItem(
@@ -161,7 +161,7 @@ fun ShortcutCustomizationDialog(
                                     selectedColor = color.hexValue
                                     colorDropdownExpanded = false
                                 },
-                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                             )
                         }
                     }
@@ -172,7 +172,7 @@ fun ShortcutCustomizationDialog(
                 ExposedDropdownMenuBox(
                     expanded = styleDropdownExpanded,
                     onExpandedChange = { styleDropdownExpanded = it },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
                 ) {
                     OutlinedTextField(
                         value = getIconStyleDisplayName(selectedStyle),
@@ -186,12 +186,12 @@ fun ShortcutCustomizationDialog(
                         colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
                         modifier = Modifier
                             .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
                     )
 
                     ExposedDropdownMenu(
                         expanded = styleDropdownExpanded,
-                        onDismissRequest = { styleDropdownExpanded = false }
+                        onDismissRequest = { styleDropdownExpanded = false },
                     ) {
                         IconStyle.entries.forEach { style ->
                             DropdownMenuItem(
@@ -200,7 +200,7 @@ fun ShortcutCustomizationDialog(
                                     selectedStyle = style
                                     styleDropdownExpanded = false
                                 },
-                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding
+                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                             )
                         }
                     }
@@ -216,7 +216,7 @@ fun ShortcutCustomizationDialog(
             TextButton(onClick = onDismiss) {
                 Text(stringResource(android.R.string.cancel))
             }
-        }
+        },
     )
 }
 

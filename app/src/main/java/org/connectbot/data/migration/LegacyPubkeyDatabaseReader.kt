@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -50,7 +50,7 @@ class LegacyPubkeyDatabaseReader(private val context: Context) {
                 null, // no where args
                 null, // no group by
                 null, // no having
-                "nickname ASC" // order by
+                "nickname ASC", // order by
             ).use { cursor ->
                 while (cursor.moveToNext()) {
                     try {
@@ -109,7 +109,7 @@ class LegacyPubkeyDatabaseReader(private val context: Context) {
             createdDate = System.currentTimeMillis(), // Legacy DB doesn't track this, use current time
             storageType = KeyStorageType.EXPORTABLE, // All legacy keys are exportable
             allowBackup = true, // Default to allowing backup for legacy keys
-            keystoreAlias = null // Legacy keys don't use Android Keystore
+            keystoreAlias = null, // Legacy keys don't use Android Keystore
         )
     }
 
@@ -124,7 +124,7 @@ class LegacyPubkeyDatabaseReader(private val context: Context) {
             val db = SQLiteDatabase.openDatabase(
                 dbFile.absolutePath,
                 null,
-                SQLiteDatabase.OPEN_READONLY
+                SQLiteDatabase.OPEN_READONLY,
             )
             try {
                 block(db)

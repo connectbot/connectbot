@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -70,7 +70,7 @@ class ConnectionNotifier @Inject constructor() {
         val nc = NotificationChannel(
             id,
             context.getString(R.string.app_name),
-            NotificationManager.IMPORTANCE_DEFAULT
+            NotificationManager.IMPORTANCE_DEFAULT,
         )
         getNotificationManager(context).createNotificationChannel(nc)
     }
@@ -90,7 +90,7 @@ class ConnectionNotifier @Inject constructor() {
             context,
             0,
             notificationIntent,
-            pendingIntentFlags
+            pendingIntentFlags,
         )
 
         builder.setContentTitle(res.getString(R.string.app_name))
@@ -121,7 +121,7 @@ class ConnectionNotifier @Inject constructor() {
             context,
             ONLINE_NOTIFICATION,
             Intent(context, MainActivity::class.java),
-            pendingIntentFlags
+            pendingIntentFlags,
         )
 
         val disconnectIntent = Intent(context, MainActivity::class.java).apply {
@@ -132,7 +132,7 @@ class ConnectionNotifier @Inject constructor() {
             context,
             ONLINE_DISCONNECT_NOTIFICATION,
             disconnectIntent,
-            pendingIntentFlags
+            pendingIntentFlags,
         )
 
         builder.setOngoing(true)
@@ -144,7 +144,7 @@ class ConnectionNotifier @Inject constructor() {
             .addAction(
                 android.R.drawable.ic_menu_close_clear_cancel,
                 res.getString(R.string.list_host_disconnect),
-                disconnectPendingIntent
+                disconnectPendingIntent,
             )
 
         return builder.build()
@@ -168,7 +168,7 @@ class ConnectionNotifier @Inject constructor() {
         context.startForeground(
             ONLINE_NOTIFICATION,
             newRunningNotification(context),
-            ServiceInfo.FOREGROUND_SERVICE_TYPE_REMOTE_MESSAGING
+            ServiceInfo.FOREGROUND_SERVICE_TYPE_REMOTE_MESSAGING,
         )
     }
 

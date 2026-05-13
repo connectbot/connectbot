@@ -558,7 +558,7 @@
   <string name="auth_screen_unlock_button">Tocca per sbloccare</string>
   <string name="auth_prompt_title">Sblocca ConnectBot</string>
   <string name="auth_prompt_subtitle">Verifica la tua identità per continuare</string>
-  <string name="pref_language_download" tools:machine_translated="true">Scarica il pacchetto lingue.</string>
+  <string name="pref_language_download" tools:machine_translated="true">Scarica il pacchetto lingue</string>
   <string name="pref_language_download_failed" tools:machine_translated="true">Download non riuscito, toccare per riprovare.</string>
   <string name="portforward_host_address" tools:machine_translated="true">Indirizzo host</string>
   <string name="portforward_source_addr_localhost" tools:machine_translated="true">localhost</string>

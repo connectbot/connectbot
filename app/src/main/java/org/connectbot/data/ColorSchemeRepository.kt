@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ import javax.inject.Singleton
 @Singleton
 class ColorSchemeRepository @Inject constructor(
     private val colorSchemeDao: ColorSchemeDao,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
 ) {
 
     /**
@@ -56,8 +56,8 @@ class ColorSchemeRepository @Inject constructor(
                     id = -(index + 1L), // Start from Default at -1
                     name = preset.name,
                     isBuiltIn = true,
-                    description = preset.description
-                )
+                    description = preset.description,
+                ),
             )
         }
 
@@ -83,8 +83,8 @@ class ColorSchemeRepository @Inject constructor(
                     id = -(index + 1L), // Start from Default at -1
                     name = preset.name,
                     isBuiltIn = true,
-                    description = preset.description
-                )
+                    description = preset.description,
+                ),
             )
         }
 
@@ -110,8 +110,8 @@ class ColorSchemeRepository @Inject constructor(
                     id = schemeId,
                     name = preset.name,
                     isBuiltIn = true,
-                    description = preset.description
-                )
+                    description = preset.description,
+                ),
             )
         }
     } else {
@@ -154,7 +154,7 @@ class ColorSchemeRepository @Inject constructor(
         colorSchemeDao.observeById(schemeId).map { scheme ->
             Pair(
                 scheme?.foreground ?: ColorSchemePresets.default.defaultFg,
-                scheme?.background ?: ColorSchemePresets.default.defaultBg
+                scheme?.background ?: ColorSchemePresets.default.defaultBg,
             )
         }
     }
@@ -203,7 +203,7 @@ class ColorSchemeRepository @Inject constructor(
                 val scheme = colorSchemeDao.getById(schemeId)
                 Pair(
                     scheme?.foreground ?: ColorSchemePresets.default.defaultFg,
-                    scheme?.background ?: ColorSchemePresets.default.defaultBg
+                    scheme?.background ?: ColorSchemePresets.default.defaultBg,
                 )
             }
         }
@@ -220,7 +220,7 @@ class ColorSchemeRepository @Inject constructor(
         val colorEntry = ColorPalette(
             schemeId = schemeId,
             colorIndex = colorIndex,
-            color = colorValue
+            color = colorValue,
         )
         colorSchemeDao.insertOrUpdateColor(colorEntry)
     }
@@ -235,15 +235,15 @@ class ColorSchemeRepository @Inject constructor(
     suspend fun setDefaultColorsForScheme(
         schemeId: Long,
         foregroundColorIndex: Int,
-        backgroundColorIndex: Int
+        backgroundColorIndex: Int,
     ) = withContext(dispatchers.io) {
         val scheme = colorSchemeDao.getById(schemeId)
         if (scheme != null) {
             colorSchemeDao.update(
                 scheme.copy(
                     foreground = foregroundColorIndex,
-                    background = backgroundColorIndex
-                )
+                    background = backgroundColorIndex,
+                ),
             )
         }
     }
@@ -265,8 +265,8 @@ class ColorSchemeRepository @Inject constructor(
                 colorSchemeDao.update(
                     scheme.copy(
                         foreground = HostConstants.DEFAULT_FG_COLOR,
-                        background = HostConstants.DEFAULT_BG_COLOR
-                    )
+                        background = HostConstants.DEFAULT_BG_COLOR,
+                    ),
                 )
             }
         }
@@ -283,7 +283,7 @@ class ColorSchemeRepository @Inject constructor(
     suspend fun createCustomScheme(
         name: String,
         description: String = "",
-        basedOnSchemeId: Long = -1L
+        basedOnSchemeId: Long = -1L,
     ): Long = withContext(dispatchers.io) {
         // Copy colors from the base scheme
         val sourcePalette = getSchemeColors(basedOnSchemeId)
@@ -296,7 +296,7 @@ class ColorSchemeRepository @Inject constructor(
             description = description,
             isBuiltIn = false,
             foreground = sourceDefaults.first,
-            background = sourceDefaults.second
+            background = sourceDefaults.second,
         )
         val newSchemeId = colorSchemeDao.insert(newScheme)
 
@@ -305,7 +305,7 @@ class ColorSchemeRepository @Inject constructor(
             val colorEntry = ColorPalette(
                 schemeId = newSchemeId,
                 colorIndex = index,
-                color = color
+                color = color,
             )
             colorSchemeDao.insertOrUpdateColor(colorEntry)
         }
@@ -324,7 +324,7 @@ class ColorSchemeRepository @Inject constructor(
         createCustomScheme(
             name = newName,
             description = "",
-            basedOnSchemeId = sourceSchemeId
+            basedOnSchemeId = sourceSchemeId,
         )
     }
 
@@ -340,7 +340,7 @@ class ColorSchemeRepository @Inject constructor(
     suspend fun renameScheme(
         schemeId: Long,
         newName: String,
-        newDescription: String = ""
+        newDescription: String = "",
     ): Boolean = withContext(dispatchers.io) {
         if (schemeId <= 0) return@withContext false
 
@@ -348,8 +348,8 @@ class ColorSchemeRepository @Inject constructor(
         colorSchemeDao.update(
             scheme.copy(
                 name = newName,
-                description = newDescription
-            )
+                description = newDescription,
+            ),
         )
         true
     }
@@ -409,7 +409,7 @@ class ColorSchemeRepository @Inject constructor(
         ColorSchemeJson.fromPalette(
             name = scheme.name,
             description = scheme.description,
-            palette = palette
+            palette = palette,
         )
     }
 
@@ -443,7 +443,7 @@ class ColorSchemeRepository @Inject constructor(
         val newSchemeId = createCustomScheme(
             name = finalName,
             description = schemeJson.description,
-            basedOnSchemeId = -1
+            basedOnSchemeId = -1,
         )
 
         // Import colors (note: createCustomScheme already copies from base scheme,
@@ -453,7 +453,7 @@ class ColorSchemeRepository @Inject constructor(
             val colorEntry = ColorPalette(
                 schemeId = newSchemeId,
                 colorIndex = index,
-                color = color
+                color = color,
             )
             colorSchemeDao.insertOrUpdateColor(colorEntry)
         }

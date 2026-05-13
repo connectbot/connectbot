@@ -564,7 +564,7 @@
   <string name="portforward_source_addr_localhost" tools:machine_translated="true">Địa chỉ cục bộ</string>
   <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Máy chủ cục bộ (chỉ IPv4)</string>
   <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">Máy chủ cục bộ (chỉ sử dụng IPv6)</string>
-  <string name="portforward_source_addr_all" tools:machine_translated="true">Tất cả địa chỉ.</string>
+  <string name="portforward_source_addr_all" tools:machine_translated="true">Tất cả địa chỉ</string>
   <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Tất cả địa chỉ IPv4</string>
   <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Tất cả địa chỉ IPv6</string>
   <string name="portforward_source_addr_specific" tools:machine_translated="true">Địa chỉ cụ thể</string>

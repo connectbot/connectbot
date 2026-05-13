@@ -172,19 +172,19 @@
   <string name="pubkey_export_private_pem" tools:machine_translated="true">Ekspor kunci privat (format PEM)</string>
   <string name="pubkey_export_private_encrypted" tools:machine_translated="true">Ekspor kunci privat (terenkripsi)</string>
   <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Tetapkan frasa sandi untuk ekspor.</string>
-  <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Masukkan frasa sandi untuk mengenkripsi kunci yang akan diekspor.</string>
-  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Konfirmasi frasa sandi.</string>
-  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Kata sandi tidak cocok.</string>
+  <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Masukkan frasa sandi untuk mengenkripsi kunci yang akan diekspor</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Konfirmasi frasa sandi</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Kata sandi tidak cocok</string>
   <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Impor kunci terenkripsi</string>
-  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Masukkan kata sandi untuk mendekripsi kunci \'%1$s\' (%2$s).</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Masukkan kata sandi untuk mendekripsi kunci \'%1$s\' (%2$s)</string>
   <string name="pubkey_import_button" tools:machine_translated="true">Impor</string>
-  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Enkripsi kunci untuk penyimpanan.</string>
-  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Gunakan kata sandi yang sama untuk enkripsi.</string>
+  <string name="pubkey_import_encrypt_key" tools:machine_translated="true">Enkripsi kunci untuk penyimpanan</string>
+  <string name="pubkey_import_reuse_password" tools:machine_translated="true">Gunakan kata sandi yang sama untuk enkripsi</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Kata sandi baru</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Konfirmasi kata sandi</string>
   <string name="pubkey_list_empty" tools:machine_translated="true">Ketuk “Menu” untuk membuat atau mengimpor pasangan kunci.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">Format tidak dikenal.</string>
-  <string name="pubkey_unlock_message" tools:machine_translated="true">Masukkan kata sandi untuk membuka kunci \'%1$s\'.</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">Format tidak dikenal</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">Masukkan kata sandi untuk membuka kunci \'%1$s\'</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">Nama panggilan ini sudah digunakan untuk kunci lain.</string>
   <string name="prompt_username" tools:machine_translated="true">Nama pengguna:</string>
   <string name="host_key_verification_title" tools:machine_translated="true">Verifikasi kunci host</string>
@@ -206,13 +206,13 @@
   <string name="font_validating" tools:machine_translated="true">Memvalidasi font…</string>
   <string name="font_downloading" tools:machine_translated="true">Sedang mengunduh font…</string>
   <string name="pref_localfont_title" tools:machine_translated="true">Impor font lokal</string>
-  <string name="pref_localfont_summary" tools:machine_translated="true">Impor berkas font dari penyimpanan (TTF, OTF).</string>
+  <string name="pref_localfont_summary" tools:machine_translated="true">Impor berkas font dari penyimpanan (TTF, OTF)</string>
   <string name="dialog_localfont_title" tools:machine_translated="true">Impor Font</string>
   <string name="dialog_localfont_hint" tools:machine_translated="true">Nama tampilan untuk jenis huruf</string>
   <string name="button_import" tools:machine_translated="true">Impor</string>
   <string name="font_importing" tools:machine_translated="true">Mengimpor font…</string>
   <string name="pref_backupkeys_title" tools:machine_translated="true">Cadangkan kunci publik</string>
-  <string name="pref_backupkeys_summary" tools:machine_translated="true">Simpan salinan cadangan kunci pribadi menggunakan mekanisme pencadangan Android.</string>
+  <string name="pref_backupkeys_summary" tools:machine_translated="true">Simpan salinan cadangan kunci pribadi menggunakan mekanisme pencadangan Android</string>
   <string name="pref_language_title" tools:machine_translated="true">Bahasa</string>
   <string name="pref_language_system_default" tools:machine_translated="true">Pengaturan bawaan sistem</string>
   <string name="pref_language_download" tools:machine_translated="true">Unduh paket bahasa</string>
@@ -222,23 +222,23 @@
   <string name="pref_theme_light" tools:machine_translated="true">Terang</string>
   <string name="pref_theme_dark" tools:machine_translated="true">Gelap</string>
   <string name="pref_titlebarhide_title" tools:machine_translated="true">Sembunyikan bilah judul secara otomatis</string>
-  <string name="pref_titlebarhide_summary" tools:machine_translated="true">Ketuk konsol untuk menampilkan bilah judul dan mengakses menu.</string>
-  <string name="pref_alwaysvisible_title" tools:machine_translated="true">Tombol khusus selalu terlihat.</string>
+  <string name="pref_titlebarhide_summary" tools:machine_translated="true">Ketuk konsol untuk menampilkan bilah judul dan mengakses menu</string>
+  <string name="pref_alwaysvisible_title" tools:machine_translated="true">Tombol khusus selalu terlihat</string>
   <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">Gerakan menggulir halaman ke atas/bawah</string>
   <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">Geser sepertiga bagian kiri layar untuk mengirim perintah naik/turun ke terminal.</string>
-  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift+angka adalah tombol F.</string>
+  <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift+angka adalah tombol F</string>
   <string name="pref_shiftfkeys_summary" tools:machine_translated="true">Pada keyboard fisik, tombol angka akan mengirimkan perintah F1-F10 saat tombol Shift ditekan.</string>
   <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl+angka adalah tombol F.</string>
-  <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Pada keyboard virtual, tombol angka mengirimkan perintah F1-F10 dengan tombol Ctrl.</string>
-  <string name="pref_volumefont_title" tools:machine_translated="true">Tombol volume mengubah ukuran font.</string>
-  <string name="pref_volumefont_summary" tools:machine_translated="true">Ukuran font juga dapat diubah di pengaturan profil.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Tetap terhubung di latar belakang.</string>
+  <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Pada keyboard virtual, tombol angka mengirimkan perintah F1-F10 dengan tombol Ctrl</string>
+  <string name="pref_volumefont_title" tools:machine_translated="true">Tombol volume mengubah ukuran font</string>
+  <string name="pref_volumefont_summary" tools:machine_translated="true">Ukuran font juga dapat diubah di pengaturan profil</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">Tetap terhubung di latar belakang</string>
   <string name="pref_conn_persist_summary" tools:machine_translated="true">Pertahankan sesi Anda tetap aktif meskipun Anda beralih ke aplikasi lain.</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Pengaturan preferensi untuk modifikasi yang tetap aktif</string>
   <string name="only_alt" tools:machine_translated="true">Hanya Alt</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Getarkan saat mengirimkan tombol panah; berguna untuk koneksi yang lambat.</string>
-  <string name="pref_bell_summary" tools:machine_translated="true">Putar suara saat ada peringatan di terminal.</string>
-  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Ponsel bergetar saat ada peringatan terminal.</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">Putar suara saat ada peringatan di terminal</string>
+  <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Ponsel bergetar saat ada peringatan terminal</string>
   <string name="color_red" tools:machine_translated="true">Merah</string>
   <string name="color_pink" tools:machine_translated="true">Merah muda</string>
   <string name="color_purple" tools:machine_translated="true">Ungu</string>
@@ -257,7 +257,7 @@
   <string name="color_gray" tools:machine_translated="true">Abu-abu</string>
   <string name="hostpref_fontfamily_title" tools:machine_translated="true">Jenis huruf</string>
   <string name="hostpref_colorscheme_title" tools:machine_translated="true">Skema warna terminal</string>
-  <string name="hostpref_stayconnected_title" tools:machine_translated="true">Tetap terhubung.</string>
+  <string name="hostpref_stayconnected_title" tools:machine_translated="true">Tetap terhubung</string>
   <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Tutup saat terputus.</string>
   <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Tutup secara otomatis segera setelah koneksi jarak jauh terputus, tanpa menampilkan pesan apa pun.</string>
   <string name="hostpref_save_password_summary" tools:machine_translated="true">Simpan kata sandi login dengan aman untuk autentikasi otomatis.</string>
@@ -265,12 +265,12 @@
   <string name="hostpref_password_unchanged" tools:machine_translated="true">Kata sandi (tidak diubah)</string>
   <string name="hostpref_clear_password" tools:machine_translated="true">Hapus kata sandi yang disimpan</string>
   <string name="hostpref_profile_title" tools:machine_translated="true">Profil</string>
-  <string name="hostpref_profile_summary" tools:machine_translated="true">Pilih profil untuk menggunakan pengaturan terminalnya.</string>
+  <string name="hostpref_profile_summary" tools:machine_translated="true">Pilih profil untuk menggunakan pengaturan terminalnya</string>
   <string name="hostpref_profile_none" tools:machine_translated="true">Tidak ada (gunakan pengaturan host)</string>
-  <string name="profile_controlled_setting" tools:machine_translated="true">Dikendalikan oleh profil.</string>
+  <string name="profile_controlled_setting" tools:machine_translated="true">Dikendalikan oleh profil</string>
   <string name="font_use_default" tools:machine_translated="true">Gunakan Default</string>
   <string name="font_system_default" tools:machine_translated="true">Standar (Jenis Huruf Monospace)</string>
-  <string name="pubkey_unknown" tools:machine_translated="true">Kunci tidak dikenal.</string>
+  <string name="pubkey_unknown" tools:machine_translated="true">Kunci tidak dikenal</string>
   <string name="colorscheme_default" tools:machine_translated="true">Standar</string>
   <string name="profile_editor_title_new" tools:machine_translated="true">Profil Baru</string>
   <string name="profile_editor_title_edit" tools:machine_translated="true">Edit Profil</string>
@@ -305,20 +305,20 @@
   <string name="profile_summary_font" tools:machine_translated="true">Jenis huruf: %1$s %2$d poin</string>
   <string name="profile_summary_emulation" tools:machine_translated="true">Emulasi: %s</string>
   <string name="console_menu_reconnect" tools:machine_translated="true">Hubungkan kembali</string>
-  <string name="console_url_no_handler" tools:machine_translated="true">Tidak ada aplikasi yang tersedia untuk membuka URL ini.</string>
-  <string name="console_url_not_supported" tools:machine_translated="true">Jenis URL ini tidak didukung.</string>
+  <string name="console_url_no_handler" tools:machine_translated="true">Tidak ada aplikasi yang tersedia untuk membuka URL ini</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">Jenis URL ini tidak didukung</string>
   <string name="portforward_save" tools:machine_translated="true">Simpan</string>
   <string name="list_menu_disconnect" tools:machine_translated="true">Putuskan sambungan semua</string>
   <string name="list_host_duplicate" tools:machine_translated="true">Gandakan host</string>
-  <string name="list_host_forget_keys" tools:machine_translated="true">Lupakan kunci host.</string>
+  <string name="list_host_forget_keys" tools:machine_translated="true">Lupakan kunci host</string>
   <string name="list_camera_esc_a" tools:machine_translated="true">Esc+A</string>
   <string name="list_camera_text_input" tools:machine_translated="true">Input Teks</string>
   <string name="disconnect_all_message" tools:machine_translated="true">Apakah Anda yakin ingin memutuskan sambungan dari semua host yang terhubung?</string>
-  <string name="disconnect_all_pos" tools:machine_translated="true">Ya, putuskan sambungan.</string>
+  <string name="disconnect_all_pos" tools:machine_translated="true">Ya, putuskan sambungan</string>
   <string name="disconnect_all_neg" tools:machine_translated="true">Batalkan</string>
   <string name="terminal_kex_algorithm" tools:machine_translated="true">Algoritma pertukaran kunci: %s</string>
   <string name="terminal_auth_saved_password" tools:machine_translated="true">Mencoba menggunakan kata sandi yang disimpan…</string>
-  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Autentikasi kata sandi yang disimpan gagal.</string>
+  <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Autentikasi kata sandi yang disimpan gagal</string>
   <string name="terminal_auth_biometric" tools:machine_translated="true">Meminta otentikasi biometrik untuk kunci \'%1$s\'</string>
   <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">Kunci biometrik \'%1$s\' telah dinonaktifkan. Hal ini dapat terjadi ketika sidik jari baru didaftarkan pada perangkat. Silakan buat kunci baru.</string>
   <string name="list_color_schemes" tools:machine_translated="true">Skema warna</string>
@@ -342,11 +342,11 @@
   <string name="button_edit_palette" tools:machine_translated="true">Edit Palet Warna</string>
   <string name="button_export_scheme" tools:machine_translated="true">Ekspor Skema</string>
   <string name="button_import_scheme" tools:machine_translated="true">Impor Skema</string>
-  <string name="message_export_success" tools:machine_translated="true">%1$s berhasil diekspor.</string>
-  <string name="message_import_success" tools:machine_translated="true">%1$s berhasil diimpor.</string>
+  <string name="message_export_success" tools:machine_translated="true">%1$s berhasil diekspor</string>
+  <string name="message_import_success" tools:machine_translated="true">%1$s berhasil diimpor</string>
   <string name="error_export_failed" tools:machine_translated="true">Ekspor skema gagal: %1$s</string>
   <string name="error_import_failed" tools:machine_translated="true">Impor skema gagal: %1$s</string>
-  <string name="error_invalid_json" tools:machine_translated="true">File JSON tidak valid.</string>
+  <string name="error_invalid_json" tools:machine_translated="true">File JSON tidak valid</string>
   <string name="title_palette_editor" tools:machine_translated="true">Edit Palet Warna</string>
   <string name="button_reset_all_colors" tools:machine_translated="true">Atur Ulang Semua</string>
   <string name="section_ansi_colors" tools:machine_translated="true">Warna ANSI (0–15)</string>
@@ -391,7 +391,7 @@
   <string name="button_key_f12" tools:machine_translated="true">F12</string>
   <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">Input teks</string>
   <string name="terminal_text_input_dialog_title" tools:machine_translated="true">Input Teks</string>
-  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">Masukkan teks yang akan dikirim ke terminal.</string>
+  <string name="terminal_text_input_dialog_label" tools:machine_translated="true">Masukkan teks yang akan dikirim ke terminal</string>
   <string name="terminal_text_input_resize_handle" tools:machine_translated="true">Ubah ukuran</string>
   <string name="console_menu_text_input" tools:machine_translated="true">Input teks</string>
   <string name="button_send" tools:machine_translated="true">Kirim</string>
@@ -408,10 +408,10 @@
   <string name="error_host_save_failed" tools:machine_translated="true">Gagal menyimpan konfigurasi host %1$s: %2$s</string>
   <string name="error_color_scheme_load_failed" tools:machine_translated="true">Gagal memuat skema warna: %s</string>
   <string name="host_duplicate_nickname" tools:machine_translated="true">%1$s (salinan)</string>
-  <string name="empty_hosts_message" tools:machine_translated="true">Belum ada host yang dikonfigurasi.</string>
+  <string name="empty_hosts_message" tools:machine_translated="true">Belum ada host yang dikonfigurasi</string>
   <string name="empty_pubkeys_message" tools:machine_translated="true">Tidak ada kunci yang ditemukan.</string>
   <string name="empty_port_forwards_message" tools:machine_translated="true">Tidak ada pengaturan penerusan port.</string>
-  <string name="empty_urls_message" tools:machine_translated="true">Tidak ada URL yang ditemukan di buffer terminal.</string>
+  <string name="empty_urls_message" tools:machine_translated="true">Tidak ada URL yang ditemukan di buffer terminal</string>
   <string name="console_default_title" tools:machine_translated="true">Konsol</string>
   <string name="host_editor_quick_connect_label" tools:machine_translated="true">Hubungkan dengan cepat</string>
   <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">pengguna\@nama_host:port</string>
@@ -423,18 +423,18 @@
   <string name="resize_disable_force_size" tools:machine_translated="true">Nonaktifkan ukuran paksa</string>
   <string name="pubkey_editor_key_type_label" tools:machine_translated="true">Jenis kunci</string>
   <string name="pubkey_editor_options_label" tools:machine_translated="true">Pilihan</string>
-  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Kunci terenkripsi tidak dapat dibuka saat sistem dimulai.</string>
+  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Kunci terenkripsi tidak dapat dibuka saat sistem dimulai</string>
   <string name="pubkey_type_label" tools:machine_translated="true">Jenis: %s</string>
   <string name="pubkey_encrypted_description" tools:machine_translated="true">Terenkripsi</string>
-  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Tidak terenkripsi.</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Tidak terenkripsi</string>
   <string name="pubkey_biometric_protection" tools:machine_translated="true">Perlindungan sidik jari</string>
-  <string name="pubkey_biometric_description" tools:machine_translated="true">Lindungi kunci ini dengan sidik jari Anda.</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">Lindungi kunci ini dengan sidik jari Anda</string>
   <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Tidak ada sidik jari yang terdaftar. Atur sidik jari di pengaturan perangkat untuk menggunakan fitur ini.</string>
   <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Perlindungan menggunakan sidik jari hanya tersedia untuk kunci RSA dan EC.</string>
-  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Verifikasi untuk menggunakan kunci.</string>
-  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Sentuh sensor sidik jari untuk membuka kunci \'%1$s\'.</string>
-  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Dilindungi dengan sidik jari.</string>
-  <string name="pubkey_biometric_not_available" tools:machine_translated="true">Autentikasi sidik jari tidak tersedia.</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Verifikasi untuk menggunakan kunci</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Sentuh sensor sidik jari untuk membuka kunci \'%1$s\'</string>
+  <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Dilindungi dengan sidik jari</string>
+  <string name="pubkey_biometric_not_available" tools:machine_translated="true">Autentikasi sidik jari tidak tersedia</string>
   <string name="portforward_nickname_placeholder" tools:machine_translated="true">Server Web Internal</string>
   <string name="portforward_port_range_error" tools:machine_translated="true">Nomor port harus berada dalam rentang 1 hingga 65535.</string>
   <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
@@ -452,7 +452,7 @@
   <string name="portforward_enable" tools:machine_translated="true">Aktifkan</string>
   <string name="portforward_disable" tools:machine_translated="true">Nonaktifkan</string>
   <string name="portforward_enabled" tools:machine_translated="true">Pengalihan port diaktifkan</string>
-  <string name="portforward_disabled" tools:machine_translated="true">Pengalihan port dinonaktifkan.</string>
+  <string name="portforward_disabled" tools:machine_translated="true">Pengalihan port dinonaktifkan</string>
   <string name="protocol_spinner_label" tools:machine_translated="true">Protokol</string>
   <string name="expand" tools:machine_translated="true">Perluas</string>
   <string name="hostpref_authagent_with_confirmation" tools:machine_translated="true">memerlukan konfirmasi</string>
@@ -463,14 +463,14 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Impor dari papan klip</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Isi kunci pribadi</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Tempel dari papan klip</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Tetap terhubung di latar belakang.</string>
+  <string name="notification_permission_title" tools:machine_translated="true">Tetap terhubung di latar belakang</string>
   <string name="notification_permission_message" tools:machine_translated="true">ConnectBot memerlukan izin notifikasi agar koneksi Anda tetap aktif saat Anda beralih aplikasi. Jika tidak, sistem mungkin memutuskan koneksi Anda untuk menghemat baterai.</string>
   <string name="grant_permission" tools:machine_translated="true">Izinkan</string>
-  <string name="connect_anyway" tools:machine_translated="true">Lanjutkan koneksi meskipun tanpa memberikan izin notifikasi.</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Izin notifikasi diperlukan.</string>
+  <string name="connect_anyway" tools:machine_translated="true">Lanjutkan koneksi meskipun tanpa memberikan izin notifikasi</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">Izin notifikasi diperlukan</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Untuk menjaga agar koneksi Anda tetap aktif di latar belakang, silakan aktifkan notifikasi untuk ConnectBot di pengaturan sistem.</string>
   <string name="open_settings" tools:machine_translated="true">Buka pengaturan</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Koneksi dapat terputus tanpa izin notifikasi.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Koneksi dapat terputus tanpa izin notifikasi</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Koneksi mungkin terputus saat aplikasi berjalan di latar belakang.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Apakah Anda mencoba mengakses host lokal? Berikan izin untuk jaringan lokal.</string>
   <string name="loading_message" tools:machine_translated="true">Memuat…</string>
@@ -499,21 +499,21 @@
   <string name="ipversion_ipv4" tools:machine_translated="true">Hanya IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">Hanya IPv6</string>
   <string name="hostpref_jumphost_title" tools:machine_translated="true">Host perantara (ProxyJump)</string>
-  <string name="hostpref_jumphost_summary" tools:machine_translated="true">Hubungkan melalui host SSH lain.</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">Hubungkan melalui host SSH lain</string>
   <string name="list_jumphost_none" tools:machine_translated="true">Tidak ada (koneksi langsung)</string>
   <string name="terminal_connecting_via_jump" tools:machine_translated="true">Menghubungkan melalui host perantara: %s</string>
   <string name="terminal_jump_connected" tools:machine_translated="true">Terhubung ke host perantara: %s</string>
   <string name="terminal_jump_authenticated" tools:machine_translated="true">Berhasil melakukan autentikasi ke server perantara: %s</string>
   <string name="terminal_jump_failed" tools:machine_translated="true">Gagal terhubung ke server penghubung %1$s: %2$s</string>
   <string name="terminal_jump_auth_failed" tools:machine_translated="true">Autentikasi gagal untuk host perantara: %s</string>
-  <string name="terminal_jump_not_found" tools:machine_translated="true">Host perantara tidak ditemukan dalam daftar host yang disimpan.</string>
+  <string name="terminal_jump_not_found" tools:machine_translated="true">Host perantara tidak ditemukan dalam daftar host yang disimpan</string>
   <string name="terminal_jump_password" tools:machine_translated="true">Kata sandi untuk server penghubung %s:</string>
   <string name="view_logs" tools:machine_translated="true">Lihat Log</string>
   <string name="logs_title" tools:machine_translated="true">Log Aplikasi</string>
   <string name="copy_logs" tools:machine_translated="true">Salin Log</string>
-  <string name="logs_copied" tools:machine_translated="true">Log telah disalin ke papan klip.</string>
+  <string name="logs_copied" tools:machine_translated="true">Log telah disalin ke papan klip</string>
   <string name="logs_bug_report_info" tools:machine_translated="true">Untuk melaporkan bug, salin log ini dan buka laporan baru di https://connectbot.org/bug</string>
-  <string name="no_logs_available" tools:machine_translated="true">Tidak ada log yang tersedia.</string>
+  <string name="no_logs_available" tools:machine_translated="true">Tidak ada log yang tersedia</string>
   <string name="help_section_about" tools:machine_translated="true">Tentang</string>
   <string name="title_contact" tools:machine_translated="true">Hubungi Kami &amp; Dukungan</string>
   <string name="help_section_contact" tools:machine_translated="true">Hubungi Kami &amp; Dukungan</string>
@@ -524,13 +524,13 @@
   <string name="help_donate_github" tools:machine_translated="true">Program Sponsor GitHub</string>
   <string name="help_donate_coffee" tools:machine_translated="true">Beri Saya Sedikit Donasi</string>
   <string name="colorscheme_default_description" tools:machine_translated="true">Warna bawaan terminal</string>
-  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Warna yang presisi untuk mesin dan manusia.</string>
-  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarized dengan latar belakang terang.</string>
-  <string name="colorscheme_dracula_description" tools:machine_translated="true">Tema gelap untuk terminal.</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Warna yang presisi untuk mesin dan manusia</string>
+  <string name="colorscheme_solarized_light_description" tools:machine_translated="true">Solarized dengan latar belakang terang</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">Tema gelap untuk terminal</string>
   <string name="colorscheme_nord_description" tools:machine_translated="true">Palet warna yang didominasi warna biru pucat, menyerupai warna wilayah Arktik.</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">Skema warna bergaya retro</string>
   <string name="colorscheme_monokai_description" tools:machine_translated="true">Tema yang terinspirasi dari Sublime Text</string>
-  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Tampilan gelap yang bersih dan nyaman.</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">Tampilan gelap yang bersih dan nyaman</string>
   <string name="pref_profiles_category" tools:machine_translated="true">Profil</string>
   <string name="pref_default_profile_title" tools:machine_translated="true">Profil Default</string>
   <string name="pref_default_profile_none" tools:machine_translated="true">Tidak ada (gunakan pengaturan host)</string>
@@ -551,15 +551,15 @@
   <string name="list_camera_text_input_description" tools:machine_translated="true">Input teks</string>
   <string name="list_menu_export_hosts" tools:machine_translated="true">Ekspor Host</string>
   <string name="list_menu_import_hosts" tools:machine_translated="true">Impor Host</string>
-  <string name="export_hosts_success" tools:machine_translated="true">%1$d host dan %2$d profil telah diekspor.</string>
-  <string name="import_hosts_success" tools:machine_translated="true">%1$d host berhasil diimpor (%2$d dilewati) dan %3$d profil berhasil diimpor (%4$d dilewati).</string>
+  <string name="export_hosts_success" tools:machine_translated="true">%1$d host dan %2$d profil telah diekspor</string>
+  <string name="import_hosts_success" tools:machine_translated="true">%1$d host berhasil diimpor (%2$d dilewati) dan %3$d profil berhasil diimpor (%4$d dilewati)</string>
   <string name="export_hosts_failed" tools:machine_translated="true">Ekspor daftar host gagal: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">Impor host gagal: %s</string>
   <string name="export_hosts_title" tools:machine_translated="true">Ekspor Host</string>
   <string name="shortcut_customize_title" tools:machine_translated="true">Sesuaikan Pintasan</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Warna Ikon</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Gaya Ikon</string>
-  <string name="shortcut_use_host_color" tools:machine_translated="true">Gunakan warna yang telah dikonfigurasi pada host.</string>
+  <string name="shortcut_use_host_color" tools:machine_translated="true">Gunakan warna yang telah dikonfigurasi pada host</string>
   <string name="shortcut_create" tools:machine_translated="true">Buat Pintasan</string>
   <string name="icon_style_terminal" tools:machine_translated="true">Terminal</string>
   <string name="icon_style_server" tools:machine_translated="true">Server</string>
@@ -568,8 +568,8 @@
   <string name="pref_auth_on_launch_title" tools:machine_translated="true">Autentikasi saat aplikasi dimulai</string>
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Wajib menggunakan sidik jari, pengenalan wajah, atau PIN perangkat saat membuka aplikasi.</string>
   <string name="pref_security_category" tools:machine_translated="true">Keamanan</string>
-  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot terkunci.</string>
-  <string name="auth_screen_unlock_button" tools:machine_translated="true">Ketuk untuk membuka kunci.</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot terkunci</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">Ketuk untuk membuka kunci</string>
   <string name="auth_prompt_title" tools:machine_translated="true">Buka ConnectBot</string>
-  <string name="auth_prompt_subtitle" tools:machine_translated="true">Verifikasi identitas Anda untuk melanjutkan.</string>
+  <string name="auth_prompt_subtitle" tools:machine_translated="true">Verifikasi identitas Anda untuk melanjutkan</string>
 </resources>

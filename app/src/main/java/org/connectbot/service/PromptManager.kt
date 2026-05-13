@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,7 +38,7 @@ class PromptManager {
      */
     suspend fun requestBooleanPrompt(
         instructions: String?,
-        message: String
+        message: String,
     ): Boolean {
         val deferred = CompletableDeferred<PromptResponse>()
         currentDeferred = deferred
@@ -46,7 +46,7 @@ class PromptManager {
         _promptState.update {
             PromptRequest.BooleanPrompt(
                 instructions = instructions,
-                message = message
+                message = message,
             )
         }
 
@@ -62,7 +62,7 @@ class PromptManager {
     suspend fun requestStringPrompt(
         instructions: String?,
         hint: String?,
-        isPassword: Boolean = false
+        isPassword: Boolean = false,
     ): String? {
         val deferred = CompletableDeferred<PromptResponse>()
         currentDeferred = deferred
@@ -71,7 +71,7 @@ class PromptManager {
             PromptRequest.StringPrompt(
                 instructions = instructions,
                 hint = hint,
-                isPassword = isPassword
+                isPassword = isPassword,
             )
         }
 
@@ -86,7 +86,7 @@ class PromptManager {
      */
     suspend fun requestBiometricAuth(
         keyNickname: String,
-        keystoreAlias: String
+        keystoreAlias: String,
     ): Boolean {
         val deferred = CompletableDeferred<PromptResponse>()
         currentDeferred = deferred
@@ -94,7 +94,7 @@ class PromptManager {
         _promptState.update {
             PromptRequest.BiometricPrompt(
                 keyNickname = keyNickname,
-                keystoreAlias = keystoreAlias
+                keystoreAlias = keystoreAlias,
             )
         }
 
@@ -115,7 +115,7 @@ class PromptManager {
         randomArt: String,
         bubblebabble: String,
         sha256: String,
-        md5: String
+        md5: String,
     ): Boolean {
         val deferred = CompletableDeferred<PromptResponse>()
         currentDeferred = deferred
@@ -129,7 +129,7 @@ class PromptManager {
                 randomArt = randomArt,
                 bubblebabble = bubblebabble,
                 sha256 = sha256,
-                md5 = md5
+                md5 = md5,
             )
         }
 
@@ -163,18 +163,18 @@ class PromptManager {
 sealed class PromptRequest {
     data class BooleanPrompt(
         val instructions: String?,
-        val message: String
+        val message: String,
     ) : PromptRequest()
 
     data class StringPrompt(
         val instructions: String?,
         val hint: String?,
-        val isPassword: Boolean
+        val isPassword: Boolean,
     ) : PromptRequest()
 
     data class BiometricPrompt(
         val keyNickname: String,
-        val keystoreAlias: String
+        val keystoreAlias: String,
     ) : PromptRequest()
 
     data class HostKeyFingerprintPrompt(
@@ -185,7 +185,7 @@ sealed class PromptRequest {
         val randomArt: String,
         val bubblebabble: String,
         val sha256: String,
-        val md5: String
+        val md5: String,
     ) : PromptRequest() {
         override fun equals(other: Any?): Boolean {
             if (this === other) return true

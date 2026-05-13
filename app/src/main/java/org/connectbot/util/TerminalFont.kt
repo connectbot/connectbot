@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,7 +23,7 @@ package org.connectbot.util
  */
 enum class TerminalFont(
     val displayName: String,
-    val googleFontName: String
+    val googleFontName: String,
 ) {
     SYSTEM_DEFAULT("Default (Monospace)", ""),
     JETBRAINS_MONO("JetBrains Mono", "JetBrains Mono"),
@@ -35,7 +35,8 @@ enum class TerminalFont(
     UBUNTU_MONO("Ubuntu Mono", "Ubuntu Mono"),
     INCONSOLATA("Inconsolata", "Inconsolata"),
     SPACE_MONO("Space Mono", "Space Mono"),
-    IBM_PLEX_MONO("IBM Plex Mono", "IBM Plex Mono");
+    IBM_PLEX_MONO("IBM Plex Mono", "IBM Plex Mono"),
+    ;
 
     companion object {
         /**

@@ -248,10 +248,10 @@
   <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d ບິດ</string>
   <string name="fingerprint_copy_description" tools:machine_translated="true">ຄັດລອກຂໍ້ມູນລາຍນິ້ວມືໄປໃສ່ກະດານ</string>
   <string name="network_lost_grace_period" tools:machine_translated="true">ສັນຍານເຄືອຂາດ, ກໍາລັງລໍຖ້າເພື່ອເຊື່ອມຕໍ່ຄືນ…</string>
-  <string name="network_grace_period_expired" tools:machine_translated="true">ບໍ່ສາມາດຟື້ນຟູເຄືອນຂ່າຍໄດ້, ກຳລັງຕັດການເຊື່ອມຕໍ່...</string>
-  <string name="network_restored_same_ip" tools:machine_translated="true">ເຄືອນຂ່າຍຟື້ນຟູແລ້ວ, ການເຊື່ອມຕໍ່ຍັງຄົງຢູ່.</string>
-  <string name="network_restored_ip_changed" tools:machine_translated="true">ເຄືອນຂ່າຍກັບມາເປັນປົກກະຕິແລ້ວ ແຕ່ IP ໄດ້ປ່ຽນແປງ, ກໍາລັງເຊື່ອມຕໍ່ຄືນໃໝ່...</string>
-  <string name="network_restored_no_previous_state" tools:machine_translated="true">ເຄືອນຂ່າຍໄດ້ຮັບການຟື້ນຟູ, ກໍາລັງກວດສອບການເຊື່ອມຕໍ່...</string>
+  <string name="network_grace_period_expired" tools:machine_translated="true">ບໍ່ສາມາດຟື້ນຟູເຄືອນຂ່າຍໄດ້, ກຳລັງຕັດການເຊື່ອມຕໍ່…</string>
+  <string name="network_restored_same_ip" tools:machine_translated="true">ເຄືອນຂ່າຍຟື້ນຟູແລ້ວ, ການເຊື່ອມຕໍ່ຍັງຄົງຢູ່</string>
+  <string name="network_restored_ip_changed" tools:machine_translated="true">ເຄືອນຂ່າຍກັບມາເປັນປົກກະຕິແລ້ວ ແຕ່ IP ໄດ້ປ່ຽນແປງ, ກໍາລັງເຊື່ອມຕໍ່ຄືນໃໝ່…</string>
+  <string name="network_restored_no_previous_state" tools:machine_translated="true">ເຄືອນຂ່າຍໄດ້ຮັບການຟື້ນຟູ, ກໍາລັງກວດສອບການເຊື່ມຕໍ່…</string>
   <string name="pref_fontfamily_title" tools:machine_translated="true">ຕົວອັກສອນ</string>
   <string name="pref_customfont_title" tools:machine_translated="true">ເພີ່ມຕົວອັກສອນທີ່ກຳນົດເອງ</string>
   <string name="pref_customfont_summary" tools:machine_translated="true">ເພີ່ມຕົວອັກສອນຈາກ Google Fonts ໂດຍໃຊ້ຊື່</string>
@@ -348,7 +348,7 @@
   <string name="list_host_duplicate" tools:machine_translated="true">ສ້າງສຳເນົາຂອງໂຮສ</string>
   <string name="list_host_forget_keys" tools:machine_translated="true">ລຶບຄີຂອງເຈົ້າພາບ</string>
   <string name="list_camera_text_input" tools:machine_translated="true">ປ້ອນຂໍ້ຄວາມ</string>
-  <string name="terminal_auth_saved_password" tools:machine_translated="true">ກຳລັງພະຍາຍາມໃຊ້ລະຫັດຜ່ານທີ່ບັນທຶກໄວ້...</string>
+  <string name="terminal_auth_saved_password" tools:machine_translated="true">ກຳລັງພະຍາຍາມໃຊ້ລະຫັດຜ່ານທີ່ບັນທຶກໄວ້…</string>
   <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">ການກວດສອບລະຫັດຜ່ານທີ່ບັນທຶກໄວ້ບໍ່ສຳເລັດ</string>
   <string name="terminal_auth_biometric" tools:machine_translated="true">ກຳລັງຮ້ອງຂໍການຢືນຢັນທາງຊີວະມິຕິເພື່ອປົດລັອກກະແຈ \'%1$s\'</string>
   <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">ລະບົບກວດກາລາຍນິ້ວມື \'%1$s\' ບໍ່ສາມາດນຳໃຊ້ໄດ້ແລ້ວ. ສິ່ງນີ້ອາດຈະເກີດຂຶ້ນເມື່ອມີການເພີ່ມລາຍນິ້ວມືໃໝ່ເຂົ້າໃນອຸປະກອນ. ກະລຸນາສ້າງລະບົບກວດກາລາຍນິ້ວມືໃໝ່.</string>
@@ -484,7 +484,7 @@
   <string name="migration_failed_title" tools:machine_translated="true">ການຍ້າຍຂໍ້ມູນບໍ່ສຳເລັດ</string>
   <string name="migration_failed_message" tools:machine_translated="true">ເກີດຄວາມຜິດພາດໃນຂະນະທີ່ກຳລັງໂອນຂໍ້ມູນຈາກຖານຂໍ້ມູນເກົ່າໄປຍັງຖານຂໍ້ມູນໃໝ່: %s</string>
   <string name="migration_retry" tools:machine_translated="true">ລອງເຮັດໃຫມ່</string>
-  <string name="migration_failed_help" tools:machine_translated="true">ຖ້າບັນຫາຫຍັງຍັງຄົງຢູ່, ກະລຸນາລາຍງານບັນຫານີ້ທີ່ %1$s ພ້ອມທັງສົ່ງບັນທຶກການແກ້ໄຂບັນຫາ (debug log) ທີ່ໄດ້ກັອບປີໄວ້ຂ້າງເທິງ.</string>
+  <string name="migration_failed_help" tools:machine_translated="true">ຖ້າບັນຫາຫຍັງຍັງຄົງຢູ່, ກະລຸນາລາຍງານບັນຫານີ້ທີ່ %1$s ພ້ອມທັງສົ່ງບັນທຶກການແກ້ໄຂບັນຫາ (debug log) ທີ່ໄດ້ກັອບປີໄວ້ຂ້າງເທິງ</string>
   <string name="migration_warnings_title" tools:machine_translated="true">ຄຳເຕືອນກ່ຽວກັບການຍ້າຍຖານຂໍ້ມູນ</string>
   <string name="migration_copy_warnings" tools:machine_translated="true">ຄັດລອກຂໍ້ຄວາມເຕືອນ</string>
   <string name="migration_debug_log_title" tools:machine_translated="true">ບັນທຶກການແກ້ໄຂບັນຫາ</string>
@@ -540,8 +540,8 @@
   <string name="dialog_customterminal_title" tools:machine_translated="true">ເພີ່ມປະເພດ Terminal ທີ່ກຳນົດເອງ</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">ປະເພດຂອງ terminal (ຕົວຢ່າງ: rxvt-unicode)</string>
   <string name="dialog_manage_customterminal_title" tools:machine_translated="true">ຈັດການປະເພດ Terminal ທີ່ກຳນົດເອງ</string>
-  <string name="button_add_custom" tools:machine_translated="true">ເພີ່ມສິ່ງຂອງທີ່ກຳນົດເອງ...</string>
-  <string name="button_manage_custom" tools:machine_translated="true">ຈັດການສິນຄ້າທີ່ກຳນົດເອງ...</string>
+  <string name="button_add_custom" tools:machine_translated="true">ເພີ່ມສິ່ງຂອງທີ່ກຳນົດເອງ…</string>
+  <string name="button_manage_custom" tools:machine_translated="true">ຈັດການສິນຄ້າທີ່ກຳນົດເອງ…</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">ປ້ອນຄ່າທີ່ກຳນົດເອງ</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">ກົດ Ctrl+A ຫຼັງຈາກນັ້ນກົດປຸ່ມ Space</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>

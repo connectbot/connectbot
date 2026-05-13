@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ import kotlin.coroutines.resume
  */
 class TerminalFontProvider(
     private val context: Context,
-    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO,
 ) {
     private val fontCache = ConcurrentHashMap<String, Typeface>()
     private val loadingFonts = ConcurrentHashMap<String, Boolean>()
@@ -87,7 +87,7 @@ class TerminalFontProvider(
                     "com.google.android.gms.fonts",
                     "com.google.android.gms",
                     googleFontName,
-                    R.array.com_google_android_gms_fonts_certs
+                    R.array.com_google_android_gms_fonts_certs,
                 )
 
                 val fontCallback = object : FontsContractCompat.FontRequestCallback() {
@@ -112,7 +112,7 @@ class TerminalFontProvider(
                     Typeface.NORMAL,
                     ioExecutor,
                     ioExecutor,
-                    fontCallback
+                    fontCallback,
                 )
             }
 

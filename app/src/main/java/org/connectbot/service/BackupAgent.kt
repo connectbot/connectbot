@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,7 +67,7 @@ class BackupAgent : BackupAgentHelper() {
         // Backup shared preferences
         val prefsHelper = SharedPreferencesBackupHelper(
             this,
-            packageName + "_preferences"
+            packageName + "_preferences",
         )
         addHelper(PreferenceConstants.BACKUP_PREF_KEY, prefsHelper)
     }
@@ -75,7 +75,7 @@ class BackupAgent : BackupAgentHelper() {
     override fun onBackup(
         oldState: ParcelFileDescriptor?,
         data: BackupDataOutput,
-        newState: ParcelFileDescriptor
+        newState: ParcelFileDescriptor,
     ) {
         // First, handle preferences and other helpers
         super.onBackup(oldState, data, newState)
@@ -84,7 +84,7 @@ class BackupAgent : BackupAgentHelper() {
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val backupKeys = prefs.getBoolean(
             PreferenceConstants.BACKUP_KEYS,
-            PreferenceConstants.BACKUP_KEYS_DEFAULT
+            PreferenceConstants.BACKUP_KEYS_DEFAULT,
         )
 
         try {
@@ -110,7 +110,7 @@ class BackupAgent : BackupAgentHelper() {
         val database = Room.databaseBuilder(
             applicationContext,
             ConnectBotDatabase::class.java,
-            DATABASE_NAME
+            DATABASE_NAME,
         ).build()
         val dispatchers = CoroutineDispatchers(default = Dispatchers.Default, io = Dispatchers.IO, main = Dispatchers.Main)
         val securePasswordStorage = org.connectbot.util.SecurePasswordStorage(applicationContext)
@@ -164,7 +164,7 @@ class BackupAgent : BackupAgentHelper() {
     override fun onRestore(
         data: BackupDataInput,
         appVersionCode: Int,
-        newState: ParcelFileDescriptor
+        newState: ParcelFileDescriptor,
     ) {
         Timber.d("onRestore called (app version: $appVersionCode)")
 

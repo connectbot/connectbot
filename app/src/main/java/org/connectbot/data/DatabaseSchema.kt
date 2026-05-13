@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -78,7 +78,7 @@ data class EntitySchema(
     val fields: List<FieldSchema>,
     val primaryKey: PrimaryKeySchema,
     val foreignKeys: List<ForeignKeySchema>,
-    val uniqueIndices: List<UniqueIndexSchema>
+    val uniqueIndices: List<UniqueIndexSchema>,
 ) {
     /**
      * Get field schema by field path (Kotlin property name).
@@ -107,7 +107,7 @@ data class EntitySchema(
                 autoGenerate = primaryKeyJson.getBoolean("autoGenerate"),
                 columnNames = primaryKeyJson.getJSONArray("columnNames").let { arr ->
                     (0 until arr.length()).map { arr.getString(it) }
-                }
+                },
             )
 
             // Parse foreign keys
@@ -148,7 +148,7 @@ data class FieldSchema(
     val affinity: String,
     val notNull: Boolean,
     // True if field should be excluded from export (e.g., runtime state)
-    val excluded: Boolean
+    val excluded: Boolean,
 ) {
     companion object {
         fun fromJson(json: JSONObject): FieldSchema = FieldSchema(
@@ -156,7 +156,7 @@ data class FieldSchema(
             columnName = json.getString("columnName"),
             affinity = json.getString("affinity"),
             notNull = json.optBoolean("notNull", false),
-            excluded = json.optBoolean("excluded", false)
+            excluded = json.optBoolean("excluded", false),
         )
     }
 }
@@ -166,7 +166,7 @@ data class FieldSchema(
  */
 data class PrimaryKeySchema(
     val autoGenerate: Boolean,
-    val columnNames: List<String>
+    val columnNames: List<String>,
 )
 
 /**
@@ -176,7 +176,7 @@ data class ForeignKeySchema(
     val table: String, // Referenced table name
     val columns: List<String>, // Local column names
     val referencedColumns: List<String>, // Referenced column names
-    val onDelete: String
+    val onDelete: String,
 ) {
     companion object {
         fun fromJson(json: JSONObject): ForeignKeySchema = ForeignKeySchema(
@@ -187,7 +187,7 @@ data class ForeignKeySchema(
             referencedColumns = json.getJSONArray("referencedColumns").let { arr ->
                 (0 until arr.length()).map { arr.getString(it) }
             },
-            onDelete = json.getString("onDelete")
+            onDelete = json.getString("onDelete"),
         )
     }
 }
@@ -197,14 +197,14 @@ data class ForeignKeySchema(
  */
 data class UniqueIndexSchema(
     val name: String,
-    val columnNames: List<String>
+    val columnNames: List<String>,
 ) {
     companion object {
         fun fromJson(json: JSONObject): UniqueIndexSchema = UniqueIndexSchema(
             name = json.getString("name"),
             columnNames = json.getJSONArray("columnNames").let { arr ->
                 (0 until arr.length()).map { arr.getString(it) }
-            }
+            },
         )
     }
 }

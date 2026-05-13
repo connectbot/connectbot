@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,8 +48,11 @@ class HostRepository @Inject constructor(
     private val hostDao: HostDao,
     private val portForwardDao: PortForwardDao,
     private val knownHostDao: KnownHostDao,
-    private val securePasswordStorage: SecurePasswordStorage
+    private val securePasswordStorage: SecurePasswordStorage,
 ) {
+    private companion object {
+        val RSA_HOST_KEY_ALGORITHMS = listOf("rsa-sha2-512", "rsa-sha2-256", "ssh-rsa")
+    }
 
     // ============================================================================
     // Host Operations
@@ -223,7 +226,14 @@ class HostRepository @Inject constructor(
      */
     suspend fun getHostKeyAlgorithmsForHost(hostId: Long): List<String> {
         val knownHosts = knownHostDao.getByHostId(hostId)
-        return knownHosts.map { it.hostKeyAlgo }.distinct()
+        return knownHosts
+            .flatMap { expandHostKeyAlgorithms(it.hostKeyAlgo) }
+            .distinct()
+    }
+
+    private fun expandHostKeyAlgorithms(algorithm: String): List<String> = when (algorithm) {
+        "rsa-sha2-512", "rsa-sha2-256", "ssh-rsa" -> RSA_HOST_KEY_ALGORITHMS
+        else -> listOf(algorithm)
     }
 
     /**
@@ -240,7 +250,7 @@ class HostRepository @Inject constructor(
         hostname: String,
         port: Int,
         serverHostKeyAlgorithm: String,
-        serverHostKey: ByteArray
+        serverHostKey: ByteArray,
     ) {
         // Temporary hosts (negative ids) are never inserted into the hosts
         // table, so persisting a known_hosts row keyed by host.id would break
@@ -252,7 +262,7 @@ class HostRepository @Inject constructor(
         val existing = knownHostDao.getByHostIdAlgoAndKey(
             host.id,
             serverHostKeyAlgorithm,
-            serverHostKey
+            serverHostKey,
         )
         // If it does not exist or exists but has a different hostname and port, add it.
         if (existing == null || existing.hostname != hostname || existing.port != port) {
@@ -262,7 +272,7 @@ class HostRepository @Inject constructor(
                 hostname = hostname,
                 port = port,
                 hostKeyAlgo = serverHostKeyAlgorithm,
-                hostKey = serverHostKey
+                hostKey = serverHostKey,
             )
             knownHostDao.insert(knownHost)
         }
@@ -273,18 +283,24 @@ class HostRepository @Inject constructor(
      *
      * @param hostId The host ID
      * @param serverHostKeyAlgorithm The key algorithm
-     * @param serverHostKey The public key bytes
+     * @param serverHostKey The public key bytes, or null to remove all keys for the algorithm
      */
     suspend fun removeKnownHost(
         hostId: Long,
         serverHostKeyAlgorithm: String,
-        serverHostKey: ByteArray
+        serverHostKey: ByteArray?,
     ) {
+        if (serverHostKey == null) {
+            expandHostKeyAlgorithms(serverHostKeyAlgorithm)
+                .forEach { knownHostDao.deleteByHostIdAndAlgo(hostId, it) }
+            return
+        }
+
         // Find the exact key to remove
         val knownHost = knownHostDao.getByHostIdAlgoAndKey(
             hostId,
             serverHostKeyAlgorithm,
-            serverHostKey
+            serverHostKey,
         )
         if (knownHost != null) {
             knownHostDao.delete(knownHost)
@@ -341,7 +357,7 @@ class HostRepository @Inject constructor(
         hostname: String,
         port: Int,
         serverHostKeyAlgorithm: String,
-        serverHostKey: ByteArray
+        serverHostKey: ByteArray,
     ) = runBlocking {
         saveKnownHost(host, hostname, port, serverHostKeyAlgorithm, serverHostKey)
     }
@@ -366,7 +382,7 @@ class HostRepository @Inject constructor(
     fun removeKnownHostBlocking(
         hostId: Long,
         serverHostKeyAlgorithm: String,
-        serverHostKey: ByteArray
+        serverHostKey: ByteArray?,
     ) = runBlocking {
         removeKnownHost(hostId, serverHostKeyAlgorithm, serverHostKey)
     }

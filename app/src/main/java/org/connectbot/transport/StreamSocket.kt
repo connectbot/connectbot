@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,7 +37,7 @@ import java.net.SocketException
 class StreamSocket(
     private val forwarder: LocalStreamForwarder,
     private val remoteHost: String,
-    private val remotePort: Int
+    private val remotePort: Int,
 ) : Socket() {
 
     private val inputStreamInternal: InputStream = forwarder.inputStream

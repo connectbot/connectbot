@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ data class PubkeyEditorUiState(
     val error: String? = null,
     val saveSuccess: Boolean = false,
     val wrongPassword: Boolean = false,
-    val nicknameExists: Boolean = false
+    val nicknameExists: Boolean = false,
 ) {
     val passwordMismatch: Boolean
         get() = newPassword1 != newPassword2 && newPassword2.isNotEmpty()
@@ -65,7 +65,7 @@ data class PubkeyEditorUiState(
 class PubkeyEditorViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val repository: PubkeyRepository,
-    private val dispatchers: CoroutineDispatchers
+    private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
 
     private val pubkeyId: Long = savedStateHandle.get<Long>("pubkeyId") ?: -1L
@@ -95,14 +95,14 @@ class PubkeyEditorViewModel @Inject constructor(
                             isEncrypted = pubkey.encrypted,
                             unlockAtStartup = pubkey.startup,
                             confirmUse = pubkey.confirmation,
-                            isLoading = false
+                            isLoading = false,
                         )
                     }
                 } else {
                     _uiState.update {
                         it.copy(
                             isLoading = false,
-                            error = "Public key not found"
+                            error = "Public key not found",
                         )
                     }
                 }
@@ -111,7 +111,7 @@ class PubkeyEditorViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         isLoading = false,
-                        error = "Failed to load public key: ${e.message}"
+                        error = "Failed to load public key: ${e.message}",
                     )
                 }
             }
@@ -198,7 +198,7 @@ class PubkeyEditorViewModel @Inject constructor(
                             val privateKeyObj = PubkeyUtils.decodePrivate(
                                 privateKeyData,
                                 pubkey.type,
-                                oldPassword
+                                oldPassword,
                             )
 
                             if (privateKeyObj == null) {
@@ -225,7 +225,7 @@ class PubkeyEditorViewModel @Inject constructor(
                         privateKey = newPrivateKey,
                         encrypted = newEncrypted,
                         startup = state.unlockAtStartup,
-                        confirmation = state.confirmUse
+                        confirmation = state.confirmUse,
                     )
 
                     // Save to database

@@ -126,27 +126,27 @@
   <string name="pubkey_copy_private_openssh" tools:machine_translated="true">პირადი გასაღების კოპირება (OpenSSH ფორმატი)</string>
   <string name="pubkey_copy_private_pem" tools:machine_translated="true">პირადი გასაღების კოპირება (PEM ფორმატი)</string>
   <string name="pubkey_copy_private_encrypted" tools:machine_translated="true">პირადი გასაღების (შესრულებული) კოპირება.</string>
-  <string name="pubkey_copy_public" tools:machine_translated="true">გააკეთეთ საჯარო გასაღების ასლი.</string>
+  <string name="pubkey_copy_public" tools:machine_translated="true">გააკეთეთ საჯარო გასაღების ასლი</string>
   <string name="pubkey_export_public" tools:machine_translated="true">გამოიყავით საჯარო გასაღები ფაილად</string>
-  <string name="pubkey_export_private" tools:machine_translated="true">პირადი გასაღების ექსპორტი.</string>
+  <string name="pubkey_export_private" tools:machine_translated="true">პირადი გასაღების ექსპორტი</string>
   <string name="pubkey_export_private_openssh" tools:machine_translated="true">პირადი გასაღების ექსპორტი (OpenSSH ფორმატი)</string>
   <string name="pubkey_export_private_pem" tools:machine_translated="true">პირადი გასაღების ექსპორტი (PEM ფორმატი)</string>
-  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">პირადი გასაღების ექსპორტი (შიფრილი).</string>
-  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">დააყენეთ გასაექსპორტო პაროლი.</string>
-  <string name="pubkey_export_passphrase_message" tools:machine_translated="true">შეიყვანეთ პაროლი, რათა დაშიფრული იყოს ექსპორტირებული გასაღები.</string>
-  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">დადასტურეთ პაროლი.</string>
+  <string name="pubkey_export_private_encrypted" tools:machine_translated="true">პირადი გასაღების ექსპორტი (შიფრილი)</string>
+  <string name="pubkey_export_set_passphrase" tools:machine_translated="true">დააყენეთ გასაექსპორტო პაროლი</string>
+  <string name="pubkey_export_passphrase_message" tools:machine_translated="true">შეიყვანეთ პაროლი, რათა დაშიფრული იყოს ექსპორტირებული გასაღები</string>
+  <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">დადასტურეთ პაროლი</string>
   <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">პაროლები არ ემთხვევა ერთმანეთს.</string>
   <string name="pubkey_import_encrypted_title" tools:machine_translated="true">შიფრირებული გასაღების იმპორტირება</string>
-  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">შეიყვანეთ პაროლი, რათა გაიხსნას \'%1$s\' ტიპის გასაღები (%2$s).</string>
+  <string name="pubkey_import_encrypted_message" tools:machine_translated="true">შეიყვანეთ პაროლი, რათა გაიხსნას \'%1$s\' ტიპის გასაღები (%2$s)</string>
   <string name="pubkey_import_button" tools:machine_translated="true">იმპორტირება</string>
   <string name="pubkey_import_encrypt_key" tools:machine_translated="true">შენახვისთვის გასაჭრული კლავიში.</string>
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">გამოიყენეთ იგივე პაროლი დაშიფრვისთვის.</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">ახალი პაროლი</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">დადასტურებული პაროლი</string>
   <string name="pubkey_list_empty" tools:machine_translated="true">დააწკაპეთ „მენიუ“-ზე, რათა შექმნათ\nან იმპორტირეთ გასაღები წყვილები.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">უცნობი ფორმატი.</string>
+  <string name="pubkey_unknown_format" tools:machine_translated="true">უცნობი ფორმატი</string>
   <string name="pubkey_unlock" tools:machine_translated="true">კოდის გახსნა</string>
-  <string name="pubkey_unlock_message" tools:machine_translated="true">შეიყვანეთ პაროლი, რათა გახსნათ დაშიფრული გასაღები „%1$s“.</string>
+  <string name="pubkey_unlock_message" tools:machine_translated="true">შეიყვანეთ პაროლი, რათა გახსნათ დაშიფრული გასაღები „%1$s“</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">ასეთი სახელით კლავიში უკვე არსებობს.</string>
   <string name="pubkey_load_on_start" tools:machine_translated="true">გააქტიურდეს გასაღების ჩატვირთვა აპლიკაციის გახსნისას.</string>
   <string name="pubkey_confirm_use" tools:machine_translated="true">გამოყენებამდე დაადასტურეთ.</string>
@@ -154,7 +154,7 @@
   <string name="portforward_delete" tools:machine_translated="true">შერჩეული პორტის გადაგზავნის წაშლა</string>
   <string name="prompt_username" tools:machine_translated="true">მომხმარებლის სახელი:</string>
   <string name="prompt_password_can_be_blank" tools:machine_translated="true">შენიშვნა: პაროლი შეიძლება ცარიელი იყოს.</string>
-  <string name="prompt_pubkey_password" tools:machine_translated="true">პაროლი გასაღებისათვის \'%1$s\'.</string>
+  <string name="prompt_pubkey_password" tools:machine_translated="true">პაროლი გასაღებისათვის \'%1$s\'</string>
   <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">დაუშვით, რომ დისტანციურმა სერვერმა გამოიყენოს გასაღები „%1$s“?</string>
   <string name="host_verification_failure_warning_header" tools:machine_translated="true">გაფრთხილება: დისტანციური სერვერის იდენტიფიკაცია შეიცვალა!</string>
   <string name="host_verification_failure_warning" tools:machine_translated="true">სავარაუდოდ, ვინმე ცუდი რამ აკეთებს!\nშესაძლოა, ამჟამად თქვენს შესახებ ინფორმაციას იკ gatheringებს (მესამე მხარის შეტევა)!\nასევე შესაძლებელია, რომ მასპინძელი კლუჩი ახლახან შეიცვალა.</string>
@@ -162,7 +162,7 @@
   <string name="prompt_continue_connecting" tools:machine_translated="true">დარწმუნებული ხართ, რომ კავშირს განაგრძობთ?</string>
   <string name="host_authenticity_warning" tools:machine_translated="true">ვერ შეგვიძლია დავწმუნდოთ, რომ \'%1$s\'-ის ავთენტურობა დადასტურებულია.</string>
   <string name="host_fingerprint" tools:machine_translated="true">ჰოსტის %1$s-ის გასაღების ციფრული თითბეჭდა არის %2$s.</string>
-  <string name="host_key_verification_title" tools:machine_translated="true">მასპინძელი კომპიუტერის გასაღების ვერიფიკაცია.</string>
+  <string name="host_key_verification_title" tools:machine_translated="true">მასპინძელი კომპიუტერის გასაღების ვერიფიკაცია</string>
   <string name="fingerprint_format_header" tools:machine_translated="true">ნაბიჯის ბეჭედის ფორმატი</string>
   <string name="host_key_type_and_size" tools:machine_translated="true">%1$s %2$d ბიტი</string>
   <string name="fingerprint_copy_description" tools:machine_translated="true">გააკეთეთ თითის ანაბეჭდის ასლი და ჩასვით კლიპბორდში.</string>
@@ -175,9 +175,9 @@
   <string name="pref_scrollback_title" tools:machine_translated="true">გადახვევის ზომა</string>
   <string name="pref_scrollback_summary" tools:machine_translated="true">თითოეული კონსოლისთვის მეხსიერებაში შე保存ებული გადახვევის ბუფერის ზომა.</string>
   <string name="pref_fontfamily_title" tools:machine_translated="true">შრიფტი</string>
-  <string name="pref_customfont_title" tools:machine_translated="true">დაამატეთ მორგებული შრიფტი.</string>
+  <string name="pref_customfont_title" tools:machine_translated="true">დაამატეთ მორგებული შრიფტი</string>
   <string name="pref_customfont_summary" tools:machine_translated="true">დამატეთ Google Fonts-დან შრიფტი მისი სახელის მიხედვით.</string>
-  <string name="dialog_customfont_title" tools:machine_translated="true">დაამატეთ მორგებული შრიფტი.</string>
+  <string name="dialog_customfont_title" tools:machine_translated="true">დაამატეთ მორგებული შრიფტი</string>
   <string name="dialog_customfont_hint" tools:machine_translated="true">Google Fonts-ის სახელი (მაგ., Cascadia Code)</string>
   <string name="button_add" tools:machine_translated="true">დამატება</string>
   <string name="button_remove" tools:machine_translated="true">ამოიღე</string>
@@ -186,10 +186,10 @@
   <string name="pref_localfont_title" tools:machine_translated="true">ლოკალური შრიფტის იმპორტირება</string>
   <string name="pref_localfont_summary" tools:machine_translated="true">შექმნით შრიფტის ფაილი (TTF, OTF) და დატვირთეთ იგი.</string>
   <string name="dialog_localfont_title" tools:machine_translated="true">შრიფტის იმპორტირება</string>
-  <string name="dialog_localfont_hint" tools:machine_translated="true">შრიფტის ჩვენების სახელი.</string>
+  <string name="dialog_localfont_hint" tools:machine_translated="true">შრიფტის ჩვენების სახელი</string>
   <string name="button_import" tools:machine_translated="true">შემომტანა</string>
   <string name="font_importing" tools:machine_translated="true">შრიფტის იმპორტირება…</string>
-  <string name="pref_backupkeys_title" tools:machine_translated="true">საჯარო გასაღების სარეზერვო ასლის შექმნა.</string>
+  <string name="pref_backupkeys_title" tools:machine_translated="true">საჯარო გასაღების სარეზერვო ასლის შექმნა</string>
   <string name="pref_backupkeys_summary" tools:machine_translated="true">შეინახეთ პირადი გასაღებების ასლები Android-ის სარეზერვო სისტემის გამოყენებით.</string>
   <string name="pref_language_title" tools:machine_translated="true">ენა</string>
   <string name="pref_language_system_default" tools:machine_translated="true">სისტემის სტანდარტული პარამეტრი</string>
@@ -203,34 +203,34 @@
   <string name="pref_titlebarhide_title" tools:machine_translated="true">ტიტულის ზოლის ავტომატური დამალვა</string>
   <string name="pref_titlebarhide_summary" tools:machine_translated="true">დააკლიკეთ კონსოლზე, რათა გამოჩენილიყო ტიტულის ზოლი და გახსნილიყო მენიუ.</string>
   <string name="pref_alwaysvisible_title" tools:machine_translated="true">სპეციალური კლავიშები ყოველთვის ხილადია.</string>
-  <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">გვერდის ზემოთ/ქვემოთ გადახვევის ჟესტი.</string>
+  <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">გვერდის ზემოთ/ქვემოთ გადახვევის ჟესტი</string>
   <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">ეკრანის მარჯვენა მესამედზე თითით გადაუსვით, რათა ტერმინალში სიგნალი გაგზავნოთ, რომელიც გვერდზე გადახვევას (ზემოთ/ქვემოთ) გამოიწვევს.</string>
   <string name="pref_fullscreen_summary" tools:machine_translated="true">დამალეთ სტატუსის ზოლი კონსოლის რეჟიმში მუშაობის დროს.</string>
   <string name="pref_shiftfkeys_summary" tools:machine_translated="true">ფიზიკურ კლავიატურებზე, ციფრული კლავიშები Shift-თან ერთად F1-F10-ს სიგნალს აგზავნიან.</string>
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">სოფტმობილურ კლავიატურებზე, ციფრული კლავიშები Ctrl-თან ერთად F1-F10 ფუნქციებს ააქტივებს.</string>
-  <string name="pref_volumefont_title" tools:machine_translated="true">ხმის დაგაზრდის/დაკლების ღილაკები ფონტის ზომას ცვლის.</string>
+  <string name="pref_volumefont_title" tools:machine_translated="true">ხმის დაგაზრდის/დაკლების ღილაკები ფონტის ზომას ცვლის</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">შრიფტის ზომას ასევე შეგიძლიათ შეცვალოთ პროფილის პარამეტრებში.</string>
-  <string name="pref_memkeys_title" tools:machine_translated="true">შენახული კლავიშები.</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">შენახული კლავიშები</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">შენახული გასაღებები შეინახეთ მეხსიერებაში, სანამ ბექენდ-სერვისი არ დაიხურება.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">დარჩით კავშირზე ფონურ რეჟიმში.</string>
+  <string name="pref_conn_persist_title" tools:machine_translated="true">დარჩით კავშირზე ფონურ რეჟიმში</string>
   <string name="pref_conn_persist_summary" tools:machine_translated="true">დარჩით შეერთებულს, მაშინაც კი, როდესაც სხვა პროგრამებზე გადაერთვებით.</string>
   <string name="pref_keymode_title" tools:machine_translated="true">დირექტორიის მალსახელები</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">მუდმივი მოდიფიკატორები</string>
   <string name="only_alt" tools:machine_translated="true">მხოლოდ Alt</string>
-  <string name="pref_keepalive_title" tools:machine_translated="true">ეკრანის ჩართული დატოვება.</string>
+  <string name="pref_keepalive_title" tools:machine_translated="true">ეკრანის ჩართული დატოვება</string>
   <string name="pref_keepalive_summary" tools:machine_translated="true">დარგული რეჟიმში მუშაობის დროს, ეკრანის გამორთვა აეცილეთ.</string>
-  <string name="pref_wifilock_title" tools:machine_translated="true">დატოვეთ Wi-Fi ჩართული.</string>
+  <string name="pref_wifilock_title" tools:machine_translated="true">დატოვეთ Wi-Fi ჩართული</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">დარწმუნდით, რომ Wi-Fi არ ითიშება აქტიური სესიის დროს.</string>
   <string name="pref_bumpyarrows_title" tools:machine_translated="true">ხაზგარეული ისრები</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">გამოიყენეთ ვიბრაცია, როდესაც მიმღებს მიგზავნით; ეს სასარგებლოა, თუ კავშირი არასტაბილურია.</string>
-  <string name="pref_bell_summary" tools:machine_translated="true">გამოიყვითე ხმა, როდესაც ტერმინალში გააქტიურდება სიგნალი.</string>
-  <string name="pref_bell_vibrate_title" tools:machine_translated="true">ხმის სიგნალზე ვიბრაცია.</string>
+  <string name="pref_bell_summary" tools:machine_translated="true">გამოიყვითე ხმა, როდესაც ტერმინალში გააქტიურდება სიგნალი</string>
+  <string name="pref_bell_vibrate_title" tools:machine_translated="true">ხმის სიგნალზე ვიბრაცია</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">გააქტიურდეს ვიბრაცია, როდესაც ტერმინალში გაჩნდება სიგნალი.</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">ფონის შეტყობინებები</string>
   <string name="pref_bell_notification_summary" tools:machine_translated="true">გამოიგზავნეთ შეტყობინება, როდესაც ფონზე მუშავებ ტერმინალს და ის სიგნალს გამოსცემს.</string>
   <string name="list_keymode_right" tools:machine_translated="true">გამოიყენეთ კლავიატურის მარჯვენა მხარეს მდებარე ღილაკები.</string>
   <string name="list_keymode_left" tools:machine_translated="true">გამოიყენეთ კლავიატურის მარცხენა მხარის ღილაკები.</string>
-  <string name="list_pubkeyids_none" tools:machine_translated="true">არ გამოიყენოთ გასაღებები.</string>
+  <string name="list_pubkeyids_none" tools:machine_translated="true">არ გამოიყენოთ გასაღებები</string>
   <string name="list_pubkeyids_any" tools:machine_translated="true">გამოიყენეთ ნებისმიერი, გახსნილი გასაღები.</string>
   <string name="color_red" tools:machine_translated="true">წითელი</string>
   <string name="color_pink" tools:machine_translated="true">ვარდისფერი</string>
@@ -250,15 +250,15 @@
   <string name="color_gray" tools:machine_translated="true">ნაცრისფერი</string>
   <string name="hostpref_fontfamily_title" tools:machine_translated="true">შრიფტი</string>
   <string name="hostpref_colorscheme_title" tools:machine_translated="true">ტერმინალის ფერების სქემა</string>
-  <string name="hostpref_pubkeyid_title" tools:machine_translated="true">გამოიყენეთ საჯარო გასაღების ავთენტიფიკაცია.</string>
-  <string name="hostpref_authagent_title" tools:machine_translated="true">გამოიყენეთ SSH ავტორიზაციის აგენტი.</string>
+  <string name="hostpref_pubkeyid_title" tools:machine_translated="true">გამოიყენეთ საჯარო გასაღების ავთენტიფიკაცია</string>
+  <string name="hostpref_authagent_title" tools:machine_translated="true">გამოიყენეთ SSH ავტორიზაციის აგენტი</string>
   <string name="hostpref_postlogin_title" tools:machine_translated="true">ავტომატიზაცია სისტემაში შესვლის შემდეგ</string>
   <string name="hostpref_postlogin_summary" tools:machine_translated="true">ავტორიზაციის შემდეგ, დისტანციურ სერვერზე შესასრულებელი ბრძანებები.</string>
   <string name="hostpref_compression_summary" tools:machine_translated="true">ეს შესაძლოა დაგეხმაროთ უფრო ნელი კავშირის შემთხვევაში.</string>
-  <string name="hostpref_wantsession_title" tools:machine_translated="true">გაიხსნას ტერმინალის სესია.</string>
+  <string name="hostpref_wantsession_title" tools:machine_translated="true">გაიხსნას ტერმინალის სესია</string>
   <string name="hostpref_wantsession_summary" tools:machine_translated="true">გაითიშეთ ეს პარამეტრი, რათა გამოიყენოთ მხოლოდ პორტის გადაგზავნა.</string>
   <string name="hostpref_stayconnected_summary" tools:machine_translated="true">შეეცადეთ, კავშირი განახორციელოთ მასპინძლთან, თუ კავშირი გაწყვეტილია.</string>
-  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">გათიშვის შემდეგ დახურვა.</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">გათიშვის შემდეგ დახურვა</string>
   <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">დახურეთ მყისიერად, დისტანციური კავშირის გაწყვეტის შემდეგ, ყოველგვარი შეტყობინების გარეშე.</string>
   <string name="hostpref_delkey_title" tools:machine_translated="true">DEL კლავიში</string>
   <string name="hostpref_save_password_summary" tools:machine_translated="true">შეინახეთ ავტორიზაციის პაროლი უსაფრთხოდ, რათა ავტომატურად განხორციელდეს ავტორიზაცია.</string>
@@ -269,9 +269,9 @@
   <string name="hostpref_profile_summary" tools:machine_translated="true">აირჩიეთ პროფილი, რათა გამოიყენოთ მისი ტერმინალის პარამეტრები.</string>
   <string name="hostpref_profile_none" tools:machine_translated="true">არცერთი (გამოიყენეთ მასპინძლის პარამეტრები)</string>
   <string name="profile_controlled_setting" tools:machine_translated="true">მართულია პროფილით.</string>
-  <string name="font_use_default" tools:machine_translated="true">გამოიყენეთ ნაგულისხმევი.</string>
+  <string name="font_use_default" tools:machine_translated="true">გამოიყენეთ ნაგულისხმევი</string>
   <string name="font_system_default" tools:machine_translated="true">სისტემის სტანდარტული მონოსპეის შრიფტი</string>
-  <string name="pubkey_unknown" tools:machine_translated="true">უცნობი გასაღები.</string>
+  <string name="pubkey_unknown" tools:machine_translated="true">უცნობი გასაღები</string>
   <string name="colorscheme_default" tools:machine_translated="true">სტანდარტული</string>
   <string name="profile_editor_title_new" tools:machine_translated="true">ახალი პროფილი</string>
   <string name="profile_editor_title_edit" tools:machine_translated="true">პროფილის რედაქტირება</string>
@@ -285,7 +285,7 @@
   <string name="profile_editor_font_size_title" tools:machine_translated="true">შრიფტის ზომა: %d</string>
   <string name="profile_editor_force_size_title" tools:machine_translated="true">ძალის ზომა</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">ტერმინალის ზომა ავტომატურად არ უნდა იცვლებოდეს ეკრანთან ადაპტაციის მიზნით, არამედ უნდა დაინიშნოს კონკრეტული ზომა (სვეტების რაოდენობა x რიგების რაოდენობა).</string>
-  <string name="profile_editor_force_size_enable" tools:machine_translated="true">აქტივირებულია ზომის ავტომატური რეგულირება.</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">აქტივირებულია ზომის ავტომატური რეგულირება</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">სვეტები</string>
   <string name="profile_editor_force_size_rows" tools:machine_translated="true">რიგები</string>
   <string name="profile_icon_color_none" tools:machine_translated="true">არცერთი (გამოიყენეთ მასპინძლის ფერი)</string>
@@ -303,12 +303,12 @@
   <string name="profile_delete_dialog_message" tools:machine_translated="true">დარწმუნებული ხართ, რომ \'%s\'-ის წაშლის სურვილი გაქვთ?</string>
   <string name="profile_delete_button" tools:machine_translated="true">წაშლა</string>
   <string name="profile_delete_cancel" tools:machine_translated="true">გაუქმება</string>
-  <string name="profile_summary_font" tools:machine_translated="true">შრიფტი: %1$s, ზომა: %2$d პუნქტი.</string>
+  <string name="profile_summary_font" tools:machine_translated="true">შრიფტი: %1$s %2$dpt</string>
   <string name="profile_summary_emulation" tools:machine_translated="true">ემულაცია: %s</string>
   <string name="console_menu_reconnect" tools:machine_translated="true">გაიმეორე კავშირი</string>
   <string name="console_menu_portforwards" tools:machine_translated="true">პორტის გადაგზავნები</string>
   <string name="console_url_no_handler" tools:machine_translated="true">არცერთი აპლიკაცია არ არის, რომელსაც შეძლებდა ამ URL-ის გახსნას.</string>
-  <string name="console_url_not_supported" tools:machine_translated="true">ეს URL-ის ტიპი არ არის მხარდაჭერილი.</string>
+  <string name="console_url_not_supported" tools:machine_translated="true">ეს URL-ის ტიპი არ არის მხარდაჭერილი</string>
   <string name="portforward_dynamic" tools:machine_translated="true">დინამიური (SOCKS)</string>
   <string name="portforward_pos" tools:machine_translated="true">შექმენით პორტის გადაგზავნის წესი.</string>
   <string name="portforward_save" tools:machine_translated="true">შენახვა</string>
@@ -317,12 +317,12 @@
   <string name="list_host_portforwards" tools:machine_translated="true">პორტის გადაგზავნის რედაქტირება</string>
   <string name="list_host_duplicate" tools:machine_translated="true">შერჩეული მასპინძელის დუბლირება</string>
   <string name="list_host_forget_keys" tools:machine_translated="true">შენახული მასპინძელი კომპიუტერის გასაღებიების მოხსნა</string>
-  <string name="list_rotation_land" tools:machine_translated="true">დააყენეთ ჰორიზონტალური ორიენტაცია.</string>
-  <string name="list_rotation_port" tools:machine_translated="true">გადააყენეთ პორტრეტულ რეჟიმში.</string>
+  <string name="list_rotation_land" tools:machine_translated="true">დააყენეთ ჰორიზონტალური ორიენტაცია</string>
+  <string name="list_rotation_port" tools:machine_translated="true">გადააყენეთ პორტრეტულ რეჟიმში</string>
   <string name="list_camera_text_input" tools:machine_translated="true">ტექსტის შეყვანა</string>
   <string name="delete_message" tools:machine_translated="true">დარწმუნებული ხართ, რომ \'%1$s\'-ს წაშლით?</string>
   <string name="disconnect_all_message" tools:machine_translated="true">დარწმუნებული ხართ, რომ ყველა დამაკავშირებელ სერვერთან კავშირს გაწყვეტთ?</string>
-  <string name="terminal_connecting" tools:ignore="PluralsCandidate" tools:machine_translated="true">ვცდილობ დავუკავშირდე %1$s-ს:%2$d-ს %3$s-ის საშუალებით.</string>
+  <string name="terminal_connecting" tools:ignore="PluralsCandidate" tools:machine_translated="true">ვცდილობ დავუკავშირდე %1$s-ს:%2$d-ს %3$s-ის საშუალებით</string>
   <string name="terminal_sucess" tools:machine_translated="true">დადასტურებულია მასპინძელი \'%1$s\'-ის კლუჩი: %2$s</string>
   <string name="terminal_failed" tools:machine_translated="true">მასპინძლის გასაღების ვერიფიკაცია წარუმატებელი აღმოჩნდა.</string>
   <string name="terminal_using_s2c_algorithm" tools:machine_translated="true">სერვერიდან კლიენტამდე ალგორითმი: %1$s %2$s</string>
@@ -368,17 +368,17 @@
   <string name="button_export_scheme" tools:machine_translated="true">სქემის ექსპორტი</string>
   <string name="button_import_scheme" tools:machine_translated="true">სქემის იმპორტი</string>
   <string name="message_export_success" tools:machine_translated="true">%1$s-ის ექსპორტი წარმატებით დასრულდა.</string>
-  <string name="message_import_success" tools:machine_translated="true">%1$s წარმატებით იმპორტირებულია.</string>
+  <string name="message_import_success" tools:machine_translated="true">%1$s წარმატებით იმპორტირებულია</string>
   <string name="error_export_failed" tools:machine_translated="true">სქემის ექსპორტი ვერ მოხერხდა: %1$s</string>
   <string name="error_import_failed" tools:machine_translated="true">იმპორტირება ვერ მოხერხდა: %1$s</string>
-  <string name="error_invalid_json" tools:machine_translated="true">არასწორი JSON ფაილი.</string>
+  <string name="error_invalid_json" tools:machine_translated="true">არასწორი JSON ფაილი</string>
   <string name="title_palette_editor" tools:machine_translated="true">ფერთა პალიტრის რედაქტირება</string>
   <string name="button_reset_all_colors" tools:machine_translated="true">ყველაფრის გადატვირთვა</string>
   <string name="section_ansi_colors" tools:machine_translated="true">ANSI ფერები (0–15)</string>
   <string name="dialog_title_edit_color" tools:machine_translated="true">შერჩეული ფერის რედაქტირება %1$d</string>
   <string name="dialog_title_reset_all" tools:machine_translated="true">გაუქმება ყველა ფერის?</string>
   <string name="dialog_message_reset_all" tools:machine_translated="true">ეს ყველა 256 ფერს დააბრუნებს საწყის მნიშვნელობებზე. ამ მოქმედების გაუქმება შეუძლებელია.</string>
-  <string name="app_is_running" tools:machine_translated="true">ConnectBot-ი აქტიურია.</string>
+  <string name="app_is_running" tools:machine_translated="true">ConnectBot-ი აქტიურია</string>
   <string name="label_red" tools:machine_translated="true">წითელი</string>
   <string name="label_green" tools:machine_translated="true">მწვანე</string>
   <string name="label_blue" tools:machine_translated="true">ლურჯი</string>
@@ -414,7 +414,7 @@
   <string name="error_host_save_failed" tools:machine_translated="true">შეიძლება არ მოხდა მასპინძელი %1$s-ის კონფიგურაციის შენახვა: %2$s</string>
   <string name="error_color_scheme_load_failed" tools:machine_translated="true">ფერთა სქემის ჩატვირთვა ვერ მოხერხდა: %s</string>
   <string name="host_duplicate_nickname" tools:machine_translated="true">%1$s (კოპია)</string>
-  <string name="empty_hosts_message" tools:machine_translated="true">ჯერ არცერთი ჰოსტი არ არის კონფიგურირებული.</string>
+  <string name="empty_hosts_message" tools:machine_translated="true">ჯერ არცერთი ჰოსტი არ არის კონფიგურირებული</string>
   <string name="empty_pubkeys_message" tools:machine_translated="true">ქვაბულები არ მოიძებნა.</string>
   <string name="empty_port_forwards_message" tools:machine_translated="true">პორტის გადაგზავნის პარამეტრები არ არის დაყენებული.</string>
   <string name="empty_urls_message" tools:machine_translated="true">ტერმინალის ბუფერში URL-ები არ აღმოჩნდა.</string>
@@ -426,19 +426,19 @@
   <string name="host_editor_hide_advanced" tools:machine_translated="true">დამალეთ დამატებითი პარამეტრები</string>
   <string name="resize_width_label" tools:machine_translated="true">სიგანე (სვეტები)</string>
   <string name="resize_height_label" tools:machine_translated="true">სიმაღლე (ხაზები)</string>
-  <string name="resize_disable_force_size" tools:machine_translated="true">გაუქმეთ ზომის ავტომატურად რეგულირების ფუნქცია.</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">გაუქმეთ ზომის ავტომატურად რეგულირების ფუნქცია</string>
   <string name="pubkey_editor_key_type_label" tools:machine_translated="true">კლუჩის ტიპი</string>
   <string name="pubkey_editor_options_label" tools:machine_translated="true">პარამეტრები</string>
   <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">დაშიფრული გასაღებები ვერ გაიხსნება სისტემის ჩატვირთვის დროს.</string>
   <string name="pubkey_type_label" tools:machine_translated="true">ტიპი: %s</string>
   <string name="pubkey_encrypted_description" tools:machine_translated="true">შიფრირებული</string>
-  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">შიფრი არ არის გამოყენებული.</string>
+  <string name="pubkey_not_encrypted_description" tools:machine_translated="true">შიფრი არ არის გამოყენებული</string>
   <string name="pubkey_biometric_protection" tools:machine_translated="true">ნაბიჯის ბეჭედის დაცვა</string>
-  <string name="pubkey_biometric_description" tools:machine_translated="true">დაიცავით ეს გასაღები თქვენი თითის ანაბეჭდის გამოყენებით.</string>
+  <string name="pubkey_biometric_description" tools:machine_translated="true">დაიცავით ეს გასაღები თქვენი თითის ანაბეჭდის გამოყენებით</string>
   <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">ბიომეტრიული მონაცემები არ არის რეგისტრირებული. ამ ფუნქციის გამოყენებისთვის, მოაწყვეთ თითის ბიომეტრიული მონაცემები მოწყობილობის პარამეტრებში.</string>
   <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">ბიომეტრიული დაცვა ხელმისაწვდომია მხოლოდ RSA და EC ტიპის გასაღებებისთვის.</string>
-  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">დაიწყეთ ავტორიზაცია, რათა გამოიყენოთ გასაღები.</string>
-  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">შეეხეთ თითის ბეჭედის სკანერს, რათა გახსნათ \'%1$s\'.</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">დაიწყეთ ავტორიზაცია, რათა გამოიყენოთ გასაღები</string>
+  <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">შეეხეთ თითის ბეჭედის სკანერს, რათა გახსნათ \'%1$s\'</string>
   <string name="pubkey_biometric_description_icon" tools:machine_translated="true">დაცულია თითის ბიომეტრული მონაცემებით</string>
   <string name="pubkey_biometric_not_available" tools:machine_translated="true">თითის ბიომეტრიული ავთენტიკაცია ამჟამად არ არის ხელმისაწვდომი.</string>
   <string name="portforward_nickname_placeholder" tools:machine_translated="true">შიდა ვებ-სერვერი</string>
@@ -457,17 +457,17 @@
   <string name="portforward_type_label" tools:machine_translated="true">ტიპი: %s</string>
   <string name="portforward_enable" tools:machine_translated="true">აქტივირება</string>
   <string name="portforward_disable" tools:machine_translated="true">გამორთვა</string>
-  <string name="portforward_enabled" tools:machine_translated="true">პორტის გადაგზავნის ფუნქცია ჩართულია.</string>
+  <string name="portforward_enabled" tools:machine_translated="true">პორტის გადაგზავნის ფუნქცია ჩართულია</string>
   <string name="portforward_disabled" tools:machine_translated="true">პორტის გადაგზავნის ფუნქცია გათიშულია.</string>
   <string name="hostpref_setting_title" tools:machine_translated="true">მასპინძლის პარამეტრები</string>
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">კოპირებული ტექსტიდან იმპორტირება</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">პირადი გასაღების შინაარსი</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">გააკეთეთ ჩასწორება კლიპბორდიდან</string>
-  <string name="notification_permission_title" tools:machine_translated="true">დარჩით კავშირზე ფონურ რეჟიმში.</string>
+  <string name="notification_permission_title" tools:machine_translated="true">დარჩით კავშირზე ფონურ რეჟიმში</string>
   <string name="notification_permission_message" tools:machine_translated="true">ConnectBot-ს აუცილებელი აქვს შეტყობინებების ნებართვა, რათა თქვენი კავშირები აქტიური იყოს, როდესაც სხვა აპლიკაციებზე გადაერთვებით. სხვაგვარად, სისტემას შეიძლება მოუწიოს თქვენი კავშირების გაუქმება, რათა ენერგია დაზოგოს.</string>
   <string name="grant_permission" tools:machine_translated="true">ნება დართეთ</string>
   <string name="connect_anyway" tools:machine_translated="true">დაკავშირდით, მიუხედავად იმისა, რომ არ დართეთ შეტყობინებების გაგზავნის უფლება.</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">გაუქმებული შეტყობინებების ნებართვის აღდგენა აუცილებელია.</string>
+  <string name="notification_permission_denied_title" tools:machine_translated="true">გაუქმებული შეტყობინებების ნებართვის აღდგენა აუცილებელია</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">იმისათვის, რომ თქვენი კავშირები ფონზე აქტიური იყოს, გთხოვთ, სისტემის პარამეტრებში ჩართოთ ConnectBot-ის შეტყობინებების მიღება.</string>
   <string name="open_settings" tools:machine_translated="true">პარამეტრების გახსნა</string>
   <string name="notification_permission_denied_snackbar" tools:machine_translated="true">შეიძლება კავშირები გაწყდეს, თუ არ იქნება ნებართვა შეტყობინებების მისაღებად.</string>
@@ -481,7 +481,7 @@
   <string name="migration_stats_pubkeys" tools:machine_translated="true">მიგრაცირებული SSH გასაღები: %d</string>
   <string name="migration_stats_port_forwards" tools:machine_translated="true">მიგრაცირებული პორტის გადაგზავნა: %d</string>
   <string name="migration_stats_known_hosts" tools:machine_translated="true">მომიგრაცირებული ცნობილი მასპინძელები: %d</string>
-  <string name="migration_failed_title" tools:machine_translated="true">მიგრაცია წარუმატებლად დასრულდა.</string>
+  <string name="migration_failed_title" tools:machine_translated="true">მიგრაცია წარუმატებლად დასრულდა</string>
   <string name="migration_failed_message" tools:machine_translated="true">მონაცემთა ბაზის გადატანისას წარმოიშვა შეცდომა: %s</string>
   <string name="migration_retry" tools:machine_translated="true">გადაიცადა</string>
   <string name="migration_failed_help" tools:machine_translated="true">თუ პრობლემა გაგრძელდება, გთხოვთ, შეატყობინეთ ამის შესახებ %1$s-ში, თან დაურთეთ ზემოთ მოცული დიაგნოსტიკური ჩანაწერი.</string>
@@ -499,7 +499,7 @@
   <string name="ipversion_ipv4" tools:machine_translated="true">მხოლოდ IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">მხოლოდ IPv6</string>
   <string name="hostpref_jumphost_title" tools:machine_translated="true">ჯამპ-ჰოსტი (ProxyJump)</string>
-  <string name="hostpref_jumphost_summary" tools:machine_translated="true">დაუკავშირდით სხვა SSH ჰოსტის საშუალებით.</string>
+  <string name="hostpref_jumphost_summary" tools:machine_translated="true">დაუკავშირდით სხვა SSH ჰოსტის საშუალებით</string>
   <string name="list_jumphost_none" tools:machine_translated="true">არცერთი (მباشრი კავშირი)</string>
   <string name="terminal_connecting_via_jump" tools:machine_translated="true">დაკავშირება ხორციელდება გადამრთველ სერვერის საშუალებით: %s</string>
   <string name="terminal_jump_connected" tools:machine_translated="true">დაკავშირებულია ჯამპ-სერვერთან: %s</string>
@@ -513,7 +513,7 @@
   <string name="copy_logs" tools:machine_translated="true">ლოგების კოპირება</string>
   <string name="logs_copied" tools:machine_translated="true">ლოგები კოპირებულია და კლიპბორდში შენახულია.</string>
   <string name="logs_bug_report_info" tools:machine_translated="true">თუ შეამჩნევთ რაიმე ხარვეზს, გთხოვთ, დაურთეთ ამ შეტყობინების ტექსტი და გახსნით ახალი განცხადება შემდეგ ბმულზე: https://connectbot.org/bug</string>
-  <string name="no_logs_available" tools:machine_translated="true">მონაცემები არ არის ხელმისაწვდომი.</string>
+  <string name="no_logs_available" tools:machine_translated="true">მონაცემები არ არის ხელმისაწვდომი</string>
   <string name="help_section_about" tools:machine_translated="true">პროგრამის შესახებ</string>
   <string name="title_contact" tools:machine_translated="true">დაგვიკავშირდით და დაგეხმარებით</string>
   <string name="help_section_contact" tools:machine_translated="true">დაგვიკავშირდით და დაგეხმარებით</string>
@@ -524,13 +524,13 @@
   <string name="help_donate_github" tools:machine_translated="true">GitHub-ის მხარდამჭერები</string>
   <string name="help_donate_coffee" tools:machine_translated="true">მომაწოდე ერთი ყავა</string>
   <string name="colorscheme_default_description" tools:machine_translated="true">ტერმინალის სტანდარტული ფერები</string>
-  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">პრეკიზული ფერები, რომლებიც განკუთვნილია მანქანებისთვის და ადამიანებისთვის.</string>
+  <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">პრეკიზული ფერები, რომლებიც განკუთვნილია მანქანებისთვის და ადამიანებისთვის</string>
   <string name="colorscheme_solarized_light_description" tools:machine_translated="true">სოლარიზებული, ღია ფონის ჩრდილებით</string>
-  <string name="colorscheme_dracula_description" tools:machine_translated="true">მუქი ფერების სქემა ტერმინალისთვის.</string>
-  <string name="colorscheme_nord_description" tools:machine_translated="true">არქტიკული, ჩრდილოეთის ფერებში გადაწყვეტილი ფერთა გამა.</string>
+  <string name="colorscheme_dracula_description" tools:machine_translated="true">მუქი ფერების სქემა ტერმინალისთვის</string>
+  <string name="colorscheme_nord_description" tools:machine_translated="true">არქტიკული, ჩრდილოეთის ფერთა გამა</string>
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">რეტრო სტილის ფერების გამა</string>
   <string name="colorscheme_monokai_description" tools:machine_translated="true">„Sublime Text“-ის სტილით შექმნილი თემა.</string>
-  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">მინიმალისტური და კომფორტული მუქი თემა.</string>
+  <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">მინიმალისტური და კომფორტული მუქი თემა</string>
   <string name="pref_profiles_category" tools:machine_translated="true">პროფილები</string>
   <string name="pref_default_profile_title" tools:machine_translated="true">სტანდარტული პროფილი</string>
   <string name="pref_default_profile_none" tools:machine_translated="true">არცერთი (გამოიყენეთ მასპინძლის პარამეტრები)</string>
@@ -542,7 +542,7 @@
   <string name="dialog_manage_customterminal_title" tools:machine_translated="true">მორგებული ტერმინალის ტიპების მართვა</string>
   <string name="button_add_custom" tools:machine_translated="true">დამატება…</string>
   <string name="button_manage_custom" tools:machine_translated="true">მორგებული ელემენტების მართვა…</string>
-  <string name="dialog_custom_value_label" tools:machine_translated="true">შეიყვანეთ სასურველი მნიშვნელობა.</string>
+  <string name="dialog_custom_value_label" tools:machine_translated="true">შეიყვანეთ სასურველი მნიშვნელობა</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, შემდეგ – კოსმოსური ღილაკი.</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
   <string name="list_camera_esc_description" tools:machine_translated="true">Esc</string>
@@ -568,8 +568,8 @@
   <string name="pref_auth_on_launch_title" tools:machine_translated="true">ავტორიზაცია პროგრამის გახსნისას</string>
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">აპლიკაციის გახსნისას მოითხოვეთ თითის ანაბეჭდის, სახის სკანირება ან მოწყობილობის PIN-კოდის გამოყენება.</string>
   <string name="pref_security_category" tools:machine_translated="true">უსაფრთხოება</string>
-  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot დაბლოკილია.</string>
-  <string name="auth_screen_unlock_button" tools:machine_translated="true">შეეხეთ, რათა გახსნათ.</string>
-  <string name="auth_prompt_title" tools:machine_translated="true">გაიხსენით ConnectBot.</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot დაბლოკილია</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">შეეხეთ, რათა გახსნათ</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">გაიხსენით ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">გადასასვლელად გადაამოწმეთ თქვენი იდენტობა.</string>
 </resources>
