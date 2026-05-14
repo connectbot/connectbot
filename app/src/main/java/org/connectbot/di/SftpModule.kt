@@ -35,5 +35,6 @@ object SftpModule {
     fun provideSftpConnectionManager(
         hostRepository: HostRepository,
         pubkeyRepository: PubkeyRepository,
-    ): SftpConnectionManager = SftpConnectionManager(hostRepository, pubkeyRepository)
+        dispatchers: CoroutineDispatchers,
+    ): SftpConnectionManager = SftpConnectionManager(hostRepository, pubkeyRepository, dispatchers)
 }
