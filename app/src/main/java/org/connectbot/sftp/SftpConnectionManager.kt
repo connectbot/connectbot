@@ -17,6 +17,8 @@
 
 package org.connectbot.sftp
 
+import android.security.keystore.KeyPermanentlyInvalidatedException
+import android.security.keystore.UserNotAuthenticatedException
 import android.util.Log
 import com.trilead.ssh2.Connection
 import com.trilead.ssh2.ExtendedServerHostKeyVerifier
@@ -25,7 +27,6 @@ import com.trilead.ssh2.KnownHosts
 import com.trilead.ssh2.SFTPv3Client
 import com.trilead.ssh2.crypto.PEMDecoder
 import com.trilead.ssh2.crypto.fingerprint.KeyFingerprint
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
@@ -34,6 +35,7 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.transport.JumpHostProxyData
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PubkeyUtils
@@ -52,6 +54,7 @@ import javax.inject.Singleton
 class SftpConnectionManager @Inject constructor(
     private val hostRepository: HostRepository,
     private val pubkeyRepository: PubkeyRepository,
+    private val dispatchers: CoroutineDispatchers,
 ) {
     companion object {
         private const val TAG = "CB.SftpConnMgr"
@@ -85,7 +88,7 @@ class SftpConnectionManager @Inject constructor(
     suspend fun connect(
         host: Host,
         promptHandler: SftpPromptHandler,
-    ): Result<SftpOperations> = withContext(Dispatchers.IO) {
+    ): Result<SftpOperations> = withContext(dispatchers.io) {
         // Check for existing session
         sessionMutex.withLock {
             activeSessions[host.id]?.let { session ->
@@ -94,12 +97,13 @@ class SftpConnectionManager @Inject constructor(
         }
 
         val jumpConnections = mutableListOf<Connection>()
+        val keyCache = SftpAuthKeyCache()
         try {
             // Resolve ProxyJump chain before connecting to the target
             val directJumpConnection = host.jumpHostId?.takeIf { it > 0 }?.let { jumpHostId ->
                 val jumpHost = hostRepository.findHostById(jumpHostId)
                     ?: throw IOException("Jump host (id=$jumpHostId) not found")
-                connectToJumpHost(jumpHost, promptHandler, jumpConnections)
+                connectToJumpHost(jumpHost, promptHandler, jumpConnections, keyCache)
             }
 
             val connection = Connection(host.hostname, host.port)
@@ -118,7 +122,7 @@ class SftpConnectionManager @Inject constructor(
             connection.connect(hostKeyVerifier)
 
             // Authenticate
-            val authenticated = authenticate(connection, host, promptHandler)
+            val authenticated = authenticate(connection, host, promptHandler, keyCache)
             if (!authenticated) {
                 connection.close()
                 closeJumpConnections(jumpConnections)
@@ -152,6 +156,7 @@ class SftpConnectionManager @Inject constructor(
         jumpHost: Host,
         promptHandler: SftpPromptHandler,
         jumpConnections: MutableList<Connection>,
+        keyCache: SftpAuthKeyCache,
     ): Connection {
         val jc = Connection(jumpHost.hostname, jumpHost.port)
 
@@ -159,7 +164,7 @@ class SftpConnectionManager @Inject constructor(
         jumpHost.jumpHostId?.takeIf { it > 0 }?.let { nestedId ->
             val nested = hostRepository.findHostById(nestedId)
                 ?: throw IOException("Jump host (id=$nestedId) not found")
-            val nestedConnection = connectToJumpHost(nested, promptHandler, jumpConnections)
+            val nestedConnection = connectToJumpHost(nested, promptHandler, jumpConnections, keyCache)
             jc.setProxyData(JumpHostProxyData(nestedConnection))
         }
 
@@ -171,7 +176,7 @@ class SftpConnectionManager @Inject constructor(
             jc.connect(SftpHostKeyVerifier(jumpHost, promptHandler))
             jumpConnections.add(jc)
 
-            if (!authenticate(jc, jumpHost, promptHandler)) {
+            if (!authenticate(jc, jumpHost, promptHandler, keyCache)) {
                 throw IOException("Authentication to jump host ${jumpHost.nickname} failed")
             }
             Log.d(TAG, "Authenticated to jump host ${jumpHost.nickname}")
@@ -259,6 +264,7 @@ class SftpConnectionManager @Inject constructor(
         connection: Connection,
         host: Host,
         promptHandler: SftpPromptHandler,
+        keyCache: SftpAuthKeyCache,
     ): Boolean {
         // Try 'none' authentication first
         try {
@@ -275,7 +281,7 @@ class SftpConnectionManager @Inject constructor(
             if (host.pubkeyId != HostConstants.PUBKEYID_NEVER &&
                 connection.isAuthMethodAvailable(host.username, AUTH_PUBLICKEY)
             ) {
-                if (tryPublicKeyAuth(connection, host, promptHandler)) {
+                if (tryPublicKeyAuth(connection, host, promptHandler, keyCache)) {
                     return true
                 }
             }
@@ -310,6 +316,7 @@ class SftpConnectionManager @Inject constructor(
         connection: Connection,
         host: Host,
         promptHandler: SftpPromptHandler,
+        keyCache: SftpAuthKeyCache,
     ): Boolean {
         val pubkeyId = host.pubkeyId
 
@@ -317,13 +324,16 @@ class SftpConnectionManager @Inject constructor(
             // Try all available keys
             val allKeys = pubkeyRepository.getAll()
             for (pubkey in allKeys) {
-                val keyPair = loadKeyPair(pubkey, promptHandler) ?: continue
+                val keyPair = loadKeyPair(pubkey, promptHandler, keyCache) ?: continue
                 try {
                     if (connection.authenticateWithPublicKey(host.username, keyPair)) {
                         Log.d(TAG, "Authenticated with key: ${pubkey.nickname}")
                         return true
                     }
                 } catch (e: Exception) {
+                    if (e.isBiometricKeyAuthenticationException()) {
+                        keyCache.remove(pubkey)
+                    }
                     Log.d(TAG, "Key ${pubkey.nickname} failed: ${e.message}")
                 }
             }
@@ -331,7 +341,7 @@ class SftpConnectionManager @Inject constructor(
             // Try specific key
             val pubkey = pubkeyRepository.getById(pubkeyId)
             if (pubkey != null) {
-                val keyPair = loadKeyPair(pubkey, promptHandler)
+                val keyPair = loadKeyPair(pubkey, promptHandler, keyCache)
                 if (keyPair != null) {
                     try {
                         if (connection.authenticateWithPublicKey(host.username, keyPair)) {
@@ -339,6 +349,9 @@ class SftpConnectionManager @Inject constructor(
                             return true
                         }
                     } catch (e: Exception) {
+                        if (e.isBiometricKeyAuthenticationException()) {
+                            keyCache.remove(pubkey)
+                        }
                         Log.d(TAG, "Key ${pubkey.nickname} failed: ${e.message}")
                     }
                 }
@@ -351,7 +364,13 @@ class SftpConnectionManager @Inject constructor(
     private suspend fun loadKeyPair(
         pubkey: Pubkey,
         promptHandler: SftpPromptHandler,
+        keyCache: SftpAuthKeyCache,
     ): KeyPair? {
+        keyCache.get(pubkey)?.let { keyPair ->
+            Log.d(TAG, "Found unlocked key '${pubkey.nickname}' already in SFTP auth cache")
+            return keyPair
+        }
+
         // Handle Android Keystore (biometric) keys
         if (pubkey.storageType == KeyStorageType.ANDROID_KEYSTORE) {
             val keystoreAlias = pubkey.keystoreAlias ?: return null
@@ -370,7 +389,7 @@ class SftpConnectionManager @Inject constructor(
                 if (publicKey == null || privateKey == null) {
                     null
                 } else {
-                    KeyPair(publicKey, privateKey)
+                    KeyPair(publicKey, privateKey).also { keyCache.put(pubkey, it) }
                 }
             } catch (e: Exception) {
                 Log.e(TAG, "Failed to load biometric key: ${pubkey.nickname}", e)
@@ -388,7 +407,7 @@ class SftpConnectionManager @Inject constructor(
         }
 
         return try {
-            if (pubkey.type == "IMPORTED") {
+            val keyPair = if (pubkey.type == "IMPORTED") {
                 val privateKey = pubkey.privateKey ?: return null
                 PEMDecoder.decode(String(privateKey, StandardCharsets.UTF_8).toCharArray(), password)
             } else {
@@ -397,10 +416,19 @@ class SftpConnectionManager @Inject constructor(
                 val pubKey = PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type)
                 KeyPair(pubKey, privKey)
             }
+            keyPair.also { keyCache.put(pubkey, it) }
         } catch (e: Exception) {
             Log.e(TAG, "Failed to decode key: ${pubkey.nickname}", e)
             null
         }
+    }
+
+    private fun Exception.isBiometricKeyAuthenticationException(): Boolean {
+        val rootCause = this.cause ?: this
+        return rootCause is KeyPermanentlyInvalidatedException ||
+            rootCause is UserNotAuthenticatedException ||
+            this is KeyPermanentlyInvalidatedException ||
+            this is UserNotAuthenticatedException
     }
 
     private suspend fun tryKeyboardInteractiveAuth(
