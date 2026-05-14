@@ -111,6 +111,7 @@ import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
@@ -190,14 +191,39 @@ internal fun sessionSwipeTarget(
     return targetIndex.takeIf { it != currentIndex }
 }
 
+@VisibleForTesting
+internal fun isSessionSwipeStartExcluded(
+    startY: Float,
+    viewportHeight: Int,
+    excludedBottomHeightPx: Float,
+): Boolean {
+    if (viewportHeight <= 0 || excludedBottomHeightPx <= 0f) {
+        return false
+    }
+
+    return startY >= (viewportHeight - excludedBottomHeightPx).coerceAtLeast(0f)
+}
+
 private fun Modifier.sessionSwipeNavigation(
     currentIndex: Int,
     sessionCount: Int,
     onSwipeToSession: (Int) -> Unit,
     onInteraction: () -> Unit,
-): Modifier = pointerInput(currentIndex, sessionCount) {
+    excludedBottomHeight: Dp = 0.dp,
+): Modifier = pointerInput(currentIndex, sessionCount, excludedBottomHeight) {
+    val excludedBottomHeightPx = excludedBottomHeight.toPx()
+
     awaitEachGesture {
         val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+        if (isSessionSwipeStartExcluded(
+                startY = down.position.y,
+                viewportHeight = size.height,
+                excludedBottomHeightPx = excludedBottomHeightPx,
+            )
+        ) {
+            return@awaitEachGesture
+        }
+
         val pointerId = down.id
         var dragX = 0f
         var dragY = 0f
@@ -875,6 +901,11 @@ fun ConsoleScreen(
                                         sessionCount = uiState.bridges.size,
                                         onSwipeToSession = { index -> viewModel.selectBridge(index) },
                                         onInteraction = { handleTerminalInteraction(isTerminalTap = true) },
+                                        excludedBottomHeight = if (showExtraKeyboard) {
+                                            TERMINAL_KEYBOARD_HEIGHT_DP.dp
+                                        } else {
+                                            0.dp
+                                        },
                                     ),
                                 userScrollEnabled = false,
                                 key = { page -> uiState.bridges[page].host.id },

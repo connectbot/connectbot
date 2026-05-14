@@ -18,7 +18,9 @@
 package org.connectbot.ui.screens.console
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class SessionSwipeNavigationTest {
@@ -98,6 +100,44 @@ class SessionSwipeNavigationTest {
                 dragY = 180f,
                 viewportWidth = 1000,
                 touchSlop = 20f,
+            ),
+        )
+    }
+
+    @Test
+    fun isSessionSwipeStartExcluded_excludesBottomArea() {
+        assertFalse(
+            isSessionSwipeStartExcluded(
+                startY = 969f,
+                viewportHeight = 1000,
+                excludedBottomHeightPx = 30f,
+            ),
+        )
+
+        assertTrue(
+            isSessionSwipeStartExcluded(
+                startY = 970f,
+                viewportHeight = 1000,
+                excludedBottomHeightPx = 30f,
+            ),
+        )
+    }
+
+    @Test
+    fun isSessionSwipeStartExcluded_ignoresInvalidExclusion() {
+        assertFalse(
+            isSessionSwipeStartExcluded(
+                startY = 999f,
+                viewportHeight = 1000,
+                excludedBottomHeightPx = 0f,
+            ),
+        )
+
+        assertFalse(
+            isSessionSwipeStartExcluded(
+                startY = 999f,
+                viewportHeight = 0,
+                excludedBottomHeightPx = 30f,
             ),
         )
     }
