@@ -23,6 +23,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import org.connectbot.terminal.ModifierManager
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.VTermKey
+import org.connectbot.util.keybar.BuiltinKeyDispatch
+import org.connectbot.util.keybar.BuiltinKeyId
+import org.connectbot.util.keybar.dispatch
 
 // Internal modifier bitmasks
 private const val OUR_CTRL_ON = 0x01
@@ -91,6 +94,43 @@ class TerminalKeyListener(
     fun sendPressedKey(key: Int) {
         keyDispatcher.dispatchKey(modifiersForTerminal, key)
         clearTransients()
+    }
+
+    /**
+     * Dispatches a built-in key bar action.
+     *
+     * - Modifiers go through [metaPress] with `forceSticky = true`
+     *   so on-screen taps cycle the modifier into TRANSIENT state.
+     * - VTerm keys go through [sendPressedKey] so the current
+     *   modifier state composes (e.g. Tab built-in + sticky Ctrl
+     *   sends Ctrl+Tab).
+     * - Raw byte sequences are written through the provided sink
+     *   (in production: `bridge::sendBytes`). Sticky modifier
+     *   state is intentionally NOT applied to raw sequences —
+     *   they already encode their intended semantics. Transients
+     *   are cleared after the write so the user's pending Ctrl/Alt
+     *   doesn't carry over to the next key event.
+     *
+     * @param id the built-in to fire.
+     * @param byteSink callback invoked for [BuiltinKeyDispatch.ByteSequence]
+     *   actions; receives the bytes to write to the SSH transport.
+     */
+    fun sendBuiltin(
+        id: BuiltinKeyId,
+        byteSink: (ByteArray) -> Unit,
+    ) {
+        when (val action = id.dispatch()) {
+            is BuiltinKeyDispatch.Modifier ->
+                metaPress(action.ourMask, forceSticky = true)
+
+            is BuiltinKeyDispatch.VTerm ->
+                sendPressedKey(action.key)
+
+            is BuiltinKeyDispatch.ByteSequence -> {
+                byteSink(action.bytes)
+                clearTransients()
+            }
+        }
     }
 
     /**

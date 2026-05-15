@@ -32,11 +32,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowLeft
-import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material.icons.filled.KeyboardHide
 import androidx.compose.material3.Icon
@@ -59,12 +59,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.preference.PreferenceManager
+import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -72,9 +71,10 @@ import org.connectbot.R
 import org.connectbot.service.ModifierLevel
 import org.connectbot.service.ModifierState
 import org.connectbot.service.TerminalBridge
-import org.connectbot.service.TerminalKeyListener
-import org.connectbot.terminal.VTermKey
-import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.keybar.BuiltinKeyId
+import org.connectbot.util.keybar.KeyEntry
+import org.connectbot.util.keybar.MacroEscape
+import timber.log.Timber
 
 private const val UI_OPACITY = 0.5f
 
@@ -109,31 +109,26 @@ fun TerminalKeyboard(
     onScrollInProgressChange: (Boolean) -> Unit = {},
     imeVisible: Boolean = false,
     playAnimation: Boolean = false,
+    keyBarVm: KeyBarViewModel = hiltViewModel(),
 ) {
-    val context = LocalContext.current
-    val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
     val keyHandler = bridge.keyHandler
     val modifierState by keyHandler.modifierState.collectAsState()
-    val bumpyArrows by remember {
-        mutableStateOf(prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, false))
-    }
+    val config by keyBarVm.config.collectAsState()
+    val bumpyArrows by keyBarVm.bumpyArrows.collectAsState()
 
     TerminalKeyboardContent(
         modifierState = modifierState,
-        onCtrlPress = {
-            keyHandler.metaPress(TerminalKeyListener.CTRL_ON, true)
+        config = config,
+        onBuiltinPress = { id ->
+            keyHandler.sendBuiltin(id) { bytes -> bridge.sendBytes(bytes) }
             onInteraction()
         },
-        onEscPress = {
-            keyHandler.sendEscape()
-            onInteraction()
-        },
-        onTabPress = {
-            keyHandler.sendTab()
-            onInteraction()
-        },
-        onKeyPress = { key ->
-            keyHandler.sendPressedKey(key)
+        onMacroPress = { macro ->
+            runCatching { MacroEscape.expand(macro.text) }
+                .onSuccess { bytes -> bridge.sendBytes(bytes) }
+                .onFailure { e ->
+                    Timber.w(e, "Failed to expand macro %s; ignoring tap", macro.label)
+                }
             onInteraction()
         },
         onInteraction = onInteraction,
@@ -155,10 +150,9 @@ fun TerminalKeyboard(
 @Composable
 private fun TerminalKeyboardContent(
     modifierState: ModifierState,
-    onCtrlPress: () -> Unit,
-    onEscPress: () -> Unit,
-    onTabPress: () -> Unit,
-    onKeyPress: (Int) -> Unit,
+    config: List<KeyEntry>,
+    onBuiltinPress: (BuiltinKeyId) -> Unit,
+    onMacroPress: (KeyEntry.Macro) -> Unit,
     onInteraction: () -> Unit,
     onHideIme: () -> Unit,
     onShowIme: () -> Unit,
@@ -230,171 +224,28 @@ private fun TerminalKeyboardContent(
                     .horizontalScroll(scrollState),
                 horizontalArrangement = Arrangement.Start, // No spacing between keys
             ) {
-                // Ctrl key (sticky modifier)
-                ModifierKeyButton(
-                    text = stringResource(R.string.button_key_ctrl),
-                    contentDescription = stringResource(R.string.image_description_toggle_control_character),
-                    modifierLevel = modifierState.ctrlState,
-                    onClick = onCtrlPress,
-                )
-
-                // Esc key
-                KeyButton(
-                    text = stringResource(R.string.button_key_esc),
-                    contentDescription = stringResource(R.string.image_description_send_escape_character),
-                    onClick = onEscPress,
-                )
-
-                // Tab key
-                KeyButton(
-                    text = "⇥", // Tab symbol
-                    contentDescription = stringResource(R.string.image_description_send_tab_character),
-                    onClick = onTabPress,
-                )
-
-                // Arrow keys (repeatable)
-                RepeatableKeyButton(
-                    icon = Icons.Default.KeyboardArrowUp,
-                    contentDescription = stringResource(R.string.image_description_up),
-                    onPress = {
-                        onKeyPress(VTermKey.UP)
-                        if (bumpyArrows) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                config.forEach { entry ->
+                    when (entry) {
+                        is KeyEntry.Builtin -> {
+                            if (!entry.visible) return@forEach
+                            BarBuiltinButton(
+                                id = entry.id,
+                                modifierState = modifierState,
+                                bumpyArrows = bumpyArrows,
+                                view = view,
+                                onClick = { onBuiltinPress(entry.id) },
+                            )
                         }
-                    },
-                )
 
-                RepeatableKeyButton(
-                    icon = Icons.Default.KeyboardArrowDown,
-                    contentDescription = stringResource(R.string.image_description_down),
-                    onPress = {
-                        onKeyPress(VTermKey.DOWN)
-                        if (bumpyArrows) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                        is KeyEntry.Macro -> {
+                            if (!entry.visible) return@forEach
+                            BarMacroButton(
+                                entry = entry,
+                                onClick = { onMacroPress(entry) },
+                            )
                         }
-                    },
-                )
-
-                RepeatableKeyButton(
-                    icon = Icons.Default.KeyboardArrowLeft,
-                    contentDescription = stringResource(R.string.image_description_left),
-                    onPress = {
-                        onKeyPress(VTermKey.LEFT)
-                        if (bumpyArrows) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                        }
-                    },
-                )
-
-                RepeatableKeyButton(
-                    icon = Icons.Default.KeyboardArrowRight,
-                    contentDescription = stringResource(R.string.image_description_right),
-                    onPress = {
-                        onKeyPress(VTermKey.RIGHT)
-                        if (bumpyArrows) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                        }
-                    },
-                )
-
-                // Home/End
-                KeyButton(
-                    text = stringResource(R.string.button_key_home),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.HOME) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_end),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.END) },
-                )
-
-                // Page Up/Down
-                KeyButton(
-                    text = stringResource(R.string.button_key_pgup),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.PAGEUP) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_pgdn),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.PAGEDOWN) },
-                )
-
-                // Function keys F1-F12
-                KeyButton(
-                    text = stringResource(R.string.button_key_f1),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_1) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f2),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_2) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f3),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_3) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f4),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_4) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f5),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_5) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f6),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_6) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f7),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_7) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f8),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_8) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f9),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_9) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f10),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_10) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f11),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_11) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f12),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_12) },
-                )
+                    }
+                }
             }
 
             // Text input button (always visible on right)
@@ -460,6 +311,180 @@ private fun TerminalKeyboardContent(
             }
         }
     }
+}
+
+/**
+ * Renders one built-in key for the on-screen bar. Dispatches to the
+ * appropriate visual primitive (ModifierKeyButton, RepeatableKeyButton,
+ * KeyButton) based on the [BuiltinKeyId] and supplies the right
+ * label, contentDescription, and modifier-state slice.
+ */
+@Composable
+private fun BarBuiltinButton(
+    id: BuiltinKeyId,
+    modifierState: ModifierState,
+    bumpyArrows: Boolean,
+    view: android.view.View,
+    onClick: () -> Unit,
+) {
+    when (id) {
+        BuiltinKeyId.CTRL -> ModifierKeyButton(
+            text = stringResource(R.string.button_key_ctrl),
+            contentDescription = stringResource(R.string.image_description_toggle_control_character),
+            modifierLevel = modifierState.ctrlState,
+            onClick = onClick,
+        )
+
+        BuiltinKeyId.ALT -> ModifierKeyButton(
+            text = stringResource(R.string.button_key_alt),
+            contentDescription = stringResource(R.string.image_description_send_alt_character),
+            modifierLevel = modifierState.altState,
+            onClick = onClick,
+        )
+
+        BuiltinKeyId.SHIFT -> ModifierKeyButton(
+            text = stringResource(R.string.button_key_shift),
+            contentDescription = stringResource(R.string.image_description_send_shift_character),
+            modifierLevel = modifierState.shiftState,
+            onClick = onClick,
+        )
+
+        BuiltinKeyId.ESC -> KeyButton(
+            text = stringResource(R.string.button_key_esc),
+            contentDescription = stringResource(R.string.image_description_send_escape_character),
+            onClick = onClick,
+        )
+
+        BuiltinKeyId.TAB -> KeyButton(
+            text = "⇥",
+            contentDescription = stringResource(R.string.image_description_send_tab_character),
+            onClick = onClick,
+        )
+
+        BuiltinKeyId.ENTER -> KeyButton(
+            text = stringResource(R.string.button_key_enter),
+            contentDescription = null,
+            onClick = onClick,
+        )
+
+        BuiltinKeyId.BACKSPACE -> KeyButton(
+            text = stringResource(R.string.button_key_backspace),
+            contentDescription = null,
+            onClick = onClick,
+        )
+
+        BuiltinKeyId.DELETE -> KeyButton(
+            text = stringResource(R.string.button_key_delete),
+            contentDescription = null,
+            onClick = onClick,
+        )
+
+        BuiltinKeyId.INSERT -> KeyButton(
+            text = stringResource(R.string.button_key_insert),
+            contentDescription = null,
+            onClick = onClick,
+        )
+
+        BuiltinKeyId.UP -> RepeatableKeyButton(
+            icon = Icons.Default.KeyboardArrowUp,
+            contentDescription = stringResource(R.string.image_description_up),
+            onPress = {
+                onClick()
+                maybeBump(bumpyArrows, view)
+            },
+        )
+
+        BuiltinKeyId.DOWN -> RepeatableKeyButton(
+            icon = Icons.Default.KeyboardArrowDown,
+            contentDescription = stringResource(R.string.image_description_down),
+            onPress = {
+                onClick()
+                maybeBump(bumpyArrows, view)
+            },
+        )
+
+        BuiltinKeyId.LEFT -> RepeatableKeyButton(
+            icon = Icons.AutoMirrored.Filled.KeyboardArrowLeft,
+            contentDescription = stringResource(R.string.image_description_left),
+            onPress = {
+                onClick()
+                maybeBump(bumpyArrows, view)
+            },
+        )
+
+        BuiltinKeyId.RIGHT -> RepeatableKeyButton(
+            icon = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+            contentDescription = stringResource(R.string.image_description_right),
+            onPress = {
+                onClick()
+                maybeBump(bumpyArrows, view)
+            },
+        )
+
+        BuiltinKeyId.HOME -> KeyButton(
+            text = stringResource(R.string.button_key_home),
+            contentDescription = null,
+            onClick = onClick,
+        )
+
+        BuiltinKeyId.END -> KeyButton(
+            text = stringResource(R.string.button_key_end),
+            contentDescription = null,
+            onClick = onClick,
+        )
+
+        BuiltinKeyId.PG_UP -> KeyButton(
+            text = stringResource(R.string.button_key_pgup),
+            contentDescription = null,
+            onClick = onClick,
+        )
+
+        BuiltinKeyId.PG_DN -> KeyButton(
+            text = stringResource(R.string.button_key_pgdn),
+            contentDescription = null,
+            onClick = onClick,
+        )
+
+        BuiltinKeyId.F1 -> KeyButton(text = stringResource(R.string.button_key_f1), contentDescription = null, onClick = onClick)
+
+        BuiltinKeyId.F2 -> KeyButton(text = stringResource(R.string.button_key_f2), contentDescription = null, onClick = onClick)
+
+        BuiltinKeyId.F3 -> KeyButton(text = stringResource(R.string.button_key_f3), contentDescription = null, onClick = onClick)
+
+        BuiltinKeyId.F4 -> KeyButton(text = stringResource(R.string.button_key_f4), contentDescription = null, onClick = onClick)
+
+        BuiltinKeyId.F5 -> KeyButton(text = stringResource(R.string.button_key_f5), contentDescription = null, onClick = onClick)
+
+        BuiltinKeyId.F6 -> KeyButton(text = stringResource(R.string.button_key_f6), contentDescription = null, onClick = onClick)
+
+        BuiltinKeyId.F7 -> KeyButton(text = stringResource(R.string.button_key_f7), contentDescription = null, onClick = onClick)
+
+        BuiltinKeyId.F8 -> KeyButton(text = stringResource(R.string.button_key_f8), contentDescription = null, onClick = onClick)
+
+        BuiltinKeyId.F9 -> KeyButton(text = stringResource(R.string.button_key_f9), contentDescription = null, onClick = onClick)
+
+        BuiltinKeyId.F10 -> KeyButton(text = stringResource(R.string.button_key_f10), contentDescription = null, onClick = onClick)
+
+        BuiltinKeyId.F11 -> KeyButton(text = stringResource(R.string.button_key_f11), contentDescription = null, onClick = onClick)
+
+        BuiltinKeyId.F12 -> KeyButton(text = stringResource(R.string.button_key_f12), contentDescription = null, onClick = onClick)
+    }
+}
+
+@Composable
+private fun BarMacroButton(
+    entry: KeyEntry.Macro,
+    onClick: () -> Unit,
+) {
+    KeyButton(
+        text = entry.label,
+        contentDescription = entry.label, // label is the user-chosen description
+        onClick = onClick,
+    )
+}
+
+private fun maybeBump(enabled: Boolean, view: android.view.View) {
+    if (enabled) view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
 }
 
 /**
@@ -639,10 +664,17 @@ private fun TerminalKeyboardPreview() {
                 altState = ModifierLevel.OFF,
                 shiftState = ModifierLevel.OFF,
             ),
-            onCtrlPress = {},
-            onEscPress = {},
-            onTabPress = {},
-            onKeyPress = {},
+            config = listOf(
+                org.connectbot.util.keybar.KeyEntry.Builtin(BuiltinKeyId.CTRL, visible = true),
+                org.connectbot.util.keybar.KeyEntry.Builtin(BuiltinKeyId.ESC, visible = true),
+                org.connectbot.util.keybar.KeyEntry.Builtin(BuiltinKeyId.TAB, visible = true),
+                org.connectbot.util.keybar.KeyEntry.Builtin(BuiltinKeyId.UP, visible = true),
+                org.connectbot.util.keybar.KeyEntry.Builtin(BuiltinKeyId.DOWN, visible = true),
+                org.connectbot.util.keybar.KeyEntry.Builtin(BuiltinKeyId.LEFT, visible = true),
+                org.connectbot.util.keybar.KeyEntry.Builtin(BuiltinKeyId.RIGHT, visible = true),
+            ),
+            onBuiltinPress = {},
+            onMacroPress = {},
             onInteraction = {},
             onHideIme = {},
             onShowIme = {},
@@ -665,10 +697,12 @@ private fun TerminalKeyboardCtrlPressedPreview() {
                 altState = ModifierLevel.OFF,
                 shiftState = ModifierLevel.OFF,
             ),
-            onCtrlPress = {},
-            onEscPress = {},
-            onTabPress = {},
-            onKeyPress = {},
+            config = listOf(
+                org.connectbot.util.keybar.KeyEntry.Builtin(BuiltinKeyId.CTRL, visible = true),
+                org.connectbot.util.keybar.KeyEntry.Builtin(BuiltinKeyId.ESC, visible = true),
+            ),
+            onBuiltinPress = {},
+            onMacroPress = {},
             onInteraction = {},
             onHideIme = {},
             onShowIme = {},
@@ -691,10 +725,12 @@ private fun TerminalKeyboardCtrlLockedPreview() {
                 altState = ModifierLevel.OFF,
                 shiftState = ModifierLevel.OFF,
             ),
-            onCtrlPress = {},
-            onEscPress = {},
-            onTabPress = {},
-            onKeyPress = {},
+            config = listOf(
+                org.connectbot.util.keybar.KeyEntry.Builtin(BuiltinKeyId.CTRL, visible = true),
+                org.connectbot.util.keybar.KeyEntry.Builtin(BuiltinKeyId.ESC, visible = true),
+            ),
+            onBuiltinPress = {},
+            onMacroPress = {},
             onInteraction = {},
             onHideIme = {},
             onShowIme = {},
@@ -717,10 +753,12 @@ private fun TerminalKeyboardImeVisiblePreview() {
                 altState = ModifierLevel.OFF,
                 shiftState = ModifierLevel.OFF,
             ),
-            onCtrlPress = {},
-            onEscPress = {},
-            onTabPress = {},
-            onKeyPress = {},
+            config = listOf(
+                org.connectbot.util.keybar.KeyEntry.Builtin(BuiltinKeyId.CTRL, visible = true),
+                org.connectbot.util.keybar.KeyEntry.Builtin(BuiltinKeyId.ESC, visible = true),
+            ),
+            onBuiltinPress = {},
+            onMacroPress = {},
             onInteraction = {},
             onHideIme = {},
             onShowIme = {},

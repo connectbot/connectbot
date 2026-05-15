@@ -361,6 +361,58 @@
 	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
 	<string name="pref_bumpyarrows_summary">"Vibrate when sending arrow keys; useful for laggy connections"</string>
 
+	<!-- Customize key bar — Settings entry. -->
+	<string name="pref_keybar_title">Customize key bar</string>
+	<string name="pref_keybar_summary">Choose which keys appear on the on-screen key row</string>
+
+	<!-- Customize key bar — macro add/edit dialog. -->
+	<string name="keybar_macro_dialog_title_add">Add custom button</string>
+	<string name="keybar_macro_dialog_title_edit">Edit custom button</string>
+	<string name="keybar_macro_label_field">Label</string>
+	<string name="keybar_macro_sends_field">Sends</string>
+	<string name="keybar_macro_tip">C-style escapes — \\n \\t \\r \\e \\0. \\xHH sends any byte (Ctrl+A=\\x01 … Ctrl+Z=\\x1a). \\\\ for a literal backslash.</string>
+	<string name="keybar_macro_label_too_long">Label is too long (max %1$d characters)</string>
+	<string name="keybar_macro_invalid_escape">Invalid escape sequence</string>
+
+    <!-- Customize key bar — editor screen. -->
+    <string name="keybar_screen_title">Customize key bar</string>
+    <string name="keybar_add_custom">Add custom button</string>
+    <string name="keybar_reset">Reset to defaults</string>
+    <string name="keybar_reset_confirm_title">Reset key bar?</string>
+    <string name="keybar_reset_confirm_message">This will remove your custom buttons and restore the original key order.</string>
+
+    <!-- Customize key bar — delete macro confirmation. -->
+    <string name="keybar_delete_confirm_title">Delete custom button?</string>
+    <string name="keybar_delete_confirm_message">Delete \"%1$s\"? This cannot be undone.</string>
+
+    <!-- Customize key bar — accessibility. -->
+    <string name="keybar_a11y_drag_handle">Drag to reorder; double-tap and hold</string>
+    <string name="keybar_a11y_move_up">Move up</string>
+    <string name="keybar_a11y_move_down">Move down</string>
+    <string name="keybar_a11y_edit_macro">Edit custom button</string>
+    <string name="keybar_a11y_delete_macro">Delete custom button</string>
+
+    <!-- Customize key bar — built-in catalog labels added by this PR. -->
+    <!-- Text for the "Alt" button in virtual keyboard. -->
+    <string name="button_key_alt">Alt</string>
+    <!-- Text for the "Shift" button in virtual keyboard. -->
+    <string name="button_key_shift">Shift</string>
+    <!-- Text for the "Tab" button in virtual keyboard. -->
+    <string name="button_key_tab">Tab</string>
+    <!-- Text for the "Enter" button in virtual keyboard. -->
+    <string name="button_key_enter">Enter</string>
+    <!-- Text for the "Backspace" button in virtual keyboard. -->
+    <string name="button_key_backspace">Backspace</string>
+    <!-- Text for the "Delete" button in virtual keyboard. -->
+    <string name="button_key_delete">Delete</string>
+    <!-- Text for the "Insert" button in virtual keyboard. -->
+    <string name="button_key_insert">Insert</string>
+    <!-- Text for the arrow buttons in virtual keyboard (used by the editor). -->
+    <string name="button_key_up">Up</string>
+    <string name="button_key_down">Down</string>
+    <string name="button_key_left">Left</string>
+    <string name="button_key_right">Right</string>
+
 	<!-- Category title for the Terminal Bell preferences -->
 	<string name="pref_bell_category">"Terminal bell"</string>
 
@@ -904,6 +956,10 @@
 	<!-- Describes the icon of the "send control character" button in the terminal view for
 	     accessibility purposes. -->
 	<string name="image_description_toggle_control_character">Toggle control character.</string>
+
+	<!-- Customize key bar — modifier toggles. -->
+	<string name="image_description_send_alt_character">Toggle Alt modifier.</string>
+	<string name="image_description_send_shift_character">Toggle Shift modifier.</string>
 
 	<!-- Describes the icon of the "send escape character" button in the terminal view for
 	     accessibility purposes. -->

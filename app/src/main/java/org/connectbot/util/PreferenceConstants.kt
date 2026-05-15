@@ -59,6 +59,8 @@ object PreferenceConstants {
 
     const val BUMPY_ARROWS: String = "bumpyarrows"
 
+    const val KEY_BAR_CONFIG: String = "keyBarConfig"
+
     const val SORT_BY_COLOR: String = "sortByColor"
 
     const val BELL: String = "bell"

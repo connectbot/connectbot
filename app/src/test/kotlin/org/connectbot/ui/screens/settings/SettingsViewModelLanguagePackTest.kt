@@ -19,6 +19,7 @@ package org.connectbot.ui.screens.settings
 
 import android.content.SharedPreferences
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
@@ -28,6 +29,8 @@ import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.di.FakeLanguagePackManager
 import org.connectbot.util.LanguageDownloadState
+import org.connectbot.util.keybar.KeyBarConfigRepository
+import org.connectbot.util.keybar.KeyEntry
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -51,6 +54,7 @@ class SettingsViewModelLanguagePackTest {
     private lateinit var prefsEditor: SharedPreferences.Editor
     private lateinit var profileRepository: ProfileRepository
     private lateinit var languagePackManager: FakeLanguagePackManager
+    private lateinit var keyBarRepo: KeyBarConfigRepository
     private lateinit var viewModel: SettingsViewModel
 
     @Before
@@ -59,6 +63,8 @@ class SettingsViewModelLanguagePackTest {
         prefsEditor = mock()
         profileRepository = mock()
         languagePackManager = FakeLanguagePackManager()
+        keyBarRepo = mock()
+        whenever(keyBarRepo.config).thenReturn(MutableStateFlow(emptyList<KeyEntry>()))
 
         whenever(prefs.edit()).thenReturn(prefsEditor)
         whenever(prefsEditor.putString(any(), any())).thenReturn(prefsEditor)
@@ -75,6 +81,7 @@ class SettingsViewModelLanguagePackTest {
             RuntimeEnvironment.getApplication(),
             dispatchers,
             languagePackManager,
+            keyBarRepo,
         )
         advanceUntilIdle()
     }
@@ -93,6 +100,7 @@ class SettingsViewModelLanguagePackTest {
             RuntimeEnvironment.getApplication(),
             dispatchers,
             languagePackManager,
+            keyBarRepo,
         )
         advanceUntilIdle()
         assertThat(vm.uiState.value.installedLanguages).containsAll(setOf("de", "fr"))
