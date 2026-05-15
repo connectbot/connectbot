@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -520,7 +520,8 @@ class ConsoleViewModelTest {
             port = 22,
             username = "test",
         )
-        bridge.host = host
+        whenever(bridge.host).thenReturn(host)
+        whenever(bridge.sessionId).thenReturn(id)
         whenever(bridge.isSessionOpen).thenReturn(true)
         whenever(bridge.isDisconnected).thenReturn(false)
         whenever(bridge.bellEvents).thenReturn(MutableSharedFlow())
