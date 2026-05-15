@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -135,6 +135,7 @@ class Relay(
 
                     if (destBuffer.hasRemaining()) {
                         bridge.terminalEmulator.writeInput(destBuffer.array(), 0, destBuffer.limit())
+                        bridge.recordForUrlScan(destBuffer.array(), 0, destBuffer.limit())
                     }
                     destBuffer.clear()
                     charBuffer.compact()
@@ -150,6 +151,7 @@ class Relay(
                                         0,
                                         destBuffer.limit(),
                                     )
+                                    bridge.recordForUrlScan(destBuffer.array(), 0, destBuffer.limit())
                                 }
                                 destBuffer.clear()
 
