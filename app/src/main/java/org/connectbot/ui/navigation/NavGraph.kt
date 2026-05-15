@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -45,6 +45,7 @@ import org.connectbot.ui.screens.profiles.ProfileListScreen
 import org.connectbot.ui.screens.pubkeyeditor.PubkeyEditorScreen
 import org.connectbot.ui.screens.pubkeylist.PubkeyListScreen
 import org.connectbot.ui.screens.settings.SettingsScreen
+import org.connectbot.ui.screens.sftpbrowser.SftpBrowserScreen
 import org.connectbot.util.IconStyle
 import timber.log.Timber
 
@@ -87,6 +88,9 @@ fun ConnectBotNavHost(
                 },
                 onNavigateToPortForwards = { host ->
                     navController.navigateSafely("${NavDestinations.PORT_FORWARD_LIST}/${host.id}")
+                },
+                onNavigateToSftp = { host ->
+                    navController.navigate("${NavDestinations.SFTP_BROWSER}/${host.id}")
                 },
                 onNavigateToProfiles = {
                     navController.navigateSafely(NavDestinations.PROFILES)
@@ -164,6 +168,17 @@ fun ConnectBotNavHost(
             ),
         ) {
             PortForwardListScreen(
+                onNavigateBack = { navController.safePopBackStack() },
+            )
+        }
+
+        composable(
+            route = "${NavDestinations.SFTP_BROWSER}/{${NavArgs.HOST_ID}}",
+            arguments = listOf(
+                navArgument(NavArgs.HOST_ID) { type = NavType.LongType },
+            ),
+        ) {
+            SftpBrowserScreen(
                 onNavigateBack = { navController.safePopBackStack() },
             )
         }
