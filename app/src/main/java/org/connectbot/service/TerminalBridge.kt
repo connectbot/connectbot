@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -181,6 +181,14 @@ class TerminalBridge {
     private val fontSizeChangedListeners: MutableList<FontSizeChangedListener>
 
     private val localOutput: MutableList<String>
+
+    // Rolling buffer of recent terminal output, used only by [scanForURLs]. Bytes are stored as
+    // Latin-1 chars (1:1) so URL ASCII bytes survive regardless of the terminal's encoding.
+    // Escape sequences are kept in-buffer — they don't form URL-like substrings, and stripping
+    // them would require an ANSI parser this scan-only path doesn't need.
+    private val urlScanBuffer = StringBuilder()
+    private val urlScanBufferLock = Any()
+    private val urlScanBufferLimit = 64 * 1024
 
     /**
      * Flag indicating if we should perform a full-screen redraw during our next
@@ -526,7 +534,27 @@ class TerminalBridge {
 
                 localOutput.add(s)
 
-                terminalEmulator.writeInput(s.encodeToByteArray())
+                val bytes = s.encodeToByteArray()
+                terminalEmulator.writeInput(bytes)
+                recordForUrlScan(bytes, 0, bytes.size)
+            }
+        }
+    }
+
+    /**
+     * Append a chunk of raw terminal-bound bytes to the URL-scan buffer, oldest content dropped
+     * when the buffer exceeds [urlScanBufferLimit]. Called from [outputLine] and from [Relay] so
+     * URL scanning works for both pre-auth banner text and live PTY output.
+     */
+    fun recordForUrlScan(data: ByteArray, offset: Int, length: Int) {
+        if (length <= 0) return
+        synchronized(urlScanBufferLock) {
+            for (i in offset until offset + length) {
+                urlScanBuffer.append((data[i].toInt() and 0xFF).toChar())
+            }
+            val excess = urlScanBuffer.length - urlScanBufferLimit
+            if (excess > 0) {
+                urlScanBuffer.delete(0, excess)
             }
         }
     }
@@ -964,24 +992,14 @@ class TerminalBridge {
         }
     }
 
-    /**
-     * @return
-     */
     fun scanForURLs(): List<String> {
-        // buffer!! is intentional - buffer is initialized in constructor and must be non-null
-        val urls = mutableListOf<String>()
-
-        // TODO(Terminal): replace URL scanner
-//        val visibleBuffer = CharArray(buffer!!.height * buffer!!.width)
-//        for (l in 0 until buffer!!.height)
-//            System.arraycopy(buffer!!.charArray[buffer!!.windowBase + l], 0,
-//                    visibleBuffer, l * buffer!!.width, buffer!!.width)
-//
-//        val urlMatcher = PatternHolder.urlPattern.matcher(String(visibleBuffer))
-//        while (urlMatcher.find())
-//            urls.add(urlMatcher.group())
-
-        return urls
+        val text = synchronized(urlScanBufferLock) { urlScanBuffer.toString() }
+        val urls = LinkedHashSet<String>()
+        val matcher = PatternHolder.urlPattern.matcher(text)
+        while (matcher.find()) {
+            urls.add(matcher.group())
+        }
+        return urls.toList()
     }
 
     /**
