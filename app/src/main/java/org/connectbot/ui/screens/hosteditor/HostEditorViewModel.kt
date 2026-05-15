@@ -33,6 +33,7 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.SecurePasswordStorage
 import javax.inject.Inject
 
@@ -60,6 +61,11 @@ data class HostEditorUiState(
     val ipVersion: String = "IPV4_AND_IPV6",
     val password: String = "",
     val hasExistingPassword: Boolean = false,
+    // Mosh-specific fields
+    val moshPort: String = "0",
+    val moshServer: String = "",
+    val locale: String = "en_US.UTF-8",
+    val moshSupport: Boolean = false,
     val isLoading: Boolean = false,
     val error: String? = null,
 )
@@ -75,7 +81,12 @@ class HostEditorViewModel @Inject constructor(
 ) : ViewModel() {
 
     private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
-    private val _uiState = MutableStateFlow(HostEditorUiState(hostId = hostId))
+    private val _uiState = MutableStateFlow(
+        HostEditorUiState(
+            hostId = hostId,
+            moshSupport = prefs.getBoolean(PreferenceConstants.MOSH_SUPPORT, false),
+        ),
+    )
     val uiState: StateFlow<HostEditorUiState> = _uiState.asStateFlow()
 
     init {
@@ -150,6 +161,10 @@ class HostEditorViewModel @Inject constructor(
                             jumpHostId = host.jumpHostId,
                             ipVersion = host.ipVersion,
                             hasExistingPassword = hasPassword,
+                            // Mosh-specific fields
+                            moshPort = host.moshPort.toString(),
+                            moshServer = host.moshServer ?: "",
+                            locale = host.locale,
                             isLoading = false,
                         )
                     }
@@ -260,6 +275,21 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(password = "", hasExistingPassword = false) }
     }
 
+    fun updateMoshPort(value: String) {
+        // Only allow numeric input
+        if (value.isEmpty() || value.all { it.isDigit() }) {
+            _uiState.update { it.copy(moshPort = value) }
+        }
+    }
+
+    fun updateMoshServer(value: String) {
+        _uiState.update { it.copy(moshServer = value) }
+    }
+
+    fun updateLocale(value: String) {
+        _uiState.update { it.copy(locale = value) }
+    }
+
     fun saveHost(useExpandedMode: Boolean) {
         viewModelScope.launch {
             try {
@@ -277,8 +307,8 @@ class HostEditorViewModel @Inject constructor(
                     state.nickname
                 }
 
-                // Only SSH hosts can have a jump host
-                val jumpHostId = if (state.protocol == "ssh") state.jumpHostId else null
+                // Only SSH and Mosh hosts can have a jump host
+                val jumpHostId = if (state.protocol == "ssh" || state.protocol == "mosh") state.jumpHostId else null
 
                 val host = Host(
                     id = existingHost?.id ?: 0L,
@@ -303,12 +333,16 @@ class HostEditorViewModel @Inject constructor(
                     useCtrlAltAsMetaKey = existingHost?.useCtrlAltAsMetaKey ?: false,
                     jumpHostId = jumpHostId,
                     ipVersion = state.ipVersion,
+                    // Mosh-specific fields
+                    moshPort = state.moshPort.toIntOrNull() ?: 0,
+                    moshServer = state.moshServer.ifBlank { null },
+                    locale = state.locale.ifBlank { "en_US.UTF-8" },
                 )
 
                 val savedHost = repository.saveHost(host)
 
-                // Handle password storage (only for SSH protocol)
-                if (state.protocol == "ssh") {
+                // Handle password storage (for SSH and Mosh protocols)
+                if (state.protocol == "ssh" || state.protocol == "mosh") {
                     if (state.password.isNotEmpty()) {
                         // Save or update the password
                         securePasswordStorage.savePassword(savedHost.id, state.password)

@@ -22,6 +22,7 @@ import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -110,6 +111,31 @@ class SettingsScreenTest {
 
         composeTestRule
             .onNodeWithText(connPersistTitle)
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun settingsScreen_moshSupportShowsGplConfirmation() {
+        val moshTitle = composeTestRule.activity.getString(R.string.pref_mosh_support_title)
+        val confirmTitle = composeTestRule.activity.getString(R.string.pref_mosh_confirm_title)
+        val confirmMessage = composeTestRule.activity.getString(R.string.pref_mosh_confirm_message)
+
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                SettingsScreen(onNavigateBack = {})
+            }
+        }
+
+        composeTestRule
+            .onNodeWithText(moshTitle)
+            .performScrollTo()
+            .performClick()
+
+        composeTestRule
+            .onNodeWithText(confirmTitle)
+            .assertIsDisplayed()
+        composeTestRule
+            .onNodeWithText(confirmMessage)
             .assertIsDisplayed()
     }
 }
