@@ -729,6 +729,8 @@
 	<string name="terminal_auth_biometric">"Requesting biometric authentication for key '%1$s'"</string>
 	<!-- Message shown when a biometric key has been invalidated due to new fingerprint enrollment. Parameter is the key nickname. -->
 	<string name="terminal_auth_biometric_invalidated">"Biometric key '%1$s' has been invalidated. This can happen when new fingerprints are enrolled on the device. Please generate a new key."</string>
+	<!-- Message shown in terminal when requesting FIDO2 security key authentication. Parameter is the key nickname. -->
+	<string name="terminal_auth_fido2">"Requesting FIDO2 security key authentication for key '%1$s'"</string>
 	<!-- Message shown in terminal when public key authentication fails. Parameter is the key nickname. -->
 	<string name="terminal_auth_pubkey_fail">"Authentication method 'publickey' with key '%1$s' failed"</string>
 
@@ -747,6 +749,53 @@
 
 	<!-- Error message shown when trying to open a local shell but it's not available on the device -->
 	<string name="local_shell_unavailable">"Failure! Local shell is unavailable on this phone."</string>
+
+	<!-- Mosh transport messages -->
+	<!-- Message shown when Mosh is used before the user enables and installs support. -->
+	<string name="terminal_mosh_disabled">"Mosh support is disabled. Enable it in Settings first."</string>
+	<!-- Message shown in terminal when starting Mosh connection -->
+	<string name="terminal_mosh_starting">"Starting Mosh connection…"</string>
+	<!-- Message shown in terminal when Mosh installation times out -->
+	<string name="terminal_mosh_install_timeout">"Warning: Mosh installation timed out"</string>
+	<!-- Message shown in terminal when launching mosh-server on remote host -->
+	<string name="terminal_mosh_launching_server">"Launching mosh-server on remote host…"</string>
+	<!-- Message shown in terminal when mosh-server fails to start -->
+	<string name="terminal_mosh_server_failed">"Failed to start mosh-server on remote host"</string>
+	<!-- Message shown in terminal when mosh-client fails to start -->
+	<string name="terminal_mosh_client_failed">"Failed to start mosh-client"</string>
+	<!-- Message shown in terminal when Mosh connection is established -->
+	<string name="terminal_mosh_connected">"Mosh connection established"</string>
+	<!-- Message shown in terminal when Mosh encounters an error. Parameter is the error message. -->
+	<string name="terminal_mosh_error">"Mosh error: %1$s"</string>
+
+	<!-- Mosh host editor fields -->
+	<!-- Title for the Mosh server command setting -->
+	<string name="hostpref_mosh_server_title">"Mosh server command"</string>
+	<!-- Summary for the Mosh server command setting -->
+	<string name="hostpref_mosh_server_summary">"Custom mosh-server path or command (leave blank for default)"</string>
+	<!-- Title for the Mosh UDP port setting -->
+	<string name="hostpref_mosh_port_title">"Mosh UDP port"</string>
+	<!-- Summary for the Mosh UDP port setting -->
+	<string name="hostpref_mosh_port_summary">"Fixed UDP port for mosh (0 for automatic 60000-61000 range)"</string>
+	<!-- Title for the Mosh locale setting -->
+	<string name="hostpref_locale_title">"Locale"</string>
+	<!-- Summary for the Mosh locale setting -->
+	<string name="hostpref_locale_summary">"Locale for mosh session (e.g., en_US.UTF-8)"</string>
+
+	<!-- Settings title for optional Mosh support. -->
+	<string name="pref_mosh_support_title">"Mosh support"</string>
+	<!-- Settings summary for optional Mosh support. -->
+	<string name="pref_mosh_support_summary">"Download and enable the latest mosh4android client binary"</string>
+	<!-- Dialog title shown before downloading the optional Mosh binary. -->
+	<string name="pref_mosh_confirm_title">"Enable Mosh support?"</string>
+	<!-- Dialog body shown before downloading the optional Mosh binary. -->
+	<string name="pref_mosh_confirm_message">"ConnectBot will download the latest mosh4android binary from GitHub. The mosh client binary is licensed under the GPL, while ConnectBot remains under its own license."</string>
+	<!-- Dialog confirmation button for downloading Mosh. -->
+	<string name="pref_mosh_confirm_enable">"Download and enable"</string>
+	<!-- Dialog cancel button for optional Mosh download. -->
+	<string name="pref_mosh_confirm_cancel">"Cancel"</string>
+	<!-- Mosh download progress text. -->
+	<string name="pref_mosh_installing">"Downloading Mosh support…"</string>
 
 	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
 	<string name="notification_text">"%1$s wants your attention."</string>
@@ -1073,6 +1122,8 @@
 	<string name="pubkey_encrypted_description">Encrypted</string>
 	<!-- Accessibility description for unencrypted key icon -->
 	<string name="pubkey_not_encrypted_description">Not encrypted</string>
+	<!-- Accessibility description for FIDO2 key icon -->
+	<string name="pubkey_fido2_description">FIDO2 hardware key</string>
 
 	<!-- Biometric authentication strings -->
 	<!-- Label for biometric protection toggle in key generation -->
@@ -1419,4 +1470,63 @@
 	<string name="auth_prompt_title">Unlock ConnectBot</string>
 	<!-- Subtitle shown in the biometric/device credential authentication prompt -->
 	<string name="auth_prompt_subtitle">Verify your identity to continue</string>
+	<!-- FIDO2 Security Key strings -->
+	<!-- Title for FIDO2 connect prompt asking user to connect their security key -->
+	<string name="fido2_connect_title">Connect Security Key</string>
+	<!-- Message instructing user to connect their FIDO2 security key via USB or NFC -->
+	<string name="fido2_connect_message">Connect your security key via USB or tap it on the back of your device (NFC) to authenticate with \'%1$s\'</string>
+	<!-- Title for FIDO2 PIN prompt asking user to enter their security key PIN -->
+	<string name="fido2_pin_title">Security Key PIN</string>
+	<!-- Message for FIDO2 PIN prompt -->
+	<string name="fido2_pin_message">Enter the PIN for your security key to authenticate with \'%1$s\'</string>
+	<!-- Message for FIDO2 PIN prompt when retries remaining is shown -->
+	<string name="fido2_pin_message_retries">Enter the PIN for your security key (%1$d attempts remaining)</string>
+	<!-- Hint for FIDO2 PIN input field -->
+	<string name="fido2_pin_hint">Security key PIN</string>
+	<!-- Title for FIDO2 touch prompt asking user to touch their security key -->
+	<string name="fido2_touch_title">Touch Security Key</string>
+	<!-- Message instructing user to touch their FIDO2 security key to confirm authentication -->
+	<string name="fido2_touch_message">Touch your security key to confirm authentication with \'%1$s\'</string>
+	<!-- Button to cancel FIDO2 authentication -->
+	<string name="fido2_cancel">Cancel</string>
+	<!-- Description for FIDO2 security key icon in pubkey list -->
+	<string name="pubkey_fido2_description_icon">FIDO2 security key</string>
+	<!-- Menu item to import a FIDO2 security key -->
+	<string name="pubkey_import_fido2">Import from security key</string>
+	<!-- Title for FIDO2 import screen -->
+	<string name="fido2_import_title">Import Security Key</string>
+	<!-- Status message when scanning for FIDO2 credentials -->
+	<string name="fido2_scanning">Scanning for SSH credentials…</string>
+	<!-- Status message when waiting for FIDO2 device connection -->
+	<string name="fido2_waiting_connection">Waiting for security key connection…</string>
+	<!-- Status message when FIDO2 device is connected -->
+	<string name="fido2_connected">Security key connected</string>
+	<!-- Error message when no SSH credentials found on security key -->
+	<string name="fido2_no_credentials">No SSH credentials found on security key</string>
+	<!-- Label for credential user name in FIDO2 import list -->
+	<string name="fido2_credential_user">User: %s</string>
+	<!-- Button to import selected FIDO2 credential -->
+	<string name="fido2_import_credential">Import</string>
+	<!-- Title shown when waiting for NFC tap after PIN entry -->
+	<string name="fido2_tap_and_hold">Tap and hold your security key</string>
+	<!-- Hint shown below tap and hold title -->
+	<string name="fido2_tap_and_hold_hint">Hold your phone against the key until the operation completes</string>
+	<!-- Title for NFC tap prompt during SSH signing -->
+	<string name="fido2_nfc_tap_title">Tap and Hold Security Key</string>
+	<!-- Message for NFC tap prompt during SSH signing -->
+	<string name="fido2_nfc_tap_message">Tap your NFC security key and hold until signing completes</string>
+	<!-- Label for transport selection -->
+	<string name="fido2_transport_label">Connection method</string>
+	<!-- USB transport option -->
+	<string name="fido2_transport_usb">USB</string>
+	<!-- NFC transport option -->
+	<string name="fido2_transport_nfc">NFC</string>
+	<!-- Title for transport selection screen -->
+	<string name="fido2_select_transport_title">Select Connection Method</string>
+	<!-- Hint for transport selection screen -->
+	<string name="fido2_select_transport_hint">Choose how you\'ll connect your security key</string>
+	<!-- Instruction to connect USB security key -->
+	<string name="fido2_connect_usb">Connect your USB security key</string>
+	<!-- Continue button -->
+	<string name="fido2_continue">Continue</string>
 </resources>

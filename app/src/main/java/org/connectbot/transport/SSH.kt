@@ -44,18 +44,29 @@ import com.trilead.ssh2.signature.ECDSASHA2Verify
 import com.trilead.ssh2.signature.Ed25519Verify
 import com.trilead.ssh2.signature.RSASHA1Verify
 import org.connectbot.R
+import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.fido2.Fido2Algorithm
+import org.connectbot.fido2.ssh.Fido2SignatureProxy
+import org.connectbot.fido2.ssh.SkEcdsaPublicKey
+import org.connectbot.fido2.ssh.SkEcdsaVerify
+import org.connectbot.fido2.ssh.SkEd25519PublicKey
+import org.connectbot.fido2.ssh.SkEd25519Verify
+import org.connectbot.fido2.ssh.SkPublicKey
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.service.requestBiometricAuth
 import org.connectbot.service.requestBooleanPrompt
+import org.connectbot.service.requestFido2Connect
+import org.connectbot.service.requestFido2Pin
 import org.connectbot.service.requestHostKeyFingerprintPrompt
 import org.connectbot.service.requestStringPrompt
 import org.connectbot.util.HostConstants
+import org.connectbot.util.PubkeyConstants
 import org.connectbot.util.PubkeyUtils
 import timber.log.Timber
 import java.io.IOException
@@ -81,42 +92,43 @@ import java.util.regex.Pattern
 /**
  * @author Kenny Root
  */
-class SSH :
+open class SSH :
     AbsTransport,
     ConnectionMonitor,
     InteractiveCallback,
     AuthAgentCallback {
 
-    private var compression = false
+    @JvmField
+    protected var compressionEnabled = false
 
     @Volatile
-    private var authenticated = false
+    protected var authenticated = false
 
     @Volatile
-    private var connected = false
+    protected var connected = false
 
     @Volatile
-    private var sessionOpen = false
+    protected var sessionOpen = false
 
     private var pubkeysExhausted = false
     private var interactiveCanContinue = true
     private var savedPasswordTried = false
 
-    private var connection: Connection? = null
+    protected var connection: Connection? = null
     private val jumpConnections: MutableList<Connection> = mutableListOf()
-    private var session: Session? = null
+    protected var session: Session? = null
 
-    private var stdin: OutputStream? = null
-    private var stdout: InputStream? = null
-    private var stderr: InputStream? = null
+    protected var stdin: OutputStream? = null
+    protected var stdout: InputStream? = null
+    protected var stderr: InputStream? = null
 
     private val portForwards = mutableListOf<PortForward>()
 
-    private var columns: Int = 0
-    private var rows: Int = 0
+    protected var columns: Int = 0
+    protected var rows: Int = 0
 
-    private var width: Int = 0
-    private var height: Int = 0
+    protected var width: Int = 0
+    protected var height: Int = 0
 
     private var useAuthAgent = HostConstants.AUTHAGENT_NO
     private var agentLockPassphrase: String? = null
@@ -133,18 +145,33 @@ class SSH :
             "ecdsa-sha2-nistp256" -> ECDSASHA2Verify.ECDSASHA2NISTP256Verify.get().decodePublicKey(keyBlob)
             "ecdsa-sha2-nistp384" -> ECDSASHA2Verify.ECDSASHA2NISTP384Verify.get().decodePublicKey(keyBlob)
             "ecdsa-sha2-nistp521" -> ECDSASHA2Verify.ECDSASHA2NISTP521Verify.get().decodePublicKey(keyBlob)
+            SkEcdsaPublicKey.KEY_TYPE -> SkEcdsaVerify.decodePublicKey(keyBlob)
+            SkEd25519PublicKey.KEY_TYPE -> SkEd25519Verify.decodePublicKey(keyBlob)
             else -> null
         }
     } catch (e: IOException) {
+        Timber.e(e, "Failed to decode public key")
+        null
+    } catch (e: Exception) {
         Timber.e(e, "Failed to decode public key")
         null
     }
 
     private fun getKeySize(publicKey: PublicKey?): Int = when (publicKey) {
         is RSAPublicKey -> publicKey.modulus.bitLength()
+
         is DSAPublicKey -> publicKey.params.p.bitLength()
+
         is ECPublicKey -> publicKey.params.curve.field.fieldSize
+
         is Ed25519PublicKey -> 256
+
+        is SkEcdsaPublicKey -> 256
+
+        // P-256 curve
+        is SkEd25519PublicKey -> 256
+
+        // Ed25519
         else -> 0
     }
 
@@ -153,10 +180,12 @@ class SSH :
         "ssh-rsa", "rsa-sha2-256", "rsa-sha2-512" -> "RSA"
         "ssh-dss" -> "DSA"
         "ssh-ed25519" -> "Ed25519"
+        SkEcdsaPublicKey.KEY_TYPE -> "SK-ECDSA"
+        SkEd25519PublicKey.KEY_TYPE -> "SK-Ed25519"
         else -> if (openSshKeyType.startsWith("ecdsa-sha2-")) "EC" else null
     }
 
-    inner class HostKeyVerifier(private val verifyHost: Host? = host) : ExtendedServerHostKeyVerifier() {
+    open inner class HostKeyVerifier(private val verifyHost: Host? = host) : ExtendedServerHostKeyVerifier() {
         @Throws(IOException::class)
         override fun verifyServerHostKey(
             hostname: String,
@@ -440,9 +469,16 @@ class SSH :
             }
         }
 
-        val pair = getOrUnlockKey(pubkey) ?: return false
-
         val currentHost = host ?: return false
+
+        // Handle FIDO2 keys specially - they use SignatureProxy for authentication
+        if (pubkey.storageType == KeyStorageType.FIDO2_RESIDENT_KEY) {
+            val signatureProxy = handleFido2Key(pubkey) ?: return false
+            return tryFido2PublicKey(currentHost.username, pubkey.nickname, signatureProxy)
+        }
+
+        // Standard key authentication
+        val pair = getOrUnlockKey(pubkey) ?: return false
         return tryPublicKey(currentHost.username, pubkey.nickname, pair)
     }
 
@@ -458,6 +494,8 @@ class SSH :
             Timber.d(String.format("Found unlocked key '%s' already in-memory", pubkey.nickname))
             return manager?.getKey(pubkey.nickname)
         }
+
+        // Note: FIDO2 keys are handled separately in tryPublicKey() using SignatureProxy
 
         // Handle Android Keystore (biometric) keys
         if (pubkey.storageType == KeyStorageType.ANDROID_KEYSTORE) {
@@ -580,6 +618,105 @@ class SSH :
         return pair
     }
 
+    /**
+     * Handle authentication with a FIDO2 security key.
+     *
+     * FIDO2 keys require hardware-based signing which cannot be done with standard
+     * Java crypto. This method prompts the user to connect their security key
+     * and enter their PIN, then creates a SignatureProxy for SSH authentication.
+     *
+     * @return A Fido2SignatureProxy for SSH authentication, or null if setup failed
+     */
+    private fun handleFido2Key(pubkey: Pubkey): Fido2SignatureProxy? {
+        val credentialId = pubkey.credentialId
+        val rpId = pubkey.fido2RpId
+
+        if (credentialId == null || rpId == null) {
+            val message = "FIDO2 key '${pubkey.nickname}' is missing credential data"
+            Timber.e(message)
+            bridge?.outputLine(message)
+            return null
+        }
+
+        // Determine key type and algorithm from the stored public key
+        val algorithm = when (pubkey.type) {
+            PubkeyConstants.KEY_TYPE_SK_ED25519 -> Fido2Algorithm.EDDSA
+
+            PubkeyConstants.KEY_TYPE_SK_ECDSA -> Fido2Algorithm.ES256
+
+            else -> {
+                val message = "Unknown FIDO2 key type: ${pubkey.type}"
+                Timber.e(message)
+                bridge?.outputLine(message)
+                return null
+            }
+        }
+
+        bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_fido2, pubkey.nickname))
+
+        // Get the preferred transport (default to USB for legacy keys)
+        val transport = pubkey.fido2Transport ?: Fido2Transport.USB
+
+        // For USB: connect device first, then request PIN
+        // For NFC: request PIN first (NFC connection is transient, happens during signing)
+        val pin: String?
+        if (transport == Fido2Transport.USB) {
+            // USB: Prompt user to connect their security key first
+            val connected = bridge?.requestFido2Connect(pubkey.nickname, credentialId, transport) ?: false
+            if (!connected) {
+                bridge?.outputLine("FIDO2 security key connection cancelled or failed")
+                return null
+            }
+
+            // Then prompt for PIN
+            pin = bridge?.requestFido2Pin(pubkey.nickname)
+            if (pin == null) {
+                bridge?.outputLine("FIDO2 PIN entry cancelled")
+                return null
+            }
+        } else {
+            // NFC: Prompt for PIN first (connection happens during signing)
+            pin = bridge?.requestFido2Pin(pubkey.nickname)
+            if (pin == null) {
+                bridge?.outputLine("FIDO2 PIN entry cancelled")
+                return null
+            }
+            // NFC connection is transient — it happens during the signing phase
+            // when the user taps their key, so no connect prompt is needed here.
+        }
+
+        // Create the public key from stored data
+        val publicKeyBytes = pubkey.publicKey
+
+        val publicKey: SkPublicKey = when (algorithm) {
+            Fido2Algorithm.EDDSA -> SkEd25519Verify.decodePublicKey(publicKeyBytes)
+            Fido2Algorithm.ES256 -> SkEcdsaVerify.decodePublicKey(publicKeyBytes)
+        }
+
+        // Get the FIDO2 manager from the bridge
+        val fido2Manager = bridge?.fido2Manager
+        if (fido2Manager == null) {
+            val message = "FIDO2 manager not available"
+            Timber.e(message)
+            bridge?.outputLine(message)
+            return null
+        }
+
+        // Create the SignatureProxy for FIDO2 authentication
+        val signatureProxy = Fido2SignatureProxy(
+            publicKey = publicKey,
+            credentialId = credentialId,
+            rpId = rpId,
+            algorithm = algorithm,
+            pin = pin,
+            transport = transport,
+            fido2Manager = fido2Manager,
+        )
+
+        Timber.d("Created FIDO2 SignatureProxy for '${pubkey.nickname}'")
+        return signatureProxy
+    }
+
     @Throws(IOException::class)
     private fun tryPublicKey(username: String, keyNickname: String, pair: KeyPair): Boolean = try {
         val success = connection?.authenticateWithPublicKey(username, pair) == true
@@ -607,10 +744,22 @@ class SSH :
     }
 
     /**
+     * Try authentication with a FIDO2 security key using SignatureProxy.
+     */
+    @Throws(IOException::class)
+    private fun tryFido2PublicKey(username: String, keyNickname: String, signatureProxy: Fido2SignatureProxy): Boolean {
+        val success = connection?.authenticateWithPublicKey(username, signatureProxy) == true
+        if (!success) {
+            bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, keyNickname))
+        }
+        return success
+    }
+
+    /**
      * Internal method to request actual PTY terminal once we've finished
      * authentication. If called before authenticated, it will just fail.
      */
-    private fun finishConnection() {
+    protected open fun finishConnection() {
         authenticated = true
 
         for (portForward in portForwards) {
@@ -852,7 +1001,7 @@ class SSH :
         }
 
         try {
-            connection?.setCompression(compression)
+            connection?.setCompression(compressionEnabled)
         } catch (e: IOException) {
             Timber.e(e, "Could not enable compression!")
         }
@@ -1005,11 +1154,11 @@ class SSH :
         stdin?.write(c)
     }
 
-    override fun getOptions(): Map<String, String> = mapOf("compression" to compression.toString())
+    override fun getOptions(): Map<String, String> = mapOf("compression" to compressionEnabled.toString())
 
     override fun setOptions(options: Map<String, String>) {
         if (options.containsKey("compression")) {
-            compression = options["compression"]?.toBoolean() ?: false
+            compressionEnabled = options["compression"]?.toBoolean() ?: false
         }
     }
 
@@ -1252,7 +1401,7 @@ class SSH :
     }
 
     override fun setCompression(compression: Boolean) {
-        this.compression = compression
+        this.compressionEnabled = compression
     }
 
     override fun setUseAuthAgent(useAuthAgent: String) {
@@ -1373,6 +1522,12 @@ class SSH :
 
     override fun getLocalIpAddress(): String? = connection?.connectionInfo?.localSocketAddress?.address?.hostAddress
 
+    /**
+     * Returns the protocol name for this transport instance.
+     * SSH returns "ssh", Mosh overrides to return "mosh".
+     */
+    open fun instanceProtocolName(): String = PROTOCOL
+
     companion object {
         init {
             // Since this class deals with Ed25519 keys, we need to make sure this is available.
@@ -1391,21 +1546,21 @@ class SSH :
             }
         }
 
-        private const val PROTOCOL = "ssh"
-        private const val DEFAULT_PORT = 22
+        protected const val PROTOCOL = "ssh"
+        protected const val DEFAULT_PORT = 22
 
-        private const val AUTH_PUBLICKEY = "publickey"
-        private const val AUTH_PASSWORD = "password"
-        private const val AUTH_KEYBOARDINTERACTIVE = "keyboard-interactive"
+        protected const val AUTH_PUBLICKEY = "publickey"
+        protected const val AUTH_PASSWORD = "password"
+        protected const val AUTH_KEYBOARDINTERACTIVE = "keyboard-interactive"
 
-        private const val AUTH_TRIES = 20
+        protected const val AUTH_TRIES = 20
 
-        private val hostmask = Pattern.compile(
+        protected val hostmask = Pattern.compile(
             "^(.+)@((?:[0-9a-z._-]+)|(?:\\[[a-f:0-9]+(?:%[-_.a-z0-9]+)?\\]))(?::(\\d+))?\$",
             Pattern.CASE_INSENSITIVE,
         )
 
-        private const val conditions = (
+        protected const val conditions = (
             ChannelCondition.STDOUT_DATA
                 or ChannelCondition.STDERR_DATA
                 or ChannelCondition.CLOSED

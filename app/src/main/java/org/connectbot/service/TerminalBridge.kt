@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -97,6 +97,9 @@ class TerminalBridge {
     private var profileObservationJob: Job? = null
 
     val manager: TerminalManager
+
+    /** FIDO2 manager for security key operations (delegated from TerminalManager) */
+    val fido2Manager get() = manager.fido2Manager
 
     var host: Host
 
@@ -989,12 +992,14 @@ class TerminalBridge {
      */
     fun isUsingNetwork(): Boolean = transport?.usesNetwork() ?: false
 
+    fun resetOnConnectionChange(): Boolean = transport?.resetOnConnectionChange() ?: true
+
     /**
      * Capture current network state when connection established.
      * Called after successful SSH connection.
      */
     fun captureNetworkState() {
-        if (!isUsingNetwork()) return
+        if (!isUsingNetwork() || !resetOnConnectionChange()) return
 
         val localIp = transport?.getLocalIpAddress()
         val networkInfo = manager.connectivityMonitor.getCurrentNetworkInfo()
@@ -1024,7 +1029,7 @@ class TerminalBridge {
      * Starts 60-second grace period instead of immediate disconnect.
      */
     fun onNetworkLost(network: Network, lostIpAddresses: Set<String>) {
-        if (!isUsingNetwork() || disconnected) return
+        if (!isUsingNetwork() || !resetOnConnectionChange() || disconnected) return
 
         val state = lastKnownNetworkState ?: return
 

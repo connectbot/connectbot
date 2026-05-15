@@ -143,6 +143,29 @@ fun InlinePrompt(
                 )
             }
 
+            is PromptRequest.Fido2ConnectPrompt -> {
+                Fido2ConnectPromptContent(
+                    keyNickname = promptRequest.keyNickname,
+                    onCancel = onCancel,
+                )
+            }
+
+            is PromptRequest.Fido2PinPrompt -> {
+                Fido2PinPromptContent(
+                    keyNickname = promptRequest.keyNickname,
+                    attemptsRemaining = promptRequest.attemptsRemaining,
+                    onSubmit = { pin -> onResponse(PromptResponse.Fido2PinResponse(pin)) },
+                    onCancel = onCancel,
+                )
+            }
+
+            is PromptRequest.Fido2TouchPrompt -> {
+                Fido2TouchPromptContent(
+                    keyNickname = promptRequest.keyNickname,
+                    onCancel = onCancel,
+                )
+            }
+
             null -> {
                 /* No prompt */
             }

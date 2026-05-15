@@ -28,16 +28,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Nfc
+import androidx.compose.material.icons.filled.Usb
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -61,6 +65,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
+import org.connectbot.data.entity.Fido2Transport
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.theme.ConnectBotTheme
 
@@ -72,9 +77,8 @@ fun PubkeyEditorScreen(
     viewModel: PubkeyEditorViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
-
     // Navigate back on successful save
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
     LaunchedEffect(uiState.saveSuccess) {
         if (uiState.saveSuccess) {
             currentOnNavigateBack()
@@ -90,6 +94,7 @@ fun PubkeyEditorScreen(
         onNewPassword2Change = viewModel::updateNewPassword2,
         onUnlockAtStartupChange = viewModel::updateUnlockAtStartup,
         onConfirmUseChange = viewModel::updateConfirmUse,
+        onFido2TransportChange = viewModel::updateFido2Transport,
         onSave = viewModel::save,
         modifier = modifier,
     )
@@ -106,6 +111,7 @@ fun PubkeyEditorScreenContent(
     onNewPassword2Change: (String) -> Unit,
     onUnlockAtStartupChange: (Boolean) -> Unit,
     onConfirmUseChange: (Boolean) -> Unit,
+    onFido2TransportChange: (Fido2Transport) -> Unit,
     onSave: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -318,6 +324,50 @@ fun PubkeyEditorScreenContent(
                         Text(stringResource(R.string.pubkey_confirm_use))
                     }
 
+                    // FIDO2 Transport Selection (only for FIDO2 keys)
+                    if (uiState.isFido2) {
+                        Spacer(modifier = Modifier.height(24.dp))
+
+                        Text(
+                            text = stringResource(R.string.fido2_transport_label),
+                            style = MaterialTheme.typography.titleMedium,
+                        )
+
+                        Spacer(modifier = Modifier.height(8.dp))
+
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                        ) {
+                            FilterChip(
+                                selected = uiState.fido2Transport == Fido2Transport.USB,
+                                onClick = { onFido2TransportChange(Fido2Transport.USB) },
+                                label = { Text(stringResource(R.string.fido2_transport_usb)) },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Filled.Usb,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(18.dp),
+                                    )
+                                },
+                                modifier = Modifier.weight(1f),
+                            )
+                            FilterChip(
+                                selected = uiState.fido2Transport == Fido2Transport.NFC,
+                                onClick = { onFido2TransportChange(Fido2Transport.NFC) },
+                                label = { Text(stringResource(R.string.fido2_transport_nfc)) },
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Filled.Nfc,
+                                        contentDescription = null,
+                                        modifier = Modifier.size(18.dp),
+                                    )
+                                },
+                                modifier = Modifier.weight(1f),
+                            )
+                        }
+                    }
+
                     Spacer(modifier = Modifier.height(24.dp))
 
                     // Save Button
@@ -350,6 +400,7 @@ private fun PubkeyEditorScreenLoadingPreview() {
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
             onSave = {},
+            onFido2TransportChange = {},
         )
     }
 }
@@ -371,6 +422,7 @@ private fun PubkeyEditorScreenErrorPreview() {
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
             onSave = {},
+            onFido2TransportChange = {},
         )
     }
 }
@@ -396,6 +448,7 @@ private fun PubkeyEditorScreenUnencryptedPreview() {
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
             onSave = {},
+            onFido2TransportChange = {},
         )
     }
 }
@@ -422,6 +475,7 @@ private fun PubkeyEditorScreenEncryptedPreview() {
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
             onSave = {},
+            onFido2TransportChange = {},
         )
     }
 }
@@ -450,6 +504,7 @@ private fun PubkeyEditorScreenPasswordMismatchPreview() {
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
             onSave = {},
+            onFido2TransportChange = {},
         )
     }
 }
@@ -479,6 +534,7 @@ private fun PubkeyEditorScreenWrongPasswordPreview() {
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
             onSave = {},
+            onFido2TransportChange = {},
         )
     }
 }

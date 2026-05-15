@@ -70,6 +70,9 @@ object PreferenceConstants {
     const val CONNECTION_PERSIST: String = "connPersist"
     const val NOTIFICATION_PERMISSION_DENIED: String = "notificationPermissionDenied"
 
+    const val MOSH_SUPPORT: String = "moshSupport"
+    const val MOSH_RELEASE_TAG: String = "moshReleaseTag"
+
     const val SHIFT_FKEYS: String = "shiftfkeys"
     const val CTRL_FKEYS: String = "ctrlfkeys"
     const val VOLUME_FONT: String = "volumefont"
