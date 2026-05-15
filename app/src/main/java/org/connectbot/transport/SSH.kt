@@ -43,6 +43,12 @@ import com.trilead.ssh2.signature.DSASHA1Verify
 import com.trilead.ssh2.signature.ECDSASHA2Verify
 import com.trilead.ssh2.signature.Ed25519Verify
 import com.trilead.ssh2.signature.RSASHA1Verify
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
@@ -330,7 +336,50 @@ class SSH :
 
         try {
             val currentHost = host ?: return
-            if (connection?.authenticateWithNone(currentHost.username) == true) {
+
+            // Start a polling coroutine to surface SSH_MSG_USERAUTH_BANNER while
+            // authenticateWithNone is blocking. Tailscale sends its web-login URL in a banner
+            // and waits for the user to finish that login before sending USERAUTH_SUCCESS, so
+            // the call below blocks indefinitely without ever returning the banner content.
+            //
+            // org.connectbot:sshlib 2.2.46 has no public banner accessor — the field is
+            // package-private on AuthenticationManager and `Connection.am` itself is private —
+            // so we reach in via reflection. Once sshlib gains a public Connection.getBanner()
+            // (upstream trilead-ssh2 already has List<String> getBanners()), this block can be
+            // replaced with `connection?.getBanner()` and the bannerField/amField lookups
+            // deleted. See https://github.com/connectbot/sshlib for the upstream library.
+            var bannerJob: Job? = null
+            if (bridge != null) {
+                bannerJob = CoroutineScope(Dispatchers.IO).launch {
+                    try {
+                        var lastBanner: String? = null
+                        while (isActive) {
+                            val conn = connection ?: break
+                            val amField = conn.javaClass.getDeclaredField("am")
+                            amField.isAccessible = true
+                            val am = amField.get(conn)
+                            if (am != null) {
+                                val bannerField = am.javaClass.getDeclaredField("banner")
+                                bannerField.isAccessible = true
+                                val bannerStr = bannerField.get(am) as? String
+                                if (bannerStr != null && bannerStr != lastBanner) {
+                                    lastBanner = bannerStr
+                                    // Remove any trailing newlines since outputLine adds its own
+                                    bridge?.outputLine(bannerStr.trimEnd('\r', '\n'))
+                                }
+                            }
+                            delay(200)
+                        }
+                    } catch (e: Exception) {
+                        Timber.d(e, "Reflection banner polling failed")
+                    }
+                }
+            }
+
+            val authNoneSuccess = connection?.authenticateWithNone(currentHost.username) == true
+            bannerJob?.cancel()
+
+            if (authNoneSuccess) {
                 finishConnection()
                 return
             }
@@ -1199,6 +1248,12 @@ class SSH :
         echo: BooleanArray,
     ): Array<String> {
         interactiveCanContinue = true
+        if (name.isNotEmpty()) {
+            bridge?.outputLine(name)
+        }
+        if (instruction.isNotEmpty()) {
+            bridge?.outputLine(instruction)
+        }
         val responses = Array(numPrompts) { i ->
             // request response from user for each prompt
             val isPassword = i < echo.size && !echo[i]
