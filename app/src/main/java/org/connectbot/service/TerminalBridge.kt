@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -132,9 +132,9 @@ class TerminalBridge {
     val terminalEmulator: TerminalEmulator
 
     /**
-     * Callback invoked when text input dialog is requested (e.g., from camera button)
+     * Callback invoked to request the text input dialog (e.g., from camera button)
      */
-    var onTextInputRequested: (() -> Unit)? = null
+    var onTextInputRequest: (() -> Unit)? = null
 
     private val _bellEvents = MutableSharedFlow<Unit>(replay = 0, extraBufferCapacity = 10)
     val bellEvents: SharedFlow<Unit> = _bellEvents.asSharedFlow()
@@ -577,7 +577,7 @@ class TerminalBridge {
      * Called from hardware camera button or other triggers.
      */
     fun requestOpenTextInput() {
-        onTextInputRequested?.invoke()
+        onTextInputRequest?.invoke()
     }
 
     /**
