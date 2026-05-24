@@ -116,7 +116,6 @@ import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withLink
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
@@ -252,39 +251,14 @@ internal fun sessionSwipeTarget(
     return targetIndex.takeIf { it != currentIndex }
 }
 
-@VisibleForTesting
-internal fun isSessionSwipeStartExcluded(
-    startY: Float,
-    viewportHeight: Int,
-    excludedBottomHeightPx: Float,
-): Boolean {
-    if (viewportHeight <= 0 || excludedBottomHeightPx <= 0f) {
-        return false
-    }
-
-    return startY >= (viewportHeight - excludedBottomHeightPx).coerceAtLeast(0f)
-}
-
 private fun Modifier.sessionSwipeNavigation(
     currentIndex: Int,
     sessionCount: Int,
     onSwipeToSession: (Int) -> Unit,
     onInteraction: () -> Unit,
-    excludedBottomHeight: Dp = 0.dp,
-): Modifier = pointerInput(currentIndex, sessionCount, excludedBottomHeight) {
-    val excludedBottomHeightPx = excludedBottomHeight.toPx()
-
+): Modifier = pointerInput(currentIndex, sessionCount) {
     awaitEachGesture {
         val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
-        if (isSessionSwipeStartExcluded(
-                startY = down.position.y,
-                viewportHeight = size.height,
-                excludedBottomHeightPx = excludedBottomHeightPx,
-            )
-        ) {
-            return@awaitEachGesture
-        }
-
         val pointerId = down.id
         var dragX = 0f
         var dragY = 0f
@@ -357,6 +331,7 @@ private fun ConsoleTerminalPage(
     onReconnect: () -> Unit,
     snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
+    terminalModifier: Modifier = Modifier,
 ) {
     Box(modifier = modifier) {
         val fontResult = rememberTerminalTypefaceResultFromStoredValue(bridge.fontFamily)
@@ -381,6 +356,7 @@ private fun ConsoleTerminalPage(
                 .padding(
                     bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp,
                 )
+                .then(terminalModifier)
                 .testTag("terminal"),
             typeface = fontResult.typeface,
             initialFontSize = fontSize.sp,
@@ -887,19 +863,7 @@ fun ConsoleScreen(
 
                             HorizontalPager(
                                 state = pagerState,
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .sessionSwipeNavigation(
-                                        currentIndex = uiState.currentBridgeIndex,
-                                        sessionCount = uiState.bridges.size,
-                                        onSwipeToSession = { index -> viewModel.selectBridge(index) },
-                                        onInteraction = { handleTerminalInteraction(isTerminalTap = true) },
-                                        excludedBottomHeight = if (showExtraKeyboard) {
-                                            TERMINAL_KEYBOARD_HEIGHT_DP.dp
-                                        } else {
-                                            0.dp
-                                        },
-                                    ),
+                                modifier = Modifier.fillMaxSize(),
                                 userScrollEnabled = false,
                                 key = { page -> uiState.bridges[page].host.id },
                             ) { page ->
@@ -932,6 +896,12 @@ fun ConsoleScreen(
                                     onReconnect = { viewModel.reconnect(pageBridge) },
                                     snackbarHostState = snackbarHostState,
                                     modifier = Modifier.fillMaxSize(),
+                                    terminalModifier = Modifier.sessionSwipeNavigation(
+                                        currentIndex = uiState.currentBridgeIndex,
+                                        sessionCount = uiState.bridges.size,
+                                        onSwipeToSession = { index -> viewModel.selectBridge(index) },
+                                        onInteraction = { handleTerminalInteraction(isTerminalTap = true) },
+                                    ),
                                 )
                             }
                         } else {
