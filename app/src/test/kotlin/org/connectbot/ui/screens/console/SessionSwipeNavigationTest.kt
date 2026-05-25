@@ -18,7 +18,9 @@
 package org.connectbot.ui.screens.console
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
+import org.junit.Assert.assertTrue
 import org.junit.Test
 
 class SessionSwipeNavigationTest {
@@ -98,6 +100,72 @@ class SessionSwipeNavigationTest {
                 dragY = 180f,
                 viewportWidth = 1000,
                 touchSlop = 20f,
+            ),
+        )
+    }
+
+    @Test
+    fun shouldShowSoftwareKeyboardForSessionOpen_showsOnlyForSameBridgeOpening() {
+        assertTrue(
+            shouldShowSoftwareKeyboardForSessionOpen(
+                previousBridgeId = 1L,
+                previousSessionOpen = false,
+                currentBridgeId = 1L,
+                sessionOpen = true,
+                hasHardwareKeyboard = false,
+            ),
+        )
+
+        assertFalse(
+            shouldShowSoftwareKeyboardForSessionOpen(
+                previousBridgeId = 1L,
+                previousSessionOpen = true,
+                currentBridgeId = 2L,
+                sessionOpen = true,
+                hasHardwareKeyboard = false,
+            ),
+        )
+    }
+
+    @Test
+    fun shouldShowSoftwareKeyboardForSessionOpen_ignoresHardwareKeyboard() {
+        assertFalse(
+            shouldShowSoftwareKeyboardForSessionOpen(
+                previousBridgeId = 1L,
+                previousSessionOpen = false,
+                currentBridgeId = 1L,
+                sessionOpen = true,
+                hasHardwareKeyboard = true,
+            ),
+        )
+    }
+
+    @Test
+    fun shouldPreserveSoftwareKeyboardForBridgeChange_preservesOnlyVisibleSoftKeyboard() {
+        assertTrue(
+            shouldPreserveSoftwareKeyboardForBridgeChange(
+                previousBridgeId = 1L,
+                currentBridgeId = 2L,
+                showSoftwareKeyboard = true,
+                hasHardwareKeyboard = false,
+            ),
+        )
+
+        assertFalse(
+            shouldPreserveSoftwareKeyboardForBridgeChange(
+                previousBridgeId = 1L,
+                currentBridgeId = 2L,
+                showSoftwareKeyboard = false,
+                hasHardwareKeyboard = false,
+            ),
+        )
+
+        assertFalse(
+            shouldPreserveSoftwareKeyboardForBridgeChange(
+                previousBridgeId = 1L,
+                currentBridgeId = 2L,
+                showSoftwareKeyboard = true,
+                hasHardwareKeyboard = true,
             ),
         )
     }
