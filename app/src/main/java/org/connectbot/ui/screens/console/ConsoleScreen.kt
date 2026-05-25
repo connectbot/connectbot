@@ -101,10 +101,10 @@ import androidx.compose.ui.input.key.isShiftPressed
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
-import androidx.compose.ui.keepScreenOn
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
+import androidx.compose.ui.keepScreenOn
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
@@ -250,6 +250,31 @@ internal fun sessionSwipeTarget(
 
     return targetIndex.takeIf { it != currentIndex }
 }
+
+@VisibleForTesting
+internal fun shouldShowSoftwareKeyboardForSessionOpen(
+    previousBridgeId: Long?,
+    previousSessionOpen: Boolean,
+    currentBridgeId: Long?,
+    sessionOpen: Boolean,
+    hasHardwareKeyboard: Boolean,
+): Boolean = currentBridgeId != null &&
+    currentBridgeId == previousBridgeId &&
+    sessionOpen &&
+    !previousSessionOpen &&
+    !hasHardwareKeyboard
+
+@VisibleForTesting
+internal fun shouldPreserveSoftwareKeyboardForBridgeChange(
+    previousBridgeId: Long?,
+    currentBridgeId: Long?,
+    showSoftwareKeyboard: Boolean,
+    hasHardwareKeyboard: Boolean,
+): Boolean = previousBridgeId != null &&
+    currentBridgeId != null &&
+    previousBridgeId != currentBridgeId &&
+    showSoftwareKeyboard &&
+    !hasHardwareKeyboard
 
 private fun Modifier.sessionSwipeNavigation(
     currentIndex: Int,
@@ -543,12 +568,19 @@ fun ConsoleScreen(
     var selectionController by remember { mutableStateOf<SelectionController?>(null) }
     var imeVisible by remember { mutableStateOf(false) }
     var keyboardScrollInProgress by remember { mutableStateOf(false) }
+    var previousBridgeIdForImeState by remember { mutableStateOf<Long?>(null) }
+    var ignoreImeHiddenForBridgeId by remember { mutableStateOf<Long?>(null) }
+    var previousBridgeIdForSessionOpen by remember { mutableStateOf<Long?>(null) }
+    var previousSessionOpen by remember { mutableStateOf(false) }
+
+    val currentBridge = uiState.bridges
+        .getOrNull(uiState.currentBridgeIndex)
+    val currentBridgeId = currentBridge?.host?.id
 
     // Get current prompt state to check if biometric prompt is active
-    val currentBridgeForPrompt = uiState.bridges.getOrNull(uiState.currentBridgeIndex)
-    val promptState by currentBridgeForPrompt?.promptManager?.promptState?.collectAsState()
+    val promptState by currentBridge?.promptManager?.promptState?.collectAsState()
         ?: remember { mutableStateOf(null) }
-    val authBanners by currentBridgeForPrompt?.authBanners?.collectAsState()
+    val authBanners by currentBridge?.authBanners?.collectAsState()
         ?: remember { mutableStateOf(emptyList()) }
     val currentAuthBanner = authBanners.firstOrNull()
     var wasBiometricPromptActive by remember { mutableStateOf(false) }
@@ -613,6 +645,21 @@ fun ConsoleScreen(
         }
     }
 
+    fun selectBridgePreservingKeyboard(index: Int) {
+        val targetBridgeId = uiState.bridges.getOrNull(index)?.host?.id
+        if (
+            shouldPreserveSoftwareKeyboardForBridgeChange(
+                previousBridgeId = currentBridgeId,
+                currentBridgeId = targetBridgeId,
+                showSoftwareKeyboard = showSoftwareKeyboard,
+                hasHardwareKeyboard = hasHardwareKeyboard,
+            )
+        ) {
+            ignoreImeHiddenForBridgeId = targetBridgeId
+        }
+        viewModel.selectBridge(index)
+    }
+
     // Sync our state when user dismisses modals or prompts
     LaunchedEffect(anyModalActive) {
         if (!anyModalActive) {
@@ -664,16 +711,22 @@ fun ConsoleScreen(
     val imeHeight = with(density) { imeInsets.getBottom(density).toDp() }
     val systemImeVisible = imeHeight > 0.dp
     var hasImeBeenVisible by remember { mutableStateOf(false) }
+    val latestCurrentBridgeId by rememberUpdatedState(currentBridgeId)
 
     // Sync our state when user dismisses IME externally (back button)
     LaunchedEffect(systemImeVisible) {
         if (systemImeVisible) {
             hasImeBeenVisible = true
+            ignoreImeHiddenForBridgeId = null
         }
         // Only sync to hidden state after IME has been visible at least once.
         // This prevents canceling the keyboard before it has a chance to show.
         if (hasImeBeenVisible && !systemImeVisible && showSoftwareKeyboard) {
-            showSoftwareKeyboard = false
+            if (ignoreImeHiddenForBridgeId == latestCurrentBridgeId) {
+                termFocusRequester.requestFocus()
+            } else {
+                showSoftwareKeyboard = false
+            }
         }
         imeVisible = systemImeVisible
     }
@@ -686,9 +739,6 @@ fun ConsoleScreen(
         wasBiometricPromptActive = isBiometricPromptActive
     }
 
-    val currentBridge = uiState.bridges
-        .getOrNull(uiState.currentBridgeIndex)
-        ?.takeUnless { uiState.isLoading }
     val hasMultipleSessions = uiState.bridges.size > 1 && !uiState.isLoading
     val swipeBetweenSessions = swipeSessionsEnabled && hasMultipleSessions
     // These values are computed from bridge state and will recompute when uiState.revision changes
@@ -700,12 +750,36 @@ fun ConsoleScreen(
     val isConnectionActive = currentBridge != null && !disconnected
     val keepScreenOn = keepScreenAwake && isConnectionActive
 
-    // Show software keyboard when session becomes open (if no hardware keyboard)
-    // Also show when switching to a different bridge that's already open
-    LaunchedEffect(currentBridge, sessionOpen, hasHardwareKeyboard) {
-        if (sessionOpen && !hasHardwareKeyboard) {
+    LaunchedEffect(currentBridgeId) {
+        if (
+            shouldPreserveSoftwareKeyboardForBridgeChange(
+                previousBridgeId = previousBridgeIdForImeState,
+                currentBridgeId = currentBridgeId,
+                showSoftwareKeyboard = showSoftwareKeyboard,
+                hasHardwareKeyboard = hasHardwareKeyboard,
+            )
+        ) {
+            ignoreImeHiddenForBridgeId = currentBridgeId
+        }
+        previousBridgeIdForImeState = currentBridgeId
+    }
+
+    // Show software keyboard when the current session transitions to open,
+    // while preserving the user's current keyboard state across bridge switches.
+    LaunchedEffect(currentBridgeId, sessionOpen, hasHardwareKeyboard) {
+        if (
+            shouldShowSoftwareKeyboardForSessionOpen(
+                previousBridgeId = previousBridgeIdForSessionOpen,
+                previousSessionOpen = previousSessionOpen,
+                currentBridgeId = currentBridgeId,
+                sessionOpen = sessionOpen,
+                hasHardwareKeyboard = hasHardwareKeyboard,
+            )
+        ) {
             showSoftwareKeyboard = true
         }
+        previousBridgeIdForSessionOpen = currentBridgeId
+        previousSessionOpen = sessionOpen
     }
 
     // Reset selection controller when bridge changes
@@ -851,7 +925,7 @@ fun ConsoleScreen(
 
                             LaunchedEffect(pagerState.currentPage) {
                                 if (pagerState.currentPage != uiState.currentBridgeIndex) {
-                                    viewModel.selectBridge(pagerState.currentPage)
+                                    selectBridgePreservingKeyboard(pagerState.currentPage)
                                 }
                             }
 
@@ -899,8 +973,8 @@ fun ConsoleScreen(
                                     terminalModifier = Modifier.sessionSwipeNavigation(
                                         currentIndex = uiState.currentBridgeIndex,
                                         sessionCount = uiState.bridges.size,
-                                        onSwipeToSession = { index -> viewModel.selectBridge(index) },
-                                        onInteraction = { handleTerminalInteraction(isTerminalTap = true) },
+                                        onSwipeToSession = { index -> selectBridgePreservingKeyboard(index) },
+                                        onInteraction = { handleTerminalInteraction(isInteraction = false) },
                                     ),
                                 )
                             }
@@ -956,7 +1030,7 @@ fun ConsoleScreen(
             AuthBannerDialog(
                 banner = banner,
                 onDismiss = {
-                    currentBridgeForPrompt?.dismissAuthBanner(banner.id)
+                    currentBridge?.dismissAuthBanner(banner.id)
                 },
             )
         }
@@ -995,7 +1069,7 @@ fun ConsoleScreen(
                 onDismiss = { showSessionPickerDialog = false },
                 onSelectBridge = { index ->
                     showSessionPickerDialog = false
-                    viewModel.selectBridge(index)
+                    selectBridgePreservingKeyboard(index)
                 },
             )
         }
@@ -1127,7 +1201,7 @@ fun ConsoleScreen(
                                     text = { Text(stringResource(R.string.console_previous_session)) },
                                     onClick = {
                                         showMenu = false
-                                        viewModel.selectPreviousBridge()
+                                        selectBridgePreservingKeyboard(uiState.currentBridgeIndex - 1)
                                     },
                                     enabled = uiState.currentBridgeIndex > 0,
                                 )
@@ -1136,7 +1210,7 @@ fun ConsoleScreen(
                                     text = { Text(stringResource(R.string.console_next_session)) },
                                     onClick = {
                                         showMenu = false
-                                        viewModel.selectNextBridge()
+                                        selectBridgePreservingKeyboard(uiState.currentBridgeIndex + 1)
                                     },
                                     enabled = uiState.currentBridgeIndex < uiState.bridges.lastIndex,
                                 )
