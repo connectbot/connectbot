@@ -2,6 +2,24 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- Make JSON import permissive, ignoring newer schema versions and unknown fields instead of failing
+- Hook up keep screen on preference in console screen (fixing a regression in Compose migration)
+- Restore URL scanning in console screen using termlib API
+
+### Fixed
+- Expand known RSA host keys to also support SHA-2 algorithms (`rsa-sha2-512`, `rsa-sha2-256`) so servers that no longer support the older `ssh-rsa` algorithm can still negotiate successfully
+- Fix punctuation matching for machine-translated strings and clean up translations
+
+### Changed
+- Clarify nickname behavior in host editor: expand host/port fields and only synchronize nickname with host/user details if they match "quick connect", avoiding synchronization when advanced options are expanded
+- Update target SDK to 36 and compile SDK to 37
+
+### Dependencies
+- Bump dependencies (termlib to 0.0.40, Compose BOM, Gradle wrapper to 9.5.1, KSP, Spotless, Kotlin compiler plugin, actionlint, and other libraries)
+
 ## [1.10.7][1.10.7]
 ### Added
 - Downloadable language packs to reduce install size; users can also download languages from Settings
@@ -307,6 +325,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Color picker color numbers are now localized
 
 
+[Unreleased]: https://github.com/connectbot/connectbot/compare/v1.10.7...HEAD
 [1.10.7]: https://github.com/connectbot/connectbot/compare/v1.10.6...v1.10.7
 [1.10.6]: https://github.com/connectbot/connectbot/compare/v1.10.5...v1.10.6
 [1.10.5]: https://github.com/connectbot/connectbot/compare/v1.10.4...v1.10.5
