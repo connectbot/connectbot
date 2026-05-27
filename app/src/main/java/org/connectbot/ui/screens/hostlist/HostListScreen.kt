@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,6 +81,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -99,6 +100,11 @@ import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.components.ShortcutCustomizationDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.IconStyle
+
+internal object HostListTestTags {
+    fun itemRow(hostId: Long): String = "host_item_${hostId}_row"
+    fun itemMenuButton(hostId: Long): String = "host_item_${hostId}_menu_button"
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -617,7 +623,10 @@ private fun HostListItem(
             trailingContent = {
                 if (!makingShortcut) {
                     Box {
-                        IconButton(onClick = { showMenu = true }) {
+                        IconButton(
+                            onClick = { showMenu = true },
+                            modifier = Modifier.testTag(HostListTestTags.itemMenuButton(host.id)),
+                        ) {
                             Icon(Icons.Default.MoreVert, contentDescription = stringResource(R.string.button_host_options))
                         }
                         DropdownMenu(
@@ -691,7 +700,9 @@ private fun HostListItem(
                     }
                 }
             },
-            modifier = Modifier.clickable(onClick = onClick),
+            modifier = Modifier
+                .clickable(onClick = onClick)
+                .testTag(HostListTestTags.itemRow(host.id)),
         )
         HorizontalDivider()
 

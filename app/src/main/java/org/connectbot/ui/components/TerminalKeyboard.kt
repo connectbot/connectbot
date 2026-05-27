@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -153,7 +153,7 @@ fun TerminalKeyboard(
  * Separated from [TerminalKeyboard] to enable preview without TerminalBridge dependency.
  */
 @Composable
-private fun TerminalKeyboardContent(
+internal fun TerminalKeyboardContent(
     modifierState: ModifierState,
     onCtrlPress: () -> Unit,
     onEscPress: () -> Unit,
