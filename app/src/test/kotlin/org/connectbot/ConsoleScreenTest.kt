@@ -22,7 +22,10 @@ import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_BEHIND
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR
+import android.view.View
+import android.view.ViewGroup
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
@@ -42,19 +45,37 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import org.connectbot.data.entity.Host
+import org.connectbot.service.ModifierLevel
+import org.connectbot.service.ModifierState
+import org.connectbot.service.PromptManager
+import org.connectbot.service.TerminalBridge
+import org.connectbot.service.TerminalKeyListener
 import org.connectbot.service.TerminalManager
+import org.connectbot.terminal.DelKeyMode
+import org.connectbot.terminal.ProgressState
+import org.connectbot.terminal.TerminalDimensions
+import org.connectbot.terminal.TerminalEmulator
+import org.connectbot.terminal.TerminalEmulatorFactory
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.screens.console.ConsoleScreen
+import org.connectbot.ui.screens.console.ConsoleUiState
+import org.connectbot.ui.screens.console.ConsoleViewModel
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.PreferenceConstants
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -78,7 +99,10 @@ class ConsoleScreenTest {
         PreferenceManager.getDefaultSharedPreferences(context).edit().clear().commit()
     }
 
-    private fun setContent(mockTerminalManager: TerminalManager? = null) {
+    private fun setContent(
+        mockTerminalManager: TerminalManager? = null,
+        mockConsoleViewModel: ConsoleViewModel? = null,
+    ) {
         composeTestRule.setContent {
             val context = LocalContext.current
             navController = TestNavHostController(context)
@@ -91,10 +115,18 @@ class ConsoleScreenTest {
                             route = "console/{hostId}",
                             arguments = listOf(navArgument("hostId") { type = NavType.LongType }),
                         ) {
-                            ConsoleScreen(
-                                onNavigateBack = { navController.popBackStack() },
-                                onNavigateToPortForwards = {},
-                            )
+                            if (mockConsoleViewModel != null) {
+                                ConsoleScreen(
+                                    onNavigateBack = { navController.popBackStack() },
+                                    onNavigateToPortForwards = {},
+                                    viewModel = mockConsoleViewModel,
+                                )
+                            } else {
+                                ConsoleScreen(
+                                    onNavigateBack = { navController.popBackStack() },
+                                    onNavigateToPortForwards = {},
+                                )
+                            }
                         }
                     }
                 }
@@ -362,5 +394,114 @@ class ConsoleScreenTest {
         composeTestRule.runOnIdle {
             assertEquals(SCREEN_ORIENTATION_BEHIND, composeTestRule.activity.requestedOrientation)
         }
+    }
+
+    @Test
+    fun consoleScreen_keepsScreenAwake_whenPreferenceEnabledAndConnectionActive() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        PreferenceManager.getDefaultSharedPreferences(context).edit()
+            .putBoolean(PreferenceConstants.KEEP_ALIVE, true)
+            .commit()
+
+        val mockViewModel = mock(ConsoleViewModel::class.java)
+        val mockBridge = mock(TerminalBridge::class.java)
+        `when`(mockBridge.isDisconnected).thenReturn(false)
+
+        val uiStateFlow = MutableStateFlow(
+            ConsoleUiState(
+                bridges = listOf(mockBridge),
+                currentBridgeIndex = 0,
+                isLoading = true,
+            ),
+        )
+        val networkStatusMessages = MutableSharedFlow<String>()
+
+        `when`(mockViewModel.uiState).thenReturn(uiStateFlow)
+        `when`(mockViewModel.networkStatusMessages).thenReturn(networkStatusMessages)
+        `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
+
+        setContent(mockConsoleViewModel = mockViewModel)
+        navigateToConsoleScreen(hostId = 1L)
+
+        composeTestRule.runOnIdle {
+            val rootLayout = composeTestRule.activity.findViewById<View>(android.R.id.content)
+            assertTrue("Screen should be kept awake", hasKeepScreenOn(rootLayout))
+        }
+    }
+
+    @Test
+    fun consoleScreen_doesNotKeepScreenAwake_whenPreferenceDisabled() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        PreferenceManager.getDefaultSharedPreferences(context).edit()
+            .putBoolean(PreferenceConstants.KEEP_ALIVE, false)
+            .commit()
+
+        val mockViewModel = mock(ConsoleViewModel::class.java)
+        val mockBridge = mock(TerminalBridge::class.java)
+        `when`(mockBridge.isDisconnected).thenReturn(false)
+
+        val uiStateFlow = MutableStateFlow(
+            ConsoleUiState(
+                bridges = listOf(mockBridge),
+                currentBridgeIndex = 0,
+                isLoading = true,
+            ),
+        )
+        val networkStatusMessages = MutableSharedFlow<String>()
+
+        `when`(mockViewModel.uiState).thenReturn(uiStateFlow)
+        `when`(mockViewModel.networkStatusMessages).thenReturn(networkStatusMessages)
+        `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
+
+        setContent(mockConsoleViewModel = mockViewModel)
+        navigateToConsoleScreen(hostId = 1L)
+
+        composeTestRule.runOnIdle {
+            val rootLayout = composeTestRule.activity.findViewById<View>(android.R.id.content)
+            assertFalse("Screen should not be kept awake when preference is disabled", hasKeepScreenOn(rootLayout))
+        }
+    }
+
+    @Test
+    fun consoleScreen_doesNotKeepScreenAwake_whenDisconnected() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        PreferenceManager.getDefaultSharedPreferences(context).edit()
+            .putBoolean(PreferenceConstants.KEEP_ALIVE, true)
+            .commit()
+
+        val mockViewModel = mock(ConsoleViewModel::class.java)
+        val mockBridge = mock(TerminalBridge::class.java)
+        `when`(mockBridge.isDisconnected).thenReturn(true)
+
+        val uiStateFlow = MutableStateFlow(
+            ConsoleUiState(
+                bridges = listOf(mockBridge),
+                currentBridgeIndex = 0,
+                isLoading = true,
+            ),
+        )
+        val networkStatusMessages = MutableSharedFlow<String>()
+
+        `when`(mockViewModel.uiState).thenReturn(uiStateFlow)
+        `when`(mockViewModel.networkStatusMessages).thenReturn(networkStatusMessages)
+        `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
+
+        setContent(mockConsoleViewModel = mockViewModel)
+        navigateToConsoleScreen(hostId = 1L)
+
+        composeTestRule.runOnIdle {
+            val rootLayout = composeTestRule.activity.findViewById<View>(android.R.id.content)
+            assertFalse("Screen should not be kept awake when disconnected", hasKeepScreenOn(rootLayout))
+        }
+    }
+
+    private fun hasKeepScreenOn(view: View): Boolean {
+        if (view.keepScreenOn) return true
+        if (view is ViewGroup) {
+            for (i in 0 until view.childCount) {
+                if (hasKeepScreenOn(view.getChildAt(i))) return true
+            }
+        }
+        return false
     }
 }
