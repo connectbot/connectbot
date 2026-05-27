@@ -269,6 +269,16 @@ sonar {
         property("sonar.organization", "connectbot")
         property("sonar.host.url", "https://sonarcloud.io")
         property(
+            "sonar.exclusions",
+            """
+            |src/main/java/com/google/ase/**,
+            |src/main/java/de/mud/**,
+            |src/main/java/org/apache/**,
+            |src/main/java/org/keyczar/**,
+            |src/main/java/org/openintents/**
+            """.trimMargin(),
+        )
+        property(
             "sonar.coverage.jacoco.xmlReportPaths",
             """
             |build/reports/kover/reportOssDebug.xml,
