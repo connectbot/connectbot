@@ -242,8 +242,12 @@ class HostEditorViewModel @Inject constructor(
         }
     }
 
-    fun updateNickname(value: String) {
+    fun updateNickname(value: String, isExpanded: Boolean = false) {
         _uiState.update { it.copy(nickname = value) }
+
+        if (isExpanded) {
+            return
+        }
 
         if (_uiState.value.protocol == "local") {
             _uiState.update { it.copy(quickConnect = value) }
