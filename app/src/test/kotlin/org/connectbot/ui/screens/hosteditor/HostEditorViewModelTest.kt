@@ -199,6 +199,28 @@ class HostEditorViewModelTest {
     }
 
     @Test
+    fun testUpdateNickname_whenExpanded_doesNotSyncFields() = runTest {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        // Set explicit host settings first
+        viewModel.updateHostname("192.168.1.1")
+        viewModel.updateUsername("user")
+        viewModel.updatePort("22")
+        advanceUntilIdle()
+
+        // Change nickname with isExpanded = true
+        viewModel.updateNickname("john@myhost:2222", isExpanded = true)
+        advanceUntilIdle()
+
+        // Should keep old hostname, username, port, but update nickname
+        assertEquals("john@myhost:2222", viewModel.uiState.value.nickname)
+        assertEquals("192.168.1.1", viewModel.uiState.value.hostname)
+        assertEquals("user", viewModel.uiState.value.username)
+        assertEquals("22", viewModel.uiState.value.port)
+    }
+
+    @Test
     fun testUpdateHostFields_syncsNickname_whenNicknameWasMatching() = runTest {
         val viewModel = createViewModel()
         advanceUntilIdle()

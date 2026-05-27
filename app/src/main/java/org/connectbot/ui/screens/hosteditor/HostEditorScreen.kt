@@ -92,7 +92,7 @@ fun HostEditorScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
         onQuickConnectChange = viewModel::updateQuickConnect,
-        onNicknameChange = viewModel::updateNickname,
+        onNicknameChange = { nickname, isExpanded -> viewModel.updateNickname(nickname, isExpanded) },
         onProtocolChange = viewModel::updateProtocol,
         onUsernameChange = viewModel::updateUsername,
         onHostnameChange = viewModel::updateHostname,
@@ -122,7 +122,7 @@ fun HostEditorScreenContent(
     uiState: HostEditorUiState,
     onNavigateBack: () -> Unit,
     onQuickConnectChange: (String) -> Unit,
-    onNicknameChange: (String) -> Unit,
+    onNicknameChange: (String, Boolean) -> Unit,
     onProtocolChange: (String) -> Unit,
     onUsernameChange: (String) -> Unit,
     onHostnameChange: (String) -> Unit,
@@ -232,32 +232,36 @@ fun HostEditorScreenContent(
                 // Expanded mode
                 OutlinedTextField(
                     value = uiState.nickname,
-                    onValueChange = onNicknameChange,
+                    onValueChange = { onNicknameChange(it, expandedMode) },
                     label = { Text(stringResource(R.string.hostpref_nickname_title)) },
                     modifier = Modifier.fillMaxWidth(),
                     singleLine = true,
                 )
 
-                // Show collapse button if this is a new host or the nickname is matching
-                if (hostId == -1L || uiState.isNicknameMatching) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .clickable { expandedMode = false }
-                            .padding(vertical = 8.dp),
-                    ) {
-                        Text(
-                            text = stringResource(R.string.host_editor_hide_advanced),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.primary,
-                        )
-                        Spacer(Modifier.width(4.dp))
-                        Icon(
-                            Icons.Default.ExpandLess,
-                            contentDescription = stringResource(R.string.button_collapse),
-                            tint = MaterialTheme.colorScheme.primary,
-                        )
-                    }
+                val isCollapseEnabled = uiState.isNicknameMatching
+                val collapseColor = if (isCollapseEnabled) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
+                }
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(enabled = isCollapseEnabled) { expandedMode = false }
+                        .padding(vertical = 8.dp),
+                ) {
+                    Text(
+                        text = stringResource(R.string.host_editor_hide_advanced),
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = collapseColor,
+                    )
+                    Spacer(Modifier.width(4.dp))
+                    Icon(
+                        Icons.Default.ExpandLess,
+                        contentDescription = stringResource(R.string.button_collapse),
+                        tint = collapseColor,
+                    )
                 }
             }
 
@@ -1259,7 +1263,7 @@ private fun HostEditorScreenPreview() {
             ),
             onNavigateBack = {},
             onQuickConnectChange = {},
-            onNicknameChange = {},
+            onNicknameChange = { _, _ -> },
             onProtocolChange = {},
             onUsernameChange = {},
             onHostnameChange = {},
