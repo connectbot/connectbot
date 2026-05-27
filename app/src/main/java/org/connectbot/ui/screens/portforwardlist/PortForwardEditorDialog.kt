@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,6 +44,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -73,6 +74,13 @@ enum class SourceAddressOption(val sshValue: String, @StringRes val labelRes: In
             else -> SPECIFIC
         }
     }
+}
+
+internal object PortForwardEditorTestTags {
+    const val NICKNAME_FIELD = "port_forward_nickname_field"
+    const val SOURCE_PORT_FIELD = "port_forward_source_port_field"
+    const val DESTINATION_FIELD = "port_forward_destination_field"
+    const val SPECIFIC_SOURCE_ADDRESS_FIELD = "port_forward_specific_source_address_field"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -146,7 +154,9 @@ fun PortForwardEditorDialog(
                     onValueChange = { nickname = it },
                     label = { Text(stringResource(R.string.prompt_nickname)) },
                     placeholder = { Text(stringResource(R.string.portforward_nickname_placeholder)) },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag(PortForwardEditorTestTags.NICKNAME_FIELD),
                     singleLine = true,
                 )
 
@@ -228,7 +238,9 @@ fun PortForwardEditorDialog(
                                 onValueChange = { specificAddress = it },
                                 label = { Text(stringResource(R.string.portforward_host_address)) },
                                 placeholder = { Text(stringResource(R.string.portforward_source_addr_specific_placeholder)) },
-                                modifier = Modifier.fillMaxWidth(),
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .testTag(PortForwardEditorTestTags.SPECIFIC_SOURCE_ADDRESS_FIELD),
                                 singleLine = true,
                                 isError = specificAddress.isEmpty(),
                             )
@@ -244,7 +256,9 @@ fun PortForwardEditorDialog(
                     label = { Text(stringResource(R.string.prompt_source_port)) },
                     placeholder = { Text(stringResource(R.string.portforward_source_port_placeholder)) },
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag(PortForwardEditorTestTags.SOURCE_PORT_FIELD),
                     singleLine = true,
                     isError = sourcePort.isNotEmpty() && !isSourcePortValid,
                     supportingText = if (sourcePort.isNotEmpty() && !isSourcePortValid) {
@@ -262,7 +276,9 @@ fun PortForwardEditorDialog(
                     label = { Text(stringResource(R.string.prompt_destination)) },
                     placeholder = { Text(stringResource(R.string.portforward_destination_placeholder)) },
                     enabled = needsDestination,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag(PortForwardEditorTestTags.DESTINATION_FIELD),
                     singleLine = true,
                     isError = needsDestination && destination.isNotEmpty() && !isDestinationValid,
                     supportingText = if (needsDestination && destination.isNotEmpty() && !isDestinationValid) {
