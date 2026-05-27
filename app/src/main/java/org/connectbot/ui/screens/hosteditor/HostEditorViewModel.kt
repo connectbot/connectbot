@@ -33,6 +33,7 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.transport.Transport
 import org.connectbot.util.SecurePasswordStorage
 import javax.inject.Inject
 
@@ -62,7 +63,18 @@ data class HostEditorUiState(
     val hasExistingPassword: Boolean = false,
     val isLoading: Boolean = false,
     val error: String? = null,
-)
+) {
+    val isNicknameMatching: Boolean
+        get() {
+            if (nickname.isBlank()) return true
+            if (protocol == "local") return false
+            val defaultPort = (Transport.fromProtocol(protocol)?.defaultPort ?: 0).toString()
+            val effectivePort = port.ifBlank { defaultPort }
+            val repWithPort = if (username.isNotEmpty() && protocol == "ssh") "$username@$hostname:$effectivePort" else "$hostname:$effectivePort"
+            val repWithoutPort = if (username.isNotEmpty() && protocol == "ssh") "$username@$hostname" else hostname
+            return nickname == repWithPort || (effectivePort == defaultPort && nickname == repWithoutPort)
+        }
+}
 
 @HiltViewModel
 class HostEditorViewModel @Inject constructor(
@@ -124,6 +136,37 @@ class HostEditorViewModel @Inject constructor(
         }
     }
 
+    private fun getDefaultPort(protocol: String): String = (Transport.fromProtocol(protocol)?.defaultPort ?: 0).toString()
+
+    private fun getHostRepresentation(username: String, hostname: String, port: String, protocol: String): String {
+        if (protocol == "local") return ""
+        val defaultPort = getDefaultPort(protocol)
+        return buildString {
+            if (username.isNotEmpty() && protocol == "ssh") {
+                append(username)
+                append('@')
+            }
+            append(hostname)
+            if (port.isNotEmpty() && port != defaultPort) {
+                append(':')
+                append(port)
+            }
+        }
+    }
+
+    private fun updateNicknameIfMatching(
+        oldState: HostEditorUiState,
+        newState: HostEditorUiState,
+    ): HostEditorUiState {
+        if (newState.protocol == "local") return newState
+        val newRep = getHostRepresentation(newState.username, newState.hostname, newState.port, newState.protocol)
+        return if (oldState.isNicknameMatching) {
+            newState.copy(nickname = newRep, quickConnect = newRep)
+        } else {
+            newState.copy(quickConnect = newRep)
+        }
+    }
+
     private fun loadHost() {
         viewModelScope.launch {
             _uiState.update { it.copy(isLoading = true) }
@@ -131,6 +174,23 @@ class HostEditorViewModel @Inject constructor(
                 val host = repository.findHostById(hostId)
                 if (host != null) {
                     val hasPassword = securePasswordStorage.hasPassword(hostId)
+                    val tempState = HostEditorUiState(
+                        nickname = host.nickname,
+                        protocol = host.protocol,
+                        username = host.username,
+                        hostname = host.hostname,
+                        port = host.port.toString(),
+                    )
+                    val quickConnect = if (tempState.isNicknameMatching) {
+                        host.nickname
+                    } else {
+                        getHostRepresentation(
+                            host.username,
+                            host.hostname,
+                            host.port.toString(),
+                            host.protocol,
+                        )
+                    }
                     _uiState.update {
                         it.copy(
                             nickname = host.nickname,
@@ -138,6 +198,7 @@ class HostEditorViewModel @Inject constructor(
                             username = host.username,
                             hostname = host.hostname,
                             port = host.port.toString(),
+                            quickConnect = quickConnect,
                             color = host.color ?: "gray",
                             pubkeyId = host.pubkeyId,
                             profileId = host.profileId,
@@ -166,43 +227,89 @@ class HostEditorViewModel @Inject constructor(
         }
     }
 
+    private fun parseQuickConnect(value: String): Triple<String, String, String>? {
+        val regex = Regex("^(?:([^@]+)@)?((?:[0-9a-zA-Z._-]+)|(?:\\[[a-fA-F:0-9]+(?:%[-_.a-zA-Z0-9]+)?\\]))(?::(\\d+))?$")
+        val match = regex.find(value) ?: return null
+        val (username, hostname, port) = match.destructured
+        val isValid = hostname.isNotBlank() && (
+            (hostname.startsWith("[") && hostname.endsWith("]")) ||
+                hostname.all { it.isLetterOrDigit() || it == '.' || it == '-' || it == '_' }
+            )
+        return if (isValid) {
+            Triple(username.ifBlank { "" }, hostname, port)
+        } else {
+            null
+        }
+    }
+
     fun updateNickname(value: String) {
         _uiState.update { it.copy(nickname = value) }
+
+        if (_uiState.value.protocol == "local") {
+            _uiState.update { it.copy(quickConnect = value) }
+            return
+        }
+
+        val parsed = parseQuickConnect(value)
+        if (parsed != null) {
+            val (username, hostname, port) = parsed
+            _uiState.update { state ->
+                val parsedPort = port.ifBlank { getDefaultPort(state.protocol) }
+                val newRep = getHostRepresentation(username, hostname, parsedPort, state.protocol)
+                state.copy(
+                    username = username,
+                    hostname = hostname,
+                    port = parsedPort,
+                    quickConnect = newRep,
+                )
+            }
+        }
     }
 
     fun updateProtocol(value: String) {
-        _uiState.update { it.copy(protocol = value) }
+        _uiState.update { old ->
+            val updated = old.copy(protocol = value)
+            updateNicknameIfMatching(old, updated)
+        }
     }
 
     fun updateUsername(value: String) {
-        _uiState.update { it.copy(username = value) }
+        _uiState.update { old ->
+            val updated = old.copy(username = value)
+            updateNicknameIfMatching(old, updated)
+        }
     }
 
     fun updateHostname(value: String) {
-        _uiState.update { it.copy(hostname = value) }
+        _uiState.update { old ->
+            val updated = old.copy(hostname = value)
+            updateNicknameIfMatching(old, updated)
+        }
     }
 
     fun updatePort(value: String) {
         // Only allow numeric input
         if (value.isEmpty() || value.all { it.isDigit() }) {
-            _uiState.update { it.copy(port = value) }
+            _uiState.update { old ->
+                val updated = old.copy(port = value)
+                updateNicknameIfMatching(old, updated)
+            }
         }
     }
 
     fun updateQuickConnect(value: String) {
-        _uiState.update { it.copy(quickConnect = value) }
+        _uiState.update { it.copy(quickConnect = value, nickname = value) }
 
-        // Parse quick connect string: [user@]hostname[:port]
-        val regex = Regex("^(?:([^@]+)@)?([^:]+)(?::(\\d+))?$")
-        val match = regex.find(value)
+        if (_uiState.value.protocol == "local") return
 
-        if (match != null) {
-            val (username, hostname, port) = match.destructured
-            _uiState.update {
-                it.copy(
-                    username = username.ifBlank { "" },
+        val parsed = parseQuickConnect(value)
+        if (parsed != null) {
+            val (username, hostname, port) = parsed
+            _uiState.update { state ->
+                state.copy(
+                    username = username,
                     hostname = hostname,
-                    port = port.ifBlank { "22" },
+                    port = port.ifBlank { getDefaultPort(state.protocol) },
                 )
             }
         }
@@ -286,7 +393,7 @@ class HostEditorViewModel @Inject constructor(
                     protocol = state.protocol,
                     username = state.username,
                     hostname = state.hostname,
-                    port = state.port.toIntOrNull() ?: 22,
+                    port = state.port.toIntOrNull() ?: getDefaultPort(state.protocol).toIntOrNull() ?: 22,
                     color = state.color.takeIf { it != "gray" },
                     pubkeyId = state.pubkeyId,
                     profileId = state.profileId,

@@ -144,7 +144,9 @@ fun HostEditorScreenContent(
     modifier: Modifier = Modifier,
 ) {
     var showProtocolMenu by remember { mutableStateOf(false) }
-    var expandedMode by remember { mutableStateOf(hostId != -1L) }
+    var expandedMode by remember(uiState.isLoading) {
+        mutableStateOf(hostId != -1L && !uiState.isNicknameMatching)
+    }
     val protocols = listOf("ssh", "telnet", "local")
 
     Scaffold(
@@ -236,8 +238,8 @@ fun HostEditorScreenContent(
                     singleLine = true,
                 )
 
-                // Show collapse button only if this is a new host (not editing existing)
-                if (hostId == -1L) {
+                // Show collapse button if this is a new host or the nickname is matching
+                if (hostId == -1L || uiState.isNicknameMatching) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
