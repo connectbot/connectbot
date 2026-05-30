@@ -23,6 +23,7 @@ import android.content.ClipboardManager
 import android.content.Context
 import androidx.annotation.VisibleForTesting
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -572,9 +573,8 @@ fun ConsoleScreen(
 
                     val bridge = uiState.bridges[uiState.currentBridgeIndex]
 
-                    // Terminal view fills entire space with insets padding
-                    // to avoid content being cut off by screen curves/notches
-                    Box(
+                    // Terminal view with keyboard stacked below (not overlapping)
+                    Column(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(
@@ -603,10 +603,9 @@ fun ConsoleScreen(
                         Terminal(
                             terminalEmulator = bridge.terminalEmulator,
                             modifier = Modifier
-                                .fillMaxSize()
-                                .padding(
-                                    bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp,
-                                )
+                                .weight(1f)
+                                .fillMaxWidth()
+                                .animateContentSize()
                                 .testTag("terminal"),
                             typeface = fontResult.typeface,
                             initialFontSize = fontSize.sp,
@@ -636,40 +635,7 @@ fun ConsoleScreen(
                             }
                         }
 
-                        // Terminal keyboard overlay (doesn't resize terminal)
-                        // Must be BEFORE prompts so prompts appear on top
-                        // Fade in/out animation matches ConsoleActivity (100ms duration)
-                        AnimatedVisibility(
-                            visible = showExtraKeyboard,
-                            enter = fadeIn(animationSpec = tween(durationMillis = 100)),
-                            exit = fadeOut(animationSpec = tween(durationMillis = 100)),
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter)
-                                .testTag("terminal_keyboard"),
-                        ) {
-                            TerminalKeyboard(
-                                bridge = bridge,
-                                onInteraction = { handleTerminalInteraction() },
-                                onHideIme = {
-                                    showSoftwareKeyboard = false
-                                },
-                                onShowIme = {
-                                    showSoftwareKeyboard = true
-                                },
-                                onOpenTextInput = {
-                                    showTextInputDialog = true
-                                },
-                                onScrollInProgressChange = { inProgress ->
-                                    keyboardScrollInProgress = inProgress
-                                    handleTerminalInteraction()
-                                },
-                                imeVisible = imeVisible,
-                                playAnimation = !hasPlayedKeyboardAnimation,
-                            )
-                        }
-
-                        // Show inline prompts from the current bridge (non-modal at bottom)
-                        // Must be AFTER keyboard so prompts appear on top (z-order)
+                        // Show inline prompts from the current bridge (above keyboard)
                         val promptState by bridge.promptManager.promptState.collectAsState()
 
                         InlinePrompt(
@@ -683,8 +649,6 @@ fun ConsoleScreen(
                             onDismiss = {
                                 termFocusRequester.requestFocus()
                             },
-                            modifier = Modifier
-                                .align(Alignment.BottomCenter),
                         )
 
                         // Show reconnect/close overlay when session is disconnected
@@ -692,7 +656,6 @@ fun ConsoleScreen(
                             visible = disconnected && !connecting && promptState == null,
                             enter = slideInVertically(initialOffsetY = { it }),
                             exit = slideOutVertically(targetOffsetY = { it }),
-                            modifier = Modifier.align(Alignment.BottomCenter),
                         ) {
                             val terminalColors = MaterialTheme.colorScheme.terminal
                             Column(
@@ -725,6 +688,34 @@ fun ConsoleScreen(
                                     }
                                 }
                             }
+                        }
+
+                        // Terminal keyboard at the bottom (stacked below terminal, not overlay)
+                        AnimatedVisibility(
+                            visible = showExtraKeyboard,
+                            enter = fadeIn(animationSpec = tween(durationMillis = 100)),
+                            exit = fadeOut(animationSpec = tween(durationMillis = 100)),
+                            modifier = Modifier.testTag("terminal_keyboard"),
+                        ) {
+                            TerminalKeyboard(
+                                bridge = bridge,
+                                onInteraction = { handleTerminalInteraction() },
+                                onHideIme = {
+                                    showSoftwareKeyboard = false
+                                },
+                                onShowIme = {
+                                    showSoftwareKeyboard = true
+                                },
+                                onOpenTextInput = {
+                                    showTextInputDialog = true
+                                },
+                                onScrollInProgressChange = { inProgress ->
+                                    keyboardScrollInProgress = inProgress
+                                    handleTerminalInteraction()
+                                },
+                                imeVisible = imeVisible,
+                                playAnimation = !hasPlayedKeyboardAnimation,
+                            )
                         }
                     }
                 }
