@@ -101,6 +101,7 @@ jobs:
           cp ./app/build/outputs/native-debug-symbols/ossRelease/native-debug-symbols.zip "ConnectBot-${GITHUB_TAG}-oss.native-debug-symbols.zip"
           cp ./app/build/outputs/mapping/googleRelease/mapping.txt "ConnectBot-${GITHUB_TAG}-google.mapping.txt"
           cp ./app/build/outputs/mapping/ossRelease/mapping.txt "ConnectBot-${GITHUB_TAG}-oss.mapping.txt"
+          cp ./app/build/outputs/app_versioning/googleRelease/version_code.txt .
           zstd -- ./*.mapping.txt
 
       - name: Store artifacts for upload
@@ -111,6 +112,7 @@ jobs:
           path: |
             release-title.txt
             tag.txt
+            version_code.txt
             ConnectBot-*-unsigned.apk
             ConnectBot-*-unsigned.aab
             ConnectBot-*.native-debug-symbols.zip
@@ -240,6 +242,7 @@ jobs:
             ConnectBot-*-unsigned.aab
             ConnectBot-*.native-debug-symbols.zip
             ConnectBot-*.mapping.txt.zst
+            version_code.txt
 
   signing:
     name: Trigger remote signing
@@ -259,9 +262,10 @@ jobs:
         id: name
         run: |
           echo "GITHUB_TAG=$(cat tag.txt)" >> "$GITHUB_OUTPUT"
+          echo "VERSION_CODE=$(cat version_code.txt)" >> "$GITHUB_OUTPUT"
 
       - name: Call remote signer
         uses: distributhor/workflow-webhook@2381f0e9c7b6bf061fb1405bd0804b8706116369 # v3.0.8
         with:
           webhook_url: ${{ secrets.SIGNER_WEBHOOK_URL }}
-          data: '{"tag_id": "${{ steps.name.outputs.GITHUB_TAG }}"}'
+          data: '{"tag_id": "${{ steps.name.outputs.GITHUB_TAG }}", "version_code": "${{ steps.name.outputs.VERSION_CODE }}"}'
