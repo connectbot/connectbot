@@ -1,2 +1,2 @@
-Jednostavan, moćan, open.source SSH klijent.
+Jednostavan, moćan, open-source SSH klijent.
 
