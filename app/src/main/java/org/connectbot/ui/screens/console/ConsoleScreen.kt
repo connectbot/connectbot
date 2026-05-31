@@ -103,7 +103,10 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.LinkAnnotation
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.content.edit
@@ -116,6 +119,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.service.AuthBanner
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.PromptRequest
 import org.connectbot.terminal.ProgressState
@@ -229,12 +233,15 @@ fun ConsoleScreen(
     val currentBridgeForPrompt = uiState.bridges.getOrNull(uiState.currentBridgeIndex)
     val promptState by currentBridgeForPrompt?.promptManager?.promptState?.collectAsState()
         ?: remember { mutableStateOf(null) }
+    val authBanners by currentBridgeForPrompt?.authBanners?.collectAsState()
+        ?: remember { mutableStateOf(emptyList()) }
+    val currentAuthBanner = authBanners.firstOrNull()
     var wasBiometricPromptActive by remember { mutableStateOf(false) }
     val isBiometricPromptActive = promptState is PromptRequest.BiometricPrompt
 
     // Check if any modal (menu or dialog) is currently active
     val anyModalActive = showMenu || showUrlScanDialog || showResizeDialog ||
-        showDisconnectDialog || showTextInputDialog || isBiometricPromptActive
+        showDisconnectDialog || showTextInputDialog || isBiometricPromptActive || currentAuthBanner != null
 
     /**
      * Unified interaction handler for terminal and keyboard.
@@ -742,6 +749,15 @@ fun ConsoleScreen(
             )
         }
 
+        currentAuthBanner?.let { banner ->
+            AuthBannerDialog(
+                banner = banner,
+                onDismiss = {
+                    currentBridgeForPrompt?.dismissAuthBanner(banner.id)
+                },
+            )
+        }
+
         if (showResizeDialog && currentBridge != null) {
             ResizeDialog(
                 currentBridge = currentBridge,
@@ -1008,6 +1024,47 @@ fun ConsoleScreen(
             }
         }
     }
+}
+
+@Composable
+private fun AuthBannerDialog(
+    banner: AuthBanner,
+    onDismiss: () -> Unit,
+) {
+    val annotatedMessage = remember(banner.message, banner.urls) {
+        buildAnnotatedString {
+            var startIndex = 0
+            banner.urls.forEach { url ->
+                val urlIndex = banner.message.indexOf(url, startIndex)
+                if (urlIndex >= 0) {
+                    append(banner.message.substring(startIndex, urlIndex))
+                    withLink(LinkAnnotation.Url(url)) {
+                        append(url)
+                    }
+                    startIndex = urlIndex + url.length
+                }
+            }
+            append(banner.message.substring(startIndex))
+        }
+    }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = {
+            Text(stringResource(R.string.auth_banner_title, banner.sourceName))
+        },
+        text = {
+            Text(
+                text = annotatedMessage,
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        },
+        confirmButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.button_close))
+            }
+        },
+    )
 }
 
 @Composable

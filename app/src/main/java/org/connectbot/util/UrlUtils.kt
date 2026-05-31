@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,8 @@ import androidx.core.net.toUri
 
 object UrlUtils {
     private val schemeRegex = Regex("^[a-zA-Z][a-zA-Z0-9+.-]*:")
+    private val safeUrlRegex = Regex("""https?://[^\s<>"']+""", RegexOption.IGNORE_CASE)
+    private val trailingPunctuation = setOf('.', ',', ';', ':', '!', '?', ')', ']', '}', '>')
 
     /**
      * Normalizes a URL string by trimming and adding a default scheme if missing.
@@ -65,6 +67,11 @@ object UrlUtils {
 
         return "https://$trimmedUrl"
     }
+
+    fun extractUrls(text: String): List<String> = safeUrlRegex.findAll(text)
+        .map { match -> match.value.trimEnd { it in trailingPunctuation } }
+        .filter { it.isNotEmpty() }
+        .toList()
 
     private val supportedSchemes = setOf("http", "https", "mailto", "tel")
 

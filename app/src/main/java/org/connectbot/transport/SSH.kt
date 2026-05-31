@@ -34,6 +34,7 @@ import com.trilead.ssh2.IpVersion
 import com.trilead.ssh2.KnownHosts
 import com.trilead.ssh2.LocalPortForwarder
 import com.trilead.ssh2.Session
+import com.trilead.ssh2.UserAuthBannerCallback
 import com.trilead.ssh2.crypto.PEMDecoder
 import com.trilead.ssh2.crypto.fingerprint.KeyFingerprint
 import com.trilead.ssh2.crypto.keys.Ed25519PrivateKey
@@ -57,6 +58,7 @@ import org.connectbot.service.requestHostKeyFingerprintPrompt
 import org.connectbot.service.requestStringPrompt
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PubkeyUtils
+import org.connectbot.util.UrlUtils
 import timber.log.Timber
 import java.io.IOException
 import java.io.InputStream
@@ -111,6 +113,7 @@ class SSH :
     private var stderr: InputStream? = null
 
     private val portForwards = mutableListOf<PortForward>()
+    private val userAuthBannerCallbacks = mutableListOf<Pair<Connection, UserAuthBannerCallback>>()
 
     private var columns: Int = 0
     private var rows: Int = 0
@@ -124,6 +127,63 @@ class SSH :
     constructor() : super()
 
     constructor(host: Host?, bridge: TerminalBridge?, manager: TerminalManager?) : super(host, bridge, manager)
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun setConnectionForTesting(connection: Connection?) {
+        this.connection = connection
+    }
+
+    private fun registerUserAuthBanner(connection: Connection, sourceName: String) {
+        val callback = UserAuthBannerCallback { banner, languageTag ->
+            handleAuthBanner(sourceName, banner, languageTag)
+        }
+        connection.addUserAuthBanner(callback)
+        synchronized(userAuthBannerCallbacks) {
+            userAuthBannerCallbacks.add(connection to callback)
+        }
+    }
+
+    private fun unregisterUserAuthBanner(connection: Connection) {
+        synchronized(userAuthBannerCallbacks) {
+            val iterator = userAuthBannerCallbacks.iterator()
+            while (iterator.hasNext()) {
+                val (registeredConnection, callback) = iterator.next()
+                if (registeredConnection == connection) {
+                    runCatching {
+                        registeredConnection.removeUserAuthBanner(callback)
+                    }
+                    iterator.remove()
+                }
+            }
+        }
+    }
+
+    @VisibleForTesting
+    fun handleAuthBanner(sourceName: String, banner: String?, languageTag: String?) {
+        val trimmedBanner = banner?.trim()
+        if (trimmedBanner.isNullOrEmpty()) return
+
+        val header = manager?.res?.getString(R.string.terminal_auth_banner_header, sourceName)
+            ?: "[$sourceName] Authentication message:"
+        bridge?.outputLine(header)
+        bridge?.outputLine(trimmedBanner)
+
+        val urls = UrlUtils.extractUrls(trimmedBanner)
+        if (urls.isNotEmpty()) {
+            bridge?.enqueueAuthBanner(sourceName, trimmedBanner, urls, languageTag)
+        }
+    }
+
+    private fun Host.authBannerSourceName(): String {
+        if (nickname.isNotBlank()) return nickname
+
+        val userPrefix = username.takeIf { it.isNotBlank() }?.let { "$it@" } ?: ""
+        return if (port == DEFAULT_PORT) {
+            "$userPrefix$hostname"
+        } else {
+            "$userPrefix$hostname:$port"
+        }
+    }
 
     private fun decodePublicKey(algorithm: String, keyBlob: ByteArray): PublicKey? = try {
         when (algorithm) {
@@ -313,7 +373,8 @@ class SSH :
         }
     }
 
-    private fun authenticate() {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun authenticate() {
         // Prompt for username if not configured
         if (host?.username.isNullOrEmpty()) {
             val username = bridge?.requestStringPrompt(
@@ -328,14 +389,17 @@ class SSH :
             host = host?.copy(username = username)
         }
 
+        val currentHost = host ?: return
+        val authBannerSourceName = currentHost.authBannerSourceName()
         try {
-            val currentHost = host ?: return
             if (connection?.authenticateWithNone(currentHost.username) == true) {
                 finishConnection()
                 return
             }
         } catch (e: Exception) {
             Timber.d("Host does not support 'none' authentication.")
+        } finally {
+            bridge?.dismissAuthBannersFrom(authBannerSourceName)
         }
 
         bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth))
@@ -663,6 +727,7 @@ class SSH :
         bridge?.outputLine(manager?.res?.getString(R.string.terminal_connecting_via_jump, jumpHost.nickname))
 
         val jc = Connection(jumpHost.hostname, jumpHost.port)
+        registerUserAuthBanner(jc, jumpHost.authBannerSourceName())
 
         try {
             // Check if this jump host itself requires a jump host (chained ProxyJump)
@@ -670,11 +735,16 @@ class SSH :
             if (nestedJumpHostId != null && nestedJumpHostId > 0) {
                 val nestedJumpHost = manager?.hostRepository?.findHostByIdBlocking(nestedJumpHostId)
                 if (nestedJumpHost != null) {
-                    val nestedConnection = connectToJumpHost(nestedJumpHost) ?: return null
+                    val nestedConnection = connectToJumpHost(nestedJumpHost)
+                    if (nestedConnection == null) {
+                        unregisterUserAuthBanner(jc)
+                        return null
+                    }
                     // Use the nested jump host connection as proxy for this jump host
                     jc.setProxyData(JumpHostProxyData(nestedConnection))
                 } else {
                     bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_not_found))
+                    unregisterUserAuthBanner(jc)
                     return null
                 }
             }
@@ -694,6 +764,7 @@ class SSH :
             // Authenticate to jump host
             if (!authenticateJumpHost(jc, jumpHost)) {
                 bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_auth_failed, jumpHost.nickname))
+                unregisterUserAuthBanner(jc)
                 jc.close()
                 jumpConnections.remove(jc)
                 return null
@@ -705,6 +776,7 @@ class SSH :
             Timber.e(e, "Failed to connect to jump host: ${jumpHost.nickname}")
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_failed, jumpHost.nickname, e.message))
             try {
+                unregisterUserAuthBanner(jc)
                 jc.close()
                 jumpConnections.remove(jc)
             } catch (ignored: Exception) {
@@ -720,7 +792,9 @@ class SSH :
      * @param jumpHost The jump host configuration
      * @return true if authentication succeeded
      */
-    private fun authenticateJumpHost(jc: Connection, jumpHost: Host): Boolean {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun authenticateJumpHost(jc: Connection, jumpHost: Host): Boolean {
+        val authBannerSourceName = jumpHost.authBannerSourceName()
         try {
             // Try 'none' authentication first
             if (jc.authenticateWithNone(jumpHost.username)) {
@@ -819,6 +893,8 @@ class SSH :
         } catch (e: Exception) {
             Timber.e(e, "Error during jump host authentication")
             return false
+        } finally {
+            bridge?.dismissAuthBannersFrom(authBannerSourceName)
         }
     }
 
@@ -845,6 +921,7 @@ class SSH :
 
         connection = Connection(currentHost.hostname, currentHost.port)
         connection?.addConnectionMonitor(this)
+        connection?.let { registerUserAuthBanner(it, currentHost.authBannerSourceName()) }
 
         // If we have a jump host connection, set up the proxy
         directJumpConnection?.let {
@@ -942,17 +1019,22 @@ class SSH :
         session?.close()
         session = null
 
+        connection?.let { unregisterUserAuthBanner(it) }
         connection?.close()
         connection = null
 
         // Close all jump host connections (in reverse order)
         jumpConnections.asReversed().forEach { jc ->
             try {
+                unregisterUserAuthBanner(jc)
                 jc.close()
             } catch (ignored: Exception) {
             }
         }
         jumpConnections.clear()
+        synchronized(userAuthBannerCallbacks) {
+            userAuthBannerCallbacks.clear()
+        }
     }
 
     private fun onDisconnect(reason: DisconnectReason = DisconnectReason.IO_ERROR) {
