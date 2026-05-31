@@ -1,0 +1,2 @@
+Basit, güçlü, açık-kaynak SSH istemcisi
+

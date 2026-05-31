@@ -1,0 +1,2 @@
+Enkel og omfattende SSH-klient med åpen kildekode.
+

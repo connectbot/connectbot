@@ -1,0 +1,2 @@
+Paprastas, galingas, atvirojo kodo SSH klientas.
+

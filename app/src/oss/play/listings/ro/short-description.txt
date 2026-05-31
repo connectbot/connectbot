@@ -1,0 +1,2 @@
+Un client SSH simplu, flexibil, open-source
+

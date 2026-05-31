@@ -1,0 +1,2 @@
+Sederhana, tangguh, klien SSH dengan kode terbuka.
+
