@@ -60,6 +60,7 @@ import org.connectbot.R
 import org.connectbot.data.migration.MigrationState
 import org.connectbot.data.migration.MigrationStatus
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.UrlUtils
 
 /**
  * Full-screen UI shown during database migration.
@@ -358,16 +359,18 @@ private fun MigrationFailedContent(
         Spacer(modifier = Modifier.height(16.dp))
 
         val annotatedString = buildAnnotatedString {
-            val url = "https://github.com/connectbot/connectbot/issues"
-            val fullText = stringResource(id = R.string.migration_failed_help)
-            val startIndex = fullText.indexOf($$"%1$s")
-            if (startIndex != -1) {
-                append(fullText.take(startIndex))
-                withLink(LinkAnnotation.Url(url)) { append(url) }
-                append(fullText.substring(startIndex + $$"%1$s".length))
-            } else {
-                append(fullText)
+            val url = UrlUtils.normalizeUrl("https://github.com/connectbot/connectbot/issues")
+            val fullText = stringResource(id = R.string.migration_failed_help, url)
+            var startIndex = 0
+            UrlUtils.extractUrls(fullText).forEach { linkUrl ->
+                val urlIndex = fullText.indexOf(linkUrl, startIndex)
+                if (urlIndex >= 0) {
+                    append(fullText.substring(startIndex, urlIndex))
+                    withLink(LinkAnnotation.Url(linkUrl)) { append(linkUrl) }
+                    startIndex = urlIndex + linkUrl.length
+                }
             }
+            append(fullText.substring(startIndex))
         }
         Text(
             text = annotatedString,

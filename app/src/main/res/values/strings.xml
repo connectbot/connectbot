@@ -601,6 +601,8 @@
 	<string name="console_url_no_handler">No app available to open this URL</string>
 	<!-- Error shown in a snackbar when the URL type is not supported -->
 	<string name="console_url_not_supported">This URL type is not supported</string>
+	<!-- Dialog title for an SSH authentication banner sent by a server. Parameter is the host or jump host name. -->
+	<string name="auth_banner_title">Authentication message from %1$s</string>
 
 	<!-- Button label to answer "Yes" to a yes/no prompt -->
 	<string name="button_yes">"Yes"</string>
@@ -709,6 +711,8 @@
 
 	<!-- Message shown in terminal when starting authentication process -->
 	<string name="terminal_auth">"Trying to authenticate"</string>
+	<!-- Header shown before an SSH authentication banner in the terminal. Parameter is the host or jump host name. -->
+	<string name="terminal_auth_banner_header">"[%1$s] Authentication message:"</string>
 
 	<!-- Message shown in terminal when attempting password authentication method -->
 	<string name="terminal_auth_pass">"Attempting 'password' authentication"</string>

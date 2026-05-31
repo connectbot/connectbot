@@ -41,6 +41,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
@@ -61,6 +62,15 @@ import timber.log.Timber
 import java.io.IOException
 import java.nio.charset.Charset
 import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.atomic.AtomicLong
+
+data class AuthBanner(
+    val id: Long,
+    val sourceName: String,
+    val message: String,
+    val urls: List<String>,
+    val languageTag: String?,
+)
 
 /**
  * Provides a bridge between a MUD terminal buffer and a possible TerminalView.
@@ -141,6 +151,10 @@ class TerminalBridge {
 
     private val _networkStatusMessages = MutableSharedFlow<String>(replay = 0, extraBufferCapacity = 10)
     val networkStatusMessages: SharedFlow<String> = _networkStatusMessages.asSharedFlow()
+
+    private val authBannerIds = AtomicLong()
+    private val _authBanners = MutableStateFlow<List<AuthBanner>>(emptyList())
+    val authBanners: StateFlow<List<AuthBanner>> = _authBanners.asStateFlow()
 
     // Progress state for OSC 9;4 progress reporting
     data class ProgressInfo(val state: ProgressState, val progress: Int)
@@ -931,6 +945,38 @@ class TerminalBridge {
 
     fun scanForURLs(): List<String> = terminalEmulator.getUrls(UrlScanScope.CurrentView).map { it.url }
 
+    fun enqueueAuthBanner(
+        sourceName: String,
+        message: String,
+        urls: List<String>,
+        languageTag: String?,
+    ) {
+        if (urls.isEmpty()) return
+
+        val banner = AuthBanner(
+            id = authBannerIds.incrementAndGet(),
+            sourceName = sourceName,
+            message = message,
+            urls = urls,
+            languageTag = languageTag,
+        )
+        _authBanners.update { list ->
+            if (list.any { it.sourceName == sourceName && it.message == message }) {
+                list
+            } else {
+                (list + banner).takeLast(MAX_AUTH_BANNERS)
+            }
+        }
+    }
+
+    fun dismissAuthBanner(id: Long) {
+        _authBanners.update { list -> list.filterNot { it.id == id } }
+    }
+
+    fun dismissAuthBannersFrom(sourceName: String) {
+        _authBanners.update { list -> list.filterNot { it.sourceName == sourceName } }
+    }
+
     /**
      * @return
      */
@@ -1083,6 +1129,7 @@ class TerminalBridge {
 
         private const val DEFAULT_FONT_SIZE_SP = 10
         private const val FONT_SIZE_STEP = 2
+        private const val MAX_AUTH_BANNERS = 10
     }
 }
 

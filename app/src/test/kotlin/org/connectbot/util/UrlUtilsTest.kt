@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -73,6 +73,43 @@ class UrlUtilsTest {
         assertEquals("https://example.com/path://foo", UrlUtils.normalizeUrl("example.com/path://foo"))
         assertEquals("https://localhost:3000", UrlUtils.normalizeUrl("localhost:3000"))
         assertEquals("https://myhost:8080/api/v1", UrlUtils.normalizeUrl("myhost:8080/api/v1"))
+    }
+
+    @Test
+    fun extractUrls_WithTailscaleBanner_ReturnsHttpsUrl() {
+        val banner = "To authenticate, visit https://login.tailscale.com/a/123456"
+
+        assertEquals(
+            listOf("https://login.tailscale.com/a/123456"),
+            UrlUtils.extractUrls(banner),
+        )
+    }
+
+    @Test
+    fun extractUrls_WithMultipleUrls_ReturnsAllUrls() {
+        val banner = "Open https://example.com/one or http://example.org/two"
+
+        assertEquals(
+            listOf("https://example.com/one", "http://example.org/two"),
+            UrlUtils.extractUrls(banner),
+        )
+    }
+
+    @Test
+    fun extractUrls_WithTrailingPunctuation_TrimsPunctuation() {
+        val banner = "Visit (https://example.com/auth), then continue."
+
+        assertEquals(
+            listOf("https://example.com/auth"),
+            UrlUtils.extractUrls(banner),
+        )
+    }
+
+    @Test
+    fun extractUrls_WithUnsupportedSchemes_IgnoresSchemes() {
+        val banner = "Do not link javascript:alert(1) or file:///etc/passwd"
+
+        assertEquals(emptyList<String>(), UrlUtils.extractUrls(banner))
     }
 
     @Test
