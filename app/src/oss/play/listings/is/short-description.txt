@@ -1,0 +1,2 @@
+Einfaldur, öflugur og opinn SSH-viðmótsforrit.
+

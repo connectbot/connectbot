@@ -1,0 +1,2 @@
+Enostaven, močan, odprtokodni SSH odjemalec.
+

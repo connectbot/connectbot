@@ -1,0 +1,2 @@
+Jednoduchý, výkonný, open-source SSH klient.
+
