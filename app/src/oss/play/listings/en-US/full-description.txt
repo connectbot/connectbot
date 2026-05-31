@@ -1,0 +1,5 @@
+ConnectBot is a secure shell client for Android that lets you connect to remote servers over a cryptographically secure link.
+
+Use ConnectBot to manage SSH sessions from your phone or tablet, keep connections active while you switch apps, and work with the terminal tools you already use. It supports saved hosts, SSH public key authentication, port forwarding, terminal color schemes, custom fonts, and other settings for tailoring each connection.
+
+The F-Droid build uses the open-source ConnectBot flavor. It includes the cryptography provider in the APK and does not depend on Google Play Services.
