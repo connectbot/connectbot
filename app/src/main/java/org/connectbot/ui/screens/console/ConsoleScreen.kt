@@ -157,6 +157,10 @@ private fun rememberHasHardwareKeyboard(): Boolean {
 @VisibleForTesting
 const val AUTO_HIDE_DELAY_MS = 3000L
 
+internal object ConsoleTestTags {
+    const val AUTH_BANNER_MESSAGE = "auth_banner_message"
+}
+
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun ConsoleScreen(
@@ -1027,7 +1031,7 @@ fun ConsoleScreen(
 }
 
 @Composable
-private fun AuthBannerDialog(
+internal fun AuthBannerDialog(
     banner: AuthBanner,
     onDismiss: () -> Unit,
 ) {
@@ -1057,6 +1061,7 @@ private fun AuthBannerDialog(
             Text(
                 text = annotatedMessage,
                 style = MaterialTheme.typography.bodyMedium,
+                modifier = Modifier.testTag(ConsoleTestTags.AUTH_BANNER_MESSAGE),
             )
         },
         confirmButton = {
