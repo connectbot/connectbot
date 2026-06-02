@@ -28,9 +28,12 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.connectbot.service.AuthBanner
 import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.components.FontDownloadProgressDialog
 import org.connectbot.ui.components.UrlScanDialog
+import org.connectbot.ui.screens.console.AuthBannerDialog
+import org.connectbot.ui.screens.console.ConsoleTestTags
 import org.connectbot.ui.screens.portforwardlist.PortForwardEditorDialog
 import org.connectbot.ui.screens.portforwardlist.PortForwardEditorTestTags
 import org.connectbot.ui.screens.portforwardlist.SourceAddressOption
@@ -284,6 +287,39 @@ class ComponentDialogsTest {
             .performClick()
 
         assertEquals(url, clickedUrl)
+        assertTrue(dismissed)
+    }
+
+    @Test
+    fun authBannerDialog_displaysSourceMessageAndDismisses() {
+        var dismissed = false
+        val banner = AuthBanner(
+            id = 1,
+            sourceName = "jump",
+            message = "Visit https://login.tailscale.com/a/123456 to authenticate.",
+            urls = listOf("https://login.tailscale.com/a/123456"),
+            languageTag = "en",
+        )
+
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                AuthBannerDialog(
+                    banner = banner,
+                    onDismiss = { dismissed = true },
+                )
+            }
+        }
+
+        composeTestRule
+            .onNodeWithText(composeTestRule.activity.getString(R.string.auth_banner_title, "jump"))
+            .assertIsDisplayed()
+        composeTestRule
+            .onNodeWithTag(ConsoleTestTags.AUTH_BANNER_MESSAGE)
+            .assertIsDisplayed()
+        composeTestRule
+            .onNodeWithText(composeTestRule.activity.getString(R.string.button_close))
+            .performClick()
+
         assertTrue(dismissed)
     }
 

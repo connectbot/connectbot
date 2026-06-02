@@ -72,6 +72,48 @@ data class AuthBanner(
     val languageTag: String?,
 )
 
+internal class AuthBannerQueue {
+    private val authBannerIds = AtomicLong()
+    private val _authBanners = MutableStateFlow<List<AuthBanner>>(emptyList())
+    val authBanners: StateFlow<List<AuthBanner>> = _authBanners.asStateFlow()
+
+    fun enqueue(
+        sourceName: String,
+        message: String,
+        urls: List<String>,
+        languageTag: String?,
+    ) {
+        if (urls.isEmpty()) return
+
+        val banner = AuthBanner(
+            id = authBannerIds.incrementAndGet(),
+            sourceName = sourceName,
+            message = message,
+            urls = urls,
+            languageTag = languageTag,
+        )
+        _authBanners.update { list ->
+            if (list.any { it.sourceName == sourceName && it.message == message }) {
+                list
+            } else {
+                (list + banner).takeLast(MAX_AUTH_BANNERS)
+            }
+        }
+    }
+
+    fun dismiss(id: Long) {
+        _authBanners.update { list -> list.filterNot { it.id == id } }
+    }
+
+    fun dismissFrom(sourceName: String) {
+        _authBanners.update { list -> list.filterNot { it.sourceName == sourceName } }
+    }
+
+    private companion object {
+        private const val MAX_AUTH_BANNERS = 10
+    }
+}
+
 /**
  * Provides a bridge between a MUD terminal buffer and a possible TerminalView.
  * This separation allows us to keep the TerminalBridge running in a background
@@ -152,9 +194,8 @@ class TerminalBridge {
     private val _networkStatusMessages = MutableSharedFlow<String>(replay = 0, extraBufferCapacity = 10)
     val networkStatusMessages: SharedFlow<String> = _networkStatusMessages.asSharedFlow()
 
-    private val authBannerIds = AtomicLong()
-    private val _authBanners = MutableStateFlow<List<AuthBanner>>(emptyList())
-    val authBanners: StateFlow<List<AuthBanner>> = _authBanners.asStateFlow()
+    private val authBannerQueue = AuthBannerQueue()
+    val authBanners: StateFlow<List<AuthBanner>> = authBannerQueue.authBanners
 
     // Progress state for OSC 9;4 progress reporting
     data class ProgressInfo(val state: ProgressState, val progress: Int)
@@ -945,37 +986,11 @@ class TerminalBridge {
 
     fun scanForURLs(): List<String> = terminalEmulator.getUrls(UrlScanScope.CurrentView).map { it.url }
 
-    fun enqueueAuthBanner(
-        sourceName: String,
-        message: String,
-        urls: List<String>,
-        languageTag: String?,
-    ) {
-        if (urls.isEmpty()) return
+    fun enqueueAuthBanner(sourceName: String, message: String, urls: List<String>, languageTag: String?) = authBannerQueue.enqueue(sourceName, message, urls, languageTag)
 
-        val banner = AuthBanner(
-            id = authBannerIds.incrementAndGet(),
-            sourceName = sourceName,
-            message = message,
-            urls = urls,
-            languageTag = languageTag,
-        )
-        _authBanners.update { list ->
-            if (list.any { it.sourceName == sourceName && it.message == message }) {
-                list
-            } else {
-                (list + banner).takeLast(MAX_AUTH_BANNERS)
-            }
-        }
-    }
+    fun dismissAuthBanner(id: Long) = authBannerQueue.dismiss(id)
 
-    fun dismissAuthBanner(id: Long) {
-        _authBanners.update { list -> list.filterNot { it.id == id } }
-    }
-
-    fun dismissAuthBannersFrom(sourceName: String) {
-        _authBanners.update { list -> list.filterNot { it.sourceName == sourceName } }
-    }
+    fun dismissAuthBannersFrom(sourceName: String) = authBannerQueue.dismissFrom(sourceName)
 
     /**
      * @return
@@ -1129,7 +1144,6 @@ class TerminalBridge {
 
         private const val DEFAULT_FONT_SIZE_SP = 10
         private const val FONT_SIZE_STEP = 2
-        private const val MAX_AUTH_BANNERS = 10
     }
 }
 
