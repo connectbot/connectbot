@@ -53,7 +53,7 @@ media3CommonKtx = "1.10.1"
 navigationTesting = "2.9.8"
 ui = "1.11.2"
 biometric = "1.4.0-alpha02"
-core = "1.18.0"
+core = "1.19.0"
 
 [libraries]
 sshlib = { module = "org.connectbot:sshlib", version.ref = "sshlib" }
