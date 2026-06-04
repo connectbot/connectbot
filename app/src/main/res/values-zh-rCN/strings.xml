@@ -227,7 +227,7 @@
   <string name="profile_list_create_profile">创建配置文件</string>
   <string name="profile_list_empty_message">目前还没有配置文件。点击“+”来创建一个。</string>
   <string name="profile_list_more_options">更多选项</string>
-  <string name="profile_list_duplicate">重复</string>
+  <string name="profile_list_duplicate">复制</string>
   <string name="profile_list_delete">删除</string>
   <string name="profile_create_dialog_title">创建配置文件</string>
   <string name="profile_create_name_label">配置文件名称</string>
@@ -266,7 +266,7 @@
   <string name="list_host_edit">编辑主机</string>
   <string name="list_host_portforwards">编辑端口转发</string>
   <string name="list_host_delete">删除主机</string>
-  <string name="list_host_duplicate">重复的主机名</string>
+  <string name="list_host_duplicate">复制主机</string>
   <string name="list_host_forget_keys">忘记主机密钥</string>
   <string name="list_rotation_default">默认</string>
   <string name="list_rotation_land">强制横屏显示</string>

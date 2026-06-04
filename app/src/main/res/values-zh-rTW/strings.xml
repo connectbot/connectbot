@@ -227,7 +227,7 @@
   <string name="profile_list_create_profile">建立設定檔</string>
   <string name="profile_list_empty_message">目前沒有設定任何設定檔。點擊「+」按鈕來建立一個。</string>
   <string name="profile_list_more_options">更多選項</string>
-  <string name="profile_list_duplicate">重複</string>
+  <string name="profile_list_duplicate">複製</string>
   <string name="profile_list_delete">刪除</string>
   <string name="profile_create_dialog_title">建立設定檔</string>
   <string name="profile_create_name_label">個人檔案名稱</string>
@@ -266,7 +266,7 @@
   <string name="list_host_edit">編輯主機</string>
   <string name="list_host_portforwards">編輯連接埠轉址</string>
   <string name="list_host_delete">刪除主機</string>
-  <string name="list_host_duplicate">主機名稱重複</string>
+  <string name="list_host_duplicate">複製主機</string>
   <string name="list_host_forget_keys">忘記主機金鑰</string>
   <string name="list_rotation_default">預設值</string>
   <string name="list_rotation_land">強制橫屏顯示</string>
