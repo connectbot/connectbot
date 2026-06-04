@@ -91,6 +91,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -103,6 +104,14 @@ import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.components.rememberBiometricPromptState
 import org.connectbot.ui.theme.ConnectBotTheme
+
+internal object PubkeyListTestTags {
+    const val PASSWORD_FIELD = "pubkey_password_field"
+    const val PASSWORD_CONFIRM_BUTTON = "pubkey_password_confirm_button"
+
+    fun itemRow(pubkeyId: Long): String = "pubkey_item_${pubkeyId}_row"
+    fun itemMenuButton(pubkeyId: Long): String = "pubkey_item_${pubkeyId}_menu_button"
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -830,7 +839,9 @@ private fun PubkeyPasswordDialog(
                     label = { Text(stringResource(R.string.prompt_password)) },
                     visualTransformation = PasswordVisualTransformation(),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .testTag(PubkeyListTestTags.PASSWORD_FIELD),
                     singleLine = true,
                 )
             }
@@ -838,6 +849,7 @@ private fun PubkeyPasswordDialog(
         confirmButton = {
             TextButton(
                 onClick = { onProvidePassword(password) },
+                modifier = Modifier.testTag(PubkeyListTestTags.PASSWORD_CONFIRM_BUTTON),
             ) {
                 Text(stringResource(R.string.pubkey_unlock))
             }
