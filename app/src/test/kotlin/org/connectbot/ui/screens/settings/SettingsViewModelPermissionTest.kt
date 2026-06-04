@@ -20,6 +20,7 @@ package org.connectbot.ui.screens.settings
 import android.content.Context
 import android.content.SharedPreferences
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.StandardTestDispatcher
@@ -30,6 +31,8 @@ import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.di.FakeLanguagePackManager
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.keybar.KeyBarConfigRepository
+import org.connectbot.util.keybar.KeyEntry
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -60,6 +63,7 @@ class SettingsViewModelPermissionTest {
     private lateinit var prefsEditor: SharedPreferences.Editor
     private lateinit var profileRepository: ProfileRepository
     private lateinit var context: Context
+    private lateinit var keyBarRepo: KeyBarConfigRepository
     private lateinit var viewModel: SettingsViewModel
 
     @Before
@@ -68,6 +72,8 @@ class SettingsViewModelPermissionTest {
         prefsEditor = mock()
         profileRepository = mock()
         context = RuntimeEnvironment.getApplication()
+        keyBarRepo = mock()
+        whenever(keyBarRepo.config).thenReturn(MutableStateFlow(emptyList<KeyEntry>()))
 
         // Setup mock ProfileRepository
         val defaultProfile = Profile(id = 1L, name = "Default")
@@ -106,7 +112,7 @@ class SettingsViewModelPermissionTest {
         whenever(prefs.getBoolean(eq("bellnotification"), any())).thenReturn(false)
         whenever(prefs.getBoolean(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED), any())).thenReturn(false)
 
-        viewModel = SettingsViewModel(prefs, profileRepository, context, dispatchers, FakeLanguagePackManager())
+        viewModel = SettingsViewModel(prefs, profileRepository, context, dispatchers, FakeLanguagePackManager(), keyBarRepo)
         advanceUntilIdle()
     }
 
@@ -162,7 +168,7 @@ class SettingsViewModelPermissionTest {
     fun updateConnPersist_TurningOff_UpdatesPreference() = runTest {
         // Setup connPersist as ON
         whenever(prefs.getBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), any())).thenReturn(true)
-        viewModel = SettingsViewModel(prefs, profileRepository, context, dispatchers, FakeLanguagePackManager())
+        viewModel = SettingsViewModel(prefs, profileRepository, context, dispatchers, FakeLanguagePackManager(), keyBarRepo)
         advanceUntilIdle()
 
         viewModel.updateConnPersist(false)
@@ -176,7 +182,7 @@ class SettingsViewModelPermissionTest {
     fun updateConnPersist_AlreadyOn_UpdatesPreference() = runTest {
         // Setup connPersist as ON
         whenever(prefs.getBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), any())).thenReturn(true)
-        viewModel = SettingsViewModel(prefs, profileRepository, context, dispatchers, FakeLanguagePackManager())
+        viewModel = SettingsViewModel(prefs, profileRepository, context, dispatchers, FakeLanguagePackManager(), keyBarRepo)
         advanceUntilIdle()
 
         viewModel.updateConnPersist(true)
@@ -207,7 +213,7 @@ class SettingsViewModelPermissionTest {
         // Verify denial state is persisted by recreating ViewModel
         whenever(prefs.getBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), any())).thenReturn(false)
         // The NOTIFICATION_PERMISSION_DENIED flag is still false in SharedPreferences
-        viewModel = SettingsViewModel(prefs, profileRepository, context, dispatchers, FakeLanguagePackManager())
+        viewModel = SettingsViewModel(prefs, profileRepository, context, dispatchers, FakeLanguagePackManager(), keyBarRepo)
         advanceUntilIdle()
 
         val permissionRequests = mutableListOf<Unit>()
@@ -264,7 +270,7 @@ class SettingsViewModelPermissionTest {
         whenever(prefs.getBoolean(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED), any())).thenReturn(true)
 
         // Recreate ViewModel (simulating process death/configuration change)
-        viewModel = SettingsViewModel(prefs, profileRepository, context, dispatchers, FakeLanguagePackManager())
+        viewModel = SettingsViewModel(prefs, profileRepository, context, dispatchers, FakeLanguagePackManager(), keyBarRepo)
         advanceUntilIdle()
 
         // Try to turn on connPersist

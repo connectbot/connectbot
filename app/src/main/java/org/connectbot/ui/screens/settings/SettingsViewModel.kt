@@ -47,6 +47,8 @@ import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.TerminalFontProvider
 import org.connectbot.util.ThemeMode
+import org.connectbot.util.keybar.KeyBarConfigRepository
+import org.connectbot.util.keybar.KeyEntry
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -90,6 +92,7 @@ data class SettingsUiState(
     val installedLanguages: Set<String> = emptySet(),
     val defaultProfileId: Long = 0L,
     val availableProfiles: List<Profile> = emptyList(),
+    val keyBarConfig: List<KeyEntry> = emptyList(),
 )
 
 @HiltViewModel
@@ -99,6 +102,7 @@ class SettingsViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val dispatchers: CoroutineDispatchers,
     private val languagePackManager: LanguagePackManager,
+    private val keyBarRepo: KeyBarConfigRepository,
 ) : ViewModel() {
     private val fontProvider = TerminalFontProvider(context, dispatchers.io)
     private val localFontProvider = LocalFontProvider(context)
@@ -121,6 +125,11 @@ class SettingsViewModel @Inject constructor(
     init {
         loadProfiles()
         refreshInstalledLanguages()
+        viewModelScope.launch {
+            keyBarRepo.config.collect { entries ->
+                _uiState.update { it.copy(keyBarConfig = entries) }
+            }
+        }
     }
 
     private fun loadProfiles() {
@@ -477,6 +486,64 @@ class SettingsViewModel @Inject constructor(
                     updateFontFamily("SYSTEM_DEFAULT")
                 }
             }
+        }
+    }
+
+    /* ----- key bar mutators ----- */
+
+    // Match the prefs-write pattern used by updateBooleanPref / updateStringPref
+    // below: every persist runs inside viewModelScope so tests can drain it via
+    // the injected dispatchers, and we avoid doing the JSON encode synchronously
+    // from a Compose onClick frame.
+    private fun persistKeyBar(entries: List<KeyEntry>) {
+        viewModelScope.launch {
+            keyBarRepo.update(entries)
+        }
+    }
+
+    fun moveKeyBarEntry(from: Int, to: Int) {
+        val current = _uiState.value.keyBarConfig.toMutableList()
+        if (from !in current.indices || to !in current.indices) return
+        val item = current.removeAt(from)
+        current.add(to, item)
+        persistKeyBar(current)
+    }
+
+    fun setEntryVisible(index: Int, visible: Boolean) {
+        val current = _uiState.value.keyBarConfig.toMutableList()
+        current[index] = when (val entry = current.getOrNull(index)) {
+            is KeyEntry.Builtin -> entry.copy(visible = visible)
+            is KeyEntry.Macro -> entry.copy(visible = visible)
+            null -> return
+        }
+        persistKeyBar(current)
+    }
+
+    fun addMacro(label: String, text: String) {
+        val current = _uiState.value.keyBarConfig.toMutableList()
+        current.add(KeyEntry.Macro(label, text))
+        persistKeyBar(current)
+    }
+
+    fun updateMacro(index: Int, label: String, text: String) {
+        val current = _uiState.value.keyBarConfig.toMutableList()
+        val existing = current.getOrNull(index) as? KeyEntry.Macro ?: return
+        current[index] = existing.copy(label = label, text = text)
+        persistKeyBar(current)
+    }
+
+    fun deleteKeyBarEntry(index: Int) {
+        val current = _uiState.value.keyBarConfig.toMutableList()
+        val entry = current.getOrNull(index) ?: return
+        // Built-ins are not deletable — toggle visibility instead.
+        if (entry is KeyEntry.Builtin) return
+        current.removeAt(index)
+        persistKeyBar(current)
+    }
+
+    fun resetKeyBar() {
+        viewModelScope.launch {
+            keyBarRepo.reset()
         }
     }
 

@@ -38,6 +38,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Error
@@ -98,6 +99,7 @@ fun SettingsScreen(
     modifier: Modifier = Modifier,
     highlightItem: String? = null,
     viewModel: SettingsViewModel = hiltViewModel(),
+    onNavigateToCustomizeKeyBar: () -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
     val context = LocalContext.current
@@ -202,6 +204,7 @@ fun SettingsScreen(
         onBellVolumeChange = viewModel::updateBellVolume,
         onBellVibrateChange = viewModel::updateBellVibrate,
         onBellNotificationChange = viewModel::updateBellNotification,
+        onNavigateToCustomizeKeyBar = onNavigateToCustomizeKeyBar,
         modifier = modifier,
     )
 }
@@ -246,6 +249,7 @@ fun SettingsScreenContent(
     onBellVolumeChange: (Float) -> Unit,
     onBellVibrateChange: (Boolean) -> Unit,
     onBellNotificationChange: (Boolean) -> Unit,
+    onNavigateToCustomizeKeyBar: () -> Unit,
     modifier: Modifier = Modifier,
     highlightItem: String? = null,
 ) {
@@ -652,6 +656,14 @@ fun SettingsScreenContent(
             }
 
             item {
+                NavigablePreference(
+                    title = stringResource(R.string.pref_keybar_title),
+                    summary = stringResource(R.string.pref_keybar_summary),
+                    onClick = onNavigateToCustomizeKeyBar,
+                )
+            }
+
+            item {
                 PreferenceCategory(title = stringResource(R.string.pref_bell_category))
             }
 
@@ -762,6 +774,29 @@ private fun SwitchPreference(
                 containerColor = highlightColor,
             ),
             modifier = Modifier.clickable { onCheckedChange(!checked) },
+        )
+        HorizontalDivider()
+    }
+}
+
+@Composable
+private fun NavigablePreference(
+    title: String,
+    summary: String,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        ListItem(
+            headlineContent = { Text(title) },
+            supportingContent = { Text(summary) },
+            trailingContent = {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+                    contentDescription = null,
+                )
+            },
+            modifier = Modifier.clickable { onClick() },
         )
         HorizontalDivider()
     }
@@ -1600,6 +1635,7 @@ private fun SettingsScreenPreview() {
             onBellVolumeChange = {},
             onBellVibrateChange = {},
             onBellNotificationChange = {},
+            onNavigateToCustomizeKeyBar = {},
         )
     }
 }
