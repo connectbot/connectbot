@@ -105,6 +105,21 @@ class SessionSwipeNavigationTest {
     }
 
     @Test
+    fun sessionSwipeTarget_ignoresDragsWhileSelectionActive() {
+        assertNull(
+            sessionSwipeTarget(
+                currentIndex = 1,
+                sessionCount = 3,
+                dragX = -220f,
+                dragY = 20f,
+                viewportWidth = 1000,
+                touchSlop = 20f,
+                selectionActive = true,
+            ),
+        )
+    }
+
+    @Test
     fun shouldShowSoftwareKeyboardForSessionOpen_showsOnlyForSameBridgeOpening() {
         assertTrue(
             shouldShowSoftwareKeyboardForSessionOpen(

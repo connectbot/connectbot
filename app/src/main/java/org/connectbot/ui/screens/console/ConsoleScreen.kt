@@ -232,8 +232,9 @@ internal fun sessionSwipeTarget(
     dragY: Float,
     viewportWidth: Int,
     touchSlop: Float,
+    selectionActive: Boolean = false,
 ): Int? {
-    if (sessionCount < 2 || viewportWidth <= 0) {
+    if (selectionActive || sessionCount < 2 || viewportWidth <= 0) {
         return null
     }
 
@@ -279,9 +280,14 @@ internal fun shouldPreserveSoftwareKeyboardForBridgeChange(
 private fun Modifier.sessionSwipeNavigation(
     currentIndex: Int,
     sessionCount: Int,
+    selectionActive: Boolean,
     onSwipeToSession: (Int) -> Unit,
     onInteraction: () -> Unit,
-): Modifier = pointerInput(currentIndex, sessionCount) {
+): Modifier = pointerInput(currentIndex, sessionCount, selectionActive) {
+    if (selectionActive) {
+        return@pointerInput
+    }
+
     awaitEachGesture {
         val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
         val pointerId = down.id
@@ -324,6 +330,7 @@ private fun Modifier.sessionSwipeNavigation(
                 dragY = dragY,
                 viewportWidth = size.width,
                 touchSlop = viewConfiguration.touchSlop,
+                selectionActive = selectionActive,
             )?.let { target ->
                 onInteraction()
                 onSwipeToSession(target)
@@ -741,6 +748,7 @@ fun ConsoleScreen(
 
     val hasMultipleSessions = uiState.bridges.size > 1 && !uiState.isLoading
     val swipeBetweenSessions = swipeSessionsEnabled && hasMultipleSessions
+    val terminalSelectionActive = selectionController?.isSelectionActive == true
     // These values are computed from bridge state and will recompute when uiState.revision changes
     val sessionOpen = currentBridge?.isSessionOpen == true
     val disconnected = currentBridge?.isDisconnected == true
@@ -973,6 +981,7 @@ fun ConsoleScreen(
                                     terminalModifier = Modifier.sessionSwipeNavigation(
                                         currentIndex = uiState.currentBridgeIndex,
                                         sessionCount = uiState.bridges.size,
+                                        selectionActive = terminalSelectionActive,
                                         onSwipeToSession = { index -> selectBridgePreservingKeyboard(index) },
                                         onInteraction = { handleTerminalInteraction(isInteraction = false) },
                                     ),
