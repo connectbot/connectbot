@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalManager
 import org.connectbot.util.BiometricKeyManager
 import org.connectbot.util.PubkeyUtils
+import org.connectbot.util.SshKeyType
 import timber.log.Timber
 import java.io.BufferedReader
 import java.io.ByteArrayInputStream
@@ -1015,13 +1016,5 @@ class PubkeyListViewModel @Inject constructor(
         return filename
     }
 
-    /**
-     * Convert algorithm name from Java format to ConnectBot internal format.
-     * EdDSA -> Ed25519
-     */
-    private fun convertAlgorithmName(algorithm: String): String = if (algorithm == "EdDSA") {
-        "Ed25519"
-    } else {
-        algorithm
-    }
+    private fun convertAlgorithmName(algorithm: String): String = SshKeyType.fromJavaAlgorithm(algorithm)?.storedName ?: algorithm
 }
