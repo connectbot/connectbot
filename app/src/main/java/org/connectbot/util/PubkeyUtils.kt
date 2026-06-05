@@ -18,7 +18,9 @@
 package org.connectbot.util
 
 import com.trilead.ssh2.crypto.PEMDecoder
+import com.trilead.ssh2.crypto.keys.Ed25519PrivateKey
 import com.trilead.ssh2.crypto.keys.Ed25519Provider
+import com.trilead.ssh2.crypto.keys.Ed25519PublicKey
 import org.connectbot.data.entity.Pubkey
 import timber.log.Timber
 import java.security.Key
@@ -96,8 +98,17 @@ object PubkeyUtils {
 
     @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class)
     fun decodePrivate(encoded: ByteArray?, keyType: String?): PrivateKey? {
-        val privKeySpec = PKCS8EncodedKeySpec(encoded)
-        val kf = KeyFactory.getInstance(keyType)
+        val privateKeyBytes = encoded ?: throw InvalidKeySpecException("Missing private key data")
+        val sshKeyType = SshKeyType.fromStoredType(keyType)
+            ?: throw NoSuchAlgorithmException("Unsupported key type: $keyType")
+        if (sshKeyType == SshKeyType.ED25519) {
+            return Ed25519PrivateKey(PKCS8EncodedKeySpec(privateKeyBytes))
+        }
+
+        val algorithm = sshKeyType.keyFactoryAlgorithm
+            ?: throw NoSuchAlgorithmException("Unsupported key type: $keyType")
+        val privKeySpec = PKCS8EncodedKeySpec(privateKeyBytes)
+        val kf = KeyFactory.getInstance(algorithm)
         return kf.generatePrivate(privKeySpec)
     }
 
@@ -113,8 +124,17 @@ object PubkeyUtils {
 
     @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class)
     fun decodePublic(encoded: ByteArray?, keyType: String?): PublicKey {
-        val pubKeySpec = X509EncodedKeySpec(encoded)
-        val kf = KeyFactory.getInstance(keyType)
+        val publicKeyBytes = encoded ?: throw InvalidKeySpecException("Missing public key data")
+        val sshKeyType = SshKeyType.fromStoredType(keyType)
+            ?: throw NoSuchAlgorithmException("Unsupported key type: $keyType")
+        if (sshKeyType == SshKeyType.ED25519) {
+            return Ed25519PublicKey(X509EncodedKeySpec(publicKeyBytes))
+        }
+
+        val algorithm = sshKeyType.keyFactoryAlgorithm
+            ?: throw NoSuchAlgorithmException("Unsupported key type: $keyType")
+        val pubKeySpec = X509EncodedKeySpec(publicKeyBytes)
+        val kf = KeyFactory.getInstance(algorithm)
         return kf.generatePublic(pubKeySpec)
     }
 
