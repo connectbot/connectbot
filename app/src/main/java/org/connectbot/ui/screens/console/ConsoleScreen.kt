@@ -49,8 +49,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentPaste
@@ -85,6 +83,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -498,6 +497,7 @@ private fun ConsoleTerminalPage(
                 }
             }
     }
+}
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -925,70 +925,20 @@ fun ConsoleScreen(
                             .fillMaxWidth()
                             .weight(1f),
                     ) {
-                        if (swipeBetweenSessions) {
-                            val pagerState = rememberPagerState(
-                                initialPage = uiState.currentBridgeIndex,
-                                pageCount = { uiState.bridges.size },
+                        val bridge = uiState.bridges[uiState.currentBridgeIndex]
+                        val terminalModifier = if (swipeBetweenSessions) {
+                            Modifier.sessionSwipeNavigation(
+                                currentIndex = uiState.currentBridgeIndex,
+                                sessionCount = uiState.bridges.size,
+                                selectionActive = terminalSelectionActive,
+                                onSwipeToSession = { index -> selectBridgePreservingKeyboard(index) },
+                                onInteraction = { handleTerminalInteraction(isInteraction = false) },
                             )
-
-                            LaunchedEffect(pagerState.currentPage) {
-                                if (pagerState.currentPage != uiState.currentBridgeIndex) {
-                                    selectBridgePreservingKeyboard(pagerState.currentPage)
-                                }
-                            }
-
-                            LaunchedEffect(uiState.currentBridgeIndex, uiState.bridges.size) {
-                                if (pagerState.currentPage != uiState.currentBridgeIndex) {
-                                    pagerState.scrollToPage(uiState.currentBridgeIndex)
-                                }
-                            }
-
-                            HorizontalPager(
-                                state = pagerState,
-                                modifier = Modifier.fillMaxSize(),
-                                userScrollEnabled = false,
-                                key = { page -> uiState.bridges[page].host.id },
-                            ) { page ->
-                                val pageBridge = uiState.bridges[page]
-                                ConsoleTerminalPage(
-                                    bridge = pageBridge,
-                                    isActive = page == uiState.currentBridgeIndex,
-                                    keyboardAlwaysVisible = keyboardAlwaysVisible,
-                                    showSoftwareKeyboard = showSoftwareKeyboard,
-                                    forceSize = forceSize,
-                                    termFocusRequester = termFocusRequester,
-                                    showExtraKeyboard = showExtraKeyboard,
-                                    hasPlayedKeyboardAnimation = hasPlayedKeyboardAnimation,
-                                    imeVisible = imeVisible,
-                                    handleTerminalInteraction = { handleTerminalInteraction(isTerminalTap = true) },
-                                    onShowSoftwareKeyboardChange = { showSoftwareKeyboard = it },
-                                    onImeVisibilityChange = { imeVisible = it },
-                                    onTextInputRequest = { showTextInputDialog = true },
-                                    onDisconnectRequest = {
-                                        pageBridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
-                                    },
-                                    onKeyboardScrollInProgressChange = { inProgress ->
-                                        keyboardScrollInProgress = inProgress
-                                        handleTerminalInteraction()
-                                    },
-                                    onSelectionControllerChange = { selectionController = it },
-                                    onOpenUrl = ::openUrl,
-                                    onPasteRequest = ::pasteClipboardContents,
-                                    onInterceptKey = handleShortcut,
-                                    onReconnect = { viewModel.reconnect(pageBridge) },
-                                    snackbarHostState = snackbarHostState,
-                                    modifier = Modifier.fillMaxSize(),
-                                    terminalModifier = Modifier.sessionSwipeNavigation(
-                                        currentIndex = uiState.currentBridgeIndex,
-                                        sessionCount = uiState.bridges.size,
-                                        selectionActive = terminalSelectionActive,
-                                        onSwipeToSession = { index -> selectBridgePreservingKeyboard(index) },
-                                        onInteraction = { handleTerminalInteraction(isInteraction = false) },
-                                    ),
-                                )
-                            }
                         } else {
-                            val bridge = uiState.bridges[uiState.currentBridgeIndex]
+                            Modifier
+                        }
+
+                        key(bridge.host.id) {
                             ConsoleTerminalPage(
                                 bridge = bridge,
                                 isActive = true,
@@ -1017,6 +967,7 @@ fun ConsoleScreen(
                                 onReconnect = { viewModel.reconnect(bridge) },
                                 snackbarHostState = snackbarHostState,
                                 modifier = Modifier.fillMaxSize(),
+                                terminalModifier = terminalModifier,
                             )
                         }
                     }
