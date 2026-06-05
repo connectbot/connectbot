@@ -58,6 +58,7 @@ import org.connectbot.service.requestHostKeyFingerprintPrompt
 import org.connectbot.service.requestStringPrompt
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PubkeyUtils
+import org.connectbot.util.SshKeyType
 import org.connectbot.util.UrlUtils
 import timber.log.Timber
 import java.io.IOException
@@ -209,12 +210,7 @@ class SSH :
     }
 
     @VisibleForTesting
-    internal fun getKeyType(openSshKeyType: String): String? = when (openSshKeyType) {
-        "ssh-rsa", "rsa-sha2-256", "rsa-sha2-512" -> "RSA"
-        "ssh-dss" -> "DSA"
-        "ssh-ed25519" -> "Ed25519"
-        else -> if (openSshKeyType.startsWith("ecdsa-sha2-")) "EC" else null
-    }
+    internal fun getKeyType(openSshKeyType: String): String? = SshKeyType.fromOpenSshType(openSshKeyType)?.storedName
 
     inner class HostKeyVerifier(private val verifyHost: Host? = host) : ExtendedServerHostKeyVerifier() {
         @Throws(IOException::class)
