@@ -128,6 +128,7 @@ import org.connectbot.terminal.SelectionController
 import org.connectbot.terminal.Terminal
 import org.connectbot.ui.LoadingScreen
 import org.connectbot.ui.LocalTerminalManager
+import org.connectbot.ui.components.AuthBannerDialog
 import org.connectbot.ui.components.FloatingTextInputDialog
 import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
@@ -1048,48 +1049,6 @@ fun ConsoleScreen(
             }
         }
     }
-}
-
-@Composable
-internal fun AuthBannerDialog(
-    banner: AuthBanner,
-    onDismiss: () -> Unit,
-) {
-    val annotatedMessage = remember(banner.message, banner.urls) {
-        buildAnnotatedString {
-            var startIndex = 0
-            banner.urls.forEach { url ->
-                val urlIndex = banner.message.indexOf(url, startIndex)
-                if (urlIndex >= 0) {
-                    append(banner.message.substring(startIndex, urlIndex))
-                    withLink(LinkAnnotation.Url(url)) {
-                        append(url)
-                    }
-                    startIndex = urlIndex + url.length
-                }
-            }
-            append(banner.message.substring(startIndex))
-        }
-    }
-
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = {
-            Text(stringResource(R.string.auth_banner_title, banner.sourceName))
-        },
-        text = {
-            Text(
-                text = annotatedMessage,
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.testTag(ConsoleTestTags.AUTH_BANNER_MESSAGE),
-            )
-        },
-        confirmButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.button_close))
-            }
-        },
-    )
 }
 
 @Composable
