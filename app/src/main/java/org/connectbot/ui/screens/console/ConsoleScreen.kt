@@ -89,6 +89,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.input.key.Key
+import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.isCtrlPressed
 import androidx.compose.ui.input.key.isShiftPressed
@@ -159,6 +160,56 @@ const val AUTO_HIDE_DELAY_MS = 3000L
 
 internal object ConsoleTestTags {
     const val AUTH_BANNER_MESSAGE = "auth_banner_message"
+}
+
+internal fun handleConsoleShortcut(
+    keyEvent: KeyEvent,
+    volumeKeysChangeFontSize: Boolean,
+    copySelection: () -> Unit,
+    pasteClipboardContents: () -> Unit,
+    increaseFontSize: () -> Unit,
+    decreaseFontSize: () -> Unit,
+): Boolean {
+    if (keyEvent.type != KeyEventType.KeyDown) return false
+
+    return when {
+        // Ctrl+Shift+C: copy selection
+        keyEvent.key == Key.C && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
+            copySelection()
+            true
+        }
+
+        // Ctrl+Shift+V: paste clipboard content
+        keyEvent.key == Key.V && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
+            pasteClipboardContents()
+            true
+        }
+
+        // Ctrl+Shift+= (Ctrl++): increase font size
+        keyEvent.isCtrlPressed && keyEvent.isShiftPressed && keyEvent.key == Key.Equals -> {
+            increaseFontSize()
+            true
+        }
+
+        // Ctrl+Shift+-: decrease font size
+        keyEvent.isCtrlPressed && keyEvent.isShiftPressed && keyEvent.key == Key.Minus -> {
+            decreaseFontSize()
+            true
+        }
+
+        // Volume keys: change font size
+        volumeKeysChangeFontSize && keyEvent.key == Key.VolumeUp -> {
+            increaseFontSize()
+            true
+        }
+
+        volumeKeysChangeFontSize && keyEvent.key == Key.VolumeDown -> {
+            decreaseFontSize()
+            true
+        }
+
+        else -> false
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
@@ -511,6 +562,17 @@ fun ConsoleScreen(
             }
         }
 
+        val handleShortcut: (KeyEvent) -> Boolean = { keyEvent ->
+            handleConsoleShortcut(
+                keyEvent = keyEvent,
+                volumeKeysChangeFontSize = volumeKeysChangeFontSize,
+                copySelection = { selectionController?.copySelection() },
+                pasteClipboardContents = { pasteClipboardContents() },
+                increaseFontSize = { currentBridge?.increaseFontSize() },
+                decreaseFontSize = { currentBridge?.decreaseFontSize() },
+            )
+        }
+
         // Terminal content with keyboard overlay
         // This Box is transparent to accessibility - it's just for layout
         val layoutDirection = LocalLayoutDirection.current
@@ -525,50 +587,7 @@ fun ConsoleScreen(
                     bottom = innerPadding.calculateBottomPadding(),
                 )
                 .windowInsetsPadding(WindowInsets.imeAnimationTarget)
-                .onPreviewKeyEvent { keyEvent ->
-                    if (keyEvent.type == KeyEventType.KeyDown) {
-                        when {
-                            // Ctrl+Shift+C: copy selection
-                            keyEvent.key == Key.C && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
-                                selectionController?.copySelection()
-                                true
-                            }
-
-                            // Ctrl+Shift+V: paste clipboard content
-                            keyEvent.key == Key.V && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
-                                pasteClipboardContents()
-                                true
-                            }
-
-                            // Ctrl+Shift+= (Ctrl++): increase font size
-                            keyEvent.isCtrlPressed && keyEvent.isShiftPressed && keyEvent.key == Key.Equals -> {
-                                currentBridge?.increaseFontSize()
-                                true
-                            }
-
-                            // Ctrl+Shift+-: decrease font size
-                            keyEvent.isCtrlPressed && keyEvent.isShiftPressed && keyEvent.key == Key.Minus -> {
-                                currentBridge?.decreaseFontSize()
-                                true
-                            }
-
-                            // Volume keys: change font size
-                            volumeKeysChangeFontSize && keyEvent.key == Key.VolumeUp -> {
-                                currentBridge?.increaseFontSize()
-                                true
-                            }
-
-                            volumeKeysChangeFontSize && keyEvent.key == Key.VolumeDown -> {
-                                currentBridge?.decreaseFontSize()
-                                true
-                            }
-
-                            else -> false
-                        }
-                    } else {
-                        false
-                    }
-                },
+                .onPreviewKeyEvent(handleShortcut),
         ) {
             when {
                 uiState.isLoading -> {
@@ -638,6 +657,7 @@ fun ConsoleScreen(
                             onPasteRequest = {
                                 pasteClipboardContents()
                             },
+                            onInterceptKey = handleShortcut,
                         )
 
                         // Set up text input request callback from bridge (for camera button)
