@@ -256,7 +256,7 @@ class SSH :
             val fingerprint = buildString {
                 append("\nMD5:")
                 append(md5)
-                append("\nSHA256:")
+                append("\n")
                 append(sha256)
             }
 
