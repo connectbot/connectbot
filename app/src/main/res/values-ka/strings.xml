@@ -572,4 +572,6 @@
   <string name="auth_screen_unlock_button" tools:machine_translated="true">შეეხეთ, რათა გახსნათ</string>
   <string name="auth_prompt_title" tools:machine_translated="true">გაიხსენით ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">გადასასვლელად გადაამოწმეთ თქვენი იდენტობა.</string>
+  <string name="auth_banner_title" tools:machine_translated="true">ავტორიზაციის შეტყობინება %1$s-დან.</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] ავტორიზაციის შეტყობინება:</string>
 </resources>

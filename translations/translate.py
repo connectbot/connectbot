@@ -9,8 +9,8 @@ For each values-<locale>/ directory found under <res_dir>, this script:
   - Reads values/strings.xml from the source locale
   - For each <string>, <string-array>, <plurals> element:
       - Skips elements with translatable="false"
-      - Skips elements already in the target WITHOUT tools:machine_translated="true"
-      - Translates elements that are missing OR have tools:machine_translated="true"
+      - Skips elements already present in the target
+      - Translates only elements that are missing
   - Writes back the target file with tools:machine_translated="true" on new
     translations, preserving utf-8 encoding
 
@@ -31,7 +31,7 @@ import ollama
 
 OLLAMA_HOST = os.environ.get("OLLAMA_HOST", "http://localhost:11434")
 MODEL = "translategemma:27b"
-TEMPERATURE = 0.1
+TEMPERATURE = 0.0
 MAX_CONCURRENT = 5
 
 TOOLS_NS = "http://schemas.android.com/tools"
@@ -342,9 +342,7 @@ def build_target_index(root: etree._Element) -> dict[str, etree._Element]:
 
 
 def needs_translation(existing: etree._Element | None) -> bool:
-    if existing is None:
-        return True
-    return existing.get(TOOLS_MACHINE_TRANSLATED) == "true"
+    return existing is None
 
 
 def copy_structure(source: etree._Element) -> etree._Element:

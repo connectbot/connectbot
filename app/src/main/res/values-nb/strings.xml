@@ -572,4 +572,6 @@
   <string name="auth_screen_unlock_button" tools:machine_translated="true">Trykk for å låse opp</string>
   <string name="auth_prompt_title" tools:machine_translated="true">Lås opp ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Bekreft identiteten din for å fortsette.</string>
+  <string name="auth_banner_title" tools:machine_translated="true">Autentiseringsmelding fra %1$s</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Autentiseringsmelding:</string>
 </resources>

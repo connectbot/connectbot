@@ -572,4 +572,6 @@
   <string name="auth_screen_unlock_button" tools:machine_translated="true">點擊以解鎖</string>
   <string name="auth_prompt_title" tools:machine_translated="true">解鎖 ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">請驗證您的身份以繼續。</string>
+  <string name="auth_banner_title" tools:machine_translated="true">來自 %1$s 的驗證訊息。</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] 驗證訊息：</string>
 </resources>

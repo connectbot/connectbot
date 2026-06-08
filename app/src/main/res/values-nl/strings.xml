@@ -572,4 +572,6 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importeren vanuit het klembord</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Inhoud van de persoonlijke sleutel</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Plakken vanuit het klembord</string>
+  <string name="auth_banner_title" tools:machine_translated="true">Authenticatiebericht van %1$s</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Authenticatiebericht:</string>
 </resources>

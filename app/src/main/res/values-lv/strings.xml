@@ -572,4 +572,6 @@
   <string name="auth_screen_unlock_button" tools:machine_translated="true">Pieskarieties, lai atbloķētu</string>
   <string name="auth_prompt_title" tools:machine_translated="true">Atbloķējiet ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Apstipriniet savu identitāti, lai turpinātu.</string>
+  <string name="auth_banner_title" tools:machine_translated="true">Autentifikācijas ziņa no %1$s</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Autentifikācijas ziņojums:</string>
 </resources>

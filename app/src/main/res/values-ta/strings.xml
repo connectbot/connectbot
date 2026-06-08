@@ -572,4 +572,6 @@
   <string name="auth_screen_unlock_button" tools:machine_translated="true">தட்டி திறக்கவும்</string>
   <string name="auth_prompt_title" tools:machine_translated="true">கனெக்ட் பாட்டை திறக்கவும்</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">தொடர, உங்கள் அடையாளத்தை உறுதிப்படுத்தவும்</string>
+  <string name="auth_banner_title" tools:machine_translated="true">%1$s இலிருந்து வரும் அங்கீகாரச் செய்தி.</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] அங்கீகாரச் செய்தி:</string>
 </resources>

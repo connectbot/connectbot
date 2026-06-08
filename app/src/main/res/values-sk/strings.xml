@@ -572,4 +572,6 @@
   <string name="auth_screen_unlock_button" tools:machine_translated="true">Ťuknite na obrazovku, aby ste odomkli zariadenie.</string>
   <string name="auth_prompt_title" tools:machine_translated="true">Odomknite ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Overte svoju identitu, aby ste mohli pokračovať.</string>
+  <string name="auth_banner_title" tools:machine_translated="true">Autentifikačná správa od %1$s</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Správa o overovaní:</string>
 </resources>

@@ -572,4 +572,6 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importuj z schowka.</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Zawartość klucza prywatnego</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Wklej z schowka</string>
+  <string name="auth_banner_title" tools:machine_translated="true">Komunikat uwierzytelniający od %1$s</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Komunikat uwierzytelniania:</string>
 </resources>

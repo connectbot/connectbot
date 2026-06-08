@@ -572,4 +572,6 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">從剪貼簿匯入</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">私鑰內容</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">從剪貼簿貼上</string>
+  <string name="auth_banner_title" tools:machine_translated="true">來自 %1$s 的驗證訊息。</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] 驗證訊息：</string>
 </resources>

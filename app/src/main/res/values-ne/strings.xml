@@ -572,4 +572,6 @@
   <string name="auth_screen_unlock_button" tools:machine_translated="true">अनलक गर्न ट्याप गर्नुहोस्।</string>
   <string name="auth_prompt_title" tools:machine_translated="true">कनेक्टबट खोल्नुहोस्।</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">जारी राख्न आफ्नो पहिचान प्रमाणित गर्नुहोस्।</string>
+  <string name="auth_banner_title" tools:machine_translated="true">%1$s बाट प्रमाणीकरण सन्देश।</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] प्रमाणीकरण सन्देश:</string>
 </resources>
