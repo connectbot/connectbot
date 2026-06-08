@@ -29,13 +29,13 @@ enum class SshKeyType(
     ;
 
     companion object {
-        fun fromStoredType(value: String?): SshKeyType? = when (value) {
-            "RSA", "ssh-rsa", "rsa-sha2-256", "rsa-sha2-512" -> RSA
-            "DSA", "ssh-dss" -> DSA
-            "EC", "ECDSA" -> EC
-            "Ed25519", "EdDSA", "ssh-ed25519" -> ED25519
-            "IMPORTED" -> LEGACY_IMPORTED
-            else -> if (value?.startsWith("ecdsa-sha2-") == true) EC else null
+        fun fromStoredType(value: String?): SshKeyType? = when (val normalizedValue = value?.lowercase()) {
+            "rsa", "ssh-rsa", "rsa-sha2-256", "rsa-sha2-512" -> RSA
+            "dsa", "ssh-dss" -> DSA
+            "ec", "ecdsa" -> EC
+            "ed25519", "eddsa", "ssh-ed25519" -> ED25519
+            "imported" -> LEGACY_IMPORTED
+            else -> if (normalizedValue?.startsWith("ecdsa-sha2-") == true) EC else null
         }
 
         fun fromOpenSshType(value: String): SshKeyType? = when (value) {
@@ -45,11 +45,11 @@ enum class SshKeyType(
             else -> if (value.startsWith("ecdsa-sha2-")) EC else null
         }
 
-        fun fromJavaAlgorithm(value: String): SshKeyType? = when (value) {
-            "RSA" -> RSA
-            "DSA" -> DSA
-            "EC", "ECDSA" -> EC
-            "Ed25519", "EdDSA" -> ED25519
+        fun fromJavaAlgorithm(value: String): SshKeyType? = when (value.lowercase()) {
+            "rsa" -> RSA
+            "dsa" -> DSA
+            "ec", "ecdsa" -> EC
+            "ed25519", "eddsa" -> ED25519
             else -> null
         }
     }
