@@ -496,8 +496,8 @@ private fun ConsoleTerminalPage(
                     }
                 }
             }
+        }
     }
-}
 }
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
