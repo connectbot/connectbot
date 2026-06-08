@@ -28,6 +28,10 @@ class SshKeyTypeTest {
         assertThat(SshKeyType.fromStoredType("DSA")).isEqualTo(SshKeyType.DSA)
         assertThat(SshKeyType.fromStoredType("EC")).isEqualTo(SshKeyType.EC)
         assertThat(SshKeyType.fromStoredType("Ed25519")).isEqualTo(SshKeyType.ED25519)
+        assertThat(SshKeyType.fromStoredType("ed25519")).isEqualTo(SshKeyType.ED25519)
+        assertThat(SshKeyType.fromStoredType("EdDSA")).isEqualTo(SshKeyType.ED25519)
+        assertThat(SshKeyType.fromStoredType("EDDSA")).isEqualTo(SshKeyType.ED25519)
+        assertThat(SshKeyType.fromStoredType("eddsa")).isEqualTo(SshKeyType.ED25519)
         assertThat(SshKeyType.fromStoredType("IMPORTED")).isEqualTo(SshKeyType.LEGACY_IMPORTED)
     }
 
@@ -41,12 +45,21 @@ class SshKeyTypeTest {
     }
 
     @Test
+    fun fromOpenSshType_isCaseSensitive() {
+        assertThat(SshKeyType.fromOpenSshType("ssh-rsa")).isEqualTo(SshKeyType.RSA)
+        assertThat(SshKeyType.fromOpenSshType("SSH-RSA")).isNull()
+    }
+
+    @Test
     fun fromJavaAlgorithm_mapsProviderAlgorithms() {
         assertThat(SshKeyType.fromJavaAlgorithm("RSA")).isEqualTo(SshKeyType.RSA)
         assertThat(SshKeyType.fromJavaAlgorithm("EC")).isEqualTo(SshKeyType.EC)
         assertThat(SshKeyType.fromJavaAlgorithm("ECDSA")).isEqualTo(SshKeyType.EC)
         assertThat(SshKeyType.fromJavaAlgorithm("EdDSA")).isEqualTo(SshKeyType.ED25519)
+        assertThat(SshKeyType.fromJavaAlgorithm("EDDSA")).isEqualTo(SshKeyType.ED25519)
+        assertThat(SshKeyType.fromJavaAlgorithm("eddsa")).isEqualTo(SshKeyType.ED25519)
         assertThat(SshKeyType.fromJavaAlgorithm("Ed25519")).isEqualTo(SshKeyType.ED25519)
+        assertThat(SshKeyType.fromJavaAlgorithm("ed25519")).isEqualTo(SshKeyType.ED25519)
     }
 
     @Test
