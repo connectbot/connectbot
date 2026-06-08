@@ -17,10 +17,14 @@
 
 package org.connectbot.transport
 
+import com.trilead.ssh2.ChannelCondition
 import com.trilead.ssh2.Session
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.service.DisconnectReason
+import org.connectbot.service.TerminalBridge
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyLong
+import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 
@@ -41,6 +45,51 @@ class SSHDisconnectTest {
         `when`(session.exitStatus).thenReturn(null)
 
         val reason = SSH().getDisconnectReasonForClosedSession(session)
+
+        assertThat(reason).isEqualTo(DisconnectReason.REMOTE_EOF)
+    }
+
+    @Test
+    fun getDisconnectReasonForClosedSession_whenExitStatusArrivesAfterEof_reportsSessionExit() {
+        val session = mock(Session::class.java)
+        `when`(session.exitStatus).thenReturn(null, 0)
+        `when`(
+            session.waitForCondition(
+                eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL),
+                anyLong(),
+            ),
+        ).thenReturn(ChannelCondition.EXIT_STATUS)
+
+        val reason = SSH().getDisconnectReasonForClosedSession(session)
+
+        assertThat(reason).isEqualTo(DisconnectReason.SESSION_EXIT)
+    }
+
+    @Test
+    fun getDisconnectReasonForClosedSession_afterUserEofWithoutExitStatus_reportsSessionExit() {
+        val session = mock(Session::class.java)
+        val bridge = mock(TerminalBridge::class.java)
+        `when`(session.exitStatus).thenReturn(null)
+        `when`(bridge.consumePendingUserEof()).thenReturn(true)
+
+        val reason = SSH().apply {
+            setBridge(bridge)
+        }.getDisconnectReasonForClosedSession(session)
+
+        assertThat(reason).isEqualTo(DisconnectReason.SESSION_EXIT)
+    }
+
+    @Test
+    fun getDisconnectReasonForClosedSession_withExitSignal_reportsRemoteEof() {
+        val session = mock(Session::class.java)
+        val bridge = mock(TerminalBridge::class.java)
+        `when`(session.exitStatus).thenReturn(null)
+        `when`(session.exitSignal).thenReturn("TERM")
+        `when`(bridge.consumePendingUserEof()).thenReturn(true)
+
+        val reason = SSH().apply {
+            setBridge(bridge)
+        }.getDisconnectReasonForClosedSession(session)
 
         assertThat(reason).isEqualTo(DisconnectReason.REMOTE_EOF)
     }

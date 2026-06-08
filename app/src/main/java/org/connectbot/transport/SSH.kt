@@ -1038,10 +1038,29 @@ class SSH :
     }
 
     @VisibleForTesting
-    internal fun getDisconnectReasonForClosedSession(session: Session): DisconnectReason = if (session.exitStatus != null) {
-        DisconnectReason.SESSION_EXIT
-    } else {
-        DisconnectReason.REMOTE_EOF
+    internal fun getDisconnectReasonForClosedSession(session: Session): DisconnectReason {
+        if (session.exitStatus != null) {
+            return DisconnectReason.SESSION_EXIT
+        }
+
+        val closeStatus = session.waitForCondition(
+            ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL,
+            EXIT_STATUS_WAIT_MS,
+        )
+
+        if (session.exitStatus != null) {
+            return DisconnectReason.SESSION_EXIT
+        }
+
+        if ((closeStatus and ChannelCondition.EXIT_SIGNAL) != 0 || session.exitSignal != null) {
+            return DisconnectReason.REMOTE_EOF
+        }
+
+        if (bridge?.consumePendingUserEof() == true) {
+            return DisconnectReason.SESSION_EXIT
+        }
+
+        return DisconnectReason.REMOTE_EOF
     }
 
     @Throws(IOException::class)
@@ -1488,6 +1507,7 @@ class SSH :
         private const val AUTH_KEYBOARDINTERACTIVE = "keyboard-interactive"
 
         private const val AUTH_TRIES = 20
+        private const val EXIT_STATUS_WAIT_MS = 250L
 
         private val hostmask = Pattern.compile(
             "^(.+)@((?:[0-9a-z._-]+)|(?:\\[[a-f:0-9]+(?:%[-_.a-z0-9]+)?\\]))(?::(\\d+))?\$",
