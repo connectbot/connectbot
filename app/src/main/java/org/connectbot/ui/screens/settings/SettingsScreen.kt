@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -192,6 +192,7 @@ fun SettingsScreen(
         onVolumeFontChange = viewModel::updateVolumeFont,
         onKeepAliveChange = viewModel::updateKeepAlive,
         onAlwaysVisibleChange = viewModel::updateAlwaysVisible,
+        onImeToggleKeyChange = viewModel::updateImeToggleKey,
         onShiftFkeysChange = viewModel::updateShiftFkeys,
         onCtrlFkeysChange = viewModel::updateCtrlFkeys,
         onStickyModifiersChange = viewModel::updateStickyModifiers,
@@ -236,6 +237,7 @@ fun SettingsScreenContent(
     onVolumeFontChange: (Boolean) -> Unit,
     onKeepAliveChange: (Boolean) -> Unit,
     onAlwaysVisibleChange: (Boolean) -> Unit,
+    onImeToggleKeyChange: (Boolean) -> Unit,
     onShiftFkeysChange: (Boolean) -> Unit,
     onCtrlFkeysChange: (Boolean) -> Unit,
     onStickyModifiersChange: (String) -> Unit,
@@ -557,6 +559,15 @@ fun SettingsScreenContent(
                     summary = stringResource(R.string.pref_alwaysvisible_summary),
                     checked = uiState.alwaysvisible,
                     onCheckedChange = onAlwaysVisibleChange,
+                )
+            }
+
+            item {
+                SwitchPreference(
+                    title = stringResource(R.string.pref_imetogglekey_title),
+                    summary = stringResource(R.string.pref_imetogglekey_summary),
+                    checked = uiState.imeTogglekey,
+                    onCheckedChange = onImeToggleKeyChange,
                 )
             }
 
@@ -1545,6 +1556,7 @@ private fun SettingsScreenPreview() {
                 volumefont = true,
                 keepalive = true,
                 alwaysvisible = true,
+                imeTogglekey = true,
                 shiftfkeys = false,
                 ctrlfkeys = false,
                 stickymodifiers = "yes",
@@ -1590,6 +1602,7 @@ private fun SettingsScreenPreview() {
             onVolumeFontChange = {},
             onKeepAliveChange = {},
             onAlwaysVisibleChange = {},
+            onImeToggleKeyChange = {},
             onShiftFkeysChange = {},
             onCtrlFkeysChange = {},
             onStickyModifiersChange = {},
