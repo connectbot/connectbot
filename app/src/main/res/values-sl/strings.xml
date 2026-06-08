@@ -572,4 +572,6 @@
   <string name="auth_screen_unlock_button" tools:machine_translated="true">Tapnite za odklepanje.</string>
   <string name="auth_prompt_title" tools:machine_translated="true">Odkleni ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Potrdite svojo identiteto, da nadaljujete.</string>
+  <string name="auth_banner_title" tools:machine_translated="true">Sporočilo o preverjanju pristnosti od strežnika %1$s.</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Sporočilo o preverjanju pristnosti:</string>
 </resources>

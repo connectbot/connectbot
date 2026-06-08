@@ -572,4 +572,6 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importer depuis le presse-papiers</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Contenu de la clé privée</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Coller depuis le presse-papiers</string>
+  <string name="auth_banner_title" tools:machine_translated="true">Message d’authentification provenant de %1$s</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Message d’authentification :</string>
 </resources>

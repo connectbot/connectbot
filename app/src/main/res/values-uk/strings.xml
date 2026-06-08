@@ -572,4 +572,6 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Імпортувати з буфера обміну</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Вміст приватного ключа</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Вставити з буфера обміну</string>
+  <string name="auth_banner_title" tools:machine_translated="true">Повідомлення про автентифікацію від %1$s.</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Повідомлення про автентифікацію:</string>
 </resources>

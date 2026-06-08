@@ -572,4 +572,6 @@
   <string name="auth_screen_unlock_button" tools:machine_translated="true">แตะเพื่อปลดล็อก</string>
   <string name="auth_prompt_title" tools:machine_translated="true">ปลดล็อก ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">ยืนยันตัวตนของคุณเพื่อดำเนินการต่อ</string>
+  <string name="auth_banner_title" tools:machine_translated="true">ข้อความยืนยันตัวตนจาก %1$s</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] ข้อความยืนยันตัวตน:</string>
 </resources>

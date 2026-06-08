@@ -572,4 +572,6 @@
   <string name="auth_screen_unlock_button" tools:machine_translated="true">Dodirnite za otključavanje</string>
   <string name="auth_prompt_title" tools:machine_translated="true">Otključajte ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Потврдите свој идентитет да бисте наставили</string>
+  <string name="auth_banner_title" tools:machine_translated="true">Порука за аутентификацију од %1$s</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Порука о аутентификацији:</string>
 </resources>

@@ -94,12 +94,12 @@ class TestNeedsTranslation:
     def test_missing_element_needs_translation(self):
         assert needs_translation(None) is True
 
-    def test_machine_translated_true_needs_translation(self):
+    def test_machine_translated_true_is_skipped(self):
         elem = parse(
             f'<string xmlns:tools="{TOOLS_NS}" '
             f'tools:machine_translated="true" name="x">foo</string>'
         )
-        assert needs_translation(elem) is True
+        assert needs_translation(elem) is False
 
     def test_human_translated_skipped(self):
         elem = parse('<string name="x">foo</string>')
@@ -386,7 +386,7 @@ class TestTranslationPipeline:
         root = load_xml(tgt).getroot()
         assert root.find("string[@name='hello']").text == "Hallo"
 
-    def test_machine_translated_string_is_retranslated(self, tmp_path):
+    def test_machine_translated_string_is_not_overwritten(self, tmp_path):
         src = self._src(tmp_path, resources_xml('<string name="hello">Hello</string>'))
         tgt = self._tgt(tmp_path,
             f'<?xml version="1.0" encoding="utf-8"?>\n'
@@ -395,11 +395,12 @@ class TestTranslationPipeline:
             f'</resources>\n'
         )
 
-        _run(src, tgt, {"hello": "Neu"})
+        work = collect_jobs(src, tgt, "German", "de")
+        assert work is None, "no jobs should be collected for existing strings"
 
         root = load_xml(tgt).getroot()
         elem = root.find("string[@name='hello']")
-        assert elem.text == "Neu"
+        assert elem.text == "Alt"
         assert elem.get(TOOLS_MACHINE_TRANSLATED) == "true"
 
     def test_comment_is_collected_as_context(self, tmp_path):

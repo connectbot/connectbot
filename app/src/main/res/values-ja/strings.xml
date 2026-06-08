@@ -572,4 +572,6 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">クリップボードからインポート</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">秘密鍵の内容</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">クリップボードから貼り付け</string>
+  <string name="auth_banner_title" tools:machine_translated="true">%1$sからの認証メッセージ</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] 認証メッセージ：</string>
 </resources>

@@ -572,4 +572,6 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">وارد کردن از حافظه موقت</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">محتوای کلید خصوصی</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">چسباندن از حافظه موقت</string>
+  <string name="auth_banner_title" tools:machine_translated="true">پیام احراز هویت از طرف %1$s</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">پیام احراز هویت برای [%1$s]:</string>
 </resources>

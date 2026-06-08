@@ -572,4 +572,6 @@
   <string name="auth_screen_unlock_button" tools:machine_translated="true">Докоснете, за да отключите</string>
   <string name="auth_prompt_title" tools:machine_translated="true">Отключете ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Потвърдете самоличността си, за да продължите.</string>
+  <string name="auth_banner_title" tools:machine_translated="true">Съобщение за удостоверяване от %1$s</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Съобщение за удостоверяване:</string>
 </resources>

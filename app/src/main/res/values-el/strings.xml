@@ -22,7 +22,7 @@
   <string name="pubkey_gather_entropy">Συλλογή εντροπίας</string>
   <string name="pubkey_touch_prompt">Αγγίξτε αυτό το κουτί για να συγκεντρώσετε τυχαιότητα: έγινε %1$d%%</string>
   <string name="pubkey_touch_hint">Για να διασφαλίσετε την τυχαιότητα κατά τη δημιουργία του κλειδιού, μετακινήστε το δάχτυλό σας τυχαία πάνω από το παρακάτω πλαίσιο.</string>
-  <string name="pubkey_generating">Δημιουργία ζεύγους κλειδιών...</string>
+  <string name="pubkey_generating">Δημιουργία ζεύγους κλειδιών…</string>
   <string name="pubkey_copy_private">Αντιγραφή προσωπικού κλειδιού</string>
   <string name="pubkey_copy_public">Αντιγραφή δημόσιου κλειδιού</string>
   <string name="pubkey_change_password">Αλλαγή κωδικού πρόσβασης</string>
@@ -572,4 +572,6 @@
   <string name="auth_screen_unlock_button" tools:machine_translated="true">Πατήστε για να ξεκλειδώσετε</string>
   <string name="auth_prompt_title" tools:machine_translated="true">Ξεκλειδώστε το ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Επαληθεύστε την ταυτότητά σας για να συνεχίσετε.</string>
+  <string name="auth_banner_title" tools:machine_translated="true">Μήνυμα αυθεντικοποίησης από το %1$s.</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Μήνυμα αυθεντικοποίησης:</string>
 </resources>

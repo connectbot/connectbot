@@ -572,4 +572,6 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importa dagli appunti</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Contenuto della chiave privata</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Incolla dagli appunti</string>
+  <string name="auth_banner_title" tools:machine_translated="true">Messaggio di autenticazione da %1$s</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Messaggio di autenticazione:</string>
 </resources>

@@ -572,4 +572,6 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">클립보드에서 가져오기</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">개인 키 내용</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">클립보드에서 붙여넣기</string>
+  <string name="auth_banner_title" tools:machine_translated="true">%1$s에서 보낸 인증 메시지입니다.</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] 인증 메시지:</string>
 </resources>

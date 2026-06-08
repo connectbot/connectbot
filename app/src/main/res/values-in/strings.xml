@@ -572,4 +572,6 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Impor dari papan klip</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Isi kunci pribadi</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Tempel dari papan klip</string>
+  <string name="auth_banner_title" tools:machine_translated="true">Pesan autentikasi dari %1$s</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Pesan autentikasi:</string>
 </resources>

@@ -572,4 +572,6 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">ייבא מלוח הגזירים</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">תוכן המפתח הפרטי</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">הדבק מלוח הגזירים</string>
+  <string name="auth_banner_title" tools:machine_translated="true">הודעת אימות ממקור: %1$s</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] הודעת אימות:</string>
 </resources>

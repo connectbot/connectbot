@@ -572,4 +572,6 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Nhập từ khay nhớ tạm</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Nội dung khóa riêng</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Dán từ bộ nhớ tạm</string>
+  <string name="auth_banner_title" tools:machine_translated="true">Thông báo xác thực từ %1$s</string>
+  <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Thông báo xác thực:</string>
 </resources>
