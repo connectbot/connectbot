@@ -2,6 +2,14 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.10.9][1.10.9]
+
+### Fixed
+- Match stored SSH key types and Java provider algorithm names case-insensitively, while preserving case-sensitive SSH wire algorithm matching
+
+### Translations
+- Update translations
+
 ## [1.10.8][1.10.8]
 
 ### Added
@@ -330,6 +338,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Color picker color numbers are now localized
 
 
+[1.10.9]: https://github.com/connectbot/connectbot/compare/v1.10.8...v1.10.9
 [1.10.8]: https://github.com/connectbot/connectbot/compare/v1.10.7...v1.10.8
 [1.10.7]: https://github.com/connectbot/connectbot/compare/v1.10.6...v1.10.7
 [1.10.6]: https://github.com/connectbot/connectbot/compare/v1.10.5...v1.10.6
