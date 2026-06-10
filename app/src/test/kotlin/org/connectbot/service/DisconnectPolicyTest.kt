@@ -50,6 +50,23 @@ class DisconnectPolicyTest {
         assertTrue(decide(DisconnectReason.USER_REQUESTED, quickDisconnect = true, stayConnected = true) is DisconnectAction.CloseImmediately)
     }
 
+    // SESSION_EXIT closes immediately because the remote shell ended cleanly
+
+    @Test
+    fun sessionExit_defaultFlags_closesImmediately() {
+        assertTrue(decide(DisconnectReason.SESSION_EXIT) is DisconnectAction.CloseImmediately)
+    }
+
+    @Test
+    fun sessionExit_stayConnected_closesImmediately() {
+        assertTrue(decide(DisconnectReason.SESSION_EXIT, stayConnected = true) is DisconnectAction.CloseImmediately)
+    }
+
+    @Test
+    fun sessionExit_bothFlags_closesImmediately() {
+        assertTrue(decide(DisconnectReason.SESSION_EXIT, quickDisconnect = true, stayConnected = true) is DisconnectAction.CloseImmediately)
+    }
+
     // quickDisconnect=true closes immediately for all non-user reasons
 
     @Test
