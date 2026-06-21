@@ -291,8 +291,10 @@ class ConsoleViewModel @Inject constructor(
             pendingInitialHostId = null
         }
 
-        selectedSessionId = allBridges.getOrNull(newIndex)?.sessionId
         val waitingForRequestedHost = pendingInitialHostId != null
+        if (!waitingForRequestedHost) {
+            selectedSessionId = allBridges.getOrNull(newIndex)?.sessionId
+        }
 
         // Calculate session counts for each host
         val sessionCounts = allBridges.groupBy { it.host.id }
