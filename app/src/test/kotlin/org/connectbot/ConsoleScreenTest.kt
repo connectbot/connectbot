@@ -140,6 +140,27 @@ class ConsoleScreenTest {
         }
     }
 
+    private fun mockConsoleBridge(
+        id: Long = 1L,
+        hostname: String = "test-host",
+        isDisconnected: Boolean = false,
+    ): TerminalBridge {
+        val bridge = mock(TerminalBridge::class.java)
+        val host = Host(
+            id = id,
+            hostname = hostname,
+            nickname = hostname,
+            protocol = "ssh",
+            port = 22,
+            username = "test",
+        )
+        `when`(bridge.host).thenReturn(host)
+        `when`(bridge.sessionId).thenReturn(id)
+        `when`(bridge.isDisconnected).thenReturn(isDisconnected)
+        `when`(bridge.isSessionOpen).thenReturn(!isDisconnected)
+        return bridge
+    }
+
     @Test
     fun consoleScreen_showsNotificationWarningSnackbar_whenConnPersistDisabled() {
         val warning = composeTestRule.activity.getString(R.string.notification_permission_console_warning)
@@ -404,8 +425,7 @@ class ConsoleScreenTest {
             .commit()
 
         val mockViewModel = mock(ConsoleViewModel::class.java)
-        val mockBridge = mock(TerminalBridge::class.java)
-        `when`(mockBridge.isDisconnected).thenReturn(false)
+        val mockBridge = mockConsoleBridge(isDisconnected = false)
 
         val uiStateFlow = MutableStateFlow(
             ConsoleUiState(
@@ -437,8 +457,7 @@ class ConsoleScreenTest {
             .commit()
 
         val mockViewModel = mock(ConsoleViewModel::class.java)
-        val mockBridge = mock(TerminalBridge::class.java)
-        `when`(mockBridge.isDisconnected).thenReturn(false)
+        val mockBridge = mockConsoleBridge(isDisconnected = false)
 
         val uiStateFlow = MutableStateFlow(
             ConsoleUiState(
@@ -470,8 +489,7 @@ class ConsoleScreenTest {
             .commit()
 
         val mockViewModel = mock(ConsoleViewModel::class.java)
-        val mockBridge = mock(TerminalBridge::class.java)
-        `when`(mockBridge.isDisconnected).thenReturn(true)
+        val mockBridge = mockConsoleBridge(isDisconnected = true)
 
         val uiStateFlow = MutableStateFlow(
             ConsoleUiState(
