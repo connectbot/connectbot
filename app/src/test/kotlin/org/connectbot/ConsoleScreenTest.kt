@@ -24,16 +24,22 @@ import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeLeft
+import androidx.compose.ui.test.swipeRight
 import androidx.navigation.NavType
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.NavHost
@@ -55,14 +61,11 @@ import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalKeyListener
 import org.connectbot.service.TerminalManager
 import org.connectbot.terminal.DelKeyMode
-import org.connectbot.terminal.ProgressState
-import org.connectbot.terminal.TerminalDimensions
-import org.connectbot.terminal.TerminalEmulator
-import org.connectbot.terminal.TerminalEmulatorFactory
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.screens.console.ConsoleScreen
 import org.connectbot.ui.screens.console.ConsoleUiState
 import org.connectbot.ui.screens.console.ConsoleViewModel
+import org.connectbot.ui.screens.console.consoleTerminalContentOverride
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.PreferenceConstants
 import org.junit.After
@@ -75,6 +78,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 
 @HiltAndroidTest
@@ -95,6 +99,7 @@ class ConsoleScreenTest {
 
     @After
     fun tearDown() {
+        consoleTerminalContentOverride = null
         val context = ApplicationProvider.getApplicationContext<Context>()
         PreferenceManager.getDefaultSharedPreferences(context).edit().clear().commit()
     }
@@ -493,6 +498,257 @@ class ConsoleScreenTest {
             val rootLayout = composeTestRule.activity.findViewById<View>(android.R.id.content)
             assertFalse("Screen should not be kept awake when disconnected", hasKeepScreenOn(rootLayout))
         }
+    }
+
+    @Test
+    fun consoleScreen_showsSessionSwitcherForMultipleSessions() {
+        useFakeTerminalPage()
+        val bridge1 = createRenderableBridge(1L, "host1")
+        val bridge2 = createRenderableBridge(2L, "host2")
+        val mockViewModel = createMockViewModel(
+            ConsoleUiState(
+                bridges = listOf(bridge1, bridge2),
+                currentBridgeIndex = 0,
+                isLoading = false,
+            ),
+        )
+
+        setContent(mockConsoleViewModel = mockViewModel)
+        navigateToConsoleScreen(hostId = 1L)
+
+        composeTestRule
+            .onNodeWithContentDescription("Switch session")
+            .assertIsDisplayed()
+            .performClick()
+
+        composeTestRule.onNodeWithText("Switch session").assertIsDisplayed()
+        composeTestRule.onNodeWithText("\u2022 host1").assertIsDisplayed()
+        composeTestRule.onNodeWithText("host2").performClick()
+
+        verify(mockViewModel).selectBridge(1)
+    }
+
+    @Test
+    fun consoleScreen_sessionMenuNavigatesBetweenSessions() {
+        useFakeTerminalPage()
+        val bridge1 = createRenderableBridge(1L, "host1")
+        val bridge2 = createRenderableBridge(2L, "host2")
+        val mockViewModel = createMockViewModel(
+            ConsoleUiState(
+                bridges = listOf(bridge1, bridge2),
+                currentBridgeIndex = 0,
+                isLoading = false,
+            ),
+        )
+
+        setContent(mockConsoleViewModel = mockViewModel)
+        navigateToConsoleScreen(hostId = 1L)
+
+        composeTestRule
+            .onNodeWithContentDescription("More options")
+            .performClick()
+
+        composeTestRule.onNodeWithText("Previous session").assertIsNotEnabled()
+        composeTestRule
+            .onNodeWithText("Next session")
+            .assertIsEnabled()
+            .performClick()
+
+        verify(mockViewModel).selectBridge(1)
+    }
+
+    @Test
+    fun consoleScreen_sessionMenuNavigatesToPreviousSession() {
+        useFakeTerminalPage()
+        val bridge1 = createRenderableBridge(1L, "host1")
+        val bridge2 = createRenderableBridge(2L, "host2")
+        val mockViewModel = createMockViewModel(
+            ConsoleUiState(
+                bridges = listOf(bridge1, bridge2),
+                currentBridgeIndex = 1,
+                isLoading = false,
+            ),
+        )
+
+        setContent(mockConsoleViewModel = mockViewModel)
+        navigateToConsoleScreen(hostId = 2L)
+
+        composeTestRule
+            .onNodeWithContentDescription("More options")
+            .performClick()
+
+        composeTestRule
+            .onNodeWithText("Previous session")
+            .assertIsEnabled()
+            .performClick()
+
+        verify(mockViewModel).selectBridge(0)
+    }
+
+    @Test
+    fun consoleScreen_swipeLeftSelectsNextSession() {
+        useFakeTerminalPage()
+        enableSessionSwipePreference()
+        val bridge1 = createRenderableBridge(1L, "host1")
+        val bridge2 = createRenderableBridge(2L, "host2")
+        val mockViewModel = createMockViewModel(
+            ConsoleUiState(
+                bridges = listOf(bridge1, bridge2),
+                currentBridgeIndex = 0,
+                isLoading = false,
+            ),
+        )
+
+        setContent(mockConsoleViewModel = mockViewModel)
+        navigateToConsoleScreen(hostId = 1L)
+
+        composeTestRule.onNodeWithTag("terminal").performTouchInput {
+            swipeLeft()
+        }
+
+        verify(mockViewModel).selectBridge(1)
+    }
+
+    @Test
+    fun consoleScreen_swipeRightSelectsPreviousSession() {
+        useFakeTerminalPage()
+        enableSessionSwipePreference()
+        val bridge1 = createRenderableBridge(1L, "host1")
+        val bridge2 = createRenderableBridge(2L, "host2")
+        val mockViewModel = createMockViewModel(
+            ConsoleUiState(
+                bridges = listOf(bridge1, bridge2),
+                currentBridgeIndex = 1,
+                isLoading = false,
+            ),
+        )
+
+        setContent(mockConsoleViewModel = mockViewModel)
+        navigateToConsoleScreen(hostId = 2L)
+
+        composeTestRule.onNodeWithTag("terminal").performTouchInput {
+            swipeRight()
+        }
+
+        verify(mockViewModel).selectBridge(0)
+    }
+
+    @Test
+    fun consoleScreen_disconnectedOverlayReconnectsBridge() {
+        useFakeTerminalPage()
+        val bridge = createRenderableBridge(
+            id = 1L,
+            nickname = "host1",
+            isDisconnected = true,
+            isConnecting = false,
+        )
+        val mockViewModel = createMockViewModel(
+            ConsoleUiState(
+                bridges = listOf(bridge),
+                currentBridgeIndex = 0,
+                isLoading = false,
+            ),
+        )
+
+        setContent(mockConsoleViewModel = mockViewModel)
+        navigateToConsoleScreen(hostId = 1L)
+
+        composeTestRule.onNodeWithText("Connection Lost").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Reconnect").performClick()
+
+        verify(mockViewModel).reconnect(bridge)
+    }
+
+    @Test
+    fun consoleScreen_disconnectedOverlayClosesBridge() {
+        useFakeTerminalPage()
+        val bridge = createRenderableBridge(
+            id = 1L,
+            nickname = "host1",
+            isDisconnected = true,
+            isConnecting = false,
+            isSessionOpen = false,
+        )
+        val mockViewModel = createMockViewModel(
+            ConsoleUiState(
+                bridges = listOf(bridge),
+                currentBridgeIndex = 0,
+                isLoading = false,
+            ),
+        )
+
+        setContent(mockConsoleViewModel = mockViewModel)
+        navigateToConsoleScreen(hostId = 1L)
+
+        composeTestRule.onNodeWithText("Connection Lost").assertIsDisplayed()
+        composeTestRule.onAllNodesWithText("Close")[0].performClick()
+
+        verify(bridge).dispatchDisconnect(org.connectbot.service.DisconnectReason.USER_REQUESTED)
+    }
+
+    private fun useFakeTerminalPage() {
+        consoleTerminalContentOverride = { modifier ->
+            Box(modifier = modifier)
+        }
+    }
+
+    private fun enableSessionSwipePreference() {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        PreferenceManager.getDefaultSharedPreferences(context).edit()
+            .putBoolean(PreferenceConstants.SWIPE_SESSIONS, true)
+            .commit()
+    }
+
+    private fun createMockViewModel(uiState: ConsoleUiState): ConsoleViewModel {
+        val mockViewModel = mock(ConsoleViewModel::class.java)
+        `when`(mockViewModel.uiState).thenReturn(MutableStateFlow(uiState))
+        `when`(mockViewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+        `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
+        return mockViewModel
+    }
+
+    private fun createRenderableBridge(
+        id: Long,
+        nickname: String,
+        isDisconnected: Boolean = false,
+        isConnecting: Boolean = false,
+        isSessionOpen: Boolean = true,
+    ): TerminalBridge {
+        val bridge = mock(TerminalBridge::class.java)
+        val host = Host(
+            id = id,
+            nickname = nickname,
+            hostname = nickname,
+            username = "test",
+            protocol = "ssh",
+            port = 22,
+        )
+        val keyHandler = mock(TerminalKeyListener::class.java)
+        `when`(keyHandler.modifierState).thenReturn(
+            MutableStateFlow(
+                ModifierState(
+                    ctrlState = ModifierLevel.OFF,
+                    altState = ModifierLevel.OFF,
+                    shiftState = ModifierLevel.OFF,
+                ),
+            ),
+        )
+
+        `when`(bridge.host).thenReturn(host)
+        `when`(bridge.fontFamily).thenReturn(null)
+        `when`(bridge.fontSizeFlow).thenReturn(MutableStateFlow(10f))
+        `when`(bridge.delKeyModeFlow).thenReturn(MutableStateFlow(DelKeyMode.Delete))
+        `when`(bridge.keyHandler).thenReturn(keyHandler)
+        `when`(bridge.promptManager).thenReturn(PromptManager())
+        `when`(bridge.authBanners).thenReturn(MutableStateFlow(emptyList()))
+        `when`(bridge.isSessionOpen).thenReturn(isSessionOpen)
+        `when`(bridge.isDisconnected).thenReturn(isDisconnected)
+        `when`(bridge.isConnecting).thenReturn(isConnecting)
+        `when`(bridge.profileForceSizeRows).thenReturn(null)
+        `when`(bridge.profileForceSizeColumns).thenReturn(null)
+        `when`(bridge.canFowardPorts()).thenReturn(false)
+        `when`(bridge.scanForURLs()).thenReturn(emptyList())
+        return bridge
     }
 
     private fun hasKeepScreenOn(view: View): Boolean {

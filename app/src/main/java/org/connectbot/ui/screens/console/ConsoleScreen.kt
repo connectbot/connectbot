@@ -169,6 +169,9 @@ private fun rememberHasHardwareKeyboard(): Boolean {
 @VisibleForTesting
 const val AUTO_HIDE_DELAY_MS = 3000L
 
+@VisibleForTesting
+internal var consoleTerminalContentOverride: (@Composable (modifier: Modifier) -> Unit)? = null
+
 internal object ConsoleTestTags {
     const val AUTH_BANNER_MESSAGE = "auth_banner_message"
 }
@@ -380,38 +383,44 @@ private fun ConsoleTerminalPage(
             }
         }
 
-        Terminal(
-            terminalEmulator = bridge.terminalEmulator,
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(
-                    bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp,
-                )
-                .then(terminalModifier)
-                .testTag("terminal"),
-            typeface = fontResult.typeface,
-            initialFontSize = fontSize.sp,
-            keyboardEnabled = true,
-            showSoftKeyboard = showSoftwareKeyboard && isActive,
-            focusRequester = termFocusRequester,
-            forcedSize = forceSize,
-            modifierManager = bridge.keyHandler,
-            onSelectionControllerAvailable = { controller ->
-                if (isActive) {
-                    onSelectionControllerChange(controller)
-                }
-            },
-            onTerminalTap = { handleTerminalInteraction() },
-            onImeVisibilityChanged = { visible ->
-                if (isActive) {
-                    onImeVisibilityChange(visible)
-                }
-            },
-            onHyperlinkClick = onOpenUrl,
-            delKeyMode = delKeyMode,
-            onPasteRequest = onPasteRequest,
-            onInterceptKey = onInterceptKey,
-        )
+        val terminalContentModifier = Modifier
+            .fillMaxSize()
+            .padding(
+                bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp,
+            )
+            .then(terminalModifier)
+            .testTag("terminal")
+        val terminalContentOverride = consoleTerminalContentOverride
+        if (terminalContentOverride != null) {
+            terminalContentOverride(terminalContentModifier)
+        } else {
+            Terminal(
+                terminalEmulator = bridge.terminalEmulator,
+                modifier = terminalContentModifier,
+                typeface = fontResult.typeface,
+                initialFontSize = fontSize.sp,
+                keyboardEnabled = true,
+                showSoftKeyboard = showSoftwareKeyboard && isActive,
+                focusRequester = termFocusRequester,
+                forcedSize = forceSize,
+                modifierManager = bridge.keyHandler,
+                onSelectionControllerAvailable = { controller ->
+                    if (isActive) {
+                        onSelectionControllerChange(controller)
+                    }
+                },
+                onTerminalTap = { handleTerminalInteraction() },
+                onImeVisibilityChanged = { visible ->
+                    if (isActive) {
+                        onImeVisibilityChange(visible)
+                    }
+                },
+                onHyperlinkClick = onOpenUrl,
+                delKeyMode = delKeyMode,
+                onPasteRequest = onPasteRequest,
+                onInterceptKey = onInterceptKey,
+            )
+        }
 
         SideEffect {
             bridge.onTextInputRequest = onTextInputRequest

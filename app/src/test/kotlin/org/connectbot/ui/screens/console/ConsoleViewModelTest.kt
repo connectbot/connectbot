@@ -174,6 +174,53 @@ class ConsoleViewModelTest {
     }
 
     @Test
+    fun loadBridges_WithMissingTemporaryHost_ShowsError() = runTest {
+        bridgesFlow.value = emptyList()
+        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-2L)
+
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, notificationPermissionHelper)
+        viewModel.setTerminalManager(terminalManager)
+
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertFalse("Should stop loading when the temporary connection is missing", state.isLoading)
+        assertEquals("Temporary connection not found", state.error)
+    }
+
+    @Test
+    fun loadBridges_WithRequestedHostNotFound_ShowsError() = runTest {
+        bridgesFlow.value = emptyList()
+        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(2L)
+        whenever(terminalManager.openConnectionForHostId(2L)).thenReturn(null)
+
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, notificationPermissionHelper)
+        viewModel.setTerminalManager(terminalManager)
+
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertFalse("Should stop loading when the requested host cannot be opened", state.isLoading)
+        assertEquals("Failed to open connection: host not found", state.error)
+    }
+
+    @Test
+    fun loadBridges_WhenOpeningRequestedHostThrows_ShowsError() = runTest {
+        bridgesFlow.value = emptyList()
+        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(2L)
+        whenever(terminalManager.openConnectionForHostId(2L)).thenThrow(RuntimeException("boom"))
+
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, notificationPermissionHelper)
+        viewModel.setTerminalManager(terminalManager)
+
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertFalse("Should stop loading when opening the requested host fails", state.isLoading)
+        assertEquals("boom", state.error)
+    }
+
+    @Test
     fun loadBridges_WithMultipleBridges_LoadsAll() = runTest {
         val mockBridge1 = createMockBridge(1L, "host1")
         val mockBridge2 = createMockBridge(2L, "host2")
