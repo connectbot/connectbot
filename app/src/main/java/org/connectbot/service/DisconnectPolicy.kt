@@ -18,6 +18,9 @@
 package org.connectbot.service
 
 object DisconnectPolicy {
+    const val RECONNECT_BASE_DELAY_MS = 2_000L
+    const val RECONNECT_MAX_DELAY_MS = 60_000L
+
     fun decide(
         reason: DisconnectReason,
         quickDisconnect: Boolean,
@@ -30,4 +33,21 @@ object DisconnectPolicy {
         if (stayConnected) return DisconnectAction.AutoReconnect
         return DisconnectAction.ShowReconnectOverlay
     }
+
+    /**
+     * Delay before the next automatic reconnect attempt given how many
+     * consecutive attempts have already failed since the last successful
+     * connection. The first retry is immediate (a dropped connection is
+     * usually recoverable right away); subsequent retries back off
+     * exponentially, capped at [RECONNECT_MAX_DELAY_MS], so an unreachable
+     * server is not hammered in a tight loop. Connectivity-restored events
+     * and the user reopening the app bypass this delay entirely.
+     */
+    fun reconnectDelayMs(failedAttempts: Int): Long {
+        if (failedAttempts <= 1) return 0L
+        val shift = (failedAttempts - 2).coerceAtMost(MAX_BACKOFF_SHIFT)
+        return (RECONNECT_BASE_DELAY_MS shl shift).coerceAtMost(RECONNECT_MAX_DELAY_MS)
+    }
+
+    private const val MAX_BACKOFF_SHIFT = 16
 }

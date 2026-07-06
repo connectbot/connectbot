@@ -62,6 +62,7 @@ import timber.log.Timber
 import java.io.IOException
 import java.nio.charset.Charset
 import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 
 data class AuthBanner(
@@ -209,6 +210,23 @@ class TerminalBridge {
     var disconnectReason: DisconnectReason = DisconnectReason.UNKNOWN
         private set
     private var awaitingClose = false
+
+    private val reconnectAttemptCounter = AtomicInteger(0)
+
+    /**
+     * Consecutive automatic reconnect cycles since the last successful
+     * connection. Used by [TerminalManager] to back off between retries.
+     */
+    val autoReconnectAttempts: Int
+        get() = reconnectAttemptCounter.get()
+
+    /**
+     * Forget accumulated reconnect failures so the next attempt runs
+     * immediately, e.g. when the user explicitly asks to reconnect.
+     */
+    fun resetAutoReconnectBackoff() {
+        reconnectAttemptCounter.set(0)
+    }
 
     private var forcedSize = false
 
@@ -486,6 +504,11 @@ class TerminalBridge {
 
     /**
      * Spawn thread to open connection and start login process.
+     *
+     * Safe to call repeatedly (manual reconnect, connectivity-restored events,
+     * scheduled retries): a call is ignored while another attempt is in
+     * flight, while the transport is still connected, or once the bridge is
+     * being torn down.
      */
     fun startConnection() {
         val newTransport = TransportFactory.getTransport(host.protocol)
@@ -493,9 +516,31 @@ class TerminalBridge {
             Timber.w("No transport found for ${host.protocol}")
             return
         }
-        connecting = true
 
-        transport = newTransport
+        synchronized(this) {
+            if (awaitingClose) {
+                Timber.d("Skipping connection attempt for ${host.nickname}: bridge awaiting close")
+                return
+            }
+            if (connecting) {
+                Timber.d("Skipping connection attempt for ${host.nickname}: attempt already in progress")
+                return
+            }
+            if (!disconnected && transport?.isConnected() == true) {
+                Timber.d("Skipping connection attempt for ${host.nickname}: already connected")
+                return
+            }
+            connecting = true
+            // Reset per-attempt state so that a failed attempt goes back
+            // through dispatchDisconnect (instead of being swallowed by its
+            // reentrancy guard) and can schedule another retry. Swapping the
+            // transport under the same lock lets dispatchDisconnect discard
+            // stale events from the previous transport atomically.
+            disconnected = false
+            disconnectReason = DisconnectReason.UNKNOWN
+            transport = newTransport
+        }
+
         newTransport.bridge = this
         newTransport.manager = manager
         newTransport.host = host
@@ -508,6 +553,8 @@ class TerminalBridge {
         newTransport.setEmulation(emulation)
 
         outputLine(manager.res.getString(R.string.terminal_connecting, host.hostname, host.port, host.protocol))
+
+        manager.notifyBridgeStateChanged()
 
         scope.launch(dispatchers.io) {
             try {
@@ -537,6 +584,10 @@ class TerminalBridge {
                         reason = e.message ?: "Connection failed",
                     ),
                 )
+                // Route the failure through the disconnect policy so the
+                // bridge doesn't stay stuck in the connecting state and a
+                // stay-connected host schedules another retry.
+                dispatchDisconnect(DisconnectReason.IO_ERROR, newTransport)
             }
         }
     }
@@ -642,6 +693,7 @@ class TerminalBridge {
     fun onConnected() {
         disconnected = false
         connecting = false
+        reconnectAttemptCounter.set(0)
 
         // We no longer need our local output.
         localOutput.clear()
@@ -705,10 +757,21 @@ class TerminalBridge {
      * even if the bridge already reached the disconnected state — this is how
      * the "Close" button on the reconnect overlay tears down a session that an
      * IO_ERROR already marked disconnected.
+     *
+     * @param source the transport reporting the disconnect, if any. Events
+     *   from a transport that a newer connection attempt has already replaced
+     *   are ignored, so a stale transport being torn down cannot kill the new
+     *   connection.
      */
-    fun dispatchDisconnect(reason: DisconnectReason) {
+    fun dispatchDisconnect(reason: DisconnectReason, source: AbsTransport? = null) {
+        val transportToClose: AbsTransport?
+
         // We don't need to do this multiple times.
         synchronized(this) {
+            if (source != null && transport !== source) {
+                Timber.d("Ignoring disconnect from stale transport for ${host.nickname}")
+                return
+            }
             if (disconnected && reason != DisconnectReason.USER_REQUESTED) {
                 return
             }
@@ -718,6 +781,12 @@ class TerminalBridge {
             if (disconnectReason == DisconnectReason.UNKNOWN) {
                 disconnectReason = reason
             }
+
+            // Capture the transport belonging to this session under the same
+            // lock: a reconnect attempt may replace [transport] before the
+            // asynchronous close below runs, and closing the replacement
+            // would tear down the new connection.
+            transportToClose = transport
         }
 
         // Cancel any pending prompts
@@ -726,7 +795,7 @@ class TerminalBridge {
         // disconnection request hangs if we havent really connected to a host yet
         // temporary fix is to just spawn disconnection into a thread
         scope.launch(dispatchers.io) {
-            transport?.let {
+            transportToClose?.let {
                 if (it.isConnected()) {
                     it.close()
                 }
@@ -740,7 +809,8 @@ class TerminalBridge {
             }
 
             is DisconnectAction.AutoReconnect -> {
-                manager.requestReconnect(this)
+                reconnectAttemptCounter.incrementAndGet()
+                manager.requestReconnect(this, userInitiated = false)
                 manager.notifyBridgeStateChanged()
             }
 

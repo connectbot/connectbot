@@ -347,7 +347,9 @@ class TerminalManager :
         }
 
         synchronized(_disconnected) {
-            _disconnected.remove(bridge.host)
+            // Match by id: the Host row may have changed (e.g. lastConnect)
+            // since the disconnected snapshot was recorded.
+            _disconnected.removeAll { it.id == bridge.host.id }
             _disconnectedFlow.value = _disconnected.toList()
         }
 
@@ -471,7 +473,9 @@ class TerminalManager :
         }
 
         synchronized(_disconnected) {
-            _disconnected.add(bridge.host)
+            if (_disconnected.none { it.id == bridge.host.id }) {
+                _disconnected.add(bridge.host)
+            }
             _disconnectedFlow.value = _disconnected.toList()
         }
 
@@ -737,6 +741,7 @@ class TerminalManager :
         isUiBound = true
         keepServiceAlive()
         setResizeAllowed(true)
+        retryPendingReconnects()
         return binder
     }
 
@@ -765,6 +770,7 @@ class TerminalManager :
         isUiBound = true
         keepServiceAlive()
         setResizeAllowed(true)
+        retryPendingReconnects()
     }
 
     override fun onUnbind(intent: Intent): Boolean {
@@ -969,18 +975,51 @@ class TerminalManager :
     }
 
     /**
-     * Insert request into reconnect queue to be executed either immediately
-     * or later when connectivity is restored depending on whether we're
-     * currently connected.
+     * Insert request into reconnect queue to be executed either immediately,
+     * after a backoff delay, or later when connectivity is restored,
+     * depending on whether we're currently connected and how many automatic
+     * attempts have already failed.
      *
      * @param bridge the TerminalBridge to reconnect when possible
+     * @param userInitiated true when the user explicitly asked to reconnect;
+     *   this resets the backoff so the attempt happens immediately
      */
-    fun requestReconnect(bridge: TerminalBridge) {
+    fun requestReconnect(bridge: TerminalBridge, userInitiated: Boolean = true) {
+        if (bridge.isAwaitingClose()) {
+            return
+        }
+
+        if (userInitiated) {
+            bridge.resetAutoReconnectBackoff()
+        }
+
         synchronized(pendingReconnect) {
-            pendingReconnect.add(WeakReference(bridge))
-            if (!bridge.isUsingNetwork() ||
-                connectivityMonitor.getCurrentNetworkInfo()?.isConnected == true
-            ) {
+            pendingReconnect.removeAll { it.get() == null }
+            if (pendingReconnect.none { it.get() === bridge }) {
+                pendingReconnect.add(WeakReference(bridge))
+            }
+        }
+
+        // With no usable network, leave the request queued; it is retried
+        // when connectivity is restored or the app is brought back up.
+        if (bridge.isUsingNetwork() &&
+            connectivityMonitor.getCurrentNetworkInfo()?.isConnected != true
+        ) {
+            return
+        }
+
+        val delayMs = DisconnectPolicy.reconnectDelayMs(bridge.autoReconnectAttempts)
+        if (delayMs <= 0L) {
+            reconnectPending()
+        } else {
+            Timber.d(
+                "Scheduling reconnect attempt %d for %s in %d ms",
+                bridge.autoReconnectAttempts,
+                bridge.host.nickname,
+                delayMs,
+            )
+            scope.launch {
+                delay(delayMs)
                 reconnectPending()
             }
         }
@@ -991,12 +1030,28 @@ class TerminalManager :
      * was lost.
      */
     private fun reconnectPending() {
+        val bridges: List<TerminalBridge>
         synchronized(pendingReconnect) {
-            for (ref in pendingReconnect) {
-                val bridge = ref.get() ?: continue
-                bridge.startConnection()
-            }
+            bridges = pendingReconnect.mapNotNull { it.get() }
             pendingReconnect.clear()
+        }
+        for (bridge in bridges) {
+            if (bridge.isAwaitingClose()) {
+                continue
+            }
+            // startConnection is idempotent: attempts already in flight or
+            // bridges that reconnected in the meantime are skipped.
+            bridge.startConnection()
+        }
+    }
+
+    /**
+     * Retry queued reconnects right away, e.g. when the user brings the app
+     * back to the foreground. This bypasses any pending backoff delay.
+     */
+    private fun retryPendingReconnects() {
+        scope.launch(dispatchers.io) {
+            reconnectPending()
         }
     }
 

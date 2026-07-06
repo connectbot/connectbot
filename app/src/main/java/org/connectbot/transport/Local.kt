@@ -56,6 +56,13 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
         }
     }
 
+    private fun onDisconnect(reason: DisconnectReason) {
+        // Passing this transport as the source lets the bridge discard
+        // events from a transport that a reconnect attempt has replaced,
+        // such as the exit watcher of a killed shell.
+        bridge?.dispatchDisconnect(reason, this)
+    }
+
     override fun connect() {
         val pids = IntArray(1)
 
@@ -70,7 +77,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
         shellPid = pids[0]
         val exitWatcher = Runnable {
             Exec.waitFor(shellPid)
-            bridge?.dispatchDisconnect(DisconnectReason.REMOTE_EOF)
+            onDisconnect(DisconnectReason.REMOTE_EOF)
         }
 
         val exitWatcherThread = Thread(exitWatcher)
@@ -100,7 +107,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
     @Throws(IOException::class)
     override fun read(buffer: ByteArray, offset: Int, length: Int): Int {
         val inputStream = `is` ?: run {
-            bridge?.dispatchDisconnect(DisconnectReason.IO_ERROR)
+            onDisconnect(DisconnectReason.IO_ERROR)
             throw IOException("session closed")
         }
         return inputStream.read(buffer, offset, length)
