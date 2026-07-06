@@ -134,6 +134,7 @@ import org.connectbot.service.TerminalBridge
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.SelectionController
 import org.connectbot.terminal.Terminal
+import org.connectbot.terminal.VTermKey
 import org.connectbot.ui.LoadingScreen
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.components.AuthBannerDialog
@@ -252,6 +253,40 @@ internal fun sessionSwipeTarget(
     return targetIndex.takeIf { it != currentIndex }
 }
 
+/**
+ * Fraction of the viewport width, measured from the left edge, where the
+ * page up/down gesture is recognized (per the preference description).
+ */
+private const val PAGE_GESTURE_REGION_FRACTION = 1f / 3f
+
+/**
+ * Decides whether an accumulated vertical drag should send a page key.
+ *
+ * Dragging up advances the content (Page Down); dragging down goes back
+ * (Page Up), matching the pre-Compose gesture behavior.
+ *
+ * @return [VTermKey.PAGEUP], [VTermKey.PAGEDOWN], or null if the drag has
+ *   not yet covered a page distance.
+ */
+@VisibleForTesting
+internal fun pageKeyForDrag(
+    accumulatedDragY: Float,
+    viewportHeight: Int,
+    touchSlop: Float,
+    selectionActive: Boolean = false,
+): Int? {
+    if (selectionActive || viewportHeight <= 0) {
+        return null
+    }
+
+    val pageDistance = max(touchSlop * 4f, viewportHeight / 8f)
+    return when {
+        accumulatedDragY <= -pageDistance -> VTermKey.PAGEDOWN
+        accumulatedDragY >= pageDistance -> VTermKey.PAGEUP
+        else -> null
+    }
+}
+
 @VisibleForTesting
 internal fun shouldShowSoftwareKeyboardForSessionOpen(
     previousBridgeId: Long?,
@@ -334,6 +369,71 @@ private fun Modifier.sessionSwipeNavigation(
             )?.let { target ->
                 onInteraction()
                 onSwipeToSession(target)
+            }
+        }
+    }
+}
+
+/**
+ * Sends page up/down keys for vertical swipes starting in the left third of
+ * the terminal, as described by the "Page up/down gesture" preference.
+ * Locked vertical drags are consumed so the scrollback does not also move.
+ */
+private fun Modifier.pageUpDownGesture(
+    selectionActive: Boolean,
+    onPageKey: (Int) -> Unit,
+): Modifier = pointerInput(selectionActive) {
+    if (selectionActive) {
+        return@pointerInput
+    }
+
+    awaitEachGesture {
+        val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+        if (down.position.x > size.width * PAGE_GESTURE_REGION_FRACTION) {
+            return@awaitEachGesture
+        }
+
+        val pointerId = down.id
+        var dragX = 0f
+        var dragY = 0f
+        var accumulatedY = 0f
+        var pageGestureLocked = false
+        var otherGestureLocked = false
+
+        while (true) {
+            val event = awaitPointerEvent(PointerEventPass.Initial)
+            val change = event.changes.firstOrNull { it.id == pointerId } ?: break
+            if (!change.pressed) {
+                break
+            }
+
+            val delta = change.positionChange()
+            dragX += delta.x
+            dragY += delta.y
+
+            if (!pageGestureLocked && !otherGestureLocked) {
+                val absX = abs(dragX)
+                val absY = abs(dragY)
+                if (absY > viewConfiguration.touchSlop && absY > absX) {
+                    pageGestureLocked = true
+                    accumulatedY = dragY
+                } else if (absX > viewConfiguration.touchSlop && absX > absY) {
+                    otherGestureLocked = true
+                }
+            } else if (pageGestureLocked) {
+                accumulatedY += delta.y
+            }
+
+            if (pageGestureLocked) {
+                change.consume()
+                pageKeyForDrag(
+                    accumulatedDragY = accumulatedY,
+                    viewportHeight = size.height,
+                    touchSlop = viewConfiguration.touchSlop,
+                )?.let { key ->
+                    onPageKey(key)
+                    accumulatedY = 0f
+                }
             }
         }
     }
@@ -528,6 +628,9 @@ fun ConsoleScreen(
     val keyboardAlwaysVisible = remember { prefs.getBoolean(PreferenceConstants.KEY_ALWAYS_VISIBLE, false) }
     val swipeSessionsEnabled = remember {
         prefs.getBoolean(PreferenceConstants.SWIPE_SESSIONS, false)
+    }
+    val pgUpDnGestureEnabled = remember {
+        prefs.getBoolean(PreferenceConstants.PG_UPDN_GESTURE, false)
     }
     var fullscreen by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.FULLSCREEN, false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false)) }
@@ -927,7 +1030,18 @@ fun ConsoleScreen(
                             .weight(1f),
                     ) {
                         val bridge = uiState.bridges[uiState.currentBridgeIndex]
-                        val terminalModifier = if (swipeBetweenSessions) {
+                        val pageGestureModifier = if (pgUpDnGestureEnabled) {
+                            Modifier.pageUpDownGesture(
+                                selectionActive = terminalSelectionActive,
+                                onPageKey = { key ->
+                                    bridge.keyHandler.sendPressedKey(key)
+                                    handleTerminalInteraction(isInteraction = false)
+                                },
+                            )
+                        } else {
+                            Modifier
+                        }
+                        val swipeModifier = if (swipeBetweenSessions) {
                             Modifier.sessionSwipeNavigation(
                                 currentIndex = uiState.currentBridgeIndex,
                                 sessionCount = uiState.bridges.size,
@@ -938,6 +1052,7 @@ fun ConsoleScreen(
                         } else {
                             Modifier
                         }
+                        val terminalModifier = pageGestureModifier.then(swipeModifier)
 
                         key(bridge.host.id) {
                             ConsoleTerminalPage(
