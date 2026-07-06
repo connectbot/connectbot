@@ -50,6 +50,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.connectbot.R
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.HostRepository
@@ -156,6 +157,8 @@ class TerminalManager :
     internal lateinit var connectivityMonitor: ConnectivityMonitor
 
     private var mediaPlayer: MediaPlayer? = null
+
+    private var mediaPlayerSetupJob: Job? = null
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
@@ -805,44 +808,62 @@ class TerminalManager :
         }
     }
 
+    /**
+     * Set up the bell [MediaPlayer] on a background dispatcher, since opening the raw
+     * resource and [MediaPlayer.prepare] perform blocking I/O that must stay off the main
+     * thread. The player is published to [mediaPlayer] on the main thread only once fully
+     * prepared, so [playBeep] never sees a half-initialized player.
+     */
     private fun enableMediaPlayer() {
-        mediaPlayer = MediaPlayer()
+        mediaPlayerSetupJob?.cancel()
+        mediaPlayerSetupJob = scope.launch(dispatchers.io) {
+            val player = MediaPlayer()
+            var published = false
+            try {
+                val volume = prefs.getFloat(
+                    PreferenceConstants.BELL_VOLUME,
+                    PreferenceConstants.DEFAULT_BELL_VOLUME,
+                )
 
-        val volume = prefs.getFloat(
-            PreferenceConstants.BELL_VOLUME,
-            PreferenceConstants.DEFAULT_BELL_VOLUME,
-        )
+                val audioAttributes = AudioAttributes.Builder()
+                    // Use USAGE_NOTIFICATION for sounds that signal an event
+                    .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                    // Use CONTENT_TYPE_SONIFICATION for non-music/non-speech sounds (like notifications or alarms)
+                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                    .build()
+                player.setAudioAttributes(audioAttributes)
 
-        val audioAttributes = AudioAttributes.Builder()
-            // Use USAGE_NOTIFICATION for sounds that signal an event
-            .setUsage(AudioAttributes.USAGE_NOTIFICATION)
-            // Use CONTENT_TYPE_SONIFICATION for non-music/non-speech sounds (like notifications or alarms)
-            .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-            .build()
-        mediaPlayer?.setAudioAttributes(audioAttributes)
+                player.isLooping = false
+                res.openRawResourceFd(R.raw.bell).use { file ->
+                    player.setDataSource(
+                        file.fileDescriptor,
+                        file.startOffset,
+                        file.length,
+                    )
+                }
+                player.setVolume(volume, volume)
+                player.prepare()
 
-        val file = res.openRawResourceFd(R.raw.bell)
-        try {
-            mediaPlayer!!.isLooping = false
-            mediaPlayer!!.setDataSource(
-                file.fileDescriptor,
-                file
-                    .startOffset,
-                file.length,
-            )
-            file.close()
-            mediaPlayer!!.setVolume(volume, volume)
-            mediaPlayer!!.prepare()
-        } catch (e: IOException) {
-            Timber.e(e, "Error setting up bell media player")
+                withContext(dispatchers.main) {
+                    mediaPlayer?.release()
+                    mediaPlayer = player
+                    published = true
+                }
+            } catch (e: IOException) {
+                Timber.e(e, "Error setting up bell media player")
+            } finally {
+                if (!published) {
+                    player.release()
+                }
+            }
         }
     }
 
     private fun disableMediaPlayer() {
-        if (mediaPlayer != null) {
-            mediaPlayer!!.release()
-            mediaPlayer = null
-        }
+        mediaPlayerSetupJob?.cancel()
+        mediaPlayerSetupJob = null
+        mediaPlayer?.release()
+        mediaPlayer = null
     }
 
     fun playBeep() {
@@ -877,7 +898,9 @@ class TerminalManager :
             val wantAudible = sharedPreferences.getBoolean(PreferenceConstants.BELL, true)
             if (wantAudible && mediaPlayer == null) {
                 enableMediaPlayer()
-            } else if (!wantAudible && mediaPlayer != null) {
+            } else if (!wantAudible) {
+                // Always disable so an in-flight async setup is canceled even though
+                // it has not published to mediaPlayer yet.
                 disableMediaPlayer()
             }
         } else if (PreferenceConstants.BELL_VOLUME == key) {
