@@ -79,6 +79,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
@@ -92,6 +93,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.KeyEventType
@@ -109,6 +111,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
@@ -802,6 +805,25 @@ fun ConsoleScreen(
         }
     }
 
+    // While the title bar is hidden the transparent status bar sits directly
+    // on the black terminal, so it needs light icons regardless of the app
+    // theme; restore the theme's appearance once the title bar returns.
+    val rootView = LocalView.current
+    val titleBarVisible = !titleBarHide || showTitleBar
+    DisposableEffect(rootView, titleBarVisible) {
+        val window = (rootView.context as? Activity)?.window
+        val controller = window?.let { WindowInsetsControllerCompat(it, it.decorView) }
+        val previousLightStatusBars = controller?.isAppearanceLightStatusBars
+        if (controller != null && !titleBarVisible) {
+            controller.isAppearanceLightStatusBars = false
+        }
+        onDispose {
+            if (controller != null && previousLightStatusBars != null) {
+                controller.isAppearanceLightStatusBars = previousLightStatusBars
+            }
+        }
+    }
+
     // Navigate back if all bridges are closed (after initial loading)
     LaunchedEffect(uiState.bridges.size, uiState.isLoading) {
         if (uiState.bridges.isEmpty() && !uiState.isLoading) {
@@ -989,6 +1011,10 @@ fun ConsoleScreen(
         modifier = modifier
             .fillMaxSize()
             .then(if (keepScreenOn) Modifier.keepScreenOn() else Modifier),
+        // The console is a terminal screen: keep everything behind and around
+        // the terminal (including the area under the transparent status bar)
+        // black instead of the theme background.
+        containerColor = Color.Black,
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets
             .union(WindowInsets.imeAnimationTarget),
     ) { innerPadding ->
