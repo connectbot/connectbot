@@ -642,7 +642,11 @@ class SSH :
 
     @Throws(IOException::class)
     private fun tryPublicKey(username: String, keyNickname: String, pair: KeyPair): Boolean = try {
-        val success = connection?.authenticateWithPublicKey(username, pair) == true
+        val currentConnection = connection
+        val success = currentConnection != null &&
+            RsaSha2Compat.withRsaSha2Preference(currentConnection, pair) {
+                currentConnection.authenticateWithPublicKey(username, pair)
+            }
         if (!success) {
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, keyNickname))
         }
@@ -807,7 +811,11 @@ class SSH :
                     // Try all in-memory keys
                     manager?.loadedKeypairs?.entries?.forEach { entry ->
                         try {
-                            if (jc.authenticateWithPublicKey(jumpHost.username, entry.value.pair)) {
+                            val pair = entry.value.pair ?: return@forEach
+                            val success = RsaSha2Compat.withRsaSha2Preference(jc, pair) {
+                                jc.authenticateWithPublicKey(jumpHost.username, pair)
+                            }
+                            if (success) {
                                 return true
                             }
                         } catch (_: Exception) {
@@ -821,7 +829,10 @@ class SSH :
                         val pair = getOrUnlockKey(pubkey)
                         if (pair != null) {
                             try {
-                                if (jc.authenticateWithPublicKey(jumpHost.username, pair)) {
+                                val success = RsaSha2Compat.withRsaSha2Preference(jc, pair) {
+                                    jc.authenticateWithPublicKey(jumpHost.username, pair)
+                                }
+                                if (success) {
                                     return true
                                 }
                             } catch (_: Exception) {
