@@ -62,6 +62,7 @@ import timber.log.Timber
 import java.io.IOException
 import java.nio.charset.Charset
 import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
 
 data class AuthBanner(
@@ -210,20 +211,21 @@ class TerminalBridge {
         private set
     private var awaitingClose = false
 
+    private val reconnectAttemptCounter = AtomicInteger(0)
+
     /**
      * Consecutive automatic reconnect cycles since the last successful
      * connection. Used by [TerminalManager] to back off between retries.
      */
-    @Volatile
-    var autoReconnectAttempts: Int = 0
-        private set
+    val autoReconnectAttempts: Int
+        get() = reconnectAttemptCounter.get()
 
     /**
      * Forget accumulated reconnect failures so the next attempt runs
      * immediately, e.g. when the user explicitly asks to reconnect.
      */
     fun resetAutoReconnectBackoff() {
-        autoReconnectAttempts = 0
+        reconnectAttemptCounter.set(0)
     }
 
     private var forcedSize = false
@@ -691,7 +693,7 @@ class TerminalBridge {
     fun onConnected() {
         disconnected = false
         connecting = false
-        autoReconnectAttempts = 0
+        reconnectAttemptCounter.set(0)
 
         // We no longer need our local output.
         localOutput.clear()
@@ -807,7 +809,7 @@ class TerminalBridge {
             }
 
             is DisconnectAction.AutoReconnect -> {
-                autoReconnectAttempts++
+                reconnectAttemptCounter.incrementAndGet()
                 manager.requestReconnect(this, userInitiated = false)
                 manager.notifyBridgeStateChanged()
             }
