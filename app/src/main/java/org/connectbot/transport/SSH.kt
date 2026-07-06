@@ -1001,6 +1001,17 @@ class SSH :
         } catch (e: Exception) {
             Timber.e(e, "Problem in SSH connection thread during authentication")
         }
+
+        if (connected && connection?.isAuthenticationComplete != true) {
+            // Out of authentication attempts: report the failure so the
+            // bridge doesn't stay stuck in the connecting state. Dispatch
+            // AUTH_FAIL before close() because close() fires
+            // connectionLost() synchronously, which would otherwise record
+            // IO_ERROR and auto-reconnect stay-connected hosts into a
+            // lockout-prone authentication loop.
+            onDisconnect(DisconnectReason.AUTH_FAIL)
+            close()
+        }
     }
 
     override fun close() {
@@ -1034,7 +1045,9 @@ class SSH :
     }
 
     private fun onDisconnect(reason: DisconnectReason = DisconnectReason.IO_ERROR) {
-        bridge?.dispatchDisconnect(reason)
+        // Passing this transport as the source lets the bridge discard
+        // events from a transport that a reconnect attempt has replaced.
+        bridge?.dispatchDisconnect(reason, this)
     }
 
     @Throws(IOException::class)
@@ -1046,7 +1059,9 @@ class SSH :
     override fun read(buffer: ByteArray, offset: Int, length: Int): Int {
         var bytesRead = 0
 
-        val currentSession = session ?: return 0
+        // The session only becomes null after close(); returning 0 here would
+        // leave the relay loop spinning on a dead transport.
+        val currentSession = session ?: throw IOException("Session closed")
 
         val newConditions = currentSession.waitForCondition(conditions, 0)
 

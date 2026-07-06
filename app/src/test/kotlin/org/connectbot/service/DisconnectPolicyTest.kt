@@ -17,6 +17,7 @@
 
 package org.connectbot.service
 
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -160,5 +161,38 @@ class DisconnectPolicyTest {
     fun authFail_bothFlags_closesImmediately() {
         // quickDisconnect wins over AUTH_FAIL special case
         assertTrue(decide(DisconnectReason.AUTH_FAIL, quickDisconnect = true, stayConnected = true) is DisconnectAction.CloseImmediately)
+    }
+
+    // Reconnect backoff schedule
+
+    @Test
+    fun reconnectDelay_firstAttempt_isImmediate() {
+        assertEquals(0L, DisconnectPolicy.reconnectDelayMs(0))
+        assertEquals(0L, DisconnectPolicy.reconnectDelayMs(1))
+    }
+
+    @Test
+    fun reconnectDelay_backsOffExponentially() {
+        assertEquals(2_000L, DisconnectPolicy.reconnectDelayMs(2))
+        assertEquals(4_000L, DisconnectPolicy.reconnectDelayMs(3))
+        assertEquals(8_000L, DisconnectPolicy.reconnectDelayMs(4))
+        assertEquals(16_000L, DisconnectPolicy.reconnectDelayMs(5))
+        assertEquals(32_000L, DisconnectPolicy.reconnectDelayMs(6))
+    }
+
+    @Test
+    fun reconnectDelay_isCapped() {
+        assertEquals(DisconnectPolicy.RECONNECT_MAX_DELAY_MS, DisconnectPolicy.reconnectDelayMs(7))
+        assertEquals(DisconnectPolicy.RECONNECT_MAX_DELAY_MS, DisconnectPolicy.reconnectDelayMs(100))
+    }
+
+    @Test
+    fun reconnectDelay_doesNotOverflowForHugeAttemptCounts() {
+        assertEquals(DisconnectPolicy.RECONNECT_MAX_DELAY_MS, DisconnectPolicy.reconnectDelayMs(Int.MAX_VALUE))
+    }
+
+    @Test
+    fun reconnectDelay_negativeAttemptsAreImmediate() {
+        assertEquals(0L, DisconnectPolicy.reconnectDelayMs(-1))
     }
 }
