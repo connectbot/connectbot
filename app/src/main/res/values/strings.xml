@@ -77,6 +77,8 @@
 	<string name="pubkey_touch_hint">"In order to assure randomness during the key generation, move your finger randomly over the box below."</string>
 	<!-- Progress message shown while generating a new SSH key pair -->
 	<string name="pubkey_generating">"Generating key pair…"</string>
+	<!-- Dialog title shown when generating a new SSH key pair failed; the dialog body contains the error details -->
+	<string name="pubkey_generate_failed">"Key generation failed"</string>
 	<!-- Context menu action to copy the private key to clipboard in the default format -->
 	<string name="pubkey_copy_private">"Copy private key"</string>
 	<!-- Context menu action to copy the private key to clipboard in OpenSSH format -->
