@@ -33,6 +33,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Fingerprint
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -45,6 +46,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -86,6 +88,7 @@ fun GeneratePubkeyScreen(
             viewModel.cancelGeneration()
             onNavigateBack()
         },
+        onDismissGenerationError = viewModel::dismissGenerationError,
         modifier = modifier,
     )
 }
@@ -107,6 +110,7 @@ fun GeneratePubkeyScreenContent(
     onGatherEntropy: (ByteArray?) -> Unit,
     onCancelGeneration: () -> Unit,
     modifier: Modifier = Modifier,
+    onDismissGenerationError: () -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -188,7 +192,12 @@ fun GeneratePubkeyScreenContent(
                     value = uiState.bits.toFloat(),
                     onValueChange = { onBitsChange(it.toInt()) },
                     valueRange = uiState.minBits.toFloat()..uiState.maxBits.toFloat(),
-                    steps = ((uiState.maxBits - uiState.minBits) / 8) - 1,
+                    steps = if (uiState.useBiometric && uiState.keyType == KeyType.RSA) {
+                        // Keystore RSA keys only come in 2048/3072/4096 bits
+                        1
+                    } else {
+                        ((uiState.maxBits - uiState.minBits) / 8) - 1
+                    },
                     modifier = Modifier.fillMaxWidth(),
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -355,6 +364,20 @@ fun GeneratePubkeyScreenContent(
     // Show progress dialog when generating
     if (uiState.isGenerating) {
         GeneratingKeyDialog()
+    }
+
+    // Surface generation failures instead of silently closing the progress dialog
+    uiState.generationError?.let { error ->
+        AlertDialog(
+            onDismissRequest = onDismissGenerationError,
+            title = { Text(stringResource(R.string.pubkey_generate_failed)) },
+            text = { Text(error) },
+            confirmButton = {
+                TextButton(onClick = onDismissGenerationError) {
+                    Text(stringResource(android.R.string.ok))
+                }
+            },
+        )
     }
 }
 

@@ -67,6 +67,7 @@ data class GeneratePubkeyUiState(
     val confirmUse: Boolean = false,
     val showEntropyDialog: Boolean = false,
     val isGenerating: Boolean = false,
+    val generationError: String? = null,
     val ecdsaAvailable: Boolean = true,
     val nicknameExists: Boolean = false,
     // Biometric authentication options
@@ -144,15 +145,16 @@ class GeneratePubkeyViewModel @Inject constructor(
 
         // Disable biometric if key type doesn't support it
         val currentState = _uiState.value
+        val useBiometric = if (BiometricKeyManager.supportsBiometric(keyType)) currentState.useBiometric else false
 
         _uiState.update {
             it.copy(
                 keyType = keyType,
-                bits = keyType.defaultBits,
-                minBits = keyType.minBits,
-                maxBits = keyType.maxBits,
+                bits = constrainBits(keyType.defaultBits, keyType, useBiometric),
+                minBits = minBitsFor(keyType, useBiometric),
+                maxBits = maxBitsFor(keyType, useBiometric),
                 allowBitStrengthChange = allowBitStrengthChange,
-                useBiometric = if (BiometricKeyManager.supportsBiometric(keyType)) currentState.useBiometric else false,
+                useBiometric = useBiometric,
             )
         }
     }
@@ -166,6 +168,10 @@ class GeneratePubkeyViewModel @Inject constructor(
         _uiState.update {
             it.copy(
                 useBiometric = useBiometric,
+                // Keystore keys only support a restricted set of sizes
+                bits = constrainBits(it.bits, it.keyType, useBiometric),
+                minBits = minBitsFor(it.keyType, useBiometric),
+                maxBits = maxBitsFor(it.keyType, useBiometric),
                 // Clear passwords when switching to biometric
                 password1 = if (useBiometric) "" else it.password1,
                 password2 = if (useBiometric) "" else it.password2,
@@ -179,16 +185,32 @@ class GeneratePubkeyViewModel @Inject constructor(
         val currentState = _uiState.value
         val clampedBits = bits.coerceIn(currentState.minBits, currentState.maxBits)
 
-        val finalBits = when (currentState.keyType) {
-            KeyType.EC -> getClosestEcdsaSize(clampedBits)
-            KeyType.ED25519 -> clampedBits
-            else -> clampedBits - (clampedBits % 8) // Keep divisible by 8
-        }
+        _uiState.update { it.copy(bits = constrainBits(clampedBits, currentState.keyType, currentState.useBiometric)) }
+    }
 
-        _uiState.update { it.copy(bits = finalBits) }
+    private fun constrainBits(bits: Int, keyType: KeyType, useBiometric: Boolean): Int = when {
+        // Android Keystore only generates specific RSA sizes (upstream issue connectbot#2139)
+        useBiometric && keyType == KeyType.RSA -> getClosestSize(BiometricKeyManager.SUPPORTED_RSA_KEY_SIZES, bits)
+        keyType == KeyType.EC -> getClosestEcdsaSize(bits)
+        keyType == KeyType.ED25519 -> bits
+        else -> bits - (bits % 8) // Keep divisible by 8
+    }
+
+    private fun minBitsFor(keyType: KeyType, useBiometric: Boolean): Int = if (useBiometric && keyType == KeyType.RSA) {
+        BiometricKeyManager.SUPPORTED_RSA_KEY_SIZES.first()
+    } else {
+        keyType.minBits
+    }
+
+    private fun maxBitsFor(keyType: KeyType, useBiometric: Boolean): Int = if (useBiometric && keyType == KeyType.RSA) {
+        BiometricKeyManager.SUPPORTED_RSA_KEY_SIZES.last()
+    } else {
+        keyType.maxBits
     }
 
     private fun getClosestEcdsaSize(bits: Int): Int = ECDSA_SIZES.minByOrNull { kotlin.math.abs(it - bits) } ?: ECDSA_SIZES[0]
+
+    private fun getClosestSize(sizes: List<Int>, bits: Int): Int = sizes.minByOrNull { kotlin.math.abs(it - bits) } ?: sizes.first()
 
     fun updatePassword1(password: String) {
         _uiState.update { it.copy(password1 = password) }
@@ -210,6 +232,7 @@ class GeneratePubkeyViewModel @Inject constructor(
 
     fun generateKey(onSuccess: () -> Unit) {
         onSuccessCallback = onSuccess
+        _uiState.update { it.copy(generationError = null) }
         val currentState = _uiState.value
 
         if (currentState.useBiometric) {
@@ -263,7 +286,7 @@ class GeneratePubkeyViewModel @Inject constructor(
                 saveKeyPair(keyPair, currentState, callback)
             } catch (e: Exception) {
                 Timber.e(e, "Failed to generate key pair")
-                _uiState.update { it.copy(isGenerating = false) }
+                _uiState.update { it.copy(isGenerating = false, generationError = errorMessageOf(e)) }
             }
         }
     }
@@ -289,10 +312,16 @@ class GeneratePubkeyViewModel @Inject constructor(
                 saveBiometricKey(publicKey, alias, currentState, callback)
             } catch (e: Exception) {
                 Timber.e(e, "Failed to generate biometric key")
-                _uiState.update { it.copy(isGenerating = false) }
+                _uiState.update { it.copy(isGenerating = false, generationError = errorMessageOf(e)) }
             }
         }
     }
+
+    fun dismissGenerationError() {
+        _uiState.update { it.copy(generationError = null) }
+    }
+
+    private fun errorMessageOf(e: Exception): String = e.message ?: e.javaClass.simpleName
 
     private fun generateKeyPair(keyType: KeyType, bits: Int, entropy: ByteArray): KeyPair {
         val random = SecureRandom()
@@ -339,7 +368,7 @@ class GeneratePubkeyViewModel @Inject constructor(
             } catch (e: Exception) {
                 Timber.e(e, "Failed to save key pair")
                 withContext(dispatchers.main) {
-                    _uiState.update { it.copy(isGenerating = false) }
+                    _uiState.update { it.copy(isGenerating = false, generationError = errorMessageOf(e)) }
                 }
             }
         }
@@ -385,7 +414,7 @@ class GeneratePubkeyViewModel @Inject constructor(
                     Timber.e(deleteError, "Failed to clean up Keystore key after save failure")
                 }
                 withContext(dispatchers.main) {
-                    _uiState.update { it.copy(isGenerating = false) }
+                    _uiState.update { it.copy(isGenerating = false, generationError = errorMessageOf(e)) }
                 }
             }
         }

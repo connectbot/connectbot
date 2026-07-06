@@ -30,9 +30,11 @@ import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.BiometricAvailability
 import org.connectbot.util.BiometricKeyManager
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
@@ -138,5 +140,110 @@ class GeneratePubkeyViewModelTest {
             "Switching to biometric must clear unlockAtStartup since Keystore keys cannot auto-load",
             !viewModel.uiState.value.unlockAtStartup,
         )
+    }
+
+    // Regression tests for upstream issue connectbot#2139: the Android Keystore only
+    // supports RSA sizes 2048/3072/4096, and generation failures must be surfaced to
+    // the user instead of silently closing the progress dialog.
+
+    @Test
+    fun enablingBiometric_constrainsRsaBitsToKeystoreSupportedSizes() {
+        val viewModel = createViewModel()
+        viewModel.updateKeyType(KeyType.RSA)
+        viewModel.updateBits(KeyType.RSA.minBits) // 1024, unsupported by the Keystore
+        viewModel.updateUseBiometric(true)
+
+        val state = viewModel.uiState.value
+        assertEquals(2048, state.bits)
+        assertEquals(2048, state.minBits)
+        assertEquals(4096, state.maxBits)
+    }
+
+    @Test
+    fun biometricRsaBits_snapToClosestKeystoreSupportedSize() {
+        val viewModel = createViewModel()
+        viewModel.updateKeyType(KeyType.RSA)
+        viewModel.updateUseBiometric(true)
+
+        viewModel.updateBits(3000)
+        assertEquals(3072, viewModel.uiState.value.bits)
+
+        viewModel.updateBits(16384) // Clamped to the biometric max, then snapped
+        assertEquals(4096, viewModel.uiState.value.bits)
+    }
+
+    @Test
+    fun disablingBiometric_restoresFullRsaBitsRange() {
+        val viewModel = createViewModel()
+        viewModel.updateKeyType(KeyType.RSA)
+        viewModel.updateUseBiometric(true)
+        viewModel.updateUseBiometric(false)
+
+        val state = viewModel.uiState.value
+        assertEquals(KeyType.RSA.minBits, state.minBits)
+        assertEquals(KeyType.RSA.maxBits, state.maxBits)
+    }
+
+    @Test
+    fun biometricGenerationFailure_surfacesErrorInsteadOfSilentlyClosing() = runTest {
+        whenever(biometricKeyManager.generateKeyAlias()).thenReturn("connectbot_bio_test")
+        whenever(biometricKeyManager.generateKey(any(), any(), any()))
+            .thenThrow(IllegalArgumentException("RSA key size 1024 is not supported by the Android Keystore"))
+
+        val viewModel = createViewModel()
+        viewModel.updateNickname("bio-key")
+        viewModel.updateKeyType(KeyType.RSA)
+        viewModel.updateUseBiometric(true)
+
+        var succeeded = false
+        viewModel.generateKey { succeeded = true }
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertTrue("onSuccess must not fire when generation fails", !succeeded)
+        assertTrue("Progress dialog must be dismissed", !state.isGenerating)
+        assertEquals(
+            "RSA key size 1024 is not supported by the Android Keystore",
+            state.generationError,
+        )
+    }
+
+    @Test
+    fun softwareGenerationFailure_surfacesErrorInsteadOfSilentlyClosing() = runTest {
+        whenever(repository.save(any())).thenThrow(RuntimeException("database unavailable"))
+
+        val viewModel = createViewModel()
+        viewModel.updateNickname("plain-key")
+        viewModel.updateKeyType(KeyType.RSA)
+        viewModel.updateBits(KeyType.RSA.minBits)
+        advanceUntilIdle()
+
+        var succeeded = false
+        viewModel.generateKey { succeeded = true }
+        viewModel.onEntropyGathered(ByteArray(32) { it.toByte() })
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertTrue("onSuccess must not fire when saving fails", !succeeded)
+        assertTrue("Progress dialog must be dismissed", !state.isGenerating)
+        assertEquals("database unavailable", state.generationError)
+    }
+
+    @Test
+    fun dismissGenerationError_clearsError() = runTest {
+        whenever(repository.save(any())).thenThrow(RuntimeException("database unavailable"))
+
+        val viewModel = createViewModel()
+        viewModel.updateNickname("plain-key")
+        viewModel.updateKeyType(KeyType.RSA)
+        viewModel.updateBits(KeyType.RSA.minBits)
+        viewModel.generateKey { }
+        viewModel.onEntropyGathered(ByteArray(32) { it.toByte() })
+        advanceUntilIdle()
+        assertTrue(viewModel.uiState.value.generationError != null)
+
+        viewModel.dismissGenerationError()
+
+        assertTrue(viewModel.uiState.value.generationError == null)
     }
 }

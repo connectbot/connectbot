@@ -51,6 +51,12 @@ interface BiometricKeyManager {
         private const val KEYSTORE_PROVIDER = "AndroidKeyStore"
         val SUPPORTED_KEY_TYPES = listOf("RSA", "EC")
 
+        /**
+         * RSA key sizes every Android KeyMint implementation must support. Other sizes
+         * (including anything above 4096 bits) fail key generation on most devices.
+         */
+        val SUPPORTED_RSA_KEY_SIZES = listOf(2048, 3072, 4096)
+
         fun supportsBiometric(keyType: KeyType): Boolean = keyType == KeyType.RSA || keyType == KeyType.EC
     }
 }
@@ -95,6 +101,11 @@ class BiometricKeyManagerImpl(
     override fun generateKeyAlias(): String = KEY_ALIAS_PREFIX + UUID.randomUUID().toString()
 
     override fun generateRsaKey(alias: String, keySize: Int): PublicKey {
+        require(keySize in BiometricKeyManager.SUPPORTED_RSA_KEY_SIZES) {
+            "RSA key size $keySize is not supported by the Android Keystore " +
+                "(supported sizes: ${BiometricKeyManager.SUPPORTED_RSA_KEY_SIZES.joinToString()})"
+        }
+
         Timber.d("Generating RSA key with alias: $alias, size: $keySize")
 
         // Try with StrongBox first, fall back to TEE if not available
