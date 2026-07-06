@@ -74,6 +74,7 @@ import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import org.connectbot.R
 import org.connectbot.service.TerminalBridge
+import org.connectbot.util.TerminalTextUtils
 import kotlin.math.roundToInt
 
 private const val NEWLINE_SYMBOL = "↩"
@@ -191,7 +192,7 @@ fun FloatingTextInputDialog(
     // Send text helper function
     fun sendText() {
         if (text.isNotEmpty()) {
-            bridge.injectString(text)
+            bridge.injectString(TerminalTextUtils.normalizeLineBreaks(text))
             text = ""
         }
     }
