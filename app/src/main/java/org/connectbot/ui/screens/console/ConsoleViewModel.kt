@@ -39,6 +39,9 @@ import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.service.tmux.TmuxAttachState
 import org.connectbot.service.tmux.TmuxPaneTerminal
+import org.connectbot.service.tmux.TmuxSessionInfo
+import org.connectbot.service.tmux.TmuxSessionManager
+import org.connectbot.service.tmux.TmuxTarget
 import org.connectbot.terminal.ProgressState
 import org.connectbot.util.NotificationPermissionHelper
 import org.connectbot.util.PreferenceConstants
@@ -431,6 +434,60 @@ class ConsoleViewModel @Inject constructor(
             viewModelScope.launch(dispatchers.io) {
                 runCatching { terminalManager?.hostRepository?.saveHost(updated) }
             }
+        }
+    }
+
+    // ===== tmux navigation (window strip, swipes, volume keys) =====
+
+    /** Cycles panes of the viewed window by [offset], wrapping around. */
+    fun selectPane(offset: Int) {
+        val context = currentTmuxContext() ?: return
+        val (_, target, session) = context
+        val window = session.windows.find { it.id == target.windowId } ?: return
+        if (window.panes.size < 2) {
+            // Single-pane window: hardware navigation falls through to windows.
+            stepWindow(offset)
+            return
+        }
+        val index = window.panes.indexOfFirst { it.id == target.paneId }
+        if (index == -1) return
+        val next = window.panes[(index + offset).mod(window.panes.size)]
+        moveTarget(target.copy(paneId = next.id))
+    }
+
+    /** Cycles windows of the viewed session by [offset], wrapping around. */
+    fun stepWindow(offset: Int) {
+        val context = currentTmuxContext() ?: return
+        val (_, target, session) = context
+        if (session.windows.size < 2) return
+        val index = session.windows.indexOfFirst { it.id == target.windowId }
+        if (index == -1) return
+        selectWindow(session.windows[(index + offset).mod(session.windows.size)].id)
+    }
+
+    /** Jumps to a window (window strip tap), landing on its active pane. */
+    fun selectWindow(windowId: String) {
+        val context = currentTmuxContext() ?: return
+        val (_, target, session) = context
+        val window = session.windows.find { it.id == windowId } ?: return
+        val pane = window.activePane ?: return
+        moveTarget(target.copy(windowId = window.id, paneId = pane.id))
+    }
+
+    private fun currentTmuxContext(): Triple<TmuxSessionManager, TmuxTarget, TmuxSessionInfo>? {
+        val tab = _uiState.value.currentTab as? ConsoleTab.TmuxSession ?: return null
+        val tmux = tab.bridge.tmux ?: return null
+        val target = tmux.currentTarget.value?.takeIf { it.sessionId == tab.sessionId } ?: return null
+        val session = tmux.state.value.session(tab.sessionId) ?: return null
+        return Triple(tmux, target, session)
+    }
+
+    private fun moveTarget(target: TmuxTarget) {
+        val tab = _uiState.value.currentTab as? ConsoleTab.TmuxSession ?: return
+        val tmux = tab.bridge.tmux ?: return
+        viewModelScope.launch(dispatchers.io) {
+            tmux.selectTarget(target)
+            refreshPaneTerminal()
         }
     }
 

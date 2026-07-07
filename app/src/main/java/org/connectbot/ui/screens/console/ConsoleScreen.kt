@@ -144,8 +144,12 @@ import org.connectbot.service.PromptRequest
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.tmux.TmuxAttachState
 import org.connectbot.service.tmux.TmuxPaneTerminal
+import org.connectbot.ui.common.parseHostColor
+import org.connectbot.ui.screens.console.tmux.PaneDotsIndicator
 import org.connectbot.ui.screens.console.tmux.TmuxOfferBanner
 import org.connectbot.ui.screens.console.tmux.TmuxSnapshotPage
+import org.connectbot.ui.screens.console.tmux.TmuxWindowStrip
+import org.connectbot.ui.screens.console.tmux.tmuxSwipeNavigation
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.SelectionController
 import org.connectbot.terminal.Terminal
@@ -198,10 +202,25 @@ internal fun handleConsoleShortcut(
     pasteClipboardContents: () -> Unit,
     increaseFontSize: () -> Unit,
     decreaseFontSize: () -> Unit,
+    /** Active tmux tab + pref: volume keys switch panes instead of font size. */
+    tmuxPaneNavigation: Boolean = false,
+    nextPane: () -> Unit = {},
+    previousPane: () -> Unit = {},
 ): Boolean {
     if (keyEvent.type != KeyEventType.KeyDown) return false
 
     return when {
+        // Volume keys on a tmux tab: pane navigation (preference-gated)
+        tmuxPaneNavigation && keyEvent.key == Key.VolumeUp -> {
+            nextPane()
+            true
+        }
+
+        tmuxPaneNavigation && keyEvent.key == Key.VolumeDown -> {
+            previousPane()
+            true
+        }
+
         // Ctrl+Shift+C: copy selection
         keyEvent.key == Key.C && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
             copySelection()
@@ -758,6 +777,12 @@ fun ConsoleScreen(
     var fullscreen by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.FULLSCREEN, false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false)) }
     val volumeKeysChangeFontSize = remember { prefs.getBoolean(PreferenceConstants.VOLUME_FONT, true) }
+    val volumeKeysSwitchTmuxPanes = remember {
+        prefs.getBoolean(
+            PreferenceConstants.VOLUME_TMUX_PANES,
+            PreferenceConstants.VOLUME_TMUX_PANES_DEFAULT,
+        )
+    }
     val keepScreenAwake = remember { prefs.getBoolean(PreferenceConstants.KEEP_ALIVE, true) }
 
     // Keyboard state
@@ -1175,6 +1200,11 @@ fun ConsoleScreen(
                 pasteClipboardContents = { pasteClipboardContents() },
                 increaseFontSize = { currentBridge?.increaseFontSize() },
                 decreaseFontSize = { currentBridge?.decreaseFontSize() },
+                tmuxPaneNavigation = volumeKeysSwitchTmuxPanes &&
+                    uiState.currentTab is ConsoleTab.TmuxSession &&
+                    uiState.currentPaneTerminal != null,
+                nextPane = { viewModel.selectPane(1) },
+                previousPane = { viewModel.selectPane(-1) },
             )
         }
 
@@ -1246,9 +1276,15 @@ fun ConsoleScreen(
                                 modifier = Modifier.fillMaxSize(),
                             )
                         } else if (tmuxTab != null && paneTerminal != null) {
-                            val pane = tmuxSession?.windows
-                                ?.find { it.id == tmuxTab.bridge.tmux?.currentTarget?.value?.windowId }
-                                ?.panes?.find { it.id == paneTerminal.paneId }
+                            val tmuxTarget = tmuxTab.bridge.tmux?.currentTarget?.collectAsState()?.value
+                            val tmuxWindow = tmuxSession?.windows?.find { it.id == tmuxTarget?.windowId }
+                            val pane = tmuxWindow?.panes?.find { it.id == paneTerminal.paneId }
+                            val tmuxSwipeModifier = Modifier.tmuxSwipeNavigation(
+                                selectionActive = terminalSelectionActive,
+                                onSwipePane = { direction -> viewModel.selectPane(direction) },
+                                onSwipeWindow = { direction -> viewModel.stepWindow(direction) },
+                                onInteraction = { handleTerminalInteraction(isInteraction = false) },
+                            )
                             key(tmuxTab.key) {
                                 ConsoleTerminalPage(
                                     bridge = bridge,
@@ -1278,9 +1314,20 @@ fun ConsoleScreen(
                                     onReconnect = { viewModel.reconnect(bridge) },
                                     snackbarHostState = snackbarHostState,
                                     modifier = Modifier.fillMaxSize(),
-                                    terminalModifier = pageGestureModifier,
+                                    terminalModifier = pageGestureModifier.then(tmuxSwipeModifier),
                                     tmuxPane = paneTerminal,
                                     tmuxForcedSize = pane?.let { Pair(it.height, it.width) },
+                                )
+                            }
+                            if ((tmuxWindow?.panes?.size ?: 0) > 1) {
+                                PaneDotsIndicator(
+                                    count = tmuxWindow!!.panes.size,
+                                    selectedIndex = tmuxWindow.panes
+                                        .indexOfFirst { it.id == paneTerminal.paneId }
+                                        .coerceAtLeast(0),
+                                    modifier = Modifier
+                                        .align(Alignment.BottomCenter)
+                                        .padding(bottom = 8.dp),
                                 )
                             }
                         } else {
@@ -1697,6 +1744,29 @@ fun ConsoleScreen(
                             MaterialTheme.colorScheme.surface
                         },
                     )
+                }
+
+                // Window strip for the active tmux session (auto-hides with chrome)
+                (uiState.currentTab as? ConsoleTab.TmuxSession)?.let { stripTab ->
+                    val stripHostState = stripTab.bridge.tmux?.state?.collectAsState()?.value
+                    val stripSession = stripHostState?.sessions?.find { it.id == stripTab.sessionId }
+                    val stripTarget = stripTab.bridge.tmux?.currentTarget?.collectAsState()?.value
+                    if (stripSession != null &&
+                        stripSession.attachState == TmuxAttachState.ATTACHED &&
+                        stripSession.windows.isNotEmpty()
+                    ) {
+                        TmuxWindowStrip(
+                            windows = stripSession.windows,
+                            activeWindowId = stripTarget
+                                ?.takeIf { it.sessionId == stripTab.sessionId }?.windowId
+                                ?: stripSession.activeWindowId,
+                            onSelectWindow = { windowId ->
+                                viewModel.selectWindow(windowId)
+                                handleTerminalInteraction(isInteraction = false)
+                            },
+                            accentColor = parseHostColor(stripTab.bridge.host.color),
+                        )
+                    }
                 }
             }
 

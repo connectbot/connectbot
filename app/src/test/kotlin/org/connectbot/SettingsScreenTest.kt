@@ -290,6 +290,7 @@ class SettingsScreenTest {
                     onTitleBarHideChange = {},
                     onPgUpDnGestureChange = {},
                     onVolumeFontChange = {},
+                    onVolumeTmuxPanesChange = {},
                     onKeepAliveChange = {},
                     onAlwaysVisibleChange = {},
                     onSwipeSessionsChange = {},

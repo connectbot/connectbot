@@ -83,13 +83,38 @@ class ConsoleShortcutHandlerTest {
         callbacks.assertNoActions()
     }
 
+    @Test
+    fun handleConsoleShortcut_tmuxPaneNavigationOwnsVolumeKeys() {
+        val callbacks = ShortcutCallbacks(volumeKeysChangeFontSize = true, tmuxPaneNavigation = true)
+
+        assertTrue(callbacks.handle(keyDown(AndroidKeyEvent.KEYCODE_VOLUME_UP)))
+        assertEquals(1, callbacks.nextPaneCount)
+        assertEquals(0, callbacks.increaseCount)
+
+        assertTrue(callbacks.handle(keyDown(AndroidKeyEvent.KEYCODE_VOLUME_DOWN)))
+        assertEquals(1, callbacks.previousPaneCount)
+        assertEquals(0, callbacks.decreaseCount)
+    }
+
+    @Test
+    fun handleConsoleShortcut_tmuxNavigationOffFallsBackToFontSize() {
+        val callbacks = ShortcutCallbacks(volumeKeysChangeFontSize = true, tmuxPaneNavigation = false)
+
+        assertTrue(callbacks.handle(keyDown(AndroidKeyEvent.KEYCODE_VOLUME_UP)))
+        assertEquals(1, callbacks.increaseCount)
+        assertEquals(0, callbacks.nextPaneCount)
+    }
+
     private class ShortcutCallbacks(
         private val volumeKeysChangeFontSize: Boolean = false,
+        private val tmuxPaneNavigation: Boolean = false,
     ) {
         var copyCount = 0
         var pasteCount = 0
         var increaseCount = 0
         var decreaseCount = 0
+        var nextPaneCount = 0
+        var previousPaneCount = 0
 
         fun handle(keyEvent: KeyEvent): Boolean = handleConsoleShortcut(
             keyEvent = keyEvent,
@@ -98,6 +123,9 @@ class ConsoleShortcutHandlerTest {
             pasteClipboardContents = { pasteCount++ },
             increaseFontSize = { increaseCount++ },
             decreaseFontSize = { decreaseCount++ },
+            tmuxPaneNavigation = tmuxPaneNavigation,
+            nextPane = { nextPaneCount++ },
+            previousPane = { previousPaneCount++ },
         )
 
         fun assertNoActions() {
@@ -105,6 +133,8 @@ class ConsoleShortcutHandlerTest {
             assertEquals(0, pasteCount)
             assertEquals(0, increaseCount)
             assertEquals(0, decreaseCount)
+            assertEquals(0, nextPaneCount)
+            assertEquals(0, previousPaneCount)
         }
     }
 

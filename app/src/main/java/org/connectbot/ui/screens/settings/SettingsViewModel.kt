@@ -65,6 +65,7 @@ data class SettingsUiState(
     val pgupdngesture: Boolean = false,
     val swipeSessions: Boolean = false,
     val volumefont: Boolean = true,
+    val volumeTmuxPanes: Boolean = true,
     val keepalive: Boolean = true,
     val alwaysvisible: Boolean = false,
     val shiftfkeys: Boolean = false,
@@ -207,6 +208,10 @@ class SettingsViewModel @Inject constructor(
             pgupdngesture = prefs.getBoolean("pgupdngesture", false),
             swipeSessions = prefs.getBoolean(PreferenceConstants.SWIPE_SESSIONS, false),
             volumefont = prefs.getBoolean("volumefont", true),
+            volumeTmuxPanes = prefs.getBoolean(
+                PreferenceConstants.VOLUME_TMUX_PANES,
+                PreferenceConstants.VOLUME_TMUX_PANES_DEFAULT,
+            ),
             keepalive = prefs.getBoolean("keepalive", true),
             alwaysvisible = prefs.getBoolean("alwaysvisible", false),
             shiftfkeys = prefs.getBoolean("shiftfkeys", false),
@@ -332,6 +337,10 @@ class SettingsViewModel @Inject constructor(
 
     fun updateVolumeFont(value: Boolean) {
         updateBooleanPref(PreferenceConstants.VOLUME_FONT, value) { copy(volumefont = value) }
+    }
+
+    fun updateVolumeTmuxPanes(value: Boolean) {
+        updateBooleanPref(PreferenceConstants.VOLUME_TMUX_PANES, value) { copy(volumeTmuxPanes = value) }
     }
 
     fun updateAlwaysVisible(value: Boolean) {
