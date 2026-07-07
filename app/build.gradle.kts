@@ -1,5 +1,8 @@
 import io.github.reactivecircus.appversioning.toSemVer
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.zip.ZipEntry
+import java.util.zip.ZipInputStream
+import java.util.zip.ZipOutputStream
 
 plugins {
     alias(libs.plugins.android.application)
@@ -395,8 +398,74 @@ tasks
         dependsOn(generateExportSchema)
     }
 
+// sshlib's bundled AuthAgentForwardThread cannot sign with ECDSA or Android
+// Keystore-backed keys during agent forwarding (upstream issue
+// connectbot#2212). Until sshlib ships a fix, strip that one class from the
+// jar and compile the patched copy kept under
+// app/src/main/java/com/trilead/ssh2/channel/ instead.
+val sshlibToPatch: Configuration by configurations.creating {
+    isTransitive = false
+    isCanBeConsumed = false
+}
+
+// The patched jar is added as a plain file dependency, which carries no
+// module metadata, so sshlib's transitive runtime dependencies (tink,
+// simplesocks, jbcrypt, kyber) are pulled in through this configuration to
+// keep their versions in lockstep with sshlib's POM.
+val sshlibDependencies: Configuration by configurations.creating {
+    isCanBeConsumed = false
+    // Plain file dependencies bypass Gradle's version conflict resolution, so
+    // drop the pieces the app already provides (kyber pulls in an older
+    // kotlin-stdlib that would otherwise trip checkDuplicateClasses).
+    exclude(group = "org.jetbrains.kotlin", module = "kotlin-stdlib")
+    exclude(group = "org.jetbrains", module = "annotations")
+}
+
+abstract class PatchSshlibJarTask : DefaultTask() {
+    @get:InputFiles
+    abstract val inputJar: ConfigurableFileCollection
+
+    @get:Input
+    abstract val strippedEntries: ListProperty<String>
+
+    @get:OutputFile
+    abstract val outputJar: RegularFileProperty
+
+    @TaskAction
+    fun patch() {
+        val source = inputJar.singleFile
+        val remaining = strippedEntries.get().toMutableSet()
+        ZipInputStream(source.inputStream().buffered()).use { input ->
+            ZipOutputStream(outputJar.get().asFile.outputStream().buffered()).use { output ->
+                var entry = input.nextEntry
+                while (entry != null) {
+                    if (!remaining.remove(entry.name)) {
+                        output.putNextEntry(ZipEntry(entry.name))
+                        input.copyTo(output)
+                        output.closeEntry()
+                    }
+                    entry = input.nextEntry
+                }
+            }
+        }
+        check(remaining.isEmpty()) {
+            "Entries $remaining not found in ${source.name}; the vendored patched " +
+                "copies under app/src/main/java/com/trilead/ may be obsolete."
+        }
+    }
+}
+
+val patchSshlibJar = tasks.register<PatchSshlibJarTask>("patchSshlibJar") {
+    inputJar.setFrom(sshlibToPatch)
+    strippedEntries.set(listOf("com/trilead/ssh2/channel/AuthAgentForwardThread.class"))
+    outputJar.set(layout.buildDirectory.file("patched-sshlib/sshlib-patched.jar"))
+}
+
 dependencies {
-    implementation(libs.sshlib)
+    sshlibToPatch(libs.sshlib)
+    sshlibDependencies(libs.sshlib)
+    implementation(files(patchSshlibJar.flatMap { it.outputJar }))
+    implementation(sshlibDependencies.incoming.files.filter { !it.name.startsWith("sshlib-") })
     implementation(libs.termlib)
     implementation(libs.androidx.media3.common.ktx)
     implementation(libs.androidx.navigation.testing)
