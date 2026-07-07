@@ -87,9 +87,7 @@ class HostRepository @Inject constructor(
      * @return List of all hosts
      */
     suspend fun getHosts(sortedByColor: Boolean = false): List<Host> = if (sortedByColor) {
-        // For now, sort by color in memory
-        // TODO: Add a proper DAO query for this
-        hostDao.getAll().sortedBy { it.color }
+        hostDao.getAllSortedByColor()
     } else {
         hostDao.getAll()
     }
@@ -399,27 +397,20 @@ class HostRepository @Inject constructor(
      */
     suspend fun findHost(selection: Map<String, String>): Host? {
         // Try to find by nickname first (most specific)
-        val nickname = selection["nickname"]
-        if (nickname != null) {
-            val allHosts = hostDao.getAll()
-            allHosts.find { it.nickname == nickname }?.let { return it }
+        selection["nickname"]?.let { nickname ->
+            hostDao.findByNickname(nickname)?.let { return it }
         }
 
         // Fall back to finding by protocol, username, hostname, port
         val protocol = selection["protocol"]
         val hostname = selection["hostname"]
-        val username = selection["username"]
-        val portStr = selection["port"]
-        val port = portStr?.toIntOrNull()
-
         if (protocol != null && hostname != null) {
-            val allHosts = hostDao.getAll()
-            allHosts.find { host ->
-                host.protocol == protocol &&
-                    host.hostname == hostname &&
-                    (username == null || host.username == username) &&
-                    (port == null || host.port == port)
-            }?.let { return it }
+            return hostDao.findByAttributes(
+                protocol = protocol,
+                hostname = hostname,
+                username = selection["username"],
+                port = selection["port"]?.toIntOrNull(),
+            )
         }
 
         return null

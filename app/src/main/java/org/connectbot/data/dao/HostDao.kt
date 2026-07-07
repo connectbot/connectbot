@@ -94,6 +94,32 @@ interface HostDao {
     suspend fun deleteById(hostId: Long)
 
     /**
+     * Find a host by its nickname.
+     */
+    @Query("SELECT * FROM hosts WHERE nickname = :nickname ORDER BY nickname ASC LIMIT 1")
+    suspend fun findByNickname(nickname: String): Host?
+
+    /**
+     * Find a host by connection attributes. Username and port are optional
+     * criteria; pass null to match any value.
+     */
+    @Query(
+        """
+        SELECT * FROM hosts
+        WHERE protocol = :protocol AND hostname = :hostname
+          AND (:username IS NULL OR username = :username)
+          AND (:port IS NULL OR port = :port)
+        ORDER BY nickname ASC LIMIT 1
+    """,
+    )
+    suspend fun findByAttributes(
+        protocol: String,
+        hostname: String,
+        username: String?,
+        port: Int?,
+    ): Host?
+
+    /**
      * Find host associated with a known host entry.
      */
     @Query(
