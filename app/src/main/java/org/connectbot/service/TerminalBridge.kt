@@ -253,8 +253,6 @@ class TerminalBridge {
     @Deprecated("Use fontSizeFlow instead")
     private val fontSizeChangedListeners: MutableList<FontSizeChangedListener>
 
-    private val localOutput: MutableList<String>
-
     /**
      * Flag indicating if we should perform a full-screen redraw during our next
      * rendering pass.
@@ -287,8 +285,6 @@ class TerminalBridge {
         defaultPaint.isAntiAlias = true
         defaultPaint.typeface = Typeface.MONOSPACE
         defaultPaint.isFakeBoldText = true // more readable?
-
-        localOutput = mutableListOf()
 
         fontSizeChangedListeners = mutableListOf()
 
@@ -621,19 +617,13 @@ class TerminalBridge {
             )
         }
 
-        synchronized(localOutput) {
-            for (line in output.split("\n".toRegex())) {
-                var processedLine = line
-                if (processedLine.isNotEmpty() && processedLine[processedLine.length - 1] == '\r') {
-                    processedLine = processedLine.substring(0, processedLine.length - 1)
-                }
-
-                val s = processedLine + "\r\n"
-
-                localOutput.add(s)
-
-                terminalEmulator.writeInput(s.encodeToByteArray())
+        for (line in output.split("\n".toRegex())) {
+            var processedLine = line
+            if (processedLine.isNotEmpty() && processedLine[processedLine.length - 1] == '\r') {
+                processedLine = processedLine.substring(0, processedLine.length - 1)
             }
+
+            terminalEmulator.writeInput((processedLine + "\r\n").encodeToByteArray())
         }
     }
 
@@ -649,6 +639,15 @@ class TerminalBridge {
         transportOperations.trySend(
             TransportOperation.WriteData(string.toByteArray(charset(encoding))),
         )
+    }
+
+    /**
+     * Reply to a received ENQ (0x05) control code with this terminal's
+     * answerback string. VT terminals identify themselves this way; we answer
+     * with the emulation (TERM) name, matching classic ConnectBot behavior.
+     */
+    fun sendAnswerback() {
+        injectString(emulation)
     }
 
     /**
@@ -695,19 +694,9 @@ class TerminalBridge {
         connecting = false
         reconnectAttemptCounter.set(0)
 
-        // We no longer need our local output.
-        localOutput.clear()
-
-        // previously tried vt100 and xterm for emulation modes
-        // "screen" works the best for color and escape codes
-        // TODO(Terminal): send TERM variable in response to VT control code ENQ
-//        (buffer as vt320).setAnswerBack(emulation)
-
-        // TODO(Terminal): set whether backspace is del (for local echo?)
-//        if (HostConstants.DELKEY_BACKSPACE == host.delKey)
-//            (buffer as vt320).setBackspace(vt320.DELETE_IS_BACKSPACE)
-//        else
-//            (buffer as vt320).setBackspace(vt320.DELETE_IS_DEL)
+        // ENQ answerback is handled by Relay (which replies with the emulation
+        // name), and DEL-vs-backspace is handled by termlib's KeyboardHandler
+        // via delKeyModeFlow.
 
         if (isSessionOpen) {
             // create thread to relay incoming connection data to buffer
@@ -884,90 +873,12 @@ class TerminalBridge {
 
         forcedSize = isForced
 
-//        // refresh any bitmap with new font size
-//        parent?.let { parentChanged(it) }
-
         for (ofscl in fontSizeChangedListeners) {
             ofscl.onFontSizeChanged(sizeSp)
         }
         // Note: Font size is now stored in profiles, not hosts.
         // Runtime font size changes are session-only and not persisted.
     }
-
-//    /**
-//     * Something changed in our parent [TerminalView], maybe it's a new
-//     * parent, or maybe it's an updated font size. We should recalculate
-//     * terminal size information and request a PTY resize.
-//     */
-//    @Synchronized
-//    fun parentChanged(parent: TerminalView) {
-//        if (!manager.isResizeAllowed()) {
-//            Timber.d("Resize is not allowed now")
-//            return
-//        }
-//
-//        this.parent = parent
-//        val width = parent.width
-//        val height = parent.height
-//
-//        // Something has gone wrong with our layout; we're 0 width or height!
-//        if (width <= 0 || height <= 0)
-//            return
-//
-//        val clipboard = parent.context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-//        keyListener.setClipboardManager(clipboard)
-//
-//        if (!forcedSize) {
-//            // recalculate buffer size
-//            val newColumns: Int
-//            val newRows: Int
-//
-//            newColumns = width / charWidth
-//            newRows = height / charHeight
-//
-//            columns = newColumns
-//            rows = newRows
-//            refreshOverlayFontSize()
-//        }
-//
-//        // clear out any old buffer information
-//        defaultPaint.color = android.graphics.Color.BLACK
-//        canvas.drawPaint(defaultPaint)
-//
-//        // Stroke the border of the terminal if the size is being forced;
-//        if (forcedSize) {
-//            val borderX = (columns * charWidth) + 1
-//            val borderY = (rows * charHeight) + 1
-//
-//            defaultPaint.color = android.graphics.Color.GRAY
-//            defaultPaint.strokeWidth = 0.0f
-//            if (width >= borderX)
-//                canvas.drawLine(borderX.toFloat(), 0f, borderX.toFloat(), (borderY + 1).toFloat(), defaultPaint)
-//            if (height >= borderY)
-//                canvas.drawLine(0f, borderY.toFloat(), (borderX + 1).toFloat(), borderY.toFloat(), defaultPaint)
-//        }
-//
-//        try {
-//            transport?.setDimensions(columns, rows, width, height)
-//        } catch (e: Exception) {
-//            Timber.e(e, "Problem while trying to resize screen or PTY")
-//        }
-//
-//        // redraw local output if we don't have a session to receive our resize request
-//        if (transport == null) {
-//            // TODO(Terminal): write local output directly to display
-// //            synchronized(localOutput) {
-// //                (buffer as vt320).reset()
-// //
-// //                for (line in localOutput)
-// //                    (buffer as vt320).putString(line)
-// //            }
-//        }
-//
-//        parent.notifyUser(String.format("%d x %d", columns, rows))
-//
-//        Timber.i(String.format("parentChanged() now width=%d, height=%d", columns, rows))
-//    }
 
     /**
      * Clean up resources when bridge is being destroyed.
