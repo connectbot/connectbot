@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,9 @@ class Relay(
     private val transport: AbsTransport,
     private val dispatchers: CoroutineDispatchers,
     encoding: String,
+    private val writeToTerminal: (data: ByteArray, offset: Int, length: Int) -> Unit = { data, offset, length ->
+        bridge.terminalEmulator.writeInput(data, offset, length)
+    },
 ) {
 
     private var currentCharset: Charset? = null
@@ -134,7 +137,8 @@ class Relay(
                     destBuffer.flip()
 
                     if (destBuffer.hasRemaining()) {
-                        bridge.terminalEmulator.writeInput(destBuffer.array(), 0, destBuffer.limit())
+                        answerEnq(destBuffer.array(), destBuffer.limit())
+                        writeToTerminal(destBuffer.array(), 0, destBuffer.limit())
                     }
                     destBuffer.clear()
                     charBuffer.compact()
@@ -145,11 +149,7 @@ class Relay(
                                 val flushResult = encoder.flush(destBuffer)
                                 destBuffer.flip()
                                 if (destBuffer.hasRemaining()) {
-                                    bridge.terminalEmulator.writeInput(
-                                        destBuffer.array(),
-                                        0,
-                                        destBuffer.limit(),
-                                    )
+                                    writeToTerminal(destBuffer.array(), 0, destBuffer.limit())
                                 }
                                 destBuffer.clear()
 
@@ -176,10 +176,36 @@ class Relay(
         }
     }
 
+    /**
+     * VT terminals reply to the ENQ (0x05) control code with an answerback
+     * string. The emulator ignores ENQ, so detect it here and have the bridge
+     * send the answerback for each occurrence.
+     */
+    private fun answerEnq(data: ByteArray, length: Int) {
+        repeat(countEnqBytes(data, length)) {
+            bridge.sendAnswerback()
+        }
+    }
+
     companion object {
         private const val TAG = "CB.Relay"
         private const val BUFFER_SIZE = 4096
     }
+}
+
+private const val ENQ: Byte = 0x05
+
+/**
+ * Count ENQ (0x05) control codes in the first [length] bytes of [data]. The
+ * data is UTF-8 at this point, so a 0x05 byte can only be the ENQ character
+ * itself, never part of a multi-byte sequence.
+ */
+internal fun countEnqBytes(data: ByteArray, length: Int): Int {
+    var count = 0
+    for (i in 0 until length) {
+        if (data[i] == ENQ) count++
+    }
+    return count
 }
 
 internal fun ByteBuffer.advanceAfterRead(bytesRead: Int, requestedLength: Int): Boolean {
