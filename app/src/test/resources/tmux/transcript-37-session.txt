@@ -1,0 +1,26 @@
+%begin 1783398682 287 0
+%end 1783398682 287 0
+%session-changed $0 test
+%begin 1783398683 292 1
+@0:0:main:1:*
+%end 1783398683 292 1
+%begin 1783398683 293 1
+@0:%0:0:50:30:1
+@0:%1:1:49:30:0
+%end 1783398683 293 1
+%output %0 hello \033[31mred\033[0m café 🚀\007\015\012
+%begin 1783398684 295 1
+%end 1783398684 295 1
+%window-add @1
+%begin 1783398685 297 1
+%end 1783398685 297 1
+%window-renamed @1 renamed
+%begin 1783398685 299 1
+parse error: unknown command: this-is-not-a-command
+%error 1783398685 299 1
+%begin 1783398685 300 1
+%end 1783398685 300 1
+%unlinked-window-close @1
+%begin 1783398686 302 1
+%end 1783398686 302 1
+%exit
