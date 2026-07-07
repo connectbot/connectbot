@@ -139,6 +139,11 @@ class SSH :
         this.connection = connection
     }
 
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    internal fun setAuthenticatedForTesting(authenticated: Boolean) {
+        this.authenticated = authenticated
+    }
+
     private fun registerUserAuthBanner(connection: Connection, sourceName: String) {
         val callback = UserAuthBannerCallback { banner, languageTag ->
             handleAuthBanner(sourceName, banner, languageTag)
@@ -1196,6 +1201,27 @@ class SSH :
             throw IOException("Not authenticated")
         }
         return TrileadSftpChannel(SFTPv3Client(currentConnection))
+    }
+
+    override fun canOpenExecChannels(): Boolean = true
+
+    @Throws(IOException::class)
+    override fun openExecChannel(command: String, allocPty: Boolean, ptyTerm: String): ExecChannel {
+        val currentConnection = connection ?: throw IOException("Not connected")
+        if (!authenticated) {
+            throw IOException("Not authenticated")
+        }
+        val execSession = currentConnection.openSession()
+        try {
+            if (allocPty) {
+                execSession.requestPTY(ptyTerm, 0, 0, 0, 0, null)
+            }
+            execSession.execCommand(command)
+        } catch (e: IOException) {
+            execSession.close()
+            throw e
+        }
+        return TrileadExecChannel(execSession)
     }
 
     override fun getPortForwards(): List<PortForward> = portForwards
