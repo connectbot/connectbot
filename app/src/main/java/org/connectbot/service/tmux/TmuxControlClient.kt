@@ -123,12 +123,21 @@ class TmuxControlClient(
     private suspend fun readLoop() {
         try {
             val reader = channel.stdout.bufferedReader(Charsets.ISO_8859_1)
+            var seq = 0L
             while (true) {
                 val line = runInterruptible(ioDispatcher) { reader.readLine() } ?: break
                 when (val event = parser.feed(line)) {
-                    is TmuxParseEvent.Reply -> completeNextPending(event.value)
+                    is TmuxParseEvent.Reply -> completeNextPending(event.value.copy(seq = ++seq))
                     is TmuxParseEvent.Notification -> {
-                        val notification = event.value
+                        var notification = event.value
+                        seq++
+                        if (notification is TmuxNotification.Output) {
+                            notification = TmuxNotification.Output(
+                                notification.paneId,
+                                notification.bytes,
+                                seq,
+                            )
+                        }
                         if (notification is TmuxNotification.Exit) {
                             exitReason = notification.reason ?: ""
                         }

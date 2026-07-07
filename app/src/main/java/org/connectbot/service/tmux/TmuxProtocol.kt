@@ -26,14 +26,21 @@ import java.io.IOException
  * IDs keep tmux's prefixes: sessions are `$n`, windows `@n`, panes `%n`.
  */
 sealed interface TmuxNotification {
-    /** `%output %pane value` — new bytes from a pane (octal escapes decoded). */
-    class Output(val paneId: String, val bytes: ByteArray) : TmuxNotification {
+    /**
+     * `%output %pane value` — new bytes from a pane (octal escapes decoded).
+     *
+     * [seq] is the stream position stamped by [TmuxControlClient] (0 at the
+     * parser level). Comparing it against [TmuxReply.seq] of a `capture-pane`
+     * reply tells whether these bytes' effect is already part of the capture.
+     * It is transport metadata and excluded from equality.
+     */
+    class Output(val paneId: String, val bytes: ByteArray, val seq: Long = 0) : TmuxNotification {
         override fun equals(other: Any?): Boolean =
             other is Output && other.paneId == paneId && other.bytes.contentEquals(bytes)
 
         override fun hashCode(): Int = 31 * paneId.hashCode() + bytes.contentHashCode()
 
-        override fun toString(): String = "Output($paneId, ${bytes.size} bytes)"
+        override fun toString(): String = "Output($paneId, ${bytes.size} bytes, seq=$seq)"
     }
 
     /** `%window-add @window` — a window was linked into the attached session. */
@@ -124,6 +131,8 @@ data class TmuxReply(
     val number: Int,
     val ok: Boolean,
     val lines: List<String>,
+    /** Stream position stamped by [TmuxControlClient]; see [TmuxNotification.Output.seq]. */
+    val seq: Long = 0,
 ) {
     val text: String
         get() = lines.joinToString("\n")

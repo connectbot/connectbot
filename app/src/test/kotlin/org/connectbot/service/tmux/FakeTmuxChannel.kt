@@ -60,10 +60,21 @@ internal class FakeTmuxChannel : ExecChannel {
         sendRaw("%begin 1700000000 99 0\n%end 1700000000 99 0\n")
     }
 
+    private val prefixReplies = mutableMapOf<String, ArrayDeque<String>>()
+
     fun scriptReply(body: String, ok: Boolean = true) {
+        scriptedReplies.addLast(buildReply(body, ok))
+    }
+
+    /** Scripts a reply served to the next command starting with [prefix]. */
+    fun scriptReplyFor(prefix: String, body: String, ok: Boolean = true) {
+        prefixReplies.getOrPut(prefix) { ArrayDeque() }.addLast(buildReply(body, ok))
+    }
+
+    private fun buildReply(body: String, ok: Boolean): String {
         val n = nextReplyNumber++
         val terminator = if (ok) "%end" else "%error"
-        scriptedReplies.addLast("%begin 1700000000 $n 1\n$body$terminator 1700000000 $n 1\n")
+        return "%begin 1700000000 $n 1\n$body$terminator 1700000000 $n 1\n"
     }
 
     fun sendNotification(line: String) = sendRaw("$line\n")
@@ -72,9 +83,12 @@ internal class FakeTmuxChannel : ExecChannel {
 
     private fun onCommand(command: String) {
         synchronized(commandLog) { commandLog.add(command) }
-        val scripted = scriptedReplies.removeFirstOrNull()
+        val byPrefix = prefixReplies.entries
+            .firstOrNull { command.startsWith(it.key) }
+            ?.value?.removeFirstOrNull()
         val reply = when {
-            scripted != null -> scripted
+            byPrefix != null -> byPrefix
+            scriptedReplies.isNotEmpty() -> scriptedReplies.removeFirst()
             autoReply -> "%begin 1700000000 ${nextReplyNumber++} 1\n%end 1700000000 ${nextReplyNumber - 1} 1\n"
             else -> return
         }

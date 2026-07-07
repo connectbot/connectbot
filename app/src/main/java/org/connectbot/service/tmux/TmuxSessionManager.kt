@@ -22,9 +22,13 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runInterruptible
 import kotlinx.coroutines.sync.Mutex
@@ -66,8 +70,31 @@ class TmuxSessionManager(
     /** Invoked (off the main thread) whenever [currentTarget] changes; the bridge persists it. */
     var onTargetChanged: ((TmuxTarget?) -> Unit)? = null
 
-    /** Receives raw `%output` bytes per pane; set by the pane terminal registry. */
+    /** Extra tap on raw `%output` bytes (tests); rendering goes to [paneRegistry]. */
     var paneOutputSink: ((sessionId: String, paneId: String, bytes: ByteArray) -> Unit)? = null
+
+    /** Colors for newly created pane emulators; the bridge sets profile colors. */
+    @Volatile
+    var paneColors: TmuxPaneColors = TmuxPaneColors.DEFAULT
+
+    /** Emulator factory for pane terminals; tests inject a fake (termlib is JNI-only). */
+    @Volatile
+    var paneEmulatorFactory: TmuxPaneEmulatorFactory = TmuxPaneEmulatorFactory.REAL
+
+    /** Bell events from live panes: (sessionId, paneId). */
+    private val _bellEvents = MutableSharedFlow<Pair<String, String>>(extraBufferCapacity = 16)
+    val bellEvents: SharedFlow<Pair<String, String>> = _bellEvents.asSharedFlow()
+
+    /** Live pane emulators, LRU-capped; eviction stops the stream on >=3.2. */
+    val paneRegistry = TmuxPaneRegistry(
+        onEvicted = { terminal -> onPaneEvicted(terminal) },
+    )
+
+    /** All state mutations go through CAS: concurrent coroutines must not lose updates. */
+    private fun mutateState(transform: (TmuxHostState) -> TmuxHostState) = _state.update(transform)
+
+    private fun mutateSession(sessionId: String, transform: (TmuxSessionInfo) -> TmuxSessionInfo) =
+        _state.update { it.updateSession(sessionId, transform) }
 
     private val clients = java.util.concurrent.ConcurrentHashMap<String, TmuxControlClient>()
     private val clientJobs = java.util.concurrent.ConcurrentHashMap<String, List<Job>>()
@@ -111,9 +138,10 @@ class TmuxSessionManager(
                 entries
             }
             orphaned.values.forEach { runCatching { it.close() } }
-            _state.value = _state.value.copy(
-                sessions = _state.value.sessions.map { it.copy(attachState = TmuxAttachState.DETACHED) },
-            )
+            paneRegistry.clear()
+            mutateState { state ->
+                state.copy(sessions = state.sessions.map { it.copy(attachState = TmuxAttachState.DETACHED) })
+            }
         }
     }
 
@@ -129,36 +157,34 @@ class TmuxSessionManager(
         clients.clear()
         clientJobs.values.flatMap { it }.forEach { it.cancel() }
         clientJobs.clear()
+        paneRegistry.clear()
     }
 
     // ===== Probe & discovery =====
 
     private suspend fun probeAndDiscover() {
-        _state.value = _state.value.copy(availability = TmuxAvailability.PROBING)
+        mutateState { it.copy(availability = TmuxAvailability.PROBING) }
         val probe = runCatching { execRead(PROBE_COMMAND) }.getOrElse {
             Timber.d(it, "tmux probe failed")
-            _state.value = _state.value.copy(availability = TmuxAvailability.UNAVAILABLE)
+            mutateState { state -> state.copy(availability = TmuxAvailability.UNAVAILABLE) }
             return
         }
         val versionLine = probe.lineSequence().firstOrNull { it.isNotBlank() }?.trim()
         if (versionLine == null || versionLine == NO_TMUX_MARKER) {
-            _state.value = _state.value.copy(availability = TmuxAvailability.UNAVAILABLE)
+            mutateState { it.copy(availability = TmuxAvailability.UNAVAILABLE) }
             return
         }
         val version = TmuxVersion.parse(versionLine)
         if (version == null) {
             Timber.d("Unparseable tmux version: %s", versionLine)
-            _state.value = _state.value.copy(availability = TmuxAvailability.UNAVAILABLE)
+            mutateState { it.copy(availability = TmuxAvailability.UNAVAILABLE) }
             return
         }
         if (!version.isSupported) {
-            _state.value = _state.value.copy(
-                availability = TmuxAvailability.UNSUPPORTED_VERSION,
-                version = version,
-            )
+            mutateState { it.copy(availability = TmuxAvailability.UNSUPPORTED_VERSION, version = version) }
             return
         }
-        _state.value = _state.value.copy(version = version)
+        mutateState { it.copy(version = version) }
         refreshSessions()
     }
 
@@ -169,15 +195,17 @@ class TmuxSessionManager(
     suspend fun refreshSessions() {
         val listing = runCatching { execRead(LIST_SESSIONS_COMMAND) }.getOrElse {
             Timber.d(it, "tmux session discovery failed")
-            _state.value = _state.value.copy(availability = TmuxAvailability.UNAVAILABLE)
+            mutateState { state -> state.copy(availability = TmuxAvailability.UNAVAILABLE) }
             return
         }
         if (listing.lineSequence().firstOrNull()?.trim() == NO_SERVER_MARKER) {
-            _state.value = _state.value.copy(
-                availability = TmuxAvailability.READY,
-                sessions = emptyList(),
-                offerSession = true,
-            )
+            mutateState {
+                it.copy(
+                    availability = TmuxAvailability.READY,
+                    sessions = emptyList(),
+                    offerSession = true,
+                )
+            }
             return
         }
 
@@ -192,11 +220,13 @@ class TmuxSessionManager(
             }
             .toList()
 
-        _state.value = _state.value.copy(
-            availability = TmuxAvailability.READY,
-            sessions = discovered,
-            offerSession = discovered.isEmpty(),
-        )
+        mutateState {
+            it.copy(
+                availability = TmuxAvailability.READY,
+                sessions = discovered,
+                offerSession = discovered.isEmpty(),
+            )
+        }
 
         discovered
             .filter { it.attachState == TmuxAttachState.DETACHED && it.snapshot == null }
@@ -220,7 +250,7 @@ class TmuxSessionManager(
             execRead("tmux capture-pane -ep -t '$sessionId:' 2>/dev/null")
         }.getOrNull() ?: return
         if (text.isEmpty()) return
-        _state.value = _state.value.updateSession(sessionId) {
+        mutateSession(sessionId) {
             if (it.attachState == TmuxAttachState.DETACHED) it.copy(snapshot = text.lines()) else it
         }
     }
@@ -237,9 +267,7 @@ class TmuxSessionManager(
             if (clients.containsKey(sessionId)) return
         }
         val session = _state.value.session(sessionId) ?: throw IOException("unknown tmux session $sessionId")
-        _state.value = _state.value.updateSession(sessionId) {
-            it.copy(attachState = TmuxAttachState.ATTACHING)
-        }
+        mutateSession(sessionId) { it.copy(attachState = TmuxAttachState.ATTACHING) }
 
         val client = try {
             val channel = runInterruptible(ioDispatcher) {
@@ -247,9 +275,7 @@ class TmuxSessionManager(
             }
             TmuxControlClient(channel, scope, ioDispatcher)
         } catch (e: Exception) {
-            _state.value = _state.value.updateSession(sessionId) {
-                it.copy(attachState = TmuxAttachState.DETACHED)
-            }
+            mutateSession(sessionId) { it.copy(attachState = TmuxAttachState.DETACHED) }
             throw e
         }
 
@@ -272,9 +298,7 @@ class TmuxSessionManager(
             throw IOException("tmux attach to $sessionId failed: ${e.message}", e)
         }
 
-        _state.value = _state.value.updateSession(sessionId) {
-            it.copy(attachState = TmuxAttachState.ATTACHED, snapshot = null)
-        }
+        mutateSession(sessionId) { it.copy(attachState = TmuxAttachState.ATTACHED, snapshot = null) }
 
         val landed = resolveTarget(sessionId, target)
         if (landed != null) selectTarget(landed)
@@ -300,9 +324,8 @@ class TmuxSessionManager(
         }
         runCatching { client.close() }
         jobs.forEach { it.cancel() }
-        _state.value = _state.value.updateSession(sessionId) {
-            it.copy(attachState = TmuxAttachState.DETACHED)
-        }
+        paneRegistry.removeSession(sessionId)
+        mutateSession(sessionId) { it.copy(attachState = TmuxAttachState.DETACHED) }
         if (transportUp) {
             scope.launch(ioDispatcher) { fetchSnapshot(sessionId) }
         }
@@ -319,16 +342,16 @@ class TmuxSessionManager(
             when (reason) {
                 // Session or server was killed: it no longer exists.
                 "killed", "server exited" -> {
-                    _state.value = _state.value.copy(
-                        sessions = _state.value.sessions.filterNot { it.id == sessionId },
-                    )
+                    paneRegistry.removeSession(sessionId)
+                    mutateState { state ->
+                        state.copy(sessions = state.sessions.filterNot { it.id == sessionId })
+                    }
                     if (transportUp) refreshSessions()
                 }
 
                 else -> {
-                    _state.value = _state.value.updateSession(sessionId) {
-                        it.copy(attachState = TmuxAttachState.DETACHED)
-                    }
+                    paneRegistry.removeSession(sessionId)
+                    mutateSession(sessionId) { it.copy(attachState = TmuxAttachState.DETACHED) }
                     if (transportUp) scope.launch(ioDispatcher) { fetchSnapshot(sessionId) }
                 }
             }
@@ -365,7 +388,7 @@ class TmuxSessionManager(
             )
         }.sortedBy { it.index }
 
-        _state.value = _state.value.updateSession(sessionId) { session ->
+        mutateSession(sessionId) { session ->
             session.copy(
                 windows = windows,
                 activeWindowId = windows.find { it.active }?.id ?: windows.firstOrNull()?.id,
@@ -431,22 +454,84 @@ class TmuxSessionManager(
 
     private suspend fun handleNotification(sessionId: String, notification: TmuxNotification) {
         when (notification) {
-            is TmuxNotification.Output ->
+            is TmuxNotification.Output -> {
+                paneRegistry.route(sessionId, notification)
                 paneOutputSink?.invoke(sessionId, notification.paneId, notification.bytes)
+            }
 
             is TmuxNotification.SessionsChanged,
             is TmuxNotification.UnlinkedWindowAdd,
             -> if (transportUp) refreshSessions()
 
             is TmuxNotification.WindowAdd -> {
-                _state.value = reduceSession(_state.value, sessionId, notification)
+                mutateState { reduceSession(it, sessionId, notification) }
                 refreshWindows(sessionId)
             }
 
-            else -> {
-                _state.value = reduceSession(_state.value, sessionId, notification)
+            is TmuxNotification.LayoutChange -> {
+                mutateState { reduceSession(it, sessionId, notification) }
+                resizeLivePanes(sessionId, notification.windowId)
                 syncTargetWithState(sessionId, notification)
             }
+
+            else -> {
+                mutateState { reduceSession(it, sessionId, notification) }
+                syncTargetWithState(sessionId, notification)
+            }
+        }
+    }
+
+    /** Pushes server-side pane sizes into any live emulators of a window. */
+    private fun resizeLivePanes(sessionId: String, windowId: String) {
+        val window = _state.value.session(sessionId)?.windows?.find { it.id == windowId } ?: return
+        window.panes.forEach { pane ->
+            paneRegistry.get(sessionId, pane.id)?.resize(rows = pane.height, cols = pane.width)
+        }
+    }
+
+    // ===== Pane terminals =====
+
+    /**
+     * Returns the live terminal for [target]'s pane, creating and
+     * backfilling one if needed (the session must be attached). On tmux
+     * >=3.2 re-enables the pane's output stream in case a prior eviction
+     * turned it off.
+     */
+    suspend fun acquirePaneTerminal(target: TmuxTarget): TmuxPaneTerminal? {
+        val client = clients[target.sessionId] ?: return null
+        val pane = _state.value.session(target.sessionId)
+            ?.windows?.find { it.id == target.windowId }
+            ?.panes?.find { it.id == target.paneId }
+            ?: return null
+
+        val (terminal, created) = paneRegistry.acquire(target.sessionId, target.paneId) {
+            TmuxPaneTerminal(
+                sessionId = target.sessionId,
+                paneId = target.paneId,
+                initialRows = pane.height,
+                initialCols = pane.width,
+                colors = paneColors,
+                scope = scope,
+                sendCommand = { command -> client.command(command) },
+                onBell = { sessionId, paneId -> _bellEvents.tryEmit(sessionId to paneId) },
+                emulatorFactory = paneEmulatorFactory,
+            )
+        }
+        if (created) {
+            if (_state.value.version?.supportsFlowControl == true) {
+                runCatching { client.command("refresh-client -A '${target.paneId}:on'") }
+            }
+            terminal.backfill()
+        }
+        return terminal
+    }
+
+    /** Stops an evicted pane's output stream server-side when supported. */
+    private fun onPaneEvicted(terminal: TmuxPaneTerminal) {
+        if (_state.value.version?.supportsFlowControl != true) return
+        val client = clients[terminal.sessionId] ?: return
+        scope.launch {
+            runCatching { client.command("refresh-client -A '${terminal.paneId}:off'") }
         }
     }
 

@@ -248,6 +248,44 @@ class TmuxSessionManagerTest {
     }
 
     @Test
+    fun `acquire pane terminal backfills and routes live output`() = runBlocking<Unit> {
+        val fakes = mutableListOf<FakeEmulator>()
+        manager.paneEmulatorFactory = TmuxPaneEmulatorFactory { _, _, _, _, _ ->
+            FakeEmulator().also { fakes.add(it) }
+        }
+        connectAndAwaitReady()
+        factory.onControlChannel = { channel ->
+            channel.scriptReply("@0\t0\tshell\t1\t*\n@1\t1\tlogs\t0\t-\n")
+            channel.scriptReply(
+                "@0\t%0\t0\t100\t30\t0\t0\t1\n" +
+                    "@0\t%1\t1\t100\t29\t0\t31\t0\n" +
+                    "@1\t%2\t0\t100\t60\t0\t0\t1\n",
+            )
+            // Keyed by prefix: select-window/select-pane interleave with these.
+            channel.scriptReplyFor("capture-pane", "old prompt \$\n")
+            channel.scriptReplyFor("display-message", "0\t1\n")
+        }
+        withTimeout(5_000) { manager.attach("\$0") }
+
+        val terminal = withTimeout(5_000) {
+            manager.acquirePaneTerminal(TmuxTarget("\$0", "@0", "%0", "main"))
+        }
+        assertThat(terminal).isNotNull
+        val emulator = fakes.single()
+        assertThat(emulator.text).contains("old prompt \$")
+
+        factory.controlChannels.single().sendNotification("%output %0 fresh\\015\\012")
+        withTimeout(5_000) {
+            while (!emulator.text.contains("fresh")) kotlinx.coroutines.delay(10)
+        }
+
+        // Second acquire returns the same live terminal.
+        val again = manager.acquirePaneTerminal(TmuxTarget("\$0", "@0", "%0", "main"))
+        assertThat(again).isSameAs(terminal)
+        assertThat(manager.paneRegistry.liveCount()).isEqualTo(1)
+    }
+
+    @Test
     fun `shell quoting escapes single quotes in names`() {
         assertThat(TmuxSessionManager.escapeSingleQuotes("it's"))
             .isEqualTo("it'\\''s")

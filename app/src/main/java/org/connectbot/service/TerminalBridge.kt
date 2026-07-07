@@ -54,6 +54,7 @@ import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.TerminalEmulatorFactory
 import org.connectbot.terminal.UrlScanScope
+import org.connectbot.service.tmux.TmuxPaneColors
 import org.connectbot.service.tmux.TmuxSessionManager
 import org.connectbot.service.tmux.TmuxTarget
 import org.connectbot.transport.AbsTransport
@@ -831,6 +832,13 @@ class TerminalBridge {
                 }
             }
             tmux = created
+        }
+        if (fullColorPalette.size >= 16) {
+            sessionManager.paneColors = TmuxPaneColors(
+                defaultForeground = Color(fullColorPalette[defaultFg]),
+                defaultBackground = Color(fullColorPalette[defaultBg]),
+                ansiColors = fullColorPalette.sliceArray(0 until 16),
+            )
         }
         sessionManager.onTransportConnected(TmuxTarget.decode(host.tmuxLastTarget))
     }
