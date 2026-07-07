@@ -687,16 +687,31 @@ class SSH :
 
         for (portForward in portForwards) {
             try {
-                enablePortForward(portForward)
-                bridge?.outputLine(manager?.res?.getString(R.string.terminal_enable_portfoward, portForward.getDescription()))
+                if (enablePortForward(portForward)) {
+                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_enable_portfoward, portForward.getDescription()))
+                } else {
+                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_enable_portfoward_failed, portForward.getDescription()))
+                }
             } catch (e: Exception) {
                 Timber.e(e, "Error setting up port forward during connect")
+                bridge?.outputLine(manager?.res?.getString(R.string.terminal_enable_portfoward_failed, portForward.getDescription()))
             }
         }
 
         val currentHost = host ?: return
         if (!currentHost.wantSession) {
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_no_session))
+            // Without a shell the terminal would otherwise stay blank; make
+            // the connection state and the reason for it visible (#1725).
+            bridge?.outputLine(
+                manager?.res?.getString(
+                    R.string.terminal_portforward_only,
+                    manager?.res?.getString(R.string.hostpref_wantsession_title),
+                ),
+            )
+            if (portForwards.isEmpty()) {
+                bridge?.outputLine(manager?.res?.getString(R.string.terminal_no_portforwards))
+            }
             bridge?.onConnected()
             return
         }
