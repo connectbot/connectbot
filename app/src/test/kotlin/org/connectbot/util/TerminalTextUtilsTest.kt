@@ -21,6 +21,9 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class TerminalTextUtilsTest {
+    // Real terminal lines are padded to the full column width with spaces.
+    private fun line(text: String, softWrapped: Boolean = false, cols: Int = 20) = TerminalSessionLine(text.padEnd(cols), softWrapped)
+
     @Test
     fun normalizeLineBreaks_convertsLineFeedsToCarriageReturns() {
         assertEquals(
@@ -57,5 +60,55 @@ class TerminalTextUtilsTest {
     fun normalizeLineBreaks_leavesTextWithoutLineBreaksUntouched() {
         assertEquals("ls -la", TerminalTextUtils.normalizeLineBreaks("ls -la"))
         assertEquals("", TerminalTextUtils.normalizeLineBreaks(""))
+    }
+
+    @Test
+    fun buildSessionText_joinsLinesWithNewlinesAndTrimsCellPadding() {
+        assertEquals(
+            "$ echo hello\nhello\n$",
+            TerminalTextUtils.buildSessionText(
+                listOf(line("$ echo hello"), line("hello"), line("$")),
+            ),
+        )
+    }
+
+    @Test
+    fun buildSessionText_joinsSoftWrappedLinesWithoutLineBreak() {
+        assertEquals(
+            "a-very-long-command-line\ndone",
+            TerminalTextUtils.buildSessionText(
+                listOf(
+                    line("a-very-long-", softWrapped = true, cols = 12),
+                    line("command-line", cols = 12),
+                    line("done", cols = 12),
+                ),
+            ),
+        )
+    }
+
+    @Test
+    fun buildSessionText_dropsTrailingBlankScreenLines() {
+        assertEquals(
+            "$ uptime\n12:00 up 3 days",
+            TerminalTextUtils.buildSessionText(
+                listOf(line("$ uptime"), line("12:00 up 3 days"), line(""), line("")),
+            ),
+        )
+    }
+
+    @Test
+    fun buildSessionText_preservesBlankLinesBetweenContent() {
+        assertEquals(
+            "first\n\nsecond",
+            TerminalTextUtils.buildSessionText(
+                listOf(line("first"), line(""), line("second")),
+            ),
+        )
+    }
+
+    @Test
+    fun buildSessionText_returnsEmptyStringForBlankSession() {
+        assertEquals("", TerminalTextUtils.buildSessionText(emptyList()))
+        assertEquals("", TerminalTextUtils.buildSessionText(listOf(line(""), line(""))))
     }
 }

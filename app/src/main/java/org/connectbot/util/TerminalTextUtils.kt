@@ -17,6 +17,12 @@
 
 package org.connectbot.util
 
+/**
+ * A single visual line of a terminal session: its text and whether it soft-wraps
+ * into the following line.
+ */
+data class TerminalSessionLine(val text: String, val softWrapped: Boolean)
+
 object TerminalTextUtils {
     /**
      * Normalizes line breaks in text that is sent to the terminal as if the
@@ -31,4 +37,27 @@ object TerminalTextUtils {
      * @return The text with CRLF and LF line breaks replaced by CR.
      */
     fun normalizeLineBreaks(text: String): String = text.replace("\r\n", "\r").replace('\n', '\r')
+
+    /**
+     * Builds a plain-text transcript of a terminal session from its lines,
+     * in order from the oldest scrollback line to the bottom of the screen.
+     *
+     * Trailing whitespace on each visual line is dropped, soft-wrapped lines
+     * are joined with their continuation instead of a line break (matching
+     * how the terminal renders and how selection copy behaves), and blank
+     * lines at the end (the unused screen area below the output) are removed.
+     *
+     * @param lines The session's lines, oldest first.
+     * @return The session transcript as a single string.
+     */
+    fun buildSessionText(lines: List<TerminalSessionLine>): String {
+        val builder = StringBuilder()
+        for (line in lines) {
+            builder.append(line.text.trimEnd())
+            if (!line.softWrapped) {
+                builder.append('\n')
+            }
+        }
+        return builder.toString().trimEnd('\n')
+    }
 }

@@ -631,6 +631,10 @@
 	<string name="console_menu_resize">"Force size"</string>
 	<!-- Button that brings up the list of URLs on the current screen -->
 	<string name="console_menu_urlscan">"URL scan"</string>
+	<!-- Button in the console menu that copies the entire session (including scrollback) to the clipboard. -->
+	<string name="console_menu_copy_session">Copy session</string>
+	<!-- Confirmation shown in a snackbar after the entire session was copied to the clipboard. -->
+	<string name="console_session_copied">Session copied to clipboard</string>
 	<!-- Error shown in a snackbar when the user taps a URL but no app on the device can handle it -->
 	<string name="console_url_no_handler">No app available to open this URL</string>
 	<!-- Error shown in a snackbar when the URL type is not supported -->
