@@ -47,4 +47,5 @@
 
 	<!-- Default filename for exported hosts JSON file -->
 	<string name="export_hosts_filename">connectbot_hosts.json</string>
+	<string name="export_hosts_encrypted_filename">connectbot_hosts.encrypted.json</string>
 </resources>

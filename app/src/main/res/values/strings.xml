@@ -1411,6 +1411,8 @@
 	<!-- Host export/import menu items -->
 	<!-- Menu item to export all hosts to a JSON file -->
 	<string name="list_menu_export_hosts">Export Hosts</string>
+	<!-- Menu item to export all hosts to a passphrase-encrypted JSON file -->
+	<string name="list_menu_export_hosts_encrypted">Export Hosts (Encrypted)</string>
 	<!-- Menu item to import hosts from a JSON file -->
 	<string name="list_menu_import_hosts">Import Hosts</string>
 
@@ -1425,6 +1427,28 @@
 	<string name="import_hosts_failed">Failed to import hosts: %s</string>
 	<!-- Title for the export hosts file picker dialog -->
 	<string name="export_hosts_title">Export Hosts</string>
+
+	<!-- Encrypted host export/import dialogs -->
+	<!-- Title of the dialog asking for a passphrase to encrypt the export with -->
+	<string name="export_passphrase_title">Set Export Passphrase</string>
+	<!-- Explanation shown in the export passphrase dialog -->
+	<string name="export_passphrase_message">The exported file will be encrypted with this passphrase. You will need it to import the hosts later.</string>
+	<!-- Label for the passphrase input field -->
+	<string name="export_passphrase_label">Passphrase</string>
+	<!-- Label for the passphrase confirmation input field -->
+	<string name="export_passphrase_confirm_label">Confirm passphrase</string>
+	<!-- Error shown when the two passphrase fields do not match -->
+	<string name="export_passphrase_mismatch">Passphrases do not match</string>
+	<!-- Button that confirms the passphrase and starts the encrypted export -->
+	<string name="export_passphrase_confirm_button">Export</string>
+	<!-- Title of the dialog asking for the passphrase of an encrypted import file -->
+	<string name="import_passphrase_title">Encrypted Export File</string>
+	<!-- Explanation shown in the import passphrase dialog -->
+	<string name="import_passphrase_message">This file is encrypted. Enter the passphrase that was used when it was exported.</string>
+	<!-- Error shown when the entered import passphrase is wrong -->
+	<string name="import_passphrase_wrong">Wrong passphrase</string>
+	<!-- Button that confirms the passphrase and starts the import -->
+	<string name="import_passphrase_confirm_button">Import</string>
 
 	<!-- Shortcut customization dialog strings -->
 	<!-- Dialog title when customizing a shortcut icon -->
