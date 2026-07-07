@@ -254,9 +254,10 @@ object ColorSchemePresets {
 
     /**
      * E-Ink - High-contrast grayscale for e-ink displays.
-     * Black text on a white background with the 16 ANSI colors folded into
-     * maximally-separated gray levels so colored output stays legible on
-     * 16-level grayscale panels.
+     * Black text on a white background. Each ANSI hue gets its own gray
+     * level dark enough to stay legible on white, so colored output remains
+     * distinguishable on 16-level grayscale panels; bright variants share
+     * their base hue's gray, and bright black stays light for dim text.
      */
     val eink = PresetScheme(
         name = "E-Ink",
@@ -265,20 +266,20 @@ object ColorSchemePresets {
         defaultBg = 15,
         colors = intArrayOf(
             0xff000000.toInt(), // black
-            0xff000000.toInt(), // red
-            0xff000000.toInt(), // green
-            0xff555555.toInt(), // yellow
-            0xff000000.toInt(), // blue
+            0xff444444.toInt(), // red
+            0xff222222.toInt(), // green
+            0xff666666.toInt(), // yellow
+            0xff333333.toInt(), // blue
             0xff555555.toInt(), // purple
-            0xff555555.toInt(), // cyan
+            0xff777777.toInt(), // cyan
             0xffffffff.toInt(), // white
-            0xff555555.toInt(), // bright black
-            0xff555555.toInt(), // bright red
-            0xff555555.toInt(), // bright green
-            0xff999999.toInt(), // bright yellow
-            0xff555555.toInt(), // bright blue
-            0xff999999.toInt(), // bright purple
-            0xff999999.toInt(), // bright cyan
+            0xff999999.toInt(), // bright black
+            0xff444444.toInt(), // bright red
+            0xff222222.toInt(), // bright green
+            0xff666666.toInt(), // bright yellow
+            0xff333333.toInt(), // bright blue
+            0xff555555.toInt(), // bright purple
+            0xff777777.toInt(), // bright cyan
             0xffffffff.toInt(), // bright white
         ),
     )

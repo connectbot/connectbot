@@ -130,6 +130,12 @@ class ColorSchemePresetsTest {
     }
 
     @Test
+    fun eink_NormalHuesAreDistinct() {
+        val normals = ColorSchemePresets.eink.colors.sliceArray(0..6).toList()
+        assertEquals("Normal ANSI hues must map to unique grays", normals.size, normals.toSet().size)
+    }
+
+    @Test
     fun builtInSchemes_Contains9Schemes() {
         assertEquals("Should have 9 built-in schemes", 9, ColorSchemePresets.builtInSchemes.size)
     }

@@ -41,7 +41,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -52,6 +51,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imeAnimationTarget
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.union
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -102,6 +102,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.KeyEventType
@@ -147,7 +148,21 @@ import org.connectbot.service.PromptRequest
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.tmux.TmuxAttachState
 import org.connectbot.service.tmux.TmuxPaneTerminal
+import org.connectbot.terminal.ProgressState
+import org.connectbot.terminal.SelectionController
+import org.connectbot.terminal.Terminal
+import org.connectbot.terminal.VTermKey
+import org.connectbot.ui.LoadingScreen
+import org.connectbot.ui.LocalEinkMode
+import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.common.parseHostColor
+import org.connectbot.ui.components.AuthBannerDialog
+import org.connectbot.ui.components.FloatingTextInputDialog
+import org.connectbot.ui.components.InlinePrompt
+import org.connectbot.ui.components.ResizeDialog
+import org.connectbot.ui.components.TERMINAL_KEYBOARD_HEIGHT_DP
+import org.connectbot.ui.components.TerminalKeyboard
+import org.connectbot.ui.components.UrlScanDialog
 import org.connectbot.ui.screens.console.tmux.PaneDotsIndicator
 import org.connectbot.ui.screens.console.tmux.TmuxActionMenuDialog
 import org.connectbot.ui.screens.console.tmux.TmuxCommandPaletteSheet
@@ -158,20 +173,6 @@ import org.connectbot.ui.screens.console.tmux.TmuxRenameDialog
 import org.connectbot.ui.screens.console.tmux.TmuxSnapshotPage
 import org.connectbot.ui.screens.console.tmux.TmuxWindowStrip
 import org.connectbot.ui.screens.console.tmux.tmuxSwipeNavigation
-import org.connectbot.terminal.ProgressState
-import org.connectbot.terminal.SelectionController
-import org.connectbot.terminal.Terminal
-import org.connectbot.terminal.VTermKey
-import org.connectbot.ui.LoadingScreen
-import org.connectbot.ui.LocalEinkMode
-import org.connectbot.ui.LocalTerminalManager
-import org.connectbot.ui.components.AuthBannerDialog
-import org.connectbot.ui.components.FloatingTextInputDialog
-import org.connectbot.ui.components.InlinePrompt
-import org.connectbot.ui.components.ResizeDialog
-import org.connectbot.ui.components.TERMINAL_KEYBOARD_HEIGHT_DP
-import org.connectbot.ui.components.TerminalKeyboard
-import org.connectbot.ui.components.UrlScanDialog
 import org.connectbot.ui.theme.terminal
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.TerminalSessionReader
@@ -860,6 +861,12 @@ fun ConsoleScreen(
         .getOrNull(uiState.currentBridgeIndex)
     val currentBridgeId = currentBridge?.host?.id
 
+    // Surround color for everything behind and around the terminal
+    // (including the area under the transparent status bar): match the
+    // active scheme's background so the surround never clashes with it.
+    val consoleSurroundColor = currentBridge?.let { Color(it.defaultBackgroundColor) }
+        ?: if (einkMode) Color.White else Color.Black
+
     // Get current prompt state to check if biometric prompt is active
     val promptState by currentBridge?.promptManager?.promptState?.collectAsState()
         ?: remember { mutableStateOf(null) }
@@ -975,17 +982,18 @@ fun ConsoleScreen(
     }
 
     // While the title bar is hidden the transparent status bar sits directly
-    // on the terminal, so it needs icons matching the terminal background
-    // (light on the usual black, dark on the white e-ink scheme) regardless
-    // of the app theme; restore the theme's appearance once the title bar returns.
+    // on the terminal, so it needs icons that contrast with the terminal
+    // background (light icons on dark schemes, dark icons on light ones)
+    // regardless of the app theme; restore the theme's appearance once the
+    // title bar returns.
     val rootView = LocalView.current
     val titleBarVisible = !titleBarHide || showTitleBar
-    DisposableEffect(rootView, titleBarVisible, einkMode) {
+    DisposableEffect(rootView, titleBarVisible, consoleSurroundColor) {
         val window = (rootView.context as? Activity)?.window
         val controller = window?.let { WindowInsetsControllerCompat(it, it.decorView) }
         val previousLightStatusBars = controller?.isAppearanceLightStatusBars
         if (controller != null && !titleBarVisible) {
-            controller.isAppearanceLightStatusBars = einkMode
+            controller.isAppearanceLightStatusBars = consoleSurroundColor.luminance() > 0.5f
         }
         onDispose {
             if (controller != null && previousLightStatusBars != null) {
@@ -1212,9 +1220,8 @@ fun ConsoleScreen(
             .then(if (keepScreenOn) Modifier.keepScreenOn() else Modifier),
         // The console is a terminal screen: keep everything behind and around
         // the terminal (including the area under the transparent status bar)
-        // black instead of the theme background. In e-ink mode the terminal
-        // background is white, so the surround matches it.
-        containerColor = if (einkMode) Color.White else Color.Black,
+        // matched to the terminal's own background instead of the theme.
+        containerColor = consoleSurroundColor,
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets
             .union(WindowInsets.imeAnimationTarget),
     ) { innerPadding ->
@@ -1361,36 +1368,36 @@ fun ConsoleScreen(
                             }
                         } else {
                             key(bridge.host.id) {
-                            ConsoleTerminalPage(
-                                bridge = bridge,
-                                isActive = true,
-                                keyboardAlwaysVisible = keyboardAlwaysVisible,
-                                showSoftwareKeyboard = showSoftwareKeyboard,
-                                forceSize = forceSize,
-                                termFocusRequester = termFocusRequester,
-                                showExtraKeyboard = showExtraKeyboard,
-                                hasPlayedKeyboardAnimation = hasPlayedKeyboardAnimation,
-                                imeVisible = imeVisible,
-                                handleTerminalInteraction = { handleTerminalInteraction(isTerminalTap = true) },
-                                onShowSoftwareKeyboardChange = { showSoftwareKeyboard = it },
-                                onImeVisibilityChange = { imeVisible = it },
-                                onTextInputRequest = { showTextInputDialog = true },
-                                onDisconnectRequest = {
-                                    bridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
-                                },
-                                onKeyboardScrollInProgressChange = { inProgress ->
-                                    keyboardScrollInProgress = inProgress
-                                    handleTerminalInteraction()
-                                },
-                                onSelectionControllerChange = { selectionController = it },
-                                onOpenUrl = ::openUrl,
-                                onPasteRequest = ::pasteClipboardContents,
-                                onInterceptKey = handleShortcut,
-                                onReconnect = { viewModel.reconnect(bridge) },
-                                snackbarHostState = snackbarHostState,
-                                modifier = Modifier.fillMaxSize(),
-                                terminalModifier = terminalModifier,
-                            )
+                                ConsoleTerminalPage(
+                                    bridge = bridge,
+                                    isActive = true,
+                                    keyboardAlwaysVisible = keyboardAlwaysVisible,
+                                    showSoftwareKeyboard = showSoftwareKeyboard,
+                                    forceSize = forceSize,
+                                    termFocusRequester = termFocusRequester,
+                                    showExtraKeyboard = showExtraKeyboard,
+                                    hasPlayedKeyboardAnimation = hasPlayedKeyboardAnimation,
+                                    imeVisible = imeVisible,
+                                    handleTerminalInteraction = { handleTerminalInteraction(isTerminalTap = true) },
+                                    onShowSoftwareKeyboardChange = { showSoftwareKeyboard = it },
+                                    onImeVisibilityChange = { imeVisible = it },
+                                    onTextInputRequest = { showTextInputDialog = true },
+                                    onDisconnectRequest = {
+                                        bridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
+                                    },
+                                    onKeyboardScrollInProgressChange = { inProgress ->
+                                        keyboardScrollInProgress = inProgress
+                                        handleTerminalInteraction()
+                                    },
+                                    onSelectionControllerChange = { selectionController = it },
+                                    onOpenUrl = ::openUrl,
+                                    onPasteRequest = ::pasteClipboardContents,
+                                    onInterceptKey = handleShortcut,
+                                    onReconnect = { viewModel.reconnect(bridge) },
+                                    snackbarHostState = snackbarHostState,
+                                    modifier = Modifier.fillMaxSize(),
+                                    terminalModifier = terminalModifier,
+                                )
                             }
                         }
 

@@ -1646,7 +1646,7 @@ private fun SettingsScreenPreview() {
             onPgUpDnGestureChange = {},
             onSwipeSessionsChange = {},
             onVolumeFontChange = {},
-        onVolumeTmuxPanesChange = {},
+            onVolumeTmuxPanesChange = {},
             onKeepAliveChange = {},
             onAlwaysVisibleChange = {},
             onShiftFkeysChange = {},
