@@ -29,6 +29,7 @@ import org.connectbot.data.dao.KnownHostDao
 import org.connectbot.data.dao.PortForwardDao
 import org.connectbot.data.dao.ProfileDao
 import org.connectbot.data.dao.PubkeyDao
+import org.connectbot.data.dao.SnippetDao
 import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
@@ -36,6 +37,7 @@ import org.connectbot.data.entity.KnownHost
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.data.entity.Snippet
 
 /**
  * ConnectBot Room database.
@@ -48,6 +50,7 @@ import org.connectbot.data.entity.Pubkey
  * - color_schemes: Terminal color scheme metadata
  * - color_palette: Terminal color overrides
  * - profiles: Terminal profile configurations
+ * - snippets: Reusable command snippets
  *
  * Migration Strategy:
  * - Version 1: Initial Room schema (migrated from HostDatabase v27 + PubkeyDatabase v2)
@@ -61,6 +64,7 @@ import org.connectbot.data.entity.Pubkey
  *   to profiles (AutoMigration)
  * - Version 10: Added tmux_mode, tmux_last_target, and tmux_offer_dismissed
  *   to hosts for tmux integration (AutoMigration)
+ * - Version 11: Added snippets table for reusable command snippets (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -76,8 +80,9 @@ import org.connectbot.data.entity.Pubkey
         ColorScheme::class,
         ColorPalette::class,
         Profile::class,
+        Snippet::class,
     ],
-    version = 10,
+    version = 11,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -88,6 +93,7 @@ import org.connectbot.data.entity.Pubkey
         AutoMigration(from = 7, to = 8),
         AutoMigration(from = 8, to = 9),
         AutoMigration(from = 9, to = 10),
+        AutoMigration(from = 10, to = 11),
     ],
 )
 @TypeConverters(Converters::class)
@@ -98,6 +104,7 @@ abstract class ConnectBotDatabase : RoomDatabase() {
     abstract fun knownHostDao(): KnownHostDao
     abstract fun colorSchemeDao(): ColorSchemeDao
     abstract fun profileDao(): ProfileDao
+    abstract fun snippetDao(): SnippetDao
 
     companion object {
         /**

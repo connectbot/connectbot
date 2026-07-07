@@ -32,6 +32,7 @@ object NavDestinations {
     const val PALETTE_EDITOR = "palette_editor"
     const val PROFILES = "profiles"
     const val PROFILE_EDITOR = "profile_editor"
+    const val SNIPPETS = "snippets"
     const val HELP = "help"
     const val EULA = "eula"
     const val HINTS = "hints"

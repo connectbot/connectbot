@@ -32,6 +32,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Code
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -106,6 +107,7 @@ fun TerminalKeyboard(
     onHideIme: () -> Unit = {},
     onShowIme: () -> Unit = {},
     onOpenTextInput: () -> Unit = {},
+    onOpenSnippets: () -> Unit = {},
     onScrollInProgressChange: (Boolean) -> Unit = {},
     imeVisible: Boolean = false,
     playAnimation: Boolean = false,
@@ -140,6 +142,7 @@ fun TerminalKeyboard(
         onHideIme = onHideIme,
         onShowIme = onShowIme,
         onOpenTextInput = onOpenTextInput,
+        onOpenSnippets = onOpenSnippets,
         onScrollInProgressChange = onScrollInProgressChange,
         imeVisible = imeVisible,
         playAnimation = playAnimation,
@@ -163,6 +166,7 @@ internal fun TerminalKeyboardContent(
     onHideIme: () -> Unit,
     onShowIme: () -> Unit,
     onOpenTextInput: () -> Unit,
+    onOpenSnippets: () -> Unit,
     onScrollInProgressChange: (Boolean) -> Unit,
     imeVisible: Boolean,
     playAnimation: Boolean,
@@ -395,6 +399,32 @@ internal fun TerminalKeyboardContent(
                     contentDescription = null,
                     onClick = { onKeyPress(VTermKey.FUNCTION_12) },
                 )
+            }
+
+            // Snippet picker button (always visible on right)
+            Surface(
+                onClick = {
+                    onOpenSnippets()
+                    onInteraction()
+                },
+                modifier = Modifier.size(
+                    width = TERMINAL_KEYBOARD_WIDTH_DP.dp,
+                    height = TERMINAL_KEYBOARD_HEIGHT_DP.dp,
+                ),
+                shape = RectangleShape,
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+                color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
+            ) {
+                Box(
+                    contentAlignment = Alignment.Center,
+                    modifier = Modifier.fillMaxSize(),
+                ) {
+                    Icon(
+                        Icons.Default.Code,
+                        contentDescription = stringResource(R.string.terminal_keyboard_snippets_button),
+                        modifier = Modifier.height(TERMINAL_KEYBOARD_CONTENT_SIZE_DP.dp),
+                    )
+                }
             }
 
             // Text input button (always visible on right)
@@ -647,6 +677,7 @@ private fun TerminalKeyboardPreview() {
             onHideIme = {},
             onShowIme = {},
             onOpenTextInput = {},
+            onOpenSnippets = {},
             onScrollInProgressChange = {},
             imeVisible = false,
             playAnimation = false,
@@ -673,6 +704,7 @@ private fun TerminalKeyboardCtrlPressedPreview() {
             onHideIme = {},
             onShowIme = {},
             onOpenTextInput = {},
+            onOpenSnippets = {},
             onScrollInProgressChange = {},
             imeVisible = false,
             playAnimation = false,
@@ -699,6 +731,7 @@ private fun TerminalKeyboardCtrlLockedPreview() {
             onHideIme = {},
             onShowIme = {},
             onOpenTextInput = {},
+            onOpenSnippets = {},
             onScrollInProgressChange = {},
             imeVisible = false,
             playAnimation = false,
@@ -725,6 +758,7 @@ private fun TerminalKeyboardImeVisiblePreview() {
             onHideIme = {},
             onShowIme = {},
             onOpenTextInput = {},
+            onOpenSnippets = {},
             onScrollInProgressChange = {},
             imeVisible = true,
             playAnimation = false,

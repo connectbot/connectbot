@@ -52,6 +52,7 @@ import org.connectbot.ui.screens.pubkeyeditor.PubkeyEditorScreen
 import org.connectbot.ui.screens.pubkeylist.PubkeyListScreen
 import org.connectbot.ui.screens.settings.SettingsScreen
 import org.connectbot.ui.screens.sftp.SftpScreen
+import org.connectbot.ui.screens.snippets.SnippetListScreen
 import org.connectbot.util.IconStyle
 import timber.log.Timber
 
@@ -112,6 +113,9 @@ fun ConnectBotNavHost(
                 },
                 onNavigateToProfiles = {
                     navController.navigateSafely(NavDestinations.PROFILES)
+                },
+                onNavigateToSnippets = {
+                    navController.navigateSafely(NavDestinations.SNIPPETS)
                 },
                 onNavigateToHelp = {
                     navController.navigateSafely(NavDestinations.HELP)
@@ -280,6 +284,12 @@ fun ConnectBotNavHost(
                 onNavigateToColors = {
                     navController.navigateSafely(NavDestinations.COLORS)
                 },
+            )
+        }
+
+        composable(NavDestinations.SNIPPETS) {
+            SnippetListScreen(
+                onNavigateBack = { navController.safePopBackStack() },
             )
         }
 
