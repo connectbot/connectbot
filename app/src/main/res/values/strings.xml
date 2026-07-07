@@ -670,6 +670,9 @@
 	<!-- Confirmation shown in a snackbar after the entire session was copied to the clipboard. -->
 	<string name="console_session_copied">Session copied to clipboard</string>
 	<!-- tmux integration -->
+	<!-- Host editor switch enabling/disabling tmux detection for this host -->
+	<string name="hostpref_tmux_title">tmux integration</string>
+	<string name="hostpref_tmux_summary">Detect tmux and show sessions as tabs on this host</string>
 	<!-- Banner offering to start a persistent tmux session on a host that has tmux but no sessions -->
 	<string name="tmux_offer_message">tmux is available — keep your work alive across disconnects?</string>
 	<!-- Button on the offer banner that creates and attaches a tmux session -->
@@ -682,6 +685,8 @@
 	<string name="tmux_attaching">Attaching to “%1$s”…</string>
 	<!-- Menu entry opening the raw tmux command palette -->
 	<string name="tmux_menu_command">tmux command…</string>
+	<!-- Menu entry loading older scrollback from tmux's server-side history -->
+	<string name="tmux_menu_load_earlier">Load earlier history</string>
 	<!-- Long-press menu: rename a session or window -->
 	<string name="tmux_menu_rename">Rename…</string>
 	<!-- Long-press menu: detach from the session (it keeps running) -->

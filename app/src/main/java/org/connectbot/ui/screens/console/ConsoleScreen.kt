@@ -1774,6 +1774,14 @@ fun ConsoleScreen(
                                             showTmuxPalette = true
                                         },
                                     )
+
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.tmux_menu_load_earlier)) },
+                                        onClick = {
+                                            showMenu = false
+                                            viewModel.loadEarlierTmuxHistory()
+                                        },
+                                    )
                                 }
 
                                 // Port Forwards (if available)

@@ -589,6 +589,17 @@ class ConsoleViewModel @Inject constructor(
         }
     }
 
+    /** Deepens the viewed pane's local scrollback from server history. */
+    fun loadEarlierTmuxHistory() {
+        val terminal = _uiState.value.currentPaneTerminal ?: return
+        viewModelScope.launch(dispatchers.io) {
+            val grew = runCatching { terminal.loadEarlier() }.getOrDefault(false)
+            if (!grew) {
+                _networkStatusMessages.emit(HISTORY_LIMIT_MESSAGE)
+            }
+        }
+    }
+
     /** Runs a raw tmux command from the palette against the viewed session. */
     fun runTmuxCommand(command: String) {
         val tab = _uiState.value.currentTab as? ConsoleTab.TmuxSession ?: return
@@ -779,5 +790,6 @@ class ConsoleViewModel @Inject constructor(
     companion object {
         const val DEFAULT_TMUX_SESSION_NAME = "connectbot"
         private const val PALETTE_HISTORY_LIMIT = 50
+        private const val HISTORY_LIMIT_MESSAGE = "History limit reached"
     }
 }

@@ -103,6 +103,7 @@ fun HostEditorScreen(
         onUseAuthAgentChange = viewModel::updateUseAuthAgent,
         onCompressionChange = viewModel::updateCompression,
         onWantSessionChange = viewModel::updateWantSession,
+        onTmuxEnabledChange = viewModel::updateTmuxEnabled,
         onStayConnectedChange = viewModel::updateStayConnected,
         onQuickDisconnectChange = viewModel::updateQuickDisconnect,
         onPostLoginChange = viewModel::updatePostLogin,
@@ -133,6 +134,7 @@ fun HostEditorScreenContent(
     onUseAuthAgentChange: (String) -> Unit,
     onCompressionChange: (Boolean) -> Unit,
     onWantSessionChange: (Boolean) -> Unit,
+    onTmuxEnabledChange: (Boolean) -> Unit,
     onStayConnectedChange: (Boolean) -> Unit,
     onQuickDisconnectChange: (Boolean) -> Unit,
     onPostLoginChange: (String) -> Unit,
@@ -453,6 +455,15 @@ fun HostEditorScreenContent(
                 summary = stringResource(R.string.hostpref_wantsession_summary),
                 checked = uiState.wantSession,
                 onCheckedChange = onWantSessionChange,
+            )
+
+            // tmux integration
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+            SwitchPreference(
+                title = stringResource(R.string.hostpref_tmux_title),
+                summary = stringResource(R.string.hostpref_tmux_summary),
+                checked = uiState.tmuxEnabled,
+                onCheckedChange = onTmuxEnabledChange,
             )
 
             // Stay connected
@@ -1274,6 +1285,7 @@ private fun HostEditorScreenPreview() {
             onUseAuthAgentChange = {},
             onCompressionChange = {},
             onWantSessionChange = {},
+        onTmuxEnabledChange = {},
             onStayConnectedChange = {},
             onQuickDisconnectChange = {},
             onPostLoginChange = {},

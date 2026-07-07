@@ -53,6 +53,7 @@ data class HostEditorUiState(
     val useAuthAgent: String = "no",
     val compression: Boolean = false,
     val wantSession: Boolean = true,
+    val tmuxEnabled: Boolean = true,
     val stayConnected: Boolean = false,
     val quickDisconnect: Boolean = false,
     val postLogin: String = "",
@@ -205,6 +206,7 @@ class HostEditorViewModel @Inject constructor(
                             useAuthAgent = host.useAuthAgent ?: "no",
                             compression = host.compression,
                             wantSession = host.wantSession,
+                            tmuxEnabled = host.tmuxMode != Host.TMUX_MODE_OFF,
                             stayConnected = host.stayConnected,
                             quickDisconnect = host.quickDisconnect,
                             postLogin = host.postLogin ?: "",
@@ -343,6 +345,10 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(wantSession = value) }
     }
 
+    fun updateTmuxEnabled(value: Boolean) {
+        _uiState.update { it.copy(tmuxEnabled = value) }
+    }
+
     fun updateStayConnected(value: Boolean) {
         _uiState.update { it.copy(stayConnected = value) }
     }
@@ -404,6 +410,7 @@ class HostEditorViewModel @Inject constructor(
                     useAuthAgent = state.useAuthAgent.takeIf { it != "no" },
                     compression = state.compression,
                     wantSession = state.wantSession,
+                    tmuxMode = if (state.tmuxEnabled) Host.TMUX_MODE_AUTO else Host.TMUX_MODE_OFF,
                     stayConnected = state.stayConnected,
                     quickDisconnect = state.quickDisconnect,
                     postLogin = state.postLogin.ifBlank { null },
@@ -412,6 +419,8 @@ class HostEditorViewModel @Inject constructor(
                     useKeys = existingHost?.useKeys ?: true,
                     scrollbackLines = existingHost?.scrollbackLines ?: 140,
                     useCtrlAltAsMetaKey = existingHost?.useCtrlAltAsMetaKey ?: false,
+                    tmuxLastTarget = existingHost?.tmuxLastTarget,
+                    tmuxOfferDismissed = existingHost?.tmuxOfferDismissed ?: false,
                     jumpHostId = jumpHostId,
                     ipVersion = state.ipVersion,
                 )

@@ -2,6 +2,21 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+- Native tmux integration: sessions on a host appear as first-class tabs
+  (auto-detected, per-host opt-out). Attached sessions render the active pane
+  full screen through tmux control mode with a window strip, pane swipe
+  navigation and dots, and volume-key pane switching; detached sessions show a
+  tap-to-attach snapshot. Connections silently reattach to the exact
+  session/window/pane after a drop. Includes window/session management
+  (rename, reorder, kill, new window), a raw tmux command palette, bracketed
+  paste via tmux buffers, bell/activity badges with deep-linking notifications,
+  per-pane flow control on tmux ≥ 3.2, "resize to my screen", and
+  server-history scrollback loading. Hosts with tmux but no sessions get a
+  one-tap "start persistent session" offer. Requires tmux ≥ 2.6 on the server.
+
 ## [1.10.9][1.10.9]
 
 ### Fixed

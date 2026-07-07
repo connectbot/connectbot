@@ -183,6 +183,10 @@ class TmuxPaneTerminal(
     @Volatile
     private var destroyed = false
 
+    /** Current backfill depth; grows via [loadEarlier]. */
+    @Volatile
+    private var backfillDepth = DEFAULT_BACKFILL_LINES
+
     init {
         inputJob = scope.launch { inputLoop() }
     }
@@ -234,6 +238,23 @@ class TmuxPaneTerminal(
      * reset the emulator (RIS) and reload the pane from a fresh capture.
      */
     suspend fun resync() {
+        rebuildFromCapture(backfillDepth)
+    }
+
+    /**
+     * Deepens the local scrollback: termlib cannot prepend history, so the
+     * emulator is reset and re-fed a deeper capture (rebuild-and-swap).
+     * @return false when the depth cap was already reached
+     */
+    suspend fun loadEarlier(additionalLines: Int = DEFAULT_BACKFILL_LINES): Boolean {
+        val newDepth = (backfillDepth + additionalLines).coerceAtMost(MAX_BACKFILL_LINES)
+        if (newDepth == backfillDepth || destroyed) return false
+        backfillDepth = newDepth
+        rebuildFromCapture(newDepth)
+        return true
+    }
+
+    private suspend fun rebuildFromCapture(depth: Int) {
         if (destroyed) return
         synchronized(outputLock) {
             live = false
@@ -241,7 +262,7 @@ class TmuxPaneTerminal(
             pendingOutput.clear()
         }
         handle.writeInput(RESET_SEQUENCE)
-        backfill()
+        backfill(depth)
     }
 
     /** Routes one `%output` event (any thread). */
@@ -306,6 +327,7 @@ class TmuxPaneTerminal(
 
     companion object {
         const val DEFAULT_BACKFILL_LINES = 2000
+        const val MAX_BACKFILL_LINES = 10_000
 
         /** RIS — full terminal reset before re-feeding captured content. */
         private val RESET_SEQUENCE = "\u001bc".toByteArray()
