@@ -343,6 +343,33 @@ class HostRepository @Inject constructor(
      */
     suspend fun importHostsFromJson(jsonString: String): ImportCounts = HostConfigJson.importFromJson(context, database, jsonString)
 
+    /**
+     * Export all hosts to a passphrase-encrypted bundle.
+     * The payload is the same JSON produced by [exportHostsToJson], wrapped in
+     * an [EncryptedExportBundle] envelope.
+     *
+     * @param passphrase Passphrase used to derive the encryption key
+     * @return Pair of encrypted bundle string and export counts (hosts and profiles)
+     */
+    suspend fun exportHostsToEncryptedBundle(passphrase: CharArray): Pair<String, ExportCounts> {
+        val (json, counts) = HostConfigJson.exportToJson(context, database, pretty = false)
+        return Pair(EncryptedExportBundle.encrypt(json, passphrase), counts)
+    }
+
+    /**
+     * Import hosts from a passphrase-encrypted bundle produced by [exportHostsToEncryptedBundle].
+     *
+     * @param bundleJson The encrypted bundle envelope
+     * @param passphrase Passphrase the bundle was encrypted with
+     * @return Import counts for hosts and profiles
+     * @throws InvalidBundleException if the bundle is malformed
+     * @throws WrongPassphraseException if the passphrase is wrong
+     */
+    suspend fun importHostsFromEncryptedBundle(bundleJson: String, passphrase: CharArray): ImportCounts {
+        val json = EncryptedExportBundle.decrypt(bundleJson, passphrase)
+        return HostConfigJson.importFromJson(context, database, json)
+    }
+
     // ============================================================================
     // Blocking Methods for Java Interop
     // ============================================================================

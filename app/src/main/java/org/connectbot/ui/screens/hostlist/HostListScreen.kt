@@ -205,7 +205,12 @@ fun HostListScreen(
     // Handle export result - launch file picker when JSON is ready
     LaunchedEffect(uiState.exportedJson) {
         if (uiState.exportedJson != null) {
-            exportLauncher.launch(context.getString(R.string.export_hosts_filename))
+            val filename = if (uiState.exportedEncrypted) {
+                R.string.export_hosts_encrypted_filename
+            } else {
+                R.string.export_hosts_filename
+            }
+            exportLauncher.launch(context.getString(filename))
         }
     }
 
@@ -228,6 +233,25 @@ fun HostListScreen(
     }
 
     var shortcutHost by remember { mutableStateOf<Host?>(null) }
+    var showExportPassphraseDialog by remember { mutableStateOf(false) }
+
+    if (showExportPassphraseDialog) {
+        ExportPassphraseDialog(
+            onDismiss = { showExportPassphraseDialog = false },
+            onConfirm = { passphrase ->
+                showExportPassphraseDialog = false
+                viewModel.exportHostsEncrypted(passphrase)
+            },
+        )
+    }
+
+    if (uiState.pendingEncryptedImport != null) {
+        ImportPassphraseDialog(
+            wrongPassphrase = uiState.importWrongPassphrase,
+            onDismiss = viewModel::cancelEncryptedImport,
+            onConfirm = viewModel::submitImportPassphrase,
+        )
+    }
 
     if (shortcutHost != null) {
         ShortcutCustomizationDialog(
@@ -268,6 +292,7 @@ fun HostListScreen(
         onDisconnectHost = viewModel::disconnectHost,
         onDisconnectAll = viewModel::disconnectAll,
         onExportHosts = viewModel::exportHosts,
+        onExportEncryptedHosts = { showExportPassphraseDialog = true },
         onImportHosts = { importLauncher.launch(arrayOf("application/json")) },
         shouldShowNotificationWarning = shouldShowNotificationWarning,
         onNotificationSnackbarFinish = onNotificationSnackbarFinish,
@@ -297,6 +322,7 @@ fun HostListScreenContent(
     onSelectShortcut: (Host) -> Unit = {},
     onNavigateToSettingsHighlightConnPersist: () -> Unit = {},
     onExportHosts: () -> Unit = {},
+    onExportEncryptedHosts: () -> Unit = {},
     onImportHosts: () -> Unit = {},
     shouldShowNotificationWarning: () -> Boolean = { false },
     onNotificationSnackbarFinish: () -> Unit = {},
@@ -394,6 +420,13 @@ fun HostListScreenContent(
                                 onClick = {
                                     showMenu = false
                                     onExportHosts()
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.list_menu_export_hosts_encrypted)) },
+                                onClick = {
+                                    showMenu = false
+                                    onExportEncryptedHosts()
                                 },
                             )
                             DropdownMenuItem(
@@ -968,6 +1001,118 @@ private fun HostListScreenPopulatedPreview() {
             onDisconnectAll = {},
         )
     }
+}
+
+@Composable
+private fun ExportPassphraseDialog(
+    onDismiss: () -> Unit,
+    onConfirm: (String) -> Unit,
+) {
+    var passphrase by remember { mutableStateOf("") }
+    var confirmation by remember { mutableStateOf("") }
+    val mismatch = confirmation.isNotEmpty() && passphrase != confirmation
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = { Icon(Icons.Default.Lock, contentDescription = null) },
+        title = { Text(stringResource(R.string.export_passphrase_title)) },
+        text = {
+            Column {
+                Text(
+                    text = stringResource(R.string.export_passphrase_message),
+                    modifier = Modifier.padding(bottom = 16.dp),
+                )
+                OutlinedTextField(
+                    value = passphrase,
+                    onValueChange = { passphrase = it },
+                    label = { Text(stringResource(R.string.export_passphrase_label)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                )
+                OutlinedTextField(
+                    value = confirmation,
+                    onValueChange = { confirmation = it },
+                    label = { Text(stringResource(R.string.export_passphrase_confirm_label)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    isError = mismatch,
+                    supportingText = if (mismatch) {
+                        { Text(stringResource(R.string.export_passphrase_mismatch)) }
+                    } else {
+                        null
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { onConfirm(passphrase) },
+                enabled = passphrase.isNotEmpty() && passphrase == confirmation,
+            ) {
+                Text(stringResource(R.string.export_passphrase_confirm_button))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        },
+    )
+}
+
+@Composable
+private fun ImportPassphraseDialog(
+    wrongPassphrase: Boolean,
+    onDismiss: () -> Unit,
+    onConfirm: (String) -> Unit,
+) {
+    var passphrase by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        icon = { Icon(Icons.Default.Lock, contentDescription = null) },
+        title = { Text(stringResource(R.string.import_passphrase_title)) },
+        text = {
+            Column {
+                Text(
+                    text = stringResource(R.string.import_passphrase_message),
+                    modifier = Modifier.padding(bottom = 16.dp),
+                )
+                OutlinedTextField(
+                    value = passphrase,
+                    onValueChange = { passphrase = it },
+                    label = { Text(stringResource(R.string.export_passphrase_label)) },
+                    visualTransformation = PasswordVisualTransformation(),
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+                    isError = wrongPassphrase,
+                    supportingText = if (wrongPassphrase) {
+                        { Text(stringResource(R.string.import_passphrase_wrong)) }
+                    } else {
+                        null
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    singleLine = true,
+                )
+            }
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { onConfirm(passphrase) },
+                enabled = passphrase.isNotEmpty(),
+            ) {
+                Text(stringResource(R.string.import_passphrase_confirm_button))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        },
+    )
 }
 
 @Composable

@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,10 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.R
+import org.connectbot.data.EncryptedExportBundle
 import org.connectbot.data.HostRepository
+import org.connectbot.data.ImportCounts
+import org.connectbot.data.WrongPassphraseException
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
@@ -56,8 +59,11 @@ data class HostListUiState(
     val error: String? = null,
     val sortedByColor: Boolean = false,
     val exportedJson: String? = null,
+    val exportedEncrypted: Boolean = false,
     val exportResult: ExportResult? = null,
     val importResult: ImportResult? = null,
+    val pendingEncryptedImport: String? = null,
+    val importWrongPassphrase: Boolean = false,
     val startupKeyPrompt: Pubkey? = null,
     val startupKeyWrongPassword: Boolean = false,
 )
@@ -289,7 +295,26 @@ class HostListViewModel @Inject constructor(
                     hostCount = exportCounts.hostCount,
                     profileCount = exportCounts.profileCount,
                 )
-                _uiState.update { it.copy(exportedJson = json, exportResult = exportResult) }
+                _uiState.update { it.copy(exportedJson = json, exportedEncrypted = false, exportResult = exportResult) }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(error = e.message ?: "Failed to export hosts")
+                }
+            }
+        }
+    }
+
+    fun exportHostsEncrypted(passphrase: String) {
+        viewModelScope.launch {
+            try {
+                val (bundle, exportCounts) = withContext(dispatchers.io) {
+                    repository.exportHostsToEncryptedBundle(passphrase.toCharArray())
+                }
+                val exportResult = ExportResult(
+                    hostCount = exportCounts.hostCount,
+                    profileCount = exportCounts.profileCount,
+                )
+                _uiState.update { it.copy(exportedJson = bundle, exportedEncrypted = true, exportResult = exportResult) }
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(error = e.message ?: "Failed to export hosts")
@@ -299,22 +324,23 @@ class HostListViewModel @Inject constructor(
     }
 
     fun clearExportedJson() {
-        _uiState.update { it.copy(exportedJson = null, exportResult = null) }
+        _uiState.update { it.copy(exportedJson = null, exportedEncrypted = false, exportResult = null) }
     }
 
     fun importHosts(jsonString: String) {
+        if (EncryptedExportBundle.isEncryptedBundle(jsonString)) {
+            // Hold the bundle and ask the UI to prompt for the passphrase
+            _uiState.update {
+                it.copy(pendingEncryptedImport = jsonString, importWrongPassphrase = false)
+            }
+            return
+        }
         viewModelScope.launch {
             try {
                 val importCounts = withContext(dispatchers.io) {
                     repository.importHostsFromJson(jsonString)
                 }
-                val importResult = ImportResult(
-                    hostsImported = importCounts.hostsImported,
-                    hostsSkipped = importCounts.hostsSkipped,
-                    profilesImported = importCounts.profilesImported,
-                    profilesSkipped = importCounts.profilesSkipped,
-                )
-                _uiState.update { it.copy(importResult = importResult) }
+                _uiState.update { it.copy(importResult = importCounts.toImportResult()) }
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(error = e.message ?: "Failed to import hosts")
@@ -322,6 +348,45 @@ class HostListViewModel @Inject constructor(
             }
         }
     }
+
+    fun submitImportPassphrase(passphrase: String) {
+        val bundle = _uiState.value.pendingEncryptedImport ?: return
+        viewModelScope.launch {
+            try {
+                val importCounts = withContext(dispatchers.io) {
+                    repository.importHostsFromEncryptedBundle(bundle, passphrase.toCharArray())
+                }
+                _uiState.update {
+                    it.copy(
+                        importResult = importCounts.toImportResult(),
+                        pendingEncryptedImport = null,
+                        importWrongPassphrase = false,
+                    )
+                }
+            } catch (e: WrongPassphraseException) {
+                _uiState.update { it.copy(importWrongPassphrase = true) }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(
+                        error = e.message ?: "Failed to import hosts",
+                        pendingEncryptedImport = null,
+                        importWrongPassphrase = false,
+                    )
+                }
+            }
+        }
+    }
+
+    fun cancelEncryptedImport() {
+        _uiState.update { it.copy(pendingEncryptedImport = null, importWrongPassphrase = false) }
+    }
+
+    private fun ImportCounts.toImportResult() = ImportResult(
+        hostsImported = hostsImported,
+        hostsSkipped = hostsSkipped,
+        profilesImported = profilesImported,
+        profilesSkipped = profilesSkipped,
+    )
 
     fun clearImportResult() {
         _uiState.update { it.copy(importResult = null) }
