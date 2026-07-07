@@ -39,6 +39,7 @@ import org.connectbot.data.HostRepository
 import org.connectbot.data.ImportCounts
 import org.connectbot.data.WrongPassphraseException
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.ServiceError
@@ -55,6 +56,7 @@ enum class ConnectionState {
 data class HostListUiState(
     val hosts: List<Host> = emptyList(),
     val connectionStates: Map<Long, ConnectionState> = emptyMap(),
+    val portForwards: Map<Long, List<PortForward>> = emptyMap(),
     val isLoading: Boolean = false,
     val error: String? = null,
     val sortedByColor: Boolean = false,
@@ -89,6 +91,7 @@ class HostListViewModel @Inject constructor(
 ) : ViewModel() {
 
     private var terminalManager: TerminalManager? = null
+    private val allPortForwards = MutableStateFlow<List<PortForward>>(emptyList())
     private val _uiState = MutableStateFlow(
         HostListUiState(
             isLoading = true,
@@ -99,6 +102,7 @@ class HostListViewModel @Inject constructor(
 
     init {
         observeHosts()
+        observePortForwards()
     }
 
     fun setTerminalManager(manager: TerminalManager) {
@@ -112,6 +116,7 @@ class HostListViewModel @Inject constructor(
             observePendingStartupKeyPrompts()
             // Update initial connection states
             updateConnectionStates(_uiState.value.hosts)
+            updatePortForwardStates()
         }
     }
 
@@ -143,6 +148,16 @@ class HostListViewModel @Inject constructor(
             manager.hostStatusChangedFlow.collect {
                 // Update connection states when terminal manager notifies us of changes
                 updateConnectionStates(_uiState.value.hosts)
+                updatePortForwardStates()
+            }
+        }
+    }
+
+    private fun observePortForwards() {
+        viewModelScope.launch {
+            repository.observeAllPortForwards().collect { portForwards ->
+                allPortForwards.value = portForwards
+                updatePortForwardStates()
             }
         }
     }
@@ -215,6 +230,67 @@ class HostListViewModel @Inject constructor(
         }
 
         return ConnectionState.UNKNOWN
+    }
+
+    private fun updatePortForwardStates() {
+        val bridges = terminalManager?.bridgesFlow?.value.orEmpty()
+        val grouped = allPortForwards.value.groupBy { it.hostId }.mapValues { (hostId, forwards) ->
+            val bridge = bridges.find { it.host.id == hostId }
+            val bridgeForwards = if (bridge != null && bridge.transport?.isConnected() == true) {
+                bridge.portForwards
+            } else {
+                null
+            }
+
+            // Create new PortForward copies so StateFlow equality checks detect changes
+            forwards.map { pf ->
+                pf.copy().apply {
+                    setEnabled(bridgeForwards?.find { it.id == pf.id }?.isEnabled() ?: false)
+                }
+            }
+        }
+        _uiState.update { it.copy(portForwards = grouped) }
+    }
+
+    fun togglePortForward(portForward: PortForward, enable: Boolean) {
+        viewModelScope.launch {
+            try {
+                val bridge = terminalManager?.bridgesFlow?.value?.find { it.host.id == portForward.hostId }
+                if (bridge == null || bridge.transport?.isConnected() != true) {
+                    _uiState.update { it.copy(error = "No active connection for this host") }
+                    return@launch
+                }
+
+                val bridgePortForward = bridge.portForwards.find { it.id == portForward.id }
+                if (bridgePortForward == null) {
+                    _uiState.update {
+                        it.copy(error = "Port forward ${portForward.nickname} not found in active connection")
+                    }
+                    return@launch
+                }
+
+                val success = withContext(dispatchers.io) {
+                    if (enable) {
+                        bridge.enablePortForward(bridgePortForward)
+                    } else {
+                        bridge.disablePortForward(bridgePortForward)
+                    }
+                }
+
+                if (success) {
+                    updatePortForwardStates()
+                } else {
+                    val action = if (enable) "enable" else "disable"
+                    _uiState.update {
+                        it.copy(error = "Failed to $action port forward ${portForward.nickname}")
+                    }
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(error = e.message ?: "Failed to toggle port forward")
+                }
+            }
+        }
     }
 
     fun toggleSortOrder() {

@@ -48,7 +48,9 @@ import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.SwapVert
 import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.AssistChip
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
@@ -83,6 +85,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -93,10 +96,12 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.components.DisconnectAllDialog
+import org.connectbot.ui.components.PortForwardQuickToggleSheet
 import org.connectbot.ui.components.ShortcutCustomizationDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.IconStyle
@@ -104,6 +109,7 @@ import org.connectbot.util.IconStyle
 internal object HostListTestTags {
     fun itemRow(hostId: Long): String = "host_item_${hostId}_row"
     fun itemMenuButton(hostId: Long): String = "host_item_${hostId}_menu_button"
+    fun itemPortForwardChip(hostId: Long): String = "host_item_${hostId}_port_forward_chip"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -291,6 +297,7 @@ fun HostListScreen(
         onForgetHostKeys = viewModel::forgetHostKeys,
         onDisconnectHost = viewModel::disconnectHost,
         onDisconnectAll = viewModel::disconnectAll,
+        onTogglePortForward = viewModel::togglePortForward,
         onExportHosts = viewModel::exportHosts,
         onExportEncryptedHosts = { showExportPassphraseDialog = true },
         onImportHosts = { importLauncher.launch(arrayOf("application/json")) },
@@ -321,6 +328,7 @@ fun HostListScreenContent(
     makingShortcut: Boolean = false,
     onSelectShortcut: (Host) -> Unit = {},
     onNavigateToSettingsHighlightConnPersist: () -> Unit = {},
+    onTogglePortForward: (PortForward, Boolean) -> Unit = { _, _ -> },
     onExportHosts: () -> Unit = {},
     onExportEncryptedHosts: () -> Unit = {},
     onImportHosts: () -> Unit = {},
@@ -329,6 +337,7 @@ fun HostListScreenContent(
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showDisconnectAllDialog by remember { mutableStateOf(false) }
+    var quickToggleHost by remember { mutableStateOf<Host?>(null) }
     val snackbarHostState = remember { SnackbarHostState() }
 
     // Show snackbar when there's an error
@@ -515,6 +524,7 @@ fun HostListScreenContent(
                             HostListItem(
                                 host = host,
                                 connectionState = uiState.connectionStates[host.id] ?: ConnectionState.UNKNOWN,
+                                portForwards = uiState.portForwards[host.id].orEmpty(),
                                 onClick = {
                                     if (makingShortcut) {
                                         onSelectShortcut(host)
@@ -524,6 +534,7 @@ fun HostListScreenContent(
                                 },
                                 onEdit = { onNavigateToEditHost(host) },
                                 onPortForwards = { onNavigateToPortForwards(host) },
+                                onShowPortForwardToggles = { quickToggleHost = host },
                                 onDuplicate = { onDuplicateHost(host) },
                                 onForgetHostKeys = { onForgetHostKeys(host) },
                                 onDisconnect = { onDisconnectHost(host) },
@@ -546,6 +557,20 @@ fun HostListScreenContent(
             },
         )
     }
+
+    quickToggleHost?.let { host ->
+        PortForwardQuickToggleSheet(
+            host = host,
+            portForwards = uiState.portForwards[host.id].orEmpty(),
+            hasLiveConnection = uiState.connectionStates[host.id] == ConnectionState.CONNECTED,
+            onToggle = onTogglePortForward,
+            onManage = {
+                quickToggleHost = null
+                onNavigateToPortForwards(host)
+            },
+            onDismiss = { quickToggleHost = null },
+        )
+    }
 }
 
 @Composable
@@ -560,6 +585,8 @@ private fun HostListItem(
     onDisconnect: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
+    portForwards: List<PortForward> = emptyList(),
+    onShowPortForwardToggles: () -> Unit = {},
     makingShortcut: Boolean = false,
 ) {
     var showMenu by remember { mutableStateOf(false) }
@@ -587,7 +614,17 @@ private fun HostListItem(
                 )
             },
             supportingContent = {
-                Text("${host.protocol}://${host.hostname}:${host.port}")
+                Column {
+                    Text("${host.protocol}://${host.hostname}:${host.port}")
+                    if (portForwards.isNotEmpty() && !makingShortcut) {
+                        PortForwardChip(
+                            hostId = host.id,
+                            portForwards = portForwards,
+                            connected = connectionState == ConnectionState.CONNECTED,
+                            onClick = onShowPortForwardToggles,
+                        )
+                    }
+                }
             },
             leadingContent = {
                 Box(
@@ -772,6 +809,42 @@ private fun HostListItem(
             )
         }
     }
+}
+
+@Composable
+private fun PortForwardChip(
+    hostId: Long,
+    portForwards: List<PortForward>,
+    connected: Boolean,
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val activeCount = portForwards.count { it.isEnabled() }
+    val label = if (connected) {
+        stringResource(R.string.portforward_chip_active, activeCount, portForwards.size)
+    } else {
+        pluralStringResource(R.plurals.portforward_chip_count, portForwards.size, portForwards.size)
+    }
+
+    AssistChip(
+        onClick = onClick,
+        label = { Text(label) },
+        leadingIcon = {
+            Icon(
+                imageVector = Icons.Default.SwapVert,
+                contentDescription = null,
+                tint = if (connected && activeCount > 0) {
+                    MaterialTheme.colorScheme.primary
+                } else {
+                    MaterialTheme.colorScheme.onSurfaceVariant
+                },
+                modifier = Modifier.size(18.dp),
+            )
+        },
+        modifier = modifier
+            .padding(top = 4.dp)
+            .testTag(HostListTestTags.itemPortForwardChip(hostId)),
+    )
 }
 
 @Composable
@@ -983,6 +1056,39 @@ private fun HostListScreenPopulatedPreview() {
                     1L to ConnectionState.CONNECTED,
                     2L to ConnectionState.DISCONNECTED,
                     3L to ConnectionState.UNKNOWN,
+                ),
+                portForwards = mapOf(
+                    1L to listOf(
+                        PortForward(
+                            id = 1,
+                            hostId = 1,
+                            nickname = "MySQL Tunnel",
+                            type = "local",
+                            sourcePort = 3306,
+                            destAddr = "db.internal",
+                            destPort = 3306,
+                        ).apply { setEnabled(true) },
+                        PortForward(
+                            id = 2,
+                            hostId = 1,
+                            nickname = "SOCKS Proxy",
+                            type = "dynamic5",
+                            sourcePort = 1080,
+                            destAddr = null,
+                            destPort = 0,
+                        ),
+                    ),
+                    2L to listOf(
+                        PortForward(
+                            id = 3,
+                            hostId = 2,
+                            nickname = "Web Server",
+                            type = "remote",
+                            sourcePort = 8080,
+                            destAddr = "localhost",
+                            destPort = 80,
+                        ),
+                    ),
                 ),
                 isLoading = false,
             ),

@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,13 @@ interface PortForwardDao {
      */
     @Query("SELECT * FROM port_forwards WHERE host_id = :hostId ORDER BY nickname ASC")
     fun observeByHost(hostId: Long): Flow<List<PortForward>>
+
+    /**
+     * Observe all port forwards across all hosts.
+     * Automatically updates when forwards are added, updated, or deleted.
+     */
+    @Query("SELECT * FROM port_forwards ORDER BY host_id ASC, nickname ASC")
+    fun observeAll(): Flow<List<PortForward>>
 
     /**
      * Get all port forwards for a specific host (one-time query).
