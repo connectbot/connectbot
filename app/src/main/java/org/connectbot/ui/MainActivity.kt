@@ -380,7 +380,13 @@ class MainActivity : AppCompatActivity() {
                     bridge = manager.openConnection(uri)
                 }
 
-                controller.navigate("${NavDestinations.CONSOLE}/${bridge.host.id}") {
+                val tmuxParam = uri.getQueryParameter("tmux")
+                val route = if (tmuxParam != null) {
+                    "${NavDestinations.CONSOLE}/${bridge.host.id}?tmux=${Uri.encode(tmuxParam)}"
+                } else {
+                    "${NavDestinations.CONSOLE}/${bridge.host.id}"
+                }
+                controller.navigate(route) {
                     launchSingleTop = true
                 }
             } catch (e: Exception) {

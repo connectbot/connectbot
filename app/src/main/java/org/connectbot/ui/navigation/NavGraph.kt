@@ -101,9 +101,14 @@ fun ConnectBotNavHost(
         }
 
         composable(
-            route = "${NavDestinations.CONSOLE}/{${NavArgs.HOST_ID}}",
+            route = "${NavDestinations.CONSOLE}/{${NavArgs.HOST_ID}}?tmux={tmux}",
             arguments = listOf(
                 navArgument(NavArgs.HOST_ID) { type = NavType.LongType },
+                navArgument("tmux") {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
+                },
             ),
         ) {
             ConsoleScreen(

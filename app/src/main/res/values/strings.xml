@@ -342,6 +342,11 @@
 	<!-- Summary for the volume keys control font size preference -->
 	<string name="pref_volumefont_summary">"Font size can also be changed in profile settings"</string>
 
+	<!-- Name for the volume-keys-switch-tmux-panes preference -->
+	<string name="pref_volume_tmux_panes_title">Volume keys switch tmux panes</string>
+	<!-- Summary for the volume-keys-switch-tmux-panes preference -->
+	<string name="pref_volume_tmux_panes_summary">In tmux sessions, volume keys cycle panes (windows when the window has one pane) instead of changing font size</string>
+
 	<!-- Name for the memorize keys preference -->
 	<string name="pref_memkeys_title">"Remember keys in memory"</string>
 	<!-- Summary for the memorize keys preference -->
@@ -664,6 +669,57 @@
 	<string name="console_menu_copy_session">Copy session</string>
 	<!-- Confirmation shown in a snackbar after the entire session was copied to the clipboard. -->
 	<string name="console_session_copied">Session copied to clipboard</string>
+	<!-- tmux integration -->
+	<!-- Host editor switch enabling/disabling tmux detection for this host -->
+	<string name="hostpref_tmux_title">tmux integration</string>
+	<string name="hostpref_tmux_summary">Detect tmux and show sessions as tabs on this host</string>
+	<!-- Banner offering to start a persistent tmux session on a host that has tmux but no sessions -->
+	<string name="tmux_offer_message">tmux is available — keep your work alive across disconnects?</string>
+	<!-- Button on the offer banner that creates and attaches a tmux session -->
+	<string name="tmux_offer_start">Start session</string>
+	<!-- Content description for dismissing the tmux offer banner -->
+	<string name="tmux_offer_dismiss">Dismiss</string>
+	<!-- Overlay on a detached tmux session tab; %1$s is the session name -->
+	<string name="tmux_tap_to_attach">Tap to attach to “%1$s”</string>
+	<!-- Overlay while attaching to a tmux session; %1$s is the session name -->
+	<string name="tmux_attaching">Attaching to “%1$s”…</string>
+	<!-- Menu entry opening the raw tmux command palette -->
+	<string name="tmux_menu_command">tmux command…</string>
+	<!-- Menu entry loading older scrollback from tmux's server-side history -->
+	<string name="tmux_menu_load_earlier">Load earlier history</string>
+	<!-- Long-press menu: rename a session or window -->
+	<string name="tmux_menu_rename">Rename…</string>
+	<!-- Long-press menu: detach from the session (it keeps running) -->
+	<string name="tmux_menu_detach">Detach</string>
+	<!-- Long-press menu: kill the session (destructive, confirmed) -->
+	<string name="tmux_menu_kill_session">Kill session…</string>
+	<!-- Long-press menu: kill the window (destructive, confirmed) -->
+	<string name="tmux_menu_kill_window">Kill window…</string>
+	<!-- Long-press menu: swap the window one position left -->
+	<string name="tmux_menu_move_left">Move left</string>
+	<!-- Long-press menu: swap the window one position right -->
+	<string name="tmux_menu_move_right">Move right</string>
+	<!-- New window affordance on the window strip -->
+	<string name="tmux_new_window">New window</string>
+	<!-- Long-press menu: resize the session to this device's screen -->
+	<string name="tmux_menu_resize">Resize to my screen</string>
+	<!-- Confirmation when resizing a session that other clients are attached to -->
+	<string name="tmux_resize_confirm_message">Another client is attached to this session; resizing will reflow its display too.</string>
+	<!-- Rename dialog titles and confirm button -->
+	<string name="tmux_rename_session_title">Rename session</string>
+	<string name="tmux_rename_window_title">Rename window</string>
+	<string name="tmux_rename_confirm">Rename</string>
+	<!-- Kill confirmation dialog -->
+	<string name="tmux_kill_title">Are you sure?</string>
+	<string name="tmux_kill_confirm">Kill</string>
+	<!-- Kill session confirmation; %1$s is the session name -->
+	<string name="tmux_kill_session_message">Kill session “%1$s”? Everything running in it will be terminated.</string>
+	<string name="tmux_kill_window_message">Kill this window? Everything running in it will be terminated.</string>
+	<!-- Command palette -->
+	<string name="tmux_palette_title">tmux command</string>
+	<string name="tmux_palette_hint">e.g. move-window -t 0</string>
+	<string name="tmux_palette_run">Run</string>
+
 	<!-- Error shown in a snackbar when the user taps a URL but no app on the device can handle it -->
 	<string name="console_url_no_handler">No app available to open this URL</string>
 	<!-- Error shown in a snackbar when the URL type is not supported -->
@@ -827,6 +883,8 @@
 
 	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
 	<string name="notification_text">"%1$s wants your attention."</string>
+	<!-- Notification for a bell in a tmux window; %1$s host, %2$s session:window -->
+	<string name="notification_text_tmux">%1$s · %2$s rang its bell.</string>
 
 	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
 	<string name="no">"No"</string>

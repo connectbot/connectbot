@@ -1,0 +1,13 @@
+%begin 1783398716 284 0
+%end 1783398716 284 0
+%session-changed $0 test
+%layout-change @0 c08a,100x30,0,0[100x15,0,0,0,100x14,0,16,1] c08a,100x30,0,0[100x15,0,0,0,100x14,0,16,1] *
+%session-renamed $0 maison
+%unlinked-window-add @1
+%sessions-changed
+%unlinked-window-renamed @1 tmux
+%layout-change @0 a87d,100x30,0,0,0 a87d,100x30,0,0,0 *
+%output %0 x
+%sessions-changed
+%sessions-changed
+%exit

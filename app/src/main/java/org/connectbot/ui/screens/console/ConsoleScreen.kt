@@ -142,6 +142,19 @@ import org.connectbot.service.AuthBanner
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.PromptRequest
 import org.connectbot.service.TerminalBridge
+import org.connectbot.service.tmux.TmuxAttachState
+import org.connectbot.service.tmux.TmuxPaneTerminal
+import org.connectbot.ui.common.parseHostColor
+import org.connectbot.ui.screens.console.tmux.PaneDotsIndicator
+import org.connectbot.ui.screens.console.tmux.TmuxActionMenuDialog
+import org.connectbot.ui.screens.console.tmux.TmuxCommandPaletteSheet
+import org.connectbot.ui.screens.console.tmux.TmuxConfirmDialog
+import org.connectbot.ui.screens.console.tmux.TmuxKillConfirmDialog
+import org.connectbot.ui.screens.console.tmux.TmuxOfferBanner
+import org.connectbot.ui.screens.console.tmux.TmuxRenameDialog
+import org.connectbot.ui.screens.console.tmux.TmuxSnapshotPage
+import org.connectbot.ui.screens.console.tmux.TmuxWindowStrip
+import org.connectbot.ui.screens.console.tmux.tmuxSwipeNavigation
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.SelectionController
 import org.connectbot.terminal.Terminal
@@ -194,10 +207,25 @@ internal fun handleConsoleShortcut(
     pasteClipboardContents: () -> Unit,
     increaseFontSize: () -> Unit,
     decreaseFontSize: () -> Unit,
+    /** Active tmux tab + pref: volume keys switch panes instead of font size. */
+    tmuxPaneNavigation: Boolean = false,
+    nextPane: () -> Unit = {},
+    previousPane: () -> Unit = {},
 ): Boolean {
     if (keyEvent.type != KeyEventType.KeyDown) return false
 
     return when {
+        // Volume keys on a tmux tab: pane navigation (preference-gated)
+        tmuxPaneNavigation && keyEvent.key == Key.VolumeUp -> {
+            nextPane()
+            true
+        }
+
+        tmuxPaneNavigation && keyEvent.key == Key.VolumeDown -> {
+            previousPane()
+            true
+        }
+
         // Ctrl+Shift+C: copy selection
         keyEvent.key == Key.C && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
             copySelection()
@@ -490,6 +518,10 @@ private fun ConsoleTerminalPage(
     snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     terminalModifier: Modifier = Modifier,
+    /** When set, the page renders this tmux pane instead of the host shell. */
+    tmuxPane: TmuxPaneTerminal? = null,
+    /** Server-side pane grid (rows, cols); termlib fits the font to it. */
+    tmuxForcedSize: Pair<Int, Int>? = null,
 ) {
     Box(modifier = modifier) {
         val fontResult = rememberTerminalTypefaceResultFromStoredValue(bridge.fontFamily)
@@ -507,8 +539,9 @@ private fun ConsoleTerminalPage(
             }
         }
 
+        val tmuxEmulator = tmuxPane?.emulator
         Terminal(
-            terminalEmulator = bridge.terminalEmulator,
+            terminalEmulator = tmuxEmulator ?: bridge.terminalEmulator,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
@@ -521,8 +554,8 @@ private fun ConsoleTerminalPage(
             keyboardEnabled = true,
             showSoftKeyboard = showSoftwareKeyboard && isActive,
             focusRequester = termFocusRequester,
-            forcedSize = forceSize,
-            modifierManager = bridge.keyHandler,
+            forcedSize = if (tmuxPane != null) tmuxForcedSize else forceSize,
+            modifierManager = if (tmuxEmulator != null) tmuxPane.keyHandler else bridge.keyHandler,
             onSelectionControllerAvailable = { controller ->
                 if (isActive) {
                     onSelectionControllerChange(controller)
@@ -749,6 +782,12 @@ fun ConsoleScreen(
     var fullscreen by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.FULLSCREEN, false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false)) }
     val volumeKeysChangeFontSize = remember { prefs.getBoolean(PreferenceConstants.VOLUME_FONT, true) }
+    val volumeKeysSwitchTmuxPanes = remember {
+        prefs.getBoolean(
+            PreferenceConstants.VOLUME_TMUX_PANES,
+            PreferenceConstants.VOLUME_TMUX_PANES_DEFAULT,
+        )
+    }
     val keepScreenAwake = remember { prefs.getBoolean(PreferenceConstants.KEEP_ALIVE, true) }
 
     // Keyboard state
@@ -780,6 +819,14 @@ fun ConsoleScreen(
     var showDisconnectDialog by remember { mutableStateOf(false) }
     var showSessionPickerDialog by remember { mutableStateOf(false) }
     var showTextInputDialog by remember { mutableStateOf(false) }
+    var tmuxMenuTabKey by remember { mutableStateOf<String?>(null) }
+    var tmuxWindowMenuId by remember { mutableStateOf<String?>(null) }
+    var tmuxRenameSessionTab by remember { mutableStateOf<ConsoleTab.TmuxSession?>(null) }
+    var tmuxRenameWindowId by remember { mutableStateOf<String?>(null) }
+    var tmuxKillSessionTab by remember { mutableStateOf<ConsoleTab.TmuxSession?>(null) }
+    var tmuxResizeTab by remember { mutableStateOf<ConsoleTab.TmuxSession?>(null) }
+    var tmuxKillWindowId by remember { mutableStateOf<String?>(null) }
+    var showTmuxPalette by remember { mutableStateOf(false) }
     var showExtraKeyboard by remember { mutableStateOf(true) } // Start visible to show animation
     var hasPlayedKeyboardAnimation by remember { mutableStateOf(false) }
     var showTitleBar by remember { mutableStateOf(!titleBarHide) }
@@ -1113,7 +1160,13 @@ fun ConsoleScreen(
                 ?.toString()
 
             if (!clip.isNullOrBlank()) {
-                bridge.injectString(TerminalTextUtils.normalizeLineBreaks(clip))
+                val normalized = TerminalTextUtils.normalizeLineBreaks(clip)
+                val paneTerminal = uiState.currentPaneTerminal
+                if (paneTerminal != null && uiState.currentTab is ConsoleTab.TmuxSession) {
+                    paneTerminal.paste(normalized)
+                } else {
+                    bridge.injectString(normalized)
+                }
             }
         }
     }
@@ -1160,6 +1213,11 @@ fun ConsoleScreen(
                 pasteClipboardContents = { pasteClipboardContents() },
                 increaseFontSize = { currentBridge?.increaseFontSize() },
                 decreaseFontSize = { currentBridge?.decreaseFontSize() },
+                tmuxPaneNavigation = volumeKeysSwitchTmuxPanes &&
+                    uiState.currentTab is ConsoleTab.TmuxSession &&
+                    uiState.currentPaneTerminal != null,
+                nextPane = { viewModel.selectPane(1) },
+                previousPane = { viewModel.selectPane(-1) },
             )
         }
 
@@ -1214,7 +1272,82 @@ fun ConsoleScreen(
                         }
                         val terminalModifier = pageGestureModifier.then(swipeModifier)
 
-                        key(bridge.host.id) {
+                        val tmuxTab = uiState.currentTab as? ConsoleTab.TmuxSession
+                        val tmuxHostState = tmuxTab?.bridge?.tmux?.state?.collectAsState()?.value
+                        val tmuxSession = tmuxHostState?.sessions?.find { it.id == tmuxTab.sessionId }
+                        val paneTerminal = uiState.currentPaneTerminal
+
+                        if (tmuxTab != null &&
+                            (tmuxSession?.attachState != TmuxAttachState.ATTACHED || paneTerminal?.emulator == null)
+                        ) {
+                            // Detached or still attaching: dimmed snapshot face.
+                            TmuxSnapshotPage(
+                                sessionName = tmuxTab.sessionName,
+                                snapshot = tmuxSession?.snapshot,
+                                isAttaching = tmuxSession?.attachState == TmuxAttachState.ATTACHING,
+                                onAttach = { viewModel.selectTab(tmuxTab.key) },
+                                modifier = Modifier.fillMaxSize(),
+                            )
+                        } else if (tmuxTab != null && paneTerminal != null) {
+                            val tmuxTarget = tmuxTab.bridge.tmux?.currentTarget?.collectAsState()?.value
+                            val tmuxWindow = tmuxSession?.windows?.find { it.id == tmuxTarget?.windowId }
+                            val pane = tmuxWindow?.panes?.find { it.id == paneTerminal.paneId }
+                            val swipeDensity = LocalDensity.current.density
+                            val tmuxSwipeModifier = Modifier.tmuxSwipeNavigation(
+                                selectionActive = terminalSelectionActive,
+                                onSwipePane = { direction -> viewModel.selectPane(direction) },
+                                onSwipeWindow = { direction -> viewModel.stepWindow(direction) },
+                                onInteraction = { handleTerminalInteraction(isInteraction = false) },
+                                density = swipeDensity,
+                            )
+                            key(tmuxTab.key) {
+                                ConsoleTerminalPage(
+                                    bridge = bridge,
+                                    isActive = true,
+                                    keyboardAlwaysVisible = keyboardAlwaysVisible,
+                                    showSoftwareKeyboard = showSoftwareKeyboard,
+                                    forceSize = forceSize,
+                                    termFocusRequester = termFocusRequester,
+                                    showExtraKeyboard = showExtraKeyboard,
+                                    hasPlayedKeyboardAnimation = hasPlayedKeyboardAnimation,
+                                    imeVisible = imeVisible,
+                                    handleTerminalInteraction = { handleTerminalInteraction(isTerminalTap = true) },
+                                    onShowSoftwareKeyboardChange = { showSoftwareKeyboard = it },
+                                    onImeVisibilityChange = { imeVisible = it },
+                                    onTextInputRequest = { showTextInputDialog = true },
+                                    onDisconnectRequest = {
+                                        bridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
+                                    },
+                                    onKeyboardScrollInProgressChange = { inProgress ->
+                                        keyboardScrollInProgress = inProgress
+                                        handleTerminalInteraction()
+                                    },
+                                    onSelectionControllerChange = { selectionController = it },
+                                    onOpenUrl = ::openUrl,
+                                    onPasteRequest = ::pasteClipboardContents,
+                                    onInterceptKey = handleShortcut,
+                                    onReconnect = { viewModel.reconnect(bridge) },
+                                    snackbarHostState = snackbarHostState,
+                                    modifier = Modifier.fillMaxSize(),
+                                    terminalModifier = pageGestureModifier.then(tmuxSwipeModifier),
+                                    tmuxPane = paneTerminal,
+                                    tmuxForcedSize = pane?.let { Pair(it.height, it.width) },
+                                )
+                            }
+                            val tmuxPanes = tmuxWindow?.panes
+                            if (tmuxPanes != null && tmuxPanes.size > 1) {
+                                PaneDotsIndicator(
+                                    count = tmuxPanes.size,
+                                    selectedIndex = tmuxPanes
+                                        .indexOfFirst { it.id == paneTerminal.paneId }
+                                        .coerceAtLeast(0),
+                                    modifier = Modifier
+                                        .align(Alignment.BottomCenter)
+                                        .padding(bottom = 8.dp),
+                                )
+                            }
+                        } else {
+                            key(bridge.host.id) {
                             ConsoleTerminalPage(
                                 bridge = bridge,
                                 isActive = true,
@@ -1245,10 +1378,130 @@ fun ConsoleScreen(
                                 modifier = Modifier.fillMaxSize(),
                                 terminalModifier = terminalModifier,
                             )
+                            }
+                        }
+
+                        // One-tap persistent-session offer for this host
+                        if (tmuxTab == null && uiState.tmuxOfferHostId == bridge.host.id) {
+                            TmuxOfferBanner(
+                                onStart = { viewModel.startTmuxSession() },
+                                onDismiss = { viewModel.dismissTmuxOffer() },
+                                modifier = Modifier.align(Alignment.TopCenter),
+                            )
                         }
                     }
                 }
             }
+        }
+
+        // tmux management dialogs
+        (tmuxMenuTabKey?.let { key -> uiState.tabs.find { it.key == key } } as? ConsoleTab.TmuxSession)?.let { menuTab ->
+            TmuxActionMenuDialog(
+                title = menuTab.sessionName,
+                actions = buildList {
+                    add(stringResource(R.string.tmux_menu_rename) to { tmuxRenameSessionTab = menuTab })
+                    if (menuTab.attachState == TmuxAttachState.ATTACHED) {
+                        add(stringResource(R.string.tmux_menu_detach) to { viewModel.detachTmuxTab(menuTab) })
+                        add(
+                            stringResource(R.string.tmux_menu_resize) to {
+                                val attachedElsewhere = menuTab.bridge.tmux?.state?.value
+                                    ?.session(menuTab.sessionId)?.attachedCount ?: 0
+                                if (attachedElsewhere > 1) {
+                                    tmuxResizeTab = menuTab
+                                } else {
+                                    viewModel.resizeTmuxSessionToScreen(menuTab)
+                                }
+                            },
+                        )
+                    }
+                    add(stringResource(R.string.tmux_menu_kill_session) to { tmuxKillSessionTab = menuTab })
+                },
+                onDismiss = { tmuxMenuTabKey = null },
+            )
+        }
+
+        tmuxWindowMenuId?.let { windowId ->
+            val windowName = (uiState.currentTab as? ConsoleTab.TmuxSession)
+                ?.bridge?.tmux?.state?.value
+                ?.session((uiState.currentTab as ConsoleTab.TmuxSession).sessionId)
+                ?.windows?.find { it.id == windowId }?.name ?: windowId
+            TmuxActionMenuDialog(
+                title = windowName,
+                actions = listOf(
+                    stringResource(R.string.tmux_menu_rename) to { tmuxRenameWindowId = windowId },
+                    stringResource(R.string.tmux_menu_move_left) to { viewModel.moveTmuxWindow(windowId, -1) },
+                    stringResource(R.string.tmux_menu_move_right) to { viewModel.moveTmuxWindow(windowId, 1) },
+                    stringResource(R.string.tmux_menu_kill_window) to { tmuxKillWindowId = windowId },
+                ),
+                onDismiss = { tmuxWindowMenuId = null },
+            )
+        }
+
+        tmuxRenameSessionTab?.let { renameTab ->
+            TmuxRenameDialog(
+                title = stringResource(R.string.tmux_rename_session_title),
+                initialName = renameTab.sessionName,
+                onConfirm = { name ->
+                    viewModel.renameTmuxSession(renameTab, name)
+                    tmuxRenameSessionTab = null
+                },
+                onDismiss = { tmuxRenameSessionTab = null },
+            )
+        }
+
+        tmuxRenameWindowId?.let { windowId ->
+            TmuxRenameDialog(
+                title = stringResource(R.string.tmux_rename_window_title),
+                initialName = "",
+                onConfirm = { name ->
+                    viewModel.renameTmuxWindow(windowId, name)
+                    tmuxRenameWindowId = null
+                },
+                onDismiss = { tmuxRenameWindowId = null },
+            )
+        }
+
+        tmuxResizeTab?.let { resizeTab ->
+            TmuxConfirmDialog(
+                title = stringResource(R.string.tmux_menu_resize),
+                message = stringResource(R.string.tmux_resize_confirm_message),
+                confirmLabel = stringResource(R.string.tmux_menu_resize),
+                onConfirm = {
+                    viewModel.resizeTmuxSessionToScreen(resizeTab)
+                    tmuxResizeTab = null
+                },
+                onDismiss = { tmuxResizeTab = null },
+            )
+        }
+
+        tmuxKillSessionTab?.let { killTab ->
+            TmuxKillConfirmDialog(
+                message = stringResource(R.string.tmux_kill_session_message, killTab.sessionName),
+                onConfirm = {
+                    viewModel.killTmuxSession(killTab)
+                    tmuxKillSessionTab = null
+                },
+                onDismiss = { tmuxKillSessionTab = null },
+            )
+        }
+
+        tmuxKillWindowId?.let { windowId ->
+            TmuxKillConfirmDialog(
+                message = stringResource(R.string.tmux_kill_window_message),
+                onConfirm = {
+                    viewModel.killTmuxWindow(windowId)
+                    tmuxKillWindowId = null
+                },
+                onDismiss = { tmuxKillWindowId = null },
+            )
+        }
+
+        if (showTmuxPalette) {
+            TmuxCommandPaletteSheet(
+                history = uiState.tmuxPaletteHistory,
+                onRunCommand = { viewModel.runTmuxCommand(it) },
+                onDismiss = { showTmuxPalette = false },
+            )
         }
 
         // Dialogs
@@ -1328,252 +1581,348 @@ fun ConsoleScreen(
         // or temporarily visible when titleBarHide is true and showTitleBar is true
         if (!titleBarHide || showTitleBar) {
             val density = LocalDensity.current
-            TopAppBar(
-                title = {
-                    Text(
-                        currentBridge?.host?.nickname
-                            ?: stringResource(R.string.console_default_title),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+            Column(
+                modifier = Modifier.onSizeChanged {
+                    titleBarHeight = with(density) { it.height.toDp() }
                 },
-                modifier = Modifier
-                    .testTag("top_app_bar")
-                    .onSizeChanged {
-                        titleBarHeight = with(density) { it.height.toDp() }
-                    },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            stringResource(R.string.button_back),
+            ) {
+                TopAppBar(
+                    title = {
+                        Text(
+                            currentBridge?.host?.nickname
+                                ?: stringResource(R.string.console_default_title),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
-                    }
-                },
-                colors = if (titleBarHide) {
-                    // Translucent overlay when auto-hide is enabled
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
-                    )
-                } else {
-                    // Solid color when permanently visible
-                    TopAppBarDefaults.topAppBarColors()
-                },
-                actions = {
-                    if (hasMultipleSessions) {
-                        IconButton(onClick = { showSessionPickerDialog = true }) {
+                    },
+                    modifier = Modifier.testTag("top_app_bar"),
+                    navigationIcon = {
+                        IconButton(onClick = onNavigateBack) {
                             Icon(
-                                Icons.Default.SwapHoriz,
-                                contentDescription = stringResource(R.string.console_switch_session),
+                                Icons.AutoMirrored.Filled.ArrowBack,
+                                stringResource(R.string.button_back),
                             )
                         }
-                    }
-
-                    // Text Input button
-                    IconButton(
-                        onClick = { showTextInputDialog = true },
-                        enabled = currentBridge != null,
-                    ) {
-                        Icon(
-                            Icons.Default.Edit,
-                            contentDescription = stringResource(R.string.console_menu_text_input),
+                    },
+                    colors = if (titleBarHide) {
+                        // Translucent overlay when auto-hide is enabled
+                        TopAppBarDefaults.topAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
                         )
-                    }
+                    } else {
+                        // Solid color when permanently visible
+                        TopAppBarDefaults.topAppBarColors()
+                    },
+                    actions = {
+                        if (hasMultipleSessions) {
+                            IconButton(onClick = { showSessionPickerDialog = true }) {
+                                Icon(
+                                    Icons.Default.SwapHoriz,
+                                    contentDescription = stringResource(R.string.console_switch_session),
+                                )
+                            }
+                        }
 
-                    // Paste button - always visible
-                    IconButton(
-                        onClick = {
-                            pasteClipboardContents()
-                        },
-                        enabled = currentBridge != null,
-                    ) {
-                        Icon(
-                            Icons.Default.ContentPaste,
-                            contentDescription = stringResource(R.string.console_menu_paste),
-                        )
-                    }
+                        // Text Input button
+                        IconButton(
+                            onClick = { showTextInputDialog = true },
+                            enabled = currentBridge != null,
+                        ) {
+                            Icon(
+                                Icons.Default.Edit,
+                                contentDescription = stringResource(R.string.console_menu_text_input),
+                            )
+                        }
 
-                    // More menu
-                    Box {
+                        // Paste button - always visible
                         IconButton(
                             onClick = {
-                                // Refresh menu state to update enabled/disabled items
-                                viewModel.refreshMenuState()
-                                showMenu = true
+                                pasteClipboardContents()
                             },
+                            enabled = currentBridge != null,
                         ) {
                             Icon(
-                                Icons.Default.MoreVert,
-                                contentDescription = stringResource(R.string.button_more_options),
+                                Icons.Default.ContentPaste,
+                                contentDescription = stringResource(R.string.console_menu_paste),
                             )
                         }
-                        DropdownMenu(
-                            expanded = showMenu,
-                            onDismissRequest = {
-                                showMenu = false
-                                // Hide title bar again after closing menu if auto-hide is enabled
-                                if (titleBarHide) {
-                                    showTitleBar = false
-                                }
-                                termFocusRequester.requestFocus()
-                            },
-                        ) {
-                            // Reconnect (shown only when disconnected)
-                            if (disconnected) {
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.console_menu_reconnect)) },
-                                    onClick = {
-                                        showMenu = false
-                                        viewModel.reconnect(currentBridge)
-                                    },
-                                    leadingIcon = {
-                                        Icon(Icons.Default.Refresh, contentDescription = null)
-                                    },
+
+                        // More menu
+                        Box {
+                            IconButton(
+                                onClick = {
+                                    // Refresh menu state to update enabled/disabled items
+                                    viewModel.refreshMenuState()
+                                    showMenu = true
+                                },
+                            ) {
+                                Icon(
+                                    Icons.Default.MoreVert,
+                                    contentDescription = stringResource(R.string.button_more_options),
                                 )
                             }
-
-                            if (hasMultipleSessions) {
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.console_previous_session)) },
-                                    onClick = {
-                                        showMenu = false
-                                        selectBridgePreservingKeyboard(uiState.currentBridgeIndex - 1)
-                                    },
-                                    enabled = uiState.currentBridgeIndex > 0,
-                                )
-
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.console_next_session)) },
-                                    onClick = {
-                                        showMenu = false
-                                        selectBridgePreservingKeyboard(uiState.currentBridgeIndex + 1)
-                                    },
-                                    enabled = uiState.currentBridgeIndex < uiState.bridges.lastIndex,
-                                )
-                            }
-
-                            // Disconnect/Close
-                            DropdownMenuItem(
-                                text = {
-                                    Text(
-                                        if (!sessionOpen && disconnected) {
-                                            stringResource(R.string.console_menu_close)
-                                        } else {
-                                            stringResource(R.string.list_host_disconnect)
+                            DropdownMenu(
+                                expanded = showMenu,
+                                onDismissRequest = {
+                                    showMenu = false
+                                    // Hide title bar again after closing menu if auto-hide is enabled
+                                    if (titleBarHide) {
+                                        showTitleBar = false
+                                    }
+                                    termFocusRequester.requestFocus()
+                                },
+                            ) {
+                                // Reconnect (shown only when disconnected)
+                                if (disconnected) {
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.console_menu_reconnect)) },
+                                        onClick = {
+                                            showMenu = false
+                                            viewModel.reconnect(currentBridge)
+                                        },
+                                        leadingIcon = {
+                                            Icon(Icons.Default.Refresh, contentDescription = null)
                                         },
                                     )
-                                },
-                                onClick = {
-                                    showMenu = false
-                                    showDisconnectDialog = true
-                                },
-                                enabled = currentBridge != null,
-                                leadingIcon = {
-                                    Icon(Icons.Default.LinkOff, null)
-                                },
-                            )
+                                }
 
-                            // URL Scan
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.console_menu_urlscan)) },
-                                onClick = {
-                                    showMenu = false
-                                    currentBridge?.let { bridge ->
-                                        scannedUrls = bridge.scanForURLs()
-                                        showUrlScanDialog = true
-                                    }
-                                },
-                                leadingIcon = {
-                                    Icon(Icons.Default.Link, contentDescription = null)
-                                },
-                                enabled = currentBridge != null,
-                            )
+                                if (hasMultipleSessions) {
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.console_previous_session)) },
+                                        onClick = {
+                                            showMenu = false
+                                            selectBridgePreservingKeyboard(uiState.currentBridgeIndex - 1)
+                                        },
+                                        enabled = uiState.currentBridgeIndex > 0,
+                                    )
 
-                            // Copy entire session (screen plus scrollback)
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.console_menu_copy_session)) },
-                                onClick = {
-                                    showMenu = false
-                                    copySessionToClipboard()
-                                },
-                                leadingIcon = {
-                                    Icon(Icons.Default.ContentCopy, contentDescription = null)
-                                },
-                                enabled = currentBridge != null,
-                            )
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.console_next_session)) },
+                                        onClick = {
+                                            showMenu = false
+                                            selectBridgePreservingKeyboard(uiState.currentBridgeIndex + 1)
+                                        },
+                                        enabled = uiState.currentBridgeIndex < uiState.bridges.lastIndex,
+                                    )
+                                }
 
-                            // Resize
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.console_menu_resize)) },
-                                onClick = {
-                                    showMenu = false
-                                    showResizeDialog = true
-                                },
-                                enabled = sessionOpen,
-                            )
-
-                            // Port Forwards (if available)
-                            if (canForwardPorts) {
+                                // Disconnect/Close
                                 DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.console_menu_portforwards)) },
+                                    text = {
+                                        Text(
+                                            if (!sessionOpen && disconnected) {
+                                                stringResource(R.string.console_menu_close)
+                                            } else {
+                                                stringResource(R.string.list_host_disconnect)
+                                            },
+                                        )
+                                    },
                                     onClick = {
                                         showMenu = false
-                                        currentBridge.host.id.let {
-                                            onNavigateToPortForwards(
-                                                it,
-                                            )
+                                        showDisconnectDialog = true
+                                    },
+                                    enabled = currentBridge != null,
+                                    leadingIcon = {
+                                        Icon(Icons.Default.LinkOff, null)
+                                    },
+                                )
+
+                                // URL Scan
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.console_menu_urlscan)) },
+                                    onClick = {
+                                        showMenu = false
+                                        currentBridge?.let { bridge ->
+                                            scannedUrls = bridge.scanForURLs()
+                                            showUrlScanDialog = true
                                         }
                                     },
-                                    enabled = sessionOpen,
+                                    leadingIcon = {
+                                        Icon(Icons.Default.Link, contentDescription = null)
+                                    },
+                                    enabled = currentBridge != null,
                                 )
-                            }
 
-                            // SFTP file browser (if available)
-                            if (canTransferFiles) {
+                                // Copy entire session (screen plus scrollback)
                                 DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.console_menu_files)) },
+                                    text = { Text(stringResource(R.string.console_menu_copy_session)) },
                                     onClick = {
                                         showMenu = false
-                                        currentBridge.host.id.let { onNavigateToSftp(it) }
+                                        copySessionToClipboard()
+                                    },
+                                    leadingIcon = {
+                                        Icon(Icons.Default.ContentCopy, contentDescription = null)
+                                    },
+                                    enabled = currentBridge != null,
+                                )
+
+                                // Resize
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.console_menu_resize)) },
+                                    onClick = {
+                                        showMenu = false
+                                        showResizeDialog = true
                                     },
                                     enabled = sessionOpen,
                                 )
+
+                                // tmux command palette (attached tmux tab only)
+                                if (uiState.currentTab is ConsoleTab.TmuxSession &&
+                                    uiState.currentPaneTerminal != null
+                                ) {
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.tmux_menu_command)) },
+                                        onClick = {
+                                            showMenu = false
+                                            showTmuxPalette = true
+                                        },
+                                    )
+
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.tmux_menu_load_earlier)) },
+                                        onClick = {
+                                            showMenu = false
+                                            viewModel.loadEarlierTmuxHistory()
+                                        },
+                                    )
+                                }
+
+                                // Port Forwards (if available)
+                                if (canForwardPorts) {
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.console_menu_portforwards)) },
+                                        onClick = {
+                                            showMenu = false
+                                            currentBridge.host.id.let {
+                                                onNavigateToPortForwards(
+                                                    it,
+                                                )
+                                            }
+                                        },
+                                        enabled = sessionOpen,
+                                    )
+                                }
+
+                                // SFTP file browser (if available)
+                                if (canTransferFiles) {
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.console_menu_files)) },
+                                        onClick = {
+                                            showMenu = false
+                                            currentBridge.host.id.let { onNavigateToSftp(it) }
+                                        },
+                                        enabled = sessionOpen,
+                                    )
+                                }
+
+                                // Fullscreen toggle
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.pref_fullscreen_title)) },
+                                    onClick = {
+                                        fullscreen = !fullscreen
+                                        prefs.edit { putBoolean("fullscreen", fullscreen) }
+                                    },
+                                    trailingIcon = {
+                                        Checkbox(
+                                            checked = fullscreen,
+                                            onCheckedChange = null,
+                                        )
+                                    },
+                                )
+
+                                // Title bar auto-hide toggle
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.pref_titlebarhide_title)) },
+                                    onClick = {
+                                        titleBarHide = !titleBarHide
+                                        prefs.edit { putBoolean("titlebarhide", titleBarHide) }
+                                        handleTerminalInteraction(isTerminalTap = true)
+                                    },
+                                    trailingIcon = {
+                                        Checkbox(
+                                            checked = titleBarHide,
+                                            onCheckedChange = null,
+                                        )
+                                    },
+                                )
                             }
-
-                            // Fullscreen toggle
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.pref_fullscreen_title)) },
-                                onClick = {
-                                    fullscreen = !fullscreen
-                                    prefs.edit { putBoolean("fullscreen", fullscreen) }
-                                },
-                                trailingIcon = {
-                                    Checkbox(
-                                        checked = fullscreen,
-                                        onCheckedChange = null,
-                                    )
-                                },
-                            )
-
-                            // Title bar auto-hide toggle
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.pref_titlebarhide_title)) },
-                                onClick = {
-                                    titleBarHide = !titleBarHide
-                                    prefs.edit { putBoolean("titlebarhide", titleBarHide) }
-                                    handleTerminalInteraction(isTerminalTap = true)
-                                },
-                                trailingIcon = {
-                                    Checkbox(
-                                        checked = titleBarHide,
-                                        onCheckedChange = null,
-                                    )
-                                },
-                            )
                         }
+                    },
+                )
+
+                // Persistent tab strip: host shells and their tmux sessions
+                if (uiState.tabs.size > 1) {
+                    SessionTabStrip(
+                        tabs = uiState.tabs.map { tab ->
+                            when (tab) {
+                                is ConsoleTab.HostShell -> SessionTabData(
+                                    key = tab.key,
+                                    nickname = tab.bridge.host.nickname,
+                                    color = tab.bridge.host.color,
+                                    isDisconnected = tab.bridge.isDisconnected,
+                                )
+
+                                is ConsoleTab.TmuxSession -> SessionTabData(
+                                    key = tab.key,
+                                    nickname = tab.sessionName,
+                                    color = tab.bridge.host.color,
+                                    isDisconnected = tab.attachState == TmuxAttachState.DETACHED,
+                                    isTmux = true,
+                                    isAttaching = tab.attachState == TmuxAttachState.ATTACHING,
+                                    bellBadge = tab.bellBadge,
+                                    activityBadge = tab.activityBadge,
+                                )
+                            }
+                        },
+                        selectedKey = uiState.currentTab?.key,
+                        onSelectTab = { key ->
+                            val tappedBridge = uiState.tabs.find { it.key == key }?.bridge
+                            val index = tappedBridge
+                                ?.let { b -> uiState.bridges.indexOfFirst { it === b } } ?: -1
+                            if (index != -1 && index != uiState.currentBridgeIndex) {
+                                selectBridgePreservingKeyboard(index)
+                            }
+                            viewModel.selectTab(key)
+                            handleTerminalInteraction(isInteraction = false)
+                        },
+                        onLongPressTab = { key ->
+                            if (uiState.tabs.find { it.key == key } is ConsoleTab.TmuxSession) {
+                                tmuxMenuTabKey = key
+                            }
+                        },
+                        containerColor = if (titleBarHide) {
+                            MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
+                        } else {
+                            MaterialTheme.colorScheme.surface
+                        },
+                    )
+                }
+
+                // Window strip for the active tmux session (auto-hides with chrome)
+                (uiState.currentTab as? ConsoleTab.TmuxSession)?.let { stripTab ->
+                    val stripHostState = stripTab.bridge.tmux?.state?.collectAsState()?.value
+                    val stripSession = stripHostState?.sessions?.find { it.id == stripTab.sessionId }
+                    val stripTarget = stripTab.bridge.tmux?.currentTarget?.collectAsState()?.value
+                    if (stripSession != null &&
+                        stripSession.attachState == TmuxAttachState.ATTACHED &&
+                        stripSession.windows.isNotEmpty()
+                    ) {
+                        TmuxWindowStrip(
+                            windows = stripSession.windows,
+                            activeWindowId = stripTarget
+                                ?.takeIf { it.sessionId == stripTab.sessionId }?.windowId
+                                ?: stripSession.activeWindowId,
+                            onSelectWindow = { windowId ->
+                                viewModel.selectWindow(windowId)
+                                handleTerminalInteraction(isInteraction = false)
+                            },
+                            onLongPressWindow = { windowId -> tmuxWindowMenuId = windowId },
+                            onNewWindow = { viewModel.newTmuxWindow() },
+                            accentColor = parseHostColor(stripTab.bridge.host.color),
+                        )
                     }
-                },
-            )
+                }
+            }
 
             // Progress indicator for OSC 9;4 progress reporting
             val progressState = uiState.progressState

@@ -1,0 +1,414 @@
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2026 Kenny Root
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.connectbot.service.tmux
+
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
+import java.io.OutputStream
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withTimeout
+import org.assertj.core.api.Assertions.assertThat
+import org.connectbot.transport.ExecChannel
+import org.junit.After
+import org.junit.Test
+
+/** One-shot channel: fixed stdout, then EOF. */
+private class OneShotChannel(text: String) : ExecChannel {
+    override val stdin: OutputStream = ByteArrayOutputStream()
+    override val stdout: InputStream = ByteArrayInputStream(text.toByteArray(Charsets.ISO_8859_1))
+    override val stderr: InputStream = ByteArrayInputStream(ByteArray(0))
+    override fun exitStatus(): Int? = 0
+    override fun close() = Unit
+}
+
+private class FakeChannelFactory : TmuxChannelFactory {
+    val execLog = mutableListOf<String>()
+    val controlChannels = mutableListOf<FakeTmuxChannel>()
+
+    var probeResponse = "tmux 3.7b\n"
+    var listResponse = "\$0\tmain\t0\n\$1\twork\t1\n"
+    var snapshotResponse = "snapshot line 1\nsnapshot line 2\n"
+    var flagPollResponse = "NO_SERVER\n"
+
+    /** Scripts each new control channel before the client starts reading. */
+    var onControlChannel: (FakeTmuxChannel) -> Unit = { channel ->
+        channel.scriptReplyFor("list-windows", "@0\t0\tshell\t1\t*\n@1\t1\tlogs\t0\t-\n")
+        channel.scriptReplyFor(
+            "list-panes",
+            "@0\t%0\t0\t100\t30\t0\t0\t1\n" +
+                "@0\t%1\t1\t100\t29\t0\t31\t0\n" +
+                "@1\t%2\t0\t100\t60\t0\t0\t1\n",
+        )
+    }
+
+    override fun open(command: String): ExecChannel {
+        synchronized(execLog) { execLog.add(command) }
+        return when {
+            command.startsWith("tmux -u -C attach-session") ->
+                FakeTmuxChannel().also { onControlChannel(it); controlChannels.add(it) }
+
+            command.startsWith("command -v tmux") -> OneShotChannel(probeResponse)
+            command.startsWith("tmux list-windows -a") -> OneShotChannel(flagPollResponse)
+            command.startsWith("tmux ls") -> OneShotChannel(listResponse)
+            command.startsWith("tmux capture-pane") -> OneShotChannel(snapshotResponse)
+            else -> OneShotChannel("")
+        }
+    }
+}
+
+class TmuxSessionManagerTest {
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
+    private val factory = FakeChannelFactory()
+    private val manager = TmuxSessionManager(factory, scope)
+
+    @After
+    fun tearDown() {
+        manager.shutdown()
+        scope.cancel()
+    }
+
+    private fun awaitState(predicate: (TmuxHostState) -> Boolean): TmuxHostState = runBlocking {
+        withTimeout(5_000) { manager.state.first(predicate) }
+    }
+
+    private fun connectAndAwaitReady(): TmuxHostState {
+        manager.onTransportConnected()
+        return awaitState { it.availability == TmuxAvailability.READY }
+    }
+
+    @Test
+    fun `probe without tmux disables integration`() {
+        factory.probeResponse = "NO_TMUX\n"
+        manager.onTransportConnected()
+        val state = awaitState { it.availability == TmuxAvailability.UNAVAILABLE }
+        assertThat(state.sessions).isEmpty()
+    }
+
+    @Test
+    fun `probe with old tmux reports unsupported`() {
+        factory.probeResponse = "tmux 1.8\n"
+        manager.onTransportConnected()
+        val state = awaitState { it.availability == TmuxAvailability.UNSUPPORTED_VERSION }
+        assertThat(state.version?.raw).isEqualTo("tmux 1.8")
+    }
+
+    @Test
+    fun `no server means ready with offer`() {
+        factory.listResponse = "NO_SERVER\n"
+        val state = connectAndAwaitReady()
+        assertThat(state.sessions).isEmpty()
+        assertThat(state.offerSession).isTrue()
+    }
+
+    @Test
+    fun `discovery lists sessions and fetches snapshots`() {
+        val state = connectAndAwaitReady()
+        assertThat(state.sessions.map { it.name }).containsExactly("main", "work")
+        assertThat(state.sessions.map { it.id }).containsExactly("\$0", "\$1")
+        assertThat(state.offerSession).isFalse()
+
+        val withSnapshots = awaitState { s -> s.sessions.all { it.snapshot != null } }
+        assertThat(withSnapshots.sessions[0].snapshot).contains("snapshot line 1")
+    }
+
+    @Test
+    fun `attach loads the window tree and marks attached`() = runBlocking<Unit> {
+        connectAndAwaitReady()
+
+        withTimeout(5_000) { manager.attach("\$0") }
+
+        val state = manager.state.value
+        val session = state.session("\$0")!!
+        assertThat(session.attachState).isEqualTo(TmuxAttachState.ATTACHED)
+        assertThat(session.snapshot).isNull()
+        assertThat(session.windows.map { it.name }).containsExactly("shell", "logs")
+        assertThat(session.activeWindowId).isEqualTo("@0")
+        assertThat(session.windows[0].panes.map { it.id }).containsExactly("%0", "%1")
+        assertThat(session.windows[0].activePaneId).isEqualTo("%0")
+        assertThat(session.windows[1].panes.map { it.id }).containsExactly("%2")
+
+        // Landed on the server-side active window/pane and mirrored it.
+        assertThat(manager.currentTarget.value)
+            .isEqualTo(TmuxTarget("\$0", "@0", "%0", "main"))
+        val control = factory.controlChannels.single()
+        withTimeout(5_000) {
+            while (control.commands().none { it.startsWith("select-pane") }) {
+                kotlinx.coroutines.delay(10)
+            }
+        }
+        assertThat(control.commands().filter { it.startsWith("select-") })
+            .containsExactly("select-window -t '@0'", "select-pane -t '%0'")
+    }
+
+    @Test
+    fun `pane output is routed to the sink`() = runBlocking<Unit> {
+        val received = mutableListOf<Triple<String, String, String>>()
+        manager.paneOutputSink = { sessionId, paneId, bytes ->
+            synchronized(received) {
+                received.add(Triple(sessionId, paneId, bytes.toString(Charsets.UTF_8)))
+            }
+        }
+        connectAndAwaitReady()
+        withTimeout(5_000) { manager.attach("\$0") }
+
+        factory.controlChannels.single().sendNotification("%output %0 hello\\015\\012")
+
+        withTimeout(5_000) {
+            while (synchronized(received) { received.isEmpty() }) kotlinx.coroutines.delay(10)
+        }
+        assertThat(received.single()).isEqualTo(Triple("\$0", "%0", "hello\r\n"))
+    }
+
+    @Test
+    fun `notifications update attached session state`() = runBlocking<Unit> {
+        connectAndAwaitReady()
+        withTimeout(5_000) { manager.attach("\$0") }
+
+        val control = factory.controlChannels.single()
+        control.sendNotification("%window-renamed @1 build")
+        awaitState { it.session("\$0")!!.windows[1].name == "build" }
+
+        control.sendNotification("%session-window-changed \$0 @1")
+        awaitState { it.session("\$0")!!.activeWindowId == "@1" }
+    }
+
+    @Test
+    fun `detach keeps session listed and refetches snapshot`() = runBlocking<Unit> {
+        connectAndAwaitReady()
+        withTimeout(5_000) { manager.attach("\$0") }
+
+        withTimeout(5_000) { manager.detach("\$0") }
+
+        val state = awaitState {
+            it.session("\$0")!!.attachState == TmuxAttachState.DETACHED &&
+                it.session("\$0")!!.snapshot != null
+        }
+        assertThat(state.session("\$0")!!.snapshot).isNotEmpty
+        assertThat(factory.controlChannels.single().commands()).contains("detach-client")
+    }
+
+    @Test
+    fun `transport loss detaches everything and reconnect reattaches`() = runBlocking<Unit> {
+        connectAndAwaitReady()
+        withTimeout(5_000) { manager.attach("\$0") }
+        assertThat(manager.currentTarget.value).isNotNull
+
+        manager.onTransportLost()
+        awaitState { state -> state.sessions.all { it.attachState == TmuxAttachState.DETACHED } }
+
+        manager.onTransportConnected()
+        val state = awaitState { it.session("\$0")?.attachState == TmuxAttachState.ATTACHED }
+        assertThat(state.session("\$0")!!.windows).isNotEmpty
+        assertThat(factory.controlChannels).hasSize(2)
+    }
+
+    @Test
+    fun `session killed externally is dropped from state`() = runBlocking<Unit> {
+        connectAndAwaitReady()
+        withTimeout(5_000) { manager.attach("\$0") }
+
+        factory.listResponse = "\$1\twork\t1\n"
+        val control = factory.controlChannels.single()
+        control.sendNotification("%exit killed")
+        control.close()
+
+        val state = awaitState { it.session("\$0") == null }
+        assertThat(state.sessions.map { it.id }).containsExactly("\$1")
+    }
+
+    @Test
+    fun `create session and attach`() = runBlocking<Unit> {
+        factory.listResponse = "NO_SERVER\n"
+        connectAndAwaitReady()
+
+        factory.listResponse = "\$5\tconnectbot\t0\n"
+        withTimeout(5_000) { manager.createSessionAndAttach("connectbot") }
+
+        assertThat(factory.execLog).anyMatch { it.startsWith("tmux new-session -d -s 'connectbot'") }
+        val session = manager.state.value.session("\$5")!!
+        assertThat(session.attachState).isEqualTo(TmuxAttachState.ATTACHED)
+    }
+
+    @Test
+    fun `acquire pane terminal backfills and routes live output`() = runBlocking<Unit> {
+        val fakes = mutableListOf<FakeEmulator>()
+        manager.paneEmulatorFactory = TmuxPaneEmulatorFactory { _, _, _, _, _ ->
+            FakeEmulator().also { fakes.add(it) }
+        }
+        connectAndAwaitReady()
+        factory.onControlChannel = { channel ->
+            channel.scriptReplyFor("list-windows", "@0\t0\tshell\t1\t*\n@1\t1\tlogs\t0\t-\n")
+            channel.scriptReplyFor(
+                "list-panes",
+                "@0\t%0\t0\t100\t30\t0\t0\t1\n" +
+                    "@0\t%1\t1\t100\t29\t0\t31\t0\n" +
+                    "@1\t%2\t0\t100\t60\t0\t0\t1\n",
+            )
+            channel.scriptReplyFor("capture-pane", "old prompt \$\n")
+            channel.scriptReplyFor("display-message", "0\t1\n")
+        }
+        withTimeout(5_000) { manager.attach("\$0") }
+
+        val terminal = withTimeout(5_000) {
+            manager.acquirePaneTerminal(TmuxTarget("\$0", "@0", "%0", "main"))
+        }
+        assertThat(terminal).isNotNull
+        val emulator = fakes.single()
+        assertThat(emulator.text).contains("old prompt \$")
+
+        factory.controlChannels.single().sendNotification("%output %0 fresh\\015\\012")
+        withTimeout(5_000) {
+            while (!emulator.text.contains("fresh")) kotlinx.coroutines.delay(10)
+        }
+
+        // Second acquire returns the same live terminal.
+        val again = manager.acquirePaneTerminal(TmuxTarget("\$0", "@0", "%0", "main"))
+        assertThat(again).isSameAs(terminal)
+        assertThat(manager.paneRegistry.liveCount()).isEqualTo(1)
+    }
+
+    @Test
+    fun `flag poll updates badges and reports new bells once`() = runBlocking<Unit> {
+        connectAndAwaitReady()
+        val alerts = mutableListOf<TmuxAlert>()
+        val collector = scope.launch { manager.alertEvents.collect { synchronized(alerts) { alerts.add(it) } } }
+
+        factory.flagPollResponse =
+            "\$0\t@0\t1\t0\tshell\n" +
+                "\$0\t@1\t0\t1\tlogs\n" +
+                "\$1\t@2\t0\t0\twork\n"
+        withTimeout(5_000) { manager.pollWindowFlags() }
+
+        val state = awaitState { it.session("\$0")?.bell == true }
+        assertThat(state.session("\$0")!!.activity).isTrue()
+        assertThat(state.session("\$1")!!.bell).isFalse()
+
+        withTimeout(5_000) {
+            while (synchronized(alerts) { alerts.isEmpty() }) kotlinx.coroutines.delay(10)
+        }
+        assertThat(synchronized(alerts) { alerts.toList() }).containsExactly(
+            TmuxAlert("\$0", "main", "@0", "shell"),
+        )
+
+        // Same flags again: no duplicate alert.
+        withTimeout(5_000) { manager.pollWindowFlags() }
+        kotlinx.coroutines.delay(100)
+        assertThat(synchronized(alerts) { alerts.size }).isEqualTo(1)
+
+        // Bell cleared server-side, then rings again: reported anew.
+        factory.flagPollResponse = "\$0\t@0\t0\t0\tshell\n"
+        withTimeout(5_000) { manager.pollWindowFlags() }
+        factory.flagPollResponse = "\$0\t@0\t1\t0\tshell\n"
+        withTimeout(5_000) { manager.pollWindowFlags() }
+        withTimeout(5_000) {
+            while (synchronized(alerts) { alerts.size < 2 }) kotlinx.coroutines.delay(10)
+        }
+        collector.cancel()
+    }
+
+    @Test
+    fun `attach enables flow control and pause triggers resume with resync`() = runBlocking<Unit> {
+        val fakes = mutableListOf<FakeEmulator>()
+        manager.paneEmulatorFactory = TmuxPaneEmulatorFactory { _, _, _, _, _ ->
+            FakeEmulator().also { fakes.add(it) }
+        }
+        connectAndAwaitReady()
+        factory.onControlChannel = { channel ->
+            channel.scriptReplyFor("list-windows", "@0\t0\tshell\t1\t*\n")
+            channel.scriptReplyFor("list-panes", "@0\t%0\t0\t100\t30\t0\t0\t1\n")
+            channel.scriptReplyFor("capture-pane", "content\n")
+            channel.scriptReplyFor("display-message", "0\t0\n")
+        }
+        withTimeout(5_000) { manager.attach("\$0") }
+        val control = factory.controlChannels.single()
+        assertThat(control.commands()).contains("refresh-client -f pause-after=60")
+
+        withTimeout(5_000) { manager.acquirePaneTerminal(TmuxTarget("\$0", "@0", "%0", "main")) }
+
+        // Flooding pane paused by tmux: we continue + resync it.
+        control.scriptReplyFor("capture-pane", "fresh content after gap\n")
+        control.scriptReplyFor("display-message", "0\t0\n")
+        control.sendNotification("%pause %0")
+
+        withTimeout(5_000) {
+            while (control.commands().none { it == "refresh-client -A '%0:continue'" }) {
+                kotlinx.coroutines.delay(10)
+            }
+        }
+        withTimeout(5_000) {
+            while (!fakes.single().text.contains("fresh content after gap")) {
+                kotlinx.coroutines.delay(10)
+            }
+        }
+        // RIS reset precedes the re-fed capture.
+        assertThat(fakes.single().text).contains("c")
+        val paused = manager.state.value.session("\$0")!!.windows[0].panes[0].paused
+        assertThat(paused).isFalse()
+    }
+
+    @Test
+    fun `resize session uses comma syntax on modern tmux`() = runBlocking<Unit> {
+        connectAndAwaitReady()
+        withTimeout(5_000) { manager.attach("\$0") }
+
+        withTimeout(5_000) { manager.resizeSessionToClient("\$0", cols = 52, rows = 30) }
+
+        assertThat(factory.controlChannels.single().commands())
+            .contains("refresh-client -C 52,30")
+    }
+
+    @Test
+    fun `concurrent attaches open a single control channel`() = runBlocking<Unit> {
+        connectAndAwaitReady()
+
+        val attempts = (1..8).map {
+            async { runCatching { manager.attach("\$0") } }
+        }
+        withTimeout(5_000) { attempts.forEach { it.await() } }
+        // Late duplicate after fully attached is also a no-op.
+        withTimeout(5_000) { manager.attach("\$0") }
+
+        assertThat(factory.controlChannels).hasSize(1)
+        assertThat(manager.state.value.session("\$0")!!.attachState)
+            .isEqualTo(TmuxAttachState.ATTACHED)
+    }
+
+    @Test
+    fun `sessions with hostile ids are dropped at discovery`() {
+        factory.listResponse =
+            "\$0\tmain\t0\n" +
+                "\$1'; rm -rf ~'\tevil\t0\n" +
+                "@2\tweird\t0\n"
+        val state = connectAndAwaitReady()
+        assertThat(state.sessions.map { it.id }).containsExactly("\$0")
+    }
+
+    @Test
+    fun `shell quoting escapes single quotes in names`() {
+        assertThat(TmuxSessionManager.escapeSingleQuotes("it's"))
+            .isEqualTo("it'\\''s")
+    }
+}

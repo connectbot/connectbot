@@ -227,6 +227,31 @@ abstract class AbsTransport {
     @Throws(IOException::class)
     open fun openSftpChannel(): SftpChannel = throw IOException("File transfer is not supported by this transport")
 
+    /**
+     * Whether or not this transport type can open secondary exec channels
+     * over the established connection.
+     * @return true on ability to open exec channels
+     */
+    open fun canOpenExecChannels(): Boolean = false
+
+    /**
+     * Opens a new channel over the established connection running [command].
+     * Only valid when [canOpenExecChannels] returns true and the transport is
+     * connected and authenticated. Callers own the returned channel and must
+     * close it when finished.
+     * @param command the remote command to execute
+     * @param allocPty whether to allocate a PTY for the command
+     * @param ptyTerm TERM type to request when [allocPty] is true
+     * @return a new exec channel
+     * @throws IOException when the channel could not be opened
+     */
+    @Throws(IOException::class)
+    open fun openExecChannel(
+        command: String,
+        allocPty: Boolean = false,
+        ptyTerm: String = "dumb",
+    ): ExecChannel = throw IOException("Exec channels are not supported by this transport")
+
     abstract fun isConnected(): Boolean
     abstract fun isSessionOpen(): Boolean
 
