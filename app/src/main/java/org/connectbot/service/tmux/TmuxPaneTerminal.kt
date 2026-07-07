@@ -30,6 +30,7 @@ import org.connectbot.service.TerminalEmulatorKeyDispatcher
 import org.connectbot.service.TerminalKeyListener
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.TerminalEmulatorFactory
+import org.connectbot.util.commandOutputSnippet
 import timber.log.Timber
 
 /** Colors for pane emulators, taken from the host's profile. */
@@ -80,11 +81,12 @@ fun interface TmuxPaneEmulatorFactory {
         colors: TmuxPaneColors,
         onKeyboardInput: (ByteArray) -> Unit,
         onBell: () -> Unit,
+        onCommandFinished: (durationMs: Long) -> Unit,
     ): TmuxPaneEmulatorHandle
 
     companion object {
         /** The real termlib emulator (requires Android). */
-        val REAL = TmuxPaneEmulatorFactory { rows, cols, colors, onKeyboardInput, onBell ->
+        val REAL = TmuxPaneEmulatorFactory { rows, cols, colors, onKeyboardInput, onBell, onCommandFinished ->
             val emulator = TerminalEmulatorFactory.create(
                 initialRows = rows,
                 initialCols = cols,
@@ -95,6 +97,7 @@ fun interface TmuxPaneEmulatorFactory {
                 onResize = { /* pane size is dictated by the server, not the view */ },
                 onClipboardCopy = { /* OSC 52 handled at the console layer */ },
                 onProgressChange = { _, _ -> },
+                onCommandFinished = onCommandFinished,
             ).also { created ->
                 colors.ansiColors?.let { ansi ->
                     created.applyColorScheme(
@@ -143,6 +146,12 @@ class TmuxPaneTerminal(
     /** Sends one command on this session's control client. */
     private val sendCommand: suspend (String) -> TmuxReply,
     private val onBell: (sessionId: String, paneId: String) -> Unit = { _, _ -> },
+    private val onCommandCompletion: (
+        sessionId: String,
+        paneId: String,
+        durationMs: Long,
+        snippet: String?,
+    ) -> Unit = { _, _, _, _ -> },
     emulatorFactory: TmuxPaneEmulatorFactory = TmuxPaneEmulatorFactory.REAL,
 ) {
     private val handle: TmuxPaneEmulatorHandle = emulatorFactory.create(
@@ -151,6 +160,11 @@ class TmuxPaneTerminal(
         colors = colors,
         onKeyboardInput = { data -> keyboardBytes.trySend(data) },
         onBell = { onBell(sessionId, paneId) },
+        onCommandFinished = { durationMs ->
+            // Snippet captured now, while this pane's emulator is
+            // guaranteed alive (LRU eviction could destroy it later).
+            onCommandCompletion(sessionId, paneId, durationMs, commandOutputSnippet(handle.terminalEmulator))
+        },
     )
 
     /** The termlib emulator for the Terminal composable (real factory only). */

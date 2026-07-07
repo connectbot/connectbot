@@ -52,6 +52,7 @@ import org.connectbot.service.DisconnectPolicy
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.service.tmux.TmuxAttachState
+import org.connectbot.service.tmux.TmuxCommandCompletion
 import org.connectbot.service.tmux.TmuxPaneTerminal
 import org.connectbot.service.tmux.TmuxSessionInfo
 import org.connectbot.service.tmux.TmuxSessionManager
@@ -59,6 +60,7 @@ import org.connectbot.service.tmux.TmuxTarget
 import org.connectbot.terminal.ProgressState
 import org.connectbot.util.NotificationPermissionHelper
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.formatDuration
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -147,6 +149,7 @@ class ConsoleViewModel @Inject constructor(
     private var selectedHostId: Long? = null
 
     private val bellJobs = mutableMapOf<Long, Job>()
+    private val completionJobs = mutableMapOf<Long, Job>()
     private val progressJobs = mutableMapOf<Long, Job>()
     private val networkStatusJobs = mutableMapOf<Long, Job>()
     private val tmuxJobs = mutableMapOf<Long, Job>()
@@ -159,6 +162,20 @@ class ConsoleViewModel @Inject constructor(
 
     private val _networkStatusMessages = MutableSharedFlow<String>(extraBufferCapacity = 8)
     val networkStatusMessages: SharedFlow<String> = _networkStatusMessages.asSharedFlow()
+
+    /**
+     * A command completion in a hidden tab/window, for the snackbar. The
+     * screen renders it via R.string.command_finished_snackbar (the VM has no
+     * Context for localization).
+     */
+    data class CompletionMessage(val sourceLabel: String, val durationText: String)
+
+    /** Snackbar messages for command completions in hidden tabs/windows. */
+    private val _completionMessages = MutableSharedFlow<CompletionMessage>(extraBufferCapacity = 8)
+    val completionMessages: SharedFlow<CompletionMessage> = _completionMessages.asSharedFlow()
+
+    /** Host-shell tab keys carrying a completion badge until selected. */
+    private val completionBadgeKeys = mutableSetOf<String>()
 
     fun shouldShowNotificationWarning(): Boolean {
         if (!prefs.contains(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED)) return false
@@ -174,6 +191,7 @@ class ConsoleViewModel @Inject constructor(
                 manager.bridgesFlow.collect { bridges ->
                     updateBridges(bridges)
                     syncBridgeBellSubscriptions(bridges)
+                    syncBridgeCompletionSubscriptions(bridges)
                     syncBridgeProgressSubscriptions(bridges)
                     syncBridgeNetworkStatusSubscriptions(bridges)
                     syncBridgeTmuxSubscriptions(bridges)
@@ -206,6 +224,32 @@ class ConsoleViewModel @Inject constructor(
                         terminalManager?.playBeep()
                     } else {
                         terminalManager?.sendActivityNotification(bridge.host)
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Long-running command completions on host shells: nothing when that
+     * shell is the visible tab; badge + snackbar when it is hidden. The
+     * backgrounded system notification is posted by the bridge directly.
+     */
+    private fun syncBridgeCompletionSubscriptions(bridges: List<TerminalBridge>) {
+        syncBridgeJobs(bridges, completionJobs) { bridge ->
+            viewModelScope.launch {
+                bridge.commandCompletions.collect { event ->
+                    val current = _uiState.value.currentTab
+                    val viewing = current is ConsoleTab.HostShell && current.bridge === bridge
+                    if (!viewing) {
+                        completionBadgeKeys.add(ConsoleTab.hostKey(bridge.host.id))
+                        rebuildTabs()
+                        _completionMessages.emit(
+                            CompletionMessage(
+                                sourceLabel = bridge.host.nickname.orEmpty(),
+                                durationText = formatDuration(event.durationMs),
+                            ),
+                        )
                     }
                 }
             }
@@ -378,6 +422,11 @@ class ConsoleViewModel @Inject constructor(
                             onTmuxPaneBell(bridge, sessionId, paneId)
                         }
                     }
+                    launch {
+                        tmux.commandCompletions.collect { event ->
+                            onTmuxCommandCompletion(bridge, event)
+                        }
+                    }
                 }
             }
         }
@@ -419,6 +468,27 @@ class ConsoleViewModel @Inject constructor(
         )
     }
 
+    /**
+     * A long-running command finished in a live tmux pane. Nothing when the
+     * user is viewing that window; snackbar otherwise (the window/tab badges
+     * are set by TmuxSessionManager, and the backgrounded notification by the
+     * bridge's collector).
+     */
+    private fun onTmuxCommandCompletion(bridge: TerminalBridge, event: TmuxCommandCompletion) {
+        val current = _uiState.value.currentTab
+        val viewingThatWindow = current is ConsoleTab.TmuxSession &&
+            current.bridge === bridge &&
+            current.sessionId == event.sessionId &&
+            bridge.tmux?.currentTarget?.value?.windowId == event.windowId
+        if (viewingThatWindow) return
+        _completionMessages.tryEmit(
+            CompletionMessage(
+                sourceLabel = "${event.sessionName}:${event.windowName}",
+                durationText = formatDuration(event.durationMs),
+            ),
+        )
+    }
+
     private fun rebuildTabs() {
         _uiState.update { state ->
             val tabs = state.bridges.flatMap { bridge ->
@@ -432,7 +502,12 @@ class ConsoleViewModel @Inject constructor(
                         activityBadge = session.activity || session.windows.any { it.activity },
                     )
                 }
-                listOf(ConsoleTab.HostShell(bridge)) + sessionTabs
+                listOf(
+                    ConsoleTab.HostShell(
+                        bridge = bridge,
+                        completionBadge = ConsoleTab.hostKey(bridge.host.id) in completionBadgeKeys,
+                    ),
+                ) + sessionTabs
             }
             val currentKey = state.currentTabKey
                 ?.takeIf { key -> tabs.any { it.key == key } }
@@ -479,6 +554,7 @@ class ConsoleViewModel @Inject constructor(
     /** Selects a tab by key; lazily attaches detached tmux sessions. */
     fun selectTab(key: String) {
         val tab = _uiState.value.tabs.find { it.key == key } ?: return
+        if (completionBadgeKeys.remove(key)) rebuildTabs()
         val bridgeIndex = _uiState.value.bridges.indexOfFirst { it === tab.bridge }
         if (bridgeIndex != -1) {
             selectedHostId = tab.bridge.host.id

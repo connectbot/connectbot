@@ -33,6 +33,7 @@ import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.ui.MainActivity
 import org.connectbot.util.HostConstants
+import org.connectbot.util.formatDuration
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -59,19 +60,28 @@ class ConnectionNotifier @Inject constructor() {
             .setWhen(System.currentTimeMillis())
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel(context, id)
+            when (id) {
+                COMPLETION_CHANNEL -> createNotificationChannel(
+                    context,
+                    id,
+                    context.getString(R.string.notification_channel_completions),
+                    NotificationManager.IMPORTANCE_HIGH,
+                )
+                else -> createNotificationChannel(context, id)
+            }
         }
 
         return builder
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
-    private fun createNotificationChannel(context: Context, id: String) {
-        val nc = NotificationChannel(
-            id,
-            context.getString(R.string.app_name),
-            NotificationManager.IMPORTANCE_DEFAULT,
-        )
+    private fun createNotificationChannel(
+        context: Context,
+        id: String,
+        name: String = context.getString(R.string.app_name),
+        importance: Int = NotificationManager.IMPORTANCE_DEFAULT,
+    ) {
+        val nc = NotificationChannel(id, name, importance)
         getNotificationManager(context).createNotificationChannel(nc)
     }
 
@@ -90,19 +100,10 @@ class ConnectionNotifier @Inject constructor() {
             res.getString(R.string.notification_text, host.nickname)
         }
 
-        val notificationIntent = Intent(context, MainActivity::class.java).apply {
-            action = Intent.ACTION_VIEW
-            data = if (tmuxTarget != null) {
-                host.getUri().buildUpon().appendQueryParameter(TMUX_QUERY_PARAM, tmuxTarget).build()
-            } else {
-                host.getUri()
-            }
-        }
-
         val contentIntent = PendingIntent.getActivity(
             context,
             tmuxTarget?.hashCode() ?: 0,
-            notificationIntent,
+            deepLinkIntent(context, host, tmuxTarget),
             pendingIntentFlags,
         )
 
@@ -124,6 +125,19 @@ class ConnectionNotifier @Inject constructor() {
         builder.setLights(ledColor, ledOnMS, ledOffMS)
 
         return builder.build()
+    }
+
+    /**
+     * Intent that opens the console for [host], optionally landing on a tmux
+     * window via a `tmux` query parameter ("sessionId|windowId").
+     */
+    private fun deepLinkIntent(context: Context, host: Host, tmuxTarget: String?): Intent = Intent(context, MainActivity::class.java).apply {
+        action = Intent.ACTION_VIEW
+        data = if (tmuxTarget != null) {
+            host.getUri().buildUpon().appendQueryParameter(TMUX_QUERY_PARAM, tmuxTarget).build()
+        } else {
+            host.getUri()
+        }
     }
 
     private fun newRunningNotification(context: Context): Notification {
@@ -180,6 +194,60 @@ class ConnectionNotifier @Inject constructor() {
         )
     }
 
+    /**
+     * Heads-up notification for a long-running command that finished while the
+     * app was in the background, showing the tail of the command's output.
+     * Repeat completions on the same target (host shell or tmux window) update
+     * in place; distinct targets stack.
+     *
+     * @param tmuxTarget "sessionId|windowId" when the command ran in a tmux
+     *   window, null for the host shell
+     * @param tmuxLabel human-readable "session:window", null for the host shell
+     */
+    fun showCommandCompletionNotification(
+        context: Service,
+        host: Host,
+        tmuxTarget: String?,
+        tmuxLabel: String?,
+        durationMs: Long,
+        snippet: String?,
+    ) {
+        val builder = newNotificationBuilder(context, COMPLETION_CHANNEL)
+        val res = context.resources
+
+        val title = if (tmuxLabel != null) {
+            res.getString(R.string.notification_command_finished, "${host.nickname} · $tmuxLabel")
+        } else {
+            res.getString(R.string.notification_command_finished, host.nickname)
+        }
+        val status = res.getString(
+            R.string.notification_command_status,
+            formatDuration(durationMs),
+        )
+
+        val notificationId = completionNotificationId(host, tmuxTarget)
+        val contentIntent = PendingIntent.getActivity(
+            context,
+            notificationId,
+            deepLinkIntent(context, host, tmuxTarget),
+            pendingIntentFlags,
+        )
+
+        builder.setContentTitle(title)
+            .setContentText(status)
+            .setStyle(
+                NotificationCompat.BigTextStyle().bigText(
+                    snippet?.let { "$it\n\n$status" } ?: status,
+                ),
+            )
+            .setContentIntent(contentIntent)
+            .setAutoCancel(true)
+
+        getNotificationManager(context).notify(notificationId, builder.build())
+    }
+
+    private fun completionNotificationId(host: Host, tmuxTarget: String?): Int = "completion:${host.id}:${tmuxTarget ?: "shell"}".hashCode()
+
     fun showRunningNotification(context: Service) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             showRunningNotificationWithType(context)
@@ -210,5 +278,6 @@ class ConnectionNotifier @Inject constructor() {
         const val TMUX_QUERY_PARAM = "tmux"
         private const val ONLINE_DISCONNECT_NOTIFICATION = 3
         private const val NOTIFICATION_CHANNEL = "my_connectbot_channel"
+        private const val COMPLETION_CHANNEL = "command_completion_channel"
     }
 }

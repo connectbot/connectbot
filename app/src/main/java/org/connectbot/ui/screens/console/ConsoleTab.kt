@@ -33,7 +33,11 @@ sealed interface ConsoleTab {
     val bridge: TerminalBridge
 
     /** The host's regular shell — the original console view. */
-    data class HostShell(override val bridge: TerminalBridge) : ConsoleTab {
+    data class HostShell(
+        override val bridge: TerminalBridge,
+        /** A long-running command finished here while the tab was hidden. */
+        val completionBadge: Boolean = false,
+    ) : ConsoleTab {
         override val key: String = hostKey(bridge.host.id)
     }
 

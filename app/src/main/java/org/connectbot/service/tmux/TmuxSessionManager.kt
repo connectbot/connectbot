@@ -36,6 +36,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.withTimeoutOrNull
+import org.connectbot.service.meetsCompletionThreshold
 import org.connectbot.transport.ExecChannel
 import timber.log.Timber
 
@@ -94,6 +95,14 @@ class TmuxSessionManager(
     /** New window-level bell/activity flags discovered by polling. */
     private val _alertEvents = MutableSharedFlow<TmuxAlert>(extraBufferCapacity = 32)
     val alertEvents: SharedFlow<TmuxAlert> = _alertEvents.asSharedFlow()
+
+    /** Long-running command completions from live panes (OSC 133). */
+    private val _commandCompletions = MutableSharedFlow<TmuxCommandCompletion>(extraBufferCapacity = 16)
+    val commandCompletions: SharedFlow<TmuxCommandCompletion> = _commandCompletions.asSharedFlow()
+
+    /** Minimum command duration in ms before a completion is reported; 0 = off. The bridge sets it. */
+    @Volatile
+    var completionThresholdMs: Long = 0L
 
     /**
      * Flag-poll cadence: the console sets ~10s while foregrounded; the
@@ -762,6 +771,9 @@ class TmuxSessionManager(
                 scope = scope,
                 sendCommand = { command -> client.command(command) },
                 onBell = { sessionId, paneId -> onPaneBell(sessionId, paneId) },
+                onCommandCompletion = { sessionId, paneId, durationMs, snippet ->
+                    onPaneCommandCompleted(sessionId, paneId, durationMs, snippet)
+                },
                 emulatorFactory = paneEmulatorFactory,
             ).also { it.stickyModifierSetting = stickyModifierSetting }
         }
@@ -787,6 +799,47 @@ class TmuxSessionManager(
                 },
             )
         }
+    }
+
+    /**
+     * A long-running command finished in a live pane: badge its window (via
+     * the existing activity-flag plumbing) unless the user is looking at it,
+     * and emit the completion for the console/notification layers.
+     * Internal so tests can drive it with fabricated durations.
+     */
+    internal fun onPaneCommandCompleted(
+        sessionId: String,
+        paneId: String,
+        durationMs: Long,
+        snippet: String?,
+    ) {
+        if (!meetsCompletionThreshold(durationMs, completionThresholdMs)) return
+        val session = _state.value.session(sessionId) ?: return
+        val window = session.windows.find { w -> w.panes.any { it.id == paneId } } ?: return
+
+        val viewed = _currentTarget.value
+        val isViewed = viewed?.sessionId == sessionId && viewed.windowId == window.id
+        if (!isViewed) {
+            mutateSession(sessionId) { s ->
+                s.copy(
+                    activity = true,
+                    windows = s.windows.map { w ->
+                        if (w.id == window.id) w.copy(activity = true) else w
+                    },
+                )
+            }
+        }
+        _commandCompletions.tryEmit(
+            TmuxCommandCompletion(
+                sessionId = sessionId,
+                sessionName = session.name,
+                windowId = window.id,
+                windowName = window.name,
+                paneId = paneId,
+                durationMs = durationMs,
+                snippet = snippet,
+            ),
+        )
     }
 
     /** Stops an evicted pane's output stream server-side when supported. */

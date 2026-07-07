@@ -87,6 +87,13 @@ object PreferenceConstants {
     const val BELL_NOTIFICATION: String = "bellNotification"
     const val DEFAULT_BELL_VOLUME: Float = 0.25f
 
+    /**
+     * Minimum command duration in seconds ("0" = off) before a completed
+     * command triggers an alert. Requires OSC 133 shell integration.
+     */
+    const val COMMAND_COMPLETION_NOTIFY: String = "commandCompletionNotify"
+    const val DEFAULT_COMMAND_COMPLETION_NOTIFY: String = "30"
+
     const val CONNECTION_PERSIST: String = "connPersist"
     const val NOTIFICATION_PERMISSION_DENIED: String = "notificationPermissionDenied"
 

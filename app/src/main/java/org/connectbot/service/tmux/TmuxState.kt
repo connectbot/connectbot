@@ -177,6 +177,17 @@ data class TmuxAlert(
     val windowName: String,
 )
 
+/** A long-running command that finished in a live pane (OSC 133). */
+data class TmuxCommandCompletion(
+    val sessionId: String,
+    val sessionName: String,
+    val windowId: String,
+    val windowName: String,
+    val paneId: String,
+    val durationMs: Long,
+    val snippet: String?,
+)
+
 /** The pane the user is (or was last) looking at within a session. */
 data class TmuxTarget(
     val sessionId: String,

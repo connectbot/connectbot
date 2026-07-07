@@ -62,6 +62,7 @@ import org.connectbot.transport.SSH
 import org.connectbot.transport.TransportFactory
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.commandOutputSnippet
 import org.connectbot.util.ProfileStartup
 import timber.log.Timber
 import java.io.IOException
@@ -222,6 +223,10 @@ class TerminalBridge {
 
     private val _bellEvents = MutableSharedFlow<Unit>(replay = 0, extraBufferCapacity = 10)
     val bellEvents: SharedFlow<Unit> = _bellEvents.asSharedFlow()
+
+    // OSC 133 shell integration: long-running command completions
+    private val _commandCompletions = MutableSharedFlow<HostCommandCompletion>(replay = 0, extraBufferCapacity = 10)
+    val commandCompletions: SharedFlow<HostCommandCompletion> = _commandCompletions.asSharedFlow()
 
     private val _networkStatusMessages = MutableSharedFlow<String>(replay = 0, extraBufferCapacity = 10)
     val networkStatusMessages: SharedFlow<String> = _networkStatusMessages.asSharedFlow()
@@ -385,6 +390,17 @@ class TerminalBridge {
                 // OSC 9;4 progress reporting - update progress state
                 Timber.d("OSC 9;4 progress: state=$state, progress=$progress")
                 _progressState.value = ProgressInfo(state, progress)
+            },
+            onCommandFinished = { durationMs ->
+                if (meetsCompletionThreshold(durationMs, completionThresholdMs(manager.prefs))) {
+                    val snippet = commandOutputSnippet(terminalEmulator)
+                    scope.launch {
+                        _commandCompletions.emit(HostCommandCompletion(durationMs, snippet))
+                    }
+                    // Backgrounded case; gated on !isUiBound inside the manager.
+                    // Foreground routing happens via the flow in ConsoleViewModel.
+                    manager.sendCommandCompletionNotification(host, durationMs, snippet)
+                }
             },
         )
 
@@ -837,6 +853,13 @@ class TerminalBridge {
                     runCatching {
                         manager.hostRepository.updateTmuxLastTarget(host.id, target?.encode())
                     }
+                }
+            }
+            created.completionThresholdMs = completionThresholdMs(manager.prefs)
+            scope.launch {
+                created.commandCompletions.collect { event ->
+                    // Backgrounded case; gated on !isUiBound inside the manager.
+                    manager.sendTmuxCommandCompletionNotification(host, event)
                 }
             }
             tmux = created

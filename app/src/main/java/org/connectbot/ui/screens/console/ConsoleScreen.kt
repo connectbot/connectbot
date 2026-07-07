@@ -1223,6 +1223,20 @@ fun ConsoleScreen(
         }
     }
 
+    // Show snackbar when a long-running command finishes in a hidden tab/window
+    val completionMessageTemplate = stringResource(R.string.command_finished_snackbar)
+    LaunchedEffect(Unit) {
+        viewModel.completionMessages.collect { completion ->
+            snackbarHostState.showSnackbar(
+                String.format(
+                    completionMessageTemplate,
+                    completion.sourceLabel,
+                    completion.durationText,
+                ),
+            )
+        }
+    }
+
     // Show snackbar on each open when connections won't persist in background
     val notificationWarningMessage = stringResource(R.string.notification_permission_console_warning)
     val settingsLabel = stringResource(R.string.list_menu_settings)
@@ -2003,6 +2017,7 @@ fun ConsoleScreen(
                                     nickname = tab.bridge.host.nickname,
                                     color = tab.bridge.host.color,
                                     isDisconnected = tab.bridge.isDisconnected,
+                                    activityBadge = tab.completionBadge,
                                 )
 
                                 is ConsoleTab.TmuxSession -> SessionTabData(

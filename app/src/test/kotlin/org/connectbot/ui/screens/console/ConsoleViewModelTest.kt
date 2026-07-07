@@ -650,6 +650,7 @@ class ConsoleViewModelTest {
         whenever(bridge.isSessionOpen).thenReturn(true)
         whenever(bridge.isDisconnected).thenReturn(false)
         whenever(bridge.bellEvents).thenReturn(MutableSharedFlow())
+        whenever(bridge.commandCompletions).thenReturn(MutableSharedFlow())
         whenever(bridge.progressState).thenReturn(progressFlow)
         whenever(bridge.networkStatusMessages).thenReturn(MutableSharedFlow())
         return bridge

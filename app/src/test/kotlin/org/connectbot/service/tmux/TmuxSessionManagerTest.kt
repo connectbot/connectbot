@@ -255,7 +255,7 @@ class TmuxSessionManagerTest {
     @Test
     fun `acquire pane terminal backfills and routes live output`() = runBlocking<Unit> {
         val fakes = mutableListOf<FakeEmulator>()
-        manager.paneEmulatorFactory = TmuxPaneEmulatorFactory { _, _, _, _, _ ->
+        manager.paneEmulatorFactory = TmuxPaneEmulatorFactory { _, _, _, _, _, _ ->
             FakeEmulator().also { fakes.add(it) }
         }
         connectAndAwaitReady()
@@ -330,9 +330,58 @@ class TmuxSessionManagerTest {
     }
 
     @Test
+    fun `pane command completions respect threshold and badge hidden windows`() = runBlocking<Unit> {
+        connectAndAwaitReady()
+        withTimeout(5_000) { manager.attach("\$0") }
+        awaitState { it.session("\$0")?.windows?.isNotEmpty() == true }
+        withTimeout(5_000) { manager.selectTarget(TmuxTarget("\$0", "@0", "%0", "main")) }
+
+        val events = mutableListOf<TmuxCommandCompletion>()
+        // UNDISPATCHED so the subscription exists before the first tryEmit.
+        val collector = scope.launch(start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
+            manager.commandCompletions.collect { synchronized(events) { events.add(it) } }
+        }
+        manager.completionThresholdMs = 30_000
+
+        // Below threshold: dropped entirely.
+        manager.onPaneCommandCompleted("\$0", "%0", durationMs = 5_000, snippet = null)
+        // Unknown duration (-1, no start mark seen): also dropped.
+        manager.onPaneCommandCompleted("\$0", "%0", durationMs = -1, snippet = null)
+
+        // Viewed window (@0): emitted for consumers, but no activity badge.
+        manager.onPaneCommandCompleted("\$0", "%0", durationMs = 60_000, snippet = "done")
+        withTimeout(5_000) {
+            while (synchronized(events) { events.isEmpty() }) kotlinx.coroutines.delay(10)
+        }
+        assertThat(
+            manager.state.value.session("\$0")!!.windows.first { it.id == "@0" }.activity,
+        ).isFalse()
+
+        // Hidden window (@1 owns pane %2): badge + emit.
+        manager.onPaneCommandCompleted("\$0", "%2", durationMs = 45_000, snippet = null)
+        val state = awaitState { s ->
+            s.session("\$0")?.windows?.find { it.id == "@1" }?.activity == true
+        }
+        assertThat(state.session("\$0")!!.activity).isTrue()
+        withTimeout(5_000) {
+            while (synchronized(events) { events.size < 2 }) kotlinx.coroutines.delay(10)
+        }
+
+        val list = synchronized(events) { events.toList() }
+        assertThat(list).hasSize(2)
+        assertThat(list[0].windowId).isEqualTo("@0")
+        assertThat(list[0].snippet).isEqualTo("done")
+        assertThat(list[1].windowId).isEqualTo("@1")
+        assertThat(list[1].sessionName).isEqualTo("main")
+        assertThat(list[1].windowName).isEqualTo("logs")
+        assertThat(list[1].durationMs).isEqualTo(45_000)
+        collector.cancel()
+    }
+
+    @Test
     fun `attach enables flow control and pause triggers resume with resync`() = runBlocking<Unit> {
         val fakes = mutableListOf<FakeEmulator>()
-        manager.paneEmulatorFactory = TmuxPaneEmulatorFactory { _, _, _, _, _ ->
+        manager.paneEmulatorFactory = TmuxPaneEmulatorFactory { _, _, _, _, _, _ ->
             FakeEmulator().also { fakes.add(it) }
         }
         connectAndAwaitReady()

@@ -520,6 +520,25 @@
 	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
 	<string name="pref_bell_notification_summary">"Send notification when a terminal running in the background sounds a bell."</string>
 
+	<!-- List preference title for alerts when a long-running command finishes -->
+	<string name="pref_command_completion_title">"Command completion alerts"</string>
+	<!-- Summary shown when command completion alerts are off -->
+	<string name="pref_command_completion_summary">"Off. Requires shell integration (OSC 133)."</string>
+	<!-- Summary shown when command completion alerts are on; %1$s is the minimum duration, e.g. "30 seconds" -->
+	<string name="pref_command_completion_summary_on">"Alert when commands running %1$s or longer finish. Requires shell integration (OSC 133)."</string>
+	<!-- Preference selection to disable command completion alerts -->
+	<string name="list_command_completion_off">"Off"</string>
+	<!-- Preference selection: minimum command duration of 10 seconds -->
+	<string name="list_command_completion_10s">"10 seconds"</string>
+	<!-- Preference selection: minimum command duration of 30 seconds -->
+	<string name="list_command_completion_30s">"30 seconds"</string>
+	<!-- Preference selection: minimum command duration of 1 minute -->
+	<string name="list_command_completion_1m">"1 minute"</string>
+	<!-- Preference selection: minimum command duration of 2 minutes -->
+	<string name="list_command_completion_2m">"2 minutes"</string>
+	<!-- Preference selection: minimum command duration of 5 minutes -->
+	<string name="list_command_completion_5m">"5 minutes"</string>
+
 	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
 	<string name="list_keymode_right">"Use right-side keys"</string>
 	<!-- Preference selection to indicate use of left side of keyboard for special shortcuts. -->
@@ -1058,6 +1077,15 @@
 	<string name="notification_text">"%1$s wants your attention."</string>
 	<!-- Notification for a bell in a tmux window; %1$s host, %2$s session:window -->
 	<string name="notification_text_tmux">%1$s · %2$s rang its bell.</string>
+
+	<!-- Name of the notification channel for command completion alerts -->
+	<string name="notification_channel_completions">"Command completion"</string>
+	<!-- Title of a command completion notification; %1$s is the host nickname or host · tmux window -->
+	<string name="notification_command_finished">"%1$s: command finished"</string>
+	<!-- Status line of a command completion notification; %1$s is how long the command ran -->
+	<string name="notification_command_status">"took %1$s"</string>
+	<!-- Snackbar shown in-app when a command finishes in a hidden session; %1$s session name, %2$s duration -->
+	<string name="command_finished_snackbar">"%1$s: command finished (%2$s)"</string>
 
 	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
 	<string name="no">"No"</string>

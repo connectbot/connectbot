@@ -36,6 +36,7 @@ internal class FakeEmulator : TmuxPaneEmulatorHandle {
     var cols = 0
     var keyboardInput: ((ByteArray) -> Unit)? = null
     var bell: (() -> Unit)? = null
+    var commandFinished: ((Long) -> Unit)? = null
 
     override val terminalEmulator: TerminalEmulator? = null
 
@@ -67,7 +68,10 @@ class TmuxPaneTerminalTest {
         scope.cancel()
     }
 
-    private fun terminal(onBell: (String, String) -> Unit = { _, _ -> }): TmuxPaneTerminal =
+    private fun terminal(
+        onBell: (String, String) -> Unit = { _, _ -> },
+        onCommandCompletion: (String, String, Long, String?) -> Unit = { _, _, _, _ -> },
+    ): TmuxPaneTerminal =
         TmuxPaneTerminal(
             sessionId = "\$0",
             paneId = "%1",
@@ -81,12 +85,14 @@ class TmuxPaneTerminalTest {
                     ?: TmuxReply(0, true, emptyList())
             },
             onBell = onBell,
-            emulatorFactory = { rows, cols, _, onKeyboardInput, onBellCallback ->
+            onCommandCompletion = onCommandCompletion,
+            emulatorFactory = { rows, cols, _, onKeyboardInput, onBellCallback, onCommandFinished ->
                 fakeEmulator.also {
                     it.rows = rows
                     it.cols = cols
                     it.keyboardInput = onKeyboardInput
                     it.bell = onBellCallback
+                    it.commandFinished = onCommandFinished
                 }
             },
         )
@@ -167,6 +173,16 @@ class TmuxPaneTerminalTest {
         terminal(onBell = { s, p -> belled = s to p })
         fakeEmulator.bell!!.invoke()
         assertThat(belled).isEqualTo("\$0" to "%1")
+    }
+
+    @Test
+    fun `command completion is forwarded with pane identity`() {
+        val completions = mutableListOf<Triple<String, String, Long>>()
+        terminal(onCommandCompletion = { s, p, durationMs, _ -> completions.add(Triple(s, p, durationMs)) })
+
+        fakeEmulator.commandFinished!!.invoke(45_000)
+
+        assertThat(completions).containsExactly(Triple("\$0", "%1", 45_000L))
     }
 
     @Test
