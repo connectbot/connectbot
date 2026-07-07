@@ -37,8 +37,8 @@ import com.trilead.ssh2.SFTPv3Client
 import com.trilead.ssh2.Session
 import com.trilead.ssh2.UserAuthBannerCallback
 import com.trilead.ssh2.crypto.PEMDecoder
+import com.trilead.ssh2.crypto.PublicKeyUtils
 import com.trilead.ssh2.crypto.fingerprint.KeyFingerprint
-import com.trilead.ssh2.crypto.keys.Ed25519PrivateKey
 import com.trilead.ssh2.crypto.keys.Ed25519Provider
 import com.trilead.ssh2.crypto.keys.Ed25519PublicKey
 import com.trilead.ssh2.signature.DSASHA1Verify
@@ -76,11 +76,8 @@ import java.nio.charset.StandardCharsets
 import java.security.KeyPair
 import java.security.NoSuchAlgorithmException
 import java.security.PublicKey
-import java.security.interfaces.DSAPrivateKey
 import java.security.interfaces.DSAPublicKey
-import java.security.interfaces.ECPrivateKey
 import java.security.interfaces.ECPublicKey
-import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
 import java.security.spec.InvalidKeySpecException
 import java.util.Locale
@@ -1406,52 +1403,61 @@ class SSH :
     override fun retrieveIdentities(): Map<String, ByteArray> {
         val pubKeys = HashMap<String, ByteArray>(manager?.loadedKeypairs?.size ?: 0)
 
-        manager?.loadedKeypairs?.entries?.forEach { entry ->
-            val pair = entry.value.pair ?: return@forEach
-            try {
-                val privKey = pair.private
-                when (privKey) {
-                    is RSAPrivateKey -> {
-                        val pubkey = pair.public as RSAPublicKey
-                        pubKeys[entry.key] = RSASHA1Verify.get().encodePublicKey(pubkey)
-                    }
+        // In-memory keys already carry their OpenSSH wire-format blob,
+        // including Android Keystore-backed keys whose opaque private halves
+        // don't implement the standard JCA private key interfaces.
+        manager?.loadedKeypairs?.forEach { (nickname, holder) ->
+            holder.openSSHPubkey?.let { pubKeys[nickname] = it }
+        }
 
-                    is DSAPrivateKey -> {
-                        val pubkey = pair.public as DSAPublicKey
-                        pubKeys[entry.key] = DSASHA1Verify.get().encodePublicKey(pubkey)
-                    }
-
-                    is ECPrivateKey -> {
-                        val pubkey = pair.public as ECPublicKey
-                        pubKeys[entry.key] = ECDSASHA2Verify.getVerifierForKey(pubkey).encodePublicKey(pubkey)
-                    }
-
-                    is Ed25519PrivateKey -> {
-                        val pubkey = pair.public as Ed25519PublicKey
-                        pubKeys[entry.key] = Ed25519Verify.get().encodePublicKey(pubkey)
-                    }
-                }
-            } catch (ignored: IOException) {
-            }
+        // Keystore-backed keys drop out of the in-memory cache when their
+        // biometric authorization window expires; keep offering them so a
+        // sign request can trigger re-authentication in getKeyPair().
+        manager?.pubkeyRepository?.getKeystoreBackedBlocking()?.forEach { pubkey ->
+            if (pubKeys.containsKey(pubkey.nickname)) return@forEach
+            keystorePublicKeyBlob(pubkey)?.let { pubKeys[pubkey.nickname] = it }
         }
 
         return pubKeys
     }
 
-    override fun getKeyPair(publicKey: ByteArray): KeyPair? {
-        val nickname = manager?.getKeyNickname(publicKey) ?: return null
+    private fun keystorePublicKeyBlob(pubkey: Pubkey): ByteArray? = try {
+        PublicKeyUtils.extractPublicKeyBlob(PubkeyUtils.decodePublic(pubkey.publicKey, pubkey.type))
+    } catch (e: Exception) {
+        Timber.e(e, "Couldn't encode public key '%s' for the auth agent", pubkey.nickname)
+        null
+    }
 
+    override fun getKeyPair(publicKey: ByteArray): KeyPair? {
         if (useAuthAgent == HostConstants.AUTHAGENT_NO) {
-            Timber.e("")
+            Timber.e("Agent key requested while agent forwarding is disabled")
             return null
         }
-        if (useAuthAgent == HostConstants.AUTHAGENT_CONFIRM) {
-            val holder = manager?.loadedKeypairs?.get(nickname)
-            if (holder != null && holder.pubkey?.confirmation == true && !promptForPubkeyUse(nickname)) {
-                return null
+
+        val nickname = manager?.getKeyNickname(publicKey)
+        if (nickname != null) {
+            if (useAuthAgent == HostConstants.AUTHAGENT_CONFIRM) {
+                val holder = manager?.loadedKeypairs?.get(nickname)
+                if (holder != null && holder.pubkey?.confirmation == true && !promptForPubkeyUse(nickname)) {
+                    return null
+                }
             }
+            return manager?.getKey(nickname)
         }
-        return manager?.getKey(nickname)
+
+        // A keystore-backed key whose biometric authorization window expired
+        // is no longer in memory; unlock it again (prompting for biometrics)
+        // before signing.
+        val pubkey = manager?.pubkeyRepository?.getKeystoreBackedBlocking()
+            ?.firstOrNull { keystorePublicKeyBlob(it)?.contentEquals(publicKey) == true }
+            ?: return null
+        if (useAuthAgent == HostConstants.AUTHAGENT_CONFIRM &&
+            pubkey.confirmation &&
+            !promptForPubkeyUse(pubkey.nickname)
+        ) {
+            return null
+        }
+        return getOrUnlockKey(pubkey)
     }
 
     private fun promptForPubkeyUse(nickname: String): Boolean {

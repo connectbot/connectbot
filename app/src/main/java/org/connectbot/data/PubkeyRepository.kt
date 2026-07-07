@@ -113,6 +113,16 @@ class PubkeyRepository @Inject constructor(
     suspend fun getExportable(): List<Pubkey> = pubkeyDao.getExportable()
 
     /**
+     * Get all pubkeys whose private half lives in the Android Keystore (blocking).
+     * Used from the SSH agent forwarding thread, which is not a coroutine.
+     *
+     * @return List of Keystore-backed pubkeys
+     */
+    fun getKeystoreBackedBlocking(): List<Pubkey> = runBlocking {
+        pubkeyDao.getKeystoreBacked()
+    }
+
+    /**
      * Get all pubkeys marked for automatic unlocking at startup.
      *
      * @return List of startup pubkeys

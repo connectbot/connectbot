@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -84,6 +84,12 @@ interface PubkeyDao {
      */
     @Query("SELECT * FROM pubkeys WHERE storage_type = 'EXPORTABLE'")
     suspend fun getExportable(): List<Pubkey>
+
+    /**
+     * Get all keys whose private half lives in the Android Keystore.
+     */
+    @Query("SELECT * FROM pubkeys WHERE storage_type = 'ANDROID_KEYSTORE'")
+    suspend fun getKeystoreBacked(): List<Pubkey>
 
     /**
      * Get all keys marked for automatic unlocking at startup.
