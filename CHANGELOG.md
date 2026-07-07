@@ -17,6 +17,13 @@ This project adheres to [Semantic Versioning](https://semver.org/).
   server-history scrollback loading. Hosts with tmux but no sessions get a
   one-tap "start persistent session" offer. Requires tmux ≥ 2.6 on the server.
 
+### Removed
+- Local shell transport, along with its JNI bridge (`com.google.ase.Exec`) and
+  the entire NDK/CMake native build (no more cross-ABI compilation or debug
+  symbol packaging), shrinking the APK and speeding up CI.
+- Telnet transport and its vendored `de.mud.telnet` protocol handler.
+- Unused vendored keyczar EC provider (`org.keyczar.jce.EcCore`).
+
 ## [1.10.9][1.10.9]
 
 ### Fixed

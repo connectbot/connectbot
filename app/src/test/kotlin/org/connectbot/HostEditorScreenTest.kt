@@ -20,7 +20,6 @@ package org.connectbot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsEnabled
-import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -152,77 +151,4 @@ class HostEditorScreenTest {
         }
     }
 
-    @Test
-    fun hostEditorScreen_localProtocol_hidesUserHostPortFields() {
-        navigateToHostEditorScreen(-1L)
-
-        composeTestRule
-            .onNodeWithText("Show advanced options")
-            .performClick()
-
-        composeTestRule.waitForIdle()
-
-        composeTestRule
-            .onNodeWithText("Username")
-            .assertIsDisplayed()
-        composeTestRule
-            .onNodeWithText("Host")
-            .assertIsDisplayed()
-        composeTestRule
-            .onNodeWithText("Port")
-            .assertIsDisplayed()
-
-        composeTestRule
-            .onNodeWithText("ssh")
-            .performClick()
-
-        composeTestRule.waitForIdle()
-
-        composeTestRule
-            .onNodeWithText("local")
-            .performClick()
-
-        composeTestRule.waitForIdle()
-
-        composeTestRule
-            .onNodeWithText("Username")
-            .assertIsNotDisplayed()
-        composeTestRule
-            .onNodeWithText("Host")
-            .assertIsNotDisplayed()
-        composeTestRule
-            .onNodeWithText("Port")
-            .assertIsNotDisplayed()
-    }
-
-    @Test
-    fun hostEditorScreen_localProtocol_saveButtonEnabled() {
-        navigateToHostEditorScreen(-1L)
-
-        composeTestRule
-            .onNodeWithText("Show advanced options")
-            .performClick()
-
-        composeTestRule.waitForIdle()
-
-        composeTestRule
-            .onNodeWithTag("add_host_button")
-            .assertIsNotEnabled()
-
-        composeTestRule
-            .onNodeWithText("ssh")
-            .performClick()
-
-        composeTestRule.waitForIdle()
-
-        composeTestRule
-            .onNodeWithText("local")
-            .performClick()
-
-        composeTestRule.waitForIdle()
-
-        composeTestRule
-            .onNodeWithTag("add_host_button")
-            .assertIsEnabled()
-    }
 }

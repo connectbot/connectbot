@@ -307,7 +307,6 @@
   <string name="terminal_auth_fail">[Uw host ondersteund \'wachtwoord\' of \'keyboard-interactive\' authenticatie niet.]</string>
   <string name="terminal_no_session">Sessie zal niet gestart worden door host instelling</string>
   <string name="terminal_enable_portfoward">Activeer port forward: %1$s</string>
-  <string name="local_shell_unavailable">Mislukking! Lokale shell is niet beschikbaar op deze telefoon.</string>
   <string name="notification_text">%1$s wil je aandacht.</string>
   <string name="no">Nee</string>
   <string name="yes">Ja</string>

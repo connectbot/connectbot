@@ -648,7 +648,6 @@ private fun HostListItem(
                         Icon(
                             imageVector = when (host.protocol) {
                                 "ssh" -> Icons.Default.Computer
-                                "telnet" -> Icons.Default.Computer
                                 else -> Icons.Default.Link
                             },
                             contentDescription = when (connectionState) {

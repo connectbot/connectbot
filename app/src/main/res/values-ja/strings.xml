@@ -307,7 +307,6 @@
   <string name="terminal_auth_fail">[ホストは \'password\' や \'keyboard-interactive\' 認証をサポートしていません.]</string>
   <string name="terminal_no_session">ホスト設定によりセッションを開始しません</string>
   <string name="terminal_enable_portfoward">ポート転送 %1$s を有効化</string>
-  <string name="local_shell_unavailable">エラー! この電話機にはローカルシェルがありません.</string>
   <string name="notification_text">%1$s でベルが鳴りました。</string>
   <string name="no">いいえ</string>
   <string name="yes">はい</string>

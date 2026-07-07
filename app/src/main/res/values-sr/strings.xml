@@ -154,7 +154,6 @@
   <string name="terminal_auth_fail">[Ваш домаћин не подржава аутентификацију лозинком или интерактивном тастатуром.]</string>
   <string name="terminal_no_session">Сесија неће бити покренута због поставке домаћина.</string>
   <string name="terminal_enable_portfoward">Омогући прослеђење порта: %1$s</string>
-  <string name="local_shell_unavailable">Неуспех! Нема локалне шкољке на овом телефону.</string>
   <string name="notification_text">%1$s жели вашу пажњу.</string>
   <string name="no">Не</string>
   <string name="yes">Да</string>

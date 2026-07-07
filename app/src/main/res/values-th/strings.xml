@@ -309,7 +309,6 @@
   <string name="terminal_auth_fail" tools:machine_translated="true">[เซิร์ฟเวอร์ของคุณไม่รองรับวิธีการยืนยันตัวตนแบบ \'รหัสผ่าน\' หรือ \'แบบโต้ตอบกับแป้นพิมพ์\']</string>
   <string name="terminal_no_session" tools:machine_translated="true">ระบบจะไม่เริ่มเซสชันเนื่องจากมีการตั้งค่าไว้ในส่วนของโฮสต์.</string>
   <string name="terminal_enable_portfoward" tools:machine_translated="true">เปิดใช้งานการส่งต่อพอร์ต: %1$s</string>
-  <string name="local_shell_unavailable" tools:machine_translated="true">เกิดข้อผิดพลาด! ไม่สามารถเปิดใช้งานเชลล์ในเครื่องบนโทรศัพท์นี้ได้.</string>
   <string name="notification_text" tools:machine_translated="true">%1$s ต้องการให้คุณใส่ใจ.</string>
   <string name="no" tools:machine_translated="true">ไม่</string>
   <string name="yes" tools:machine_translated="true">ใช่</string>

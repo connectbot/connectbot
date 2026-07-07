@@ -309,7 +309,6 @@
   <string name="terminal_auth_fail" tools:machine_translated="true">[U bediener ondersteun nie die \'wagwoord\'- of \'sleutelbordinteraksie\'-verifikasiemetodes nie.]</string>
   <string name="terminal_no_session" tools:machine_translated="true">Die sessie sal nie begin nie, aangesien die gebruiker dit in die gasheerstellings gedeaktiveer het.</string>
   <string name="terminal_enable_portfoward" tools:machine_translated="true">Aktiveer poortdoorgang: %1$s</string>
-  <string name="local_shell_unavailable" tools:machine_translated="true">Fout! Die plaaslike dop is nie op hierdie telefoon beskikbaar nie.</string>
   <string name="notification_text" tools:machine_translated="true">%1$s wil jou aandag.</string>
   <string name="no" tools:machine_translated="true">Nee</string>
   <string name="yes" tools:machine_translated="true">Ja</string>

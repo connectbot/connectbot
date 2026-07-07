@@ -307,7 +307,6 @@
   <string name="terminal_auth_fail">[您的主機不支援 \'密碼\' 或 \'keyboard-interactive\' 驗證機制。]</string>
   <string name="terminal_no_session">因為主機的相關設置，不會啓動會話階段。</string>
   <string name="terminal_enable_portfoward">啓用連接埠轉址：%1$s</string>
-  <string name="local_shell_unavailable">失敗！此手機 Shell 不可用。</string>
   <string name="notification_text">%1$s 需要您的注意。</string>
   <string name="no">否</string>
   <string name="yes">是</string>

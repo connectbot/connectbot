@@ -68,7 +68,6 @@ data class HostEditorUiState(
     val isNicknameMatching: Boolean
         get() {
             if (nickname.isBlank()) return true
-            if (protocol == "local") return false
             val defaultPort = (Transport.fromProtocol(protocol)?.defaultPort ?: 0).toString()
             val effectivePort = port.ifBlank { defaultPort }
             val repWithPort = if (username.isNotEmpty() && protocol == "ssh") "$username@$hostname:$effectivePort" else "$hostname:$effectivePort"
@@ -140,7 +139,6 @@ class HostEditorViewModel @Inject constructor(
     private fun getDefaultPort(protocol: String): String = (Transport.fromProtocol(protocol)?.defaultPort ?: 0).toString()
 
     private fun getHostRepresentation(username: String, hostname: String, port: String, protocol: String): String {
-        if (protocol == "local") return ""
         val defaultPort = getDefaultPort(protocol)
         return buildString {
             if (username.isNotEmpty() && protocol == "ssh") {
@@ -159,7 +157,6 @@ class HostEditorViewModel @Inject constructor(
         oldState: HostEditorUiState,
         newState: HostEditorUiState,
     ): HostEditorUiState {
-        if (newState.protocol == "local") return newState
         val newRep = getHostRepresentation(newState.username, newState.hostname, newState.port, newState.protocol)
         return if (oldState.isNicknameMatching) {
             newState.copy(nickname = newRep, quickConnect = newRep)
@@ -251,11 +248,6 @@ class HostEditorViewModel @Inject constructor(
             return
         }
 
-        if (_uiState.value.protocol == "local") {
-            _uiState.update { it.copy(quickConnect = value) }
-            return
-        }
-
         val parsed = parseQuickConnect(value)
         if (parsed != null) {
             val (username, hostname, port) = parsed
@@ -305,8 +297,6 @@ class HostEditorViewModel @Inject constructor(
 
     fun updateQuickConnect(value: String) {
         _uiState.update { it.copy(quickConnect = value, nickname = value) }
-
-        if (_uiState.value.protocol == "local") return
 
         val parsed = parseQuickConnect(value)
         if (parsed != null) {

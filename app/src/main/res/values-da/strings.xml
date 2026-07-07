@@ -139,7 +139,6 @@
   <string name="terminal_auth_fail">[Din vært understøtter ikke \'password\' eller \'keyboard-interactive\' autorisering.]</string>
   <string name="terminal_no_session">Sessionen kunne ikke startes pga. værtens preferencer</string>
   <string name="terminal_enable_portfoward">Aktiver port-videresendelse: %1$s</string>
-  <string name="local_shell_unavailable">Fejl! Lokal konsol er ikke tilgængelig på denne telefon.</string>
   <string name="notification_text">%1$s vil have din opmærksomhed.</string>
   <string name="no">Nej</string>
   <string name="yes">Ja</string>

@@ -32,12 +32,6 @@ class SSHKeepaliveTest {
     }
 
     @Test
-    fun supportsKeepalive_isFalseByDefault() {
-        assertThat(Local().supportsKeepalive()).isFalse()
-        assertThat(Telnet().supportsKeepalive()).isFalse()
-    }
-
-    @Test
     fun sendKeepalive_pingsConnection() {
         val connection = mock<Connection>()
         val ssh = SSH()

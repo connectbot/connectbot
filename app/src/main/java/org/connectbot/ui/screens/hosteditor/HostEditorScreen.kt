@@ -149,7 +149,7 @@ fun HostEditorScreenContent(
     var expandedMode by remember(uiState.isLoading) {
         mutableStateOf(hostId != -1L && !uiState.isNicknameMatching)
     }
-    val protocols = listOf("ssh", "telnet", "local")
+    val protocols = listOf("ssh")
 
     Scaffold(
         topBar = {
@@ -179,8 +179,7 @@ fun HostEditorScreenContent(
                         },
                         modifier = Modifier.testTag("add_host_button"),
                         enabled = if (expandedMode) {
-                            // For local protocol, hostname can be blank
-                            uiState.protocol == "local" || uiState.hostname.isNotBlank()
+                            uiState.hostname.isNotBlank()
                         } else {
                             uiState.quickConnect.isNotBlank()
                         },
@@ -309,8 +308,8 @@ fun HostEditorScreenContent(
                     }
                 }
 
-                // Only show username, hostname, and port for non-local protocols
-                if (uiState.protocol != "local") {
+                // Username, hostname, and port fields
+                if (uiState.protocol == "ssh") {
                     OutlinedTextField(
                         value = uiState.username,
                         onValueChange = onUsernameChange,

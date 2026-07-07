@@ -146,7 +146,6 @@
   <string name="terminal_auth_fail">[Host anda tidak mendukung otentifikasi \'kata sandi\' atau \'papan ketik interaktif\'.]</string>
   <string name="terminal_no_session">Sesi tidak akan dimulai karena preferensi host</string>
   <string name="terminal_enable_portfoward">Aktifkan port forward: %1$s</string>
-  <string name="local_shell_unavailable">Gagal! Shell lokal tidak tersedia di telepon ini.</string>
   <string name="notification_text">%1$s memerlukan perhatian anda.</string>
   <string name="no">Tidak</string>
   <string name="yes">Ya</string>

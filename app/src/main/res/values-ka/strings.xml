@@ -344,7 +344,6 @@
   <string name="terminal_auth_fail" tools:machine_translated="true">[თქვენმა სერვერმა არ მხარი უნდა, რომ გამოიყენოთ „პაროლის“ ან „ინტერაქტიული კლავიატურის“ ავტორიზაციის მეთოდი.]</string>
   <string name="terminal_no_session" tools:machine_translated="true">სესიის დაწყება ვერ მოხდება, რადგან მომხმარებელმა მასპინძელი სისტემის პარამეტრებში ეს ფუნქცია გათიშა.</string>
   <string name="terminal_enable_portfoward" tools:machine_translated="true">აქტივირებულია პორტის გადაგზავნა: %1$s</string>
-  <string name="local_shell_unavailable" tools:machine_translated="true">შეცდომა! ამ ტელეფონზე ადგილობრივი ინტერფეისი არ არის ხელმისაწვდომი.</string>
   <string name="notification_text" tools:machine_translated="true">%1$s-ს თქვენი ყურადღება სჭირდება.</string>
   <string name="list_color_schemes" tools:machine_translated="true">ფერების სქემები</string>
   <string name="button_manage_schemes" tools:machine_translated="true">შემების მართვა</string>

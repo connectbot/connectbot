@@ -33,7 +33,7 @@ object TransportFactory {
 
     /**
      * Get a transport instance by protocol name.
-     * @param protocol The protocol name (e.g., "ssh", "telnet", "local")
+     * @param protocol The protocol name (e.g., "ssh")
      * @return Transport instance or null if protocol is not recognized
      */
     fun getTransport(protocol: String?): AbsTransport? = Transport.fromProtocol(protocol)?.createInstance()
@@ -46,11 +46,7 @@ object TransportFactory {
      */
     fun getUri(scheme: String, input: String): Uri? {
         Timber.d("Attempting to discover URI for scheme=$scheme on input=$input")
-        val transport = Transport.fromProtocol(scheme)
-        if (transport is Transport.Local) {
-            Timber.d("Got to the local parsing area")
-        }
-        return transport?.parseUri(input)
+        return Transport.fromProtocol(scheme)?.parseUri(input)
     }
 
     /**

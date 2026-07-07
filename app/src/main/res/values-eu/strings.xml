@@ -174,7 +174,6 @@
   <string name="terminal_auth_fail">[Zure ostalariak ez du onartzen \'pasahitz bidezko\' edo \'teklatu bidezko autentifikazio elkarreragilerik\'.]</string>
   <string name="terminal_no_session">Saiorik ez da hasiko ostalariaren hobespenak direla eta.</string>
   <string name="terminal_enable_portfoward">Gaitu ataka birbidalketa: %1$s</string>
-  <string name="local_shell_unavailable">Errorea! Shell lokala ez dago eskuragarri telefono honetan.</string>
   <string name="notification_text">%1$s(e)k zure arreta behar du.</string>
   <string name="no">Ez</string>
   <string name="yes">Bai</string>

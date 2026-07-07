@@ -309,7 +309,6 @@
   <string name="terminal_auth_fail" tools:machine_translated="true">[உங்கள் சேவையகம் ‘கடவுச்சொல்’ அல்லது ‘விசைப்பலகை-உள்ளீட்டு’ அங்கீகார முறையை ஆதரிக்கவில்லை.]</string>
   <string name="terminal_no_session" tools:machine_translated="true">உள்ளமைவு விருப்பத்தேர்வு காரணமாக, அமர்வு தொடங்கப்படாது.</string>
   <string name="terminal_enable_portfoward" tools:machine_translated="true">போர்ட் ஃபார்வர்டை இயக்கு: %1$s</string>
-  <string name="local_shell_unavailable" tools:machine_translated="true">தோல்வி! இந்தத் தொலைபேசியில் உள்ளூர் ஷெல் கிடைக்கவில்லை.</string>
   <string name="notification_text" tools:machine_translated="true">%1$s உங்கள் கவனத்தை ஈர்க்க விரும்புகிறது.</string>
   <string name="no" tools:machine_translated="true">இல்லை</string>
   <string name="yes" tools:machine_translated="true">ஆம்</string>

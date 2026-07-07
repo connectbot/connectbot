@@ -112,10 +112,10 @@ class HostEditorViewModelTest {
         val existingHost = Host(
             id = hostId,
             nickname = "test-nick",
-            protocol = "telnet",
+            protocol = "ssh",
             username = "test-user",
             hostname = "10.0.0.1",
-            port = 23,
+            port = 22,
         )
         `when`(repository.findHostById(hostId)).thenReturn(existingHost)
         `when`(securePasswordStorage.hasPassword(hostId)).thenReturn(true)
@@ -126,11 +126,11 @@ class HostEditorViewModelTest {
         val state = viewModel.uiState.value
         assertEquals(hostId, state.hostId)
         assertEquals("test-nick", state.nickname)
-        assertEquals("telnet", state.protocol)
+        assertEquals("ssh", state.protocol)
         assertEquals("test-user", state.username)
         assertEquals("10.0.0.1", state.hostname)
-        assertEquals("23", state.port)
-        assertEquals("10.0.0.1", state.quickConnect) // Verify quickConnect is populated
+        assertEquals("22", state.port)
+        assertEquals("test-user@10.0.0.1", state.quickConnect) // Verify quickConnect is populated
         assertTrue(state.hasExistingPassword)
         assertFalse(state.isNicknameMatching)
     }
@@ -416,10 +416,10 @@ class HostEditorViewModelTest {
         val existingHost = Host(
             id = hostId,
             nickname = "test-user@10.0.0.1",
-            protocol = "telnet",
+            protocol = "ssh",
             username = "test-user",
             hostname = "10.0.0.1",
-            port = 23,
+            port = 22,
         )
         `when`(repository.findHostById(hostId)).thenReturn(existingHost)
         `when`(securePasswordStorage.hasPassword(hostId)).thenReturn(false)
@@ -440,26 +440,7 @@ class HostEditorViewModelTest {
         verify(repository).saveHost(hostCaptor.capture() ?: Host())
         val savedHost = hostCaptor.value
 
-        assertEquals(23, savedHost.port) // Falls back to telnet default port 23
-    }
-
-    @Test
-    fun testLocalProtocol_doesNotSyncNicknameOrQuickConnect() = runTest {
-        val viewModel = createViewModel()
-        advanceUntilIdle()
-
-        viewModel.updateProtocol("local")
-        viewModel.updateNickname("my-local-shell")
-        advanceUntilIdle()
-
-        // Changing hostname or username shouldn't sync nickname or quickConnect
-        viewModel.updateHostname("somehost")
-        viewModel.updateUsername("someuser")
-        advanceUntilIdle()
-
-        assertEquals("my-local-shell", viewModel.uiState.value.nickname)
-        // Since isNicknameMatching is false for local, quickConnect shouldn't sync either
-        assertEquals("my-local-shell", viewModel.uiState.value.quickConnect)
+        assertEquals(22, savedHost.port) // Falls back to ssh default port 22
     }
 
     @Test

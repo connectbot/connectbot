@@ -883,9 +883,6 @@
 	<!-- Message shown in terminal when a configured port forward could not be set up during connection. Parameter is the port forward description. -->
 	<string name="terminal_enable_portfoward_failed">"Could not enable port forward: %1$s"</string>
 
-	<!-- Error message shown when trying to open a local shell but it's not available on the device -->
-	<string name="local_shell_unavailable">"Failure! Local shell is unavailable on this phone."</string>
-
 	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
 	<string name="notification_text">"%1$s wants your attention."</string>
 	<!-- Notification for a bell in a tmux window; %1$s host, %2$s session:window -->
@@ -1283,7 +1280,7 @@
 	<!-- Button in the quick-toggle sheet that opens the full port forward editor -->
 	<string name="portforward_quick_manage">Manage</string>
 
-	<!-- Label for spinner which allows user to select SSH/Telnet/Local. -->
+	<!-- Label for spinner which allows user to select the connection protocol. -->
 	<string name="protocol_spinner_label">Protocol</string>
 	<!-- Label for button which expands/collapses section. -->
 	<string name="expand">Expand</string>
@@ -1374,7 +1371,7 @@
 	<string name="migration_debug_log_title">Debug Log</string>
 	<!-- Button text to copy debug log to clipboard for reporting issues -->
 	<string name="migration_copy_debug_log">Copy Debug Log</string>
-	<!-- Shown in the alert dialog when a user chooses the 'disconnect' item to disconnect from a SSH or Telnet host. -->
+	<!-- Shown in the alert dialog when a user chooses the 'disconnect' item to disconnect from a host. -->
 	<string name="disconnect_host_alert">Are you sure you want to disconnect from \'%1$s\'?</string>
 	<!-- Shown in the alert dialog when a user chooses the 'delete host' item to delete a host. -->
 	<string name="delete_host_confirm">Are you sure you want to delete host \'%1$s\'?</string>

@@ -309,7 +309,6 @@
   <string name="terminal_auth_fail" tools:machine_translated="true">[तपाईंको सर्भरले ‘पासवर्ड’ वा ‘कीबोर्ड-आधारित अन्तरक्रियात्मक’ प्रमाणीकरण विधिहरूलाई समर्थन गर्दैन।]</string>
   <string name="terminal_no_session" tools:machine_translated="true">होस्ट सेटिङमा प्रयोगकर्ताले यसलाई अक्षम गरेकाले सत्र सुरु गरिने छैन।</string>
   <string name="terminal_enable_portfoward" tools:machine_translated="true">पोर्ट फर्वार्ड सक्रिय गरियो: %1$s</string>
-  <string name="local_shell_unavailable" tools:machine_translated="true">असफल! यो फोनमा स्थानीय शेल उपलब्ध छैन।</string>
   <string name="notification_text" tools:machine_translated="true">%1$s ले तपाईंको ध्यान चाहन्छ।</string>
   <string name="no" tools:machine_translated="true">होइन</string>
   <string name="yes" tools:machine_translated="true">हो।</string>

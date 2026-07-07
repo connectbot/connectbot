@@ -307,7 +307,6 @@
   <string name="terminal_auth_fail">Ваш сервер не поддерживает авторизацию \'по паролю\' и \'интерактивную с клавиатурой\'</string>
   <string name="terminal_no_session">Настройки сервера не позволяют запустить данную сессию.</string>
   <string name="terminal_enable_portfoward">Включить переадресацию порта: %1$s</string>
-  <string name="local_shell_unavailable">Ошибка! На данном устройстве отсутствует локальная оболочка.</string>
   <string name="notification_text">%1$s требует Вашего внимания.</string>
   <string name="no">Нет</string>
   <string name="yes">Да</string>

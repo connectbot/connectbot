@@ -307,7 +307,6 @@
   <string name="terminal_auth_fail">[Host của bạn không hỗ trợ xác thực bằng \'password\' hoặc \'keyboard-interactive\'.]</string>
   <string name="terminal_no_session">Phiên làm việc sẽ không được bắt đầu do tuỳ chọn của máy chủ.</string>
   <string name="terminal_enable_portfoward">Kich hoạt cổng chuyển tiếp: %1$s</string>
-  <string name="local_shell_unavailable">Lỗi! Local shell không có trên điện thoại.</string>
   <string name="notification_text">%1$s cần sự chú ý của bạn.</string>
   <string name="no">Không</string>
   <string name="yes">Đồng ý</string>

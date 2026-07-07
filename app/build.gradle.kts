@@ -62,11 +62,6 @@ android {
 
         vectorDrawables.useSupportLibrary = true
 
-        ndk {
-            abiFilters.addAll(listOf("x86", "x86_64", "armeabi-v7a", "arm64-v8a"))
-            debugSymbolLevel = "full"
-        }
-
         testApplicationId = "org.connectbot.tests"
         testInstrumentationRunner = "org.connectbot.HiltTestRunner"
 
@@ -188,12 +183,6 @@ android {
         resources.excludes.add("**/*.gwt.xml")
     }
 
-    externalNativeBuild {
-        cmake {
-            path = file("CMakeLists.txt")
-        }
-    }
-
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
@@ -242,10 +231,7 @@ kover {
             excludes {
                 // Third-party code vendored in the source tree
                 packages(
-                    "de.mud.*",
-                    "com.google.ase",
                     "org.apache.*",
-                    "org.keyczar.*",
                     "org.openintents.*",
                 )
                 // Hilt/Dagger generated code
@@ -284,10 +270,7 @@ sonar {
         property(
             "sonar.exclusions",
             """
-            |src/main/java/com/google/ase/**,
-            |src/main/java/de/mud/**,
             |src/main/java/org/apache/**,
-            |src/main/java/org/keyczar/**,
             |src/main/java/org/openintents/**
             """.trimMargin(),
         )

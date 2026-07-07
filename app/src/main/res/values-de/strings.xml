@@ -307,7 +307,6 @@
   <string name="terminal_auth_fail">[Ihr Host unterstützt weder \'password\' noch \'keyboard-interactive\' Authentisierung.]</string>
   <string name="terminal_no_session">Sitzung wird wegen Host Präferenz nicht gestartet</string>
   <string name="terminal_enable_portfoward">Aktiviere Port Forwarding: %1$s</string>
-  <string name="local_shell_unavailable">Fehler! Lokale Kommandozeile ist auf diesem Telefon nicht verfügbar.</string>
   <string name="notification_text">%1$s will ihre Aufmerksamkeit.</string>
   <string name="no">Nein</string>
   <string name="yes">Ja</string>
