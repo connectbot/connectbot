@@ -19,8 +19,10 @@ package org.connectbot.ui.screens.console
 
 import android.app.Activity
 import android.content.ActivityNotFoundException
+import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.os.Build
 import androidx.annotation.VisibleForTesting
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -51,6 +53,7 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Link
@@ -149,6 +152,7 @@ import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
 import org.connectbot.ui.theme.terminal
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.TerminalSessionReader
 import org.connectbot.util.TerminalTextUtils
 import org.connectbot.util.UrlUtils
 import org.connectbot.util.rememberTerminalTypefaceResultFromStoredValue
@@ -1008,6 +1012,28 @@ fun ConsoleScreen(
         }
     }
 
+    val sessionCopiedMessage = stringResource(R.string.console_session_copied)
+
+    fun copySessionToClipboard() {
+        val bridge = currentBridge ?: return
+        val sessionText = TerminalTextUtils.buildSessionText(
+            TerminalSessionReader.readSessionLines(bridge.terminalEmulator),
+        )
+        if (sessionText.isEmpty()) return
+
+        val clipboard =
+            context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+        clipboard.setPrimaryClip(
+            ClipData.newPlainText(bridge.host.nickname, sessionText),
+        )
+        // Android 13+ shows its own confirmation UI when the clipboard changes
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            coroutineScope.launch {
+                snackbarHostState.showSnackbar(sessionCopiedMessage)
+            }
+        }
+    }
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = modifier
@@ -1353,6 +1379,19 @@ fun ConsoleScreen(
                                 },
                                 leadingIcon = {
                                     Icon(Icons.Default.Link, contentDescription = null)
+                                },
+                                enabled = currentBridge != null,
+                            )
+
+                            // Copy entire session (screen plus scrollback)
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.console_menu_copy_session)) },
+                                onClick = {
+                                    showMenu = false
+                                    copySessionToClipboard()
+                                },
+                                leadingIcon = {
+                                    Icon(Icons.Default.ContentCopy, contentDescription = null)
                                 },
                                 enabled = currentBridge != null,
                             )
