@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runInterruptible
 import kotlinx.coroutines.sync.Mutex
@@ -90,6 +91,22 @@ class TmuxSessionManager(
     private val _bellEvents = MutableSharedFlow<Pair<String, String>>(extraBufferCapacity = 16)
     val bellEvents: SharedFlow<Pair<String, String>> = _bellEvents.asSharedFlow()
 
+    /** New window-level bell/activity flags discovered by polling. */
+    private val _alertEvents = MutableSharedFlow<TmuxAlert>(extraBufferCapacity = 32)
+    val alertEvents: SharedFlow<TmuxAlert> = _alertEvents.asSharedFlow()
+
+    /**
+     * Flag-poll cadence: the console sets ~10s while foregrounded; the
+     * default matches the keepalive-ish background rhythm.
+     */
+    @Volatile
+    var flagPollIntervalMs: Long = BACKGROUND_FLAG_POLL_MS
+
+    private var flagPollJob: Job? = null
+
+    /** (sessionId, windowId) pairs whose bell was already reported. */
+    private val reportedBells = mutableSetOf<Pair<String, String>>()
+
     /** Live pane emulators, LRU-capped; eviction stops the stream on >=3.2. */
     val paneRegistry = TmuxPaneRegistry(
         onEvicted = { terminal -> onPaneEvicted(terminal) },
@@ -133,6 +150,8 @@ class TmuxSessionManager(
     /** Called by the bridge when the connection drops (channels are dead). */
     fun onTransportLost() {
         transportUp = false
+        flagPollJob?.cancel()
+        flagPollJob = null
         pendingReattach = _currentTarget.value
         scope.launch {
             val orphaned = clientsMutex.withLock {
@@ -157,6 +176,8 @@ class TmuxSessionManager(
      */
     fun shutdown() {
         transportUp = false
+        flagPollJob?.cancel()
+        flagPollJob = null
         pendingReattach = null
         clients.values.forEach { runCatching { it.close() } }
         clients.clear()
@@ -238,6 +259,86 @@ class TmuxSessionManager(
             .forEach { session ->
                 scope.launch(ioDispatcher) { fetchSnapshot(session.id) }
             }
+
+        startFlagPolling()
+    }
+
+    // ===== Alert flag polling =====
+
+    private fun startFlagPolling() {
+        if (flagPollJob?.isActive == true) return
+        flagPollJob = scope.launch(ioDispatcher) {
+            while (kotlinx.coroutines.currentCoroutineContext().isActive) {
+                kotlinx.coroutines.delay(flagPollIntervalMs)
+                if (!transportUp || _state.value.availability != TmuxAvailability.READY) continue
+                if (_state.value.sessions.isEmpty()) continue
+                runCatching { pollWindowFlags() }
+                    .onFailure { Timber.d(it, "tmux flag poll failed") }
+            }
+        }
+    }
+
+    /**
+     * One cheap exec round-trip that fetches bell/activity flags for every
+     * window on the server — the only way to see alerts in sessions we are
+     * not attached to. New bells are emitted on [alertEvents] once.
+     */
+    internal suspend fun pollWindowFlags() {
+        val listing = execRead(FLAG_POLL_COMMAND)
+        if (listing.lineSequence().firstOrNull()?.trim() == NO_SERVER_MARKER) return
+
+        data class Flags(val bell: Boolean, val activity: Boolean, val name: String)
+        val flagsByWindow = mutableMapOf<Pair<String, String>, Flags>()
+        listing.lineSequence().forEach { line ->
+            val parts = line.trimEnd().split('	')
+            if (parts.size < 5 || !parts[0].startsWith('$') || !parts[1].startsWith('@')) return@forEach
+            flagsByWindow[parts[0] to parts[1]] =
+                Flags(bell = parts[2] == "1", activity = parts[3] == "1", name = parts[4])
+        }
+        if (flagsByWindow.isEmpty()) return
+
+        mutateState { state ->
+            state.copy(
+                sessions = state.sessions.map { session ->
+                    val sessionFlags = flagsByWindow.filterKeys { it.first == session.id }
+                    if (sessionFlags.isEmpty()) return@map session.copy(bell = false, activity = false)
+                    session.copy(
+                        bell = sessionFlags.values.any { it.bell },
+                        activity = sessionFlags.values.any { it.activity },
+                        windows = session.windows.map { window ->
+                            val flags = flagsByWindow[session.id to window.id]
+                            if (flags != null) {
+                                window.copy(bell = flags.bell, activity = flags.activity)
+                            } else {
+                                window
+                            }
+                        },
+                    )
+                },
+            )
+        }
+
+        // Report each bell once until it clears server-side.
+        val current = _state.value
+        val viewed = _currentTarget.value
+        flagsByWindow.forEach { (key, flags) ->
+            val (sessionId, windowId) = key
+            if (!flags.bell) {
+                reportedBells.remove(key)
+                return@forEach
+            }
+            if (viewed?.sessionId == sessionId && viewed.windowId == windowId) return@forEach
+            if (!reportedBells.add(key)) return@forEach
+            val sessionName = current.session(sessionId)?.name ?: sessionId
+            _alertEvents.tryEmit(
+                TmuxAlert(
+                    sessionId = sessionId,
+                    sessionName = sessionName,
+                    windowId = windowId,
+                    windowName = flags.name,
+                ),
+            )
+        }
     }
 
     private fun parseSessionLine(line: String): TmuxSessionInfo? {
@@ -436,6 +537,7 @@ class TmuxSessionManager(
     /** Makes [target] current locally and mirrors the selection server-side. */
     suspend fun selectTarget(target: TmuxTarget) {
         setCurrentTarget(target)
+        clearWindowFlags(target.sessionId, target.windowId)
         val client = clientsMutex.withLock { clients[target.sessionId] } ?: return
         runCatching {
             client.command("select-window -t '${target.windowId}'")
@@ -452,6 +554,21 @@ class TmuxSessionManager(
             ?: window.activePane
             ?: return null
         return TmuxTarget(sessionId, window.id, pane.id, session.name)
+    }
+
+    /** Viewing a window clears its badges (the server clears its own flags). */
+    private fun clearWindowFlags(sessionId: String, windowId: String) {
+        reportedBells.remove(sessionId to windowId)
+        mutateSession(sessionId) { session ->
+            val windows = session.windows.map { window ->
+                if (window.id == windowId) window.copy(bell = false, activity = false) else window
+            }
+            session.copy(
+                windows = windows,
+                bell = windows.any { it.bell },
+                activity = windows.any { it.activity },
+            )
+        }
     }
 
     private fun setCurrentTarget(target: TmuxTarget?) {
@@ -589,7 +706,7 @@ class TmuxSessionManager(
                 colors = paneColors,
                 scope = scope,
                 sendCommand = { command -> client.command(command) },
-                onBell = { sessionId, paneId -> _bellEvents.tryEmit(sessionId to paneId) },
+                onBell = { sessionId, paneId -> onPaneBell(sessionId, paneId) },
                 emulatorFactory = paneEmulatorFactory,
             ).also { it.stickyModifierSetting = stickyModifierSetting }
         }
@@ -600,6 +717,21 @@ class TmuxSessionManager(
             terminal.backfill()
         }
         return terminal
+    }
+
+    /** A live pane rang: badge its window unless the user is looking at it. */
+    private fun onPaneBell(sessionId: String, paneId: String) {
+        _bellEvents.tryEmit(sessionId to paneId)
+        val viewed = _currentTarget.value
+        if (viewed?.sessionId == sessionId && viewed.paneId == paneId) return
+        mutateSession(sessionId) { session ->
+            session.copy(
+                bell = true,
+                windows = session.windows.map { window ->
+                    if (window.panes.any { it.id == paneId }) window.copy(bell = true) else window
+                },
+            )
+        }
     }
 
     /** Stops an evicted pane's output stream server-side when supported. */
@@ -660,6 +792,14 @@ class TmuxSessionManager(
 
         private const val PROBE_COMMAND =
             "command -v tmux >/dev/null 2>&1 && tmux -V || echo $NO_TMUX_MARKER"
+
+        private const val BACKGROUND_FLAG_POLL_MS = 60_000L
+
+        /** Foreground cadence the console requests while visible. */
+        const val FOREGROUND_FLAG_POLL_MS = 10_000L
+
+        private const val FLAG_POLL_COMMAND =
+            "tmux list-windows -a -F '#{session_id}\t#{window_id}\t#{window_bell_flag}\t#{window_activity_flag}\t#{window_name}' 2>/dev/null || echo $NO_SERVER_MARKER"
 
         private const val LIST_SESSIONS_COMMAND =
             "tmux ls -F '#{session_id}\t#{session_name}\t#{session_attached}' 2>/dev/null || echo $NO_SERVER_MARKER"

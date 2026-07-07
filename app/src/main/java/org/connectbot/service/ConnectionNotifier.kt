@@ -75,20 +75,33 @@ class ConnectionNotifier @Inject constructor() {
         getNotificationManager(context).createNotificationChannel(nc)
     }
 
-    private fun newActivityNotification(context: Context, host: Host): Notification {
+    private fun newActivityNotification(
+        context: Context,
+        host: Host,
+        tmuxTarget: String? = null,
+        tmuxLabel: String? = null,
+    ): Notification {
         val builder = newNotificationBuilder(context, NOTIFICATION_CHANNEL)
         val res = context.resources
 
-        val contentText = res.getString(R.string.notification_text, host.nickname)
+        val contentText = if (tmuxLabel != null) {
+            res.getString(R.string.notification_text_tmux, host.nickname, tmuxLabel)
+        } else {
+            res.getString(R.string.notification_text, host.nickname)
+        }
 
         val notificationIntent = Intent(context, MainActivity::class.java).apply {
             action = Intent.ACTION_VIEW
-            data = host.getUri()
+            data = if (tmuxTarget != null) {
+                host.getUri().buildUpon().appendQueryParameter(TMUX_QUERY_PARAM, tmuxTarget).build()
+            } else {
+                host.getUri()
+            }
         }
 
         val contentIntent = PendingIntent.getActivity(
             context,
-            0,
+            tmuxTarget?.hashCode() ?: 0,
             notificationIntent,
             pendingIntentFlags,
         )
@@ -154,6 +167,19 @@ class ConnectionNotifier @Inject constructor() {
         getNotificationManager(context).notify(ACTIVITY_NOTIFICATION, newActivityNotification(context, host))
     }
 
+    /**
+     * Activity notification for a tmux window bell: tapping it deep-links to
+     * that session/window via a `tmux` query parameter on the host URI.
+     * @param tmuxTarget "sessionId|windowId"
+     * @param tmuxLabel human-readable "session:window" for the text
+     */
+    fun showTmuxActivityNotification(context: Service, host: Host, tmuxTarget: String, tmuxLabel: String) {
+        getNotificationManager(context).notify(
+            ACTIVITY_NOTIFICATION,
+            newActivityNotification(context, host, tmuxTarget, tmuxLabel),
+        )
+    }
+
     fun showRunningNotification(context: Service) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
             showRunningNotificationWithType(context)
@@ -179,6 +205,9 @@ class ConnectionNotifier @Inject constructor() {
     companion object {
         private const val ONLINE_NOTIFICATION = 1
         private const val ACTIVITY_NOTIFICATION = 2
+
+        /** Query parameter carrying a "sessionId|windowId" tmux deep-link target. */
+        const val TMUX_QUERY_PARAM = "tmux"
         private const val ONLINE_DISCONNECT_NOTIFICATION = 3
         private const val NOTIFICATION_CHANNEL = "my_connectbot_channel"
     }

@@ -901,6 +901,18 @@ class TerminalManager :
         }
     }
 
+    /**
+     * Notification for a bell in a tmux window; tapping it lands directly on
+     * that session/window.
+     * @param tmuxTarget "sessionId|windowId"
+     * @param tmuxLabel human-readable session:window label
+     */
+    fun sendTmuxActivityNotification(host: Host, tmuxTarget: String, tmuxLabel: String) {
+        if (!isUiBound && prefs.getBoolean(PreferenceConstants.BELL_NOTIFICATION, false)) {
+            connectionNotifier.showTmuxActivityNotification(this, host, tmuxTarget, tmuxLabel)
+        }
+    }
+
     override fun onSharedPreferenceChanged(
         sharedPreferences: SharedPreferences,
         key: String?,

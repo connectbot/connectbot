@@ -26,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withTimeout
 import org.assertj.core.api.Assertions.assertThat
@@ -49,6 +50,7 @@ private class FakeChannelFactory : TmuxChannelFactory {
     var probeResponse = "tmux 3.7b\n"
     var listResponse = "\$0\tmain\t0\n\$1\twork\t1\n"
     var snapshotResponse = "snapshot line 1\nsnapshot line 2\n"
+    var flagPollResponse = "NO_SERVER\n"
 
     /** Scripts each new control channel before the client starts reading. */
     var onControlChannel: (FakeTmuxChannel) -> Unit = { channel ->
@@ -67,6 +69,7 @@ private class FakeChannelFactory : TmuxChannelFactory {
                 FakeTmuxChannel().also { onControlChannel(it); controlChannels.add(it) }
 
             command.startsWith("command -v tmux") -> OneShotChannel(probeResponse)
+            command.startsWith("tmux list-windows -a") -> OneShotChannel(flagPollResponse)
             command.startsWith("tmux ls") -> OneShotChannel(listResponse)
             command.startsWith("tmux capture-pane") -> OneShotChannel(snapshotResponse)
             else -> OneShotChannel("")
@@ -283,6 +286,45 @@ class TmuxSessionManagerTest {
         val again = manager.acquirePaneTerminal(TmuxTarget("\$0", "@0", "%0", "main"))
         assertThat(again).isSameAs(terminal)
         assertThat(manager.paneRegistry.liveCount()).isEqualTo(1)
+    }
+
+    @Test
+    fun `flag poll updates badges and reports new bells once`() = runBlocking<Unit> {
+        connectAndAwaitReady()
+        val alerts = mutableListOf<TmuxAlert>()
+        val collector = scope.launch { manager.alertEvents.collect { synchronized(alerts) { alerts.add(it) } } }
+
+        factory.flagPollResponse =
+            "\$0\t@0\t1\t0\tshell\n" +
+                "\$0\t@1\t0\t1\tlogs\n" +
+                "\$1\t@2\t0\t0\twork\n"
+        withTimeout(5_000) { manager.pollWindowFlags() }
+
+        val state = awaitState { it.session("\$0")?.bell == true }
+        assertThat(state.session("\$0")!!.activity).isTrue()
+        assertThat(state.session("\$1")!!.bell).isFalse()
+
+        withTimeout(5_000) {
+            while (synchronized(alerts) { alerts.isEmpty() }) kotlinx.coroutines.delay(10)
+        }
+        assertThat(synchronized(alerts) { alerts.toList() }).containsExactly(
+            TmuxAlert("\$0", "main", "@0", "shell"),
+        )
+
+        // Same flags again: no duplicate alert.
+        withTimeout(5_000) { manager.pollWindowFlags() }
+        kotlinx.coroutines.delay(100)
+        assertThat(synchronized(alerts) { alerts.size }).isEqualTo(1)
+
+        // Bell cleared server-side, then rings again: reported anew.
+        factory.flagPollResponse = "\$0\t@0\t0\t0\tshell\n"
+        withTimeout(5_000) { manager.pollWindowFlags() }
+        factory.flagPollResponse = "\$0\t@0\t1\t0\tshell\n"
+        withTimeout(5_000) { manager.pollWindowFlags() }
+        withTimeout(5_000) {
+            while (synchronized(alerts) { alerts.size < 2 }) kotlinx.coroutines.delay(10)
+        }
+        collector.cancel()
     }
 
     @Test

@@ -874,6 +874,8 @@
 
 	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
 	<string name="notification_text">"%1$s wants your attention."</string>
+	<!-- Notification for a bell in a tmux window; %1$s host, %2$s session:window -->
+	<string name="notification_text_tmux">%1$s · %2$s rang its bell.</string>
 
 	<!-- Preference selection for SSH Authentication Agent to never use pubkeys -->
 	<string name="no">"No"</string>

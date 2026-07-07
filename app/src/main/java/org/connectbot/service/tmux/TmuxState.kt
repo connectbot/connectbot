@@ -73,6 +73,10 @@ data class TmuxSessionInfo(
     val attachedCount: Int = 0,
     /** Rendered text of the active pane, for the dimmed unattached tab. */
     val snapshot: List<String>? = null,
+    /** Aggregated bell flag from polling (covers detached sessions). */
+    val bell: Boolean = false,
+    /** Aggregated activity flag from polling (covers detached sessions). */
+    val activity: Boolean = false,
 ) {
     val activeWindow: TmuxWindow?
         get() = windows.find { it.id == activeWindowId } ?: windows.firstOrNull()
@@ -146,6 +150,14 @@ data class TmuxVersion(val major: Int, val minor: Int, val raw: String) {
         }
     }
 }
+
+/** A window-level alert discovered by flag polling. */
+data class TmuxAlert(
+    val sessionId: String,
+    val sessionName: String,
+    val windowId: String,
+    val windowName: String,
+)
 
 /** The pane the user is (or was last) looking at within a session. */
 data class TmuxTarget(

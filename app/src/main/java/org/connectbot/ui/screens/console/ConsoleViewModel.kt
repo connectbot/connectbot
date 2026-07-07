@@ -29,6 +29,8 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -84,6 +86,12 @@ class ConsoleViewModel @Inject constructor(
     private val notificationPermissionHelper: NotificationPermissionHelper,
 ) : ViewModel() {
     private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
+
+    /** "sessionId|windowId" from a tmux bell notification deep link. */
+    private var pendingTmuxNavigation: Pair<String, String>? =
+        savedStateHandle.get<String>("tmux")?.split('|')
+            ?.takeIf { it.size == 2 && it[0].startsWith('$') && it[1].startsWith('@') }
+            ?.let { it[0] to it[1] }
     private var terminalManager: TerminalManager? = null
     private var pendingInitialHostId: Long? = hostId.takeIf { it != -1L }
     private var selectedHostId: Long? = null
@@ -92,6 +100,7 @@ class ConsoleViewModel @Inject constructor(
     private val progressJobs = mutableMapOf<Long, Job>()
     private val networkStatusJobs = mutableMapOf<Long, Job>()
     private val tmuxJobs = mutableMapOf<Long, Job>()
+    private val tmuxAlertJobs = mutableMapOf<Long, Job>()
     private val dismissedTmuxOffers = mutableSetOf<Long>()
     private var paneTerminalJob: Job? = null
 
@@ -297,15 +306,67 @@ class ConsoleViewModel @Inject constructor(
         tmuxJobs.keys.filter { it !in activeHostIds }.forEach { hostId ->
             tmuxJobs.remove(hostId)?.cancel()
         }
+        tmuxAlertJobs.keys.filter { it !in activeHostIds }.forEach { hostId ->
+            tmuxAlertJobs.remove(hostId)?.cancel()
+        }
         bridges.forEach { bridge ->
             val tmux = bridge.tmux ?: return@forEach
+            // Console is visible while this VM lives: poll flags eagerly.
+            tmux.flagPollIntervalMs = TmuxSessionManager.FOREGROUND_FLAG_POLL_MS
             tmuxJobs.getOrPut(bridge.host.id) {
                 viewModelScope.launch {
                     tmux.state.collect { rebuildTabs() }
                 }
             }
+            tmuxAlertJobs.getOrPut(bridge.host.id) {
+                viewModelScope.launch {
+                    launch {
+                        tmux.alertEvents.collect { alert -> onTmuxAlert(bridge, alert) }
+                    }
+                    launch {
+                        tmux.bellEvents.collect { (sessionId, paneId) ->
+                            onTmuxPaneBell(bridge, sessionId, paneId)
+                        }
+                    }
+                }
+            }
         }
         rebuildTabs()
+    }
+
+    /** A bell surfaced by flag polling (usually a session we're not viewing). */
+    private fun onTmuxAlert(bridge: TerminalBridge, alert: org.connectbot.service.tmux.TmuxAlert) {
+        val current = _uiState.value.currentTab
+        val viewingThatSession = current is ConsoleTab.TmuxSession &&
+            current.bridge === bridge && current.sessionId == alert.sessionId
+        if (viewingThatSession) {
+            terminalManager?.playBeep()
+        } else {
+            terminalManager?.sendTmuxActivityNotification(
+                bridge.host,
+                "${alert.sessionId}|${alert.windowId}",
+                "${alert.sessionName}:${alert.windowName}",
+            )
+        }
+    }
+
+    /** A live pane rang (attached session with a live emulator). */
+    private fun onTmuxPaneBell(bridge: TerminalBridge, sessionId: String, paneId: String) {
+        val current = _uiState.value.currentTab
+        val viewingThatSession = current is ConsoleTab.TmuxSession &&
+            current.bridge === bridge && current.sessionId == sessionId
+        if (viewingThatSession) {
+            terminalManager?.playBeep()
+            return
+        }
+        val tmuxState = bridge.tmux?.state?.value
+        val session = tmuxState?.session(sessionId)
+        val window = session?.windows?.find { w -> w.panes.any { it.id == paneId } }
+        terminalManager?.sendTmuxActivityNotification(
+            bridge.host,
+            "$sessionId|${window?.id ?: ""}",
+            "${session?.name ?: sessionId}:${window?.name ?: ""}",
+        )
     }
 
     private fun rebuildTabs() {
@@ -317,8 +378,8 @@ class ConsoleViewModel @Inject constructor(
                         sessionId = session.id,
                         sessionName = session.name,
                         attachState = session.attachState,
-                        bellBadge = session.windows.any { it.bell },
-                        activityBadge = session.windows.any { it.activity },
+                        bellBadge = session.bell || session.windows.any { it.bell },
+                        activityBadge = session.activity || session.windows.any { it.activity },
                     )
                 }
                 listOf(ConsoleTab.HostShell(bridge)) + sessionTabs
@@ -334,6 +395,27 @@ class ConsoleViewModel @Inject constructor(
             )
         }
         refreshPaneTerminal()
+        consumePendingTmuxNavigation()
+    }
+
+    /** Deep link from a bell notification: land on the session and window. */
+    private fun consumePendingTmuxNavigation() {
+        val (sessionId, windowId) = pendingTmuxNavigation ?: return
+        val bridge = _uiState.value.bridges.find { it.host.id == hostId } ?: return
+        val key = ConsoleTab.tmuxKey(bridge.host.id, sessionId)
+        if (_uiState.value.tabs.none { it.key == key }) return
+        pendingTmuxNavigation = null
+        selectTab(key)
+        viewModelScope.launch(dispatchers.io) {
+            // Window selection needs the attach dump; selectTab attaches lazily.
+            val tmux = bridge.tmux ?: return@launch
+            withTimeoutOrNull(10_000) {
+                tmux.state.first { state ->
+                    state.session(sessionId)?.windows?.any { it.id == windowId } == true
+                }
+            } ?: return@launch
+            selectWindow(windowId)
+        }
     }
 
     private fun computeTmuxOffer(bridges: List<TerminalBridge>, currentIndex: Int): Long? {
