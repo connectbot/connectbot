@@ -45,6 +45,7 @@ import org.connectbot.ui.screens.profiles.ProfileListScreen
 import org.connectbot.ui.screens.pubkeyeditor.PubkeyEditorScreen
 import org.connectbot.ui.screens.pubkeylist.PubkeyListScreen
 import org.connectbot.ui.screens.settings.SettingsScreen
+import org.connectbot.ui.screens.sftp.SftpScreen
 import org.connectbot.util.IconStyle
 import timber.log.Timber
 
@@ -113,6 +114,9 @@ fun ConnectBotNavHost(
                 onNavigateToSettings = {
                     navController.navigateSafely(NavDestinations.SETTINGS_HIGHLIGHT_CONN_PERSIST)
                 },
+                onNavigateToSftp = { hostIdForSftp ->
+                    navController.navigateSafely("${NavDestinations.SFTP}/$hostIdForSftp")
+                },
             )
         }
 
@@ -164,6 +168,17 @@ fun ConnectBotNavHost(
             ),
         ) {
             PortForwardListScreen(
+                onNavigateBack = { navController.safePopBackStack() },
+            )
+        }
+
+        composable(
+            route = "${NavDestinations.SFTP}/{${NavArgs.HOST_ID}}",
+            arguments = listOf(
+                navArgument(NavArgs.HOST_ID) { type = NavType.LongType },
+            ),
+        ) {
+            SftpScreen(
                 onNavigateBack = { navController.safePopBackStack() },
             )
         }

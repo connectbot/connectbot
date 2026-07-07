@@ -611,6 +611,7 @@ fun ConsoleScreen(
     onNavigateToPortForwards: (Long) -> Unit,
     modifier: Modifier = Modifier,
     onNavigateToSettings: () -> Unit = {},
+    onNavigateToSftp: (Long) -> Unit = {},
     viewModel: ConsoleViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -879,6 +880,7 @@ fun ConsoleScreen(
     val sessionOpen = currentBridge?.isSessionOpen == true
     val disconnected = currentBridge?.isDisconnected == true
     val canForwardPorts = currentBridge?.canFowardPorts() == true
+    val canTransferFiles = currentBridge?.canTransferFiles() == true
     val snackbarHostState = remember { SnackbarHostState() }
 
     val isConnectionActive = currentBridge != null && !disconnected
@@ -1376,6 +1378,18 @@ fun ConsoleScreen(
                                                 it,
                                             )
                                         }
+                                    },
+                                    enabled = sessionOpen,
+                                )
+                            }
+
+                            // SFTP file browser (if available)
+                            if (canTransferFiles) {
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.console_menu_files)) },
+                                    onClick = {
+                                        showMenu = false
+                                        currentBridge.host.id.let { onNavigateToSftp(it) }
                                     },
                                     enabled = sessionOpen,
                                 )

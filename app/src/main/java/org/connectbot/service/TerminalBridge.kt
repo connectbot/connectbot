@@ -989,6 +989,11 @@ class TerminalBridge {
     fun canFowardPorts(): Boolean = transport?.canForwardPorts() ?: false
 
     /**
+     * @return whether underlying transport can transfer files
+     */
+    fun canTransferFiles(): Boolean = transport?.canTransferFiles() ?: false
+
+    /**
      * Adds the [PortForward] to the list.
      * @param portForward the port forward bean to add
      * @return true on successful addition

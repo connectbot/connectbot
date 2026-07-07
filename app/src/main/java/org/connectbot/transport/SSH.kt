@@ -33,6 +33,7 @@ import com.trilead.ssh2.InteractiveCallback
 import com.trilead.ssh2.IpVersion
 import com.trilead.ssh2.KnownHosts
 import com.trilead.ssh2.LocalPortForwarder
+import com.trilead.ssh2.SFTPv3Client
 import com.trilead.ssh2.Session
 import com.trilead.ssh2.UserAuthBannerCallback
 import com.trilead.ssh2.crypto.PEMDecoder
@@ -56,6 +57,8 @@ import org.connectbot.service.requestBiometricAuth
 import org.connectbot.service.requestBooleanPrompt
 import org.connectbot.service.requestHostKeyFingerprintPrompt
 import org.connectbot.service.requestStringPrompt
+import org.connectbot.transport.sftp.SftpChannel
+import org.connectbot.transport.sftp.TrileadSftpChannel
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PubkeyUtils
 import org.connectbot.util.SshKeyType
@@ -1135,6 +1138,17 @@ class SSH :
     }
 
     override fun canForwardPorts(): Boolean = true
+
+    override fun canTransferFiles(): Boolean = true
+
+    @Throws(IOException::class)
+    override fun openSftpChannel(): SftpChannel {
+        val currentConnection = connection ?: throw IOException("Not connected")
+        if (!authenticated) {
+            throw IOException("Not authenticated")
+        }
+        return TrileadSftpChannel(SFTPv3Client(currentConnection))
+    }
 
     override fun getPortForwards(): List<PortForward> = portForwards
 

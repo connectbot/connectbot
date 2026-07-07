@@ -23,6 +23,7 @@ import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
+import org.connectbot.transport.sftp.SftpChannel
 import java.io.IOException
 
 /**
@@ -182,6 +183,23 @@ abstract class AbsTransport {
      * @return the list of port forwards
      */
     open fun getPortForwards(): List<PortForward>? = null
+
+    /**
+     * Whether or not this transport type can transfer files (e.g. via SFTP).
+     * @return true on ability to transfer files
+     */
+    open fun canTransferFiles(): Boolean = false
+
+    /**
+     * Opens a new file-transfer channel over the established connection.
+     * Only valid when [canTransferFiles] returns true and the transport is
+     * connected and authenticated. Callers own the returned channel and must
+     * close it when finished.
+     * @return a new file-transfer channel
+     * @throws IOException when the channel could not be opened
+     */
+    @Throws(IOException::class)
+    open fun openSftpChannel(): SftpChannel = throw IOException("File transfer is not supported by this transport")
 
     abstract fun isConnected(): Boolean
     abstract fun isSessionOpen(): Boolean

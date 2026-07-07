@@ -605,6 +605,8 @@
 	<string name="console_menu_paste">"Paste"</string>
 	<!-- Button that brings user to the Port Forwards List. -->
 	<string name="console_menu_portforwards">"Port forwards"</string>
+	<!-- Button in the console menu that opens the SFTP file browser for the current connection. -->
+	<string name="console_menu_files">"Files (SFTP)"</string>
 	<!-- Button that brings user to the terminal resizing dialog where they can force a size. -->
 	<string name="console_menu_resize">"Force size"</string>
 	<!-- Button that brings up the list of URLs on the current screen -->
@@ -1435,4 +1437,74 @@
 	<string name="auth_prompt_title">Unlock ConnectBot</string>
 	<!-- Subtitle shown in the biometric/device credential authentication prompt -->
 	<string name="auth_prompt_subtitle">Verify your identity to continue</string>
+
+	<!-- SFTP file browser -->
+	<!-- Fallback title of the SFTP file browser screen when the host nickname is unavailable -->
+	<string name="sftp_title">Files</string>
+	<!-- Content description for the button that picks a local file to upload to the remote server -->
+	<string name="sftp_upload">Upload file</string>
+	<!-- Menu action to download the selected remote file to the device -->
+	<string name="sftp_download">Download</string>
+	<!-- Content description and dialog title for creating a new remote folder -->
+	<string name="sftp_new_folder">New folder</string>
+	<!-- Content description for the button that reloads the current remote folder listing -->
+	<string name="sftp_refresh">Refresh</string>
+	<!-- Menu action and dialog title for renaming a remote file or folder -->
+	<string name="sftp_rename">Rename</string>
+	<!-- Menu action and confirmation button for deleting a remote file or folder -->
+	<string name="sftp_delete">Delete</string>
+	<!-- Label of the list row that navigates to the parent remote folder -->
+	<string name="sftp_parent_folder">Parent folder</string>
+	<!-- Message shown when the current remote folder contains no files -->
+	<string name="sftp_empty_folder">This folder is empty</string>
+	<!-- Message shown when the SFTP browser is opened without an active connection or after the connection was lost -->
+	<string name="sftp_not_connected">No active connection for this host</string>
+	<!-- Secondary list text describing a folder entry -->
+	<string name="sftp_type_folder">Folder</string>
+	<!-- Secondary list text describing a symbolic link entry -->
+	<string name="sftp_type_link">Link</string>
+	<!-- Title of the progress dialog while a file is being uploaded. Parameter is the file name. -->
+	<string name="sftp_uploading">Uploading %1$s…</string>
+	<!-- Title of the progress dialog while a file is being downloaded. Parameter is the file name. -->
+	<string name="sftp_downloading">Downloading %1$s…</string>
+	<!-- Progress text showing transferred versus total bytes, e.g. "1.2 MB / 5.0 MB" -->
+	<string name="sftp_transfer_progress">%1$s / %2$s</string>
+	<!-- Snackbar message after a file finished uploading. Parameter is the file name. -->
+	<string name="sftp_upload_complete">Uploaded %1$s</string>
+	<!-- Snackbar message after a file finished downloading. Parameter is the file name. -->
+	<string name="sftp_download_complete">Downloaded %1$s</string>
+	<!-- Snackbar message after the user cancelled a file transfer -->
+	<string name="sftp_transfer_cancelled">Transfer cancelled</string>
+	<!-- Title of the dialog asking whether to overwrite an existing remote file -->
+	<string name="sftp_overwrite_title">File already exists</string>
+	<!-- Message of the overwrite dialog. Parameter is the file name. -->
+	<string name="sftp_overwrite_message">\"%1$s\" already exists in this folder. Uploading will replace it.</string>
+	<!-- Button that confirms replacing an existing remote file during upload -->
+	<string name="sftp_overwrite_confirm">Replace</string>
+	<!-- Message of the delete confirmation dialog. Parameter is the file or folder name. -->
+	<string name="sftp_delete_message">Delete \"%1$s\"? Folders must be empty before they can be deleted.</string>
+	<!-- Label of the text field used to enter a file or folder name -->
+	<string name="sftp_name_label">Name</string>
+	<!-- Button that confirms creating a new remote folder -->
+	<string name="sftp_create">Create</string>
+	<!-- Error shown when the SFTP session could not be started. Parameter is the error detail. -->
+	<string name="sftp_error_channel">Could not open SFTP session: %1$s</string>
+	<!-- Error shown when a remote folder could not be listed. Parameter is the error detail. -->
+	<string name="sftp_error_listing">Could not open folder: %1$s</string>
+	<!-- Error shown when a download failed. Parameter is the error detail. -->
+	<string name="sftp_error_download">Download failed: %1$s</string>
+	<!-- Error shown when an upload failed. Parameter is the error detail. -->
+	<string name="sftp_error_upload">Upload failed: %1$s</string>
+	<!-- Error shown when deleting a remote file or folder failed. Parameter is the error detail. -->
+	<string name="sftp_error_delete">Could not delete: %1$s</string>
+	<!-- Error shown when renaming a remote file or folder failed. Parameter is the error detail. -->
+	<string name="sftp_error_rename">Could not rename: %1$s</string>
+	<!-- Error shown when creating a remote folder failed. Parameter is the error detail. -->
+	<string name="sftp_error_create_folder">Could not create folder: %1$s</string>
+	<!-- Error shown when the local file for a transfer could not be opened -->
+	<string name="sftp_error_open_local_file">Could not open the local file</string>
+	<!-- Error shown when a symbolic link points to a missing target. Parameter is the link name. -->
+	<string name="sftp_error_broken_link">\"%1$s\" points to a missing file</string>
+	<!-- Error shown when the user entered an invalid file or folder name -->
+	<string name="sftp_error_invalid_name">Invalid name</string>
 </resources>
