@@ -253,7 +253,41 @@ object ColorSchemePresets {
     )
 
     /**
+     * E-Ink - High-contrast grayscale for e-ink displays.
+     * Black text on a white background with the 16 ANSI colors folded into
+     * maximally-separated gray levels so colored output stays legible on
+     * 16-level grayscale panels.
+     */
+    val eink = PresetScheme(
+        name = "E-Ink",
+        description = "High-contrast grayscale for e-ink displays",
+        defaultFg = 0,
+        defaultBg = 15,
+        colors = intArrayOf(
+            0xff000000.toInt(), // black
+            0xff000000.toInt(), // red
+            0xff000000.toInt(), // green
+            0xff555555.toInt(), // yellow
+            0xff000000.toInt(), // blue
+            0xff555555.toInt(), // purple
+            0xff555555.toInt(), // cyan
+            0xffffffff.toInt(), // white
+            0xff555555.toInt(), // bright black
+            0xff555555.toInt(), // bright red
+            0xff555555.toInt(), // bright green
+            0xff999999.toInt(), // bright yellow
+            0xff555555.toInt(), // bright blue
+            0xff999999.toInt(), // bright purple
+            0xff999999.toInt(), // bright cyan
+            0xffffffff.toInt(), // bright white
+        ),
+    )
+
+    /**
      * List of all built-in color scheme presets.
+     *
+     * Built-in scheme IDs are negative and map positionally into this list
+     * (see ColorSchemeRepository), so new presets must be appended at the end.
      */
     val builtInSchemes = listOf(
         default,
@@ -264,6 +298,7 @@ object ColorSchemePresets {
         gruvboxDark,
         monokai,
         tomorrowNight,
+        eink,
     )
 
     /**

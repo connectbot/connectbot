@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -153,6 +153,7 @@ class MainActivity : AppCompatActivity() {
             val isAuthenticated by appViewModel.isAuthenticated.collectAsState()
             val authOnLaunchEnabled = appViewModel.authOnLaunchEnabled
             val themeMode by appViewModel.themeMode.collectAsState()
+            val einkMode by appViewModel.einkMode.collectAsState()
             val navController = rememberNavController()
             val context = LocalContext.current
             var showPermissionRationale by remember { mutableStateOf(false) }
@@ -311,6 +312,7 @@ class MainActivity : AppCompatActivity() {
                 authRequired = authOnLaunchEnabled,
                 isAuthenticated = isAuthenticated,
                 themeMode = themeMode,
+                einkMode = einkMode,
                 onAuthenticationSuccess = { appViewModel.onAuthenticationSuccess() },
                 onRetryMigration = { appViewModel.retryMigration() },
                 onSelectShortcut = { host, color, iconStyle ->

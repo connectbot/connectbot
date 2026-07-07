@@ -178,6 +178,7 @@ class TerminalBridge {
 
     private val emulation: String?
     private val scrollback: Int
+    private val einkMode: Boolean
     private val encoding: String
 
     /** Font family from profile for terminal display */
@@ -307,12 +308,14 @@ class TerminalBridge {
 
         emulation = profile.emulation
         scrollback = manager.getScrollback()
+        einkMode = manager.prefs.getBoolean(PreferenceConstants.EINK_MODE, false)
 
-        // create our default paint
+        // create our default paint; e-ink panels smear soft antialiased edges
+        // and fake-bold strokes, so both stay off there
         defaultPaint = Paint()
-        defaultPaint.isAntiAlias = true
+        defaultPaint.isAntiAlias = !einkMode
         defaultPaint.typeface = Typeface.MONOSPACE
-        defaultPaint.isFakeBoldText = true // more readable?
+        defaultPaint.isFakeBoldText = !einkMode // more readable?
 
         fontSizeChangedListeners = mutableListOf()
 
@@ -335,7 +338,7 @@ class TerminalBridge {
         // Use settings from profile
         var fontSizeSp = profile.fontSize
         if (fontSizeSp <= 0) {
-            fontSizeSp = DEFAULT_FONT_SIZE_SP
+            fontSizeSp = defaultFontSizeSp
         }
         setFontSize(fontSizeSp.toFloat())
 
@@ -500,7 +503,7 @@ class TerminalBridge {
      */
     private fun applyProfileSettings(profile: org.connectbot.data.entity.Profile) {
         // Apply font size
-        val newFontSize = if (profile.fontSize > 0) profile.fontSize else DEFAULT_FONT_SIZE_SP
+        val newFontSize = if (profile.fontSize > 0) profile.fontSize else defaultFontSizeSp
         if (newFontSize.toFloat() != fontSizeSp) {
             setFontSize(newFontSize.toFloat())
         }
@@ -1261,10 +1264,15 @@ class TerminalBridge {
         setFontSize(fontSizeSp - FONT_SIZE_STEP, false)
     }
 
+    /** E-ink users sit closer to lower-resolution panels, so default larger. */
+    private val defaultFontSizeSp: Int
+        get() = if (einkMode) EINK_DEFAULT_FONT_SIZE_SP else DEFAULT_FONT_SIZE_SP
+
     companion object {
         const val TAG = "CB.TerminalBridge"
 
         private const val DEFAULT_FONT_SIZE_SP = 10
+        private const val EINK_DEFAULT_FONT_SIZE_SP = 14
         private const val FONT_SIZE_STEP = 2
     }
 }

@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,8 +109,36 @@ class ColorSchemePresetsTest {
     }
 
     @Test
-    fun builtInSchemes_Contains8Schemes() {
-        assertEquals("Should have 8 built-in schemes", 8, ColorSchemePresets.builtInSchemes.size)
+    fun eink_HasCorrectMetadata() {
+        val scheme = ColorSchemePresets.eink
+
+        assertEquals("E-Ink", scheme.name)
+        assertEquals("High-contrast grayscale for e-ink displays", scheme.description)
+        assertEquals(0, scheme.defaultFg)
+        assertEquals(15, scheme.defaultBg)
+    }
+
+    @Test
+    fun eink_UsesOnlyGrayscaleColors() {
+        ColorSchemePresets.eink.colors.forEach { color ->
+            val r = (color shr 16) and 0xff
+            val g = (color shr 8) and 0xff
+            val b = color and 0xff
+            assertEquals("Grayscale colors must have R == G", r, g)
+            assertEquals("Grayscale colors must have G == B", g, b)
+        }
+    }
+
+    @Test
+    fun builtInSchemes_Contains9Schemes() {
+        assertEquals("Should have 9 built-in schemes", 9, ColorSchemePresets.builtInSchemes.size)
+    }
+
+    @Test
+    fun builtInSchemes_EinkIsLast() {
+        // Built-in scheme IDs are negative and map positionally into the
+        // list, so new presets must stay appended at the end
+        assertEquals(ColorSchemePresets.eink, ColorSchemePresets.builtInSchemes.last())
     }
 
     @Test
@@ -124,6 +152,7 @@ class ColorSchemePresetsTest {
         assertTrue("Should contain Gruvbox Dark", schemes.contains(ColorSchemePresets.gruvboxDark))
         assertTrue("Should contain Monokai", schemes.contains(ColorSchemePresets.monokai))
         assertTrue("Should contain Tomorrow Night", schemes.contains(ColorSchemePresets.tomorrowNight))
+        assertTrue("Should contain E-Ink", schemes.contains(ColorSchemePresets.eink))
     }
 
     @Test

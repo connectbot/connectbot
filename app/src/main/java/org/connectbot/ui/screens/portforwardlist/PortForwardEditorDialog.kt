@@ -19,6 +19,8 @@ package org.connectbot.ui.screens.portforwardlist
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -50,6 +52,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
+import org.connectbot.ui.LocalEinkMode
 import org.connectbot.util.HostConstants
 
 enum class SourceAddressOption(val sshValue: String, @StringRes val labelRes: Int) {
@@ -127,6 +130,7 @@ fun PortForwardEditorDialog(
     }
 
     val isRemote = typeIndex == 1
+    val einkMode = LocalEinkMode.current
     val needsDestination = typeIndex != 2
 
     val sourcePortValue = sourcePort.ifEmpty { "8080" }.toIntOrNull()
@@ -194,8 +198,8 @@ fun PortForwardEditorDialog(
 
                 AnimatedVisibility(
                     visible = isRemote,
-                    enter = expandVertically() + fadeIn(),
-                    exit = shrinkVertically() + fadeOut(),
+                    enter = if (einkMode) EnterTransition.None else expandVertically() + fadeIn(),
+                    exit = if (einkMode) ExitTransition.None else shrinkVertically() + fadeOut(),
                 ) {
                     Column {
                         Spacer(modifier = Modifier.height(8.dp))
