@@ -385,6 +385,12 @@ class TmuxSessionManager(
             throw e
         }
 
+        // Ask tmux (>=3.2) to pause flooding panes instead of stalling the
+        // whole channel; paused panes are resumed and resynced on demand.
+        if (_state.value.version?.supportsFlowControl == true) {
+            runCatching { client.command("refresh-client -f pause-after=$PAUSE_AFTER_SECONDS") }
+        }
+
         val notificationJob = scope.launch {
             client.notifications.collect { handleNotification(sessionId, it) }
         }
@@ -591,6 +597,17 @@ class TmuxSessionManager(
     // ===== Management ops =====
 
     /**
+     * Resizes the session server-side to the phone's grid (the per-session
+     * "resize to my screen" action). Affects other attached clients; the UI
+     * confirms when attachedCount > 1.
+     */
+    suspend fun resizeSessionToClient(sessionId: String, cols: Int, rows: Int) {
+        if (cols <= 0 || rows <= 0) return
+        val separator = if (_state.value.version?.atLeast(3, 0) == true) "," else "x"
+        sessionCommand(sessionId, "refresh-client -C $cols$separator$rows")
+    }
+
+    /**
      * Runs one tmux command against [sessionId]: over its control client
      * when attached, else over a short-lived exec channel. Returns the
      * in-band reply when attached, null otherwise.
@@ -667,10 +684,32 @@ class TmuxSessionManager(
                 syncTargetWithState(sessionId, notification)
             }
 
+            is TmuxNotification.Pause -> {
+                mutateState { reduceSession(it, sessionId, notification) }
+                resumePausedPane(sessionId, notification.paneId)
+            }
+
             else -> {
                 mutateState { reduceSession(it, sessionId, notification) }
                 syncTargetWithState(sessionId, notification)
             }
+        }
+    }
+
+    /**
+     * tmux paused a flooding pane's stream. If we render it, continue the
+     * stream and resync the emulator over the gap; otherwise leave it
+     * paused — it costs nothing while unwatched.
+     */
+    private fun resumePausedPane(sessionId: String, paneId: String) {
+        val terminal = paneRegistry.get(sessionId, paneId) ?: return
+        val client = clients[sessionId] ?: return
+        scope.launch(ioDispatcher) {
+            runCatching {
+                client.command("refresh-client -A '$paneId:continue'")
+                terminal.resync()
+                mutateState { reduceSession(it, sessionId, TmuxNotification.Continue(paneId)) }
+            }.onFailure { Timber.d(it, "tmux pane resume failed for %s", paneId) }
         }
     }
 
@@ -787,6 +826,7 @@ class TmuxSessionManager(
         private const val NO_SERVER_MARKER = "NO_SERVER"
 
         private const val EXEC_TIMEOUT_MS = 10_000L
+        private const val PAUSE_AFTER_SECONDS = 60
         private const val ATTACH_TIMEOUT_MS = 15_000L
         private const val DETACH_TIMEOUT_MS = 3_000L
 

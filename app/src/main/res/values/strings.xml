@@ -696,6 +696,10 @@
 	<string name="tmux_menu_move_right">Move right</string>
 	<!-- New window affordance on the window strip -->
 	<string name="tmux_new_window">New window</string>
+	<!-- Long-press menu: resize the session to this device's screen -->
+	<string name="tmux_menu_resize">Resize to my screen</string>
+	<!-- Confirmation when resizing a session that other clients are attached to -->
+	<string name="tmux_resize_confirm_message">Another client is attached to this session; resizing will reflow its display too.</string>
 	<!-- Rename dialog titles and confirm button -->
 	<string name="tmux_rename_session_title">Rename session</string>
 	<string name="tmux_rename_window_title">Rename window</string>

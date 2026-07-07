@@ -108,6 +108,35 @@ fun TmuxActionMenuDialog(
     )
 }
 
+/** Non-destructive confirmation (e.g. resizing a shared session). */
+@Composable
+fun TmuxConfirmDialog(
+    title: String,
+    message: String,
+    confirmLabel: String,
+    onConfirm: () -> Unit,
+    onDismiss: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(title) },
+        text = { Text(message) },
+        confirmButton = {
+            TextButton(
+                onClick = onConfirm,
+                modifier = Modifier.testTag("tmux_confirm"),
+            ) {
+                Text(confirmLabel)
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.delete_neg))
+            }
+        },
+    )
+}
+
 /** Destructive confirmation for kill-session / kill-window. */
 @Composable
 fun TmuxKillConfirmDialog(

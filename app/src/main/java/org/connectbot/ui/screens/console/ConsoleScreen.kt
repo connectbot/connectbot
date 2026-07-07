@@ -148,6 +148,7 @@ import org.connectbot.ui.common.parseHostColor
 import org.connectbot.ui.screens.console.tmux.PaneDotsIndicator
 import org.connectbot.ui.screens.console.tmux.TmuxActionMenuDialog
 import org.connectbot.ui.screens.console.tmux.TmuxCommandPaletteSheet
+import org.connectbot.ui.screens.console.tmux.TmuxConfirmDialog
 import org.connectbot.ui.screens.console.tmux.TmuxKillConfirmDialog
 import org.connectbot.ui.screens.console.tmux.TmuxOfferBanner
 import org.connectbot.ui.screens.console.tmux.TmuxRenameDialog
@@ -823,6 +824,7 @@ fun ConsoleScreen(
     var tmuxRenameSessionTab by remember { mutableStateOf<ConsoleTab.TmuxSession?>(null) }
     var tmuxRenameWindowId by remember { mutableStateOf<String?>(null) }
     var tmuxKillSessionTab by remember { mutableStateOf<ConsoleTab.TmuxSession?>(null) }
+    var tmuxResizeTab by remember { mutableStateOf<ConsoleTab.TmuxSession?>(null) }
     var tmuxKillWindowId by remember { mutableStateOf<String?>(null) }
     var showTmuxPalette by remember { mutableStateOf(false) }
     var showExtraKeyboard by remember { mutableStateOf(true) } // Start visible to show animation
@@ -1397,6 +1399,17 @@ fun ConsoleScreen(
                     add(stringResource(R.string.tmux_menu_rename) to { tmuxRenameSessionTab = menuTab })
                     if (menuTab.attachState == TmuxAttachState.ATTACHED) {
                         add(stringResource(R.string.tmux_menu_detach) to { viewModel.detachTmuxTab(menuTab) })
+                        add(
+                            stringResource(R.string.tmux_menu_resize) to {
+                                val attachedElsewhere = menuTab.bridge.tmux?.state?.value
+                                    ?.session(menuTab.sessionId)?.attachedCount ?: 0
+                                if (attachedElsewhere > 1) {
+                                    tmuxResizeTab = menuTab
+                                } else {
+                                    viewModel.resizeTmuxSessionToScreen(menuTab)
+                                }
+                            },
+                        )
                     }
                     add(stringResource(R.string.tmux_menu_kill_session) to { tmuxKillSessionTab = menuTab })
                 },
@@ -1442,6 +1455,19 @@ fun ConsoleScreen(
                     tmuxRenameWindowId = null
                 },
                 onDismiss = { tmuxRenameWindowId = null },
+            )
+        }
+
+        tmuxResizeTab?.let { resizeTab ->
+            TmuxConfirmDialog(
+                title = stringResource(R.string.tmux_menu_resize),
+                message = stringResource(R.string.tmux_resize_confirm_message),
+                confirmLabel = stringResource(R.string.tmux_menu_resize),
+                onConfirm = {
+                    viewModel.resizeTmuxSessionToScreen(resizeTab)
+                    tmuxResizeTab = null
+                },
+                onDismiss = { tmuxResizeTab = null },
             )
         }
 

@@ -575,6 +575,20 @@ class ConsoleViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Resizes the tmux session to this phone's grid (approximated by the
+     * host shell emulator's current dimensions at the profile font size).
+     */
+    fun resizeTmuxSessionToScreen(tab: ConsoleTab.TmuxSession) {
+        val tmux = tab.bridge.tmux ?: return
+        val dimensions = tab.bridge.terminalEmulator.dimensions
+        viewModelScope.launch(dispatchers.io) {
+            runCatching {
+                tmux.resizeSessionToClient(tab.sessionId, dimensions.columns, dimensions.rows)
+            }
+        }
+    }
+
     /** Runs a raw tmux command from the palette against the viewed session. */
     fun runTmuxCommand(command: String) {
         val tab = _uiState.value.currentTab as? ConsoleTab.TmuxSession ?: return

@@ -229,6 +229,21 @@ class TmuxPaneTerminal(
         handle.writeInput("\u001b[${y + 1};${x + 1}H".toByteArray())
     }
 
+    /**
+     * Recovers from a tmux flow-control pause: the stream has a gap, so
+     * reset the emulator (RIS) and reload the pane from a fresh capture.
+     */
+    suspend fun resync() {
+        if (destroyed) return
+        synchronized(outputLock) {
+            live = false
+            backfillSeq = Long.MAX_VALUE
+            pendingOutput.clear()
+        }
+        handle.writeInput(RESET_SEQUENCE)
+        backfill()
+    }
+
     /** Routes one `%output` event (any thread). */
     fun handleOutput(output: TmuxNotification.Output) {
         if (destroyed) return
@@ -291,6 +306,9 @@ class TmuxPaneTerminal(
 
     companion object {
         const val DEFAULT_BACKFILL_LINES = 2000
+
+        /** RIS — full terminal reset before re-feeding captured content. */
+        private val RESET_SEQUENCE = "\u001bc".toByteArray()
         private const val MAX_PENDING_OUTPUT = 512
         private const val INPUT_COALESCE_MS = 8L
         private const val INPUT_COALESCE_BYTES = 128

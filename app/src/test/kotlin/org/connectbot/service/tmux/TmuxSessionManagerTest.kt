@@ -54,8 +54,9 @@ private class FakeChannelFactory : TmuxChannelFactory {
 
     /** Scripts each new control channel before the client starts reading. */
     var onControlChannel: (FakeTmuxChannel) -> Unit = { channel ->
-        channel.scriptReply("@0\t0\tshell\t1\t*\n@1\t1\tlogs\t0\t-\n")
-        channel.scriptReply(
+        channel.scriptReplyFor("list-windows", "@0\t0\tshell\t1\t*\n@1\t1\tlogs\t0\t-\n")
+        channel.scriptReplyFor(
+            "list-panes",
             "@0\t%0\t0\t100\t30\t0\t0\t1\n" +
                 "@0\t%1\t1\t100\t29\t0\t31\t0\n" +
                 "@1\t%2\t0\t100\t60\t0\t0\t1\n",
@@ -258,13 +259,13 @@ class TmuxSessionManagerTest {
         }
         connectAndAwaitReady()
         factory.onControlChannel = { channel ->
-            channel.scriptReply("@0\t0\tshell\t1\t*\n@1\t1\tlogs\t0\t-\n")
-            channel.scriptReply(
+            channel.scriptReplyFor("list-windows", "@0\t0\tshell\t1\t*\n@1\t1\tlogs\t0\t-\n")
+            channel.scriptReplyFor(
+                "list-panes",
                 "@0\t%0\t0\t100\t30\t0\t0\t1\n" +
                     "@0\t%1\t1\t100\t29\t0\t31\t0\n" +
                     "@1\t%2\t0\t100\t60\t0\t0\t1\n",
             )
-            // Keyed by prefix: select-window/select-pane interleave with these.
             channel.scriptReplyFor("capture-pane", "old prompt \$\n")
             channel.scriptReplyFor("display-message", "0\t1\n")
         }
@@ -325,6 +326,57 @@ class TmuxSessionManagerTest {
             while (synchronized(alerts) { alerts.size < 2 }) kotlinx.coroutines.delay(10)
         }
         collector.cancel()
+    }
+
+    @Test
+    fun `attach enables flow control and pause triggers resume with resync`() = runBlocking<Unit> {
+        val fakes = mutableListOf<FakeEmulator>()
+        manager.paneEmulatorFactory = TmuxPaneEmulatorFactory { _, _, _, _, _ ->
+            FakeEmulator().also { fakes.add(it) }
+        }
+        connectAndAwaitReady()
+        factory.onControlChannel = { channel ->
+            channel.scriptReplyFor("list-windows", "@0\t0\tshell\t1\t*\n")
+            channel.scriptReplyFor("list-panes", "@0\t%0\t0\t100\t30\t0\t0\t1\n")
+            channel.scriptReplyFor("capture-pane", "content\n")
+            channel.scriptReplyFor("display-message", "0\t0\n")
+        }
+        withTimeout(5_000) { manager.attach("\$0") }
+        val control = factory.controlChannels.single()
+        assertThat(control.commands()).contains("refresh-client -f pause-after=60")
+
+        withTimeout(5_000) { manager.acquirePaneTerminal(TmuxTarget("\$0", "@0", "%0", "main")) }
+
+        // Flooding pane paused by tmux: we continue + resync it.
+        control.scriptReplyFor("capture-pane", "fresh content after gap\n")
+        control.scriptReplyFor("display-message", "0\t0\n")
+        control.sendNotification("%pause %0")
+
+        withTimeout(5_000) {
+            while (control.commands().none { it == "refresh-client -A '%0:continue'" }) {
+                kotlinx.coroutines.delay(10)
+            }
+        }
+        withTimeout(5_000) {
+            while (!fakes.single().text.contains("fresh content after gap")) {
+                kotlinx.coroutines.delay(10)
+            }
+        }
+        // RIS reset precedes the re-fed capture.
+        assertThat(fakes.single().text).contains("c")
+        val paused = manager.state.value.session("\$0")!!.windows[0].panes[0].paused
+        assertThat(paused).isFalse()
+    }
+
+    @Test
+    fun `resize session uses comma syntax on modern tmux`() = runBlocking<Unit> {
+        connectAndAwaitReady()
+        withTimeout(5_000) { manager.attach("\$0") }
+
+        withTimeout(5_000) { manager.resizeSessionToClient("\$0", cols = 52, rows = 30) }
+
+        assertThat(factory.controlChannels.single().commands())
+            .contains("refresh-client -C 52,30")
     }
 
     @Test
