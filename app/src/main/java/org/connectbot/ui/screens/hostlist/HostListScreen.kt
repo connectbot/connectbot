@@ -91,7 +91,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
-import androidx.core.graphics.toColorInt
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import org.connectbot.R
@@ -100,6 +99,7 @@ import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.PreviewScreen
+import org.connectbot.ui.common.parseHostColor
 import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.components.PortForwardQuickToggleSheet
 import org.connectbot.ui.components.ShortcutCustomizationDialog
@@ -635,7 +635,7 @@ private fun HostListItem(
                         modifier = Modifier
                             .size(40.dp)
                             .background(
-                                color = parseColor(host.color),
+                                color = parseHostColor(host.color),
                                 shape = CircleShape,
                             )
                             .border(
@@ -926,16 +926,6 @@ private fun ForgetHostKeysDialog(
             }
         },
     )
-}
-
-@Composable
-private fun parseColor(colorString: String?): Color {
-    if (colorString.isNullOrBlank()) {
-        return colorResource(R.color.host_blue)
-    } else {
-        val colorInt = colorString.toColorInt()
-        return Color(colorInt)
-    }
 }
 
 @PreviewScreen

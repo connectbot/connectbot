@@ -1328,252 +1328,278 @@ fun ConsoleScreen(
         // or temporarily visible when titleBarHide is true and showTitleBar is true
         if (!titleBarHide || showTitleBar) {
             val density = LocalDensity.current
-            TopAppBar(
-                title = {
-                    Text(
-                        currentBridge?.host?.nickname
-                            ?: stringResource(R.string.console_default_title),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                    )
+            Column(
+                modifier = Modifier.onSizeChanged {
+                    titleBarHeight = with(density) { it.height.toDp() }
                 },
-                modifier = Modifier
-                    .testTag("top_app_bar")
-                    .onSizeChanged {
-                        titleBarHeight = with(density) { it.height.toDp() }
-                    },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            stringResource(R.string.button_back),
+            ) {
+                TopAppBar(
+                    title = {
+                        Text(
+                            currentBridge?.host?.nickname
+                                ?: stringResource(R.string.console_default_title),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis,
                         )
-                    }
-                },
-                colors = if (titleBarHide) {
-                    // Translucent overlay when auto-hide is enabled
-                    TopAppBarDefaults.topAppBarColors(
-                        containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
-                    )
-                } else {
-                    // Solid color when permanently visible
-                    TopAppBarDefaults.topAppBarColors()
-                },
-                actions = {
-                    if (hasMultipleSessions) {
-                        IconButton(onClick = { showSessionPickerDialog = true }) {
+                    },
+                    modifier = Modifier.testTag("top_app_bar"),
+                    navigationIcon = {
+                        IconButton(onClick = onNavigateBack) {
                             Icon(
-                                Icons.Default.SwapHoriz,
-                                contentDescription = stringResource(R.string.console_switch_session),
+                                Icons.AutoMirrored.Filled.ArrowBack,
+                                stringResource(R.string.button_back),
                             )
                         }
-                    }
-
-                    // Text Input button
-                    IconButton(
-                        onClick = { showTextInputDialog = true },
-                        enabled = currentBridge != null,
-                    ) {
-                        Icon(
-                            Icons.Default.Edit,
-                            contentDescription = stringResource(R.string.console_menu_text_input),
+                    },
+                    colors = if (titleBarHide) {
+                        // Translucent overlay when auto-hide is enabled
+                        TopAppBarDefaults.topAppBarColors(
+                            containerColor = MaterialTheme.colorScheme.surface.copy(alpha = 0.5f),
                         )
-                    }
+                    } else {
+                        // Solid color when permanently visible
+                        TopAppBarDefaults.topAppBarColors()
+                    },
+                    actions = {
+                        if (hasMultipleSessions) {
+                            IconButton(onClick = { showSessionPickerDialog = true }) {
+                                Icon(
+                                    Icons.Default.SwapHoriz,
+                                    contentDescription = stringResource(R.string.console_switch_session),
+                                )
+                            }
+                        }
 
-                    // Paste button - always visible
-                    IconButton(
-                        onClick = {
-                            pasteClipboardContents()
-                        },
-                        enabled = currentBridge != null,
-                    ) {
-                        Icon(
-                            Icons.Default.ContentPaste,
-                            contentDescription = stringResource(R.string.console_menu_paste),
-                        )
-                    }
+                        // Text Input button
+                        IconButton(
+                            onClick = { showTextInputDialog = true },
+                            enabled = currentBridge != null,
+                        ) {
+                            Icon(
+                                Icons.Default.Edit,
+                                contentDescription = stringResource(R.string.console_menu_text_input),
+                            )
+                        }
 
-                    // More menu
-                    Box {
+                        // Paste button - always visible
                         IconButton(
                             onClick = {
-                                // Refresh menu state to update enabled/disabled items
-                                viewModel.refreshMenuState()
-                                showMenu = true
+                                pasteClipboardContents()
                             },
+                            enabled = currentBridge != null,
                         ) {
                             Icon(
-                                Icons.Default.MoreVert,
-                                contentDescription = stringResource(R.string.button_more_options),
+                                Icons.Default.ContentPaste,
+                                contentDescription = stringResource(R.string.console_menu_paste),
                             )
                         }
-                        DropdownMenu(
-                            expanded = showMenu,
-                            onDismissRequest = {
-                                showMenu = false
-                                // Hide title bar again after closing menu if auto-hide is enabled
-                                if (titleBarHide) {
-                                    showTitleBar = false
-                                }
-                                termFocusRequester.requestFocus()
-                            },
-                        ) {
-                            // Reconnect (shown only when disconnected)
-                            if (disconnected) {
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.console_menu_reconnect)) },
-                                    onClick = {
-                                        showMenu = false
-                                        viewModel.reconnect(currentBridge)
-                                    },
-                                    leadingIcon = {
-                                        Icon(Icons.Default.Refresh, contentDescription = null)
-                                    },
+
+                        // More menu
+                        Box {
+                            IconButton(
+                                onClick = {
+                                    // Refresh menu state to update enabled/disabled items
+                                    viewModel.refreshMenuState()
+                                    showMenu = true
+                                },
+                            ) {
+                                Icon(
+                                    Icons.Default.MoreVert,
+                                    contentDescription = stringResource(R.string.button_more_options),
                                 )
                             }
-
-                            if (hasMultipleSessions) {
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.console_previous_session)) },
-                                    onClick = {
-                                        showMenu = false
-                                        selectBridgePreservingKeyboard(uiState.currentBridgeIndex - 1)
-                                    },
-                                    enabled = uiState.currentBridgeIndex > 0,
-                                )
-
-                                DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.console_next_session)) },
-                                    onClick = {
-                                        showMenu = false
-                                        selectBridgePreservingKeyboard(uiState.currentBridgeIndex + 1)
-                                    },
-                                    enabled = uiState.currentBridgeIndex < uiState.bridges.lastIndex,
-                                )
-                            }
-
-                            // Disconnect/Close
-                            DropdownMenuItem(
-                                text = {
-                                    Text(
-                                        if (!sessionOpen && disconnected) {
-                                            stringResource(R.string.console_menu_close)
-                                        } else {
-                                            stringResource(R.string.list_host_disconnect)
+                            DropdownMenu(
+                                expanded = showMenu,
+                                onDismissRequest = {
+                                    showMenu = false
+                                    // Hide title bar again after closing menu if auto-hide is enabled
+                                    if (titleBarHide) {
+                                        showTitleBar = false
+                                    }
+                                    termFocusRequester.requestFocus()
+                                },
+                            ) {
+                                // Reconnect (shown only when disconnected)
+                                if (disconnected) {
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.console_menu_reconnect)) },
+                                        onClick = {
+                                            showMenu = false
+                                            viewModel.reconnect(currentBridge)
+                                        },
+                                        leadingIcon = {
+                                            Icon(Icons.Default.Refresh, contentDescription = null)
                                         },
                                     )
-                                },
-                                onClick = {
-                                    showMenu = false
-                                    showDisconnectDialog = true
-                                },
-                                enabled = currentBridge != null,
-                                leadingIcon = {
-                                    Icon(Icons.Default.LinkOff, null)
-                                },
-                            )
+                                }
 
-                            // URL Scan
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.console_menu_urlscan)) },
-                                onClick = {
-                                    showMenu = false
-                                    currentBridge?.let { bridge ->
-                                        scannedUrls = bridge.scanForURLs()
-                                        showUrlScanDialog = true
-                                    }
-                                },
-                                leadingIcon = {
-                                    Icon(Icons.Default.Link, contentDescription = null)
-                                },
-                                enabled = currentBridge != null,
-                            )
+                                if (hasMultipleSessions) {
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.console_previous_session)) },
+                                        onClick = {
+                                            showMenu = false
+                                            selectBridgePreservingKeyboard(uiState.currentBridgeIndex - 1)
+                                        },
+                                        enabled = uiState.currentBridgeIndex > 0,
+                                    )
 
-                            // Copy entire session (screen plus scrollback)
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.console_menu_copy_session)) },
-                                onClick = {
-                                    showMenu = false
-                                    copySessionToClipboard()
-                                },
-                                leadingIcon = {
-                                    Icon(Icons.Default.ContentCopy, contentDescription = null)
-                                },
-                                enabled = currentBridge != null,
-                            )
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.console_next_session)) },
+                                        onClick = {
+                                            showMenu = false
+                                            selectBridgePreservingKeyboard(uiState.currentBridgeIndex + 1)
+                                        },
+                                        enabled = uiState.currentBridgeIndex < uiState.bridges.lastIndex,
+                                    )
+                                }
 
-                            // Resize
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.console_menu_resize)) },
-                                onClick = {
-                                    showMenu = false
-                                    showResizeDialog = true
-                                },
-                                enabled = sessionOpen,
-                            )
-
-                            // Port Forwards (if available)
-                            if (canForwardPorts) {
+                                // Disconnect/Close
                                 DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.console_menu_portforwards)) },
+                                    text = {
+                                        Text(
+                                            if (!sessionOpen && disconnected) {
+                                                stringResource(R.string.console_menu_close)
+                                            } else {
+                                                stringResource(R.string.list_host_disconnect)
+                                            },
+                                        )
+                                    },
                                     onClick = {
                                         showMenu = false
-                                        currentBridge.host.id.let {
-                                            onNavigateToPortForwards(
-                                                it,
-                                            )
+                                        showDisconnectDialog = true
+                                    },
+                                    enabled = currentBridge != null,
+                                    leadingIcon = {
+                                        Icon(Icons.Default.LinkOff, null)
+                                    },
+                                )
+
+                                // URL Scan
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.console_menu_urlscan)) },
+                                    onClick = {
+                                        showMenu = false
+                                        currentBridge?.let { bridge ->
+                                            scannedUrls = bridge.scanForURLs()
+                                            showUrlScanDialog = true
                                         }
                                     },
-                                    enabled = sessionOpen,
+                                    leadingIcon = {
+                                        Icon(Icons.Default.Link, contentDescription = null)
+                                    },
+                                    enabled = currentBridge != null,
                                 )
-                            }
 
-                            // SFTP file browser (if available)
-                            if (canTransferFiles) {
+                                // Copy entire session (screen plus scrollback)
                                 DropdownMenuItem(
-                                    text = { Text(stringResource(R.string.console_menu_files)) },
+                                    text = { Text(stringResource(R.string.console_menu_copy_session)) },
                                     onClick = {
                                         showMenu = false
-                                        currentBridge.host.id.let { onNavigateToSftp(it) }
+                                        copySessionToClipboard()
+                                    },
+                                    leadingIcon = {
+                                        Icon(Icons.Default.ContentCopy, contentDescription = null)
+                                    },
+                                    enabled = currentBridge != null,
+                                )
+
+                                // Resize
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.console_menu_resize)) },
+                                    onClick = {
+                                        showMenu = false
+                                        showResizeDialog = true
                                     },
                                     enabled = sessionOpen,
                                 )
+
+                                // Port Forwards (if available)
+                                if (canForwardPorts) {
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.console_menu_portforwards)) },
+                                        onClick = {
+                                            showMenu = false
+                                            currentBridge.host.id.let {
+                                                onNavigateToPortForwards(
+                                                    it,
+                                                )
+                                            }
+                                        },
+                                        enabled = sessionOpen,
+                                    )
+                                }
+
+                                // SFTP file browser (if available)
+                                if (canTransferFiles) {
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.console_menu_files)) },
+                                        onClick = {
+                                            showMenu = false
+                                            currentBridge.host.id.let { onNavigateToSftp(it) }
+                                        },
+                                        enabled = sessionOpen,
+                                    )
+                                }
+
+                                // Fullscreen toggle
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.pref_fullscreen_title)) },
+                                    onClick = {
+                                        fullscreen = !fullscreen
+                                        prefs.edit { putBoolean("fullscreen", fullscreen) }
+                                    },
+                                    trailingIcon = {
+                                        Checkbox(
+                                            checked = fullscreen,
+                                            onCheckedChange = null,
+                                        )
+                                    },
+                                )
+
+                                // Title bar auto-hide toggle
+                                DropdownMenuItem(
+                                    text = { Text(stringResource(R.string.pref_titlebarhide_title)) },
+                                    onClick = {
+                                        titleBarHide = !titleBarHide
+                                        prefs.edit { putBoolean("titlebarhide", titleBarHide) }
+                                        handleTerminalInteraction(isTerminalTap = true)
+                                    },
+                                    trailingIcon = {
+                                        Checkbox(
+                                            checked = titleBarHide,
+                                            onCheckedChange = null,
+                                        )
+                                    },
+                                )
                             }
-
-                            // Fullscreen toggle
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.pref_fullscreen_title)) },
-                                onClick = {
-                                    fullscreen = !fullscreen
-                                    prefs.edit { putBoolean("fullscreen", fullscreen) }
-                                },
-                                trailingIcon = {
-                                    Checkbox(
-                                        checked = fullscreen,
-                                        onCheckedChange = null,
-                                    )
-                                },
-                            )
-
-                            // Title bar auto-hide toggle
-                            DropdownMenuItem(
-                                text = { Text(stringResource(R.string.pref_titlebarhide_title)) },
-                                onClick = {
-                                    titleBarHide = !titleBarHide
-                                    prefs.edit { putBoolean("titlebarhide", titleBarHide) }
-                                    handleTerminalInteraction(isTerminalTap = true)
-                                },
-                                trailingIcon = {
-                                    Checkbox(
-                                        checked = titleBarHide,
-                                        onCheckedChange = null,
-                                    )
-                                },
-                            )
                         }
-                    }
-                },
-            )
+                    },
+                )
+
+                // Persistent tab strip for switching between open sessions
+                if (hasMultipleSessions) {
+                    SessionTabStrip(
+                        tabs = uiState.bridges.map { bridge ->
+                            SessionTabData(
+                                hostId = bridge.host.id,
+                                nickname = bridge.host.nickname,
+                                color = bridge.host.color,
+                                isDisconnected = bridge.isDisconnected,
+                            )
+                        },
+                        selectedIndex = uiState.currentBridgeIndex,
+                        onSelectTab = { index ->
+                            selectBridgePreservingKeyboard(index)
+                            handleTerminalInteraction(isInteraction = false)
+                        },
+                        containerColor = if (titleBarHide) {
+                            MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
+                        } else {
+                            MaterialTheme.colorScheme.surface
+                        },
+                    )
+                }
+            }
 
             // Progress indicator for OSC 9;4 progress reporting
             val progressState = uiState.progressState
