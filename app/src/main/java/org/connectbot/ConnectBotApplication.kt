@@ -20,6 +20,7 @@ package org.connectbot
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp
 import org.connectbot.logging.TimberInitializer
+import org.connectbot.util.HostShortcutsUpdater
 import javax.inject.Inject
 
 @HiltAndroidApp
@@ -28,8 +29,12 @@ class ConnectBotApplication : Application() {
     @Inject
     lateinit var timberInitializer: TimberInitializer
 
+    @Inject
+    lateinit var hostShortcutsUpdater: HostShortcutsUpdater
+
     override fun onCreate() {
         super.onCreate()
         timberInitializer.initialize()
+        hostShortcutsUpdater.start()
     }
 }

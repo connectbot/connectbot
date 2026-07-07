@@ -1422,6 +1422,12 @@
 	<!-- Icon style option: key/security icon -->
 	<string name="icon_style_key">Key</string>
 
+	<!-- Quick Settings tile strings -->
+	<!-- Label for the Quick Settings tile that connects to the most recent host -->
+	<string name="qs_tile_label">Quick Connect</string>
+	<!-- Subtitle for the Quick Settings tile when no hosts have been set up yet -->
+	<string name="qs_tile_no_hosts">No hosts</string>
+
 	<!-- Authentication on launch -->
 	<!-- Title for the authentication on launch preference in settings -->
 	<string name="pref_auth_on_launch_title">Authentication on launch</string>

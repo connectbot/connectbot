@@ -96,6 +96,17 @@
 			android:foregroundServiceType="remoteMessaging"/>
 
 		<service
+			android:name="org.connectbot.service.QuickConnectTileService"
+			android:exported="true"
+			android:icon="@drawable/ic_qs_connect"
+			android:label="@string/qs_tile_label"
+			android:permission="android.permission.BIND_QUICK_SETTINGS_TILE">
+			<intent-filter>
+				<action android:name="android.service.quicksettings.action.QS_TILE"/>
+			</intent-filter>
+		</service>
+
+		<service
 			android:name="androidx.appcompat.app.AppLocalesMetadataHolderService"
 			android:enabled="true"
 			android:exported="false">
