@@ -784,8 +784,14 @@
 
 	<!-- Message shown in terminal when shell session is not started because user disabled it in host settings -->
 	<string name="terminal_no_session">"Session will not be started due to host preference."</string>
+	<!-- Message shown in terminal, right after terminal_no_session, confirming the connection is up without a shell. Parameter is the title of the "Start shell session" host setting (hostpref_wantsession_title). -->
+	<string name="terminal_portforward_only">"Connection established for port forwarding only. To get a shell on this host, enable \'%1$s\' in the host settings."</string>
+	<!-- Warning shown in terminal after connecting without a shell when the host has no port forwards configured, so the connection appears to do nothing -->
+	<string name="terminal_no_portforwards">"Warning: no port forwards are configured for this host."</string>
 	<!-- Message shown in terminal when a port forward is enabled. Parameter is the port forward description. -->
 	<string name="terminal_enable_portfoward">"Enable port forward: %1$s"</string>
+	<!-- Message shown in terminal when a configured port forward could not be set up during connection. Parameter is the port forward description. -->
+	<string name="terminal_enable_portfoward_failed">"Could not enable port forward: %1$s"</string>
 
 	<!-- Error message shown when trying to open a local shell but it's not available on the device -->
 	<string name="local_shell_unavailable">"Failure! Local shell is unavailable on this phone."</string>
