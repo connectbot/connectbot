@@ -79,6 +79,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
@@ -92,6 +93,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.compose.ui.input.key.KeyEventType
@@ -109,6 +111,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
@@ -134,6 +137,7 @@ import org.connectbot.service.TerminalBridge
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.SelectionController
 import org.connectbot.terminal.Terminal
+import org.connectbot.terminal.VTermKey
 import org.connectbot.ui.LoadingScreen
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.components.AuthBannerDialog
@@ -145,6 +149,7 @@ import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
 import org.connectbot.ui.theme.terminal
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.TerminalTextUtils
 import org.connectbot.util.UrlUtils
 import org.connectbot.util.rememberTerminalTypefaceResultFromStoredValue
 import timber.log.Timber
@@ -251,6 +256,40 @@ internal fun sessionSwipeTarget(
     return targetIndex.takeIf { it != currentIndex }
 }
 
+/**
+ * Fraction of the viewport width, measured from the left edge, where the
+ * page up/down gesture is recognized (per the preference description).
+ */
+private const val PAGE_GESTURE_REGION_FRACTION = 1f / 3f
+
+/**
+ * Decides whether an accumulated vertical drag should send a page key.
+ *
+ * Dragging up advances the content (Page Down); dragging down goes back
+ * (Page Up), matching the pre-Compose gesture behavior.
+ *
+ * @return [VTermKey.PAGEUP], [VTermKey.PAGEDOWN], or null if the drag has
+ *   not yet covered a page distance.
+ */
+@VisibleForTesting
+internal fun pageKeyForDrag(
+    accumulatedDragY: Float,
+    viewportHeight: Int,
+    touchSlop: Float,
+    selectionActive: Boolean = false,
+): Int? {
+    if (selectionActive || viewportHeight <= 0) {
+        return null
+    }
+
+    val pageDistance = max(touchSlop * 4f, viewportHeight / 8f)
+    return when {
+        accumulatedDragY <= -pageDistance -> VTermKey.PAGEDOWN
+        accumulatedDragY >= pageDistance -> VTermKey.PAGEUP
+        else -> null
+    }
+}
+
 @VisibleForTesting
 internal fun shouldShowSoftwareKeyboardForSessionOpen(
     previousBridgeId: Long?,
@@ -333,6 +372,71 @@ private fun Modifier.sessionSwipeNavigation(
             )?.let { target ->
                 onInteraction()
                 onSwipeToSession(target)
+            }
+        }
+    }
+}
+
+/**
+ * Sends page up/down keys for vertical swipes starting in the left third of
+ * the terminal, as described by the "Page up/down gesture" preference.
+ * Locked vertical drags are consumed so the scrollback does not also move.
+ */
+private fun Modifier.pageUpDownGesture(
+    selectionActive: Boolean,
+    onPageKey: (Int) -> Unit,
+): Modifier = pointerInput(selectionActive) {
+    if (selectionActive) {
+        return@pointerInput
+    }
+
+    awaitEachGesture {
+        val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+        if (down.position.x > size.width * PAGE_GESTURE_REGION_FRACTION) {
+            return@awaitEachGesture
+        }
+
+        val pointerId = down.id
+        var dragX = 0f
+        var dragY = 0f
+        var accumulatedY = 0f
+        var pageGestureLocked = false
+        var otherGestureLocked = false
+
+        while (true) {
+            val event = awaitPointerEvent(PointerEventPass.Initial)
+            val change = event.changes.firstOrNull { it.id == pointerId } ?: break
+            if (!change.pressed) {
+                break
+            }
+
+            val delta = change.positionChange()
+            dragX += delta.x
+            dragY += delta.y
+
+            if (!pageGestureLocked && !otherGestureLocked) {
+                val absX = abs(dragX)
+                val absY = abs(dragY)
+                if (absY > viewConfiguration.touchSlop && absY > absX) {
+                    pageGestureLocked = true
+                    accumulatedY = dragY
+                } else if (absX > viewConfiguration.touchSlop && absX > absY) {
+                    otherGestureLocked = true
+                }
+            } else if (pageGestureLocked) {
+                accumulatedY += delta.y
+            }
+
+            if (pageGestureLocked) {
+                change.consume()
+                pageKeyForDrag(
+                    accumulatedDragY = accumulatedY,
+                    viewportHeight = size.height,
+                    touchSlop = viewConfiguration.touchSlop,
+                )?.let { key ->
+                    onPageKey(key)
+                    accumulatedY = 0f
+                }
             }
         }
     }
@@ -528,6 +632,9 @@ fun ConsoleScreen(
     val swipeSessionsEnabled = remember {
         prefs.getBoolean(PreferenceConstants.SWIPE_SESSIONS, false)
     }
+    val pgUpDnGestureEnabled = remember {
+        prefs.getBoolean(PreferenceConstants.PG_UPDN_GESTURE, false)
+    }
     var fullscreen by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.FULLSCREEN, false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false)) }
     val volumeKeysChangeFontSize = remember { prefs.getBoolean(PreferenceConstants.VOLUME_FONT, true) }
@@ -695,6 +802,25 @@ fun ConsoleScreen(
         } catch (e: IllegalArgumentException) {
             // Handle foldable device state issues
             Timber.e(e, "Error setting fullscreen mode (foldable device?)")
+        }
+    }
+
+    // While the title bar is hidden the transparent status bar sits directly
+    // on the black terminal, so it needs light icons regardless of the app
+    // theme; restore the theme's appearance once the title bar returns.
+    val rootView = LocalView.current
+    val titleBarVisible = !titleBarHide || showTitleBar
+    DisposableEffect(rootView, titleBarVisible) {
+        val window = (rootView.context as? Activity)?.window
+        val controller = window?.let { WindowInsetsControllerCompat(it, it.decorView) }
+        val previousLightStatusBars = controller?.isAppearanceLightStatusBars
+        if (controller != null && !titleBarVisible) {
+            controller.isAppearanceLightStatusBars = false
+        }
+        onDispose {
+            if (controller != null && previousLightStatusBars != null) {
+                controller.isAppearanceLightStatusBars = previousLightStatusBars
+            }
         }
     }
 
@@ -875,7 +1001,7 @@ fun ConsoleScreen(
                 ?.toString()
 
             if (!clip.isNullOrBlank()) {
-                bridge.injectString(clip)
+                bridge.injectString(TerminalTextUtils.normalizeLineBreaks(clip))
             }
         }
     }
@@ -885,6 +1011,10 @@ fun ConsoleScreen(
         modifier = modifier
             .fillMaxSize()
             .then(if (keepScreenOn) Modifier.keepScreenOn() else Modifier),
+        // The console is a terminal screen: keep everything behind and around
+        // the terminal (including the area under the transparent status bar)
+        // black instead of the theme background.
+        containerColor = Color.Black,
         contentWindowInsets = ScaffoldDefaults.contentWindowInsets
             .union(WindowInsets.imeAnimationTarget),
     ) { innerPadding ->
@@ -926,7 +1056,18 @@ fun ConsoleScreen(
                             .weight(1f),
                     ) {
                         val bridge = uiState.bridges[uiState.currentBridgeIndex]
-                        val terminalModifier = if (swipeBetweenSessions) {
+                        val pageGestureModifier = if (pgUpDnGestureEnabled) {
+                            Modifier.pageUpDownGesture(
+                                selectionActive = terminalSelectionActive,
+                                onPageKey = { key ->
+                                    bridge.keyHandler.sendPressedKey(key)
+                                    handleTerminalInteraction(isInteraction = false)
+                                },
+                            )
+                        } else {
+                            Modifier
+                        }
+                        val swipeModifier = if (swipeBetweenSessions) {
                             Modifier.sessionSwipeNavigation(
                                 currentIndex = uiState.currentBridgeIndex,
                                 sessionCount = uiState.bridges.size,
@@ -937,6 +1078,7 @@ fun ConsoleScreen(
                         } else {
                             Modifier
                         }
+                        val terminalModifier = pageGestureModifier.then(swipeModifier)
 
                         key(bridge.host.id) {
                             ConsoleTerminalPage(
