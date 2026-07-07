@@ -285,6 +285,7 @@ class SettingsScreenTest {
                     onDefaultProfileChange = onDefaultProfileChange,
                     onLanguageChange = {},
                     onThemeModeChange = {},
+                    onEinkModeChange = {},
                     onRotationChange = {},
                     onFullscreenChange = {},
                     onTitleBarHideChange = {},

@@ -33,6 +33,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import org.connectbot.ui.LocalEinkMode
 import org.connectbot.util.ThemeMode
 
 private val lightScheme = lightColorScheme(
@@ -89,19 +90,65 @@ private val darkScheme = darkColorScheme(
     inversePrimary = md_theme_dark_inversePrimary,
 )
 
+/**
+ * Flat black-on-white scheme for e-ink displays: pure white surfaces, black
+ * text and outlines, no tonal/elevation tints (surfaceTint is white so tonal
+ * elevation renders invisibly instead of as low-contrast gray noise).
+ */
+private val einkLightScheme = lightColorScheme(
+    primary = Color.Black,
+    onPrimary = Color.White,
+    primaryContainer = Color.White,
+    onPrimaryContainer = Color.Black,
+    secondary = Color.Black,
+    onSecondary = Color.White,
+    secondaryContainer = Color.White,
+    onSecondaryContainer = Color.Black,
+    tertiary = Color.Black,
+    onTertiary = Color.White,
+    error = Color.Black,
+    onError = Color.White,
+    errorContainer = Color.White,
+    onErrorContainer = Color.Black,
+    background = Color.White,
+    onBackground = Color.Black,
+    surface = Color.White,
+    onSurface = Color.Black,
+    surfaceVariant = Color.White,
+    onSurfaceVariant = Color.Black,
+    surfaceTint = Color.White,
+    surfaceContainerLowest = Color.White,
+    surfaceContainerLow = Color.White,
+    surfaceContainer = Color.White,
+    surfaceContainerHigh = Color.White,
+    surfaceContainerHighest = Color.White,
+    surfaceDim = Color.White,
+    surfaceBright = Color.White,
+    outline = Color.Black,
+    outlineVariant = Color.Black,
+    inverseSurface = Color.Black,
+    inverseOnSurface = Color.White,
+    inversePrimary = Color.White,
+)
+
 @Composable
 fun ConnectBotTheme(
     themeMode: ThemeMode = ThemeMode.SYSTEM,
     // Dynamic color is available on Android 12+
     dynamicColor: Boolean = true,
+    einkMode: Boolean = false,
     content: @Composable () -> Unit,
 ) {
-    val darkTheme = when (themeMode) {
-        ThemeMode.LIGHT -> false
-        ThemeMode.DARK -> true
-        ThemeMode.SYSTEM -> isSystemInDarkTheme()
-    }
+    // E-ink mode forces a light high-contrast look regardless of theme setting
+    val darkTheme = !einkMode &&
+        when (themeMode) {
+            ThemeMode.LIGHT -> false
+            ThemeMode.DARK -> true
+            ThemeMode.SYSTEM -> isSystemInDarkTheme()
+        }
     val colorScheme = when {
+        einkMode -> einkLightScheme
+
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
@@ -148,10 +195,17 @@ private val terminalColors = TerminalColors(
     overlayTextSecondary = TerminalOverlayTextSecondary,
 )
 
+// Translucency causes ghost trails on e-ink panels, so overlays go fully opaque
+private val einkTerminalColors = TerminalColors(
+    overlayBackground = Color(0xFF000000),
+    overlayText = Color(0xFFFFFFFF),
+    overlayTextSecondary = Color(0xFFFFFFFF),
+)
+
 /**
  * Access terminal-specific colors via MaterialTheme.colorScheme.terminal
  */
 val ColorScheme.terminal: TerminalColors
     @Composable
     @ReadOnlyComposable
-    get() = terminalColors
+    get() = if (LocalEinkMode.current) einkTerminalColors else terminalColors

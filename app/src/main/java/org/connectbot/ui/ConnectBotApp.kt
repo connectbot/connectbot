@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -36,6 +36,12 @@ val LocalTerminalManager = compositionLocalOf<TerminalManager?> {
     null
 }
 
+/**
+ * Whether e-ink mode is enabled: animations are disabled and high-contrast
+ * flat rendering is used so e-ink panels avoid ghosting partial refreshes.
+ */
+val LocalEinkMode = compositionLocalOf { false }
+
 @Composable
 fun ConnectBotApp(
     appUiState: AppUiState,
@@ -44,6 +50,7 @@ fun ConnectBotApp(
     authRequired: Boolean,
     isAuthenticated: Boolean,
     themeMode: ThemeMode,
+    einkMode: Boolean,
     onAuthenticationSuccess: () -> Unit,
     onRetryMigration: () -> Unit,
     onSelectShortcut: (Host, String?, IconStyle) -> Unit,
@@ -52,49 +59,51 @@ fun ConnectBotApp(
     shouldShowNotificationWarning: () -> Boolean = { false },
     onNotificationSnackbarFinish: () -> Unit = {},
 ) {
-    ConnectBotTheme(themeMode = themeMode) {
-        when (appUiState) {
-            is AppUiState.Loading -> {
-                LoadingScreen(modifier = modifier)
-            }
+    CompositionLocalProvider(LocalEinkMode provides einkMode) {
+        ConnectBotTheme(themeMode = themeMode, einkMode = einkMode) {
+            when (appUiState) {
+                is AppUiState.Loading -> {
+                    LoadingScreen(modifier = modifier)
+                }
 
-            is AppUiState.MigrationInProgress -> {
-                MigrationScreen(
-                    uiState = MigrationUiState.InProgress(appUiState.state),
-                    onRetry = onRetryMigration,
-                    modifier = modifier,
-                )
-            }
-
-            is AppUiState.MigrationFailed -> {
-                MigrationScreen(
-                    uiState = MigrationUiState.Failed(
-                        appUiState.error,
-                        appUiState.debugLog,
-                    ),
-                    onRetry = onRetryMigration,
-                    modifier = modifier,
-                )
-            }
-
-            is AppUiState.Ready -> {
-                if (authRequired && !isAuthenticated && !makingShortcut) {
-                    AuthenticationScreen(
-                        onAuthenticationSuccess = onAuthenticationSuccess,
+                is AppUiState.MigrationInProgress -> {
+                    MigrationScreen(
+                        uiState = MigrationUiState.InProgress(appUiState.state),
+                        onRetry = onRetryMigration,
                         modifier = modifier,
                     )
-                } else {
-                    CompositionLocalProvider(LocalTerminalManager provides appUiState.terminalManager) {
-                        ConnectBotNavHost(
-                            navController = navController,
-                            startDestination = NavDestinations.HOST_LIST,
-                            makingShortcut = makingShortcut,
-                            onSelectShortcut = onSelectShortcut,
-                            onNavigateToConsole = onNavigateToConsole,
-                            shouldShowNotificationWarning = shouldShowNotificationWarning,
-                            onNotificationSnackbarFinish = onNotificationSnackbarFinish,
+                }
+
+                is AppUiState.MigrationFailed -> {
+                    MigrationScreen(
+                        uiState = MigrationUiState.Failed(
+                            appUiState.error,
+                            appUiState.debugLog,
+                        ),
+                        onRetry = onRetryMigration,
+                        modifier = modifier,
+                    )
+                }
+
+                is AppUiState.Ready -> {
+                    if (authRequired && !isAuthenticated && !makingShortcut) {
+                        AuthenticationScreen(
+                            onAuthenticationSuccess = onAuthenticationSuccess,
                             modifier = modifier,
                         )
+                    } else {
+                        CompositionLocalProvider(LocalTerminalManager provides appUiState.terminalManager) {
+                            ConnectBotNavHost(
+                                navController = navController,
+                                startDestination = NavDestinations.HOST_LIST,
+                                makingShortcut = makingShortcut,
+                                onSelectShortcut = onSelectShortcut,
+                                onNavigateToConsole = onNavigateToConsole,
+                                shouldShowNotificationWarning = shouldShowNotificationWarning,
+                                onNotificationSnackbarFinish = onNotificationSnackbarFinish,
+                                modifier = modifier,
+                            )
+                        }
                     }
                 }
             }

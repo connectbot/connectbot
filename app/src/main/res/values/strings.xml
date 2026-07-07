@@ -299,6 +299,11 @@
 	<!-- Theme option: always use the dark theme regardless of OS setting -->
 	<string name="pref_theme_dark">Dark</string>
 
+	<!-- Title of the e-ink mode toggle in the User Interface settings section; shown below the theme selector -->
+	<string name="pref_eink_title">E-Ink mode</string>
+	<!-- Summary of the e-ink mode toggle explaining what it changes on e-ink (electronic paper) displays -->
+	<string name="pref_eink_summary">Disable animations and use high-contrast colors for e-ink displays</string>
+
 	<!-- Name for the rotation mode preference -->
 	<string name="pref_rotation_title">"Rotation mode"</string>
 

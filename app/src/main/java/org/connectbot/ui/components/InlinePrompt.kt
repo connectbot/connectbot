@@ -18,6 +18,8 @@
 package org.connectbot.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
@@ -75,6 +77,7 @@ import androidx.compose.ui.unit.dp
 import org.connectbot.R
 import org.connectbot.service.PromptRequest
 import org.connectbot.service.PromptResponse
+import org.connectbot.ui.LocalEinkMode
 import org.connectbot.ui.theme.terminal
 
 /**
@@ -100,10 +103,11 @@ fun InlinePrompt(
         wasVisible = promptRequest != null
     }
 
+    val einkMode = LocalEinkMode.current
     AnimatedVisibility(
         visible = promptRequest != null,
-        enter = slideInVertically(initialOffsetY = { it }),
-        exit = slideOutVertically(targetOffsetY = { it }),
+        enter = if (einkMode) EnterTransition.None else slideInVertically(initialOffsetY = { it }),
+        exit = if (einkMode) ExitTransition.None else slideOutVertically(targetOffsetY = { it }),
         modifier = modifier,
     ) {
         when (promptRequest) {

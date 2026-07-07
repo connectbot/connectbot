@@ -49,14 +49,14 @@ import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.service.tmux.TmuxPaneColors
+import org.connectbot.service.tmux.TmuxSessionManager
+import org.connectbot.service.tmux.TmuxTarget
 import org.connectbot.terminal.DelKeyMode
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.TerminalEmulatorFactory
 import org.connectbot.terminal.UrlScanScope
-import org.connectbot.service.tmux.TmuxPaneColors
-import org.connectbot.service.tmux.TmuxSessionManager
-import org.connectbot.service.tmux.TmuxTarget
 import org.connectbot.transport.AbsTransport
 import org.connectbot.transport.SSH
 import org.connectbot.transport.TransportFactory
@@ -150,6 +150,10 @@ class TerminalBridge {
     private var currentColorSchemeId: Long = -1L
     private var fullColorPalette: IntArray = IntArray(0)
 
+    /** Resolved ARGB color of the terminal's default background. */
+    val defaultBackgroundColor: Int
+        get() = fullColorPalette.getOrNull(defaultBg) ?: 0xff000000.toInt()
+
     // Profile observation
     private var currentProfileId: Long? = null
     private var profileObservationJob: Job? = null
@@ -178,6 +182,7 @@ class TerminalBridge {
 
     private val emulation: String?
     private val scrollback: Int
+    private var einkMode: Boolean
     private val encoding: String
 
     /** Font family from profile for terminal display */
@@ -307,12 +312,14 @@ class TerminalBridge {
 
         emulation = profile.emulation
         scrollback = manager.getScrollback()
+        einkMode = manager.prefs.getBoolean(PreferenceConstants.EINK_MODE, false)
 
-        // create our default paint
+        // create our default paint; e-ink panels smear soft antialiased edges
+        // and fake-bold strokes, so both stay off there
         defaultPaint = Paint()
-        defaultPaint.isAntiAlias = true
+        defaultPaint.isAntiAlias = !einkMode
         defaultPaint.typeface = Typeface.MONOSPACE
-        defaultPaint.isFakeBoldText = true // more readable?
+        defaultPaint.isFakeBoldText = !einkMode // more readable?
 
         fontSizeChangedListeners = mutableListOf()
 
@@ -333,11 +340,8 @@ class TerminalBridge {
         _delKeyModeFlow.value = delKeyModeFromProfile(profile)
 
         // Use settings from profile
-        var fontSizeSp = profile.fontSize
-        if (fontSizeSp <= 0) {
-            fontSizeSp = DEFAULT_FONT_SIZE_SP
-        }
-        setFontSize(fontSizeSp.toFloat())
+        val initialFontSize = if (profile.fontSize > 0) profile.fontSize else defaultFontSizeSp
+        setFontSize(initialFontSize.toFloat())
 
         // Load color scheme from profile
         currentColorSchemeId = profile.colorSchemeId
@@ -500,7 +504,7 @@ class TerminalBridge {
      */
     private fun applyProfileSettings(profile: org.connectbot.data.entity.Profile) {
         // Apply font size
-        val newFontSize = if (profile.fontSize > 0) profile.fontSize else DEFAULT_FONT_SIZE_SP
+        val newFontSize = if (profile.fontSize > 0) profile.fontSize else defaultFontSizeSp
         if (newFontSize.toFloat() != fontSizeSp) {
             setFontSize(newFontSize.toFloat())
         }
@@ -1261,10 +1265,30 @@ class TerminalBridge {
         setFontSize(fontSizeSp - FONT_SIZE_STEP, false)
     }
 
+    /** E-ink users sit closer to lower-resolution panels, so default larger. */
+    private val defaultFontSizeSp: Int
+        get() = if (einkMode) EINK_DEFAULT_FONT_SIZE_SP else DEFAULT_FONT_SIZE_SP
+
+    /**
+     * Applies an e-ink mode preference change to this live session so font
+     * rendering updates without requiring a reconnect.
+     */
+    fun setEinkMode(enabled: Boolean) {
+        if (einkMode == enabled) {
+            return
+        }
+        einkMode = enabled
+        defaultPaint.isAntiAlias = !enabled
+        defaultPaint.isFakeBoldText = !enabled
+        // Re-measure with the updated paint flags
+        setFontSize(fontSizeSp)
+    }
+
     companion object {
         const val TAG = "CB.TerminalBridge"
 
         private const val DEFAULT_FONT_SIZE_SP = 10
+        private const val EINK_DEFAULT_FONT_SIZE_SP = 14
         private const val FONT_SIZE_STEP = 2
     }
 }

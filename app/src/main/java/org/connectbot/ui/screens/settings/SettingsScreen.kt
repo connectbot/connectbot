@@ -186,6 +186,7 @@ fun SettingsScreen(
         onDefaultProfileChange = viewModel::updateDefaultProfile,
         onLanguageChange = viewModel::requestLanguage,
         onThemeModeChange = viewModel::updateThemeMode,
+        onEinkModeChange = viewModel::updateEinkMode,
         onRotationChange = viewModel::updateRotation,
         onFullscreenChange = viewModel::updateFullscreen,
         onTitleBarHideChange = viewModel::updateTitleBarHide,
@@ -233,6 +234,7 @@ fun SettingsScreenContent(
     onDefaultProfileChange: (Long) -> Unit,
     onLanguageChange: (String) -> Unit,
     onThemeModeChange: (ThemeMode) -> Unit,
+    onEinkModeChange: (Boolean) -> Unit,
     onRotationChange: (String) -> Unit,
     onFullscreenChange: (Boolean) -> Unit,
     onTitleBarHideChange: (Boolean) -> Unit,
@@ -503,6 +505,15 @@ fun SettingsScreenContent(
                         stringResource(R.string.pref_theme_dark) to ThemeMode.DARK.name,
                     ),
                     onValueChange = { onThemeModeChange(ThemeMode.fromString(it)) },
+                )
+            }
+
+            item {
+                SwitchPreference(
+                    title = stringResource(R.string.pref_eink_title),
+                    summary = stringResource(R.string.pref_eink_summary),
+                    checked = uiState.einkMode,
+                    onCheckedChange = onEinkModeChange,
                 )
             }
 
@@ -1628,13 +1639,14 @@ private fun SettingsScreenPreview() {
             onDefaultProfileChange = {},
             onLanguageChange = {},
             onThemeModeChange = {},
+            onEinkModeChange = {},
             onRotationChange = {},
             onFullscreenChange = {},
             onTitleBarHideChange = {},
             onPgUpDnGestureChange = {},
             onSwipeSessionsChange = {},
             onVolumeFontChange = {},
-        onVolumeTmuxPanesChange = {},
+            onVolumeTmuxPanesChange = {},
             onKeepAliveChange = {},
             onAlwaysVisibleChange = {},
             onShiftFkeysChange = {},

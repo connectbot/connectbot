@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,11 @@
 
 package org.connectbot.ui.navigation
 
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
@@ -29,6 +34,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import org.connectbot.data.entity.Host
+import org.connectbot.ui.LocalEinkMode
 import org.connectbot.ui.screens.colors.ColorsScreen
 import org.connectbot.ui.screens.colors.PaletteEditorScreen
 import org.connectbot.ui.screens.console.ConsoleScreen
@@ -49,6 +55,9 @@ import org.connectbot.ui.screens.sftp.SftpScreen
 import org.connectbot.util.IconStyle
 import timber.log.Timber
 
+/** Matches the default cross-fade duration used by NavHost. */
+private const val DEFAULT_NAV_TRANSITION_MILLIS = 700
+
 @Composable
 fun ConnectBotNavHost(
     navController: NavHostController,
@@ -60,10 +69,22 @@ fun ConnectBotNavHost(
     shouldShowNotificationWarning: () -> Boolean = { false },
     onNotificationSnackbarFinish: () -> Unit = {},
 ) {
+    // E-ink panels ghost on every animation frame, so skip screen transitions
+    val einkMode = LocalEinkMode.current
     NavHost(
         navController = navController,
         startDestination = startDestination,
         modifier = modifier,
+        enterTransition = if (einkMode) {
+            { EnterTransition.None }
+        } else {
+            { fadeIn(animationSpec = tween(DEFAULT_NAV_TRANSITION_MILLIS)) }
+        },
+        exitTransition = if (einkMode) {
+            { ExitTransition.None }
+        } else {
+            { fadeOut(animationSpec = tween(DEFAULT_NAV_TRANSITION_MILLIS)) }
+        },
     ) {
         composable(NavDestinations.HOST_LIST) {
             HostListScreen(

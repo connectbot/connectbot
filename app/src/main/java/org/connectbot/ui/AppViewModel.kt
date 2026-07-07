@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -96,9 +96,15 @@ class AppViewModel @Inject constructor(
     private val _themeMode = MutableStateFlow(currentThemeMode())
     val themeMode: StateFlow<ThemeMode> = _themeMode.asStateFlow()
 
+    private fun currentEinkMode() = prefs.getBoolean(PreferenceConstants.EINK_MODE, false)
+
+    private val _einkMode = MutableStateFlow(currentEinkMode())
+    val einkMode: StateFlow<Boolean> = _einkMode.asStateFlow()
+
     private val themePrefListener = SharedPreferences.OnSharedPreferenceChangeListener { _, key ->
-        if (key == PreferenceConstants.THEME_MODE) {
-            _themeMode.value = currentThemeMode()
+        when (key) {
+            PreferenceConstants.THEME_MODE -> _themeMode.value = currentThemeMode()
+            PreferenceConstants.EINK_MODE -> _einkMode.value = currentEinkMode()
         }
     }
 
