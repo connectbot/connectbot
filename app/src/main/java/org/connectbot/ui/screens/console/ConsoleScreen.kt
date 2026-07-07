@@ -142,6 +142,10 @@ import org.connectbot.service.AuthBanner
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.PromptRequest
 import org.connectbot.service.TerminalBridge
+import org.connectbot.service.tmux.TmuxAttachState
+import org.connectbot.service.tmux.TmuxPaneTerminal
+import org.connectbot.ui.screens.console.tmux.TmuxOfferBanner
+import org.connectbot.ui.screens.console.tmux.TmuxSnapshotPage
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.SelectionController
 import org.connectbot.terminal.Terminal
@@ -490,6 +494,10 @@ private fun ConsoleTerminalPage(
     snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     terminalModifier: Modifier = Modifier,
+    /** When set, the page renders this tmux pane instead of the host shell. */
+    tmuxPane: TmuxPaneTerminal? = null,
+    /** Server-side pane grid (rows, cols); termlib fits the font to it. */
+    tmuxForcedSize: Pair<Int, Int>? = null,
 ) {
     Box(modifier = modifier) {
         val fontResult = rememberTerminalTypefaceResultFromStoredValue(bridge.fontFamily)
@@ -507,8 +515,9 @@ private fun ConsoleTerminalPage(
             }
         }
 
+        val tmuxEmulator = tmuxPane?.emulator
         Terminal(
-            terminalEmulator = bridge.terminalEmulator,
+            terminalEmulator = tmuxEmulator ?: bridge.terminalEmulator,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
@@ -521,8 +530,8 @@ private fun ConsoleTerminalPage(
             keyboardEnabled = true,
             showSoftKeyboard = showSoftwareKeyboard && isActive,
             focusRequester = termFocusRequester,
-            forcedSize = forceSize,
-            modifierManager = bridge.keyHandler,
+            forcedSize = if (tmuxPane != null) tmuxForcedSize else forceSize,
+            modifierManager = if (tmuxEmulator != null) tmuxPane.keyHandler else bridge.keyHandler,
             onSelectionControllerAvailable = { controller ->
                 if (isActive) {
                     onSelectionControllerChange(controller)
@@ -1113,7 +1122,13 @@ fun ConsoleScreen(
                 ?.toString()
 
             if (!clip.isNullOrBlank()) {
-                bridge.injectString(TerminalTextUtils.normalizeLineBreaks(clip))
+                val normalized = TerminalTextUtils.normalizeLineBreaks(clip)
+                val paneTerminal = uiState.currentPaneTerminal
+                if (paneTerminal != null && uiState.currentTab is ConsoleTab.TmuxSession) {
+                    paneTerminal.paste(normalized)
+                } else {
+                    bridge.injectString(normalized)
+                }
             }
         }
     }
@@ -1214,7 +1229,62 @@ fun ConsoleScreen(
                         }
                         val terminalModifier = pageGestureModifier.then(swipeModifier)
 
-                        key(bridge.host.id) {
+                        val tmuxTab = uiState.currentTab as? ConsoleTab.TmuxSession
+                        val tmuxHostState = tmuxTab?.bridge?.tmux?.state?.collectAsState()?.value
+                        val tmuxSession = tmuxHostState?.sessions?.find { it.id == tmuxTab.sessionId }
+                        val paneTerminal = uiState.currentPaneTerminal
+
+                        if (tmuxTab != null &&
+                            (tmuxSession?.attachState != TmuxAttachState.ATTACHED || paneTerminal?.emulator == null)
+                        ) {
+                            // Detached or still attaching: dimmed snapshot face.
+                            TmuxSnapshotPage(
+                                sessionName = tmuxTab.sessionName,
+                                snapshot = tmuxSession?.snapshot,
+                                isAttaching = tmuxSession?.attachState == TmuxAttachState.ATTACHING,
+                                onAttach = { viewModel.selectTab(tmuxTab.key) },
+                                modifier = Modifier.fillMaxSize(),
+                            )
+                        } else if (tmuxTab != null && paneTerminal != null) {
+                            val pane = tmuxSession?.windows
+                                ?.find { it.id == tmuxTab.bridge.tmux?.currentTarget?.value?.windowId }
+                                ?.panes?.find { it.id == paneTerminal.paneId }
+                            key(tmuxTab.key) {
+                                ConsoleTerminalPage(
+                                    bridge = bridge,
+                                    isActive = true,
+                                    keyboardAlwaysVisible = keyboardAlwaysVisible,
+                                    showSoftwareKeyboard = showSoftwareKeyboard,
+                                    forceSize = forceSize,
+                                    termFocusRequester = termFocusRequester,
+                                    showExtraKeyboard = showExtraKeyboard,
+                                    hasPlayedKeyboardAnimation = hasPlayedKeyboardAnimation,
+                                    imeVisible = imeVisible,
+                                    handleTerminalInteraction = { handleTerminalInteraction(isTerminalTap = true) },
+                                    onShowSoftwareKeyboardChange = { showSoftwareKeyboard = it },
+                                    onImeVisibilityChange = { imeVisible = it },
+                                    onTextInputRequest = { showTextInputDialog = true },
+                                    onDisconnectRequest = {
+                                        bridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
+                                    },
+                                    onKeyboardScrollInProgressChange = { inProgress ->
+                                        keyboardScrollInProgress = inProgress
+                                        handleTerminalInteraction()
+                                    },
+                                    onSelectionControllerChange = { selectionController = it },
+                                    onOpenUrl = ::openUrl,
+                                    onPasteRequest = ::pasteClipboardContents,
+                                    onInterceptKey = handleShortcut,
+                                    onReconnect = { viewModel.reconnect(bridge) },
+                                    snackbarHostState = snackbarHostState,
+                                    modifier = Modifier.fillMaxSize(),
+                                    terminalModifier = pageGestureModifier,
+                                    tmuxPane = paneTerminal,
+                                    tmuxForcedSize = pane?.let { Pair(it.height, it.width) },
+                                )
+                            }
+                        } else {
+                            key(bridge.host.id) {
                             ConsoleTerminalPage(
                                 bridge = bridge,
                                 isActive = true,
@@ -1244,6 +1314,16 @@ fun ConsoleScreen(
                                 snackbarHostState = snackbarHostState,
                                 modifier = Modifier.fillMaxSize(),
                                 terminalModifier = terminalModifier,
+                            )
+                            }
+                        }
+
+                        // One-tap persistent-session offer for this host
+                        if (tmuxTab == null && uiState.tmuxOfferHostId == bridge.host.id) {
+                            TmuxOfferBanner(
+                                onStart = { viewModel.startTmuxSession() },
+                                onDismiss = { viewModel.dismissTmuxOffer() },
+                                modifier = Modifier.align(Alignment.TopCenter),
                             )
                         }
                     }
@@ -1576,20 +1656,39 @@ fun ConsoleScreen(
                     },
                 )
 
-                // Persistent tab strip for switching between open sessions
-                if (hasMultipleSessions) {
+                // Persistent tab strip: host shells and their tmux sessions
+                if (uiState.tabs.size > 1) {
                     SessionTabStrip(
-                        tabs = uiState.bridges.map { bridge ->
-                            SessionTabData(
-                                hostId = bridge.host.id,
-                                nickname = bridge.host.nickname,
-                                color = bridge.host.color,
-                                isDisconnected = bridge.isDisconnected,
-                            )
+                        tabs = uiState.tabs.map { tab ->
+                            when (tab) {
+                                is ConsoleTab.HostShell -> SessionTabData(
+                                    key = tab.key,
+                                    nickname = tab.bridge.host.nickname,
+                                    color = tab.bridge.host.color,
+                                    isDisconnected = tab.bridge.isDisconnected,
+                                )
+
+                                is ConsoleTab.TmuxSession -> SessionTabData(
+                                    key = tab.key,
+                                    nickname = tab.sessionName,
+                                    color = tab.bridge.host.color,
+                                    isDisconnected = tab.attachState == TmuxAttachState.DETACHED,
+                                    isTmux = true,
+                                    isAttaching = tab.attachState == TmuxAttachState.ATTACHING,
+                                    bellBadge = tab.bellBadge,
+                                    activityBadge = tab.activityBadge,
+                                )
+                            }
                         },
-                        selectedIndex = uiState.currentBridgeIndex,
-                        onSelectTab = { index ->
-                            selectBridgePreservingKeyboard(index)
+                        selectedKey = uiState.currentTab?.key,
+                        onSelectTab = { key ->
+                            val tappedBridge = uiState.tabs.find { it.key == key }?.bridge
+                            val index = tappedBridge
+                                ?.let { b -> uiState.bridges.indexOfFirst { it === b } } ?: -1
+                            if (index != -1 && index != uiState.currentBridgeIndex) {
+                                selectBridgePreservingKeyboard(index)
+                            }
+                            viewModel.selectTab(key)
                             handleTerminalInteraction(isInteraction = false)
                         },
                         containerColor = if (titleBarHide) {

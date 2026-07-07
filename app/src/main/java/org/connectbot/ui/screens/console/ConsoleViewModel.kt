@@ -32,10 +32,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.DisconnectPolicy
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
+import org.connectbot.service.tmux.TmuxAttachState
+import org.connectbot.service.tmux.TmuxPaneTerminal
 import org.connectbot.terminal.ProgressState
 import org.connectbot.util.NotificationPermissionHelper
 import org.connectbot.util.PreferenceConstants
@@ -52,7 +55,21 @@ data class ConsoleUiState(
     // Progress state from OSC 9;4 escape sequences
     val progressState: ProgressState? = null,
     val progressValue: Int = 0,
-)
+    /** Host shell tabs plus tmux session tabs, grouped by host. */
+    val tabs: List<ConsoleTab> = emptyList(),
+    /** Key of the selected tab; null falls back to the current bridge's shell tab. */
+    val currentTabKey: String? = null,
+    /** Live pane terminal for the selected (attached) tmux tab. */
+    val currentPaneTerminal: TmuxPaneTerminal? = null,
+    /** Non-null when the "start a persistent session" offer applies to this host. */
+    val tmuxOfferHostId: Long? = null,
+) {
+    val currentTab: ConsoleTab?
+        get() = tabs.find { it.key == currentTabKey }
+            ?: bridges.getOrNull(currentBridgeIndex)?.let { bridge ->
+                tabs.find { it.key == ConsoleTab.hostKey(bridge.host.id) }
+            }
+}
 
 @HiltViewModel
 class ConsoleViewModel @Inject constructor(
@@ -69,6 +86,9 @@ class ConsoleViewModel @Inject constructor(
     private val bellJobs = mutableMapOf<Long, Job>()
     private val progressJobs = mutableMapOf<Long, Job>()
     private val networkStatusJobs = mutableMapOf<Long, Job>()
+    private val tmuxJobs = mutableMapOf<Long, Job>()
+    private val dismissedTmuxOffers = mutableSetOf<Long>()
+    private var paneTerminalJob: Job? = null
 
     private val _uiState = MutableStateFlow(ConsoleUiState())
     val uiState: StateFlow<ConsoleUiState> = _uiState.asStateFlow()
@@ -92,12 +112,15 @@ class ConsoleViewModel @Inject constructor(
                     syncBridgeBellSubscriptions(bridges)
                     syncBridgeProgressSubscriptions(bridges)
                     syncBridgeNetworkStatusSubscriptions(bridges)
+                    syncBridgeTmuxSubscriptions(bridges)
                 }
             }
 
             viewModelScope.launch {
                 manager.hostStatusChangedFlow.collect {
                     _uiState.update { it.copy(revision = it.revision + 1) }
+                    // tmux managers are created on connect; catch late arrivals.
+                    syncBridgeTmuxSubscriptions(_uiState.value.bridges)
                 }
             }
 
@@ -257,6 +280,171 @@ class ConsoleViewModel @Inject constructor(
         }
     }
 
+    // ===== tmux tabs =====
+
+    /**
+     * Subscribes to each bridge's tmux state once its manager exists (it is
+     * created on connect, after the bridge first appears). Safe to call
+     * repeatedly.
+     */
+    private fun syncBridgeTmuxSubscriptions(bridges: List<TerminalBridge>) {
+        val activeHostIds = bridges.map { it.host.id }.toSet()
+        tmuxJobs.keys.filter { it !in activeHostIds }.forEach { hostId ->
+            tmuxJobs.remove(hostId)?.cancel()
+        }
+        bridges.forEach { bridge ->
+            val tmux = bridge.tmux ?: return@forEach
+            tmuxJobs.getOrPut(bridge.host.id) {
+                viewModelScope.launch {
+                    tmux.state.collect { rebuildTabs() }
+                }
+            }
+        }
+        rebuildTabs()
+    }
+
+    private fun rebuildTabs() {
+        _uiState.update { state ->
+            val tabs = state.bridges.flatMap { bridge ->
+                val sessionTabs = bridge.tmux?.state?.value?.sessions.orEmpty().map { session ->
+                    ConsoleTab.TmuxSession(
+                        bridge = bridge,
+                        sessionId = session.id,
+                        sessionName = session.name,
+                        attachState = session.attachState,
+                        bellBadge = session.windows.any { it.bell },
+                        activityBadge = session.windows.any { it.activity },
+                    )
+                }
+                listOf(ConsoleTab.HostShell(bridge)) + sessionTabs
+            }
+            val currentKey = state.currentTabKey
+                ?.takeIf { key -> tabs.any { it.key == key } }
+                ?: state.bridges.getOrNull(state.currentBridgeIndex)
+                    ?.let { ConsoleTab.hostKey(it.host.id) }
+            state.copy(
+                tabs = tabs,
+                currentTabKey = currentKey,
+                tmuxOfferHostId = computeTmuxOffer(state.bridges, state.currentBridgeIndex),
+            )
+        }
+        refreshPaneTerminal()
+    }
+
+    private fun computeTmuxOffer(bridges: List<TerminalBridge>, currentIndex: Int): Long? {
+        val bridge = bridges.getOrNull(currentIndex) ?: return null
+        val host = bridge.host
+        if (host.id in dismissedTmuxOffers || host.tmuxOfferDismissed) return null
+        val tmuxState = bridge.tmux?.state?.value ?: return null
+        return host.id.takeIf { tmuxState.offerSession }
+    }
+
+    /** Selects a tab by key; lazily attaches detached tmux sessions. */
+    fun selectTab(key: String) {
+        val tab = _uiState.value.tabs.find { it.key == key } ?: return
+        val bridgeIndex = _uiState.value.bridges.indexOfFirst { it === tab.bridge }
+        if (bridgeIndex != -1) {
+            selectedHostId = tab.bridge.host.id
+        }
+        _uiState.update {
+            it.copy(
+                currentTabKey = key,
+                currentBridgeIndex = if (bridgeIndex != -1) bridgeIndex else it.currentBridgeIndex,
+            )
+        }
+        updateCurrentBridgeProgress()
+
+        if (tab is ConsoleTab.TmuxSession) {
+            val tmux = tab.bridge.tmux ?: return
+            viewModelScope.launch(dispatchers.io) {
+                try {
+                    if (tab.attachState == TmuxAttachState.DETACHED) {
+                        tmux.attach(tab.sessionId)
+                    } else {
+                        tmux.selectSession(tab.sessionId)
+                    }
+                } catch (e: Exception) {
+                    _networkStatusMessages.emit(e.message ?: "tmux attach failed")
+                }
+                refreshPaneTerminal()
+            }
+        } else {
+            _uiState.update { it.copy(currentPaneTerminal = null) }
+        }
+    }
+
+    /**
+     * Resolves the live pane terminal for the selected tmux tab (creating and
+     * backfilling on first view) into [ConsoleUiState.currentPaneTerminal].
+     */
+    private fun refreshPaneTerminal() {
+        val tab = _uiState.value.currentTab
+        if (tab !is ConsoleTab.TmuxSession) {
+            if (_uiState.value.currentPaneTerminal != null) {
+                _uiState.update { it.copy(currentPaneTerminal = null) }
+            }
+            return
+        }
+        val tmux = tab.bridge.tmux ?: return
+        paneTerminalJob?.cancel()
+        paneTerminalJob = viewModelScope.launch(dispatchers.io) {
+            val target = tmux.currentTarget.value
+                ?.takeIf { it.sessionId == tab.sessionId }
+                ?: tmux.selectSession(tab.sessionId)
+                ?: return@launch
+            val terminal = runCatching { tmux.acquirePaneTerminal(target) }.getOrNull()
+            _uiState.update { state ->
+                if (state.currentTab?.key == tab.key) {
+                    state.copy(currentPaneTerminal = terminal)
+                } else {
+                    state
+                }
+            }
+        }
+    }
+
+    /** The offer banner action: create a persistent session and land in it. */
+    fun startTmuxSession() {
+        val bridge = _uiState.value.bridges.getOrNull(_uiState.value.currentBridgeIndex) ?: return
+        val tmux = bridge.tmux ?: return
+        viewModelScope.launch(dispatchers.io) {
+            try {
+                tmux.createSessionAndAttach(DEFAULT_TMUX_SESSION_NAME)
+                val sessionId = tmux.state.value.sessions
+                    .find { it.name == DEFAULT_TMUX_SESSION_NAME }?.id
+                if (sessionId != null) {
+                    selectTab(ConsoleTab.tmuxKey(bridge.host.id, sessionId))
+                }
+            } catch (e: Exception) {
+                _networkStatusMessages.emit(e.message ?: "Failed to start tmux session")
+            }
+        }
+    }
+
+    /** Dismisses the offer; [permanent] persists it on the host row. */
+    fun dismissTmuxOffer(permanent: Boolean = false) {
+        val bridge = _uiState.value.bridges.getOrNull(_uiState.value.currentBridgeIndex) ?: return
+        dismissedTmuxOffers.add(bridge.host.id)
+        _uiState.update { it.copy(tmuxOfferHostId = null) }
+        if (permanent && bridge.host.id > 0L) {
+            val updated = bridge.host.copy(tmuxOfferDismissed = true)
+            viewModelScope.launch(dispatchers.io) {
+                runCatching { terminalManager?.hostRepository?.saveHost(updated) }
+            }
+        }
+    }
+
+    /** Closing a tmux tab detaches only; the server-side session survives. */
+    fun detachTmuxTab(tab: ConsoleTab.TmuxSession) {
+        val tmux = tab.bridge.tmux ?: return
+        viewModelScope.launch(dispatchers.io) {
+            runCatching { tmux.detach(tab.sessionId) }
+        }
+        if (_uiState.value.currentTabKey == tab.key) {
+            selectTab(ConsoleTab.hostKey(tab.bridge.host.id))
+        }
+    }
+
     private fun updateBridges(allBridges: List<TerminalBridge>) {
         val currentState = _uiState.value
         val selectedIndex = findBridgeIndex(allBridges, selectedHostId)
@@ -289,12 +477,21 @@ class ConsoleViewModel @Inject constructor(
         }
 
         updateCurrentBridgeProgress(allBridges, newIndex)
+        rebuildTabs()
     }
 
     fun selectBridge(index: Int) {
         if (index in _uiState.value.bridges.indices) {
-            selectedHostId = _uiState.value.bridges[index].host.id
-            _uiState.update { it.copy(currentBridgeIndex = index) }
+            val bridge = _uiState.value.bridges[index]
+            selectedHostId = bridge.host.id
+            _uiState.update {
+                it.copy(
+                    currentBridgeIndex = index,
+                    currentTabKey = ConsoleTab.hostKey(bridge.host.id),
+                    currentPaneTerminal = null,
+                    tmuxOfferHostId = computeTmuxOffer(it.bridges, index),
+                )
+            }
             updateCurrentBridgeProgress()
         }
     }
@@ -340,5 +537,9 @@ class ConsoleViewModel @Inject constructor(
         Timber.i("Reconnecting ${bridge.host.nickname} on open")
         terminalManager?.requestReconnect(bridge, userInitiated = true)
         _uiState.update { it.copy(revision = it.revision + 1) }
+    }
+
+    companion object {
+        const val DEFAULT_TMUX_SESSION_NAME = "connectbot"
     }
 }

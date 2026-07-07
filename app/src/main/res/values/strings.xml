@@ -664,6 +664,18 @@
 	<string name="console_menu_copy_session">Copy session</string>
 	<!-- Confirmation shown in a snackbar after the entire session was copied to the clipboard. -->
 	<string name="console_session_copied">Session copied to clipboard</string>
+	<!-- tmux integration -->
+	<!-- Banner offering to start a persistent tmux session on a host that has tmux but no sessions -->
+	<string name="tmux_offer_message">tmux is available — keep your work alive across disconnects?</string>
+	<!-- Button on the offer banner that creates and attaches a tmux session -->
+	<string name="tmux_offer_start">Start session</string>
+	<!-- Content description for dismissing the tmux offer banner -->
+	<string name="tmux_offer_dismiss">Dismiss</string>
+	<!-- Overlay on a detached tmux session tab; %1$s is the session name -->
+	<string name="tmux_tap_to_attach">Tap to attach to “%1$s”</string>
+	<!-- Overlay while attaching to a tmux session; %1$s is the session name -->
+	<string name="tmux_attaching">Attaching to “%1$s”…</string>
+
 	<!-- Error shown in a snackbar when the user taps a URL but no app on the device can handle it -->
 	<string name="console_url_no_handler">No app available to open this URL</string>
 	<!-- Error shown in a snackbar when the URL type is not supported -->

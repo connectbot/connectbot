@@ -25,6 +25,9 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
+import org.connectbot.service.StickyModifierSetting
+import org.connectbot.service.TerminalEmulatorKeyDispatcher
+import org.connectbot.service.TerminalKeyListener
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.TerminalEmulatorFactory
 import timber.log.Timber
@@ -153,6 +156,21 @@ class TmuxPaneTerminal(
     /** The termlib emulator for the Terminal composable (real factory only). */
     val emulator: TerminalEmulator?
         get() = handle.terminalEmulator
+
+    /** Sticky-modifier behavior for [keyHandler]; the bridge sets the pref value. */
+    @Volatile
+    var stickyModifierSetting: StickyModifierSetting = StickyModifierSetting.NONE
+
+    /**
+     * Modifier/key handling bound to THIS pane's emulator, so hardware keys
+     * and on-screen modifier buttons land in the pane, not the host shell.
+     */
+    val keyHandler: TerminalKeyListener by lazy {
+        TerminalKeyListener(
+            TerminalEmulatorKeyDispatcher(requireNotNull(emulator) { "no emulator for $paneId" }),
+            stickyModifierSetting,
+        )
+    }
 
     private val keyboardBytes = Channel<ByteArray>(Channel.UNLIMITED)
     private val inputJob: Job

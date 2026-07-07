@@ -32,6 +32,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -48,36 +49,48 @@ import org.connectbot.ui.common.parseHostColor
 import org.connectbot.ui.theme.ConnectBotTheme
 
 /**
- * Everything the session tab strip needs to render one open session.
+ * Everything the session tab strip needs to render one tab: a host's shell
+ * console or a tmux session on it. Tabs are identified by [key]
+ * (see [ConsoleTab]); tmux tabs share their host's color.
  */
 data class SessionTabData(
-    val hostId: Long,
+    val key: String,
     val nickname: String,
     val color: String?,
     val isDisconnected: Boolean,
+    /** True for tmux session tabs (rendered dimmed while detached). */
+    val isTmux: Boolean = false,
+    /** Control channel being established: shows a spinner in the dot slot. */
+    val isAttaching: Boolean = false,
+    /** A window in this session rang its bell. */
+    val bellBadge: Boolean = false,
+    /** A window in this session saw activity. */
+    val activityBadge: Boolean = false,
 )
 
 /**
- * A persistent, horizontally scrollable strip of tabs, one per open session,
- * shown under the console title bar when more than one session is open.
+ * A persistent, horizontally scrollable strip of tabs: one per open host
+ * connection plus one per tmux session, grouped by host. Shown under the
+ * console title bar when more than one tab exists.
  *
- * Each tab shows the host's identification color as a dot (hollow while the
- * session is disconnected) and underlines the selected session in that same
- * color. The strip scrolls automatically to keep the selected tab visible.
+ * Each tab shows the host's identification color as a dot (hollow while
+ * disconnected/detached) and underlines the selected tab in that color. The
+ * strip scrolls automatically to keep the selected tab visible.
  */
 @Composable
 fun SessionTabStrip(
     tabs: List<SessionTabData>,
-    selectedIndex: Int,
-    onSelectTab: (Int) -> Unit,
+    selectedKey: String?,
+    onSelectTab: (String) -> Unit,
     modifier: Modifier = Modifier,
     containerColor: Color = MaterialTheme.colorScheme.surface,
 ) {
     val listState = rememberLazyListState()
 
-    LaunchedEffect(selectedIndex, tabs.size) {
-        if (selectedIndex in tabs.indices) {
-            listState.animateScrollToItem(selectedIndex)
+    LaunchedEffect(selectedKey, tabs.size) {
+        val index = tabs.indexOfFirst { it.key == selectedKey }
+        if (index >= 0) {
+            listState.animateScrollToItem(index)
         }
     }
 
@@ -90,12 +103,12 @@ fun SessionTabStrip(
     ) {
         itemsIndexed(
             items = tabs,
-            key = { _, tab -> tab.hostId },
-        ) { index, tab ->
+            key = { _, tab -> tab.key },
+        ) { _, tab ->
             SessionTab(
                 tab = tab,
-                selected = index == selectedIndex,
-                onClick = { onSelectTab(index) },
+                selected = tab.key == selectedKey,
+                onClick = { onSelectTab(tab.key) },
             )
         }
     }
@@ -129,23 +142,33 @@ private fun SessionTab(
                 role = Role.Tab,
                 onClick = onClick,
             )
-            .testTag("session_tab_${tab.hostId}"),
+            .testTag("session_tab_${tab.key}"),
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp),
         ) {
-            Box(
-                modifier = Modifier
-                    .size(8.dp)
-                    .then(
-                        if (tab.isDisconnected) {
-                            Modifier.border(1.dp, hostColor, CircleShape)
-                        } else {
-                            Modifier.background(hostColor, CircleShape)
-                        },
-                    ),
-            )
+            if (tab.isAttaching) {
+                CircularProgressIndicator(
+                    strokeWidth = 1.5.dp,
+                    color = hostColor,
+                    modifier = Modifier
+                        .size(10.dp)
+                        .testTag("tab_attaching_${tab.key}"),
+                )
+            } else {
+                Box(
+                    modifier = Modifier
+                        .size(8.dp)
+                        .then(
+                            if (tab.isDisconnected) {
+                                Modifier.border(1.dp, hostColor, CircleShape)
+                            } else {
+                                Modifier.background(hostColor, CircleShape)
+                            },
+                        ),
+                )
+            }
             Text(
                 text = tab.nickname,
                 style = MaterialTheme.typography.labelLarge,
@@ -154,6 +177,20 @@ private fun SessionTab(
                 overflow = TextOverflow.Ellipsis,
                 modifier = Modifier.padding(start = 6.dp),
             )
+            if (tab.bellBadge || tab.activityBadge) {
+                val badgeColor = if (tab.bellBadge) {
+                    MaterialTheme.colorScheme.error
+                } else {
+                    MaterialTheme.colorScheme.tertiary
+                }
+                Box(
+                    modifier = Modifier
+                        .padding(start = 4.dp)
+                        .size(6.dp)
+                        .background(badgeColor, CircleShape)
+                        .testTag("tab_badge_${tab.key}"),
+                )
+            }
         }
         Box(
             modifier = Modifier
@@ -170,11 +207,25 @@ private fun SessionTabStripPreview() {
     ConnectBotTheme {
         SessionTabStrip(
             tabs = listOf(
-                SessionTabData(hostId = 1L, nickname = "web-01", color = "#F44336", isDisconnected = false),
-                SessionTabData(hostId = 2L, nickname = "db-primary", color = "#4CAF50", isDisconnected = false),
-                SessionTabData(hostId = 3L, nickname = "staging", color = null, isDisconnected = true),
+                SessionTabData(key = "host:1", nickname = "web-01", color = "#F44336", isDisconnected = false),
+                SessionTabData(
+                    key = "tmux:1:\$0",
+                    nickname = "main",
+                    color = "#F44336",
+                    isDisconnected = false,
+                    isTmux = true,
+                    bellBadge = true,
+                ),
+                SessionTabData(
+                    key = "tmux:1:\$1",
+                    nickname = "deploy",
+                    color = "#F44336",
+                    isDisconnected = true,
+                    isTmux = true,
+                ),
+                SessionTabData(key = "host:3", nickname = "staging", color = null, isDisconnected = true),
             ),
-            selectedIndex = 1,
+            selectedKey = "tmux:1:\$0",
             onSelectTab = {},
         )
     }

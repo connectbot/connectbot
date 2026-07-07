@@ -81,6 +81,11 @@ class TmuxSessionManager(
     @Volatile
     var paneEmulatorFactory: TmuxPaneEmulatorFactory = TmuxPaneEmulatorFactory.REAL
 
+    /** Sticky-modifier pref for pane key handlers; the bridge sets it. */
+    @Volatile
+    var stickyModifierSetting: org.connectbot.service.StickyModifierSetting =
+        org.connectbot.service.StickyModifierSetting.NONE
+
     /** Bell events from live panes: (sessionId, paneId). */
     private val _bellEvents = MutableSharedFlow<Pair<String, String>>(extraBufferCapacity = 16)
     val bellEvents: SharedFlow<Pair<String, String>> = _bellEvents.asSharedFlow()
@@ -412,6 +417,22 @@ class TmuxSessionManager(
 
     // ===== Navigation =====
 
+    /**
+     * Makes [sessionId] the session the user is viewing: resolves its active
+     * window/pane into a target, selects it, and returns it (or null when the
+     * session has no usable target yet).
+     */
+    suspend fun selectSession(sessionId: String): TmuxTarget? {
+        val current = _currentTarget.value
+        val target = if (current?.sessionId == sessionId) {
+            resolveTarget(sessionId, current)
+        } else {
+            resolveTarget(sessionId, null)
+        } ?: return null
+        selectTarget(target)
+        return target
+    }
+
     /** Makes [target] current locally and mirrors the selection server-side. */
     suspend fun selectTarget(target: TmuxTarget) {
         setCurrentTarget(target)
@@ -515,7 +536,7 @@ class TmuxSessionManager(
                 sendCommand = { command -> client.command(command) },
                 onBell = { sessionId, paneId -> _bellEvents.tryEmit(sessionId to paneId) },
                 emulatorFactory = paneEmulatorFactory,
-            )
+            ).also { it.stickyModifierSetting = stickyModifierSetting }
         }
         if (created) {
             if (_state.value.version?.supportsFlowControl == true) {

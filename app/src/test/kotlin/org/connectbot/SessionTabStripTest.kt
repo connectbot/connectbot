@@ -46,9 +46,25 @@ class SessionTabStripTest {
     val composeTestRule = createAndroidComposeRule<HiltComponentActivity>()
 
     private val tabs = listOf(
-        SessionTabData(hostId = 1L, nickname = "web-01", color = "#F44336", isDisconnected = false),
-        SessionTabData(hostId = 2L, nickname = "db-primary", color = "#4CAF50", isDisconnected = false),
-        SessionTabData(hostId = 3L, nickname = "staging", color = null, isDisconnected = true),
+        SessionTabData(key = "host:1", nickname = "web-01", color = "#F44336", isDisconnected = false),
+        SessionTabData(key = "host:2", nickname = "db-primary", color = "#4CAF50", isDisconnected = false),
+        SessionTabData(key = "host:3", nickname = "staging", color = null, isDisconnected = true),
+        SessionTabData(
+            key = "tmux:1:\$0",
+            nickname = "main",
+            color = "#F44336",
+            isDisconnected = false,
+            isTmux = true,
+            bellBadge = true,
+        ),
+        SessionTabData(
+            key = "tmux:1:\$1",
+            nickname = "deploy",
+            color = "#F44336",
+            isDisconnected = true,
+            isTmux = true,
+            isAttaching = true,
+        ),
     )
 
     @Before
@@ -57,14 +73,14 @@ class SessionTabStripTest {
     }
 
     private fun setContent(
-        selectedIndex: Int = 0,
-        onSelectTab: (Int) -> Unit = {},
+        selectedKey: String = "host:1",
+        onSelectTab: (String) -> Unit = {},
     ) {
         composeTestRule.setContent {
             ConnectBotTheme {
                 SessionTabStrip(
                     tabs = tabs,
-                    selectedIndex = selectedIndex,
+                    selectedKey = selectedKey,
                     onSelectTab = onSelectTab,
                 )
             }
@@ -82,22 +98,43 @@ class SessionTabStripTest {
 
     @Test
     fun sessionTabStrip_marksOnlySelectedTabAsSelected() {
-        setContent(selectedIndex = 1)
+        setContent(selectedKey = "host:2")
 
-        composeTestRule.onNodeWithTag("session_tab_1").assertIsNotSelected()
-        composeTestRule.onNodeWithTag("session_tab_2").assertIsSelected()
-        composeTestRule.onNodeWithTag("session_tab_3").assertIsNotSelected()
+        composeTestRule.onNodeWithTag("session_tab_host:1").assertIsNotSelected()
+        composeTestRule.onNodeWithTag("session_tab_host:2").assertIsSelected()
+        composeTestRule.onNodeWithTag("session_tab_host:3").assertIsNotSelected()
     }
 
     @Test
-    fun sessionTabStrip_clickingTabReportsItsIndex() {
-        var selected = -1
-        setContent(selectedIndex = 0, onSelectTab = { selected = it })
+    fun sessionTabStrip_clickingTabReportsItsKey() {
+        var selected = ""
+        setContent(onSelectTab = { selected = it })
 
         composeTestRule.onNodeWithText("staging").performClick()
 
         composeTestRule.runOnIdle {
-            assertEquals(2, selected)
+            assertEquals("host:3", selected)
+        }
+    }
+
+    @Test
+    fun sessionTabStrip_showsTmuxSessionTabsWithBadgesAndSpinner() {
+        setContent()
+
+        composeTestRule.onNodeWithText("main").assertIsDisplayed()
+        composeTestRule.onNodeWithTag("tab_badge_tmux:1:\$0", useUnmergedTree = true).assertExists()
+        composeTestRule.onNodeWithTag("tab_attaching_tmux:1:\$1", useUnmergedTree = true).assertExists()
+    }
+
+    @Test
+    fun sessionTabStrip_clickingTmuxTabReportsItsKey() {
+        var selected = ""
+        setContent(onSelectTab = { selected = it })
+
+        composeTestRule.onNodeWithText("main").performClick()
+
+        composeTestRule.runOnIdle {
+            assertEquals("tmux:1:\$0", selected)
         }
     }
 }
