@@ -15,6 +15,16 @@ plugins {
 
 appVersioning {
     tagFilter.set("v[0-9].*")
+    // In a git worktree, .git is a file pointing at the main repository's
+    // gitdir; resolve the main repository root so the plugin can find tags.
+    val dotGit = rootProject.file(".git")
+    if (dotGit.isFile) {
+        val gitDir = File(dotGit.readText().removePrefix("gitdir:").trim())
+        // <main>/.git/worktrees/<name> -> <main>
+        gitDir.parentFile?.parentFile?.parentFile?.let {
+            gitRootDirectory.set(it)
+        }
+    }
     overrideVersionCode { gitTag, _, _ ->
         val semVer = gitTag.toSemVer()
         semVer.major * 10000000 + semVer.minor * 100000 + semVer.patch * 1000 + gitTag.commitsSinceLatestTag

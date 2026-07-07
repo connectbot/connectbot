@@ -58,6 +58,7 @@ import org.connectbot.transport.SSH
 import org.connectbot.transport.TransportFactory
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.ProfileStartup
 import timber.log.Timber
 import java.io.IOException
 import java.nio.charset.Charset
@@ -175,6 +176,18 @@ class TerminalBridge {
 
     /** Force size columns from profile (null = auto-size) */
     var profileForceSizeColumns: Int? = null
+        private set
+
+    /** Startup command from profile, run when a connection is established */
+    var profileStartupCommand: String? = null
+        private set
+
+    /** How the profile startup command is run (see [Profile.STARTUP_MODE_INJECT]) */
+    var profileStartupCommandMode: String = Profile.STARTUP_MODE_INJECT
+        private set
+
+    /** Environment variables from profile (one KEY=VALUE per line) */
+    var profileEnvironmentVariables: String? = null
         private set
 
     /** DEL key mode from profile */
@@ -299,6 +312,11 @@ class TerminalBridge {
         // Store force size from profile
         profileForceSizeRows = profile.forceSizeRows
         profileForceSizeColumns = profile.forceSizeColumns
+
+        // Store startup command and environment variables from profile
+        profileStartupCommand = profile.startupCommand
+        profileStartupCommandMode = profile.startupCommandMode
+        profileEnvironmentVariables = profile.environmentVariables
 
         // Set DEL key mode from profile
         _delKeyModeFlow.value = delKeyModeFromProfile(profile)
@@ -494,6 +512,12 @@ class TerminalBridge {
         // Update force size from profile
         profileForceSizeRows = profile.forceSizeRows
         profileForceSizeColumns = profile.forceSizeColumns
+
+        // Update startup command and environment variables from profile;
+        // these take effect on the next connection
+        profileStartupCommand = profile.startupCommand
+        profileStartupCommandMode = profile.startupCommandMode
+        profileEnvironmentVariables = profile.environmentVariables
 
         // Update DEL key mode from profile
         _delKeyModeFlow.value = delKeyModeFromProfile(profile)
@@ -721,6 +745,14 @@ class TerminalBridge {
 
         // force font-size to make sure we resizePTY as needed
         setFontSize(fontSizeSp)
+
+        // send environment variables and the profile startup command, unless
+        // the transport already ran them as the session exec command
+        if (transport?.executedStartupCommand != true) {
+            injectString(
+                ProfileStartup.buildInjectString(profileEnvironmentVariables, profileStartupCommand),
+            )
+        }
 
         // finally send any post-login string, if requested
         injectString(host.postLogin)

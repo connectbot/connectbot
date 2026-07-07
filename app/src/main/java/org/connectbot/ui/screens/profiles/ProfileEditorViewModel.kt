@@ -35,6 +35,7 @@ import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.LocalFontProvider
+import org.connectbot.util.ProfileStartup
 import org.connectbot.util.TerminalFont
 import org.connectbot.util.TerminalFontProvider
 import java.nio.charset.Charset
@@ -54,6 +55,9 @@ data class ProfileEditorUiState(
     val forceSizeEnabled: Boolean = false,
     val forceSizeRows: Int = 24,
     val forceSizeColumns: Int = 80,
+    val startupCommand: String = "",
+    val startupCommandMode: String = Profile.STARTUP_MODE_INJECT,
+    val environmentVariables: String = "",
     val customTerminalTypes: List<String> = emptyList(),
     val customFonts: List<String> = emptyList(),
     val localFonts: List<Pair<String, String>> = emptyList(),
@@ -157,6 +161,9 @@ class ProfileEditorViewModel @Inject constructor(
                         forceSizeEnabled = forceSizeEnabled,
                         forceSizeRows = profile.forceSizeRows ?: 24,
                         forceSizeColumns = profile.forceSizeColumns ?: 80,
+                        startupCommand = profile.startupCommand ?: "",
+                        startupCommandMode = profile.startupCommandMode,
+                        environmentVariables = profile.environmentVariables ?: "",
                         isLoading = false,
                     )
                 }
@@ -225,6 +232,18 @@ class ProfileEditorViewModel @Inject constructor(
         _uiState.update { it.copy(forceSizeColumns = value.coerceIn(1, 999)) }
     }
 
+    fun updateStartupCommand(value: String) {
+        _uiState.update { it.copy(startupCommand = value) }
+    }
+
+    fun updateStartupCommandMode(value: String) {
+        _uiState.update { it.copy(startupCommandMode = value) }
+    }
+
+    fun updateEnvironmentVariables(value: String) {
+        _uiState.update { it.copy(environmentVariables = value, saveError = null) }
+    }
+
     fun save(onSuccess: () -> Unit) {
         viewModelScope.launch {
             val state = _uiState.value
@@ -238,6 +257,14 @@ class ProfileEditorViewModel @Inject constructor(
             val excludeId = if (profileId != -1L) profileId else null
             if (profileRepository.nameExists(state.name, excludeId)) {
                 _uiState.update { it.copy(saveError = "A profile with this name already exists") }
+                return@launch
+            }
+
+            val invalidEnvLine = ProfileStartup.firstInvalidEnvironmentLine(state.environmentVariables)
+            if (invalidEnvLine != null) {
+                _uiState.update {
+                    it.copy(saveError = "Environment variables: line $invalidEnvLine is not a valid KEY=VALUE entry")
+                }
                 return@launch
             }
 
@@ -255,6 +282,9 @@ class ProfileEditorViewModel @Inject constructor(
                 emulation = state.emulation,
                 forceSizeRows = if (state.forceSizeEnabled) state.forceSizeRows else null,
                 forceSizeColumns = if (state.forceSizeEnabled) state.forceSizeColumns else null,
+                startupCommand = state.startupCommand.ifBlank { null },
+                startupCommandMode = state.startupCommandMode,
+                environmentVariables = state.environmentVariables.ifBlank { null },
             )
 
             profileRepository.save(profile)

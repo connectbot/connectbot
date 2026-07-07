@@ -554,6 +554,26 @@
 	<string name="profile_editor_force_size_columns">Columns</string>
 	<!-- Label for the force size rows input field -->
 	<string name="profile_editor_force_size_rows">Rows</string>
+	<!-- Section title for startup command and environment variable settings -->
+	<string name="profile_editor_section_startup">Startup</string>
+	<!-- Label for the startup command input field -->
+	<string name="profile_editor_startup_command_label">Startup command</string>
+	<!-- Summary text explaining what the startup command does -->
+	<string name="profile_editor_startup_command_summary">Command to run when the connection is established, e.g. to attach to tmux.</string>
+	<!-- Subsection title for choosing how the startup command runs -->
+	<string name="profile_editor_startup_mode_title">Run startup command as</string>
+	<!-- Dropdown option: type the startup command into the interactive shell after login -->
+	<string name="profile_editor_startup_mode_inject">Input to shell after login</string>
+	<!-- Dropdown option: run the startup command as the SSH session command with a pseudo-terminal (like ssh -t) -->
+	<string name="profile_editor_startup_mode_exec_pty">SSH command with PTY (ssh -t)</string>
+	<!-- Dropdown option: run the startup command as the SSH session command without a pseudo-terminal (like ssh -T) -->
+	<string name="profile_editor_startup_mode_exec_no_pty">SSH command without PTY (ssh -T)</string>
+	<!-- Summary text explaining SSH command modes fall back to shell input on other protocols -->
+	<string name="profile_editor_startup_mode_summary">SSH command modes replace the login shell, like running "ssh host command". Other protocols always input to the shell.</string>
+	<!-- Label for the environment variables input field -->
+	<string name="profile_editor_env_vars_label">Environment variables</string>
+	<!-- Summary text explaining the environment variables format -->
+	<string name="profile_editor_env_vars_summary">One KEY=VALUE per line, set in the shell when the connection is established.</string>
 	<!-- Dropdown option to not override host color with profile color -->
 	<string name="profile_icon_color_none">None (use host color)</string>
 

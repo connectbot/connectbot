@@ -49,6 +49,7 @@ import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.PortForward
+import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.TerminalBridge
@@ -60,6 +61,7 @@ import org.connectbot.service.requestStringPrompt
 import org.connectbot.transport.sftp.SftpChannel
 import org.connectbot.transport.sftp.TrileadSftpChannel
 import org.connectbot.util.HostConstants
+import org.connectbot.util.ProfileStartup
 import org.connectbot.util.PubkeyUtils
 import org.connectbot.util.SshKeyType
 import org.connectbot.util.UrlUtils
@@ -127,6 +129,9 @@ class SSH :
 
     private var useAuthAgent = HostConstants.AUTHAGENT_NO
     private var agentLockPassphrase: String? = null
+
+    override var executedStartupCommand: Boolean = false
+        private set
 
     constructor() : super()
 
@@ -703,8 +708,29 @@ class SSH :
                 session?.requestAuthAgentForwarding(this)
             }
 
-            session?.requestPTY(getEmulation(), columns, rows, width, height, null)
-            session?.startShell()
+            // If the profile asks for its startup command to run as the
+            // session command (like `ssh -t` / `ssh -T`), use an exec request
+            // instead of an interactive shell.
+            val startupMode = bridge?.profileStartupCommandMode
+            val execCommand = if (startupMode != null && startupMode != Profile.STARTUP_MODE_INJECT) {
+                ProfileStartup.buildExecCommand(
+                    bridge?.profileEnvironmentVariables,
+                    bridge?.profileStartupCommand,
+                )
+            } else {
+                null
+            }
+
+            if (execCommand != null) {
+                if (startupMode == Profile.STARTUP_MODE_EXEC_PTY) {
+                    session?.requestPTY(getEmulation(), columns, rows, width, height, null)
+                }
+                session?.execCommand(execCommand)
+                executedStartupCommand = true
+            } else {
+                session?.requestPTY(getEmulation(), columns, rows, width, height, null)
+                session?.startShell()
+            }
 
             stdin = session?.stdin
             stdout = session?.stdout
