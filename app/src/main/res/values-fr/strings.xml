@@ -307,7 +307,6 @@
   <string name="terminal_auth_fail">[L\'hôte ne supporte pas l\'authentification par mot de passe ou par clavier.]</string>
   <string name="terminal_no_session">La session ne sera pas démarrée à cause des préférences de l\'hôte.</string>
   <string name="terminal_enable_portfoward">Activer la redirection de port : %1$s</string>
-  <string name="local_shell_unavailable">Échec ! Le shell local est indisponible pour ce téléphone.</string>
   <string name="notification_text">%1$s requiert votre attention.</string>
   <string name="no">Non</string>
   <string name="yes">Oui</string>

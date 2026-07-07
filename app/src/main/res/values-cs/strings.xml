@@ -307,7 +307,6 @@
   <string name="terminal_auth_fail">[Váš server nepodporuje ověřování pomocí hesla nebo interaktivního klíče.]</string>
   <string name="terminal_no_session">Sezení nebude spuštěno kvůli nastavení hosta.</string>
   <string name="terminal_enable_portfoward">Povolit přesměrování portu: %1$s</string>
-  <string name="local_shell_unavailable">Selhání! Místní shell není na tomto telefonu podporován</string>
   <string name="notification_text">%1$s žádá pozornost.</string>
   <string name="no">Ne</string>
   <string name="yes">Ano</string>

@@ -144,7 +144,6 @@
   <string name="terminal_auth_fail">[Palvelin ei tue \'password\' tai \'keyboard-interactive\' varmennusmenetelmiä.]</string>
   <string name="terminal_no_session">Istuntoa ei aloiteta palvelimen asetuksista johtuen</string>
   <string name="terminal_enable_portfoward">Ota käyttöön porttiohjaus %1$s</string>
-  <string name="local_shell_unavailable">Virhe! Paikallista komentoriviä ei ole käytettävissä</string>
   <string name="notification_text">%1$s kaipaa huomiotasi.</string>
   <string name="no">Ei</string>
   <string name="yes">Kyllä</string>

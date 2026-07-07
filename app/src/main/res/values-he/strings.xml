@@ -140,7 +140,6 @@
   <string name="terminal_auth_fail">[המארח שלך אינו תומך באימות \'ססמה\' או \'פעילות-מקלדת\'.]</string>
   <string name="terminal_no_session">ההפעלה לא תתחיל עקב העדפות המארח.</string>
   <string name="terminal_enable_portfoward">הפעלת הפניית פתחות: %1$s</string>
-  <string name="local_shell_unavailable">תקלה! המעטפת המקומית אינה זמינה במכשיר זה.</string>
   <string name="notification_text">ל־%1$s נדרשת תשומת הלב שלך.</string>
   <string name="no">לא</string>
   <string name="yes">כן</string>

@@ -307,7 +307,6 @@
   <string name="terminal_auth_fail">[Twój host nie obsługuje uwierzytelnienia za pomocą klawiatury lub hasła]</string>
   <string name="terminal_no_session">Sesja nie zostanie rozpoczęta z powodu ustawień hostu</string>
   <string name="terminal_enable_portfoward">Włącz przekierowanie portu: %1$s</string>
-  <string name="local_shell_unavailable">Niepowodzenie! Lokalna powłoka nie jest obsługiwana na tym telefonie.</string>
   <string name="notification_text">%1$s wymaga reakcji</string>
   <string name="no">Nie</string>
   <string name="yes">Tak</string>

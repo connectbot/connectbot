@@ -29,7 +29,7 @@ import android.net.Uri
  */
 sealed class Transport {
     /**
-     * The protocol identifier (e.g., "ssh", "telnet", "local")
+     * The protocol identifier (e.g., "ssh")
      */
     abstract val protocolName: String
 
@@ -73,36 +73,6 @@ sealed class Transport {
         override fun parseUri(input: String): Uri? = SSH.getUri(input)
     }
 
-    /**
-     * Telnet transport - Telnet protocol
-     */
-    object Telnet : Transport() {
-        override val protocolName = "telnet"
-        override val defaultPort = 23
-        override val usesNetwork = true
-
-        override fun getFormatHint(context: Context): String = org.connectbot.transport.Telnet.getFormatHint(context)
-
-        override fun createInstance(): AbsTransport = org.connectbot.transport.Telnet()
-
-        override fun parseUri(input: String): Uri? = org.connectbot.transport.Telnet.getUri(input)
-    }
-
-    /**
-     * Local transport - Local shell access
-     */
-    object Local : Transport() {
-        override val protocolName = "local"
-        override val defaultPort = 0
-        override val usesNetwork = false
-
-        override fun getFormatHint(context: Context): String = org.connectbot.transport.Local.getFormatHint(context)
-
-        override fun createInstance(): AbsTransport = org.connectbot.transport.Local()
-
-        override fun parseUri(input: String): Uri? = org.connectbot.transport.Local.getUri(input)
-    }
-
     companion object {
         /**
          * Get a transport by its protocol name.
@@ -111,8 +81,6 @@ sealed class Transport {
         @JvmStatic
         fun fromProtocol(protocol: String?): Transport? = when (protocol) {
             "ssh" -> Ssh
-            "telnet" -> Telnet
-            "local" -> Local
             else -> null
         }
 
@@ -120,7 +88,7 @@ sealed class Transport {
          * Get all available transports
          */
         @JvmStatic
-        fun allTransports(): List<Transport> = listOf(Ssh, Telnet, Local)
+        fun allTransports(): List<Transport> = listOf(Ssh)
 
         /**
          * Get transport from a URI

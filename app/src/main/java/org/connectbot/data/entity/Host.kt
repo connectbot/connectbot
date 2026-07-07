@@ -24,7 +24,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 
 /**
- * SSH/Telnet/Local connection configuration entity.
+ * SSH connection configuration entity.
  */
 @Entity(
     tableName = "hosts",
@@ -144,29 +144,20 @@ data class Host(
         val builder = Uri.Builder()
             .scheme(protocol)
 
-        // Build authority based on protocol
-        when (protocol) {
-            "local" -> {
-                builder.fragment(nickname)
+        // Build authority with hostname and port
+        val authority = buildString {
+            if (username.isNotEmpty()) {
+                append(username)
+                append('@')
             }
-
-            "ssh", "telnet" -> {
-                // Build authority with hostname and port
-                val authority = buildString {
-                    if (username.isNotEmpty() && protocol == "ssh") {
-                        append(username)
-                        append('@')
-                    }
-                    append(hostname)
-                    if (port > 0) {
-                        append(':')
-                        append(port)
-                    }
-                }
-                builder.authority(authority)
-                builder.fragment(nickname)
+            append(hostname)
+            if (port > 0) {
+                append(':')
+                append(port)
             }
         }
+        builder.authority(authority)
+        builder.fragment(nickname)
 
         return builder.build()
     }
@@ -191,30 +182,5 @@ data class Host(
             port = port,
         )
 
-        /**
-         * Create a new Telnet host with default values (Java interop helper).
-         */
-        @JvmStatic
-        fun createTelnetHost(nickname: String, hostname: String, port: Int): Host = Host(
-            id = 0L,
-            nickname = nickname,
-            protocol = "telnet",
-            username = "",
-            hostname = hostname,
-            port = port,
-        )
-
-        /**
-         * Create a new Local host with default values (Java interop helper).
-         */
-        @JvmStatic
-        fun createLocalHost(nickname: String): Host = Host(
-            id = 0L,
-            nickname = nickname,
-            protocol = "local",
-            username = "",
-            hostname = "",
-            port = 0,
-        )
     }
 }

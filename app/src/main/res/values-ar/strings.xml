@@ -307,7 +307,6 @@
   <string name="terminal_auth_fail">[مضيفك لا يدعم طريقة المصادقة \'كلمة المرور\' أو \'التفاعل عبر لوحة المفاتيح\'].</string>
   <string name="terminal_no_session">لن يتم بدء الجلسة بسبب تفضيل المضيف.</string>
   <string name="terminal_enable_portfoward">تفعيل إعادة توجيه المنفذ: %1$s</string>
-  <string name="local_shell_unavailable">فشل! واجهة سطر الأوامر المحلية غير متاحة على هذا الهاتف.</string>
   <string name="notification_text">يريد %1$s أن يلفت انتباهك.</string>
   <string name="no">لا</string>
   <string name="yes">نعم</string>

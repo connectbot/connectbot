@@ -30,11 +30,9 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
 import org.connectbot.ui.MainActivity
-import org.connectbot.util.TestUriBuilder
 import org.connectbot.util.waitForBridgeByNickname
 import org.connectbot.util.waitUntilServiceBound
 import org.junit.Assert.assertNotNull
-import org.junit.Assert.assertTrue
 import org.junit.Assume.assumeTrue
 import org.junit.Before
 import org.junit.Rule
@@ -76,31 +74,6 @@ class MainActivityTest {
                     activity.waitUntilServiceBound()
                 }
                 val manager = state.terminalManager
-            }
-        }
-    }
-
-    @Test
-    fun shortcut_localUri_launchesCorrectly() {
-        val uri = TestUriBuilder.local("LocalShortcut")
-        val shortcutIntent = Intent(Intent.ACTION_VIEW, uri).apply {
-            setClass(context, MainActivity::class.java)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-        }
-
-        ActivityScenario.launch<MainActivity>(shortcutIntent).use { scenario ->
-            scenario.onActivity { activity ->
-                val state = runBlocking {
-                    activity.waitUntilServiceBound()
-                }
-                val manager = state.terminalManager
-                val bridge = runBlocking {
-                    manager.waitForBridgeByNickname("LocalShortcut")
-                }
-
-                assertNotNull("Shortcut should create connection", bridge)
-                assertTrue("Shortcut host should be temporary", bridge.host.id < 0)
             }
         }
     }

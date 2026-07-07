@@ -309,7 +309,6 @@
   <string name="terminal_auth_fail" tools:machine_translated="true">[Вашиот хост не поддржува автентикација со „лозинка“ или „интеракција со тастатурата“.]</string>
   <string name="terminal_no_session" tools:machine_translated="true">Сесијата нема да започне поради претпочитањето на хостот.</string>
   <string name="terminal_enable_portfoward" tools:machine_translated="true">Овозможување на пренасочување на порта: %1$s</string>
-  <string name="local_shell_unavailable" tools:machine_translated="true">Грешка! Локалниот терминал не е достапен на овој телефон.</string>
   <string name="notification_text" tools:machine_translated="true">%1$s сака да привлече ваше внимание.</string>
   <string name="no" tools:machine_translated="true">Не</string>
   <string name="yes" tools:machine_translated="true">Да</string>

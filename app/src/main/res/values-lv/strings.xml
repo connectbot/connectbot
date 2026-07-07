@@ -327,7 +327,6 @@
   <string name="terminal_auth_fail" tools:machine_translated="true">[Jūsu serveris neatbalsta autentifikācijas metodi “parole” vai “interaktīva tastatūra”.]</string>
   <string name="terminal_no_session" tools:machine_translated="true">Sesija netiks uzsākta, jo lietotājs to ir atspējojis hostas iestatījumos.</string>
   <string name="terminal_enable_portfoward" tools:machine_translated="true">Ieslēgt portu pāradresāciju: %1$s</string>
-  <string name="local_shell_unavailable" tools:machine_translated="true">Kļūda! Vietējā komandrinda šajā telefonā nav pieejama.</string>
   <string name="notification_text" tools:machine_translated="true">%1$s vēlas pievērst jūsu uzmanību.</string>
   <string name="no" tools:machine_translated="true">Nē</string>
   <string name="yes" tools:machine_translated="true">Jā</string>

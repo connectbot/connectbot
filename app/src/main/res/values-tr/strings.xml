@@ -151,7 +151,6 @@
   <string name="terminal_auth_fail">[Hostunuz \'şifre\' veya \'klavyeden karşılıklı\' kimlik doğrulamasını desteklemiyor.]</string>
   <string name="terminal_no_session">Sunucu tercihleri sebebiyle oturum başlatılamıyor</string>
   <string name="terminal_enable_portfoward">Port yönlendirmesini etkinleştir: %1$s</string>
-  <string name="local_shell_unavailable">Başarısız! Yerel shell bu telefonda kullanılamıyor.</string>
   <string name="notification_text">%1$s sizi uyarıyor</string>
   <string name="no">Hayır</string>
   <string name="yes">Evet</string>

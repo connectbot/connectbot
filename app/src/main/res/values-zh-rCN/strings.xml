@@ -307,7 +307,6 @@
   <string name="terminal_auth_fail">主机不支持“密码”或“键盘交互式”验证。</string>
   <string name="terminal_no_session">由于主机设置不能启动该会话。</string>
   <string name="terminal_enable_portfoward">启用端口转发：%1$s</string>
-  <string name="local_shell_unavailable">失败! 本地Shell在该手机上不可用</string>
   <string name="notification_text">%1$s 需要你关注。</string>
   <string name="no">不使用</string>
   <string name="yes">使用</string>

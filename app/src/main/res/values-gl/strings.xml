@@ -173,7 +173,6 @@
   <string name="terminal_auth_fail">[O teu servidor non permite autenticación por contrasinal nen interactiva por teclado.]</string>
   <string name="terminal_no_session">Non se iniciará a sesión debido ás configuracións de servidor</string>
   <string name="terminal_enable_portfoward">Habilitar redirección de porto: %1$s</string>
-  <string name="local_shell_unavailable">Erro! O terminal local non está disponíbel neste teléfono.</string>
   <string name="notification_text">%1$s require a túa atención.</string>
   <string name="no">Non</string>
   <string name="yes">Si</string>

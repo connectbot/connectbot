@@ -139,7 +139,6 @@
   <string name="terminal_auth_fail">[Din värd stödjer inte \'password\' eller \'keyboard-interactive\' autentiseringsmetoderna]</string>
   <string name="terminal_no_session">Session kommer inte att startas på grund av värd önskemål.</string>
   <string name="terminal_enable_portfoward">Aktivera vidarebefodring av port: %1$s</string>
-  <string name="local_shell_unavailable">Misslyckande! Lokal shell är otillgänglig på denna telefon</string>
   <string name="notification_text">%1$s vill ha din uppmärksamhet.</string>
   <string name="no">Nej</string>
   <string name="yes">Ja</string>

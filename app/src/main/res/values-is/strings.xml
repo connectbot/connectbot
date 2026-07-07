@@ -314,7 +314,6 @@
   <string name="terminal_auth_ki_fail" tools:machine_translated="true">Staðfestingaraðferðin „keyboard-interactive“ mistókst</string>
   <string name="terminal_auth_fail" tools:machine_translated="true">[Netþjónninn þinn styður ekki kennsluaðferðirnar „lykilorð“ eða „tastatur-viðburðarkennd“.]</string>
   <string name="terminal_no_session" tools:machine_translated="true">Hægt er ekki að hefja lotu þar sem notandinn hefur slökkt á henni í stillingum tölvunnar.</string>
-  <string name="local_shell_unavailable" tools:machine_translated="true">Ekki tókst! Lokaðu kerfisforritið er ekki tiltækt á þessari símtæki.</string>
   <string name="list_color_schemes" tools:machine_translated="true">Litapallettur</string>
   <string name="button_manage_schemes" tools:machine_translated="true">Stýra litasettum</string>
   <string name="title_scheme_manager" tools:machine_translated="true">Stýra litasettum</string>

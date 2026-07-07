@@ -151,7 +151,6 @@
   <string name="terminal_auth_fail">[Din vert støtter ikke autentiseringsmetodene \'password\' eller \'keyboard-interactive\'.]</string>
   <string name="terminal_no_session">Sesjonen vil ikke bli startet grunnet vertsinnstillinger.</string>
   <string name="terminal_enable_portfoward">Aktiver portvideresending: %1$s</string>
-  <string name="local_shell_unavailable">Feil! Lokalt skall er utilgjengelig på denne telefonen.</string>
   <string name="notification_text">%1$s ønsker din oppmerksomhet.</string>
   <string name="no">Nei</string>
   <string name="yes">Ja</string>

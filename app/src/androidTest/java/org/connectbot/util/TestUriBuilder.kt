@@ -26,6 +26,4 @@ object TestUriBuilder {
         port: Int = 22,
         nickname: String = "test",
     ): Uri = Uri.parse("ssh://$username@$hostname:$port/#$nickname")
-
-    fun local(nickname: String = "Local"): Uri = Uri.parse("local://#$nickname")
 }

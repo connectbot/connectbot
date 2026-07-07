@@ -307,7 +307,6 @@
   <string name="terminal_auth_fail">您的 호스트는 패스워드 또는 키보드 상호 작용 인증을 지원하지 않습니다</string>
   <string name="terminal_no_session">호스트 설정 동안에는 세션이 시작되지 않을 것 입니다.</string>
   <string name="terminal_enable_portfoward">포트 포워딩 사용: %1$s</string>
-  <string name="local_shell_unavailable">실패! 이 폰은 로컬 쉘을 사용할 수 없습니다.</string>
   <string name="notification_text">%1$s에서 알림이 있습니다.</string>
   <string name="no">아니오</string>
   <string name="yes">예</string>

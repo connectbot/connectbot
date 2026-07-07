@@ -307,7 +307,6 @@
   <string name="terminal_auth_fail">[Ваш сервер не підтримує автентифікацію за допомогою пароля або інтерактивного введення з клавіатури.]</string>
   <string name="terminal_no_session">Сеанс не буде запущено через налаштування хоста.</string>
   <string name="terminal_enable_portfoward">Увімкнути переадресацію порту: %1$s</string>
-  <string name="local_shell_unavailable">Помилка! Локальна оболонка недоступна на цьому телефоні.</string>
   <string name="notification_text">Програмі %1$s потрібна ваша увага.</string>
   <string name="no">Ні</string>
   <string name="yes">Так</string>

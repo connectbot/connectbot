@@ -388,7 +388,7 @@ class TerminalManager :
     suspend fun openConnection(uri: Uri): TerminalBridge {
         Timber.d("openConnection: uri=$uri, scheme=${uri.scheme}, fragment=${uri.fragment}")
         val scheme = uri.scheme
-            ?: throw IllegalArgumentException("URI must contain a scheme (e.g., 'ssh://', 'telnet://'). URI: $uri")
+            ?: throw IllegalArgumentException("URI must contain a scheme (e.g., 'ssh://'). URI: $uri")
 
         val host: Host = TransportFactory.findHost(hostRepository, uri)
             ?: TransportFactory.getTransport(scheme)?.createHost(uri)

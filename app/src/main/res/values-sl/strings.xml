@@ -336,7 +336,6 @@
   <string name="terminal_auth_ki_fail" tools:machine_translated="true">Način preverjanja pristnosti »interakcija s tipkovnico« je bil neuspešen.</string>
   <string name="terminal_no_session" tools:machine_translated="true">Seja se ne bo začela, ker je uporabnik to onemogočil v nastavitvah gostitelja.</string>
   <string name="terminal_enable_portfoward" tools:machine_translated="true">Omogočanje preusmeritve vrat: %1$s</string>
-  <string name="local_shell_unavailable" tools:machine_translated="true">Napaka! Lokalna lupina ni na voljo na tem telefonu.</string>
   <string name="list_color_schemes" tools:machine_translated="true">Barvne sheme</string>
   <string name="button_manage_schemes" tools:machine_translated="true">Upravljanje barvnih shem</string>
   <string name="title_scheme_manager" tools:machine_translated="true">Upravljanje barvnih shem</string>

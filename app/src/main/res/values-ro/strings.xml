@@ -309,7 +309,6 @@
   <string name="terminal_auth_fail" tools:machine_translated="true">[Serverul dumneavoastră nu acceptă metodele de autentificare „parolă” sau „interacțiune cu tastatura”.]</string>
   <string name="terminal_no_session" tools:machine_translated="true">Sesiunea nu va fi inițiată din cauza setărilor preferate ale sistemului gazdă.</string>
   <string name="terminal_enable_portfoward" tools:machine_translated="true">Activare redirecționare port: %1$s</string>
-  <string name="local_shell_unavailable" tools:machine_translated="true">Eroare! Interfața locală nu este disponibilă pe acest telefon.</string>
   <string name="notification_text" tools:machine_translated="true">%1$s vrea să vă atragă atenția.</string>
   <string name="no" tools:machine_translated="true">Nu</string>
   <string name="yes" tools:machine_translated="true">Da</string>

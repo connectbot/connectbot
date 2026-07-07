@@ -307,7 +307,6 @@
   <string name="terminal_auth_fail">[Seu host não suporta autenticação por \'senha\' ou \'interativa por teclado\'.]</string>
   <string name="terminal_no_session">A sessão não será iniciada devido à configurações do host.</string>
   <string name="terminal_enable_portfoward">Habilitar encaminhamento de porta: %1$s</string>
-  <string name="local_shell_unavailable">Erro! O terminal local não está disponível neste telefone.</string>
   <string name="notification_text">%1$s deseja sua atenção.</string>
   <string name="no">Não</string>
   <string name="yes">Sim</string>

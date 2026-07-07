@@ -309,7 +309,6 @@
   <string name="terminal_auth_fail" tools:machine_translated="true">[Ваш сервер не падтрымлівае аўтэнтыфікацыю з выкарыстаннем «пароля» або «клавіятурнай інтэрактыўнай» аўтэнтыфікацыі.]</string>
   <string name="terminal_no_session" tools:machine_translated="true">Сеанс не будзе запушчаны з-за налад хоста.</string>
   <string name="terminal_enable_portfoward" tools:machine_translated="true">Уключаем пераадпраўленне порта: %1$s</string>
-  <string name="local_shell_unavailable" tools:machine_translated="true">Памылка! Лакальная абалонка недаступная на гэтым тэлефоне.</string>
   <string name="notification_text" tools:machine_translated="true">%1$s хоча, каб вы звярнулі на гэта ўвагу.</string>
   <string name="no" tools:machine_translated="true">Не</string>
   <string name="yes" tools:machine_translated="true">Так</string>

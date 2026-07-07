@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.Flow
 import org.connectbot.data.entity.Host
 
 /**
- * Data Access Object for SSH/Telnet host configurations.
+ * Data Access Object for SSH host configurations.
  */
 @Dao
 interface HostDao {

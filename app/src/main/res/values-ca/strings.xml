@@ -307,7 +307,6 @@
   <string name="terminal_auth_fail">[El servidor no admet autenticació amb \'contrasenya\' o \'teclat-interactiu\'.]</string>
   <string name="terminal_no_session">La sessió no s\'iniciarà degut a la preferencia de servidor.</string>
   <string name="terminal_enable_portfoward">Activa el redireccionament de ports: %1$s</string>
-  <string name="local_shell_unavailable">Fallada! El shell local no està disponible en aquest telèfon.</string>
   <string name="notification_text">%1$s necessita la teva atenció.</string>
   <string name="no">No</string>
   <string name="yes">Sí</string>

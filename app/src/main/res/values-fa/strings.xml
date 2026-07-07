@@ -307,7 +307,6 @@
   <string name="terminal_auth_fail">[سرور شما از روش‌های احراز هویت «گذرواژه» یا «تعاملی مبتنی بر صفحه‌کلید» پشتیبانی نمی‌کند.]</string>
   <string name="terminal_no_session">به دلیل تنظیمات مربوط به هاست، نشست آغاز نخواهد شد.</string>
   <string name="terminal_enable_portfoward">فعال کردن انتقال پورت: %1$s</string>
-  <string name="local_shell_unavailable">عملیات با شکست مواجه شد. دسترسی به شل محلی در این تلفن امکان‌پذیر نیست.</string>
   <string name="notification_text">%1$s می‌خواهد توجه شما را جلب کند.</string>
   <string name="no">خیر</string>
   <string name="yes">بله</string>
