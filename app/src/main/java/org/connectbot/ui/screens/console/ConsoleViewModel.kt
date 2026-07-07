@@ -66,6 +66,8 @@ data class ConsoleUiState(
     val currentPaneTerminal: TmuxPaneTerminal? = null,
     /** Non-null when the "start a persistent session" offer applies to this host. */
     val tmuxOfferHostId: Long? = null,
+    /** Command palette history for the current console (newest last). */
+    val tmuxPaletteHistory: List<org.connectbot.ui.screens.console.tmux.TmuxPaletteEntry> = emptyList(),
 ) {
     val currentTab: ConsoleTab?
         get() = tabs.find { it.key == currentTabKey }
@@ -437,6 +439,88 @@ class ConsoleViewModel @Inject constructor(
         }
     }
 
+    // ===== tmux management (menus, palette) =====
+
+    fun renameTmuxSession(tab: ConsoleTab.TmuxSession, name: String) {
+        val tmux = tab.bridge.tmux ?: return
+        viewModelScope.launch(dispatchers.io) {
+            runCatching { tmux.renameSession(tab.sessionId, name) }
+        }
+    }
+
+    fun killTmuxSession(tab: ConsoleTab.TmuxSession) {
+        val tmux = tab.bridge.tmux ?: return
+        if (_uiState.value.currentTabKey == tab.key) {
+            selectTab(ConsoleTab.hostKey(tab.bridge.host.id))
+        }
+        viewModelScope.launch(dispatchers.io) {
+            runCatching { tmux.killSession(tab.sessionId) }
+        }
+    }
+
+    fun newTmuxWindow() {
+        val tab = _uiState.value.currentTab as? ConsoleTab.TmuxSession ?: return
+        val tmux = tab.bridge.tmux ?: return
+        viewModelScope.launch(dispatchers.io) {
+            runCatching { tmux.newWindow(tab.sessionId) }
+        }
+    }
+
+    fun renameTmuxWindow(windowId: String, name: String) {
+        val tab = _uiState.value.currentTab as? ConsoleTab.TmuxSession ?: return
+        val tmux = tab.bridge.tmux ?: return
+        viewModelScope.launch(dispatchers.io) {
+            runCatching { tmux.renameWindow(tab.sessionId, windowId, name) }
+        }
+    }
+
+    fun killTmuxWindow(windowId: String) {
+        val tab = _uiState.value.currentTab as? ConsoleTab.TmuxSession ?: return
+        val tmux = tab.bridge.tmux ?: return
+        viewModelScope.launch(dispatchers.io) {
+            runCatching { tmux.killWindow(tab.sessionId, windowId) }
+        }
+    }
+
+    /** Swaps a window with its neighbor [offset] positions away (reorder). */
+    fun moveTmuxWindow(windowId: String, offset: Int) {
+        val context = currentTmuxContext() ?: return
+        val (tmux, _, session) = context
+        val index = session.windows.indexOfFirst { it.id == windowId }
+        val other = session.windows.getOrNull(index + offset) ?: return
+        viewModelScope.launch(dispatchers.io) {
+            runCatching { tmux.swapWindows(session.id, windowId, other.id) }
+        }
+    }
+
+    /** Runs a raw tmux command from the palette against the viewed session. */
+    fun runTmuxCommand(command: String) {
+        val tab = _uiState.value.currentTab as? ConsoleTab.TmuxSession ?: return
+        val tmux = tab.bridge.tmux ?: return
+        viewModelScope.launch(dispatchers.io) {
+            val entry = runCatching { tmux.rawCommand(tab.sessionId, command) }
+                .fold(
+                    onSuccess = { reply ->
+                        org.connectbot.ui.screens.console.tmux.TmuxPaletteEntry(
+                            command = command,
+                            output = reply.text,
+                            isError = !reply.ok,
+                        )
+                    },
+                    onFailure = { e ->
+                        org.connectbot.ui.screens.console.tmux.TmuxPaletteEntry(
+                            command = command,
+                            output = e.message ?: "command failed",
+                            isError = true,
+                        )
+                    },
+                )
+            _uiState.update {
+                it.copy(tmuxPaletteHistory = (it.tmuxPaletteHistory + entry).takeLast(PALETTE_HISTORY_LIMIT))
+            }
+        }
+    }
+
     // ===== tmux navigation (window strip, swipes, volume keys) =====
 
     /** Cycles panes of the viewed window by [offset], wrapping around. */
@@ -598,5 +682,6 @@ class ConsoleViewModel @Inject constructor(
 
     companion object {
         const val DEFAULT_TMUX_SESSION_NAME = "connectbot"
+        private const val PALETTE_HISTORY_LIMIT = 50
     }
 }

@@ -471,6 +471,61 @@ class TmuxSessionManager(
         attach(created.id)
     }
 
+    // ===== Management ops =====
+
+    /**
+     * Runs one tmux command against [sessionId]: over its control client
+     * when attached, else over a short-lived exec channel. Returns the
+     * in-band reply when attached, null otherwise.
+     */
+    suspend fun sessionCommand(sessionId: String, command: String): TmuxReply? {
+        val client = clients[sessionId]
+        return if (client != null) {
+            client.command(command)
+        } else {
+            // Our id quoting ('$n'/'@n') and quoteDouble name quoting are
+            // shell-compatible (\$ and \` survive double quotes); only octal
+            // control-byte escapes degrade, which is acceptable for names.
+            execRead("tmux $command 2>&1")
+            null
+        }
+    }
+
+    /** Raw command for the palette; requires an attached session. */
+    suspend fun rawCommand(sessionId: String, command: String): TmuxReply {
+        val client = clients[sessionId] ?: throw TmuxChannelClosedException("session $sessionId is not attached")
+        return client.command(command)
+    }
+
+    suspend fun renameSession(sessionId: String, name: String) {
+        sessionCommand(sessionId, "rename-session -t '$sessionId' \"${TmuxInputEncoder.quoteDouble(name)}\"")
+        refreshSessions()
+    }
+
+    /** Kills the session server-side; state updates via %exit / re-discovery. */
+    suspend fun killSession(sessionId: String) {
+        sessionCommand(sessionId, "kill-session -t '$sessionId'")
+        if (clients[sessionId] == null && transportUp) refreshSessions()
+    }
+
+    suspend fun newWindow(sessionId: String) {
+        sessionCommand(sessionId, "new-window -t '$sessionId'")
+    }
+
+    suspend fun renameWindow(sessionId: String, windowId: String, name: String) {
+        sessionCommand(sessionId, "rename-window -t '$windowId' \"${TmuxInputEncoder.quoteDouble(name)}\"")
+    }
+
+    suspend fun killWindow(sessionId: String, windowId: String) {
+        sessionCommand(sessionId, "kill-window -t '$windowId'")
+    }
+
+    /** Swaps two windows' positions (menu-based reorder). */
+    suspend fun swapWindows(sessionId: String, windowId: String, otherWindowId: String) {
+        sessionCommand(sessionId, "swap-window -d -s '$windowId' -t '$otherWindowId'")
+        refreshWindows(sessionId)
+    }
+
     // ===== Notification handling =====
 
     private suspend fun handleNotification(sessionId: String, notification: TmuxNotification) {

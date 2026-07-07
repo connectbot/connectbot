@@ -26,8 +26,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,7 +44,10 @@ import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.input.pointer.positionChange
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.gestures.awaitEachGesture
@@ -48,6 +55,7 @@ import androidx.compose.foundation.gestures.awaitFirstDown
 import androidx.compose.foundation.systemGestureExclusion
 import kotlin.math.abs
 import kotlin.math.max
+import org.connectbot.R
 import org.connectbot.service.tmux.TmuxWindow
 
 /**
@@ -61,6 +69,8 @@ fun TmuxWindowStrip(
     activeWindowId: String?,
     onSelectWindow: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onLongPressWindow: (String) -> Unit = {},
+    onNewWindow: (() -> Unit)? = null,
     accentColor: Color = MaterialTheme.colorScheme.primary,
     containerColor: Color = MaterialTheme.colorScheme.surfaceVariant,
 ) {
@@ -88,11 +98,12 @@ fun TmuxWindowStrip(
             Row(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .selectable(
-                        selected = selected,
+                    .combinedClickable(
                         role = Role.Tab,
                         onClick = { onSelectWindow(window.id) },
+                        onLongClick = { onLongPressWindow(window.id) },
                     )
+                    .semantics { this.selected = selected }
                     .background(
                         if (selected) accentColor.copy(alpha = 0.18f) else Color.Transparent,
                     )
@@ -124,6 +135,25 @@ fun TmuxWindowStrip(
                                 CircleShape,
                             )
                             .testTag("tmux_window_badge_${window.id}"),
+                    )
+                }
+            }
+        }
+
+        if (onNewWindow != null) {
+            item(key = "tmux_new_window") {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier
+                        .clickable(onClick = onNewWindow)
+                        .padding(horizontal = 10.dp, vertical = 6.dp)
+                        .testTag("tmux_new_window"),
+                ) {
+                    Icon(
+                        Icons.Default.Add,
+                        contentDescription = stringResource(R.string.tmux_new_window),
+                        modifier = Modifier.size(16.dp),
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
             }

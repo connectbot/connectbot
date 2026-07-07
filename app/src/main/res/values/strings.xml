@@ -680,6 +680,36 @@
 	<string name="tmux_tap_to_attach">Tap to attach to “%1$s”</string>
 	<!-- Overlay while attaching to a tmux session; %1$s is the session name -->
 	<string name="tmux_attaching">Attaching to “%1$s”…</string>
+	<!-- Menu entry opening the raw tmux command palette -->
+	<string name="tmux_menu_command">tmux command…</string>
+	<!-- Long-press menu: rename a session or window -->
+	<string name="tmux_menu_rename">Rename…</string>
+	<!-- Long-press menu: detach from the session (it keeps running) -->
+	<string name="tmux_menu_detach">Detach</string>
+	<!-- Long-press menu: kill the session (destructive, confirmed) -->
+	<string name="tmux_menu_kill_session">Kill session…</string>
+	<!-- Long-press menu: kill the window (destructive, confirmed) -->
+	<string name="tmux_menu_kill_window">Kill window…</string>
+	<!-- Long-press menu: swap the window one position left -->
+	<string name="tmux_menu_move_left">Move left</string>
+	<!-- Long-press menu: swap the window one position right -->
+	<string name="tmux_menu_move_right">Move right</string>
+	<!-- New window affordance on the window strip -->
+	<string name="tmux_new_window">New window</string>
+	<!-- Rename dialog titles and confirm button -->
+	<string name="tmux_rename_session_title">Rename session</string>
+	<string name="tmux_rename_window_title">Rename window</string>
+	<string name="tmux_rename_confirm">Rename</string>
+	<!-- Kill confirmation dialog -->
+	<string name="tmux_kill_title">Are you sure?</string>
+	<string name="tmux_kill_confirm">Kill</string>
+	<!-- Kill session confirmation; %1$s is the session name -->
+	<string name="tmux_kill_session_message">Kill session “%1$s”? Everything running in it will be terminated.</string>
+	<string name="tmux_kill_window_message">Kill this window? Everything running in it will be terminated.</string>
+	<!-- Command palette -->
+	<string name="tmux_palette_title">tmux command</string>
+	<string name="tmux_palette_hint">e.g. move-window -t 0</string>
+	<string name="tmux_palette_run">Run</string>
 
 	<!-- Error shown in a snackbar when the user taps a URL but no app on the device can handle it -->
 	<string name="console_url_no_handler">No app available to open this URL</string>

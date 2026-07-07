@@ -146,7 +146,11 @@ import org.connectbot.service.tmux.TmuxAttachState
 import org.connectbot.service.tmux.TmuxPaneTerminal
 import org.connectbot.ui.common.parseHostColor
 import org.connectbot.ui.screens.console.tmux.PaneDotsIndicator
+import org.connectbot.ui.screens.console.tmux.TmuxActionMenuDialog
+import org.connectbot.ui.screens.console.tmux.TmuxCommandPaletteSheet
+import org.connectbot.ui.screens.console.tmux.TmuxKillConfirmDialog
 import org.connectbot.ui.screens.console.tmux.TmuxOfferBanner
+import org.connectbot.ui.screens.console.tmux.TmuxRenameDialog
 import org.connectbot.ui.screens.console.tmux.TmuxSnapshotPage
 import org.connectbot.ui.screens.console.tmux.TmuxWindowStrip
 import org.connectbot.ui.screens.console.tmux.tmuxSwipeNavigation
@@ -814,6 +818,13 @@ fun ConsoleScreen(
     var showDisconnectDialog by remember { mutableStateOf(false) }
     var showSessionPickerDialog by remember { mutableStateOf(false) }
     var showTextInputDialog by remember { mutableStateOf(false) }
+    var tmuxMenuTabKey by remember { mutableStateOf<String?>(null) }
+    var tmuxWindowMenuId by remember { mutableStateOf<String?>(null) }
+    var tmuxRenameSessionTab by remember { mutableStateOf<ConsoleTab.TmuxSession?>(null) }
+    var tmuxRenameWindowId by remember { mutableStateOf<String?>(null) }
+    var tmuxKillSessionTab by remember { mutableStateOf<ConsoleTab.TmuxSession?>(null) }
+    var tmuxKillWindowId by remember { mutableStateOf<String?>(null) }
+    var showTmuxPalette by remember { mutableStateOf(false) }
     var showExtraKeyboard by remember { mutableStateOf(true) } // Start visible to show animation
     var hasPlayedKeyboardAnimation by remember { mutableStateOf(false) }
     var showTitleBar by remember { mutableStateOf(!titleBarHide) }
@@ -1378,6 +1389,92 @@ fun ConsoleScreen(
             }
         }
 
+        // tmux management dialogs
+        (tmuxMenuTabKey?.let { key -> uiState.tabs.find { it.key == key } } as? ConsoleTab.TmuxSession)?.let { menuTab ->
+            TmuxActionMenuDialog(
+                title = menuTab.sessionName,
+                actions = buildList {
+                    add(stringResource(R.string.tmux_menu_rename) to { tmuxRenameSessionTab = menuTab })
+                    if (menuTab.attachState == TmuxAttachState.ATTACHED) {
+                        add(stringResource(R.string.tmux_menu_detach) to { viewModel.detachTmuxTab(menuTab) })
+                    }
+                    add(stringResource(R.string.tmux_menu_kill_session) to { tmuxKillSessionTab = menuTab })
+                },
+                onDismiss = { tmuxMenuTabKey = null },
+            )
+        }
+
+        tmuxWindowMenuId?.let { windowId ->
+            val windowName = (uiState.currentTab as? ConsoleTab.TmuxSession)
+                ?.bridge?.tmux?.state?.value
+                ?.session((uiState.currentTab as ConsoleTab.TmuxSession).sessionId)
+                ?.windows?.find { it.id == windowId }?.name ?: windowId
+            TmuxActionMenuDialog(
+                title = windowName,
+                actions = listOf(
+                    stringResource(R.string.tmux_menu_rename) to { tmuxRenameWindowId = windowId },
+                    stringResource(R.string.tmux_menu_move_left) to { viewModel.moveTmuxWindow(windowId, -1) },
+                    stringResource(R.string.tmux_menu_move_right) to { viewModel.moveTmuxWindow(windowId, 1) },
+                    stringResource(R.string.tmux_menu_kill_window) to { tmuxKillWindowId = windowId },
+                ),
+                onDismiss = { tmuxWindowMenuId = null },
+            )
+        }
+
+        tmuxRenameSessionTab?.let { renameTab ->
+            TmuxRenameDialog(
+                title = stringResource(R.string.tmux_rename_session_title),
+                initialName = renameTab.sessionName,
+                onConfirm = { name ->
+                    viewModel.renameTmuxSession(renameTab, name)
+                    tmuxRenameSessionTab = null
+                },
+                onDismiss = { tmuxRenameSessionTab = null },
+            )
+        }
+
+        tmuxRenameWindowId?.let { windowId ->
+            TmuxRenameDialog(
+                title = stringResource(R.string.tmux_rename_window_title),
+                initialName = "",
+                onConfirm = { name ->
+                    viewModel.renameTmuxWindow(windowId, name)
+                    tmuxRenameWindowId = null
+                },
+                onDismiss = { tmuxRenameWindowId = null },
+            )
+        }
+
+        tmuxKillSessionTab?.let { killTab ->
+            TmuxKillConfirmDialog(
+                message = stringResource(R.string.tmux_kill_session_message, killTab.sessionName),
+                onConfirm = {
+                    viewModel.killTmuxSession(killTab)
+                    tmuxKillSessionTab = null
+                },
+                onDismiss = { tmuxKillSessionTab = null },
+            )
+        }
+
+        tmuxKillWindowId?.let { windowId ->
+            TmuxKillConfirmDialog(
+                message = stringResource(R.string.tmux_kill_window_message),
+                onConfirm = {
+                    viewModel.killTmuxWindow(windowId)
+                    tmuxKillWindowId = null
+                },
+                onDismiss = { tmuxKillWindowId = null },
+            )
+        }
+
+        if (showTmuxPalette) {
+            TmuxCommandPaletteSheet(
+                history = uiState.tmuxPaletteHistory,
+                onRunCommand = { viewModel.runTmuxCommand(it) },
+                onDismiss = { showTmuxPalette = false },
+            )
+        }
+
         // Dialogs
         if (showUrlScanDialog) {
             UrlScanDialog(
@@ -1640,6 +1737,19 @@ fun ConsoleScreen(
                                     enabled = sessionOpen,
                                 )
 
+                                // tmux command palette (attached tmux tab only)
+                                if (uiState.currentTab is ConsoleTab.TmuxSession &&
+                                    uiState.currentPaneTerminal != null
+                                ) {
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.tmux_menu_command)) },
+                                        onClick = {
+                                            showMenu = false
+                                            showTmuxPalette = true
+                                        },
+                                    )
+                                }
+
                                 // Port Forwards (if available)
                                 if (canForwardPorts) {
                                     DropdownMenuItem(
@@ -1738,6 +1848,11 @@ fun ConsoleScreen(
                             viewModel.selectTab(key)
                             handleTerminalInteraction(isInteraction = false)
                         },
+                        onLongPressTab = { key ->
+                            if (uiState.tabs.find { it.key == key } is ConsoleTab.TmuxSession) {
+                                tmuxMenuTabKey = key
+                            }
+                        },
                         containerColor = if (titleBarHide) {
                             MaterialTheme.colorScheme.surface.copy(alpha = 0.5f)
                         } else {
@@ -1764,6 +1879,8 @@ fun ConsoleScreen(
                                 viewModel.selectWindow(windowId)
                                 handleTerminalInteraction(isInteraction = false)
                             },
+                            onLongPressWindow = { windowId -> tmuxWindowMenuId = windowId },
+                            onNewWindow = { viewModel.newTmuxWindow() },
                             accentColor = parseHostColor(stripTab.bridge.host.color),
                         )
                     }

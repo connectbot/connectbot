@@ -30,7 +30,8 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.selection.selectable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -42,6 +43,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.selected
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -83,6 +86,7 @@ fun SessionTabStrip(
     selectedKey: String?,
     onSelectTab: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onLongPressTab: (String) -> Unit = {},
     containerColor: Color = MaterialTheme.colorScheme.surface,
 ) {
     val listState = rememberLazyListState()
@@ -109,6 +113,7 @@ fun SessionTabStrip(
                 tab = tab,
                 selected = tab.key == selectedKey,
                 onClick = { onSelectTab(tab.key) },
+                onLongClick = { onLongPressTab(tab.key) },
             )
         }
     }
@@ -119,6 +124,7 @@ private fun SessionTab(
     tab: SessionTabData,
     selected: Boolean,
     onClick: () -> Unit,
+    onLongClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val hostColor = parseHostColor(tab.color)
@@ -137,11 +143,12 @@ private fun SessionTab(
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
             .widthIn(min = 72.dp, max = 200.dp)
-            .selectable(
-                selected = selected,
+            .combinedClickable(
                 role = Role.Tab,
                 onClick = onClick,
+                onLongClick = onLongClick,
             )
+            .semantics { this.selected = selected }
             .testTag("session_tab_${tab.key}"),
     ) {
         Row(
