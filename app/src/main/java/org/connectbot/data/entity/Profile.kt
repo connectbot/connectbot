@@ -39,6 +39,11 @@ import androidx.room.PrimaryKey
  * @property emulation Terminal emulation mode (e.g., "xterm-256color")
  * @property forceSizeRows Forced terminal rows (null = auto-size based on screen)
  * @property forceSizeColumns Forced terminal columns (null = auto-size based on screen)
+ * @property startupCommand Command(s) to run when a connection is established (null = none)
+ * @property startupCommandMode How to run the startup command: [STARTUP_MODE_INJECT] types it
+ *   into the interactive shell after login; [STARTUP_MODE_EXEC_PTY] and [STARTUP_MODE_EXEC_NO_PTY]
+ *   run it as the SSH session command (like `ssh -t` / `ssh -T`) with or without a pseudo-terminal
+ * @property environmentVariables Environment variables to set on connect, one KEY=VALUE per line
  */
 @Entity(
     tableName = "profiles",
@@ -80,8 +85,26 @@ data class Profile(
 
     @ColumnInfo(name = "force_size_columns")
     val forceSizeColumns: Int? = null,
+
+    @ColumnInfo(name = "startup_command")
+    val startupCommand: String? = null,
+
+    @ColumnInfo(name = "startup_command_mode", defaultValue = "'inject'")
+    val startupCommandMode: String = STARTUP_MODE_INJECT,
+
+    @ColumnInfo(name = "environment_variables")
+    val environmentVariables: String? = null,
 ) {
     companion object {
+        /** Type the startup command into the interactive shell after login. */
+        const val STARTUP_MODE_INJECT = "inject"
+
+        /** Run the startup command as the SSH session command with a PTY (like `ssh -t`). */
+        const val STARTUP_MODE_EXEC_PTY = "exec_pty"
+
+        /** Run the startup command as the SSH session command without a PTY (like `ssh -T`). */
+        const val STARTUP_MODE_EXEC_NO_PTY = "exec_no_pty"
+
         /**
          * Create a default profile with auto-generated ID.
          */

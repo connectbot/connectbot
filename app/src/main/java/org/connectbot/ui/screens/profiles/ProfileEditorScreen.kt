@@ -68,6 +68,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.BuildConfig
 import org.connectbot.R
 import org.connectbot.data.entity.ColorScheme
+import org.connectbot.data.entity.Profile
 import org.connectbot.ui.common.getIconColors
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.common.getLocalizedFontDisplayName
@@ -275,6 +276,31 @@ fun ProfileEditorScreen(
                     onEnabledChange = { viewModel.updateForceSizeEnabled(it) },
                     onRowsChange = { viewModel.updateForceSizeRows(it) },
                     onColumnsChange = { viewModel.updateForceSizeColumns(it) },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                // Startup Section
+                Text(
+                    text = stringResource(R.string.profile_editor_section_startup),
+                    style = MaterialTheme.typography.titleLarge,
+                    modifier = Modifier.padding(bottom = 8.dp),
+                )
+
+                StartupCommandSelector(
+                    startupCommand = uiState.startupCommand,
+                    startupCommandMode = uiState.startupCommandMode,
+                    onStartupCommandChange = { viewModel.updateStartupCommand(it) },
+                    onStartupCommandModeChange = { viewModel.updateStartupCommandMode(it) },
+                    modifier = Modifier.fillMaxWidth(),
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                EnvironmentVariablesField(
+                    environmentVariables = uiState.environmentVariables,
+                    onEnvironmentVariablesChange = { viewModel.updateEnvironmentVariables(it) },
                     modifier = Modifier.fillMaxWidth(),
                 )
 
@@ -729,6 +755,97 @@ private fun IconColorSelector(
             }
         }
     }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun StartupCommandSelector(
+    startupCommand: String,
+    startupCommandMode: String,
+    onStartupCommandChange: (String) -> Unit,
+    onStartupCommandModeChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val modeOptions = listOf(
+        Profile.STARTUP_MODE_INJECT to stringResource(R.string.profile_editor_startup_mode_inject),
+        Profile.STARTUP_MODE_EXEC_PTY to stringResource(R.string.profile_editor_startup_mode_exec_pty),
+        Profile.STARTUP_MODE_EXEC_NO_PTY to stringResource(R.string.profile_editor_startup_mode_exec_no_pty),
+    )
+
+    Column(modifier = modifier) {
+        OutlinedTextField(
+            value = startupCommand,
+            onValueChange = onStartupCommandChange,
+            label = { Text(stringResource(R.string.profile_editor_startup_command_label)) },
+            supportingText = { Text(stringResource(R.string.profile_editor_startup_command_summary)) },
+            minLines = 2,
+            modifier = Modifier.fillMaxWidth(),
+        )
+
+        if (startupCommand.isNotBlank()) {
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = stringResource(R.string.profile_editor_startup_mode_title),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(bottom = 8.dp),
+            )
+
+            ExposedDropdownMenuBox(
+                expanded = expanded,
+                onExpandedChange = { expanded = it },
+            ) {
+                OutlinedTextField(
+                    value = modeOptions.firstOrNull { it.first == startupCommandMode }?.second
+                        ?: modeOptions.first().second,
+                    onValueChange = {},
+                    readOnly = true,
+                    singleLine = true,
+                    supportingText = { Text(stringResource(R.string.profile_editor_startup_mode_summary)) },
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                    },
+                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                    modifier = Modifier
+                        .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                        .fillMaxWidth(),
+                )
+
+                ExposedDropdownMenu(
+                    expanded = expanded,
+                    onDismissRequest = { expanded = false },
+                ) {
+                    modeOptions.forEach { (value, displayName) ->
+                        DropdownMenuItem(
+                            text = { Text(displayName) },
+                            onClick = {
+                                onStartupCommandModeChange(value)
+                                expanded = false
+                            },
+                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun EnvironmentVariablesField(
+    environmentVariables: String,
+    onEnvironmentVariablesChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    OutlinedTextField(
+        value = environmentVariables,
+        onValueChange = onEnvironmentVariablesChange,
+        label = { Text(stringResource(R.string.profile_editor_env_vars_label)) },
+        supportingText = { Text(stringResource(R.string.profile_editor_env_vars_summary)) },
+        minLines = 2,
+        modifier = modifier,
+    )
 }
 
 @Composable

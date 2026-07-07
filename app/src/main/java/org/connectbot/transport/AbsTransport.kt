@@ -130,6 +130,14 @@ abstract class AbsTransport {
 
     open fun getEmulation(): String? = _emulation
 
+    /**
+     * Whether this transport ran the profile's startup command itself (e.g.
+     * as an SSH session exec request). When true, the bridge must not inject
+     * the startup command into the terminal after connecting.
+     */
+    open val executedStartupCommand: Boolean
+        get() = false
+
     open fun setHost(host: Host?) {
         this.host = host
     }

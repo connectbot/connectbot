@@ -26,17 +26,25 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.ProfileRepository
+import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.kotlin.any
+import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import org.robolectric.RobolectricTestRunner
 
@@ -111,5 +119,62 @@ class ProfileEditorViewModelTest {
         common.forEach { encoding ->
             assertTrue("allEncodings must contain $encoding", viewModel.allEncodings.contains(encoding))
         }
+    }
+
+    @Test
+    fun save_InvalidEnvironmentVariables_SetsErrorAndDoesNotSave() = runTest(testDispatcher) {
+        whenever(profileRepository.nameExists("Test", null)).thenReturn(false)
+        val viewModel = createViewModel()
+        viewModel.updateName("Test")
+        viewModel.updateEnvironmentVariables("FOO=bar\nnot a var")
+
+        var saved = false
+        viewModel.save { saved = true }
+
+        assertFalse("save must not complete with invalid env vars", saved)
+        assertEquals(
+            "Environment variables: line 2 is not a valid KEY=VALUE entry",
+            viewModel.uiState.value.saveError,
+        )
+        verify(profileRepository, never()).save(any())
+    }
+
+    @Test
+    fun save_StartupFields_PersistedOnProfile() = runTest(testDispatcher) {
+        whenever(profileRepository.nameExists("Test", null)).thenReturn(false)
+        whenever(profileRepository.save(any())).thenReturn(1L)
+        val viewModel = createViewModel()
+        viewModel.updateName("Test")
+        viewModel.updateStartupCommand("tmux attach")
+        viewModel.updateStartupCommandMode(Profile.STARTUP_MODE_EXEC_PTY)
+        viewModel.updateEnvironmentVariables("FOO=bar")
+
+        var saved = false
+        viewModel.save { saved = true }
+
+        assertTrue("save must complete", saved)
+        val captor = argumentCaptor<Profile>()
+        verify(profileRepository).save(captor.capture())
+        assertEquals("tmux attach", captor.firstValue.startupCommand)
+        assertEquals(Profile.STARTUP_MODE_EXEC_PTY, captor.firstValue.startupCommandMode)
+        assertEquals("FOO=bar", captor.firstValue.environmentVariables)
+    }
+
+    @Test
+    fun save_BlankStartupFields_PersistedAsNull() = runTest(testDispatcher) {
+        whenever(profileRepository.nameExists("Test", null)).thenReturn(false)
+        whenever(profileRepository.save(any())).thenReturn(1L)
+        val viewModel = createViewModel()
+        viewModel.updateName("Test")
+        viewModel.updateStartupCommand("   ")
+        viewModel.updateEnvironmentVariables("")
+
+        viewModel.save { }
+
+        val captor = argumentCaptor<Profile>()
+        verify(profileRepository).save(captor.capture())
+        assertNull(captor.firstValue.startupCommand)
+        assertNull(captor.firstValue.environmentVariables)
+        assertEquals(Profile.STARTUP_MODE_INJECT, captor.firstValue.startupCommandMode)
     }
 }

@@ -57,6 +57,8 @@ import org.connectbot.data.entity.Pubkey
  * - Version 5: Added profiles table and profile_id column to hosts (manual migration)
  * - Version 6: Added force_size_rows and force_size_columns to profiles (AutoMigration)
  * - Version 7: Added ip_version column to hosts for IP version preference (AutoMigration)
+ * - Version 9: Added startup_command, startup_command_mode, and environment_variables
+ *   to profiles (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -73,7 +75,7 @@ import org.connectbot.data.entity.Pubkey
         ColorPalette::class,
         Profile::class,
     ],
-    version = 8,
+    version = 9,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -82,6 +84,7 @@ import org.connectbot.data.entity.Pubkey
         AutoMigration(from = 5, to = 6),
         AutoMigration(from = 6, to = 7),
         AutoMigration(from = 7, to = 8),
+        AutoMigration(from = 8, to = 9),
     ],
 )
 @TypeConverters(Converters::class)
