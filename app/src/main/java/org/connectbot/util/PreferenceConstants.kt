@@ -40,6 +40,10 @@ object PreferenceConstants {
     const val PG_UPDN_GESTURE: String = "pgupdngesture"
     const val SWIPE_SESSIONS: String = "swipeSessions"
 
+    /** Volume keys switch tmux panes (true, default) or adjust font size (false). */
+    const val VOLUME_TMUX_PANES: String = "volumeTmuxPanes"
+    const val VOLUME_TMUX_PANES_DEFAULT: Boolean = true
+
     const val KEYMODE: String = "keymode"
     const val KEY_ALWAYS_VISIBLE: String = "alwaysvisible"
 

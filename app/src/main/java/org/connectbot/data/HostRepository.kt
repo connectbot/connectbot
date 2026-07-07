@@ -165,6 +165,20 @@ class HostRepository @Inject constructor(
         hostDao.update(updatedHost)
     }
 
+    /**
+     * Persist the last viewed tmux target for silent reattach.
+     *
+     * @param hostId the host row to update (ignored for temporary hosts)
+     * @param target encoded [org.connectbot.service.tmux.TmuxTarget], or null to clear
+     */
+    suspend fun updateTmuxLastTarget(hostId: Long, target: String?) {
+        if (hostId <= 0L) {
+            // Skip for temporary hosts (negative IDs)
+            return
+        }
+        hostDao.updateTmuxLastTarget(hostId, target)
+    }
+
     // ============================================================================
     // Port Forward Operations
     // ============================================================================

@@ -105,6 +105,30 @@ data class Host(
      */
     @ColumnInfo(name = "ip_version", defaultValue = "IPV4_AND_IPV6")
     val ipVersion: String = "IPV4_AND_IPV6",
+
+    /**
+     * tmux integration mode for this host.
+     * Values: "AUTO" (detect tmux and offer the native session UI, default),
+     * "OFF" (never probe for or surface tmux on this host).
+     */
+    @ColumnInfo(name = "tmux_mode", defaultValue = "AUTO")
+    val tmuxMode: String = TMUX_MODE_AUTO,
+
+    /**
+     * Last viewed tmux target for silent reattach, encoded as
+     * "sessionId|windowId|paneId|sessionName" (e.g. "$1|@3|%7|main").
+     * Null when the host was not left inside a tmux session.
+     */
+    @ColumnInfo(name = "tmux_last_target")
+    val tmuxLastTarget: String? = null,
+
+    /**
+     * Whether the "start a persistent tmux session" offer was permanently
+     * dismissed for this host. Unlike tmuxMode = OFF, existing sessions are
+     * still detected and surfaced.
+     */
+    @ColumnInfo(name = "tmux_offer_dismissed", defaultValue = "0")
+    val tmuxOfferDismissed: Boolean = false,
 ) {
     /**
      * Check if this host is temporary (not saved to database).
@@ -148,6 +172,12 @@ data class Host(
     }
 
     companion object {
+        /** [tmuxMode] value: detect tmux and surface the native session UI. */
+        const val TMUX_MODE_AUTO = "AUTO"
+
+        /** [tmuxMode] value: never probe for or surface tmux on this host. */
+        const val TMUX_MODE_OFF = "OFF"
+
         /**
          * Create a new SSH host with default values (Java interop helper).
          */

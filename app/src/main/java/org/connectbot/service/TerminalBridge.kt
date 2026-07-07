@@ -54,6 +54,8 @@ import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.TerminalEmulatorFactory
 import org.connectbot.terminal.UrlScanScope
+import org.connectbot.service.tmux.TmuxSessionManager
+import org.connectbot.service.tmux.TmuxTarget
 import org.connectbot.transport.AbsTransport
 import org.connectbot.transport.SSH
 import org.connectbot.transport.TransportFactory
@@ -163,6 +165,15 @@ class TerminalBridge {
     val defaultPaint: Paint
 
     private var relay: Relay? = null
+
+    /**
+     * Native tmux integration for this host, created after the first
+     * successful connect when the transport supports exec channels and the
+     * host has not disabled tmux. Survives reconnects (it holds the
+     * reattach target); torn down in [cleanup].
+     */
+    var tmux: TmuxSessionManager? = null
+        private set
 
     private val emulation: String?
     private val scrollback: Int
@@ -749,6 +760,8 @@ class TerminalBridge {
         // finally send any post-login string, if requested
         injectString(host.postLogin)
 
+        maybeStartTmux()
+
         // Capture network state after successful connection
         captureNetworkState()
 
@@ -791,6 +804,35 @@ class TerminalBridge {
                 },
             ).run()
         }
+    }
+
+    /**
+     * Starts (or resumes, after a reconnect) tmux integration when the
+     * transport supports exec channels, the host wants a session, and tmux
+     * mode is not OFF for this host.
+     */
+    private fun maybeStartTmux() {
+        if (transport?.canOpenExecChannels() != true) return
+        if (!host.wantSession || host.tmuxMode == Host.TMUX_MODE_OFF) return
+
+        val sessionManager = tmux ?: TmuxSessionManager(
+            // Resolve the transport at call time: reconnects swap it out.
+            channelFactory = { command ->
+                (transport ?: throw IOException("transport is gone")).openExecChannel(command)
+            },
+            scope = scope,
+            ioDispatcher = dispatchers.io,
+        ).also { created ->
+            created.onTargetChanged = { target ->
+                scope.launch(dispatchers.io) {
+                    runCatching {
+                        manager.hostRepository.updateTmuxLastTarget(host.id, target?.encode())
+                    }
+                }
+            }
+            tmux = created
+        }
+        sessionManager.onTransportConnected(TmuxTarget.decode(host.tmuxLastTarget))
     }
 
     /**
@@ -856,6 +898,10 @@ class TerminalBridge {
 
         // Cancel any pending prompts
         promptManager.cancelPrompt()
+
+        // tmux control channels died with the connection; remember where we
+        // were so a reconnect can silently reattach
+        tmux?.onTransportLost()
 
         // disconnection request hangs if we havent really connected to a host yet
         // temporary fix is to just spawn disconnection into a thread
@@ -967,6 +1013,9 @@ class TerminalBridge {
 
         keepaliveJob?.cancel()
         keepaliveJob = null
+
+        tmux?.shutdown()
+        tmux = null
 
         profileObservationJob?.cancel()
         transportOperations.close()

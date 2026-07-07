@@ -81,6 +81,13 @@ interface HostDao {
     suspend fun update(host: Host)
 
     /**
+     * Update only the persisted tmux reattach target for a host, leaving all
+     * other columns untouched (safe against concurrent host edits).
+     */
+    @Query("UPDATE hosts SET tmux_last_target = :target WHERE id = :hostId")
+    suspend fun updateTmuxLastTarget(hostId: Long, target: String?)
+
+    /**
      * Delete a host.
      * Also cascades to delete associated port forwards and known hosts.
      */

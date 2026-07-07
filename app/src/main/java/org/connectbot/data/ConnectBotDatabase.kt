@@ -59,6 +59,8 @@ import org.connectbot.data.entity.Pubkey
  * - Version 7: Added ip_version column to hosts for IP version preference (AutoMigration)
  * - Version 9: Added startup_command, startup_command_mode, and environment_variables
  *   to profiles (AutoMigration)
+ * - Version 10: Added tmux_mode, tmux_last_target, and tmux_offer_dismissed
+ *   to hosts for tmux integration (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -75,7 +77,7 @@ import org.connectbot.data.entity.Pubkey
         ColorPalette::class,
         Profile::class,
     ],
-    version = 9,
+    version = 10,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -85,6 +87,7 @@ import org.connectbot.data.entity.Pubkey
         AutoMigration(from = 6, to = 7),
         AutoMigration(from = 7, to = 8),
         AutoMigration(from = 8, to = 9),
+        AutoMigration(from = 9, to = 10),
     ],
 )
 @TypeConverters(Converters::class)
