@@ -692,10 +692,15 @@ class TerminalManager :
     }
 
     private fun stopWithDelay() {
-        // TODO add in a way to check whether keys loaded are encrypted and only
-        // set timer when we have an encrypted key loaded
+        // Only keep the service alive for keys that would require user
+        // interaction to reload: encrypted keys (passphrase prompt) and
+        // biometric keys (re-authentication). Unencrypted keys can be
+        // reloaded silently, so they don't justify delaying shutdown.
+        val hasInteractiveKey = loadedKeypairs.values.any {
+            it.pubkey?.encrypted == true || it.isBiometricKey
+        }
 
-        if (loadedKeypairs.isNotEmpty()) {
+        if (hasInteractiveKey) {
             synchronized(this) {
                 idleJob?.cancel()
                 idleJob = scope.launch {
