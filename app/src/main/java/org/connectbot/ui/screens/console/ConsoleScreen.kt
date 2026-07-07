@@ -1292,11 +1292,13 @@ fun ConsoleScreen(
                             val tmuxTarget = tmuxTab.bridge.tmux?.currentTarget?.collectAsState()?.value
                             val tmuxWindow = tmuxSession?.windows?.find { it.id == tmuxTarget?.windowId }
                             val pane = tmuxWindow?.panes?.find { it.id == paneTerminal.paneId }
+                            val swipeDensity = LocalDensity.current.density
                             val tmuxSwipeModifier = Modifier.tmuxSwipeNavigation(
                                 selectionActive = terminalSelectionActive,
                                 onSwipePane = { direction -> viewModel.selectPane(direction) },
                                 onSwipeWindow = { direction -> viewModel.stepWindow(direction) },
                                 onInteraction = { handleTerminalInteraction(isInteraction = false) },
+                                density = swipeDensity,
                             )
                             key(tmuxTab.key) {
                                 ConsoleTerminalPage(
@@ -1332,10 +1334,11 @@ fun ConsoleScreen(
                                     tmuxForcedSize = pane?.let { Pair(it.height, it.width) },
                                 )
                             }
-                            if ((tmuxWindow?.panes?.size ?: 0) > 1) {
+                            val tmuxPanes = tmuxWindow?.panes
+                            if (tmuxPanes != null && tmuxPanes.size > 1) {
                                 PaneDotsIndicator(
-                                    count = tmuxWindow!!.panes.size,
-                                    selectedIndex = tmuxWindow.panes
+                                    count = tmuxPanes.size,
+                                    selectedIndex = tmuxPanes
                                         .indexOfFirst { it.id == paneTerminal.paneId }
                                         .coerceAtLeast(0),
                                     modifier = Modifier

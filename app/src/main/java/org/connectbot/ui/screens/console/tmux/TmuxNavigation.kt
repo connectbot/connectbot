@@ -226,14 +226,16 @@ fun Modifier.tmuxSwipeNavigation(
     onSwipePane: (Int) -> Unit,
     onSwipeWindow: (Int) -> Unit,
     onInteraction: () -> Unit,
+    /** Device density (LocalDensity.current.density) for exact edge-zone pixels. */
+    density: Float,
     edgeWidthDp: Float = EDGE_ZONE_DP,
 ): Modifier = this
     .systemGestureExclusion { coordinates ->
-        Rect(0f, 0f, edgeWidthDp * EDGE_DENSITY_APPROX, coordinates.size.height.toFloat())
+        Rect(0f, 0f, edgeWidthDp * density, coordinates.size.height.toFloat())
     }
     .systemGestureExclusion { coordinates ->
         Rect(
-            coordinates.size.width - edgeWidthDp * EDGE_DENSITY_APPROX,
+            coordinates.size.width - edgeWidthDp * density,
             0f,
             coordinates.size.width.toFloat(),
             coordinates.size.height.toFloat(),
@@ -295,6 +297,3 @@ fun Modifier.tmuxSwipeNavigation(
     }
 
 private const val EDGE_ZONE_DP = 24f
-
-/** systemGestureExclusion's lambda has no density receiver; 3x covers xxhdpi. */
-private const val EDGE_DENSITY_APPROX = 3f

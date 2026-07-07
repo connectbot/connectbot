@@ -122,6 +122,9 @@ class TmuxSessionManager(
     private val clientJobs = java.util.concurrent.ConcurrentHashMap<String, List<Job>>()
     private val clientsMutex = Mutex()
 
+    /** Sessions mid-attach; guarded by [clientsMutex] to bar duplicate attaches. */
+    private val attachingSessions = mutableSetOf<String>()
+
     /** Where to reattach after the transport comes back. */
     @Volatile
     private var pendingReattach: TmuxTarget? = null
@@ -290,8 +293,8 @@ class TmuxSessionManager(
         data class Flags(val bell: Boolean, val activity: Boolean, val name: String)
         val flagsByWindow = mutableMapOf<Pair<String, String>, Flags>()
         listing.lineSequence().forEach { line ->
-            val parts = line.trimEnd().split('	')
-            if (parts.size < 5 || !parts[0].startsWith('$') || !parts[1].startsWith('@')) return@forEach
+            val parts = line.trimEnd().split('\t')
+            if (parts.size < 5 || !TmuxIds.isSession(parts[0]) || !TmuxIds.isWindow(parts[1])) return@forEach
             flagsByWindow[parts[0] to parts[1]] =
                 Flags(bell = parts[2] == "1", activity = parts[3] == "1", name = parts[4])
         }
@@ -343,7 +346,7 @@ class TmuxSessionManager(
 
     private fun parseSessionLine(line: String): TmuxSessionInfo? {
         val parts = line.trimEnd().split('\t')
-        if (parts.size < 3 || !parts[0].startsWith('$')) return null
+        if (parts.size < 3 || !TmuxIds.isSession(parts[0])) return null
         return TmuxSessionInfo(
             id = parts[0],
             name = parts[1],
@@ -370,8 +373,18 @@ class TmuxSessionManager(
      */
     suspend fun attach(sessionId: String, target: TmuxTarget? = null) {
         clientsMutex.withLock {
-            if (clients.containsKey(sessionId)) return
+            // A concurrent attach may be past the containsKey check but not
+            // yet registered in clients; the attaching set closes that gap.
+            if (clients.containsKey(sessionId) || !attachingSessions.add(sessionId)) return
         }
+        try {
+            doAttach(sessionId, target)
+        } finally {
+            clientsMutex.withLock { attachingSessions.remove(sessionId) }
+        }
+    }
+
+    private suspend fun doAttach(sessionId: String, target: TmuxTarget?) {
         val session = _state.value.session(sessionId) ?: throw IOException("unknown tmux session $sessionId")
         mutateSession(sessionId) { it.copy(attachState = TmuxAttachState.ATTACHING) }
 
@@ -486,7 +499,7 @@ class TmuxSessionManager(
 
         val windows = windowsReply.lines.mapNotNull { line ->
             val parts = line.split('\t')
-            if (parts.size < 5 || !parts[0].startsWith('@')) return@mapNotNull null
+            if (parts.size < 5 || !TmuxIds.isWindow(parts[0])) return@mapNotNull null
             val panes = panesByWindow[parts[0]].orEmpty()
             TmuxWindow(
                 id = parts[0],
@@ -510,7 +523,7 @@ class TmuxSessionManager(
 
     private fun parsePaneLine(line: String): Pair<String, TmuxPaneRef>? {
         val parts = line.split('\t')
-        if (parts.size < 8 || !parts[0].startsWith('@') || !parts[1].startsWith('%')) return null
+        if (parts.size < 8 || !TmuxIds.isWindow(parts[0]) || !TmuxIds.isPane(parts[1])) return null
         return parts[0] to TmuxPaneRef(
             id = parts[1],
             index = parts[2].toIntOrNull() ?: 0,
@@ -669,13 +682,16 @@ class TmuxSessionManager(
                 paneOutputSink?.invoke(sessionId, notification.paneId, notification.bytes)
             }
 
+            // Refreshes issue commands whose replies arrive on this same
+            // channel: never await them from the notification collector, or
+            // a full buffer would deadlock the reader against the reply.
             is TmuxNotification.SessionsChanged,
             is TmuxNotification.UnlinkedWindowAdd,
-            -> if (transportUp) refreshSessions()
+            -> if (transportUp) scope.launch(ioDispatcher) { refreshSessions() }
 
             is TmuxNotification.WindowAdd -> {
                 mutateState { reduceSession(it, sessionId, notification) }
-                refreshWindows(sessionId)
+                scope.launch(ioDispatcher) { refreshWindows(sessionId) }
             }
 
             is TmuxNotification.LayoutChange -> {

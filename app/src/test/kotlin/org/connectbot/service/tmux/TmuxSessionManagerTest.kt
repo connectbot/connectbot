@@ -24,6 +24,7 @@ import java.io.OutputStream
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
@@ -377,6 +378,32 @@ class TmuxSessionManagerTest {
 
         assertThat(factory.controlChannels.single().commands())
             .contains("refresh-client -C 52,30")
+    }
+
+    @Test
+    fun `concurrent attaches open a single control channel`() = runBlocking<Unit> {
+        connectAndAwaitReady()
+
+        val attempts = (1..8).map {
+            async { runCatching { manager.attach("\$0") } }
+        }
+        withTimeout(5_000) { attempts.forEach { it.await() } }
+        // Late duplicate after fully attached is also a no-op.
+        withTimeout(5_000) { manager.attach("\$0") }
+
+        assertThat(factory.controlChannels).hasSize(1)
+        assertThat(manager.state.value.session("\$0")!!.attachState)
+            .isEqualTo(TmuxAttachState.ATTACHED)
+    }
+
+    @Test
+    fun `sessions with hostile ids are dropped at discovery`() {
+        factory.listResponse =
+            "\$0\tmain\t0\n" +
+                "\$1'; rm -rf ~'\tevil\t0\n" +
+                "@2\tweird\t0\n"
+        val state = connectAndAwaitReady()
+        assertThat(state.sessions.map { it.id }).containsExactly("\$0")
     }
 
     @Test

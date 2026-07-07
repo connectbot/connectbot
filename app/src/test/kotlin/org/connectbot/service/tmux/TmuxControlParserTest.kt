@@ -190,6 +190,36 @@ class TmuxControlParserTest {
     }
 
     @Test
+    fun `malformed server ids degrade to Unknown instead of flowing into commands`() {
+        // Ids are interpolated into shell/control commands; anything that is
+        // not exactly $n/@n/%n must be rejected (hostile-server hardening).
+        val hostile = listOf(
+            "%window-add @1'; rm -rf ~'",
+            "%window-add not-a-window",
+            "%window-close @",
+            "%window-renamed @1x name",
+            "%session-changed \$1;kill-server name",
+            "%session-window-changed \$1 @2'",
+            "%window-pane-changed @1 %2b",
+            "%pause %1'; detach'",
+            "%continue %-1",
+            "%pane-mode-changed %1 extra",
+            "%output %1x data",
+        )
+        hostile.forEach { line ->
+            assertThat(notificationOf(line))
+                .describedAs(line)
+                .isInstanceOf(TmuxNotification.Unknown::class.java)
+        }
+    }
+
+    @Test
+    fun `session renamed with hostile id treats whole rest as name`() {
+        assertThat(notificationOf("%session-renamed \$1' evil"))
+            .isEqualTo(TmuxNotification.SessionRenamed(null, "\$1' evil"))
+    }
+
+    @Test
     fun `unknown notifications are preserved not crashed on`() {
         assertThat(notificationOf("%future-thing a b c"))
             .isEqualTo(TmuxNotification.Unknown("%future-thing a b c"))

@@ -78,6 +78,22 @@ class TmuxStateTest {
         assertThat(TmuxTarget.decode("")).isNull()
         assertThat(TmuxTarget.decode("$1|@3")).isNull()
         assertThat(TmuxTarget.decode("a|b|c|d")).isNull()
+        // Prefix alone is not enough: ids must be strictly numeric.
+        assertThat(TmuxTarget.decode("\$1'|@3|%7|name")).isNull()
+        assertThat(TmuxTarget.decode("\$1|@3x|%7|name")).isNull()
+        assertThat(TmuxTarget.decode("\$1|@3|%7; kill|name")).isNull()
+    }
+
+    @Test
+    fun `id validators accept only canonical forms`() {
+        assertThat(TmuxIds.isSession("\$0")).isTrue()
+        assertThat(TmuxIds.isWindow("@12")).isTrue()
+        assertThat(TmuxIds.isPane("%3")).isTrue()
+        listOf("\$", "\$1 ", "\$1'", "\$-1", "@1;x", "%1\n", "'@1'", "%%1").forEach {
+            assertThat(TmuxIds.isSession(it)).describedAs(it).isFalse()
+            assertThat(TmuxIds.isWindow(it)).describedAs(it).isFalse()
+            assertThat(TmuxIds.isPane(it)).describedAs(it).isFalse()
+        }
     }
 
     // ===== Reducer =====

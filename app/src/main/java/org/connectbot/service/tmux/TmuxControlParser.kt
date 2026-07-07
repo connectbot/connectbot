@@ -81,34 +81,45 @@ class TmuxControlParser {
         val word = if (space == -1) line else line.substring(0, space)
         val rest = if (space == -1) "" else line.substring(space + 1)
 
+        // Ids are validated strictly (TmuxIds): they flow into shell and
+        // control-mode commands, so malformed ones degrade to Unknown.
         return when (word) {
             "%output" -> parseOutput(rest) ?: TmuxNotification.Unknown(line)
             "%extended-output" -> parseExtendedOutput(rest) ?: TmuxNotification.Unknown(line)
-            "%window-add" -> TmuxNotification.WindowAdd(rest)
-            "%window-close" -> TmuxNotification.WindowClose(rest)
-            "%window-renamed" -> splitIdAndText(rest)?.let { (id, name) ->
+            "%window-add" -> windowIdOrNull(rest)?.let { TmuxNotification.WindowAdd(it) }
+                ?: TmuxNotification.Unknown(line)
+            "%window-close" -> windowIdOrNull(rest)?.let { TmuxNotification.WindowClose(it) }
+                ?: TmuxNotification.Unknown(line)
+            "%window-renamed" -> splitIdAndText(rest)?.takeIf { TmuxIds.isWindow(it.first) }?.let { (id, name) ->
                 TmuxNotification.WindowRenamed(id, name)
             } ?: TmuxNotification.Unknown(line)
-            "%window-pane-changed" -> splitIdAndText(rest)?.let { (windowId, paneId) ->
-                TmuxNotification.WindowPaneChanged(windowId, paneId)
-            } ?: TmuxNotification.Unknown(line)
+            "%window-pane-changed" -> splitIdAndText(rest)
+                ?.takeIf { TmuxIds.isWindow(it.first) && TmuxIds.isPane(it.second) }
+                ?.let { (windowId, paneId) -> TmuxNotification.WindowPaneChanged(windowId, paneId) }
+                ?: TmuxNotification.Unknown(line)
             "%layout-change" -> parseLayoutChange(rest) ?: TmuxNotification.Unknown(line)
-            "%session-changed" -> splitIdAndText(rest)?.let { (id, name) ->
+            "%session-changed" -> splitIdAndText(rest)?.takeIf { TmuxIds.isSession(it.first) }?.let { (id, name) ->
                 TmuxNotification.SessionChanged(id, name)
             } ?: TmuxNotification.Unknown(line)
             "%session-renamed" -> parseSessionRenamed(rest)
             "%sessions-changed" -> TmuxNotification.SessionsChanged
-            "%session-window-changed" -> splitIdAndText(rest)?.let { (sessionId, windowId) ->
-                TmuxNotification.SessionWindowChanged(sessionId, windowId)
-            } ?: TmuxNotification.Unknown(line)
-            "%unlinked-window-add" -> TmuxNotification.UnlinkedWindowAdd(rest)
-            "%unlinked-window-close" -> TmuxNotification.UnlinkedWindowClose(rest)
-            "%unlinked-window-renamed" -> splitIdAndText(rest)?.let { (id, name) ->
+            "%session-window-changed" -> splitIdAndText(rest)
+                ?.takeIf { TmuxIds.isSession(it.first) && TmuxIds.isWindow(it.second) }
+                ?.let { (sessionId, windowId) -> TmuxNotification.SessionWindowChanged(sessionId, windowId) }
+                ?: TmuxNotification.Unknown(line)
+            "%unlinked-window-add" -> windowIdOrNull(rest)?.let { TmuxNotification.UnlinkedWindowAdd(it) }
+                ?: TmuxNotification.Unknown(line)
+            "%unlinked-window-close" -> windowIdOrNull(rest)?.let { TmuxNotification.UnlinkedWindowClose(it) }
+                ?: TmuxNotification.Unknown(line)
+            "%unlinked-window-renamed" -> splitIdAndText(rest)?.takeIf { TmuxIds.isWindow(it.first) }?.let { (id, name) ->
                 TmuxNotification.UnlinkedWindowRenamed(id, name)
             } ?: TmuxNotification.Unknown(line)
-            "%pane-mode-changed" -> TmuxNotification.PaneModeChanged(rest)
-            "%pause" -> TmuxNotification.Pause(rest)
-            "%continue" -> TmuxNotification.Continue(rest)
+            "%pane-mode-changed" -> paneIdOrNull(rest)?.let { TmuxNotification.PaneModeChanged(it) }
+                ?: TmuxNotification.Unknown(line)
+            "%pause" -> paneIdOrNull(rest)?.let { TmuxNotification.Pause(it) }
+                ?: TmuxNotification.Unknown(line)
+            "%continue" -> paneIdOrNull(rest)?.let { TmuxNotification.Continue(it) }
+                ?: TmuxNotification.Unknown(line)
             "%client-detached" -> TmuxNotification.ClientDetached(rest)
             "%client-session-changed" -> parseClientSessionChanged(rest) ?: TmuxNotification.Unknown(line)
             "%exit" -> TmuxNotification.Exit(rest.ifEmpty { null })
@@ -120,16 +131,20 @@ class TmuxControlParser {
 
     private fun parseOutput(rest: String): TmuxNotification.Output? {
         val (paneId, value) = splitIdAndText(rest) ?: return null
-        if (!paneId.startsWith('%')) return null
+        if (!TmuxIds.isPane(paneId)) return null
         return TmuxNotification.Output(paneId, unescapeControlBytes(value))
     }
+
+    private fun windowIdOrNull(value: String): String? = value.takeIf { TmuxIds.isWindow(it) }
+
+    private fun paneIdOrNull(value: String): String? = value.takeIf { TmuxIds.isPane(it) }
 
     /** `%pane age ... : value` — future-proofed by anchoring on the first " : ". */
     private fun parseExtendedOutput(rest: String): TmuxNotification.Output? {
         val paneEnd = rest.indexOf(' ')
         if (paneEnd == -1) return null
         val paneId = rest.substring(0, paneEnd)
-        if (!paneId.startsWith('%')) return null
+        if (!TmuxIds.isPane(paneId)) return null
         val separator = rest.indexOf(" : ", startIndex = paneEnd)
         if (separator == -1) return null
         return TmuxNotification.Output(paneId, unescapeControlBytes(rest.substring(separator + 3)))
@@ -137,7 +152,7 @@ class TmuxControlParser {
 
     private fun parseLayoutChange(rest: String): TmuxNotification.LayoutChange? {
         val parts = rest.split(' ')
-        if (parts.size < 2) return null
+        if (parts.size < 2 || !TmuxIds.isWindow(parts[0])) return null
         return TmuxNotification.LayoutChange(
             windowId = parts[0],
             layout = parts[1],
@@ -149,7 +164,7 @@ class TmuxControlParser {
     private fun parseSessionRenamed(rest: String): TmuxNotification {
         // tmux ≥3.0 sends "$id name"; older versions send just "name".
         val (first, remainder) = splitIdAndText(rest) ?: return TmuxNotification.SessionRenamed(null, rest)
-        return if (first.startsWith('$')) {
+        return if (TmuxIds.isSession(first)) {
             TmuxNotification.SessionRenamed(first, remainder)
         } else {
             TmuxNotification.SessionRenamed(null, rest)
@@ -159,6 +174,7 @@ class TmuxControlParser {
     private fun parseClientSessionChanged(rest: String): TmuxNotification.ClientSessionChanged? {
         val (client, remainder) = splitIdAndText(rest) ?: return null
         val (sessionId, name) = splitIdAndText(remainder) ?: return null
+        if (!TmuxIds.isSession(sessionId)) return null
         return TmuxNotification.ClientSessionChanged(client, sessionId, name)
     }
 

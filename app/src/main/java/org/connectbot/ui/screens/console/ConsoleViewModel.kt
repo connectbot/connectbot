@@ -465,26 +465,30 @@ class ConsoleViewModel @Inject constructor(
      * backfilling on first view) into [ConsoleUiState.currentPaneTerminal].
      */
     private fun refreshPaneTerminal() {
-        val tab = _uiState.value.currentTab
-        if (tab !is ConsoleTab.TmuxSession) {
-            if (_uiState.value.currentPaneTerminal != null) {
-                _uiState.update { it.copy(currentPaneTerminal = null) }
+        // Callers run on arbitrary dispatchers; paneTerminalJob bookkeeping is
+        // serialized on the main dispatcher so cancellations are never lost.
+        viewModelScope.launch(dispatchers.main) {
+            val tab = _uiState.value.currentTab
+            if (tab !is ConsoleTab.TmuxSession) {
+                if (_uiState.value.currentPaneTerminal != null) {
+                    _uiState.update { it.copy(currentPaneTerminal = null) }
+                }
+                return@launch
             }
-            return
-        }
-        val tmux = tab.bridge.tmux ?: return
-        paneTerminalJob?.cancel()
-        paneTerminalJob = viewModelScope.launch(dispatchers.io) {
-            val target = tmux.currentTarget.value
-                ?.takeIf { it.sessionId == tab.sessionId }
-                ?: tmux.selectSession(tab.sessionId)
-                ?: return@launch
-            val terminal = runCatching { tmux.acquirePaneTerminal(target) }.getOrNull()
-            _uiState.update { state ->
-                if (state.currentTab?.key == tab.key) {
-                    state.copy(currentPaneTerminal = terminal)
-                } else {
-                    state
+            val tmux = tab.bridge.tmux ?: return@launch
+            paneTerminalJob?.cancel()
+            paneTerminalJob = launch(dispatchers.io) {
+                val target = tmux.currentTarget.value
+                    ?.takeIf { it.sessionId == tab.sessionId }
+                    ?: tmux.selectSession(tab.sessionId)
+                    ?: return@launch
+                val terminal = runCatching { tmux.acquirePaneTerminal(target) }.getOrNull()
+                _uiState.update { state ->
+                    if (state.currentTab?.key == tab.key) {
+                        state.copy(currentPaneTerminal = terminal)
+                    } else {
+                        state
+                    }
                 }
             }
         }

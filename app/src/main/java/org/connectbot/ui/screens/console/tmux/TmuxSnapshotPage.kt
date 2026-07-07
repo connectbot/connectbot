@@ -25,8 +25,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -64,13 +64,12 @@ fun TmuxSnapshotPage(
             .testTag("tmux_snapshot_page"),
     ) {
         if (!snapshot.isNullOrEmpty()) {
-            Column(
+            LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .verticalScroll(rememberScrollState())
                     .padding(8.dp),
             ) {
-                snapshot.forEach { line ->
+                items(snapshot) { line ->
                     Text(
                         text = line,
                         fontFamily = FontFamily.Monospace,

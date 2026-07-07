@@ -151,6 +151,24 @@ data class TmuxVersion(val major: Int, val minor: Int, val raw: String) {
     }
 }
 
+/**
+ * Strict validators for server-supplied tmux ids. Ids are interpolated into
+ * shell and control-mode commands, so anything that is not exactly `$n`,
+ * `@n`, or `%n` is rejected at every parse boundary — a hostile server must
+ * not be able to smuggle shell or tmux syntax through an "id".
+ */
+object TmuxIds {
+    private val SESSION = Regex("""\$\d+""")
+    private val WINDOW = Regex("""@\d+""")
+    private val PANE = Regex("""%\d+""")
+
+    fun isSession(id: String): Boolean = SESSION.matches(id)
+
+    fun isWindow(id: String): Boolean = WINDOW.matches(id)
+
+    fun isPane(id: String): Boolean = PANE.matches(id)
+}
+
 /** A window-level alert discovered by flag polling. */
 data class TmuxAlert(
     val sessionId: String,
@@ -174,7 +192,7 @@ data class TmuxTarget(
             if (value.isNullOrEmpty()) return null
             val parts = value.split('|', limit = 4)
             if (parts.size < 4) return null
-            if (!parts[0].startsWith('$') || !parts[1].startsWith('@') || !parts[2].startsWith('%')) return null
+            if (!TmuxIds.isSession(parts[0]) || !TmuxIds.isWindow(parts[1]) || !TmuxIds.isPane(parts[2])) return null
             return TmuxTarget(parts[0], parts[1], parts[2], parts[3])
         }
     }
