@@ -38,6 +38,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -64,6 +65,7 @@ import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -114,6 +116,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -127,6 +130,8 @@ import androidx.core.content.edit
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -446,6 +451,20 @@ private fun Modifier.pageUpDownGesture(
     }
 }
 
+/**
+ * Human-readable explanation for why the session ended, shown on the
+ * disconnect overlay. Returns null for reasons that need no explanation
+ * (the user asked for the disconnect, or the cause is unknown).
+ */
+@Composable
+private fun disconnectReasonText(reason: DisconnectReason): String? = when (reason) {
+    DisconnectReason.REMOTE_EOF -> stringResource(R.string.disconnect_reason_remote_eof)
+    DisconnectReason.IO_ERROR -> stringResource(R.string.disconnect_reason_io_error)
+    DisconnectReason.NETWORK_LOST -> stringResource(R.string.disconnect_reason_network_lost)
+    DisconnectReason.AUTH_FAIL -> stringResource(R.string.disconnect_reason_auth_fail)
+    DisconnectReason.USER_REQUESTED, DisconnectReason.UNKNOWN -> null
+}
+
 @Composable
 private fun ConsoleTerminalPage(
     bridge: TerminalBridge,
@@ -566,41 +585,113 @@ private fun ConsoleTerminalPage(
                 modifier = Modifier.align(Alignment.BottomCenter),
             )
 
-            AnimatedVisibility(
-                visible = bridge.isDisconnected && !bridge.isConnecting && promptState == null,
-                enter = slideInVertically(initialOffsetY = { it }),
-                exit = slideOutVertically(targetOffsetY = { it }),
+            ConnectionStatusOverlays(
+                isConnecting = bridge.isConnecting,
+                isDisconnected = bridge.isDisconnected,
+                hasPrompt = promptState != null,
+                hostNickname = bridge.host.nickname,
+                reconnectAttempts = bridge.autoReconnectAttempts,
+                disconnectReason = bridge.disconnectReason,
+                onClose = onDisconnectRequest,
+                onReconnect = onReconnect,
                 modifier = Modifier.align(Alignment.BottomCenter),
+            )
+        }
+    }
+}
+
+/**
+ * Bottom-anchored overlays that keep the user informed about the session's
+ * connection state: a progress banner while (re)connecting and a disconnect
+ * banner with the reason plus close/reconnect actions once the session has
+ * dropped. Returning to a session must never show a silent blank terminal.
+ */
+@Composable
+internal fun ConnectionStatusOverlays(
+    isConnecting: Boolean,
+    isDisconnected: Boolean,
+    hasPrompt: Boolean,
+    hostNickname: String,
+    reconnectAttempts: Int,
+    disconnectReason: DisconnectReason,
+    onClose: () -> Unit,
+    onReconnect: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Box(modifier = modifier) {
+        AnimatedVisibility(
+            visible = isConnecting && !hasPrompt,
+            enter = slideInVertically(initialOffsetY = { it }),
+            exit = slideOutVertically(targetOffsetY = { it }),
+            modifier = Modifier.align(Alignment.BottomCenter),
+        ) {
+            val terminalColors = MaterialTheme.colorScheme.terminal
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(terminalColors.overlayBackground)
+                    .padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                val terminalColors = MaterialTheme.colorScheme.terminal
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(terminalColors.overlayBackground)
-                        .padding(16.dp),
-                ) {
+                CircularProgressIndicator(
+                    modifier = Modifier.size(20.dp),
+                    strokeWidth = 2.dp,
+                )
+                Text(
+                    text = if (reconnectAttempts > 0) {
+                        stringResource(R.string.console_reconnecting_status, hostNickname, reconnectAttempts)
+                    } else {
+                        stringResource(R.string.console_connecting_status, hostNickname)
+                    },
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = terminalColors.overlayText,
+                    modifier = Modifier.padding(start = 12.dp),
+                )
+            }
+        }
+
+        AnimatedVisibility(
+            visible = isDisconnected && !isConnecting && !hasPrompt,
+            enter = slideInVertically(initialOffsetY = { it }),
+            exit = slideOutVertically(targetOffsetY = { it }),
+            modifier = Modifier.align(Alignment.BottomCenter),
+        ) {
+            val terminalColors = MaterialTheme.colorScheme.terminal
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(terminalColors.overlayBackground)
+                    .padding(16.dp),
+            ) {
+                Text(
+                    text = stringResource(R.string.alert_disconnect_msg),
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = terminalColors.overlayText,
+                    modifier = Modifier.padding(bottom = 16.dp),
+                )
+                disconnectReasonText(disconnectReason)?.let { reasonText ->
                     Text(
-                        text = stringResource(R.string.alert_disconnect_msg),
-                        style = MaterialTheme.typography.bodyLarge,
+                        text = reasonText,
+                        style = MaterialTheme.typography.bodyMedium,
                         color = terminalColors.overlayText,
                         modifier = Modifier.padding(bottom = 16.dp),
                     )
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.End,
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.End,
+                ) {
+                    TextButton(onClick = onClose) {
+                        Text(
+                            stringResource(R.string.console_menu_close),
+                            color = terminalColors.overlayText,
+                        )
+                    }
+                    Button(
+                        onClick = onReconnect,
+                        modifier = Modifier.padding(start = 8.dp),
                     ) {
-                        TextButton(onClick = onDisconnectRequest) {
-                            Text(
-                                stringResource(R.string.console_menu_close),
-                                color = terminalColors.overlayText,
-                            )
-                        }
-                        Button(
-                            onClick = onReconnect,
-                            modifier = Modifier.padding(start = 8.dp),
-                        ) {
-                            Text(stringResource(R.string.console_menu_reconnect))
-                        }
+                        Text(stringResource(R.string.console_menu_reconnect))
                     }
                 }
             }
@@ -629,6 +720,21 @@ fun ConsoleScreen(
 
     LaunchedEffect(terminalManager) {
         terminalManager?.let { viewModel.setTerminalManager(it) }
+    }
+
+    // Reconnect a session that dropped in the background when the console
+    // comes back to the foreground, matching pre-rewrite behavior.
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                viewModel.onConsoleResumed()
+            }
+        }
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
     }
 
     // Read preferences

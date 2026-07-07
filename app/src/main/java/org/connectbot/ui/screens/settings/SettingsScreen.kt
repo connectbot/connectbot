@@ -171,6 +171,7 @@ fun SettingsScreen(
         onMemkeysChange = viewModel::updateMemkeys,
         onConnPersistChange = viewModel::updateConnPersist,
         onWifilockChange = viewModel::updateWifilock,
+        onSshKeepaliveIntervalChange = viewModel::updateSshKeepaliveInterval,
         onBackupkeysChange = viewModel::updateBackupkeys,
         onScrollbackChange = viewModel::updateScrollback,
         onAddCustomTerminalType = viewModel::addCustomTerminalType,
@@ -216,6 +217,7 @@ fun SettingsScreenContent(
     onMemkeysChange: (Boolean) -> Unit,
     onConnPersistChange: (Boolean) -> Unit,
     onWifilockChange: (Boolean) -> Unit,
+    onSshKeepaliveIntervalChange: (String) -> Unit,
     onBackupkeysChange: (Boolean) -> Unit,
     onScrollbackChange: (String) -> Unit,
     onAddCustomTerminalType: (String) -> Unit,
@@ -330,6 +332,25 @@ fun SettingsScreenContent(
                     summary = stringResource(R.string.pref_wifilock_summary),
                     checked = uiState.wifilock,
                     onCheckedChange = onWifilockChange,
+                )
+            }
+
+            item {
+                val keepaliveEntries = listOf(
+                    stringResource(R.string.list_ssh_keepalive_off) to "0",
+                    stringResource(R.string.list_ssh_keepalive_15s) to "15",
+                    stringResource(R.string.list_ssh_keepalive_30s) to "30",
+                    stringResource(R.string.list_ssh_keepalive_1m) to "60",
+                    stringResource(R.string.list_ssh_keepalive_2m) to "120",
+                    stringResource(R.string.list_ssh_keepalive_5m) to "300",
+                )
+                ListPreference(
+                    title = stringResource(R.string.pref_ssh_keepalive_title),
+                    summary = keepaliveEntries.firstOrNull { it.second == uiState.sshKeepaliveInterval }?.first
+                        ?: stringResource(R.string.pref_ssh_keepalive_summary),
+                    value = uiState.sshKeepaliveInterval,
+                    entries = keepaliveEntries,
+                    onValueChange = onSshKeepaliveIntervalChange,
                 )
             }
 
@@ -1581,6 +1602,7 @@ private fun SettingsScreenPreview() {
             onMemkeysChange = {},
             onConnPersistChange = {},
             onWifilockChange = {},
+            onSshKeepaliveIntervalChange = {},
             onBackupkeysChange = {},
             onScrollbackChange = {},
             onAddCustomTerminalType = {},

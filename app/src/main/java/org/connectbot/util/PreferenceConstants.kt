@@ -56,6 +56,14 @@ object PreferenceConstants {
 
     const val KEEP_ALIVE: String = "keepalive"
 
+    /**
+     * SSH keepalive probe interval in seconds ("0" = off). Named
+     * "sshKeepaliveInterval" because the literal "keepalive" above is
+     * already used for keeping the screen awake.
+     */
+    const val SSH_KEEPALIVE_INTERVAL: String = "sshKeepaliveInterval"
+    const val SSH_KEEPALIVE_INTERVAL_DEFAULT: String = "60"
+
     const val WIFI_LOCK: String = "wifilock"
 
     const val BUMPY_ARROWS: String = "bumpyarrows"

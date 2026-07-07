@@ -199,6 +199,24 @@ abstract class AbsTransport {
     open fun canTransferFiles(): Boolean = false
 
     /**
+     * Whether this transport supports liveness probes via [sendKeepalive].
+     * @return true when [sendKeepalive] performs a real probe
+     */
+    open fun supportsKeepalive(): Boolean = false
+
+    /**
+     * Sends a blocking request/response liveness probe over the established
+     * connection. Returns normally when the remote end replied; throws when
+     * the connection is unusable. Only valid when [supportsKeepalive]
+     * returns true and the transport is connected.
+     * @throws IOException when the connection is dead or the probe failed
+     */
+    @Throws(IOException::class)
+    open fun sendKeepalive() {
+        // do nothing
+    }
+
+    /**
      * Opens a new file-transfer channel over the established connection.
      * Only valid when [canTransferFiles] returns true and the transport is
      * connected and authenticated. Callers own the returned channel and must
