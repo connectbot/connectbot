@@ -28,6 +28,8 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.PortForward
+import org.connectbot.ui.components.PortForwardQuickToggleTestTags
 import org.connectbot.ui.screens.hostlist.ConnectionState
 import org.connectbot.ui.screens.hostlist.HostListScreen
 import org.connectbot.ui.screens.hostlist.HostListScreenContent
@@ -424,6 +426,107 @@ class HostListScreenTest {
             .assertIsNotEnabled()
     }
 
+    @Test
+    fun hostListScreenContent_portForwardChipShowsActiveCounts() {
+        val host = testHost(id = 5L, nickname = "tunnels", protocol = "ssh")
+
+        setHostListContent(
+            uiState = HostListUiState(
+                hosts = listOf(host),
+                connectionStates = mapOf(host.id to ConnectionState.CONNECTED),
+                portForwards = mapOf(
+                    host.id to listOf(
+                        testPortForward(id = 1L, hostId = host.id, enabled = true),
+                        testPortForward(id = 2L, hostId = host.id),
+                    ),
+                ),
+            ),
+        )
+
+        composeTestRule
+            .onNodeWithTag(HostListTestTags.itemPortForwardChip(host.id), useUnmergedTree = true)
+            .assertIsDisplayed()
+        composeTestRule
+            .onNodeWithText(composeTestRule.activity.getString(R.string.portforward_chip_active, 1, 2))
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun hostListScreenContent_chipHiddenWhenNoPortForwards() {
+        val host = testHost(id = 6L, nickname = "plain", protocol = "ssh")
+
+        setHostListContent(
+            uiState = HostListUiState(hosts = listOf(host)),
+        )
+
+        composeTestRule
+            .onNodeWithTag(HostListTestTags.itemPortForwardChip(host.id), useUnmergedTree = true)
+            .assertDoesNotExist()
+    }
+
+    @Test
+    fun hostListScreenContent_chipOpensQuickToggleSheetAndTogglesForward() {
+        var toggledForward: PortForward? = null
+        var toggledEnable: Boolean? = null
+        val host = testHost(id = 7L, nickname = "sheet-host", protocol = "ssh")
+        val forward = testPortForward(id = 11L, hostId = host.id, nickname = "MySQL Tunnel")
+
+        setHostListContent(
+            uiState = HostListUiState(
+                hosts = listOf(host),
+                connectionStates = mapOf(host.id to ConnectionState.CONNECTED),
+                portForwards = mapOf(host.id to listOf(forward)),
+            ),
+            onTogglePortForward = { pf, enable ->
+                toggledForward = pf
+                toggledEnable = enable
+            },
+        )
+
+        composeTestRule
+            .onNodeWithTag(HostListTestTags.itemPortForwardChip(host.id), useUnmergedTree = true)
+            .performClick()
+        composeTestRule
+            .onNodeWithText("MySQL Tunnel")
+            .assertIsDisplayed()
+
+        composeTestRule
+            .onNodeWithTag(PortForwardQuickToggleTestTags.switchRow(forward.id), useUnmergedTree = true)
+            .performClick()
+        assertTrue(toggledForward == forward)
+        assertTrue(toggledEnable == true)
+    }
+
+    @Test
+    fun hostListScreenContent_sheetSwitchDisabledAndManageNavigatesWhenDisconnected() {
+        var managedHost: Host? = null
+        val host = testHost(id = 8L, nickname = "offline-tunnels", protocol = "ssh")
+        val forward = testPortForward(id = 12L, hostId = host.id)
+
+        setHostListContent(
+            uiState = HostListUiState(
+                hosts = listOf(host),
+                portForwards = mapOf(host.id to listOf(forward)),
+            ),
+            onNavigateToPortForwards = { managedHost = it },
+        )
+
+        composeTestRule
+            .onNodeWithTag(HostListTestTags.itemPortForwardChip(host.id), useUnmergedTree = true)
+            .performClick()
+        composeTestRule
+            .onNodeWithText(composeTestRule.activity.getString(R.string.portforward_quick_connect_hint))
+            .assertIsDisplayed()
+        composeTestRule
+            .onNodeWithTag(PortForwardQuickToggleTestTags.switchRow(forward.id), useUnmergedTree = true)
+            .assertIsNotEnabled()
+
+        composeTestRule
+            .onNodeWithTag(PortForwardQuickToggleTestTags.MANAGE_BUTTON, useUnmergedTree = true)
+            .performClick()
+        assertTrue(managedHost == host)
+    }
+
     private fun openTopMenu() {
         composeTestRule
             .onNodeWithContentDescription(composeTestRule.activity.getString(R.string.button_more_options))
@@ -453,6 +556,7 @@ class HostListScreenTest {
         onForgetHostKeys: (Host) -> Unit = {},
         onDisconnectHost: (Host) -> Unit = {},
         onDisconnectAll: () -> Unit = {},
+        onTogglePortForward: (PortForward, Boolean) -> Unit = { _, _ -> },
         onExportHosts: () -> Unit = {},
         onImportHosts: () -> Unit = {},
     ) {
@@ -475,12 +579,29 @@ class HostListScreenTest {
                     onForgetHostKeys = onForgetHostKeys,
                     onDisconnectHost = onDisconnectHost,
                     onDisconnectAll = onDisconnectAll,
+                    onTogglePortForward = onTogglePortForward,
                     onExportHosts = onExportHosts,
                     onImportHosts = onImportHosts,
                 )
             }
         }
     }
+
+    private fun testPortForward(
+        id: Long,
+        hostId: Long,
+        nickname: String = "tunnel-$id",
+        enabled: Boolean = false,
+    ): PortForward = PortForward(
+        id = id,
+        hostId = hostId,
+        nickname = nickname,
+        type = "local",
+        sourceAddr = "localhost",
+        sourcePort = 8080,
+        destAddr = "localhost",
+        destPort = 80,
+    ).apply { setEnabled(enabled) }
 
     private fun testHost(
         id: Long,

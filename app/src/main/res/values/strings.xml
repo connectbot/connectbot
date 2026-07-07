@@ -1173,6 +1173,17 @@
 	<string name="portforward_enabled">Port forward enabled</string>
 	<!-- Content description for disabled port forward visual indicator -->
 	<string name="portforward_disabled">Port forward disabled</string>
+	<!-- Chip label on host list showing active vs. configured tunnel counts for a connected host -->
+	<string name="portforward_chip_active">%1$d/%2$d tunnels active</string>
+	<!-- Chip label on host list showing configured tunnel count for a disconnected host -->
+	<plurals name="portforward_chip_count">
+		<item quantity="one">%d tunnel</item>
+		<item quantity="other">%d tunnels</item>
+	</plurals>
+	<!-- Hint shown in the quick-toggle sheet when the host has no live connection -->
+	<string name="portforward_quick_connect_hint">Connect to this host to toggle port forwards.</string>
+	<!-- Button in the quick-toggle sheet that opens the full port forward editor -->
+	<string name="portforward_quick_manage">Manage</string>
 
 	<!-- Label for spinner which allows user to select SSH/Telnet/Local. -->
 	<string name="protocol_spinner_label">Protocol</string>

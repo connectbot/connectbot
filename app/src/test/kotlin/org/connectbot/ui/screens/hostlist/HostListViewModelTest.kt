@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,12 +30,17 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.PortForward
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.ServiceError
+import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
+import org.connectbot.transport.AbsTransport
 import org.connectbot.util.PreferenceConstants
 import org.junit.After
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
@@ -63,6 +68,7 @@ class HostListViewModelTest {
     private lateinit var editor: SharedPreferences.Editor
     private lateinit var hostsFlow: MutableStateFlow<List<Host>>
     private lateinit var hostsSortedByColorFlow: MutableStateFlow<List<Host>>
+    private lateinit var portForwardsFlow: MutableStateFlow<List<PortForward>>
 
     @Before
     fun setUp() {
@@ -74,9 +80,11 @@ class HostListViewModelTest {
         editor = mock()
         hostsFlow = MutableStateFlow(emptyList())
         hostsSortedByColorFlow = MutableStateFlow(emptyList())
+        portForwardsFlow = MutableStateFlow(emptyList())
 
         whenever(repository.observeHosts()).thenReturn(hostsFlow)
         whenever(repository.observeHostsSortedByColor()).thenReturn(hostsSortedByColorFlow)
+        whenever(repository.observeAllPortForwards()).thenReturn(portForwardsFlow)
         whenever(sharedPreferences.edit()).thenReturn(editor)
         whenever(editor.putBoolean(any(), any())).thenReturn(editor)
     }
@@ -92,15 +100,43 @@ class HostListViewModelTest {
         return HostListViewModel(context, repository, dispatchers, sharedPreferences)
     }
 
-    private fun createTerminalManager(): TerminalManager {
+    private fun createTerminalManager(bridges: List<TerminalBridge> = emptyList()): TerminalManager {
         val terminalManager = mock<TerminalManager>()
-        whenever(terminalManager.bridgesFlow).thenReturn(MutableStateFlow(emptyList()))
+        whenever(terminalManager.bridgesFlow).thenReturn(MutableStateFlow(bridges))
         whenever(terminalManager.disconnectedFlow).thenReturn(MutableStateFlow(emptyList()))
         whenever(terminalManager.hostStatusChangedFlow).thenReturn(MutableSharedFlow())
         whenever(terminalManager.serviceErrors).thenReturn(MutableSharedFlow<ServiceError>())
         whenever(terminalManager.pendingStartupKeyPrompts).thenReturn(MutableStateFlow(emptyList()))
         return terminalManager
     }
+
+    private fun createMockBridge(hostId: Long, portForwards: List<PortForward> = emptyList(), connected: Boolean = true): TerminalBridge {
+        val bridge = mock<TerminalBridge>()
+        val host = Host(id = hostId, nickname = "test-host", protocol = "ssh", username = "user", hostname = "example.com", port = 22)
+        val transport = mock<AbsTransport>()
+
+        whenever(bridge.host).thenReturn(host)
+        whenever(bridge.transport).thenReturn(transport)
+        whenever(transport.isConnected()).thenReturn(connected)
+        whenever(bridge.portForwards).thenReturn(portForwards)
+
+        return bridge
+    }
+
+    private fun createTestPortForward(
+        id: Long = 1L,
+        hostId: Long = 42L,
+        nickname: String = "test-forward",
+    ): PortForward = PortForward(
+        id = id,
+        hostId = hostId,
+        nickname = nickname,
+        type = "local",
+        sourceAddr = "localhost",
+        sourcePort = 8080,
+        destAddr = "localhost",
+        destPort = 80,
+    )
 
     /**
      * Tests that sort order preference is loaded from SharedPreferences on initialization.
@@ -229,5 +265,105 @@ class HostListViewModelTest {
         val inOrder = inOrder(terminalManager, repository)
         inOrder.verify(terminalManager).disconnectHost(host.id)
         inOrder.verify(repository).deleteHost(host)
+    }
+
+    /**
+     * Tests that port forwards are grouped by host and marked disabled without a connection.
+     *
+     * Scenario: Two hosts have configured forwards but neither is connected.
+     * Expected: The uiState map contains both hosts' forwards, all disabled.
+     */
+    @Test
+    fun portForwards_groupedByHostAndDisabled_whenNoConnection() = runTest {
+        val viewModel = createViewModel()
+        viewModel.setTerminalManager(createTerminalManager())
+        portForwardsFlow.value = listOf(
+            createTestPortForward(id = 1L, hostId = 42L),
+            createTestPortForward(id = 2L, hostId = 42L, nickname = "second"),
+            createTestPortForward(id = 3L, hostId = 7L, nickname = "other-host"),
+        )
+        advanceUntilIdle()
+
+        val portForwards = viewModel.uiState.value.portForwards
+        assertEquals("Forwards should be grouped into two hosts", 2, portForwards.size)
+        assertEquals("Host 42 should have two forwards", 2, portForwards[42L]?.size)
+        assertEquals("Host 7 should have one forward", 1, portForwards[7L]?.size)
+        assertTrue(
+            "All forwards should be disabled without a connection",
+            portForwards.values.flatten().none { it.isEnabled() },
+        )
+    }
+
+    /**
+     * Tests that enabled state is read from the live bridge for connected hosts.
+     *
+     * Scenario: Host 42 is connected and one of its two forwards is enabled on the bridge.
+     * Expected: The uiState copies reflect the bridge's enabled flags.
+     */
+    @Test
+    fun portForwards_reflectBridgeEnabledState_whenConnected() = runTest {
+        val enabledForward = createTestPortForward(id = 1L, hostId = 42L).apply { setEnabled(true) }
+        val disabledForward = createTestPortForward(id = 2L, hostId = 42L, nickname = "second")
+        val bridge = createMockBridge(hostId = 42L, portForwards = listOf(enabledForward, disabledForward))
+
+        val viewModel = createViewModel()
+        viewModel.setTerminalManager(createTerminalManager(bridges = listOf(bridge)))
+        portForwardsFlow.value = listOf(
+            createTestPortForward(id = 1L, hostId = 42L),
+            createTestPortForward(id = 2L, hostId = 42L, nickname = "second"),
+        )
+        advanceUntilIdle()
+
+        val forwards = viewModel.uiState.value.portForwards[42L].orEmpty()
+        assertEquals(2, forwards.size)
+        assertTrue("Forward 1 should be enabled from bridge", forwards.first { it.id == 1L }.isEnabled())
+        assertFalse("Forward 2 should stay disabled", forwards.first { it.id == 2L }.isEnabled())
+    }
+
+    /**
+     * Tests that toggling a port forward enables it on the bridge and refreshes state.
+     *
+     * Scenario: Host 42 is connected with one disabled forward; user flips the toggle on.
+     * Expected: bridge.enablePortForward is called and uiState shows the forward enabled.
+     */
+    @Test
+    fun togglePortForward_enablesOnBridge_andRefreshesState() = runTest {
+        val bridgeForward = createTestPortForward(id = 1L, hostId = 42L)
+        val bridge = createMockBridge(hostId = 42L, portForwards = listOf(bridgeForward))
+        whenever(bridge.enablePortForward(bridgeForward)).thenAnswer {
+            bridgeForward.setEnabled(true)
+            true
+        }
+
+        val viewModel = createViewModel()
+        viewModel.setTerminalManager(createTerminalManager(bridges = listOf(bridge)))
+        portForwardsFlow.value = listOf(createTestPortForward(id = 1L, hostId = 42L))
+        advanceUntilIdle()
+
+        viewModel.togglePortForward(createTestPortForward(id = 1L, hostId = 42L), enable = true)
+        advanceUntilIdle()
+
+        verify(bridge).enablePortForward(bridgeForward)
+        val forwards = viewModel.uiState.value.portForwards[42L].orEmpty()
+        assertTrue("Forward should be enabled after toggle", forwards.first { it.id == 1L }.isEnabled())
+        assertNull("No error should be set", viewModel.uiState.value.error)
+    }
+
+    /**
+     * Tests that toggling without an active connection surfaces an error.
+     *
+     * Scenario: No bridge exists for the forward's host.
+     * Expected: uiState.error explains there is no active connection.
+     */
+    @Test
+    fun togglePortForward_setsError_whenNoActiveConnection() = runTest {
+        val viewModel = createViewModel()
+        viewModel.setTerminalManager(createTerminalManager())
+        advanceUntilIdle()
+
+        viewModel.togglePortForward(createTestPortForward(id = 1L, hostId = 42L), enable = true)
+        advanceUntilIdle()
+
+        assertEquals("No active connection for this host", viewModel.uiState.value.error)
     }
 }
