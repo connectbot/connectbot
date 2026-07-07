@@ -303,6 +303,7 @@ class SettingsScreenTest {
                     onBellVolumeChange = {},
                     onBellVibrateChange = {},
                     onBellNotificationChange = {},
+                    onSshKeepaliveIntervalChange = {},
                 )
             }
         }

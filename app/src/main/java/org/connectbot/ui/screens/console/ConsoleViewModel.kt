@@ -33,11 +33,13 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.service.DisconnectPolicy
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.terminal.ProgressState
 import org.connectbot.util.NotificationPermissionHelper
 import org.connectbot.util.PreferenceConstants
+import timber.log.Timber
 import javax.inject.Inject
 
 data class ConsoleUiState(
@@ -246,6 +248,8 @@ class ConsoleViewModel @Inject constructor(
                             handleInitialSelectionError("Failed to open connection: host not found")
                         }
                     }
+                } else {
+                    maybeReconnectOnOpen(existingBridge)
                 }
             } catch (e: Exception) {
                 handleInitialSelectionError(e.message ?: "Failed to create connection")
@@ -309,6 +313,32 @@ class ConsoleViewModel @Inject constructor(
      */
     fun reconnect(bridge: TerminalBridge) {
         terminalManager?.requestReconnect(bridge)
+        _uiState.update { it.copy(revision = it.revision + 1) }
+    }
+
+    /**
+     * Called when the console returns to the foreground so a session that
+     * dropped in the background reconnects without requiring the user to
+     * find the reconnect menu, matching pre-rewrite behavior.
+     */
+    fun onConsoleResumed() {
+        val state = _uiState.value
+        val bridge = state.bridges.getOrNull(state.currentBridgeIndex) ?: return
+        maybeReconnectOnOpen(bridge)
+    }
+
+    private fun maybeReconnectOnOpen(bridge: TerminalBridge) {
+        val shouldReconnect = DisconnectPolicy.shouldReconnectOnOpen(
+            isDisconnected = bridge.isDisconnected,
+            isConnecting = bridge.isConnecting,
+            awaitingClose = bridge.isAwaitingClose(),
+            reason = bridge.disconnectReason,
+        )
+        if (!shouldReconnect) {
+            return
+        }
+        Timber.i("Reconnecting ${bridge.host.nickname} on open")
+        terminalManager?.requestReconnect(bridge, userInitiated = true)
         _uiState.update { it.copy(revision = it.revision + 1) }
     }
 }

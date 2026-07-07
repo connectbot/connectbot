@@ -1179,6 +1179,16 @@ class SSH :
 
     override fun canTransferFiles(): Boolean = true
 
+    override fun supportsKeepalive(): Boolean = true
+
+    @Throws(IOException::class)
+    override fun sendKeepalive() {
+        // ping() sends an SSH global request and blocks until the server
+        // replies, so a normal return proves the connection is still alive.
+        val currentConnection = connection ?: throw IOException("Not connected")
+        currentConnection.ping()
+    }
+
     @Throws(IOException::class)
     override fun openSftpChannel(): SftpChannel {
         val currentConnection = connection ?: throw IOException("Not connected")

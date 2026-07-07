@@ -1003,6 +1003,19 @@ class TerminalManager :
     }
 
     /**
+     * Interval between connection liveness probes in milliseconds, or 0 when
+     * keepalive is disabled. Read at connect time, so changes apply to new
+     * connections.
+     */
+    fun keepaliveIntervalMs(): Long {
+        val seconds = prefs.getString(
+            PreferenceConstants.SSH_KEEPALIVE_INTERVAL,
+            PreferenceConstants.SSH_KEEPALIVE_INTERVAL_DEFAULT,
+        )?.toLongOrNull() ?: return 0L
+        return seconds.coerceAtLeast(0L) * 1000L
+    }
+
+    /**
      * Insert request into reconnect queue to be executed either immediately,
      * after a backoff delay, or later when connectivity is restored,
      * depending on whether we're currently connected and how many automatic

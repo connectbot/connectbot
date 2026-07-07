@@ -56,6 +56,7 @@ data class SettingsUiState(
     val memkeys: Boolean = true,
     val connPersist: Boolean = true,
     val wifilock: Boolean = true,
+    val sshKeepaliveInterval: String = PreferenceConstants.SSH_KEEPALIVE_INTERVAL_DEFAULT,
     val backupkeys: Boolean = false,
     val scrollback: String = "140",
     val rotation: String = "Default",
@@ -194,6 +195,10 @@ class SettingsViewModel @Inject constructor(
             memkeys = prefs.getBoolean("memkeys", true),
             connPersist = prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true),
             wifilock = prefs.getBoolean("wifilock", true),
+            sshKeepaliveInterval = prefs.getString(
+                PreferenceConstants.SSH_KEEPALIVE_INTERVAL,
+                PreferenceConstants.SSH_KEEPALIVE_INTERVAL_DEFAULT,
+            ) ?: PreferenceConstants.SSH_KEEPALIVE_INTERVAL_DEFAULT,
             backupkeys = prefs.getBoolean("backupkeys", false),
             scrollback = prefs.getString("scrollback", "140") ?: "140",
             rotation = prefs.getString("rotation", "Default") ?: "Default",
@@ -283,6 +288,10 @@ class SettingsViewModel @Inject constructor(
 
     fun updateWifilock(value: Boolean) {
         updateBooleanPref(PreferenceConstants.WIFI_LOCK, value) { copy(wifilock = value) }
+    }
+
+    fun updateSshKeepaliveInterval(value: String) {
+        updateStringPref(PreferenceConstants.SSH_KEEPALIVE_INTERVAL, value) { copy(sshKeepaliveInterval = value) }
     }
 
     fun updateBackupkeys(value: Boolean) {

@@ -43,6 +43,7 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runInterruptible
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
@@ -252,6 +253,8 @@ class TerminalBridge {
     private var lastKnownNetworkState: NetworkState? = null
     private var networkGracePeriodJob: Job? = null
     private var inGracePeriod: Boolean = false
+
+    private var keepaliveJob: Job? = null
 
     private val keyListener: TerminalKeyListener
 
@@ -749,8 +752,45 @@ class TerminalBridge {
         // Capture network state after successful connection
         captureNetworkState()
 
+        startKeepaliveMonitor()
+
         // Notify manager so the UI recomposes with updated connection state
         manager.notifyBridgeStateChanged()
+    }
+
+    /**
+     * Starts the periodic liveness probe for this connection so a link that
+     * dies silently in the background (NAT/firewall idle drop) is detected
+     * promptly and routed through [dispatchDisconnect] instead of lingering
+     * until the next read fails hours later.
+     */
+    private fun startKeepaliveMonitor() {
+        keepaliveJob?.cancel()
+
+        val intervalMs = manager.keepaliveIntervalMs()
+        // Capture the transport this monitor watches: dispatching with it as
+        // the source lets dispatchDisconnect discard the event if a newer
+        // connection attempt has already replaced this transport.
+        val monitoredTransport = transport ?: return
+        if (intervalMs <= 0 || !monitoredTransport.supportsKeepalive()) {
+            return
+        }
+
+        keepaliveJob = scope.launch {
+            KeepaliveMonitor(
+                intervalMs = intervalMs,
+                isEligible = {
+                    !disconnected && !inGracePeriod && monitoredTransport.isConnected()
+                },
+                sendKeepalive = {
+                    runInterruptible(dispatchers.io) { monitoredTransport.sendKeepalive() }
+                },
+                onDead = {
+                    Timber.w("Keepalive failed for ${host.nickname}, treating connection as dead")
+                    dispatchDisconnect(DisconnectReason.IO_ERROR, monitoredTransport)
+                },
+            ).run()
+        }
     }
 
     /**
@@ -809,6 +849,10 @@ class TerminalBridge {
             // would tear down the new connection.
             transportToClose = transport
         }
+
+        // The connection is going away one way or another; stop probing it.
+        keepaliveJob?.cancel()
+        keepaliveJob = null
 
         // Cancel any pending prompts
         promptManager.cancelPrompt()
@@ -920,6 +964,9 @@ class TerminalBridge {
         // Cancel grace period if active
         networkGracePeriodJob?.cancel()
         inGracePeriod = false
+
+        keepaliveJob?.cancel()
+        keepaliveJob = null
 
         profileObservationJob?.cancel()
         transportOperations.close()

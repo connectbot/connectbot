@@ -203,6 +203,18 @@
 
 	<!-- Alert dialog title shown when connection to the remote host is lost -->
 	<string name="alert_disconnect_msg">"Connection Lost"</string>
+	<!-- Disconnect overlay detail: the server ended the session -->
+	<string name="disconnect_reason_remote_eof">"The remote host closed the connection"</string>
+	<!-- Disconnect overlay detail: a read or write on the connection failed -->
+	<string name="disconnect_reason_io_error">"The connection was interrupted"</string>
+	<!-- Disconnect overlay detail: the device lost network connectivity -->
+	<string name="disconnect_reason_network_lost">"The network connection was lost"</string>
+	<!-- Disconnect overlay detail: the server rejected our credentials -->
+	<string name="disconnect_reason_auth_fail">"Authentication failed"</string>
+	<!-- Status overlay shown while a session is connecting; %1$s is the host nickname -->
+	<string name="console_connecting_status">"Connecting to %1$s…"</string>
+	<!-- Status overlay shown while a dropped session is reconnecting; %1$s is the host nickname, %2$d is the attempt number -->
+	<string name="console_reconnecting_status">"Reconnecting to %1$s… (attempt %2$d)"</string>
 
 	<!-- Message shown when network connection is lost and app is waiting to reconnect -->
 	<string name="network_lost_grace_period">"Network lost, waiting to reconnect…"</string>
@@ -361,6 +373,23 @@
 	<string name="pref_wifilock_title">"Keep Wi-Fi active"</string>
 	<!-- Summary for the Wi-Fi lock preference -->
 	<string name="pref_wifilock_summary">"Prevent Wi-Fi from turning off when a session is active"</string>
+
+	<!-- Name for the SSH keepalive interval preference -->
+	<string name="pref_ssh_keepalive_title">"Keepalive interval"</string>
+	<!-- Summary for the SSH keepalive interval preference -->
+	<string name="pref_ssh_keepalive_summary">"Periodically ping the server to keep idle connections alive and detect dropped ones; applies to new connections"</string>
+	<!-- Keepalive interval option: disabled -->
+	<string name="list_ssh_keepalive_off">"Off"</string>
+	<!-- Keepalive interval option: every 15 seconds -->
+	<string name="list_ssh_keepalive_15s">"Every 15 seconds"</string>
+	<!-- Keepalive interval option: every 30 seconds -->
+	<string name="list_ssh_keepalive_30s">"Every 30 seconds"</string>
+	<!-- Keepalive interval option: every minute -->
+	<string name="list_ssh_keepalive_1m">"Every minute"</string>
+	<!-- Keepalive interval option: every 2 minutes -->
+	<string name="list_ssh_keepalive_2m">"Every 2 minutes"</string>
+	<!-- Keepalive interval option: every 5 minutes -->
+	<string name="list_ssh_keepalive_5m">"Every 5 minutes"</string>
 
 	<!-- Name for the haptic feedback (bumpy arrow) preference -->
 	<string name="pref_bumpyarrows_title">"Bumpy arrows"</string>

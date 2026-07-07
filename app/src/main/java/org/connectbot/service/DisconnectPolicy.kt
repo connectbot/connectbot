@@ -35,6 +35,26 @@ object DisconnectPolicy {
     }
 
     /**
+     * Whether bringing a disconnected session back into view (tapping the
+     * host, returning to its console) should trigger a reconnect on its own.
+     * This restores the pre-rewrite behavior where reopening the app revived
+     * dropped sessions, even for hosts without stay-connected set.
+     * AUTH_FAIL is excluded so a bad credential can't be retried into an
+     * account lockout, and USER_REQUESTED respects an explicit disconnect;
+     * for those the overlay's Reconnect button remains the explicit path.
+     */
+    fun shouldReconnectOnOpen(
+        isDisconnected: Boolean,
+        isConnecting: Boolean,
+        awaitingClose: Boolean,
+        reason: DisconnectReason,
+    ): Boolean = isDisconnected &&
+        !isConnecting &&
+        !awaitingClose &&
+        reason != DisconnectReason.AUTH_FAIL &&
+        reason != DisconnectReason.USER_REQUESTED
+
+    /**
      * Delay before the next automatic reconnect attempt given how many
      * consecutive attempts have already failed since the last successful
      * connection. The first retry is immediate (a dropped connection is

@@ -18,6 +18,7 @@
 package org.connectbot.service
 
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 
@@ -194,5 +195,61 @@ class DisconnectPolicyTest {
     @Test
     fun reconnectDelay_negativeAttemptsAreImmediate() {
         assertEquals(0L, DisconnectPolicy.reconnectDelayMs(-1))
+    }
+
+    // Reconnect-on-open: bringing a dropped session back into view retries it
+
+    private fun shouldReconnectOnOpen(
+        reason: DisconnectReason,
+        isDisconnected: Boolean = true,
+        isConnecting: Boolean = false,
+        awaitingClose: Boolean = false,
+    ) = DisconnectPolicy.shouldReconnectOnOpen(isDisconnected, isConnecting, awaitingClose, reason)
+
+    @Test
+    fun reconnectOnOpen_remoteEof_reconnects() {
+        assertTrue(shouldReconnectOnOpen(DisconnectReason.REMOTE_EOF))
+    }
+
+    @Test
+    fun reconnectOnOpen_ioError_reconnects() {
+        assertTrue(shouldReconnectOnOpen(DisconnectReason.IO_ERROR))
+    }
+
+    @Test
+    fun reconnectOnOpen_networkLost_reconnects() {
+        assertTrue(shouldReconnectOnOpen(DisconnectReason.NETWORK_LOST))
+    }
+
+    @Test
+    fun reconnectOnOpen_unknown_reconnects() {
+        assertTrue(shouldReconnectOnOpen(DisconnectReason.UNKNOWN))
+    }
+
+    @Test
+    fun reconnectOnOpen_authFail_doesNotReconnect() {
+        // Retrying bad credentials automatically could lock the account
+        assertFalse(shouldReconnectOnOpen(DisconnectReason.AUTH_FAIL))
+    }
+
+    @Test
+    fun reconnectOnOpen_userRequested_doesNotReconnect() {
+        // An explicit disconnect must stay disconnected
+        assertFalse(shouldReconnectOnOpen(DisconnectReason.USER_REQUESTED))
+    }
+
+    @Test
+    fun reconnectOnOpen_stillConnected_doesNotReconnect() {
+        assertFalse(shouldReconnectOnOpen(DisconnectReason.REMOTE_EOF, isDisconnected = false))
+    }
+
+    @Test
+    fun reconnectOnOpen_alreadyConnecting_doesNotReconnect() {
+        assertFalse(shouldReconnectOnOpen(DisconnectReason.REMOTE_EOF, isConnecting = true))
+    }
+
+    @Test
+    fun reconnectOnOpen_awaitingClose_doesNotReconnect() {
+        assertFalse(shouldReconnectOnOpen(DisconnectReason.REMOTE_EOF, awaitingClose = true))
     }
 }
