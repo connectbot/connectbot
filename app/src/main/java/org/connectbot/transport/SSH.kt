@@ -72,6 +72,7 @@ import java.io.OutputStream
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.NoRouteToHostException
+import java.net.UnknownHostException
 import java.nio.charset.StandardCharsets
 import java.security.KeyPair
 import java.security.NoSuchAlgorithmException
@@ -1029,6 +1030,7 @@ class SSH :
             Timber.e(e, "Problem in SSH connection thread during authentication")
 
             // Display the reason in the text.
+            var hostUnresolved = false
             var t: Throwable? = e
             while (t != null) {
                 val message = t.message
@@ -1038,11 +1040,25 @@ class SSH :
                         bridge?.outputLine(manager?.res?.getString(R.string.terminal_no_route))
                     }
                 }
+                if (t is UnknownHostException) {
+                    hostUnresolved = true
+                }
                 t = t.cause
             }
 
+            // Classify DNS failures (EAI_NODATA and friends) separately from
+            // generic I/O errors so stay-connected hosts keep retrying after
+            // a network switch leaves resolution temporarily broken. Dispatch
+            // before close() because close() fires connectionLost()
+            // synchronously, which would otherwise record IO_ERROR first.
+            // https://github.com/connectbot/connectbot/issues/2297
+            val reason = if (hostUnresolved) {
+                DisconnectReason.HOST_UNRESOLVED
+            } else {
+                DisconnectReason.IO_ERROR
+            }
+            onDisconnect(reason)
             close()
-            onDisconnect()
             return
         }
 

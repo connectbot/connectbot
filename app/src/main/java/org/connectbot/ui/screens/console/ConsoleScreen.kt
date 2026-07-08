@@ -494,6 +494,7 @@ private fun disconnectReasonText(reason: DisconnectReason): String? = when (reas
     DisconnectReason.REMOTE_EOF -> stringResource(R.string.disconnect_reason_remote_eof)
     DisconnectReason.IO_ERROR -> stringResource(R.string.disconnect_reason_io_error)
     DisconnectReason.NETWORK_LOST -> stringResource(R.string.disconnect_reason_network_lost)
+    DisconnectReason.HOST_UNRESOLVED -> stringResource(R.string.disconnect_reason_host_unresolved)
     DisconnectReason.AUTH_FAIL -> stringResource(R.string.disconnect_reason_auth_fail)
     DisconnectReason.USER_REQUESTED, DisconnectReason.UNKNOWN -> null
 }

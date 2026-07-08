@@ -209,6 +209,8 @@
 	<string name="disconnect_reason_io_error">"The connection was interrupted"</string>
 	<!-- Disconnect overlay detail: the device lost network connectivity -->
 	<string name="disconnect_reason_network_lost">"The network connection was lost"</string>
+	<!-- Disconnect overlay detail: the hostname could not be resolved via DNS -->
+	<string name="disconnect_reason_host_unresolved">"The hostname could not be resolved"</string>
 	<!-- Disconnect overlay detail: the server rejected our credentials -->
 	<string name="disconnect_reason_auth_fail">"Authentication failed"</string>
 	<!-- Status overlay shown while a session is connecting; %1$s is the host nickname -->

@@ -22,6 +22,9 @@ enum class DisconnectReason {
     REMOTE_EOF,
     IO_ERROR,
     NETWORK_LOST,
+
+    /** Hostname resolution failed (e.g. EAI_NODATA after a network switch). */
+    HOST_UNRESOLVED,
     AUTH_FAIL,
     UNKNOWN,
 }

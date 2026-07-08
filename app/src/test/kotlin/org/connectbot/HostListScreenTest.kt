@@ -427,6 +427,28 @@ class HostListScreenTest {
     }
 
     @Test
+    fun hostListScreenContent_disconnectEnabledForFailedBridge() {
+        // A bridge whose connection dropped must be closable individually,
+        // not only via Disconnect All.
+        // https://github.com/connectbot/connectbot/issues/2297
+        var disconnectedHost: Host? = null
+        val host = testHost(id = 4L, nickname = "dropped", protocol = "ssh", color = null)
+
+        setHostListContent(
+            uiState = HostListUiState(
+                hosts = listOf(host),
+                connectionStates = mapOf(host.id to ConnectionState.FAILED),
+            ),
+            onDisconnectHost = { disconnectedHost = it },
+        )
+
+        openHostMenu(host)
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.list_host_disconnect)).performClick()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.button_yes)).performClick()
+        assertTrue(disconnectedHost == host)
+    }
+
+    @Test
     fun hostListScreenContent_portForwardChipShowsActiveCounts() {
         val host = testHost(id = 5L, nickname = "tunnels", protocol = "ssh")
 

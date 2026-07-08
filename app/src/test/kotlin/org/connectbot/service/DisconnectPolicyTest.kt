@@ -70,6 +70,11 @@ class DisconnectPolicyTest {
     }
 
     @Test
+    fun hostUnresolved_quickDisconnect_closesImmediately() {
+        assertTrue(decide(DisconnectReason.HOST_UNRESOLVED, quickDisconnect = true) is DisconnectAction.CloseImmediately)
+    }
+
+    @Test
     fun authFail_quickDisconnect_closesImmediately() {
         assertTrue(decide(DisconnectReason.AUTH_FAIL, quickDisconnect = true) is DisconnectAction.CloseImmediately)
     }
@@ -120,6 +125,11 @@ class DisconnectPolicyTest {
     }
 
     @Test
+    fun hostUnresolved_defaultFlags_showsReconnectOverlay() {
+        assertTrue(decide(DisconnectReason.HOST_UNRESOLVED) is DisconnectAction.ShowReconnectOverlay)
+    }
+
+    @Test
     fun authFail_defaultFlags_showsReconnectOverlay() {
         assertTrue(decide(DisconnectReason.AUTH_FAIL) is DisconnectAction.ShowReconnectOverlay)
     }
@@ -144,6 +154,14 @@ class DisconnectPolicyTest {
     @Test
     fun networkLost_stayConnected_autoReconnects() {
         assertTrue(decide(DisconnectReason.NETWORK_LOST, stayConnected = true) is DisconnectAction.AutoReconnect)
+    }
+
+    @Test
+    fun hostUnresolved_stayConnected_autoReconnects() {
+        // A DNS failure (EAI_NODATA) after a network switch must keep the
+        // stay-connected retry loop going rather than giving up.
+        // https://github.com/connectbot/connectbot/issues/2297
+        assertTrue(decide(DisconnectReason.HOST_UNRESOLVED, stayConnected = true) is DisconnectAction.AutoReconnect)
     }
 
     @Test
@@ -217,6 +235,11 @@ class DisconnectPolicyTest {
     }
 
     @Test
+    fun reconnectOnOpen_hostUnresolved_reconnects() {
+        assertTrue(shouldReconnectOnOpen(DisconnectReason.HOST_UNRESOLVED))
+    }
+
+    @Test
     fun reconnectOnOpen_networkLost_reconnects() {
         assertTrue(shouldReconnectOnOpen(DisconnectReason.NETWORK_LOST))
     }
@@ -240,16 +263,16 @@ class DisconnectPolicyTest {
 
     @Test
     fun reconnectOnOpen_stillConnected_doesNotReconnect() {
-        assertFalse(shouldReconnectOnOpen(DisconnectReason.REMOTE_EOF, isDisconnected = false))
+        assertFalse(shouldReconnectOnOpen(DisconnectReason.IO_ERROR, isDisconnected = false))
     }
 
     @Test
     fun reconnectOnOpen_alreadyConnecting_doesNotReconnect() {
-        assertFalse(shouldReconnectOnOpen(DisconnectReason.REMOTE_EOF, isConnecting = true))
+        assertFalse(shouldReconnectOnOpen(DisconnectReason.IO_ERROR, isConnecting = true))
     }
 
     @Test
     fun reconnectOnOpen_awaitingClose_doesNotReconnect() {
-        assertFalse(shouldReconnectOnOpen(DisconnectReason.REMOTE_EOF, awaitingClose = true))
+        assertFalse(shouldReconnectOnOpen(DisconnectReason.IO_ERROR, awaitingClose = true))
     }
 }
