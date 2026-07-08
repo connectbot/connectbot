@@ -28,6 +28,7 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.connectbot.data.HostRepository
+import org.connectbot.data.KeyboardLayoutRepository
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
@@ -53,7 +54,7 @@ class HostEditorViewModelTest {
     private lateinit var repository: HostRepository
     private lateinit var pubkeyRepository: PubkeyRepository
     private lateinit var profileRepository: ProfileRepository
-    private lateinit var keyboardLayoutRepository: org.connectbot.data.KeyboardLayoutRepository
+    private lateinit var keyboardLayoutRepository: KeyboardLayoutRepository
     private lateinit var prefs: SharedPreferences
     private lateinit var securePasswordStorage: SecurePasswordStorage
 
@@ -65,7 +66,7 @@ class HostEditorViewModelTest {
         repository = mock(HostRepository::class.java)
         pubkeyRepository = mock(PubkeyRepository::class.java)
         profileRepository = mock(ProfileRepository::class.java)
-        keyboardLayoutRepository = mock(org.connectbot.data.KeyboardLayoutRepository::class.java)
+        keyboardLayoutRepository = mock(KeyboardLayoutRepository::class.java)
         prefs = mock(SharedPreferences::class.java)
         securePasswordStorage = mock(SecurePasswordStorage::class.java)
 

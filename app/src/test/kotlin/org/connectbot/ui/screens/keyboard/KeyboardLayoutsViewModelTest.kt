@@ -24,11 +24,9 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
-import kotlinx.coroutines.withTimeout
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
 import org.connectbot.data.KeyboardLayoutRepository
@@ -75,24 +73,37 @@ class KeyboardLayoutsViewModelTest {
     }
 
     @Test
-    fun renameSkipsDuplicateName() = runBlocking<Unit> {
+    fun renameReportsDuplicateName() = runBlocking<Unit> {
         val layoutId = repository.create("Original", DefaultKeyboardLayouts.default)
         repository.create("Taken", DefaultKeyboardLayouts.classic)
         val viewModel = KeyboardLayoutsViewModel(repository, prefs, context)
 
-        viewModel.rename(layoutId, "Renamed")
-        awaitName(layoutId, "Renamed")
+        assertThat(viewModel.rename(layoutId, "Renamed")).isTrue()
+        assertThat(repository.getById(layoutId)?.name).isEqualTo("Renamed")
 
-        viewModel.rename(layoutId, " Taken ")
-        delay(50)
+        assertThat(viewModel.rename(layoutId, " Taken ")).isFalse()
         assertThat(repository.getById(layoutId)?.name).isEqualTo("Renamed")
     }
 
-    private suspend fun awaitName(layoutId: Long, expectedName: String) {
-        withTimeout(3000) {
-            while (repository.getById(layoutId)?.name != expectedName) {
-                delay(5)
-            }
-        }
+    @Test
+    fun renameToOwnNameSucceeds() = runBlocking<Unit> {
+        val layoutId = repository.create("Original", DefaultKeyboardLayouts.default)
+        val viewModel = KeyboardLayoutsViewModel(repository, prefs, context)
+
+        assertThat(viewModel.rename(layoutId, "original")).isTrue()
+        assertThat(repository.getById(layoutId)?.name).isEqualTo("original")
+    }
+
+    @Test
+    fun createLayoutGeneratesUniqueNames() = runBlocking<Unit> {
+        val viewModel = KeyboardLayoutsViewModel(repository, prefs, context)
+
+        val first = viewModel.createLayout()
+        val second = viewModel.createLayout()
+
+        val names = repository.getAll().map { it.name }
+        assertThat(names).hasSize(2)
+        assertThat(names.toSet()).hasSize(2)
+        assertThat(first).isNotEqualTo(second)
     }
 }

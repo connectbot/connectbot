@@ -18,6 +18,7 @@
 package org.connectbot.data
 
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import org.connectbot.data.dao.KeyboardLayoutDao
@@ -47,18 +48,18 @@ class KeyboardLayoutRepository @Inject constructor(
      * the default.
      */
     fun observeResolvedSpec(layoutId: Long?): Flow<KeyboardLayoutSpec> {
-        DefaultKeyboardLayouts.byId(layoutId)?.let { builtIn ->
-            return kotlinx.coroutines.flow.flowOf(builtIn)
-        }
-        return dao.observeById(layoutId!!).map { entity ->
+        if (layoutId == null) return flowOf(DefaultKeyboardLayouts.default)
+        DefaultKeyboardLayouts.byId(layoutId)?.let { return flowOf(it) }
+        return dao.observeById(layoutId).map { entity ->
             entity?.keysJson?.let { KeyboardLayoutJson.decode(it) } ?: DefaultKeyboardLayouts.default
         }
     }
 
     /** One-shot resolution, for non-Flow callers. */
     suspend fun resolveSpec(layoutId: Long?): KeyboardLayoutSpec = withContext(dispatchers.io) {
+        if (layoutId == null) return@withContext DefaultKeyboardLayouts.default
         DefaultKeyboardLayouts.byId(layoutId)?.let { return@withContext it }
-        val entity = dao.getById(layoutId!!)
+        val entity = dao.getById(layoutId)
         entity?.keysJson?.let { KeyboardLayoutJson.decode(it) } ?: DefaultKeyboardLayouts.default
     }
 
@@ -84,9 +85,6 @@ class KeyboardLayoutRepository @Inject constructor(
         val existing = dao.getById(layoutId) ?: return@withContext
         dao.update(existing.copy(name = name))
     }
-
-    /** Materialize a spec (built-in or custom) into a new editable custom row. */
-    suspend fun duplicate(name: String, spec: KeyboardLayoutSpec): Long = create(name, spec)
 
     /**
      * Delete a custom layout, first clearing any host overrides that point at it.

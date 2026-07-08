@@ -385,16 +385,26 @@
 	<!-- Keyboard layouts library screen -->
 	<string name="keyboard_layouts_title">"Special keys layouts"</string>
 	<string name="keyboard_layouts_new">"New layout"</string>
+	<!-- Names of the built-in layouts shown in the layouts library -->
+	<string name="keyboard_layout_name_default">"Default"</string>
+	<string name="keyboard_layout_name_classic">"Classic"</string>
 	<string name="keyboard_layouts_builtin_label">"Built-in"</string>
 	<string name="keyboard_layouts_actions">"Layout actions"</string>
 	<string name="keyboard_layouts_edit">"Edit"</string>
 	<string name="keyboard_layouts_rename">"Rename"</string>
+	<!-- Error shown in the rename dialog when another layout already has the entered name -->
+	<string name="keyboard_layouts_name_taken">"A layout with this name already exists"</string>
 	<string name="keyboard_layouts_duplicate">"Duplicate"</string>
 	<!-- Default name assigned to a duplicated keyboard layout; %1$s is the original layout name. -->
 	<string name="keyboard_layouts_duplicate_name">"%1$s (copy)"</string>
 	<string name="keyboard_layouts_delete">"Delete"</string>
 	<!-- %1$s is the layout name -->
-	<string name="keyboard_layouts_delete_confirm">"Delete the layout \"%1$s\"? Hosts using it will fall back to the default."</string>
+	<string name="keyboard_layouts_delete_confirm">"Delete the layout \"%1$s\"?"</string>
+	<!-- Appended to the delete confirmation when hosts override to the layout; %1$d is the host count -->
+	<plurals name="keyboard_layouts_delete_hosts_using">
+		<item quantity="one">"%1$d host uses this layout and will fall back to the default."</item>
+		<item quantity="other">"%1$d hosts use this layout and will fall back to the default."</item>
+	</plurals>
 
 	<!-- Keyboard layout editor screen -->
 	<string name="keyboard_layout_editor_title">"Edit layout"</string>

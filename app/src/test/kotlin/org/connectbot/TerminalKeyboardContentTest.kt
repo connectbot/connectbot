@@ -183,6 +183,26 @@ class TerminalKeyboardContentTest {
     }
 
     @Test
+    fun iconOnlyKey_exposesLabelAsContentDescription() {
+        val actions = mutableListOf<KeySpec>()
+
+        setKeyboardContent(
+            layout = KeyboardLayoutSpec(
+                listOf(listOf(KeySpec.Text("ls -la", label = "List", icon = "folder"))),
+            ),
+            onKeyAction = { actions += it },
+        )
+
+        // The key renders as an icon, so TalkBack must get its label instead.
+        composeTestRule
+            .onNodeWithContentDescription("List")
+            .assertIsDisplayed()
+            .performClick()
+
+        assertEquals(listOf<KeySpec>(KeySpec.Text("ls -la", label = "List", icon = "folder")), actions)
+    }
+
+    @Test
     fun reportsHorizontalScrollInteractions() {
         val scrollStates = mutableListOf<Boolean>()
 

@@ -18,7 +18,6 @@
 package org.connectbot.data.dao
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
@@ -47,9 +46,6 @@ interface KeyboardLayoutDao {
 
     @Update
     suspend fun update(layout: KeyboardLayout)
-
-    @Delete
-    suspend fun delete(layout: KeyboardLayout)
 
     @Query("DELETE FROM keyboard_layouts WHERE id = :layoutId")
     suspend fun deleteById(layoutId: Long): Int

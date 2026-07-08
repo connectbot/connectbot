@@ -18,6 +18,7 @@
 package org.connectbot.keyboard
 
 import org.json.JSONArray
+import org.json.JSONException
 import org.json.JSONObject
 
 /**
@@ -55,16 +56,21 @@ object KeyboardLayoutJson {
             .toString()
     }
 
-    /** Decode a layout, or null if the JSON is malformed or has no usable rows. */
+    /**
+     * Decode a layout, or null if the JSON is malformed or has no usable rows.
+     * Rows beyond [KeyboardLayoutSpec.MAX_ROWS] are dropped: the keys bar and
+     * the editor only support that many.
+     */
     fun decode(json: String): KeyboardLayoutSpec? {
         val obj = try {
             JSONObject(json)
-        } catch (_: org.json.JSONException) {
+        } catch (_: JSONException) {
             return null
         }
         val rowsArray = obj.optJSONArray(KEY_ROWS) ?: return null
         val rows = mutableListOf<List<KeySpec>>()
         for (r in 0 until rowsArray.length()) {
+            if (rows.size == KeyboardLayoutSpec.MAX_ROWS) break
             val rowArray = rowsArray.optJSONArray(r) ?: continue
             val keys = mutableListOf<KeySpec>()
             for (k in 0 until rowArray.length()) {

@@ -22,14 +22,22 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -91,18 +99,42 @@ class ConsoleViewModel @Inject constructor(
     private val notificationPermissionHelper: NotificationPermissionHelper,
 ) : ViewModel() {
 
-    /** Resolve the effective keys-bar layout for a host (per-host override or global default). */
-    fun keyboardLayoutFlow(host: Host): kotlinx.coroutines.flow.Flow<KeyboardLayoutSpec> {
-        val id = host.keyboardLayoutId
-            ?: prefs.getLong(PreferenceConstants.KEYBOARD_LAYOUT_ID, DefaultKeyboardLayouts.DEFAULT_ID)
-        return keyboardLayoutRepository.observeResolvedSpec(id)
+    /**
+     * Resolve the effective keys-bar layout for a host: the per-host override,
+     * or the global default preference (tracked live, so changing the default
+     * updates any open console).
+     */
+    @OptIn(ExperimentalCoroutinesApi::class)
+    fun keyboardLayoutFlow(host: Host): Flow<KeyboardLayoutSpec> {
+        host.keyboardLayoutId?.let { return keyboardLayoutRepository.observeResolvedSpec(it) }
+        return prefChanges(PreferenceConstants.KEYBOARD_LAYOUT_ID).flatMapLatest {
+            keyboardLayoutRepository.observeResolvedSpec(
+                prefs.getLong(PreferenceConstants.KEYBOARD_LAYOUT_ID, DefaultKeyboardLayouts.DEFAULT_ID),
+            )
+        }
     }
 
-    /** Global key-size preference for the keys bar. */
-    val keyboardKeySize: KeyboardKeySize
-        get() = KeyboardKeySize.fromPreferenceValue(
-            prefs.getString(PreferenceConstants.KEYBOARD_KEY_SIZE, PreferenceConstants.KEYBOARD_KEY_SIZE_DEFAULT),
-        )
+    /** Global key-size preference for the keys bar, tracked live. */
+    val keyboardKeySize: StateFlow<KeyboardKeySize> by lazy {
+        prefChanges(PreferenceConstants.KEYBOARD_KEY_SIZE)
+            .map { readKeyboardKeySize() }
+            .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), readKeyboardKeySize())
+    }
+
+    private fun readKeyboardKeySize(): KeyboardKeySize = KeyboardKeySize.fromPreferenceValue(
+        prefs.getString(PreferenceConstants.KEYBOARD_KEY_SIZE, PreferenceConstants.KEYBOARD_KEY_SIZE_DEFAULT),
+    )
+
+    /** Emits once immediately, then whenever the preference [key] changes. */
+    private fun prefChanges(key: String): Flow<Unit> = callbackFlow {
+        val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, changedKey ->
+            if (changedKey == key) trySend(Unit)
+        }
+        prefs.registerOnSharedPreferenceChangeListener(listener)
+        trySend(Unit)
+        awaitClose { prefs.unregisterOnSharedPreferenceChangeListener(listener) }
+    }
+
     private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
 
     /** "sessionId|windowId" from a tmux bell notification deep link. */

@@ -515,6 +515,10 @@ private fun rememberResolvedKeyboardLayout(
     return flow.collectAsStateWithLifecycle(initialValue = DefaultKeyboardLayouts.default).value
 }
 
+/** The global key-size preference, tracked live. */
+@Composable
+private fun rememberKeyboardKeySize(viewModel: ConsoleViewModel): KeyboardKeySize = viewModel.keyboardKeySize.collectAsStateWithLifecycle().value
+
 @Composable
 private fun ConsoleTerminalPage(
     bridge: TerminalBridge,
@@ -576,7 +580,10 @@ private fun ConsoleTerminalPage(
         var composeController by remember { mutableStateOf<ComposeController?>(null) }
 
         // Per-host keyboard suggestions (issue 2015): activate the IME compose
-        // mode once the terminal provides its controller.
+        // mode once the terminal provides its controller. bridge.host is a
+        // connect-time snapshot, so toggling the host setting takes effect on
+        // the next connection; compose mode is never force-stopped here because
+        // the terminal may activate it for its own transient input handling.
         LaunchedEffect(composeController, bridge.host.keyboardSuggestions) {
             val controller = composeController ?: return@LaunchedEffect
             if (bridge.host.keyboardSuggestions && !controller.isComposeModeActive) {
@@ -1429,7 +1436,7 @@ fun ConsoleScreen(
                                     modifier = Modifier.fillMaxSize(),
                                     terminalModifier = pageGestureModifier.then(tmuxSwipeModifier),
                                     keyboardLayout = rememberResolvedKeyboardLayout(bridge.host, viewModel),
-                                    keyboardKeySize = viewModel.keyboardKeySize,
+                                    keyboardKeySize = rememberKeyboardKeySize(viewModel),
                                     onNavigateToKeyboardLayouts = onNavigateToKeyboardLayouts,
                                     tmuxPane = paneTerminal,
                                     tmuxForcedSize = pane?.let { Pair(it.height, it.width) },
@@ -1480,7 +1487,7 @@ fun ConsoleScreen(
                                     modifier = Modifier.fillMaxSize(),
                                     terminalModifier = terminalModifier,
                                     keyboardLayout = rememberResolvedKeyboardLayout(bridge.host, viewModel),
-                                    keyboardKeySize = viewModel.keyboardKeySize,
+                                    keyboardKeySize = rememberKeyboardKeySize(viewModel),
                                     onNavigateToKeyboardLayouts = onNavigateToKeyboardLayouts,
                                 )
                             }

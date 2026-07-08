@@ -28,6 +28,7 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.connectbot.data.KeyboardLayoutRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalBridge
@@ -64,7 +65,7 @@ class ConsoleViewModelTest {
     private lateinit var savedStateHandle: SavedStateHandle
     private lateinit var bridgesFlow: MutableStateFlow<List<TerminalBridge>>
     private lateinit var prefs: SharedPreferences
-    private lateinit var keyboardLayoutRepository: org.connectbot.data.KeyboardLayoutRepository
+    private lateinit var keyboardLayoutRepository: KeyboardLayoutRepository
     private lateinit var notificationPermissionHelper: NotificationPermissionHelper
 
     @Before

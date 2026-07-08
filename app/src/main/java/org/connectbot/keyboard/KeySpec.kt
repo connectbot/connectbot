@@ -123,4 +123,9 @@ data class KeyboardLayoutSpec(val rows: List<List<KeySpec>>) {
     init {
         require(rows.isNotEmpty()) { "A keyboard layout needs at least one row" }
     }
+
+    companion object {
+        /** The keys bar renders at most this many rows. */
+        const val MAX_ROWS = 2
+    }
 }
