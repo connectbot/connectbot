@@ -76,7 +76,7 @@ class KeyboardLayoutsViewModelTest {
     fun renameReportsDuplicateName() = runBlocking<Unit> {
         val layoutId = repository.create("Original", DefaultKeyboardLayouts.default)
         repository.create("Taken", DefaultKeyboardLayouts.classic)
-        val viewModel = KeyboardLayoutsViewModel(repository, prefs, context)
+        val viewModel = KeyboardLayoutsViewModel(repository, prefs)
 
         assertThat(viewModel.rename(layoutId, "Renamed")).isTrue()
         assertThat(repository.getById(layoutId)?.name).isEqualTo("Renamed")
@@ -88,7 +88,7 @@ class KeyboardLayoutsViewModelTest {
     @Test
     fun renameToOwnNameSucceeds() = runBlocking<Unit> {
         val layoutId = repository.create("Original", DefaultKeyboardLayouts.default)
-        val viewModel = KeyboardLayoutsViewModel(repository, prefs, context)
+        val viewModel = KeyboardLayoutsViewModel(repository, prefs)
 
         assertThat(viewModel.rename(layoutId, "original")).isTrue()
         assertThat(repository.getById(layoutId)?.name).isEqualTo("original")
@@ -96,10 +96,10 @@ class KeyboardLayoutsViewModelTest {
 
     @Test
     fun createLayoutGeneratesUniqueNames() = runBlocking<Unit> {
-        val viewModel = KeyboardLayoutsViewModel(repository, prefs, context)
+        val viewModel = KeyboardLayoutsViewModel(repository, prefs)
 
-        val first = viewModel.createLayout()
-        val second = viewModel.createLayout()
+        val first = viewModel.createLayout("New layout")
+        val second = viewModel.createLayout("New layout")
 
         val names = repository.getAll().map { it.name }
         assertThat(names).hasSize(2)

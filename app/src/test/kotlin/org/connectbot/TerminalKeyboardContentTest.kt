@@ -203,6 +203,22 @@ class TerminalKeyboardContentTest {
     }
 
     @Test
+    fun textSpecialKey_exposesContentDescription() {
+        val actions = mutableListOf<KeySpec>()
+
+        setKeyboardContent(
+            onKeyAction = { actions += it },
+        )
+
+        composeTestRule
+            .onNodeWithContentDescription(composeTestRule.activity.getString(R.string.image_description_send_tab_character))
+            .assertIsDisplayed()
+            .performClick()
+
+        assertEquals(listOf<KeySpec>(KeySpec.Special(SpecialKey.TAB)), actions)
+    }
+
+    @Test
     fun reportsHorizontalScrollInteractions() {
         val scrollStates = mutableListOf<Boolean>()
 
