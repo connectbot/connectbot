@@ -142,6 +142,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.keyboard.DefaultKeyboardLayouts
 import org.connectbot.service.AuthBanner
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.PromptRequest
@@ -162,8 +163,8 @@ import org.connectbot.ui.components.FloatingTextInputDialog
 import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
 import org.connectbot.ui.components.SnippetPickerSheet
-import org.connectbot.ui.components.TERMINAL_KEYBOARD_HEIGHT_DP
 import org.connectbot.ui.components.TerminalKeyboard
+import org.connectbot.ui.components.terminalKeyboardHeightDp
 import org.connectbot.ui.components.UrlScanDialog
 import org.connectbot.ui.screens.console.tmux.PaneDotsIndicator
 import org.connectbot.ui.screens.console.tmux.TmuxActionMenuDialog
@@ -549,6 +550,15 @@ private fun ConsoleTerminalPage(
         }
 
         val tmuxEmulator = tmuxPane?.emulator
+
+        // Keys-bar layout and its terminal-focused I/O paths. The resolved
+        // per-host/global layout is wired in later; for now the built-in default.
+        val keyboardLayout = DefaultKeyboardLayouts.default
+        val keyboardKeyHandler = tmuxPane?.keyHandler ?: bridge.keyHandler
+        val injectKeyboardText: (String) -> Unit = { text ->
+            if (tmuxPane != null) tmuxPane.paste(text) else bridge.injectString(text)
+        }
+
         var composeController by remember { mutableStateOf<ComposeController?>(null) }
 
         // Per-host keyboard suggestions (issue 2015): activate the IME compose
@@ -565,7 +575,11 @@ private fun ConsoleTerminalPage(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp,
+                    bottom = if (keyboardAlwaysVisible) {
+                        terminalKeyboardHeightDp(keyboardLayout.rows.size).dp
+                    } else {
+                        0.dp
+                    },
                 )
                 .then(terminalModifier)
                 .testTag("terminal"),
@@ -611,7 +625,9 @@ private fun ConsoleTerminalPage(
                     .testTag("terminal_keyboard"),
             ) {
                 TerminalKeyboard(
-                    bridge = bridge,
+                    keyHandler = keyboardKeyHandler,
+                    injectText = injectKeyboardText,
+                    layout = keyboardLayout,
                     onInteraction = { handleTerminalInteraction() },
                     onHideIme = {
                         onShowSoftwareKeyboardChange(false)

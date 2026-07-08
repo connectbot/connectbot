@@ -1171,6 +1171,18 @@
 	<string name="button_key_f11">F11</string>
 	<!-- Text for the "F12" button in virtual keyboard. -->
 	<string name="button_key_f12">F12</string>
+	<!-- Text for the "Alt" button in virtual keyboard. -->
+	<string name="button_key_alt">Alt</string>
+	<!-- Text for the "Shift" button in virtual keyboard. -->
+	<string name="button_key_shift">Shift</string>
+	<!-- Text for the "Fn" button in virtual keyboard that opens the F1-F12 grid. -->
+	<string name="button_key_fn">Fn</string>
+	<!-- Text for the "Enter" button in virtual keyboard. -->
+	<string name="button_key_enter">Enter</string>
+	<!-- Text for the "Insert" button in virtual keyboard. -->
+	<string name="button_key_ins">Ins</string>
+	<!-- Text for the "Delete" button in virtual keyboard. -->
+	<string name="button_key_del">Del</string>
 
 	<!-- Button in virtual keyboard that opens text input dialog for composing longer text with full IME support -->
 	<string name="terminal_keyboard_text_input_button">Text input</string>

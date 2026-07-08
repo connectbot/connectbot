@@ -22,7 +22,21 @@ import org.junit.Test
 
 class TerminalKeyListenerTest {
 
-    private val noopDispatcher = KeyDispatcher { _, _ -> }
+    /** Records every dispatched key/char so combo masks can be asserted. */
+    private class RecordingDispatcher : KeyDispatcher {
+        val keys = mutableListOf<Pair<Int, Int>>()
+        val chars = mutableListOf<Pair<Int, Char>>()
+
+        override fun dispatchKey(modifiers: Int, key: Int) {
+            keys.add(modifiers to key)
+        }
+
+        override fun dispatchCharacter(modifiers: Int, ch: Char) {
+            chars.add(modifiers to ch)
+        }
+    }
+
+    private val noopDispatcher = RecordingDispatcher()
 
     // NONE: sticky is OFF for all modifiers. metaPress only works if forceSticky=true.
 
@@ -112,5 +126,40 @@ class TerminalKeyListenerTest {
         listener.metaPress(TerminalKeyListener.CTRL_ON)
         listener.sendPressedKey(0)
         assertEquals(ModifierLevel.LOCKED, listener.getModifierState().ctrlState)
+    }
+
+    // sendCombo/sendComboChar build explicit VTerm modifier masks
+    // (shift=1, alt=2, ctrl=4) independent of sticky state.
+
+    @Test
+    fun `sendComboChar sends ctrl mask with character`() {
+        val dispatcher = RecordingDispatcher()
+        val listener = TerminalKeyListener(dispatcher, StickyModifierSetting.NONE)
+        listener.sendComboChar(ctrl = true, alt = false, shift = false, ch = 'c')
+        assertEquals(listOf(4 to 'c'), dispatcher.chars)
+    }
+
+    @Test
+    fun `sendComboChar combines all modifier bits`() {
+        val dispatcher = RecordingDispatcher()
+        val listener = TerminalKeyListener(dispatcher, StickyModifierSetting.NONE)
+        listener.sendComboChar(ctrl = true, alt = true, shift = true, ch = 'x')
+        assertEquals(listOf(7 to 'x'), dispatcher.chars)
+    }
+
+    @Test
+    fun `sendCombo sends alt mask with special key`() {
+        val dispatcher = RecordingDispatcher()
+        val listener = TerminalKeyListener(dispatcher, StickyModifierSetting.NONE)
+        listener.sendCombo(ctrl = false, alt = true, shift = false, key = 42)
+        assertEquals(listOf(2 to 42), dispatcher.keys)
+    }
+
+    @Test
+    fun `sendCombo clears TRANSIENT modifiers`() {
+        val listener = TerminalKeyListener(noopDispatcher, StickyModifierSetting.ALL)
+        listener.metaPress(TerminalKeyListener.CTRL_ON)
+        listener.sendCombo(ctrl = false, alt = false, shift = false, key = 0)
+        assertEquals(ModifierLevel.OFF, listener.getModifierState().ctrlState)
     }
 }

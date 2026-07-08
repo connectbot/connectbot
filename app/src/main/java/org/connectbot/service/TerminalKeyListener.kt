@@ -41,12 +41,14 @@ private const val VTERM_MOD_SHIFT = 1
 private const val VTERM_MOD_ALT = 2
 private const val VTERM_MOD_CTRL = 4
 
-fun interface KeyDispatcher {
+interface KeyDispatcher {
     fun dispatchKey(modifiers: Int, key: Int)
+    fun dispatchCharacter(modifiers: Int, ch: Char)
 }
 
 class TerminalEmulatorKeyDispatcher(private val emulator: TerminalEmulator) : KeyDispatcher {
     override fun dispatchKey(modifiers: Int, key: Int) = emulator.dispatchKey(modifiers, key)
+    override fun dispatchCharacter(modifiers: Int, ch: Char) = emulator.dispatchCharacter(modifiers, ch)
 }
 
 enum class StickyModifierSetting(internal val mask: Int) {
@@ -91,6 +93,26 @@ class TerminalKeyListener(
     fun sendPressedKey(key: Int) {
         keyDispatcher.dispatchKey(modifiersForTerminal, key)
         clearTransients()
+    }
+
+    /** Send a special key with an explicit modifier combination (one-button combos). */
+    fun sendCombo(ctrl: Boolean, alt: Boolean, shift: Boolean, key: Int) {
+        keyDispatcher.dispatchKey(comboMask(ctrl, alt, shift), key)
+        clearTransients()
+    }
+
+    /** Send a character with an explicit modifier combination, e.g. Ctrl+C. */
+    fun sendComboChar(ctrl: Boolean, alt: Boolean, shift: Boolean, ch: Char) {
+        keyDispatcher.dispatchCharacter(comboMask(ctrl, alt, shift), ch)
+        clearTransients()
+    }
+
+    private fun comboMask(ctrl: Boolean, alt: Boolean, shift: Boolean): Int {
+        var mask = 0
+        if (shift) mask = mask or VTERM_MOD_SHIFT
+        if (alt) mask = mask or VTERM_MOD_ALT
+        if (ctrl) mask = mask or VTERM_MOD_CTRL
+        return mask
     }
 
     /**
