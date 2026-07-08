@@ -39,6 +39,7 @@ import com.trilead.ssh2.UserAuthBannerCallback
 import com.trilead.ssh2.crypto.PEMDecoder
 import com.trilead.ssh2.crypto.PublicKeyUtils
 import com.trilead.ssh2.crypto.fingerprint.KeyFingerprint
+import com.trilead.ssh2.crypto.keys.Ed25519PrivateKey
 import com.trilead.ssh2.crypto.keys.Ed25519Provider
 import com.trilead.ssh2.crypto.keys.Ed25519PublicKey
 import com.trilead.ssh2.signature.DSASHA1Verify
@@ -60,6 +61,7 @@ import org.connectbot.service.requestHostKeyFingerprintPrompt
 import org.connectbot.service.requestStringPrompt
 import org.connectbot.transport.sftp.SftpChannel
 import org.connectbot.transport.sftp.TrileadSftpChannel
+import org.connectbot.util.Ed25519SignatureProxy
 import org.connectbot.util.HostConstants
 import org.connectbot.util.ProfileStartup
 import org.connectbot.util.PubkeyUtils
@@ -72,6 +74,7 @@ import java.io.OutputStream
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.NoRouteToHostException
+import java.net.UnknownHostException
 import java.nio.charset.StandardCharsets
 import java.security.KeyPair
 import java.security.NoSuchAlgorithmException
@@ -554,14 +557,25 @@ class SSH :
             return try {
                 val keyStore = java.security.KeyStore.getInstance("AndroidKeyStore")
                 keyStore.load(null)
-                val publicKey = keyStore.getCertificate(keystoreAlias)?.publicKey
+                val rawPublicKey = keyStore.getCertificate(keystoreAlias)?.publicKey
                 val privateKey = keyStore.getKey(keystoreAlias, null) as? java.security.PrivateKey
 
-                if (publicKey == null || privateKey == null) {
+                if (rawPublicKey == null || privateKey == null) {
                     val message = String.format("Failed to load key '%s' from Keystore.", pubkey.nickname)
                     Timber.e(message)
                     bridge?.outputLine(message)
                     return null
+                }
+
+                // Keystore Ed25519 public keys use platform-specific classes
+                // and algorithm names sshlib does not recognize; convert to
+                // sshlib's own Ed25519 type so key detection, encoding, and
+                // agent forwarding all work.
+                // https://github.com/connectbot/connectbot/issues/1974
+                val publicKey = if (SshKeyType.fromStoredType(pubkey.type) == SshKeyType.ED25519) {
+                    Ed25519Verify.convertPublicKey(rawPublicKey)
+                } else {
+                    rawPublicKey
                 }
 
                 val pair = KeyPair(publicKey, privateKey)
@@ -650,12 +664,32 @@ class SSH :
         return pair
     }
 
+    /**
+     * Whether authenticating with this pair requires signing through the JCA
+     * [java.security.Signature] API: the key is Ed25519 but the private half
+     * is not sshlib's software type, so its raw seed cannot be read (opaque
+     * Android Keystore keys).
+     */
+    private fun needsEd25519Proxy(pair: KeyPair): Boolean =
+        PublicKeyUtils.isEd25519Key(pair.public) && pair.private !is Ed25519PrivateKey
+
     @Throws(IOException::class)
     private fun tryPublicKey(username: String, keyNickname: String, pair: KeyPair): Boolean = try {
         val currentConnection = connection
         val success = currentConnection != null &&
-            RsaSha2Compat.withRsaSha2Preference(currentConnection, pair) {
-                currentConnection.authenticateWithPublicKey(username, pair)
+            if (needsEd25519Proxy(pair)) {
+                // sshlib's Ed25519 signer needs the raw private key seed,
+                // which an opaque (Android Keystore) key never exposes; sign
+                // through the JCA Signature API instead.
+                // https://github.com/connectbot/connectbot/issues/1974
+                currentConnection.authenticateWithPublicKey(
+                    username,
+                    Ed25519SignatureProxy(pair.public, pair.private),
+                )
+            } else {
+                RsaSha2Compat.withRsaSha2Preference(currentConnection, pair) {
+                    currentConnection.authenticateWithPublicKey(username, pair)
+                }
             }
         if (!success) {
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, keyNickname))
@@ -1029,6 +1063,7 @@ class SSH :
             Timber.e(e, "Problem in SSH connection thread during authentication")
 
             // Display the reason in the text.
+            var hostUnresolved = false
             var t: Throwable? = e
             while (t != null) {
                 val message = t.message
@@ -1038,11 +1073,25 @@ class SSH :
                         bridge?.outputLine(manager?.res?.getString(R.string.terminal_no_route))
                     }
                 }
+                if (t is UnknownHostException) {
+                    hostUnresolved = true
+                }
                 t = t.cause
             }
 
+            // Classify DNS failures (EAI_NODATA and friends) separately from
+            // generic I/O errors so stay-connected hosts keep retrying after
+            // a network switch leaves resolution temporarily broken. Dispatch
+            // before close() because close() fires connectionLost()
+            // synchronously, which would otherwise record IO_ERROR first.
+            // https://github.com/connectbot/connectbot/issues/2297
+            val reason = if (hostUnresolved) {
+                DisconnectReason.HOST_UNRESOLVED
+            } else {
+                DisconnectReason.IO_ERROR
+            }
+            onDisconnect(reason)
             close()
-            onDisconnect()
             return
         }
 

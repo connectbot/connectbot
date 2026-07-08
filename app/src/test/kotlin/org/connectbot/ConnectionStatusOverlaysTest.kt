@@ -105,14 +105,48 @@ class ConnectionStatusOverlaysTest {
 
     @Test
     fun disconnected_showsDisconnectReason() {
-        setOverlays(isDisconnected = true, disconnectReason = DisconnectReason.REMOTE_EOF)
+        setOverlays(isDisconnected = true, disconnectReason = DisconnectReason.IO_ERROR)
 
         composeTestRule
             .onNodeWithText(string(R.string.alert_disconnect_msg))
             .assertIsDisplayed()
         composeTestRule
+            .onNodeWithText(string(R.string.disconnect_reason_io_error))
+            .assertIsDisplayed()
+    }
+
+    @Test
+    fun disconnected_remoteEof_showsSessionEndedInsteadOfConnectionLost() {
+        // A clean remote exit (Ctrl+D) is presented as a session that ended,
+        // not a lost connection. https://github.com/connectbot/connectbot/issues/2214
+        setOverlays(isDisconnected = true, disconnectReason = DisconnectReason.REMOTE_EOF)
+
+        composeTestRule
+            .onNodeWithText(string(R.string.console_session_ended))
+            .assertIsDisplayed()
+        composeTestRule
             .onNodeWithText(string(R.string.disconnect_reason_remote_eof))
             .assertIsDisplayed()
+        composeTestRule
+            .onAllNodes(androidx.compose.ui.test.hasText(string(R.string.alert_disconnect_msg)))
+            .fetchSemanticsNodes()
+            .let { nodes -> assertEquals(0, nodes.size) }
+    }
+
+    @Test
+    fun disconnected_remoteEof_closeButton_invokesCallback() {
+        var closeRequested = false
+        setOverlays(
+            isDisconnected = true,
+            disconnectReason = DisconnectReason.REMOTE_EOF,
+            onClose = { closeRequested = true },
+        )
+
+        composeTestRule
+            .onNodeWithText(string(R.string.console_menu_close))
+            .performClick()
+
+        assertTrue(closeRequested)
     }
 
     @Test

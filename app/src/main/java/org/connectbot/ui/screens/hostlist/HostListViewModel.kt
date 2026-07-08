@@ -50,6 +50,13 @@ import javax.inject.Inject
 enum class ConnectionState {
     UNKNOWN,
     CONNECTED,
+
+    /**
+     * A bridge for the host still exists but its connection has dropped
+     * (failed, reconnecting, or in the network grace period). Unlike
+     * [DISCONNECTED], the session can still be disconnected individually.
+     */
+    FAILED,
     DISCONNECTED,
 }
 
@@ -218,7 +225,7 @@ class HostListViewModel @Inject constructor(
         if (bridge != null) {
             // Bridge exists but may be disconnected or in grace period
             return if (bridge.disconnected || bridge.isInGracePeriod()) {
-                ConnectionState.DISCONNECTED
+                ConnectionState.FAILED
             } else {
                 ConnectionState.CONNECTED
             }

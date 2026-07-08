@@ -161,7 +161,7 @@ class GeneratePubkeyViewModel @Inject constructor(
 
     fun updateUseBiometric(useBiometric: Boolean) {
         val currentState = _uiState.value
-        // Only allow biometric for RSA and EC keys
+        // Only allow biometric for key types the Android Keystore supports
         if (useBiometric && !currentState.keyTypeSupportsBiometric) {
             return
         }

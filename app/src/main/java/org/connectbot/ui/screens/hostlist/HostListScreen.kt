@@ -599,7 +599,9 @@ private fun HostListItem(
         ConnectionState.CONNECTED -> colorResource(R.color.host_green)
 
         // Green
-        ConnectionState.DISCONNECTED -> colorResource(R.color.host_red)
+        ConnectionState.FAILED,
+        ConnectionState.DISCONNECTED,
+        -> colorResource(R.color.host_red)
 
         // Red
         ConnectionState.UNKNOWN -> Color.Transparent
@@ -652,7 +654,9 @@ private fun HostListItem(
                             },
                             contentDescription = when (connectionState) {
                                 ConnectionState.CONNECTED -> stringResource(R.string.image_description_connected)
-                                ConnectionState.DISCONNECTED -> stringResource(R.string.image_description_disconnected)
+                                ConnectionState.FAILED,
+                                ConnectionState.DISCONNECTED,
+                                -> stringResource(R.string.image_description_disconnected)
                                 ConnectionState.UNKNOWN -> null
                             },
                             tint = Color.White,
@@ -674,13 +678,17 @@ private fun HostListItem(
                             Icon(
                                 imageVector = when (connectionState) {
                                     ConnectionState.CONNECTED -> Icons.Default.CheckCircle
-                                    ConnectionState.DISCONNECTED -> Icons.Default.Error
+                                    ConnectionState.FAILED,
+                                    ConnectionState.DISCONNECTED,
+                                    -> Icons.Default.Error
                                     ConnectionState.UNKNOWN -> Icons.Default.Computer // Unreachable
                                 },
                                 contentDescription = null,
                                 tint = when (connectionState) {
                                     ConnectionState.CONNECTED -> colorResource(R.color.host_green)
-                                    ConnectionState.DISCONNECTED -> colorResource(R.color.host_red)
+                                    ConnectionState.FAILED,
+                                    ConnectionState.DISCONNECTED,
+                                    -> colorResource(R.color.host_red)
                                     ConnectionState.UNKNOWN -> Color.Gray // Unreachable
                                 },
                                 modifier = Modifier.size(16.dp),
@@ -750,7 +758,11 @@ private fun HostListItem(
                                     showMenu = false
                                     showDisconnectDialog = true
                                 },
-                                enabled = connectionState == ConnectionState.CONNECTED,
+                                // FAILED bridges still hold a session that must be
+                                // closable individually, not only via Disconnect All.
+                                // https://github.com/connectbot/connectbot/issues/2297
+                                enabled = connectionState == ConnectionState.CONNECTED ||
+                                    connectionState == ConnectionState.FAILED,
                                 leadingIcon = {
                                     Icon(Icons.Default.LinkOff, null)
                                 },

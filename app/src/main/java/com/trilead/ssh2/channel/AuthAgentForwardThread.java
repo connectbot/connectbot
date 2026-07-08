@@ -57,7 +57,11 @@ import java.security.spec.RSAPublicKeySpec;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.connectbot.util.Ed25519SignatureProxy;
+
 import com.trilead.ssh2.AuthAgentCallback;
+import com.trilead.ssh2.auth.SignatureProxy;
+import com.trilead.ssh2.crypto.PublicKeyUtils;
 import com.trilead.ssh2.crypto.keys.Ed25519PrivateKey;
 import com.trilead.ssh2.crypto.keys.Ed25519PublicKey;
 import com.trilead.ssh2.log.Logger;
@@ -564,8 +568,14 @@ public class AuthAgentForwardThread extends Thread implements IChannelWorkerThre
 			} else if (pubKey instanceof ECPublicKey) {
 				return ECDSASHA2Verify.getVerifierForKey((ECPublicKey) pubKey)
 						.generateSignature(challenge, privKey, new SecureRandom());
-			} else if (pubKey instanceof Ed25519PublicKey || privKey instanceof Ed25519PrivateKey) {
-				return Ed25519Verify.get().generateSignature(challenge, privKey, new SecureRandom());
+			} else if (PublicKeyUtils.isEd25519Key(pubKey) || privKey instanceof Ed25519PrivateKey) {
+				if (privKey instanceof Ed25519PrivateKey || privKey.getEncoded() != null) {
+					return Ed25519Verify.get().generateSignature(challenge, privKey, new SecureRandom());
+				}
+				// Opaque (Android Keystore) Ed25519 private keys expose no seed,
+				// so sign through the JCA Signature API instead.
+				// https://github.com/connectbot/connectbot/issues/1974
+				return new Ed25519SignatureProxy(pubKey, privKey).sign(challenge, SignatureProxy.SHA512);
 			} else {
 				log.log(2, "Unsupported key type for agent signing: "
 						+ (pubKey == null ? "null" : pubKey.getAlgorithm()));

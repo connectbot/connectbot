@@ -130,10 +130,13 @@ class ConnectivityMonitor(
         connectivityManager.registerNetworkCallback(request, networkCallback)
         connectivityManager.registerDefaultNetworkCallback(defaultNetworkCallback)
 
-        // Initialize all active networks
-        for (network in connectivityManager.allNetworks) {
-            updateNetworkInfo(network)
-        }
+        // Only sync the active network here; enumerating allNetworks makes
+        // several synchronous Binder calls during startup, which can exhaust
+        // the Binder buffer on some devices (ENOSPC crash). The registered
+        // callbacks deliver onAvailable for every other matching network
+        // asynchronously, so nothing is lost.
+        // https://github.com/connectbot/connectbot/issues/2296
+        connectivityManager.activeNetwork?.let { updateNetworkInfo(it) }
     }
 
     /**

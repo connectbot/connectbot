@@ -42,6 +42,10 @@ object DisconnectPolicy {
      * AUTH_FAIL is excluded so a bad credential can't be retried into an
      * account lockout, and USER_REQUESTED respects an explicit disconnect;
      * for those the overlay's Reconnect button remains the explicit path.
+     * REMOTE_EOF is excluded because the remote end closed the session
+     * cleanly (e.g. the user exited the shell with Ctrl+D) — silently
+     * reopening a shell the user just ended would fight their intent.
+     * https://github.com/connectbot/connectbot/issues/2214
      */
     fun shouldReconnectOnOpen(
         isDisconnected: Boolean,
@@ -52,7 +56,8 @@ object DisconnectPolicy {
         !isConnecting &&
         !awaitingClose &&
         reason != DisconnectReason.AUTH_FAIL &&
-        reason != DisconnectReason.USER_REQUESTED
+        reason != DisconnectReason.USER_REQUESTED &&
+        reason != DisconnectReason.REMOTE_EOF
 
     /**
      * Delay before the next automatic reconnect attempt given how many
