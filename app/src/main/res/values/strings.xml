@@ -203,6 +203,8 @@
 
 	<!-- Alert dialog title shown when connection to the remote host is lost -->
 	<string name="alert_disconnect_msg">"Connection Lost"</string>
+	<!-- Overlay title when the session ended cleanly (remote shell exited, e.g. via Ctrl+D) -->
+	<string name="console_session_ended">"Session ended"</string>
 	<!-- Disconnect overlay detail: the server ended the session -->
 	<string name="disconnect_reason_remote_eof">"The remote host closed the connection"</string>
 	<!-- Disconnect overlay detail: a read or write on the connection failed -->

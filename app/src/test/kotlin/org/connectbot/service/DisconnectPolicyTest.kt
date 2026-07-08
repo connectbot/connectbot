@@ -225,8 +225,11 @@ class DisconnectPolicyTest {
     ) = DisconnectPolicy.shouldReconnectOnOpen(isDisconnected, isConnecting, awaitingClose, reason)
 
     @Test
-    fun reconnectOnOpen_remoteEof_reconnects() {
-        assertTrue(shouldReconnectOnOpen(DisconnectReason.REMOTE_EOF))
+    fun reconnectOnOpen_remoteEof_doesNotReconnect() {
+        // The remote end closed the session cleanly (e.g. Ctrl+D); reopening
+        // the console must not silently restart the shell the user just ended.
+        // https://github.com/connectbot/connectbot/issues/2214
+        assertFalse(shouldReconnectOnOpen(DisconnectReason.REMOTE_EOF))
     }
 
     @Test

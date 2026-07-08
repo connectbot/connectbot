@@ -708,8 +708,16 @@ internal fun ConnectionStatusOverlays(
                     )
                     .padding(16.dp),
             ) {
+                // A remote EOF means the session ended cleanly (e.g. the user
+                // exited the shell with Ctrl+D), so present a calm "session
+                // ended" state with Close as the primary action instead of an
+                // alarming connection-lost banner pushing a reconnect.
+                // https://github.com/connectbot/connectbot/issues/2214
+                val cleanClose = disconnectReason == DisconnectReason.REMOTE_EOF
                 Text(
-                    text = stringResource(R.string.alert_disconnect_msg),
+                    text = stringResource(
+                        if (cleanClose) R.string.console_session_ended else R.string.alert_disconnect_msg,
+                    ),
                     style = MaterialTheme.typography.bodyLarge,
                     color = terminalColors.overlayText,
                     modifier = Modifier.padding(bottom = 16.dp),
@@ -726,17 +734,32 @@ internal fun ConnectionStatusOverlays(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.End,
                 ) {
-                    TextButton(onClick = onClose) {
-                        Text(
-                            stringResource(R.string.console_menu_close),
-                            color = terminalColors.overlayText,
-                        )
-                    }
-                    Button(
-                        onClick = onReconnect,
-                        modifier = Modifier.padding(start = 8.dp),
-                    ) {
-                        Text(stringResource(R.string.console_menu_reconnect))
+                    if (cleanClose) {
+                        TextButton(onClick = onReconnect) {
+                            Text(
+                                stringResource(R.string.console_menu_reconnect),
+                                color = terminalColors.overlayText,
+                            )
+                        }
+                        Button(
+                            onClick = onClose,
+                            modifier = Modifier.padding(start = 8.dp),
+                        ) {
+                            Text(stringResource(R.string.console_menu_close))
+                        }
+                    } else {
+                        TextButton(onClick = onClose) {
+                            Text(
+                                stringResource(R.string.console_menu_close),
+                                color = terminalColors.overlayText,
+                            )
+                        }
+                        Button(
+                            onClick = onReconnect,
+                            modifier = Modifier.padding(start = 8.dp),
+                        ) {
+                            Text(stringResource(R.string.console_menu_reconnect))
+                        }
                     }
                 }
             }
