@@ -394,10 +394,13 @@ private fun TerminalKey(
                     },
                 )
             } else {
+                // Icon-only keys need a content description for screen readers;
+                // keys drawn with text are announced through their label.
                 KeyButton(
                     text = if (customIcon != null) null else spec.label ?: defaultSpecialLabel(spec.key),
                     icon = customIcon,
-                    contentDescription = specialContentDescription(spec.key),
+                    contentDescription = specialContentDescription(spec.key)
+                        ?: iconOnlyContentDescription(customIcon, spec.label ?: defaultSpecialLabel(spec.key)),
                     onClick = { onKeyAction(spec) },
                 )
             }
@@ -406,25 +409,31 @@ private fun TerminalKey(
         is KeySpec.Text -> KeyButton(
             text = if (customIcon != null) null else spec.label ?: spec.text,
             icon = customIcon,
-            contentDescription = null,
+            contentDescription = iconOnlyContentDescription(customIcon, spec.label ?: spec.text),
             onClick = { onKeyAction(spec) },
         )
 
         is KeySpec.Combo -> KeyButton(
             text = if (customIcon != null) null else spec.label ?: defaultComboLabel(spec),
             icon = customIcon,
-            contentDescription = null,
+            contentDescription = iconOnlyContentDescription(customIcon, spec.label ?: defaultComboLabel(spec)),
             onClick = { onKeyAction(spec) },
         )
 
         is KeySpec.FnGrid -> KeyButton(
             text = if (customIcon != null) null else spec.label ?: stringResource(R.string.button_key_fn),
             icon = customIcon,
-            contentDescription = null,
+            contentDescription = iconOnlyContentDescription(
+                customIcon,
+                spec.label ?: stringResource(R.string.button_key_fn),
+            ),
             onClick = { onKeyAction(spec) },
         )
     }
 }
+
+/** Content description for a key rendered as an icon: its label, or null when text is shown. */
+private fun iconOnlyContentDescription(icon: ImageVector?, label: String): String? = if (icon != null) label else null
 
 private fun ModifierState.levelFor(mod: ModifierKey): ModifierLevel = when (mod) {
     ModifierKey.CTRL -> ctrlState

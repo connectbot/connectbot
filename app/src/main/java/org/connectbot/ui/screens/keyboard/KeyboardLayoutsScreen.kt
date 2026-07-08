@@ -40,7 +40,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -66,7 +68,9 @@ fun KeyboardLayoutsScreen(
     val scope = rememberCoroutineScope()
 
     var renameTarget by remember { mutableStateOf<KeyboardLayoutListItem?>(null) }
+    var renameFailed by remember { mutableStateOf(false) }
     var deleteTarget by remember { mutableStateOf<KeyboardLayoutListItem?>(null) }
+    var creatingLayout by remember { mutableStateOf(false) }
 
     Scaffold(
         modifier = modifier,
@@ -86,7 +90,17 @@ fun KeyboardLayoutsScreen(
         floatingActionButton = {
             FloatingActionButton(
                 onClick = {
-                    scope.launch { onNavigateToEditor(viewModel.createLayout()) }
+                    // Guard against a double-tap creating two layouts.
+                    if (!creatingLayout) {
+                        creatingLayout = true
+                        scope.launch {
+                            try {
+                                onNavigateToEditor(viewModel.createLayout())
+                            } finally {
+                                creatingLayout = false
+                            }
+                        }
+                    }
                 },
                 modifier = Modifier.testTag("new_layout_fab"),
             ) {
@@ -106,7 +120,10 @@ fun KeyboardLayoutsScreen(
                     onSetDefault = { viewModel.setDefault(item.id) },
                     onEdit = { onNavigateToEditor(item.id) },
                     onDuplicate = { scope.launch { onNavigateToEditor(viewModel.duplicate(item)) } },
-                    onRename = { renameTarget = item },
+                    onRename = {
+                        renameFailed = false
+                        renameTarget = item
+                    },
                     onDelete = { deleteTarget = item },
                 )
             }
@@ -117,17 +134,29 @@ fun KeyboardLayoutsScreen(
         LayoutNameDialog(
             title = stringResource(R.string.keyboard_layouts_rename),
             initialName = target.name,
+            errorText = if (renameFailed) stringResource(R.string.keyboard_layouts_name_taken) else null,
             onConfirm = { name ->
-                viewModel.rename(target.id, name)
-                renameTarget = null
+                scope.launch {
+                    if (viewModel.rename(target.id, name)) {
+                        renameTarget = null
+                    } else {
+                        // Keep the dialog open and flag the conflicting name.
+                        renameFailed = true
+                    }
+                }
             },
             onDismiss = { renameTarget = null },
         )
     }
 
     deleteTarget?.let { target ->
+        var hostsUsing by remember(target.id) { mutableIntStateOf(0) }
+        LaunchedEffect(target.id) {
+            hostsUsing = viewModel.hostsUsing(target.id)
+        }
         DeleteLayoutDialog(
             name = target.name,
+            hostsUsing = hostsUsing,
             onConfirm = {
                 viewModel.delete(target.id)
                 deleteTarget = null

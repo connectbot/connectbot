@@ -97,6 +97,21 @@ class KeyboardLayoutJsonTest {
     }
 
     @Test
+    fun dropsRowsBeyondMax() {
+        val json = """
+            {"version":1,"rows":[
+              [{"type":"special","key":"ESC"}],
+              [{"type":"special","key":"TAB"}],
+              [{"type":"special","key":"ENTER"}]
+            ]}
+        """.trimIndent()
+        val decoded = KeyboardLayoutJson.decode(json)!!
+        assertEquals(KeyboardLayoutSpec.MAX_ROWS, decoded.rows.size)
+        assertEquals(listOf<KeySpec>(KeySpec.Special(SpecialKey.ESC)), decoded.rows[0])
+        assertEquals(listOf<KeySpec>(KeySpec.Special(SpecialKey.TAB)), decoded.rows[1])
+    }
+
+    @Test
     fun returnsNullForMalformedJson() {
         assertNull(KeyboardLayoutJson.decode("not json"))
         assertNull(KeyboardLayoutJson.decode("{}"))

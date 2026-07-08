@@ -125,7 +125,7 @@ class KeyboardLayoutEditorViewModel @Inject constructor(
 
     fun addSecondRow() {
         val rows = _uiState.value.rows
-        if (rows.size < 2) persist(rows + listOf(emptyList()))
+        if (rows.size < KeyboardLayoutSpec.MAX_ROWS) persist(rows + listOf(emptyList()))
     }
 
     /** Remove the second row, merging its keys back into the first. */

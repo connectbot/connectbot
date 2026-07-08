@@ -19,6 +19,7 @@ package org.connectbot.ui.screens.keyboard
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.database.sqlite.SQLiteConstraintException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -31,6 +32,7 @@ import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.KeyboardLayoutRepository
 import org.connectbot.keyboard.DefaultKeyboardLayouts
+import org.connectbot.keyboard.KeyboardLayoutSpec
 import org.connectbot.util.PreferenceConstants
 import javax.inject.Inject
 
@@ -70,8 +72,16 @@ class KeyboardLayoutsViewModel @Inject constructor(
     }
 
     private fun builtInItems() = listOf(
-        KeyboardLayoutListItem(DefaultKeyboardLayouts.DEFAULT_ID, BUILT_IN_DEFAULT_NAME, isBuiltIn = true),
-        KeyboardLayoutListItem(DefaultKeyboardLayouts.CLASSIC_ID, BUILT_IN_CLASSIC_NAME, isBuiltIn = true),
+        KeyboardLayoutListItem(
+            DefaultKeyboardLayouts.DEFAULT_ID,
+            context.getString(R.string.keyboard_layout_name_default),
+            isBuiltIn = true,
+        ),
+        KeyboardLayoutListItem(
+            DefaultKeyboardLayouts.CLASSIC_ID,
+            context.getString(R.string.keyboard_layout_name_classic),
+            isBuiltIn = true,
+        ),
     )
 
     private fun readDefaultId(): Long = prefs.getLong(PreferenceConstants.KEYBOARD_LAYOUT_ID, DefaultKeyboardLayouts.DEFAULT_ID)
@@ -82,24 +92,30 @@ class KeyboardLayoutsViewModel @Inject constructor(
     }
 
     /** Create an empty-ish new layout (seeded from the built-in default). Returns its id. */
-    suspend fun createLayout(): Long {
-        val name = uniqueName(context.getString(R.string.keyboard_layouts_new))
-        return repository.create(name, DefaultKeyboardLayouts.default)
-    }
+    suspend fun createLayout(): Long = createWithUniqueName(
+        context.getString(R.string.keyboard_layouts_new),
+        DefaultKeyboardLayouts.default,
+    )
 
     /** Duplicate a built-in or custom layout into a new editable row. Returns its id. */
-    suspend fun duplicate(item: KeyboardLayoutListItem): Long {
-        val spec = repository.resolveSpec(item.id)
-        val name = uniqueName(context.getString(R.string.keyboard_layouts_duplicate_name, item.name))
-        return repository.duplicate(name, spec)
-    }
+    suspend fun duplicate(item: KeyboardLayoutListItem): Long = createWithUniqueName(
+        context.getString(R.string.keyboard_layouts_duplicate_name, item.name),
+        repository.resolveSpec(item.id),
+    )
 
-    fun rename(layoutId: Long, newName: String) {
-        viewModelScope.launch {
-            val trimmed = newName.trim()
-            if (!repository.nameExists(trimmed, excludeLayoutId = layoutId)) {
-                repository.rename(layoutId, trimmed)
-            }
+    /**
+     * Rename a layout. Returns false (leaving the layout unchanged) if the new
+     * name is already taken.
+     */
+    suspend fun rename(layoutId: Long, newName: String): Boolean {
+        val trimmed = newName.trim()
+        if (repository.nameExists(trimmed, excludeLayoutId = layoutId)) return false
+        return try {
+            repository.rename(layoutId, trimmed)
+            true
+        } catch (_: SQLiteConstraintException) {
+            // A concurrent writer took the name between the check and the update.
+            false
         }
     }
 
@@ -113,20 +129,28 @@ class KeyboardLayoutsViewModel @Inject constructor(
         }
     }
 
-    suspend fun nameExists(name: String): Boolean = repository.nameExists(name.trim())
-
+    /** Number of hosts whose layout override points at [layoutId]. */
     suspend fun hostsUsing(layoutId: Long): Int = repository.countHostsUsing(layoutId)
+
+    /**
+     * Insert a layout under the first free "base", "base 2", ... name. The
+     * unique-name check and the insert are not atomic, so retry from fresh
+     * database state if a concurrent writer wins the name first.
+     */
+    private suspend fun createWithUniqueName(base: String, spec: KeyboardLayoutSpec): Long {
+        while (true) {
+            try {
+                return repository.create(uniqueName(base), spec)
+            } catch (_: SQLiteConstraintException) {
+                // Name taken since the check; recompute against current rows.
+            }
+        }
+    }
 
     private suspend fun uniqueName(base: String): String {
         if (!repository.nameExists(base)) return base
         var n = 2
         while (repository.nameExists("$base $n")) n++
         return "$base $n"
-    }
-
-    companion object {
-        // Built-in names are user-facing but not localized here to keep them stable ids in the UI.
-        const val BUILT_IN_DEFAULT_NAME = "Default"
-        const val BUILT_IN_CLASSIC_NAME = "Classic"
     }
 }

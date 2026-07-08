@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import org.connectbot.R
 
@@ -36,6 +37,7 @@ fun LayoutNameDialog(
     initialName: String,
     onConfirm: (String) -> Unit,
     onDismiss: () -> Unit,
+    errorText: String? = null,
 ) {
     var name by remember { mutableStateOf(initialName) }
     AlertDialog(
@@ -46,6 +48,8 @@ fun LayoutNameDialog(
                 value = name,
                 onValueChange = { name = it },
                 singleLine = true,
+                isError = errorText != null,
+                supportingText = errorText?.let { { Text(it) } },
             )
         },
         confirmButton = {
@@ -67,13 +71,21 @@ fun LayoutNameDialog(
 @Composable
 fun DeleteLayoutDialog(
     name: String,
+    hostsUsing: Int,
     onConfirm: () -> Unit,
     onDismiss: () -> Unit,
 ) {
+    val message = buildString {
+        append(stringResource(R.string.keyboard_layouts_delete_confirm, name))
+        if (hostsUsing > 0) {
+            append(' ')
+            append(pluralStringResource(R.plurals.keyboard_layouts_delete_hosts_using, hostsUsing, hostsUsing))
+        }
+    }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.keyboard_layouts_delete)) },
-        text = { Text(stringResource(R.string.keyboard_layouts_delete_confirm, name)) },
+        text = { Text(message) },
         confirmButton = {
             TextButton(onClick = onConfirm) {
                 Text(stringResource(R.string.keyboard_layouts_delete))
