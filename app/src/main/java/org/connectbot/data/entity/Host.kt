@@ -129,6 +129,14 @@ data class Host(
      */
     @ColumnInfo(name = "tmux_offer_dismissed", defaultValue = "0")
     val tmuxOfferDismissed: Boolean = false,
+
+    /**
+     * Whether to enable IME keyboard suggestions (autocomplete/predictive text)
+     * for this host by activating the terminal's compose mode on connect.
+     * Off by default so passwords are not fed to the keyboard's suggestion engine.
+     */
+    @ColumnInfo(name = "keyboard_suggestions", defaultValue = "0")
+    val keyboardSuggestions: Boolean = false,
 ) {
     /**
      * Check if this host is temporary (not saved to database).

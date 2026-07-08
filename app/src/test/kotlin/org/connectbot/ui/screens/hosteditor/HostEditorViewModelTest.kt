@@ -444,6 +444,42 @@ class HostEditorViewModelTest {
     }
 
     @Test
+    fun testKeyboardSuggestions_loadsAndSaves() = runTest {
+        val hostId = 42L
+        val existingHost = Host(
+            id = hostId,
+            nickname = "test-user@10.0.0.1",
+            protocol = "ssh",
+            username = "test-user",
+            hostname = "10.0.0.1",
+            port = 22,
+            keyboardSuggestions = true,
+        )
+        `when`(repository.findHostById(hostId)).thenReturn(existingHost)
+        `when`(securePasswordStorage.hasPassword(hostId)).thenReturn(false)
+        `when`(repository.saveHost(any(Host::class.java) ?: Host())).thenAnswer { invocation ->
+            invocation.arguments[0] as Host
+        }
+
+        val viewModel = createViewModel(hostId)
+        advanceUntilIdle()
+
+        // Loaded from the host entity
+        assertTrue(viewModel.uiState.value.keyboardSuggestions)
+
+        viewModel.updateKeyboardSuggestions(false)
+        advanceUntilIdle()
+        assertFalse(viewModel.uiState.value.keyboardSuggestions)
+
+        viewModel.saveHost(useExpandedMode = true)
+        advanceUntilIdle()
+
+        val hostCaptor = ArgumentCaptor.forClass(Host::class.java)
+        verify(repository).saveHost(hostCaptor.capture() ?: Host())
+        assertFalse(hostCaptor.value.keyboardSuggestions)
+    }
+
+    @Test
     fun testLoadExistingHost_matchingNickname_initializesQuickConnectToNickname() = runTest {
         val hostId = 42L
         val existingHost = Host(

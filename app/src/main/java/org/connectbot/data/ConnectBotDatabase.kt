@@ -65,6 +65,8 @@ import org.connectbot.data.entity.Snippet
  * - Version 10: Added tmux_mode, tmux_last_target, and tmux_offer_dismissed
  *   to hosts for tmux integration (AutoMigration)
  * - Version 11: Added snippets table for reusable command snippets (AutoMigration)
+ * - Version 12: Added keyboard_suggestions to hosts for per-host IME
+ *   suggestions (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -82,7 +84,7 @@ import org.connectbot.data.entity.Snippet
         Profile::class,
         Snippet::class,
     ],
-    version = 11,
+    version = 12,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -94,6 +96,7 @@ import org.connectbot.data.entity.Snippet
         AutoMigration(from = 8, to = 9),
         AutoMigration(from = 9, to = 10),
         AutoMigration(from = 10, to = 11),
+        AutoMigration(from = 11, to = 12),
     ],
 )
 @TypeConverters(Converters::class)

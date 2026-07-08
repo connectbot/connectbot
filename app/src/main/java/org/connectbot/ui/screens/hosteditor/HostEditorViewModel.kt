@@ -56,6 +56,7 @@ data class HostEditorUiState(
     val tmuxEnabled: Boolean = true,
     val stayConnected: Boolean = false,
     val quickDisconnect: Boolean = false,
+    val keyboardSuggestions: Boolean = false,
     val postLogin: String = "",
     val jumpHostId: Long? = null,
     val availableJumpHosts: List<Host> = emptyList(),
@@ -206,6 +207,7 @@ class HostEditorViewModel @Inject constructor(
                             tmuxEnabled = host.tmuxMode != Host.TMUX_MODE_OFF,
                             stayConnected = host.stayConnected,
                             quickDisconnect = host.quickDisconnect,
+                            keyboardSuggestions = host.keyboardSuggestions,
                             postLogin = host.postLogin ?: "",
                             jumpHostId = host.jumpHostId,
                             ipVersion = host.ipVersion,
@@ -347,6 +349,10 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(quickDisconnect = value) }
     }
 
+    fun updateKeyboardSuggestions(value: Boolean) {
+        _uiState.update { it.copy(keyboardSuggestions = value) }
+    }
+
     fun updatePostLogin(value: String) {
         _uiState.update { it.copy(postLogin = value) }
     }
@@ -403,6 +409,7 @@ class HostEditorViewModel @Inject constructor(
                     tmuxMode = if (state.tmuxEnabled) Host.TMUX_MODE_AUTO else Host.TMUX_MODE_OFF,
                     stayConnected = state.stayConnected,
                     quickDisconnect = state.quickDisconnect,
+                    keyboardSuggestions = state.keyboardSuggestions,
                     postLogin = state.postLogin.ifBlank { null },
                     lastConnect = existingHost?.lastConnect ?: System.currentTimeMillis(),
                     hostKeyAlgo = existingHost?.hostKeyAlgo,

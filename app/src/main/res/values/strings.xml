@@ -523,6 +523,11 @@
 	<!-- Summary explaining that the console will close automatically without prompting when connection ends -->
 	<string name="hostpref_quickdisconnect_summary">"Close immediately after remote disconnect without prompting."</string>
 
+	<!-- Setting for enabling IME keyboard suggestions (autocomplete) on this host -->
+	<string name="hostpref_keyboard_suggestions_title">"Keyboard suggestions"</string>
+	<!-- Summary warning that suggestions expose typed text (including passwords) to the keyboard app -->
+	<string name="hostpref_keyboard_suggestions_summary">"Enable autocomplete and predictive text for this host. Typed text, including passwords, is shared with your keyboard app."</string>
+
 	<!-- Setting for what key code is sent to the server when DEL key is pressed. -->
 	<string name="hostpref_delkey_title">"DEL Key"</string>
 

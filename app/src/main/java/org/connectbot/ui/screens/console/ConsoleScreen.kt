@@ -148,6 +148,7 @@ import org.connectbot.service.PromptRequest
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.tmux.TmuxAttachState
 import org.connectbot.service.tmux.TmuxPaneTerminal
+import org.connectbot.terminal.ComposeController
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.SelectionController
 import org.connectbot.terminal.Terminal
@@ -548,6 +549,17 @@ private fun ConsoleTerminalPage(
         }
 
         val tmuxEmulator = tmuxPane?.emulator
+        var composeController by remember { mutableStateOf<ComposeController?>(null) }
+
+        // Per-host keyboard suggestions (issue 2015): activate the IME compose
+        // mode once the terminal provides its controller.
+        LaunchedEffect(composeController, bridge.host.keyboardSuggestions) {
+            val controller = composeController ?: return@LaunchedEffect
+            if (bridge.host.keyboardSuggestions && !controller.isComposeModeActive) {
+                controller.startComposeMode()
+            }
+        }
+
         Terminal(
             terminalEmulator = tmuxEmulator ?: bridge.terminalEmulator,
             modifier = Modifier
@@ -568,6 +580,9 @@ private fun ConsoleTerminalPage(
                 if (isActive) {
                     onSelectionControllerChange(controller)
                 }
+            },
+            onComposeControllerAvailable = { controller ->
+                composeController = controller
             },
             onTerminalTap = { handleTerminalInteraction() },
             onImeVisibilityChanged = { visible ->

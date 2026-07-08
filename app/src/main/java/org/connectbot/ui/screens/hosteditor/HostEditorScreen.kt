@@ -106,6 +106,7 @@ fun HostEditorScreen(
         onTmuxEnabledChange = viewModel::updateTmuxEnabled,
         onStayConnectedChange = viewModel::updateStayConnected,
         onQuickDisconnectChange = viewModel::updateQuickDisconnect,
+        onKeyboardSuggestionsChange = viewModel::updateKeyboardSuggestions,
         onPostLoginChange = viewModel::updatePostLogin,
         onJumpHostChange = viewModel::updateJumpHostId,
         onIpVersionChange = viewModel::updateIpVersion,
@@ -137,6 +138,7 @@ fun HostEditorScreenContent(
     onTmuxEnabledChange: (Boolean) -> Unit,
     onStayConnectedChange: (Boolean) -> Unit,
     onQuickDisconnectChange: (Boolean) -> Unit,
+    onKeyboardSuggestionsChange: (Boolean) -> Unit,
     onPostLoginChange: (String) -> Unit,
     onJumpHostChange: (Long?) -> Unit,
     onIpVersionChange: (String) -> Unit,
@@ -481,6 +483,15 @@ fun HostEditorScreenContent(
                 summary = stringResource(R.string.hostpref_quickdisconnect_summary),
                 checked = uiState.quickDisconnect,
                 onCheckedChange = onQuickDisconnectChange,
+            )
+
+            // Keyboard suggestions (IME compose mode)
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+            SwitchPreference(
+                title = stringResource(R.string.hostpref_keyboard_suggestions_title),
+                summary = stringResource(R.string.hostpref_keyboard_suggestions_summary),
+                checked = uiState.keyboardSuggestions,
+                onCheckedChange = onKeyboardSuggestionsChange,
             )
 
             // Post-login automation
@@ -1287,6 +1298,7 @@ private fun HostEditorScreenPreview() {
         onTmuxEnabledChange = {},
             onStayConnectedChange = {},
             onQuickDisconnectChange = {},
+            onKeyboardSuggestionsChange = {},
             onPostLoginChange = {},
             onJumpHostChange = {},
             onIpVersionChange = {},
