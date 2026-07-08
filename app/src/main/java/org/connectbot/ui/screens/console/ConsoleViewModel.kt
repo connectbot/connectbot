@@ -30,12 +30,16 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
+import org.connectbot.data.KeyboardLayoutRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.keyboard.DefaultKeyboardLayouts
+import org.connectbot.keyboard.KeyboardKeySize
+import org.connectbot.keyboard.KeyboardLayoutSpec
 import org.connectbot.service.DisconnectPolicy
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
@@ -83,8 +87,22 @@ class ConsoleViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val dispatchers: CoroutineDispatchers,
     private val prefs: SharedPreferences,
+    private val keyboardLayoutRepository: KeyboardLayoutRepository,
     private val notificationPermissionHelper: NotificationPermissionHelper,
 ) : ViewModel() {
+
+    /** Resolve the effective keys-bar layout for a host (per-host override or global default). */
+    fun keyboardLayoutFlow(host: Host): kotlinx.coroutines.flow.Flow<KeyboardLayoutSpec> {
+        val id = host.keyboardLayoutId
+            ?: prefs.getLong(PreferenceConstants.KEYBOARD_LAYOUT_ID, DefaultKeyboardLayouts.DEFAULT_ID)
+        return keyboardLayoutRepository.observeResolvedSpec(id)
+    }
+
+    /** Global key-size preference for the keys bar. */
+    val keyboardKeySize: KeyboardKeySize
+        get() = KeyboardKeySize.fromPreferenceValue(
+            prefs.getString(PreferenceConstants.KEYBOARD_KEY_SIZE, PreferenceConstants.KEYBOARD_KEY_SIZE_DEFAULT),
+        )
     private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
 
     /** "sessionId|windowId" from a tmux bell notification deep link. */

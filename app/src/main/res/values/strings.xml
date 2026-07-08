@@ -583,6 +583,14 @@
 	<!-- Summary explaining that the console will close automatically without prompting when connection ends -->
 	<string name="hostpref_quickdisconnect_summary">"Close immediately after remote disconnect without prompting."</string>
 
+	<!-- Per-host special-keys layout override -->
+	<string name="hostpref_keyboard_layout_title">"Special keys layout"</string>
+	<string name="hostpref_keyboard_layout_summary">"Which keys appear above the keyboard for this host"</string>
+	<string name="hostpref_keyboard_layout_app_default">"App default"</string>
+	<!-- Built-in layout names shown in pickers -->
+	<string name="keyboard_layout_builtin_default">"Default (built-in)"</string>
+	<string name="keyboard_layout_builtin_classic">"Classic (built-in)"</string>
+
 	<!-- Setting for enabling IME keyboard suggestions (autocomplete) on this host -->
 	<string name="hostpref_keyboard_suggestions_title">"Keyboard suggestions"</string>
 	<!-- Summary warning that suggestions expose typed text (including passwords) to the keyboard app -->

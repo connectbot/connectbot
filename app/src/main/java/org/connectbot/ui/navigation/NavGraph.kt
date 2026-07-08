@@ -149,6 +149,9 @@ fun ConnectBotNavHost(
                 onNavigateToSftp = { hostIdForSftp ->
                     navController.navigateSafely("${NavDestinations.SFTP}/$hostIdForSftp")
                 },
+                onNavigateToKeyboardLayouts = {
+                    navController.navigateSafely(NavDestinations.KEYBOARD_LAYOUTS)
+                },
             )
         }
 

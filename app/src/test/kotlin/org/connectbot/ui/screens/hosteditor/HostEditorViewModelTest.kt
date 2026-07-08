@@ -53,6 +53,7 @@ class HostEditorViewModelTest {
     private lateinit var repository: HostRepository
     private lateinit var pubkeyRepository: PubkeyRepository
     private lateinit var profileRepository: ProfileRepository
+    private lateinit var keyboardLayoutRepository: org.connectbot.data.KeyboardLayoutRepository
     private lateinit var prefs: SharedPreferences
     private lateinit var securePasswordStorage: SecurePasswordStorage
 
@@ -64,6 +65,7 @@ class HostEditorViewModelTest {
         repository = mock(HostRepository::class.java)
         pubkeyRepository = mock(PubkeyRepository::class.java)
         profileRepository = mock(ProfileRepository::class.java)
+        keyboardLayoutRepository = mock(org.connectbot.data.KeyboardLayoutRepository::class.java)
         prefs = mock(SharedPreferences::class.java)
         securePasswordStorage = mock(SecurePasswordStorage::class.java)
 
@@ -71,6 +73,7 @@ class HostEditorViewModelTest {
         `when`(pubkeyRepository.observeAll()).thenReturn(flowOf(emptyList()))
         `when`(repository.observeSshHosts()).thenReturn(flowOf(emptyList()))
         `when`(profileRepository.observeAll()).thenReturn(flowOf(emptyList()))
+        `when`(keyboardLayoutRepository.observeAll()).thenReturn(flowOf(emptyList()))
         `when`(prefs.getLong("defaultProfileId", 0L)).thenReturn(0L)
     }
 
@@ -86,6 +89,7 @@ class HostEditorViewModelTest {
             repository = repository,
             pubkeyRepository = pubkeyRepository,
             profileRepository = profileRepository,
+            keyboardLayoutRepository = keyboardLayoutRepository,
             prefs = prefs,
             securePasswordStorage = securePasswordStorage,
         )

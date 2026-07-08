@@ -67,8 +67,10 @@ import org.connectbot.BuildConfig
 import org.connectbot.R
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.KeyboardLayout
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.keyboard.DefaultKeyboardLayouts
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.common.getIconColors
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
@@ -107,6 +109,7 @@ fun HostEditorScreen(
         onStayConnectedChange = viewModel::updateStayConnected,
         onQuickDisconnectChange = viewModel::updateQuickDisconnect,
         onKeyboardSuggestionsChange = viewModel::updateKeyboardSuggestions,
+        onKeyboardLayoutChange = viewModel::updateKeyboardLayoutId,
         onPostLoginChange = viewModel::updatePostLogin,
         onJumpHostChange = viewModel::updateJumpHostId,
         onIpVersionChange = viewModel::updateIpVersion,
@@ -139,6 +142,7 @@ fun HostEditorScreenContent(
     onStayConnectedChange: (Boolean) -> Unit,
     onQuickDisconnectChange: (Boolean) -> Unit,
     onKeyboardSuggestionsChange: (Boolean) -> Unit,
+    onKeyboardLayoutChange: (Long?) -> Unit,
     onPostLoginChange: (String) -> Unit,
     onJumpHostChange: (Long?) -> Unit,
     onIpVersionChange: (String) -> Unit,
@@ -492,6 +496,14 @@ fun HostEditorScreenContent(
                 summary = stringResource(R.string.hostpref_keyboard_suggestions_summary),
                 checked = uiState.keyboardSuggestions,
                 onCheckedChange = onKeyboardSuggestionsChange,
+            )
+
+            // Special-keys bar layout override
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+            KeyboardLayoutSelector(
+                keyboardLayoutId = uiState.keyboardLayoutId,
+                availableLayouts = uiState.availableKeyboardLayouts,
+                onLayoutSelect = onKeyboardLayoutChange,
             )
 
             // Post-login automation
@@ -936,6 +948,92 @@ private fun ProfileSelector(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+private fun KeyboardLayoutSelector(
+    keyboardLayoutId: Long?,
+    availableLayouts: List<KeyboardLayout>,
+    onLayoutSelect: (Long?) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var expanded by remember { mutableStateOf(false) }
+
+    val selectedLabel = when (keyboardLayoutId) {
+        null -> stringResource(R.string.hostpref_keyboard_layout_app_default)
+
+        DefaultKeyboardLayouts.DEFAULT_ID -> stringResource(R.string.keyboard_layout_builtin_default)
+
+        DefaultKeyboardLayouts.CLASSIC_ID -> stringResource(R.string.keyboard_layout_builtin_classic)
+
+        else -> availableLayouts.find { it.id == keyboardLayoutId }?.name
+            ?: stringResource(R.string.hostpref_keyboard_layout_app_default)
+    }
+
+    Column(modifier = modifier) {
+        Text(
+            text = stringResource(R.string.hostpref_keyboard_layout_title),
+            style = MaterialTheme.typography.titleMedium,
+            modifier = Modifier.padding(bottom = 4.dp),
+        )
+        Text(
+            text = stringResource(R.string.hostpref_keyboard_layout_summary),
+            style = MaterialTheme.typography.bodySmall,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.padding(bottom = 8.dp),
+        )
+
+        ExposedDropdownMenuBox(
+            expanded = expanded,
+            onExpandedChange = { expanded = it },
+        ) {
+            OutlinedTextField(
+                value = selectedLabel,
+                onValueChange = {},
+                readOnly = true,
+                singleLine = true,
+                trailingIcon = {
+                    ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+                },
+                colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                modifier = Modifier
+                    .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                    .fillMaxWidth(),
+            )
+
+            ExposedDropdownMenu(
+                expanded = expanded,
+                onDismissRequest = { expanded = false },
+            ) {
+                val fixed = listOf(
+                    null to stringResource(R.string.hostpref_keyboard_layout_app_default),
+                    DefaultKeyboardLayouts.DEFAULT_ID to stringResource(R.string.keyboard_layout_builtin_default),
+                    DefaultKeyboardLayouts.CLASSIC_ID to stringResource(R.string.keyboard_layout_builtin_classic),
+                )
+                fixed.forEach { (id, label) ->
+                    DropdownMenuItem(
+                        text = { Text(label) },
+                        onClick = {
+                            onLayoutSelect(id)
+                            expanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                    )
+                }
+                availableLayouts.forEach { layout ->
+                    DropdownMenuItem(
+                        text = { Text(layout.name) },
+                        onClick = {
+                            onLayoutSelect(layout.id)
+                            expanded = false
+                        },
+                        contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                    )
+                }
+            }
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
 private fun IpVersionSelector(
     ipVersion: String,
     hostname: String,
@@ -1299,6 +1397,7 @@ private fun HostEditorScreenPreview() {
             onStayConnectedChange = {},
             onQuickDisconnectChange = {},
             onKeyboardSuggestionsChange = {},
+            onKeyboardLayoutChange = {},
             onPostLoginChange = {},
             onJumpHostChange = {},
             onIpVersionChange = {},

@@ -144,6 +144,7 @@ import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.keyboard.DefaultKeyboardLayouts
 import org.connectbot.keyboard.KeyboardKeySize
+import org.connectbot.keyboard.KeyboardLayoutSpec
 import org.connectbot.service.AuthBanner
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.PromptRequest
@@ -503,6 +504,16 @@ private fun disconnectReasonText(reason: DisconnectReason): String? = when (reas
     DisconnectReason.USER_REQUESTED, DisconnectReason.UNKNOWN -> null
 }
 
+/** Resolve a host's effective keys-bar layout (per-host override or global default). */
+@Composable
+private fun rememberResolvedKeyboardLayout(
+    host: Host,
+    viewModel: ConsoleViewModel,
+): KeyboardLayoutSpec {
+    val flow = remember(host.id, host.keyboardLayoutId) { viewModel.keyboardLayoutFlow(host) }
+    return flow.collectAsState(initial = DefaultKeyboardLayouts.default).value
+}
+
 @Composable
 private fun ConsoleTerminalPage(
     bridge: TerminalBridge,
@@ -529,6 +540,9 @@ private fun ConsoleTerminalPage(
     snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     terminalModifier: Modifier = Modifier,
+    keyboardLayout: KeyboardLayoutSpec = DefaultKeyboardLayouts.default,
+    keyboardKeySize: KeyboardKeySize = KeyboardKeySize.MEDIUM,
+    onNavigateToKeyboardLayouts: () -> Unit = {},
     /** When set, the page renders this tmux pane instead of the host shell. */
     tmuxPane: TmuxPaneTerminal? = null,
     /** Server-side pane grid (rows, cols); termlib fits the font to it. */
@@ -552,16 +566,7 @@ private fun ConsoleTerminalPage(
 
         val tmuxEmulator = tmuxPane?.emulator
 
-        // Keys-bar layout and its terminal-focused I/O paths. The resolved
-        // per-host/global layout is wired in later; for now the built-in default.
-        val keyboardLayout = DefaultKeyboardLayouts.default
-        val keyboardContext = LocalContext.current
-        val keyboardKeySize = remember {
-            KeyboardKeySize.fromPreferenceValue(
-                PreferenceManager.getDefaultSharedPreferences(keyboardContext)
-                    .getString(PreferenceConstants.KEYBOARD_KEY_SIZE, PreferenceConstants.KEYBOARD_KEY_SIZE_DEFAULT),
-            )
-        }
+        // Keys-bar terminal-focused I/O paths (layout/size resolved by the caller).
         val keyboardKeyHandler = tmuxPane?.keyHandler ?: bridge.keyHandler
         val injectKeyboardText: (String) -> Unit = { text ->
             if (tmuxPane != null) tmuxPane.paste(text) else bridge.injectString(text)
@@ -646,6 +651,7 @@ private fun ConsoleTerminalPage(
                     },
                     onOpenTextInput = onTextInputRequest,
                     onOpenSnippets = onSnippetsRequest,
+                    onLongPress = onNavigateToKeyboardLayouts,
                     onScrollInProgressChange = onKeyboardScrollInProgressChange,
                     imeVisible = imeVisible,
                     playAnimation = !hasPlayedKeyboardAnimation && !einkMode,
@@ -818,6 +824,7 @@ fun ConsoleScreen(
     modifier: Modifier = Modifier,
     onNavigateToSettings: () -> Unit = {},
     onNavigateToSftp: (Long) -> Unit = {},
+    onNavigateToKeyboardLayouts: () -> Unit = {},
     viewModel: ConsoleViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -1420,6 +1427,9 @@ fun ConsoleScreen(
                                     snackbarHostState = snackbarHostState,
                                     modifier = Modifier.fillMaxSize(),
                                     terminalModifier = pageGestureModifier.then(tmuxSwipeModifier),
+                                    keyboardLayout = rememberResolvedKeyboardLayout(bridge.host, viewModel),
+                                    keyboardKeySize = viewModel.keyboardKeySize,
+                                    onNavigateToKeyboardLayouts = onNavigateToKeyboardLayouts,
                                     tmuxPane = paneTerminal,
                                     tmuxForcedSize = pane?.let { Pair(it.height, it.width) },
                                 )
@@ -1468,6 +1478,9 @@ fun ConsoleScreen(
                                     snackbarHostState = snackbarHostState,
                                     modifier = Modifier.fillMaxSize(),
                                     terminalModifier = terminalModifier,
+                                    keyboardLayout = rememberResolvedKeyboardLayout(bridge.host, viewModel),
+                                    keyboardKeySize = viewModel.keyboardKeySize,
+                                    onNavigateToKeyboardLayouts = onNavigateToKeyboardLayouts,
                                 )
                             }
                         }
