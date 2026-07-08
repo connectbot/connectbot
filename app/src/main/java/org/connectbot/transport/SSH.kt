@@ -674,23 +674,27 @@ class SSH :
         PublicKeyUtils.isEd25519Key(pair.public) && pair.private !is Ed25519PrivateKey
 
     @Throws(IOException::class)
+    private fun authenticateWithPublicKeyCompat(connection: Connection, username: String, pair: KeyPair): Boolean =
+        if (needsEd25519Proxy(pair)) {
+            // sshlib's Ed25519 signer needs the raw private key seed,
+            // which an opaque (Android Keystore) key never exposes; sign
+            // through the JCA Signature API instead.
+            // https://github.com/connectbot/connectbot/issues/1974
+            connection.authenticateWithPublicKey(
+                username,
+                Ed25519SignatureProxy(pair.public, pair.private),
+            )
+        } else {
+            RsaSha2Compat.withRsaSha2Preference(connection, pair) {
+                connection.authenticateWithPublicKey(username, pair)
+            }
+        }
+
+    @Throws(IOException::class)
     private fun tryPublicKey(username: String, keyNickname: String, pair: KeyPair): Boolean = try {
         val currentConnection = connection
         val success = currentConnection != null &&
-            if (needsEd25519Proxy(pair)) {
-                // sshlib's Ed25519 signer needs the raw private key seed,
-                // which an opaque (Android Keystore) key never exposes; sign
-                // through the JCA Signature API instead.
-                // https://github.com/connectbot/connectbot/issues/1974
-                currentConnection.authenticateWithPublicKey(
-                    username,
-                    Ed25519SignatureProxy(pair.public, pair.private),
-                )
-            } else {
-                RsaSha2Compat.withRsaSha2Preference(currentConnection, pair) {
-                    currentConnection.authenticateWithPublicKey(username, pair)
-                }
-            }
+            authenticateWithPublicKeyCompat(currentConnection, username, pair)
         if (!success) {
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, keyNickname))
         }
@@ -892,9 +896,7 @@ class SSH :
                     manager?.loadedKeypairs?.entries?.forEach { entry ->
                         try {
                             val pair = entry.value.pair ?: return@forEach
-                            val success = RsaSha2Compat.withRsaSha2Preference(jc, pair) {
-                                jc.authenticateWithPublicKey(jumpHost.username, pair)
-                            }
+                            val success = authenticateWithPublicKeyCompat(jc, jumpHost.username, pair)
                             if (success) {
                                 return true
                             }
@@ -909,9 +911,7 @@ class SSH :
                         val pair = getOrUnlockKey(pubkey)
                         if (pair != null) {
                             try {
-                                val success = RsaSha2Compat.withRsaSha2Preference(jc, pair) {
-                                    jc.authenticateWithPublicKey(jumpHost.username, pair)
-                                }
+                                val success = authenticateWithPublicKeyCompat(jc, jumpHost.username, pair)
                                 if (success) {
                                     return true
                                 }
