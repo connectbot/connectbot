@@ -35,6 +35,7 @@ import org.connectbot.data.HostRepository
 import org.connectbot.data.ImportCounts
 import org.connectbot.data.WrongPassphraseException
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.PortForward
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.PreferenceConstants
 import org.json.JSONObject
@@ -91,6 +92,7 @@ class HostListViewModelEncryptedExportTest {
         sharedPreferences = mock()
 
         whenever(repository.observeHosts()).thenReturn(MutableStateFlow(emptyList<Host>()))
+        whenever(repository.observeAllPortForwards()).thenReturn(MutableStateFlow(emptyList<PortForward>()))
         whenever(sharedPreferences.getBoolean(PreferenceConstants.SORT_BY_COLOR, false))
             .thenReturn(false)
     }
