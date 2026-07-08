@@ -654,6 +654,57 @@
 	<!-- Summary text showing emulation setting. Parameter is the terminal emulation type. -->
 	<string name="profile_summary_emulation">Emulation: %s</string>
 
+	<!-- Title of the snippet library management screen and its menu entry. -->
+	<string name="snippet_list_title">Snippets</string>
+	<!-- Content description for the button that creates a new snippet. -->
+	<string name="snippet_list_create">Create snippet</string>
+	<!-- Message shown when no snippets have been created yet. -->
+	<string name="snippet_list_empty_message">No snippets yet. Tap + to save a command you use often.</string>
+	<!-- Label of the tag filter chip that shows all snippets. -->
+	<string name="snippet_tag_filter_all">All</string>
+	<!-- Scope label for snippets available on every host. -->
+	<string name="snippet_scope_global">Global</string>
+	<!-- Title of the dialog for creating a new snippet. -->
+	<string name="snippet_editor_create_title">Create Snippet</string>
+	<!-- Title of the dialog for editing an existing snippet. -->
+	<string name="snippet_editor_edit_title">Edit Snippet</string>
+	<!-- Label for the snippet name text field. -->
+	<string name="snippet_editor_name_label">Name</string>
+	<!-- Label for the snippet command text field. -->
+	<string name="snippet_editor_command_label">Command</string>
+	<!-- Hint below the command field explaining variable placeholders. -->
+	<string name="snippet_editor_command_hint">Use ${variable} to prompt for a value when run</string>
+	<!-- Label for the snippet tags text field. -->
+	<string name="snippet_editor_tags_label">Tags</string>
+	<!-- Hint below the tags field. -->
+	<string name="snippet_editor_tags_hint">Comma-separated, e.g. docker, logs</string>
+	<!-- Label for the snippet scope (global or per-host) dropdown. -->
+	<string name="snippet_editor_scope_label">Available on</string>
+	<!-- Button text to save a snippet. -->
+	<string name="snippet_save_button">Save</string>
+	<!-- Title of the dialog to confirm deleting a snippet. -->
+	<string name="snippet_delete_dialog_title">Delete Snippet</string>
+	<!-- Message of the dialog to confirm deleting a snippet. Parameter is the snippet name. -->
+	<string name="snippet_delete_dialog_message">Are you sure you want to delete \'%s\'?</string>
+	<!-- Button text to confirm deleting a snippet. -->
+	<string name="snippet_delete_button">Delete</string>
+	<!-- Title of the snippet picker shown in the terminal. -->
+	<string name="snippet_picker_title">Snippets</string>
+	<!-- Placeholder of the search field in the snippet picker. -->
+	<string name="snippet_picker_search">Search snippets</string>
+	<!-- Message shown in the snippet picker when there are no snippets for this host. -->
+	<string name="snippet_picker_empty">No snippets for this host. Add them from the host list menu.</string>
+	<!-- Content description for the per-row button that types the snippet without running it. -->
+	<string name="snippet_picker_insert">Insert without running</string>
+	<!-- Title of the dialog prompting for snippet variable values. Parameter is the snippet name. -->
+	<string name="snippet_variables_dialog_title">Run \'%s\'</string>
+	<!-- Button that sends the snippet command followed by Enter. -->
+	<string name="snippet_run_button">Run</string>
+	<!-- Button that types the snippet command without pressing Enter. -->
+	<string name="snippet_insert_button">Insert</string>
+	<!-- Content description for the terminal keyboard button that opens the snippet picker. -->
+	<string name="terminal_keyboard_snippets_button">Snippets</string>
+
 	<!-- Button to reconnect to a disconnected host. -->
 	<string name="console_menu_reconnect">Reconnect</string>
 	<!-- Content description and dialog title for switching between active terminal sessions. -->

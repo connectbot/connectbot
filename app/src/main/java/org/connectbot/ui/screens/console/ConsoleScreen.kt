@@ -160,6 +160,7 @@ import org.connectbot.ui.components.AuthBannerDialog
 import org.connectbot.ui.components.FloatingTextInputDialog
 import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
+import org.connectbot.ui.components.SnippetPickerSheet
 import org.connectbot.ui.components.TERMINAL_KEYBOARD_HEIGHT_DP
 import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
@@ -514,6 +515,7 @@ private fun ConsoleTerminalPage(
     onShowSoftwareKeyboardChange: (Boolean) -> Unit,
     onImeVisibilityChange: (Boolean) -> Unit,
     onTextInputRequest: () -> Unit,
+    onSnippetsRequest: () -> Unit,
     onDisconnectRequest: () -> Unit,
     onKeyboardScrollInProgressChange: (Boolean) -> Unit,
     onSelectionControllerChange: (SelectionController) -> Unit,
@@ -603,6 +605,7 @@ private fun ConsoleTerminalPage(
                         onShowSoftwareKeyboardChange(true)
                     },
                     onOpenTextInput = onTextInputRequest,
+                    onOpenSnippets = onSnippetsRequest,
                     onScrollInProgressChange = onKeyboardScrollInProgressChange,
                     imeVisible = imeVisible,
                     playAnimation = !hasPlayedKeyboardAnimation && !einkMode,
@@ -863,6 +866,7 @@ fun ConsoleScreen(
     var tmuxResizeTab by remember { mutableStateOf<ConsoleTab.TmuxSession?>(null) }
     var tmuxKillWindowId by remember { mutableStateOf<String?>(null) }
     var showTmuxPalette by remember { mutableStateOf(false) }
+    var showSnippetPicker by remember { mutableStateOf(false) }
     var showExtraKeyboard by remember { mutableStateOf(true) } // Start visible to show animation
     var hasPlayedKeyboardAnimation by remember { mutableStateOf(false) }
     var showTitleBar by remember { mutableStateOf(!titleBarHide) }
@@ -902,7 +906,8 @@ fun ConsoleScreen(
 
     // Check if any modal (menu or dialog) is currently active
     val anyModalActive = showMenu || showUrlScanDialog || showResizeDialog ||
-        showDisconnectDialog || showTextInputDialog || isBiometricPromptActive || currentAuthBanner != null
+        showDisconnectDialog || showTextInputDialog || showSnippetPicker ||
+        isBiometricPromptActive || currentAuthBanner != null
 
     /**
      * Unified interaction handler for terminal and keyboard.
@@ -1359,6 +1364,7 @@ fun ConsoleScreen(
                                     onShowSoftwareKeyboardChange = { showSoftwareKeyboard = it },
                                     onImeVisibilityChange = { imeVisible = it },
                                     onTextInputRequest = { showTextInputDialog = true },
+                                    onSnippetsRequest = { showSnippetPicker = true },
                                     onDisconnectRequest = {
                                         bridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
                                     },
@@ -1406,6 +1412,7 @@ fun ConsoleScreen(
                                     onShowSoftwareKeyboardChange = { showSoftwareKeyboard = it },
                                     onImeVisibilityChange = { imeVisible = it },
                                     onTextInputRequest = { showTextInputDialog = true },
+                                    onSnippetsRequest = { showSnippetPicker = true },
                                     onDisconnectRequest = {
                                         bridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
                                     },
@@ -1603,6 +1610,19 @@ fun ConsoleScreen(
                 onSelectBridge = { index ->
                     showSessionPickerDialog = false
                     selectBridgePreservingKeyboard(index)
+                },
+            )
+        }
+
+        if (showSnippetPicker && currentBridge != null) {
+            SnippetPickerSheet(
+                hostId = currentBridge.host.id,
+                onSend = { text ->
+                    currentBridge.injectString(TerminalTextUtils.normalizeLineBreaks(text))
+                },
+                onDismiss = {
+                    showSnippetPicker = false
+                    termFocusRequester.requestFocus()
                 },
             )
         }
