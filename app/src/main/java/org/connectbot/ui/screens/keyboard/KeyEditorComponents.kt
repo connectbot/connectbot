@@ -231,9 +231,9 @@ fun KeyConfigDialog(
 
                 if (initial is KeySpec.Combo) {
                     Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        ModifierCheckbox("Ctrl", ctrl) { ctrl = it }
-                        ModifierCheckbox("Alt", alt) { alt = it }
-                        ModifierCheckbox("Shift", shift) { shift = it }
+                        ModifierCheckbox(stringResource(R.string.button_key_ctrl), ctrl) { ctrl = it }
+                        ModifierCheckbox(stringResource(R.string.button_key_alt), alt) { alt = it }
+                        ModifierCheckbox(stringResource(R.string.button_key_shift), shift) { shift = it }
                     }
                     OutlinedTextField(
                         value = comboChar,

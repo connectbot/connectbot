@@ -136,5 +136,5 @@ class KeyboardLayoutEditorViewModel @Inject constructor(
         }
     }
 
-    private fun List<List<KeySpec>>.toMutableRows(): MutableList<List<KeySpec>> = this.map { it }.toMutableList()
+    private fun List<List<KeySpec>>.toMutableRows(): MutableList<List<KeySpec>> = this.toMutableList()
 }

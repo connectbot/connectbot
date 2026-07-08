@@ -101,7 +101,7 @@ fun KeyboardLayoutEditorScreen(
             if (!uiState.isLoading && uiState.rows.isNotEmpty()) {
                 // Live preview.
                 TerminalKeyboardContent(
-                    layout = KeyboardLayoutSpec(uiState.rows.map { it.ifEmpty { listOf() } }.map { it }),
+                    layout = KeyboardLayoutSpec(uiState.rows),
                     modifierState = ModifierState(ModifierLevel.OFF, ModifierLevel.OFF, ModifierLevel.OFF),
                     onKeyAction = {},
                     onInteraction = {},
@@ -249,11 +249,16 @@ private fun keyDescription(spec: KeySpec): String = when (spec) {
         stringResource(R.string.keyboard_layout_editor_text_desc, spec.label ?: spec.text) + enter
     }
 
-    is KeySpec.Combo -> spec.label ?: buildString {
-        if (spec.ctrl) append("Ctrl+")
-        if (spec.alt) append("Alt+")
-        if (spec.shift) append("Shift+")
-        append(spec.ch?.uppercaseChar()?.toString() ?: spec.special?.name.orEmpty())
+    is KeySpec.Combo -> spec.label ?: run {
+        val ctrl = stringResource(R.string.button_key_ctrl)
+        val alt = stringResource(R.string.button_key_alt)
+        val shift = stringResource(R.string.button_key_shift)
+        buildString {
+            if (spec.ctrl) append(ctrl).append("+")
+            if (spec.alt) append(alt).append("+")
+            if (spec.shift) append(shift).append("+")
+            append(spec.ch?.uppercaseChar()?.toString() ?: spec.special?.name.orEmpty())
+        }
     }
 
     is KeySpec.FnGrid -> spec.label ?: stringResource(R.string.button_key_fn)

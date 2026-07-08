@@ -17,15 +17,18 @@
 
 package org.connectbot.ui.screens.keyboard
 
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import org.connectbot.R
 import org.connectbot.data.KeyboardLayoutRepository
 import org.connectbot.keyboard.DefaultKeyboardLayouts
 import org.connectbot.util.PreferenceConstants
@@ -47,6 +50,7 @@ data class KeyboardLayoutsUiState(
 class KeyboardLayoutsViewModel @Inject constructor(
     private val repository: KeyboardLayoutRepository,
     private val prefs: SharedPreferences,
+    @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
@@ -79,19 +83,24 @@ class KeyboardLayoutsViewModel @Inject constructor(
 
     /** Create an empty-ish new layout (seeded from the built-in default). Returns its id. */
     suspend fun createLayout(): Long {
-        val name = uniqueName(NEW_LAYOUT_BASE_NAME)
+        val name = uniqueName(context.getString(R.string.keyboard_layouts_new))
         return repository.create(name, DefaultKeyboardLayouts.default)
     }
 
     /** Duplicate a built-in or custom layout into a new editable row. Returns its id. */
     suspend fun duplicate(item: KeyboardLayoutListItem): Long {
         val spec = repository.resolveSpec(item.id)
-        val name = uniqueName("${item.name} ($COPY_SUFFIX)")
+        val name = uniqueName(context.getString(R.string.keyboard_layouts_duplicate_name, item.name))
         return repository.duplicate(name, spec)
     }
 
     fun rename(layoutId: Long, newName: String) {
-        viewModelScope.launch { repository.rename(layoutId, newName.trim()) }
+        viewModelScope.launch {
+            val trimmed = newName.trim()
+            if (!repository.nameExists(trimmed, excludeLayoutId = layoutId)) {
+                repository.rename(layoutId, trimmed)
+            }
+        }
     }
 
     fun delete(layoutId: Long) {
@@ -119,7 +128,5 @@ class KeyboardLayoutsViewModel @Inject constructor(
         // Built-in names are user-facing but not localized here to keep them stable ids in the UI.
         const val BUILT_IN_DEFAULT_NAME = "Default"
         const val BUILT_IN_CLASSIC_NAME = "Classic"
-        const val NEW_LAYOUT_BASE_NAME = "New layout"
-        const val COPY_SUFFIX = "copy"
     }
 }

@@ -105,8 +105,8 @@ object KeyboardLayoutJson {
     }
 
     private fun decodeKey(obj: JSONObject): KeySpec? {
-        val label = if (obj.has(KEY_LABEL)) obj.optString(KEY_LABEL) else null
-        val icon = if (obj.has(KEY_ICON)) obj.optString(KEY_ICON) else null
+        val label = if (obj.isNull(KEY_LABEL)) null else obj.optString(KEY_LABEL)
+        val icon = if (obj.isNull(KEY_ICON)) null else obj.optString(KEY_ICON)
         return when (obj.optString(KEY_TYPE)) {
             TYPE_SPECIAL -> parseSpecial(obj.optString("key"))
                 ?.let { KeySpec.Special(it, label, icon) }

@@ -1,0 +1,98 @@
+/*
+ * ConnectBot: simple, powerful, open-source SSH client for Android
+ * Copyright 2026 Kenny Root
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.connectbot.ui.screens.keyboard
+
+import android.content.Context
+import android.content.SharedPreferences
+import androidx.room.Room
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.setMain
+import kotlinx.coroutines.withTimeout
+import org.assertj.core.api.Assertions.assertThat
+import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.KeyboardLayoutRepository
+import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.keyboard.DefaultKeyboardLayouts
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
+
+@OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(AndroidJUnit4::class)
+class KeyboardLayoutsViewModelTest {
+
+    private lateinit var context: Context
+    private lateinit var database: ConnectBotDatabase
+    private lateinit var repository: KeyboardLayoutRepository
+    private lateinit var prefs: SharedPreferences
+
+    @Before
+    fun setUp() {
+        Dispatchers.setMain(Dispatchers.Unconfined)
+        context = ApplicationProvider.getApplicationContext()
+        prefs = context.getSharedPreferences("KeyboardLayoutsViewModelTest", Context.MODE_PRIVATE)
+        prefs.edit().clear().commit()
+        database = Room.inMemoryDatabaseBuilder(context, ConnectBotDatabase::class.java)
+            .allowMainThreadQueries()
+            .build()
+        repository = KeyboardLayoutRepository(
+            database.keyboardLayoutDao(),
+            CoroutineDispatchers(
+                default = Dispatchers.Unconfined,
+                io = Dispatchers.Unconfined,
+                main = Dispatchers.Unconfined,
+            ),
+        )
+    }
+
+    @After
+    fun tearDown() {
+        database.close()
+        prefs.edit().clear().commit()
+        Dispatchers.resetMain()
+    }
+
+    @Test
+    fun renameSkipsDuplicateName() = runBlocking<Unit> {
+        val layoutId = repository.create("Original", DefaultKeyboardLayouts.default)
+        repository.create("Taken", DefaultKeyboardLayouts.classic)
+        val viewModel = KeyboardLayoutsViewModel(repository, prefs, context)
+
+        viewModel.rename(layoutId, "Renamed")
+        awaitName(layoutId, "Renamed")
+
+        viewModel.rename(layoutId, " Taken ")
+        delay(50)
+        assertThat(repository.getById(layoutId)?.name).isEqualTo("Renamed")
+    }
+
+    private suspend fun awaitName(layoutId: Long, expectedName: String) {
+        withTimeout(3000) {
+            while (repository.getById(layoutId)?.name != expectedName) {
+                delay(5)
+            }
+        }
+    }
+}

@@ -61,6 +61,19 @@ class KeyboardLayoutJsonTest {
     }
 
     @Test
+    fun explicitNullLabelAndIconDecodeAsAbsent() {
+        val json = """
+            {"version":1,"rows":[[
+              {"type":"text","text":"x","label":null,"icon":null}
+            ]]}
+        """.trimIndent()
+
+        val key = KeyboardLayoutJson.decode(json)!!.rows[0][0] as KeySpec.Text
+        assertNull(key.label)
+        assertNull(key.icon)
+    }
+
+    @Test
     fun skipsUnknownKeyTypes() {
         val json = """
             {"version":1,"rows":[[

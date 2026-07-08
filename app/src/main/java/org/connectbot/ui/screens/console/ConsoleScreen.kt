@@ -136,6 +136,7 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -511,7 +512,7 @@ private fun rememberResolvedKeyboardLayout(
     viewModel: ConsoleViewModel,
 ): KeyboardLayoutSpec {
     val flow = remember(host.id, host.keyboardLayoutId) { viewModel.keyboardLayoutFlow(host) }
-    return flow.collectAsState(initial = DefaultKeyboardLayouts.default).value
+    return flow.collectAsStateWithLifecycle(initialValue = DefaultKeyboardLayouts.default).value
 }
 
 @Composable

@@ -390,6 +390,8 @@
 	<string name="keyboard_layouts_edit">"Edit"</string>
 	<string name="keyboard_layouts_rename">"Rename"</string>
 	<string name="keyboard_layouts_duplicate">"Duplicate"</string>
+	<!-- Default name assigned to a duplicated keyboard layout; %1$s is the original layout name. -->
+	<string name="keyboard_layouts_duplicate_name">"%1$s (copy)"</string>
 	<string name="keyboard_layouts_delete">"Delete"</string>
 	<!-- %1$s is the layout name -->
 	<string name="keyboard_layouts_delete_confirm">"Delete the layout \"%1$s\"? Hosts using it will fall back to the default."</string>
