@@ -70,6 +70,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -97,6 +98,7 @@ fun SettingsScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     highlightItem: String? = null,
+    onNavigateToKeyboardLayouts: () -> Unit = {},
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -167,6 +169,7 @@ fun SettingsScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
         highlightItem = highlightItem,
+        onNavigateToKeyboardLayouts = onNavigateToKeyboardLayouts,
         onAuthOnLaunchChange = viewModel::updateAuthOnLaunch,
         onMemkeysChange = viewModel::updateMemkeys,
         onConnPersistChange = viewModel::updateConnPersist,
@@ -258,6 +261,7 @@ fun SettingsScreenContent(
     onBellNotificationChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     highlightItem: String? = null,
+    onNavigateToKeyboardLayouts: () -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -605,6 +609,16 @@ fun SettingsScreenContent(
 
             item {
                 PreferenceCategory(title = stringResource(R.string.pref_keyboard_category))
+            }
+
+            item {
+                ListItem(
+                    headlineContent = { Text(stringResource(R.string.pref_keyboard_layouts_title)) },
+                    supportingContent = { Text(stringResource(R.string.pref_keyboard_layouts_summary)) },
+                    modifier = Modifier
+                        .clickable { onNavigateToKeyboardLayouts() }
+                        .testTag("keyboard_layouts_setting"),
+                )
             }
 
             item {

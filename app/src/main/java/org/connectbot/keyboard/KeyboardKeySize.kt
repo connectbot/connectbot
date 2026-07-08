@@ -33,7 +33,6 @@ enum class KeyboardKeySize(
     ;
 
     companion object {
-        fun fromPreferenceValue(value: String?): KeyboardKeySize =
-            entries.firstOrNull { it.prefValue == value } ?: MEDIUM
+        fun fromPreferenceValue(value: String?): KeyboardKeySize = entries.firstOrNull { it.prefValue == value } ?: MEDIUM
     }
 }

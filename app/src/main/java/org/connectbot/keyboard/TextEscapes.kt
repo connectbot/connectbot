@@ -38,22 +38,27 @@ object TextEscapes {
                     sb.append('\n')
                     i += 2
                 }
+
                 't' -> {
                     sb.append('\t')
                     i += 2
                 }
+
                 'r' -> {
                     sb.append('\r')
                     i += 2
                 }
+
                 'e' -> {
                     sb.append('\u001B')
                     i += 2
                 }
+
                 '\\' -> {
                     sb.append('\\')
                     i += 2
                 }
+
                 'x' -> {
                     val hex = input.substring(i + 2, minOf(i + 4, input.length))
                     val value = if (hex.length == 2) hex.toIntOrNull(16) else null
@@ -65,6 +70,7 @@ object TextEscapes {
                         i++
                     }
                 }
+
                 else -> {
                     sb.append(c)
                     i++

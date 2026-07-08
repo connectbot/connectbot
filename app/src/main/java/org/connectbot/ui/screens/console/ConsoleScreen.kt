@@ -165,8 +165,8 @@ import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
 import org.connectbot.ui.components.SnippetPickerSheet
 import org.connectbot.ui.components.TerminalKeyboard
-import org.connectbot.ui.components.terminalKeyboardHeightDp
 import org.connectbot.ui.components.UrlScanDialog
+import org.connectbot.ui.components.terminalKeyboardHeightDp
 import org.connectbot.ui.screens.console.tmux.PaneDotsIndicator
 import org.connectbot.ui.screens.console.tmux.TmuxActionMenuDialog
 import org.connectbot.ui.screens.console.tmux.TmuxCommandPaletteSheet

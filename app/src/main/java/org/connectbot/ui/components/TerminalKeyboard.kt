@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("ktlint:compose:compositionlocal-allowlist")
+
 package org.connectbot.ui.components
 
 import android.view.HapticFeedbackConstants
@@ -79,6 +81,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.keyboard.DefaultKeyboardLayouts
+import org.connectbot.keyboard.KeyIconCatalog
 import org.connectbot.keyboard.KeySpec
 import org.connectbot.keyboard.KeyboardKeySize
 import org.connectbot.keyboard.KeyboardLayoutSpec
@@ -98,8 +101,7 @@ private val LocalKeyboardKeySize = staticCompositionLocalOf { KeyboardKeySize.ME
 /**
  * Total height of the keys bar for a layout with [rowCount] rows at [keySize].
  */
-fun terminalKeyboardHeightDp(rowCount: Int, keySize: KeyboardKeySize): Int =
-    rowCount.coerceAtLeast(1) * keySize.keyHeightDp
+fun terminalKeyboardHeightDp(rowCount: Int, keySize: KeyboardKeySize): Int = rowCount.coerceAtLeast(1) * keySize.keyHeightDp
 
 /**
  * Virtual keyboard with a customizable set of terminal special keys.
@@ -248,59 +250,59 @@ internal fun TerminalKeyboardContent(
                     .height(terminalKeyboardHeightDp(layout.rows.size, keySize).dp),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-            // Scrollable rows of keys.
-            Column(modifier = Modifier.weight(1f)) {
-                layout.rows.forEachIndexed { rowIndex, keys ->
-                    Row(
-                        modifier = Modifier
-                            .weight(1f)
-                            .horizontalScroll(scrollStates.getOrElse(rowIndex) { scrollState0 }),
-                        horizontalArrangement = Arrangement.Start,
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        keys.forEach { key ->
-                            TerminalKey(
-                                spec = key,
-                                modifierState = modifierState,
-                                bumpyArrows = bumpyArrows,
-                                onKeyAction = onKeyActionWithFn,
-                            )
+                // Scrollable rows of keys.
+                Column(modifier = Modifier.weight(1f)) {
+                    layout.rows.forEachIndexed { rowIndex, keys ->
+                        Row(
+                            modifier = Modifier
+                                .weight(1f)
+                                .horizontalScroll(scrollStates.getOrElse(rowIndex) { scrollState0 }),
+                            horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            keys.forEach { key ->
+                                TerminalKey(
+                                    spec = key,
+                                    modifierState = modifierState,
+                                    bumpyArrows = bumpyArrows,
+                                    onKeyAction = onKeyActionWithFn,
+                                )
+                            }
                         }
                     }
                 }
-            }
 
-            // Pinned right-side buttons, spanning the full bar height.
-            PinnedBarButton(
-                icon = Icons.Default.Code,
-                contentDescription = stringResource(R.string.terminal_keyboard_snippets_button),
-                onClick = {
-                    onOpenSnippets()
-                    onInteraction()
-                },
-            )
-            PinnedBarButton(
-                icon = Icons.Default.Edit,
-                contentDescription = stringResource(R.string.terminal_keyboard_text_input_button),
-                onClick = {
-                    onOpenTextInput()
-                    onInteraction()
-                },
-            )
-            PinnedBarButton(
-                icon = if (imeVisible) Icons.Default.KeyboardHide else Icons.Default.Keyboard,
-                contentDescription = stringResource(
-                    if (imeVisible) {
-                        R.string.image_description_hide_keyboard
-                    } else {
-                        R.string.image_description_show_keyboard
+                // Pinned right-side buttons, spanning the full bar height.
+                PinnedBarButton(
+                    icon = Icons.Default.Code,
+                    contentDescription = stringResource(R.string.terminal_keyboard_snippets_button),
+                    onClick = {
+                        onOpenSnippets()
+                        onInteraction()
                     },
-                ),
-                onClick = {
-                    if (imeVisible) onHideIme() else onShowIme()
-                    onInteraction()
-                },
-            )
+                )
+                PinnedBarButton(
+                    icon = Icons.Default.Edit,
+                    contentDescription = stringResource(R.string.terminal_keyboard_text_input_button),
+                    onClick = {
+                        onOpenTextInput()
+                        onInteraction()
+                    },
+                )
+                PinnedBarButton(
+                    icon = if (imeVisible) Icons.Default.KeyboardHide else Icons.Default.Keyboard,
+                    contentDescription = stringResource(
+                        if (imeVisible) {
+                            R.string.image_description_hide_keyboard
+                        } else {
+                            R.string.image_description_show_keyboard
+                        },
+                    ),
+                    onClick = {
+                        if (imeVisible) onHideIme() else onShowIme()
+                        onInteraction()
+                    },
+                )
             }
         }
 
@@ -368,6 +370,7 @@ private fun TerminalKey(
     onKeyAction: (KeySpec) -> Unit,
 ) {
     val view = LocalView.current
+    val customIcon = KeyIconCatalog.iconFor(spec.icon)
 
     when (spec) {
         is KeySpec.Modifier -> ModifierKeyButton(
@@ -379,9 +382,9 @@ private fun TerminalKey(
 
         is KeySpec.Special -> {
             val arrowIcon = arrowIconFor(spec.key)
-            if (spec.key.repeatable && arrowIcon != null && spec.label == null) {
+            if (spec.key.repeatable && spec.label == null && (customIcon ?: arrowIcon) != null) {
                 RepeatableKeyButton(
-                    icon = arrowIcon,
+                    icon = customIcon ?: arrowIcon!!,
                     contentDescription = specialContentDescription(spec.key),
                     onPress = {
                         onKeyAction(spec)
@@ -392,7 +395,8 @@ private fun TerminalKey(
                 )
             } else {
                 KeyButton(
-                    text = spec.label ?: defaultSpecialLabel(spec.key),
+                    text = if (customIcon != null) null else spec.label ?: defaultSpecialLabel(spec.key),
+                    icon = customIcon,
                     contentDescription = specialContentDescription(spec.key),
                     onClick = { onKeyAction(spec) },
                 )
@@ -400,19 +404,22 @@ private fun TerminalKey(
         }
 
         is KeySpec.Text -> KeyButton(
-            text = spec.label ?: spec.text,
+            text = if (customIcon != null) null else spec.label ?: spec.text,
+            icon = customIcon,
             contentDescription = null,
             onClick = { onKeyAction(spec) },
         )
 
         is KeySpec.Combo -> KeyButton(
-            text = spec.label ?: defaultComboLabel(spec),
+            text = if (customIcon != null) null else spec.label ?: defaultComboLabel(spec),
+            icon = customIcon,
             contentDescription = null,
             onClick = { onKeyAction(spec) },
         )
 
         is KeySpec.FnGrid -> KeyButton(
-            text = spec.label ?: stringResource(R.string.button_key_fn),
+            text = if (customIcon != null) null else spec.label ?: stringResource(R.string.button_key_fn),
+            icon = customIcon,
             contentDescription = null,
             onClick = { onKeyAction(spec) },
         )

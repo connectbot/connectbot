@@ -378,6 +378,57 @@
 	<!-- Key size option: large -->
 	<string name="key_size_large">"Large"</string>
 
+	<!-- Keyboard layouts library entry in Settings -->
+	<string name="pref_keyboard_layouts_title">"Special keys layouts"</string>
+	<string name="pref_keyboard_layouts_summary">"Customize the keys shown above the keyboard"</string>
+
+	<!-- Keyboard layouts library screen -->
+	<string name="keyboard_layouts_title">"Special keys layouts"</string>
+	<string name="keyboard_layouts_new">"New layout"</string>
+	<string name="keyboard_layouts_builtin_label">"Built-in"</string>
+	<string name="keyboard_layouts_actions">"Layout actions"</string>
+	<string name="keyboard_layouts_edit">"Edit"</string>
+	<string name="keyboard_layouts_rename">"Rename"</string>
+	<string name="keyboard_layouts_duplicate">"Duplicate"</string>
+	<string name="keyboard_layouts_delete">"Delete"</string>
+	<!-- %1$s is the layout name -->
+	<string name="keyboard_layouts_delete_confirm">"Delete the layout \"%1$s\"? Hosts using it will fall back to the default."</string>
+
+	<!-- Keyboard layout editor screen -->
+	<string name="keyboard_layout_editor_title">"Edit layout"</string>
+	<!-- %1$d is the row number -->
+	<string name="keyboard_layout_editor_row">"Row %1$d"</string>
+	<string name="keyboard_layout_editor_add_key">"Add key"</string>
+	<string name="keyboard_layout_editor_add_row">"Add second row"</string>
+	<string name="keyboard_layout_editor_remove_row">"Remove second row"</string>
+	<string name="keyboard_layout_editor_move_up">"Move left"</string>
+	<string name="keyboard_layout_editor_move_down">"Move right"</string>
+	<string name="keyboard_layout_editor_move_row">"Move to other row"</string>
+	<string name="keyboard_layout_editor_remove_key">"Remove key"</string>
+	<!-- %1$s is the text the key sends -->
+	<string name="keyboard_layout_editor_text_desc">"Text: %1$s"</string>
+
+	<!-- Key catalog bottom sheet sections -->
+	<string name="keyboard_catalog_special">"Special keys"</string>
+	<string name="keyboard_catalog_function">"Function keys"</string>
+	<string name="keyboard_catalog_modifiers">"Modifiers"</string>
+	<string name="keyboard_catalog_symbols">"Symbols"</string>
+	<string name="keyboard_catalog_other">"Other"</string>
+	<string name="keyboard_catalog_custom_text">"Custom text…"</string>
+	<string name="keyboard_catalog_combo">"Modifier combo…"</string>
+
+	<!-- Key configuration dialog -->
+	<string name="keyboard_key_config_title">"Configure key"</string>
+	<string name="keyboard_key_config_text">"Text to send"</string>
+	<string name="keyboard_key_config_text_hint">"Escapes: \\n \\t \\e \\xHH"</string>
+	<string name="keyboard_key_config_send_enter">"Send Enter after"</string>
+	<string name="keyboard_key_config_combo_char">"Key (single character)"</string>
+	<string name="keyboard_key_config_label">"Label (optional)"</string>
+	<string name="keyboard_key_config_icon">"Icon (optional)"</string>
+
+	<!-- Generic save button -->
+	<string name="button_save">"Save"</string>
+
 	<!-- Name for the sticky modifiers preference -->
 	<string name="pref_stickymodifiers_title">"Sticky modifiers"</string>
 

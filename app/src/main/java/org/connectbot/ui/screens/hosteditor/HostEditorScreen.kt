@@ -1295,7 +1295,7 @@ private fun HostEditorScreenPreview() {
             onUseAuthAgentChange = {},
             onCompressionChange = {},
             onWantSessionChange = {},
-        onTmuxEnabledChange = {},
+            onTmuxEnabledChange = {},
             onStayConnectedChange = {},
             onQuickDisconnectChange = {},
             onKeyboardSuggestionsChange = {},

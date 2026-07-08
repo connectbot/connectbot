@@ -92,6 +92,7 @@ fun dispatchKeySpec(
             when {
                 special != null ->
                     keyHandler.sendCombo(spec.ctrl, spec.alt, spec.shift, special.toVTermKey())
+
                 ch != null ->
                     keyHandler.sendComboChar(spec.ctrl, spec.alt, spec.shift, ch)
             }

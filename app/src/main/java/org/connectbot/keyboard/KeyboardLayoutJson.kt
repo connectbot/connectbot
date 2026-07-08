@@ -81,10 +81,13 @@ object KeyboardLayoutJson {
         val obj = JSONObject()
         when (key) {
             is KeySpec.Special -> obj.put(KEY_TYPE, TYPE_SPECIAL).put("key", key.key.name)
+
             is KeySpec.Modifier -> obj.put(KEY_TYPE, TYPE_MODIFIER).put("mod", key.mod.name)
+
             is KeySpec.Text -> obj.put(KEY_TYPE, TYPE_TEXT)
                 .put("text", key.text)
                 .put("sendEnter", key.sendEnter)
+
             is KeySpec.Combo -> {
                 obj.put(KEY_TYPE, TYPE_COMBO)
                     .put("ctrl", key.ctrl)
@@ -93,6 +96,7 @@ object KeyboardLayoutJson {
                 key.ch?.let { obj.put("ch", it.toString()) }
                 key.special?.let { obj.put("special", it.name) }
             }
+
             is KeySpec.FnGrid -> obj.put(KEY_TYPE, TYPE_FN)
         }
         key.label?.let { obj.put(KEY_LABEL, it) }
@@ -106,14 +110,17 @@ object KeyboardLayoutJson {
         return when (obj.optString(KEY_TYPE)) {
             TYPE_SPECIAL -> parseSpecial(obj.optString("key"))
                 ?.let { KeySpec.Special(it, label, icon) }
+
             TYPE_MODIFIER -> parseModifier(obj.optString("mod"))
                 ?.let { KeySpec.Modifier(it, label, icon) }
+
             TYPE_TEXT -> KeySpec.Text(
                 text = obj.optString("text"),
                 sendEnter = obj.optBoolean("sendEnter", false),
                 label = label,
                 icon = icon,
             )
+
             TYPE_COMBO -> KeySpec.Combo(
                 ctrl = obj.optBoolean("ctrl", false),
                 alt = obj.optBoolean("alt", false),
@@ -123,15 +130,15 @@ object KeyboardLayoutJson {
                 label = label,
                 icon = icon,
             )
+
             TYPE_FN -> KeySpec.FnGrid(label, icon)
+
             // Unknown key types (e.g. from a newer version) are skipped.
             else -> null
         }
     }
 
-    private fun parseSpecial(name: String): SpecialKey? =
-        SpecialKey.entries.firstOrNull { it.name == name }
+    private fun parseSpecial(name: String): SpecialKey? = SpecialKey.entries.firstOrNull { it.name == name }
 
-    private fun parseModifier(name: String): ModifierKey? =
-        ModifierKey.entries.firstOrNull { it.name == name }
+    private fun parseModifier(name: String): ModifierKey? = ModifierKey.entries.firstOrNull { it.name == name }
 }
