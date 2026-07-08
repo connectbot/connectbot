@@ -594,9 +594,10 @@ class TerminalManager :
         // Validate the key by trying to initialize a Signature
         // This will throw if the key is invalidated (e.g., new fingerprint enrolled)
         try {
-            val algorithm = when (publicKey) {
-                is java.security.interfaces.RSAPublicKey -> "SHA256withRSA"
-                is java.security.interfaces.ECPublicKey -> "SHA256withECDSA"
+            val algorithm = when {
+                publicKey is java.security.interfaces.RSAPublicKey -> "SHA256withRSA"
+                publicKey is java.security.interfaces.ECPublicKey -> "SHA256withECDSA"
+                com.trilead.ssh2.crypto.PublicKeyUtils.isEd25519Key(publicKey) -> "Ed25519"
                 else -> null
             }
             if (algorithm != null) {

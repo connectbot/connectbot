@@ -49,7 +49,8 @@ interface BiometricKeyManager {
 
     companion object {
         private const val KEYSTORE_PROVIDER = "AndroidKeyStore"
-        val SUPPORTED_KEY_TYPES = listOf("RSA", "EC")
+        val SUPPORTED_KEY_TYPES: List<String>
+            get() = if (keystoreSupportsEd25519) listOf("RSA", "EC", "Ed25519") else listOf("RSA", "EC")
 
         /**
          * RSA key sizes every Android KeyMint implementation must support. Other sizes
@@ -57,7 +58,19 @@ interface BiometricKeyManager {
          */
         val SUPPORTED_RSA_KEY_SIZES = listOf(2048, 3072, 4096)
 
-        fun supportsBiometric(keyType: KeyType): Boolean = keyType == KeyType.RSA || keyType == KeyType.EC
+        /**
+         * The Android Keystore can generate and sign with Curve 25519 keys
+         * starting with Android 13 (KeyMint support for ed25519).
+         * https://github.com/connectbot/connectbot/issues/1974
+         */
+        val keystoreSupportsEd25519: Boolean
+            get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU
+
+        fun supportsBiometric(keyType: KeyType): Boolean = when (keyType) {
+            KeyType.RSA, KeyType.EC -> true
+            KeyType.ED25519 -> keystoreSupportsEd25519
+            else -> false
+        }
     }
 }
 
@@ -248,7 +261,52 @@ class BiometricKeyManagerImpl(
     override fun generateKey(alias: String, keyType: String, keySize: Int): PublicKey = when (keyType) {
         "RSA" -> generateRsaKey(alias, keySize)
         "EC" -> generateEcKey(alias, keySize)
+        "Ed25519" -> generateEd25519Key(alias)
         else -> throw IllegalArgumentException("Unsupported key type for biometric protection: $keyType")
+    }
+
+    private fun generateEd25519Key(alias: String): PublicKey {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            throw IllegalStateException("Ed25519 keys in the Android Keystore require Android 13 or later")
+        }
+
+        Timber.d("Generating Ed25519 key with alias: $alias")
+
+        // StrongBox implementations do not support Curve 25519; the generic
+        // try-with-StrongBox-then-fall-back pattern used for RSA/EC would
+        // just waste a failed attempt, so go straight to the TEE.
+        val keyPairGenerator = KeyPairGenerator.getInstance(
+            KeyProperties.KEY_ALGORITHM_EC,
+            KEYSTORE_PROVIDER,
+        )
+
+        val builder = KeyGenParameterSpec.Builder(
+            alias,
+            KeyProperties.PURPOSE_SIGN,
+        ).apply {
+            // "ed25519" selects Curve 25519 signing keys (Android 13+); the
+            // Ed25519 algorithm hashes internally, so the digest must be NONE.
+            setAlgorithmParameterSpec(ECGenParameterSpec("ed25519"))
+            setDigests(KeyProperties.DIGEST_NONE)
+
+            // Require biometric authentication for every use
+            setUserAuthenticationRequired(true)
+
+            // Set authentication validity duration - allows signing for N seconds after auth
+            setUserAuthenticationParameters(
+                AUTH_VALIDITY_DURATION_SECONDS,
+                KeyProperties.AUTH_BIOMETRIC_STRONG,
+            )
+
+            // Invalidate key if new biometrics are enrolled
+            setInvalidatedByBiometricEnrollment(true)
+        }
+
+        keyPairGenerator.initialize(builder.build())
+        val keyPair = keyPairGenerator.generateKeyPair()
+
+        Timber.d("Ed25519 key generated successfully")
+        return keyPair.public
     }
 
     override fun getCryptoObject(alias: String, algorithm: String): BiometricPrompt.CryptoObject {
@@ -266,6 +324,8 @@ class BiometricKeyManagerImpl(
             384 -> "SHA384withECDSA"
             else -> "SHA256withECDSA"
         }
+
+        "Ed25519" -> "Ed25519"
 
         else -> throw IllegalArgumentException("Unsupported key type: $keyType")
     }
