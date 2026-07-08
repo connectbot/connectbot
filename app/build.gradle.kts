@@ -311,7 +311,10 @@ tasks.withType<Test>().configureEach {
 // Only includes tables needed for export/import (profiles, hosts, port_forwards, snippets)
 val generateExportSchema by tasks.registering {
     val exportTables = setOf("profiles", "hosts", "port_forwards", "snippets")
-    val excludedFields = setOf("last_connect", "host_key_algo")
+    // keyboard_layout_id is excluded: it ends in "Id" and would be misremapped by
+    // the importer's self-reference heuristic. Imported hosts fall back to the
+    // global default layout rather than pointing at an arbitrary layout row.
+    val excludedFields = setOf("last_connect", "host_key_algo", "keyboard_layout_id")
 
     // Read schema version from Room's @Database annotation.
     val databaseFile = file("src/main/java/org/connectbot/data/ConnectBotDatabase.kt")

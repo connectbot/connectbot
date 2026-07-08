@@ -137,6 +137,15 @@ data class Host(
      */
     @ColumnInfo(name = "keyboard_suggestions", defaultValue = "0")
     val keyboardSuggestions: Boolean = false,
+
+    /**
+     * Optional per-host override for the special-keys bar layout.
+     * null means use the global default; negative values select a built-in
+     * layout; positive values reference a `keyboard_layouts` row. Plain nullable
+     * Long (no foreign key), consistent with [profileId].
+     */
+    @ColumnInfo(name = "keyboard_layout_id")
+    val keyboardLayoutId: Long? = null,
 ) {
     /**
      * Check if this host is temporary (not saved to database).

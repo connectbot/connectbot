@@ -76,4 +76,7 @@ object DatabaseModule {
 
     @Provides
     fun provideSnippetDao(database: ConnectBotDatabase) = database.snippetDao()
+
+    @Provides
+    fun provideKeyboardLayoutDao(database: ConnectBotDatabase) = database.keyboardLayoutDao()
 }
