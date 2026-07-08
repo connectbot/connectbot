@@ -48,6 +48,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -57,6 +58,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -78,6 +80,7 @@ import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.keyboard.DefaultKeyboardLayouts
 import org.connectbot.keyboard.KeySpec
+import org.connectbot.keyboard.KeyboardKeySize
 import org.connectbot.keyboard.KeyboardLayoutSpec
 import org.connectbot.keyboard.ModifierKey
 import org.connectbot.keyboard.SpecialKey
@@ -89,25 +92,14 @@ import org.connectbot.util.PreferenceConstants
 
 private const val UI_OPACITY = 0.5f
 
-/**
- * Height of a single row of virtual keyboard keys in dp.
- */
-const val TERMINAL_KEYBOARD_HEIGHT_DP = 30
+/** The active key size, provided by [TerminalKeyboardContent] to nested key composables. */
+private val LocalKeyboardKeySize = staticCompositionLocalOf { KeyboardKeySize.MEDIUM }
 
 /**
- * Width of the virtual keyboard keys in dp.
+ * Total height of the keys bar for a layout with [rowCount] rows at [keySize].
  */
-private const val TERMINAL_KEYBOARD_WIDTH_DP = 45
-
-/**
- * Size of the content (icons and text) for the virtual keyboard keys in dp.
- */
-private const val TERMINAL_KEYBOARD_CONTENT_SIZE_DP = 20
-
-/**
- * Total height of the keys bar for a layout with [rowCount] rows.
- */
-fun terminalKeyboardHeightDp(rowCount: Int): Int = rowCount.coerceAtLeast(1) * TERMINAL_KEYBOARD_HEIGHT_DP
+fun terminalKeyboardHeightDp(rowCount: Int, keySize: KeyboardKeySize): Int =
+    rowCount.coerceAtLeast(1) * keySize.keyHeightDp
 
 /**
  * Virtual keyboard with a customizable set of terminal special keys.
@@ -126,6 +118,7 @@ fun TerminalKeyboard(
     layout: KeyboardLayoutSpec,
     onInteraction: () -> Unit,
     modifier: Modifier = Modifier,
+    keySize: KeyboardKeySize = KeyboardKeySize.MEDIUM,
     onHideIme: () -> Unit = {},
     onShowIme: () -> Unit = {},
     onOpenTextInput: () -> Unit = {},
@@ -144,6 +137,7 @@ fun TerminalKeyboard(
 
     TerminalKeyboardContent(
         layout = layout,
+        keySize = keySize,
         modifierState = modifierState,
         onKeyAction = { spec ->
             dispatchKeySpec(spec, keyHandler, injectText)
@@ -184,6 +178,7 @@ internal fun TerminalKeyboardContent(
     playAnimation: Boolean,
     bumpyArrows: Boolean,
     modifier: Modifier = Modifier,
+    keySize: KeyboardKeySize = KeyboardKeySize.MEDIUM,
 ) {
     val currentOnScrollInProgressChange by rememberUpdatedState(onScrollInProgressChange)
     val view = LocalView.current
@@ -232,26 +227,27 @@ internal fun TerminalKeyboardContent(
         }
     }
 
-    Surface(
-        modifier = modifier
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onLongPress = { onLongPress() },
-                    onPress = {
-                        onInteraction()
-                        tryAwaitRelease()
-                    },
-                )
-            },
-        color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
-        tonalElevation = 8.dp,
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(terminalKeyboardHeightDp(layout.rows.size).dp),
-            verticalAlignment = Alignment.CenterVertically,
+    CompositionLocalProvider(LocalKeyboardKeySize provides keySize) {
+        Surface(
+            modifier = modifier
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onLongPress = { onLongPress() },
+                        onPress = {
+                            onInteraction()
+                            tryAwaitRelease()
+                        },
+                    )
+                },
+            color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
+            tonalElevation = 8.dp,
         ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(terminalKeyboardHeightDp(layout.rows.size, keySize).dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
             // Scrollable rows of keys.
             Column(modifier = Modifier.weight(1f)) {
                 layout.rows.forEachIndexed { rowIndex, keys ->
@@ -305,17 +301,18 @@ internal fun TerminalKeyboardContent(
                     onInteraction()
                 },
             )
+            }
         }
-    }
 
-    if (showFnPopup) {
-        FnGridPopup(
-            onDismiss = { showFnPopup = false },
-            onFunctionKey = { key ->
-                onKeyAction(KeySpec.Special(key))
-                showFnPopup = false
-            },
-        )
+        if (showFnPopup) {
+            FnGridPopup(
+                onDismiss = { showFnPopup = false },
+                onFunctionKey = { key ->
+                    onKeyAction(KeySpec.Special(key))
+                    showFnPopup = false
+                },
+            )
+        }
     }
 }
 
@@ -503,10 +500,11 @@ private fun PinnedBarButton(
     contentDescription: String?,
     onClick: () -> Unit,
 ) {
+    val keySize = LocalKeyboardKeySize.current
     Surface(
         onClick = onClick,
         modifier = Modifier
-            .width(TERMINAL_KEYBOARD_WIDTH_DP.dp)
+            .width(keySize.keyWidthDp.dp)
             .fillMaxHeight(),
         shape = RectangleShape,
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
@@ -519,7 +517,7 @@ private fun PinnedBarButton(
             Icon(
                 icon,
                 contentDescription = contentDescription,
-                modifier = Modifier.height(TERMINAL_KEYBOARD_CONTENT_SIZE_DP.dp),
+                modifier = Modifier.height(keySize.contentDp.dp),
             )
         }
     }
@@ -539,8 +537,9 @@ private fun KeyButton(
     backgroundColor: Color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
     tint: Color = MaterialTheme.colorScheme.onSurface,
 ) {
+    val keySize = LocalKeyboardKeySize.current
     val surfaceModifier = modifier
-        .size(width = TERMINAL_KEYBOARD_WIDTH_DP.dp, height = TERMINAL_KEYBOARD_HEIGHT_DP.dp)
+        .size(width = keySize.keyWidthDp.dp, height = keySize.keyHeightDp.dp)
 
     val content: @Composable () -> Unit = {
         Box(
@@ -558,7 +557,7 @@ private fun KeyButton(
                     imageVector = icon,
                     contentDescription = contentDescription,
                     tint = tint,
-                    modifier = Modifier.height(TERMINAL_KEYBOARD_CONTENT_SIZE_DP.dp),
+                    modifier = Modifier.height(keySize.contentDp.dp),
                 )
             }
         }

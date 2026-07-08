@@ -200,6 +200,7 @@ fun SettingsScreen(
         onCtrlFkeysChange = viewModel::updateCtrlFkeys,
         onStickyModifiersChange = viewModel::updateStickyModifiers,
         onKeyModeChange = viewModel::updateKeyMode,
+        onKeyboardKeySizeChange = viewModel::updateKeyboardKeySize,
         onCameraChange = viewModel::updateCamera,
         onBumpyArrowsChange = viewModel::updateBumpyArrows,
         onBellChange = viewModel::updateBell,
@@ -248,6 +249,7 @@ fun SettingsScreenContent(
     onCtrlFkeysChange: (Boolean) -> Unit,
     onStickyModifiersChange: (String) -> Unit,
     onKeyModeChange: (String) -> Unit,
+    onKeyboardKeySizeChange: (String) -> Unit,
     onCameraChange: (String) -> Unit,
     onBumpyArrowsChange: (Boolean) -> Unit,
     onBellChange: (Boolean) -> Unit,
@@ -667,6 +669,24 @@ fun SettingsScreenContent(
                         stringResource(R.string.list_keymode_none) to "none",
                     ),
                     onValueChange = onKeyModeChange,
+                )
+            }
+
+            item {
+                ListPreference(
+                    title = stringResource(R.string.pref_key_size_title),
+                    summary = when (uiState.keyboardKeySize) {
+                        "small" -> stringResource(R.string.key_size_small)
+                        "large" -> stringResource(R.string.key_size_large)
+                        else -> stringResource(R.string.key_size_medium)
+                    },
+                    value = uiState.keyboardKeySize,
+                    entries = listOf(
+                        stringResource(R.string.key_size_small) to "small",
+                        stringResource(R.string.key_size_medium) to "medium",
+                        stringResource(R.string.key_size_large) to "large",
+                    ),
+                    onValueChange = onKeyboardKeySizeChange,
                 )
             }
 
@@ -1653,6 +1673,7 @@ private fun SettingsScreenPreview() {
             onCtrlFkeysChange = {},
             onStickyModifiersChange = {},
             onKeyModeChange = {},
+            onKeyboardKeySizeChange = {},
             onCameraChange = {},
             onBumpyArrowsChange = {},
             onBellChange = {},

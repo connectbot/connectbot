@@ -369,6 +369,15 @@
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">"Directory shortcuts"</string>
 
+	<!-- Name for the special-keys bar key size preference -->
+	<string name="pref_key_size_title">"Key size"</string>
+	<!-- Key size option: small -->
+	<string name="key_size_small">"Small"</string>
+	<!-- Key size option: medium (default) -->
+	<string name="key_size_medium">"Medium"</string>
+	<!-- Key size option: large -->
+	<string name="key_size_large">"Large"</string>
+
 	<!-- Name for the sticky modifiers preference -->
 	<string name="pref_stickymodifiers_title">"Sticky modifiers"</string>
 

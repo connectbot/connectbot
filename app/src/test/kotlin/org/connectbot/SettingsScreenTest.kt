@@ -299,6 +299,7 @@ class SettingsScreenTest {
                     onCtrlFkeysChange = {},
                     onStickyModifiersChange = {},
                     onKeyModeChange = {},
+                    onKeyboardKeySizeChange = {},
                     onCameraChange = {},
                     onBumpyArrowsChange = {},
                     onBellChange = {},

@@ -143,6 +143,7 @@ import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.keyboard.DefaultKeyboardLayouts
+import org.connectbot.keyboard.KeyboardKeySize
 import org.connectbot.service.AuthBanner
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.PromptRequest
@@ -554,6 +555,13 @@ private fun ConsoleTerminalPage(
         // Keys-bar layout and its terminal-focused I/O paths. The resolved
         // per-host/global layout is wired in later; for now the built-in default.
         val keyboardLayout = DefaultKeyboardLayouts.default
+        val keyboardContext = LocalContext.current
+        val keyboardKeySize = remember {
+            KeyboardKeySize.fromPreferenceValue(
+                PreferenceManager.getDefaultSharedPreferences(keyboardContext)
+                    .getString(PreferenceConstants.KEYBOARD_KEY_SIZE, PreferenceConstants.KEYBOARD_KEY_SIZE_DEFAULT),
+            )
+        }
         val keyboardKeyHandler = tmuxPane?.keyHandler ?: bridge.keyHandler
         val injectKeyboardText: (String) -> Unit = { text ->
             if (tmuxPane != null) tmuxPane.paste(text) else bridge.injectString(text)
@@ -576,7 +584,7 @@ private fun ConsoleTerminalPage(
                 .fillMaxSize()
                 .padding(
                     bottom = if (keyboardAlwaysVisible) {
-                        terminalKeyboardHeightDp(keyboardLayout.rows.size).dp
+                        terminalKeyboardHeightDp(keyboardLayout.rows.size, keyboardKeySize).dp
                     } else {
                         0.dp
                     },
@@ -628,6 +636,7 @@ private fun ConsoleTerminalPage(
                     keyHandler = keyboardKeyHandler,
                     injectText = injectKeyboardText,
                     layout = keyboardLayout,
+                    keySize = keyboardKeySize,
                     onInteraction = { handleTerminalInteraction() },
                     onHideIme = {
                         onShowSoftwareKeyboardChange(false)
