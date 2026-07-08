@@ -47,6 +47,13 @@ object PreferenceConstants {
     const val KEYMODE: String = "keymode"
     const val KEY_ALWAYS_VISIBLE: String = "alwaysvisible"
 
+    /** ID of the global default special-keys layout ([DefaultKeyboardLayouts.DEFAULT_ID] = built-in default). */
+    const val KEYBOARD_LAYOUT_ID: String = "keyboardLayoutId"
+
+    /** Key size for the special-keys bar: "small", "medium" (default) or "large". */
+    const val KEYBOARD_KEY_SIZE: String = "keyboardKeySize"
+    const val KEYBOARD_KEY_SIZE_DEFAULT: String = "medium"
+
     const val KEYMODE_RIGHT: String = "Use right-side keys"
     const val KEYMODE_LEFT: String = "Use left-side keys"
     const val KEYMODE_NONE: String = "none"

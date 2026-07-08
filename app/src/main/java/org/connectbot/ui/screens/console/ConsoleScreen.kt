@@ -136,18 +136,23 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.keyboard.DefaultKeyboardLayouts
+import org.connectbot.keyboard.KeyboardKeySize
+import org.connectbot.keyboard.KeyboardLayoutSpec
 import org.connectbot.service.AuthBanner
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.PromptRequest
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.tmux.TmuxAttachState
 import org.connectbot.service.tmux.TmuxPaneTerminal
+import org.connectbot.terminal.ComposeController
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.SelectionController
 import org.connectbot.terminal.Terminal
@@ -161,9 +166,9 @@ import org.connectbot.ui.components.FloatingTextInputDialog
 import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
 import org.connectbot.ui.components.SnippetPickerSheet
-import org.connectbot.ui.components.TERMINAL_KEYBOARD_HEIGHT_DP
 import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
+import org.connectbot.ui.components.terminalKeyboardHeightDp
 import org.connectbot.ui.screens.console.tmux.PaneDotsIndicator
 import org.connectbot.ui.screens.console.tmux.TmuxActionMenuDialog
 import org.connectbot.ui.screens.console.tmux.TmuxCommandPaletteSheet
@@ -500,6 +505,16 @@ private fun disconnectReasonText(reason: DisconnectReason): String? = when (reas
     DisconnectReason.USER_REQUESTED, DisconnectReason.UNKNOWN -> null
 }
 
+/** Resolve a host's effective keys-bar layout (per-host override or global default). */
+@Composable
+private fun rememberResolvedKeyboardLayout(
+    host: Host,
+    viewModel: ConsoleViewModel,
+): KeyboardLayoutSpec {
+    val flow = remember(host.id, host.keyboardLayoutId) { viewModel.keyboardLayoutFlow(host) }
+    return flow.collectAsStateWithLifecycle(initialValue = DefaultKeyboardLayouts.default).value
+}
+
 @Composable
 private fun ConsoleTerminalPage(
     bridge: TerminalBridge,
@@ -526,6 +541,9 @@ private fun ConsoleTerminalPage(
     snackbarHostState: SnackbarHostState,
     modifier: Modifier = Modifier,
     terminalModifier: Modifier = Modifier,
+    keyboardLayout: KeyboardLayoutSpec = DefaultKeyboardLayouts.default,
+    keyboardKeySize: KeyboardKeySize = KeyboardKeySize.MEDIUM,
+    onNavigateToKeyboardLayouts: () -> Unit = {},
     /** When set, the page renders this tmux pane instead of the host shell. */
     tmuxPane: TmuxPaneTerminal? = null,
     /** Server-side pane grid (rows, cols); termlib fits the font to it. */
@@ -548,12 +566,34 @@ private fun ConsoleTerminalPage(
         }
 
         val tmuxEmulator = tmuxPane?.emulator
+
+        // Keys-bar terminal-focused I/O paths (layout/size resolved by the caller).
+        val keyboardKeyHandler = tmuxPane?.keyHandler ?: bridge.keyHandler
+        val injectKeyboardText: (String) -> Unit = { text ->
+            if (tmuxPane != null) tmuxPane.paste(text) else bridge.injectString(text)
+        }
+
+        var composeController by remember { mutableStateOf<ComposeController?>(null) }
+
+        // Per-host keyboard suggestions (issue 2015): activate the IME compose
+        // mode once the terminal provides its controller.
+        LaunchedEffect(composeController, bridge.host.keyboardSuggestions) {
+            val controller = composeController ?: return@LaunchedEffect
+            if (bridge.host.keyboardSuggestions && !controller.isComposeModeActive) {
+                controller.startComposeMode()
+            }
+        }
+
         Terminal(
             terminalEmulator = tmuxEmulator ?: bridge.terminalEmulator,
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp,
+                    bottom = if (keyboardAlwaysVisible) {
+                        terminalKeyboardHeightDp(keyboardLayout.rows.size, keyboardKeySize).dp
+                    } else {
+                        0.dp
+                    },
                 )
                 .then(terminalModifier)
                 .testTag("terminal"),
@@ -568,6 +608,9 @@ private fun ConsoleTerminalPage(
                 if (isActive) {
                     onSelectionControllerChange(controller)
                 }
+            },
+            onComposeControllerAvailable = { controller ->
+                composeController = controller
             },
             onTerminalTap = { handleTerminalInteraction() },
             onImeVisibilityChanged = { visible ->
@@ -596,7 +639,10 @@ private fun ConsoleTerminalPage(
                     .testTag("terminal_keyboard"),
             ) {
                 TerminalKeyboard(
-                    bridge = bridge,
+                    keyHandler = keyboardKeyHandler,
+                    injectText = injectKeyboardText,
+                    layout = keyboardLayout,
+                    keySize = keyboardKeySize,
                     onInteraction = { handleTerminalInteraction() },
                     onHideIme = {
                         onShowSoftwareKeyboardChange(false)
@@ -606,6 +652,7 @@ private fun ConsoleTerminalPage(
                     },
                     onOpenTextInput = onTextInputRequest,
                     onOpenSnippets = onSnippetsRequest,
+                    onLongPress = onNavigateToKeyboardLayouts,
                     onScrollInProgressChange = onKeyboardScrollInProgressChange,
                     imeVisible = imeVisible,
                     playAnimation = !hasPlayedKeyboardAnimation && !einkMode,
@@ -778,6 +825,7 @@ fun ConsoleScreen(
     modifier: Modifier = Modifier,
     onNavigateToSettings: () -> Unit = {},
     onNavigateToSftp: (Long) -> Unit = {},
+    onNavigateToKeyboardLayouts: () -> Unit = {},
     viewModel: ConsoleViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -1380,6 +1428,9 @@ fun ConsoleScreen(
                                     snackbarHostState = snackbarHostState,
                                     modifier = Modifier.fillMaxSize(),
                                     terminalModifier = pageGestureModifier.then(tmuxSwipeModifier),
+                                    keyboardLayout = rememberResolvedKeyboardLayout(bridge.host, viewModel),
+                                    keyboardKeySize = viewModel.keyboardKeySize,
+                                    onNavigateToKeyboardLayouts = onNavigateToKeyboardLayouts,
                                     tmuxPane = paneTerminal,
                                     tmuxForcedSize = pane?.let { Pair(it.height, it.width) },
                                 )
@@ -1428,6 +1479,9 @@ fun ConsoleScreen(
                                     snackbarHostState = snackbarHostState,
                                     modifier = Modifier.fillMaxSize(),
                                     terminalModifier = terminalModifier,
+                                    keyboardLayout = rememberResolvedKeyboardLayout(bridge.host, viewModel),
+                                    keyboardKeySize = viewModel.keyboardKeySize,
+                                    onNavigateToKeyboardLayouts = onNavigateToKeyboardLayouts,
                                 )
                             }
                         }

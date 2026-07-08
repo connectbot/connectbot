@@ -20,6 +20,7 @@ package org.connectbot
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performTouchInput
@@ -27,9 +28,13 @@ import androidx.compose.ui.test.swipeLeft
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.connectbot.keyboard.DefaultKeyboardLayouts
+import org.connectbot.keyboard.KeySpec
+import org.connectbot.keyboard.KeyboardLayoutSpec
+import org.connectbot.keyboard.ModifierKey
+import org.connectbot.keyboard.SpecialKey
 import org.connectbot.service.ModifierLevel
 import org.connectbot.service.ModifierState
-import org.connectbot.terminal.VTermKey
 import org.connectbot.ui.components.TerminalKeyboardContent
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.junit.Assert.assertEquals
@@ -54,27 +59,20 @@ class TerminalKeyboardContentTest {
     }
 
     @Test
-    fun terminalKeyboardContent_displaysCoreKeysAndInvokesCallbacks() {
-        var ctrlPressed = false
-        var escapePressed = false
-        var tabPressed = false
+    fun defaultLayout_rendersBothRowsAndDispatchesKeys() {
+        val actions = mutableListOf<KeySpec>()
         var interactionCount = 0
         var textInputOpened = false
         var showImeCalled = false
 
         setKeyboardContent(
-            onCtrlPress = { ctrlPressed = true },
-            onEscPress = { escapePressed = true },
-            onTabPress = { tabPressed = true },
+            onKeyAction = { actions += it },
             onInteraction = { interactionCount++ },
             onOpenTextInput = { textInputOpened = true },
             onShowIme = { showImeCalled = true },
         )
 
-        composeTestRule
-            .onNodeWithText(composeTestRule.activity.getString(R.string.button_key_ctrl))
-            .assertIsDisplayed()
-            .performClick()
+        // Row 1 (Esc) and row 2 (Tab) are both present in the default layout.
         composeTestRule
             .onNodeWithText(composeTestRule.activity.getString(R.string.button_key_esc))
             .assertIsDisplayed()
@@ -83,6 +81,12 @@ class TerminalKeyboardContentTest {
             .onNodeWithText("⇥")
             .assertIsDisplayed()
             .performClick()
+        // A symbol key sends its literal text.
+        composeTestRule
+            .onNodeWithText("/")
+            .assertIsDisplayed()
+            .performClick()
+        // Pinned buttons still work.
         composeTestRule
             .onNodeWithContentDescription(composeTestRule.activity.getString(R.string.terminal_keyboard_text_input_button))
             .performClick()
@@ -90,26 +94,27 @@ class TerminalKeyboardContentTest {
             .onNodeWithContentDescription(composeTestRule.activity.getString(R.string.image_description_show_keyboard))
             .performClick()
 
-        assertTrue(ctrlPressed)
-        assertTrue(escapePressed)
-        assertTrue(tabPressed)
+        assertEquals(
+            listOf(
+                KeySpec.Special(SpecialKey.ESC),
+                KeySpec.Special(SpecialKey.TAB),
+                KeySpec.Text("/"),
+            ),
+            actions,
+        )
         assertTrue(textInputOpened)
         assertTrue(showImeCalled)
+        // Two pinned-button presses fire onInteraction.
         assertEquals(2, interactionCount)
     }
 
     @Test
-    fun terminalKeyboardContent_imeVisibleInvokesHideKeyboard() {
+    fun imeVisible_invokesHideKeyboard() {
         var hideImeCalled = false
         var interactionCount = 0
 
         setKeyboardContent(
             imeVisible = true,
-            modifierState = ModifierState(
-                ctrlState = ModifierLevel.LOCKED,
-                altState = ModifierLevel.OFF,
-                shiftState = ModifierLevel.OFF,
-            ),
             onHideIme = { hideImeCalled = true },
             onInteraction = { interactionCount++ },
         )
@@ -124,16 +129,11 @@ class TerminalKeyboardContentTest {
     }
 
     @Test
-    fun terminalKeyboardContent_arrowAndFunctionKeysInvokeKeyCallback() {
-        val pressedKeys = mutableListOf<Int>()
+    fun arrowKey_dispatchesSpecialKey() {
+        val actions = mutableListOf<KeySpec>()
 
         setKeyboardContent(
-            modifierState = ModifierState(
-                ctrlState = ModifierLevel.TRANSIENT,
-                altState = ModifierLevel.OFF,
-                shiftState = ModifierLevel.OFF,
-            ),
-            onKeyPress = { pressedKeys += it },
+            onKeyAction = { actions += it },
             bumpyArrows = true,
         )
 
@@ -143,15 +143,47 @@ class TerminalKeyboardContentTest {
                 down(center)
                 up()
             }
-        composeTestRule
-            .onNodeWithText(composeTestRule.activity.getString(R.string.button_key_f1))
-            .performClick()
 
-        assertEquals(listOf(VTermKey.UP, VTermKey.FUNCTION_1), pressedKeys)
+        assertEquals(listOf(KeySpec.Special(SpecialKey.UP)), actions)
     }
 
     @Test
-    fun terminalKeyboardContent_reportsHorizontalScrollInteractions() {
+    fun fnKey_opensPopupAndDispatchesFunctionKey() {
+        val actions = mutableListOf<KeySpec>()
+
+        setKeyboardContent(
+            onKeyAction = { actions += it },
+        )
+
+        // Fn key does not dispatch itself; it opens the grid popup.
+        composeTestRule
+            .onNodeWithText(composeTestRule.activity.getString(R.string.button_key_fn))
+            .performClick()
+        composeTestRule.onNodeWithTag("fn_popup").assertIsDisplayed()
+        composeTestRule
+            .onNodeWithText(composeTestRule.activity.getString(R.string.button_key_f5))
+            .performClick()
+
+        assertEquals(listOf(KeySpec.Special(SpecialKey.F5)), actions)
+    }
+
+    @Test
+    fun modifierKey_dispatchesModifier() {
+        val actions = mutableListOf<KeySpec>()
+
+        setKeyboardContent(
+            onKeyAction = { actions += it },
+        )
+
+        composeTestRule
+            .onNodeWithText(composeTestRule.activity.getString(R.string.button_key_ctrl))
+            .performClick()
+
+        assertEquals(listOf<KeySpec>(KeySpec.Modifier(ModifierKey.CTRL)), actions)
+    }
+
+    @Test
+    fun reportsHorizontalScrollInteractions() {
         val scrollStates = mutableListOf<Boolean>()
 
         setKeyboardContent(
@@ -159,27 +191,26 @@ class TerminalKeyboardContentTest {
         )
 
         composeTestRule
-            .onNodeWithText(composeTestRule.activity.getString(R.string.button_key_ctrl))
+            .onNodeWithText(composeTestRule.activity.getString(R.string.button_key_esc))
             .performTouchInput { swipeLeft() }
 
         assertTrue(scrollStates.isNotEmpty())
     }
 
     private fun setKeyboardContent(
+        layout: KeyboardLayoutSpec = DefaultKeyboardLayouts.default,
         modifierState: ModifierState = ModifierState(
             ctrlState = ModifierLevel.OFF,
             altState = ModifierLevel.OFF,
             shiftState = ModifierLevel.OFF,
         ),
-        onCtrlPress: () -> Unit = {},
-        onEscPress: () -> Unit = {},
-        onTabPress: () -> Unit = {},
-        onKeyPress: (Int) -> Unit = {},
+        onKeyAction: (KeySpec) -> Unit = {},
         onInteraction: () -> Unit = {},
         onHideIme: () -> Unit = {},
         onShowIme: () -> Unit = {},
         onOpenTextInput: () -> Unit = {},
         onOpenSnippets: () -> Unit = {},
+        onLongPress: () -> Unit = {},
         onScrollInProgressChange: (Boolean) -> Unit = {},
         imeVisible: Boolean = false,
         bumpyArrows: Boolean = false,
@@ -187,16 +218,15 @@ class TerminalKeyboardContentTest {
         composeTestRule.setContent {
             ConnectBotTheme {
                 TerminalKeyboardContent(
+                    layout = layout,
                     modifierState = modifierState,
-                    onCtrlPress = onCtrlPress,
-                    onEscPress = onEscPress,
-                    onTabPress = onTabPress,
-                    onKeyPress = onKeyPress,
+                    onKeyAction = onKeyAction,
                     onInteraction = onInteraction,
                     onHideIme = onHideIme,
                     onShowIme = onShowIme,
                     onOpenTextInput = onOpenTextInput,
                     onOpenSnippets = onOpenSnippets,
+                    onLongPress = onLongPress,
                     onScrollInProgressChange = onScrollInProgressChange,
                     imeVisible = imeVisible,
                     playAnimation = false,

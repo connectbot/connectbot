@@ -28,9 +28,11 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.connectbot.data.HostRepository
+import org.connectbot.data.KeyboardLayoutRepository
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.KeyboardLayout
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.transport.Transport
@@ -56,6 +58,9 @@ data class HostEditorUiState(
     val tmuxEnabled: Boolean = true,
     val stayConnected: Boolean = false,
     val quickDisconnect: Boolean = false,
+    val keyboardSuggestions: Boolean = false,
+    val keyboardLayoutId: Long? = null,
+    val availableKeyboardLayouts: List<KeyboardLayout> = emptyList(),
     val postLogin: String = "",
     val jumpHostId: Long? = null,
     val availableJumpHosts: List<Host> = emptyList(),
@@ -82,6 +87,7 @@ class HostEditorViewModel @Inject constructor(
     private val repository: HostRepository,
     private val pubkeyRepository: PubkeyRepository,
     private val profileRepository: ProfileRepository,
+    private val keyboardLayoutRepository: KeyboardLayoutRepository,
     private val prefs: android.content.SharedPreferences,
     private val securePasswordStorage: SecurePasswordStorage,
 ) : ViewModel() {
@@ -94,6 +100,7 @@ class HostEditorViewModel @Inject constructor(
         observePubkeys()
         observeJumpHosts()
         observeProfiles()
+        observeKeyboardLayouts()
         if (hostId != -1L) {
             loadHost()
         } else {
@@ -122,6 +129,16 @@ class HostEditorViewModel @Inject constructor(
                 .collect { sshHosts ->
                     val filteredHosts = sshHosts.filter { it.id != hostId }
                     _uiState.update { it.copy(availableJumpHosts = filteredHosts) }
+                }
+        }
+    }
+
+    private fun observeKeyboardLayouts() {
+        viewModelScope.launch {
+            keyboardLayoutRepository.observeAll()
+                .catch { _uiState.update { it.copy(availableKeyboardLayouts = emptyList()) } }
+                .collect { layouts ->
+                    _uiState.update { it.copy(availableKeyboardLayouts = layouts) }
                 }
         }
     }
@@ -206,6 +223,8 @@ class HostEditorViewModel @Inject constructor(
                             tmuxEnabled = host.tmuxMode != Host.TMUX_MODE_OFF,
                             stayConnected = host.stayConnected,
                             quickDisconnect = host.quickDisconnect,
+                            keyboardSuggestions = host.keyboardSuggestions,
+                            keyboardLayoutId = host.keyboardLayoutId,
                             postLogin = host.postLogin ?: "",
                             jumpHostId = host.jumpHostId,
                             ipVersion = host.ipVersion,
@@ -347,6 +366,14 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(quickDisconnect = value) }
     }
 
+    fun updateKeyboardSuggestions(value: Boolean) {
+        _uiState.update { it.copy(keyboardSuggestions = value) }
+    }
+
+    fun updateKeyboardLayoutId(value: Long?) {
+        _uiState.update { it.copy(keyboardLayoutId = value) }
+    }
+
     fun updatePostLogin(value: String) {
         _uiState.update { it.copy(postLogin = value) }
     }
@@ -403,6 +430,8 @@ class HostEditorViewModel @Inject constructor(
                     tmuxMode = if (state.tmuxEnabled) Host.TMUX_MODE_AUTO else Host.TMUX_MODE_OFF,
                     stayConnected = state.stayConnected,
                     quickDisconnect = state.quickDisconnect,
+                    keyboardSuggestions = state.keyboardSuggestions,
+                    keyboardLayoutId = state.keyboardLayoutId,
                     postLogin = state.postLogin.ifBlank { null },
                     lastConnect = existingHost?.lastConnect ?: System.currentTimeMillis(),
                     hostKeyAlgo = existingHost?.hostKeyAlgo,

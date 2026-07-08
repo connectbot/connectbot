@@ -97,7 +97,7 @@ class SSHJumpHostAuthTest {
     }
 
     private fun ssh(): SSH = SSH().apply {
-        setManager(manager)
+        setManager(this@SSHJumpHostAuthTest.manager)
     }
 
     private fun jumpHost(pubkeyId: Long): Host = Host(
@@ -108,7 +108,9 @@ class SSHJumpHostAuthTest {
     )
 
     private fun ed25519KeystoreLikePair(): KeyPair {
-        val provider = Security.getProviders("Signature.Ed25519").first()
+        val provider = requireNotNull(Security.getProviders("Signature.Ed25519")?.firstOrNull()) {
+            "No JCA Ed25519 Signature provider available"
+        }
         val generated = KeyPairGenerator.getInstance("Ed25519", provider).generateKeyPair()
         return KeyPair(Ed25519Verify.convertPublicKey(generated.public), generated.private)
     }

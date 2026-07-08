@@ -70,6 +70,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -97,6 +98,7 @@ fun SettingsScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     highlightItem: String? = null,
+    onNavigateToKeyboardLayouts: () -> Unit = {},
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -167,6 +169,7 @@ fun SettingsScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
         highlightItem = highlightItem,
+        onNavigateToKeyboardLayouts = onNavigateToKeyboardLayouts,
         onAuthOnLaunchChange = viewModel::updateAuthOnLaunch,
         onMemkeysChange = viewModel::updateMemkeys,
         onConnPersistChange = viewModel::updateConnPersist,
@@ -200,6 +203,7 @@ fun SettingsScreen(
         onCtrlFkeysChange = viewModel::updateCtrlFkeys,
         onStickyModifiersChange = viewModel::updateStickyModifiers,
         onKeyModeChange = viewModel::updateKeyMode,
+        onKeyboardKeySizeChange = viewModel::updateKeyboardKeySize,
         onCameraChange = viewModel::updateCamera,
         onBumpyArrowsChange = viewModel::updateBumpyArrows,
         onBellChange = viewModel::updateBell,
@@ -248,6 +252,7 @@ fun SettingsScreenContent(
     onCtrlFkeysChange: (Boolean) -> Unit,
     onStickyModifiersChange: (String) -> Unit,
     onKeyModeChange: (String) -> Unit,
+    onKeyboardKeySizeChange: (String) -> Unit,
     onCameraChange: (String) -> Unit,
     onBumpyArrowsChange: (Boolean) -> Unit,
     onBellChange: (Boolean) -> Unit,
@@ -256,6 +261,7 @@ fun SettingsScreenContent(
     onBellNotificationChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     highlightItem: String? = null,
+    onNavigateToKeyboardLayouts: () -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -606,6 +612,16 @@ fun SettingsScreenContent(
             }
 
             item {
+                ListItem(
+                    headlineContent = { Text(stringResource(R.string.pref_keyboard_layouts_title)) },
+                    supportingContent = { Text(stringResource(R.string.pref_keyboard_layouts_summary)) },
+                    modifier = Modifier
+                        .clickable { onNavigateToKeyboardLayouts() }
+                        .testTag("keyboard_layouts_setting"),
+                )
+            }
+
+            item {
                 SwitchPreference(
                     title = stringResource(R.string.pref_alwaysvisible_title),
                     summary = stringResource(R.string.pref_alwaysvisible_summary),
@@ -667,6 +683,24 @@ fun SettingsScreenContent(
                         stringResource(R.string.list_keymode_none) to "none",
                     ),
                     onValueChange = onKeyModeChange,
+                )
+            }
+
+            item {
+                ListPreference(
+                    title = stringResource(R.string.pref_key_size_title),
+                    summary = when (uiState.keyboardKeySize) {
+                        "small" -> stringResource(R.string.key_size_small)
+                        "large" -> stringResource(R.string.key_size_large)
+                        else -> stringResource(R.string.key_size_medium)
+                    },
+                    value = uiState.keyboardKeySize,
+                    entries = listOf(
+                        stringResource(R.string.key_size_small) to "small",
+                        stringResource(R.string.key_size_medium) to "medium",
+                        stringResource(R.string.key_size_large) to "large",
+                    ),
+                    onValueChange = onKeyboardKeySizeChange,
                 )
             }
 
@@ -1653,6 +1687,7 @@ private fun SettingsScreenPreview() {
             onCtrlFkeysChange = {},
             onStickyModifiersChange = {},
             onKeyModeChange = {},
+            onKeyboardKeySizeChange = {},
             onCameraChange = {},
             onBumpyArrowsChange = {},
             onBellChange = {},

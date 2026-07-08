@@ -15,6 +15,8 @@
  * limitations under the License.
  */
 
+@file:Suppress("ktlint:compose:compositionlocal-allowlist")
+
 package org.connectbot.ui.components
 
 import android.view.HapticFeedbackConstants
@@ -25,11 +27,14 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Code
@@ -45,6 +50,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -54,6 +60,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -62,80 +69,80 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Popup
+import androidx.compose.ui.window.PopupProperties
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.connectbot.R
+import org.connectbot.keyboard.DefaultKeyboardLayouts
+import org.connectbot.keyboard.KeyIconCatalog
+import org.connectbot.keyboard.KeySpec
+import org.connectbot.keyboard.KeyboardKeySize
+import org.connectbot.keyboard.KeyboardLayoutSpec
+import org.connectbot.keyboard.ModifierKey
+import org.connectbot.keyboard.SpecialKey
+import org.connectbot.keyboard.dispatchKeySpec
 import org.connectbot.service.ModifierLevel
 import org.connectbot.service.ModifierState
-import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalKeyListener
-import org.connectbot.terminal.VTermKey
 import org.connectbot.util.PreferenceConstants
 
 private const val UI_OPACITY = 0.5f
 
-/**
- * Height of the virtual keyboard keys in dp.
- */
-const val TERMINAL_KEYBOARD_HEIGHT_DP = 30
+/** The active key size, provided by [TerminalKeyboardContent] to nested key composables. */
+private val LocalKeyboardKeySize = staticCompositionLocalOf { KeyboardKeySize.MEDIUM }
 
 /**
- * Width of the virtual keyboard keys in dp.
+ * Total height of the keys bar for a layout with [rowCount] rows at [keySize].
  */
-private const val TERMINAL_KEYBOARD_WIDTH_DP = 45
+fun terminalKeyboardHeightDp(rowCount: Int, keySize: KeyboardKeySize): Int = rowCount.coerceAtLeast(1) * keySize.keyHeightDp
 
 /**
- * Size of the content (icons and text) for the virtual keyboard keys in dp.
- */
-private const val TERMINAL_KEYBOARD_CONTENT_SIZE_DP = 20
-
-/**
- * Virtual keyboard with terminal special keys (Ctrl, Esc, arrows, function keys, etc.)
- * Positioned at bottom of console screen, horizontally scrollable
- * Auto-hide timer is managed by parent ConsoleScreen
+ * Virtual keyboard with a customizable set of terminal special keys.
+ * Positioned at the bottom of the console screen; each row scrolls horizontally.
+ * The auto-hide timer is managed by the parent ConsoleScreen.
+ *
+ * @param keyHandler modifier-aware key path for the terminal that currently has
+ *   focus (host shell or tmux pane).
+ * @param injectText pane-aware text path for custom text keys.
+ * @param layout the ordered rows of keys to render.
  */
 @Composable
 fun TerminalKeyboard(
-    bridge: TerminalBridge,
+    keyHandler: TerminalKeyListener,
+    injectText: (String) -> Unit,
+    layout: KeyboardLayoutSpec,
     onInteraction: () -> Unit,
     modifier: Modifier = Modifier,
+    keySize: KeyboardKeySize = KeyboardKeySize.MEDIUM,
     onHideIme: () -> Unit = {},
     onShowIme: () -> Unit = {},
     onOpenTextInput: () -> Unit = {},
     onOpenSnippets: () -> Unit = {},
+    onLongPress: () -> Unit = {},
     onScrollInProgressChange: (Boolean) -> Unit = {},
     imeVisible: Boolean = false,
     playAnimation: Boolean = false,
 ) {
     val context = LocalContext.current
     val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
-    val keyHandler = bridge.keyHandler
     val modifierState by keyHandler.modifierState.collectAsState()
     val bumpyArrows by remember {
         mutableStateOf(prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, false))
     }
 
     TerminalKeyboardContent(
+        layout = layout,
+        keySize = keySize,
         modifierState = modifierState,
-        onCtrlPress = {
-            keyHandler.metaPress(TerminalKeyListener.CTRL_ON, true)
-            onInteraction()
-        },
-        onEscPress = {
-            keyHandler.sendEscape()
-            onInteraction()
-        },
-        onTabPress = {
-            keyHandler.sendTab()
-            onInteraction()
-        },
-        onKeyPress = { key ->
-            keyHandler.sendPressedKey(key)
+        onKeyAction = { spec ->
+            dispatchKeySpec(spec, keyHandler, injectText)
             onInteraction()
         },
         onInteraction = onInteraction,
@@ -143,6 +150,7 @@ fun TerminalKeyboard(
         onShowIme = onShowIme,
         onOpenTextInput = onOpenTextInput,
         onOpenSnippets = onOpenSnippets,
+        onLongPress = onLongPress,
         onScrollInProgressChange = onScrollInProgressChange,
         imeVisible = imeVisible,
         playAnimation = playAnimation,
@@ -153,339 +161,197 @@ fun TerminalKeyboard(
 
 /**
  * Stateless UI component for the terminal keyboard.
- * Separated from [TerminalKeyboard] to enable preview without TerminalBridge dependency.
+ * Separated from [TerminalKeyboard] so it can be previewed and tested without a
+ * TerminalBridge; [onKeyAction] receives the pressed [KeySpec].
  */
 @Composable
 internal fun TerminalKeyboardContent(
+    layout: KeyboardLayoutSpec,
     modifierState: ModifierState,
-    onCtrlPress: () -> Unit,
-    onEscPress: () -> Unit,
-    onTabPress: () -> Unit,
-    onKeyPress: (Int) -> Unit,
+    onKeyAction: (KeySpec) -> Unit,
     onInteraction: () -> Unit,
     onHideIme: () -> Unit,
     onShowIme: () -> Unit,
     onOpenTextInput: () -> Unit,
     onOpenSnippets: () -> Unit,
+    onLongPress: () -> Unit,
     onScrollInProgressChange: (Boolean) -> Unit,
     imeVisible: Boolean,
     playAnimation: Boolean,
     bumpyArrows: Boolean,
     modifier: Modifier = Modifier,
+    keySize: KeyboardKeySize = KeyboardKeySize.MEDIUM,
 ) {
-    val scrollState = rememberScrollState()
     val currentOnScrollInProgressChange by rememberUpdatedState(onScrollInProgressChange)
     val view = LocalView.current
+
+    // At most two rows are supported; states are created unconditionally so the
+    // number of remembered slots never changes between recompositions.
+    val scrollState0 = rememberScrollState()
+    val scrollState1 = rememberScrollState()
+    val scrollStates = listOf(scrollState0, scrollState1)
+
+    var showFnPopup by remember { mutableStateOf(false) }
 
     if (bumpyArrows) {
         view.isHapticFeedbackEnabled = true
     }
 
-    // Notify parent when scroll state changes
-    LaunchedEffect(scrollState.isScrollInProgress) {
-        currentOnScrollInProgressChange(scrollState.isScrollInProgress)
+    // Notify parent when any row is scrolling.
+    LaunchedEffect(scrollState0.isScrollInProgress, scrollState1.isScrollInProgress) {
+        currentOnScrollInProgressChange(
+            scrollState0.isScrollInProgress || scrollState1.isScrollInProgress,
+        )
     }
 
-    // Auto-scroll animation on first appearance (only if playAnimation is true)
+    // Auto-scroll animation on first appearance (only if playAnimation is true).
     LaunchedEffect(playAnimation) {
         if (playAnimation) {
-            // Wait a moment for layout to complete
             delay(100)
-
-            // Scroll all the way to the right to show all keys
-            scrollState.animateScrollTo(
-                value = scrollState.maxValue,
+            scrollState0.animateScrollTo(
+                value = scrollState0.maxValue,
                 animationSpec = tween(durationMillis = 500),
             )
-
-            // Then scroll back to the left
             delay(300)
-            scrollState.animateScrollTo(
+            scrollState0.animateScrollTo(
                 value = 0,
                 animationSpec = tween(durationMillis = 500),
             )
         }
     }
 
-    Surface(
-        modifier = modifier
-            .pointerInput(Unit) {
-                // Reset timer on any touch interaction
-                detectTapGestures(
-                    onPress = {
-                        onInteraction()
-                        tryAwaitRelease()
-                    },
-                )
-            },
-        color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
-        tonalElevation = 8.dp,
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(TERMINAL_KEYBOARD_HEIGHT_DP.dp),
-            verticalAlignment = Alignment.CenterVertically,
+    val onKeyActionWithFn: (KeySpec) -> Unit = { spec ->
+        if (spec is KeySpec.FnGrid) {
+            showFnPopup = !showFnPopup
+            onInteraction()
+        } else {
+            onKeyAction(spec)
+        }
+    }
+
+    CompositionLocalProvider(LocalKeyboardKeySize provides keySize) {
+        Surface(
+            modifier = modifier
+                .pointerInput(Unit) {
+                    detectTapGestures(
+                        onLongPress = { onLongPress() },
+                        onPress = {
+                            onInteraction()
+                            tryAwaitRelease()
+                        },
+                    )
+                },
+            color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
+            tonalElevation = 8.dp,
         ) {
-            // Scrollable key buttons
             Row(
                 modifier = Modifier
-                    .weight(1f)
-                    .horizontalScroll(scrollState),
-                horizontalArrangement = Arrangement.Start, // No spacing between keys
+                    .fillMaxWidth()
+                    .height(terminalKeyboardHeightDp(layout.rows.size, keySize).dp),
+                verticalAlignment = Alignment.CenterVertically,
             ) {
-                // Ctrl key (sticky modifier)
-                ModifierKeyButton(
-                    text = stringResource(R.string.button_key_ctrl),
-                    contentDescription = stringResource(R.string.image_description_toggle_control_character),
-                    modifierLevel = modifierState.ctrlState,
-                    onClick = onCtrlPress,
-                )
-
-                // Esc key
-                KeyButton(
-                    text = stringResource(R.string.button_key_esc),
-                    contentDescription = stringResource(R.string.image_description_send_escape_character),
-                    onClick = onEscPress,
-                )
-
-                // Tab key
-                KeyButton(
-                    text = "⇥", // Tab symbol
-                    contentDescription = stringResource(R.string.image_description_send_tab_character),
-                    onClick = onTabPress,
-                )
-
-                // Arrow keys (repeatable)
-                RepeatableKeyButton(
-                    icon = Icons.Default.KeyboardArrowUp,
-                    contentDescription = stringResource(R.string.image_description_up),
-                    onPress = {
-                        onKeyPress(VTermKey.UP)
-                        if (bumpyArrows) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                // Scrollable rows of keys.
+                Column(modifier = Modifier.weight(1f)) {
+                    layout.rows.forEachIndexed { rowIndex, keys ->
+                        Row(
+                            modifier = Modifier
+                                .weight(1f)
+                                .horizontalScroll(scrollStates.getOrElse(rowIndex) { scrollState0 }),
+                            horizontalArrangement = Arrangement.Start,
+                            verticalAlignment = Alignment.CenterVertically,
+                        ) {
+                            keys.forEach { key ->
+                                TerminalKey(
+                                    spec = key,
+                                    modifierState = modifierState,
+                                    bumpyArrows = bumpyArrows,
+                                    onKeyAction = onKeyActionWithFn,
+                                )
+                            }
                         }
-                    },
-                )
-
-                RepeatableKeyButton(
-                    icon = Icons.Default.KeyboardArrowDown,
-                    contentDescription = stringResource(R.string.image_description_down),
-                    onPress = {
-                        onKeyPress(VTermKey.DOWN)
-                        if (bumpyArrows) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                        }
-                    },
-                )
-
-                RepeatableKeyButton(
-                    icon = Icons.Default.KeyboardArrowLeft,
-                    contentDescription = stringResource(R.string.image_description_left),
-                    onPress = {
-                        onKeyPress(VTermKey.LEFT)
-                        if (bumpyArrows) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                        }
-                    },
-                )
-
-                RepeatableKeyButton(
-                    icon = Icons.Default.KeyboardArrowRight,
-                    contentDescription = stringResource(R.string.image_description_right),
-                    onPress = {
-                        onKeyPress(VTermKey.RIGHT)
-                        if (bumpyArrows) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                        }
-                    },
-                )
-
-                // Home/End
-                KeyButton(
-                    text = stringResource(R.string.button_key_home),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.HOME) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_end),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.END) },
-                )
-
-                // Page Up/Down
-                KeyButton(
-                    text = stringResource(R.string.button_key_pgup),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.PAGEUP) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_pgdn),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.PAGEDOWN) },
-                )
-
-                // Function keys F1-F12
-                KeyButton(
-                    text = stringResource(R.string.button_key_f1),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_1) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f2),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_2) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f3),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_3) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f4),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_4) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f5),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_5) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f6),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_6) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f7),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_7) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f8),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_8) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f9),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_9) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f10),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_10) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f11),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_11) },
-                )
-
-                KeyButton(
-                    text = stringResource(R.string.button_key_f12),
-                    contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_12) },
-                )
-            }
-
-            // Snippet picker button (always visible on right)
-            Surface(
-                onClick = {
-                    onOpenSnippets()
-                    onInteraction()
-                },
-                modifier = Modifier.size(
-                    width = TERMINAL_KEYBOARD_WIDTH_DP.dp,
-                    height = TERMINAL_KEYBOARD_HEIGHT_DP.dp,
-                ),
-                shape = RectangleShape,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-                color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    Icon(
-                        Icons.Default.Code,
-                        contentDescription = stringResource(R.string.terminal_keyboard_snippets_button),
-                        modifier = Modifier.height(TERMINAL_KEYBOARD_CONTENT_SIZE_DP.dp),
-                    )
-                }
-            }
-
-            // Text input button (always visible on right)
-            Surface(
-                onClick = {
-                    onOpenTextInput()
-                    onInteraction()
-                },
-                modifier = Modifier.size(
-                    width = TERMINAL_KEYBOARD_WIDTH_DP.dp,
-                    height = TERMINAL_KEYBOARD_HEIGHT_DP.dp,
-                ),
-                shape = RectangleShape,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-                color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    Icon(
-                        Icons.Default.Edit,
-                        contentDescription = stringResource(R.string.terminal_keyboard_text_input_button),
-                        modifier = Modifier.height(TERMINAL_KEYBOARD_CONTENT_SIZE_DP.dp),
-                    )
-                }
-            }
-
-            // Keyboard toggle button (always visible on right)
-            Surface(
-                onClick = {
-                    if (imeVisible) {
-                        onHideIme()
-                    } else {
-                        onShowIme()
                     }
-                    onInteraction()
+                }
+
+                // Pinned right-side buttons, spanning the full bar height.
+                PinnedBarButton(
+                    icon = Icons.Default.Code,
+                    contentDescription = stringResource(R.string.terminal_keyboard_snippets_button),
+                    onClick = {
+                        onOpenSnippets()
+                        onInteraction()
+                    },
+                )
+                PinnedBarButton(
+                    icon = Icons.Default.Edit,
+                    contentDescription = stringResource(R.string.terminal_keyboard_text_input_button),
+                    onClick = {
+                        onOpenTextInput()
+                        onInteraction()
+                    },
+                )
+                PinnedBarButton(
+                    icon = if (imeVisible) Icons.Default.KeyboardHide else Icons.Default.Keyboard,
+                    contentDescription = stringResource(
+                        if (imeVisible) {
+                            R.string.image_description_hide_keyboard
+                        } else {
+                            R.string.image_description_show_keyboard
+                        },
+                    ),
+                    onClick = {
+                        if (imeVisible) onHideIme() else onShowIme()
+                        onInteraction()
+                    },
+                )
+            }
+        }
+
+        if (showFnPopup) {
+            FnGridPopup(
+                onDismiss = { showFnPopup = false },
+                onFunctionKey = { key ->
+                    onKeyAction(KeySpec.Special(key))
+                    showFnPopup = false
                 },
-                modifier = Modifier.size(
-                    width = TERMINAL_KEYBOARD_WIDTH_DP.dp,
-                    height = TERMINAL_KEYBOARD_HEIGHT_DP.dp,
-                ),
-                shape = RectangleShape,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-                color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    Icon(
-                        if (imeVisible) Icons.Default.KeyboardHide else Icons.Default.Keyboard,
-                        contentDescription = stringResource(
-                            if (imeVisible) {
-                                R.string.image_description_hide_keyboard
-                            } else {
-                                R.string.image_description_show_keyboard
-                            },
-                        ),
-                        modifier = Modifier.height(TERMINAL_KEYBOARD_CONTENT_SIZE_DP.dp),
-                    )
+            )
+        }
+    }
+}
+
+/** The twelve function keys, laid out 4 columns × 3 rows in the Fn popup. */
+private val FUNCTION_KEYS = listOf(
+    SpecialKey.F1, SpecialKey.F2, SpecialKey.F3, SpecialKey.F4,
+    SpecialKey.F5, SpecialKey.F6, SpecialKey.F7, SpecialKey.F8,
+    SpecialKey.F9, SpecialKey.F10, SpecialKey.F11, SpecialKey.F12,
+)
+
+@Composable
+private fun FnGridPopup(
+    onDismiss: () -> Unit,
+    onFunctionKey: (SpecialKey) -> Unit,
+) {
+    Popup(
+        alignment = Alignment.BottomCenter,
+        onDismissRequest = onDismiss,
+        properties = PopupProperties(focusable = true),
+    ) {
+        Surface(
+            modifier = Modifier.testTag("fn_popup"),
+            shape = RectangleShape,
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+            tonalElevation = 8.dp,
+        ) {
+            Column {
+                FUNCTION_KEYS.chunked(4).forEach { rowKeys ->
+                    Row {
+                        rowKeys.forEach { key ->
+                            KeyButton(
+                                text = defaultSpecialLabel(key),
+                                contentDescription = null,
+                                onClick = { onFunctionKey(key) },
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -493,8 +359,180 @@ internal fun TerminalKeyboardContent(
 }
 
 /**
- * A button for single-press keys (Ctrl, Esc, Tab, Home, End, PgUp, PgDn, F1-F12)
- * Styled to match the old keyboard layout: rectangular 45dp × 30dp with border
+ * Renders a single key from the layout, choosing the right button style
+ * (modifier / repeatable / plain) for the spec.
+ */
+@Composable
+private fun TerminalKey(
+    spec: KeySpec,
+    modifierState: ModifierState,
+    bumpyArrows: Boolean,
+    onKeyAction: (KeySpec) -> Unit,
+) {
+    val view = LocalView.current
+    val customIcon = KeyIconCatalog.iconFor(spec.icon)
+
+    when (spec) {
+        is KeySpec.Modifier -> ModifierKeyButton(
+            text = spec.label ?: defaultModifierLabel(spec.mod),
+            contentDescription = modifierContentDescription(spec.mod),
+            modifierLevel = modifierState.levelFor(spec.mod),
+            onClick = { onKeyAction(spec) },
+        )
+
+        is KeySpec.Special -> {
+            val arrowIcon = arrowIconFor(spec.key)
+            if (spec.key.repeatable && spec.label == null && (customIcon ?: arrowIcon) != null) {
+                RepeatableKeyButton(
+                    icon = customIcon ?: arrowIcon!!,
+                    contentDescription = specialContentDescription(spec.key),
+                    onPress = {
+                        onKeyAction(spec)
+                        if (bumpyArrows) {
+                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                        }
+                    },
+                )
+            } else {
+                KeyButton(
+                    text = if (customIcon != null) null else spec.label ?: defaultSpecialLabel(spec.key),
+                    icon = customIcon,
+                    contentDescription = specialContentDescription(spec.key),
+                    onClick = { onKeyAction(spec) },
+                )
+            }
+        }
+
+        is KeySpec.Text -> KeyButton(
+            text = if (customIcon != null) null else spec.label ?: spec.text,
+            icon = customIcon,
+            contentDescription = null,
+            onClick = { onKeyAction(spec) },
+        )
+
+        is KeySpec.Combo -> KeyButton(
+            text = if (customIcon != null) null else spec.label ?: defaultComboLabel(spec),
+            icon = customIcon,
+            contentDescription = null,
+            onClick = { onKeyAction(spec) },
+        )
+
+        is KeySpec.FnGrid -> KeyButton(
+            text = if (customIcon != null) null else spec.label ?: stringResource(R.string.button_key_fn),
+            icon = customIcon,
+            contentDescription = null,
+            onClick = { onKeyAction(spec) },
+        )
+    }
+}
+
+private fun ModifierState.levelFor(mod: ModifierKey): ModifierLevel = when (mod) {
+    ModifierKey.CTRL -> ctrlState
+    ModifierKey.ALT -> altState
+    ModifierKey.SHIFT -> shiftState
+}
+
+private fun arrowIconFor(key: SpecialKey): ImageVector? = when (key) {
+    SpecialKey.UP -> Icons.Default.KeyboardArrowUp
+    SpecialKey.DOWN -> Icons.Default.KeyboardArrowDown
+    SpecialKey.LEFT -> Icons.Default.KeyboardArrowLeft
+    SpecialKey.RIGHT -> Icons.Default.KeyboardArrowRight
+    else -> null
+}
+
+@Composable
+private fun defaultModifierLabel(mod: ModifierKey): String = when (mod) {
+    ModifierKey.CTRL -> stringResource(R.string.button_key_ctrl)
+    ModifierKey.ALT -> stringResource(R.string.button_key_alt)
+    ModifierKey.SHIFT -> stringResource(R.string.button_key_shift)
+}
+
+@Composable
+private fun modifierContentDescription(mod: ModifierKey): String? = when (mod) {
+    ModifierKey.CTRL -> stringResource(R.string.image_description_toggle_control_character)
+    else -> null
+}
+
+@Composable
+private fun defaultSpecialLabel(key: SpecialKey): String = when (key) {
+    SpecialKey.ESC -> stringResource(R.string.button_key_esc)
+    SpecialKey.TAB -> "⇥"
+    SpecialKey.ENTER -> stringResource(R.string.button_key_enter)
+    SpecialKey.UP -> "↑"
+    SpecialKey.DOWN -> "↓"
+    SpecialKey.LEFT -> "←"
+    SpecialKey.RIGHT -> "→"
+    SpecialKey.HOME -> stringResource(R.string.button_key_home)
+    SpecialKey.END -> stringResource(R.string.button_key_end)
+    SpecialKey.PGUP -> stringResource(R.string.button_key_pgup)
+    SpecialKey.PGDN -> stringResource(R.string.button_key_pgdn)
+    SpecialKey.INS -> stringResource(R.string.button_key_ins)
+    SpecialKey.DEL -> stringResource(R.string.button_key_del)
+    SpecialKey.F1 -> stringResource(R.string.button_key_f1)
+    SpecialKey.F2 -> stringResource(R.string.button_key_f2)
+    SpecialKey.F3 -> stringResource(R.string.button_key_f3)
+    SpecialKey.F4 -> stringResource(R.string.button_key_f4)
+    SpecialKey.F5 -> stringResource(R.string.button_key_f5)
+    SpecialKey.F6 -> stringResource(R.string.button_key_f6)
+    SpecialKey.F7 -> stringResource(R.string.button_key_f7)
+    SpecialKey.F8 -> stringResource(R.string.button_key_f8)
+    SpecialKey.F9 -> stringResource(R.string.button_key_f9)
+    SpecialKey.F10 -> stringResource(R.string.button_key_f10)
+    SpecialKey.F11 -> stringResource(R.string.button_key_f11)
+    SpecialKey.F12 -> stringResource(R.string.button_key_f12)
+}
+
+@Composable
+private fun specialContentDescription(key: SpecialKey): String? = when (key) {
+    SpecialKey.ESC -> stringResource(R.string.image_description_send_escape_character)
+    SpecialKey.TAB -> stringResource(R.string.image_description_send_tab_character)
+    SpecialKey.UP -> stringResource(R.string.image_description_up)
+    SpecialKey.DOWN -> stringResource(R.string.image_description_down)
+    SpecialKey.LEFT -> stringResource(R.string.image_description_left)
+    SpecialKey.RIGHT -> stringResource(R.string.image_description_right)
+    else -> null
+}
+
+/** Compact default label for a combo key, e.g. Ctrl+C -> "⌃C". */
+private fun defaultComboLabel(spec: KeySpec.Combo): String = buildString {
+    if (spec.ctrl) append("⌃")
+    if (spec.alt) append("⌥")
+    if (spec.shift) append("⇧")
+    append(spec.ch?.uppercaseChar()?.toString() ?: spec.special?.name.orEmpty())
+}
+
+@Composable
+private fun PinnedBarButton(
+    icon: ImageVector,
+    contentDescription: String?,
+    onClick: () -> Unit,
+) {
+    val keySize = LocalKeyboardKeySize.current
+    Surface(
+        onClick = onClick,
+        modifier = Modifier
+            .width(keySize.keyWidthDp.dp)
+            .fillMaxHeight(),
+        shape = RectangleShape,
+        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+        color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
+    ) {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            Icon(
+                icon,
+                contentDescription = contentDescription,
+                modifier = Modifier.height(keySize.contentDp.dp),
+            )
+        }
+    }
+}
+
+/**
+ * A button for single-press keys.
+ * Styled to match the old keyboard layout: rectangular 45dp × 30dp with border.
  */
 @Composable
 private fun KeyButton(
@@ -506,8 +544,9 @@ private fun KeyButton(
     backgroundColor: Color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
     tint: Color = MaterialTheme.colorScheme.onSurface,
 ) {
+    val keySize = LocalKeyboardKeySize.current
     val surfaceModifier = modifier
-        .size(width = TERMINAL_KEYBOARD_WIDTH_DP.dp, height = TERMINAL_KEYBOARD_HEIGHT_DP.dp)
+        .size(width = keySize.keyWidthDp.dp, height = keySize.keyHeightDp.dp)
 
     val content: @Composable () -> Unit = {
         Box(
@@ -525,7 +564,7 @@ private fun KeyButton(
                     imageVector = icon,
                     contentDescription = contentDescription,
                     tint = tint,
-                    modifier = Modifier.height(TERMINAL_KEYBOARD_CONTENT_SIZE_DP.dp),
+                    modifier = Modifier.height(keySize.contentDp.dp),
                 )
             }
         }
@@ -552,9 +591,8 @@ private fun KeyButton(
 }
 
 /**
- * A button for repeatable keys (arrow keys)
- * Starts repeating after initial delay when held down
- * Styled to match the old keyboard layout: rectangular 45dp × 30dp with border
+ * A button for repeatable keys (arrow keys).
+ * Starts repeating after an initial delay when held down.
  */
 @Composable
 private fun RepeatableKeyButton(
@@ -567,7 +605,6 @@ private fun RepeatableKeyButton(
     var isPressed by remember { mutableStateOf(false) }
     var repeatJob by remember { mutableStateOf<Job?>(null) }
 
-    // Cleanup on unmount
     DisposableEffect(Unit) {
         onDispose {
             repeatJob?.cancel()
@@ -591,18 +628,15 @@ private fun RepeatableKeyButton(
                     isPressed = true
                     var sentPress = false
 
-                    // Start a job that handles initial delay, first press, and repeat
                     val tapTimeout = ViewConfiguration.getTapTimeout().toLong()
                     repeatJob = coroutineScope.launch {
-                        // Delay before first press to allow scroll gestures to steal touch
+                        // Delay before first press to allow scroll gestures to steal touch.
                         delay(tapTimeout)
                         if (!isPressed) return@launch
 
-                        // First press after initial tap delay
                         sentPress = true
                         onPress()
 
-                        // Wait before starting repeat
                         delay(500 - tapTimeout)
                         while (isPressed) {
                             sentPress = true
@@ -611,12 +645,11 @@ private fun RepeatableKeyButton(
                         }
                     }
 
-                    // Wait for release - returns true if normal release, false if gesture stolen
                     val released = tryAwaitRelease()
                     isPressed = false
 
                     if (released && !sentPress) {
-                        // User released but key hasn't been sent yet (quick tap) - send it now
+                        // Quick tap released before the repeat job fired — send once now.
                         repeatJob?.cancel()
                         onPress()
                     } else {
@@ -659,25 +692,24 @@ private fun ModifierKeyButton(
     )
 }
 
-@Preview(name = "Terminal Keyboard - Default State", showBackground = true)
+@Preview(name = "Terminal Keyboard - Default", showBackground = true)
 @Composable
 private fun TerminalKeyboardPreview() {
     MaterialTheme {
         TerminalKeyboardContent(
+            layout = DefaultKeyboardLayouts.default,
             modifierState = ModifierState(
                 ctrlState = ModifierLevel.OFF,
                 altState = ModifierLevel.OFF,
                 shiftState = ModifierLevel.OFF,
             ),
-            onCtrlPress = {},
-            onEscPress = {},
-            onTabPress = {},
-            onKeyPress = {},
+            onKeyAction = {},
             onInteraction = {},
             onHideIme = {},
             onShowIme = {},
             onOpenTextInput = {},
             onOpenSnippets = {},
+            onLongPress = {},
             onScrollInProgressChange = {},
             imeVisible = false,
             playAnimation = false,
@@ -686,81 +718,26 @@ private fun TerminalKeyboardPreview() {
     }
 }
 
-@Preview(name = "Terminal Keyboard - Ctrl Pressed", showBackground = true)
+@Preview(name = "Terminal Keyboard - Classic, Ctrl Locked", showBackground = true)
 @Composable
-private fun TerminalKeyboardCtrlPressedPreview() {
+private fun TerminalKeyboardClassicPreview() {
     MaterialTheme {
         TerminalKeyboardContent(
-            modifierState = ModifierState(
-                ctrlState = ModifierLevel.TRANSIENT,
-                altState = ModifierLevel.OFF,
-                shiftState = ModifierLevel.OFF,
-            ),
-            onCtrlPress = {},
-            onEscPress = {},
-            onTabPress = {},
-            onKeyPress = {},
-            onInteraction = {},
-            onHideIme = {},
-            onShowIme = {},
-            onOpenTextInput = {},
-            onOpenSnippets = {},
-            onScrollInProgressChange = {},
-            imeVisible = false,
-            playAnimation = false,
-            bumpyArrows = false,
-        )
-    }
-}
-
-@Preview(name = "Terminal Keyboard - Ctrl Locked", showBackground = true)
-@Composable
-private fun TerminalKeyboardCtrlLockedPreview() {
-    MaterialTheme {
-        TerminalKeyboardContent(
+            layout = DefaultKeyboardLayouts.classic,
             modifierState = ModifierState(
                 ctrlState = ModifierLevel.LOCKED,
                 altState = ModifierLevel.OFF,
                 shiftState = ModifierLevel.OFF,
             ),
-            onCtrlPress = {},
-            onEscPress = {},
-            onTabPress = {},
-            onKeyPress = {},
+            onKeyAction = {},
             onInteraction = {},
             onHideIme = {},
             onShowIme = {},
             onOpenTextInput = {},
             onOpenSnippets = {},
+            onLongPress = {},
             onScrollInProgressChange = {},
             imeVisible = false,
-            playAnimation = false,
-            bumpyArrows = false,
-        )
-    }
-}
-
-@Preview(name = "Terminal Keyboard - IME Visible", showBackground = true)
-@Composable
-private fun TerminalKeyboardImeVisiblePreview() {
-    MaterialTheme {
-        TerminalKeyboardContent(
-            modifierState = ModifierState(
-                ctrlState = ModifierLevel.OFF,
-                altState = ModifierLevel.OFF,
-                shiftState = ModifierLevel.OFF,
-            ),
-            onCtrlPress = {},
-            onEscPress = {},
-            onTabPress = {},
-            onKeyPress = {},
-            onInteraction = {},
-            onHideIme = {},
-            onShowIme = {},
-            onOpenTextInput = {},
-            onOpenSnippets = {},
-            onScrollInProgressChange = {},
-            imeVisible = true,
             playAnimation = false,
             bumpyArrows = false,
         )

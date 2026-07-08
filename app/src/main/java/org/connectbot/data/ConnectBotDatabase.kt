@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import org.connectbot.data.dao.ColorSchemeDao
 import org.connectbot.data.dao.HostDao
+import org.connectbot.data.dao.KeyboardLayoutDao
 import org.connectbot.data.dao.KnownHostDao
 import org.connectbot.data.dao.PortForwardDao
 import org.connectbot.data.dao.ProfileDao
@@ -33,6 +34,7 @@ import org.connectbot.data.dao.SnippetDao
 import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.KeyboardLayout
 import org.connectbot.data.entity.KnownHost
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Profile
@@ -65,6 +67,10 @@ import org.connectbot.data.entity.Snippet
  * - Version 10: Added tmux_mode, tmux_last_target, and tmux_offer_dismissed
  *   to hosts for tmux integration (AutoMigration)
  * - Version 11: Added snippets table for reusable command snippets (AutoMigration)
+ * - Version 12: Added keyboard_suggestions to hosts for per-host IME
+ *   suggestions (AutoMigration)
+ * - Version 13: Added keyboard_layouts table and keyboard_layout_id column on
+ *   hosts for the customizable keys bar (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -81,8 +87,9 @@ import org.connectbot.data.entity.Snippet
         ColorPalette::class,
         Profile::class,
         Snippet::class,
+        KeyboardLayout::class,
     ],
-    version = 11,
+    version = 13,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -94,6 +101,8 @@ import org.connectbot.data.entity.Snippet
         AutoMigration(from = 8, to = 9),
         AutoMigration(from = 9, to = 10),
         AutoMigration(from = 10, to = 11),
+        AutoMigration(from = 11, to = 12),
+        AutoMigration(from = 12, to = 13),
     ],
 )
 @TypeConverters(Converters::class)
@@ -105,6 +114,7 @@ abstract class ConnectBotDatabase : RoomDatabase() {
     abstract fun colorSchemeDao(): ColorSchemeDao
     abstract fun profileDao(): ProfileDao
     abstract fun snippetDao(): SnippetDao
+    abstract fun keyboardLayoutDao(): KeyboardLayoutDao
 
     companion object {
         /**

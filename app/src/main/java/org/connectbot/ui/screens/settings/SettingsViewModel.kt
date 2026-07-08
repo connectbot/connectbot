@@ -72,6 +72,7 @@ data class SettingsUiState(
     val ctrlfkeys: Boolean = false,
     val stickymodifiers: String = "no",
     val keymode: String = "none",
+    val keyboardKeySize: String = PreferenceConstants.KEYBOARD_KEY_SIZE_DEFAULT,
     val camera: String = "Ctrl+A then Space",
     val bumpyarrows: Boolean = true,
     val bell: Boolean = true,
@@ -219,6 +220,10 @@ class SettingsViewModel @Inject constructor(
             ctrlfkeys = prefs.getBoolean("ctrlfkeys", false),
             stickymodifiers = prefs.getString("stickymodifiers", "no") ?: "no",
             keymode = prefs.getString("keymode", "none") ?: "none",
+            keyboardKeySize = prefs.getString(
+                PreferenceConstants.KEYBOARD_KEY_SIZE,
+                PreferenceConstants.KEYBOARD_KEY_SIZE_DEFAULT,
+            ) ?: PreferenceConstants.KEYBOARD_KEY_SIZE_DEFAULT,
             camera = prefs.getString("camera", "Ctrl+A then Space") ?: "Ctrl+A then Space",
             bumpyarrows = prefs.getBoolean("bumpyarrows", true),
             bell = prefs.getBoolean("bell", true),
@@ -371,6 +376,10 @@ class SettingsViewModel @Inject constructor(
 
     fun updateKeyMode(value: String) {
         updateStringPref(PreferenceConstants.KEYMODE, value) { copy(keymode = value) }
+    }
+
+    fun updateKeyboardKeySize(value: String) {
+        updateStringPref(PreferenceConstants.KEYBOARD_KEY_SIZE, value) { copy(keyboardKeySize = value) }
     }
 
     fun updateCamera(value: String) {

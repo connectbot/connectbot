@@ -53,6 +53,7 @@ class HostEditorViewModelTest {
     private lateinit var repository: HostRepository
     private lateinit var pubkeyRepository: PubkeyRepository
     private lateinit var profileRepository: ProfileRepository
+    private lateinit var keyboardLayoutRepository: org.connectbot.data.KeyboardLayoutRepository
     private lateinit var prefs: SharedPreferences
     private lateinit var securePasswordStorage: SecurePasswordStorage
 
@@ -64,6 +65,7 @@ class HostEditorViewModelTest {
         repository = mock(HostRepository::class.java)
         pubkeyRepository = mock(PubkeyRepository::class.java)
         profileRepository = mock(ProfileRepository::class.java)
+        keyboardLayoutRepository = mock(org.connectbot.data.KeyboardLayoutRepository::class.java)
         prefs = mock(SharedPreferences::class.java)
         securePasswordStorage = mock(SecurePasswordStorage::class.java)
 
@@ -71,6 +73,7 @@ class HostEditorViewModelTest {
         `when`(pubkeyRepository.observeAll()).thenReturn(flowOf(emptyList()))
         `when`(repository.observeSshHosts()).thenReturn(flowOf(emptyList()))
         `when`(profileRepository.observeAll()).thenReturn(flowOf(emptyList()))
+        `when`(keyboardLayoutRepository.observeAll()).thenReturn(flowOf(emptyList()))
         `when`(prefs.getLong("defaultProfileId", 0L)).thenReturn(0L)
     }
 
@@ -86,6 +89,7 @@ class HostEditorViewModelTest {
             repository = repository,
             pubkeyRepository = pubkeyRepository,
             profileRepository = profileRepository,
+            keyboardLayoutRepository = keyboardLayoutRepository,
             prefs = prefs,
             securePasswordStorage = securePasswordStorage,
         )
@@ -441,6 +445,42 @@ class HostEditorViewModelTest {
         val savedHost = hostCaptor.value
 
         assertEquals(22, savedHost.port) // Falls back to ssh default port 22
+    }
+
+    @Test
+    fun testKeyboardSuggestions_loadsAndSaves() = runTest {
+        val hostId = 42L
+        val existingHost = Host(
+            id = hostId,
+            nickname = "test-user@10.0.0.1",
+            protocol = "ssh",
+            username = "test-user",
+            hostname = "10.0.0.1",
+            port = 22,
+            keyboardSuggestions = true,
+        )
+        `when`(repository.findHostById(hostId)).thenReturn(existingHost)
+        `when`(securePasswordStorage.hasPassword(hostId)).thenReturn(false)
+        `when`(repository.saveHost(any(Host::class.java) ?: Host())).thenAnswer { invocation ->
+            invocation.arguments[0] as Host
+        }
+
+        val viewModel = createViewModel(hostId)
+        advanceUntilIdle()
+
+        // Loaded from the host entity
+        assertTrue(viewModel.uiState.value.keyboardSuggestions)
+
+        viewModel.updateKeyboardSuggestions(false)
+        advanceUntilIdle()
+        assertFalse(viewModel.uiState.value.keyboardSuggestions)
+
+        viewModel.saveHost(useExpandedMode = true)
+        advanceUntilIdle()
+
+        val hostCaptor = ArgumentCaptor.forClass(Host::class.java)
+        verify(repository).saveHost(hostCaptor.capture() ?: Host())
+        assertFalse(hostCaptor.value.keyboardSuggestions)
     }
 
     @Test

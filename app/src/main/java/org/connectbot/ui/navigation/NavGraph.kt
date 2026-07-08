@@ -45,6 +45,8 @@ import org.connectbot.ui.screens.help.HelpScreen
 import org.connectbot.ui.screens.hints.HintsScreen
 import org.connectbot.ui.screens.hosteditor.HostEditorScreen
 import org.connectbot.ui.screens.hostlist.HostListScreen
+import org.connectbot.ui.screens.keyboard.KeyboardLayoutEditorScreen
+import org.connectbot.ui.screens.keyboard.KeyboardLayoutsScreen
 import org.connectbot.ui.screens.portforwardlist.PortForwardListScreen
 import org.connectbot.ui.screens.profiles.ProfileEditorScreen
 import org.connectbot.ui.screens.profiles.ProfileListScreen
@@ -147,6 +149,9 @@ fun ConnectBotNavHost(
                 onNavigateToSftp = { hostIdForSftp ->
                     navController.navigateSafely("${NavDestinations.SFTP}/$hostIdForSftp")
                 },
+                onNavigateToKeyboardLayouts = {
+                    navController.navigateSafely(NavDestinations.KEYBOARD_LAYOUTS)
+                },
             )
         }
 
@@ -227,6 +232,29 @@ fun ConnectBotNavHost(
             SettingsScreen(
                 onNavigateBack = { navController.safePopBackStack() },
                 highlightItem = highlight,
+                onNavigateToKeyboardLayouts = {
+                    navController.navigateSafely(NavDestinations.KEYBOARD_LAYOUTS)
+                },
+            )
+        }
+
+        composable(NavDestinations.KEYBOARD_LAYOUTS) {
+            KeyboardLayoutsScreen(
+                onNavigateBack = { navController.safePopBackStack() },
+                onNavigateToEditor = { layoutId ->
+                    navController.navigateSafely("${NavDestinations.KEYBOARD_LAYOUT_EDITOR}/$layoutId")
+                },
+            )
+        }
+
+        composable(
+            route = "${NavDestinations.KEYBOARD_LAYOUT_EDITOR}/{${NavArgs.LAYOUT_ID}}",
+            arguments = listOf(
+                navArgument(NavArgs.LAYOUT_ID) { type = NavType.LongType },
+            ),
+        ) {
+            KeyboardLayoutEditorScreen(
+                onNavigateBack = { navController.safePopBackStack() },
             )
         }
 
