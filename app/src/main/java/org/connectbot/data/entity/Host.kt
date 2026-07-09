@@ -146,6 +146,12 @@ data class Host(
      */
     @ColumnInfo(name = "keyboard_layout_id")
     val keyboardLayoutId: Long? = null,
+
+    /**
+     * Automatically open a connection to this host when the app starts.
+     */
+    @ColumnInfo(name = "connect_on_startup", defaultValue = "0")
+    val connectOnStartup: Boolean = false,
 ) {
     /**
      * Check if this host is temporary (not saved to database).

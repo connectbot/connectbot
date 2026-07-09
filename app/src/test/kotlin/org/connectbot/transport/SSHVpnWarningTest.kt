@@ -83,6 +83,15 @@ class SSHVpnWarningTest {
     }
 
     @Test
+    fun tailscaleAddressWithoutManager_staysSilent() {
+        ssh.setManager(null)
+
+        ssh.warnIfVpnInactive(host("100.100.1.2"))
+
+        verify(bridge, never()).outputLine(anyString())
+    }
+
+    @Test
     fun ordinaryHost_staysSilent() {
         ssh.warnIfVpnInactive(host("example.com"))
         ssh.warnIfVpnInactive(host("192.168.1.4"))

@@ -90,6 +90,29 @@ object PreferenceConstants {
     const val CONNECTION_PERSIST: String = "connPersist"
     const val NOTIFICATION_PERMISSION_DENIED: String = "notificationPermissionDenied"
 
+    /* Automatic reconnect strategy for hosts with "stay connected" enabled */
+    const val RECONNECT_MAX_ATTEMPTS: String = "reconnectMaxAttempts"
+    const val DEFAULT_RECONNECT_MAX_ATTEMPTS: Int = 0 // 0 = unlimited
+    const val RECONNECT_INTERVAL: String = "reconnectInterval"
+    const val DEFAULT_RECONNECT_INTERVAL_SECONDS: Int = 2
+    const val RECONNECT_BACKOFF: String = "reconnectBackoff"
+    const val DEFAULT_RECONNECT_BACKOFF: Boolean = true
+    const val MAX_RECONNECT_INTERVAL_SECONDS: Int = 3600
+
+    /**
+     * Parse the stored reconnect attempt limit into a non-negative count.
+     * A value of 0 means retry forever.
+     */
+    @JvmStatic
+    fun parseReconnectMaxAttempts(stored: String?): Int = stored?.toIntOrNull()?.coerceAtLeast(0) ?: DEFAULT_RECONNECT_MAX_ATTEMPTS
+
+    /**
+     * Parse the stored reconnect interval in seconds, clamped to one hour.
+     */
+    @JvmStatic
+    fun parseReconnectIntervalSeconds(stored: String?): Int = stored?.toIntOrNull()?.coerceIn(0, MAX_RECONNECT_INTERVAL_SECONDS)
+        ?: DEFAULT_RECONNECT_INTERVAL_SECONDS
+
     const val SHIFT_FKEYS: String = "shiftfkeys"
     const val CTRL_FKEYS: String = "ctrlfkeys"
     const val VOLUME_FONT: String = "volumefont"

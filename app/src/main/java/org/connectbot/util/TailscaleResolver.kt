@@ -93,9 +93,14 @@ class TailscaleResolver {
                                 val buffer = ByteArray(MAX_PACKET_SIZE)
                                 val packet = DatagramPacket(buffer, buffer.size)
                                 try {
-                                    socket.soTimeout =
-                                        MdnsResolver.receiveTimeoutMillis(deadlineNanos, receiveDeadline)
-                                            ?: return null
+                                    val receiveTimeout = MdnsResolver.receiveTimeoutMillis(deadlineNanos, receiveDeadline)
+                                    if (receiveTimeout == null) {
+                                        if (deadlineNanos != null && System.nanoTime() >= deadlineNanos) {
+                                            return null
+                                        }
+                                        break
+                                    }
+                                    socket.soTimeout = receiveTimeout
                                     socket.receive(packet)
                                 } catch (_: SocketTimeoutException) {
                                     break

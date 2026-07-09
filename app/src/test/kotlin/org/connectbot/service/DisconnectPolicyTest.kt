@@ -28,7 +28,15 @@ class DisconnectPolicyTest {
         reason: DisconnectReason,
         quickDisconnect: Boolean = false,
         stayConnected: Boolean = false,
-    ) = DisconnectPolicy.decide(reason, quickDisconnect, stayConnected)
+        reconnectAttempts: Int = 0,
+        maxReconnectAttempts: Int = 0,
+    ) = DisconnectPolicy.decide(
+        reason = reason,
+        quickDisconnect = quickDisconnect,
+        stayConnected = stayConnected,
+        reconnectAttempts = reconnectAttempts,
+        maxReconnectAttempts = maxReconnectAttempts,
+    )
 
     // USER_REQUESTED always closes immediately regardless of flags
 
@@ -169,6 +177,54 @@ class DisconnectPolicyTest {
         assertTrue(decide(DisconnectReason.UNKNOWN, stayConnected = true) is DisconnectAction.AutoReconnect)
     }
 
+    @Test
+    fun stayConnected_underAttemptLimit_autoReconnects() {
+        assertTrue(
+            decide(
+                DisconnectReason.IO_ERROR,
+                stayConnected = true,
+                reconnectAttempts = 2,
+                maxReconnectAttempts = 3,
+            ) is DisconnectAction.AutoReconnect,
+        )
+    }
+
+    @Test
+    fun stayConnected_atAttemptLimit_givesUpReconnect() {
+        assertTrue(
+            decide(
+                DisconnectReason.IO_ERROR,
+                stayConnected = true,
+                reconnectAttempts = 3,
+                maxReconnectAttempts = 3,
+            ) is DisconnectAction.GiveUpReconnect,
+        )
+    }
+
+    @Test
+    fun stayConnected_zeroAttemptLimit_isUnlimited() {
+        assertTrue(
+            decide(
+                DisconnectReason.IO_ERROR,
+                stayConnected = true,
+                reconnectAttempts = Int.MAX_VALUE,
+                maxReconnectAttempts = 0,
+            ) is DisconnectAction.AutoReconnect,
+        )
+    }
+
+    @Test
+    fun authFail_stayConnectedAtAttemptLimit_showsReconnectOverlay() {
+        assertTrue(
+            decide(
+                DisconnectReason.AUTH_FAIL,
+                stayConnected = true,
+                reconnectAttempts = 3,
+                maxReconnectAttempts = 3,
+            ) is DisconnectAction.ShowReconnectOverlay,
+        )
+    }
+
     // AUTH_FAIL never auto-reconnects even with stayConnected — would lock accounts
 
     @Test
@@ -213,6 +269,58 @@ class DisconnectPolicyTest {
     @Test
     fun reconnectDelay_negativeAttemptsAreImmediate() {
         assertEquals(0L, DisconnectPolicy.reconnectDelayMs(-1))
+    }
+
+    @Test
+    fun reconnectDelay_usesConfiguredIntervalWithBackoff() {
+        assertEquals(
+            5_000L,
+            DisconnectPolicy.reconnectDelayMs(
+                attempt = 2,
+                intervalSeconds = 5,
+                exponentialBackoff = true,
+            ),
+        )
+        assertEquals(
+            10_000L,
+            DisconnectPolicy.reconnectDelayMs(
+                attempt = 3,
+                intervalSeconds = 5,
+                exponentialBackoff = true,
+            ),
+        )
+    }
+
+    @Test
+    fun reconnectDelay_usesFixedIntervalWhenBackoffDisabled() {
+        assertEquals(
+            5_000L,
+            DisconnectPolicy.reconnectDelayMs(
+                attempt = 2,
+                intervalSeconds = 5,
+                exponentialBackoff = false,
+            ),
+        )
+        assertEquals(
+            5_000L,
+            DisconnectPolicy.reconnectDelayMs(
+                attempt = 100,
+                intervalSeconds = 5,
+                exponentialBackoff = false,
+            ),
+        )
+    }
+
+    @Test
+    fun reconnectDelay_zeroConfiguredInterval_isImmediate() {
+        assertEquals(
+            0L,
+            DisconnectPolicy.reconnectDelayMs(
+                attempt = 10,
+                intervalSeconds = 0,
+                exponentialBackoff = true,
+            ),
+        )
     }
 
     // Reconnect-on-open: bringing a dropped session back into view retries it

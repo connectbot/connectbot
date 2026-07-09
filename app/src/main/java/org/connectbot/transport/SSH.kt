@@ -826,9 +826,11 @@ class SSH :
      * MagicDNS before dialing, reporting the resolved address on the terminal.
      */
     private fun tailscaleProxyData(host: Host): TailscaleProxyData = TailscaleProxyData(TailscaleResolver(), host.ipVersion) { address ->
-        bridge?.outputLine(
-            manager?.res?.getString(R.string.terminal_tailscale_resolved, host.hostname, address.hostAddress),
-        )
+        manager?.let { mgr ->
+            bridge?.outputLine(
+                mgr.res.getString(R.string.terminal_tailscale_resolved, host.hostname, address.hostAddress),
+            )
+        }
     }
 
     /**
@@ -839,12 +841,13 @@ class SSH :
      */
     @VisibleForTesting
     internal fun warnIfVpnInactive(host: Host) {
+        val mgr = manager ?: return
         val name = host.hostname
         if (!TailscaleResolver.isTailscaleHostname(name) && !TailscaleResolver.isTailscaleAddress(name)) {
             return
         }
-        if (manager?.isVpnActive() == true) return
-        bridge?.outputLine(manager?.res?.getString(R.string.terminal_vpn_inactive, name))
+        if (mgr.isVpnActive()) return
+        bridge?.outputLine(mgr.res.getString(R.string.terminal_vpn_inactive, name))
     }
 
     /**

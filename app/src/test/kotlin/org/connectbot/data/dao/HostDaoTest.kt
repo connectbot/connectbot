@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -194,6 +194,7 @@ class HostDaoTest {
             compression = true,
             useKeys = true,
             stayConnected = false,
+            connectOnStartup = true,
             wantSession = false,
             useCtrlAltAsMetaKey = true,
         )
@@ -203,6 +204,7 @@ class HostDaoTest {
         assertThat(retrieved?.compression).isTrue()
         assertThat(retrieved?.useKeys).isTrue()
         assertThat(retrieved?.stayConnected).isFalse()
+        assertThat(retrieved?.connectOnStartup).isTrue()
         assertThat(retrieved?.wantSession).isFalse()
         assertThat(retrieved?.useCtrlAltAsMetaKey).isTrue()
     }
@@ -278,6 +280,25 @@ class HostDaoTest {
         assertThat(all.count { it.protocol == "telnet" }).isEqualTo(1)
     }
 
+    @Test
+    fun connectOnStartupDefaultsToFalse() = runTest {
+        val id = hostDao.insert(createTestHost(nickname = "manual-host"))
+
+        val retrieved = hostDao.getById(id)
+        assertThat(retrieved?.connectOnStartup).isFalse()
+    }
+
+    @Test
+    fun getConnectOnStartupHostsReturnsOnlyEnabledHostsSortedByNickname() = runTest {
+        hostDao.insert(createTestHost(nickname = "zeta", connectOnStartup = true))
+        hostDao.insert(createTestHost(nickname = "manual", connectOnStartup = false))
+        hostDao.insert(createTestHost(nickname = "alpha", connectOnStartup = true))
+
+        val startupHosts = hostDao.getConnectOnStartupHosts()
+
+        assertThat(startupHosts.map { it.nickname }).containsExactly("alpha", "zeta")
+    }
+
     private fun createTestHost(
         nickname: String,
         protocol: String = "ssh",
@@ -290,6 +311,7 @@ class HostDaoTest {
         useKeys: Boolean = false,
         useAuthAgent: String? = null,
         stayConnected: Boolean = false,
+        connectOnStartup: Boolean = false,
         postLogin: String? = null,
         pubkeyId: Long = 0,
         wantSession: Boolean = true,
@@ -310,6 +332,7 @@ class HostDaoTest {
         useKeys = useKeys,
         useAuthAgent = useAuthAgent,
         stayConnected = stayConnected,
+        connectOnStartup = connectOnStartup,
         postLogin = postLogin,
         pubkeyId = pubkeyId,
         wantSession = wantSession,

@@ -107,6 +107,7 @@ fun HostEditorScreen(
         onWantSessionChange = viewModel::updateWantSession,
         onTmuxEnabledChange = viewModel::updateTmuxEnabled,
         onStayConnectedChange = viewModel::updateStayConnected,
+        onConnectOnStartupChange = viewModel::updateConnectOnStartup,
         onQuickDisconnectChange = viewModel::updateQuickDisconnect,
         onKeyboardSuggestionsChange = viewModel::updateKeyboardSuggestions,
         onKeyboardLayoutChange = viewModel::updateKeyboardLayoutId,
@@ -140,6 +141,7 @@ fun HostEditorScreenContent(
     onWantSessionChange: (Boolean) -> Unit,
     onTmuxEnabledChange: (Boolean) -> Unit,
     onStayConnectedChange: (Boolean) -> Unit,
+    onConnectOnStartupChange: (Boolean) -> Unit,
     onQuickDisconnectChange: (Boolean) -> Unit,
     onKeyboardSuggestionsChange: (Boolean) -> Unit,
     onKeyboardLayoutChange: (Long?) -> Unit,
@@ -478,6 +480,15 @@ fun HostEditorScreenContent(
                 summary = stringResource(R.string.hostpref_stayconnected_summary),
                 checked = uiState.stayConnected,
                 onCheckedChange = onStayConnectedChange,
+            )
+
+            // Connect on app start
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+            SwitchPreference(
+                title = stringResource(R.string.hostpref_connectonstartup_title),
+                summary = stringResource(R.string.hostpref_connectonstartup_summary),
+                checked = uiState.connectOnStartup,
+                onCheckedChange = onConnectOnStartupChange,
             )
 
             // Quick disconnect
@@ -1395,6 +1406,7 @@ private fun HostEditorScreenPreview() {
             onWantSessionChange = {},
             onTmuxEnabledChange = {},
             onStayConnectedChange = {},
+            onConnectOnStartupChange = {},
             onQuickDisconnectChange = {},
             onKeyboardSuggestionsChange = {},
             onKeyboardLayoutChange = {},

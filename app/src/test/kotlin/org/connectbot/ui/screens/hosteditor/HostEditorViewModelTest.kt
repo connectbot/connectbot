@@ -108,6 +108,7 @@ class HostEditorViewModelTest {
         assertEquals("", state.username)
         assertEquals("", state.hostname)
         assertEquals("22", state.port)
+        assertFalse(state.connectOnStartup)
         assertTrue(state.isNicknameMatching)
     }
 
@@ -172,6 +173,7 @@ class HostEditorViewModelTest {
         viewModel.updateNickname("john@myhost:2222")
         viewModel.updateWantSession(false)
         viewModel.updateStayConnected(true)
+        viewModel.updateConnectOnStartup(true)
         viewModel.updatePassword("hunter2")
         advanceUntilIdle()
 
@@ -184,6 +186,7 @@ class HostEditorViewModelTest {
         assertEquals("2222", state.port)
         assertFalse(state.wantSession)
         assertTrue(state.stayConnected)
+        assertTrue(state.connectOnStartup)
         // The password is intentionally NOT persisted to saved state
         assertEquals("", state.password)
     }
@@ -206,6 +209,7 @@ class HostEditorViewModelTest {
         advanceUntilIdle()
 
         viewModel.updateWantSession(false)
+        viewModel.updateConnectOnStartup(true)
         advanceUntilIdle()
 
         val recreated = createViewModel(hostId)
@@ -215,6 +219,7 @@ class HostEditorViewModelTest {
         val state = recreated.uiState.value
         assertEquals("test-nick", state.nickname)
         assertFalse(state.wantSession)
+        assertTrue(state.connectOnStartup)
     }
 
     @Test
@@ -548,6 +553,41 @@ class HostEditorViewModelTest {
         val hostCaptor = ArgumentCaptor.forClass(Host::class.java)
         verify(repository).saveHost(hostCaptor.capture() ?: Host())
         assertFalse(hostCaptor.value.keyboardSuggestions)
+    }
+
+    @Test
+    fun testConnectOnStartup_loadsAndSaves() = runTest {
+        val hostId = 42L
+        val existingHost = Host(
+            id = hostId,
+            nickname = "test-user@10.0.0.1",
+            protocol = "ssh",
+            username = "test-user",
+            hostname = "10.0.0.1",
+            port = 22,
+            connectOnStartup = true,
+        )
+        `when`(repository.findHostById(hostId)).thenReturn(existingHost)
+        `when`(securePasswordStorage.hasPassword(hostId)).thenReturn(false)
+        `when`(repository.saveHost(any(Host::class.java) ?: Host())).thenAnswer { invocation ->
+            invocation.arguments[0] as Host
+        }
+
+        val viewModel = createViewModel(hostId)
+        advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value.connectOnStartup)
+
+        viewModel.updateConnectOnStartup(false)
+        advanceUntilIdle()
+        assertFalse(viewModel.uiState.value.connectOnStartup)
+
+        viewModel.saveHost(useExpandedMode = true)
+        advanceUntilIdle()
+
+        val hostCaptor = ArgumentCaptor.forClass(Host::class.java)
+        verify(repository).saveHost(hostCaptor.capture() ?: Host())
+        assertFalse(hostCaptor.value.connectOnStartup)
     }
 
     @Test

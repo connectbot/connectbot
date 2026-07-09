@@ -929,7 +929,14 @@ class TerminalBridge {
             }
         }
 
-        when (DisconnectPolicy.decide(reason, host.quickDisconnect, host.stayConnected)) {
+        val action = DisconnectPolicy.decide(
+            reason = reason,
+            quickDisconnect = host.quickDisconnect,
+            stayConnected = host.stayConnected,
+            reconnectAttempts = autoReconnectAttempts,
+            maxReconnectAttempts = manager.reconnectMaxAttempts(),
+        )
+        when (action) {
             is DisconnectAction.CloseImmediately -> {
                 awaitingClose = true
                 triggerDisconnectListener()
@@ -938,6 +945,11 @@ class TerminalBridge {
             is DisconnectAction.AutoReconnect -> {
                 reconnectAttemptCounter.incrementAndGet()
                 manager.requestReconnect(this, userInitiated = false)
+                manager.notifyBridgeStateChanged()
+            }
+
+            is DisconnectAction.GiveUpReconnect -> {
+                outputLine(manager.res.getString(R.string.terminal_reconnect_gave_up, autoReconnectAttempts))
                 manager.notifyBridgeStateChanged()
             }
 
