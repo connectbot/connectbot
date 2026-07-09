@@ -38,6 +38,7 @@ import android.security.keystore.UserNotAuthenticatedException
 import com.trilead.ssh2.crypto.PublicKeyUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -50,6 +51,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import org.connectbot.R
 import org.connectbot.data.ColorSchemeRepository
@@ -182,6 +185,8 @@ class TerminalManager :
     private val pendingReconnect: MutableList<WeakReference<TerminalBridge>> = ArrayList()
 
     private val reconnectJobs = ConcurrentHashMap<TerminalBridge, Job>()
+
+    private val openConnectionMutex = Mutex()
 
     private val nextTemporaryHostId = AtomicLong(-1L)
 
@@ -364,42 +369,50 @@ class TerminalManager :
     /**
      * Open a new SSH session using the given parameters.
      */
-    private fun openConnection(host: Host): TerminalBridge {
-        // throw exception if terminal already open
-        if (getConnectedBridge(host) != null || getConnectedBridge(host.nickname) != null) {
-            throw IllegalArgumentException("Connection already open for that nickname")
+    private suspend fun openConnection(host: Host): TerminalBridge = openConnectionMutex.withLock {
+        withContext(dispatchers.main) {
+            // Throw an exception if the terminal is already open. Serializing this
+            // check with bridge construction prevents concurrent startup/deep-link
+            // requests from creating duplicate sessions while database I/O is suspended.
+            if (getConnectedBridge(host) != null || getConnectedBridge(host.nickname) != null) {
+                throw IllegalArgumentException("Connection already open for that nickname")
+            }
+
+            // TerminalBridge loads profile and color data synchronously during
+            // construction, so create it away from the main thread.
+            val bridge = withContext(dispatchers.io) {
+                TerminalBridge(this@TerminalManager, host, dispatchers)
+            }
+            bridge.setOnDisconnectedListener(this@TerminalManager)
+            bridge.startConnection()
+
+            synchronized(_bridges) {
+                _bridges.add(bridge)
+                val wr = WeakReference(bridge)
+                hostBridgeMap[bridge.host] = wr
+                nicknameBridgeMap[bridge.host.nickname] = wr
+                _bridgesFlow.value = _bridges.toList()
+            }
+
+            synchronized(_disconnected) {
+                // Match by id: the Host row may have changed (e.g. lastConnect)
+                // since the disconnected snapshot was recorded.
+                _disconnected.removeAll { it.id == bridge.host.id }
+                _disconnectedFlow.value = _disconnected.toList()
+            }
+
+            if (bridge.isUsingNetwork()) {
+                connectivityMonitor.incRef()
+            }
+
+            if (prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)) {
+                connectionNotifier.showRunningNotification(this@TerminalManager)
+            }
+
+            notifyHostStatusChanged()
+
+            bridge
         }
-
-        val bridge = TerminalBridge(this, host, dispatchers)
-        bridge.setOnDisconnectedListener(this)
-        bridge.startConnection()
-
-        synchronized(_bridges) {
-            _bridges.add(bridge)
-            val wr = WeakReference(bridge)
-            hostBridgeMap[bridge.host] = wr
-            nicknameBridgeMap[bridge.host.nickname] = wr
-            _bridgesFlow.value = _bridges.toList()
-        }
-
-        synchronized(_disconnected) {
-            // Match by id: the Host row may have changed (e.g. lastConnect)
-            // since the disconnected snapshot was recorded.
-            _disconnected.removeAll { it.id == bridge.host.id }
-            _disconnectedFlow.value = _disconnected.toList()
-        }
-
-        if (bridge.isUsingNetwork()) {
-            connectivityMonitor.incRef()
-        }
-
-        if (prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)) {
-            connectionNotifier.showRunningNotification(this)
-        }
-
-        notifyHostStatusChanged()
-
-        return bridge
     }
 
     fun getScrollback(): Int {
@@ -1127,7 +1140,7 @@ class TerminalManager :
             bridge.host.nickname,
             delayMs,
         )
-        val job = scope.launch(dispatchers.main) {
+        val job = scope.launch(dispatchers.main, start = CoroutineStart.LAZY) {
             try {
                 delay(delayMs)
                 startOrParkReconnect(bridge, announceWaiting = true)
@@ -1135,7 +1148,8 @@ class TerminalManager :
                 reconnectJobs.remove(bridge, coroutineContext[Job])
             }
         }
-        reconnectJobs[bridge] = job
+        reconnectJobs.put(bridge, job)?.cancel()
+        job.start()
     }
 
     private fun startOrParkReconnect(bridge: TerminalBridge, announceWaiting: Boolean) {
