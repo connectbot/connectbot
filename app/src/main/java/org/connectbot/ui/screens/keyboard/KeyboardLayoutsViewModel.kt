@@ -17,19 +17,16 @@
 
 package org.connectbot.ui.screens.keyboard
 
-import android.content.Context
 import android.content.SharedPreferences
 import android.database.sqlite.SQLiteConstraintException
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import org.connectbot.R
 import org.connectbot.data.KeyboardLayoutRepository
 import org.connectbot.keyboard.DefaultKeyboardLayouts
 import org.connectbot.keyboard.KeyboardLayoutSpec
@@ -39,7 +36,7 @@ import javax.inject.Inject
 /** One row in the layouts library. */
 data class KeyboardLayoutListItem(
     val id: Long,
-    val name: String,
+    val name: String?,
     val isBuiltIn: Boolean,
 )
 
@@ -52,7 +49,6 @@ data class KeyboardLayoutsUiState(
 class KeyboardLayoutsViewModel @Inject constructor(
     private val repository: KeyboardLayoutRepository,
     private val prefs: SharedPreferences,
-    @ApplicationContext private val context: Context,
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(
@@ -74,12 +70,12 @@ class KeyboardLayoutsViewModel @Inject constructor(
     private fun builtInItems() = listOf(
         KeyboardLayoutListItem(
             DefaultKeyboardLayouts.DEFAULT_ID,
-            context.getString(R.string.keyboard_layout_name_default),
+            name = null,
             isBuiltIn = true,
         ),
         KeyboardLayoutListItem(
             DefaultKeyboardLayouts.CLASSIC_ID,
-            context.getString(R.string.keyboard_layout_name_classic),
+            name = null,
             isBuiltIn = true,
         ),
     )
@@ -92,16 +88,10 @@ class KeyboardLayoutsViewModel @Inject constructor(
     }
 
     /** Create an empty-ish new layout (seeded from the built-in default). Returns its id. */
-    suspend fun createLayout(): Long = createWithUniqueName(
-        context.getString(R.string.keyboard_layouts_new),
-        DefaultKeyboardLayouts.default,
-    )
+    suspend fun createLayout(name: String): Long = createWithUniqueName(name, DefaultKeyboardLayouts.default)
 
     /** Duplicate a built-in or custom layout into a new editable row. Returns its id. */
-    suspend fun duplicate(item: KeyboardLayoutListItem): Long = createWithUniqueName(
-        context.getString(R.string.keyboard_layouts_duplicate_name, item.name),
-        repository.resolveSpec(item.id),
-    )
+    suspend fun duplicate(layoutId: Long, name: String): Long = createWithUniqueName(name, repository.resolveSpec(layoutId))
 
     /**
      * Rename a layout. Returns false (leaving the layout unchanged) if the new
@@ -138,13 +128,14 @@ class KeyboardLayoutsViewModel @Inject constructor(
      * database state if a concurrent writer wins the name first.
      */
     private suspend fun createWithUniqueName(base: String, spec: KeyboardLayoutSpec): Long {
-        while (true) {
+        repeat(CREATE_UNIQUE_NAME_MAX_ATTEMPTS) {
             try {
                 return repository.create(uniqueName(base), spec)
             } catch (_: SQLiteConstraintException) {
                 // Name taken since the check; recompute against current rows.
             }
         }
+        return repository.create(uniqueName(base), spec)
     }
 
     private suspend fun uniqueName(base: String): String {
@@ -152,5 +143,9 @@ class KeyboardLayoutsViewModel @Inject constructor(
         var n = 2
         while (repository.nameExists("$base $n")) n++
         return "$base $n"
+    }
+
+    private companion object {
+        const val CREATE_UNIQUE_NAME_MAX_ATTEMPTS = 10
     }
 }

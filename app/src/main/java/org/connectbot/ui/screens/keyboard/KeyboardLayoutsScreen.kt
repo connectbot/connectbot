@@ -55,6 +55,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import kotlinx.coroutines.launch
 import org.connectbot.R
+import org.connectbot.keyboard.DefaultKeyboardLayouts
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -71,6 +72,7 @@ fun KeyboardLayoutsScreen(
     var renameFailed by remember { mutableStateOf(false) }
     var deleteTarget by remember { mutableStateOf<KeyboardLayoutListItem?>(null) }
     var creatingLayout by remember { mutableStateOf(false) }
+    val newLayoutName = stringResource(R.string.keyboard_layouts_new)
 
     Scaffold(
         modifier = modifier,
@@ -95,7 +97,7 @@ fun KeyboardLayoutsScreen(
                         creatingLayout = true
                         scope.launch {
                             try {
-                                onNavigateToEditor(viewModel.createLayout())
+                                onNavigateToEditor(viewModel.createLayout(newLayoutName))
                             } finally {
                                 creatingLayout = false
                             }
@@ -114,12 +116,15 @@ fun KeyboardLayoutsScreen(
                 .padding(padding),
         ) {
             items(uiState.items, key = { it.id }) { item ->
+                val itemName = item.displayName()
+                val duplicateName = stringResource(R.string.keyboard_layouts_duplicate_name, itemName)
                 KeyboardLayoutRow(
                     item = item,
+                    name = itemName,
                     isDefault = item.id == uiState.defaultLayoutId,
                     onSetDefault = { viewModel.setDefault(item.id) },
                     onEdit = { onNavigateToEditor(item.id) },
-                    onDuplicate = { scope.launch { onNavigateToEditor(viewModel.duplicate(item)) } },
+                    onDuplicate = { scope.launch { onNavigateToEditor(viewModel.duplicate(item.id, duplicateName)) } },
                     onRename = {
                         renameFailed = false
                         renameTarget = item
@@ -131,9 +136,10 @@ fun KeyboardLayoutsScreen(
     }
 
     renameTarget?.let { target ->
+        val targetName = target.displayName()
         LayoutNameDialog(
             title = stringResource(R.string.keyboard_layouts_rename),
-            initialName = target.name,
+            initialName = targetName,
             errorText = if (renameFailed) stringResource(R.string.keyboard_layouts_name_taken) else null,
             onConfirm = { name ->
                 scope.launch {
@@ -150,12 +156,13 @@ fun KeyboardLayoutsScreen(
     }
 
     deleteTarget?.let { target ->
+        val targetName = target.displayName()
         var hostsUsing by remember(target.id) { mutableIntStateOf(0) }
         LaunchedEffect(target.id) {
             hostsUsing = viewModel.hostsUsing(target.id)
         }
         DeleteLayoutDialog(
-            name = target.name,
+            name = targetName,
             hostsUsing = hostsUsing,
             onConfirm = {
                 viewModel.delete(target.id)
@@ -169,6 +176,7 @@ fun KeyboardLayoutsScreen(
 @Composable
 private fun KeyboardLayoutRow(
     item: KeyboardLayoutListItem,
+    name: String,
     isDefault: Boolean,
     onSetDefault: () -> Unit,
     onEdit: () -> Unit,
@@ -179,7 +187,7 @@ private fun KeyboardLayoutRow(
     var menuExpanded by remember { mutableStateOf(false) }
 
     ListItem(
-        headlineContent = { Text(item.name) },
+        headlineContent = { Text(name) },
         supportingContent = if (item.isBuiltIn) {
             { Text(stringResource(R.string.keyboard_layouts_builtin_label)) }
         } else {
@@ -240,4 +248,11 @@ private fun KeyboardLayoutRow(
             .clickable { if (item.isBuiltIn) onSetDefault() else onEdit() }
             .testTag("layout_row_${item.id}"),
     )
+}
+
+@Composable
+private fun KeyboardLayoutListItem.displayName(): String = when (id) {
+    DefaultKeyboardLayouts.DEFAULT_ID -> stringResource(R.string.keyboard_layout_name_default)
+    DefaultKeyboardLayouts.CLASSIC_ID -> stringResource(R.string.keyboard_layout_name_classic)
+    else -> name.orEmpty()
 }
