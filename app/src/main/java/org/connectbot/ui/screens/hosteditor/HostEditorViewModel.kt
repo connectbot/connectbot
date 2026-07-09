@@ -96,20 +96,102 @@ class HostEditorViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(HostEditorUiState(hostId = hostId))
     val uiState: StateFlow<HostEditorUiState> = _uiState.asStateFlow()
 
+    /**
+     * Gates mirroring edits into [SavedStateHandle]: an existing host must
+     * not have the pre-load defaults recorded over its real values, so
+     * persistence only starts once its fields have been loaded (or restored).
+     */
+    private var persistEditsEnabled = hostId == -1L
+
     init {
         observePubkeys()
         observeJumpHosts()
         observeProfiles()
         observeKeyboardLayouts()
-        if (hostId != -1L) {
-            loadHost()
-        } else {
-            // For new hosts, apply the default profile from settings
-            val defaultProfileId = prefs.getLong("defaultProfileId", 0L)
-            if (defaultProfileId > 0) {
-                _uiState.update { it.copy(profileId = defaultProfileId) }
+        val restored = restoreEditsAfterProcessDeath()
+        when {
+            restored != null -> {
+                persistEditsEnabled = true
+                _uiState.value = restored
+            }
+
+            hostId != -1L -> loadHost()
+
+            else -> {
+                // For new hosts, apply the default profile from settings
+                val defaultProfileId = prefs.getLong("defaultProfileId", 0L)
+                if (defaultProfileId > 0) {
+                    _uiState.update { it.copy(profileId = defaultProfileId) }
+                }
             }
         }
+        viewModelScope.launch {
+            uiState.collect { state ->
+                if (persistEditsEnabled && !state.isLoading) {
+                    persistEditsForProcessDeath(state)
+                }
+            }
+        }
+    }
+
+    /**
+     * Mirror the user-editable fields into [SavedStateHandle] so in-progress
+     * edits survive the OS killing the backgrounded process (config changes
+     * are already covered by the retained ViewModel). The password field is
+     * deliberately not persisted: saved instance state is written to disk
+     * unencrypted. https://github.com/connectbot/connectbot/issues/1060
+     */
+    private fun persistEditsForProcessDeath(state: HostEditorUiState) {
+        savedStateHandle[KEY_EDITS_SAVED] = true
+        savedStateHandle[KEY_QUICK_CONNECT] = state.quickConnect
+        savedStateHandle[KEY_NICKNAME] = state.nickname
+        savedStateHandle[KEY_PROTOCOL] = state.protocol
+        savedStateHandle[KEY_USERNAME] = state.username
+        savedStateHandle[KEY_HOSTNAME] = state.hostname
+        savedStateHandle[KEY_PORT] = state.port
+        savedStateHandle[KEY_COLOR] = state.color
+        savedStateHandle[KEY_PUBKEY_ID] = state.pubkeyId
+        savedStateHandle[KEY_PROFILE_ID] = state.profileId
+        savedStateHandle[KEY_USE_AUTH_AGENT] = state.useAuthAgent
+        savedStateHandle[KEY_COMPRESSION] = state.compression
+        savedStateHandle[KEY_WANT_SESSION] = state.wantSession
+        savedStateHandle[KEY_TMUX_ENABLED] = state.tmuxEnabled
+        savedStateHandle[KEY_STAY_CONNECTED] = state.stayConnected
+        savedStateHandle[KEY_QUICK_DISCONNECT] = state.quickDisconnect
+        savedStateHandle[KEY_KEYBOARD_SUGGESTIONS] = state.keyboardSuggestions
+        savedStateHandle[KEY_KEYBOARD_LAYOUT_ID] = state.keyboardLayoutId
+        savedStateHandle[KEY_POST_LOGIN] = state.postLogin
+        savedStateHandle[KEY_JUMP_HOST_ID] = state.jumpHostId
+        savedStateHandle[KEY_IP_VERSION] = state.ipVersion
+        savedStateHandle[KEY_HAS_EXISTING_PASSWORD] = state.hasExistingPassword
+    }
+
+    private fun restoreEditsAfterProcessDeath(): HostEditorUiState? {
+        if (savedStateHandle.get<Boolean>(KEY_EDITS_SAVED) != true) return null
+        return HostEditorUiState(
+            hostId = hostId,
+            quickConnect = savedStateHandle[KEY_QUICK_CONNECT] ?: "",
+            nickname = savedStateHandle[KEY_NICKNAME] ?: "",
+            protocol = savedStateHandle[KEY_PROTOCOL] ?: "ssh",
+            username = savedStateHandle[KEY_USERNAME] ?: "",
+            hostname = savedStateHandle[KEY_HOSTNAME] ?: "",
+            port = savedStateHandle[KEY_PORT] ?: "22",
+            color = savedStateHandle[KEY_COLOR] ?: "gray",
+            pubkeyId = savedStateHandle[KEY_PUBKEY_ID] ?: -1L,
+            profileId = savedStateHandle[KEY_PROFILE_ID],
+            useAuthAgent = savedStateHandle[KEY_USE_AUTH_AGENT] ?: "no",
+            compression = savedStateHandle[KEY_COMPRESSION] ?: false,
+            wantSession = savedStateHandle[KEY_WANT_SESSION] ?: true,
+            tmuxEnabled = savedStateHandle[KEY_TMUX_ENABLED] ?: true,
+            stayConnected = savedStateHandle[KEY_STAY_CONNECTED] ?: false,
+            quickDisconnect = savedStateHandle[KEY_QUICK_DISCONNECT] ?: false,
+            keyboardSuggestions = savedStateHandle[KEY_KEYBOARD_SUGGESTIONS] ?: false,
+            keyboardLayoutId = savedStateHandle[KEY_KEYBOARD_LAYOUT_ID],
+            postLogin = savedStateHandle[KEY_POST_LOGIN] ?: "",
+            jumpHostId = savedStateHandle[KEY_JUMP_HOST_ID],
+            ipVersion = savedStateHandle[KEY_IP_VERSION] ?: "IPV4_AND_IPV6",
+            hasExistingPassword = savedStateHandle[KEY_HAS_EXISTING_PASSWORD] ?: false,
+        )
     }
 
     private fun observePubkeys() {
@@ -232,6 +314,7 @@ class HostEditorViewModel @Inject constructor(
                             isLoading = false,
                         )
                     }
+                    persistEditsEnabled = true
                 } else {
                     _uiState.update {
                         it.copy(isLoading = false, error = "Host not found")
@@ -463,5 +546,30 @@ class HostEditorViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private companion object {
+        const val KEY_EDITS_SAVED = "edit_saved"
+        const val KEY_QUICK_CONNECT = "edit_quickConnect"
+        const val KEY_NICKNAME = "edit_nickname"
+        const val KEY_PROTOCOL = "edit_protocol"
+        const val KEY_USERNAME = "edit_username"
+        const val KEY_HOSTNAME = "edit_hostname"
+        const val KEY_PORT = "edit_port"
+        const val KEY_COLOR = "edit_color"
+        const val KEY_PUBKEY_ID = "edit_pubkeyId"
+        const val KEY_PROFILE_ID = "edit_profileId"
+        const val KEY_USE_AUTH_AGENT = "edit_useAuthAgent"
+        const val KEY_COMPRESSION = "edit_compression"
+        const val KEY_WANT_SESSION = "edit_wantSession"
+        const val KEY_TMUX_ENABLED = "edit_tmuxEnabled"
+        const val KEY_STAY_CONNECTED = "edit_stayConnected"
+        const val KEY_QUICK_DISCONNECT = "edit_quickDisconnect"
+        const val KEY_KEYBOARD_SUGGESTIONS = "edit_keyboardSuggestions"
+        const val KEY_KEYBOARD_LAYOUT_ID = "edit_keyboardLayoutId"
+        const val KEY_POST_LOGIN = "edit_postLogin"
+        const val KEY_JUMP_HOST_ID = "edit_jumpHostId"
+        const val KEY_IP_VERSION = "edit_ipVersion"
+        const val KEY_HAS_EXISTING_PASSWORD = "edit_hasExistingPassword"
     }
 }
