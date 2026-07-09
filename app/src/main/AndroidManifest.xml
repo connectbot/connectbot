@@ -19,6 +19,8 @@
 	android:installLocation="auto">
 
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<!-- Required to reliably send/receive mDNS multicast when resolving .local hostnames -->
+	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 	<uses-permission android:name="android.permission.INTERNET" />
 	<uses-permission android:name="android.permission.NEARBY_WIFI_DEVICES" />
@@ -54,6 +56,7 @@
 
 		<activity
 			android:name=".ui.MainActivity"
+			android:configChanges="keyboard|keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout|density"
 			android:exported="true"
 			android:launchMode="singleTop"
 			android:resizeableActivity="true"
@@ -85,7 +88,6 @@
 
 		<service
 			android:name="org.connectbot.service.TerminalManager"
-			android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
 			android:description="@string/service_desc"
 			android:foregroundServiceType="remoteMessaging"/>
 

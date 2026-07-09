@@ -162,6 +162,72 @@ class HostEditorViewModelTest {
     }
 
     @Test
+    fun testProcessDeath_restoresInProgressEditsForNewHost() = runTest {
+        // https://github.com/connectbot/connectbot/issues/1060: in-progress
+        // edits must survive the OS killing the backgrounded process. The
+        // recreated ViewModel receives the same SavedStateHandle contents.
+        val viewModel = createViewModel(-1L)
+        advanceUntilIdle()
+
+        viewModel.updateNickname("john@myhost:2222")
+        viewModel.updateWantSession(false)
+        viewModel.updateStayConnected(true)
+        viewModel.updatePassword("hunter2")
+        advanceUntilIdle()
+
+        val recreated = createViewModel(-1L)
+        advanceUntilIdle()
+
+        val state = recreated.uiState.value
+        assertEquals("myhost", state.hostname)
+        assertEquals("john", state.username)
+        assertEquals("2222", state.port)
+        assertFalse(state.wantSession)
+        assertTrue(state.stayConnected)
+        // The password is intentionally NOT persisted to saved state
+        assertEquals("", state.password)
+    }
+
+    @Test
+    fun testProcessDeath_restoresInProgressEditsForExistingHost() = runTest {
+        val hostId = 42L
+        val existingHost = Host(
+            id = hostId,
+            nickname = "test-nick",
+            protocol = "ssh",
+            username = "test-user",
+            hostname = "10.0.0.1",
+            port = 22,
+        )
+        `when`(repository.findHostById(hostId)).thenReturn(existingHost)
+        `when`(securePasswordStorage.hasPassword(hostId)).thenReturn(false)
+
+        val viewModel = createViewModel(hostId)
+        advanceUntilIdle()
+
+        viewModel.updateWantSession(false)
+        advanceUntilIdle()
+
+        val recreated = createViewModel(hostId)
+        advanceUntilIdle()
+
+        // The unsaved edit wins over the values reloaded from the database
+        val state = recreated.uiState.value
+        assertEquals("test-nick", state.nickname)
+        assertFalse(state.wantSession)
+    }
+
+    @Test
+    fun testFreshViewModel_doesNotRestoreWithoutSavedEdits() = runTest {
+        val viewModel = createViewModel(-1L)
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertTrue(state.wantSession)
+        assertEquals("", state.nickname)
+    }
+
+    @Test
     fun testUpdateNickname_withValidQuickConnect_syncsFields() = runTest {
         val viewModel = createViewModel()
         advanceUntilIdle()

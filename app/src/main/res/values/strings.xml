@@ -213,6 +213,8 @@
 	<string name="disconnect_reason_network_lost">"The network connection was lost"</string>
 	<!-- Disconnect overlay detail: the hostname could not be resolved via DNS -->
 	<string name="disconnect_reason_host_unresolved">"The hostname could not be resolved"</string>
+	<!-- Disconnect overlay detail: the network or host could not be reached (e.g. airplane mode, no route) -->
+	<string name="disconnect_reason_network_unreachable">"The network or host is unreachable. Check your internet connection."</string>
 	<!-- Disconnect overlay detail: the server rejected our credentials -->
 	<string name="disconnect_reason_auth_fail">"Authentication failed"</string>
 	<!-- Status overlay shown while a session is connecting; %1$s is the host nickname -->
@@ -1174,6 +1176,10 @@
 	 connected. -->
 	<string name="image_description_connected">"Connected."</string>
 
+	<!-- Accessibility text for connection state in list of hosts while a connection attempt
+	     is still in progress. -->
+	<string name="image_description_connecting">"Connecting."</string>
+
 	<!-- Accessibility text for connection state in list of hosts when the host is currently
 	     disconnected after having been previously connected. -->
 	<string name="image_description_disconnected">"Disconnected."</string>
@@ -1488,6 +1494,8 @@
 	<!-- Message shown to user when they're trying to connect to a host on a local network but
 	     have not granted the permission yet. -->
 	<string name="terminal_no_route">Are you trying to access a local host? Grant local network permissions.</string>
+	<!-- Console message after an mDNS (.local) hostname was resolved; %1$s is the hostname, %2$s the resolved IP address -->
+	<string name="terminal_mdns_resolved">"Resolved %1$s to %2$s via mDNS"</string>
 
 	<!-- Loading message shown during app initialization -->
 	<string name="loading_message">Loading…</string>

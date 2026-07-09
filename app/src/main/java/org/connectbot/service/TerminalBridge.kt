@@ -737,6 +737,10 @@ class TerminalBridge {
         connecting = false
         reconnectAttemptCounter.set(0)
 
+        // Record the connected time only now that the connection actually
+        // succeeded, so a doomed attempt never shows as "recently connected".
+        manager.touchHost(host)
+
         // ENQ answerback is handled by Relay (which replies with the emulation
         // name), and DEL-vs-backspace is handled by termlib's KeyboardHandler
         // via delKeyModeFlow.

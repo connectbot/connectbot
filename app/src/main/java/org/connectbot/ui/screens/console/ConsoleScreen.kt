@@ -222,8 +222,23 @@ internal fun handleConsoleShortcut(
     tmuxPaneNavigation: Boolean = false,
     nextPane: () -> Unit = {},
     previousPane: () -> Unit = {},
+    isSelectionActive: () -> Boolean = { false },
+    clearSelection: () -> Unit = {},
 ): Boolean {
     if (keyEvent.type != KeyEventType.KeyDown) return false
+
+    // Enter pressed while the terminal's selection guard is armed: dismiss the
+    // selection here and let the key fall through to the terminal, unconsumed.
+    // A touch selection is finished by lifting the finger, so an Enter arriving
+    // in that state was never meant to operate on the selection — but termlib's
+    // key handler would consume it as a selection no-op, leaving Enter dead
+    // until some other guarded key healed the state. Clearing before the
+    // terminal sees the event makes Enter behave normally again.
+    // Upstream report: https://github.com/connectbot/connectbot/issues/2252
+    if (keyEvent.key == Key.Enter && isSelectionActive()) {
+        clearSelection()
+        return false
+    }
 
     return when {
         // Volume keys on a tmux tab: pane navigation (preference-gated)
@@ -501,6 +516,7 @@ private fun disconnectReasonText(reason: DisconnectReason): String? = when (reas
     DisconnectReason.IO_ERROR -> stringResource(R.string.disconnect_reason_io_error)
     DisconnectReason.NETWORK_LOST -> stringResource(R.string.disconnect_reason_network_lost)
     DisconnectReason.HOST_UNRESOLVED -> stringResource(R.string.disconnect_reason_host_unresolved)
+    DisconnectReason.NETWORK_UNREACHABLE -> stringResource(R.string.disconnect_reason_network_unreachable)
     DisconnectReason.AUTH_FAIL -> stringResource(R.string.disconnect_reason_auth_fail)
     DisconnectReason.USER_REQUESTED, DisconnectReason.UNKNOWN -> null
 }
@@ -1322,6 +1338,8 @@ fun ConsoleScreen(
                     uiState.currentPaneTerminal != null,
                 nextPane = { viewModel.selectPane(1) },
                 previousPane = { viewModel.selectPane(-1) },
+                isSelectionActive = { selectionController?.isSelectionActive == true },
+                clearSelection = { selectionController?.clearSelection() },
             )
         }
 

@@ -63,6 +63,7 @@ import org.connectbot.transport.sftp.SftpChannel
 import org.connectbot.transport.sftp.TrileadSftpChannel
 import org.connectbot.util.Ed25519SignatureProxy
 import org.connectbot.util.HostConstants
+import org.connectbot.util.MdnsResolver
 import org.connectbot.util.ProfileStartup
 import org.connectbot.util.PubkeyUtils
 import org.connectbot.util.SshKeyType
@@ -71,9 +72,11 @@ import timber.log.Timber
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
+import java.net.ConnectException
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.NoRouteToHostException
+import java.net.SocketException
 import java.net.UnknownHostException
 import java.nio.charset.StandardCharsets
 import java.security.KeyPair
@@ -680,25 +683,23 @@ class SSH :
      * is not sshlib's software type, so its raw seed cannot be read (opaque
      * Android Keystore keys).
      */
-    private fun needsEd25519Proxy(pair: KeyPair): Boolean =
-        PublicKeyUtils.isEd25519Key(pair.public) && pair.private !is Ed25519PrivateKey
+    private fun needsEd25519Proxy(pair: KeyPair): Boolean = PublicKeyUtils.isEd25519Key(pair.public) && pair.private !is Ed25519PrivateKey
 
     @Throws(IOException::class)
-    private fun authenticateWithPublicKeyCompat(connection: Connection, username: String, pair: KeyPair): Boolean =
-        if (needsEd25519Proxy(pair)) {
-            // sshlib's Ed25519 signer needs the raw private key seed,
-            // which an opaque (Android Keystore) key never exposes; sign
-            // through the JCA Signature API instead.
-            // https://github.com/connectbot/connectbot/issues/1974
-            connection.authenticateWithPublicKey(
-                username,
-                Ed25519SignatureProxy(pair.public, pair.private),
-            )
-        } else {
-            RsaSha2Compat.withRsaSha2Preference(connection, pair) {
-                connection.authenticateWithPublicKey(username, pair)
-            }
+    private fun authenticateWithPublicKeyCompat(connection: Connection, username: String, pair: KeyPair): Boolean = if (needsEd25519Proxy(pair)) {
+        // sshlib's Ed25519 signer needs the raw private key seed,
+        // which an opaque (Android Keystore) key never exposes; sign
+        // through the JCA Signature API instead.
+        // https://github.com/connectbot/connectbot/issues/1974
+        connection.authenticateWithPublicKey(
+            username,
+            Ed25519SignatureProxy(pair.public, pair.private),
+        )
+    } else {
+        RsaSha2Compat.withRsaSha2Preference(connection, pair) {
+            connection.authenticateWithPublicKey(username, pair)
         }
+    }
 
     @Throws(IOException::class)
     private fun tryPublicKey(username: String, keyNickname: String, pair: KeyPair): Boolean = try {
@@ -810,6 +811,16 @@ class SSH :
     }
 
     /**
+     * ProxyData that resolves the given host's `.local` name via mDNS before
+     * dialing, reporting the resolved address on the terminal.
+     */
+    private fun mdnsProxyData(host: Host): MdnsProxyData = MdnsProxyData(MdnsResolver(manager), host.ipVersion) { address ->
+        bridge?.outputLine(
+            manager?.res?.getString(R.string.terminal_mdns_resolved, host.hostname, address.hostAddress),
+        )
+    }
+
+    /**
      * Establish and authenticate a connection to the jump host.
      * This is called before connecting to the target host when ProxyJump is configured.
      * Supports chained jump hosts (jump host that requires another jump host).
@@ -822,6 +833,14 @@ class SSH :
 
         val jc = Connection(jumpHost.hostname, jumpHost.port)
         registerUserAuthBanner(jc, jumpHost.authBannerSourceName())
+
+        // A first-hop jump host with a .local name needs local mDNS
+        // resolution too. If this jump host itself goes through another jump
+        // host, the nested proxy set below takes precedence (and resolves the
+        // name remotely).
+        if (MdnsResolver.isMdnsHostname(jumpHost.hostname)) {
+            jc.setProxyData(mdnsProxyData(jumpHost))
+        }
 
         try {
             // Check if this jump host itself requires a jump host (chained ProxyJump)
@@ -1025,6 +1044,14 @@ class SSH :
             connection?.setProxyData(JumpHostProxyData(it))
         }
 
+        // Without a jump host, resolve .local hostnames via mDNS ourselves:
+        // most Android resolvers cannot, and a jump host resolves the target
+        // remotely where local mDNS knowledge would not apply anyway.
+        // https://github.com/connectbot/connectbot/issues/396
+        if (directJumpConnection == null && MdnsResolver.isMdnsHostname(currentHost.hostname)) {
+            connection?.setProxyData(mdnsProxyData(currentHost))
+        }
+
         try {
             connection?.setCompression(compression)
         } catch (e: IOException) {
@@ -1070,10 +1097,14 @@ class SSH :
                 )
             }
         } catch (e: IOException) {
-            Timber.e(e, "Problem in SSH connection thread during authentication")
+            // This failure happens while establishing the connection (TCP
+            // connect / key exchange), before any authentication is attempted.
+            // https://github.com/connectbot/connectbot/issues/386
+            Timber.e(e, "Problem in SSH connection thread during connection setup")
 
             // Display the reason in the text.
             var hostUnresolved = false
+            var networkUnreachable = false
             var t: Throwable? = e
             while (t != null) {
                 val message = t.message
@@ -1086,6 +1117,9 @@ class SSH :
                 if (t is UnknownHostException) {
                     hostUnresolved = true
                 }
+                if (isNetworkUnreachable(t)) {
+                    networkUnreachable = true
+                }
                 t = t.cause
             }
 
@@ -1095,10 +1129,14 @@ class SSH :
             // before close() because close() fires connectionLost()
             // synchronously, which would otherwise record IO_ERROR first.
             // https://github.com/connectbot/connectbot/issues/2297
-            val reason = if (hostUnresolved) {
-                DisconnectReason.HOST_UNRESOLVED
-            } else {
-                DisconnectReason.IO_ERROR
+            // Unreachable networks/hosts (e.g. connecting by IP in airplane
+            // mode) get their own reason so the failure isn't presented as a
+            // generic mid-session interruption.
+            // https://github.com/connectbot/connectbot/issues/386
+            val reason = when {
+                hostUnresolved -> DisconnectReason.HOST_UNRESOLVED
+                networkUnreachable -> DisconnectReason.NETWORK_UNREACHABLE
+                else -> DisconnectReason.IO_ERROR
             }
             onDisconnect(reason)
             close()
@@ -1650,6 +1688,20 @@ class SSH :
                 else -> IpVersion.IPV4_AND_IPV6
             }
         }
+
+        /**
+         * Whether this throwable indicates the network or host was unreachable
+         * at connect time. ENETUNREACH/EHOSTUNREACH surface either as
+         * [NoRouteToHostException] or as a [ConnectException]/[SocketException]
+         * whose message mentions "unreachable" (e.g. "Network is unreachable"
+         * when connecting in airplane mode).
+         */
+        @VisibleForTesting
+        internal fun isNetworkUnreachable(t: Throwable): Boolean = t is NoRouteToHostException ||
+            (
+                (t is ConnectException || t is SocketException) &&
+                    t.message?.contains("unreachable", ignoreCase = true) == true
+                )
 
         private const val PROTOCOL = "ssh"
         private const val DEFAULT_PORT = 22

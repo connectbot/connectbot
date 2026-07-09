@@ -48,6 +48,7 @@ import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.Pending
 import androidx.compose.material.icons.filled.SwapVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
@@ -608,12 +609,12 @@ private fun HostListItem(
     val borderColor = when (connectionState) {
         ConnectionState.CONNECTED -> colorResource(R.color.host_green)
 
-        // Green
+        ConnectionState.CONNECTING -> colorResource(R.color.host_amber)
+
         ConnectionState.FAILED,
         ConnectionState.DISCONNECTED,
         -> colorResource(R.color.host_red)
 
-        // Red
         ConnectionState.UNKNOWN -> Color.Transparent
     }
 
@@ -664,9 +665,13 @@ private fun HostListItem(
                             },
                             contentDescription = when (connectionState) {
                                 ConnectionState.CONNECTED -> stringResource(R.string.image_description_connected)
+
+                                ConnectionState.CONNECTING -> stringResource(R.string.image_description_connecting)
+
                                 ConnectionState.FAILED,
                                 ConnectionState.DISCONNECTED,
                                 -> stringResource(R.string.image_description_disconnected)
+
                                 ConnectionState.UNKNOWN -> null
                             },
                             tint = Color.White,
@@ -688,17 +693,25 @@ private fun HostListItem(
                             Icon(
                                 imageVector = when (connectionState) {
                                     ConnectionState.CONNECTED -> Icons.Default.CheckCircle
+
+                                    ConnectionState.CONNECTING -> Icons.Default.Pending
+
                                     ConnectionState.FAILED,
                                     ConnectionState.DISCONNECTED,
                                     -> Icons.Default.Error
+
                                     ConnectionState.UNKNOWN -> Icons.Default.Computer // Unreachable
                                 },
                                 contentDescription = null,
                                 tint = when (connectionState) {
                                     ConnectionState.CONNECTED -> colorResource(R.color.host_green)
+
+                                    ConnectionState.CONNECTING -> colorResource(R.color.host_amber)
+
                                     ConnectionState.FAILED,
                                     ConnectionState.DISCONNECTED,
                                     -> colorResource(R.color.host_red)
+
                                     ConnectionState.UNKNOWN -> Color.Gray // Unreachable
                                 },
                                 modifier = Modifier.size(16.dp),
