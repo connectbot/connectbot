@@ -23,6 +23,7 @@ import java.io.IOException
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.Socket
+import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 
 /**
@@ -47,13 +48,17 @@ class MdnsProxyData(
 ) : ProxyData {
     @Throws(IOException::class)
     override fun openConnection(hostname: String, port: Int, connectTimeout: Int): Socket {
-        val address = resolver.resolve(hostname, ipVersion)
+        val timeout = connectTimeout.coerceAtLeast(0)
+        val startedAtNanos = System.nanoTime()
+        val address = resolver.resolve(hostname, ipVersion, timeout)
             ?: throw UnknownHostException("Unable to resolve \"$hostname\" via mDNS")
         onResolved?.invoke(address)
 
+        val remainingTimeout = remainingTimeoutMillis(timeout, startedAtNanos)
+            ?: throw SocketTimeoutException("Timed out resolving \"$hostname\" via mDNS")
         val socket = Socket()
         try {
-            socket.connect(InetSocketAddress(address, port), connectTimeout.coerceAtLeast(0))
+            socket.connect(InetSocketAddress(address, port), remainingTimeout)
         } catch (e: IOException) {
             try {
                 socket.close()
@@ -62,5 +67,22 @@ class MdnsProxyData(
             throw e
         }
         return socket
+    }
+
+    private companion object {
+        private const val NANOS_PER_MILLI = 1_000_000L
+
+        fun remainingTimeoutMillis(timeoutMillis: Int, startedAtNanos: Long): Int? {
+            if (timeoutMillis == 0) return 0
+
+            val elapsedNanos = System.nanoTime() - startedAtNanos
+            val remainingNanos = timeoutMillis.toLong() * NANOS_PER_MILLI - elapsedNanos
+            if (remainingNanos <= 0) return null
+
+            return ((remainingNanos + NANOS_PER_MILLI - 1) / NANOS_PER_MILLI)
+                .coerceAtMost(Int.MAX_VALUE.toLong())
+                .toInt()
+                .coerceAtLeast(1)
+        }
     }
 }

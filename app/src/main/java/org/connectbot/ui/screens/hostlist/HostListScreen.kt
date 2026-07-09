@@ -785,6 +785,7 @@ private fun HostListItem(
                                 // closable individually, not only via Disconnect All.
                                 // https://github.com/connectbot/connectbot/issues/2297
                                 enabled = connectionState == ConnectionState.CONNECTED ||
+                                    connectionState == ConnectionState.CONNECTING ||
                                     connectionState == ConnectionState.FAILED,
                                 leadingIcon = {
                                     Icon(Icons.Default.LinkOff, null)

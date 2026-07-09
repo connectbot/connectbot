@@ -33,6 +33,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.robolectric.RobolectricTestRunner
@@ -99,6 +100,17 @@ class SSHNonInteractiveStatusTest {
         ssh.authenticate()
 
         verify(bridge).outputLine(expectedString(R.string.terminal_no_portforwards))
+    }
+
+    @Test
+    fun authenticationFailure_doesNotReportConnected() {
+        `when`(connection.authenticateWithNone("alice")).thenReturn(false)
+        `when`(connection.isAuthMethodAvailable("alice", "keyboard-interactive")).thenReturn(false)
+        `when`(connection.isAuthMethodAvailable("alice", "password")).thenReturn(false)
+
+        ssh.authenticate()
+
+        verify(bridge, never()).onConnected()
     }
 
     @Test

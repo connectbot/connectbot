@@ -449,8 +449,27 @@ class HostListScreenTest {
     }
 
     @Test
+    fun hostListScreenContent_disconnectEnabledForConnectingBridge() {
+        var disconnectedHost: Host? = null
+        val host = testHost(id = 5L, nickname = "dialing", protocol = "ssh", color = null)
+
+        setHostListContent(
+            uiState = HostListUiState(
+                hosts = listOf(host),
+                connectionStates = mapOf(host.id to ConnectionState.CONNECTING),
+            ),
+            onDisconnectHost = { disconnectedHost = it },
+        )
+
+        openHostMenu(host)
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.list_host_disconnect)).performClick()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.button_yes)).performClick()
+        assertTrue(disconnectedHost == host)
+    }
+
+    @Test
     fun hostListScreenContent_portForwardChipShowsActiveCounts() {
-        val host = testHost(id = 5L, nickname = "tunnels", protocol = "ssh")
+        val host = testHost(id = 6L, nickname = "tunnels", protocol = "ssh")
 
         setHostListContent(
             uiState = HostListUiState(
