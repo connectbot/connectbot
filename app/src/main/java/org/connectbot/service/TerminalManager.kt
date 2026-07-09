@@ -37,6 +37,7 @@ import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.UserNotAuthenticatedException
 import com.trilead.ssh2.crypto.PublicKeyUtils
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
@@ -373,16 +374,27 @@ class TerminalManager :
         withContext(dispatchers.main) {
             // Throw an exception if the terminal is already open. Serializing this
             // check with bridge construction prevents concurrent startup/deep-link
-            // requests from creating duplicate sessions while database I/O is suspended.
+            // requests from creating duplicate sessions while bridge construction
+            // is suspended on the I/O dispatcher.
             if (getConnectedBridge(host) != null || getConnectedBridge(host.nickname) != null) {
                 throw IllegalArgumentException("Connection already open for that nickname")
             }
 
             // TerminalBridge loads profile and color data synchronously during
             // construction, so create it away from the main thread.
-            val bridge = withContext(dispatchers.io) {
-                TerminalBridge(this@TerminalManager, host, dispatchers)
+            var pendingBridge: TerminalBridge? = null
+            try {
+                withContext(dispatchers.io) {
+                    pendingBridge = TerminalBridge(this@TerminalManager, host, dispatchers)
+                }
+            } catch (e: CancellationException) {
+                // If the caller was cancelled while construction was suspended,
+                // the bridge can never be registered, but its constructor has
+                // already started its own coroutines — tear it down.
+                pendingBridge?.cleanup()
+                throw e
             }
+            val bridge = checkNotNull(pendingBridge)
             bridge.setOnDisconnectedListener(this@TerminalManager)
             bridge.startConnection()
 
