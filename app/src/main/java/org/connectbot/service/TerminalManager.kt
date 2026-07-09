@@ -38,7 +38,6 @@ import android.security.keystore.UserNotAuthenticatedException
 import com.trilead.ssh2.crypto.PublicKeyUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -260,7 +259,7 @@ class TerminalManager :
 
         ProviderLoader.load(this, this)
 
-        scope.launch(dispatchers.io) {
+        scope.launch(dispatchers.main) {
             startupKeyLoadJob.join()
             connectOnStartupHosts()
         }
@@ -271,11 +270,13 @@ class TerminalManager :
     }
 
     private suspend fun connectOnStartupHosts() {
-        val hosts = try {
-            hostRepository.getConnectOnStartupHosts()
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to load connect-on-startup hosts")
-            return
+        val hosts = withContext(dispatchers.io) {
+            try {
+                hostRepository.getConnectOnStartupHosts()
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to load connect-on-startup hosts")
+                emptyList()
+            }
         }
 
         for (host in hosts) {
@@ -1126,7 +1127,7 @@ class TerminalManager :
             bridge.host.nickname,
             delayMs,
         )
-        val job = scope.launch(dispatchers.default, start = CoroutineStart.LAZY) {
+        val job = scope.launch(dispatchers.main) {
             try {
                 delay(delayMs)
                 startOrParkReconnect(bridge, announceWaiting = true)
@@ -1134,8 +1135,7 @@ class TerminalManager :
                 reconnectJobs.remove(bridge, coroutineContext[Job])
             }
         }
-        reconnectJobs.put(bridge, job)?.cancel()
-        job.start()
+        reconnectJobs[bridge] = job
     }
 
     private fun startOrParkReconnect(bridge: TerminalBridge, announceWaiting: Boolean) {
@@ -1184,7 +1184,7 @@ class TerminalManager :
      * back to the foreground. This bypasses any pending backoff delay.
      */
     private fun retryPendingReconnects() {
-        scope.launch(dispatchers.io) {
+        scope.launch(dispatchers.main) {
             val delayedBridges = reconnectJobs.keys.toList()
             for (bridge in delayedBridges) {
                 reconnectJobs.remove(bridge)?.cancel()

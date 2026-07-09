@@ -178,7 +178,7 @@ class DisconnectPolicyTest {
     }
 
     @Test
-    fun stayConnected_underAttemptLimit_autoReconnects() {
+    fun stayConnectedUnderAttemptLimitAutoReconnects() {
         assertTrue(
             decide(
                 DisconnectReason.IO_ERROR,
@@ -190,7 +190,7 @@ class DisconnectPolicyTest {
     }
 
     @Test
-    fun stayConnected_atAttemptLimit_givesUpReconnect() {
+    fun stayConnectedAtAttemptLimitGivesUpReconnect() {
         assertTrue(
             decide(
                 DisconnectReason.IO_ERROR,
@@ -202,7 +202,7 @@ class DisconnectPolicyTest {
     }
 
     @Test
-    fun stayConnected_zeroAttemptLimit_isUnlimited() {
+    fun stayConnectedZeroAttemptLimitIsUnlimited() {
         assertTrue(
             decide(
                 DisconnectReason.IO_ERROR,
@@ -214,7 +214,7 @@ class DisconnectPolicyTest {
     }
 
     @Test
-    fun authFail_stayConnectedAtAttemptLimit_showsReconnectOverlay() {
+    fun authFailStayConnectedAtAttemptLimitShowsReconnectOverlay() {
         assertTrue(
             decide(
                 DisconnectReason.AUTH_FAIL,
@@ -272,7 +272,7 @@ class DisconnectPolicyTest {
     }
 
     @Test
-    fun reconnectDelay_usesConfiguredIntervalWithBackoff() {
+    fun reconnectDelayUsesConfiguredIntervalWithBackoff() {
         assertEquals(
             5_000L,
             DisconnectPolicy.reconnectDelayMs(
@@ -292,7 +292,7 @@ class DisconnectPolicyTest {
     }
 
     @Test
-    fun reconnectDelay_usesFixedIntervalWhenBackoffDisabled() {
+    fun reconnectDelayUsesFixedIntervalWhenBackoffDisabled() {
         assertEquals(
             5_000L,
             DisconnectPolicy.reconnectDelayMs(
@@ -312,7 +312,7 @@ class DisconnectPolicyTest {
     }
 
     @Test
-    fun reconnectDelay_zeroConfiguredInterval_isImmediate() {
+    fun reconnectDelayZeroConfiguredIntervalIsImmediate() {
         assertEquals(
             0L,
             DisconnectPolicy.reconnectDelayMs(
