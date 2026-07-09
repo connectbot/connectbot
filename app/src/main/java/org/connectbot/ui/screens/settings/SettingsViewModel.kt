@@ -609,7 +609,10 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun updateNumericStringPref(key: String, value: String, updateState: SettingsUiState.() -> SettingsUiState) {
-        if (value.isEmpty() || value.toIntOrNull() != null) {
+        // Readers clamp these prefs to >= 0 (see PreferenceConstants), so a
+        // persisted negative value would silently behave as 0 — reject it here.
+        val parsed = value.toIntOrNull()
+        if (value.isEmpty() || (parsed != null && parsed >= 0)) {
             updateStringPref(key, value, updateState)
         }
     }

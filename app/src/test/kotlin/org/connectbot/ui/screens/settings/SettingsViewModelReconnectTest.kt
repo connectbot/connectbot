@@ -116,14 +116,17 @@ class SettingsViewModelReconnectTest {
     }
 
     @Test
-    fun updateReconnectMaxAttemptsWritesNegativeString() = runTest {
+    fun updateReconnectMaxAttempts_ignoresNegativeValue() = runTest {
         val viewModel = createViewModel()
 
         viewModel.updateReconnectMaxAttempts("-2")
         advanceUntilIdle()
 
-        assertEquals("-2", viewModel.uiState.value.reconnectMaxAttempts)
-        verify(prefsEditor).putString(PreferenceConstants.RECONNECT_MAX_ATTEMPTS, "-2")
+        assertEquals(
+            PreferenceConstants.DEFAULT_RECONNECT_MAX_ATTEMPTS.toString(),
+            viewModel.uiState.value.reconnectMaxAttempts,
+        )
+        verify(prefsEditor, never()).putString(PreferenceConstants.RECONNECT_MAX_ATTEMPTS, "-2")
     }
 
     @Test
