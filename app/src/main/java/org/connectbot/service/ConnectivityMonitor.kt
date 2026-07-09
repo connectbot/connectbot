@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -162,6 +162,22 @@ class ConnectivityMonitor(
      * @return current NetworkInfo or null if not connected
      */
     fun getCurrentNetworkInfo(): NetworkInfo? = currentNetworkInfo
+
+    /**
+     * Whether this app's active network runs over a VPN. Checked directly
+     * against the active network rather than [getNetworkType], which reports
+     * the underlying transport (e.g. WIFI) for VPN networks — and the
+     * registered callbacks never see VPN networks at all, since a plain
+     * NetworkRequest implicitly requires NOT_VPN.
+     */
+    fun isVpnActive(): Boolean = try {
+        connectivityManager.activeNetwork
+            ?.let { connectivityManager.getNetworkCapabilities(it) }
+            ?.hasTransport(NetworkCapabilities.TRANSPORT_VPN) == true
+    } catch (e: RuntimeException) {
+        Timber.w(e, "Unable to determine VPN state")
+        false
+    }
 
     /**
      * Update network info based on current active network.

@@ -1023,6 +1023,12 @@ class TerminalManager :
     }
 
     /**
+     * Whether this app's active network runs over a VPN. False before the
+     * service has finished initializing.
+     */
+    fun isVpnActive(): Boolean = ::connectivityMonitor.isInitialized && connectivityMonitor.isVpnActive()
+
+    /**
      * Interval between connection liveness probes in milliseconds, or 0 when
      * keepalive is disabled. Read at connect time, so changes apply to new
      * connections.
