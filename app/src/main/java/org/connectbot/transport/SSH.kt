@@ -63,6 +63,7 @@ import org.connectbot.transport.sftp.SftpChannel
 import org.connectbot.transport.sftp.TrileadSftpChannel
 import org.connectbot.util.Ed25519SignatureProxy
 import org.connectbot.util.HostConstants
+import org.connectbot.util.MdnsResolver
 import org.connectbot.util.ProfileStartup
 import org.connectbot.util.PubkeyUtils
 import org.connectbot.util.SshKeyType
@@ -682,25 +683,23 @@ class SSH :
      * is not sshlib's software type, so its raw seed cannot be read (opaque
      * Android Keystore keys).
      */
-    private fun needsEd25519Proxy(pair: KeyPair): Boolean =
-        PublicKeyUtils.isEd25519Key(pair.public) && pair.private !is Ed25519PrivateKey
+    private fun needsEd25519Proxy(pair: KeyPair): Boolean = PublicKeyUtils.isEd25519Key(pair.public) && pair.private !is Ed25519PrivateKey
 
     @Throws(IOException::class)
-    private fun authenticateWithPublicKeyCompat(connection: Connection, username: String, pair: KeyPair): Boolean =
-        if (needsEd25519Proxy(pair)) {
-            // sshlib's Ed25519 signer needs the raw private key seed,
-            // which an opaque (Android Keystore) key never exposes; sign
-            // through the JCA Signature API instead.
-            // https://github.com/connectbot/connectbot/issues/1974
-            connection.authenticateWithPublicKey(
-                username,
-                Ed25519SignatureProxy(pair.public, pair.private),
-            )
-        } else {
-            RsaSha2Compat.withRsaSha2Preference(connection, pair) {
-                connection.authenticateWithPublicKey(username, pair)
-            }
+    private fun authenticateWithPublicKeyCompat(connection: Connection, username: String, pair: KeyPair): Boolean = if (needsEd25519Proxy(pair)) {
+        // sshlib's Ed25519 signer needs the raw private key seed,
+        // which an opaque (Android Keystore) key never exposes; sign
+        // through the JCA Signature API instead.
+        // https://github.com/connectbot/connectbot/issues/1974
+        connection.authenticateWithPublicKey(
+            username,
+            Ed25519SignatureProxy(pair.public, pair.private),
+        )
+    } else {
+        RsaSha2Compat.withRsaSha2Preference(connection, pair) {
+            connection.authenticateWithPublicKey(username, pair)
         }
+    }
 
     @Throws(IOException::class)
     private fun tryPublicKey(username: String, keyNickname: String, pair: KeyPair): Boolean = try {
@@ -812,6 +811,16 @@ class SSH :
     }
 
     /**
+     * ProxyData that resolves the given host's `.local` name via mDNS before
+     * dialing, reporting the resolved address on the terminal.
+     */
+    private fun mdnsProxyData(host: Host): MdnsProxyData = MdnsProxyData(MdnsResolver(manager), host.ipVersion) { address ->
+        bridge?.outputLine(
+            manager?.res?.getString(R.string.terminal_mdns_resolved, host.hostname, address.hostAddress),
+        )
+    }
+
+    /**
      * Establish and authenticate a connection to the jump host.
      * This is called before connecting to the target host when ProxyJump is configured.
      * Supports chained jump hosts (jump host that requires another jump host).
@@ -824,6 +833,14 @@ class SSH :
 
         val jc = Connection(jumpHost.hostname, jumpHost.port)
         registerUserAuthBanner(jc, jumpHost.authBannerSourceName())
+
+        // A first-hop jump host with a .local name needs local mDNS
+        // resolution too. If this jump host itself goes through another jump
+        // host, the nested proxy set below takes precedence (and resolves the
+        // name remotely).
+        if (MdnsResolver.isMdnsHostname(jumpHost.hostname)) {
+            jc.setProxyData(mdnsProxyData(jumpHost))
+        }
 
         try {
             // Check if this jump host itself requires a jump host (chained ProxyJump)
@@ -1025,6 +1042,14 @@ class SSH :
         // If we have a jump host connection, set up the proxy
         directJumpConnection?.let {
             connection?.setProxyData(JumpHostProxyData(it))
+        }
+
+        // Without a jump host, resolve .local hostnames via mDNS ourselves:
+        // most Android resolvers cannot, and a jump host resolves the target
+        // remotely where local mDNS knowledge would not apply anyway.
+        // https://github.com/connectbot/connectbot/issues/396
+        if (directJumpConnection == null && MdnsResolver.isMdnsHostname(currentHost.hostname)) {
+            connection?.setProxyData(mdnsProxyData(currentHost))
         }
 
         try {

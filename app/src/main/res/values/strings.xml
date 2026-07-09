@@ -1494,6 +1494,8 @@
 	<!-- Message shown to user when they're trying to connect to a host on a local network but
 	     have not granted the permission yet. -->
 	<string name="terminal_no_route">Are you trying to access a local host? Grant local network permissions.</string>
+	<!-- Console message after an mDNS (.local) hostname was resolved; %1$s is the hostname, %2$s the resolved IP address -->
+	<string name="terminal_mdns_resolved">"Resolved %1$s to %2$s via mDNS"</string>
 
 	<!-- Loading message shown during app initialization -->
 	<string name="loading_message">Loading…</string>
