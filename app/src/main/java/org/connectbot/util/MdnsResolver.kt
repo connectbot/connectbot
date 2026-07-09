@@ -21,7 +21,6 @@ import android.content.Context
 import android.net.wifi.WifiManager
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
-import java.io.IOException
 import java.net.DatagramPacket
 import java.net.DatagramSocket
 import java.net.Inet4Address
@@ -49,9 +48,12 @@ class MdnsResolver(private val context: Context?) {
     /**
      * Resolve [hostname] to an address permitted by [ipVersion] (one of the
      * [HostConstants] IPVERSION values), or null if it could not be resolved.
+     * When [timeoutMillis] is positive, the multicast fallback stops once that
+     * timeout budget is exhausted.
      */
-    fun resolve(hostname: String, ipVersion: String): InetAddress? {
+    fun resolve(hostname: String, ipVersion: String, timeoutMillis: Int = 0): InetAddress? {
         val name = normalizeHostname(hostname)
+        val deadlineNanos = timeoutMillis.toDeadlineNanos()
         val queryTypes = when (ipVersion) {
             HostConstants.IPVERSION_IPV4_ONLY -> listOf(TYPE_A)
 
@@ -64,7 +66,7 @@ class MdnsResolver(private val context: Context?) {
 
         resolveViaPlatform(name, queryTypes)?.let { return it }
 
-        return withMulticastLock { queryViaMulticast(name, queryTypes) }
+        return withMulticastLock { queryViaMulticast(name, queryTypes, deadlineNanos) }
     }
 
     private fun resolveViaPlatform(hostname: String, queryTypes: List<Int>): InetAddress? {
@@ -79,22 +81,24 @@ class MdnsResolver(private val context: Context?) {
         return null
     }
 
-    private fun queryViaMulticast(hostname: String, queryTypes: List<Int>): InetAddress? {
+    private fun queryViaMulticast(hostname: String, queryTypes: List<Int>, deadlineNanos: Long?): InetAddress? {
         try {
             DatagramSocket().use { socket ->
-                socket.soTimeout = RECEIVE_TIMEOUT_MS
                 val group = InetAddress.getByAddress(MDNS_GROUP_V4)
                 for (type in queryTypes) {
                     repeat(QUERY_ATTEMPTS) {
+                        val timeout = receiveTimeoutMillis(deadlineNanos) ?: return null
+                        socket.soTimeout = timeout
                         val transactionId = Random.nextInt(0x10000)
                         val query = buildQuery(transactionId, hostname, type)
                         socket.send(DatagramPacket(query, query.size, group, MDNS_PORT))
 
-                        val deadline = System.currentTimeMillis() + RECEIVE_TIMEOUT_MS
-                        while (System.currentTimeMillis() < deadline) {
+                        val receiveDeadline = System.nanoTime() + timeout.toLong() * NANOS_PER_MILLI
+                        while (System.nanoTime() < receiveDeadline) {
                             val buffer = ByteArray(MAX_PACKET_SIZE)
                             val packet = DatagramPacket(buffer, buffer.size)
                             try {
+                                socket.soTimeout = receiveTimeoutMillis(deadlineNanos, receiveDeadline) ?: return null
                                 socket.receive(packet)
                             } catch (_: SocketTimeoutException) {
                                 break
@@ -110,7 +114,7 @@ class MdnsResolver(private val context: Context?) {
                     }
                 }
             }
-        } catch (e: IOException) {
+        } catch (e: Exception) {
             Timber.w(e, "mDNS query for %s failed", hostname)
         }
         return null
@@ -150,6 +154,7 @@ class MdnsResolver(private val context: Context?) {
         private const val RECEIVE_TIMEOUT_MS = 1000
         private const val QUERY_ATTEMPTS = 2
         private const val MAX_COMPRESSION_JUMPS = 16
+        private const val NANOS_PER_MILLI = 1_000_000L
         private const val CLASS_IN = 1
 
         internal const val TYPE_A = 1
@@ -163,10 +168,27 @@ class MdnsResolver(private val context: Context?) {
             val labels = name.split('.')
             return labels.size >= 2 &&
                 labels.last().equals("local", ignoreCase = true) &&
-                labels.all { it.isNotEmpty() }
+                labels.all { label ->
+                    val bytes = label.toByteArray(Charsets.UTF_8)
+                    bytes.size in 1..63
+                }
         }
 
         internal fun normalizeHostname(hostname: String): String = hostname.trim().removeSuffix(".")
+
+        internal fun Int.toDeadlineNanos(): Long? = takeIf { it > 0 }
+            ?.let { System.nanoTime() + it.toLong() * NANOS_PER_MILLI }
+
+        internal fun receiveTimeoutMillis(vararg deadlineNanos: Long?): Int? {
+            val nearestDeadline = deadlineNanos.filterNotNull().minOrNull()
+            if (nearestDeadline == null) return RECEIVE_TIMEOUT_MS
+
+            val remainingNanos = nearestDeadline - System.nanoTime()
+            if (remainingNanos <= 0) return null
+
+            val remainingMillis = (remainingNanos + NANOS_PER_MILLI - 1) / NANOS_PER_MILLI
+            return remainingMillis.coerceAtMost(RECEIVE_TIMEOUT_MS.toLong()).toInt().coerceAtLeast(1)
+        }
 
         private fun matchesType(address: InetAddress, type: Int): Boolean = when (type) {
             TYPE_A -> address is Inet4Address

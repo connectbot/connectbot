@@ -414,7 +414,7 @@ class TerminalManager :
     }
 
     /**
-     * Update the last-connected value for the given nickname by passing through
+     * Update the last-connected value for the given host by passing through
      * to [HostRepository]. Called by [TerminalBridge.onConnected] once a
      * connection has actually been established and authenticated — a failed
      * attempt (e.g. in airplane mode) must not bump the timestamp.

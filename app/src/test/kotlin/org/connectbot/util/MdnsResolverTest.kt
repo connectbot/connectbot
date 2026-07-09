@@ -45,6 +45,12 @@ class MdnsResolverTest {
     }
 
     @Test
+    fun isMdnsHostname_rejectsInvalidLabelLengths() {
+        assertThat(MdnsResolver.isMdnsHostname("${"a".repeat(64)}.local")).isFalse()
+        assertThat(MdnsResolver.isMdnsHostname("${"\u00e9".repeat(32)}.local")).isFalse()
+    }
+
+    @Test
     fun buildQuery_encodesQuestion() {
         val query = MdnsResolver.buildQuery(0x1234, "pi.local", MdnsResolver.TYPE_A)
 

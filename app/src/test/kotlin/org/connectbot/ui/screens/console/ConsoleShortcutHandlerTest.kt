@@ -165,6 +165,7 @@ class ConsoleShortcutHandlerTest {
             assertEquals(0, decreaseCount)
             assertEquals(0, nextPaneCount)
             assertEquals(0, previousPaneCount)
+            assertEquals(0, clearSelectionCount)
         }
     }
 
