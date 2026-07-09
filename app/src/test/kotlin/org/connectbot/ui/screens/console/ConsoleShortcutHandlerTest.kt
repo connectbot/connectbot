@@ -105,9 +105,36 @@ class ConsoleShortcutHandlerTest {
         assertEquals(0, callbacks.nextPaneCount)
     }
 
+    @Test
+    fun handleConsoleShortcut_enterWithActiveSelectionClearsItWithoutConsuming() {
+        // Regression test for https://github.com/connectbot/connectbot/issues/2252:
+        // a stale terminal selection must not leave the Enter key permanently dead.
+        val callbacks = ShortcutCallbacks(selectionActive = true)
+
+        assertFalse(callbacks.handle(keyDown(AndroidKeyEvent.KEYCODE_ENTER)))
+        assertEquals(1, callbacks.clearSelectionCount)
+    }
+
+    @Test
+    fun handleConsoleShortcut_enterWithoutSelectionIsUntouched() {
+        val callbacks = ShortcutCallbacks(selectionActive = false)
+
+        assertFalse(callbacks.handle(keyDown(AndroidKeyEvent.KEYCODE_ENTER)))
+        assertEquals(0, callbacks.clearSelectionCount)
+    }
+
+    @Test
+    fun handleConsoleShortcut_nonEnterKeysDoNotClearSelection() {
+        val callbacks = ShortcutCallbacks(selectionActive = true)
+
+        assertFalse(callbacks.handle(keyDown(AndroidKeyEvent.KEYCODE_A)))
+        assertEquals(0, callbacks.clearSelectionCount)
+    }
+
     private class ShortcutCallbacks(
         private val volumeKeysChangeFontSize: Boolean = false,
         private val tmuxPaneNavigation: Boolean = false,
+        private val selectionActive: Boolean = false,
     ) {
         var copyCount = 0
         var pasteCount = 0
@@ -115,6 +142,7 @@ class ConsoleShortcutHandlerTest {
         var decreaseCount = 0
         var nextPaneCount = 0
         var previousPaneCount = 0
+        var clearSelectionCount = 0
 
         fun handle(keyEvent: KeyEvent): Boolean = handleConsoleShortcut(
             keyEvent = keyEvent,
@@ -126,6 +154,8 @@ class ConsoleShortcutHandlerTest {
             tmuxPaneNavigation = tmuxPaneNavigation,
             nextPane = { nextPaneCount++ },
             previousPane = { previousPaneCount++ },
+            isSelectionActive = { selectionActive },
+            clearSelection = { clearSelectionCount++ },
         )
 
         fun assertNoActions() {
