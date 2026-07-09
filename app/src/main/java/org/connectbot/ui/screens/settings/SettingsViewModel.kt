@@ -609,7 +609,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     private fun updateNumericStringPref(key: String, value: String, updateState: SettingsUiState.() -> SettingsUiState) {
-        if (value.toIntOrNull() != null) {
+        if (value.isEmpty() || value.toIntOrNull() != null) {
             updateStringPref(key, value, updateState)
         }
     }

@@ -116,6 +116,28 @@ class SettingsViewModelReconnectTest {
     }
 
     @Test
+    fun updateReconnectMaxAttemptsWritesNegativeString() = runTest {
+        val viewModel = createViewModel()
+
+        viewModel.updateReconnectMaxAttempts("-2")
+        advanceUntilIdle()
+
+        assertEquals("-2", viewModel.uiState.value.reconnectMaxAttempts)
+        verify(prefsEditor).putString(PreferenceConstants.RECONNECT_MAX_ATTEMPTS, "-2")
+    }
+
+    @Test
+    fun updateReconnectIntervalWritesEmptyString() = runTest {
+        val viewModel = createViewModel()
+
+        viewModel.updateReconnectInterval("")
+        advanceUntilIdle()
+
+        assertEquals("", viewModel.uiState.value.reconnectInterval)
+        verify(prefsEditor).putString(PreferenceConstants.RECONNECT_INTERVAL, "")
+    }
+
+    @Test
     fun updateReconnectInterval_ignoresNonNumericValue() = runTest {
         val viewModel = createViewModel()
 
