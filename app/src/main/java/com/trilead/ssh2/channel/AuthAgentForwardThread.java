@@ -85,6 +85,15 @@ import com.trilead.ssh2.signature.RSASHA1Verify;
  * not implement {@code RSAPrivateKey}/{@code ECPrivateKey}
  * (upstream issue connectbot#2212). Delete this copy once sshlib ships the fix.
  *
+ * <p>{@link #processSignRequest(TypesReader)} also honors the
+ * {@code SSH_AGENT_RSA_SHA2_256}/{@code SSH_AGENT_RSA_SHA2_512} signing flags
+ * from draft-miller-ssh-agent. OpenSSH 7.2+ clients request rsa-sha2 signatures
+ * through these flags when the server advertises "server-sig-algs"; an agent
+ * that rejects them fails with "sign_and_send_pubkey: signing failed: agent
+ * refused operation" (upstream issue connectbot#397, fixed in sshlib and kept
+ * intact in this copy — see the flag dispatch in
+ * {@link #generateSignature(KeyPair, byte[], int)}).
+ *
  * @author Kenny Root
  * @version $Id$
  */
