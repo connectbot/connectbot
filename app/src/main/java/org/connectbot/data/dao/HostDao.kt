@@ -146,6 +146,12 @@ interface HostDao {
     suspend fun getSshHosts(): List<Host>
 
     /**
+     * Get all hosts marked to connect automatically when the app starts.
+     */
+    @Query("SELECT * FROM hosts WHERE connect_on_startup = 1 ORDER BY nickname ASC")
+    suspend fun getConnectOnStartupHosts(): List<Host>
+
+    /**
      * Observe all SSH hosts (for jump host selection UI).
      */
     @Query("SELECT * FROM hosts WHERE protocol = 'ssh' ORDER BY nickname ASC")

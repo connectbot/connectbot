@@ -71,6 +71,7 @@ import org.connectbot.data.entity.Snippet
  *   suggestions (AutoMigration)
  * - Version 13: Added keyboard_layouts table and keyboard_layout_id column on
  *   hosts for the customizable keys bar (AutoMigration)
+ * - Version 14: Added connect_on_startup column to hosts (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -89,7 +90,7 @@ import org.connectbot.data.entity.Snippet
         Snippet::class,
         KeyboardLayout::class,
     ],
-    version = 13,
+    version = 14,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -103,6 +104,7 @@ import org.connectbot.data.entity.Snippet
         AutoMigration(from = 10, to = 11),
         AutoMigration(from = 11, to = 12),
         AutoMigration(from = 12, to = 13),
+        AutoMigration(from = 13, to = 14),
     ],
 )
 @TypeConverters(Converters::class)

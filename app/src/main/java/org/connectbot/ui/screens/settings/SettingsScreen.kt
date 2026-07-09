@@ -175,6 +175,9 @@ fun SettingsScreen(
         onConnPersistChange = viewModel::updateConnPersist,
         onWifilockChange = viewModel::updateWifilock,
         onSshKeepaliveIntervalChange = viewModel::updateSshKeepaliveInterval,
+        onReconnectMaxAttemptsChange = viewModel::updateReconnectMaxAttempts,
+        onReconnectIntervalChange = viewModel::updateReconnectInterval,
+        onReconnectBackoffChange = viewModel::updateReconnectBackoff,
         onBackupkeysChange = viewModel::updateBackupkeys,
         onScrollbackChange = viewModel::updateScrollback,
         onAddCustomTerminalType = viewModel::addCustomTerminalType,
@@ -224,6 +227,9 @@ fun SettingsScreenContent(
     onConnPersistChange: (Boolean) -> Unit,
     onWifilockChange: (Boolean) -> Unit,
     onSshKeepaliveIntervalChange: (String) -> Unit,
+    onReconnectMaxAttemptsChange: (String) -> Unit,
+    onReconnectIntervalChange: (String) -> Unit,
+    onReconnectBackoffChange: (Boolean) -> Unit,
     onBackupkeysChange: (Boolean) -> Unit,
     onScrollbackChange: (String) -> Unit,
     onAddCustomTerminalType: (String) -> Unit,
@@ -361,6 +367,37 @@ fun SettingsScreenContent(
                     value = uiState.sshKeepaliveInterval,
                     entries = keepaliveEntries,
                     onValueChange = onSshKeepaliveIntervalChange,
+                )
+            }
+
+            item {
+                PreferenceCategory(title = stringResource(R.string.pref_reconnect_category))
+            }
+
+            item {
+                TextPreference(
+                    title = stringResource(R.string.pref_reconnect_max_attempts_title),
+                    summary = stringResource(R.string.pref_reconnect_max_attempts_summary),
+                    value = uiState.reconnectMaxAttempts,
+                    onValueChange = onReconnectMaxAttemptsChange,
+                )
+            }
+
+            item {
+                TextPreference(
+                    title = stringResource(R.string.pref_reconnect_interval_title),
+                    summary = stringResource(R.string.pref_reconnect_interval_summary),
+                    value = uiState.reconnectInterval,
+                    onValueChange = onReconnectIntervalChange,
+                )
+            }
+
+            item {
+                SwitchPreference(
+                    title = stringResource(R.string.pref_reconnect_backoff_title),
+                    summary = stringResource(R.string.pref_reconnect_backoff_summary),
+                    checked = uiState.reconnectBackoff,
+                    onCheckedChange = onReconnectBackoffChange,
                 )
             }
 
@@ -1659,6 +1696,9 @@ private fun SettingsScreenPreview() {
             onConnPersistChange = {},
             onWifilockChange = {},
             onSshKeepaliveIntervalChange = {},
+            onReconnectMaxAttemptsChange = {},
+            onReconnectIntervalChange = {},
+            onReconnectBackoffChange = {},
             onBackupkeysChange = {},
             onScrollbackChange = {},
             onAddCustomTerminalType = {},

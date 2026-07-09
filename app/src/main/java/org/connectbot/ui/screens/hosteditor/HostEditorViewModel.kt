@@ -57,6 +57,7 @@ data class HostEditorUiState(
     val wantSession: Boolean = true,
     val tmuxEnabled: Boolean = true,
     val stayConnected: Boolean = false,
+    val connectOnStartup: Boolean = false,
     val quickDisconnect: Boolean = false,
     val keyboardSuggestions: Boolean = false,
     val keyboardLayoutId: Long? = null,
@@ -157,6 +158,7 @@ class HostEditorViewModel @Inject constructor(
         savedStateHandle[KEY_WANT_SESSION] = state.wantSession
         savedStateHandle[KEY_TMUX_ENABLED] = state.tmuxEnabled
         savedStateHandle[KEY_STAY_CONNECTED] = state.stayConnected
+        savedStateHandle[KEY_CONNECT_ON_STARTUP] = state.connectOnStartup
         savedStateHandle[KEY_QUICK_DISCONNECT] = state.quickDisconnect
         savedStateHandle[KEY_KEYBOARD_SUGGESTIONS] = state.keyboardSuggestions
         savedStateHandle[KEY_KEYBOARD_LAYOUT_ID] = state.keyboardLayoutId
@@ -184,6 +186,7 @@ class HostEditorViewModel @Inject constructor(
             wantSession = savedStateHandle[KEY_WANT_SESSION] ?: true,
             tmuxEnabled = savedStateHandle[KEY_TMUX_ENABLED] ?: true,
             stayConnected = savedStateHandle[KEY_STAY_CONNECTED] ?: false,
+            connectOnStartup = savedStateHandle[KEY_CONNECT_ON_STARTUP] ?: false,
             quickDisconnect = savedStateHandle[KEY_QUICK_DISCONNECT] ?: false,
             keyboardSuggestions = savedStateHandle[KEY_KEYBOARD_SUGGESTIONS] ?: false,
             keyboardLayoutId = savedStateHandle[KEY_KEYBOARD_LAYOUT_ID],
@@ -304,6 +307,7 @@ class HostEditorViewModel @Inject constructor(
                             wantSession = host.wantSession,
                             tmuxEnabled = host.tmuxMode != Host.TMUX_MODE_OFF,
                             stayConnected = host.stayConnected,
+                            connectOnStartup = host.connectOnStartup,
                             quickDisconnect = host.quickDisconnect,
                             keyboardSuggestions = host.keyboardSuggestions,
                             keyboardLayoutId = host.keyboardLayoutId,
@@ -445,6 +449,10 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(stayConnected = value) }
     }
 
+    fun updateConnectOnStartup(value: Boolean) {
+        _uiState.update { it.copy(connectOnStartup = value) }
+    }
+
     fun updateQuickDisconnect(value: Boolean) {
         _uiState.update { it.copy(quickDisconnect = value) }
     }
@@ -512,6 +520,7 @@ class HostEditorViewModel @Inject constructor(
                     wantSession = state.wantSession,
                     tmuxMode = if (state.tmuxEnabled) Host.TMUX_MODE_AUTO else Host.TMUX_MODE_OFF,
                     stayConnected = state.stayConnected,
+                    connectOnStartup = state.connectOnStartup,
                     quickDisconnect = state.quickDisconnect,
                     keyboardSuggestions = state.keyboardSuggestions,
                     keyboardLayoutId = state.keyboardLayoutId,
@@ -564,6 +573,7 @@ class HostEditorViewModel @Inject constructor(
         const val KEY_WANT_SESSION = "edit_wantSession"
         const val KEY_TMUX_ENABLED = "edit_tmuxEnabled"
         const val KEY_STAY_CONNECTED = "edit_stayConnected"
+        const val KEY_CONNECT_ON_STARTUP = "edit_connectOnStartup"
         const val KEY_QUICK_DISCONNECT = "edit_quickDisconnect"
         const val KEY_KEYBOARD_SUGGESTIONS = "edit_keyboardSuggestions"
         const val KEY_KEYBOARD_LAYOUT_ID = "edit_keyboardLayoutId"

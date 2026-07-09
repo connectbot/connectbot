@@ -57,6 +57,9 @@ data class SettingsUiState(
     val connPersist: Boolean = true,
     val wifilock: Boolean = true,
     val sshKeepaliveInterval: String = PreferenceConstants.SSH_KEEPALIVE_INTERVAL_DEFAULT,
+    val reconnectMaxAttempts: String = PreferenceConstants.DEFAULT_RECONNECT_MAX_ATTEMPTS.toString(),
+    val reconnectInterval: String = PreferenceConstants.DEFAULT_RECONNECT_INTERVAL_SECONDS.toString(),
+    val reconnectBackoff: Boolean = PreferenceConstants.DEFAULT_RECONNECT_BACKOFF,
     val backupkeys: Boolean = false,
     val scrollback: String = "140",
     val rotation: String = "Default",
@@ -202,6 +205,14 @@ class SettingsViewModel @Inject constructor(
                 PreferenceConstants.SSH_KEEPALIVE_INTERVAL,
                 PreferenceConstants.SSH_KEEPALIVE_INTERVAL_DEFAULT,
             ) ?: PreferenceConstants.SSH_KEEPALIVE_INTERVAL_DEFAULT,
+            reconnectMaxAttempts = prefs.getString(PreferenceConstants.RECONNECT_MAX_ATTEMPTS, null)
+                ?: PreferenceConstants.DEFAULT_RECONNECT_MAX_ATTEMPTS.toString(),
+            reconnectInterval = prefs.getString(PreferenceConstants.RECONNECT_INTERVAL, null)
+                ?: PreferenceConstants.DEFAULT_RECONNECT_INTERVAL_SECONDS.toString(),
+            reconnectBackoff = prefs.getBoolean(
+                PreferenceConstants.RECONNECT_BACKOFF,
+                PreferenceConstants.DEFAULT_RECONNECT_BACKOFF,
+            ),
             backupkeys = prefs.getBoolean("backupkeys", false),
             scrollback = prefs.getString("scrollback", "140") ?: "140",
             rotation = prefs.getString("rotation", "Default") ?: "Default",
@@ -304,6 +315,18 @@ class SettingsViewModel @Inject constructor(
 
     fun updateSshKeepaliveInterval(value: String) {
         updateStringPref(PreferenceConstants.SSH_KEEPALIVE_INTERVAL, value) { copy(sshKeepaliveInterval = value) }
+    }
+
+    fun updateReconnectMaxAttempts(value: String) {
+        updateNumericStringPref(PreferenceConstants.RECONNECT_MAX_ATTEMPTS, value) { copy(reconnectMaxAttempts = value) }
+    }
+
+    fun updateReconnectInterval(value: String) {
+        updateNumericStringPref(PreferenceConstants.RECONNECT_INTERVAL, value) { copy(reconnectInterval = value) }
+    }
+
+    fun updateReconnectBackoff(value: Boolean) {
+        updateBooleanPref(PreferenceConstants.RECONNECT_BACKOFF, value) { copy(reconnectBackoff = value) }
     }
 
     fun updateBackupkeys(value: Boolean) {
@@ -582,6 +605,12 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             prefs.edit { putString(key, value) }
             _uiState.update { it.updateState() }
+        }
+    }
+
+    private fun updateNumericStringPref(key: String, value: String, updateState: SettingsUiState.() -> SettingsUiState) {
+        if (value.all { it.isDigit() }) {
+            updateStringPref(key, value, updateState)
         }
     }
 

@@ -108,6 +108,13 @@ class HostRepository @Inject constructor(
     suspend fun getSshHosts(): List<Host> = hostDao.getSshHosts()
 
     /**
+     * Get all hosts marked to connect automatically when the app starts.
+     *
+     * @return List of hosts with connect-on-startup enabled
+     */
+    suspend fun getConnectOnStartupHosts(): List<Host> = hostDao.getConnectOnStartupHosts()
+
+    /**
      * Observe all SSH hosts (for jump host selection UI).
      *
      * @return Flow of SSH hosts

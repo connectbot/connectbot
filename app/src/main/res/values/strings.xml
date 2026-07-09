@@ -479,6 +479,21 @@
 	<!-- Keepalive interval option: every 5 minutes -->
 	<string name="list_ssh_keepalive_5m">"Every 5 minutes"</string>
 
+	<!-- The category title for preferences controlling automatic reconnection of hosts with stay connected enabled -->
+	<string name="pref_reconnect_category">"Automatic reconnect"</string>
+	<!-- Title of the preference limiting automatic reconnect attempts for stay-connected hosts -->
+	<string name="pref_reconnect_max_attempts_title">"Maximum reconnect attempts"</string>
+	<!-- Summary for the maximum reconnect attempts preference; zero means retry forever -->
+	<string name="pref_reconnect_max_attempts_summary">"Automatic reconnect attempts before giving up (0 for unlimited)"</string>
+	<!-- Title of the preference controlling how long to wait between automatic reconnect attempts -->
+	<string name="pref_reconnect_interval_title">"Reconnect interval"</string>
+	<!-- Summary for the reconnect interval preference; the value is entered in seconds -->
+	<string name="pref_reconnect_interval_summary">"Seconds to wait between automatic reconnect attempts"</string>
+	<!-- Title of the preference enabling exponential backoff between automatic reconnect attempts -->
+	<string name="pref_reconnect_backoff_title">"Exponential backoff"</string>
+	<!-- Summary for the exponential backoff preference; the wait doubles after each failed attempt up to a cap -->
+	<string name="pref_reconnect_backoff_summary">"Double the wait after each failed attempt, with capped backoff growth"</string>
+
 	<!-- Name for the haptic feedback (bumpy arrow) preference -->
 	<string name="pref_bumpyarrows_title">"Bumpy arrows"</string>
 	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
@@ -591,6 +606,11 @@
 	<string name="hostpref_stayconnected_title">"Stay connected"</string>
 	<!-- Summary for preference asking whether the host should be reconnected to when it disconnects -->
 	<string name="hostpref_stayconnected_summary">"Try to reconnect to host if disconnected"</string>
+
+	<!-- Setting for whether a connection to the host should be opened automatically when the app starts -->
+	<string name="hostpref_connectonstartup_title">"Connect on app start"</string>
+	<!-- Summary for preference asking whether to automatically open a connection to this host when the app starts -->
+	<string name="hostpref_connectonstartup_summary">"Automatically connect to this host when ConnectBot starts"</string>
 
 	<!-- Setting for whether we should prompt to close after getting disconnected -->
 	<string name="hostpref_quickdisconnect_title">"Close on disconnect"</string>
@@ -961,6 +981,15 @@
 	<!-- Displayed in terminal when attempting to connect to a host. The first two
 	     variables are host:port and the third is the protocol (e.g., SSH) -->
 	<string name="terminal_connecting" tools:ignore="PluralsCandidate">"Connecting to %1$s:%2$d via %3$s"</string>
+
+	<!-- Displayed in the terminal while waiting before the next automatic reconnect attempt; the variable is the wait in seconds -->
+	<string name="terminal_reconnect_pending" tools:ignore="PluralsCandidate">"Reconnecting in %1$d seconds..."</string>
+
+	<!-- Displayed in the terminal when automatic reconnection stops because the configured attempt limit was reached -->
+	<string name="terminal_reconnect_gave_up" tools:ignore="PluralsCandidate">"Gave up reconnecting after %1$d attempts"</string>
+
+	<!-- Displayed in the terminal when an automatic reconnect is waiting for network connectivity to return -->
+	<string name="terminal_reconnect_waiting_network">"Waiting for network to reconnect..."</string>
 
 	<!-- Displays the host key to the user in the terminal -->
 	<string name="terminal_sucess">"Verified host '%1$s' key: %2$s"</string>

@@ -38,6 +38,7 @@ import android.security.keystore.UserNotAuthenticatedException
 import com.trilead.ssh2.crypto.PublicKeyUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -181,6 +182,8 @@ class TerminalManager :
 
     private val pendingReconnect: MutableList<WeakReference<TerminalBridge>> = ArrayList()
 
+    private val reconnectJobs = ConcurrentHashMap<TerminalBridge, Job>()
+
     private val nextTemporaryHostId = AtomicLong(-1L)
 
     internal var hardKeyboardHidden = false
@@ -195,7 +198,7 @@ class TerminalManager :
 
         // load all marked pubkeys into memory
         updateSavingKeys()
-        scope.launch(dispatchers.io) {
+        val startupKeyLoadJob = scope.launch(dispatchers.io) {
             try {
                 val pubkeys = pubkeyRepository.getStartupKeys()
                 val encryptedPending = mutableListOf<Pubkey>()
@@ -256,10 +259,36 @@ class TerminalManager :
         connectivityMonitor.init()
 
         ProviderLoader.load(this, this)
+
+        scope.launch(dispatchers.io) {
+            startupKeyLoadJob.join()
+            connectOnStartupHosts()
+        }
     }
 
     private fun updateSavingKeys() {
         savingKeys = prefs.getBoolean(PreferenceConstants.MEMKEYS, true)
+    }
+
+    private suspend fun connectOnStartupHosts() {
+        val hosts = try {
+            hostRepository.getConnectOnStartupHosts()
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to load connect-on-startup hosts")
+            return
+        }
+
+        for (host in hosts) {
+            if (getConnectedBridge(host) != null || getConnectedBridge(host.nickname) != null) {
+                continue
+            }
+            try {
+                Timber.i("Auto-connecting to '%s' on startup", host.nickname)
+                openConnection(host)
+            } catch (e: Exception) {
+                Timber.w(e, "Skipped auto-connect for '%s'", host.nickname)
+            }
+        }
     }
 
     override fun onDestroy() {
@@ -317,9 +346,12 @@ class TerminalManager :
             _bridges.filter { it.host.id == hostId }
         }
 
+        reconnectJobs.keys.filter { it.host.id == hostId }.forEach { bridge ->
+            reconnectJobs.remove(bridge)?.cancel()
+        }
         synchronized(pendingReconnect) {
             pendingReconnect.removeAll { ref ->
-                ref.get()?.host?.id == hostId
+                ref.get()?.host?.id == hostId || ref.get() == null
             }
         }
 
@@ -333,7 +365,7 @@ class TerminalManager :
      */
     private fun openConnection(host: Host): TerminalBridge {
         // throw exception if terminal already open
-        if (getConnectedBridge(host) != null) {
+        if (getConnectedBridge(host) != null || getConnectedBridge(host.nickname) != null) {
             throw IllegalArgumentException("Connection already open for that nickname")
         }
 
@@ -454,6 +486,8 @@ class TerminalManager :
     override fun onDisconnected(bridge: TerminalBridge) {
         var shouldHideRunningNotification = false
         Timber.d("Bridge Disconnected. Removing it.")
+
+        cancelReconnect(bridge)
 
         synchronized(_bridges) {
             // remove this bridge from our list
@@ -1041,6 +1075,19 @@ class TerminalManager :
         return seconds.coerceAtLeast(0L) * 1000L
     }
 
+    internal fun reconnectMaxAttempts(): Int = PreferenceConstants.parseReconnectMaxAttempts(
+        prefs.getString(PreferenceConstants.RECONNECT_MAX_ATTEMPTS, null),
+    )
+
+    private fun reconnectIntervalSeconds(): Int = PreferenceConstants.parseReconnectIntervalSeconds(
+        prefs.getString(PreferenceConstants.RECONNECT_INTERVAL, null),
+    )
+
+    private fun reconnectBackoffEnabled(): Boolean = prefs.getBoolean(
+        PreferenceConstants.RECONNECT_BACKOFF,
+        PreferenceConstants.DEFAULT_RECONNECT_BACKOFF,
+    )
+
     /**
      * Insert request into reconnect queue to be executed either immediately,
      * after a backoff delay, or later when connectivity is restored,
@@ -1060,35 +1107,60 @@ class TerminalManager :
             bridge.resetAutoReconnectBackoff()
         }
 
-        synchronized(pendingReconnect) {
-            pendingReconnect.removeAll { it.get() == null }
-            if (pendingReconnect.none { it.get() === bridge }) {
-                pendingReconnect.add(WeakReference(bridge))
-            }
-        }
+        cancelReconnect(bridge)
 
-        // With no usable network, leave the request queued; it is retried
-        // when connectivity is restored or the app is brought back up.
-        if (bridge.isUsingNetwork() &&
-            connectivityMonitor.getCurrentNetworkInfo()?.isConnected != true
-        ) {
+        val delayMs = DisconnectPolicy.reconnectDelayMs(
+            attempt = bridge.autoReconnectAttempts,
+            intervalSeconds = reconnectIntervalSeconds(),
+            exponentialBackoff = reconnectBackoffEnabled(),
+        )
+        if (delayMs <= 0L) {
+            startOrParkReconnect(bridge, announceWaiting = true)
             return
         }
 
-        val delayMs = DisconnectPolicy.reconnectDelayMs(bridge.autoReconnectAttempts)
-        if (delayMs <= 0L) {
-            reconnectPending()
-        } else {
-            Timber.d(
-                "Scheduling reconnect attempt %d for %s in %d ms",
-                bridge.autoReconnectAttempts,
-                bridge.host.nickname,
-                delayMs,
-            )
-            scope.launch {
+        bridge.outputLine(res.getString(R.string.terminal_reconnect_pending, delayMs / 1000))
+        Timber.d(
+            "Scheduling reconnect attempt %d for %s in %d ms",
+            bridge.autoReconnectAttempts,
+            bridge.host.nickname,
+            delayMs,
+        )
+        val job = scope.launch(dispatchers.default, start = CoroutineStart.LAZY) {
+            try {
                 delay(delayMs)
-                reconnectPending()
+                startOrParkReconnect(bridge, announceWaiting = true)
+            } finally {
+                reconnectJobs.remove(bridge, coroutineContext[Job])
             }
+        }
+        reconnectJobs.put(bridge, job)?.cancel()
+        job.start()
+    }
+
+    private fun startOrParkReconnect(bridge: TerminalBridge, announceWaiting: Boolean) {
+        if (bridge.isAwaitingClose()) {
+            return
+        }
+        if (bridge.isUsingNetwork() &&
+            connectivityMonitor.getCurrentNetworkInfo()?.isConnected != true
+        ) {
+            if (announceWaiting) {
+                bridge.outputLine(res.getString(R.string.terminal_reconnect_waiting_network))
+            }
+            synchronized(pendingReconnect) {
+                pendingReconnect.removeAll { it.get() === bridge || it.get() == null }
+                pendingReconnect.add(WeakReference(bridge))
+            }
+            return
+        }
+        bridge.startConnection()
+    }
+
+    private fun cancelReconnect(bridge: TerminalBridge) {
+        reconnectJobs.remove(bridge)?.cancel()
+        synchronized(pendingReconnect) {
+            pendingReconnect.removeAll { it.get() === bridge || it.get() == null }
         }
     }
 
@@ -1103,12 +1175,7 @@ class TerminalManager :
             pendingReconnect.clear()
         }
         for (bridge in bridges) {
-            if (bridge.isAwaitingClose()) {
-                continue
-            }
-            // startConnection is idempotent: attempts already in flight or
-            // bridges that reconnected in the meantime are skipped.
-            bridge.startConnection()
+            startOrParkReconnect(bridge, announceWaiting = false)
         }
     }
 
@@ -1118,6 +1185,18 @@ class TerminalManager :
      */
     private fun retryPendingReconnects() {
         scope.launch(dispatchers.io) {
+            val delayedBridges = reconnectJobs.keys.toList()
+            for (bridge in delayedBridges) {
+                reconnectJobs.remove(bridge)?.cancel()
+            }
+            synchronized(pendingReconnect) {
+                pendingReconnect.removeAll { it.get() == null }
+                for (bridge in delayedBridges) {
+                    if (pendingReconnect.none { it.get() === bridge }) {
+                        pendingReconnect.add(WeakReference(bridge))
+                    }
+                }
+            }
             reconnectPending()
         }
     }
