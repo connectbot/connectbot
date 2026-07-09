@@ -628,7 +628,17 @@ class SSH :
         val pair = if (pubkey.type == "IMPORTED") {
             // load specific key using pem format
             val privateKey = pubkey.privateKey ?: return null
-            PEMDecoder.decode(String(privateKey, StandardCharsets.UTF_8).toCharArray(), password)
+            try {
+                PEMDecoder.decode(String(privateKey, StandardCharsets.UTF_8).toCharArray(), password)
+            } catch (e: Exception) {
+                // Wrong passphrase (or an unparseable key) must not abort the
+                // whole authentication loop; report it like the internal-format
+                // branch does. https://github.com/connectbot/connectbot/issues/742
+                val message = String.format("Bad password for key '%s'. Authentication failed.", pubkey.nickname)
+                Timber.e(e, message)
+                bridge?.outputLine(message)
+                return null
+            }
         } else {
             // load using internal generated format
             val privateKey = pubkey.privateKey ?: return null

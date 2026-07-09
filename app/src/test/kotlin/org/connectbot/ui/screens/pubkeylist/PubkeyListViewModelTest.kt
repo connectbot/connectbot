@@ -433,6 +433,100 @@ class PubkeyListViewModelTest {
         verify(repository, never()).save(any())
     }
 
+    // ========== Tests for OpenSSH 7.6+ format keys (upstream issue #742) ==========
+
+    /**
+     * An ssh-keygen (OpenSSH 7.6+) encrypted Ed25519 key in openssh-key-v1
+     * format: bcrypt KDF with the aes256-ctr cipher, passphrase "testpass".
+     * Old sshlib releases rejected this cipher, so import failed with
+     * "Bad password for key". https://github.com/connectbot/connectbot/issues/742
+     */
+    private val opensshV1EncryptedKey = """
+        -----BEGIN OPENSSH PRIVATE KEY-----
+        b3BlbnNzaC1rZXktdjEAAAAACmFlczI1Ni1jdHIAAAAGYmNyeXB0AAAAGAAAABBOJWzPzh
+        Y3ZOJgSlS3X/NyAAAAGAAAAAEAAAAzAAAAC3NzaC1lZDI1NTE5AAAAIG8bs3lBPqJOXIca
+        eAwG3M3dbceihppIjgJwSEaVc/ksAAAAkEkxYckMA/Osfn3RU1jOy7aN3v47V/Ow7Ragpz
+        nwlYiYXzRuMcUVznhYnhGrxJdcInF9vgImMFu3JL4JH0Z/IIyMASIIPyWYm1JNQ+NNUMVp
+        BZ3KAKdJqN9Ap8E3GMMciv59btyn0XwyhYRWicGrnYdD2aKNesSEXtJNN8DLe8kB6n7Gq6
+        Cnz0X9QjY+GXCiIg==
+        -----END OPENSSH PRIVATE KEY-----
+    """.trimIndent()
+
+    /**
+     * Tests that a key encrypted by OpenSSH 7.6+ (aes256-ctr) is detected as
+     * encrypted and queued for password entry rather than rejected.
+     */
+    @Test
+    fun importKeyFromText_WithOpenSSHv1EncryptedKey_SetsPendingImport() = runTest {
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.importKeyFromText(opensshV1EncryptedKey, "openssh-key")
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertNotNull("Should have pending import", state.pendingImport)
+        assertEquals("Nickname should match", "openssh-key", state.pendingImport?.nickname)
+        assertNull("Should have no error", state.error)
+    }
+
+    /**
+     * Tests the full import of an OpenSSH 7.6+ encrypted key: detection,
+     * decryption with the passphrase, and conversion to the internal format.
+     */
+    @Test
+    fun completeImportWithPassword_WithOpenSSHv1EncryptedKey_SavesKey() = runTest {
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.importKeyFromText(opensshV1EncryptedKey, "openssh-key")
+        advanceUntilIdle()
+        assertNotNull("Should have pending import", viewModel.uiState.value.pendingImport)
+
+        viewModel.completeImportWithPassword(
+            nickname = "openssh-key",
+            decryptPassword = "testpass",
+            encrypt = false,
+            encryptPassword = null,
+        )
+        advanceUntilIdle()
+
+        val captor = argumentCaptor<Pubkey>()
+        verify(repository).save(captor.capture())
+
+        val savedPubkey = captor.firstValue
+        assertEquals("Nickname should match", "openssh-key", savedPubkey.nickname)
+        assertEquals("Type should be Ed25519", "Ed25519", savedPubkey.type)
+        assertFalse("Saved key should not be encrypted", savedPubkey.encrypted)
+        assertNull("Should have no error", viewModel.uiState.value.error)
+    }
+
+    /**
+     * Tests that the wrong passphrase for an OpenSSH 7.6+ encrypted key
+     * reports a bad-password error instead of saving a broken key.
+     */
+    @Test
+    fun completeImportWithPassword_WithOpenSSHv1KeyAndWrongPassword_SetsError() = runTest {
+        viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.importKeyFromText(opensshV1EncryptedKey, "openssh-key")
+        advanceUntilIdle()
+
+        viewModel.completeImportWithPassword(
+            nickname = "openssh-key",
+            decryptPassword = "wrongpass",
+            encrypt = false,
+            encryptPassword = null,
+        )
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertNotNull("Should have an error", state.error)
+        assertNull("Pending import should be cleared", state.pendingImport)
+        verify(repository, never()).save(any())
+    }
+
     // ========== Tests for confirmImportNickname ==========
 
     /**

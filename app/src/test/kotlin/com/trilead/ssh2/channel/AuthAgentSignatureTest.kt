@@ -37,6 +37,12 @@ import java.security.interfaces.ECPublicKey
  * key type so that opaque private keys (Android Keystore) are signable, and
  * ECDSA keys — which the sshlib 2.2.48 copy of this class did not handle at
  * all — must round-trip.
+ *
+ * The rsa-sha2 flag tests are also the regression coverage for upstream issue
+ * connectbot#397 ("agent refused operation"): OpenSSH 7.2+ clients ask the
+ * forwarded agent for rsa-sha2-256/512 signatures via the sign-request flags,
+ * so the agent must honor them instead of failing.
+ * https://github.com/connectbot/connectbot/issues/397
  */
 class AuthAgentSignatureTest {
 
