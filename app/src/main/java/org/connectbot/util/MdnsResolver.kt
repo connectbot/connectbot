@@ -196,13 +196,17 @@ class MdnsResolver(private val context: Context?) {
             else -> false
         }
 
-        /** Build a single-question DNS query packet for [hostname]. */
-        internal fun buildQuery(transactionId: Int, hostname: String, queryType: Int): ByteArray {
+        /**
+         * Build a single-question DNS query packet for [hostname]. Shared with
+         * [TailscaleResolver], which sets the RD flag via [flags]; mDNS queries
+         * keep the default flags of 0 (standard query, no recursion).
+         */
+        internal fun buildQuery(transactionId: Int, hostname: String, queryType: Int, flags: Int = 0): ByteArray {
             val out = ByteArrayOutputStream()
             out.write(transactionId ushr 8)
             out.write(transactionId and 0xFF)
-            out.write(0)
-            out.write(0) // flags: standard query
+            out.write(flags ushr 8)
+            out.write(flags and 0xFF)
             out.write(0)
             out.write(1) // QDCOUNT = 1
             repeat(6) { out.write(0) } // ANCOUNT, NSCOUNT, ARCOUNT = 0

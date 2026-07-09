@@ -67,6 +67,7 @@ import org.connectbot.util.MdnsResolver
 import org.connectbot.util.ProfileStartup
 import org.connectbot.util.PubkeyUtils
 import org.connectbot.util.SshKeyType
+import org.connectbot.util.TailscaleResolver
 import org.connectbot.util.UrlUtils
 import timber.log.Timber
 import java.io.IOException
@@ -821,6 +822,32 @@ class SSH :
     }
 
     /**
+     * ProxyData that resolves the given host's `.ts.net` name via Tailscale
+     * MagicDNS before dialing, reporting the resolved address on the terminal.
+     */
+    private fun tailscaleProxyData(host: Host): TailscaleProxyData = TailscaleProxyData(TailscaleResolver(), host.ipVersion) { address ->
+        bridge?.outputLine(
+            manager?.res?.getString(R.string.terminal_tailscale_resolved, host.hostname, address.hostAddress),
+        )
+    }
+
+    /**
+     * Warn (without aborting) when [host] looks tunnel-bound — a Tailscale
+     * MagicDNS name or a literal Tailscale/CGNAT-range address — but no VPN
+     * is active for this app, so the connection is likely to fail until the
+     * user starts their VPN.
+     */
+    @VisibleForTesting
+    internal fun warnIfVpnInactive(host: Host) {
+        val name = host.hostname
+        if (!TailscaleResolver.isTailscaleHostname(name) && !TailscaleResolver.isTailscaleAddress(name)) {
+            return
+        }
+        if (manager?.isVpnActive() == true) return
+        bridge?.outputLine(manager?.res?.getString(R.string.terminal_vpn_inactive, name))
+    }
+
+    /**
      * Establish and authenticate a connection to the jump host.
      * This is called before connecting to the target host when ProxyJump is configured.
      * Supports chained jump hosts (jump host that requires another jump host).
@@ -834,12 +861,20 @@ class SSH :
         val jc = Connection(jumpHost.hostname, jumpHost.port)
         registerUserAuthBanner(jc, jumpHost.authBannerSourceName())
 
-        // A first-hop jump host with a .local name needs local mDNS
+        // A first-hop jump host with a .local or .ts.net name needs local
         // resolution too. If this jump host itself goes through another jump
         // host, the nested proxy set below takes precedence (and resolves the
         // name remotely).
         if (MdnsResolver.isMdnsHostname(jumpHost.hostname)) {
             jc.setProxyData(mdnsProxyData(jumpHost))
+        } else if (TailscaleResolver.isTailscaleHostname(jumpHost.hostname)) {
+            jc.setProxyData(tailscaleProxyData(jumpHost))
+        }
+
+        // Only a locally-dialed first hop depends on this device's VPN.
+        val nestedJumpId = jumpHost.jumpHostId
+        if (nestedJumpId == null || nestedJumpId <= 0) {
+            warnIfVpnInactive(jumpHost)
         }
 
         try {
@@ -1044,12 +1079,18 @@ class SSH :
             connection?.setProxyData(JumpHostProxyData(it))
         }
 
-        // Without a jump host, resolve .local hostnames via mDNS ourselves:
-        // most Android resolvers cannot, and a jump host resolves the target
-        // remotely where local mDNS knowledge would not apply anyway.
+        // Without a jump host, resolve .local (mDNS) and .ts.net (Tailscale
+        // MagicDNS) hostnames ourselves: most Android resolvers cannot, and a
+        // jump host resolves the target remotely where local knowledge of
+        // either would not apply anyway.
         // https://github.com/connectbot/connectbot/issues/396
-        if (directJumpConnection == null && MdnsResolver.isMdnsHostname(currentHost.hostname)) {
-            connection?.setProxyData(mdnsProxyData(currentHost))
+        if (directJumpConnection == null) {
+            warnIfVpnInactive(currentHost)
+            if (MdnsResolver.isMdnsHostname(currentHost.hostname)) {
+                connection?.setProxyData(mdnsProxyData(currentHost))
+            } else if (TailscaleResolver.isTailscaleHostname(currentHost.hostname)) {
+                connection?.setProxyData(tailscaleProxyData(currentHost))
+            }
         }
 
         try {

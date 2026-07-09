@@ -17,23 +17,20 @@
 
 package org.connectbot.transport
 
-import org.connectbot.util.MdnsResolver
+import org.connectbot.util.TailscaleResolver
 import java.net.InetAddress
 
 /**
- * ProxyData implementation that resolves `.local` hostnames via mDNS and
- * opens a plain TCP socket to the resolved address, so host keys stay bound
- * to the `.local` name rather than an mDNS-assigned IP that may change with
- * every DHCP lease.
+ * ProxyData implementation that resolves `*.ts.net` (Tailscale MagicDNS)
+ * hostnames and opens a plain TCP socket to the resolved address, so host
+ * keys stay bound to the MagicDNS name rather than a tailnet IP.
  *
- * https://github.com/connectbot/connectbot/issues/396
- *
- * @param resolver resolver used to look up the `.local` name
+ * @param resolver resolver used to look up the `.ts.net` name
  * @param ipVersion the host's IP version preference ([org.connectbot.util.HostConstants] value)
  * @param onResolved optional callback invoked with the resolved address, for status output
  */
-class MdnsProxyData(
-    resolver: MdnsResolver,
+class TailscaleProxyData(
+    resolver: TailscaleResolver,
     ipVersion: String,
     onResolved: ((InetAddress) -> Unit)? = null,
-) : ResolvingProxyData("mDNS", ipVersion, onResolved, resolver::resolve)
+) : ResolvingProxyData("MagicDNS", ipVersion, onResolved, resolver::resolve)

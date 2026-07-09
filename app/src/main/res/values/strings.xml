@@ -1496,6 +1496,10 @@
 	<string name="terminal_no_route">Are you trying to access a local host? Grant local network permissions.</string>
 	<!-- Console message after an mDNS (.local) hostname was resolved; %1$s is the hostname, %2$s the resolved IP address -->
 	<string name="terminal_mdns_resolved">"Resolved %1$s to %2$s via mDNS"</string>
+	<!-- Console message after a Tailscale MagicDNS (.ts.net) hostname was resolved; %1$s is the hostname, %2$s the resolved IP address -->
+	<string name="terminal_tailscale_resolved">"Resolved %1$s to %2$s via MagicDNS"</string>
+	<!-- Console warning when connecting to a Tailscale/WireGuard-style host while no VPN is active; %1$s is the hostname or address -->
+	<string name="terminal_vpn_inactive">"%1$s looks like a VPN address (Tailscale/WireGuard), but no VPN is active on this device — connections may fail until you start your VPN app"</string>
 
 	<!-- Loading message shown during app initialization -->
 	<string name="loading_message">Loading…</string>

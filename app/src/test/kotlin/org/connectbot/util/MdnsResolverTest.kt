@@ -69,6 +69,14 @@ class MdnsResolverTest {
     }
 
     @Test
+    fun buildQuery_encodesFlags() {
+        val query = MdnsResolver.buildQuery(0x1234, "pi.local", MdnsResolver.TYPE_A, flags = 0x0100)
+
+        assertThat(query[2]).isEqualTo(0x01.toByte())
+        assertThat(query[3]).isEqualTo(0x00.toByte())
+    }
+
+    @Test
     fun parseAddressRecord_extractsARecord() {
         val response = response(
             transactionId = 0x1234,

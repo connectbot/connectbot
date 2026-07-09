@@ -17,6 +17,8 @@
 
 package org.connectbot.ui.screens.keyboard
 
+import android.database.sqlite.SQLiteConstraintException
+import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -131,7 +133,15 @@ fun KeyboardLayoutsScreen(
                                 R.string.keyboard_layouts_duplicate_name,
                                 itemName,
                             )
-                            onNavigateToEditor(viewModel.duplicate(item.id, duplicateName))
+                            try {
+                                onNavigateToEditor(viewModel.duplicate(item.id, duplicateName))
+                            } catch (_: SQLiteConstraintException) {
+                                Toast.makeText(
+                                    context,
+                                    R.string.keyboard_layouts_name_taken,
+                                    Toast.LENGTH_SHORT,
+                                ).show()
+                            }
                         }
                     },
                     onRename = {
