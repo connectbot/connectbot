@@ -54,6 +54,7 @@
 
 		<activity
 			android:name=".ui.MainActivity"
+			android:configChanges="keyboard|keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout|density"
 			android:exported="true"
 			android:launchMode="singleTop"
 			android:resizeableActivity="true"
@@ -85,7 +86,6 @@
 
 		<service
 			android:name="org.connectbot.service.TerminalManager"
-			android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"
 			android:description="@string/service_desc"
 			android:foregroundServiceType="remoteMessaging"/>
 
