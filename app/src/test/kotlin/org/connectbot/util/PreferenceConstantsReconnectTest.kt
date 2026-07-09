@@ -23,30 +23,30 @@ import org.junit.Test
 class PreferenceConstantsReconnectTest {
 
     @Test
-    fun parseReconnectMaxAttempts_acceptsNonNegativeValues() {
+    fun parseReconnectMaxAttemptsAcceptsNonNegativeValues() {
         assertEquals(0, PreferenceConstants.parseReconnectMaxAttempts("0"))
         assertEquals(3, PreferenceConstants.parseReconnectMaxAttempts("3"))
     }
 
     @Test
-    fun parseReconnectMaxAttempts_clampsNegativeValuesToZero() {
+    fun parseReconnectMaxAttemptsClampsNegativeValuesToZero() {
         assertEquals(0, PreferenceConstants.parseReconnectMaxAttempts("-2"))
     }
 
     @Test
-    fun parseReconnectMaxAttempts_usesDefaultForInvalidValues() {
+    fun parseReconnectMaxAttemptsUsesDefaultForInvalidValues() {
         assertEquals(0, PreferenceConstants.parseReconnectMaxAttempts(null))
         assertEquals(0, PreferenceConstants.parseReconnectMaxAttempts(""))
         assertEquals(0, PreferenceConstants.parseReconnectMaxAttempts("nope"))
     }
 
     @Test
-    fun parseReconnectIntervalSeconds_acceptsConfiguredValue() {
+    fun parseReconnectIntervalSecondsAcceptsConfiguredValue() {
         assertEquals(15, PreferenceConstants.parseReconnectIntervalSeconds("15"))
     }
 
     @Test
-    fun parseReconnectIntervalSeconds_clampsToAllowedRange() {
+    fun parseReconnectIntervalSecondsClampsToAllowedRange() {
         assertEquals(0, PreferenceConstants.parseReconnectIntervalSeconds("-1"))
         assertEquals(
             PreferenceConstants.MAX_RECONNECT_INTERVAL_SECONDS,
@@ -55,7 +55,7 @@ class PreferenceConstantsReconnectTest {
     }
 
     @Test
-    fun parseReconnectIntervalSeconds_usesDefaultForInvalidValues() {
+    fun parseReconnectIntervalSecondsUsesDefaultForInvalidValues() {
         assertEquals(
             PreferenceConstants.DEFAULT_RECONNECT_INTERVAL_SECONDS,
             PreferenceConstants.parseReconnectIntervalSeconds(null),
