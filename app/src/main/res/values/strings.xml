@@ -213,6 +213,8 @@
 	<string name="disconnect_reason_network_lost">"The network connection was lost"</string>
 	<!-- Disconnect overlay detail: the hostname could not be resolved via DNS -->
 	<string name="disconnect_reason_host_unresolved">"The hostname could not be resolved"</string>
+	<!-- Disconnect overlay detail: the network or host could not be reached (e.g. airplane mode, no route) -->
+	<string name="disconnect_reason_network_unreachable">"The network or host is unreachable. Check your internet connection."</string>
 	<!-- Disconnect overlay detail: the server rejected our credentials -->
 	<string name="disconnect_reason_auth_fail">"Authentication failed"</string>
 	<!-- Status overlay shown while a session is connecting; %1$s is the host nickname -->
@@ -1173,6 +1175,10 @@
 	<!-- Accessibility text for connection state in list of hosts when the host is currently
 	 connected. -->
 	<string name="image_description_connected">"Connected."</string>
+
+	<!-- Accessibility text for connection state in list of hosts while a connection attempt
+	     is still in progress. -->
+	<string name="image_description_connecting">"Connecting."</string>
 
 	<!-- Accessibility text for connection state in list of hosts when the host is currently
 	     disconnected after having been previously connected. -->

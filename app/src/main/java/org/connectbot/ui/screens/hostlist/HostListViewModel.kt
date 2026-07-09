@@ -52,6 +52,14 @@ enum class ConnectionState {
     CONNECTED,
 
     /**
+     * A bridge exists but the connection attempt has not completed yet.
+     * Shown distinctly from [CONNECTED] so a doomed attempt (e.g. with no
+     * network) never flashes the host green before failing.
+     * https://github.com/connectbot/connectbot/issues/386
+     */
+    CONNECTING,
+
+    /**
      * A bridge for the host still exists but its connection has dropped
      * (failed, reconnecting, or in the network grace period). Unlike
      * [DISCONNECTED], the session can still be disconnected individually.
@@ -224,10 +232,10 @@ class HostListViewModel @Inject constructor(
         val bridge = manager.bridgesFlow.value.find { it.host.id == host.id }
         if (bridge != null) {
             // Bridge exists but may be disconnected or in grace period
-            return if (bridge.disconnected || bridge.isInGracePeriod()) {
-                ConnectionState.FAILED
-            } else {
-                ConnectionState.CONNECTED
+            return when {
+                bridge.disconnected || bridge.isInGracePeriod() -> ConnectionState.FAILED
+                bridge.isConnecting -> ConnectionState.CONNECTING
+                else -> ConnectionState.CONNECTED
             }
         }
 

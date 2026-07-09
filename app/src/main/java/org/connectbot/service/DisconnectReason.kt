@@ -25,6 +25,14 @@ enum class DisconnectReason {
 
     /** Hostname resolution failed (e.g. EAI_NODATA after a network switch). */
     HOST_UNRESOLVED,
+
+    /**
+     * The network or host could not be reached at connect time (e.g. airplane
+     * mode, no route to host). Distinct from [NETWORK_LOST], which is used
+     * when connectivity drops on an already-established connection.
+     * https://github.com/connectbot/connectbot/issues/386
+     */
+    NETWORK_UNREACHABLE,
     AUTH_FAIL,
     UNKNOWN,
 }

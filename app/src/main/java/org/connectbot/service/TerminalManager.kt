@@ -364,9 +364,6 @@ class TerminalManager :
             connectionNotifier.showRunningNotification(this)
         }
 
-        // also update database with new connected time
-        touchHost(host)
-
         notifyHostStatusChanged()
 
         return bridge
@@ -418,9 +415,12 @@ class TerminalManager :
 
     /**
      * Update the last-connected value for the given nickname by passing through
-     * to [HostRepository].
+     * to [HostRepository]. Called by [TerminalBridge.onConnected] once a
+     * connection has actually been established and authenticated — a failed
+     * attempt (e.g. in airplane mode) must not bump the timestamp.
+     * https://github.com/connectbot/connectbot/issues/386
      */
-    private fun touchHost(host: Host) {
+    internal fun touchHost(host: Host) {
         scope.launch(dispatchers.io) {
             hostRepository.touchHost(host)
         }

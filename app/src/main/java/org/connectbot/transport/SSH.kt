@@ -71,9 +71,11 @@ import timber.log.Timber
 import java.io.IOException
 import java.io.InputStream
 import java.io.OutputStream
+import java.net.ConnectException
 import java.net.InetAddress
 import java.net.InetSocketAddress
 import java.net.NoRouteToHostException
+import java.net.SocketException
 import java.net.UnknownHostException
 import java.nio.charset.StandardCharsets
 import java.security.KeyPair
@@ -1070,10 +1072,14 @@ class SSH :
                 )
             }
         } catch (e: IOException) {
-            Timber.e(e, "Problem in SSH connection thread during authentication")
+            // This failure happens while establishing the connection (TCP
+            // connect / key exchange), before any authentication is attempted.
+            // https://github.com/connectbot/connectbot/issues/386
+            Timber.e(e, "Problem in SSH connection thread during connection setup")
 
             // Display the reason in the text.
             var hostUnresolved = false
+            var networkUnreachable = false
             var t: Throwable? = e
             while (t != null) {
                 val message = t.message
@@ -1086,6 +1092,9 @@ class SSH :
                 if (t is UnknownHostException) {
                     hostUnresolved = true
                 }
+                if (isNetworkUnreachable(t)) {
+                    networkUnreachable = true
+                }
                 t = t.cause
             }
 
@@ -1095,10 +1104,14 @@ class SSH :
             // before close() because close() fires connectionLost()
             // synchronously, which would otherwise record IO_ERROR first.
             // https://github.com/connectbot/connectbot/issues/2297
-            val reason = if (hostUnresolved) {
-                DisconnectReason.HOST_UNRESOLVED
-            } else {
-                DisconnectReason.IO_ERROR
+            // Unreachable networks/hosts (e.g. connecting by IP in airplane
+            // mode) get their own reason so the failure isn't presented as a
+            // generic mid-session interruption.
+            // https://github.com/connectbot/connectbot/issues/386
+            val reason = when {
+                hostUnresolved -> DisconnectReason.HOST_UNRESOLVED
+                networkUnreachable -> DisconnectReason.NETWORK_UNREACHABLE
+                else -> DisconnectReason.IO_ERROR
             }
             onDisconnect(reason)
             close()
@@ -1650,6 +1663,20 @@ class SSH :
                 else -> IpVersion.IPV4_AND_IPV6
             }
         }
+
+        /**
+         * Whether this throwable indicates the network or host was unreachable
+         * at connect time. ENETUNREACH/EHOSTUNREACH surface either as
+         * [NoRouteToHostException] or as a [ConnectException]/[SocketException]
+         * whose message mentions "unreachable" (e.g. "Network is unreachable"
+         * when connecting in airplane mode).
+         */
+        @VisibleForTesting
+        internal fun isNetworkUnreachable(t: Throwable): Boolean = t is NoRouteToHostException ||
+            (
+                (t is ConnectException || t is SocketException) &&
+                    t.message?.contains("unreachable", ignoreCase = true) == true
+                )
 
         private const val PROTOCOL = "ssh"
         private const val DEFAULT_PORT = 22
