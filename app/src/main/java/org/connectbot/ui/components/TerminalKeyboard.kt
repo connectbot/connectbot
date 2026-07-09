@@ -560,7 +560,9 @@ private fun KeyButton(
         .size(width = keySize.keyWidthDp.dp, height = keySize.keyHeightDp.dp)
         .let {
             if (contentDescription != null && text != null) {
-                it.semantics { this.contentDescription = contentDescription }
+                it.semantics(mergeDescendants = true) {
+                    this.contentDescription = contentDescription
+                }
             } else {
                 it
             }

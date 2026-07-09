@@ -128,14 +128,15 @@ class KeyboardLayoutsViewModel @Inject constructor(
      * database state if a concurrent writer wins the name first.
      */
     private suspend fun createWithUniqueName(base: String, spec: KeyboardLayoutSpec): Long {
-        repeat(CREATE_UNIQUE_NAME_MAX_ATTEMPTS) {
+        var attempts = 0
+        while (true) {
             try {
                 return repository.create(uniqueName(base), spec)
-            } catch (_: SQLiteConstraintException) {
+            } catch (e: SQLiteConstraintException) {
+                if (++attempts >= CREATE_UNIQUE_NAME_MAX_ATTEMPTS) throw e
                 // Name taken since the check; recompute against current rows.
             }
         }
-        return repository.create(uniqueName(base), spec)
     }
 
     private suspend fun uniqueName(base: String): String {

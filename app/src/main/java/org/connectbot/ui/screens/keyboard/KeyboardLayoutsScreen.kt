@@ -48,6 +48,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -67,6 +68,7 @@ fun KeyboardLayoutsScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val scope = rememberCoroutineScope()
+    val context = LocalContext.current
 
     var renameTarget by remember { mutableStateOf<KeyboardLayoutListItem?>(null) }
     var renameFailed by remember { mutableStateOf(false) }
@@ -117,14 +119,21 @@ fun KeyboardLayoutsScreen(
         ) {
             items(uiState.items, key = { it.id }) { item ->
                 val itemName = item.displayName()
-                val duplicateName = stringResource(R.string.keyboard_layouts_duplicate_name, itemName)
                 KeyboardLayoutRow(
                     item = item,
                     name = itemName,
                     isDefault = item.id == uiState.defaultLayoutId,
                     onSetDefault = { viewModel.setDefault(item.id) },
                     onEdit = { onNavigateToEditor(item.id) },
-                    onDuplicate = { scope.launch { onNavigateToEditor(viewModel.duplicate(item.id, duplicateName)) } },
+                    onDuplicate = {
+                        scope.launch {
+                            val duplicateName = context.getString(
+                                R.string.keyboard_layouts_duplicate_name,
+                                itemName,
+                            )
+                            onNavigateToEditor(viewModel.duplicate(item.id, duplicateName))
+                        }
+                    },
                     onRename = {
                         renameFailed = false
                         renameTarget = item
