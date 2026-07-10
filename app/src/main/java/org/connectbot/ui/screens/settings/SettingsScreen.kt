@@ -173,6 +173,7 @@ fun SettingsScreen(
         onWifilockChange = viewModel::updateWifilock,
         onBackupkeysChange = viewModel::updateBackupkeys,
         onScrollbackChange = viewModel::updateScrollback,
+        onMouseReportingChange = viewModel::updateMouseReporting,
         onAddCustomTerminalType = viewModel::addCustomTerminalType,
         onRemoveCustomTerminalType = viewModel::removeCustomTerminalType,
         onFontFamilyChange = viewModel::updateFontFamily,
@@ -218,6 +219,7 @@ fun SettingsScreenContent(
     onWifilockChange: (Boolean) -> Unit,
     onBackupkeysChange: (Boolean) -> Unit,
     onScrollbackChange: (String) -> Unit,
+    onMouseReportingChange: (Boolean) -> Unit,
     onAddCustomTerminalType: (String) -> Unit,
     onRemoveCustomTerminalType: (String) -> Unit,
     onFontFamilyChange: (String) -> Unit,
@@ -413,6 +415,15 @@ fun SettingsScreenContent(
                     onImportFont = onImportLocalFont,
                     onDeleteFont = onDeleteLocalFont,
                     onClearError = onClearImportError,
+                )
+            }
+
+            item {
+                SwitchPreference(
+                    title = stringResource(R.string.pref_mousereporting_title),
+                    summary = stringResource(R.string.pref_mousereporting_summary),
+                    checked = uiState.mousereporting,
+                    onCheckedChange = onMouseReportingChange,
                 )
             }
 
@@ -1583,6 +1594,7 @@ private fun SettingsScreenPreview() {
             onWifilockChange = {},
             onBackupkeysChange = {},
             onScrollbackChange = {},
+            onMouseReportingChange = {},
             onAddCustomTerminalType = {},
             onRemoveCustomTerminalType = {},
             onFontFamilyChange = {},
