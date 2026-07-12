@@ -400,13 +400,17 @@ class TerminalBridge {
             },
             onCommandFinished = { durationMs ->
                 if (meetsCompletionThreshold(durationMs, completionThresholdMs(manager.prefs))) {
-                    val snippet = commandOutputSnippet(terminalEmulator)
-                    scope.launch {
-                        _commandCompletions.emit(HostCommandCompletion(durationMs, snippet))
+                    synchronized(emulatorLifecycleLock) {
+                        if (!cleanedUp.get()) {
+                            val snippet = commandOutputSnippet(terminalEmulator)
+                            scope.launch {
+                                _commandCompletions.emit(HostCommandCompletion(durationMs, snippet))
+                            }
+                            // Backgrounded case; gated on !isUiBound inside the manager.
+                            // Foreground routing happens via the flow in ConsoleViewModel.
+                            manager.sendCommandCompletionNotification(host, durationMs)
+                        }
                     }
-                    // Backgrounded case; gated on !isUiBound inside the manager.
-                    // Foreground routing happens via the flow in ConsoleViewModel.
-                    manager.sendCommandCompletionNotification(host, durationMs)
                 }
             },
             minUpdateIntervalMs = terminalUpdateIntervalMs(einkMode),
@@ -868,7 +872,6 @@ class TerminalBridge {
                     }
                 }
             }
-            created.completionThresholdMs = completionThresholdMs(manager.prefs)
             scope.launch {
                 created.commandCompletions.collect { event ->
                     // Backgrounded case; gated on !isUiBound inside the manager.
@@ -884,6 +887,7 @@ class TerminalBridge {
                 ansiColors = fullColorPalette.sliceArray(0 until 16),
             )
         }
+        sessionManager.completionThresholdMs = completionThresholdMs(manager.prefs)
         sessionManager.paneMinUpdateIntervalMs = terminalUpdateIntervalMs(einkMode)
         sessionManager.onTransportConnected(TmuxTarget.decode(host.tmuxLastTarget))
     }
@@ -1072,7 +1076,9 @@ class TerminalBridge {
      * Releases bitmap and clears parent reference to prevent memory leaks.
      */
     fun cleanup() {
-        if (!cleanedUp.compareAndSet(false, true)) return
+        synchronized(emulatorLifecycleLock) {
+            if (!cleanedUp.compareAndSet(false, true)) return
+        }
 
         // Cancel grace period if active
         networkGracePeriodJob?.cancel()
@@ -1336,7 +1342,13 @@ class TerminalBridge {
             return
         }
         einkMode = enabled
-        tmux?.paneMinUpdateIntervalMs = terminalUpdateIntervalMs(enabled)
+        val updateIntervalMs = terminalUpdateIntervalMs(enabled)
+        tmux?.paneMinUpdateIntervalMs = updateIntervalMs
+        synchronized(emulatorLifecycleLock) {
+            if (!cleanedUp.get()) {
+                terminalEmulator.setMinUpdateIntervalMs(updateIntervalMs)
+            }
+        }
         defaultPaint.isAntiAlias = !enabled
         defaultPaint.isFakeBoldText = !enabled
         // Re-measure with the updated paint flags

@@ -28,6 +28,9 @@ import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.terminal.TerminalEmulator
 import org.junit.After
 import org.junit.Test
+import java.util.concurrent.CountDownLatch
+import java.util.concurrent.TimeUnit
+import kotlin.concurrent.thread
 
 /** Records writes/resizes; termlib itself is JNI-only and untestable here. */
 internal class FakeEmulator : TmuxPaneEmulatorHandle {
@@ -40,6 +43,7 @@ internal class FakeEmulator : TmuxPaneEmulatorHandle {
     var minUpdateIntervalMs = 0L
     var maxScrollbackLines = 0
     var closeCount = 0
+    var beforeWrite: ((ByteArray) -> Unit)? = null
 
     override val terminalEmulator: TerminalEmulator? = null
     override var isAltScreenActive: Boolean = false
@@ -50,6 +54,7 @@ internal class FakeEmulator : TmuxPaneEmulatorHandle {
         }
 
     override fun writeInput(bytes: ByteArray) {
+        beforeWrite?.invoke(bytes)
         val text = bytes.toString(Charsets.UTF_8)
         if ("\u001bc" in text || "\u001b[?1049l" in text) isAltScreenActive = false
         if ("\u001b[?1049h" in text) isAltScreenActive = true
@@ -157,6 +162,20 @@ class TmuxPaneTerminalTest {
         assertThat(text).endsWith("new-alt-output")
         assertThat(terminal.isAltScreenActive).isTrue()
         assertThat(commandLog).anyMatch { it.startsWith("capture-pane -a") }
+    }
+
+    @Test
+    fun `failed alternate-screen capture restores primary cursor`() = runBlocking<Unit> {
+        replies["capture-pane"] = TmuxReply(1, true, listOf("primary"), seq = 10)
+        replies["capture-pane -a"] = TmuxReply(2, false, listOf("capture failed"), seq = 12)
+        replies["display-message"] = TmuxReply(3, true, listOf("1\t4\t2\t7\t3"), seq = 11)
+
+        val terminal = terminal()
+
+        terminal.backfill()
+
+        assertThat(fakeEmulator.text).isEqualTo("primary\u001b[4;8H")
+        assertThat(terminal.isAltScreenActive).isFalse()
     }
 
     @Test
@@ -295,6 +314,44 @@ class TmuxPaneTerminalTest {
         terminal.resize(10, 10)
         assertThat(synchronized(fakeEmulator.writes) { fakeEmulator.writes.size }).isEqualTo(writesBefore)
         assertThat(fakeEmulator.rows).isEqualTo(50)
+        assertThat(fakeEmulator.closeCount).isEqualTo(1)
+    }
+
+    @Test
+    fun `destroy waits for an in-flight emulator write`() = runBlocking<Unit> {
+        replies["capture-pane"] = TmuxReply(1, true, emptyList(), seq = 1)
+        val terminal = terminal()
+        terminal.backfill()
+
+        val writeStarted = CountDownLatch(1)
+        val allowWriteToFinish = CountDownLatch(1)
+        val destroyStarted = CountDownLatch(1)
+        val destroyFinished = CountDownLatch(1)
+        fakeEmulator.beforeWrite = { bytes ->
+            if (bytes.toString(Charsets.UTF_8) == "racing-write") {
+                writeStarted.countDown()
+                allowWriteToFinish.await(5, TimeUnit.SECONDS)
+            }
+        }
+
+        val writeThread = thread { terminal.handleOutput(output(2, "racing-write")) }
+        assertThat(writeStarted.await(5, TimeUnit.SECONDS)).isTrue()
+
+        val destroyThread = thread {
+            destroyStarted.countDown()
+            terminal.destroy()
+            destroyFinished.countDown()
+        }
+        assertThat(destroyStarted.await(5, TimeUnit.SECONDS)).isTrue()
+        assertThat(destroyFinished.await(100, TimeUnit.MILLISECONDS)).isFalse()
+
+        allowWriteToFinish.countDown()
+        writeThread.join(5_000)
+        destroyThread.join(5_000)
+
+        assertThat(writeThread.isAlive).isFalse()
+        assertThat(destroyThread.isAlive).isFalse()
+        assertThat(fakeEmulator.text).contains("racing-write")
         assertThat(fakeEmulator.closeCount).isEqualTo(1)
     }
 

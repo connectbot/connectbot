@@ -35,23 +35,27 @@ class ConnectionNotifierTest {
     @Test
     fun commandCompletionNotificationRedactsPublicContent() {
         val host = Host(id = 7, nickname = "private-host", hostname = "example.com")
+        val privateTmuxLabel = "private-session:private-window"
         val notification = ConnectionNotifier().newCommandCompletionNotification(
             context = context,
             host = host,
-            tmuxTarget = null,
-            tmuxLabel = null,
+            tmuxTarget = "\$1|@2",
+            tmuxLabel = privateTmuxLabel,
             durationMs = 60_000,
         )
 
         assertThat(notification.visibility).isEqualTo(NotificationCompat.VISIBILITY_PRIVATE)
-        assertThat(notification.extras.getCharSequence(Notification.EXTRA_TITLE).toString())
-            .contains("private-host")
+        val privateTitle = notification.extras.getCharSequence(Notification.EXTRA_TITLE).toString()
+        assertThat(privateTitle).contains("private-host", privateTmuxLabel)
         assertThat(notification.extras.containsKey(Notification.EXTRA_BIG_TEXT)).isFalse()
 
         val publicNotification = requireNotNull(notification.publicVersion)
-        assertThat(publicNotification.extras.getCharSequence(Notification.EXTRA_TITLE).toString())
+        val publicTitle = publicNotification.extras.getCharSequence(Notification.EXTRA_TITLE).toString()
+        val publicText = publicNotification.extras.getCharSequence(Notification.EXTRA_TEXT).toString()
+        assertThat(publicTitle)
             .isEqualTo(context.getString(R.string.notification_channel_completions))
-        assertThat(publicNotification.extras.getCharSequence(Notification.EXTRA_TITLE).toString())
-            .doesNotContain("private-host")
+        assertThat(publicTitle).doesNotContain("private-host", privateTmuxLabel)
+        assertThat(publicText).doesNotContain("private-host", privateTmuxLabel)
+        assertThat(publicNotification.extras.containsKey(Notification.EXTRA_BIG_TEXT)).isFalse()
     }
 }

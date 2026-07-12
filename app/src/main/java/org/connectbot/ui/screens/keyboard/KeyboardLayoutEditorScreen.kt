@@ -59,6 +59,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import org.connectbot.R
 import org.connectbot.keyboard.KeySpec
 import org.connectbot.keyboard.KeyboardLayoutSpec
+import org.connectbot.keyboard.stringResId
 import org.connectbot.service.ModifierLevel
 import org.connectbot.service.ModifierState
 import org.connectbot.ui.components.TerminalKeyboardContent
@@ -263,5 +264,5 @@ private fun keyDescription(spec: KeySpec): String = when (spec) {
 
     is KeySpec.FnGrid -> spec.label ?: stringResource(R.string.button_key_fn)
 
-    is KeySpec.Tmux -> spec.label ?: spec.action.name.replace('_', ' ')
+    is KeySpec.Tmux -> spec.label ?: stringResource(spec.action.stringResId)
 }

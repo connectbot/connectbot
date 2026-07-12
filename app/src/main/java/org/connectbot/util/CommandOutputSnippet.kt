@@ -49,8 +49,11 @@ private fun sessionTailFallback(emulator: TerminalEmulator, maxLines: Int): Stri
     val text = TerminalTextUtils.buildSessionText(lines.takeLast(maxLines + 1))
     if (text.isEmpty()) return null
     // The last line is the shell prompt that just repainted after the command.
-    return text.substringBeforeLast('\n', missingDelimiterValue = "")
+    return withoutFinalPromptLine(text)
 }
+
+internal fun withoutFinalPromptLine(text: String): String =
+    if ('\n' in text) text.substringBeforeLast('\n') else text
 
 internal fun tailOf(text: String, maxLines: Int, maxChars: Int): String {
     val lines = text.lines()

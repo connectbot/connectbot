@@ -17,11 +17,14 @@
 
 package org.connectbot.service
 
+import android.content.SharedPreferences
+import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.formatDuration
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.mockito.Mockito
 
 class CommandCompletionTest {
 
@@ -46,5 +49,26 @@ class CommandCompletionTest {
         assertEquals("37s", formatDuration(37_000))
         assertEquals("2m 14s", formatDuration(134_000))
         assertEquals("1h 03m", formatDuration(3_780_000))
+    }
+
+    @Test
+    fun completionThresholdParsingRejectsOverflow() {
+        val largestSafeSeconds = Long.MAX_VALUE / 1000
+
+        assertEquals(largestSafeSeconds * 1000, thresholdMs(largestSafeSeconds.toString()))
+        assertEquals(0L, thresholdMs(Long.MAX_VALUE.toString()))
+        assertEquals(0L, thresholdMs("-1"))
+        assertEquals(0L, thresholdMs("not-a-number"))
+    }
+
+    private fun thresholdMs(value: String): Long {
+        val prefs = Mockito.mock(SharedPreferences::class.java)
+        Mockito.`when`(
+            prefs.getString(
+                PreferenceConstants.COMMAND_COMPLETION_NOTIFY,
+                PreferenceConstants.DEFAULT_COMMAND_COMPLETION_NOTIFY,
+            ),
+        ).thenReturn(value)
+        return completionThresholdMs(prefs)
     }
 }

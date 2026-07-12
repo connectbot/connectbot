@@ -152,5 +152,8 @@ class TmuxManagementUiTest {
 
         composeTestRule.onNodeWithTag("tmux_action_SPLIT_H").performClick()
         composeTestRule.runOnIdle { assertEquals(TmuxAction.SPLIT_H, action) }
+        composeTestRule.onNodeWithTag("tmux_action_OPEN_DRAWER").assertDoesNotExist()
+        composeTestRule.onNodeWithTag("tmux_action_PREFIX").assertDoesNotExist()
+        composeTestRule.onNodeWithTag("tmux_action_COPY_MODE").assertDoesNotExist()
     }
 }

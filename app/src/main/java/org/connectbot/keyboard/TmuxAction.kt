@@ -17,6 +17,9 @@
 
 package org.connectbot.keyboard
 
+import androidx.annotation.StringRes
+import org.connectbot.R
+
 enum class TmuxAction {
     SPLIT_H,
     SPLIT_V,
@@ -33,3 +36,22 @@ enum class TmuxAction {
     PREFIX,
     OPEN_DRAWER,
 }
+
+@get:StringRes
+val TmuxAction.stringResId: Int
+    get() = when (this) {
+        TmuxAction.SPLIT_H -> R.string.tmux_action_split_h
+        TmuxAction.SPLIT_V -> R.string.tmux_action_split_v
+        TmuxAction.ZOOM -> R.string.tmux_action_zoom
+        TmuxAction.KILL_PANE -> R.string.tmux_action_kill_pane
+        TmuxAction.BREAK_PANE -> R.string.tmux_action_break_pane
+        TmuxAction.NEW_WINDOW -> R.string.tmux_action_new_window
+        TmuxAction.NEXT_WINDOW -> R.string.tmux_action_next_window
+        TmuxAction.PREV_WINDOW -> R.string.tmux_action_prev_window
+        TmuxAction.NEXT_PANE -> R.string.tmux_action_next_pane
+        TmuxAction.PREV_PANE -> R.string.tmux_action_prev_pane
+        TmuxAction.COPY_MODE -> R.string.tmux_action_copy_mode
+        TmuxAction.PALETTE -> R.string.tmux_action_palette
+        TmuxAction.PREFIX -> R.string.tmux_action_prefix
+        TmuxAction.OPEN_DRAWER -> R.string.tmux_action_open_drawer
+    }

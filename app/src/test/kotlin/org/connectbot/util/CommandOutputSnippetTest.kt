@@ -31,4 +31,10 @@ class CommandOutputSnippetTest {
     fun tailOfKeepsOnlyRequestedLines() {
         assertEquals("…second\nthird", tailOf("first\nsecond\nthird", maxLines = 2, maxChars = 600))
     }
+
+    @Test
+    fun finalPromptRemovalPreservesSingleLineOutput() {
+        assertEquals("command output", withoutFinalPromptLine("command output"))
+        assertEquals("command output", withoutFinalPromptLine("command output\nprompt \$"))
+    }
 }

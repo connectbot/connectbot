@@ -57,6 +57,7 @@ import org.connectbot.keyboard.KeySpec
 import org.connectbot.keyboard.ModifierKey
 import org.connectbot.keyboard.SpecialKey
 import org.connectbot.keyboard.TmuxAction
+import org.connectbot.keyboard.stringResId
 
 /** Symbol characters offered as ready-made text keys. */
 private val SYMBOL_KEYS = listOf("/", "|", "-", ":", ";", "~", ".", "_", "'", "\"", "*", "&")
@@ -125,7 +126,7 @@ fun KeyCatalogSheet(
                 TmuxAction.entries.forEach { action ->
                     AssistChip(
                         onClick = { onPick(KeySpec.Tmux(action)) },
-                        label = { Text(action.name.replace('_', ' ')) },
+                        label = { Text(stringResource(action.stringResId)) },
                     )
                 }
             }
