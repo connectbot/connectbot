@@ -153,6 +153,7 @@ import org.connectbot.service.TerminalBridge
 import org.connectbot.service.tmux.TmuxAttachState
 import org.connectbot.service.tmux.TmuxPaneTerminal
 import org.connectbot.terminal.ComposeController
+import org.connectbot.terminal.CursorBlinkMode
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.SelectionController
 import org.connectbot.terminal.Terminal
@@ -574,6 +575,7 @@ private fun ConsoleTerminalPage(
         val coroutineScope = rememberCoroutineScope()
         val fontSize by bridge.fontSizeFlow.collectAsState()
         val delKeyMode by bridge.delKeyModeFlow.collectAsState()
+        val einkMode = LocalEinkMode.current
 
         LaunchedEffect(fontResult.loadFailed, fontResult.isLoading) {
             if (fontResult.loadFailed && !fontResult.isLoading) {
@@ -645,13 +647,14 @@ private fun ConsoleTerminalPage(
             delKeyMode = delKeyMode,
             onPasteRequest = onPasteRequest,
             onInterceptKey = onInterceptKey,
+            cursorBlinkMode = if (einkMode) CursorBlinkMode.Never else CursorBlinkMode.Terminal,
+            textAntiAlias = !einkMode,
         )
 
         SideEffect {
             bridge.onTextInputRequest = onTextInputRequest
         }
 
-        val einkMode = LocalEinkMode.current
         if (isActive) {
             AnimatedVisibility(
                 visible = showExtraKeyboard,
@@ -1223,6 +1226,20 @@ fun ConsoleScreen(
         }
     }
 
+    // Show snackbar when a long-running command finishes in a hidden tab/window
+    val completionMessageTemplate = stringResource(R.string.command_finished_snackbar)
+    LaunchedEffect(Unit) {
+        viewModel.completionMessages.collect { completion ->
+            snackbarHostState.showSnackbar(
+                String.format(
+                    completionMessageTemplate,
+                    completion.sourceLabel,
+                    completion.durationText,
+                ),
+            )
+        }
+    }
+
     // Show snackbar on each open when connections won't persist in background
     val notificationWarningMessage = stringResource(R.string.notification_permission_console_warning)
     val settingsLabel = stringResource(R.string.list_menu_settings)
@@ -1457,7 +1474,9 @@ fun ConsoleScreen(
                                     keyboardKeySize = rememberKeyboardKeySize(viewModel),
                                     onNavigateToKeyboardLayouts = onNavigateToKeyboardLayouts,
                                     tmuxPane = paneTerminal,
-                                    tmuxForcedSize = pane?.let { Pair(it.height, it.width) },
+                                    tmuxForcedSize = pane?.let {
+                                        Pair(it.height.coerceAtLeast(1), it.width.coerceAtLeast(1))
+                                    },
                                 )
                             }
                             val tmuxPanes = tmuxWindow?.panes
@@ -2003,6 +2022,7 @@ fun ConsoleScreen(
                                     nickname = tab.bridge.host.nickname,
                                     color = tab.bridge.host.color,
                                     isDisconnected = tab.bridge.isDisconnected,
+                                    activityBadge = tab.completionBadge,
                                 )
 
                                 is ConsoleTab.TmuxSession -> SessionTabData(

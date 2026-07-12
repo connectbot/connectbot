@@ -17,7 +17,6 @@
 
 package org.connectbot.service.tmux
 
-import java.io.IOException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,8 +35,10 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.withTimeoutOrNull
+import org.connectbot.service.meetsCompletionThreshold
 import org.connectbot.transport.ExecChannel
 import timber.log.Timber
+import java.io.IOException
 
 /** Opens one remote command channel; the SSH transport provides this. */
 fun interface TmuxChannelFactory {
@@ -82,6 +83,10 @@ class TmuxSessionManager(
     @Volatile
     var paneEmulatorFactory: TmuxPaneEmulatorFactory = TmuxPaneEmulatorFactory.REAL
 
+    /** Snapshot cadence for newly created pane emulators; existing panes retain theirs. */
+    @Volatile
+    var paneMinUpdateIntervalMs: Long = 0L
+
     /** Sticky-modifier pref for pane key handlers; the bridge sets it. */
     @Volatile
     var stickyModifierSetting: org.connectbot.service.StickyModifierSetting =
@@ -94,6 +99,14 @@ class TmuxSessionManager(
     /** New window-level bell/activity flags discovered by polling. */
     private val _alertEvents = MutableSharedFlow<TmuxAlert>(extraBufferCapacity = 32)
     val alertEvents: SharedFlow<TmuxAlert> = _alertEvents.asSharedFlow()
+
+    /** Long-running command completions from live panes (OSC 133). */
+    private val _commandCompletions = MutableSharedFlow<TmuxCommandCompletion>(extraBufferCapacity = 16)
+    val commandCompletions: SharedFlow<TmuxCommandCompletion> = _commandCompletions.asSharedFlow()
+
+    /** Minimum command duration in ms before a completion is reported; 0 = off. The bridge sets it. */
+    @Volatile
+    var completionThresholdMs: Long = 0L
 
     /**
      * Flag-poll cadence: the console sets ~10s while foregrounded; the
@@ -115,8 +128,7 @@ class TmuxSessionManager(
     /** All state mutations go through CAS: concurrent coroutines must not lose updates. */
     private fun mutateState(transform: (TmuxHostState) -> TmuxHostState) = _state.update(transform)
 
-    private fun mutateSession(sessionId: String, transform: (TmuxSessionInfo) -> TmuxSessionInfo) =
-        _state.update { it.updateSession(sessionId, transform) }
+    private fun mutateSession(sessionId: String, transform: (TmuxSessionInfo) -> TmuxSessionInfo) = _state.update { it.updateSession(sessionId, transform) }
 
     private val clients = java.util.concurrent.ConcurrentHashMap<String, TmuxControlClient>()
     private val clientJobs = java.util.concurrent.ConcurrentHashMap<String, List<Job>>()
@@ -759,9 +771,13 @@ class TmuxSessionManager(
                 initialRows = pane.height,
                 initialCols = pane.width,
                 colors = paneColors,
+                minUpdateIntervalMs = paneMinUpdateIntervalMs,
                 scope = scope,
                 sendCommand = { command -> client.command(command) },
                 onBell = { sessionId, paneId -> onPaneBell(sessionId, paneId) },
+                onCommandCompletion = { sessionId, paneId, durationMs, snippet ->
+                    onPaneCommandCompleted(sessionId, paneId, durationMs, snippet)
+                },
                 emulatorFactory = paneEmulatorFactory,
             ).also { it.stickyModifierSetting = stickyModifierSetting }
         }
@@ -787,6 +803,46 @@ class TmuxSessionManager(
                 },
             )
         }
+    }
+
+    /**
+     * A long-running command finished in a live pane: badge its window (via
+     * the existing activity-flag plumbing) unless the user is looking at it,
+     * and emit the completion for the console/notification layers.
+     * Internal so tests can drive it with fabricated durations.
+     */
+    internal fun onPaneCommandCompleted(
+        sessionId: String,
+        paneId: String,
+        durationMs: Long,
+        snippet: String?,
+    ) {
+        if (!meetsCompletionThreshold(durationMs, completionThresholdMs)) return
+        val session = _state.value.session(sessionId) ?: return
+        val window = session.windows.find { w -> w.panes.any { it.id == paneId } } ?: return
+
+        val viewed = _currentTarget.value
+        val isViewed = viewed?.sessionId == sessionId && viewed.windowId == window.id
+        if (!isViewed) {
+            mutateSession(sessionId) { s ->
+                s.copy(
+                    activity = true,
+                    windows = s.windows.map { w ->
+                        if (w.id == window.id) w.copy(activity = true) else w
+                    },
+                )
+            }
+        }
+        val completion = TmuxCommandCompletion(
+            sessionId = sessionId,
+            sessionName = session.name,
+            windowId = window.id,
+            windowName = window.name,
+            paneId = paneId,
+            durationMs = durationMs,
+            snippet = snippet,
+        )
+        scope.launch { _commandCompletions.emit(completion) }
     }
 
     /** Stops an evicted pane's output stream server-side when supported. */
@@ -885,9 +941,11 @@ class TmuxSessionManager(
             }
 
             is TmuxNotification.WindowClose -> removeWindow(state, notification.windowId)
+
             is TmuxNotification.UnlinkedWindowClose -> removeWindow(state, notification.windowId)
 
             is TmuxNotification.WindowRenamed -> renameWindow(state, notification.windowId, notification.name)
+
             is TmuxNotification.UnlinkedWindowRenamed -> renameWindow(state, notification.windowId, notification.name)
 
             is TmuxNotification.LayoutChange -> state.updateSession(sessionId) { session ->
@@ -915,6 +973,7 @@ class TmuxSessionManager(
             }
 
             is TmuxNotification.Pause -> setPanePaused(state, sessionId, notification.paneId, paused = true)
+
             is TmuxNotification.Continue -> setPanePaused(state, sessionId, notification.paneId, paused = false)
 
             is TmuxNotification.Exit -> state.updateSession(sessionId) {
@@ -942,16 +1001,15 @@ class TmuxSessionManager(
             },
         )
 
-        private fun renameWindow(state: TmuxHostState, windowId: String, name: String): TmuxHostState =
-            state.copy(
-                sessions = state.sessions.map { session ->
-                    session.copy(
-                        windows = session.windows.map { window ->
-                            if (window.id == windowId) window.copy(name = name) else window
-                        },
-                    )
-                },
-            )
+        private fun renameWindow(state: TmuxHostState, windowId: String, name: String): TmuxHostState = state.copy(
+            sessions = state.sessions.map { session ->
+                session.copy(
+                    windows = session.windows.map { window ->
+                        if (window.id == windowId) window.copy(name = name) else window
+                    },
+                )
+            },
+        )
 
         private fun applyLayout(
             session: TmuxSessionInfo,

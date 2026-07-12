@@ -39,6 +39,7 @@ import org.connectbot.transport.AbsTransport
 import org.connectbot.ui.MainActivity
 import org.connectbot.util.waitUntilServiceBound
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThrows
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -236,6 +237,12 @@ class TerminalBridgeWriteSerializationTest {
                     transport.attemptedBytes.get(),
                     transport.receivedBytes(),
                 )
+
+                bridge.cleanup()
+                assertThrows(IllegalStateException::class.java) {
+                    bridge.terminalEmulator.resize(24, 80)
+                }
+                bridge.cleanup()
             } finally {
                 bridge.cleanup()
             }

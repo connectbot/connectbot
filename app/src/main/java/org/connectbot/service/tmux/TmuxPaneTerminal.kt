@@ -19,7 +19,6 @@ package org.connectbot.service.tmux
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import java.io.ByteArrayOutputStream
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -30,7 +29,10 @@ import org.connectbot.service.TerminalEmulatorKeyDispatcher
 import org.connectbot.service.TerminalKeyListener
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.TerminalEmulatorFactory
+import org.connectbot.util.commandOutputSnippet
 import timber.log.Timber
+import java.io.ByteArrayOutputStream
+import java.util.concurrent.atomic.AtomicBoolean
 
 /** Colors for pane emulators, taken from the host's profile. */
 data class TmuxPaneColors(
@@ -44,9 +46,8 @@ data class TmuxPaneColors(
         other.defaultBackground == defaultBackground &&
         (other.ansiColors?.contentEquals(ansiColors) ?: (ansiColors == null))
 
-    override fun hashCode(): Int =
-        31 * (31 * defaultForeground.hashCode() + defaultBackground.hashCode()) +
-            (ansiColors?.contentHashCode() ?: 0)
+    override fun hashCode(): Int = 31 * (31 * defaultForeground.hashCode() + defaultBackground.hashCode()) +
+        (ansiColors?.contentHashCode() ?: 0)
 
     companion object {
         /** Classic light-gray-on-black, used until the bridge provides profile colors. */
@@ -63,13 +64,15 @@ data class TmuxPaneColors(
  * faked nor run in local unit tests, so panes talk to it through this handle;
  * tests substitute their own recording implementation.
  */
-interface TmuxPaneEmulatorHandle {
+interface TmuxPaneEmulatorHandle : AutoCloseable {
     /** The real termlib emulator for the Terminal composable; null in fakes. */
     val terminalEmulator: TerminalEmulator?
 
     fun writeInput(bytes: ByteArray)
 
     fun resize(rows: Int, cols: Int)
+
+    override fun close()
 }
 
 /** Creates the emulator handle behind a pane. */
@@ -78,13 +81,15 @@ fun interface TmuxPaneEmulatorFactory {
         initialRows: Int,
         initialCols: Int,
         colors: TmuxPaneColors,
+        minUpdateIntervalMs: Long,
         onKeyboardInput: (ByteArray) -> Unit,
         onBell: () -> Unit,
+        onCommandFinished: (durationMs: Long) -> Unit,
     ): TmuxPaneEmulatorHandle
 
     companion object {
         /** The real termlib emulator (requires Android). */
-        val REAL = TmuxPaneEmulatorFactory { rows, cols, colors, onKeyboardInput, onBell ->
+        val REAL = TmuxPaneEmulatorFactory { rows, cols, colors, minUpdateIntervalMs, onKeyboardInput, onBell, onCommandFinished ->
             val emulator = TerminalEmulatorFactory.create(
                 initialRows = rows,
                 initialCols = cols,
@@ -95,6 +100,8 @@ fun interface TmuxPaneEmulatorFactory {
                 onResize = { /* pane size is dictated by the server, not the view */ },
                 onClipboardCopy = { /* OSC 52 handled at the console layer */ },
                 onProgressChange = { _, _ -> },
+                onCommandFinished = onCommandFinished,
+                minUpdateIntervalMs = minUpdateIntervalMs,
             ).also { created ->
                 colors.ansiColors?.let { ansi ->
                     created.applyColorScheme(
@@ -113,6 +120,10 @@ fun interface TmuxPaneEmulatorFactory {
 
                 override fun resize(rows: Int, cols: Int) {
                     emulator.resize(rows, cols)
+                }
+
+                override fun close() {
+                    emulator.close()
                 }
             }
         }
@@ -139,18 +150,31 @@ class TmuxPaneTerminal(
     initialRows: Int,
     initialCols: Int,
     colors: TmuxPaneColors,
+    minUpdateIntervalMs: Long = 0L,
     private val scope: CoroutineScope,
     /** Sends one command on this session's control client. */
     private val sendCommand: suspend (String) -> TmuxReply,
     private val onBell: (sessionId: String, paneId: String) -> Unit = { _, _ -> },
+    private val onCommandCompletion: (
+        sessionId: String,
+        paneId: String,
+        durationMs: Long,
+        snippet: String?,
+    ) -> Unit = { _, _, _, _ -> },
     emulatorFactory: TmuxPaneEmulatorFactory = TmuxPaneEmulatorFactory.REAL,
 ) {
     private val handle: TmuxPaneEmulatorHandle = emulatorFactory.create(
-        initialRows = initialRows,
-        initialCols = initialCols,
+        initialRows = initialRows.coerceAtLeast(1),
+        initialCols = initialCols.coerceAtLeast(1),
         colors = colors,
+        minUpdateIntervalMs = minUpdateIntervalMs,
         onKeyboardInput = { data -> keyboardBytes.trySend(data) },
         onBell = { onBell(sessionId, paneId) },
+        onCommandFinished = { durationMs ->
+            // Snippet captured now, while this pane's emulator is
+            // guaranteed alive (LRU eviction could destroy it later).
+            onCommandCompletion(sessionId, paneId, durationMs, commandOutputSnippet(handle.terminalEmulator))
+        },
     )
 
     /** The termlib emulator for the Terminal composable (real factory only). */
@@ -180,8 +204,8 @@ class TmuxPaneTerminal(
     private var backfillSeq = Long.MAX_VALUE
     private val pendingOutput = ArrayDeque<TmuxNotification.Output>()
 
-    @Volatile
-    private var destroyed = false
+    private val destroyed = AtomicBoolean(false)
+    private val emulatorLifecycleLock = Any()
 
     /** Current backfill depth; grows via [loadEarlier]. */
     @Volatile
@@ -248,14 +272,14 @@ class TmuxPaneTerminal(
      */
     suspend fun loadEarlier(additionalLines: Int = DEFAULT_BACKFILL_LINES): Boolean {
         val newDepth = (backfillDepth + additionalLines).coerceAtMost(MAX_BACKFILL_LINES)
-        if (newDepth == backfillDepth || destroyed) return false
+        if (newDepth == backfillDepth || destroyed.get()) return false
         backfillDepth = newDepth
         rebuildFromCapture(newDepth)
         return true
     }
 
     private suspend fun rebuildFromCapture(depth: Int) {
-        if (destroyed) return
+        if (destroyed.get()) return
         synchronized(outputLock) {
             live = false
             backfillSeq = Long.MAX_VALUE
@@ -267,7 +291,7 @@ class TmuxPaneTerminal(
 
     /** Routes one `%output` event (any thread). */
     fun handleOutput(output: TmuxNotification.Output) {
-        if (destroyed) return
+        if (destroyed.get()) return
         synchronized(outputLock) {
             if (!live) {
                 pendingOutput.addLast(output)
@@ -282,13 +306,15 @@ class TmuxPaneTerminal(
 
     /** Applies a server-side pane resize (from `%layout-change`). */
     fun resize(rows: Int, cols: Int) {
-        if (destroyed) return
-        handle.resize(rows, cols)
+        synchronized(emulatorLifecycleLock) {
+            if (destroyed.get()) return
+            handle.resize(rows.coerceAtLeast(1), cols.coerceAtLeast(1))
+        }
     }
 
     /** Sends pasted text through a tmux buffer (bracketed paste aware). */
     fun paste(text: String) {
-        if (destroyed || text.isEmpty()) return
+        if (destroyed.get() || text.isEmpty()) return
         scope.launch {
             TmuxInputEncoder.toPasteCommands(paneId, text).forEach { command ->
                 runCatching { sendCommand(command) }
@@ -300,12 +326,15 @@ class TmuxPaneTerminal(
         }
     }
 
-    /** Unhooks everything. termlib has no dispose; the GC reclaims the peer. */
+    /** Unhooks everything and releases the native terminal. */
     fun destroy() {
-        destroyed = true
+        if (!destroyed.compareAndSet(false, true)) return
         inputJob.cancel()
         keyboardBytes.close()
         synchronized(outputLock) { pendingOutput.clear() }
+        synchronized(emulatorLifecycleLock) {
+            handle.close()
+        }
     }
 
     private suspend fun inputLoop() {

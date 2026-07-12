@@ -82,6 +82,7 @@ data class SettingsUiState(
     val bellVolume: Float = 0.5f,
     val bellVibrate: Boolean = true,
     val bellNotification: Boolean = false,
+    val commandCompletionNotify: String = PreferenceConstants.DEFAULT_COMMAND_COMPLETION_NOTIFY,
     val fontFamily: String = "SYSTEM_DEFAULT",
     val customFonts: List<String> = emptyList(),
     val customTerminalTypes: List<String> = emptyList(),
@@ -241,6 +242,10 @@ class SettingsViewModel @Inject constructor(
             bellVolume = prefs.getFloat("bellVolume", 0.5f),
             bellVibrate = prefs.getBoolean("bellVibrate", true),
             bellNotification = prefs.getBoolean("bellNotification", false),
+            commandCompletionNotify = prefs.getString(
+                PreferenceConstants.COMMAND_COMPLETION_NOTIFY,
+                PreferenceConstants.DEFAULT_COMMAND_COMPLETION_NOTIFY,
+            ) ?: PreferenceConstants.DEFAULT_COMMAND_COMPLETION_NOTIFY,
             fontFamily = prefs.getString("fontFamily", "SYSTEM_DEFAULT") ?: "SYSTEM_DEFAULT",
             customFonts = customFonts,
             customTerminalTypes = customTerminalTypes,
@@ -351,6 +356,12 @@ class SettingsViewModel @Inject constructor(
 
     fun updateBellNotification(value: Boolean) {
         updateBooleanPref(PreferenceConstants.BELL_NOTIFICATION, value) { copy(bellNotification = value) }
+    }
+
+    fun updateCommandCompletionNotify(value: String) {
+        updateStringPref(PreferenceConstants.COMMAND_COMPLETION_NOTIFY, value) {
+            copy(commandCompletionNotify = value)
+        }
     }
 
     fun updateTitleBarHide(value: Boolean) {

@@ -418,6 +418,7 @@ class ConsoleScreenTest {
 
         `when`(mockViewModel.uiState).thenReturn(uiStateFlow)
         `when`(mockViewModel.networkStatusMessages).thenReturn(networkStatusMessages)
+        `when`(mockViewModel.completionMessages).thenReturn(MutableSharedFlow())
         `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
 
         setContent(mockConsoleViewModel = mockViewModel)
@@ -451,6 +452,7 @@ class ConsoleScreenTest {
 
         `when`(mockViewModel.uiState).thenReturn(uiStateFlow)
         `when`(mockViewModel.networkStatusMessages).thenReturn(networkStatusMessages)
+        `when`(mockViewModel.completionMessages).thenReturn(MutableSharedFlow())
         `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
 
         setContent(mockConsoleViewModel = mockViewModel)
@@ -484,6 +486,7 @@ class ConsoleScreenTest {
 
         `when`(mockViewModel.uiState).thenReturn(uiStateFlow)
         `when`(mockViewModel.networkStatusMessages).thenReturn(networkStatusMessages)
+        `when`(mockViewModel.completionMessages).thenReturn(MutableSharedFlow())
         `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
 
         setContent(mockConsoleViewModel = mockViewModel)
