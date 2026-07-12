@@ -68,8 +68,13 @@ import timber.log.Timber
 import java.io.IOException
 import java.nio.charset.Charset
 import java.util.concurrent.CopyOnWriteArrayList
+import java.util.concurrent.atomic.AtomicBoolean
 import java.util.concurrent.atomic.AtomicInteger
 import java.util.concurrent.atomic.AtomicLong
+
+internal const val EINK_TERMINAL_UPDATE_INTERVAL_MS = 250L
+
+internal fun terminalUpdateIntervalMs(einkMode: Boolean): Long = if (einkMode) EINK_TERMINAL_UPDATE_INTERVAL_MS else 0L
 
 data class AuthBanner(
     val id: Long,
@@ -133,6 +138,8 @@ internal class AuthBannerQueue {
 @Suppress("DEPRECATION") // for ClipboardManager
 class TerminalBridge {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private val cleanedUp = AtomicBoolean(false)
+    private val emulatorLifecycleLock = Any()
 
     private sealed class TransportOperation {
         data class WriteData(val data: ByteArray) : TransportOperation()
@@ -333,8 +340,8 @@ class TerminalBridge {
         fontFamily = profile.fontFamily
 
         // Store force size from profile
-        profileForceSizeRows = profile.forceSizeRows
-        profileForceSizeColumns = profile.forceSizeColumns
+        profileForceSizeRows = profile.forceSizeRows.toPositiveTerminalDimension()
+        profileForceSizeColumns = profile.forceSizeColumns.toPositiveTerminalDimension()
 
         // Store startup command and environment variables from profile
         profileStartupCommand = profile.startupCommand
@@ -402,6 +409,7 @@ class TerminalBridge {
                     manager.sendCommandCompletionNotification(host, durationMs)
                 }
             },
+            minUpdateIntervalMs = terminalUpdateIntervalMs(einkMode),
         )
 
         // Apply color scheme to terminal emulator
@@ -537,12 +545,16 @@ class TerminalBridge {
             val defaultFgColor = fullColorPalette[defaultFg]
             val defaultBgColor = fullColorPalette[defaultBg]
             val ansiColors = fullColorPalette.sliceArray(0 until 16)
-            terminalEmulator.applyColorScheme(ansiColors, defaultFgColor, defaultBgColor)
+            synchronized(emulatorLifecycleLock) {
+                if (!cleanedUp.get()) {
+                    terminalEmulator.applyColorScheme(ansiColors, defaultFgColor, defaultBgColor)
+                }
+            }
         }
 
         // Update force size from profile
-        profileForceSizeRows = profile.forceSizeRows
-        profileForceSizeColumns = profile.forceSizeColumns
+        profileForceSizeRows = profile.forceSizeRows.toPositiveTerminalDimension()
+        profileForceSizeColumns = profile.forceSizeColumns.toPositiveTerminalDimension()
 
         // Update startup command and environment variables from profile;
         // these take effect on the next connection
@@ -871,6 +883,7 @@ class TerminalBridge {
                 ansiColors = fullColorPalette.sliceArray(0 until 16),
             )
         }
+        sessionManager.paneMinUpdateIntervalMs = terminalUpdateIntervalMs(einkMode)
         sessionManager.onTransportConnected(TmuxTarget.decode(host.tmuxLastTarget))
     }
 
@@ -1058,6 +1071,8 @@ class TerminalBridge {
      * Releases bitmap and clears parent reference to prevent memory leaks.
      */
     fun cleanup() {
+        if (!cleanedUp.compareAndSet(false, true)) return
+
         // Cancel grace period if active
         networkGracePeriodJob?.cancel()
         inGracePeriod = false
@@ -1069,6 +1084,9 @@ class TerminalBridge {
         tmux = null
 
         profileObservationJob?.cancel()
+        synchronized(emulatorLifecycleLock) {
+            terminalEmulator.close()
+        }
         transportOperations.close()
         scope.cancel()
     }
@@ -1317,6 +1335,7 @@ class TerminalBridge {
             return
         }
         einkMode = enabled
+        tmux?.paneMinUpdateIntervalMs = terminalUpdateIntervalMs(enabled)
         defaultPaint.isAntiAlias = !enabled
         defaultPaint.isFakeBoldText = !enabled
         // Re-measure with the updated paint flags
@@ -1337,3 +1356,5 @@ private fun delKeyModeFromProfile(profile: Profile): DelKeyMode = if (profile.de
 } else {
     DelKeyMode.Delete
 }
+
+internal fun Int?.toPositiveTerminalDimension(): Int? = this?.coerceAtLeast(1)

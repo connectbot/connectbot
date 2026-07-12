@@ -25,8 +25,8 @@ package org.connectbot.service.tmux
  * reading. Eviction destroys the terminal and reports it via [onEvicted]
  * (the manager then stops its output stream on tmux ≥3.2).
  *
- * termlib emulators have no dispose(); eviction drops all references and the
- * GC reclaims the native peer, which is why the cap stays conservative.
+ * Eviction closes each termlib emulator immediately so its native peer and
+ * pending callbacks are released without waiting for garbage collection.
  */
 class TmuxPaneRegistry(
     private val maxLivePanes: Int = DEFAULT_MAX_LIVE_PANES,
@@ -38,8 +38,7 @@ class TmuxPaneRegistry(
     /** Keys ordered least- to most-recently acquired. */
     private val recency = ArrayDeque<String>()
 
-    fun get(sessionId: String, paneId: String): TmuxPaneTerminal? =
-        synchronized(lock) { terminals[key(sessionId, paneId)] }
+    fun get(sessionId: String, paneId: String): TmuxPaneTerminal? = synchronized(lock) { terminals[key(sessionId, paneId)] }
 
     /**
      * Returns the existing terminal for the pane (marking it most recent) or

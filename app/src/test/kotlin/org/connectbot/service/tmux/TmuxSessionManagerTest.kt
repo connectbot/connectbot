@@ -262,8 +262,12 @@ class TmuxSessionManagerTest {
     @Test
     fun `acquire pane terminal backfills and routes live output`() = runBlocking<Unit> {
         val fakes = mutableListOf<FakeEmulator>()
-        manager.paneEmulatorFactory = TmuxPaneEmulatorFactory { _, _, _, _, _, _ ->
-            FakeEmulator().also { fakes.add(it) }
+        val intervals = mutableListOf<Long>()
+        manager.paneEmulatorFactory = TmuxPaneEmulatorFactory { _, _, _, intervalMs, _, _, _ ->
+            FakeEmulator().also {
+                fakes.add(it)
+                intervals.add(intervalMs)
+            }
         }
         connectAndAwaitReady()
         factory.onControlChannel = { channel ->
@@ -295,6 +299,11 @@ class TmuxSessionManagerTest {
         val again = manager.acquirePaneTerminal(TmuxTarget("\$0", "@0", "%0", "main"))
         assertThat(again).isSameAs(terminal)
         assertThat(manager.paneRegistry.liveCount()).isEqualTo(1)
+
+        manager.paneMinUpdateIntervalMs = 250L
+        manager.acquirePaneTerminal(TmuxTarget("\$0", "@0", "%1", "main"))
+
+        assertThat(intervals).containsExactly(0L, 250L)
     }
 
     @Test
@@ -388,7 +397,7 @@ class TmuxSessionManagerTest {
     @Test
     fun `attach enables flow control and pause triggers resume with resync`() = runBlocking<Unit> {
         val fakes = mutableListOf<FakeEmulator>()
-        manager.paneEmulatorFactory = TmuxPaneEmulatorFactory { _, _, _, _, _, _ ->
+        manager.paneEmulatorFactory = TmuxPaneEmulatorFactory { _, _, _, _, _, _, _ ->
             FakeEmulator().also { fakes.add(it) }
         }
         connectAndAwaitReady()

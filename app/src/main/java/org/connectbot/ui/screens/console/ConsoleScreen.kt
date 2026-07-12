@@ -153,6 +153,7 @@ import org.connectbot.service.TerminalBridge
 import org.connectbot.service.tmux.TmuxAttachState
 import org.connectbot.service.tmux.TmuxPaneTerminal
 import org.connectbot.terminal.ComposeController
+import org.connectbot.terminal.CursorBlinkMode
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.SelectionController
 import org.connectbot.terminal.Terminal
@@ -574,6 +575,7 @@ private fun ConsoleTerminalPage(
         val coroutineScope = rememberCoroutineScope()
         val fontSize by bridge.fontSizeFlow.collectAsState()
         val delKeyMode by bridge.delKeyModeFlow.collectAsState()
+        val einkMode = LocalEinkMode.current
 
         LaunchedEffect(fontResult.loadFailed, fontResult.isLoading) {
             if (fontResult.loadFailed && !fontResult.isLoading) {
@@ -645,13 +647,14 @@ private fun ConsoleTerminalPage(
             delKeyMode = delKeyMode,
             onPasteRequest = onPasteRequest,
             onInterceptKey = onInterceptKey,
+            cursorBlinkMode = if (einkMode) CursorBlinkMode.Never else CursorBlinkMode.Terminal,
+            textAntiAlias = !einkMode,
         )
 
         SideEffect {
             bridge.onTextInputRequest = onTextInputRequest
         }
 
-        val einkMode = LocalEinkMode.current
         if (isActive) {
             AnimatedVisibility(
                 visible = showExtraKeyboard,
@@ -1471,7 +1474,9 @@ fun ConsoleScreen(
                                     keyboardKeySize = rememberKeyboardKeySize(viewModel),
                                     onNavigateToKeyboardLayouts = onNavigateToKeyboardLayouts,
                                     tmuxPane = paneTerminal,
-                                    tmuxForcedSize = pane?.let { Pair(it.height, it.width) },
+                                    tmuxForcedSize = pane?.let {
+                                        Pair(it.height.coerceAtLeast(1), it.width.coerceAtLeast(1))
+                                    },
                                 )
                             }
                             val tmuxPanes = tmuxWindow?.panes

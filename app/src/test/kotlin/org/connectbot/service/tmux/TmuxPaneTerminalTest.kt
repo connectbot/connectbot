@@ -37,6 +37,8 @@ internal class FakeEmulator : TmuxPaneEmulatorHandle {
     var keyboardInput: ((ByteArray) -> Unit)? = null
     var bell: (() -> Unit)? = null
     var commandFinished: ((Long) -> Unit)? = null
+    var minUpdateIntervalMs = 0L
+    var closeCount = 0
 
     override val terminalEmulator: TerminalEmulator? = null
 
@@ -52,6 +54,10 @@ internal class FakeEmulator : TmuxPaneEmulatorHandle {
     override fun resize(rows: Int, cols: Int) {
         this.rows = rows
         this.cols = cols
+    }
+
+    override fun close() {
+        closeCount++
     }
 }
 
@@ -69,14 +75,18 @@ class TmuxPaneTerminalTest {
     }
 
     private fun terminal(
+        initialRows: Int = 24,
+        initialCols: Int = 80,
+        minUpdateIntervalMs: Long = 0L,
         onBell: (String, String) -> Unit = { _, _ -> },
         onCommandCompletion: (String, String, Long, String?) -> Unit = { _, _, _, _ -> },
     ): TmuxPaneTerminal = TmuxPaneTerminal(
         sessionId = "\$0",
         paneId = "%1",
-        initialRows = 24,
-        initialCols = 80,
+        initialRows = initialRows,
+        initialCols = initialCols,
         colors = TmuxPaneColors.DEFAULT,
+        minUpdateIntervalMs = minUpdateIntervalMs,
         scope = scope,
         sendCommand = { command ->
             synchronized(commandLog) { commandLog.add(command) }
@@ -85,10 +95,11 @@ class TmuxPaneTerminalTest {
         },
         onBell = onBell,
         onCommandCompletion = onCommandCompletion,
-        emulatorFactory = { rows, cols, _, onKeyboardInput, onBellCallback, onCommandFinished ->
+        emulatorFactory = { rows, cols, _, intervalMs, onKeyboardInput, onBellCallback, onCommandFinished ->
             fakeEmulator.also {
                 it.rows = rows
                 it.cols = cols
+                it.minUpdateIntervalMs = intervalMs
                 it.keyboardInput = onKeyboardInput
                 it.bell = onBellCallback
                 it.commandFinished = onCommandFinished
@@ -184,6 +195,20 @@ class TmuxPaneTerminalTest {
     }
 
     @Test
+    fun `creation and resize normalize non-positive dimensions`() {
+        val terminal = terminal(initialRows = 0, initialCols = -80, minUpdateIntervalMs = 250L)
+
+        assertThat(fakeEmulator.rows).isEqualTo(1)
+        assertThat(fakeEmulator.cols).isEqualTo(1)
+        assertThat(fakeEmulator.minUpdateIntervalMs).isEqualTo(250L)
+
+        terminal.resize(rows = -1, cols = 0)
+
+        assertThat(fakeEmulator.rows).isEqualTo(1)
+        assertThat(fakeEmulator.cols).isEqualTo(1)
+    }
+
+    @Test
     fun `resize forwards to emulator and destroy stops everything`() = runBlocking<Unit> {
         replies["capture-pane"] = TmuxReply(1, true, emptyList(), seq = 1)
         val terminal = terminal()
@@ -194,11 +219,13 @@ class TmuxPaneTerminalTest {
         assertThat(fakeEmulator.cols).isEqualTo(120)
 
         terminal.destroy()
+        terminal.destroy()
         val writesBefore = synchronized(fakeEmulator.writes) { fakeEmulator.writes.size }
         terminal.handleOutput(output(99, "ignored"))
         terminal.resize(10, 10)
         assertThat(synchronized(fakeEmulator.writes) { fakeEmulator.writes.size }).isEqualTo(writesBefore)
         assertThat(fakeEmulator.rows).isEqualTo(50)
+        assertThat(fakeEmulator.closeCount).isEqualTo(1)
     }
 
     @Test

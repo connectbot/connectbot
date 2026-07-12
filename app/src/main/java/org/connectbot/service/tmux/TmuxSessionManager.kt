@@ -83,6 +83,10 @@ class TmuxSessionManager(
     @Volatile
     var paneEmulatorFactory: TmuxPaneEmulatorFactory = TmuxPaneEmulatorFactory.REAL
 
+    /** Snapshot cadence for newly created pane emulators; existing panes retain theirs. */
+    @Volatile
+    var paneMinUpdateIntervalMs: Long = 0L
+
     /** Sticky-modifier pref for pane key handlers; the bridge sets it. */
     @Volatile
     var stickyModifierSetting: org.connectbot.service.StickyModifierSetting =
@@ -767,6 +771,7 @@ class TmuxSessionManager(
                 initialRows = pane.height,
                 initialCols = pane.width,
                 colors = paneColors,
+                minUpdateIntervalMs = paneMinUpdateIntervalMs,
                 scope = scope,
                 sendCommand = { command -> client.command(command) },
                 onBell = { sessionId, paneId -> onPaneBell(sessionId, paneId) },

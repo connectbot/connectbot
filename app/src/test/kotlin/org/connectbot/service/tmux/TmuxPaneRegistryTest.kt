@@ -28,6 +28,7 @@ import org.junit.Test
 class TmuxPaneRegistryTest {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private val evicted = mutableListOf<String>()
+    private val emulators = mutableMapOf<String, FakeEmulator>()
     private val registry = TmuxPaneRegistry(
         maxLivePanes = 3,
         onEvicted = { evicted.add(it.paneId) },
@@ -47,7 +48,9 @@ class TmuxPaneRegistryTest {
         colors = TmuxPaneColors.DEFAULT,
         scope = scope,
         sendCommand = { TmuxReply(0, true, emptyList()) },
-        emulatorFactory = { _, _, _, _, _, _ -> FakeEmulator() },
+        emulatorFactory = { _, _, _, _, _, _, _ ->
+            FakeEmulator().also { emulators["$sessionId|$paneId"] = it }
+        },
     )
 
     private fun acquire(sessionId: String, paneId: String): Pair<TmuxPaneTerminal, Boolean> = registry.acquire(sessionId, paneId) { newTerminal(sessionId, paneId) }
@@ -75,6 +78,8 @@ class TmuxPaneRegistryTest {
         assertThat(registry.liveCount()).isEqualTo(3)
         assertThat(registry.get("\$0", "%2")).isNull()
         assertThat(registry.get("\$0", "%1")).isNotNull
+        assertThat(emulators["\$0|%2"]!!.closeCount).isEqualTo(1)
+        assertThat(emulators["\$0|%1"]!!.closeCount).isZero()
     }
 
     @Test
@@ -104,6 +109,8 @@ class TmuxPaneRegistryTest {
         assertThat(registry.get("\$0", "%1")).isNull()
         assertThat(registry.get("\$1", "%9")).isNotNull
         assertThat(registry.liveCount()).isEqualTo(1)
+        assertThat(emulators["\$0|%1"]!!.closeCount).isEqualTo(1)
+        assertThat(emulators["\$1|%9"]!!.closeCount).isZero()
     }
 
     @Test
@@ -112,5 +119,6 @@ class TmuxPaneRegistryTest {
         acquire("\$1", "%9")
         registry.clear()
         assertThat(registry.liveCount()).isEqualTo(0)
+        assertThat(emulators.values.map { it.closeCount }).containsExactlyInAnyOrder(1, 1)
     }
 }

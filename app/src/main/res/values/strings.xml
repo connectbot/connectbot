@@ -308,7 +308,7 @@
 	<!-- Title of the e-ink mode toggle in the User Interface settings section; shown below the theme selector -->
 	<string name="pref_eink_title">E-Ink mode</string>
 	<!-- Summary of the e-ink mode toggle explaining what it changes on e-ink (electronic paper) displays -->
-	<string name="pref_eink_summary">Disable animations and use high-contrast colors for e-ink displays</string>
+	<string name="pref_eink_summary">Reduce terminal refreshes, disable animations, and use high-contrast colors for e-ink displays</string>
 
 	<!-- Name for the rotation mode preference -->
 	<string name="pref_rotation_title">"Rotation mode"</string>
