@@ -410,6 +410,7 @@ class TerminalBridge {
                 }
             },
             minUpdateIntervalMs = terminalUpdateIntervalMs(einkMode),
+            maxScrollbackLines = terminalScrollbackLimit(scrollback),
         )
 
         // Apply color scheme to terminal emulator
@@ -1358,3 +1359,5 @@ private fun delKeyModeFromProfile(profile: Profile): DelKeyMode = if (profile.de
 }
 
 internal fun Int?.toPositiveTerminalDimension(): Int? = this?.coerceAtLeast(1)
+
+internal fun terminalScrollbackLimit(lines: Int): Int = lines.coerceAtLeast(0)

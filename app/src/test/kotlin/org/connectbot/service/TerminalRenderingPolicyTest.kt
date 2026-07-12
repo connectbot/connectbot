@@ -35,4 +35,11 @@ class TerminalRenderingPolicyTest {
         assertThat(0.toPositiveTerminalDimension()).isEqualTo(1)
         assertThat(24.toPositiveTerminalDimension()).isEqualTo(24)
     }
+
+    @Test
+    fun `persisted scrollback limit is normalized`() {
+        assertThat(terminalScrollbackLimit(-1)).isZero()
+        assertThat(terminalScrollbackLimit(0)).isZero()
+        assertThat(terminalScrollbackLimit(500)).isEqualTo(500)
+    }
 }

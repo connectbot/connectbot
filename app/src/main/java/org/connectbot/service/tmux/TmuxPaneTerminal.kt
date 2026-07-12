@@ -68,6 +68,9 @@ interface TmuxPaneEmulatorHandle : AutoCloseable {
     /** The real termlib emulator for the Terminal composable; null in fakes. */
     val terminalEmulator: TerminalEmulator?
 
+    /** Snapshot-published alternate-screen state. */
+    val isAltScreenActive: Boolean
+
     fun writeInput(bytes: ByteArray)
 
     fun resize(rows: Int, cols: Int)
@@ -82,6 +85,7 @@ fun interface TmuxPaneEmulatorFactory {
         initialCols: Int,
         colors: TmuxPaneColors,
         minUpdateIntervalMs: Long,
+        maxScrollbackLines: Int,
         onKeyboardInput: (ByteArray) -> Unit,
         onBell: () -> Unit,
         onCommandFinished: (durationMs: Long) -> Unit,
@@ -89,7 +93,7 @@ fun interface TmuxPaneEmulatorFactory {
 
     companion object {
         /** The real termlib emulator (requires Android). */
-        val REAL = TmuxPaneEmulatorFactory { rows, cols, colors, minUpdateIntervalMs, onKeyboardInput, onBell, onCommandFinished ->
+        val REAL = TmuxPaneEmulatorFactory { rows, cols, colors, minUpdateIntervalMs, maxScrollbackLines, onKeyboardInput, onBell, onCommandFinished ->
             val emulator = TerminalEmulatorFactory.create(
                 initialRows = rows,
                 initialCols = cols,
@@ -102,6 +106,7 @@ fun interface TmuxPaneEmulatorFactory {
                 onProgressChange = { _, _ -> },
                 onCommandFinished = onCommandFinished,
                 minUpdateIntervalMs = minUpdateIntervalMs,
+                maxScrollbackLines = maxScrollbackLines,
             ).also { created ->
                 colors.ansiColors?.let { ansi ->
                     created.applyColorScheme(
@@ -113,6 +118,8 @@ fun interface TmuxPaneEmulatorFactory {
             }
             object : TmuxPaneEmulatorHandle {
                 override val terminalEmulator: TerminalEmulator = emulator
+                override val isAltScreenActive: Boolean
+                    get() = emulator.isAltScreenActive()
 
                 override fun writeInput(bytes: ByteArray) {
                     emulator.writeInput(bytes)
@@ -168,6 +175,7 @@ class TmuxPaneTerminal(
         initialCols = initialCols.coerceAtLeast(1),
         colors = colors,
         minUpdateIntervalMs = minUpdateIntervalMs,
+        maxScrollbackLines = MAX_BACKFILL_LINES,
         onKeyboardInput = { data -> keyboardBytes.trySend(data) },
         onBell = { onBell(sessionId, paneId) },
         onCommandFinished = { durationMs ->
@@ -180,6 +188,10 @@ class TmuxPaneTerminal(
     /** The termlib emulator for the Terminal composable (real factory only). */
     val emulator: TerminalEmulator?
         get() = handle.terminalEmulator
+
+    /** Whether this pane is currently rendering a full-screen alternate buffer. */
+    val isAltScreenActive: Boolean
+        get() = handle.isAltScreenActive
 
     /** Sticky-modifier behavior for [keyHandler]; the bridge sets the pref value. */
     @Volatile
@@ -220,23 +232,37 @@ class TmuxPaneTerminal(
      * live. Must be called once, before the pane is shown.
      */
     suspend fun backfill(scrollbackLines: Int = DEFAULT_BACKFILL_LINES) {
-        val capture = runCatching {
+        val primaryCapture = runCatching {
             sendCommand("capture-pane -e -p -t $paneId -S -$scrollbackLines")
         }.getOrNull()
+        var latestCaptureSeq = 0L
 
-        if (capture != null && capture.ok) {
-            synchronized(outputLock) { backfillSeq = capture.seq }
-            val text = capture.lines.joinToString("\r\n")
-            if (text.isNotEmpty()) {
-                handle.writeInput(text.toByteArray(Charsets.UTF_8))
-            }
+        if (primaryCapture != null && primaryCapture.ok) {
+            latestCaptureSeq = primaryCapture.seq
+            writeCapture(primaryCapture)
         } else {
-            // No capture: everything that streams in is new.
-            synchronized(outputLock) { backfillSeq = 0 }
             Timber.d("tmux capture-pane backfill failed for %s", paneId)
         }
 
-        positionCursor()
+        val screenState = readScreenState()
+        if (screenState?.altScreenActive == true) {
+            val alternateCapture = runCatching {
+                sendCommand("capture-pane -a -e -p -t $paneId")
+            }.getOrNull()
+            if (alternateCapture != null && alternateCapture.ok) {
+                latestCaptureSeq = maxOf(latestCaptureSeq, alternateCapture.seq)
+                screenState.primaryCursor?.let(::positionCursor)
+                handle.writeInput(ENTER_ALT_SCREEN_SEQUENCE)
+                writeCapture(alternateCapture)
+                positionCursor(screenState.cursor)
+            } else {
+                Timber.d("tmux alternate-screen capture failed for %s", paneId)
+            }
+        } else {
+            screenState?.cursor?.let(::positionCursor)
+        }
+
+        synchronized(outputLock) { backfillSeq = latestCaptureSeq }
 
         val queued: List<TmuxNotification.Output>
         synchronized(outputLock) {
@@ -247,14 +273,38 @@ class TmuxPaneTerminal(
         queued.forEach { handle.writeInput(it.bytes) }
     }
 
-    private suspend fun positionCursor() {
-        val cursor = runCatching {
-            sendCommand("display-message -p -t $paneId '#{cursor_x}\t#{cursor_y}'")
-        }.getOrNull() ?: return
-        val parts = cursor.lines.firstOrNull()?.split('\t') ?: return
-        val x = parts.getOrNull(0)?.toIntOrNull() ?: return
-        val y = parts.getOrNull(1)?.toIntOrNull() ?: return
-        handle.writeInput("\u001b[${y + 1};${x + 1}H".toByteArray())
+    private fun writeCapture(capture: TmuxReply) {
+        val text = capture.lines.joinToString("\r\n")
+        if (text.isNotEmpty()) {
+            handle.writeInput(text.toByteArray(Charsets.UTF_8))
+        }
+    }
+
+    private suspend fun readScreenState(): TmuxPaneScreenState? {
+        val reply = runCatching {
+            sendCommand(
+                "display-message -p -t $paneId " +
+                    "'#{alternate_on}\t#{cursor_x}\t#{cursor_y}\t#{alternate_saved_x}\t#{alternate_saved_y}'",
+            )
+        }.getOrNull() ?: return null
+        if (!reply.ok) return null
+        val parts = reply.lines.firstOrNull()?.split('\t') ?: return null
+        val cursor = TmuxCursor(
+            x = parts.getOrNull(1)?.toIntOrNull() ?: return null,
+            y = parts.getOrNull(2)?.toIntOrNull() ?: return null,
+        )
+        val primaryCursor = parts.getOrNull(3)?.toIntOrNull()?.let { x ->
+            parts.getOrNull(4)?.toIntOrNull()?.let { y -> TmuxCursor(x, y) }
+        }
+        return TmuxPaneScreenState(
+            altScreenActive = parts.getOrNull(0) == "1",
+            cursor = cursor,
+            primaryCursor = primaryCursor,
+        )
+    }
+
+    private fun positionCursor(cursor: TmuxCursor) {
+        handle.writeInput("\u001b[${cursor.y + 1};${cursor.x + 1}H".toByteArray())
     }
 
     /**
@@ -268,9 +318,10 @@ class TmuxPaneTerminal(
     /**
      * Deepens the local scrollback: termlib cannot prepend history, so the
      * emulator is reset and re-fed a deeper capture (rebuild-and-swap).
-     * @return false when the depth cap was already reached
+     * @return false while the alternate screen is active or when the depth cap was reached
      */
     suspend fun loadEarlier(additionalLines: Int = DEFAULT_BACKFILL_LINES): Boolean {
+        if (isAltScreenActive) return false
         val newDepth = (backfillDepth + additionalLines).coerceAtMost(MAX_BACKFILL_LINES)
         if (newDepth == backfillDepth || destroyed.get()) return false
         backfillDepth = newDepth
@@ -360,8 +411,17 @@ class TmuxPaneTerminal(
 
         /** RIS — full terminal reset before re-feeding captured content. */
         private val RESET_SEQUENCE = "\u001bc".toByteArray()
+        private val ENTER_ALT_SCREEN_SEQUENCE = "\u001b[?1049h".toByteArray()
         private const val MAX_PENDING_OUTPUT = 512
         private const val INPUT_COALESCE_MS = 8L
         private const val INPUT_COALESCE_BYTES = 128
     }
 }
+
+private data class TmuxCursor(val x: Int, val y: Int)
+
+private data class TmuxPaneScreenState(
+    val altScreenActive: Boolean,
+    val cursor: TmuxCursor,
+    val primaryCursor: TmuxCursor?,
+)

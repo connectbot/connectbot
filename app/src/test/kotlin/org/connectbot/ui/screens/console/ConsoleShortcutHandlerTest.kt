@@ -19,24 +19,45 @@ package org.connectbot.ui.screens.console
 
 import androidx.compose.ui.input.key.KeyEvent
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import org.connectbot.terminal.SelectionController
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.`when`
 import android.view.KeyEvent as AndroidKeyEvent
 
 @RunWith(AndroidJUnit4::class)
 class ConsoleShortcutHandlerTest {
     @Test
-    fun handleConsoleShortcut_invokesCtrlShiftActions() {
+    fun selectedTextForFloatingInput_readsWithoutCopySideEffects() {
+        val controller = mock(SelectionController::class.java)
+        `when`(controller.getSelectedText()).thenReturn("selected command")
+
+        assertEquals("selected command", selectedTextForFloatingInput(controller))
+        assertEquals("", selectedTextForFloatingInput(null))
+    }
+
+    @Test
+    fun routeTextToActiveTerminal_prefersTmuxPane() {
+        val hostText = mutableListOf<String>()
+        val tmuxText = mutableListOf<String>()
+
+        routeTextToActiveTerminal("pane", tmuxText::add, hostText::add)
+        routeTextToActiveTerminal("host", null, hostText::add)
+
+        assertEquals(listOf("pane"), tmuxText)
+        assertEquals(listOf("host"), hostText)
+    }
+
+    @Test
+    fun handleConsoleShortcut_invokesAppOwnedCtrlShiftActions() {
         val callbacks = ShortcutCallbacks()
 
         assertTrue(callbacks.handle(keyDown(AndroidKeyEvent.KEYCODE_C, CTRL_SHIFT_META_STATE)))
         assertEquals(1, callbacks.copyCount)
-
-        assertTrue(callbacks.handle(keyDown(AndroidKeyEvent.KEYCODE_V, CTRL_SHIFT_META_STATE)))
-        assertEquals(1, callbacks.pasteCount)
 
         assertTrue(callbacks.handle(keyDown(AndroidKeyEvent.KEYCODE_EQUALS, CTRL_SHIFT_META_STATE)))
         assertEquals(1, callbacks.increaseCount)
@@ -106,66 +127,41 @@ class ConsoleShortcutHandlerTest {
     }
 
     @Test
-    fun handleConsoleShortcut_enterWithActiveSelectionClearsItWithoutConsuming() {
-        // Regression test for https://github.com/connectbot/connectbot/issues/2252:
-        // a stale terminal selection must not leave the Enter key permanently dead.
-        val callbacks = ShortcutCallbacks(selectionActive = true)
+    fun handleConsoleShortcut_leavesEnterAndPasteToTermlib() {
+        val callbacks = ShortcutCallbacks()
 
         assertFalse(callbacks.handle(keyDown(AndroidKeyEvent.KEYCODE_ENTER)))
-        assertEquals(1, callbacks.clearSelectionCount)
-    }
-
-    @Test
-    fun handleConsoleShortcut_enterWithoutSelectionIsUntouched() {
-        val callbacks = ShortcutCallbacks(selectionActive = false)
-
-        assertFalse(callbacks.handle(keyDown(AndroidKeyEvent.KEYCODE_ENTER)))
-        assertEquals(0, callbacks.clearSelectionCount)
-    }
-
-    @Test
-    fun handleConsoleShortcut_nonEnterKeysDoNotClearSelection() {
-        val callbacks = ShortcutCallbacks(selectionActive = true)
-
-        assertFalse(callbacks.handle(keyDown(AndroidKeyEvent.KEYCODE_A)))
-        assertEquals(0, callbacks.clearSelectionCount)
+        assertFalse(callbacks.handle(keyDown(AndroidKeyEvent.KEYCODE_V, CTRL_SHIFT_META_STATE)))
+        callbacks.assertNoActions()
     }
 
     private class ShortcutCallbacks(
         private val volumeKeysChangeFontSize: Boolean = false,
         private val tmuxPaneNavigation: Boolean = false,
-        private val selectionActive: Boolean = false,
     ) {
         var copyCount = 0
-        var pasteCount = 0
         var increaseCount = 0
         var decreaseCount = 0
         var nextPaneCount = 0
         var previousPaneCount = 0
-        var clearSelectionCount = 0
 
         fun handle(keyEvent: KeyEvent): Boolean = handleConsoleShortcut(
             keyEvent = keyEvent,
             volumeKeysChangeFontSize = volumeKeysChangeFontSize,
             copySelection = { copyCount++ },
-            pasteClipboardContents = { pasteCount++ },
             increaseFontSize = { increaseCount++ },
             decreaseFontSize = { decreaseCount++ },
             tmuxPaneNavigation = tmuxPaneNavigation,
             nextPane = { nextPaneCount++ },
             previousPane = { previousPaneCount++ },
-            isSelectionActive = { selectionActive },
-            clearSelection = { clearSelectionCount++ },
         )
 
         fun assertNoActions() {
             assertEquals(0, copyCount)
-            assertEquals(0, pasteCount)
             assertEquals(0, increaseCount)
             assertEquals(0, decreaseCount)
             assertEquals(0, nextPaneCount)
             assertEquals(0, previousPaneCount)
-            assertEquals(0, clearSelectionCount)
         }
     }
 

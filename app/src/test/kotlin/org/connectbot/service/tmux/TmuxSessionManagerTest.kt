@@ -263,7 +263,7 @@ class TmuxSessionManagerTest {
     fun `acquire pane terminal backfills and routes live output`() = runBlocking<Unit> {
         val fakes = mutableListOf<FakeEmulator>()
         val intervals = mutableListOf<Long>()
-        manager.paneEmulatorFactory = TmuxPaneEmulatorFactory { _, _, _, intervalMs, _, _, _ ->
+        manager.paneEmulatorFactory = TmuxPaneEmulatorFactory { _, _, _, intervalMs, _, _, _, _ ->
             FakeEmulator().also {
                 fakes.add(it)
                 intervals.add(intervalMs)
@@ -279,7 +279,7 @@ class TmuxSessionManagerTest {
                     "@1\t%2\t0\t100\t60\t0\t0\t1\n",
             )
             channel.scriptReplyFor("capture-pane", "old prompt \$\n")
-            channel.scriptReplyFor("display-message", "0\t1\n")
+            channel.scriptReplyFor("display-message", "0\t0\t1\t\t\n")
         }
         withTimeout(5_000) { manager.attach("\$0") }
 
@@ -397,7 +397,7 @@ class TmuxSessionManagerTest {
     @Test
     fun `attach enables flow control and pause triggers resume with resync`() = runBlocking<Unit> {
         val fakes = mutableListOf<FakeEmulator>()
-        manager.paneEmulatorFactory = TmuxPaneEmulatorFactory { _, _, _, _, _, _, _ ->
+        manager.paneEmulatorFactory = TmuxPaneEmulatorFactory { _, _, _, _, _, _, _, _ ->
             FakeEmulator().also { fakes.add(it) }
         }
         connectAndAwaitReady()
@@ -405,7 +405,7 @@ class TmuxSessionManagerTest {
             channel.scriptReplyFor("list-windows", "@0\t0\tshell\t1\t*\n")
             channel.scriptReplyFor("list-panes", "@0\t%0\t0\t100\t30\t0\t0\t1\n")
             channel.scriptReplyFor("capture-pane", "content\n")
-            channel.scriptReplyFor("display-message", "0\t0\n")
+            channel.scriptReplyFor("display-message", "0\t0\t0\t\t\n")
         }
         withTimeout(5_000) { manager.attach("\$0") }
         val control = factory.controlChannels.single()
@@ -415,7 +415,7 @@ class TmuxSessionManagerTest {
 
         // Flooding pane paused by tmux: we continue + resync it.
         control.scriptReplyFor("capture-pane", "fresh content after gap\n")
-        control.scriptReplyFor("display-message", "0\t0\n")
+        control.scriptReplyFor("display-message", "0\t0\t0\t\t\n")
         control.sendNotification("%pause %0")
 
         withTimeout(5_000) {

@@ -36,6 +36,8 @@ repeat with an image pinning tmux 2.6 (e.g. Ubuntu 18.04) and 3.1
 ### Rendering & input
 - [ ] vim/htop render correctly in an attached pane; server-side pane width is
       preserved with the font auto-fitted (letterboxed, not rewrapped).
+- [ ] Attach while vim/less is already running: its alternate screen appears
+      immediately; exit the app and the preserved shell screen and prompt return.
 - [ ] Typing round-trips (send-keys hex): shell editing, Ctrl-C, Esc in vim,
       sticky modifiers from the extra keyboard, IME word input, emoji + CJK output.
 - [ ] Paste 100 KB into `vim` in paste-aware mode: arrives as one bracketed paste.
@@ -84,3 +86,7 @@ repeat with an image pinning tmux 2.6 (e.g. Ubuntu 18.04) and 3.1
       error in red; history tap refills the field.
 - [ ] "Load earlier history" deepens scrollback (run `seq 1 5000` first;
       after loading, line 1 is reachable).
+- [ ] Repeat with at least 10,000 lines: progressive loads retain all requested
+      history; the action is disabled while vim/less owns the alternate screen.
+- [ ] "Copy session" in a normal tmux pane copies that pane's retained history,
+      not the host shell; in vim/less it copies only the visible full-screen buffer.

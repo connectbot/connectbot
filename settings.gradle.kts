@@ -4,6 +4,9 @@ pluginManagement {
         gradlePluginPortal()
     }
 }
+plugins {
+    id("org.gradle.toolchains.foojay-resolver-convention") version "1.0.0"
+}
 
 @file:Suppress("ktlint:standard:property-naming")
 val TRANSLATIONS_ONLY: String? by settings

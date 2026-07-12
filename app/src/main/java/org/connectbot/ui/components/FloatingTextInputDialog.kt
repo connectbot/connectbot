@@ -73,7 +73,6 @@ import androidx.compose.ui.window.PopupProperties
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
 import org.connectbot.R
-import org.connectbot.service.TerminalBridge
 import org.connectbot.util.TerminalTextUtils
 import kotlin.math.roundToInt
 
@@ -141,9 +140,9 @@ private const val MIN_HEIGHT_DP = 80f
  */
 @Composable
 fun FloatingTextInputDialog(
-    bridge: TerminalBridge,
-    initialText: String = "",
+    onSend: (String) -> Unit,
     onDismiss: () -> Unit,
+    initialText: String = "",
 ) {
     val context = LocalContext.current
     val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
@@ -192,7 +191,7 @@ fun FloatingTextInputDialog(
     // Send text helper function
     fun sendText() {
         if (text.isNotEmpty()) {
-            bridge.injectString(TerminalTextUtils.normalizeLineBreaks(text))
+            onSend(TerminalTextUtils.normalizeLineBreaks(text))
             text = ""
         }
     }
