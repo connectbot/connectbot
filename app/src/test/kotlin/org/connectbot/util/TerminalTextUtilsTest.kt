@@ -111,4 +111,50 @@ class TerminalTextUtilsTest {
         assertEquals("", TerminalTextUtils.buildSessionText(emptyList()))
         assertEquals("", TerminalTextUtils.buildSessionText(listOf(line(""), line(""))))
     }
+
+    @Test
+    fun buildSnapshotText_preservesVisualRowsAndTrimsPadding() {
+        assertEquals(
+            "vim line one\nwrapped continuation",
+            TerminalTextUtils.buildSnapshotText(
+                listOf("vim line one       ", "wrapped continuation", "                    "),
+            ),
+        )
+    }
+
+    @Test
+    fun buildTerminalCopyText_usesOnlyVisibleRowsOnAlternateScreen() {
+        var sessionRead = false
+
+        assertEquals(
+            "vim screen",
+            TerminalTextUtils.buildTerminalCopyText(
+                altScreenActive = true,
+                snapshotLines = { listOf("vim screen   ", "              ") },
+                sessionLines = {
+                    sessionRead = true
+                    listOf(line("shell history"))
+                },
+            ),
+        )
+        assertEquals(false, sessionRead)
+    }
+
+    @Test
+    fun buildTerminalCopyText_usesTranscriptOnPrimaryScreen() {
+        var snapshotRead = false
+
+        assertEquals(
+            "shell history\nprompt $",
+            TerminalTextUtils.buildTerminalCopyText(
+                altScreenActive = false,
+                snapshotLines = {
+                    snapshotRead = true
+                    listOf("wrong screen")
+                },
+                sessionLines = { listOf(line("shell history"), line("prompt $")) },
+            ),
+        )
+        assertEquals(false, snapshotRead)
+    }
 }

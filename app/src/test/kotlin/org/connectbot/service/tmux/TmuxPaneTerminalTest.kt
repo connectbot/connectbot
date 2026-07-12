@@ -38,9 +38,11 @@ internal class FakeEmulator : TmuxPaneEmulatorHandle {
     var bell: (() -> Unit)? = null
     var commandFinished: ((Long) -> Unit)? = null
     var minUpdateIntervalMs = 0L
+    var maxScrollbackLines = 0
     var closeCount = 0
 
     override val terminalEmulator: TerminalEmulator? = null
+    override var isAltScreenActive: Boolean = false
 
     val text: String
         get() = synchronized(writes) {
@@ -48,6 +50,9 @@ internal class FakeEmulator : TmuxPaneEmulatorHandle {
         }
 
     override fun writeInput(bytes: ByteArray) {
+        val text = bytes.toString(Charsets.UTF_8)
+        if ("\u001bc" in text || "\u001b[?1049l" in text) isAltScreenActive = false
+        if ("\u001b[?1049h" in text) isAltScreenActive = true
         synchronized(writes) { writes.add(bytes.copyOf()) }
     }
 
@@ -90,16 +95,20 @@ class TmuxPaneTerminalTest {
         scope = scope,
         sendCommand = { command ->
             synchronized(commandLog) { commandLog.add(command) }
-            replies.entries.firstOrNull { command.startsWith(it.key) }?.value
+            replies.entries
+                .filter { command.startsWith(it.key) }
+                .maxByOrNull { it.key.length }
+                ?.value
                 ?: TmuxReply(0, true, emptyList())
         },
         onBell = onBell,
         onCommandCompletion = onCommandCompletion,
-        emulatorFactory = { rows, cols, _, intervalMs, onKeyboardInput, onBellCallback, onCommandFinished ->
+        emulatorFactory = { rows, cols, _, intervalMs, scrollbackLines, onKeyboardInput, onBellCallback, onCommandFinished ->
             fakeEmulator.also {
                 it.rows = rows
                 it.cols = cols
                 it.minUpdateIntervalMs = intervalMs
+                it.maxScrollbackLines = scrollbackLines
                 it.keyboardInput = onKeyboardInput
                 it.bell = onBellCallback
                 it.commandFinished = onCommandFinished
@@ -112,7 +121,7 @@ class TmuxPaneTerminalTest {
     @Test
     fun `backfill writes capture then cursor then later output only`() = runBlocking<Unit> {
         replies["capture-pane"] = TmuxReply(1, true, listOf("history line", "prompt \$"), seq = 10)
-        replies["display-message"] = TmuxReply(2, true, listOf("8\t1"), seq = 11)
+        replies["display-message"] = TmuxReply(2, true, listOf("0\t8\t1\t\t"), seq = 11)
 
         val terminal = terminal()
         // Events racing ahead of the backfill: seq 9 is inside the capture,
@@ -127,6 +136,66 @@ class TmuxPaneTerminalTest {
         assertThat(text).contains("[2;9H") // cursor y=1,x=8 → row 2, col 9
         assertThat(text).doesNotContain("already-captured")
         assertThat(text).endsWith("new-bytes")
+    }
+
+    @Test
+    fun `alternate-screen backfill restores primary and alternate buffers`() = runBlocking<Unit> {
+        replies["capture-pane"] = TmuxReply(1, true, listOf("shell history", "prompt \$"), seq = 10)
+        replies["capture-pane -a"] = TmuxReply(2, true, listOf("vim buffer", "~"), seq = 12)
+        replies["display-message"] = TmuxReply(3, true, listOf("1\t4\t2\t7\t3"), seq = 11)
+
+        val terminal = terminal()
+        terminal.handleOutput(output(11, "already-in-alt-capture"))
+        terminal.handleOutput(output(13, "new-alt-output"))
+
+        terminal.backfill()
+
+        val text = fakeEmulator.text
+        assertThat(text).contains("shell history\r\nprompt \$")
+        assertThat(text).contains("\u001b[4;8H\u001b[?1049hvim buffer\r\n~\u001b[3;5H")
+        assertThat(text).doesNotContain("already-in-alt-capture")
+        assertThat(text).endsWith("new-alt-output")
+        assertThat(terminal.isAltScreenActive).isTrue()
+        assertThat(commandLog).anyMatch { it.startsWith("capture-pane -a") }
+    }
+
+    @Test
+    fun `load earlier is blocked on alternate screen`() = runBlocking<Unit> {
+        fakeEmulator.isAltScreenActive = true
+        val terminal = terminal()
+
+        assertThat(terminal.loadEarlier()).isFalse()
+        assertThat(commandLog).isEmpty()
+    }
+
+    @Test
+    fun `load earlier progressively requests history within retained limit`() = runBlocking<Unit> {
+        val terminal = terminal()
+
+        assertThat(terminal.loadEarlier()).isTrue()
+        assertThat(terminal.loadEarlier()).isTrue()
+
+        assertThat(fakeEmulator.maxScrollbackLines).isEqualTo(TmuxPaneTerminal.MAX_BACKFILL_LINES)
+        assertThat(commandLog).anyMatch { it.contains("-S -4000") }
+        assertThat(commandLog).anyMatch { it.contains("-S -6000") }
+    }
+
+    @Test
+    fun `resync resets and rebuilds alternate screen`() = runBlocking<Unit> {
+        replies["capture-pane"] = TmuxReply(1, true, listOf("primary"), seq = 10)
+        replies["capture-pane -a"] = TmuxReply(2, true, listOf("alternate"), seq = 12)
+        replies["display-message"] = TmuxReply(3, true, listOf("1\t0\t0\t0\t0"), seq = 11)
+        val terminal = terminal()
+        terminal.backfill()
+        val writesBeforeResync = fakeEmulator.writes.size
+
+        terminal.resync()
+
+        val resyncText = fakeEmulator.writes.drop(writesBeforeResync)
+            .joinToString("") { it.toString(Charsets.UTF_8) }
+        assertThat(resyncText).startsWith("\u001bcprimary")
+        assertThat(resyncText).contains("\u001b[?1049halternate")
+        assertThat(terminal.isAltScreenActive).isTrue()
     }
 
     @Test
@@ -201,6 +270,7 @@ class TmuxPaneTerminalTest {
         assertThat(fakeEmulator.rows).isEqualTo(1)
         assertThat(fakeEmulator.cols).isEqualTo(1)
         assertThat(fakeEmulator.minUpdateIntervalMs).isEqualTo(250L)
+        assertThat(fakeEmulator.maxScrollbackLines).isEqualTo(TmuxPaneTerminal.MAX_BACKFILL_LINES)
 
         terminal.resize(rows = -1, cols = 0)
 

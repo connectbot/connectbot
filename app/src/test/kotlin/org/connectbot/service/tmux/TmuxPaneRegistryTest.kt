@@ -48,7 +48,7 @@ class TmuxPaneRegistryTest {
         colors = TmuxPaneColors.DEFAULT,
         scope = scope,
         sendCommand = { TmuxReply(0, true, emptyList()) },
-        emulatorFactory = { _, _, _, _, _, _, _ ->
+        emulatorFactory = { _, _, _, _, _, _, _, _ ->
             FakeEmulator().also { emulators["$sessionId|$paneId"] = it }
         },
     )

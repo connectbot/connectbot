@@ -60,4 +60,24 @@ object TerminalTextUtils {
         }
         return builder.toString().trimEnd('\n')
     }
+
+    /**
+     * Builds plain text from the visible rows of a terminal snapshot.
+     * Each snapshot row remains a separate line because the public snapshot
+     * text API intentionally does not expose soft-wrap metadata.
+     */
+    fun buildSnapshotText(lines: List<String>): String = buildSessionText(
+        lines.map { TerminalSessionLine(text = it, softWrapped = false) },
+    )
+
+    /** Selects the truthful copy source for the emulator's active screen. */
+    fun buildTerminalCopyText(
+        altScreenActive: Boolean,
+        snapshotLines: () -> List<String>,
+        sessionLines: () -> List<TerminalSessionLine>,
+    ): String = if (altScreenActive) {
+        buildSnapshotText(snapshotLines())
+    } else {
+        buildSessionText(sessionLines())
+    }
 }

@@ -214,34 +214,28 @@ internal object ConsoleTestTags {
     const val AUTH_BANNER_MESSAGE = "auth_banner_message"
 }
 
+internal fun selectedTextForFloatingInput(controller: SelectionController?): String = controller?.getSelectedText().orEmpty()
+
+internal fun routeTextToActiveTerminal(
+    text: String,
+    tmuxSender: ((String) -> Unit)?,
+    hostSender: (String) -> Unit,
+) {
+    (tmuxSender ?: hostSender)(text)
+}
+
 internal fun handleConsoleShortcut(
     keyEvent: KeyEvent,
     volumeKeysChangeFontSize: Boolean,
     copySelection: () -> Unit,
-    pasteClipboardContents: () -> Unit,
     increaseFontSize: () -> Unit,
     decreaseFontSize: () -> Unit,
     /** Active tmux tab + pref: volume keys switch panes instead of font size. */
     tmuxPaneNavigation: Boolean = false,
     nextPane: () -> Unit = {},
     previousPane: () -> Unit = {},
-    isSelectionActive: () -> Boolean = { false },
-    clearSelection: () -> Unit = {},
 ): Boolean {
     if (keyEvent.type != KeyEventType.KeyDown) return false
-
-    // Enter pressed while the terminal's selection guard is armed: dismiss the
-    // selection here and let the key fall through to the terminal, unconsumed.
-    // A touch selection is finished by lifting the finger, so an Enter arriving
-    // in that state was never meant to operate on the selection — but termlib's
-    // key handler would consume it as a selection no-op, leaving Enter dead
-    // until some other guarded key healed the state. Clearing before the
-    // terminal sees the event makes Enter behave normally again.
-    // Upstream report: https://github.com/connectbot/connectbot/issues/2252
-    if (keyEvent.key == Key.Enter && isSelectionActive()) {
-        clearSelection()
-        return false
-    }
 
     return when {
         // Volume keys on a tmux tab: pane navigation (preference-gated)
@@ -258,12 +252,6 @@ internal fun handleConsoleShortcut(
         // Ctrl+Shift+C: copy selection
         keyEvent.key == Key.C && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
             copySelection()
-            true
-        }
-
-        // Ctrl+Shift+V: paste clipboard content
-        keyEvent.key == Key.V && keyEvent.isCtrlPressed && keyEvent.isShiftPressed -> {
-            pasteClipboardContents()
             true
         }
 
@@ -649,6 +637,7 @@ private fun ConsoleTerminalPage(
             onHyperlinkClick = onOpenUrl,
             delKeyMode = delKeyMode,
             onPasteRequest = onPasteRequest,
+            onPasteShortcut = onPasteRequest,
             onInterceptKey = onInterceptKey,
             cursorBlinkMode = if (einkMode) CursorBlinkMode.Never else CursorBlinkMode.Terminal,
             textAntiAlias = !einkMode,
@@ -1305,11 +1294,12 @@ fun ConsoleScreen(
             if (!clip.isNullOrBlank()) {
                 val normalized = TerminalTextUtils.normalizeLineBreaks(clip)
                 val paneTerminal = uiState.currentPaneTerminal
-                if (paneTerminal != null && uiState.currentTab is ConsoleTab.TmuxSession) {
-                    paneTerminal.paste(normalized)
-                } else {
-                    bridge.injectString(normalized)
-                }
+                    ?.takeIf { uiState.currentTab is ConsoleTab.TmuxSession }
+                routeTextToActiveTerminal(
+                    text = normalized,
+                    tmuxSender = paneTerminal?.let { pane -> pane::paste },
+                    hostSender = bridge::injectString,
+                )
             }
         }
     }
@@ -1318,8 +1308,13 @@ fun ConsoleScreen(
 
     fun copySessionToClipboard() {
         val bridge = currentBridge ?: return
-        val sessionText = TerminalTextUtils.buildSessionText(
-            TerminalSessionReader.readSessionLines(bridge.terminalEmulator),
+        val paneTerminal = uiState.currentPaneTerminal
+            ?.takeIf { uiState.currentTab is ConsoleTab.TmuxSession }
+        val emulator = paneTerminal?.emulator ?: bridge.terminalEmulator
+        val sessionText = TerminalTextUtils.buildTerminalCopyText(
+            altScreenActive = emulator.isAltScreenActive(),
+            snapshotLines = emulator::getSnapshotLineTexts,
+            sessionLines = { TerminalSessionReader.readSessionLines(emulator) },
         )
         if (sessionText.isEmpty()) return
 
@@ -1353,7 +1348,6 @@ fun ConsoleScreen(
                 keyEvent = keyEvent,
                 volumeKeysChangeFontSize = volumeKeysChangeFontSize,
                 copySelection = { selectionController?.copySelection() },
-                pasteClipboardContents = { pasteClipboardContents() },
                 increaseFontSize = { currentBridge?.increaseFontSize() },
                 decreaseFontSize = { currentBridge?.decreaseFontSize() },
                 tmuxPaneNavigation = volumeKeysSwitchTmuxPanes &&
@@ -1361,8 +1355,6 @@ fun ConsoleScreen(
                     uiState.currentPaneTerminal != null,
                 nextPane = { viewModel.selectPane(1) },
                 previousPane = { viewModel.selectPane(-1) },
-                isSelectionActive = { selectionController?.isSelectionActive == true },
-                clearSelection = { selectionController?.clearSelection() },
             )
         }
 
@@ -1784,12 +1776,19 @@ fun ConsoleScreen(
         }
 
         if (showTextInputDialog && promptState == null && currentBridge != null) {
-            // TODO: Get selected text from TerminalEmulator when selection is implemented
-            val selectedText = ""
+            val selectedText = selectedTextForFloatingInput(selectionController)
+            val paneTerminal = uiState.currentPaneTerminal
+                ?.takeIf { uiState.currentTab is ConsoleTab.TmuxSession }
 
             FloatingTextInputDialog(
-                bridge = currentBridge,
                 initialText = selectedText,
+                onSend = { text ->
+                    routeTextToActiveTerminal(
+                        text = text,
+                        tmuxSender = paneTerminal?.let { pane -> pane::paste },
+                        hostSender = currentBridge::injectString,
+                    )
+                },
                 onDismiss = {
                     showTextInputDialog = false
                     termFocusRequester.requestFocus()
@@ -1987,9 +1986,8 @@ fun ConsoleScreen(
                                 )
 
                                 // tmux command palette (attached tmux tab only)
-                                if (uiState.currentTab is ConsoleTab.TmuxSession &&
-                                    uiState.currentPaneTerminal != null
-                                ) {
+                                val attachedTmuxPane = uiState.currentPaneTerminal
+                                if (uiState.currentTab is ConsoleTab.TmuxSession && attachedTmuxPane != null) {
                                     DropdownMenuItem(
                                         text = { Text(stringResource(R.string.tmux_actions_title)) },
                                         onClick = {
@@ -2011,6 +2009,7 @@ fun ConsoleScreen(
                                             showMenu = false
                                             viewModel.loadEarlierTmuxHistory()
                                         },
+                                        enabled = !attachedTmuxPane.isAltScreenActive,
                                     )
                                 }
 
