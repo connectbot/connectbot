@@ -170,6 +170,10 @@ class TmuxPaneTerminal(
     ) -> Unit = { _, _, _, _ -> },
     emulatorFactory: TmuxPaneEmulatorFactory = TmuxPaneEmulatorFactory.REAL,
 ) {
+    private val keyboardBytes = Channel<ByteArray>(Channel.UNLIMITED)
+    private val destroyed = AtomicBoolean(false)
+    private val emulatorLifecycleLock = Any()
+
     private val handle: TmuxPaneEmulatorHandle = emulatorFactory.create(
         initialRows = initialRows.coerceAtLeast(1),
         initialCols = initialCols.coerceAtLeast(1),
@@ -179,9 +183,13 @@ class TmuxPaneTerminal(
         onKeyboardInput = { data -> keyboardBytes.trySend(data) },
         onBell = { onBell(sessionId, paneId) },
         onCommandFinished = { durationMs ->
-            // Snippet captured now, while this pane's emulator is
-            // guaranteed alive (LRU eviction could destroy it later).
-            onCommandCompletion(sessionId, paneId, durationMs, commandOutputSnippet(handle.terminalEmulator))
+            synchronized(emulatorLifecycleLock) {
+                if (!destroyed.get()) {
+                    // Snippet captured now, while this pane's emulator is
+                    // guaranteed alive (LRU eviction could destroy it later).
+                    onCommandCompletion(sessionId, paneId, durationMs, commandOutputSnippet(handle.terminalEmulator))
+                }
+            }
         },
     )
 
@@ -208,16 +216,12 @@ class TmuxPaneTerminal(
         )
     }
 
-    private val keyboardBytes = Channel<ByteArray>(Channel.UNLIMITED)
     private val inputJob: Job
 
     private val outputLock = Any()
     private var live = false
     private var backfillSeq = Long.MAX_VALUE
     private val pendingOutput = ArrayDeque<TmuxNotification.Output>()
-
-    private val destroyed = AtomicBoolean(false)
-    private val emulatorLifecycleLock = Any()
 
     /** Current backfill depth; grows via [loadEarlier]. */
     @Volatile
@@ -252,11 +256,12 @@ class TmuxPaneTerminal(
             if (alternateCapture != null && alternateCapture.ok) {
                 latestCaptureSeq = maxOf(latestCaptureSeq, alternateCapture.seq)
                 screenState.primaryCursor?.let(::positionCursor)
-                handle.writeInput(ENTER_ALT_SCREEN_SEQUENCE)
+                writeToEmulator(ENTER_ALT_SCREEN_SEQUENCE)
                 writeCapture(alternateCapture)
                 positionCursor(screenState.cursor)
             } else {
                 Timber.d("tmux alternate-screen capture failed for %s", paneId)
+                screenState.primaryCursor?.let(::positionCursor)
             }
         } else {
             screenState?.cursor?.let(::positionCursor)
@@ -270,13 +275,13 @@ class TmuxPaneTerminal(
             pendingOutput.clear()
             live = true
         }
-        queued.forEach { handle.writeInput(it.bytes) }
+        queued.forEach { writeToEmulator(it.bytes) }
     }
 
     private fun writeCapture(capture: TmuxReply) {
         val text = capture.lines.joinToString("\r\n")
         if (text.isNotEmpty()) {
-            handle.writeInput(text.toByteArray(Charsets.UTF_8))
+            writeToEmulator(text.toByteArray(Charsets.UTF_8))
         }
     }
 
@@ -304,7 +309,7 @@ class TmuxPaneTerminal(
     }
 
     private fun positionCursor(cursor: TmuxCursor) {
-        handle.writeInput("\u001b[${cursor.y + 1};${cursor.x + 1}H".toByteArray())
+        writeToEmulator("\u001b[${cursor.y + 1};${cursor.x + 1}H".toByteArray())
     }
 
     /**
@@ -336,7 +341,7 @@ class TmuxPaneTerminal(
             backfillSeq = Long.MAX_VALUE
             pendingOutput.clear()
         }
-        handle.writeInput(RESET_SEQUENCE)
+        writeToEmulator(RESET_SEQUENCE)
         backfill(depth)
     }
 
@@ -352,7 +357,16 @@ class TmuxPaneTerminal(
             }
             if (output.seq <= backfillSeq) return
         }
-        handle.writeInput(output.bytes)
+        writeToEmulator(output.bytes)
+    }
+
+    /** Writes only while the emulator handle is guaranteed to remain open. */
+    private fun writeToEmulator(bytes: ByteArray) {
+        synchronized(emulatorLifecycleLock) {
+            if (!destroyed.get()) {
+                handle.writeInput(bytes)
+            }
+        }
     }
 
     /** Applies a server-side pane resize (from `%layout-change`). */
@@ -379,13 +393,13 @@ class TmuxPaneTerminal(
 
     /** Unhooks everything and releases the native terminal. */
     fun destroy() {
-        if (!destroyed.compareAndSet(false, true)) return
+        synchronized(emulatorLifecycleLock) {
+            if (!destroyed.compareAndSet(false, true)) return
+            handle.close()
+        }
         inputJob.cancel()
         keyboardBytes.close()
         synchronized(outputLock) { pendingOutput.clear() }
-        synchronized(emulatorLifecycleLock) {
-            handle.close()
-        }
     }
 
     private suspend fun inputLoop() {

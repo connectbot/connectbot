@@ -36,7 +36,7 @@ fun completionThresholdMs(prefs: SharedPreferences): Long {
         PreferenceConstants.COMMAND_COMPLETION_NOTIFY,
         PreferenceConstants.DEFAULT_COMMAND_COMPLETION_NOTIFY,
     )?.toLongOrNull() ?: 0L
-    return seconds.coerceAtLeast(0) * 1000
+    return if (seconds in 0..(Long.MAX_VALUE / 1000)) seconds * 1000 else 0L
 }
 
 /**

@@ -36,6 +36,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
 import org.connectbot.keyboard.TmuxAction
+import org.connectbot.keyboard.stringResId
+
+private val DRAWER_ACTIONS = TmuxAction.entries.filterNot {
+    it == TmuxAction.OPEN_DRAWER || it == TmuxAction.PREFIX || it == TmuxAction.COPY_MODE
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,35 +63,15 @@ fun TmuxActionDrawerSheet(
                     .heightIn(max = 480.dp)
                     .padding(vertical = 12.dp),
             ) {
-                items(TmuxAction.entries) { action ->
+                items(DRAWER_ACTIONS) { action ->
                     FilledTonalButton(
                         onClick = { onAction(action) },
                         modifier = Modifier.testTag("tmux_action_${action.name}"),
                     ) {
-                        Text(tmuxActionLabel(action))
+                        Text(stringResource(action.stringResId))
                     }
                 }
             }
         }
     }
 }
-
-@Composable
-private fun tmuxActionLabel(action: TmuxAction): String = stringResource(
-    when (action) {
-        TmuxAction.SPLIT_H -> R.string.tmux_action_split_h
-        TmuxAction.SPLIT_V -> R.string.tmux_action_split_v
-        TmuxAction.ZOOM -> R.string.tmux_action_zoom
-        TmuxAction.KILL_PANE -> R.string.tmux_action_kill_pane
-        TmuxAction.BREAK_PANE -> R.string.tmux_action_break_pane
-        TmuxAction.NEW_WINDOW -> R.string.tmux_action_new_window
-        TmuxAction.NEXT_WINDOW -> R.string.tmux_action_next_window
-        TmuxAction.PREV_WINDOW -> R.string.tmux_action_prev_window
-        TmuxAction.NEXT_PANE -> R.string.tmux_action_next_pane
-        TmuxAction.PREV_PANE -> R.string.tmux_action_prev_pane
-        TmuxAction.COPY_MODE -> R.string.tmux_action_copy_mode
-        TmuxAction.PALETTE -> R.string.tmux_action_palette
-        TmuxAction.PREFIX -> R.string.tmux_action_prefix
-        TmuxAction.OPEN_DRAWER -> R.string.tmux_action_open_drawer
-    },
-)

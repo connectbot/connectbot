@@ -22,6 +22,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.awaitClose
@@ -782,16 +783,19 @@ class ConsoleViewModel @Inject constructor(
                 val context = currentTmuxContext() ?: return
                 val (tmux, target, _) = context
                 viewModelScope.launch(dispatchers.io) {
-                    runCatching {
+                    try {
                         when (action) {
                             TmuxAction.SPLIT_H -> tmux.splitPaneH(target.sessionId, target.paneId)
                             TmuxAction.SPLIT_V -> tmux.splitPaneV(target.sessionId, target.paneId)
                             TmuxAction.ZOOM -> tmux.zoomPane(target.sessionId, target.paneId)
                             TmuxAction.KILL_PANE -> tmux.killPane(target.sessionId, target.paneId)
                             TmuxAction.BREAK_PANE -> tmux.breakPane(target.sessionId, target.paneId)
-                            else -> Unit
                         }
-                    }.onFailure { _networkStatusMessages.emit(it.message ?: "tmux action failed") }
+                    } catch (e: CancellationException) {
+                        throw e
+                    } catch (e: Exception) {
+                        _networkStatusMessages.emit(e.message ?: "tmux action failed")
+                    }
                 }
             }
         }

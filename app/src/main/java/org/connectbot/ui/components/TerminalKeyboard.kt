@@ -91,6 +91,7 @@ import org.connectbot.keyboard.ModifierKey
 import org.connectbot.keyboard.SpecialKey
 import org.connectbot.keyboard.TmuxAction
 import org.connectbot.keyboard.dispatchKeySpec
+import org.connectbot.keyboard.stringResId
 import org.connectbot.service.ModifierLevel
 import org.connectbot.service.ModifierState
 import org.connectbot.service.TerminalKeyListener
@@ -440,8 +441,7 @@ private fun TerminalKey(
         )
 
         is KeySpec.Tmux -> {
-            val label = spec.label ?: spec.action.name.lowercase().replace('_', ' ')
-                .replaceFirstChar { it.uppercase() }
+            val label = spec.label ?: stringResource(spec.action.stringResId)
             KeyButton(
                 text = if (customIcon != null) null else label,
                 icon = customIcon,
