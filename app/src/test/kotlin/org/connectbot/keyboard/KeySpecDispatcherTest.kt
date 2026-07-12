@@ -116,4 +116,21 @@ class KeySpecDispatcherTest {
         assertEquals(0, dispatcher.chars.size)
         assertEquals(0, injected.size)
     }
+
+    @Test
+    fun tmuxKeyInvokesSemanticAction() {
+        val (listener, dispatcher, injected) = fixture()
+        val actions = mutableListOf<TmuxAction>()
+
+        dispatchKeySpec(
+            spec = KeySpec.Tmux(TmuxAction.SPLIT_H),
+            keyHandler = listener,
+            onTmuxAction = { actions += it },
+            injectText = { injected += it },
+        )
+
+        assertEquals(listOf(TmuxAction.SPLIT_H), actions)
+        assertEquals(0, dispatcher.keys.size)
+        assertEquals(0, injected.size)
+    }
 }

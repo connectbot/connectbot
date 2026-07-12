@@ -48,6 +48,7 @@ import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.keyboard.DefaultKeyboardLayouts
 import org.connectbot.keyboard.KeyboardKeySize
 import org.connectbot.keyboard.KeyboardLayoutSpec
+import org.connectbot.keyboard.TmuxAction
 import org.connectbot.service.DisconnectPolicy
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
@@ -754,6 +755,44 @@ class ConsoleViewModel @Inject constructor(
                 )
             _uiState.update {
                 it.copy(tmuxPaletteHistory = (it.tmuxPaletteHistory + entry).takeLast(PALETTE_HISTORY_LIMIT))
+            }
+        }
+    }
+
+    /** Runs a semantic action through tmux control mode. UI-only actions are handled by the screen. */
+    fun runTmuxAction(action: TmuxAction) {
+        when (action) {
+            TmuxAction.NEXT_WINDOW -> stepWindow(1)
+
+            TmuxAction.PREV_WINDOW -> stepWindow(-1)
+
+            TmuxAction.NEXT_PANE -> selectPane(1)
+
+            TmuxAction.PREV_PANE -> selectPane(-1)
+
+            TmuxAction.NEW_WINDOW -> newTmuxWindow()
+
+            TmuxAction.COPY_MODE,
+            TmuxAction.PALETTE,
+            TmuxAction.PREFIX,
+            TmuxAction.OPEN_DRAWER,
+            -> return
+
+            else -> {
+                val context = currentTmuxContext() ?: return
+                val (tmux, target, _) = context
+                viewModelScope.launch(dispatchers.io) {
+                    runCatching {
+                        when (action) {
+                            TmuxAction.SPLIT_H -> tmux.splitPaneH(target.sessionId, target.paneId)
+                            TmuxAction.SPLIT_V -> tmux.splitPaneV(target.sessionId, target.paneId)
+                            TmuxAction.ZOOM -> tmux.zoomPane(target.sessionId, target.paneId)
+                            TmuxAction.KILL_PANE -> tmux.killPane(target.sessionId, target.paneId)
+                            TmuxAction.BREAK_PANE -> tmux.breakPane(target.sessionId, target.paneId)
+                            else -> Unit
+                        }
+                    }.onFailure { _networkStatusMessages.emit(it.message ?: "tmux action failed") }
+                }
             }
         }
     }

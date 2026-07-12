@@ -262,4 +262,6 @@ private fun keyDescription(spec: KeySpec): String = when (spec) {
     }
 
     is KeySpec.FnGrid -> spec.label ?: stringResource(R.string.button_key_fn)
+
+    is KeySpec.Tmux -> spec.label ?: spec.action.name.replace('_', ' ')
 }

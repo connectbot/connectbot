@@ -428,6 +428,26 @@
 	<string name="keyboard_catalog_modifiers">"Modifiers"</string>
 	<string name="keyboard_catalog_symbols">"Symbols"</string>
 	<string name="keyboard_catalog_other">"Other"</string>
+	<!-- Section title for semantic tmux actions in the custom keyboard editor -->
+	<string name="keyboard_catalog_tmux">"tmux actions"</string>
+	<!-- Title of the touch-friendly tmux action drawer -->
+	<string name="tmux_actions_title">tmux actions</string>
+	<string name="tmux_action_split_h">Split left/right</string>
+	<string name="tmux_action_split_v">Split top/bottom</string>
+	<string name="tmux_action_zoom">Toggle zoom</string>
+	<string name="tmux_action_kill_pane">Kill pane</string>
+	<string name="tmux_action_break_pane">Move pane to window</string>
+	<string name="tmux_action_new_window">New window</string>
+	<string name="tmux_action_next_window">Next window</string>
+	<string name="tmux_action_prev_window">Previous window</string>
+	<string name="tmux_action_next_pane">Next pane</string>
+	<string name="tmux_action_prev_pane">Previous pane</string>
+	<string name="tmux_action_copy_mode">Copy and search</string>
+	<string name="tmux_action_palette">Command palette</string>
+	<string name="tmux_action_prefix">Prefix binding</string>
+	<string name="tmux_action_open_drawer">Open actions</string>
+	<string name="tmux_action_confirm_kill">Kill this pane for every attached client?</string>
+	<string name="tmux_action_confirm_break">Move this pane into a new window?</string>
 	<string name="keyboard_catalog_custom_text">"Custom text…"</string>
 	<string name="keyboard_catalog_combo">"Modifier combo…"</string>
 

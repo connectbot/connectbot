@@ -671,6 +671,26 @@ class TmuxSessionManager(
         sessionCommand(sessionId, "new-window -t '$sessionId'")
     }
 
+    suspend fun splitPaneH(sessionId: String, paneId: String) {
+        sessionCommand(sessionId, "split-window -h -t '$paneId'")
+    }
+
+    suspend fun splitPaneV(sessionId: String, paneId: String) {
+        sessionCommand(sessionId, "split-window -v -t '$paneId'")
+    }
+
+    suspend fun zoomPane(sessionId: String, paneId: String) {
+        sessionCommand(sessionId, "resize-pane -Z -t '$paneId'")
+    }
+
+    suspend fun killPane(sessionId: String, paneId: String) {
+        sessionCommand(sessionId, "kill-pane -t '$paneId'")
+    }
+
+    suspend fun breakPane(sessionId: String, paneId: String) {
+        sessionCommand(sessionId, "break-pane -t '$paneId'")
+    }
+
     suspend fun renameWindow(sessionId: String, windowId: String, name: String) {
         sessionCommand(sessionId, "rename-window -t '$windowId' \"${TmuxInputEncoder.quoteDouble(name)}\"")
     }
