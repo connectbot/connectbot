@@ -35,6 +35,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.callbackFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
@@ -50,6 +51,9 @@ import org.connectbot.keyboard.DefaultKeyboardLayouts
 import org.connectbot.keyboard.KeyboardKeySize
 import org.connectbot.keyboard.KeyboardLayoutSpec
 import org.connectbot.keyboard.TmuxAction
+import org.connectbot.service.AuthenticationMethod
+import org.connectbot.service.AuthorizedKeyInstallResult
+import org.connectbot.service.BridgeConnectionPhase
 import org.connectbot.service.DisconnectPolicy
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
@@ -84,6 +88,9 @@ data class ConsoleUiState(
     val currentPaneTerminal: TmuxPaneTerminal? = null,
     /** Non-null when the "start a persistent session" offer applies to this host. */
     val tmuxOfferHostId: Long? = null,
+    /** Non-null after this saved host authenticated using a password. */
+    val keySetupOfferHostId: Long? = null,
+    val isSettingUpKeyLogin: Boolean = false,
     /** Command palette history for the current console (newest last). */
     val tmuxPaletteHistory: List<org.connectbot.ui.screens.console.tmux.TmuxPaletteEntry> = emptyList(),
 ) {
@@ -156,7 +163,9 @@ class ConsoleViewModel @Inject constructor(
     private val networkStatusJobs = mutableMapOf<Long, Job>()
     private val tmuxJobs = mutableMapOf<Long, Job>()
     private val tmuxAlertJobs = mutableMapOf<Long, Job>()
+    private val keySetupJobs = mutableMapOf<Long, Job>()
     private val dismissedTmuxOffers = mutableSetOf<Long>()
+    private val dismissedKeySetupOffers = mutableSetOf<Long>()
     private var paneTerminalJob: Job? = null
 
     private val _uiState = MutableStateFlow(ConsoleUiState())
@@ -175,6 +184,14 @@ class ConsoleViewModel @Inject constructor(
     /** Snackbar messages for command completions in hidden tabs/windows. */
     private val _completionMessages = MutableSharedFlow<CompletionMessage>(extraBufferCapacity = 8)
     val completionMessages: SharedFlow<CompletionMessage> = _completionMessages.asSharedFlow()
+
+    sealed interface KeySetupEvent {
+        data object Success : KeySetupEvent
+        data class Failure(val reason: String) : KeySetupEvent
+    }
+
+    private val _keySetupEvents = MutableSharedFlow<KeySetupEvent>(extraBufferCapacity = 2)
+    val keySetupEvents: SharedFlow<KeySetupEvent> = _keySetupEvents.asSharedFlow()
 
     /** Host-shell tab keys carrying a completion badge until selected. */
     private val completionBadgeKeys = mutableSetOf<String>()
@@ -197,6 +214,7 @@ class ConsoleViewModel @Inject constructor(
                     syncBridgeProgressSubscriptions(bridges)
                     syncBridgeNetworkStatusSubscriptions(bridges)
                     syncBridgeTmuxSubscriptions(bridges)
+                    syncBridgeKeySetupSubscriptions(bridges)
                 }
             }
 
@@ -281,6 +299,38 @@ class ConsoleViewModel @Inject constructor(
                     }
                 }
             }
+        }
+    }
+
+    private fun syncBridgeKeySetupSubscriptions(bridges: List<TerminalBridge>) {
+        syncBridgeJobs(bridges, keySetupJobs) { bridge ->
+            viewModelScope.launch {
+                combine(bridge.authenticationMethod, bridge.connectionState) { method, connection ->
+                    method to connection.phase
+                }.collect { (method, phase) ->
+                    if (method == null) dismissedKeySetupOffers.remove(bridge.host.id)
+                    val current = _uiState.value.bridges.getOrNull(_uiState.value.currentBridgeIndex)
+                    if (current === bridge) {
+                        _uiState.update {
+                            it.copy(keySetupOfferHostId = computeKeySetupOffer(bridge, method, phase))
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun computeKeySetupOffer(
+        bridge: TerminalBridge,
+        method: AuthenticationMethod? = bridge.authenticationMethod.value,
+        phase: BridgeConnectionPhase = bridge.connectionState.value.phase,
+    ): Long? {
+        if (bridge.host.id <= 0L || bridge.host.protocol != "ssh") return null
+        if (bridge.host.id in dismissedKeySetupOffers) return null
+        if (phase != BridgeConnectionPhase.CONNECTED) return null
+        if (bridge.transport?.canOpenExecChannels() != true) return null
+        return bridge.host.id.takeIf {
+            method == AuthenticationMethod.PASSWORD || method == AuthenticationMethod.PASSWORD_INTERACTIVE
         }
     }
 
@@ -628,9 +678,16 @@ class ConsoleViewModel @Inject constructor(
         val tmux = bridge.tmux ?: return
         viewModelScope.launch(dispatchers.io) {
             try {
-                tmux.createSessionAndAttach(DEFAULT_TMUX_SESSION_NAME)
+                val existingNames = tmux.state.value.sessions.mapTo(mutableSetOf()) { it.name }
+                var sessionName = DEFAULT_TMUX_SESSION_NAME
+                var suffix = 2
+                while (sessionName in existingNames) {
+                    sessionName = "$DEFAULT_TMUX_SESSION_NAME-$suffix"
+                    suffix++
+                }
+                tmux.createSessionAndAttach(sessionName)
                 val sessionId = tmux.state.value.sessions
-                    .find { it.name == DEFAULT_TMUX_SESSION_NAME }?.id
+                    .find { it.name == sessionName }?.id
                 if (sessionId != null) {
                     selectTab(ConsoleTab.tmuxKey(bridge.host.id, sessionId))
                 }
@@ -649,6 +706,39 @@ class ConsoleViewModel @Inject constructor(
             val updated = bridge.host.copy(tmuxOfferDismissed = true)
             viewModelScope.launch(dispatchers.io) {
                 runCatching { terminalManager?.hostRepository?.saveHost(updated) }
+            }
+        }
+    }
+
+    fun dismissKeySetupOffer() {
+        val bridge = _uiState.value.bridges.getOrNull(_uiState.value.currentBridgeIndex) ?: return
+        dismissedKeySetupOffers.add(bridge.host.id)
+        _uiState.update { it.copy(keySetupOfferHostId = null) }
+    }
+
+    fun setupKeyLogin() {
+        val manager = terminalManager ?: return
+        val bridge = _uiState.value.bridges.getOrNull(_uiState.value.currentBridgeIndex) ?: return
+        if (_uiState.value.isSettingUpKeyLogin) return
+        _uiState.update { it.copy(isSettingUpKeyLogin = true) }
+        viewModelScope.launch {
+            val result = runCatching { manager.installAuthorizedKey(bridge) }
+                .getOrElse {
+                    AuthorizedKeyInstallResult.Failure(it.message ?: "Could not set up key login")
+                }
+            when (result) {
+                is AuthorizedKeyInstallResult.Success -> {
+                    dismissedKeySetupOffers.add(bridge.host.id)
+                    _uiState.update {
+                        it.copy(isSettingUpKeyLogin = false, keySetupOfferHostId = null)
+                    }
+                    _keySetupEvents.emit(KeySetupEvent.Success)
+                }
+
+                is AuthorizedKeyInstallResult.Failure -> {
+                    _uiState.update { it.copy(isSettingUpKeyLogin = false) }
+                    _keySetupEvents.emit(KeySetupEvent.Failure(result.reason))
+                }
             }
         }
     }
@@ -894,6 +984,7 @@ class ConsoleViewModel @Inject constructor(
                 currentBridgeIndex = newIndex,
                 isLoading = waitingForRequestedHost,
                 error = null,
+                keySetupOfferHostId = allBridges.getOrNull(newIndex)?.let(::computeKeySetupOffer),
             )
         }
 
@@ -911,6 +1002,7 @@ class ConsoleViewModel @Inject constructor(
                     currentTabKey = ConsoleTab.hostKey(bridge.host.id),
                     currentPaneTerminal = null,
                     tmuxOfferHostId = computeTmuxOffer(it.bridges, index),
+                    keySetupOfferHostId = computeKeySetupOffer(bridge),
                 )
             }
             updateCurrentBridgeProgress()

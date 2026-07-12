@@ -152,6 +152,7 @@ import org.connectbot.service.DisconnectReason
 import org.connectbot.service.PromptRequest
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.tmux.TmuxAttachState
+import org.connectbot.service.tmux.TmuxAvailability
 import org.connectbot.service.tmux.TmuxPaneTerminal
 import org.connectbot.terminal.ComposeController
 import org.connectbot.terminal.CursorBlinkMode
@@ -176,6 +177,7 @@ import org.connectbot.ui.screens.console.tmux.TmuxActionDrawerSheet
 import org.connectbot.ui.screens.console.tmux.TmuxActionMenuDialog
 import org.connectbot.ui.screens.console.tmux.TmuxCommandPaletteSheet
 import org.connectbot.ui.screens.console.tmux.TmuxConfirmDialog
+import org.connectbot.ui.screens.console.tmux.TmuxHubSheet
 import org.connectbot.ui.screens.console.tmux.TmuxKillConfirmDialog
 import org.connectbot.ui.screens.console.tmux.TmuxOfferBanner
 import org.connectbot.ui.screens.console.tmux.TmuxRenameDialog
@@ -215,6 +217,12 @@ internal object ConsoleTestTags {
 }
 
 internal fun selectedTextForFloatingInput(controller: SelectionController?): String = controller?.getSelectedText().orEmpty()
+
+internal fun shouldShowExtraKeyboard(
+    keyboardAlwaysVisible: Boolean,
+    showSoftwareKeyboard: Boolean,
+    imeVisible: Boolean,
+): Boolean = keyboardAlwaysVisible || showSoftwareKeyboard || imeVisible
 
 internal fun routeTextToActiveTerminal(
     text: String,
@@ -566,6 +574,7 @@ private fun ConsoleTerminalPage(
         val coroutineScope = rememberCoroutineScope()
         val fontSize by bridge.fontSizeFlow.collectAsState()
         val delKeyMode by bridge.delKeyModeFlow.collectAsState()
+        val connectionState by bridge.connectionState.collectAsStateWithLifecycle()
         val einkMode = LocalEinkMode.current
 
         LaunchedEffect(fontResult.loadFailed, fontResult.isLoading) {
@@ -695,12 +704,12 @@ private fun ConsoleTerminalPage(
             )
 
             ConnectionStatusOverlays(
-                isConnecting = bridge.isConnecting,
-                isDisconnected = bridge.isDisconnected,
+                isConnecting = connectionState.phase == org.connectbot.service.BridgeConnectionPhase.CONNECTING,
+                isDisconnected = connectionState.phase == org.connectbot.service.BridgeConnectionPhase.DISCONNECTED,
                 hasPrompt = promptState != null,
                 hostNickname = bridge.host.nickname,
-                reconnectAttempts = bridge.autoReconnectAttempts,
-                disconnectReason = bridge.disconnectReason,
+                reconnectAttempts = connectionState.reconnectAttempts,
+                disconnectReason = connectionState.disconnectReason,
                 onClose = onDisconnectRequest,
                 onReconnect = onReconnect,
                 modifier = Modifier.align(Alignment.BottomCenter),
@@ -934,9 +943,9 @@ fun ConsoleScreen(
     var tmuxKillWindowId by remember { mutableStateOf<String?>(null) }
     var showTmuxPalette by remember { mutableStateOf(false) }
     var showTmuxActionDrawer by remember { mutableStateOf(false) }
+    var showTmuxHub by remember { mutableStateOf(false) }
     var pendingTmuxAction by remember { mutableStateOf<TmuxAction?>(null) }
     var showSnippetPicker by remember { mutableStateOf(false) }
-    var showExtraKeyboard by remember { mutableStateOf(true) } // Start visible to show animation
     var hasPlayedKeyboardAnimation by remember { mutableStateOf(false) }
     var showTitleBar by remember { mutableStateOf(!titleBarHide) }
     // Non-state holder for auto-hide job to avoid unnecessary recompositions
@@ -957,6 +966,7 @@ fun ConsoleScreen(
     val currentBridge = uiState.bridges
         .getOrNull(uiState.currentBridgeIndex)
     val currentBridgeId = currentBridge?.host?.id
+    val currentTmuxState = currentBridge?.tmux?.state?.collectAsStateWithLifecycle()?.value
 
     // Surround color for everything behind and around the terminal
     // (including the area under the transparent status bar): match the
@@ -976,7 +986,7 @@ fun ConsoleScreen(
     // Check if any modal (menu or dialog) is currently active
     val anyModalActive = showMenu || showUrlScanDialog || showResizeDialog ||
         showDisconnectDialog || showTextInputDialog || showSnippetPicker ||
-        isBiometricPromptActive || currentAuthBanner != null
+        showTmuxHub || isBiometricPromptActive || currentAuthBanner != null
 
     /**
      * Unified interaction handler for terminal and keyboard.
@@ -999,36 +1009,20 @@ fun ConsoleScreen(
         autoHideJobRef.job?.cancel()
 
         if (isInteraction || keyboardScrollInProgress) {
-            // Show emulated keyboard on any interaction or while scrolling (unless always visible)
-            if (!keyboardAlwaysVisible) {
-                showExtraKeyboard = true
-            }
             // Show title bar temporarily ONLY when terminal is tapped (if auto-hide enabled)
             if (titleBarHide && isTerminalTap) {
                 showTitleBar = true
             }
         }
 
-        // Ensure they are shown if they should be permanent
-        if (keyboardAlwaysVisible) showExtraKeyboard = true
         if (!titleBarHide) showTitleBar = true
 
-        // Only start the auto-hide timer if we are not actively scrolling,
-        // no modal is active, and at least one element is configured to auto-hide.
-        if (!keyboardScrollInProgress && !anyModalActive && (!keyboardAlwaysVisible || titleBarHide)) {
+        // Special-key visibility is derived from IME/preference state. Only
+        // the title bar retains interaction-based auto-hide behavior.
+        if (!keyboardScrollInProgress && !anyModalActive && titleBarHide) {
             autoHideJobRef.job = coroutineScope.launch {
                 delay(AUTO_HIDE_DELAY_MS)
-                // Accessing Compose State within coroutine to avoid stale closures
-                // Hide keyboard if not always visible
-                if (!keyboardAlwaysVisible) {
-                    showExtraKeyboard = false
-                }
-                // Hide title bar if auto-hide is enabled
-                if (titleBarHide) {
-                    showTitleBar = false
-                }
-                // Mark animation as played after first timeout
-                hasPlayedKeyboardAnimation = true
+                showTitleBar = false
             }
         }
     }
@@ -1140,6 +1134,15 @@ fun ConsoleScreen(
         imeVisible = systemImeVisible
     }
 
+    val showExtraKeyboard = shouldShowExtraKeyboard(keyboardAlwaysVisible, showSoftwareKeyboard, imeVisible)
+
+    LaunchedEffect(showExtraKeyboard) {
+        if (showExtraKeyboard && !hasPlayedKeyboardAnimation) {
+            delay(300)
+            hasPlayedKeyboardAnimation = true
+        }
+    }
+
     // Show software keyboard after biometric prompt completes (unless hardware keyboard is connected)
     LaunchedEffect(isBiometricPromptActive) {
         if (wasBiometricPromptActive && !isBiometricPromptActive && !hasHardwareKeyboard) {
@@ -1151,9 +1154,9 @@ fun ConsoleScreen(
     val hasMultipleSessions = uiState.bridges.size > 1 && !uiState.isLoading
     val swipeBetweenSessions = swipeSessionsEnabled && hasMultipleSessions
     val terminalSelectionActive = selectionController?.isSelectionActive == true
-    // These values are computed from bridge state and will recompute when uiState.revision changes
+    val currentConnectionState = currentBridge?.connectionState?.collectAsStateWithLifecycle()?.value
     val sessionOpen = currentBridge?.isSessionOpen == true
-    val disconnected = currentBridge?.isDisconnected == true
+    val disconnected = currentConnectionState?.phase == org.connectbot.service.BridgeConnectionPhase.DISCONNECTED
     val canForwardPorts = currentBridge?.canFowardPorts() == true
     val canTransferFiles = currentBridge?.canTransferFiles() == true
     val snackbarHostState = remember { SnackbarHostState() }
@@ -1232,6 +1235,18 @@ fun ConsoleScreen(
                     completion.durationText,
                 ),
             )
+        }
+    }
+
+    val keySetupSuccessMessage = stringResource(R.string.key_setup_success)
+    val keySetupFailureTemplate = stringResource(R.string.key_setup_failure)
+    LaunchedEffect(Unit) {
+        viewModel.keySetupEvents.collect { event ->
+            val message = when (event) {
+                ConsoleViewModel.KeySetupEvent.Success -> keySetupSuccessMessage
+                is ConsoleViewModel.KeySetupEvent.Failure -> String.format(keySetupFailureTemplate, event.reason)
+            }
+            snackbarHostState.showSnackbar(message, withDismissAction = true)
         }
     }
 
@@ -1541,13 +1556,21 @@ fun ConsoleScreen(
                             }
                         }
 
-                        // One-tap persistent-session offer for this host
-                        if (tmuxTab == null && uiState.tmuxOfferHostId == bridge.host.id) {
-                            TmuxOfferBanner(
-                                onStart = { viewModel.startTmuxSession() },
-                                onDismiss = { viewModel.dismissTmuxOffer() },
-                                modifier = Modifier.align(Alignment.TopCenter),
-                            )
+                        Column(modifier = Modifier.align(Alignment.TopCenter)) {
+                            if (uiState.keySetupOfferHostId == bridge.host.id) {
+                                KeySetupOfferBanner(
+                                    isInstalling = uiState.isSettingUpKeyLogin,
+                                    onSetup = viewModel::setupKeyLogin,
+                                    onDismiss = viewModel::dismissKeySetupOffer,
+                                )
+                            }
+                            // One-tap persistent-session offer for this host
+                            if (tmuxTab == null && uiState.tmuxOfferHostId == bridge.host.id) {
+                                TmuxOfferBanner(
+                                    onStart = { viewModel.startTmuxSession() },
+                                    onDismiss = { viewModel.dismissTmuxOffer() },
+                                )
+                            }
                         }
                     }
                 }
@@ -1661,6 +1684,21 @@ fun ConsoleScreen(
                 history = uiState.tmuxPaletteHistory,
                 onRunCommand = { viewModel.runTmuxCommand(it) },
                 onDismiss = { showTmuxPalette = false },
+            )
+        }
+
+        if (showTmuxHub && currentTmuxState != null) {
+            TmuxHubSheet(
+                state = currentTmuxState,
+                onSelectSession = { sessionId ->
+                    showTmuxHub = false
+                    viewModel.selectTab(ConsoleTab.tmuxKey(currentBridge.host.id, sessionId))
+                },
+                onCreateSession = {
+                    showTmuxHub = false
+                    viewModel.startTmuxSession()
+                },
+                onDismiss = { showTmuxHub = false },
             )
         }
 
@@ -1833,6 +1871,18 @@ fun ConsoleScreen(
                         TopAppBarDefaults.topAppBarColors()
                     },
                     actions = {
+                        if (
+                            currentTmuxState?.availability == TmuxAvailability.PROBING ||
+                            currentTmuxState?.availability == TmuxAvailability.READY
+                        ) {
+                            TextButton(
+                                onClick = { showTmuxHub = true },
+                                modifier = Modifier.testTag("tmux_hub_action"),
+                            ) {
+                                Text(stringResource(R.string.tmux_hub_action))
+                            }
+                        }
+
                         if (hasMultipleSessions) {
                             IconButton(onClick = { showSessionPickerDialog = true }) {
                                 Icon(

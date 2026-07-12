@@ -17,6 +17,8 @@
 
 package org.connectbot
 
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
@@ -24,6 +26,9 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.flow.MutableStateFlow
+import org.connectbot.service.BridgeConnectionPhase
+import org.connectbot.service.BridgeConnectionState
 import org.connectbot.service.DisconnectReason
 import org.connectbot.ui.screens.console.ConnectionStatusOverlays
 import org.connectbot.ui.theme.ConnectBotTheme
@@ -82,6 +87,37 @@ class ConnectionStatusOverlaysTest {
         composeTestRule
             .onNodeWithText(string(R.string.console_connecting_status, HOST_NICKNAME))
             .assertIsDisplayed()
+    }
+
+    @Test
+    fun replayedConnectedState_removesConnectingStatus() {
+        val connection = MutableStateFlow(
+            BridgeConnectionState(phase = BridgeConnectionPhase.CONNECTING),
+        )
+        composeTestRule.setContent {
+            val state by connection.collectAsState()
+            ConnectBotTheme {
+                ConnectionStatusOverlays(
+                    isConnecting = state.phase == BridgeConnectionPhase.CONNECTING,
+                    isDisconnected = state.phase == BridgeConnectionPhase.DISCONNECTED,
+                    hasPrompt = false,
+                    hostNickname = HOST_NICKNAME,
+                    reconnectAttempts = state.reconnectAttempts,
+                    disconnectReason = state.disconnectReason,
+                    onClose = {},
+                    onReconnect = {},
+                )
+            }
+        }
+        composeTestRule.onNodeWithText(string(R.string.console_connecting_status, HOST_NICKNAME)).assertIsDisplayed()
+
+        connection.value = BridgeConnectionState(phase = BridgeConnectionPhase.CONNECTED)
+
+        composeTestRule.waitForIdle()
+        composeTestRule
+            .onAllNodes(androidx.compose.ui.test.hasText(string(R.string.console_connecting_status, HOST_NICKNAME)))
+            .fetchSemanticsNodes()
+            .let { nodes -> assertEquals(0, nodes.size) }
     }
 
     @Test

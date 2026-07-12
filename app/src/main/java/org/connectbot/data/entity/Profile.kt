@@ -68,8 +68,9 @@ data class Profile(
     @ColumnInfo(name = "font_family")
     val fontFamily: String? = null,
 
-    @ColumnInfo(name = "font_size", defaultValue = "10")
-    val fontSize: Int = 10,
+    /** 0 selects the adaptive phone/tablet default; positive values are explicit sp sizes. */
+    @ColumnInfo(name = "font_size", defaultValue = "0")
+    val fontSize: Int = 0,
 
     @ColumnInfo(name = "del_key", defaultValue = "'del'")
     val delKey: String = "del",

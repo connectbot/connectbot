@@ -52,6 +52,7 @@ import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.service.AuthenticationMethod
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
@@ -113,6 +114,8 @@ class SSH :
     private var pubkeysExhausted = false
     private var interactiveCanContinue = true
     private var savedPasswordTried = false
+    private var interactiveAuthenticationMethod = AuthenticationMethod.MULTI_FACTOR_INTERACTIVE
+    private var interactiveChallengeCount = 0
 
     private var connection: Connection? = null
     private val jumpConnections: MutableList<Connection> = mutableListOf()
@@ -406,7 +409,7 @@ class SSH :
         val authBannerSourceName = currentHost.authBannerSourceName()
         try {
             if (connection?.authenticateWithNone(currentHost.username) == true) {
-                finishConnection()
+                finishConnection(AuthenticationMethod.NONE)
                 return
             }
         } catch (e: Exception) {
@@ -439,7 +442,7 @@ class SSH :
                         val keyPair = entry.value.pair ?: return@forEach
 
                         if (tryPublicKey(currentHost.username, entry.key, keyPair)) {
-                            finishConnection()
+                            finishConnection(AuthenticationMethod.PUBLIC_KEY)
                             return
                         }
                     }
@@ -451,7 +454,7 @@ class SSH :
                     if (pubkey == null) {
                         bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_invalid))
                     } else if (tryPublicKey(pubkey)) {
-                        finishConnection()
+                        finishConnection(AuthenticationMethod.PUBLIC_KEY)
                     }
                 }
 
@@ -463,8 +466,10 @@ class SSH :
                 // it blocks until authentication finishes
                 bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_ki))
                 interactiveCanContinue = false
+                interactiveChallengeCount = 0
+                interactiveAuthenticationMethod = AuthenticationMethod.MULTI_FACTOR_INTERACTIVE
                 if (connection?.authenticateWithKeyboardInteractive(currentHost.username, this) == true) {
-                    finishConnection()
+                    finishConnection(interactiveAuthenticationMethod)
                 } else {
                     bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_ki_fail))
                 }
@@ -474,7 +479,7 @@ class SSH :
                 if (savedPassword != null) {
                     bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_saved_password))
                     if (connection?.authenticateWithPassword(currentHost.username, savedPassword) == true) {
-                        finishConnection()
+                        finishConnection(AuthenticationMethod.PASSWORD)
                         return
                     }
                     bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_saved_password_fail))
@@ -488,7 +493,7 @@ class SSH :
                     true,
                 )
                 if (password != null && connection?.authenticateWithPassword(currentHost.username, password) == true) {
-                    finishConnection()
+                    finishConnection(AuthenticationMethod.PASSWORD)
                 } else {
                     bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pass_fail))
                 }
@@ -734,8 +739,9 @@ class SSH :
      * Internal method to request actual PTY terminal once we've finished
      * authentication. If called before authenticated, it will just fail.
      */
-    private fun finishConnection() {
+    private fun finishConnection(authenticationMethod: AuthenticationMethod) {
         authenticated = true
+        bridge?.recordAuthenticationMethod(authenticationMethod)
 
         for (portForward in portForwards) {
             try {
@@ -1532,6 +1538,14 @@ class SSH :
         echo: BooleanArray,
     ): Array<String> {
         interactiveCanContinue = true
+        interactiveChallengeCount++
+        interactiveAuthenticationMethod = if (
+            interactiveChallengeCount == 1 && numPrompts == 1 && echo.size == 1 && !echo[0]
+        ) {
+            AuthenticationMethod.PASSWORD_INTERACTIVE
+        } else {
+            AuthenticationMethod.MULTI_FACTOR_INTERACTIVE
+        }
         val responses = Array(numPrompts) { i ->
             // request response from user for each prompt
             val isPassword = i < echo.size && !echo[i]

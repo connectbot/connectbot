@@ -230,6 +230,7 @@ fun ProfileEditorScreen(
                 FontSizeSelector(
                     fontSize = uiState.fontSize,
                     onFontSizeChange = { viewModel.updateFontSize(it) },
+                    onAdaptiveChange = viewModel::updateAdaptiveFontSize,
                     modifier = Modifier.fillMaxWidth(),
                 )
 
@@ -388,22 +389,41 @@ private fun FontFamilySelector(
 private fun FontSizeSelector(
     fontSize: Int,
     onFontSizeChange: (Int) -> Unit,
+    onAdaptiveChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(modifier = modifier) {
-        Text(
-            text = stringResource(R.string.profile_editor_font_size_title, fontSize),
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(bottom = 8.dp),
-        )
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(
+                    text = stringResource(R.string.profile_editor_adaptive_font_title),
+                    style = MaterialTheme.typography.titleMedium,
+                )
+                Text(
+                    text = stringResource(R.string.profile_editor_adaptive_font_summary),
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+            Switch(
+                checked = fontSize == 0,
+                onCheckedChange = onAdaptiveChange,
+            )
+        }
 
-        Slider(
-            value = fontSize.toFloat(),
-            onValueChange = { onFontSizeChange(it.toInt()) },
-            valueRange = 6f..30f,
-            steps = 23,
-            modifier = Modifier.fillMaxWidth(),
-        )
+        if (fontSize > 0) {
+            Text(
+                text = stringResource(R.string.profile_editor_font_size_title, fontSize),
+                style = MaterialTheme.typography.titleMedium,
+                modifier = Modifier.padding(top = 16.dp, bottom = 8.dp),
+            )
+            Slider(
+                value = fontSize.toFloat(),
+                onValueChange = { onFontSizeChange(it.toInt()) },
+                valueRange = 6f..30f,
+                steps = 23,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
     }
 }
 

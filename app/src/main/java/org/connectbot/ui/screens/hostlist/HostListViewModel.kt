@@ -35,8 +35,8 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.coroutines.withContext
+import kotlinx.coroutines.withTimeoutOrNull
 import org.connectbot.R
 import org.connectbot.data.EncryptedExportBundle
 import org.connectbot.data.HostRepository
@@ -247,7 +247,7 @@ class HostListViewModel @Inject constructor(
         if (bridge != null) {
             // Bridge exists but may be disconnected or in grace period
             return when {
-                bridge.disconnected || bridge.isInGracePeriod() -> ConnectionState.FAILED
+                bridge.isDisconnected || bridge.isInGracePeriod() -> ConnectionState.FAILED
                 bridge.isConnecting -> ConnectionState.CONNECTING
                 else -> ConnectionState.CONNECTED
             }

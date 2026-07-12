@@ -157,6 +157,9 @@ class TerminalManager :
     @Inject
     internal lateinit var securePasswordStorage: org.connectbot.util.SecurePasswordStorage
 
+    @Inject
+    internal lateinit var authorizedKeysInstaller: AuthorizedKeysInstaller
+
     private val binder: IBinder = TerminalBinder()
 
     internal lateinit var connectivityMonitor: ConnectivityMonitor
@@ -1272,6 +1275,8 @@ class TerminalManager :
     fun notifyBridgeStateChanged() {
         notifyHostStatusChanged()
     }
+
+    suspend fun installAuthorizedKey(bridge: TerminalBridge): AuthorizedKeyInstallResult = authorizedKeysInstaller.install(bridge, this)
 
     private fun notifyHostStatusChanged() {
         scope.launch {

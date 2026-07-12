@@ -48,6 +48,8 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.connectbot.data.entity.Host
+import org.connectbot.service.BridgeConnectionPhase
+import org.connectbot.service.BridgeConnectionState
 import org.connectbot.service.ModifierLevel
 import org.connectbot.service.ModifierState
 import org.connectbot.service.PromptManager
@@ -406,6 +408,9 @@ class ConsoleScreenTest {
         val mockViewModel = mock(ConsoleViewModel::class.java)
         val mockBridge = mock(TerminalBridge::class.java)
         `when`(mockBridge.isDisconnected).thenReturn(false)
+        `when`(mockBridge.connectionState).thenReturn(
+            MutableStateFlow(BridgeConnectionState(phase = BridgeConnectionPhase.CONNECTED)),
+        )
 
         val uiStateFlow = MutableStateFlow(
             ConsoleUiState(
@@ -419,6 +424,7 @@ class ConsoleScreenTest {
         `when`(mockViewModel.uiState).thenReturn(uiStateFlow)
         `when`(mockViewModel.networkStatusMessages).thenReturn(networkStatusMessages)
         `when`(mockViewModel.completionMessages).thenReturn(MutableSharedFlow())
+        `when`(mockViewModel.keySetupEvents).thenReturn(MutableSharedFlow())
         `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
 
         setContent(mockConsoleViewModel = mockViewModel)
@@ -440,6 +446,9 @@ class ConsoleScreenTest {
         val mockViewModel = mock(ConsoleViewModel::class.java)
         val mockBridge = mock(TerminalBridge::class.java)
         `when`(mockBridge.isDisconnected).thenReturn(false)
+        `when`(mockBridge.connectionState).thenReturn(
+            MutableStateFlow(BridgeConnectionState(phase = BridgeConnectionPhase.CONNECTED)),
+        )
 
         val uiStateFlow = MutableStateFlow(
             ConsoleUiState(
@@ -453,6 +462,7 @@ class ConsoleScreenTest {
         `when`(mockViewModel.uiState).thenReturn(uiStateFlow)
         `when`(mockViewModel.networkStatusMessages).thenReturn(networkStatusMessages)
         `when`(mockViewModel.completionMessages).thenReturn(MutableSharedFlow())
+        `when`(mockViewModel.keySetupEvents).thenReturn(MutableSharedFlow())
         `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
 
         setContent(mockConsoleViewModel = mockViewModel)
@@ -474,6 +484,9 @@ class ConsoleScreenTest {
         val mockViewModel = mock(ConsoleViewModel::class.java)
         val mockBridge = mock(TerminalBridge::class.java)
         `when`(mockBridge.isDisconnected).thenReturn(true)
+        `when`(mockBridge.connectionState).thenReturn(
+            MutableStateFlow(BridgeConnectionState(phase = BridgeConnectionPhase.DISCONNECTED)),
+        )
 
         val uiStateFlow = MutableStateFlow(
             ConsoleUiState(
@@ -487,6 +500,7 @@ class ConsoleScreenTest {
         `when`(mockViewModel.uiState).thenReturn(uiStateFlow)
         `when`(mockViewModel.networkStatusMessages).thenReturn(networkStatusMessages)
         `when`(mockViewModel.completionMessages).thenReturn(MutableSharedFlow())
+        `when`(mockViewModel.keySetupEvents).thenReturn(MutableSharedFlow())
         `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
 
         setContent(mockConsoleViewModel = mockViewModel)

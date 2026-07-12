@@ -63,6 +63,7 @@ import org.connectbot.transport.TransportFactory
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.ProfileStartup
+import org.connectbot.util.adaptiveTerminalFontSize
 import org.connectbot.util.commandOutputSnippet
 import timber.log.Timber
 import java.io.IOException
@@ -83,6 +84,27 @@ data class AuthBanner(
     val urls: List<String>,
     val languageTag: String?,
 )
+
+enum class BridgeConnectionPhase {
+    IDLE,
+    CONNECTING,
+    CONNECTED,
+    DISCONNECTED,
+}
+
+data class BridgeConnectionState(
+    val phase: BridgeConnectionPhase = BridgeConnectionPhase.IDLE,
+    val disconnectReason: DisconnectReason = DisconnectReason.UNKNOWN,
+    val reconnectAttempts: Int = 0,
+)
+
+enum class AuthenticationMethod {
+    NONE,
+    PUBLIC_KEY,
+    PASSWORD,
+    PASSWORD_INTERACTIVE,
+    MULTI_FACTOR_INTERACTIVE,
+}
 
 internal class AuthBannerQueue {
     private val authBannerIds = AtomicLong()
@@ -246,12 +268,10 @@ class TerminalBridge {
     private val _progressState = MutableStateFlow<ProgressInfo?>(null)
     val progressState: StateFlow<ProgressInfo?> = _progressState.asStateFlow()
 
-    var disconnected = false
-        private set
-    var connecting = false
-        private set
-    var disconnectReason: DisconnectReason = DisconnectReason.UNKNOWN
-        private set
+    private val _connectionState = MutableStateFlow(BridgeConnectionState())
+    val connectionState: StateFlow<BridgeConnectionState> = _connectionState.asStateFlow()
+    private val _authenticationMethod = MutableStateFlow<AuthenticationMethod?>(null)
+    val authenticationMethod: StateFlow<AuthenticationMethod?> = _authenticationMethod.asStateFlow()
     private var awaitingClose = false
 
     private val reconnectAttemptCounter = AtomicInteger(0)
@@ -269,6 +289,7 @@ class TerminalBridge {
      */
     fun resetAutoReconnectBackoff() {
         reconnectAttemptCounter.set(0)
+        _connectionState.update { it.copy(reconnectAttempts = 0) }
     }
 
     private var forcedSize = false
@@ -292,6 +313,7 @@ class TerminalBridge {
     private var charTop = -1
 
     private var fontSizeSp: Float = DEFAULT_FONT_SIZE_SP.toFloat()
+    private var fontSizeAutomatic = false
     private val _fontSizeFlow = MutableStateFlow(-1f)
     val fontSizeFlow: StateFlow<Float> = _fontSizeFlow.asStateFlow()
 
@@ -352,6 +374,7 @@ class TerminalBridge {
         _delKeyModeFlow.value = delKeyModeFromProfile(profile)
 
         // Use settings from profile
+        fontSizeAutomatic = profile.fontSize <= 0
         val initialFontSize = if (profile.fontSize > 0) profile.fontSize else defaultFontSizeSp
         setFontSize(initialFontSize.toFloat())
 
@@ -537,6 +560,7 @@ class TerminalBridge {
      */
     private fun applyProfileSettings(profile: org.connectbot.data.entity.Profile) {
         // Apply font size
+        fontSizeAutomatic = profile.fontSize <= 0
         val newFontSize = if (profile.fontSize > 0) profile.fontSize else defaultFontSizeSp
         if (newFontSize.toFloat() != fontSizeSp) {
             setFontSize(newFontSize.toFloat())
@@ -598,22 +622,24 @@ class TerminalBridge {
                 Timber.d("Skipping connection attempt for ${host.nickname}: bridge awaiting close")
                 return
             }
-            if (connecting) {
+            if (isConnecting) {
                 Timber.d("Skipping connection attempt for ${host.nickname}: attempt already in progress")
                 return
             }
-            if (!disconnected && transport?.isConnected() == true) {
+            if (!isDisconnected && transport?.isConnected() == true) {
                 Timber.d("Skipping connection attempt for ${host.nickname}: already connected")
                 return
             }
-            connecting = true
+            _connectionState.value = BridgeConnectionState(
+                phase = BridgeConnectionPhase.CONNECTING,
+                reconnectAttempts = reconnectAttemptCounter.get(),
+            )
+            _authenticationMethod.value = null
             // Reset per-attempt state so that a failed attempt goes back
             // through dispatchDisconnect (instead of being swallowed by its
             // reentrancy guard) and can schedule another retry. Swapping the
             // transport under the same lock lets dispatchDisconnect discard
             // stale events from the previous transport atomically.
-            disconnected = false
-            disconnectReason = DisconnectReason.UNKNOWN
             transport = newTransport
         }
 
@@ -770,9 +796,8 @@ class TerminalBridge {
      * authentication. If called before authenticated, it will just fail.
      */
     fun onConnected() {
-        disconnected = false
-        connecting = false
         reconnectAttemptCounter.set(0)
+        _connectionState.value = BridgeConnectionState(phase = BridgeConnectionPhase.CONNECTED)
 
         // Record the connected time only now that the connection actually
         // succeeded, so a doomed attempt never shows as "recently connected".
@@ -793,7 +818,7 @@ class TerminalBridge {
         }
 
         // force font-size to make sure we resizePTY as needed
-        setFontSize(fontSizeSp)
+        setFontSize(if (fontSizeAutomatic) defaultFontSizeSp.toFloat() else fontSizeSp)
 
         // send environment variables and the profile startup command, unless
         // the transport already ran them as the session exec command
@@ -815,6 +840,10 @@ class TerminalBridge {
 
         // Notify manager so the UI recomposes with updated connection state
         manager.notifyBridgeStateChanged()
+    }
+
+    fun recordAuthenticationMethod(method: AuthenticationMethod) {
+        _authenticationMethod.value = method
     }
 
     /**
@@ -839,7 +868,7 @@ class TerminalBridge {
             KeepaliveMonitor(
                 intervalMs = intervalMs,
                 isEligible = {
-                    !disconnected && !inGracePeriod && monitoredTransport.isConnected()
+                    !isDisconnected && !inGracePeriod && monitoredTransport.isConnected()
                 },
                 sendKeepalive = {
                     runInterruptible(dispatchers.io) { monitoredTransport.sendKeepalive() }
@@ -936,15 +965,17 @@ class TerminalBridge {
                 Timber.d("Ignoring disconnect from stale transport for ${host.nickname}")
                 return
             }
-            if (disconnected && reason != DisconnectReason.USER_REQUESTED) {
+            if (isDisconnected && reason != DisconnectReason.USER_REQUESTED) {
                 return
             }
 
-            disconnected = true
-            connecting = false
-            if (disconnectReason == DisconnectReason.UNKNOWN) {
-                disconnectReason = reason
-            }
+            val currentState = _connectionState.value
+            _connectionState.value = currentState.copy(
+                phase = BridgeConnectionPhase.DISCONNECTED,
+                disconnectReason = currentState.disconnectReason.takeUnless {
+                    it == DisconnectReason.UNKNOWN
+                } ?: reason,
+            )
 
             // Capture the transport belonging to this session under the same
             // lock: a reconnect attempt may replace [transport] before the
@@ -988,7 +1019,8 @@ class TerminalBridge {
             }
 
             is DisconnectAction.AutoReconnect -> {
-                reconnectAttemptCounter.incrementAndGet()
+                val attempts = reconnectAttemptCounter.incrementAndGet()
+                _connectionState.update { it.copy(reconnectAttempts = attempts) }
                 manager.requestReconnect(this, userInitiated = false)
                 manager.notifyBridgeStateChanged()
             }
@@ -1173,10 +1205,13 @@ class TerminalBridge {
      * @return whether this connection had started and subsequently disconnected
      */
     val isDisconnected: Boolean
-        get() = disconnected
+        get() = connectionState.value.phase == BridgeConnectionPhase.DISCONNECTED
 
     val isConnecting: Boolean
-        get() = connecting
+        get() = connectionState.value.phase == BridgeConnectionPhase.CONNECTING
+
+    val disconnectReason: DisconnectReason
+        get() = connectionState.value.disconnectReason
 
     fun scanForURLs(): List<String> = terminalEmulator.getUrls(UrlScanScope.CurrentView).map { it.url }
 
@@ -1226,7 +1261,7 @@ class TerminalBridge {
      * Starts 60-second grace period instead of immediate disconnect.
      */
     fun onNetworkLost(network: Network, lostIpAddresses: Set<String>) {
-        if (!isUsingNetwork() || disconnected) return
+        if (!isUsingNetwork() || isDisconnected) return
 
         val state = lastKnownNetworkState ?: return
 
@@ -1333,9 +1368,12 @@ class TerminalBridge {
         setFontSize(fontSizeSp - FONT_SIZE_STEP, false)
     }
 
-    /** E-ink users sit closer to lower-resolution panels, so default larger. */
+    /** Automatic profiles scale up on tablets and retain the larger e-ink baseline. */
     private val defaultFontSizeSp: Int
-        get() = if (einkMode) EINK_DEFAULT_FONT_SIZE_SP else DEFAULT_FONT_SIZE_SP
+        get() = adaptiveTerminalFontSize(
+            manager.res.configuration.smallestScreenWidthDp,
+            einkMode,
+        )
 
     /**
      * Applies an e-ink mode preference change to this live session so font
@@ -1356,14 +1394,13 @@ class TerminalBridge {
         defaultPaint.isAntiAlias = !enabled
         defaultPaint.isFakeBoldText = !enabled
         // Re-measure with the updated paint flags
-        setFontSize(fontSizeSp)
+        setFontSize(if (fontSizeAutomatic) defaultFontSizeSp.toFloat() else fontSizeSp)
     }
 
     companion object {
         const val TAG = "CB.TerminalBridge"
 
         private const val DEFAULT_FONT_SIZE_SP = 10
-        private const val EINK_DEFAULT_FONT_SIZE_SP = 14
         private const val FONT_SIZE_STEP = 2
     }
 }

@@ -733,6 +733,10 @@
 	<string name="profile_editor_font_family_title">Font Family</string>
 	<!-- Subsection title showing current font size. Parameter is the font size in points. -->
 	<string name="profile_editor_font_size_title">Font Size: %d</string>
+	<!-- Toggle for using device-size-aware terminal text instead of an explicit profile size -->
+	<string name="profile_editor_adaptive_font_title">Adaptive text size</string>
+	<!-- Explanation of the automatic terminal sizes used on phones and tablets -->
+	<string name="profile_editor_adaptive_font_summary">10sp on phones and 14sp on tablets</string>
 	<!-- Subsection title for force size settings -->
 	<string name="profile_editor_force_size_title">Force Size</string>
 	<!-- Summary text explaining what force size does -->
@@ -883,8 +887,34 @@
 	<string name="tmux_offer_message">tmux is available — keep your work alive across disconnects?</string>
 	<!-- Button on the offer banner that creates and attaches a tmux session -->
 	<string name="tmux_offer_start">Start session</string>
+	<!-- Labeled console app-bar action that opens native tmux session management -->
+	<string name="tmux_hub_action">tmux</string>
+	<!-- Title of the native tmux session management bottom sheet -->
+	<string name="tmux_hub_title">tmux sessions</string>
+	<!-- Status shown while ConnectBot checks whether tmux is installed -->
+	<string name="tmux_hub_detecting">Detecting tmux…</string>
+	<!-- Empty state shown when tmux is installed but has no sessions -->
+	<string name="tmux_hub_empty">No persistent sessions yet.</string>
+	<!-- Action that creates and attaches a new persistent tmux session -->
+	<string name="tmux_hub_create">New session</string>
+	<!-- Status for a tmux session with a live ConnectBot control channel -->
+	<string name="tmux_hub_attached">Attached</string>
+	<!-- Status for a tmux session whose ConnectBot control channel is being established -->
+	<string name="tmux_hub_attaching">Attaching…</string>
+	<!-- Status for a server-side tmux session not currently attached in ConnectBot -->
+	<string name="tmux_hub_detached">Tap to attach</string>
 	<!-- Content description for dismissing the tmux offer banner -->
 	<string name="tmux_offer_dismiss">Dismiss</string>
+	<!-- Banner shown after password authentication to offer automatic public-key login setup -->
+	<string name="key_setup_offer_message">Use a key instead of your password next time?</string>
+	<!-- Action that installs a ConnectBot public key on the connected server -->
+	<string name="key_setup_offer_action">Set up</string>
+	<!-- Accessibility label for dismissing the key-login setup offer for this connection -->
+	<string name="key_setup_offer_dismiss">Not now</string>
+	<!-- Snackbar shown after automatic public-key login setup succeeds -->
+	<string name="key_setup_success">Key login is ready for the next connection</string>
+	<!-- Snackbar shown when automatic public-key setup fails; %1$s is the server or transport error -->
+	<string name="key_setup_failure">Could not set up key login: %1$s</string>
 	<!-- Overlay on a detached tmux session tab; %1$s is the session name -->
 	<string name="tmux_tap_to_attach">Tap to attach to “%1$s”</string>
 	<!-- Overlay while attaching to a tmux session; %1$s is the session name -->

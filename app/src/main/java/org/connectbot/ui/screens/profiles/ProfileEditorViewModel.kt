@@ -38,6 +38,7 @@ import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.ProfileStartup
 import org.connectbot.util.TerminalFont
 import org.connectbot.util.TerminalFontProvider
+import org.connectbot.util.adaptiveTerminalFontSize
 import java.nio.charset.Charset
 import javax.inject.Inject
 
@@ -48,7 +49,7 @@ data class ProfileEditorUiState(
     val colorSchemeId: Long = -1L,
     val availableColorSchemes: List<ColorScheme> = emptyList(),
     val fontFamily: String? = null,
-    val fontSize: Int = 10,
+    val fontSize: Int = 0,
     val delKey: String = "del",
     val encoding: String = "UTF-8",
     val emulation: String = "xterm-256color",
@@ -206,6 +207,18 @@ class ProfileEditorViewModel @Inject constructor(
 
     fun updateFontSize(value: Int) {
         _uiState.update { it.copy(fontSize = value) }
+    }
+
+    fun updateAdaptiveFontSize(enabled: Boolean) {
+        _uiState.update {
+            it.copy(
+                fontSize = if (enabled) {
+                    0
+                } else {
+                    adaptiveTerminalFontSize(context.resources.configuration.smallestScreenWidthDp)
+                },
+            )
+        }
     }
 
     fun updateDelKey(value: String) {

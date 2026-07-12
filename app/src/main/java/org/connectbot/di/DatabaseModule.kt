@@ -49,7 +49,7 @@ object DatabaseModule {
                 db.execSQL(
                     """
                         INSERT INTO profiles (name, color_scheme_id, font_size, del_key, encoding, emulation)
-                        VALUES ('Default', -1, 10, 'del', 'UTF-8', 'xterm-256color')
+                        VALUES ('Default', -1, 0, 'del', 'UTF-8', 'xterm-256color')
                     """.trimIndent(),
                 )
             }

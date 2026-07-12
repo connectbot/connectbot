@@ -31,6 +31,9 @@ import kotlinx.coroutines.test.setMain
 import org.connectbot.data.KeyboardLayoutRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.service.AuthenticationMethod
+import org.connectbot.service.BridgeConnectionPhase
+import org.connectbot.service.BridgeConnectionState
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.terminal.ProgressState
@@ -653,6 +656,10 @@ class ConsoleViewModelTest {
         whenever(bridge.commandCompletions).thenReturn(MutableSharedFlow())
         whenever(bridge.progressState).thenReturn(progressFlow)
         whenever(bridge.networkStatusMessages).thenReturn(MutableSharedFlow())
+        whenever(bridge.authenticationMethod).thenReturn(MutableStateFlow<AuthenticationMethod?>(null))
+        whenever(bridge.connectionState).thenReturn(
+            MutableStateFlow(BridgeConnectionState(phase = BridgeConnectionPhase.CONNECTED)),
+        )
         return bridge
     }
 }

@@ -21,6 +21,7 @@ import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.AutoMigrationSpec
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import org.connectbot.data.dao.ColorSchemeDao
@@ -72,6 +73,7 @@ import org.connectbot.data.entity.Snippet
  * - Version 13: Added keyboard_layouts table and keyboard_layout_id column on
  *   hosts for the customizable keys bar (AutoMigration)
  * - Version 14: Added connect_on_startup column to hosts (AutoMigration)
+ * - Version 15: Made the Default profile font size adaptive (AutoMigration + data update)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -90,7 +92,7 @@ import org.connectbot.data.entity.Snippet
         Snippet::class,
         KeyboardLayout::class,
     ],
-    version = 14,
+    version = 15,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -105,6 +107,7 @@ import org.connectbot.data.entity.Snippet
         AutoMigration(from = 11, to = 12),
         AutoMigration(from = 12, to = 13),
         AutoMigration(from = 13, to = 14),
+        AutoMigration(from = 14, to = 15, spec = ConnectBotDatabase.Migration14To15::class),
     ],
 )
 @TypeConverters(Converters::class)
@@ -117,6 +120,15 @@ abstract class ConnectBotDatabase : RoomDatabase() {
     abstract fun profileDao(): ProfileDao
     abstract fun snippetDao(): SnippetDao
     abstract fun keyboardLayoutDao(): KeyboardLayoutDao
+
+    class Migration14To15 : AutoMigrationSpec {
+        override fun onPostMigrate(db: SupportSQLiteDatabase) {
+            db.execSQL(
+                "UPDATE profiles SET font_size = 0 " +
+                    "WHERE id = 1 AND name = 'Default' AND font_size = 10",
+            )
+        }
+    }
 
     companion object {
         /**

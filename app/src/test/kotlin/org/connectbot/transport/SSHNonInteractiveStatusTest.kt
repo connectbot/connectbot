@@ -23,9 +23,11 @@ import com.trilead.ssh2.LocalPortForwarder
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
+import org.connectbot.service.AuthenticationMethod
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.util.HostConstants
+import org.connectbot.util.SecurePasswordStorage
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -85,6 +87,7 @@ class SSHNonInteractiveStatusTest {
     fun connectWithoutShell_reportsConnectionEstablished() {
         ssh.authenticate()
 
+        verify(bridge).recordAuthenticationMethod(AuthenticationMethod.NONE)
         verify(bridge).outputLine(expectedString(R.string.terminal_no_session))
         verify(bridge).outputLine(
             expectedString(
@@ -111,6 +114,22 @@ class SSHNonInteractiveStatusTest {
         ssh.authenticate()
 
         verify(bridge, never()).onConnected()
+    }
+
+    @Test
+    fun passwordAuthentication_recordsPasswordMethod() {
+        val passwordStorage = mock(SecurePasswordStorage::class.java)
+        `when`(manager.securePasswordStorage).thenReturn(passwordStorage)
+        `when`(passwordStorage.getPassword(0L)).thenReturn("secret")
+        `when`(connection.authenticateWithNone("alice")).thenReturn(false)
+        `when`(connection.isAuthMethodAvailable("alice", "keyboard-interactive")).thenReturn(false)
+        `when`(connection.isAuthMethodAvailable("alice", "password")).thenReturn(true)
+        `when`(connection.authenticateWithPassword("alice", "secret")).thenReturn(true)
+
+        ssh.authenticate()
+
+        verify(bridge).recordAuthenticationMethod(AuthenticationMethod.PASSWORD)
+        verify(bridge).onConnected()
     }
 
     @Test

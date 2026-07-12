@@ -29,8 +29,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.connectbot.keyboard.TmuxAction
+import org.connectbot.service.tmux.TmuxAvailability
+import org.connectbot.service.tmux.TmuxHostState
+import org.connectbot.service.tmux.TmuxSessionInfo
 import org.connectbot.ui.screens.console.tmux.TmuxActionDrawerSheet
 import org.connectbot.ui.screens.console.tmux.TmuxCommandPaletteSheet
+import org.connectbot.ui.screens.console.tmux.TmuxHubSheet
 import org.connectbot.ui.screens.console.tmux.TmuxKillConfirmDialog
 import org.connectbot.ui.screens.console.tmux.TmuxPaletteEntry
 import org.connectbot.ui.screens.console.tmux.TmuxRenameDialog
@@ -155,5 +159,29 @@ class TmuxManagementUiTest {
         composeTestRule.onNodeWithTag("tmux_action_OPEN_DRAWER").assertDoesNotExist()
         composeTestRule.onNodeWithTag("tmux_action_PREFIX").assertDoesNotExist()
         composeTestRule.onNodeWithTag("tmux_action_COPY_MODE").assertDoesNotExist()
+    }
+
+    @Test
+    fun hub_listsSessionsAndCreatesNewSession() {
+        var selected = ""
+        var created = false
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                TmuxHubSheet(
+                    state = TmuxHostState(
+                        availability = TmuxAvailability.READY,
+                        sessions = listOf(TmuxSessionInfo(id = "\$1", name = "main")),
+                    ),
+                    onSelectSession = { selected = it },
+                    onCreateSession = { created = true },
+                    onDismiss = {},
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithTag("tmux_hub_session_\$1").performClick()
+        composeTestRule.runOnIdle { assertEquals("\$1", selected) }
+        composeTestRule.onNodeWithTag("tmux_hub_create").performClick()
+        composeTestRule.runOnIdle { assertTrue(created) }
     }
 }
