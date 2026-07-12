@@ -36,6 +36,7 @@ import org.connectbot.ui.screens.hostlist.HostListScreenContent
 import org.connectbot.ui.screens.hostlist.HostListTestTags
 import org.connectbot.ui.screens.hostlist.HostListUiState
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.DiscoveredSshServer
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -253,6 +254,51 @@ class HostListScreenTest {
             .performClick()
 
         assertTrue(editedHost == null)
+    }
+
+    @Test
+    fun hostListScreenContent_discoveryButtonBelowAddStartsScan() {
+        var discoveryStarted = false
+
+        setHostListContent(
+            uiState = HostListUiState(hosts = emptyList()),
+            onDiscoverSshServers = { discoveryStarted = true },
+        )
+
+        composeTestRule
+            .onNodeWithText(composeTestRule.activity.getString(R.string.host_discovery_button))
+            .assertIsDisplayed()
+            .performClick()
+
+        assertTrue(discoveryStarted)
+    }
+
+    @Test
+    fun hostListScreenContent_discoveredServerSelectionInvokesCallback() {
+        val server = DiscoveredSshServer(
+            key = "Raspberry Pi\u0000_ssh._tcp",
+            serviceName = "Raspberry Pi",
+            hostname = "raspberrypi.local",
+            port = 22,
+            username = "pi",
+        )
+        var selectedServer: DiscoveredSshServer? = null
+
+        setHostListContent(
+            uiState = HostListUiState(
+                hosts = emptyList(),
+                showSshDiscovery = true,
+                discoveredSshServers = listOf(server),
+            ),
+            onSelectDiscoveredSshServer = { selectedServer = it },
+        )
+
+        composeTestRule
+            .onNodeWithText(server.serviceName)
+            .assertIsDisplayed()
+            .performClick()
+
+        assertTrue(selectedServer == server)
     }
 
     @Test
@@ -600,6 +646,8 @@ class HostListScreenTest {
         onTogglePortForward: (PortForward, Boolean) -> Unit = { _, _ -> },
         onExportHosts: () -> Unit = {},
         onImportHosts: () -> Unit = {},
+        onDiscoverSshServers: () -> Unit = {},
+        onSelectDiscoveredSshServer: (DiscoveredSshServer) -> Unit = {},
     ) {
         composeTestRule.setContent {
             ConnectBotTheme {
@@ -623,6 +671,8 @@ class HostListScreenTest {
                     onTogglePortForward = onTogglePortForward,
                     onExportHosts = onExportHosts,
                     onImportHosts = onImportHosts,
+                    onDiscoverSshServers = onDiscoverSshServers,
+                    onSelectDiscoveredSshServer = onSelectDiscoveredSshServer,
                 )
             }
         }

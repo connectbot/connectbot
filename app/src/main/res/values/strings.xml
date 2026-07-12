@@ -1523,6 +1523,22 @@
 	<string name="hostpref_authagent_with_confirmation">require confirmation</string>
 	<!-- Text for button which, when clicked, adds a new host. -->
 	<string name="hostpref_add_host">Add host</string>
+	<!-- Text for the button below Add host that searches the local network for advertised SSH services. -->
+	<string name="host_discovery_button">Discover SSH servers</string>
+	<!-- Title for the dialog listing SSH services discovered over mDNS. -->
+	<string name="host_discovery_title">SSH servers on local network</string>
+	<!-- Status shown while an mDNS SSH service discovery scan is running. -->
+	<string name="host_discovery_scanning">Looking for advertised SSH servers…</string>
+	<!-- Empty state shown after an mDNS scan found no advertised SSH services. -->
+	<string name="host_discovery_none_found">No advertised SSH servers found. The server must advertise an _ssh._tcp service over mDNS.</string>
+	<!-- Hostname and port shown beneath a discovered SSH service; %1$s is the hostname and %2$d is the port. -->
+	<string name="host_discovery_address">%1$s:%2$d</string>
+	<!-- Button that restarts an mDNS SSH service discovery scan. -->
+	<string name="host_discovery_scan_again">Scan again</string>
+	<!-- Error shown when Android network service discovery cannot start. -->
+	<string name="host_discovery_failed">Couldn’t scan the local network</string>
+	<!-- Error shown when the user denies Android's local-network runtime permission. -->
+	<string name="host_discovery_permission_denied">Local network permission is required to discover SSH servers</string>
 	<!-- Text for button which, when clicked, saves an existing host. -->
 	<string name="hostpref_save_host">Save host</string>
 	<!-- Title shown in the app bar when editing an existing host's settings. -->

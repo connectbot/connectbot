@@ -24,14 +24,18 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import kotlinx.coroutines.withContext
 import org.connectbot.R
 import org.connectbot.data.EncryptedExportBundle
@@ -44,7 +48,10 @@ import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.ServiceError
 import org.connectbot.service.TerminalManager
+import org.connectbot.util.DiscoveredSshServer
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.SshDiscoveryEvent
+import org.connectbot.util.SshServiceDiscovery
 import javax.inject.Inject
 
 enum class ConnectionState {
@@ -83,6 +90,10 @@ data class HostListUiState(
     val importWrongPassphrase: Boolean = false,
     val startupKeyPrompt: Pubkey? = null,
     val startupKeyWrongPassword: Boolean = false,
+    val showSshDiscovery: Boolean = false,
+    val isDiscoveringSshServers: Boolean = false,
+    val discoveredSshServers: List<DiscoveredSshServer> = emptyList(),
+    val sshDiscoveryError: String? = null,
 )
 
 data class ImportResult(
@@ -103,9 +114,12 @@ class HostListViewModel @Inject constructor(
     private val repository: HostRepository,
     private val dispatchers: CoroutineDispatchers,
     private val sharedPreferences: SharedPreferences,
+    private val sshServiceDiscovery: SshServiceDiscovery,
 ) : ViewModel() {
 
     private var terminalManager: TerminalManager? = null
+    private var sshDiscoveryJob: Job? = null
+    private var sshDiscoveryGeneration = 0L
     private val allPortForwards = MutableStateFlow<List<PortForward>>(emptyList())
     private val _uiState = MutableStateFlow(
         HostListUiState(
@@ -376,6 +390,85 @@ class HostListViewModel @Inject constructor(
         _uiState.update { it.copy(error = null) }
     }
 
+    fun startSshDiscovery() {
+        val generation = ++sshDiscoveryGeneration
+        sshDiscoveryJob?.cancel()
+        _uiState.update {
+            it.copy(
+                showSshDiscovery = true,
+                isDiscoveringSshServers = true,
+                discoveredSshServers = emptyList(),
+                sshDiscoveryError = null,
+            )
+        }
+        sshDiscoveryJob = viewModelScope.launch {
+            try {
+                withTimeoutOrNull(SSH_DISCOVERY_DURATION_MILLIS) {
+                    sshServiceDiscovery.discover().collect { event ->
+                        when (event) {
+                            is SshDiscoveryEvent.Found -> {
+                                _uiState.update { state ->
+                                    val servers = state.discoveredSshServers
+                                        .filterNot { it.key == event.server.key }
+                                        .plus(event.server)
+                                        .sortedBy { it.serviceName.lowercase() }
+                                    state.copy(discoveredSshServers = servers)
+                                }
+                            }
+
+                            is SshDiscoveryEvent.Lost -> {
+                                _uiState.update { state ->
+                                    state.copy(
+                                        discoveredSshServers = state.discoveredSshServers
+                                            .filterNot { it.key == event.key },
+                                    )
+                                }
+                            }
+
+                            is SshDiscoveryEvent.Failed -> {
+                                _uiState.update {
+                                    it.copy(
+                                        isDiscoveringSshServers = false,
+                                        sshDiscoveryError = context.getString(R.string.host_discovery_failed),
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (_: Exception) {
+                _uiState.update {
+                    it.copy(sshDiscoveryError = context.getString(R.string.host_discovery_failed))
+                }
+            } finally {
+                if (generation == sshDiscoveryGeneration) {
+                    _uiState.update { it.copy(isDiscoveringSshServers = false) }
+                }
+            }
+        }
+    }
+
+    fun dismissSshDiscovery() {
+        sshDiscoveryGeneration++
+        sshDiscoveryJob?.cancel()
+        sshDiscoveryJob = null
+        _uiState.update {
+            it.copy(
+                showSshDiscovery = false,
+                isDiscoveringSshServers = false,
+                sshDiscoveryError = null,
+            )
+        }
+    }
+
+    fun showSshDiscoveryPermissionDenied() {
+        _uiState.update {
+            it.copy(error = context.getString(R.string.host_discovery_permission_denied))
+        }
+    }
+
     fun exportHosts() {
         viewModelScope.launch {
             try {
@@ -393,6 +486,10 @@ class HostListViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private companion object {
+        const val SSH_DISCOVERY_DURATION_MILLIS = 10_000L
     }
 
     fun exportHostsEncrypted(passphrase: String) {

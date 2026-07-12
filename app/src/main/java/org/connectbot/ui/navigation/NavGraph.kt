@@ -17,6 +17,7 @@
 
 package org.connectbot.ui.navigation
 
+import android.net.Uri
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.core.tween
@@ -101,6 +102,15 @@ fun ConnectBotNavHost(
                         navController.navigateSafely(NavDestinations.HOST_EDITOR)
                     }
                 },
+                onNavigateToDiscoveredHost = { server ->
+                    navController.navigateSafely(
+                        "${NavDestinations.HOST_EDITOR}?" +
+                            "${NavArgs.HOST_ID}=-1&" +
+                            "${NavArgs.USERNAME}=${Uri.encode(server.username.orEmpty())}&" +
+                            "${NavArgs.HOSTNAME}=${Uri.encode(server.hostname)}&" +
+                            "${NavArgs.PORT}=${server.port}",
+                    )
+                },
                 onNavigateToSettings = {
                     navController.navigateSafely(NavDestinations.SETTINGS)
                 },
@@ -156,11 +166,27 @@ fun ConnectBotNavHost(
         }
 
         composable(
-            route = "${NavDestinations.HOST_EDITOR}?${NavArgs.HOST_ID}={${NavArgs.HOST_ID}}",
+            route = "${NavDestinations.HOST_EDITOR}?" +
+                "${NavArgs.HOST_ID}={${NavArgs.HOST_ID}}&" +
+                "${NavArgs.USERNAME}={${NavArgs.USERNAME}}&" +
+                "${NavArgs.HOSTNAME}={${NavArgs.HOSTNAME}}&" +
+                "${NavArgs.PORT}={${NavArgs.PORT}}",
             arguments = listOf(
                 navArgument(NavArgs.HOST_ID) {
                     type = NavType.LongType
                     defaultValue = -1L
+                },
+                navArgument(NavArgs.USERNAME) {
+                    type = NavType.StringType
+                    defaultValue = ""
+                },
+                navArgument(NavArgs.HOSTNAME) {
+                    type = NavType.StringType
+                    defaultValue = ""
+                },
+                navArgument(NavArgs.PORT) {
+                    type = NavType.StringType
+                    defaultValue = "22"
                 },
             ),
         ) {

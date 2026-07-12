@@ -23,6 +23,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
+import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
@@ -36,7 +38,10 @@ import org.connectbot.service.ServiceError
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.transport.AbsTransport
+import org.connectbot.util.DiscoveredSshServer
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.SshDiscoveryEvent
+import org.connectbot.util.SshServiceDiscovery
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -69,6 +74,7 @@ class HostListViewModelTest {
     private lateinit var hostsFlow: MutableStateFlow<List<Host>>
     private lateinit var hostsSortedByColorFlow: MutableStateFlow<List<Host>>
     private lateinit var portForwardsFlow: MutableStateFlow<List<PortForward>>
+    private lateinit var sshServiceDiscovery: SshServiceDiscovery
 
     @Before
     fun setUp() {
@@ -81,12 +87,14 @@ class HostListViewModelTest {
         hostsFlow = MutableStateFlow(emptyList())
         hostsSortedByColorFlow = MutableStateFlow(emptyList())
         portForwardsFlow = MutableStateFlow(emptyList())
+        sshServiceDiscovery = mock()
 
         whenever(repository.observeHosts()).thenReturn(hostsFlow)
         whenever(repository.observeHostsSortedByColor()).thenReturn(hostsSortedByColorFlow)
         whenever(repository.observeAllPortForwards()).thenReturn(portForwardsFlow)
         whenever(sharedPreferences.edit()).thenReturn(editor)
         whenever(editor.putBoolean(any(), any())).thenReturn(editor)
+        whenever(sshServiceDiscovery.discover()).thenReturn(emptyFlow())
     }
 
     @After
@@ -97,7 +105,7 @@ class HostListViewModelTest {
     private fun createViewModel(sortedByColor: Boolean = false): HostListViewModel {
         whenever(sharedPreferences.getBoolean(PreferenceConstants.SORT_BY_COLOR, false))
             .thenReturn(sortedByColor)
-        return HostListViewModel(context, repository, dispatchers, sharedPreferences)
+        return HostListViewModel(context, repository, dispatchers, sharedPreferences, sshServiceDiscovery)
     }
 
     private fun createTerminalManager(bridges: List<TerminalBridge> = emptyList()): TerminalManager {
@@ -249,6 +257,28 @@ class HostListViewModelTest {
         advanceUntilIdle()
 
         verify(repository).observeHostsSortedByColor()
+    }
+
+    @Test
+    fun startSshDiscovery_addsResolvedServersToUiState() = runTest {
+        val server = DiscoveredSshServer(
+            key = "Raspberry Pi\u0000_ssh._tcp",
+            serviceName = "Raspberry Pi",
+            hostname = "raspberrypi.local",
+            port = 22,
+            username = "pi",
+        )
+        whenever(sshServiceDiscovery.discover()).thenReturn(
+            flowOf(SshDiscoveryEvent.Found(server)),
+        )
+        val viewModel = createViewModel()
+
+        viewModel.startSshDiscovery()
+        advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value.showSshDiscovery)
+        assertEquals(listOf(server), viewModel.uiState.value.discoveredSshServers)
+        assertFalse(viewModel.uiState.value.isDiscoveringSshServers)
     }
 
     @Test

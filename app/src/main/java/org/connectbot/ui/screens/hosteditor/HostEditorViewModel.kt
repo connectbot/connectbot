@@ -36,6 +36,7 @@ import org.connectbot.data.entity.KeyboardLayout
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.transport.Transport
+import org.connectbot.ui.navigation.NavArgs
 import org.connectbot.util.SecurePasswordStorage
 import javax.inject.Inject
 
@@ -118,13 +119,7 @@ class HostEditorViewModel @Inject constructor(
 
             hostId != -1L -> loadHost()
 
-            else -> {
-                // For new hosts, apply the default profile from settings
-                val defaultProfileId = prefs.getLong("defaultProfileId", 0L)
-                if (defaultProfileId > 0) {
-                    _uiState.update { it.copy(profileId = defaultProfileId) }
-                }
-            }
+            else -> initializeNewHost()
         }
         viewModelScope.launch {
             uiState.collect { state ->
@@ -239,6 +234,29 @@ class HostEditorViewModel @Inject constructor(
     }
 
     private fun getDefaultPort(protocol: String): String = (Transport.fromProtocol(protocol)?.defaultPort ?: 0).toString()
+
+    private fun initializeNewHost() {
+        val defaultProfileId = prefs.getLong("defaultProfileId", 0L).takeIf { it > 0 }
+        val hostname = savedStateHandle.get<String>(NavArgs.HOSTNAME).orEmpty().trim()
+        val username = savedStateHandle.get<String>(NavArgs.USERNAME).orEmpty().trim()
+        val port = savedStateHandle.get<String>(NavArgs.PORT)
+            ?.toIntOrNull()
+            ?.takeIf { it in 1..65535 }
+            ?.toString()
+            ?: getDefaultPort("ssh")
+        val quickConnect = getHostRepresentation(username, hostname, port, "ssh")
+
+        _uiState.update {
+            it.copy(
+                quickConnect = quickConnect,
+                nickname = quickConnect,
+                username = username,
+                hostname = hostname,
+                port = port,
+                profileId = defaultProfileId ?: it.profileId,
+            )
+        }
+    }
 
     private fun getHostRepresentation(username: String, hostname: String, port: String, protocol: String): String {
         val defaultPort = getDefaultPort(protocol)
