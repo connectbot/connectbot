@@ -17,10 +17,6 @@
 
 package org.connectbot.service.tmux
 
-import java.io.ByteArrayInputStream
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
-import java.io.OutputStream
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
@@ -34,6 +30,10 @@ import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.transport.ExecChannel
 import org.junit.After
 import org.junit.Test
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
+import java.io.InputStream
+import java.io.OutputStream
 
 /** One-shot channel: fixed stdout, then EOF. */
 private class OneShotChannel(text: String) : ExecChannel {
@@ -68,12 +68,19 @@ private class FakeChannelFactory : TmuxChannelFactory {
         synchronized(execLog) { execLog.add(command) }
         return when {
             command.startsWith("tmux -u -C attach-session") ->
-                FakeTmuxChannel().also { onControlChannel(it); controlChannels.add(it) }
+                FakeTmuxChannel().also {
+                    onControlChannel(it)
+                    controlChannels.add(it)
+                }
 
             command.startsWith("command -v tmux") -> OneShotChannel(probeResponse)
+
             command.startsWith("tmux list-windows -a") -> OneShotChannel(flagPollResponse)
+
             command.startsWith("tmux ls") -> OneShotChannel(listResponse)
+
             command.startsWith("tmux capture-pane") -> OneShotChannel(snapshotResponse)
+
             else -> OneShotChannel("")
         }
     }
@@ -298,8 +305,8 @@ class TmuxSessionManagerTest {
 
         factory.flagPollResponse =
             "\$0\t@0\t1\t0\tshell\n" +
-                "\$0\t@1\t0\t1\tlogs\n" +
-                "\$1\t@2\t0\t0\twork\n"
+            "\$0\t@1\t0\t1\tlogs\n" +
+            "\$1\t@2\t0\t0\twork\n"
         withTimeout(5_000) { manager.pollWindowFlags() }
 
         val state = awaitState { it.session("\$0")?.bell == true }
@@ -337,7 +344,7 @@ class TmuxSessionManagerTest {
         withTimeout(5_000) { manager.selectTarget(TmuxTarget("\$0", "@0", "%0", "main")) }
 
         val events = mutableListOf<TmuxCommandCompletion>()
-        // UNDISPATCHED so the subscription exists before the first tryEmit.
+        // UNDISPATCHED so the subscription exists before the first emission.
         val collector = scope.launch(start = kotlinx.coroutines.CoroutineStart.UNDISPATCHED) {
             manager.commandCompletions.collect { synchronized(events) { events.add(it) } }
         }
@@ -449,8 +456,8 @@ class TmuxSessionManagerTest {
     fun `sessions with hostile ids are dropped at discovery`() {
         factory.listResponse =
             "\$0\tmain\t0\n" +
-                "\$1'; rm -rf ~'\tevil\t0\n" +
-                "@2\tweird\t0\n"
+            "\$1'; rm -rf ~'\tevil\t0\n" +
+            "@2\tweird\t0\n"
         val state = connectAndAwaitReady()
         assertThat(state.sessions.map { it.id }).containsExactly("\$0")
     }

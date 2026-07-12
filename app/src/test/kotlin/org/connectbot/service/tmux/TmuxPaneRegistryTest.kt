@@ -39,20 +39,18 @@ class TmuxPaneRegistryTest {
         scope.cancel()
     }
 
-    private fun newTerminal(sessionId: String, paneId: String): TmuxPaneTerminal =
-        TmuxPaneTerminal(
-            sessionId = sessionId,
-            paneId = paneId,
-            initialRows = 24,
-            initialCols = 80,
-            colors = TmuxPaneColors.DEFAULT,
-            scope = scope,
-            sendCommand = { TmuxReply(0, true, emptyList()) },
-            emulatorFactory = { _, _, _, _, _, _ -> FakeEmulator() },
-        )
+    private fun newTerminal(sessionId: String, paneId: String): TmuxPaneTerminal = TmuxPaneTerminal(
+        sessionId = sessionId,
+        paneId = paneId,
+        initialRows = 24,
+        initialCols = 80,
+        colors = TmuxPaneColors.DEFAULT,
+        scope = scope,
+        sendCommand = { TmuxReply(0, true, emptyList()) },
+        emulatorFactory = { _, _, _, _, _, _ -> FakeEmulator() },
+    )
 
-    private fun acquire(sessionId: String, paneId: String): Pair<TmuxPaneTerminal, Boolean> =
-        registry.acquire(sessionId, paneId) { newTerminal(sessionId, paneId) }
+    private fun acquire(sessionId: String, paneId: String): Pair<TmuxPaneTerminal, Boolean> = registry.acquire(sessionId, paneId) { newTerminal(sessionId, paneId) }
 
     @Test
     fun `acquire returns same terminal for same pane`() {

@@ -44,5 +44,4 @@ fun completionThresholdMs(prefs: SharedPreferences): Long {
  * False when the feature is off ([thresholdMs] == 0) or the duration is
  * unknown (termlib reports -1 when it saw no command-start mark).
  */
-fun meetsCompletionThreshold(durationMs: Long, thresholdMs: Long): Boolean =
-    thresholdMs > 0 && durationMs >= thresholdMs
+fun meetsCompletionThreshold(durationMs: Long, thresholdMs: Long): Boolean = thresholdMs > 0 && durationMs >= thresholdMs

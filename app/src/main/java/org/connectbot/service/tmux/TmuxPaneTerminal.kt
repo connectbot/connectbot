@@ -19,7 +19,6 @@ package org.connectbot.service.tmux
 
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
-import java.io.ByteArrayOutputStream
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -32,6 +31,7 @@ import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.TerminalEmulatorFactory
 import org.connectbot.util.commandOutputSnippet
 import timber.log.Timber
+import java.io.ByteArrayOutputStream
 
 /** Colors for pane emulators, taken from the host's profile. */
 data class TmuxPaneColors(
@@ -45,9 +45,8 @@ data class TmuxPaneColors(
         other.defaultBackground == defaultBackground &&
         (other.ansiColors?.contentEquals(ansiColors) ?: (ansiColors == null))
 
-    override fun hashCode(): Int =
-        31 * (31 * defaultForeground.hashCode() + defaultBackground.hashCode()) +
-            (ansiColors?.contentHashCode() ?: 0)
+    override fun hashCode(): Int = 31 * (31 * defaultForeground.hashCode() + defaultBackground.hashCode()) +
+        (ansiColors?.contentHashCode() ?: 0)
 
     companion object {
         /** Classic light-gray-on-black, used until the bridge provides profile colors. */

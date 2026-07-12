@@ -62,8 +62,8 @@ import org.connectbot.transport.SSH
 import org.connectbot.transport.TransportFactory
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PreferenceConstants
-import org.connectbot.util.commandOutputSnippet
 import org.connectbot.util.ProfileStartup
+import org.connectbot.util.commandOutputSnippet
 import timber.log.Timber
 import java.io.IOException
 import java.nio.charset.Charset
@@ -399,7 +399,7 @@ class TerminalBridge {
                     }
                     // Backgrounded case; gated on !isUiBound inside the manager.
                     // Foreground routing happens via the flow in ConsoleViewModel.
-                    manager.sendCommandCompletionNotification(host, durationMs, snippet)
+                    manager.sendCommandCompletionNotification(host, durationMs)
                 }
             },
         )

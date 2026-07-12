@@ -31,8 +31,7 @@ data class TmuxHostState(
 ) {
     fun session(sessionId: String): TmuxSessionInfo? = sessions.find { it.id == sessionId }
 
-    fun updateSession(sessionId: String, transform: (TmuxSessionInfo) -> TmuxSessionInfo): TmuxHostState =
-        copy(sessions = sessions.map { if (it.id == sessionId) transform(it) else it })
+    fun updateSession(sessionId: String, transform: (TmuxSessionInfo) -> TmuxSessionInfo): TmuxHostState = copy(sessions = sessions.map { if (it.id == sessionId) transform(it) else it })
 }
 
 enum class TmuxAvailability {
@@ -114,8 +113,7 @@ data class TmuxPaneRef(
  * `tmux master`, and distro suffixes.
  */
 data class TmuxVersion(val major: Int, val minor: Int, val raw: String) {
-    fun atLeast(major: Int, minor: Int): Boolean =
-        this.major > major || (this.major == major && this.minor >= minor)
+    fun atLeast(major: Int, minor: Int): Boolean = this.major > major || (this.major == major && this.minor >= minor)
 
     /** `%pause`/`%continue`, `refresh-client -f pause-after`, `-A %p:on/off`. */
     val supportsFlowControl: Boolean

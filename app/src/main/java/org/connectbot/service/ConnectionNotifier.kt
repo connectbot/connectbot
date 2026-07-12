@@ -67,6 +67,7 @@ class ConnectionNotifier @Inject constructor() {
                     context.getString(R.string.notification_channel_completions),
                     NotificationManager.IMPORTANCE_HIGH,
                 )
+
                 else -> createNotificationChannel(context, id)
             }
         }
@@ -196,7 +197,8 @@ class ConnectionNotifier @Inject constructor() {
 
     /**
      * Heads-up notification for a long-running command that finished while the
-     * app was in the background, showing the tail of the command's output.
+     * app was in the background. Terminal output is intentionally excluded
+     * because notification listeners can read private notification content.
      * Repeat completions on the same target (host shell or tmux window) update
      * in place; distinct targets stack.
      *
@@ -210,9 +212,27 @@ class ConnectionNotifier @Inject constructor() {
         tmuxTarget: String?,
         tmuxLabel: String?,
         durationMs: Long,
-        snippet: String?,
     ) {
-        val builder = newNotificationBuilder(context, COMPLETION_CHANNEL)
+        val notificationId = completionNotificationId(host, tmuxTarget)
+        getNotificationManager(context).notify(
+            notificationId,
+            newCommandCompletionNotification(
+                context,
+                host,
+                tmuxTarget,
+                tmuxLabel,
+                durationMs,
+            ),
+        )
+    }
+
+    internal fun newCommandCompletionNotification(
+        context: Context,
+        host: Host,
+        tmuxTarget: String?,
+        tmuxLabel: String?,
+        durationMs: Long,
+    ): Notification {
         val res = context.resources
 
         val title = if (tmuxLabel != null) {
@@ -233,17 +253,20 @@ class ConnectionNotifier @Inject constructor() {
             pendingIntentFlags,
         )
 
-        builder.setContentTitle(title)
+        val publicNotification = NotificationCompat.Builder(context, COMPLETION_CHANNEL)
+            .setSmallIcon(R.drawable.notification_icon)
+            .setContentTitle(res.getString(R.string.notification_channel_completions))
             .setContentText(status)
-            .setStyle(
-                NotificationCompat.BigTextStyle().bigText(
-                    snippet?.let { "$it\n\n$status" } ?: status,
-                ),
-            )
+            .build()
+
+        return newNotificationBuilder(context, COMPLETION_CHANNEL)
+            .setContentTitle(title)
+            .setContentText(status)
             .setContentIntent(contentIntent)
             .setAutoCancel(true)
-
-        getNotificationManager(context).notify(notificationId, builder.build())
+            .setVisibility(NotificationCompat.VISIBILITY_PRIVATE)
+            .setPublicVersion(publicNotification)
+            .build()
     }
 
     private fun completionNotificationId(host: Host, tmuxTarget: String?): Int = "completion:${host.id}:${tmuxTarget ?: "shell"}".hashCode()

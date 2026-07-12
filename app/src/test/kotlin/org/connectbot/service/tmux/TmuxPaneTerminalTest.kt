@@ -71,34 +71,32 @@ class TmuxPaneTerminalTest {
     private fun terminal(
         onBell: (String, String) -> Unit = { _, _ -> },
         onCommandCompletion: (String, String, Long, String?) -> Unit = { _, _, _, _ -> },
-    ): TmuxPaneTerminal =
-        TmuxPaneTerminal(
-            sessionId = "\$0",
-            paneId = "%1",
-            initialRows = 24,
-            initialCols = 80,
-            colors = TmuxPaneColors.DEFAULT,
-            scope = scope,
-            sendCommand = { command ->
-                synchronized(commandLog) { commandLog.add(command) }
-                replies.entries.firstOrNull { command.startsWith(it.key) }?.value
-                    ?: TmuxReply(0, true, emptyList())
-            },
-            onBell = onBell,
-            onCommandCompletion = onCommandCompletion,
-            emulatorFactory = { rows, cols, _, onKeyboardInput, onBellCallback, onCommandFinished ->
-                fakeEmulator.also {
-                    it.rows = rows
-                    it.cols = cols
-                    it.keyboardInput = onKeyboardInput
-                    it.bell = onBellCallback
-                    it.commandFinished = onCommandFinished
-                }
-            },
-        )
+    ): TmuxPaneTerminal = TmuxPaneTerminal(
+        sessionId = "\$0",
+        paneId = "%1",
+        initialRows = 24,
+        initialCols = 80,
+        colors = TmuxPaneColors.DEFAULT,
+        scope = scope,
+        sendCommand = { command ->
+            synchronized(commandLog) { commandLog.add(command) }
+            replies.entries.firstOrNull { command.startsWith(it.key) }?.value
+                ?: TmuxReply(0, true, emptyList())
+        },
+        onBell = onBell,
+        onCommandCompletion = onCommandCompletion,
+        emulatorFactory = { rows, cols, _, onKeyboardInput, onBellCallback, onCommandFinished ->
+            fakeEmulator.also {
+                it.rows = rows
+                it.cols = cols
+                it.keyboardInput = onKeyboardInput
+                it.bell = onBellCallback
+                it.commandFinished = onCommandFinished
+            }
+        },
+    )
 
-    private fun output(seq: Long, text: String) =
-        TmuxNotification.Output("%1", text.toByteArray(), seq)
+    private fun output(seq: Long, text: String) = TmuxNotification.Output("%1", text.toByteArray(), seq)
 
     @Test
     fun `backfill writes capture then cursor then later output only`() = runBlocking<Unit> {

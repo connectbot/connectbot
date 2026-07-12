@@ -63,8 +63,8 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
-import org.connectbot.transport.TransportFactory
 import org.connectbot.service.tmux.TmuxCommandCompletion
+import org.connectbot.transport.TransportFactory
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.ProviderLoader
 import org.connectbot.util.ProviderLoaderListener
@@ -980,9 +980,15 @@ class TerminalManager :
      * shell. The duration threshold ("off" included) is already enforced at
      * emit time, so this only gates on the app being backgrounded.
      */
-    fun sendCommandCompletionNotification(host: Host, durationMs: Long, snippet: String?) {
+    fun sendCommandCompletionNotification(host: Host, durationMs: Long) {
         if (!isUiBound) {
-            connectionNotifier.showCommandCompletionNotification(this, host, null, null, durationMs, snippet)
+            connectionNotifier.showCommandCompletionNotification(
+                this,
+                host,
+                null,
+                null,
+                durationMs,
+            )
         }
     }
 
@@ -995,7 +1001,6 @@ class TerminalManager :
                 "${event.sessionId}|${event.windowId}",
                 "${event.sessionName}:${event.windowName}",
                 event.durationMs,
-                event.snippet,
             )
         }
     }

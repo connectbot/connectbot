@@ -474,14 +474,14 @@ class ConsoleViewModel @Inject constructor(
      * are set by TmuxSessionManager, and the backgrounded notification by the
      * bridge's collector).
      */
-    private fun onTmuxCommandCompletion(bridge: TerminalBridge, event: TmuxCommandCompletion) {
+    private suspend fun onTmuxCommandCompletion(bridge: TerminalBridge, event: TmuxCommandCompletion) {
         val current = _uiState.value.currentTab
         val viewingThatWindow = current is ConsoleTab.TmuxSession &&
             current.bridge === bridge &&
             current.sessionId == event.sessionId &&
             bridge.tmux?.currentTarget?.value?.windowId == event.windowId
         if (viewingThatWindow) return
-        _completionMessages.tryEmit(
+        _completionMessages.emit(
             CompletionMessage(
                 sourceLabel = "${event.sessionName}:${event.windowName}",
                 durationText = formatDuration(event.durationMs),

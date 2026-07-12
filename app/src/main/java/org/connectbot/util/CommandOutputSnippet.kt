@@ -23,8 +23,8 @@ const val SNIPPET_MAX_LINES = 8
 const val SNIPPET_MAX_CHARS = 600
 
 /**
- * Extracts the tail of the most recent command's output for display in a
- * notification or snackbar.
+ * Extracts the tail of the most recent command's output for completion-event
+ * consumers.
  *
  * Prefers the emulator's OSC 133-based [TerminalEmulator.getLastCommandOutput]
  * (exactly the finished command's output); falls back to the tail of the whole
@@ -38,24 +38,30 @@ fun commandOutputSnippet(
 ): String? {
     if (emulator == null) return null
     val output = emulator.getLastCommandOutput()
-        ?: sessionTailFallback(emulator)
+        ?: sessionTailFallback(emulator, maxLines)
         ?: return null
     return output.trimEnd().takeIf { it.isNotEmpty() }?.let { tailOf(it, maxLines, maxChars) }
 }
 
-private fun sessionTailFallback(emulator: TerminalEmulator): String? {
-    val text = TerminalTextUtils.buildSessionText(TerminalSessionReader.readSessionLines(emulator))
+private fun sessionTailFallback(emulator: TerminalEmulator, maxLines: Int): String? {
+    val lines = TerminalSessionReader.readSessionLines(emulator)
+    if (lines.isEmpty()) return null
+    val text = TerminalTextUtils.buildSessionText(lines.takeLast(maxLines + 1))
     if (text.isEmpty()) return null
     // The last line is the shell prompt that just repainted after the command.
     return text.substringBeforeLast('\n', missingDelimiterValue = "")
 }
 
-private fun tailOf(text: String, maxLines: Int, maxChars: Int): String {
+internal fun tailOf(text: String, maxLines: Int, maxChars: Int): String {
     val lines = text.lines()
     var result = lines.takeLast(maxLines).joinToString("\n")
     var truncated = lines.size > maxLines
     if (result.length > maxChars) {
-        result = result.takeLast(maxChars)
+        var truncatedText = result.takeLast(maxChars)
+        if (truncatedText.firstOrNull()?.isLowSurrogate() == true) {
+            truncatedText = truncatedText.drop(1)
+        }
+        result = truncatedText
         truncated = true
     }
     return if (truncated) "…" + result.trimStart() else result
