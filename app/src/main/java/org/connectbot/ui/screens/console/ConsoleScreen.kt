@@ -146,6 +146,7 @@ import org.connectbot.data.entity.Host
 import org.connectbot.keyboard.DefaultKeyboardLayouts
 import org.connectbot.keyboard.KeyboardKeySize
 import org.connectbot.keyboard.KeyboardLayoutSpec
+import org.connectbot.keyboard.TmuxAction
 import org.connectbot.service.AuthBanner
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.PromptRequest
@@ -170,6 +171,7 @@ import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
 import org.connectbot.ui.components.terminalKeyboardHeightDp
 import org.connectbot.ui.screens.console.tmux.PaneDotsIndicator
+import org.connectbot.ui.screens.console.tmux.TmuxActionDrawerSheet
 import org.connectbot.ui.screens.console.tmux.TmuxActionMenuDialog
 import org.connectbot.ui.screens.console.tmux.TmuxCommandPaletteSheet
 import org.connectbot.ui.screens.console.tmux.TmuxConfirmDialog
@@ -564,6 +566,7 @@ private fun ConsoleTerminalPage(
     keyboardLayout: KeyboardLayoutSpec = DefaultKeyboardLayouts.default,
     keyboardKeySize: KeyboardKeySize = KeyboardKeySize.MEDIUM,
     onNavigateToKeyboardLayouts: () -> Unit = {},
+    onTmuxAction: ((TmuxAction) -> Unit)? = null,
     /** When set, the page renders this tmux pane instead of the host shell. */
     tmuxPane: TmuxPaneTerminal? = null,
     /** Server-side pane grid (rows, cols); termlib fits the font to it. */
@@ -675,6 +678,7 @@ private fun ConsoleTerminalPage(
                     },
                     onOpenTextInput = onTextInputRequest,
                     onOpenSnippets = onSnippetsRequest,
+                    onTmuxAction = onTmuxAction,
                     onLongPress = onNavigateToKeyboardLayouts,
                     onScrollInProgressChange = onKeyboardScrollInProgressChange,
                     imeVisible = imeVisible,
@@ -937,6 +941,8 @@ fun ConsoleScreen(
     var tmuxResizeTab by remember { mutableStateOf<ConsoleTab.TmuxSession?>(null) }
     var tmuxKillWindowId by remember { mutableStateOf<String?>(null) }
     var showTmuxPalette by remember { mutableStateOf(false) }
+    var showTmuxActionDrawer by remember { mutableStateOf(false) }
+    var pendingTmuxAction by remember { mutableStateOf<TmuxAction?>(null) }
     var showSnippetPicker by remember { mutableStateOf(false) }
     var showExtraKeyboard by remember { mutableStateOf(true) } // Start visible to show animation
     var hasPlayedKeyboardAnimation by remember { mutableStateOf(false) }
@@ -1438,6 +1444,19 @@ fun ConsoleScreen(
                                     onImeVisibilityChange = { imeVisible = it },
                                     onTextInputRequest = { showTextInputDialog = true },
                                     onSnippetsRequest = { showSnippetPicker = true },
+                                    onTmuxAction = { action ->
+                                        when (action) {
+                                            TmuxAction.OPEN_DRAWER -> showTmuxActionDrawer = true
+
+                                            TmuxAction.PALETTE -> showTmuxPalette = true
+
+                                            TmuxAction.KILL_PANE,
+                                            TmuxAction.BREAK_PANE,
+                                            -> pendingTmuxAction = action
+
+                                            else -> viewModel.runTmuxAction(action)
+                                        }
+                                    },
                                     onDisconnectRequest = {
                                         bridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
                                     },
@@ -1631,6 +1650,45 @@ fun ConsoleScreen(
                 history = uiState.tmuxPaletteHistory,
                 onRunCommand = { viewModel.runTmuxCommand(it) },
                 onDismiss = { showTmuxPalette = false },
+            )
+        }
+
+        if (showTmuxActionDrawer && uiState.currentTab is ConsoleTab.TmuxSession) {
+            TmuxActionDrawerSheet(
+                onAction = { action ->
+                    showTmuxActionDrawer = false
+                    when (action) {
+                        TmuxAction.PALETTE -> showTmuxPalette = true
+
+                        TmuxAction.KILL_PANE,
+                        TmuxAction.BREAK_PANE,
+                        -> pendingTmuxAction = action
+
+                        TmuxAction.OPEN_DRAWER -> Unit
+
+                        else -> viewModel.runTmuxAction(action)
+                    }
+                },
+                onDismiss = { showTmuxActionDrawer = false },
+            )
+        }
+
+        pendingTmuxAction?.let { action ->
+            TmuxConfirmDialog(
+                title = stringResource(R.string.tmux_actions_title),
+                message = stringResource(
+                    if (action == TmuxAction.KILL_PANE) {
+                        R.string.tmux_action_confirm_kill
+                    } else {
+                        R.string.tmux_action_confirm_break
+                    },
+                ),
+                confirmLabel = stringResource(R.string.tmux_kill_confirm),
+                onConfirm = {
+                    viewModel.runTmuxAction(action)
+                    pendingTmuxAction = null
+                },
+                onDismiss = { pendingTmuxAction = null },
             )
         }
 
@@ -1913,6 +1971,13 @@ fun ConsoleScreen(
                                 if (uiState.currentTab is ConsoleTab.TmuxSession &&
                                     uiState.currentPaneTerminal != null
                                 ) {
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.tmux_actions_title)) },
+                                        onClick = {
+                                            showMenu = false
+                                            showTmuxActionDrawer = true
+                                        },
+                                    )
                                     DropdownMenuItem(
                                         text = { Text(stringResource(R.string.tmux_menu_command)) },
                                         onClick = {

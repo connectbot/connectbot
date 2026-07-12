@@ -89,6 +89,7 @@ import org.connectbot.keyboard.KeyboardKeySize
 import org.connectbot.keyboard.KeyboardLayoutSpec
 import org.connectbot.keyboard.ModifierKey
 import org.connectbot.keyboard.SpecialKey
+import org.connectbot.keyboard.TmuxAction
 import org.connectbot.keyboard.dispatchKeySpec
 import org.connectbot.service.ModifierLevel
 import org.connectbot.service.ModifierState
@@ -127,6 +128,7 @@ fun TerminalKeyboard(
     onShowIme: () -> Unit = {},
     onOpenTextInput: () -> Unit = {},
     onOpenSnippets: () -> Unit = {},
+    onTmuxAction: ((TmuxAction) -> Unit)? = null,
     onLongPress: () -> Unit = {},
     onScrollInProgressChange: (Boolean) -> Unit = {},
     imeVisible: Boolean = false,
@@ -144,7 +146,12 @@ fun TerminalKeyboard(
         keySize = keySize,
         modifierState = modifierState,
         onKeyAction = { spec ->
-            dispatchKeySpec(spec, keyHandler, injectText)
+            dispatchKeySpec(
+                spec = spec,
+                keyHandler = keyHandler,
+                onTmuxAction = onTmuxAction,
+                injectText = injectText,
+            )
             onInteraction()
         },
         onInteraction = onInteraction,
@@ -431,6 +438,17 @@ private fun TerminalKey(
             ),
             onClick = { onKeyAction(spec) },
         )
+
+        is KeySpec.Tmux -> {
+            val label = spec.label ?: spec.action.name.lowercase().replace('_', ' ')
+                .replaceFirstChar { it.uppercase() }
+            KeyButton(
+                text = if (customIcon != null) null else label,
+                icon = customIcon,
+                contentDescription = iconOnlyContentDescription(customIcon, label),
+                onClick = { onKeyAction(spec) },
+            )
+        }
     }
 }
 

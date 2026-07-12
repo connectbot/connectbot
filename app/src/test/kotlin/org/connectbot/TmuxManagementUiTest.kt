@@ -28,6 +28,8 @@ import androidx.compose.ui.test.performTextReplacement
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.connectbot.keyboard.TmuxAction
+import org.connectbot.ui.screens.console.tmux.TmuxActionDrawerSheet
 import org.connectbot.ui.screens.console.tmux.TmuxCommandPaletteSheet
 import org.connectbot.ui.screens.console.tmux.TmuxKillConfirmDialog
 import org.connectbot.ui.screens.console.tmux.TmuxPaletteEntry
@@ -134,5 +136,21 @@ class TmuxManagementUiTest {
         composeTestRule.runOnIdle {
             assertEquals("kill-window -t @2", ran)
         }
+    }
+
+    @Test
+    fun actionDrawer_dispatchesSemanticAction() {
+        var action: TmuxAction? = null
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                TmuxActionDrawerSheet(
+                    onAction = { action = it },
+                    onDismiss = {},
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithTag("tmux_action_SPLIT_H").performClick()
+        composeTestRule.runOnIdle { assertEquals(TmuxAction.SPLIT_H, action) }
     }
 }

@@ -56,6 +56,7 @@ import org.connectbot.keyboard.KeyIconCatalog
 import org.connectbot.keyboard.KeySpec
 import org.connectbot.keyboard.ModifierKey
 import org.connectbot.keyboard.SpecialKey
+import org.connectbot.keyboard.TmuxAction
 
 /** Symbol characters offered as ready-made text keys. */
 private val SYMBOL_KEYS = listOf("/", "|", "-", ":", ";", "~", ".", "_", "'", "\"", "*", "&")
@@ -119,6 +120,14 @@ fun KeyCatalogSheet(
                     onClick = { configuring = KeySpec.Combo(ctrl = true, ch = 'c') },
                     label = { Text(stringResource(R.string.keyboard_catalog_combo)) },
                 )
+            }
+            CatalogSection(stringResource(R.string.keyboard_catalog_tmux)) {
+                TmuxAction.entries.forEach { action ->
+                    AssistChip(
+                        onClick = { onPick(KeySpec.Tmux(action)) },
+                        label = { Text(action.name.replace('_', ' ')) },
+                    )
+                }
             }
         }
     }
@@ -194,6 +203,8 @@ fun KeyConfigDialog(
             is KeySpec.Modifier -> initial.copy(label = cleanLabel, icon = icon)
 
             is KeySpec.FnGrid -> initial.copy(label = cleanLabel, icon = icon)
+
+            is KeySpec.Tmux -> initial.copy(label = cleanLabel, icon = icon)
         }
     }
 

@@ -61,6 +61,7 @@ fun SpecialKey.toVTermKey(): Int = when (this) {
 fun dispatchKeySpec(
     spec: KeySpec,
     keyHandler: TerminalKeyListener,
+    onTmuxAction: ((TmuxAction) -> Unit)? = null,
     injectText: (String) -> Unit,
 ) {
     when (spec) {
@@ -100,5 +101,7 @@ fun dispatchKeySpec(
 
         // Opens a popup; the keys inside it dispatch as Special keys.
         is KeySpec.FnGrid -> Unit
+
+        is KeySpec.Tmux -> onTmuxAction?.invoke(spec.action)
     }
 }

@@ -37,6 +37,7 @@ class KeyboardLayoutJsonTest {
                     KeySpec.Combo(ctrl = true, ch = 'c'),
                     KeySpec.Combo(alt = true, special = SpecialKey.LEFT),
                     KeySpec.FnGrid(),
+                    KeySpec.Tmux(TmuxAction.SPLIT_H, label = "Split", icon = "terminal"),
                 ),
                 listOf(
                     KeySpec.Special(SpecialKey.UP, label = "Up", icon = "arrow_up"),
@@ -93,6 +94,12 @@ class KeyboardLayoutJsonTest {
     fun skipsUnknownSpecialKeyNames() {
         val json = """{"version":1,"rows":[[{"type":"special","key":"NOPE"}]]}"""
         // The only key is unrecognized, so the row is empty and the layout has no keys.
+        assertEquals(emptyList<KeySpec>(), KeyboardLayoutJson.decode(json)!!.rows[0])
+    }
+
+    @Test
+    fun skipsUnknownTmuxActions() {
+        val json = """{"version":1,"rows":[[{"type":"tmux","action":"FUTURE_ACTION"}]]}"""
         assertEquals(emptyList<KeySpec>(), KeyboardLayoutJson.decode(json)!!.rows[0])
     }
 

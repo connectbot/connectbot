@@ -17,7 +17,6 @@
 
 package org.connectbot.service.tmux
 
-import java.io.IOException
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -38,6 +37,7 @@ import kotlinx.coroutines.withTimeout
 import kotlinx.coroutines.withTimeoutOrNull
 import org.connectbot.transport.ExecChannel
 import timber.log.Timber
+import java.io.IOException
 
 /** Opens one remote command channel; the SSH transport provides this. */
 fun interface TmuxChannelFactory {
@@ -115,8 +115,7 @@ class TmuxSessionManager(
     /** All state mutations go through CAS: concurrent coroutines must not lose updates. */
     private fun mutateState(transform: (TmuxHostState) -> TmuxHostState) = _state.update(transform)
 
-    private fun mutateSession(sessionId: String, transform: (TmuxSessionInfo) -> TmuxSessionInfo) =
-        _state.update { it.updateSession(sessionId, transform) }
+    private fun mutateSession(sessionId: String, transform: (TmuxSessionInfo) -> TmuxSessionInfo) = _state.update { it.updateSession(sessionId, transform) }
 
     private val clients = java.util.concurrent.ConcurrentHashMap<String, TmuxControlClient>()
     private val clientJobs = java.util.concurrent.ConcurrentHashMap<String, List<Job>>()
@@ -659,6 +658,26 @@ class TmuxSessionManager(
         sessionCommand(sessionId, "new-window -t '$sessionId'")
     }
 
+    suspend fun splitPaneH(sessionId: String, paneId: String) {
+        sessionCommand(sessionId, "split-window -h -t '$paneId'")
+    }
+
+    suspend fun splitPaneV(sessionId: String, paneId: String) {
+        sessionCommand(sessionId, "split-window -v -t '$paneId'")
+    }
+
+    suspend fun zoomPane(sessionId: String, paneId: String) {
+        sessionCommand(sessionId, "resize-pane -Z -t '$paneId'")
+    }
+
+    suspend fun killPane(sessionId: String, paneId: String) {
+        sessionCommand(sessionId, "kill-pane -t '$paneId'")
+    }
+
+    suspend fun breakPane(sessionId: String, paneId: String) {
+        sessionCommand(sessionId, "break-pane -t '$paneId'")
+    }
+
     suspend fun renameWindow(sessionId: String, windowId: String, name: String) {
         sessionCommand(sessionId, "rename-window -t '$windowId' \"${TmuxInputEncoder.quoteDouble(name)}\"")
     }
@@ -885,9 +904,11 @@ class TmuxSessionManager(
             }
 
             is TmuxNotification.WindowClose -> removeWindow(state, notification.windowId)
+
             is TmuxNotification.UnlinkedWindowClose -> removeWindow(state, notification.windowId)
 
             is TmuxNotification.WindowRenamed -> renameWindow(state, notification.windowId, notification.name)
+
             is TmuxNotification.UnlinkedWindowRenamed -> renameWindow(state, notification.windowId, notification.name)
 
             is TmuxNotification.LayoutChange -> state.updateSession(sessionId) { session ->
@@ -915,6 +936,7 @@ class TmuxSessionManager(
             }
 
             is TmuxNotification.Pause -> setPanePaused(state, sessionId, notification.paneId, paused = true)
+
             is TmuxNotification.Continue -> setPanePaused(state, sessionId, notification.paneId, paused = false)
 
             is TmuxNotification.Exit -> state.updateSession(sessionId) {
@@ -942,16 +964,15 @@ class TmuxSessionManager(
             },
         )
 
-        private fun renameWindow(state: TmuxHostState, windowId: String, name: String): TmuxHostState =
-            state.copy(
-                sessions = state.sessions.map { session ->
-                    session.copy(
-                        windows = session.windows.map { window ->
-                            if (window.id == windowId) window.copy(name = name) else window
-                        },
-                    )
-                },
-            )
+        private fun renameWindow(state: TmuxHostState, windowId: String, name: String): TmuxHostState = state.copy(
+            sessions = state.sessions.map { session ->
+                session.copy(
+                    windows = session.windows.map { window ->
+                        if (window.id == windowId) window.copy(name = name) else window
+                    },
+                )
+            },
+        )
 
         private fun applyLayout(
             session: TmuxSessionInfo,

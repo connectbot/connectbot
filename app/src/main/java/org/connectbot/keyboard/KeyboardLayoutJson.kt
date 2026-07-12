@@ -40,6 +40,7 @@ object KeyboardLayoutJson {
     private const val TYPE_TEXT = "text"
     private const val TYPE_COMBO = "combo"
     private const val TYPE_FN = "fn"
+    private const val TYPE_TMUX = "tmux"
 
     fun encode(spec: KeyboardLayoutSpec): String {
         val rows = JSONArray()
@@ -104,6 +105,8 @@ object KeyboardLayoutJson {
             }
 
             is KeySpec.FnGrid -> obj.put(KEY_TYPE, TYPE_FN)
+
+            is KeySpec.Tmux -> obj.put(KEY_TYPE, TYPE_TMUX).put("action", key.action.name)
         }
         key.label?.let { obj.put(KEY_LABEL, it) }
         key.icon?.let { obj.put(KEY_ICON, it) }
@@ -138,6 +141,11 @@ object KeyboardLayoutJson {
             )
 
             TYPE_FN -> KeySpec.FnGrid(label, icon)
+
+            TYPE_TMUX ->
+                TmuxAction.entries
+                    .firstOrNull { it.name == obj.optString("action") }
+                    ?.let { KeySpec.Tmux(it, label, icon) }
 
             // Unknown key types (e.g. from a newer version) are skipped.
             else -> null

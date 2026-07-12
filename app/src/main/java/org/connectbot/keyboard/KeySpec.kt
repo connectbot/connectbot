@@ -114,6 +114,13 @@ sealed interface KeySpec {
         override val label: String? = null,
         override val icon: String? = null,
     ) : KeySpec
+
+    /** Runs a semantic tmux action through control mode, never prefix keystrokes. */
+    data class Tmux(
+        val action: TmuxAction,
+        override val label: String? = null,
+        override val icon: String? = null,
+    ) : KeySpec
 }
 
 /**
