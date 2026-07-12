@@ -400,16 +400,20 @@ class TerminalBridge {
             },
             onCommandFinished = { durationMs ->
                 if (meetsCompletionThreshold(durationMs, completionThresholdMs(manager.prefs))) {
-                    synchronized(emulatorLifecycleLock) {
-                        if (!cleanedUp.get()) {
-                            val snippet = commandOutputSnippet(terminalEmulator)
-                            scope.launch {
-                                _commandCompletions.emit(HostCommandCompletion(durationMs, snippet))
-                            }
-                            // Backgrounded case; gated on !isUiBound inside the manager.
-                            // Foreground routing happens via the flow in ConsoleViewModel.
-                            manager.sendCommandCompletionNotification(host, durationMs)
+                    val completion = synchronized(emulatorLifecycleLock) {
+                        if (cleanedUp.get()) {
+                            null
+                        } else {
+                            HostCommandCompletion(durationMs, commandOutputSnippet(terminalEmulator))
                         }
+                    }
+                    if (completion != null) {
+                        scope.launch {
+                            _commandCompletions.emit(completion)
+                        }
+                        // Backgrounded case; gated on !isUiBound inside the manager.
+                        // Foreground routing happens via the flow in ConsoleViewModel.
+                        manager.sendCommandCompletionNotification(host, durationMs)
                     }
                 }
             },

@@ -17,6 +17,9 @@
 
 package org.connectbot.ui.screens.hostlist
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -27,8 +30,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
@@ -49,6 +54,7 @@ import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Pending
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.SwapVert
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.AssistChip
@@ -92,6 +98,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlinx.coroutines.launch
 import org.connectbot.R
@@ -105,6 +112,7 @@ import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.components.PortForwardQuickToggleSheet
 import org.connectbot.ui.components.ShortcutCustomizationDialog
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.DiscoveredSshServer
 import org.connectbot.util.IconStyle
 
 internal object HostListTestTags {
@@ -130,6 +138,7 @@ fun HostListScreen(
     onSelectShortcut: (Host, String?, IconStyle) -> Unit = { _, _, _ -> },
     shouldShowNotificationWarning: () -> Boolean = { false },
     onNotificationSnackbarFinish: () -> Unit = {},
+    onNavigateToDiscoveredHost: (DiscoveredSshServer) -> Unit = {},
     viewModel: HostListViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -141,6 +150,26 @@ fun HostListScreen(
 
     val uiState by viewModel.uiState.collectAsState()
     val scope = rememberCoroutineScope()
+    val localNetworkPermissionLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.RequestPermission(),
+    ) { granted ->
+        if (granted) {
+            viewModel.startSshDiscovery()
+        } else {
+            viewModel.showSshDiscoveryPermissionDenied()
+        }
+    }
+    val startSshDiscovery = {
+        if (
+            Build.VERSION.SDK_INT >= 37 &&
+            ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_LOCAL_NETWORK) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            localNetworkPermissionLauncher.launch(Manifest.permission.ACCESS_LOCAL_NETWORK)
+        } else {
+            viewModel.startSshDiscovery()
+        }
+    }
 
     // File picker for export
     val exportLauncher = rememberLauncherForActivityResult(
@@ -304,6 +333,12 @@ fun HostListScreen(
         onExportHosts = viewModel::exportHosts,
         onExportEncryptedHosts = { showExportPassphraseDialog = true },
         onImportHosts = { importLauncher.launch(arrayOf("application/json")) },
+        onDiscoverSshServers = startSshDiscovery,
+        onDismissSshDiscovery = viewModel::dismissSshDiscovery,
+        onSelectDiscoveredSshServer = { server ->
+            viewModel.dismissSshDiscovery()
+            onNavigateToDiscoveredHost(server)
+        },
         shouldShowNotificationWarning = shouldShowNotificationWarning,
         onNotificationSnackbarFinish = onNotificationSnackbarFinish,
         modifier = modifier,
@@ -338,6 +373,9 @@ fun HostListScreenContent(
     onImportHosts: () -> Unit = {},
     shouldShowNotificationWarning: () -> Boolean = { false },
     onNotificationSnackbarFinish: () -> Unit = {},
+    onDiscoverSshServers: () -> Unit = {},
+    onDismissSshDiscovery: () -> Unit = {},
+    onSelectDiscoveredSshServer: (DiscoveredSshServer) -> Unit = {},
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showDisconnectAllDialog by remember { mutableStateOf(false) }
@@ -359,6 +397,17 @@ fun HostListScreenContent(
     val currentShouldShowNotificationWarning by rememberUpdatedState(shouldShowNotificationWarning)
     val currentOnNavigateToSettingsHighlightConnPersist by rememberUpdatedState(onNavigateToSettingsHighlightConnPersist)
     val currentOnNotificationSnackbarFinish by rememberUpdatedState(onNotificationSnackbarFinish)
+
+    if (uiState.showSshDiscovery) {
+        SshDiscoveryDialog(
+            isDiscovering = uiState.isDiscoveringSshServers,
+            servers = uiState.discoveredSshServers,
+            error = uiState.sshDiscoveryError,
+            onRetry = onDiscoverSshServers,
+            onDismiss = onDismissSshDiscovery,
+            onSelect = onSelectDiscoveredSshServer,
+        )
+    }
 
     // Show snackbar once per launch when connections won't persist in the background
     LaunchedEffect(Unit) {
@@ -514,6 +563,14 @@ fun HostListScreenContent(
                         TextButton(onClick = { onNavigateToEditHost(null) }) {
                             Text(stringResource(R.string.hostpref_add_host))
                         }
+                        TextButton(onClick = onDiscoverSshServers) {
+                            Icon(
+                                Icons.Default.Search,
+                                contentDescription = null,
+                                modifier = Modifier.padding(end = 8.dp),
+                            )
+                            Text(stringResource(R.string.host_discovery_button))
+                        }
                     }
                 }
 
@@ -582,6 +639,78 @@ fun HostListScreenContent(
             onDismiss = { quickToggleHost = null },
         )
     }
+}
+
+@Composable
+private fun SshDiscoveryDialog(
+    isDiscovering: Boolean,
+    servers: List<DiscoveredSshServer>,
+    error: String?,
+    onRetry: () -> Unit,
+    onDismiss: () -> Unit,
+    onSelect: (DiscoveredSshServer) -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.host_discovery_title)) },
+        text = {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                if (isDiscovering) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(12.dp),
+                        modifier = Modifier.padding(bottom = 12.dp),
+                    ) {
+                        CircularProgressIndicator(modifier = Modifier.size(24.dp))
+                        Text(stringResource(R.string.host_discovery_scanning))
+                    }
+                }
+
+                if (error != null) {
+                    Text(
+                        text = error,
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.padding(bottom = 8.dp),
+                    )
+                } else if (!isDiscovering && servers.isEmpty()) {
+                    Text(stringResource(R.string.host_discovery_none_found))
+                }
+
+                if (servers.isNotEmpty()) {
+                    LazyColumn(modifier = Modifier.heightIn(max = 360.dp)) {
+                        items(servers, key = { it.key }) { server ->
+                            ListItem(
+                                headlineContent = { Text(server.serviceName) },
+                                supportingContent = {
+                                    Text(
+                                        stringResource(
+                                            R.string.host_discovery_address,
+                                            server.hostname,
+                                            server.port,
+                                        ),
+                                    )
+                                },
+                                leadingContent = {
+                                    Icon(Icons.Default.Computer, contentDescription = null)
+                                },
+                                modifier = Modifier.clickable { onSelect(server) },
+                            )
+                        }
+                    }
+                }
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = onRetry) {
+                Text(stringResource(R.string.host_discovery_scan_again))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(R.string.button_close))
+            }
+        },
+    )
 }
 
 @Composable

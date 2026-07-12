@@ -183,12 +183,19 @@ class TmuxPaneTerminal(
         onKeyboardInput = { data -> keyboardBytes.trySend(data) },
         onBell = { onBell(sessionId, paneId) },
         onCommandFinished = { durationMs ->
-            synchronized(emulatorLifecycleLock) {
-                if (!destroyed.get()) {
+            var shouldNotify = false
+            val snippet = synchronized(emulatorLifecycleLock) {
+                if (destroyed.get()) {
+                    null
+                } else {
+                    shouldNotify = true
                     // Snippet captured now, while this pane's emulator is
                     // guaranteed alive (LRU eviction could destroy it later).
-                    onCommandCompletion(sessionId, paneId, durationMs, commandOutputSnippet(handle.terminalEmulator))
+                    commandOutputSnippet(handle.terminalEmulator)
                 }
+            }
+            if (shouldNotify) {
+                onCommandCompletion(sessionId, paneId, durationMs, snippet)
             }
         },
     )

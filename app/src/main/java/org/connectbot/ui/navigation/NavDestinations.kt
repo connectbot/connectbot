@@ -43,6 +43,9 @@ object NavDestinations {
 
 object NavArgs {
     const val HOST_ID = "hostId"
+    const val HOSTNAME = "hostname"
+    const val PORT = "port"
+    const val USERNAME = "username"
     const val BRIDGE_NAME = "bridgeName"
     const val PUBKEY_ID = "pubkeyId"
     const val SCHEME_ID = "schemeId"

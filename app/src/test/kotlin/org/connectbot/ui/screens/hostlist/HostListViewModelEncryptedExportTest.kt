@@ -23,6 +23,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.emptyFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
@@ -38,6 +39,7 @@ import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.SshServiceDiscovery
 import org.json.JSONObject
 import org.junit.After
 import org.junit.Before
@@ -70,6 +72,7 @@ class HostListViewModelEncryptedExportTest {
     private lateinit var context: Context
     private lateinit var repository: HostRepository
     private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var sshServiceDiscovery: SshServiceDiscovery
 
     private val encryptedBundle = JSONObject()
         .put("format", EncryptedExportBundle.FORMAT)
@@ -90,11 +93,13 @@ class HostListViewModelEncryptedExportTest {
         context = mock()
         repository = mock()
         sharedPreferences = mock()
+        sshServiceDiscovery = mock()
 
         whenever(repository.observeHosts()).thenReturn(MutableStateFlow(emptyList<Host>()))
         whenever(repository.observeAllPortForwards()).thenReturn(MutableStateFlow(emptyList<PortForward>()))
         whenever(sharedPreferences.getBoolean(PreferenceConstants.SORT_BY_COLOR, false))
             .thenReturn(false)
+        whenever(sshServiceDiscovery.discover()).thenReturn(emptyFlow())
     }
 
     @After
@@ -102,7 +107,8 @@ class HostListViewModelEncryptedExportTest {
         Dispatchers.resetMain()
     }
 
-    private fun createViewModel(): HostListViewModel = HostListViewModel(context, repository, dispatchers, sharedPreferences)
+    private fun createViewModel(): HostListViewModel =
+        HostListViewModel(context, repository, dispatchers, sharedPreferences, sshServiceDiscovery)
 
     @Test
     fun exportHostsEncrypted_marksExportAsEncrypted() = runTest {

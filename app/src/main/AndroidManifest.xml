@@ -19,6 +19,8 @@
 	android:installLocation="auto">
 
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+	<!-- Required on Android 17+ to discover and connect to devices on the local network -->
+	<uses-permission android:name="android.permission.ACCESS_LOCAL_NETWORK" />
 	<!-- Required to reliably send/receive mDNS multicast when resolving .local hostnames -->
 	<uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
 	<uses-permission android:name="android.permission.FOREGROUND_SERVICE" />

@@ -32,6 +32,7 @@ import org.connectbot.data.KeyboardLayoutRepository
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
+import org.connectbot.ui.navigation.NavArgs
 import org.connectbot.util.SecurePasswordStorage
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -110,6 +111,23 @@ class HostEditorViewModelTest {
         assertEquals("22", state.port)
         assertFalse(state.connectOnStartup)
         assertTrue(state.isNicknameMatching)
+    }
+
+    @Test
+    fun testDiscoveredHost_prefillsQuickConnectFields() = runTest {
+        savedStateHandle[NavArgs.USERNAME] = "pi"
+        savedStateHandle[NavArgs.HOSTNAME] = "raspberrypi.local"
+        savedStateHandle[NavArgs.PORT] = "2222"
+
+        val viewModel = createViewModel(-1L)
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertEquals("pi", state.username)
+        assertEquals("raspberrypi.local", state.hostname)
+        assertEquals("2222", state.port)
+        assertEquals("pi@raspberrypi.local:2222", state.quickConnect)
+        assertEquals(state.quickConnect, state.nickname)
     }
 
     @Test

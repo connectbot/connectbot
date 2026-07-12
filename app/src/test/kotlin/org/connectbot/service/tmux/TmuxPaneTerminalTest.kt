@@ -283,6 +283,28 @@ class TmuxPaneTerminalTest {
     }
 
     @Test
+    fun `command completion callback runs outside emulator lifecycle lock`() {
+        val destroyFinished = CountDownLatch(1)
+        lateinit var terminal: TmuxPaneTerminal
+        terminal = terminal(
+            onCommandCompletion = { _, _, _, _ ->
+                val destroyThread = thread {
+                    terminal.destroy()
+                    destroyFinished.countDown()
+                }
+
+                assertThat(destroyFinished.await(5, TimeUnit.SECONDS)).isTrue()
+                destroyThread.join(5_000)
+                assertThat(destroyThread.isAlive).isFalse()
+            },
+        )
+
+        fakeEmulator.commandFinished!!.invoke(45_000)
+
+        assertThat(fakeEmulator.closeCount).isEqualTo(1)
+    }
+
+    @Test
     fun `creation and resize normalize non-positive dimensions`() {
         val terminal = terminal(initialRows = 0, initialCols = -80, minUpdateIntervalMs = 250L)
 
