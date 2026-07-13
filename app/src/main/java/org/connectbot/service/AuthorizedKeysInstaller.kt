@@ -19,7 +19,10 @@ package org.connectbot.service
 
 import com.trilead.ssh2.crypto.PublicKeyUtils
 import com.trilead.ssh2.crypto.keys.Ed25519Provider
+import kotlinx.coroutines.async
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.runInterruptible
 import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeout
 import org.connectbot.data.HostRepository
@@ -89,10 +92,19 @@ class AuthorizedKeysInstaller @Inject constructor(
 
         val failure = runCatching {
             withTimeout(INSTALL_TIMEOUT_MS) {
-                val channel = transport.openExecChannel(authorizedKeysInstallCommand(authorizedKey))
+                val channel = runInterruptible(dispatchers.io) {
+                    transport.openExecChannel(authorizedKeysInstallCommand(authorizedKey))
+                }
                 try {
-                    val stdout = channel.stdout.bufferedReader().use { it.readText() }
-                    val stderr = channel.stderr.bufferedReader().use { it.readText() }
+                    val (stdout, stderr) = coroutineScope {
+                        val stdoutRead = async(dispatchers.io) {
+                            runInterruptible { channel.stdout.bufferedReader().use { it.readText() } }
+                        }
+                        val stderrRead = async(dispatchers.io) {
+                            runInterruptible { channel.stderr.bufferedReader().use { it.readText() } }
+                        }
+                        stdoutRead.await() to stderrRead.await()
+                    }
                     var status = channel.exitStatus()
                     repeat(EXIT_STATUS_POLLS) {
                         if (status != null) return@repeat

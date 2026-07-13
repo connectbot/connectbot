@@ -37,5 +37,4 @@ class AuthorizedKeysInstallerTest {
         assertTrue(command.contains("grep -qxF 'ssh-ed25519 AAAA test'"))
         assertTrue(command.contains("|| printf '%s\\n' 'ssh-ed25519 AAAA test'"))
     }
-
 }

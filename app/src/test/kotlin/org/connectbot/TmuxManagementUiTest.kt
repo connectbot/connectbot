@@ -23,6 +23,7 @@ import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -183,5 +184,26 @@ class TmuxManagementUiTest {
         composeTestRule.runOnIdle { assertEquals("\$1", selected) }
         composeTestRule.onNodeWithTag("tmux_hub_create").performClick()
         composeTestRule.runOnIdle { assertTrue(created) }
+    }
+
+    @Test
+    fun hub_scrollsToCreateButtonAfterLongSessionList() {
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                TmuxHubSheet(
+                    state = TmuxHostState(
+                        availability = TmuxAvailability.READY,
+                        sessions = List(30) { index ->
+                            TmuxSessionInfo(id = "\$$index", name = "session-$index")
+                        },
+                    ),
+                    onSelectSession = {},
+                    onCreateSession = {},
+                    onDismiss = {},
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithTag("tmux_hub_create").performScrollTo().assertIsDisplayed()
     }
 }

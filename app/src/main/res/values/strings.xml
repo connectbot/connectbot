@@ -1569,6 +1569,10 @@
 	<string name="host_discovery_failed">Couldn’t scan the local network</string>
 	<!-- Error shown when the user denies Android's local-network runtime permission. -->
 	<string name="host_discovery_permission_denied">Local network permission is required to discover SSH servers</string>
+	<!-- Button shown below local discovery when Tailscale is active; opens Tailscale's device list. -->
+	<string name="tailscale_devices_button">Open Tailscale devices</string>
+	<!-- Error shown if Tailscale was active but its app can no longer be opened. -->
+	<string name="tailscale_devices_unavailable">Couldn’t open the Tailscale app</string>
 	<!-- Text for button which, when clicked, saves an existing host. -->
 	<string name="hostpref_save_host">Save host</string>
 	<!-- Title shown in the app bar when editing an existing host's settings. -->

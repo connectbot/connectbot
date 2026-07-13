@@ -90,7 +90,8 @@ data class ConsoleUiState(
     val tmuxOfferHostId: Long? = null,
     /** Non-null after this saved host authenticated using a password. */
     val keySetupOfferHostId: Long? = null,
-    val isSettingUpKeyLogin: Boolean = false,
+    /** Host currently installing a login key, if any. */
+    val keySetupInstallingHostId: Long? = null,
     /** Command palette history for the current console (newest last). */
     val tmuxPaletteHistory: List<org.connectbot.ui.screens.console.tmux.TmuxPaletteEntry> = emptyList(),
 ) {
@@ -719,8 +720,9 @@ class ConsoleViewModel @Inject constructor(
     fun setupKeyLogin() {
         val manager = terminalManager ?: return
         val bridge = _uiState.value.bridges.getOrNull(_uiState.value.currentBridgeIndex) ?: return
-        if (_uiState.value.isSettingUpKeyLogin) return
-        _uiState.update { it.copy(isSettingUpKeyLogin = true) }
+        val hostId = bridge.host.id
+        if (_uiState.value.keySetupInstallingHostId != null) return
+        _uiState.update { it.copy(keySetupInstallingHostId = hostId) }
         viewModelScope.launch {
             val result = runCatching { manager.installAuthorizedKey(bridge) }
                 .getOrElse {
@@ -728,15 +730,30 @@ class ConsoleViewModel @Inject constructor(
                 }
             when (result) {
                 is AuthorizedKeyInstallResult.Success -> {
-                    dismissedKeySetupOffers.add(bridge.host.id)
+                    dismissedKeySetupOffers.add(hostId)
                     _uiState.update {
-                        it.copy(isSettingUpKeyLogin = false, keySetupOfferHostId = null)
+                        if (it.keySetupInstallingHostId != hostId) {
+                            it
+                        } else {
+                            it.copy(
+                                keySetupInstallingHostId = null,
+                                keySetupOfferHostId = it.keySetupOfferHostId.takeUnless { offerHostId ->
+                                    offerHostId == hostId
+                                },
+                            )
+                        }
                     }
                     _keySetupEvents.emit(KeySetupEvent.Success)
                 }
 
                 is AuthorizedKeyInstallResult.Failure -> {
-                    _uiState.update { it.copy(isSettingUpKeyLogin = false) }
+                    _uiState.update {
+                        if (it.keySetupInstallingHostId == hostId) {
+                            it.copy(keySetupInstallingHostId = null)
+                        } else {
+                            it
+                        }
+                    }
                     _keySetupEvents.emit(KeySetupEvent.Failure(result.reason))
                 }
             }

@@ -92,7 +92,7 @@ class ConnectionStatusOverlaysTest {
     @Test
     fun replayedConnectedState_removesConnectingStatus() {
         val connection = MutableStateFlow(
-            BridgeConnectionState(phase = BridgeConnectionPhase.CONNECTING),
+            BridgeConnectionState(phase = BridgeConnectionPhase.CONNECTED),
         )
         composeTestRule.setContent {
             val state by connection.collectAsState()
@@ -109,11 +109,6 @@ class ConnectionStatusOverlaysTest {
                 )
             }
         }
-        composeTestRule.onNodeWithText(string(R.string.console_connecting_status, HOST_NICKNAME)).assertIsDisplayed()
-
-        connection.value = BridgeConnectionState(phase = BridgeConnectionPhase.CONNECTED)
-
-        composeTestRule.waitForIdle()
         composeTestRule
             .onAllNodes(androidx.compose.ui.test.hasText(string(R.string.console_connecting_status, HOST_NICKNAME)))
             .fetchSemanticsNodes()

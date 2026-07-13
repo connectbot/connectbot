@@ -18,6 +18,7 @@
 package org.connectbot.ui.screens.hostlist
 
 import android.Manifest
+import android.content.ActivityNotFoundException
 import android.content.pm.PackageManager
 import android.os.Build
 import android.widget.Toast
@@ -100,6 +101,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
@@ -143,6 +145,11 @@ fun HostListScreen(
 ) {
     val context = LocalContext.current
     val terminalManager = LocalTerminalManager.current
+
+    LifecycleResumeEffect(viewModel) {
+        viewModel.refreshTailscaleState()
+        onPauseOrDispose { }
+    }
 
     LaunchedEffect(terminalManager) {
         terminalManager?.let { viewModel.setTerminalManager(it) }
@@ -334,6 +341,21 @@ fun HostListScreen(
         onExportEncryptedHosts = { showExportPassphraseDialog = true },
         onImportHosts = { importLauncher.launch(arrayOf("application/json")) },
         onDiscoverSshServers = startSshDiscovery,
+        onOpenTailscaleDevices = {
+            try {
+                val intent = context.packageManager
+                    .getLaunchIntentForPackage(TAILSCALE_PACKAGE_NAME)
+                    ?.putExtra(TAILSCALE_START_AT_ROOT_EXTRA, true)
+                    ?: throw ActivityNotFoundException()
+                context.startActivity(intent)
+            } catch (_: ActivityNotFoundException) {
+                Toast.makeText(
+                    context,
+                    context.getString(R.string.tailscale_devices_unavailable),
+                    Toast.LENGTH_LONG,
+                ).show()
+            }
+        },
         onDismissSshDiscovery = viewModel::dismissSshDiscovery,
         onSelectDiscoveredSshServer = { server ->
             viewModel.dismissSshDiscovery()
@@ -374,6 +396,7 @@ fun HostListScreenContent(
     shouldShowNotificationWarning: () -> Boolean = { false },
     onNotificationSnackbarFinish: () -> Unit = {},
     onDiscoverSshServers: () -> Unit = {},
+    onOpenTailscaleDevices: () -> Unit = {},
     onDismissSshDiscovery: () -> Unit = {},
     onSelectDiscoveredSshServer: (DiscoveredSshServer) -> Unit = {},
 ) {
@@ -571,6 +594,16 @@ fun HostListScreenContent(
                             )
                             Text(stringResource(R.string.host_discovery_button))
                         }
+                        if (uiState.isTailscaleActive) {
+                            TextButton(onClick = onOpenTailscaleDevices) {
+                                Icon(
+                                    Icons.Default.Link,
+                                    contentDescription = null,
+                                    modifier = Modifier.padding(end = 8.dp),
+                                )
+                                Text(stringResource(R.string.tailscale_devices_button))
+                            }
+                        }
                     }
                 }
 
@@ -640,6 +673,9 @@ fun HostListScreenContent(
         )
     }
 }
+
+private const val TAILSCALE_PACKAGE_NAME = "com.tailscale.ipn"
+private const val TAILSCALE_START_AT_ROOT_EXTRA = "startAtRoot"
 
 @Composable
 private fun SshDiscoveryDialog(

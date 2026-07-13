@@ -34,6 +34,11 @@
 
 	<uses-feature android:name="android.hardware.touchscreen" android:required="false"/>
 
+	<queries>
+		<!-- Used to open the device list when the active VPN is Tailscale. -->
+		<package android:name="com.tailscale.ipn" />
+	</queries>
+
 	<supports-screens
 		android:anyDensity="true"
 		android:largeScreens="true"

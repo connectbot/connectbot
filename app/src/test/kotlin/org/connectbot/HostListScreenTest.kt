@@ -274,6 +274,32 @@ class HostListScreenTest {
     }
 
     @Test
+    fun hostListScreenContent_activeTailscaleButtonBelowLocalDiscoveryOpensDevices() {
+        var tailscaleOpened = false
+
+        setHostListContent(
+            uiState = HostListUiState(hosts = emptyList(), isTailscaleActive = true),
+            onOpenTailscaleDevices = { tailscaleOpened = true },
+        )
+
+        composeTestRule
+            .onNodeWithText(composeTestRule.activity.getString(R.string.tailscale_devices_button))
+            .assertIsDisplayed()
+            .performClick()
+
+        assertTrue(tailscaleOpened)
+    }
+
+    @Test
+    fun hostListScreenContent_inactiveTailscaleHidesDevicesButton() {
+        setHostListContent(uiState = HostListUiState(hosts = emptyList(), isTailscaleActive = false))
+
+        composeTestRule
+            .onNodeWithText(composeTestRule.activity.getString(R.string.tailscale_devices_button))
+            .assertDoesNotExist()
+    }
+
+    @Test
     fun hostListScreenContent_discoveredServerSelectionInvokesCallback() {
         val server = DiscoveredSshServer(
             key = "Raspberry Pi\u0000_ssh._tcp",
@@ -647,6 +673,7 @@ class HostListScreenTest {
         onExportHosts: () -> Unit = {},
         onImportHosts: () -> Unit = {},
         onDiscoverSshServers: () -> Unit = {},
+        onOpenTailscaleDevices: () -> Unit = {},
         onSelectDiscoveredSshServer: (DiscoveredSshServer) -> Unit = {},
     ) {
         composeTestRule.setContent {
@@ -672,6 +699,7 @@ class HostListScreenTest {
                     onExportHosts = onExportHosts,
                     onImportHosts = onImportHosts,
                     onDiscoverSshServers = onDiscoverSshServers,
+                    onOpenTailscaleDevices = onOpenTailscaleDevices,
                     onSelectDiscoveredSshServer = onSelectDiscoveredSshServer,
                 )
             }

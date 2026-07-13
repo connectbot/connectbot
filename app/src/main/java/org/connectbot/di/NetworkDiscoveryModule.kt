@@ -22,7 +22,9 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import org.connectbot.util.AndroidSshServiceDiscovery
+import org.connectbot.util.AndroidTailscaleNetworkDetector
 import org.connectbot.util.SshServiceDiscovery
+import org.connectbot.util.TailscaleNetworkDetector
 import javax.inject.Singleton
 
 @Module
@@ -31,4 +33,8 @@ abstract class NetworkDiscoveryModule {
     @Binds
     @Singleton
     abstract fun bindSshServiceDiscovery(implementation: AndroidSshServiceDiscovery): SshServiceDiscovery
+
+    @Binds
+    @Singleton
+    abstract fun bindTailscaleNetworkDetector(implementation: AndroidTailscaleNetworkDetector): TailscaleNetworkDetector
 }

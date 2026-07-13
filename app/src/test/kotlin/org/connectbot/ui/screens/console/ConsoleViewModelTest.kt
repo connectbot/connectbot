@@ -30,13 +30,16 @@ import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.connectbot.data.KeyboardLayoutRepository
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.AuthenticationMethod
+import org.connectbot.service.AuthorizedKeyInstallResult
 import org.connectbot.service.BridgeConnectionPhase
 import org.connectbot.service.BridgeConnectionState
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.terminal.ProgressState
+import org.connectbot.transport.AbsTransport
 import org.connectbot.util.NotificationPermissionHelper
 import org.connectbot.util.PreferenceConstants
 import org.junit.After
@@ -46,16 +49,15 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
-import org.mockito.kotlin.any
-import org.mockito.kotlin.eq
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.verify
-import org.mockito.kotlin.whenever
+import org.junit.runner.RunWith
+import org.mockito.Mockito
+import org.robolectric.RobolectricTestRunner
 
 /**
  * Tests for ConsoleViewModel.
  */
 @OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(RobolectricTestRunner::class)
 class ConsoleViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
@@ -75,15 +77,15 @@ class ConsoleViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
 
-        terminalManager = mock()
-        savedStateHandle = mock()
-        prefs = mock()
-        keyboardLayoutRepository = mock()
-        notificationPermissionHelper = mock()
+        terminalManager = Mockito.mock(TerminalManager::class.java)
+        savedStateHandle = Mockito.mock(SavedStateHandle::class.java)
+        prefs = Mockito.mock(SharedPreferences::class.java)
+        keyboardLayoutRepository = Mockito.mock(KeyboardLayoutRepository::class.java)
+        notificationPermissionHelper = Mockito.mock(NotificationPermissionHelper::class.java)
         bridgesFlow = MutableStateFlow(emptyList())
-        whenever(terminalManager.bridgesFlow).thenReturn(bridgesFlow)
-        whenever(terminalManager.hostStatusChangedFlow).thenReturn(MutableSharedFlow())
-        whenever(notificationPermissionHelper.isGranted()).thenReturn(true)
+        Mockito.`when`(terminalManager.bridgesFlow).thenReturn(bridgesFlow)
+        Mockito.`when`(terminalManager.hostStatusChangedFlow).thenReturn(MutableSharedFlow())
+        Mockito.`when`(notificationPermissionHelper.isGranted()).thenReturn(true)
     }
 
     @After
@@ -93,7 +95,7 @@ class ConsoleViewModelTest {
 
     @Test
     fun initialState_IsLoading() {
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(1L)
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
 
@@ -107,7 +109,7 @@ class ConsoleViewModelTest {
     @Test
     fun loadBridges_WithNoBridges_StopsLoading() = runTest {
         bridgesFlow.value = emptyList()
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -123,7 +125,7 @@ class ConsoleViewModelTest {
     fun loadBridges_WithExistingBridges_LoadsSuccessfully() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -141,7 +143,7 @@ class ConsoleViewModelTest {
         val mockBridge1 = createMockBridge(1L, "host1")
         val mockBridge2 = createMockBridge(2L, "host2")
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(2L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(2L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -160,8 +162,8 @@ class ConsoleViewModelTest {
         val mockBridge1 = createMockBridge(1L, "host1")
         val mockBridge2 = createMockBridge(2L, "host2")
         bridgesFlow.value = listOf(mockBridge1)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(2L)
-        whenever(terminalManager.openConnectionForHostId(2L)).thenReturn(mockBridge2)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(2L)
+        Mockito.`when`(terminalManager.openConnectionForHostId(2L)).thenReturn(mockBridge2)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -169,7 +171,7 @@ class ConsoleViewModelTest {
         advanceUntilIdle()
 
         assertTrue("Should keep showing loading until the requested bridge is active", viewModel.uiState.value.isLoading)
-        verify(terminalManager).openConnectionForHostId(2L)
+        Mockito.verify(terminalManager).openConnectionForHostId(2L)
 
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
         advanceUntilIdle()
@@ -185,7 +187,7 @@ class ConsoleViewModelTest {
         val mockBridge2 = createMockBridge(2L, "host2")
         val mockBridge3 = createMockBridge(3L, "host3")
         bridgesFlow.value = listOf(mockBridge1, mockBridge2, mockBridge3)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -204,7 +206,7 @@ class ConsoleViewModelTest {
         val mockBridge1 = createMockBridge(1L, "host1")
         val mockBridge2 = createMockBridge(2L, "host2")
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -223,7 +225,7 @@ class ConsoleViewModelTest {
         val mockBridge1 = createMockBridge(1L, "host1")
         val mockBridge2 = createMockBridge(2L, "host2")
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -240,7 +242,7 @@ class ConsoleViewModelTest {
         val mockBridge1 = createMockBridge(1L, "host1")
         val mockBridge2 = createMockBridge(2L, "host2")
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -257,7 +259,7 @@ class ConsoleViewModelTest {
     fun selectBridge_InvalidIndex_DoesNotUpdate() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -277,7 +279,7 @@ class ConsoleViewModelTest {
     fun selectBridge_NegativeIndex_DoesNotUpdate() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -297,7 +299,7 @@ class ConsoleViewModelTest {
     fun refreshMenuState_IncrementsRevision() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -316,7 +318,7 @@ class ConsoleViewModelTest {
     fun refreshMenuState_MultipleRefreshes_IncrementsEachTime() = runTest {
         val mockBridge = createMockBridge(1L, "test-host")
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -340,7 +342,7 @@ class ConsoleViewModelTest {
         val mockBridge3 = createMockBridge(3L, "host3")
 
         bridgesFlow.value = listOf(mockBridge1, mockBridge2, mockBridge3)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -365,7 +367,7 @@ class ConsoleViewModelTest {
         val mockBridge3 = createMockBridge(3L, "host3")
 
         bridgesFlow.value = listOf(mockBridge1, mockBridge2, mockBridge3)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -391,7 +393,7 @@ class ConsoleViewModelTest {
         val mockBridge3 = createMockBridge(3L, "host3")
 
         bridgesFlow.value = listOf(mockBridge1, mockBridge2, mockBridge3)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -412,7 +414,7 @@ class ConsoleViewModelTest {
         val mockBridge = createMockBridge(1L, "test-host")
 
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -435,7 +437,7 @@ class ConsoleViewModelTest {
         val progressFlow = MutableStateFlow<TerminalBridge.ProgressInfo?>(null)
         val mockBridge = createMockBridge(1L, "test-host", progressFlow)
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -459,7 +461,7 @@ class ConsoleViewModelTest {
         val progressFlow = MutableStateFlow<TerminalBridge.ProgressInfo?>(null)
         val mockBridge = createMockBridge(1L, "test-host", progressFlow)
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -485,7 +487,7 @@ class ConsoleViewModelTest {
         val progressFlow = MutableStateFlow<TerminalBridge.ProgressInfo?>(null)
         val mockBridge = createMockBridge(1L, "test-host", progressFlow)
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -510,7 +512,7 @@ class ConsoleViewModelTest {
         val progressFlow = MutableStateFlow<TerminalBridge.ProgressInfo?>(null)
         val mockBridge = createMockBridge(1L, "test-host", progressFlow)
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -540,7 +542,7 @@ class ConsoleViewModelTest {
         val mockBridge1 = createMockBridge(1L, "host1", progressFlow1)
         val mockBridge2 = createMockBridge(2L, "host2", progressFlow2)
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -570,8 +572,8 @@ class ConsoleViewModelTest {
 
     @Test
     fun shouldShowNotificationWarning_PermissionNeverRequested_ReturnsFalse() = runTest {
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
-        whenever(prefs.contains(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(false)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(prefs.contains(Mockito.eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(false)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
 
@@ -580,10 +582,10 @@ class ConsoleViewModelTest {
 
     @Test
     fun shouldShowNotificationWarning_ConnPersistFalse_ReturnsTrue() = runTest {
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
-        whenever(prefs.contains(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(true)
-        whenever(prefs.getBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), any())).thenReturn(false)
-        whenever(notificationPermissionHelper.isGranted()).thenReturn(true)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(prefs.contains(Mockito.eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(true)
+        Mockito.`when`(prefs.getBoolean(Mockito.eq(PreferenceConstants.CONNECTION_PERSIST), Mockito.anyBoolean())).thenReturn(false)
+        Mockito.`when`(notificationPermissionHelper.isGranted()).thenReturn(true)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
 
@@ -592,10 +594,10 @@ class ConsoleViewModelTest {
 
     @Test
     fun shouldShowNotificationWarning_PermissionDenied_ReturnsTrue() = runTest {
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
-        whenever(prefs.contains(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(true)
-        whenever(prefs.getBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), any())).thenReturn(true)
-        whenever(notificationPermissionHelper.isGranted()).thenReturn(false)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(prefs.contains(Mockito.eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(true)
+        Mockito.`when`(prefs.getBoolean(Mockito.eq(PreferenceConstants.CONNECTION_PERSIST), Mockito.anyBoolean())).thenReturn(true)
+        Mockito.`when`(notificationPermissionHelper.isGranted()).thenReturn(false)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
 
@@ -604,10 +606,10 @@ class ConsoleViewModelTest {
 
     @Test
     fun shouldShowNotificationWarning_ConnPersistTrueAndPermissionGranted_ReturnsFalse() = runTest {
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
-        whenever(prefs.contains(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(true)
-        whenever(prefs.getBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), any())).thenReturn(true)
-        whenever(notificationPermissionHelper.isGranted()).thenReturn(true)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(prefs.contains(Mockito.eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(true)
+        Mockito.`when`(prefs.getBoolean(Mockito.eq(PreferenceConstants.CONNECTION_PERSIST), Mockito.anyBoolean())).thenReturn(true)
+        Mockito.`when`(notificationPermissionHelper.isGranted()).thenReturn(true)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
 
@@ -623,7 +625,7 @@ class ConsoleViewModelTest {
         val mockBridge1 = createMockBridge(1L, "host1", progressFlow1)
         val mockBridge2 = createMockBridge(2L, "host2", progressFlow2)
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
         viewModel.setTerminalManager(terminalManager)
@@ -635,12 +637,51 @@ class ConsoleViewModelTest {
         assertEquals("Switching bridges should show the selected bridge's current progress value", 90, viewModel.uiState.value.progressValue)
     }
 
+    @Test
+    fun setupKeyLogin_completionPreservesAnotherHostsOffer() = runTest {
+        val firstBridge = createMockBridge(
+            id = 1L,
+            hostname = "first-host",
+            authenticationMethod = AuthenticationMethod.PASSWORD,
+            canOpenExecChannels = true,
+        )
+        val secondBridge = createMockBridge(
+            id = 2L,
+            hostname = "second-host",
+            authenticationMethod = AuthenticationMethod.PASSWORD,
+            canOpenExecChannels = true,
+        )
+        bridgesFlow.value = listOf(firstBridge, secondBridge)
+        Mockito.`when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        Mockito.`when`(terminalManager.installAuthorizedKey(firstBridge)).thenReturn(
+            AuthorizedKeyInstallResult.Success(Mockito.mock(Pubkey::class.java)),
+        )
+
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, keyboardLayoutRepository, notificationPermissionHelper)
+        viewModel.setTerminalManager(terminalManager)
+        advanceUntilIdle()
+
+        viewModel.setupKeyLogin()
+        assertEquals(1L, viewModel.uiState.value.keySetupInstallingHostId)
+
+        viewModel.selectBridge(1)
+        assertEquals(2L, viewModel.uiState.value.keySetupOfferHostId)
+        assertEquals(1L, viewModel.uiState.value.keySetupInstallingHostId)
+
+        advanceUntilIdle()
+
+        assertNull(viewModel.uiState.value.keySetupInstallingHostId)
+        assertEquals(2L, viewModel.uiState.value.keySetupOfferHostId)
+    }
+
     private fun createMockBridge(
         id: Long,
         hostname: String,
         progressFlow: MutableStateFlow<TerminalBridge.ProgressInfo?> = MutableStateFlow(null),
+        authenticationMethod: AuthenticationMethod? = null,
+        canOpenExecChannels: Boolean = false,
     ): TerminalBridge {
-        val bridge = mock<TerminalBridge>()
+        val bridge = Mockito.mock(TerminalBridge::class.java)
         val host = Host(
             id = id,
             hostname = hostname,
@@ -649,17 +690,22 @@ class ConsoleViewModelTest {
             port = 22,
             username = "test",
         )
-        whenever(bridge.host).thenReturn(host)
-        whenever(bridge.isSessionOpen).thenReturn(true)
-        whenever(bridge.isDisconnected).thenReturn(false)
-        whenever(bridge.bellEvents).thenReturn(MutableSharedFlow())
-        whenever(bridge.commandCompletions).thenReturn(MutableSharedFlow())
-        whenever(bridge.progressState).thenReturn(progressFlow)
-        whenever(bridge.networkStatusMessages).thenReturn(MutableSharedFlow())
-        whenever(bridge.authenticationMethod).thenReturn(MutableStateFlow<AuthenticationMethod?>(null))
-        whenever(bridge.connectionState).thenReturn(
+        Mockito.`when`(bridge.host).thenReturn(host)
+        Mockito.`when`(bridge.isSessionOpen).thenReturn(true)
+        Mockito.`when`(bridge.isDisconnected).thenReturn(false)
+        Mockito.`when`(bridge.bellEvents).thenReturn(MutableSharedFlow())
+        Mockito.`when`(bridge.commandCompletions).thenReturn(MutableSharedFlow())
+        Mockito.`when`(bridge.progressState).thenReturn(progressFlow)
+        Mockito.`when`(bridge.networkStatusMessages).thenReturn(MutableSharedFlow())
+        Mockito.`when`(bridge.authenticationMethod).thenReturn(MutableStateFlow(authenticationMethod))
+        Mockito.`when`(bridge.connectionState).thenReturn(
             MutableStateFlow(BridgeConnectionState(phase = BridgeConnectionPhase.CONNECTED)),
         )
+        if (canOpenExecChannels) {
+            val transport = Mockito.mock(AbsTransport::class.java)
+            Mockito.`when`(transport.canOpenExecChannels()).thenReturn(true)
+            Mockito.`when`(bridge.transport).thenReturn(transport)
+        }
         return bridge
     }
 }

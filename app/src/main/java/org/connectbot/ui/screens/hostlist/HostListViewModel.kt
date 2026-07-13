@@ -52,6 +52,7 @@ import org.connectbot.util.DiscoveredSshServer
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.SshDiscoveryEvent
 import org.connectbot.util.SshServiceDiscovery
+import org.connectbot.util.TailscaleNetworkDetector
 import javax.inject.Inject
 
 enum class ConnectionState {
@@ -94,6 +95,7 @@ data class HostListUiState(
     val isDiscoveringSshServers: Boolean = false,
     val discoveredSshServers: List<DiscoveredSshServer> = emptyList(),
     val sshDiscoveryError: String? = null,
+    val isTailscaleActive: Boolean = false,
 )
 
 data class ImportResult(
@@ -115,6 +117,7 @@ class HostListViewModel @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
     private val sharedPreferences: SharedPreferences,
     private val sshServiceDiscovery: SshServiceDiscovery,
+    private val tailscaleNetworkDetector: TailscaleNetworkDetector,
 ) : ViewModel() {
 
     private var terminalManager: TerminalManager? = null
@@ -466,6 +469,15 @@ class HostListViewModel @Inject constructor(
     fun showSshDiscoveryPermissionDenied() {
         _uiState.update {
             it.copy(error = context.getString(R.string.host_discovery_permission_denied))
+        }
+    }
+
+    fun refreshTailscaleState() {
+        viewModelScope.launch {
+            val isActive = withContext(dispatchers.io) {
+                tailscaleNetworkDetector.isActive()
+            }
+            _uiState.update { it.copy(isTailscaleActive = isActive) }
         }
     }
 

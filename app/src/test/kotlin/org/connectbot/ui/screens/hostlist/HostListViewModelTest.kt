@@ -42,6 +42,7 @@ import org.connectbot.util.DiscoveredSshServer
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.SshDiscoveryEvent
 import org.connectbot.util.SshServiceDiscovery
+import org.connectbot.util.TailscaleNetworkDetector
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -75,6 +76,7 @@ class HostListViewModelTest {
     private lateinit var hostsSortedByColorFlow: MutableStateFlow<List<Host>>
     private lateinit var portForwardsFlow: MutableStateFlow<List<PortForward>>
     private lateinit var sshServiceDiscovery: SshServiceDiscovery
+    private lateinit var tailscaleNetworkDetector: TailscaleNetworkDetector
 
     @Before
     fun setUp() {
@@ -88,6 +90,7 @@ class HostListViewModelTest {
         hostsSortedByColorFlow = MutableStateFlow(emptyList())
         portForwardsFlow = MutableStateFlow(emptyList())
         sshServiceDiscovery = mock()
+        tailscaleNetworkDetector = mock()
 
         whenever(repository.observeHosts()).thenReturn(hostsFlow)
         whenever(repository.observeHostsSortedByColor()).thenReturn(hostsSortedByColorFlow)
@@ -105,7 +108,14 @@ class HostListViewModelTest {
     private fun createViewModel(sortedByColor: Boolean = false): HostListViewModel {
         whenever(sharedPreferences.getBoolean(PreferenceConstants.SORT_BY_COLOR, false))
             .thenReturn(sortedByColor)
-        return HostListViewModel(context, repository, dispatchers, sharedPreferences, sshServiceDiscovery)
+        return HostListViewModel(
+            context,
+            repository,
+            dispatchers,
+            sharedPreferences,
+            sshServiceDiscovery,
+            tailscaleNetworkDetector,
+        )
     }
 
     private fun createTerminalManager(bridges: List<TerminalBridge> = emptyList()): TerminalManager {
@@ -279,6 +289,17 @@ class HostListViewModelTest {
         assertTrue(viewModel.uiState.value.showSshDiscovery)
         assertEquals(listOf(server), viewModel.uiState.value.discoveredSshServers)
         assertFalse(viewModel.uiState.value.isDiscoveringSshServers)
+    }
+
+    @Test
+    fun refreshTailscaleState_exposesActiveTailscaleNetwork() = runTest {
+        whenever(tailscaleNetworkDetector.isActive()).thenReturn(true)
+        val viewModel = createViewModel()
+
+        viewModel.refreshTailscaleState()
+        advanceUntilIdle()
+
+        assertTrue(viewModel.uiState.value.isTailscaleActive)
     }
 
     @Test

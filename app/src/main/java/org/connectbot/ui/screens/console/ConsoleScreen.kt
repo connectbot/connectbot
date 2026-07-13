@@ -1559,7 +1559,7 @@ fun ConsoleScreen(
                         Column(modifier = Modifier.align(Alignment.TopCenter)) {
                             if (uiState.keySetupOfferHostId == bridge.host.id) {
                                 KeySetupOfferBanner(
-                                    isInstalling = uiState.isSettingUpKeyLogin,
+                                    isInstalling = uiState.keySetupInstallingHostId == bridge.host.id,
                                     onSetup = viewModel::setupKeyLogin,
                                     onDismiss = viewModel::dismissKeySetupOffer,
                                 )
@@ -1687,12 +1687,12 @@ fun ConsoleScreen(
             )
         }
 
-        if (showTmuxHub && currentTmuxState != null) {
+        if (showTmuxHub && currentTmuxState != null && currentBridgeId != null) {
             TmuxHubSheet(
                 state = currentTmuxState,
                 onSelectSession = { sessionId ->
                     showTmuxHub = false
-                    viewModel.selectTab(ConsoleTab.tmuxKey(currentBridge.host.id, sessionId))
+                    viewModel.selectTab(ConsoleTab.tmuxKey(currentBridgeId, sessionId))
                 },
                 onCreateSession = {
                     showTmuxHub = false

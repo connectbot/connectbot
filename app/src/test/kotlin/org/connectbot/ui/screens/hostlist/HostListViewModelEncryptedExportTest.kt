@@ -40,6 +40,7 @@ import org.connectbot.data.entity.PortForward
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.SshServiceDiscovery
+import org.connectbot.util.TailscaleNetworkDetector
 import org.json.JSONObject
 import org.junit.After
 import org.junit.Before
@@ -73,6 +74,7 @@ class HostListViewModelEncryptedExportTest {
     private lateinit var repository: HostRepository
     private lateinit var sharedPreferences: SharedPreferences
     private lateinit var sshServiceDiscovery: SshServiceDiscovery
+    private lateinit var tailscaleNetworkDetector: TailscaleNetworkDetector
 
     private val encryptedBundle = JSONObject()
         .put("format", EncryptedExportBundle.FORMAT)
@@ -94,6 +96,7 @@ class HostListViewModelEncryptedExportTest {
         repository = mock()
         sharedPreferences = mock()
         sshServiceDiscovery = mock()
+        tailscaleNetworkDetector = mock()
 
         whenever(repository.observeHosts()).thenReturn(MutableStateFlow(emptyList<Host>()))
         whenever(repository.observeAllPortForwards()).thenReturn(MutableStateFlow(emptyList<PortForward>()))
@@ -107,8 +110,14 @@ class HostListViewModelEncryptedExportTest {
         Dispatchers.resetMain()
     }
 
-    private fun createViewModel(): HostListViewModel =
-        HostListViewModel(context, repository, dispatchers, sharedPreferences, sshServiceDiscovery)
+    private fun createViewModel(): HostListViewModel = HostListViewModel(
+        context,
+        repository,
+        dispatchers,
+        sharedPreferences,
+        sshServiceDiscovery,
+        tailscaleNetworkDetector,
+    )
 
     @Test
     fun exportHostsEncrypted_marksExportAsEncrypted() = runTest {
