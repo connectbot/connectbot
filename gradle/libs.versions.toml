@@ -27,7 +27,7 @@ termlib = "0.1.0"
 playServicesBasement = "18.10.0"
 playFeatureDelivery = "2.1.0"
 conscrypt = "2.6.1"
-conscryptOpenJdk = "2.6.0"
+conscryptOpenJdk = "2.6.1"
 coroutines = "1.11.0"
 timber = "5.0.1"
 
