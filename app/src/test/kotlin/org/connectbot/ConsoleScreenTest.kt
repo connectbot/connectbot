@@ -140,6 +140,28 @@ class ConsoleScreenTest {
         }
     }
 
+    private fun mockConsoleBridge(
+        id: Long = 1L,
+        sessionId: Long = id,
+        hostname: String = "test-host",
+        isDisconnected: Boolean = false,
+    ): TerminalBridge {
+        val bridge = mock(TerminalBridge::class.java)
+        val host = Host(
+            id = id,
+            hostname = hostname,
+            nickname = hostname,
+            protocol = "ssh",
+            port = 22,
+            username = "test",
+        )
+        `when`(bridge.host).thenReturn(host)
+        `when`(bridge.sessionId).thenReturn(sessionId)
+        `when`(bridge.isDisconnected).thenReturn(isDisconnected)
+        `when`(bridge.isSessionOpen).thenReturn(!isDisconnected)
+        return bridge
+    }
+
     @Test
     fun consoleScreen_showsNotificationWarningSnackbar_whenConnPersistDisabled() {
         val warning = composeTestRule.activity.getString(R.string.notification_permission_console_warning)
@@ -260,6 +282,53 @@ class ConsoleScreenTest {
         composeTestRule
             .onNodeWithTag("top_app_bar")
             .assertIsDisplayed()
+    }
+
+    @Test
+    fun consoleScreen_showsHostnameWithoutSessionNumber_forSingleSession() {
+        val mockViewModel = mock(ConsoleViewModel::class.java)
+        val bridge = mockConsoleBridge(hostname = "a-long-hostname")
+        `when`(mockViewModel.uiState).thenReturn(
+            MutableStateFlow(
+                ConsoleUiState(
+                    bridges = listOf(bridge),
+                    currentBridgeIndex = 0,
+                    isLoading = true,
+                ),
+            ),
+        )
+        `when`(mockViewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+        `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
+
+        setContent(mockConsoleViewModel = mockViewModel)
+        navigateToConsoleScreen(hostId = 1L)
+
+        composeTestRule.onNodeWithText("a-long-hostname").assertIsDisplayed()
+        composeTestRule.onNodeWithText("#1 a-long-hostname").assertIsNotDisplayed()
+    }
+
+    @Test
+    fun consoleScreen_showsSessionNumberBeforeHostname_forMultipleSessionsOnHost() {
+        val mockViewModel = mock(ConsoleViewModel::class.java)
+        val firstBridge = mockConsoleBridge(sessionId = 10L, hostname = "a-long-hostname")
+        val secondBridge = mockConsoleBridge(sessionId = 20L, hostname = "a-long-hostname")
+        `when`(mockViewModel.uiState).thenReturn(
+            MutableStateFlow(
+                ConsoleUiState(
+                    bridges = listOf(firstBridge, secondBridge),
+                    currentBridgeIndex = 1,
+                    isLoading = true,
+                ),
+            ),
+        )
+        `when`(mockViewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+        `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
+
+        setContent(mockConsoleViewModel = mockViewModel)
+        navigateToConsoleScreen(hostId = 1L)
+
+        composeTestRule.onNodeWithText("#2 a-long-hostname").assertIsDisplayed()
+        composeTestRule.onNodeWithText("a-long-hostname #2").assertIsNotDisplayed()
     }
 
     @Test
@@ -404,8 +473,7 @@ class ConsoleScreenTest {
             .commit()
 
         val mockViewModel = mock(ConsoleViewModel::class.java)
-        val mockBridge = mock(TerminalBridge::class.java)
-        `when`(mockBridge.isDisconnected).thenReturn(false)
+        val mockBridge = mockConsoleBridge(isDisconnected = false)
 
         val uiStateFlow = MutableStateFlow(
             ConsoleUiState(
@@ -437,8 +505,7 @@ class ConsoleScreenTest {
             .commit()
 
         val mockViewModel = mock(ConsoleViewModel::class.java)
-        val mockBridge = mock(TerminalBridge::class.java)
-        `when`(mockBridge.isDisconnected).thenReturn(false)
+        val mockBridge = mockConsoleBridge(isDisconnected = false)
 
         val uiStateFlow = MutableStateFlow(
             ConsoleUiState(
@@ -470,8 +537,7 @@ class ConsoleScreenTest {
             .commit()
 
         val mockViewModel = mock(ConsoleViewModel::class.java)
-        val mockBridge = mock(TerminalBridge::class.java)
-        `when`(mockBridge.isDisconnected).thenReturn(true)
+        val mockBridge = mockConsoleBridge(isDisconnected = true)
 
         val uiStateFlow = MutableStateFlow(
             ConsoleUiState(

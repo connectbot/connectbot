@@ -56,6 +56,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
 import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.OpenInNew
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.SwapHoriz
 import androidx.compose.material3.AlertDialog
@@ -113,6 +114,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
 import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withLink
 import androidx.compose.ui.unit.dp
@@ -509,14 +511,12 @@ fun ConsoleScreen(
     onNavigateToSettings: () -> Unit = {},
     viewModel: ConsoleViewModel = hiltViewModel(),
 ) {
+    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
+    val currentOnNavigateToSettings by rememberUpdatedState(onNavigateToSettings)
     val context = LocalContext.current
     val terminalManager = LocalTerminalManager.current
     val uiState by viewModel.uiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
-
-    // Capture latest callback for use in effects
-    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
-    val currentOnNavigateToSettings by rememberUpdatedState(onNavigateToSettings)
 
     LaunchedEffect(terminalManager) {
         terminalManager?.let { viewModel.setTerminalManager(it) }
@@ -938,7 +938,7 @@ fun ConsoleScreen(
                             Modifier
                         }
 
-                        key(bridge.host.id) {
+                        key(bridge.sessionId) {
                             ConsoleTerminalPage(
                                 bridge = bridge,
                                 isActive = true,
@@ -1012,12 +1012,11 @@ fun ConsoleScreen(
         }
 
         if (showDisconnectDialog && currentBridge != null) {
-            HostDisconnectDialog(
-                host = currentBridge.host,
+            SessionDisconnectDialog(
                 onDismiss = { showDisconnectDialog = false },
                 onConfirm = {
                     showDisconnectDialog = false
-                    currentBridge.dispatchDisconnect(DisconnectReason.USER_REQUESTED)
+                    viewModel.disconnectCurrentSession()
                 },
             )
         }
@@ -1054,9 +1053,25 @@ fun ConsoleScreen(
             val density = LocalDensity.current
             TopAppBar(
                 title = {
-                    Text(
+                    val sessionsForHost = currentBridge?.let { bridge ->
+                        uiState.bridges.filter { it.host.id == bridge.host.id }
+                    }.orEmpty()
+                    val sessionNumber = currentBridge?.let { bridge ->
+                        sessionsForHost.indexOfFirst { it.sessionId == bridge.sessionId } + 1
+                    } ?: 0
+
+                    val titleText = if (currentBridge != null && sessionsForHost.size > 1) {
+                        stringResource(
+                            R.string.console_session_title,
+                            sessionNumber,
+                            currentBridge.host.nickname,
+                        )
+                    } else {
                         currentBridge?.host?.nickname
-                            ?: stringResource(R.string.console_default_title),
+                            ?: stringResource(R.string.console_default_title)
+                    }
+                    Text(
+                        titleText,
                         maxLines = 1,
                         overflow = TextOverflow.Ellipsis,
                     )
@@ -1131,10 +1146,18 @@ fun ConsoleScreen(
                                 contentDescription = stringResource(R.string.button_more_options),
                             )
                         }
+                        // Get sessions for the current host (for switch session menu)
+                        val sessionsForCurrentHost = currentBridge?.let { bridge ->
+                            uiState.bridges.filter { it.host.id == bridge.host.id }
+                        } ?: emptyList()
+                        val hasMultipleSessionsForCurrentHost = sessionsForCurrentHost.size > 1
+                        var showSwitchSessionMenu by remember { mutableStateOf(false) }
+
                         DropdownMenu(
                             expanded = showMenu,
                             onDismissRequest = {
                                 showMenu = false
+                                showSwitchSessionMenu = false
                                 // Hide title bar again after closing menu if auto-hide is enabled
                                 if (titleBarHide) {
                                     showTitleBar = false
@@ -1174,6 +1197,64 @@ fun ConsoleScreen(
                                     },
                                     enabled = uiState.currentBridgeIndex < uiState.bridges.lastIndex,
                                 )
+                            }
+
+                            // Open new session
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.list_host_new_session)) },
+                                onClick = {
+                                    showMenu = false
+                                    viewModel.openNewSession()
+                                },
+                                leadingIcon = {
+                                    Icon(Icons.Default.OpenInNew, contentDescription = null)
+                                },
+                                enabled = currentBridge != null,
+                            )
+
+                            // Switch session (if multiple sessions exist for current host)
+                            if (hasMultipleSessionsForCurrentHost) {
+                                Box {
+                                    DropdownMenuItem(
+                                        text = { Text(stringResource(R.string.console_menu_switch_session)) },
+                                        onClick = {
+                                            showSwitchSessionMenu = !showSwitchSessionMenu
+                                        },
+                                        leadingIcon = {
+                                            Icon(Icons.Default.SwapHoriz, contentDescription = null)
+                                        },
+                                    )
+
+                                    // Switch session submenu
+                                    DropdownMenu(
+                                        expanded = showSwitchSessionMenu,
+                                        onDismissRequest = { showSwitchSessionMenu = false },
+                                    ) {
+                                        sessionsForCurrentHost.forEachIndexed { index, bridge ->
+                                            val isCurrentSession = bridge.sessionId == currentBridge?.sessionId
+                                            DropdownMenuItem(
+                                                text = {
+                                                    Text(
+                                                        stringResource(R.string.console_menu_session_number, index + 1),
+                                                        fontWeight = if (isCurrentSession) FontWeight.Bold else null,
+                                                    )
+                                                },
+                                                onClick = {
+                                                    showSwitchSessionMenu = false
+                                                    showMenu = false
+                                                    val bridgeIndex = uiState.bridges.indexOfFirst {
+                                                        it.sessionId == bridge.sessionId
+                                                    }
+                                                    if (bridgeIndex >= 0) {
+                                                        selectBridgePreservingKeyboard(bridgeIndex)
+                                                    }
+                                                    termFocusRequester.requestFocus()
+                                                },
+                                                enabled = !isCurrentSession,
+                                            )
+                                        }
+                                    }
+                                }
                             }
 
                             // Disconnect/Close
@@ -1305,15 +1386,14 @@ fun ConsoleScreen(
 }
 
 @Composable
-private fun HostDisconnectDialog(
-    host: Host,
+private fun SessionDisconnectDialog(
     onDismiss: () -> Unit,
     onConfirm: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
         text = {
-            Text(stringResource(R.string.disconnect_host_alert, host.nickname))
+            Text(stringResource(R.string.disconnect_session_alert))
         },
         confirmButton = {
             TextButton(
