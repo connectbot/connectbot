@@ -26,6 +26,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mock
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.mockito.MockitoAnnotations
@@ -85,6 +86,18 @@ class ConnectivityMonitorTest {
 
         // Verify notification
         verify(terminalManager).onConnectivityLost(network, ipAddresses)
+    }
+
+    @Test
+    fun `init should query only the active network`() {
+        val activeNetwork = mock(Network::class.java)
+        `when`(connectivityManager.allNetworks).thenReturn(emptyArray())
+        `when`(connectivityManager.activeNetwork).thenReturn(activeNetwork)
+
+        connectivityMonitor.init()
+
+        verify(connectivityManager).activeNetwork
+        verify(connectivityManager, never()).allNetworks
     }
 
     private fun anyString(): String = org.mockito.ArgumentMatchers.anyString()
