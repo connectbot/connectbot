@@ -293,6 +293,7 @@ class SettingsScreenTest {
                     onKeepAliveChange = {},
                     onAlwaysVisibleChange = {},
                     onSwipeSessionsChange = {},
+                    onImeToggleKeyChange = {},
                     onShiftFkeysChange = {},
                     onCtrlFkeysChange = {},
                     onStickyModifiersChange = {},
