@@ -142,9 +142,11 @@ class ConnectivityMonitor(
         connectivityManager.registerNetworkCallback(request, networkCallback)
         connectivityManager.registerDefaultNetworkCallback(defaultNetworkCallback)
 
-        // Initialize all active networks
-        for (network in connectivityManager.allNetworks) {
-            updateNetworkInfo(network)
+        // Initialize the active network. Other matching networks will be
+        // populated by networkCallback.
+        val activeNetwork = connectivityManager.activeNetwork
+        if (activeNetwork != null) {
+            updateNetworkInfo(activeNetwork)
         }
     }
 
