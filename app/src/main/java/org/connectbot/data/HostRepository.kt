@@ -216,6 +216,8 @@ class HostRepository @Inject constructor(
     // Known Host Operations
     // ============================================================================
 
+    fun observeKnownHosts(): Flow<List<KnownHost>> = knownHostDao.observeAll()
+
     suspend fun getKnownHostsForHost(hostId: Long): List<KnownHost> = knownHostDao.getByHostId(hostId)
 
     /**
@@ -316,6 +318,14 @@ class HostRepository @Inject constructor(
      */
     suspend fun deleteKnownHostsForHost(hostId: Long) {
         knownHostDao.deleteByHostId(hostId)
+    }
+
+    /**
+     * Delete one stored host key. The key will need to be verified again the next
+     * time it is presented by the server.
+     */
+    suspend fun deleteKnownHost(knownHost: KnownHost) {
+        knownHostDao.delete(knownHost)
     }
 
     // ============================================================================

@@ -259,6 +259,7 @@ class HostListScreenTest {
         var settingsCalled = false
         var profilesCalled = false
         var pubkeysCalled = false
+        var knownHostsCalled = false
         var exportCalled = false
         var importCalled = false
         var helpCalled = false
@@ -270,6 +271,7 @@ class HostListScreenTest {
             onNavigateToSettings = { settingsCalled = true },
             onNavigateToProfiles = { profilesCalled = true },
             onNavigateToPubkeys = { pubkeysCalled = true },
+            onNavigateToKnownHosts = { knownHostsCalled = true },
             onExportHosts = { exportCalled = true },
             onImportHosts = { importCalled = true },
             onNavigateToHelp = { helpCalled = true },
@@ -291,6 +293,10 @@ class HostListScreenTest {
         openTopMenu()
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.list_menu_pubkeys)).performClick()
         assertTrue(pubkeysCalled)
+
+        openTopMenu()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.list_menu_known_hosts)).performClick()
+        assertTrue(knownHostsCalled)
 
         openTopMenu()
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.list_menu_export_hosts)).performClick()
@@ -444,6 +450,7 @@ class HostListScreenTest {
         onNavigateToEditHost: (Host?) -> Unit = {},
         onNavigateToSettings: () -> Unit = {},
         onNavigateToPubkeys: () -> Unit = {},
+        onNavigateToKnownHosts: () -> Unit = {},
         onNavigateToPortForwards: (Host) -> Unit = {},
         onNavigateToProfiles: () -> Unit = {},
         onNavigateToHelp: () -> Unit = {},
@@ -466,6 +473,7 @@ class HostListScreenTest {
                     onNavigateToEditHost = onNavigateToEditHost,
                     onNavigateToSettings = onNavigateToSettings,
                     onNavigateToPubkeys = onNavigateToPubkeys,
+                    onNavigateToKnownHosts = onNavigateToKnownHosts,
                     onNavigateToPortForwards = onNavigateToPortForwards,
                     onNavigateToProfiles = onNavigateToProfiles,
                     onNavigateToHelp = onNavigateToHelp,

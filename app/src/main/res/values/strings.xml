@@ -640,6 +640,24 @@
 
 	<!-- Menu item to open the pubkey management screen -->
 	<string name="list_menu_pubkeys">"Manage pubkeys"</string>
+	<!-- Menu item to open the list of trusted SSH host keys -->
+	<string name="list_menu_known_hosts">Known hosts</string>
+	<!-- Title of the screen listing trusted SSH host keys -->
+	<string name="known_hosts_title">Known hosts</string>
+	<!-- Empty-state message when no SSH host keys have been trusted yet -->
+	<string name="known_hosts_empty">No known hosts.</string>
+	<!-- Label identifying the SSH host key algorithm in the known-host list -->
+	<string name="known_host_algorithm">Algorithm: %1$s</string>
+	<!-- Accessible description for the button that deletes one trusted SSH host key -->
+	<string name="known_host_delete">Delete known host</string>
+	<!-- Confirmation button label for deleting one trusted SSH host key -->
+	<string name="known_host_delete_confirm">Delete</string>
+	<!-- Title of the confirmation dialog shown before deleting a trusted SSH host key -->
+	<string name="known_host_delete_title">Delete known host?</string>
+	<!-- Confirmation text shown before deleting a trusted SSH host key. The parameter is a hostname and port. -->
+	<string name="known_host_delete_message">The key for %1$s will need to be verified again the next time you connect.</string>
+	<!-- Generic error shown when a trusted SSH host key cannot be loaded or deleted -->
+	<string name="known_hosts_error">Unable to update known hosts</string>
 	<!-- Selection choice to sort hosts by color. -->
 	<string name="list_menu_sortcolor">"Sort by color"</string>
 	<!-- Selection choice to sort hosts by nickname. -->

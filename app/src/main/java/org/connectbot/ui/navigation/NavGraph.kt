@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,6 +39,7 @@ import org.connectbot.ui.screens.help.HelpScreen
 import org.connectbot.ui.screens.hints.HintsScreen
 import org.connectbot.ui.screens.hosteditor.HostEditorScreen
 import org.connectbot.ui.screens.hostlist.HostListScreen
+import org.connectbot.ui.screens.knownhostlist.KnownHostListScreen
 import org.connectbot.ui.screens.portforwardlist.PortForwardListScreen
 import org.connectbot.ui.screens.profiles.ProfileEditorScreen
 import org.connectbot.ui.screens.profiles.ProfileListScreen
@@ -84,6 +85,9 @@ fun ConnectBotNavHost(
                 },
                 onNavigateToPubkeys = {
                     navController.navigateSafely(NavDestinations.PUBKEY_LIST)
+                },
+                onNavigateToKnownHosts = {
+                    navController.navigateSafely(NavDestinations.KNOWN_HOST_LIST)
                 },
                 onNavigateToPortForwards = { host ->
                     navController.navigateSafely("${NavDestinations.PORT_FORWARD_LIST}/${host.id}")
@@ -137,6 +141,12 @@ fun ConnectBotNavHost(
                 onNavigateToEdit = { pubkey ->
                     navController.navigateSafely("${NavDestinations.PUBKEY_EDITOR}/${pubkey.id}")
                 },
+            )
+        }
+
+        composable(NavDestinations.KNOWN_HOST_LIST) {
+            KnownHostListScreen(
+                onNavigateBack = { navController.safePopBackStack() },
             )
         }
 

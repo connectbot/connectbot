@@ -22,6 +22,7 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 import org.connectbot.data.entity.KnownHost
 
 /**
@@ -29,6 +30,12 @@ import org.connectbot.data.entity.KnownHost
  */
 @Dao
 interface KnownHostDao {
+    /**
+     * Observe all known hosts, ordered by hostname and port.
+     */
+    @Query("SELECT * FROM known_hosts ORDER BY hostname, port, host_key_algo")
+    fun observeAll(): Flow<List<KnownHost>>
+
     /**
      * Get all known hosts for a specific host configuration.
      */
