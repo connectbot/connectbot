@@ -1433,10 +1433,14 @@
 	<string name="sftp_create_folder">Create folder</string>
 	<!-- Label for folder name input field -->
 	<string name="sftp_folder_name">Folder name</string>
-	<!-- Button/menu item to upload a file -->
-	<string name="sftp_upload_file">Upload file</string>
+	<!-- Button/menu item to select one or more files to upload -->
+	<string name="sftp_upload_file">Upload files</string>
 	<!-- Button/menu item to download a file -->
 	<string name="sftp_download_file">Download file</string>
+	<!-- Accessibility description for downloading the selected files -->
+	<string name="sftp_download_selected">Download selected files</string>
+	<!-- App bar title while SFTP files are selected; placeholder is the number selected -->
+	<string name="sftp_selected_count">%d selected</string>
 	<!-- Button/menu item to delete a file or folder -->
 	<string name="sftp_delete">Delete</string>
 	<!-- Confirmation dialog text when deleting a file or folder -->
@@ -1447,6 +1451,8 @@
 	<string name="sftp_transfer_downloading">Downloading %s…</string>
 	<!-- Message shown while uploading a file -->
 	<string name="sftp_transfer_uploading">Uploading %s…</string>
+	<!-- Batch transfer progress; placeholders are the current file number and total file count -->
+	<string name="sftp_transfer_file_count">File %1$d of %2$d</string>
 	<!-- Message shown when transfer completes successfully -->
 	<string name="sftp_transfer_complete">Transfer complete</string>
 	<!-- Message shown when transfer fails -->

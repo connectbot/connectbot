@@ -40,6 +40,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.CreateNewFolder
+import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.UploadFile
@@ -97,9 +98,24 @@ fun SftpBrowserScreen(
     val snackbarHostState = remember { SnackbarHostState() }
     var fabExpanded by rememberSaveable { mutableStateOf(false) }
 
-    // Handle back navigation - go up directory or exit
-    BackHandler(enabled = uiState.currentPath != "/" && uiState.isConnected) {
+    var selectedEntries by remember { mutableStateOf<Map<String, SftpEntry>>(emptyMap()) }
+
+    // Handle back navigation - clear selection, go up directory, or exit
+    BackHandler(enabled = selectedEntries.isNotEmpty()) {
+        selectedEntries = emptyMap()
+    }
+    BackHandler(
+        enabled = selectedEntries.isEmpty() && uiState.currentPath != "/" && uiState.isConnected,
+    ) {
         viewModel.navigateUp()
+    }
+
+    LaunchedEffect(uiState.currentPath, uiState.entries) {
+        val visiblePaths = uiState.entries.asSequence()
+            .filterNot { it.isDirectory }
+            .map { it.fullPath }
+            .toSet()
+        selectedEntries = selectedEntries.filterKeys { it in visiblePaths }
     }
 
     // Disconnect when leaving the screen
@@ -119,20 +135,20 @@ fun SftpBrowserScreen(
 
     // Pending download entry
     var pendingDownloadEntry by remember { mutableStateOf<SftpEntry?>(null) }
+    var pendingDownloadEntries by remember { mutableStateOf<List<SftpEntry>>(emptyList()) }
 
-    // File picker for uploading
+    // File picker for uploading one or more files
     val uploadFilePicker = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.OpenDocument(),
-    ) { uri: Uri? ->
-        uri?.let { selectedUri ->
-            // Get filename from URI
-            val filename = context.contentResolver.query(selectedUri, null, null, null, null)?.use { cursor ->
-                val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-                cursor.moveToFirst()
-                if (nameIndex >= 0) cursor.getString(nameIndex) else null
-            } ?: "uploaded_file"
-
-            viewModel.uploadFile(selectedUri, filename)
+        contract = ActivityResultContracts.OpenMultipleDocuments(),
+    ) { uris: List<Uri> ->
+        if (uris.isNotEmpty()) {
+            val files = uris.mapIndexed { index, uri ->
+                UploadFile(
+                    uri = uri,
+                    filename = context.displayName(uri) ?: "uploaded_file_${index + 1}",
+                )
+            }
+            viewModel.uploadFiles(files)
         }
     }
 
@@ -146,37 +162,80 @@ fun SftpBrowserScreen(
         pendingDownloadEntry = null
     }
 
+    // Directory picker for downloading multiple files
+    val downloadDirectoryPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.OpenDocumentTree(),
+    ) { uri: Uri? ->
+        if (uri != null && pendingDownloadEntries.isNotEmpty()) {
+            viewModel.downloadFiles(pendingDownloadEntries, uri)
+            selectedEntries = emptyMap()
+        }
+        pendingDownloadEntries = emptyList()
+    }
+
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {
-                    Column {
-                        Text(
-                            text = stringResource(R.string.sftp_title, uiState.host?.nickname ?: ""),
-                            maxLines = 1,
-                            overflow = TextOverflow.Ellipsis,
-                        )
-                        if (uiState.isConnected) {
+                    if (selectedEntries.isNotEmpty()) {
+                        Text(stringResource(R.string.sftp_selected_count, selectedEntries.size))
+                    } else {
+                        Column {
                             Text(
-                                text = uiState.currentPath,
-                                style = MaterialTheme.typography.bodySmall,
+                                text = stringResource(R.string.sftp_title, uiState.host?.nickname ?: ""),
                                 maxLines = 1,
                                 overflow = TextOverflow.Ellipsis,
                             )
+                            if (uiState.isConnected) {
+                                Text(
+                                    text = uiState.currentPath,
+                                    style = MaterialTheme.typography.bodySmall,
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis,
+                                )
+                            }
                         }
                     }
                 },
                 navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
+                    IconButton(
+                        onClick = {
+                            if (selectedEntries.isNotEmpty()) {
+                                selectedEntries = emptyMap()
+                            } else {
+                                onNavigateBack()
+                            }
+                        },
+                    ) {
                         Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.button_back),
+                            imageVector = if (selectedEntries.isNotEmpty()) {
+                                Icons.Default.Close
+                            } else {
+                                Icons.AutoMirrored.Filled.ArrowBack
+                            },
+                            contentDescription = if (selectedEntries.isNotEmpty()) {
+                                stringResource(R.string.button_cancel)
+                            } else {
+                                stringResource(R.string.button_back)
+                            },
                         )
                     }
                 },
                 actions = {
-                    if (uiState.isConnected) {
+                    if (selectedEntries.isNotEmpty()) {
+                        IconButton(
+                            onClick = {
+                                pendingDownloadEntries = selectedEntries.values.toList()
+                                downloadDirectoryPicker.launch(null)
+                            },
+                        ) {
+                            Icon(
+                                Icons.Default.Download,
+                                contentDescription = stringResource(R.string.sftp_download_selected),
+                            )
+                        }
+                    } else if (uiState.isConnected) {
                         IconButton(onClick = { viewModel.showGoToPathDialog() }) {
                             Icon(
                                 Icons.Default.Folder,
@@ -194,7 +253,7 @@ fun SftpBrowserScreen(
             )
         },
         floatingActionButton = {
-            if (uiState.isConnected) {
+            if (uiState.isConnected && selectedEntries.isEmpty()) {
                 FloatingActionButtonMenu(
                     expanded = fabExpanded,
                     button = {
@@ -300,8 +359,11 @@ fun SftpBrowserScreen(
                                 ) { entry ->
                                     SftpEntryItem(
                                         entry = entry,
+                                        isSelected = entry.fullPath in selectedEntries,
                                         onClick = {
-                                            if (entry.isDirectory || entry.filename == "..") {
+                                            if (selectedEntries.isNotEmpty() && !entry.isDirectory) {
+                                                selectedEntries = selectedEntries.toggle(entry)
+                                            } else if (entry.isDirectory || entry.filename == "..") {
                                                 if (entry.filename == "..") {
                                                     viewModel.navigateUp()
                                                 } else {
@@ -319,6 +381,9 @@ fun SftpBrowserScreen(
                                         },
                                         onDelete = {
                                             viewModel.showDeleteDialog(entry)
+                                        },
+                                        onSelectionChange = {
+                                            selectedEntries = selectedEntries.toggle(entry)
                                         },
                                     )
                                     HorizontalDivider()
@@ -468,3 +533,16 @@ private fun Context.findFragmentActivity(): FragmentActivity? {
     }
     return null
 }
+
+private fun Context.displayName(uri: Uri): String? =
+    contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->
+        val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+        if (nameIndex >= 0 && cursor.moveToFirst()) cursor.getString(nameIndex) else null
+    }
+
+private fun Map<String, SftpEntry>.toggle(entry: SftpEntry): Map<String, SftpEntry> =
+    if (entry.fullPath in this) {
+        this - entry.fullPath
+    } else {
+        this + (entry.fullPath to entry)
+    }

@@ -27,6 +27,7 @@ import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.FileDownload
 import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Link
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
@@ -51,9 +52,11 @@ import java.util.Locale
 @Composable
 fun SftpEntryItem(
     entry: SftpEntry,
+    isSelected: Boolean,
     onClick: () -> Unit,
     onDownload: () -> Unit,
     onDelete: () -> Unit,
+    onSelectionChange: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var showMenu by remember { mutableStateOf(false) }
@@ -105,6 +108,14 @@ fun SftpEntryItem(
                     },
                     modifier = Modifier.size(24.dp),
                 )
+            },
+            trailingContent = {
+                if (!entry.isDirectory) {
+                    Checkbox(
+                        checked = isSelected,
+                        onCheckedChange = { onSelectionChange() },
+                    )
+                }
             },
             modifier = Modifier.combinedClickable(
                 onClick = onClick,
