@@ -1059,6 +1059,8 @@
 	<!-- Console screen messages -->
 	<!-- Default title for console screen when no specific host is connected -->
 	<string name="console_default_title">Console</string>
+	<!-- Console title when a host has multiple sessions. First parameter is the session number; second is the host nickname. -->
+	<string name="console_session_title">#%1$d %2$s</string>
 
 	<!-- Host editor screen labels -->
 	<!-- Label for quick connect input field -->
