@@ -19,19 +19,26 @@ package org.connectbot.ui.screens.sftpbrowser
 
 import android.content.Context
 import android.net.Uri
+import android.provider.DocumentsContract
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.trilead.ssh2.SFTPv3DirectoryEntry
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.sftp.SftpConnectionManager
 import org.connectbot.sftp.SftpOperations
 import org.connectbot.sftp.SftpPromptHandler
@@ -50,6 +57,14 @@ data class SftpEntry(
     val size: Long?,
     val modifiedTime: Long?,
     val permissions: String?,
+)
+
+/**
+ * A local document selected for upload.
+ */
+data class UploadFile(
+    val uri: Uri,
+    val filename: String,
 )
 
 /**
@@ -86,6 +101,8 @@ data class TransferProgress(
     val isUpload: Boolean,
     val bytesTransferred: Long,
     val totalBytes: Long,
+    val fileIndex: Int = 1,
+    val fileCount: Int = 1,
 ) {
     val progress: Float
         get() = if (totalBytes > 0) bytesTransferred.toFloat() / totalBytes else 0f
@@ -117,6 +134,7 @@ class SftpBrowserViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val hostRepository: HostRepository,
     private val sftpConnectionManager: SftpConnectionManager,
+    private val dispatchers: CoroutineDispatchers,
     savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
 
@@ -130,6 +148,7 @@ class SftpBrowserViewModel @Inject constructor(
     private var pendingPasswordCallback: ((String?) -> Unit)? = null
     private var pendingKeyPassphraseCallback: ((String?) -> Unit)? = null
     private var pendingBiometricCallback: ((Boolean) -> Unit)? = null
+    private var transferJob: Job? = null
 
     init {
         loadHost()
@@ -328,115 +347,180 @@ class SftpBrowserViewModel @Inject constructor(
     fun downloadFile(entry: SftpEntry, destinationUri: Uri) {
         val operations = sftpOperations ?: return
 
-        viewModelScope.launch {
+        transferJob?.cancel()
+        transferJob = viewModelScope.launch {
             try {
-                val outputStream = context.contentResolver.openOutputStream(destinationUri)
-                    ?: throw IOException("Cannot open output stream")
-
-                _uiState.update {
-                    it.copy(
-                        transferProgress = TransferProgress(
-                            filename = entry.filename,
-                            isUpload = false,
-                            bytesTransferred = 0,
-                            totalBytes = entry.size ?: 0,
-                        ),
-                    )
+                withContext(dispatchers.io) {
+                    downloadFile(operations, entry, destinationUri, 1, 1)
                 }
+            } catch (_: CancellationException) {
+                // The user cancelled the transfer.
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = "Download failed: ${e.message}") }
+            } finally {
+                _uiState.update { it.copy(transferProgress = null) }
+            }
+        }
+    }
 
-                outputStream.use { stream ->
-                    operations.downloadFile(
-                        remotePath = entry.fullPath,
-                        outputStream = stream,
-                    ) { bytesTransferred, totalBytes ->
-                        _uiState.update {
-                            it.copy(
-                                transferProgress = TransferProgress(
-                                    filename = entry.filename,
-                                    isUpload = false,
-                                    bytesTransferred = bytesTransferred,
-                                    totalBytes = totalBytes,
-                                ),
-                            )
-                        }
+    fun downloadFiles(entries: List<SftpEntry>, destinationDirectoryUri: Uri) {
+        val operations = sftpOperations ?: return
+        if (entries.isEmpty()) return
+
+        transferJob?.cancel()
+        transferJob = viewModelScope.launch {
+            try {
+                withContext(dispatchers.io) {
+                    entries.forEachIndexed { index, entry ->
+                        currentCoroutineContext().ensureActive()
+                        val destinationUri = createDocument(destinationDirectoryUri, entry.filename)
+                        downloadFile(operations, entry, destinationUri, index + 1, entries.size)
                     }
                 }
-
-                _uiState.update { it.copy(transferProgress = null) }
+            } catch (_: CancellationException) {
+                // The user cancelled the transfer.
             } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(
-                        transferProgress = null,
-                        error = "Download failed: ${e.message}",
-                    )
-                }
+                _uiState.update { it.copy(error = "Download failed: ${e.message}") }
+            } finally {
+                _uiState.update { it.copy(transferProgress = null) }
             }
         }
     }
 
     fun uploadFile(sourceUri: Uri, filename: String) {
+        uploadFiles(listOf(UploadFile(sourceUri, filename)))
+    }
+
+    fun uploadFiles(files: List<UploadFile>) {
         val operations = sftpOperations ?: return
+        if (files.isEmpty()) return
 
-        viewModelScope.launch {
+        transferJob?.cancel()
+        transferJob = viewModelScope.launch {
             try {
-                val inputStream = context.contentResolver.openInputStream(sourceUri)
-                    ?: throw IOException("Cannot open input stream")
-
-                // Get file size
-                val fileSize = context.contentResolver.openAssetFileDescriptor(sourceUri, "r")?.use {
-                    it.length
-                } ?: 0L
-
-                val currentPath = _uiState.value.currentPath
-                val remotePath = if (currentPath.endsWith("/")) "$currentPath$filename" else "$currentPath/$filename"
-
-                _uiState.update {
-                    it.copy(
-                        transferProgress = TransferProgress(
-                            filename = filename,
-                            isUpload = true,
-                            bytesTransferred = 0,
-                            totalBytes = fileSize,
-                        ),
-                    )
-                }
-
-                inputStream.use { stream ->
-                    operations.uploadFile(
-                        inputStream = stream,
-                        remotePath = remotePath,
-                        totalSize = fileSize,
-                    ) { bytesTransferred, totalBytes ->
-                        _uiState.update {
-                            it.copy(
-                                transferProgress = TransferProgress(
-                                    filename = filename,
-                                    isUpload = true,
-                                    bytesTransferred = bytesTransferred,
-                                    totalBytes = totalBytes,
-                                ),
-                            )
-                        }
+                withContext(dispatchers.io) {
+                    val currentPath = _uiState.value.currentPath
+                    files.forEachIndexed { index, file ->
+                        currentCoroutineContext().ensureActive()
+                        uploadFile(operations, file, currentPath, index + 1, files.size)
                     }
                 }
-
-                _uiState.update { it.copy(transferProgress = null) }
                 refresh()
+            } catch (_: CancellationException) {
+                // The user cancelled the transfer.
             } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(
-                        transferProgress = null,
-                        error = "Upload failed: ${e.message}",
-                    )
-                }
+                _uiState.update { it.copy(error = "Upload failed: ${e.message}") }
+            } finally {
+                _uiState.update { it.copy(transferProgress = null) }
             }
         }
     }
 
     fun cancelTransfer() {
-        // Transfer cancellation would require more complex coroutine job management
-        // For now, we just clear the progress
+        transferJob?.cancel()
+        transferJob = null
         _uiState.update { it.copy(transferProgress = null) }
+    }
+
+    private suspend fun downloadFile(
+        operations: SftpOperations,
+        entry: SftpEntry,
+        destinationUri: Uri,
+        fileIndex: Int,
+        fileCount: Int,
+    ) {
+        val outputStream = context.contentResolver.openOutputStream(destinationUri)
+            ?: throw IOException("Cannot open output stream")
+
+        updateTransferProgress(entry.filename, false, 0, entry.size ?: 0, fileIndex, fileCount)
+        outputStream.use { stream ->
+            operations.downloadFile(
+                remotePath = entry.fullPath,
+                outputStream = stream,
+            ) { bytesTransferred, totalBytes ->
+                updateTransferProgress(
+                    entry.filename,
+                    false,
+                    bytesTransferred,
+                    totalBytes,
+                    fileIndex,
+                    fileCount,
+                )
+            }
+        }
+    }
+
+    private suspend fun uploadFile(
+        operations: SftpOperations,
+        file: UploadFile,
+        currentPath: String,
+        fileIndex: Int,
+        fileCount: Int,
+    ) {
+        val inputStream = context.contentResolver.openInputStream(file.uri)
+            ?: throw IOException("Cannot open input stream")
+        val fileSize = context.contentResolver.openAssetFileDescriptor(file.uri, "r")?.use {
+            it.length
+        } ?: 0L
+        val remotePath = if (currentPath.endsWith("/")) {
+            "$currentPath${file.filename}"
+        } else {
+            "$currentPath/${file.filename}"
+        }
+
+        updateTransferProgress(file.filename, true, 0, fileSize, fileIndex, fileCount)
+        inputStream.use { stream ->
+            operations.uploadFile(
+                inputStream = stream,
+                remotePath = remotePath,
+                totalSize = fileSize,
+            ) { bytesTransferred, totalBytes ->
+                updateTransferProgress(
+                    file.filename,
+                    true,
+                    bytesTransferred,
+                    totalBytes,
+                    fileIndex,
+                    fileCount,
+                )
+            }
+        }
+    }
+
+    private fun createDocument(directoryUri: Uri, filename: String): Uri {
+        val directoryDocumentId = DocumentsContract.getTreeDocumentId(directoryUri)
+        val directoryDocumentUri = DocumentsContract.buildDocumentUriUsingTree(
+            directoryUri,
+            directoryDocumentId,
+        )
+        return DocumentsContract.createDocument(
+            context.contentResolver,
+            directoryDocumentUri,
+            "application/octet-stream",
+            filename,
+        ) ?: throw IOException("Cannot create $filename")
+    }
+
+    private fun updateTransferProgress(
+        filename: String,
+        isUpload: Boolean,
+        bytesTransferred: Long,
+        totalBytes: Long,
+        fileIndex: Int,
+        fileCount: Int,
+    ) {
+        _uiState.update {
+            it.copy(
+                transferProgress = TransferProgress(
+                    filename = filename,
+                    isUpload = isUpload,
+                    bytesTransferred = bytesTransferred,
+                    totalBytes = totalBytes,
+                    fileIndex = fileIndex,
+                    fileCount = fileCount,
+                ),
+            )
+        }
     }
 
     fun clearError() {
