@@ -67,6 +67,7 @@ class HostEditorScreenTest {
     lateinit var repository: HostRepository
 
     private lateinit var navController: TestNavHostController
+    private var knownHostsHostId: Long? = null
 
     @Before
     fun setUp() {
@@ -85,6 +86,7 @@ class HostEditorScreenTest {
                         HostEditorScreen(
                             onNavigateBack = { navController.popBackStack() },
                             onNavigateToProfile = {},
+                            onNavigateToKnownHosts = { knownHostsHostId = it },
                         )
                     }
                 }
@@ -314,6 +316,18 @@ class HostEditorScreenTest {
         composeTestRule.onNodeWithText("Show advanced options").performScrollTo().performClick()
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.hostpref_ipversion_title)).performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.hostpref_password_title)).assertDoesNotExist()
+    }
+
+    @Test
+    fun hostEditorScreen_existingSshHost_opensKnownHostKeys() {
+        navigateToHostEditorScreen(42L)
+
+        composeTestRule.onNodeWithText("Show advanced options").performScrollTo().performClick()
+        composeTestRule.onNodeWithTag("known_host_keys_preference").performScrollTo().performClick()
+
+        composeTestRule.runOnIdle {
+            assertTrue(knownHostsHostId == 42L)
+        }
     }
 
     @Test
