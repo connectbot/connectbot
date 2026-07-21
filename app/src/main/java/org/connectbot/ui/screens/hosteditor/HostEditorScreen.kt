@@ -95,6 +95,7 @@ fun HostEditorScreen(
     modifier: Modifier = Modifier,
     onNavigateToAutomation: (Long) -> Unit = {},
     viewModel: HostEditorViewModel = hiltViewModel(),
+    onNavigateToKnownHosts: (Long) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -102,6 +103,7 @@ fun HostEditorScreen(
         hostId = uiState.hostId,
         uiState = uiState,
         onNavigateBack = onNavigateBack,
+        onNavigateToKnownHosts = onNavigateToKnownHosts,
         onNicknameChange = viewModel::updateNickname,
         onNicknameFocusChange = viewModel::onNicknameFocusChanged,
         onProtocolChange = viewModel::updateProtocol,
@@ -141,7 +143,6 @@ fun HostEditorScreenContent(
     onNicknameChange: (String) -> Unit,
     onNicknameFocusChange: (Boolean) -> Unit,
     onProtocolChange: (String) -> Unit,
-    onCancelMoshInstall: () -> Unit = {},
     onUsernameChange: (String) -> Unit,
     onHostnameChange: (String) -> Unit,
     onPortChange: (String) -> Unit,
@@ -159,12 +160,14 @@ fun HostEditorScreenContent(
     onIpVersionChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onClearPassword: () -> Unit,
+    onSaveHost: suspend () -> Boolean,
+    modifier: Modifier = Modifier,
+    onCancelMoshInstall: () -> Unit = {},
     onMoshPortChange: (String) -> Unit = {},
     onMoshNetworkTimeoutChange: (String) -> Unit = {},
     onMoshServerChange: (String) -> Unit = {},
     onLocaleChange: (String) -> Unit = {},
-    onSaveHost: suspend () -> Boolean,
-    modifier: Modifier = Modifier,
+    onNavigateToKnownHosts: (Long) -> Unit = {},
 ) {
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = remember { SnackbarHostState() }
@@ -409,6 +412,30 @@ fun HostEditorScreenContent(
                                 modifier = Modifier.padding(top = 4.dp),
                             ) {
                                 Text(stringResource(R.string.hostpref_clear_password))
+                            }
+                        }
+
+                        if (hostId != -1L) {
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable { onNavigateToKnownHosts(hostId) }
+                                    .padding(vertical = 8.dp)
+                                    .testTag("known_host_keys_preference"),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = stringResource(R.string.hostpref_known_hosts_title),
+                                        style = MaterialTheme.typography.bodyLarge,
+                                    )
+                                    Text(
+                                        text = stringResource(R.string.hostpref_known_hosts_summary),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    )
+                                }
+                                Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null)
                             }
                         }
                     }
