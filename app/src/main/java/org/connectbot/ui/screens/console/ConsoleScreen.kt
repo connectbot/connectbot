@@ -78,7 +78,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.PrimaryTabRow
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.ScaffoldDefaults
 import androidx.compose.material3.SnackbarDuration
@@ -86,7 +85,6 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.SnackbarResult
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -1182,42 +1180,6 @@ fun ConsoleScreen(
                     }
                 }
             }
-            
-            if (hasMultipleSessions) {
-                PrimaryTabRow(
-                    selectedTabIndex = uiState.currentBridgeIndex,
-                    modifier = Modifier.fillMaxWidth(),
-                ) {
-                    uiState.bridges.forEachIndexed { index, bridge ->
-                        val hostId = bridge.host.id
-                        val sessionCount = uiState.sessionCounts[hostId] ?: 1
-                        val sessionNumber = if (sessionCount > 1) {
-                            val bridgesForHost = uiState.bridges.filter { it.host.id == hostId }
-                            bridgesForHost.indexOfFirst { it.sessionId == bridge.sessionId } + 1
-                        } else {
-                            0
-                        }
-                        val tabTitle = if (sessionNumber > 0) {
-                            "${bridge.host.nickname} #$sessionNumber"
-                        } else {
-                            bridge.host.nickname
-                        }
-
-                        Tab(
-                            selected = index == uiState.currentBridgeIndex,
-                            onClick = { selectBridgePreservingKeyboard(index) },
-                            text = {
-                                Text(
-                                    tabTitle,
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis,
-                                )
-                            },
-                        )
-                    }
-                }
-            }
-
             when {
                 uiState.isLoading -> {
                     LoadingScreen(modifier = Modifier.fillMaxSize())
@@ -1418,13 +1380,19 @@ fun ConsoleScreen(
             val density = LocalDensity.current
             TopAppBar(
                 title = {
+                    val sessionsForHost = currentBridge?.let { bridge ->
+                        uiState.bridges.filter { it.host.id == bridge.host.id }
+                    }.orEmpty()
                     val sessionNumber = currentBridge?.let { bridge ->
-                        val bridgesForHost = uiState.bridges.filter { it.host.id == bridge.host.id }
-                        bridgesForHost.indexOfFirst { it.sessionId == bridge.sessionId } + 1
+                        sessionsForHost.indexOfFirst { it.sessionId == bridge.sessionId } + 1
                     } ?: 0
 
-                    val titleText = if (currentBridge != null && sessionNumber > 0) {
-                        "${currentBridge.host.nickname} #$sessionNumber"
+                    val titleText = if (currentBridge != null && sessionsForHost.size > 1) {
+                        stringResource(
+                            R.string.console_session_title,
+                            sessionNumber,
+                            currentBridge.host.nickname,
+                        )
                     } else {
                         currentBridge?.host?.nickname
                             ?: stringResource(R.string.console_default_title)
