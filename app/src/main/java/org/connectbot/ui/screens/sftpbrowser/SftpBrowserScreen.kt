@@ -534,15 +534,13 @@ private fun Context.findFragmentActivity(): FragmentActivity? {
     return null
 }
 
-private fun Context.displayName(uri: Uri): String? =
-    contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->
-        val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-        if (nameIndex >= 0 && cursor.moveToFirst()) cursor.getString(nameIndex) else null
-    }
+private fun Context.displayName(uri: Uri): String? = contentResolver.query(uri, arrayOf(OpenableColumns.DISPLAY_NAME), null, null, null)?.use { cursor ->
+    val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
+    if (nameIndex >= 0 && cursor.moveToFirst()) cursor.getString(nameIndex) else null
+}
 
-private fun Map<String, SftpEntry>.toggle(entry: SftpEntry): Map<String, SftpEntry> =
-    if (entry.fullPath in this) {
-        this - entry.fullPath
-    } else {
-        this + (entry.fullPath to entry)
-    }
+private fun Map<String, SftpEntry>.toggle(entry: SftpEntry): Map<String, SftpEntry> = if (entry.fullPath in this) {
+    this - entry.fullPath
+} else {
+    this + (entry.fullPath to entry)
+}
