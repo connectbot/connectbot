@@ -171,6 +171,16 @@ fun TransferProgressDialog(
                     modifier = Modifier.fillMaxWidth(),
                 )
                 Spacer(modifier = Modifier.height(8.dp))
+                if (progress.fileCount > 1) {
+                    Text(
+                        text = stringResource(
+                            R.string.sftp_transfer_file_count,
+                            progress.fileIndex,
+                            progress.fileCount,
+                        ),
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
                 Text(
                     text = "${formatBytes(progress.bytesTransferred)} / ${formatBytes(progress.totalBytes)} (${progress.percentComplete}%)",
                     style = MaterialTheme.typography.bodySmall,
