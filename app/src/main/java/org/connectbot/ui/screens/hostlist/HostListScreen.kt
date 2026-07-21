@@ -122,6 +122,7 @@ fun HostListScreen(
     onSelectShortcut: (Host, String?, IconStyle) -> Unit = { _, _, _ -> },
     shouldShowNotificationWarning: () -> Boolean = { false },
     onNotificationSnackbarFinish: () -> Unit = {},
+    onNavigateToKnownHosts: () -> Unit = {},
     viewModel: HostListViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -258,6 +259,7 @@ fun HostListScreen(
         onNavigateToSettings = onNavigateToSettings,
         onNavigateToSettingsHighlightConnPersist = onNavigateToSettingsHighlightConnPersist,
         onNavigateToPubkeys = onNavigateToPubkeys,
+        onNavigateToKnownHosts = onNavigateToKnownHosts,
         onNavigateToPortForwards = onNavigateToPortForwards,
         onNavigateToProfiles = onNavigateToProfiles,
         onNavigateToHelp = onNavigateToHelp,
@@ -300,6 +302,7 @@ fun HostListScreenContent(
     onImportHosts: () -> Unit = {},
     shouldShowNotificationWarning: () -> Boolean = { false },
     onNotificationSnackbarFinish: () -> Unit = {},
+    onNavigateToKnownHosts: () -> Unit = {},
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showDisconnectAllDialog by remember { mutableStateOf(false) }
@@ -387,6 +390,13 @@ fun HostListScreenContent(
                                 onClick = {
                                     showMenu = false
                                     onNavigateToPubkeys()
+                                },
+                            )
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.list_menu_known_hosts)) },
+                                onClick = {
+                                    showMenu = false
+                                    onNavigateToKnownHosts()
                                 },
                             )
                             DropdownMenuItem(
