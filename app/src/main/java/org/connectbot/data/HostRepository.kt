@@ -216,7 +216,7 @@ class HostRepository @Inject constructor(
     // Known Host Operations
     // ============================================================================
 
-    fun observeKnownHosts(): Flow<List<KnownHost>> = knownHostDao.observeAll()
+    fun observeKnownHostsForHost(hostId: Long): Flow<List<KnownHost>> = knownHostDao.observeByHostId(hostId)
 
     suspend fun getKnownHostsForHost(hostId: Long): List<KnownHost> = knownHostDao.getByHostId(hostId)
 

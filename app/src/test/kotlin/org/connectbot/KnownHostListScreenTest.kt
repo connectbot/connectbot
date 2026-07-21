@@ -19,9 +19,11 @@ package org.connectbot
 
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
+import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -76,7 +78,29 @@ class KnownHostListScreenTest {
         }
     }
 
-    private fun setContent(onDeleteKnownHost: (KnownHost) -> Unit = {}) {
+    @Test
+    fun importingKnownHostAcceptsPastedPublicKey() {
+        var importedValue: String? = null
+        setContent(
+            onImportKnownHost = {
+                importedValue = it
+                true
+            },
+        )
+
+        composeTestRule.onNodeWithContentDescription("Import host key").performClick()
+        composeTestRule.onNodeWithText("OpenSSH public key").performTextInput("ssh-ed25519 AAAA")
+        composeTestRule.onNodeWithText("Import").performClick()
+
+        composeTestRule.runOnIdle {
+            assertEquals("ssh-ed25519 AAAA", importedValue)
+        }
+    }
+
+    private fun setContent(
+        onDeleteKnownHost: (KnownHost) -> Unit = {},
+        onImportKnownHost: (String) -> Boolean = { true },
+    ) {
         composeTestRule.setContent {
             ConnectBotTheme {
                 KnownHostListScreenContent(
@@ -91,6 +115,7 @@ class KnownHostListScreenTest {
                     ),
                     onNavigateBack = {},
                     onDeleteKnownHost = onDeleteKnownHost,
+                    onImportKnownHost = onImportKnownHost,
                 )
             }
         }

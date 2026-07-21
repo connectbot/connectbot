@@ -86,9 +86,6 @@ fun ConnectBotNavHost(
                 onNavigateToPubkeys = {
                     navController.navigateSafely(NavDestinations.PUBKEY_LIST)
                 },
-                onNavigateToKnownHosts = {
-                    navController.navigateSafely(NavDestinations.KNOWN_HOST_LIST)
-                },
                 onNavigateToPortForwards = { host ->
                     navController.navigateSafely("${NavDestinations.PORT_FORWARD_LIST}/${host.id}")
                 },
@@ -131,6 +128,9 @@ fun ConnectBotNavHost(
         ) {
             HostEditorScreen(
                 onNavigateBack = { navController.safePopBackStack() },
+                onNavigateToKnownHosts = { hostId ->
+                    navController.navigateSafely("${NavDestinations.KNOWN_HOST_LIST}/$hostId")
+                },
             )
         }
 
@@ -144,7 +144,12 @@ fun ConnectBotNavHost(
             )
         }
 
-        composable(NavDestinations.KNOWN_HOST_LIST) {
+        composable(
+            route = "${NavDestinations.KNOWN_HOST_LIST}/{${NavArgs.HOST_ID}}",
+            arguments = listOf(
+                navArgument(NavArgs.HOST_ID) { type = NavType.LongType },
+            ),
+        ) {
             KnownHostListScreen(
                 onNavigateBack = { navController.safePopBackStack() },
             )
