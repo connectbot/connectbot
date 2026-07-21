@@ -27,6 +27,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.selection.SelectionContainer
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.CircularProgressIndicator
@@ -35,6 +36,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
@@ -81,10 +83,19 @@ fun KnownHostListScreen(
         }
     }
 
+    LaunchedEffect(uiState.importError) {
+        if (uiState.importError == KnownHostImportError.IMPORT_FAILED) {
+            snackbarHostState.showSnackbar(errorMessage)
+            viewModel.clearImportError()
+        }
+    }
+
     KnownHostListScreenContent(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
         onDeleteKnownHost = viewModel::deleteKnownHost,
+        onImportKnownHost = viewModel::importKnownHost,
+        onClearImportError = viewModel::clearImportError,
         snackbarHostState = snackbarHostState,
         modifier = modifier,
     )
@@ -96,10 +107,29 @@ fun KnownHostListScreenContent(
     uiState: KnownHostListUiState,
     onNavigateBack: () -> Unit,
     onDeleteKnownHost: (KnownHost) -> Unit,
+    onImportKnownHost: (String) -> Boolean,
     modifier: Modifier = Modifier,
     snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    importError: KnownHostImportError? = uiState.importError,
+    onClearImportError: () -> Unit = {},
 ) {
     var pendingDelete by remember { mutableStateOf<KnownHostListItem?>(null) }
+    var showImportDialog by remember { mutableStateOf(false) }
+
+    if (showImportDialog) {
+        ImportKnownHostDialog(
+            isInvalid = importError == KnownHostImportError.INVALID_KEY,
+            onDismiss = {
+                showImportDialog = false
+                onClearImportError()
+            },
+            onImport = { value ->
+                if (onImportKnownHost(value)) {
+                    showImportDialog = false
+                }
+            },
+        )
+    }
 
     pendingDelete?.let { item ->
         AlertDialog(
@@ -134,6 +164,16 @@ fun KnownHostListScreenContent(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             contentDescription = stringResource(R.string.button_navigate_up),
                         )
+                    }
+                },
+                actions = {
+                    IconButton(
+                        onClick = {
+                            onClearImportError()
+                            showImportDialog = true
+                        },
+                    ) {
+                        Icon(Icons.Default.Add, stringResource(R.string.known_host_import))
                     }
                 },
             )
@@ -177,6 +217,53 @@ fun KnownHostListScreenContent(
             }
         }
     }
+}
+
+@Composable
+private fun ImportKnownHostDialog(
+    isInvalid: Boolean,
+    onDismiss: () -> Unit,
+    onImport: (String) -> Unit,
+) {
+    var value by remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.known_host_import_title)) },
+        text = {
+            OutlinedTextField(
+                value = value,
+                onValueChange = { value = it },
+                label = { Text(stringResource(R.string.known_host_import_key_label)) },
+                supportingText = {
+                    Text(
+                        stringResource(
+                            if (isInvalid) {
+                                R.string.known_host_import_invalid
+                            } else {
+                                R.string.known_host_import_help
+                            },
+                        ),
+                    )
+                },
+                isError = isInvalid,
+                minLines = 3,
+            )
+        },
+        confirmButton = {
+            TextButton(
+                onClick = { onImport(value) },
+                enabled = value.isNotBlank(),
+            ) {
+                Text(stringResource(R.string.known_host_import_confirm))
+            }
+        },
+        dismissButton = {
+            TextButton(onClick = onDismiss) {
+                Text(stringResource(android.R.string.cancel))
+            }
+        },
+    )
 }
 
 @Composable
@@ -233,6 +320,7 @@ private fun KnownHostListScreenPreview() {
             ),
             onNavigateBack = {},
             onDeleteKnownHost = {},
+            onImportKnownHost = { true },
         )
     }
 }

@@ -31,10 +31,10 @@ import org.connectbot.data.entity.KnownHost
 @Dao
 interface KnownHostDao {
     /**
-     * Observe all known hosts, ordered by hostname and port.
+     * Observe known hosts for one host configuration.
      */
-    @Query("SELECT * FROM known_hosts ORDER BY hostname, port, host_key_algo")
-    fun observeAll(): Flow<List<KnownHost>>
+    @Query("SELECT * FROM known_hosts WHERE host_id = :hostId ORDER BY hostname, port, host_key_algo")
+    fun observeByHostId(hostId: Long): Flow<List<KnownHost>>
 
     /**
      * Get all known hosts for a specific host configuration.
