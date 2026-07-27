@@ -2,7 +2,7 @@
 androidGradlePlugin = "9.3.0"
 
 kotlin = "2.4.10"
-spotless = "8.8.0"
+spotless = "8.9.0"
 easylauncher = "6.4.1"
 pythonUv = "0.4.18"
 appVersioning = "1.6.0"
