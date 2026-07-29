@@ -63,6 +63,7 @@ import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.screens.console.ConsoleScreen
 import org.connectbot.ui.screens.console.ConsoleUiState
 import org.connectbot.ui.screens.console.ConsoleViewModel
+import org.connectbot.ui.screens.console.SessionPickerDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.PreferenceConstants
 import org.junit.After
@@ -329,6 +330,25 @@ class ConsoleScreenTest {
 
         composeTestRule.onNodeWithText("#2 a-long-hostname").assertIsDisplayed()
         composeTestRule.onNodeWithText("a-long-hostname #2").assertIsNotDisplayed()
+    }
+
+    @Test
+    fun consoleScreen_sessionPickerSupportsMultipleSessionsForSameHost() {
+        val firstBridge = mockConsoleBridge(id = 1L, sessionId = 10L, hostname = "same-host")
+        val secondBridge = mockConsoleBridge(id = 1L, sessionId = 20L, hostname = "same-host")
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                SessionPickerDialog(
+                    bridges = listOf(firstBridge, secondBridge),
+                    currentBridgeIndex = 0,
+                    onDismiss = {},
+                    onSelectBridge = {},
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithText("\u2022 same-host").assertIsDisplayed()
+        composeTestRule.onNodeWithText("same-host").assertIsDisplayed()
     }
 
     @Test
