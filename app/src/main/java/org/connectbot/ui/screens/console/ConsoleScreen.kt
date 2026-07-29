@@ -1778,6 +1778,7 @@ private fun SessionDisconnectDialog(
 }
 
 @Composable
+@VisibleForTesting
 internal fun SessionPickerDialog(
     bridges: List<TerminalBridge>,
     currentBridgeIndex: Int,
@@ -1797,6 +1798,7 @@ internal fun SessionPickerDialog(
             ) {
                 items(
                     count = bridges.size,
+                    key = { index -> bridges[index].sessionId },
                 ) { index ->
                     val bridge = bridges[index]
                     TextButton(
