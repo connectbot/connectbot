@@ -585,6 +585,25 @@ class ConsoleScreenTest {
     }
 
     @Test
+    fun consoleScreen_sessionPickerSupportsMultipleSessionsForSameHost() {
+        val firstBridge = mockConsoleBridge(id = 1L, sessionId = 10L, hostname = "same-host")
+        val secondBridge = mockConsoleBridge(id = 1L, sessionId = 20L, hostname = "same-host")
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                SessionPickerDialog(
+                    bridges = listOf(firstBridge, secondBridge),
+                    currentBridgeIndex = 0,
+                    onDismiss = {},
+                    onSelectBridge = {},
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithText("\u2022 same-host").assertIsDisplayed()
+        composeTestRule.onNodeWithText("same-host").assertIsDisplayed()
+    }
+
+    @Test
     fun consoleScreen_displaysBackButton() {
         setContent()
         navigateToConsoleScreen()
