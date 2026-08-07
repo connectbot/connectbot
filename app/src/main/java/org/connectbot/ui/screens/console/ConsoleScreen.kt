@@ -123,13 +123,18 @@ import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.cancelChildren
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.fido2.Fido2ConnectionState
 import org.connectbot.service.AuthBanner
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.PromptRequest
+import org.connectbot.service.PromptResponse
 import org.connectbot.service.TerminalBridge
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.SelectionController
@@ -137,6 +142,7 @@ import org.connectbot.terminal.Terminal
 import org.connectbot.ui.LoadingScreen
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.components.AuthBannerDialog
+import org.connectbot.ui.components.Fido2NfcTapOverlay
 import org.connectbot.ui.components.FloatingTextInputDialog
 import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
@@ -443,6 +449,40 @@ private fun ConsoleTerminalPage(
             }
 
             val promptState by bridge.promptManager.promptState.collectAsState()
+
+            // Handle FIDO2 connect prompt based on transport preference
+            LaunchedEffect(promptState) {
+                val fido2Prompt = promptState as? PromptRequest.Fido2ConnectPrompt
+                if (fido2Prompt != null) {
+                    val fido2Manager = bridge.fido2Manager
+
+                    // NFC tap happens during the signing phase, so no USB discovery is needed.
+                    if (fido2Prompt.transport == org.connectbot.data.entity.Fido2Transport.NFC) {
+                        bridge.promptManager.respond(PromptResponse.Fido2Response(true))
+                        return@LaunchedEffect
+                    }
+
+                    if (fido2Manager.isDeviceConnected()) {
+                        bridge.promptManager.respond(PromptResponse.Fido2Response(true))
+                        return@LaunchedEffect
+                    }
+
+                    fido2Manager.startUsbDiscovery()
+                    fido2Manager.connectionState.first { state ->
+                        state is Fido2ConnectionState.Connected
+                    }
+                    // Keep USB discovery active because signing still needs the device.
+                    bridge.promptManager.respond(PromptResponse.Fido2Response(true))
+                }
+            }
+
+            val waitingForNfc by bridge.fido2Manager.waitingForNfcSigning.collectAsState()
+            if (waitingForNfc) {
+                Fido2NfcTapOverlay(
+                    onCancel = { bridge.fido2Manager.cancelNfcSigning() },
+                    modifier = Modifier.align(Alignment.BottomCenter),
+                )
+            }
 
             InlinePrompt(
                 promptRequest = promptState,

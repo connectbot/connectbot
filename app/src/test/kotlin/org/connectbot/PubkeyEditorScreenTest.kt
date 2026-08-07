@@ -61,6 +61,7 @@ class PubkeyEditorScreenTest {
                     onNewPassword2Change = {},
                     onUnlockAtStartupChange = {},
                     onConfirmUseChange = {},
+                    onFido2TransportChange = {},
                     onSave = {},
                 )
             }
@@ -86,6 +87,7 @@ class PubkeyEditorScreenTest {
                     onNewPassword2Change = {},
                     onUnlockAtStartupChange = {},
                     onConfirmUseChange = {},
+                    onFido2TransportChange = {},
                     onSave = {},
                 )
             }
@@ -111,6 +113,7 @@ class PubkeyEditorScreenTest {
                     onNewPassword2Change = {},
                     onUnlockAtStartupChange = {},
                     onConfirmUseChange = {},
+                    onFido2TransportChange = {},
                     onSave = {},
                 )
             }
