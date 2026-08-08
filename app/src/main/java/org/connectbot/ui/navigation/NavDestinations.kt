@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ object NavDestinations {
     const val GENERATE_PUBKEY = "generate_pubkey"
     const val PUBKEY_EDITOR = "pubkey_editor"
     const val PORT_FORWARD_LIST = "port_forward_list"
+    const val SFTP_BROWSER = "sftp_browser"
     const val SETTINGS = "settings"
     const val SETTINGS_HIGHLIGHT_CONN_PERSIST = "settings?highlight=conn_persist"
     const val COLORS = "colors"

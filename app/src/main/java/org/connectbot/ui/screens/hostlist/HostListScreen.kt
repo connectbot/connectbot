@@ -43,6 +43,7 @@ import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Folder
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
@@ -114,6 +115,7 @@ fun HostListScreen(
     onNavigateToSettings: () -> Unit,
     onNavigateToPubkeys: () -> Unit,
     onNavigateToPortForwards: (Host) -> Unit,
+    onNavigateToSftp: (Host) -> Unit,
     onNavigateToProfiles: () -> Unit,
     onNavigateToHelp: () -> Unit,
     modifier: Modifier = Modifier,
@@ -259,6 +261,7 @@ fun HostListScreen(
         onNavigateToSettingsHighlightConnPersist = onNavigateToSettingsHighlightConnPersist,
         onNavigateToPubkeys = onNavigateToPubkeys,
         onNavigateToPortForwards = onNavigateToPortForwards,
+        onNavigateToSftp = onNavigateToSftp,
         onNavigateToProfiles = onNavigateToProfiles,
         onNavigateToHelp = onNavigateToHelp,
         onToggleSortOrder = viewModel::toggleSortOrder,
@@ -284,6 +287,7 @@ fun HostListScreenContent(
     onNavigateToSettings: () -> Unit,
     onNavigateToPubkeys: () -> Unit,
     onNavigateToPortForwards: (Host) -> Unit,
+    onNavigateToSftp: (Host) -> Unit,
     onNavigateToProfiles: () -> Unit,
     onNavigateToHelp: () -> Unit,
     onToggleSortOrder: () -> Unit,
@@ -493,6 +497,7 @@ fun HostListScreenContent(
                                 onPortForwards = { onNavigateToPortForwards(host) },
                                 onDuplicate = { onDuplicateHost(host) },
                                 onForgetHostKeys = { onForgetHostKeys(host) },
+                                onSftp = { onNavigateToSftp(host) },
                                 onDisconnect = { onDisconnectHost(host) },
                                 onDelete = { onDeleteHost(host) },
                                 makingShortcut = makingShortcut,
@@ -524,6 +529,7 @@ private fun HostListItem(
     onPortForwards: () -> Unit,
     onDuplicate: () -> Unit,
     onForgetHostKeys: () -> Unit,
+    onSftp: () -> Unit,
     onDisconnect: () -> Unit,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
@@ -675,6 +681,17 @@ private fun HostListItem(
                                     },
                                 )
                             }
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.list_host_sftp)) },
+                                onClick = {
+                                    showMenu = false
+                                    onSftp()
+                                },
+                                enabled = host.protocol == "ssh",
+                                leadingIcon = {
+                                    Icon(Icons.Default.Folder, null)
+                                },
+                            )
                             DropdownMenuItem(
                                 text = { Text(stringResource(R.string.list_host_disconnect)) },
                                 onClick = {
@@ -846,6 +863,7 @@ private fun HostListScreenEmptyPreview() {
             onNavigateToSettings = {},
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
+            onNavigateToSftp = {},
             onNavigateToProfiles = {},
             onNavigateToHelp = {},
             onToggleSortOrder = {},
@@ -872,6 +890,7 @@ private fun HostListScreenLoadingPreview() {
             onNavigateToSettings = {},
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
+            onNavigateToSftp = {},
             onNavigateToProfiles = {},
             onNavigateToHelp = {},
             onToggleSortOrder = {},
@@ -899,6 +918,7 @@ private fun HostListScreenErrorPreview() {
             onNavigateToSettings = {},
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
+            onNavigateToSftp = {},
             onNavigateToProfiles = {},
             onNavigateToHelp = {},
             onToggleSortOrder = {},
@@ -958,6 +978,7 @@ private fun HostListScreenPopulatedPreview() {
             onNavigateToSettings = {},
             onNavigateToPubkeys = {},
             onNavigateToPortForwards = {},
+            onNavigateToSftp = {},
             onNavigateToProfiles = {},
             onNavigateToHelp = {},
             onToggleSortOrder = {},

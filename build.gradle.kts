@@ -57,6 +57,10 @@ spotless {
         licenseHeaderFile("spotless/license-header.txt")
     }
 
+    groovyGradle {
+        target("**/*.gradle")
+    }
+
     kotlinGradle {
         target("**/*.gradle.kts")
         ktlint("1.8.0")
