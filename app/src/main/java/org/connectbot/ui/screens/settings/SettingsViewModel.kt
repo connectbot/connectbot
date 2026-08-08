@@ -63,6 +63,7 @@ data class SettingsUiState(
     val fullscreen: Boolean = false,
     val pgupdngesture: Boolean = false,
     val swipeSessions: Boolean = false,
+    val mousereporting: Boolean = false,
     val volumefont: Boolean = true,
     val keepalive: Boolean = true,
     val alwaysvisible: Boolean = false,
@@ -201,6 +202,7 @@ class SettingsViewModel @Inject constructor(
             fullscreen = prefs.getBoolean("fullscreen", false),
             pgupdngesture = prefs.getBoolean("pgupdngesture", false),
             swipeSessions = prefs.getBoolean(PreferenceConstants.SWIPE_SESSIONS, false),
+            mousereporting = prefs.getBoolean(PreferenceConstants.MOUSE_REPORTING, false),
             volumefont = prefs.getBoolean("volumefont", true),
             keepalive = prefs.getBoolean("keepalive", true),
             alwaysvisible = prefs.getBoolean("alwaysvisible", false),
@@ -287,6 +289,10 @@ class SettingsViewModel @Inject constructor(
 
     fun updateBackupkeys(value: Boolean) {
         updateBooleanPref(PreferenceConstants.BACKUP_KEYS, value) { copy(backupkeys = value) }
+    }
+
+    fun updateMouseReporting(value: Boolean) {
+        updateBooleanPref(PreferenceConstants.MOUSE_REPORTING, value) { copy(mousereporting = value) }
     }
 
     fun updateFullscreen(value: Boolean) {

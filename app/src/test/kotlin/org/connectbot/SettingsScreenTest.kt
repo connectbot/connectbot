@@ -156,6 +156,26 @@ class SettingsScreenTest {
     }
 
     @Test
+    fun settingsScreenContent_clickingMouseReportingRowCallsCallback() {
+        var mouseReportingValue: Boolean? = null
+        val mouseReporting = composeTestRule.activity.getString(R.string.pref_mousereporting_title)
+
+        setSettingsContent(
+            uiState = SettingsUiState(mousereporting = false),
+            onMouseReportingChange = { mouseReportingValue = it },
+        )
+
+        composeTestRule
+            .onNode(hasScrollAction())
+            .performScrollToNode(hasText(mouseReporting))
+        composeTestRule
+            .onNodeWithText(mouseReporting)
+            .performClick()
+
+        assertTrue(mouseReportingValue == true)
+    }
+
+    @Test
     fun settingsScreenContent_scrollbackDialogConfirmsUpdatedValue() {
         var scrollbackValue: String? = null
         val scrollback = composeTestRule.activity.getString(R.string.pref_scrollback_title)
@@ -258,6 +278,7 @@ class SettingsScreenTest {
         onWifilockChange: (Boolean) -> Unit = {},
         onBackupkeysChange: (Boolean) -> Unit = {},
         onScrollbackChange: (String) -> Unit = {},
+        onMouseReportingChange: (Boolean) -> Unit = {},
         onAddCustomTerminalType: (String) -> Unit = {},
         onRemoveCustomTerminalType: (String) -> Unit = {},
         onDefaultProfileChange: (Long) -> Unit = {},
@@ -273,6 +294,7 @@ class SettingsScreenTest {
                     onWifilockChange = onWifilockChange,
                     onBackupkeysChange = onBackupkeysChange,
                     onScrollbackChange = onScrollbackChange,
+                    onMouseReportingChange = onMouseReportingChange,
                     onAddCustomTerminalType = onAddCustomTerminalType,
                     onRemoveCustomTerminalType = onRemoveCustomTerminalType,
                     onFontFamilyChange = {},
