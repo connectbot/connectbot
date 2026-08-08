@@ -997,12 +997,14 @@ class TerminalBridge {
      */
     fun isUsingNetwork(): Boolean = transport?.usesNetwork() ?: false
 
+    fun resetOnConnectionChange(): Boolean = transport?.resetOnConnectionChange() ?: true
+
     /**
      * Capture current network state when connection established.
      * Called after successful SSH connection.
      */
     fun captureNetworkState() {
-        if (!isUsingNetwork()) return
+        if (!isUsingNetwork() || !resetOnConnectionChange()) return
 
         val localIp = transport?.getLocalIpAddress()
         val networkInfo = manager.connectivityMonitor.getCurrentNetworkInfo()
@@ -1032,7 +1034,7 @@ class TerminalBridge {
      * Starts 60-second grace period instead of immediate disconnect.
      */
     fun onNetworkLost(network: Network, lostIpAddresses: Set<String>) {
-        if (!isUsingNetwork() || disconnected) return
+        if (!isUsingNetwork() || !resetOnConnectionChange() || disconnected) return
 
         val state = lastKnownNetworkState ?: return
 
