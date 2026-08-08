@@ -23,6 +23,7 @@ import android.content.Context
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.net.Network
+import android.os.SystemClock
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -209,6 +210,7 @@ class TerminalBridge {
     var disconnectReason: DisconnectReason = DisconnectReason.UNKNOWN
         private set
     private var awaitingClose = false
+    private val pendingUserEofSentAt = AtomicLong(0L)
 
     private var forcedSize = false
 
@@ -311,7 +313,7 @@ class TerminalBridge {
             defaultForeground = Color(defaultFgColor),
             defaultBackground = Color(defaultBgColor),
             onKeyboardInput = { data ->
-                transportOperations.trySend(TransportOperation.WriteData(data))
+                enqueueWriteData(data, trackUserEof = true)
             },
             onBell = {
                 scope.launch {
@@ -595,9 +597,7 @@ class TerminalBridge {
             return
         }
 
-        transportOperations.trySend(
-            TransportOperation.WriteData(string.toByteArray(charset(encoding))),
-        )
+        enqueueWriteData(string.toByteArray(charset(encoding)), trackUserEof = false)
     }
 
     /**
@@ -605,9 +605,7 @@ class TerminalBridge {
      * channel as [injectString] so keyboard input cannot interleave with paste data.
      */
     fun sendByte(c: Int) {
-        transportOperations.trySend(
-            TransportOperation.WriteData(byteArrayOf(c.toByte())),
-        )
+        enqueueWriteData(byteArrayOf(c.toByte()), trackUserEof = true)
     }
 
     /**
@@ -616,7 +614,30 @@ class TerminalBridge {
      */
     fun sendBytes(data: ByteArray) {
         if (data.isEmpty()) return
+        enqueueWriteData(data, trackUserEof = true)
+    }
+
+    private fun enqueueWriteData(data: ByteArray, trackUserEof: Boolean) {
+        updatePendingUserEof(data, trackUserEof)
         transportOperations.trySend(TransportOperation.WriteData(data))
+    }
+
+    private fun updatePendingUserEof(data: ByteArray, trackUserEof: Boolean) {
+        if (
+            trackUserEof &&
+            data.size == 1 &&
+            data[0].toInt() == USER_EOF_BYTE
+        ) {
+            pendingUserEofSentAt.set(SystemClock.elapsedRealtime())
+        } else if (data.isNotEmpty()) {
+            pendingUserEofSentAt.set(0L)
+        }
+    }
+
+    internal fun consumePendingUserEof(): Boolean {
+        val sentAt = pendingUserEofSentAt.getAndSet(0L)
+        return sentAt > 0 &&
+            SystemClock.elapsedRealtime() - sentAt <= USER_EOF_DISCONNECT_GRACE_MS
     }
 
     /**
@@ -1144,6 +1165,8 @@ class TerminalBridge {
 
         private const val DEFAULT_FONT_SIZE_SP = 10
         private const val FONT_SIZE_STEP = 2
+        private const val USER_EOF_BYTE = 0x04
+        private const val USER_EOF_DISCONNECT_GRACE_MS = 5_000L
     }
 }
 
