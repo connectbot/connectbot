@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -52,6 +53,7 @@ enum class ConnectionState {
 data class HostListUiState(
     val hosts: List<Host> = emptyList(),
     val connectionStates: Map<Long, ConnectionState> = emptyMap(),
+    val sessionCounts: Map<Long, Int> = emptyMap(),
     val isLoading: Boolean = false,
     val error: String? = null,
     val sortedByColor: Boolean = false,
@@ -186,21 +188,18 @@ class HostListViewModel @Inject constructor(
         val states = hosts.associate { host ->
             host.id to getConnectionState(host)
         }
-        _uiState.update { it.copy(connectionStates = states) }
+        val counts = hosts.associate { host ->
+            host.id to (terminalManager?.getSessionCount(host.id) ?: 0)
+        }
+        _uiState.update { it.copy(connectionStates = states, sessionCounts = counts) }
     }
 
     private fun getConnectionState(host: Host): ConnectionState {
         val manager = terminalManager ?: return ConnectionState.UNKNOWN
 
-        // Check if host has an active bridge
-        val bridge = manager.bridgesFlow.value.find { it.host.id == host.id }
-        if (bridge != null) {
-            // Bridge exists but may be disconnected or in grace period
-            return if (bridge.disconnected || bridge.isInGracePeriod()) {
-                ConnectionState.DISCONNECTED
-            } else {
-                ConnectionState.CONNECTED
-            }
+        // Check if any sessions are connected for this host
+        if (manager.isHostConnected(host.id)) {
+            return ConnectionState.CONNECTED
         }
 
         // Check if in disconnected list by comparing ID
@@ -216,6 +215,45 @@ class HostListViewModel @Inject constructor(
         sharedPreferences.edit { putBoolean(PreferenceConstants.SORT_BY_COLOR, newSortedByColor) }
         _uiState.update { it.copy(sortedByColor = newSortedByColor) }
     }
+
+    /**
+     * Open a new session to a host.
+     * This always creates a new session, even if sessions already exist.
+     */
+    fun connectToHost(host: Host) {
+        viewModelScope.launch {
+            try {
+                withContext(Dispatchers.IO) {
+                    // Build URI from host
+                    val uri = android.net.Uri.Builder()
+                        .scheme(host.protocol)
+                        .encodedAuthority("${host.username}@${host.hostname}:${host.port}")
+                        .build()
+                    terminalManager?.openConnection(uri)
+                }
+            } catch (e: Exception) {
+                _uiState.update {
+                    it.copy(error = e.message ?: "Failed to connect")
+                }
+            }
+        }
+    }
+
+    /**
+     * Get the session ID of the last-used session for a host.
+     * Returns null if no sessions exist.
+     */
+    fun getLastUsedSessionId(hostId: Long): Long? = terminalManager?.getLastUsedBridge(hostId)?.sessionId
+
+    /**
+     * Check if a host has any connected sessions.
+     */
+    fun isHostConnected(hostId: Long): Boolean = terminalManager?.isHostConnected(hostId) ?: false
+
+    /**
+     * Get the number of sessions for a host.
+     */
+    fun getSessionCount(hostId: Long): Int = terminalManager?.getSessionCount(hostId) ?: 0
 
     fun deleteHost(host: Host) {
         viewModelScope.launch {
