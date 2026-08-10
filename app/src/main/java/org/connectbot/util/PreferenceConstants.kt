@@ -39,6 +39,7 @@ object PreferenceConstants {
     const val TITLEBARHIDE: String = "titlebarhide"
     const val PG_UPDN_GESTURE: String = "pgupdngesture"
     const val SWIPE_SESSIONS: String = "swipeSessions"
+    const val MOUSE_REPORTING: String = "mousereporting"
 
     const val KEYMODE: String = "keymode"
     const val KEY_ALWAYS_VISIBLE: String = "alwaysvisible"

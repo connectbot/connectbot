@@ -225,6 +225,11 @@
 	<!-- Description of the scrollback size preference -->
 	<string name="pref_scrollback_summary">"Size of scrollback buffer to keep in memory for each console"</string>
 
+	<!-- Name for the mouse reporting preference, shown in the Terminal emulation settings category. -->
+	<string name="pref_mousereporting_title">"Mouse reporting"</string>
+	<!-- Description of the mouse reporting preference: when enabled, taps and scroll gestures are sent as mouse events to remote programs (such as tmux or nano) that have requested them. -->
+	<string name="pref_mousereporting_summary">"Send taps and scroll gestures as mouse events to remote programs that request them"</string>
+
 	<!-- Name for the font family preference -->
 	<string name="pref_fontfamily_title">"Font"</string>
 	<!-- Description of the font family preference -->

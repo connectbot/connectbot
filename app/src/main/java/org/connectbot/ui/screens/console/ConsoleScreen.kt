@@ -131,6 +131,7 @@ import org.connectbot.service.AuthBanner
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.PromptRequest
 import org.connectbot.service.TerminalBridge
+import org.connectbot.terminal.MouseTracking
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.SelectionController
 import org.connectbot.terminal.Terminal
@@ -343,6 +344,7 @@ private fun ConsoleTerminalPage(
     bridge: TerminalBridge,
     isActive: Boolean,
     keyboardAlwaysVisible: Boolean,
+    mouseReportingEnabled: Boolean,
     showSoftwareKeyboard: Boolean,
     forceSize: Pair<Int, Int>?,
     termFocusRequester: FocusRequester,
@@ -369,6 +371,7 @@ private fun ConsoleTerminalPage(
         val coroutineScope = rememberCoroutineScope()
         val fontSize by bridge.fontSizeFlow.collectAsState()
         val delKeyMode by bridge.delKeyModeFlow.collectAsState()
+        val mouseTracking by bridge.terminalEmulator.mouseTracking.collectAsState()
 
         LaunchedEffect(fontResult.loadFailed, fontResult.isLoading) {
             if (fontResult.loadFailed && !fontResult.isLoading) {
@@ -387,6 +390,7 @@ private fun ConsoleTerminalPage(
                 .padding(
                     bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp,
                 )
+                .terminalMouseReporting(bridge, mouseReportingEnabled && mouseTracking != MouseTracking.None)
                 .then(terminalModifier)
                 .testTag("terminal"),
             typeface = fontResult.typeface,
@@ -527,6 +531,9 @@ fun ConsoleScreen(
     val keyboardAlwaysVisible = remember { prefs.getBoolean(PreferenceConstants.KEY_ALWAYS_VISIBLE, false) }
     val swipeSessionsEnabled = remember {
         prefs.getBoolean(PreferenceConstants.SWIPE_SESSIONS, false)
+    }
+    val mouseReportingEnabled = remember {
+        prefs.getBoolean(PreferenceConstants.MOUSE_REPORTING, false)
     }
     var fullscreen by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.FULLSCREEN, false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false)) }
@@ -943,6 +950,7 @@ fun ConsoleScreen(
                                 bridge = bridge,
                                 isActive = true,
                                 keyboardAlwaysVisible = keyboardAlwaysVisible,
+                                mouseReportingEnabled = mouseReportingEnabled,
                                 showSoftwareKeyboard = showSoftwareKeyboard,
                                 forceSize = forceSize,
                                 termFocusRequester = termFocusRequester,

@@ -23,7 +23,7 @@ navigationCompose = "2.9.8"
 activityCompose = "1.13.0"
 
 sshlib = "2.2.48"
-termlib = "0.1.0"
+termlib = "0.1.1-SNAPSHOT"
 playServicesBasement = "18.10.0"
 playFeatureDelivery = "2.1.0"
 conscrypt = "2.6.1"
