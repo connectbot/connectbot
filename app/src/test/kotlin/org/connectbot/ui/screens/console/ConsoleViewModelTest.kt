@@ -644,6 +644,7 @@ class ConsoleViewModelTest {
             username = "test",
         )
         whenever(bridge.host).thenReturn(host)
+        whenever(bridge.sessionId).thenReturn(id)
         whenever(bridge.isSessionOpen).thenReturn(true)
         whenever(bridge.isDisconnected).thenReturn(false)
         whenever(bridge.bellEvents).thenReturn(MutableSharedFlow())
