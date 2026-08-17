@@ -32,7 +32,7 @@ coroutines = "1.11.0"
 timber = "5.0.1"
 
 recyclerview = "1.4.0"
-appcompat = "1.7.1"
+appcompat = "1.8.0"
 preference = "1.2.1"
 material = "1.14.0"
 
