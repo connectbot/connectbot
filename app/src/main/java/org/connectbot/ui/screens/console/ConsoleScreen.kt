@@ -134,6 +134,7 @@ import org.connectbot.service.TerminalBridge
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.SelectionController
 import org.connectbot.terminal.Terminal
+import org.connectbot.terminal.VTermKey
 import org.connectbot.ui.LoadingScreen
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.components.AuthBannerDialog
@@ -275,6 +276,109 @@ internal fun shouldPreserveSoftwareKeyboardForBridgeChange(
     previousBridgeId != currentBridgeId &&
     showSoftwareKeyboard &&
     !hasHardwareKeyboard
+
+/** Terminal rows that must be dragged before another PgUp/PgDn is emitted. */
+private const val PG_UPDN_GESTURE_ROWS = 5
+
+/** Fallback row height used while the bridge has not measured its font yet. */
+private val PG_UPDN_FALLBACK_ROW_HEIGHT = 20.dp
+
+/**
+ * Whether a touch at [x] starts in the strip that pages the terminal.
+ *
+ * The gesture is confined to the left third so the rest of the terminal keeps its
+ * regular scrollback drag.
+ */
+@VisibleForTesting
+internal fun isInPgUpDnZone(x: Float, width: Int): Boolean = width > 0 && x <= width / 3f
+
+/**
+ * Pixels of vertical drag that correspond to a single page.
+ *
+ * [rowHeightPx] is the bridge's measured row height, which is -1 until the font has been
+ * measured; [fallbackRowHeightPx] covers that window.
+ */
+@VisibleForTesting
+internal fun pgUpDnStepPx(rowHeightPx: Int, fallbackRowHeightPx: Float): Float {
+    val row = if (rowHeightPx > 0) rowHeightPx.toFloat() else fallbackRowHeightPx
+    return row * PG_UPDN_GESTURE_ROWS
+}
+
+/**
+ * Whole pages contained in [accumulatedUpPx] pixels of upward drag.
+ *
+ * Positive values page forward (PgDn), negative values page back (PgUp), matching the
+ * direction of the pre-Compose gesture.
+ */
+@VisibleForTesting
+internal fun pgUpDnPageCount(accumulatedUpPx: Float, stepPx: Float): Int = if (stepPx <= 0f) 0 else (accumulatedUpPx / stepPx).toInt()
+
+/**
+ * Dragging vertically over the left third of the terminal sends PgUp/PgDn to the remote
+ * host rather than scrolling the local scrollback.
+ *
+ * Full-screen applications (vim, less, tmux, ...) keep their own scroll history and leave
+ * the emulator's scrollback empty, so paging is the only way to look back at earlier
+ * output. Behaviour matches the pre-Compose implementation that used to live in
+ * TerminalView.onScroll.
+ */
+private fun Modifier.pgUpDnGesture(
+    selectionActive: Boolean,
+    rowHeight: () -> Int,
+    onPage: (Boolean) -> Unit,
+): Modifier = pointerInput(selectionActive) {
+    if (selectionActive) {
+        return@pointerInput
+    }
+
+    val fallbackRowHeightPx = PG_UPDN_FALLBACK_ROW_HEIGHT.toPx()
+
+    awaitEachGesture {
+        val down = awaitFirstDown(requireUnconsumed = false, pass = PointerEventPass.Initial)
+        if (!isInPgUpDnZone(down.position.x, size.width)) {
+            return@awaitEachGesture
+        }
+
+        val pointerId = down.id
+        var dragX = 0f
+        var dragY = 0f
+        var pendingUpPx = 0f
+        var verticalGestureLocked = false
+
+        while (true) {
+            val event = awaitPointerEvent(PointerEventPass.Initial)
+            val change = event.changes.firstOrNull { it.id == pointerId } ?: break
+            if (!change.pressed) {
+                break
+            }
+
+            val delta = change.positionChange()
+            dragX += delta.x
+            dragY += delta.y
+
+            if (!verticalGestureLocked) {
+                val absX = abs(dragX)
+                val absY = abs(dragY)
+                if (absX > viewConfiguration.touchSlop && absX > absY) {
+                    // Horizontal swipe: leave it to session navigation.
+                    break
+                }
+                if (absY > viewConfiguration.touchSlop && absY > absX) {
+                    verticalGestureLocked = true
+                }
+            }
+
+            if (verticalGestureLocked) {
+                pendingUpPx -= delta.y
+                val stepPx = pgUpDnStepPx(rowHeight(), fallbackRowHeightPx)
+                val pages = pgUpDnPageCount(pendingUpPx, stepPx)
+                repeat(abs(pages)) { onPage(pages > 0) }
+                pendingUpPx -= pages * stepPx
+                change.consume()
+            }
+        }
+    }
+}
 
 private fun Modifier.sessionSwipeNavigation(
     currentIndex: Int,
@@ -527,6 +631,9 @@ fun ConsoleScreen(
     val keyboardAlwaysVisible = remember { prefs.getBoolean(PreferenceConstants.KEY_ALWAYS_VISIBLE, false) }
     val swipeSessionsEnabled = remember {
         prefs.getBoolean(PreferenceConstants.SWIPE_SESSIONS, false)
+    }
+    val pgUpDnGestureEnabled = remember {
+        prefs.getBoolean(PreferenceConstants.PG_UPDN_GESTURE, false)
     }
     var fullscreen by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.FULLSCREEN, false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false)) }
@@ -926,16 +1033,27 @@ fun ConsoleScreen(
                             .weight(1f),
                     ) {
                         val bridge = uiState.bridges[uiState.currentBridgeIndex]
-                        val terminalModifier = if (swipeBetweenSessions) {
-                            Modifier.sessionSwipeNavigation(
+                        var terminalModifier: Modifier = Modifier
+                        if (pgUpDnGestureEnabled) {
+                            terminalModifier = terminalModifier.pgUpDnGesture(
+                                selectionActive = terminalSelectionActive,
+                                rowHeight = { bridge.charHeight },
+                                onPage = { forward ->
+                                    bridge.keyHandler.sendPressedKey(
+                                        if (forward) VTermKey.PAGEDOWN else VTermKey.PAGEUP,
+                                    )
+                                    bridge.tryKeyVibrate()
+                                },
+                            )
+                        }
+                        if (swipeBetweenSessions) {
+                            terminalModifier = terminalModifier.sessionSwipeNavigation(
                                 currentIndex = uiState.currentBridgeIndex,
                                 sessionCount = uiState.bridges.size,
                                 selectionActive = terminalSelectionActive,
                                 onSwipeToSession = { index -> selectBridgePreservingKeyboard(index) },
                                 onInteraction = { handleTerminalInteraction(isInteraction = false) },
                             )
-                        } else {
-                            Modifier
                         }
 
                         key(bridge.host.id) {
