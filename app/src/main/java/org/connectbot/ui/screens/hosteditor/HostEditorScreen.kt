@@ -106,6 +106,7 @@ fun HostEditorScreen(
         onStayConnectedChange = viewModel::updateStayConnected,
         onQuickDisconnectChange = viewModel::updateQuickDisconnect,
         onPostLoginChange = viewModel::updatePostLogin,
+        onPostLoginWaitForChange = viewModel::updatePostLoginWaitFor,
         onJumpHostChange = viewModel::updateJumpHostId,
         onIpVersionChange = viewModel::updateIpVersion,
         onPasswordChange = viewModel::updatePassword,
@@ -136,6 +137,7 @@ fun HostEditorScreenContent(
     onStayConnectedChange: (Boolean) -> Unit,
     onQuickDisconnectChange: (Boolean) -> Unit,
     onPostLoginChange: (String) -> Unit,
+    onPostLoginWaitForChange: (String) -> Unit,
     onJumpHostChange: (Long?) -> Unit,
     onIpVersionChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
@@ -482,6 +484,18 @@ fun HostEditorScreenContent(
                 supportingText = { Text(stringResource(R.string.hostpref_postlogin_summary)) },
                 minLines = 3,
                 maxLines = 8,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+            )
+
+            // Text to wait for before the post-login commands are sent
+            OutlinedTextField(
+                value = uiState.postLoginWaitFor,
+                onValueChange = onPostLoginWaitForChange,
+                label = { Text(stringResource(R.string.hostpref_postloginwaitfor_title)) },
+                supportingText = { Text(stringResource(R.string.hostpref_postloginwaitfor_summary)) },
+                singleLine = true,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 8.dp),
@@ -1260,6 +1274,7 @@ private fun HostEditorScreenPreview() {
                 stayConnected = false,
                 quickDisconnect = false,
                 postLogin = "cd /var/www",
+                postLoginWaitFor = "$ ",
             ),
             onNavigateBack = {},
             onQuickConnectChange = {},
@@ -1277,6 +1292,7 @@ private fun HostEditorScreenPreview() {
             onStayConnectedChange = {},
             onQuickDisconnectChange = {},
             onPostLoginChange = {},
+            onPostLoginWaitForChange = {},
             onJumpHostChange = {},
             onIpVersionChange = {},
             onPasswordChange = {},

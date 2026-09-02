@@ -64,6 +64,18 @@ data class Host(
     @ColumnInfo(name = "post_login")
     val postLogin: String? = null,
 
+    /**
+     * Text to wait for in the remote output before [postLogin] is sent.
+     *
+     * Logins that need another step after authentication, such as a Tailscale
+     * SSH check that waits on a browser, are not ready to read anything when
+     * the shell is requested. Naming a piece of the shell prompt holds the
+     * commands back until that step is done. Null sends them once the remote
+     * has gone quiet instead.
+     */
+    @ColumnInfo(name = "post_login_wait_for")
+    val postLoginWaitFor: String? = null,
+
     @ColumnInfo(name = "pubkey_id")
     val pubkeyId: Long = -1L,
 

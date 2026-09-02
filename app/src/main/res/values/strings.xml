@@ -458,6 +458,11 @@
 	<!-- Host post-login automation preference summary -->
 	<string name="hostpref_postlogin_summary">"Commands to run on remote server once authenticated"</string>
 
+	<!-- Title of the host preference naming the text to wait for before the post-login commands are sent -->
+	<string name="hostpref_postloginwaitfor_title">"Wait for text"</string>
+	<!-- Summary explaining when to fill in the wait-for-text preference and what an empty value does -->
+	<string name="hostpref_postloginwaitfor_summary">"Hold the commands until this text arrives, for logins that need a browser check or another step first. Leave empty to send them once the server stops sending output."</string>
+
 	<!-- Host compression preference title -->
 	<string name="hostpref_compression_title">"Compression"</string>
 	<!-- Summary for compression preference -->

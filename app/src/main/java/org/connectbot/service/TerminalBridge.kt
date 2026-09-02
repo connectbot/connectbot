@@ -222,6 +222,11 @@ class TerminalBridge {
     private var networkGracePeriodJob: Job? = null
     private var inGracePeriod: Boolean = false
 
+    // Post-login automation, held back until the remote is ready to read it
+    @Volatile
+    private var postLoginWaiter: PostLoginWaiter? = null
+    private var postLoginJob: Job? = null
+
     private val keyListener: TerminalKeyListener
 
     var charWidth = -1
@@ -657,6 +662,10 @@ class TerminalBridge {
 //        else
 //            (buffer as vt320).setBackspace(vt320.DELETE_IS_DEL)
 
+        // queue up any post-login string before the relay can deliver the
+        // output it waits on
+        schedulePostLogin()
+
         if (isSessionOpen) {
             // create thread to relay incoming connection data to buffer
             transport?.let { t ->
@@ -670,14 +679,62 @@ class TerminalBridge {
         // force font-size to make sure we resizePTY as needed
         setFontSize(fontSizeSp)
 
-        // finally send any post-login string, if requested
-        injectString(host.postLogin)
-
         // Capture network state after successful connection
         captureNetworkState()
 
         // Notify manager so the UI recomposes with updated connection state
         manager.notifyBridgeStateChanged()
+    }
+
+    /**
+     * Send the host's post-login commands once the remote is ready for them.
+     *
+     * Writing them straight after the shell request races anything that delays
+     * the remote shell, so [PostLoginWaiter] holds them until the remote looks
+     * ready to read.
+     */
+    private fun schedulePostLogin() {
+        val postLogin = host.postLogin
+        if (postLogin.isNullOrEmpty()) return
+
+        if (!isSessionOpen) {
+            // Without a session there is nothing on the far end to read them.
+            Timber.d("No session for ${host.nickname}, skipping post-login automation")
+            return
+        }
+
+        // Only post-login is entered for the user; a clipboard paste through
+        // injectString must never enter itself.
+        val commands = postLoginAsTyped(postLogin)
+
+        postLoginJob?.cancel()
+
+        val waiter = PostLoginWaiter(host.postLoginWaitFor)
+        postLoginWaiter = waiter
+        postLoginJob = scope.launch {
+            try {
+                if (!waiter.awaitReady()) {
+                    Timber.i("Post-login wait for ${host.nickname} timed out, sending anyway")
+                }
+                injectString(commands)
+            } finally {
+                // Only stand down if a later connection has not taken over.
+                if (postLoginWaiter === waiter) {
+                    postLoginWaiter = null
+                }
+            }
+        }
+    }
+
+    /**
+     * Hand a chunk of decoded remote output to whatever is still waiting on it.
+     * Called by the relay for every chunk, so it costs a volatile read once
+     * post-login automation has run.
+     */
+    internal fun onRemoteOutput(data: ByteArray, length: Int) {
+        if (length <= 0) return
+        val waiter = postLoginWaiter ?: return
+        waiter.onOutput(String(data, 0, length, Charsets.UTF_8))
     }
 
     /**
@@ -722,6 +779,10 @@ class TerminalBridge {
 
         // Cancel any pending prompts
         promptManager.cancelPrompt()
+
+        // Drop post-login automation that never got its go-ahead
+        postLoginJob?.cancel()
+        postLoginWaiter = null
 
         // disconnection request hangs if we havent really connected to a host yet
         // temporary fix is to just spawn disconnection into a thread

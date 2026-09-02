@@ -56,6 +56,7 @@ data class HostEditorUiState(
     val stayConnected: Boolean = false,
     val quickDisconnect: Boolean = false,
     val postLogin: String = "",
+    val postLoginWaitFor: String = "",
     val jumpHostId: Long? = null,
     val availableJumpHosts: List<Host> = emptyList(),
     val ipVersion: String = "IPV4_AND_IPV6",
@@ -208,6 +209,7 @@ class HostEditorViewModel @Inject constructor(
                             stayConnected = host.stayConnected,
                             quickDisconnect = host.quickDisconnect,
                             postLogin = host.postLogin ?: "",
+                            postLoginWaitFor = host.postLoginWaitFor ?: "",
                             jumpHostId = host.jumpHostId,
                             ipVersion = host.ipVersion,
                             hasExistingPassword = hasPassword,
@@ -355,6 +357,10 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(postLogin = value) }
     }
 
+    fun updatePostLoginWaitFor(value: String) {
+        _uiState.update { it.copy(postLoginWaitFor = value) }
+    }
+
     fun updateJumpHostId(value: Long?) {
         _uiState.update { it.copy(jumpHostId = value) }
     }
@@ -407,6 +413,7 @@ class HostEditorViewModel @Inject constructor(
                     stayConnected = state.stayConnected,
                     quickDisconnect = state.quickDisconnect,
                     postLogin = state.postLogin.ifBlank { null },
+                    postLoginWaitFor = state.postLoginWaitFor.ifBlank { null },
                     lastConnect = existingHost?.lastConnect ?: System.currentTimeMillis(),
                     hostKeyAlgo = existingHost?.hostKeyAlgo,
                     useKeys = existingHost?.useKeys ?: true,

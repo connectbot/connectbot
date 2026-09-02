@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,6 +57,7 @@ import org.connectbot.data.entity.Pubkey
  * - Version 5: Added profiles table and profile_id column to hosts (manual migration)
  * - Version 6: Added force_size_rows and force_size_columns to profiles (AutoMigration)
  * - Version 7: Added ip_version column to hosts for IP version preference (AutoMigration)
+ * - Version 9: Added post_login_wait_for column to hosts for post-login timing (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -73,7 +74,7 @@ import org.connectbot.data.entity.Pubkey
         ColorPalette::class,
         Profile::class,
     ],
-    version = 8,
+    version = 9,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -82,6 +83,7 @@ import org.connectbot.data.entity.Pubkey
         AutoMigration(from = 5, to = 6),
         AutoMigration(from = 6, to = 7),
         AutoMigration(from = 7, to = 8),
+        AutoMigration(from = 8, to = 9),
     ],
 )
 @TypeConverters(Converters::class)
