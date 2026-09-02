@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -380,6 +380,9 @@ class MainActivity : AppCompatActivity() {
                     bridge = manager.openConnection(uri)
                 }
 
+                // If the console is already open for another host, navigating with
+                // launchSingleTop keeps its ViewModel, so ask it to switch explicitly.
+                manager.requestShowHost(bridge.host.id)
                 controller.navigate("${NavDestinations.CONSOLE}/${bridge.host.id}") {
                     launchSingleTop = true
                 }
