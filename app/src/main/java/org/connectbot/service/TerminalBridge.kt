@@ -314,10 +314,15 @@ class TerminalBridge {
                 transportOperations.trySend(TransportOperation.WriteData(data))
             },
             onBell = {
-                scope.launch {
-                    _bellEvents.emit(Unit)
+                if (manager.isUiVisible) {
+                    // The console UI decides between an audible/vibrating bell for the
+                    // host it is showing and a notification for any other host.
+                    scope.launch {
+                        _bellEvents.emit(Unit)
+                    }
+                } else {
+                    manager.sendActivityNotification(host)
                 }
-                manager.sendActivityNotification(host)
             },
             onResize = {
                 transportOperations.trySend(
