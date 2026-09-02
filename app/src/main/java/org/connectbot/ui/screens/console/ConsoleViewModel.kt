@@ -59,9 +59,10 @@ class ConsoleViewModel @Inject constructor(
     private val prefs: SharedPreferences,
     private val notificationPermissionHelper: NotificationPermissionHelper,
 ) : ViewModel() {
-    private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
     private var terminalManager: TerminalManager? = null
-    private var pendingInitialHostId: Long? = hostId.takeIf { it != -1L }
+
+    /** Host whose console should be shown once its bridge is active; null when none is outstanding. */
+    private var pendingHostId: Long? = savedStateHandle.get<Long>("hostId")?.takeIf { it != -1L }
     private var selectedHostId: Long? = null
 
     private val bellJobs = mutableMapOf<Long, Job>()
@@ -99,10 +100,34 @@ class ConsoleViewModel @Inject constructor(
                 }
             }
 
-            if (hostId != -1L) {
-                viewModelScope.launch {
-                    ensureBridgeExists()
+            viewModelScope.launch {
+                manager.showHostRequests.collect { hostId ->
+                    showHost(hostId)
                 }
+            }
+
+            pendingHostId?.let { hostId ->
+                viewModelScope.launch {
+                    ensureBridgeExists(hostId)
+                }
+            }
+        }
+    }
+
+    /**
+     * Bring [hostId]'s console to the front, opening a connection if it has none.
+     * Requested through [TerminalManager.showHostRequests], e.g. by tapping a bell
+     * notification while this screen already shows another host.
+     */
+    private fun showHost(hostId: Long) {
+        if (hostId == selectedHostId || hostId == pendingHostId) return
+
+        pendingHostId = hostId
+        terminalManager?.bridgesFlow?.value?.let { updateBridges(it) }
+
+        if (pendingHostId != null) {
+            viewModelScope.launch {
+                ensureBridgeExists(hostId)
             }
         }
     }
@@ -220,7 +245,7 @@ class ConsoleViewModel @Inject constructor(
     }
 
     private fun handleInitialSelectionError(message: String) {
-        pendingInitialHostId = null
+        pendingHostId = null
         _uiState.update {
             it.copy(
                 isLoading = false,
@@ -229,7 +254,7 @@ class ConsoleViewModel @Inject constructor(
         }
     }
 
-    private suspend fun ensureBridgeExists() {
+    private suspend fun ensureBridgeExists(hostId: Long) {
         withContext(dispatchers.io) {
             try {
                 val allBridges = terminalManager?.bridgesFlow?.value ?: emptyList()
@@ -256,7 +281,7 @@ class ConsoleViewModel @Inject constructor(
     private fun updateBridges(allBridges: List<TerminalBridge>) {
         val currentState = _uiState.value
         val selectedIndex = findBridgeIndex(allBridges, selectedHostId)
-        val requestedIndex = findBridgeIndex(allBridges, pendingInitialHostId)
+        val requestedIndex = findBridgeIndex(allBridges, pendingHostId)
         val requestedBridgeAvailable = requestedIndex != -1
 
         val newIndex = when {
@@ -267,13 +292,13 @@ class ConsoleViewModel @Inject constructor(
         }
 
         if (requestedBridgeAvailable) {
-            pendingInitialHostId = null
+            pendingHostId = null
             selectedHostId = allBridges.getOrNull(newIndex)?.host?.id
-        } else if (pendingInitialHostId == null) {
+        } else if (pendingHostId == null) {
             selectedHostId = allBridges.getOrNull(newIndex)?.host?.id
         }
 
-        val waitingForRequestedHost = pendingInitialHostId != null
+        val waitingForRequestedHost = pendingHostId != null
 
         _uiState.update {
             it.copy(

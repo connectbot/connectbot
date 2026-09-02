@@ -63,6 +63,7 @@ class ConsoleViewModelTest {
     private lateinit var terminalManager: TerminalManager
     private lateinit var savedStateHandle: SavedStateHandle
     private lateinit var bridgesFlow: MutableStateFlow<List<TerminalBridge>>
+    private lateinit var showHostRequests: MutableSharedFlow<Long>
     private lateinit var prefs: SharedPreferences
     private lateinit var notificationPermissionHelper: NotificationPermissionHelper
 
@@ -75,8 +76,10 @@ class ConsoleViewModelTest {
         prefs = mock()
         notificationPermissionHelper = mock()
         bridgesFlow = MutableStateFlow(emptyList())
+        showHostRequests = MutableSharedFlow()
         whenever(terminalManager.bridgesFlow).thenReturn(bridgesFlow)
         whenever(terminalManager.hostStatusChangedFlow).thenReturn(MutableSharedFlow())
+        whenever(terminalManager.showHostRequests).thenReturn(showHostRequests)
         whenever(notificationPermissionHelper.isGranted()).thenReturn(true)
     }
 
@@ -627,6 +630,53 @@ class ConsoleViewModelTest {
 
         assertEquals("Switching bridges should show the selected bridge's current progress state", ProgressState.WARNING, viewModel.uiState.value.progressState)
         assertEquals("Switching bridges should show the selected bridge's current progress value", 90, viewModel.uiState.value.progressValue)
+    }
+
+    @Test
+    fun showHostRequest_ForOtherActiveBridge_SelectsIt() = runTest {
+        val mockBridge1 = createMockBridge(1L, "host1")
+        val mockBridge2 = createMockBridge(2L, "host2")
+        bridgesFlow.value = listOf(mockBridge1, mockBridge2)
+        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(1L)
+
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, notificationPermissionHelper)
+        viewModel.setTerminalManager(terminalManager)
+        advanceUntilIdle()
+        assertEquals("Should start on the initially requested host", 0, viewModel.uiState.value.currentBridgeIndex)
+
+        // e.g. the user tapped host2's bell notification while looking at host1
+        showHostRequests.emit(2L)
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertEquals("Requested host should become the selected bridge", 1, state.currentBridgeIndex)
+        assertFalse("Should not be loading when the requested bridge is already active", state.isLoading)
+    }
+
+    @Test
+    fun showHostRequest_ForHostWithoutBridge_OpensConnectionAndSelectsItWhenActive() = runTest {
+        val mockBridge1 = createMockBridge(1L, "host1")
+        val mockBridge2 = createMockBridge(2L, "host2")
+        bridgesFlow.value = listOf(mockBridge1)
+        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(1L)
+        whenever(terminalManager.openConnectionForHostId(2L)).thenReturn(mockBridge2)
+
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, notificationPermissionHelper)
+        viewModel.setTerminalManager(terminalManager)
+        advanceUntilIdle()
+
+        showHostRequests.emit(2L)
+        advanceUntilIdle()
+
+        verify(terminalManager).openConnectionForHostId(2L)
+        assertTrue("Should show loading until the requested bridge is active", viewModel.uiState.value.isLoading)
+
+        bridgesFlow.value = listOf(mockBridge1, mockBridge2)
+        advanceUntilIdle()
+
+        val state = viewModel.uiState.value
+        assertFalse("Should stop loading once the requested bridge appears", state.isLoading)
+        assertEquals("Requested bridge should become active when it appears", 2L, state.bridges[state.currentBridgeIndex].host.id)
     }
 
     private fun createMockBridge(

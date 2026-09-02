@@ -114,6 +114,20 @@ class TerminalManager :
     private val _hostStatusChanged = MutableSharedFlow<Unit>(replay = 0, extraBufferCapacity = 10)
     val hostStatusChangedFlow: SharedFlow<Unit> = _hostStatusChanged.asSharedFlow()
 
+    private val _showHostRequests = MutableSharedFlow<Long>(replay = 0, extraBufferCapacity = 10)
+
+    /**
+     * Ids of hosts whose console the user asked to see, e.g. by tapping a bell
+     * notification or a shortcut while the console already shows another host.
+     */
+    val showHostRequests: SharedFlow<Long> = _showHostRequests.asSharedFlow()
+
+    fun requestShowHost(hostId: Long) {
+        scope.launch {
+            _showHostRequests.emit(hostId)
+        }
+    }
+
     private val _serviceErrors =
         MutableSharedFlow<ServiceError>(replay = 0, extraBufferCapacity = 10)
     val serviceErrors: SharedFlow<ServiceError> = _serviceErrors.asSharedFlow()
