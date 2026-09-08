@@ -145,6 +145,7 @@ import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
 import org.connectbot.ui.theme.terminal
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.SwipeKeySequenceParser
 import org.connectbot.util.UrlUtils
 import org.connectbot.util.rememberTerminalTypefaceResultFromStoredValue
 import timber.log.Timber
@@ -334,6 +335,84 @@ private fun Modifier.sessionSwipeNavigation(
                 onInteraction()
                 onSwipeToSession(target)
             }
+        }
+    }
+}
+
+private fun Modifier.keySequenceGestures(
+    swipeLeftParsed: String,
+    swipeRightParsed: String,
+    doubleTapParsed: String,
+    pgUpDnGesture: Boolean,
+    onInjectString: (String) -> Unit,
+): Modifier = pointerInput(swipeLeftParsed, swipeRightParsed, doubleTapParsed, pgUpDnGesture) {
+    val thresholdPx = 100.dp.toPx()
+    val touchSlopPx = viewConfiguration.touchSlop
+    val doubleTapTimeoutMs = viewConfiguration.doubleTapTimeoutMillis
+    var lastTapTime = 0L
+    awaitEachGesture {
+        val down = awaitFirstDown(
+            requireUnconsumed = false,
+            pass = PointerEventPass.Initial,
+        )
+        val isLeftSide = down.position.x < size.width / 2f
+        var totalDragX = 0f
+        var totalDragY = 0f
+        var exceedsSlop = false
+        while (true) {
+            val event = awaitPointerEvent(pass = PointerEventPass.Initial)
+            val change = event.changes.firstOrNull() ?: break
+            totalDragX += change.position.x - change.previousPosition.x
+            totalDragY += change.position.y - change.previousPosition.y
+            if (!exceedsSlop &&
+                (abs(totalDragX) > touchSlopPx || abs(totalDragY) > touchSlopPx)
+            ) {
+                exceedsSlop = true
+            }
+            // Consume left-side vertical events so the Terminal composable
+            // does not also perform local buffer scroll.
+            if (pgUpDnGesture && isLeftSide && exceedsSlop &&
+                abs(totalDragY) > abs(totalDragX) * 2f
+            ) {
+                change.consume()
+            }
+            if (!change.pressed) break
+        }
+        val absDragX = abs(totalDragX)
+        val absDragY = abs(totalDragY)
+        when {
+            exceedsSlop && pgUpDnGesture && isLeftSide &&
+                absDragY > absDragX * 2f && absDragY > thresholdPx -> {
+                // finger down (totalDragY > 0) = natural scroll up = PAGE_UP
+                // finger up   (totalDragY < 0) = natural scroll down = PAGE_DOWN
+                if (totalDragY > 0) {
+                    onInjectString("[5~")
+                } else {
+                    onInjectString("[6~")
+                }
+                lastTapTime = 0L
+            }
+
+            exceedsSlop && absDragX > absDragY * 2f && absDragX > thresholdPx -> {
+                if (totalDragX < 0 && swipeLeftParsed.isNotEmpty()) {
+                    onInjectString(swipeLeftParsed)
+                } else if (totalDragX > 0 && swipeRightParsed.isNotEmpty()) {
+                    onInjectString(swipeRightParsed)
+                }
+                lastTapTime = 0L
+            }
+
+            !exceedsSlop && doubleTapParsed.isNotEmpty() -> {
+                val now = System.currentTimeMillis()
+                if (now - lastTapTime < doubleTapTimeoutMs) {
+                    onInjectString(doubleTapParsed)
+                    lastTapTime = 0L
+                } else {
+                    lastTapTime = now
+                }
+            }
+
+            else -> lastTapTime = 0L
         }
     }
 }
@@ -528,6 +607,16 @@ fun ConsoleScreen(
     val swipeSessionsEnabled = remember {
         prefs.getBoolean(PreferenceConstants.SWIPE_SESSIONS, false)
     }
+    val swipeLeftParsed = remember {
+        SwipeKeySequenceParser.parse(prefs.getString(PreferenceConstants.SWIPE_LEFT_KEYS, "") ?: "")
+    }
+    val swipeRightParsed = remember {
+        SwipeKeySequenceParser.parse(prefs.getString(PreferenceConstants.SWIPE_RIGHT_KEYS, "") ?: "")
+    }
+    val doubleTapParsed = remember {
+        SwipeKeySequenceParser.parse(prefs.getString(PreferenceConstants.DOUBLE_TAP_KEYS, "") ?: "")
+    }
+    val pgUpDnGesture = remember { prefs.getBoolean(PreferenceConstants.PG_UPDN_GESTURE, false) }
     var fullscreen by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.FULLSCREEN, false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false)) }
     val volumeKeysChangeFontSize = remember { prefs.getBoolean(PreferenceConstants.VOLUME_FONT, true) }
@@ -926,17 +1015,34 @@ fun ConsoleScreen(
                             .weight(1f),
                     ) {
                         val bridge = uiState.bridges[uiState.currentBridgeIndex]
-                        val terminalModifier = if (swipeBetweenSessions) {
-                            Modifier.sessionSwipeNavigation(
-                                currentIndex = uiState.currentBridgeIndex,
-                                sessionCount = uiState.bridges.size,
-                                selectionActive = terminalSelectionActive,
-                                onSwipeToSession = { index -> selectBridgePreservingKeyboard(index) },
-                                onInteraction = { handleTerminalInteraction(isInteraction = false) },
+                        val hasKeySequenceGestures = swipeLeftParsed.isNotEmpty() ||
+                            swipeRightParsed.isNotEmpty() ||
+                            doubleTapParsed.isNotEmpty() ||
+                            pgUpDnGesture
+                        val keySequenceModifier = if (hasKeySequenceGestures) {
+                            Modifier.keySequenceGestures(
+                                swipeLeftParsed = if (swipeSessionsEnabled) "" else swipeLeftParsed,
+                                swipeRightParsed = if (swipeSessionsEnabled) "" else swipeRightParsed,
+                                doubleTapParsed = doubleTapParsed,
+                                pgUpDnGesture = pgUpDnGesture,
+                                onInjectString = { bridge.injectString(it) },
                             )
                         } else {
                             Modifier
                         }
+                        val terminalModifier = (
+                            if (swipeBetweenSessions) {
+                                Modifier.sessionSwipeNavigation(
+                                    currentIndex = uiState.currentBridgeIndex,
+                                    sessionCount = uiState.bridges.size,
+                                    selectionActive = terminalSelectionActive,
+                                    onSwipeToSession = { index -> selectBridgePreservingKeyboard(index) },
+                                    onInteraction = { handleTerminalInteraction(isInteraction = false) },
+                                )
+                            } else {
+                                Modifier
+                            }
+                            ).then(keySequenceModifier)
 
                         key(bridge.host.id) {
                             ConsoleTerminalPage(

@@ -63,6 +63,9 @@ data class SettingsUiState(
     val fullscreen: Boolean = false,
     val pgupdngesture: Boolean = false,
     val swipeSessions: Boolean = false,
+    val swipeLeftKeys: String = "",
+    val swipeRightKeys: String = "",
+    val doubleTapKeys: String = "",
     val volumefont: Boolean = true,
     val keepalive: Boolean = true,
     val alwaysvisible: Boolean = false,
@@ -201,6 +204,9 @@ class SettingsViewModel @Inject constructor(
             fullscreen = prefs.getBoolean("fullscreen", false),
             pgupdngesture = prefs.getBoolean("pgupdngesture", false),
             swipeSessions = prefs.getBoolean(PreferenceConstants.SWIPE_SESSIONS, false),
+            swipeLeftKeys = prefs.getString(PreferenceConstants.SWIPE_LEFT_KEYS, "") ?: "",
+            swipeRightKeys = prefs.getString(PreferenceConstants.SWIPE_RIGHT_KEYS, "") ?: "",
+            doubleTapKeys = prefs.getString(PreferenceConstants.DOUBLE_TAP_KEYS, "") ?: "",
             volumefont = prefs.getBoolean("volumefont", true),
             keepalive = prefs.getBoolean("keepalive", true),
             alwaysvisible = prefs.getBoolean("alwaysvisible", false),
@@ -319,6 +325,18 @@ class SettingsViewModel @Inject constructor(
 
     fun updateSwipeSessions(value: Boolean) {
         updateBooleanPref(PreferenceConstants.SWIPE_SESSIONS, value) { copy(swipeSessions = value) }
+    }
+
+    fun updateSwipeLeftKeys(value: String) {
+        updateStringPref(PreferenceConstants.SWIPE_LEFT_KEYS, value) { copy(swipeLeftKeys = value) }
+    }
+
+    fun updateSwipeRightKeys(value: String) {
+        updateStringPref(PreferenceConstants.SWIPE_RIGHT_KEYS, value) { copy(swipeRightKeys = value) }
+    }
+
+    fun updateDoubleTapKeys(value: String) {
+        updateStringPref(PreferenceConstants.DOUBLE_TAP_KEYS, value) { copy(doubleTapKeys = value) }
     }
 
     fun updateVolumeFont(value: Boolean) {
