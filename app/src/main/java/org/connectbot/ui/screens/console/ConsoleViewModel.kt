@@ -64,7 +64,6 @@ class ConsoleViewModel @Inject constructor(
     private var pendingInitialHostId: Long? = hostId.takeIf { it != -1L }
     private var selectedHostId: Long? = null
 
-    private val bellJobs = mutableMapOf<Long, Job>()
     private val progressJobs = mutableMapOf<Long, Job>()
     private val networkStatusJobs = mutableMapOf<Long, Job>()
 
@@ -87,7 +86,6 @@ class ConsoleViewModel @Inject constructor(
             viewModelScope.launch {
                 manager.bridgesFlow.collect { bridges ->
                     updateBridges(bridges)
-                    syncBridgeBellSubscriptions(bridges)
                     syncBridgeProgressSubscriptions(bridges)
                     syncBridgeNetworkStatusSubscriptions(bridges)
                 }
@@ -102,22 +100,6 @@ class ConsoleViewModel @Inject constructor(
             if (hostId != -1L) {
                 viewModelScope.launch {
                     ensureBridgeExists()
-                }
-            }
-        }
-    }
-
-    private fun syncBridgeBellSubscriptions(bridges: List<TerminalBridge>) {
-        syncBridgeJobs(bridges, bellJobs) { bridge ->
-            viewModelScope.launch {
-                bridge.bellEvents.collect {
-                    val currentBridge = _uiState.value.bridges.getOrNull(_uiState.value.currentBridgeIndex)
-
-                    if (currentBridge == bridge) {
-                        terminalManager?.playBeep()
-                    } else {
-                        terminalManager?.sendActivityNotification(bridge.host)
-                    }
                 }
             }
         }

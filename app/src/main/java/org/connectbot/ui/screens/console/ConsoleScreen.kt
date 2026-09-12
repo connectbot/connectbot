@@ -121,6 +121,7 @@ import androidx.core.content.edit
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -583,6 +584,14 @@ fun ConsoleScreen(
     val currentBridge = uiState.bridges
         .getOrNull(uiState.currentBridgeIndex)
     val currentBridgeId = currentBridge?.host?.id
+
+    LifecycleResumeEffect(terminalManager, currentBridge) {
+        val owner = Any()
+        terminalManager?.setVisibleConsole(owner, currentBridge)
+        onPauseOrDispose {
+            terminalManager?.clearVisibleConsole(owner)
+        }
+    }
 
     // Get current prompt state to check if biometric prompt is active
     val promptState by currentBridge?.promptManager?.promptState?.collectAsState()

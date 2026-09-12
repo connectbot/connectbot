@@ -35,6 +35,7 @@ import android.os.Vibrator
 import android.os.VibratorManager
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.UserNotAuthenticatedException
+import androidx.annotation.MainThread
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
@@ -53,6 +54,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.connectbot.R
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.HostRepository
@@ -171,6 +173,38 @@ class TerminalManager :
     private var wantKeyVibration = false
 
     private var wantBellVibration = false
+
+    // Accessed on the main thread. The owner prevents a departing console from
+    // clearing a newer console's registration during navigation.
+    private var visibleConsoleOwner: Any? = null
+    private var visibleBridge: TerminalBridge? = null
+
+    @MainThread
+    fun setVisibleConsole(owner: Any, bridge: TerminalBridge?) {
+        visibleConsoleOwner = owner
+        visibleBridge = bridge
+    }
+
+    @MainThread
+    fun clearVisibleConsole(owner: Any) {
+        if (visibleConsoleOwner === owner) {
+            visibleConsoleOwner = null
+            visibleBridge = null
+        }
+    }
+
+    /** Route each bell once, using the originating bridge and the visible console. */
+    fun onBell(bridge: TerminalBridge) {
+        scope.launch(dispatchers.main) {
+            if (isUiVisible && visibleBridge === bridge) {
+                playBeep()
+            } else {
+                withContext(dispatchers.io) {
+                    sendActivityNotification(bridge.host)
+                }
+            }
+        }
+    }
 
     /**
      * Whether our UI is currently visible to the user, i.e. an activity of this
