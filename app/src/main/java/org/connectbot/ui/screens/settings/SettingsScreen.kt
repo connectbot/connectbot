@@ -68,6 +68,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -190,6 +191,9 @@ fun SettingsScreen(
         onTitleBarHideChange = viewModel::updateTitleBarHide,
         onPgUpDnGestureChange = viewModel::updatePgUpDnGesture,
         onSwipeSessionsChange = viewModel::updateSwipeSessions,
+        onSwipeLeftKeysChange = viewModel::updateSwipeLeftKeys,
+        onSwipeRightKeysChange = viewModel::updateSwipeRightKeys,
+        onDoubleTapKeysChange = viewModel::updateDoubleTapKeys,
         onVolumeFontChange = viewModel::updateVolumeFont,
         onKeepAliveChange = viewModel::updateKeepAlive,
         onAlwaysVisibleChange = viewModel::updateAlwaysVisible,
@@ -235,6 +239,9 @@ fun SettingsScreenContent(
     onTitleBarHideChange: (Boolean) -> Unit,
     onPgUpDnGestureChange: (Boolean) -> Unit,
     onSwipeSessionsChange: (Boolean) -> Unit,
+    onSwipeLeftKeysChange: (String) -> Unit = {},
+    onSwipeRightKeysChange: (String) -> Unit = {},
+    onDoubleTapKeysChange: (String) -> Unit = {},
     onVolumeFontChange: (Boolean) -> Unit,
     onKeepAliveChange: (Boolean) -> Unit,
     onAlwaysVisibleChange: (Boolean) -> Unit,
@@ -537,6 +544,63 @@ fun SettingsScreenContent(
                     summary = stringResource(R.string.pref_swipe_sessions_summary),
                     checked = uiState.swipeSessions,
                     onCheckedChange = onSwipeSessionsChange,
+                )
+            }
+
+            item {
+                PreferenceCategory(title = stringResource(R.string.pref_swipe_gestures_category))
+            }
+
+            item {
+                val swipeKeyPresets = listOf(
+                    "" to stringResource(R.string.swipe_keys_none),
+                    "Ctrl+B N" to "tmux next",
+                    "Ctrl+B P" to "tmux previous",
+                    "Ctrl+A N" to "screen next",
+                    "Ctrl+A P" to "screen previous",
+                    "Ctrl+N" to "irssi next",
+                    "Ctrl+P" to "irssi previous",
+                )
+                val doubleTapPresets = listOf(
+                    "" to stringResource(R.string.swipe_keys_none),
+                    "Esc a" to "irssi next active",
+                    "Ctrl+G" to "tmux display panes",
+                    "Ctrl+B w" to "tmux window list",
+                    "Ctrl+A \"" to "screen window list",
+                )
+                val swipeDirectionEnabled = !uiState.swipeSessions
+                val swipeDirectionDisabledSummary =
+                    stringResource(R.string.pref_swipe_direction_keys_disabled)
+                ListPreferenceWithCustom(
+                    title = stringResource(R.string.pref_swipe_left_keys_title),
+                    summary = if (swipeDirectionEnabled) {
+                        uiState.swipeLeftKeys.ifEmpty { stringResource(R.string.swipe_keys_none) }
+                    } else {
+                        swipeDirectionDisabledSummary
+                    },
+                    value = uiState.swipeLeftKeys,
+                    entries = swipeKeyPresets,
+                    onValueChange = onSwipeLeftKeysChange,
+                    enabled = swipeDirectionEnabled,
+                )
+                ListPreferenceWithCustom(
+                    title = stringResource(R.string.pref_swipe_right_keys_title),
+                    summary = if (swipeDirectionEnabled) {
+                        uiState.swipeRightKeys.ifEmpty { stringResource(R.string.swipe_keys_none) }
+                    } else {
+                        swipeDirectionDisabledSummary
+                    },
+                    value = uiState.swipeRightKeys,
+                    entries = swipeKeyPresets,
+                    onValueChange = onSwipeRightKeysChange,
+                    enabled = swipeDirectionEnabled,
+                )
+                ListPreferenceWithCustom(
+                    title = stringResource(R.string.pref_double_tap_keys_title),
+                    summary = uiState.doubleTapKeys.ifEmpty { stringResource(R.string.swipe_keys_none) },
+                    value = uiState.doubleTapKeys,
+                    entries = doubleTapPresets,
+                    onValueChange = onDoubleTapKeysChange,
                 )
             }
 
@@ -1035,15 +1099,16 @@ private fun ListPreferenceWithCustom(
     entries: List<Pair<String, String>>,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     customLabel: String = "Custom...",
 ) {
     var showDialog by remember { mutableStateOf(false) }
 
-    Column(modifier = modifier) {
+    Column(modifier = modifier.alpha(if (enabled) 1f else 0.38f)) {
         ListItem(
             headlineContent = { Text(title) },
             supportingContent = { Text(summary) },
-            modifier = Modifier.clickable { showDialog = true },
+            modifier = Modifier.clickable(enabled = enabled) { showDialog = true },
         )
         HorizontalDivider()
 
@@ -1554,6 +1619,9 @@ private fun SettingsScreenPreview() {
                 fullscreen = true,
                 pgupdngesture = true,
                 swipeSessions = false,
+                swipeLeftKeys = "Ctrl+P",
+                swipeRightKeys = "Ctrl+N",
+                doubleTapKeys = "Esc a",
                 volumefont = true,
                 keepalive = true,
                 alwaysvisible = true,
@@ -1600,6 +1668,9 @@ private fun SettingsScreenPreview() {
             onTitleBarHideChange = {},
             onPgUpDnGestureChange = {},
             onSwipeSessionsChange = {},
+            onSwipeLeftKeysChange = {},
+            onSwipeRightKeysChange = {},
+            onDoubleTapKeysChange = {},
             onVolumeFontChange = {},
             onKeepAliveChange = {},
             onAlwaysVisibleChange = {},
