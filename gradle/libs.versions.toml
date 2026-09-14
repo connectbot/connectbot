@@ -10,7 +10,7 @@ room = "2.8.4"
 ksp = "2.3.12"
 hilt = "2.60.1"
 hiltNavigationCompose = "1.4.0"
-sonarqube = "7.4.0.8496"
+sonarqube = "7.5.0.8588"
 
 compileSdk = "37"
 minSdk = "24"
