@@ -31,6 +31,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.DropdownMenuItem
@@ -84,6 +85,7 @@ fun HostEditorScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HostEditorViewModel = hiltViewModel(),
+    onNavigateToKnownHosts: (Long) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -91,6 +93,7 @@ fun HostEditorScreen(
         hostId = uiState.hostId,
         uiState = uiState,
         onNavigateBack = onNavigateBack,
+        onNavigateToKnownHosts = onNavigateToKnownHosts,
         onQuickConnectChange = viewModel::updateQuickConnect,
         onNicknameChange = { nickname, isExpanded -> viewModel.updateNickname(nickname, isExpanded) },
         onProtocolChange = viewModel::updateProtocol,
@@ -142,6 +145,7 @@ fun HostEditorScreenContent(
     onClearPassword: () -> Unit,
     onSaveHost: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    onNavigateToKnownHosts: (Long) -> Unit = {},
 ) {
     var showProtocolMenu by remember { mutableStateOf(false) }
     var expandedMode by remember(uiState.isLoading) {
@@ -378,6 +382,31 @@ fun HostEditorScreenContent(
                                 modifier = Modifier.padding(top = 4.dp),
                             ) {
                                 Text(stringResource(R.string.hostpref_clear_password))
+                            }
+                        }
+
+                        if (hostId != -1L) {
+                            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+                            Row(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .clickable { onNavigateToKnownHosts(hostId) }
+                                    .padding(vertical = 8.dp)
+                                    .testTag("known_host_keys_preference"),
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Column(modifier = Modifier.weight(1f)) {
+                                    Text(
+                                        text = stringResource(R.string.hostpref_known_hosts_title),
+                                        style = MaterialTheme.typography.bodyLarge,
+                                    )
+                                    Text(
+                                        text = stringResource(R.string.hostpref_known_hosts_summary),
+                                        style = MaterialTheme.typography.bodyMedium,
+                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                                    )
+                                }
+                                Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null)
                             }
                         }
                     }
