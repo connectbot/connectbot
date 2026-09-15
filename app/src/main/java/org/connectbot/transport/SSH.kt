@@ -421,7 +421,14 @@ class SSH :
 
                         val keyPair = entry.value.pair ?: return@forEach
 
-                        if (tryPublicKey(currentHost.username, entry.key, keyPair)) {
+                        if (
+                            tryPublicKey(
+                                currentHost.username,
+                                entry.key,
+                                keyPair,
+                                entry.value.pubkey?.storageType,
+                            )
+                        ) {
                             finishConnection()
                             return
                         }
@@ -503,7 +510,7 @@ class SSH :
         val pair = getOrUnlockKey(pubkey) ?: return false
 
         val currentHost = host ?: return false
-        return tryPublicKey(currentHost.username, pubkey.nickname, pair)
+        return tryPublicKey(currentHost.username, pubkey.nickname, pair, pubkey.storageType)
     }
 
     /**
@@ -641,7 +648,17 @@ class SSH :
     }
 
     @Throws(IOException::class)
-    private fun tryPublicKey(username: String, keyNickname: String, pair: KeyPair): Boolean = try {
+    private fun tryPublicKey(
+        username: String,
+        keyNickname: String,
+        pair: KeyPair,
+        storageType: KeyStorageType? = null,
+    ): Boolean = try {
+        if (!preparePublicKeyAuthentication(connection, pair, storageType)) {
+            bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, keyNickname))
+            return false
+        }
+
         val success = connection?.authenticateWithPublicKey(username, pair) == true
         if (!success) {
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, keyNickname))
@@ -664,6 +681,18 @@ class SSH :
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, keyNickname))
         }
         false
+    }
+
+    private fun preparePublicKeyAuthentication(
+        connection: Connection?,
+        pair: KeyPair,
+        storageType: KeyStorageType?,
+    ): Boolean {
+        if (storageType != KeyStorageType.ANDROID_KEYSTORE || pair.public !is RSAPublicKey) {
+            return true
+        }
+
+        return connection != null && RsaSignatureAlgorithmPolicy.prepareForAuthentication(connection)
     }
 
     /**
@@ -807,7 +836,11 @@ class SSH :
                     // Try all in-memory keys
                     manager?.loadedKeypairs?.entries?.forEach { entry ->
                         try {
-                            if (jc.authenticateWithPublicKey(jumpHost.username, entry.value.pair)) {
+                            val pair = entry.value.pair ?: return@forEach
+                            if (
+                                preparePublicKeyAuthentication(jc, pair, entry.value.pubkey?.storageType) &&
+                                jc.authenticateWithPublicKey(jumpHost.username, pair)
+                            ) {
                                 return true
                             }
                         } catch (_: Exception) {
@@ -821,7 +854,10 @@ class SSH :
                         val pair = getOrUnlockKey(pubkey)
                         if (pair != null) {
                             try {
-                                if (jc.authenticateWithPublicKey(jumpHost.username, pair)) {
+                                if (
+                                    preparePublicKeyAuthentication(jc, pair, pubkey.storageType) &&
+                                    jc.authenticateWithPublicKey(jumpHost.username, pair)
+                                ) {
                                     return true
                                 }
                             } catch (_: Exception) {
