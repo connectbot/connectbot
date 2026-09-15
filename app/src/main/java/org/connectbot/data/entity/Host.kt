@@ -105,6 +105,27 @@ data class Host(
      */
     @ColumnInfo(name = "ip_version", defaultValue = "IPV4_AND_IPV6")
     val ipVersion: String = "IPV4_AND_IPV6",
+
+    /**
+     * Mosh UDP port. 0 means use mosh default (60000-61000 range).
+     * Set to a specific port to use a fixed port for firewall compatibility.
+     */
+    @ColumnInfo(name = "mosh_port", defaultValue = "0")
+    val moshPort: Int = 0,
+
+    /**
+     * Custom mosh-server command. null means use standard "mosh-server".
+     * Can specify full path or custom arguments.
+     */
+    @ColumnInfo(name = "mosh_server")
+    val moshServer: String? = null,
+
+    /**
+     * Locale to use for mosh sessions.
+     * Mosh requires locale to be set properly for UTF-8 support.
+     */
+    @ColumnInfo(name = "locale", defaultValue = "en_US.UTF-8")
+    val locale: String = "en_US.UTF-8",
 ) {
     /**
      * Check if this host is temporary (not saved to database).
@@ -126,10 +147,10 @@ data class Host(
                 builder.fragment(nickname)
             }
 
-            "ssh", "telnet" -> {
+            "ssh", "mosh", "telnet" -> {
                 // Build authority with hostname and port
                 val authority = buildString {
-                    if (username.isNotEmpty() && protocol == "ssh") {
+                    if (username.isNotEmpty() && (protocol == "ssh" || protocol == "mosh")) {
                         append(username)
                         append('@')
                     }
@@ -185,6 +206,30 @@ data class Host(
             username = "",
             hostname = "",
             port = 0,
+        )
+
+        /**
+         * Create a new Mosh host with default values (Java interop helper).
+         */
+        @JvmStatic
+        fun createMoshHost(
+            nickname: String,
+            hostname: String,
+            port: Int,
+            username: String,
+            moshPort: Int = 0,
+            moshServer: String? = null,
+            locale: String = "en_US.UTF-8",
+        ): Host = Host(
+            id = 0L,
+            nickname = nickname,
+            protocol = "mosh",
+            username = username,
+            hostname = hostname,
+            port = port,
+            moshPort = moshPort,
+            moshServer = moshServer,
+            locale = locale,
         )
     }
 }

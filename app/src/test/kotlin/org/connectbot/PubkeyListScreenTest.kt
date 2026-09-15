@@ -63,6 +63,7 @@ class PubkeyListScreenTest {
                 PubkeyListScreen(
                     onNavigateBack = {},
                     onNavigateToGenerate = {},
+                    onNavigateToImportFido2 = {},
                     onNavigateToEdit = {},
                 )
             }
@@ -82,6 +83,7 @@ class PubkeyListScreenTest {
                 PubkeyListScreen(
                     onNavigateBack = { backCalled = true },
                     onNavigateToGenerate = {},
+                    onNavigateToImportFido2 = {},
                     onNavigateToEdit = {},
                 )
             }
@@ -101,6 +103,7 @@ class PubkeyListScreenTest {
                 PubkeyListScreen(
                     onNavigateBack = {},
                     onNavigateToGenerate = {},
+                    onNavigateToImportFido2 = {},
                     onNavigateToEdit = {},
                 )
             }
@@ -125,6 +128,7 @@ class PubkeyListScreenTest {
                 PubkeyListScreen(
                     onNavigateBack = {},
                     onNavigateToGenerate = { generateCalled = true },
+                    onNavigateToImportFido2 = {},
                     onNavigateToEdit = {},
                 )
             }
@@ -312,6 +316,7 @@ class PubkeyListScreenTest {
         uiState: PubkeyListUiState = PubkeyListUiState(),
         onNavigateBack: () -> Unit = {},
         onNavigateToGenerate: () -> Unit = {},
+        onNavigateToImportFido2: () -> Unit = {},
         onNavigateToEdit: (Pubkey) -> Unit = {},
         onDeletePubkey: (Pubkey) -> Unit = {},
         onToggleKeyLoad: (Pubkey, (Pubkey, (String) -> Unit) -> Unit) -> Unit = { _, _ -> },
@@ -327,17 +332,18 @@ class PubkeyListScreenTest {
                     snackbarHostState = androidx.compose.material3.SnackbarHostState(),
                     onNavigateBack = onNavigateBack,
                     onNavigateToGenerate = onNavigateToGenerate,
+                    onNavigateToImportFido2 = onNavigateToImportFido2,
                     onNavigateToEdit = onNavigateToEdit,
                     onDeletePubkey = onDeletePubkey,
                     onToggleKeyLoad = onToggleKeyLoad,
                     onCopyPublicKey = onCopyPublicKey,
                     onCopyPrivateKeyOpenSSH = { _, _ -> },
                     onCopyPrivateKeyPem = { _, _ -> },
-                    onCopyPrivateKeyEncrypt = { _, _, _ -> },
+                    onCopyEncryptedPrivateKey = { _, _, _ -> },
                     onExportPublicKey = onExportPublicKey,
                     onExportPrivateKeyOpenSSH = { _, _ -> },
                     onExportPrivateKeyPem = { _, _ -> },
-                    onExportPrivateKeyEncrypt = { _, _, _ -> },
+                    onExportEncryptedPrivateKey = { _, _, _ -> },
                     onImportKey = onImportKey,
                     onImportKeyFromClipboard = onImportKeyFromClipboard,
                 )
