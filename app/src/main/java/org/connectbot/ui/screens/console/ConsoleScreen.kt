@@ -707,11 +707,15 @@ fun ConsoleScreen(
         }
     }
 
-    // Navigate back if all bridges are closed (after initial loading)
-    LaunchedEffect(uiState.bridges.size, uiState.isLoading) {
+    // Navigate back if all bridges are closed (after initial loading). This must be
+    // lifecycle-aware: a quick-disconnect can empty the list while the app is in
+    // the background, when safePopBackStack() intentionally rejects navigation.
+    // LifecycleResumeEffect retries the navigation when the console resumes.
+    LifecycleResumeEffect(uiState.bridges.size, uiState.isLoading) {
         if (uiState.bridges.isEmpty() && !uiState.isLoading) {
             currentOnNavigateBack()
         }
+        onPauseOrDispose {}
     }
 
     // Request focus on terminal when screen appears (e.g., returning from navigation)
