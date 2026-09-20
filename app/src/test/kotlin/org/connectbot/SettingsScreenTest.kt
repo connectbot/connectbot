@@ -31,6 +31,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.connectbot.data.entity.Profile
+import org.connectbot.terminal.ImeShortcutInputMode
 import org.connectbot.ui.screens.settings.SettingsScreen
 import org.connectbot.ui.screens.settings.SettingsScreenContent
 import org.connectbot.ui.screens.settings.SettingsUiState
@@ -156,6 +157,29 @@ class SettingsScreenTest {
     }
 
     @Test
+    fun settingsScreenContent_imeShortcutModeReturnsSelectedValue() {
+        var selectedMode: ImeShortcutInputMode? = null
+        val title = composeTestRule.activity.getString(R.string.pref_ime_shortcut_mode_title)
+        val rawKeyEvents = composeTestRule.activity.getString(R.string.pref_ime_shortcut_mode_type_null)
+
+        setSettingsContent(
+            onImeShortcutInputModeChange = { selectedMode = it },
+        )
+
+        composeTestRule
+            .onNode(hasScrollAction())
+            .performScrollToNode(hasText(title))
+        composeTestRule
+            .onNodeWithText(title)
+            .performClick()
+        composeTestRule
+            .onNodeWithText(rawKeyEvents)
+            .performClick()
+
+        assertTrue(selectedMode == ImeShortcutInputMode.TYPE_NULL)
+    }
+
+    @Test
     fun settingsScreenContent_scrollbackDialogConfirmsUpdatedValue() {
         var scrollbackValue: String? = null
         val scrollback = composeTestRule.activity.getString(R.string.pref_scrollback_title)
@@ -261,6 +285,7 @@ class SettingsScreenTest {
         onAddCustomTerminalType: (String) -> Unit = {},
         onRemoveCustomTerminalType: (String) -> Unit = {},
         onDefaultProfileChange: (Long) -> Unit = {},
+        onImeShortcutInputModeChange: (ImeShortcutInputMode) -> Unit = {},
     ) {
         composeTestRule.setContent {
             ConnectBotTheme {
@@ -294,6 +319,7 @@ class SettingsScreenTest {
                     onAlwaysVisibleChange = {},
                     onSwipeSessionsChange = {},
                     onImeToggleKeyChange = {},
+                    onImeShortcutInputModeChange = onImeShortcutInputModeChange,
                     onShiftFkeysChange = {},
                     onCtrlFkeysChange = {},
                     onStickyModifiersChange = {},
