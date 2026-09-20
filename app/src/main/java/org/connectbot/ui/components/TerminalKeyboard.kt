@@ -112,6 +112,7 @@ fun TerminalKeyboard(
     showImeToggleKey: Boolean = true,
     isComposeModeActive: Boolean = false,
     onToggleComposeMode: () -> Unit = {},
+    onShortcutModifierChange: () -> Unit = {},
 ) {
     val context = LocalContext.current
     val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
@@ -125,6 +126,12 @@ fun TerminalKeyboard(
         modifierState = modifierState,
         onCtrlPress = {
             keyHandler.metaPress(TerminalKeyListener.CTRL_ON, true)
+            onShortcutModifierChange()
+            onInteraction()
+        },
+        onAltPress = {
+            keyHandler.metaPress(TerminalKeyListener.ALT_ON, true)
+            onShortcutModifierChange()
             onInteraction()
         },
         onEscPress = {
@@ -162,6 +169,7 @@ fun TerminalKeyboard(
 internal fun TerminalKeyboardContent(
     modifierState: ModifierState,
     onCtrlPress: () -> Unit,
+    onAltPress: () -> Unit,
     onEscPress: () -> Unit,
     onTabPress: () -> Unit,
     onKeyPress: (Int) -> Unit,
@@ -245,6 +253,14 @@ internal fun TerminalKeyboardContent(
                     contentDescription = stringResource(R.string.image_description_toggle_control_character),
                     modifierLevel = modifierState.ctrlState,
                     onClick = onCtrlPress,
+                )
+
+                // Alt key (sticky modifier)
+                ModifierKeyButton(
+                    text = stringResource(R.string.button_key_alt),
+                    contentDescription = stringResource(R.string.image_description_toggle_alt_key),
+                    modifierLevel = modifierState.altState,
+                    onClick = onAltPress,
                 )
 
                 // Esc key
@@ -673,6 +689,7 @@ private fun TerminalKeyboardPreview() {
                 shiftState = ModifierLevel.OFF,
             ),
             onCtrlPress = {},
+            onAltPress = {},
             onEscPress = {},
             onTabPress = {},
             onKeyPress = {},
@@ -699,6 +716,7 @@ private fun TerminalKeyboardCtrlPressedPreview() {
                 shiftState = ModifierLevel.OFF,
             ),
             onCtrlPress = {},
+            onAltPress = {},
             onEscPress = {},
             onTabPress = {},
             onKeyPress = {},
@@ -725,6 +743,7 @@ private fun TerminalKeyboardCtrlLockedPreview() {
                 shiftState = ModifierLevel.OFF,
             ),
             onCtrlPress = {},
+            onAltPress = {},
             onEscPress = {},
             onTabPress = {},
             onKeyPress = {},
@@ -751,6 +770,7 @@ private fun TerminalKeyboardImeVisiblePreview() {
                 shiftState = ModifierLevel.OFF,
             ),
             onCtrlPress = {},
+            onAltPress = {},
             onEscPress = {},
             onTabPress = {},
             onKeyPress = {},

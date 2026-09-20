@@ -77,6 +77,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.connectbot.BuildConfig
 import org.connectbot.R
+import org.connectbot.terminal.ImeShortcutInputMode
 import org.connectbot.ui.ObservePermissionOnResume
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.common.getLocalizedFontDisplayName
@@ -194,6 +195,7 @@ fun SettingsScreen(
         onKeepAliveChange = viewModel::updateKeepAlive,
         onAlwaysVisibleChange = viewModel::updateAlwaysVisible,
         onImeToggleKeyChange = viewModel::updateImeToggleKey,
+        onImeShortcutInputModeChange = viewModel::updateImeShortcutInputMode,
         onShiftFkeysChange = viewModel::updateShiftFkeys,
         onCtrlFkeysChange = viewModel::updateCtrlFkeys,
         onStickyModifiersChange = viewModel::updateStickyModifiers,
@@ -240,6 +242,7 @@ fun SettingsScreenContent(
     onKeepAliveChange: (Boolean) -> Unit,
     onAlwaysVisibleChange: (Boolean) -> Unit,
     onImeToggleKeyChange: (Boolean) -> Unit,
+    onImeShortcutInputModeChange: (ImeShortcutInputMode) -> Unit,
     onShiftFkeysChange: (Boolean) -> Unit,
     onCtrlFkeysChange: (Boolean) -> Unit,
     onStickyModifiersChange: (String) -> Unit,
@@ -579,6 +582,27 @@ fun SettingsScreenContent(
                     summary = stringResource(R.string.pref_imetogglekey_summary),
                     checked = uiState.imeTogglekey,
                     onCheckedChange = onImeToggleKeyChange,
+                )
+            }
+
+            item {
+                val shortcutModeLabels = mapOf(
+                    ImeShortcutInputMode.DISABLED to stringResource(R.string.pref_ime_shortcut_mode_disabled),
+                    ImeShortcutInputMode.TYPE_NULL to stringResource(R.string.pref_ime_shortcut_mode_type_null),
+                    ImeShortcutInputMode.FORCE_ASCII to stringResource(R.string.pref_ime_shortcut_mode_force_ascii),
+                )
+                ListPreference(
+                    title = stringResource(R.string.pref_ime_shortcut_mode_title),
+                    summary = shortcutModeLabels.getValue(uiState.imeShortcutInputMode),
+                    value = uiState.imeShortcutInputMode.name,
+                    entries = ImeShortcutInputMode.entries.map { mode ->
+                        shortcutModeLabels.getValue(mode) to mode.name
+                    },
+                    onValueChange = { value ->
+                        ImeShortcutInputMode.entries
+                            .firstOrNull { it.name == value }
+                            ?.let(onImeShortcutInputModeChange)
+                    },
                 )
             }
 
@@ -1569,6 +1593,7 @@ private fun SettingsScreenPreview() {
                 keepalive = true,
                 alwaysvisible = true,
                 imeTogglekey = true,
+                imeShortcutInputMode = ImeShortcutInputMode.FORCE_ASCII,
                 shiftfkeys = false,
                 ctrlfkeys = false,
                 stickymodifiers = "yes",
@@ -1616,6 +1641,7 @@ private fun SettingsScreenPreview() {
             onKeepAliveChange = {},
             onAlwaysVisibleChange = {},
             onImeToggleKeyChange = {},
+            onImeShortcutInputModeChange = {},
             onShiftFkeysChange = {},
             onCtrlFkeysChange = {},
             onStickyModifiersChange = {},
