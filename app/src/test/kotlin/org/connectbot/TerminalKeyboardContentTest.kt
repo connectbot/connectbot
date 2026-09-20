@@ -165,6 +165,31 @@ class TerminalKeyboardContentTest {
         assertTrue(scrollStates.isNotEmpty())
     }
 
+    @Test
+    fun imeToggleInvokesCallbackAndReportsInteraction() {
+        var toggles = 0
+        var interactions = 0
+        setKeyboardContent(
+            onToggleComposeMode = { toggles++ },
+            onInteraction = { interactions++ },
+        )
+
+        composeTestRule.onNodeWithText("IME").assertIsDisplayed().performClick()
+
+        assertEquals(1, toggles)
+        assertTrue(interactions > 0)
+    }
+
+    @Test
+    fun imeToggleCanBeHiddenWithoutRemovingTextInput() {
+        setKeyboardContent(showImeToggleKey = false)
+
+        composeTestRule.onNodeWithText("IME").assertDoesNotExist()
+        composeTestRule.onNodeWithContentDescription(
+            composeTestRule.activity.getString(R.string.terminal_keyboard_text_input_button),
+        ).assertIsDisplayed()
+    }
+
     private fun setKeyboardContent(
         modifierState: ModifierState = ModifierState(
             ctrlState = ModifierLevel.OFF,
@@ -182,6 +207,8 @@ class TerminalKeyboardContentTest {
         onScrollInProgressChange: (Boolean) -> Unit = {},
         imeVisible: Boolean = false,
         bumpyArrows: Boolean = false,
+        showImeToggleKey: Boolean = true,
+        onToggleComposeMode: () -> Unit = {},
     ) {
         composeTestRule.setContent {
             ConnectBotTheme {
@@ -199,6 +226,8 @@ class TerminalKeyboardContentTest {
                     imeVisible = imeVisible,
                     playAnimation = false,
                     bumpyArrows = bumpyArrows,
+                    showImeToggleKey = showImeToggleKey,
+                    onToggleComposeMode = onToggleComposeMode,
                 )
             }
         }
