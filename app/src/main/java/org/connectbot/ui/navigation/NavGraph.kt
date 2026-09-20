@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -283,7 +283,7 @@ private fun NavBackStackEntry?.lifecycleIsResumed() = this?.lifecycle?.currentSt
  * the back button. This checks if the current destination's lifecycle state is RESUMED
  * before allowing the navigation to proceed.
  */
-private fun NavHostController.safePopBackStack() = if (currentBackStackEntry.lifecycleIsResumed()) popBackStack() else false
+internal fun NavHostController.safePopBackStack() = if (currentBackStackEntry.lifecycleIsResumed()) popBackStack() else false
 
 /**
  * A more robust navigate function that avoids navigating to the
