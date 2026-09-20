@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,7 +98,7 @@ class ConnectivityMonitor(
         override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
             Timber.i("Network capabilities changed: $network")
             // Update network info to reflect capability changes
-            updateNetworkInfo(network)
+            updateNetworkInfo(network, networkCapabilities = networkCapabilities)
         }
     }
 
@@ -107,6 +107,16 @@ class ConnectivityMonitor(
             Timber.i("Default network available: $network")
             defaultNetwork = network
             updateNetworkInfo(network)
+        }
+
+        // VPNs can become validated after onAvailable. Keep the default network
+        // current so reconnect requests do not wait forever on that initial state.
+        override fun onCapabilitiesChanged(network: Network, networkCapabilities: NetworkCapabilities) {
+            updateNetworkInfo(network, networkCapabilities = networkCapabilities)
+        }
+
+        override fun onLinkPropertiesChanged(network: Network, linkProperties: LinkProperties) {
+            updateNetworkInfo(network, linkProperties)
         }
 
         override fun onLost(network: Network) {
@@ -125,6 +135,8 @@ class ConnectivityMonitor(
     fun init() {
         val request = NetworkRequest.Builder()
             .addCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET)
+            // NetworkRequest excludes VPNs by default. Track their loss and IPs too.
+            .removeCapability(NetworkCapabilities.NET_CAPABILITY_NOT_VPN)
             .build()
 
         connectivityManager.registerNetworkCallback(request, networkCallback)
@@ -163,9 +175,13 @@ class ConnectivityMonitor(
     /**
      * Update network info based on current active network.
      */
-    private fun updateNetworkInfo(network: Network, linkProperties: LinkProperties? = null) {
+    private fun updateNetworkInfo(
+        network: Network,
+        linkProperties: LinkProperties? = null,
+        networkCapabilities: NetworkCapabilities? = null,
+    ) {
         val props = linkProperties ?: connectivityManager.getLinkProperties(network)
-        val capabilities = connectivityManager.getNetworkCapabilities(network)
+        val capabilities = networkCapabilities ?: connectivityManager.getNetworkCapabilities(network)
 
         if (props == null || capabilities == null) {
             Timber.w("Could not get link properties or capabilities for network: $network")
@@ -209,6 +225,10 @@ class ConnectivityMonitor(
      * Determine network type from NetworkCapabilities.
      */
     private fun getNetworkType(capabilities: NetworkCapabilities): Int = when {
+        // A VPN also advertises its underlying transport (for example Wi-Fi).
+        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN) ->
+            NetworkCapabilities.TRANSPORT_VPN
+
         capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) ->
             NetworkCapabilities.TRANSPORT_WIFI
 
@@ -217,9 +237,6 @@ class ConnectivityMonitor(
 
         capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) ->
             NetworkCapabilities.TRANSPORT_ETHERNET
-
-        capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN) ->
-            NetworkCapabilities.TRANSPORT_VPN
 
         else -> -1
     }

@@ -121,7 +121,10 @@ import androidx.core.content.edit
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.currentStateAsState
 import androidx.preference.PreferenceManager
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -707,15 +710,17 @@ fun ConsoleScreen(
         }
     }
 
-    // Navigate back if all bridges are closed (after initial loading). This must be
-    // lifecycle-aware: a quick-disconnect can empty the list while the app is in
-    // the background, when safePopBackStack() intentionally rejects navigation.
-    // LifecycleResumeEffect retries the navigation when the console resumes.
-    LifecycleResumeEffect(uiState.bridges.size, uiState.isLoading) {
-        if (uiState.bridges.isEmpty() && !uiState.isLoading) {
+    // Defer navigation until after lifecycle dispatch has finished. Popping from
+    // ON_RESUME synchronously can re-enter Navigation while it is updating entries.
+    // Observing lifecycle state also retries a background disconnect on resume.
+    val lifecycle = LocalLifecycleOwner.current.lifecycle
+    val lifecycleState by lifecycle.currentStateAsState()
+    LaunchedEffect(uiState.bridges.isEmpty(), uiState.isLoading, lifecycleState) {
+        if (uiState.bridges.isEmpty() && !uiState.isLoading &&
+            lifecycle.currentState == Lifecycle.State.RESUMED
+        ) {
             currentOnNavigateBack()
         }
-        onPauseOrDispose {}
     }
 
     // Request focus on terminal when screen appears (e.g., returning from navigation)

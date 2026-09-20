@@ -24,7 +24,9 @@ import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
 import android.content.pm.ActivityInfo.SCREEN_ORIENTATION_SENSOR
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.material3.Text
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
@@ -34,6 +36,10 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LifecycleRegistry
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.NavType
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.NavHost
@@ -60,6 +66,7 @@ import org.connectbot.terminal.TerminalDimensions
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.TerminalEmulatorFactory
 import org.connectbot.ui.LocalTerminalManager
+import org.connectbot.ui.navigation.safePopBackStack
 import org.connectbot.ui.screens.console.ConsoleScreen
 import org.connectbot.ui.screens.console.ConsoleUiState
 import org.connectbot.ui.screens.console.ConsoleViewModel
@@ -102,28 +109,42 @@ class ConsoleScreenTest {
     private fun setContent(
         mockTerminalManager: TerminalManager? = null,
         mockConsoleViewModel: ConsoleViewModel? = null,
+        lifecycleOwner: LifecycleOwner = composeTestRule.activity,
+        onAutomaticBack: () -> Unit = {},
     ) {
         composeTestRule.setContent {
             val context = LocalContext.current
-            navController = TestNavHostController(context)
-            navController.navigatorProvider.addNavigator(ComposeNavigator())
+            navController = remember {
+                TestNavHostController(context).apply {
+                    navigatorProvider.addNavigator(ComposeNavigator())
+                }
+            }
             ConnectBotTheme {
-                CompositionLocalProvider(LocalTerminalManager provides mockTerminalManager) {
+                CompositionLocalProvider(
+                    LocalTerminalManager provides mockTerminalManager,
+                    LocalLifecycleOwner provides lifecycleOwner,
+                ) {
                     NavHost(navController = navController, startDestination = "start") {
-                        composable("start") {}
+                        composable("start") { Text("Host list") }
                         composable(
                             route = "console/{hostId}",
                             arguments = listOf(navArgument("hostId") { type = NavType.LongType }),
                         ) {
                             if (mockConsoleViewModel != null) {
                                 ConsoleScreen(
-                                    onNavigateBack = { navController.popBackStack() },
+                                    onNavigateBack = {
+                                        onAutomaticBack()
+                                        navController.safePopBackStack()
+                                    },
                                     onNavigateToPortForwards = {},
                                     viewModel = mockConsoleViewModel,
                                 )
                             } else {
                                 ConsoleScreen(
-                                    onNavigateBack = { navController.popBackStack() },
+                                    onNavigateBack = {
+                                        onAutomaticBack()
+                                        navController.safePopBackStack()
+                                    },
                                     onNavigateToPortForwards = {},
                                 )
                             }
@@ -137,6 +158,64 @@ class ConsoleScreenTest {
     private fun navigateToConsoleScreen(hostId: Long = -1L) {
         composeTestRule.runOnUiThread {
             navController.navigate("console/$hostId")
+        }
+    }
+
+    @Test
+    fun consoleScreen_emptyOnEntry_returnsToHostList() {
+        val viewModel = mock(ConsoleViewModel::class.java)
+        `when`(viewModel.uiState).thenReturn(MutableStateFlow(ConsoleUiState(isLoading = false)))
+        `when`(viewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+        setContent(mockConsoleViewModel = viewModel)
+        navigateToConsoleScreen()
+
+        composeTestRule.onNodeWithText("Host list").assertIsDisplayed()
+        composeTestRule.runOnIdle {
+            assertEquals("start", navController.currentDestination?.route)
+        }
+    }
+
+    @Test
+    fun consoleScreen_disconnectInBackground_navigatesAfterResumeDispatch() {
+        val owner = object : LifecycleOwner {
+            override val lifecycle = LifecycleRegistry(this)
+        }
+        val states = MutableStateFlow(ConsoleUiState())
+        val viewModel = mock(ConsoleViewModel::class.java)
+        `when`(viewModel.uiState).thenReturn(states)
+        `when`(viewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+        var dispatchingResume = false
+        var backCount = 0
+        composeTestRule.runOnUiThread {
+            owner.lifecycle.currentState = Lifecycle.State.RESUMED
+        }
+        setContent(
+            mockConsoleViewModel = viewModel,
+            lifecycleOwner = owner,
+            onAutomaticBack = {
+                assertFalse("Navigation must run after lifecycle dispatch", dispatchingResume)
+                backCount++
+            },
+        )
+        navigateToConsoleScreen()
+        composeTestRule.waitForIdle()
+        composeTestRule.runOnUiThread {
+            owner.lifecycle.currentState = Lifecycle.State.CREATED
+            states.value = ConsoleUiState(isLoading = false)
+        }
+        composeTestRule.runOnIdle {
+            assertEquals(0, backCount)
+            assertEquals("console/{hostId}", navController.currentDestination?.route)
+        }
+        composeTestRule.runOnUiThread {
+            dispatchingResume = true
+            owner.lifecycle.currentState = Lifecycle.State.RESUMED
+            dispatchingResume = false
+        }
+        composeTestRule.onNodeWithText("Host list").assertIsDisplayed()
+        composeTestRule.runOnIdle {
+            assertEquals(1, backCount)
+            assertEquals("start", navController.currentDestination?.route)
         }
     }
 
