@@ -17,79 +17,75 @@
 
 package org.connectbot.util
 
-import com.trilead.ssh2.crypto.OpenSSHKeyEncoder
-import com.trilead.ssh2.crypto.PEMEncoder
-import com.trilead.ssh2.crypto.keys.Ed25519KeyPairGenerator
-import com.trilead.ssh2.crypto.keys.Ed25519PrivateKey
-import com.trilead.ssh2.crypto.keys.Ed25519PublicKey
 import org.assertj.core.api.Assertions.assertThat
+import org.connectbot.sshlib.SshKeys
 import org.junit.Test
 
 class PubkeyUtilsTest {
 
-    private val ed25519KeyPair = Ed25519KeyPairGenerator().generateKeyPair()
+    private val ed25519KeyPair = java.security.KeyPairGenerator.getInstance("Ed25519").generateKeyPair()
 
     @Test
-    fun decodePrivate_ed25519StoredType_returnsSshlibKey() {
+    fun decodePrivate_ed25519StoredType_returnsKey() {
         val privateKey = PubkeyUtils.decodePrivate(ed25519KeyPair.private.encoded, "Ed25519")
 
-        assertThat(privateKey).isInstanceOf(Ed25519PrivateKey::class.java)
+        assertThat(privateKey).isNotNull()
     }
 
     @Test
-    fun decodePublic_ed25519StoredType_returnsSshlibKey() {
+    fun decodePublic_ed25519StoredType_returnsKey() {
         val publicKey = PubkeyUtils.decodePublic(ed25519KeyPair.public.encoded, "Ed25519")
 
-        assertThat(publicKey).isInstanceOf(Ed25519PublicKey::class.java)
+        assertThat(publicKey).isNotNull()
     }
 
     @Test
     fun decodePrivate_lowercaseEd25519StoredType_returnsSshlibKey() {
         val privateKey = PubkeyUtils.decodePrivate(ed25519KeyPair.private.encoded, "ed25519")
 
-        assertThat(privateKey).isInstanceOf(Ed25519PrivateKey::class.java)
+        assertThat(privateKey).isNotNull()
     }
 
     @Test
     fun decodePublic_lowercaseEd25519StoredType_returnsSshlibKey() {
         val publicKey = PubkeyUtils.decodePublic(ed25519KeyPair.public.encoded, "ed25519")
 
-        assertThat(publicKey).isInstanceOf(Ed25519PublicKey::class.java)
+        assertThat(publicKey).isNotNull()
     }
 
     @Test
     fun decodePrivate_lowercaseLegacyEdDsaType_returnsSshlibKey() {
         val privateKey = PubkeyUtils.decodePrivate(ed25519KeyPair.private.encoded, "eddsa")
 
-        assertThat(privateKey).isInstanceOf(Ed25519PrivateKey::class.java)
+        assertThat(privateKey).isNotNull()
     }
 
     @Test
     fun decodePublic_lowercaseLegacyEdDsaType_returnsSshlibKey() {
         val publicKey = PubkeyUtils.decodePublic(ed25519KeyPair.public.encoded, "eddsa")
 
-        assertThat(publicKey).isInstanceOf(Ed25519PublicKey::class.java)
+        assertThat(publicKey).isNotNull()
     }
 
     @Test
     fun decodePrivate_uppercaseLegacyEdDsaType_returnsSshlibKey() {
         val privateKey = PubkeyUtils.decodePrivate(ed25519KeyPair.private.encoded, "EDDSA")
 
-        assertThat(privateKey).isInstanceOf(Ed25519PrivateKey::class.java)
+        assertThat(privateKey).isNotNull()
     }
 
     @Test
     fun decodePublic_uppercaseLegacyEdDsaType_returnsSshlibKey() {
         val publicKey = PubkeyUtils.decodePublic(ed25519KeyPair.public.encoded, "EDDSA")
 
-        assertThat(publicKey).isInstanceOf(Ed25519PublicKey::class.java)
+        assertThat(publicKey).isNotNull()
     }
 
     @Test
     fun decodePrivate_legacyOpenSshEd25519Type_returnsSshlibKey() {
         val privateKey = PubkeyUtils.decodePrivate(ed25519KeyPair.private.encoded, "ssh-ed25519")
 
-        assertThat(privateKey).isInstanceOf(Ed25519PrivateKey::class.java)
+        assertThat(privateKey).isNotNull()
     }
 
     @Test
@@ -97,8 +93,8 @@ class PubkeyUtilsTest {
         val privateKey = PubkeyUtils.decodePrivate(ed25519KeyPair.private.encoded, "Ed25519")
         val publicKey = PubkeyUtils.decodePublic(ed25519KeyPair.public.encoded, "Ed25519")
 
-        val openSsh = OpenSSHKeyEncoder.exportOpenSSH(privateKey, publicKey, "test-key")
-        val pem = PEMEncoder.encodePrivateKey(privateKey, null)
+        val openSsh = SshKeys.encodeOpenSshPrivateKey(java.security.KeyPair(publicKey, privateKey!!))
+        val pem = SshKeys.encodePemPrivateKey(java.security.KeyPair(publicKey, privateKey))
 
         assertThat(openSsh).contains("-----BEGIN OPENSSH PRIVATE KEY-----")
         assertThat(pem).contains("-----BEGIN PRIVATE KEY-----")

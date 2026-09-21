@@ -24,7 +24,7 @@ enum class SshKeyType(
     RSA("RSA", "RSA"),
     DSA("DSA", "DSA"),
     EC("EC", "EC"),
-    ED25519("Ed25519", null),
+    ED25519("Ed25519", "Ed25519"),
     LEGACY_IMPORTED("IMPORTED", null),
     ;
 

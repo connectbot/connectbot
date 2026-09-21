@@ -39,7 +39,6 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.DefaultLifecycleObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ProcessLifecycleOwner
-import com.trilead.ssh2.crypto.PublicKeyUtils
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -63,6 +62,7 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.sshlib.SshSigning
 import org.connectbot.transport.TransportFactory
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.ProviderLoader
@@ -593,7 +593,7 @@ class TerminalManager :
 
         removeKey(pubkey.nickname)
 
-        val sshPubKey = PublicKeyUtils.extractPublicKeyBlob(pair.public)
+        val sshPubKey = SshSigning.encodePublicKey(pair).publicKeyBlob
 
         val keyHolder = KeyHolder()
         keyHolder.pubkey = pubkey
@@ -675,7 +675,7 @@ class TerminalManager :
         val keyPair = KeyPair(publicKey, privateKey)
 
         // Extract OpenSSH format public key for SSH authentication
-        val sshPubKey = PublicKeyUtils.extractPublicKeyBlob(keyPair.public)
+        val sshPubKey = SshSigning.encodePublicKey(keyPair).publicKeyBlob
 
         val keyHolder = KeyHolder()
         keyHolder.pubkey = pubkey

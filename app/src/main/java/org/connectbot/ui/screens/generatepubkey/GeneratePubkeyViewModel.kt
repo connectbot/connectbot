@@ -19,7 +19,6 @@ package org.connectbot.ui.screens.generatepubkey
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.trilead.ssh2.crypto.keys.Ed25519Provider
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -95,11 +94,6 @@ class GeneratePubkeyViewModel @Inject constructor(
 ) : ViewModel() {
     companion object {
         private val ECDSA_SIZES = intArrayOf(256, 384, 521)
-    }
-
-    init {
-        // Ensure Ed25519 provider is available
-        Ed25519Provider.insertIfNeeded()
     }
 
     private val _uiState = MutableStateFlow(
