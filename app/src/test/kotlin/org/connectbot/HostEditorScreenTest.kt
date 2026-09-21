@@ -134,6 +134,10 @@ class HostEditorScreenTest {
             .onNodeWithTag("add_host_button")
             .performClick()
 
+        composeTestRule.waitUntil(timeoutMillis = 5_000) {
+            navController.currentBackStackEntry?.destination?.route == "start"
+        }
+
         composeTestRule.runOnIdle {
             assertTrue(navController.currentBackStackEntry?.destination?.route == "start")
         }
