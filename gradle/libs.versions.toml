@@ -24,7 +24,7 @@ activityCompose = "1.13.0"
 
 sshlib = "2.2.48"
 termlib = "0.2.1"
-playServicesBasement = "18.11.0"
+playServicesBasement = "18.12.0"
 playFeatureDelivery = "2.1.0"
 conscrypt = "2.7.0"
 conscryptOpenJdk = "2.7.0"
