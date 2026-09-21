@@ -1062,11 +1062,24 @@ class SSH :
         }
 
         if ((newConditions and ChannelCondition.EOF) != 0) {
-            // Dispatch REMOTE_EOF before close(): connection.close() fires
-            // connectionLost() synchronously, which would otherwise race in
-            // with IO_ERROR and trigger the reconnect overlay.
-            onDisconnect(DisconnectReason.REMOTE_EOF)
-            close()
+            // A final data packet and EOF may be reported together. Deliver the
+            // data first; the next read will observe EOF and disconnect.
+            if (bytesRead > 0) {
+                return bytesRead
+            }
+
+            // TerminalBridge owns closing a connected transport after it has
+            // transitioned the bridge to disconnected. Calling close() here as
+            // well races with that asynchronous close and can re-enter through
+            // ConnectionMonitor.connectionLost().
+            val currentBridge = bridge
+            if (currentBridge != null) {
+                currentBridge.dispatchDisconnect(DisconnectReason.REMOTE_EOF)
+            } else {
+                // SSH is normally always attached to a bridge. Preserve the
+                // transport contract for callers that use it independently.
+                close()
+            }
             throw IOException("Remote end closed connection")
         }
 
