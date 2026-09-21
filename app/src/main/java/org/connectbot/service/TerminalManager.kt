@@ -965,7 +965,6 @@ class TerminalManager :
             "Someone rebound to TerminalManager with %d bridges active",
             bridgesFlow.value.size,
         )
-        isUiBound = true
         keepServiceAlive()
         setResizeAllowed(true)
     }
