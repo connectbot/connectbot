@@ -371,68 +371,66 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(password = "", hasExistingPassword = false) }
     }
 
-    fun saveHost(useExpandedMode: Boolean) {
-        viewModelScope.launch {
-            try {
-                val state = _uiState.value
-                val existingHost = if (hostId != -1L) {
-                    repository.findHostById(hostId)
-                } else {
-                    null
+    suspend fun saveHost(useExpandedMode: Boolean) {
+        try {
+            val state = _uiState.value
+            val existingHost = if (hostId != -1L) {
+                repository.findHostById(hostId)
+            } else {
+                null
+            }
+
+            // In quick connect mode, use the quickConnect string as the nickname
+            val nickname = if (!useExpandedMode && state.quickConnect.isNotBlank()) {
+                state.quickConnect
+            } else {
+                state.nickname
+            }
+
+            // Only SSH hosts can have a jump host
+            val jumpHostId = if (state.protocol == "ssh") state.jumpHostId else null
+
+            val host = Host(
+                id = existingHost?.id ?: 0L,
+                nickname = nickname,
+                protocol = state.protocol,
+                username = state.username,
+                hostname = state.hostname,
+                port = state.port.toIntOrNull() ?: getDefaultPort(state.protocol).toIntOrNull() ?: 22,
+                color = state.color.takeIf { it != "gray" },
+                pubkeyId = state.pubkeyId,
+                profileId = state.profileId,
+                useAuthAgent = state.useAuthAgent.takeIf { it != "no" },
+                compression = state.compression,
+                wantSession = state.wantSession,
+                stayConnected = state.stayConnected,
+                quickDisconnect = state.quickDisconnect,
+                postLogin = state.postLogin.ifBlank { null },
+                lastConnect = existingHost?.lastConnect ?: System.currentTimeMillis(),
+                hostKeyAlgo = existingHost?.hostKeyAlgo,
+                useKeys = existingHost?.useKeys ?: true,
+                scrollbackLines = existingHost?.scrollbackLines ?: 140,
+                useCtrlAltAsMetaKey = existingHost?.useCtrlAltAsMetaKey ?: false,
+                jumpHostId = jumpHostId,
+                ipVersion = state.ipVersion,
+            )
+
+            val savedHost = repository.saveHost(host)
+
+            // Handle password storage (only for SSH protocol)
+            if (state.protocol == "ssh") {
+                if (state.password.isNotEmpty()) {
+                    // Save or update the password
+                    securePasswordStorage.savePassword(savedHost.id, state.password)
+                } else if (!state.hasExistingPassword) {
+                    // No password entered and no existing password - ensure it's cleared
+                    securePasswordStorage.deletePassword(savedHost.id)
                 }
-
-                // In quick connect mode, use the quickConnect string as the nickname
-                val nickname = if (!useExpandedMode && state.quickConnect.isNotBlank()) {
-                    state.quickConnect
-                } else {
-                    state.nickname
-                }
-
-                // Only SSH hosts can have a jump host
-                val jumpHostId = if (state.protocol == "ssh") state.jumpHostId else null
-
-                val host = Host(
-                    id = existingHost?.id ?: 0L,
-                    nickname = nickname,
-                    protocol = state.protocol,
-                    username = state.username,
-                    hostname = state.hostname,
-                    port = state.port.toIntOrNull() ?: getDefaultPort(state.protocol).toIntOrNull() ?: 22,
-                    color = state.color.takeIf { it != "gray" },
-                    pubkeyId = state.pubkeyId,
-                    profileId = state.profileId,
-                    useAuthAgent = state.useAuthAgent.takeIf { it != "no" },
-                    compression = state.compression,
-                    wantSession = state.wantSession,
-                    stayConnected = state.stayConnected,
-                    quickDisconnect = state.quickDisconnect,
-                    postLogin = state.postLogin.ifBlank { null },
-                    lastConnect = existingHost?.lastConnect ?: System.currentTimeMillis(),
-                    hostKeyAlgo = existingHost?.hostKeyAlgo,
-                    useKeys = existingHost?.useKeys ?: true,
-                    scrollbackLines = existingHost?.scrollbackLines ?: 140,
-                    useCtrlAltAsMetaKey = existingHost?.useCtrlAltAsMetaKey ?: false,
-                    jumpHostId = jumpHostId,
-                    ipVersion = state.ipVersion,
-                )
-
-                val savedHost = repository.saveHost(host)
-
-                // Handle password storage (only for SSH protocol)
-                if (state.protocol == "ssh") {
-                    if (state.password.isNotEmpty()) {
-                        // Save or update the password
-                        securePasswordStorage.savePassword(savedHost.id, state.password)
-                    } else if (!state.hasExistingPassword) {
-                        // No password entered and no existing password - ensure it's cleared
-                        securePasswordStorage.deletePassword(savedHost.id)
-                    }
-                    // If password is empty but hasExistingPassword is true, keep existing
-                }
-            } catch (e: Exception) {
-                _uiState.update {
-                    it.copy(error = e.message ?: "Failed to save host")
-                }
+                // If password is empty but hasExistingPassword is true, keep existing
+            }
+        } catch (e: Exception) {
+            _uiState.update {
+                it.copy(error = e.message ?: "Failed to save host")
             }
         }
     }
