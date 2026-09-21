@@ -44,6 +44,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imeAnimationSource
 import androidx.compose.foundation.layout.imeAnimationTarget
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.union
@@ -90,6 +91,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
@@ -110,6 +112,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.LinkAnnotation
@@ -258,6 +261,17 @@ internal fun sessionSwipeTarget(
 }
 
 @VisibleForTesting
+internal fun shouldRecordSoftwareKeyboardDismissal(
+    hasImeBeenVisible: Boolean,
+    systemImeVisible: Boolean,
+    showSoftwareKeyboard: Boolean,
+    windowFocused: Boolean,
+    anyModalActive: Boolean,
+    resizeSuspended: Boolean,
+): Boolean = hasImeBeenVisible && !systemImeVisible && showSoftwareKeyboard &&
+    windowFocused && !anyModalActive && !resizeSuspended
+
+@VisibleForTesting
 internal fun shouldShowSoftwareKeyboardForSessionOpen(
     previousBridgeId: Long?,
     previousSessionOpen: Boolean,
@@ -350,6 +364,7 @@ private fun ConsoleTerminalPage(
     isActive: Boolean,
     keyboardAlwaysVisible: Boolean,
     showSoftwareKeyboard: Boolean,
+    resizeSuspended: Boolean,
     forceSize: Pair<Int, Int>?,
     termFocusRequester: FocusRequester,
     showExtraKeyboard: Boolean,
@@ -403,6 +418,7 @@ private fun ConsoleTerminalPage(
             initialFontSize = fontSize.sp,
             keyboardEnabled = true,
             showSoftKeyboard = showSoftwareKeyboard && isActive,
+            resizeSuspended = resizeSuspended,
             focusRequester = termFocusRequester,
             forcedSize = forceSize,
             modifierManager = bridge.keyHandler,
@@ -576,6 +592,8 @@ fun ConsoleScreen(
     var forceSize: Pair<Int, Int>? by remember { mutableStateOf(null) }
 
     var showMenu by remember { mutableStateOf(false) }
+    var resizeSuspended by remember { mutableStateOf(false) }
+    var menuImeWasVisible by remember { mutableStateOf(false) }
     var showUrlScanDialog by remember { mutableStateOf(false) }
     var showResizeDialog by remember { mutableStateOf(false) }
     var showDisconnectDialog by remember { mutableStateOf(false) }
@@ -751,6 +769,24 @@ fun ConsoleScreen(
     val density = LocalDensity.current
     val imeHeight = with(density) { imeInsets.getBottom(density).toDp() }
     val systemImeVisible = imeHeight > 0.dp
+    val windowFocused = LocalWindowInfo.current.isWindowFocused
+    val imeAnimating = WindowInsets.imeAnimationSource.getBottom(density) !=
+        WindowInsets.imeAnimationTarget.getBottom(density)
+
+    // Popup dismissal precedes window focus restoration and the IME animation.
+    // Retain the PTY size through that transition, including menus opening dialogs.
+    LaunchedEffect(anyModalActive, windowFocused, imeAnimating, systemImeVisible, showSoftwareKeyboard) {
+        if (resizeSuspended && !anyModalActive && windowFocused && !imeAnimating) {
+            if (menuImeWasVisible && showSoftwareKeyboard && !systemImeVisible) {
+                // Focus can return before Android even starts restoring the IME.
+                // A visibility/animation change cancels this wait. If Android
+                // declines the request, eventually accept the keyboard-free size.
+                delay(1000)
+            }
+            withFrameNanos { }
+            resizeSuspended = false
+        }
+    }
     var hasImeBeenVisible by remember { mutableStateOf(false) }
     val latestCurrentBridgeId by rememberUpdatedState(currentBridgeId)
 
@@ -762,7 +798,20 @@ fun ConsoleScreen(
         }
         // Only sync to hidden state after IME has been visible at least once.
         // This prevents canceling the keyboard before it has a chance to show.
-        if (hasImeBeenVisible && !systemImeVisible && showSoftwareKeyboard) {
+        // A focusable popup may temporarily hide the IME. Keep the user's request
+        // intact so termlib can restore it when the terminal window regains focus.
+        // Observe visibility transitions only: ending resize suspension must not
+        // reinterpret the same temporary hidden state as a Back-button dismissal.
+        if (
+            shouldRecordSoftwareKeyboardDismissal(
+                hasImeBeenVisible = hasImeBeenVisible,
+                systemImeVisible = systemImeVisible,
+                showSoftwareKeyboard = showSoftwareKeyboard,
+                windowFocused = windowFocused,
+                anyModalActive = anyModalActive,
+                resizeSuspended = resizeSuspended,
+            )
+        ) {
             if (ignoreImeHiddenForBridgeId == latestCurrentBridgeId) {
                 termFocusRequester.requestFocus()
             } else {
@@ -979,6 +1028,7 @@ fun ConsoleScreen(
                                 isActive = true,
                                 keyboardAlwaysVisible = keyboardAlwaysVisible,
                                 showSoftwareKeyboard = showSoftwareKeyboard,
+                                resizeSuspended = resizeSuspended,
                                 forceSize = forceSize,
                                 termFocusRequester = termFocusRequester,
                                 showExtraKeyboard = showExtraKeyboard,
@@ -1164,6 +1214,8 @@ fun ConsoleScreen(
                             onClick = {
                                 // Refresh menu state to update enabled/disabled items
                                 viewModel.refreshMenuState()
+                                menuImeWasVisible = imeVisible
+                                resizeSuspended = true
                                 showMenu = true
                             },
                         ) {
