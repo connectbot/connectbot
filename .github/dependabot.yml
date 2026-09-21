@@ -4,6 +4,11 @@ updates:
   directory: "/"
   schedule:
     interval: daily
+  cooldown:
+    default-days: 3
+    exclude:
+      - "org.connectbot.*"
+      - "org.connectbot:*"
   open-pull-requests-limit: 10
 
 - package-ecosystem: gradle
