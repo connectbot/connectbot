@@ -328,7 +328,12 @@ class TerminalBridge {
             },
             onResize = {
                 transportOperations.trySend(
-                    TransportOperation.SetDimensions(it.columns, it.rows, 0, 0),
+                    TransportOperation.SetDimensions(
+                        it.columns,
+                        it.rows,
+                        it.widthPixels,
+                        it.heightPixels,
+                    ),
                 )
             },
             onClipboardCopy = { text ->
