@@ -26,9 +26,11 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.ProfileRepository
+import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -36,8 +38,9 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.kotlin.mock
-import org.mockito.kotlin.whenever
+import org.mockito.Mockito.mock
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.`when`
 import org.robolectric.RobolectricTestRunner
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -59,13 +62,13 @@ class ProfileEditorViewModelTest {
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
         context = ApplicationProvider.getApplicationContext()
-        profileRepository = mock()
-        colorSchemeRepository = mock()
-        sharedPreferences = mock()
+        profileRepository = mock(ProfileRepository::class.java)
+        colorSchemeRepository = mock(ColorSchemeRepository::class.java)
+        sharedPreferences = mock(SharedPreferences::class.java)
 
-        whenever(colorSchemeRepository.observeAllSchemes()).thenReturn(MutableStateFlow(emptyList()))
-        whenever(sharedPreferences.getString("customFonts", "")).thenReturn("")
-        whenever(sharedPreferences.getString("customTerminalTypes", "")).thenReturn("")
+        `when`(colorSchemeRepository.observeAllSchemes()).thenReturn(MutableStateFlow(emptyList()))
+        `when`(sharedPreferences.getString("customFonts", "")).thenReturn("")
+        `when`(sharedPreferences.getString("customTerminalTypes", "")).thenReturn("")
     }
 
     @After
@@ -81,6 +84,33 @@ class ProfileEditorViewModelTest {
         context = context,
         dispatchers = dispatchers,
     )
+
+    @Test
+    fun inlineImagesDefaultsToAskAndSavesSelection() = runTest {
+        val viewModel = createViewModel()
+        assertEquals("ask", viewModel.uiState.value.inlineImages)
+        assertEquals("ask", Profile.createDefault().inlineImages)
+        viewModel.updateName("Images")
+        viewModel.updateInlineImages("on")
+        `when`(profileRepository.nameExists("Images", null)).thenReturn(false)
+        `when`(profileRepository.save(Profile(name = "Images", inlineImages = "on"))).thenReturn(1L)
+        viewModel.save {}
+        verify(profileRepository).save(Profile(name = "Images", inlineImages = "on"))
+    }
+
+    @Test
+    fun inlineImagesLoadsSavedSelection() = runTest {
+        `when`(profileRepository.getById(2L)).thenReturn(Profile(id = 2L, name = "Images", inlineImages = "off"))
+        val viewModel = ProfileEditorViewModel(
+            SavedStateHandle(mapOf("profileId" to 2L)),
+            profileRepository,
+            colorSchemeRepository,
+            sharedPreferences,
+            context,
+            dispatchers,
+        )
+        assertEquals("off", viewModel.uiState.value.inlineImages)
+    }
 
     @Test
     fun commonEncodings_hasExpectedFiveEntriesInOrder() {

@@ -28,6 +28,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
@@ -146,6 +147,16 @@ class TerminalBridge {
 
     // Profile observation
     private var currentProfileId: Long? = null
+    private var inlineImagesSetting = "ask"
+    private val sessionInlineImages = SessionInlineImages {
+        scope.async(dispatchers.main) {
+            promptManager.requestBooleanPrompt(
+                manager.res.getString(R.string.inline_images_prompt_title),
+                manager.res.getString(R.string.inline_images_prompt_message),
+            )
+        }.await()
+    }
+
     private var profileObservationJob: Job? = null
 
     val manager: TerminalManager
@@ -302,7 +313,9 @@ class TerminalBridge {
 
         // Initialize TerminalEmulator with colors from scheme
         // Note: We pass the actual RGB colors (not indices) wrapped in Color objects
+        inlineImagesSetting = profile.inlineImages
         terminalEmulator = TerminalEmulatorFactory.create(
+            inlineImages = sessionInlineImages.policy(inlineImagesSetting),
             initialRows = 24, // Will be resized when view is attached
             initialCols = 80,
             defaultForeground = Color(defaultFgColor),
@@ -446,6 +459,10 @@ class TerminalBridge {
      * Apply profile settings to the terminal.
      */
     private fun applyProfileSettings(profile: org.connectbot.data.entity.Profile) {
+        if (inlineImagesSetting != profile.inlineImages) {
+            inlineImagesSetting = profile.inlineImages
+            terminalEmulator.setInlineImages(sessionInlineImages.policy(inlineImagesSetting))
+        }
         // Apply font size
         val newFontSize = if (profile.fontSize > 0) profile.fontSize else DEFAULT_FONT_SIZE_SP
         if (newFontSize.toFloat() != fontSizeSp) {

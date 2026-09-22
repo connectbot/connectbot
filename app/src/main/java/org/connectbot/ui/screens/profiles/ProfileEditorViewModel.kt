@@ -49,6 +49,7 @@ data class ProfileEditorUiState(
     val fontFamily: String? = null,
     val fontSize: Int = 10,
     val delKey: String = "del",
+    val inlineImages: String = "ask",
     val encoding: String = "UTF-8",
     val emulation: String = "xterm-256color",
     val forceSizeEnabled: Boolean = false,
@@ -152,6 +153,7 @@ class ProfileEditorViewModel @Inject constructor(
                         fontFamily = profile.fontFamily,
                         fontSize = profile.fontSize,
                         delKey = profile.delKey,
+                        inlineImages = profile.inlineImages,
                         encoding = profile.encoding,
                         emulation = profile.emulation,
                         forceSizeEnabled = forceSizeEnabled,
@@ -205,6 +207,10 @@ class ProfileEditorViewModel @Inject constructor(
         _uiState.update { it.copy(delKey = value) }
     }
 
+    fun updateInlineImages(value: String) {
+        _uiState.update { it.copy(inlineImages = value) }
+    }
+
     fun updateEncoding(value: String) {
         _uiState.update { it.copy(encoding = value) }
     }
@@ -251,6 +257,7 @@ class ProfileEditorViewModel @Inject constructor(
                 fontFamily = state.fontFamily,
                 fontSize = state.fontSize,
                 delKey = state.delKey,
+                inlineImages = state.inlineImages,
                 encoding = state.encoding,
                 emulation = state.emulation,
                 forceSizeRows = if (state.forceSizeEnabled) state.forceSizeRows else null,
