@@ -1653,7 +1653,7 @@
 	<string name="automation_key_shift">Shift</string>
 	<!-- Action summary duration in seconds. -->
 	<string name="automation_seconds">%1$.3f s</string>
- 	<!-- FIDO2 Security Key strings -->
+	<!-- FIDO2 Security Key strings -->
 	<!-- Title for FIDO2 connect prompt asking user to connect their security key -->
 	<string name="fido2_connect_title">Connect Security Key</string>
 	<!-- Message instructing user to connect their FIDO2 security key via USB or NFC -->
