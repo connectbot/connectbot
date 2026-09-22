@@ -2,6 +2,30 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased][Unreleased]
+
+### Added
+- Restore in-console session switching and add an optional swipe gesture for switching between terminal sessions
+- Add controls for full IME mode and for choosing whether Ctrl and Alt shortcuts use direct terminal input or the IME
+- Add profile-level support for iTerm2 and Kitty inline images, with off, per-session consent, and always-on policies
+- Add font shaping and fallback for Arabic and other complex scripts
+- Add improved rendering for combining characters, emoji sequences, box-drawing characters, and block characters
+
+### Fixed
+- Show bell notifications only while ConnectBot is not visible, and route bells through the currently visible console
+- Keep the console visible when the network drops and correctly detect VPN connectivity while reconnecting
+- Preserve the keyboard state while switching sessions and prevent swipes from conflicting with text selection or special keys
+- Correctly copy terminal selections, including selections that cross the scrollback boundary
+- Improve IME input handling for Hangul, backspaces, wide characters, cursor context, and paste actions
+- Require bare domains detected as URLs to end at a token boundary
+- Handle malformed terminal OSC input without exposing its payload in logs
+
+### Changed
+- Improve terminal rendering performance with frame-aware updates and less work on the UI thread
+
+### Dependencies
+- Update ConnectBot termlib from 0.1.0 to 0.3.3
+
 ## [1.10.9][1.10.9]
 
 ### Fixed
@@ -338,6 +362,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Color picker color numbers are now localized
 
 
+[Unreleased]: https://github.com/connectbot/connectbot/compare/v1.10.9...HEAD
 [1.10.9]: https://github.com/connectbot/connectbot/compare/v1.10.8...v1.10.9
 [1.10.8]: https://github.com/connectbot/connectbot/compare/v1.10.7...v1.10.8
 [1.10.7]: https://github.com/connectbot/connectbot/compare/v1.10.6...v1.10.7
