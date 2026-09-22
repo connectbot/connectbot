@@ -1457,4 +1457,18 @@
 	<string name="auth_prompt_title">Unlock ConnectBot</string>
 	<!-- Subtitle shown in the biometric/device credential authentication prompt -->
 	<string name="auth_prompt_subtitle">Verify your identity to continue</string>
+
+  <!-- Inline images -->
+	<!-- Profile setting controlling Kitty and iTerm inline images. -->
+	<string name="profile_inline_images">InlineImages</string>
+	<!-- InlineImages choice: reject images without prompting. -->
+	<string name="inline_images_off">Off</string>
+	<!-- InlineImages choice: ask once per terminal session. -->
+	<string name="inline_images_ask">Ask</string>
+	<!-- InlineImages choice: allow images without prompting. -->
+	<string name="inline_images_on">On</string>
+	<!-- Title of the inline image permission prompt in a terminal session. -->
+	<string name="inline_images_prompt_title">Display inline images?</string>
+	<!-- Permission applies to all Kitty and iTerm images for this session only. -->
+	<string name="inline_images_prompt_message">Allow this host to display inline images for the rest of this session?</string>
 </resources>
