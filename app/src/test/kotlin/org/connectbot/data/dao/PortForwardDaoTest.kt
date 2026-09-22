@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,12 +25,15 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
+import org.connectbot.util.HostConstants
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.UUID
 
 @RunWith(AndroidJUnit4::class)
 class PortForwardDaoTest {
@@ -60,7 +63,7 @@ class PortForwardDaoTest {
         val portForward = createTestPortForward(hostId = hostId, nickname = "test-forward")
 
         val id = portForwardDao.insert(portForward)
-        assertThat(id).isGreaterThan(0)
+        assertThat(id).isNotEqualTo(EntityIds.NONE)
 
         val retrieved = portForwardDao.getById(id)
         assertThat(retrieved).isNotNull()
@@ -222,7 +225,7 @@ class PortForwardDaoTest {
         assertThat(retrieved.map { it.sourcePort }).containsExactlyInAnyOrder(8001, 8002, 8003, 8004, 8005)
     }
 
-    private suspend fun createTestHost(nickname: String = "test-host"): Long {
+    private suspend fun createTestHost(nickname: String = "test-host"): UUID {
         val host = Host(
             nickname = nickname,
             protocol = "ssh",
@@ -236,19 +239,19 @@ class PortForwardDaoTest {
             useAuthAgent = null,
             stayConnected = false,
             postLogin = null,
-            pubkeyId = 0,
+            pubkeyId = UUID(0, 0),
             wantSession = true,
             compression = false,
             scrollbackLines = 140,
             useCtrlAltAsMetaKey = false,
             jumpHostId = null,
-            profileId = 1L,
+            profileId = EntityIds.DEFAULT_PROFILE,
         )
         return hostDao.insert(host)
     }
 
     private fun createTestPortForward(
-        hostId: Long,
+        hostId: UUID,
         nickname: String,
         type: String = "local",
         sourcePort: Int = 8080,

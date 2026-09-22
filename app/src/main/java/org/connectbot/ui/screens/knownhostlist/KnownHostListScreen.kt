@@ -60,10 +60,11 @@ import org.connectbot.R
 import org.connectbot.data.entity.KnownHost
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.theme.ConnectBotTheme
+import java.util.UUID
 
 internal object KnownHostListTestTags {
-    fun itemRow(knownHostId: Long): String = "known_host_item_${knownHostId}_row"
-    fun deleteButton(knownHostId: Long): String = "known_host_item_${knownHostId}_delete"
+    fun itemRow(knownHostId: UUID): String = "known_host_item_${knownHostId}_row"
+    fun deleteButton(knownHostId: UUID): String = "known_host_item_${knownHostId}_delete"
 }
 
 @Composable
@@ -306,8 +307,8 @@ private fun KnownHostListScreenPreview() {
                 knownHosts = listOf(
                     KnownHostListItem(
                         knownHost = KnownHost(
-                            id = 1,
-                            hostId = 1,
+                            id = UUID(0, 1),
+                            hostId = UUID(0, 1),
                             hostname = "example.com",
                             port = 22,
                             hostKeyAlgo = "ssh-ed25519",

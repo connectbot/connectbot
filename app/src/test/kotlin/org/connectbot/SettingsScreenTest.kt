@@ -36,12 +36,14 @@ import androidx.compose.ui.test.performTextReplacement
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Profile
 import org.connectbot.terminal.ImeShortcutInputMode
 import org.connectbot.ui.screens.settings.SettingsScreen
 import org.connectbot.ui.screens.settings.SettingsScreenContent
 import org.connectbot.ui.screens.settings.SettingsUiState
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.HostConstants
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -51,6 +53,7 @@ import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 import java.io.File
+import java.util.UUID
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -332,15 +335,15 @@ class SettingsScreenTest {
 
     @Test
     fun settingsScreenContent_defaultProfileDialogReturnsSelectedProfile() {
-        var selectedProfileId: Long? = null
+        var selectedProfileId: UUID? = null
         val defaultProfile = composeTestRule.activity.getString(R.string.pref_default_profile_title)
 
         setSettingsContent(
             uiState = SettingsUiState(
-                defaultProfileId = 2L,
+                defaultProfileId = UUID(0, 2),
                 availableProfiles = listOf(
-                    Profile(id = 1L, name = "Work"),
-                    Profile(id = 2L, name = "Home"),
+                    Profile(id = UUID(0, 1), name = "Work"),
+                    Profile(id = UUID(0, 2), name = "Home"),
                 ),
             ),
             onDefaultProfileChange = { selectedProfileId = it },
@@ -359,7 +362,7 @@ class SettingsScreenTest {
             .onNodeWithText("Work")
             .performClick()
 
-        assertTrue(selectedProfileId == 1L)
+        assertTrue(selectedProfileId == UUID(0, 1))
     }
 
     private fun setSettingsContent(
@@ -372,7 +375,7 @@ class SettingsScreenTest {
         onScrollbackChange: (String) -> Unit = {},
         onAddCustomTerminalType: (String) -> Unit = {},
         onRemoveCustomTerminalType: (String) -> Unit = {},
-        onDefaultProfileChange: (Long) -> Unit = {},
+        onDefaultProfileChange: (UUID) -> Unit = {},
         onImeShortcutInputModeChange: (ImeShortcutInputMode) -> Unit = {},
         onBellNotificationChange: (Boolean) -> Unit = {},
         onConnectionLostNotificationChange: (Boolean) -> Unit = {},

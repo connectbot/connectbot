@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,6 +29,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.EntityIds
 import org.connectbot.di.CoroutineDispatchers
 import org.junit.After
 import org.junit.Before
@@ -41,13 +42,15 @@ import timber.log.Timber
  * Test to reproduce issue #1839: Database migration failure with
  * "UNIQUE constraint failed: profiles.id" error.
  *
- * The bug occurs when:
+ * The historical integer-ID bug occurred when:
  * 1. User upgrades from old ConnectBot (legacy databases) to new beta (Room database)
  * 2. Legacy database has a host with custom terminal settings (non-default fontSize, encoding, etc.)
  * 3. Migration creates 2 profiles: Default (ID=1) + custom settings profile (ID=2)
  * 4. During writeToRoomDatabase(), the first Room access triggers lazy initialization
  * 5. Room's onCreate callback inserts a default profile with auto-generated ID (becomes 1)
  * 6. Migration then tries to insert its default profile with explicit ID=1 → CONFLICT!
+ *
+ * Current fixtures reproduce the initialization conflict using the stable default-profile UUID.
  *
  * @see <a href="https://github.com/connectbot/connectbot/issues/1839">Issue #1839</a>
  */
@@ -92,8 +95,8 @@ class Issue1839MigrationTest {
      * - 1 host with custom terminal settings (fontSize=12 instead of default 10)
      * - 1 pubkey
      * - Migration creates 2 profiles (Default + Migrated Profile 2)
-     * - Conflict occurs when Room onCreate callback inserts profile ID=1
-     *   before migration tries to insert its profile with ID=1
+     * - Conflict occurs when Room onCreate inserts the default-profile UUID
+     *   before migration tries to insert the same default-profile UUID
      *
      * Expected: Migration should complete successfully without constraint violation.
      * Actual (bug): SQLiteConstraintException: UNIQUE constraint failed: profiles.id
@@ -131,8 +134,8 @@ class Issue1839MigrationTest {
                     Timber.d("Room onCreate callback - inserting default profile")
                     db.execSQL(
                         """
-                        INSERT INTO profiles (name, color_scheme_id, font_size, del_key, encoding, emulation)
-                        VALUES ('Default', -1, 10, 'del', 'UTF-8', 'xterm-256color')
+                        INSERT INTO profiles (id, name, color_scheme_id, font_size, del_key, encoding, emulation)
+                        VALUES ('${EntityIds.DEFAULT_PROFILE}', 'Default', '${EntityIds.DEFAULT_SCHEME}', 10, 'del', 'UTF-8', 'xterm-256color')
                         """.trimIndent(),
                     )
                 }
@@ -153,8 +156,8 @@ class Issue1839MigrationTest {
                 .isTrue()
 
             // Step 6: Run migration - this is where the bug manifests
-            // The bug: Room onCreate callback inserts profile ID=1, then migration
-            // tries to insert another profile with ID=1, causing a constraint violation
+            // Room onCreate and migration both create the default profile;
+            // migration must handle their shared stable UUID without a conflict
             val result = migrator.migrate()
 
             // Step 7: Verify migration succeeded
@@ -186,8 +189,7 @@ class Issue1839MigrationTest {
     /**
      * This test demonstrates that the bug only occurs when legacy hosts have
      * NON-DEFAULT terminal settings. With default settings, only one profile
-     * is created and there's no conflict because the migration's profile ID=1
-     * would match the onCreate callback's profile.
+     * is created. Its stable UUID matches the onCreate callback's default profile.
      *
      * However, even this scenario has a race condition issue.
      */
@@ -211,8 +213,8 @@ class Issue1839MigrationTest {
                     super.onCreate(db)
                     db.execSQL(
                         """
-                        INSERT INTO profiles (name, color_scheme_id, font_size, del_key, encoding, emulation)
-                        VALUES ('Default', -1, 10, 'del', 'UTF-8', 'xterm-256color')
+                        INSERT INTO profiles (id, name, color_scheme_id, font_size, del_key, encoding, emulation)
+                        VALUES ('${EntityIds.DEFAULT_PROFILE}', 'Default', '${EntityIds.DEFAULT_SCHEME}', 10, 'del', 'UTF-8', 'xterm-256color')
                         """.trimIndent(),
                     )
                 }
@@ -229,8 +231,8 @@ class Issue1839MigrationTest {
             assertThat(isMigrationNeeded).isTrue()
 
             // Even with default settings, there could be a conflict because:
-            // - onCreate inserts profile with auto-generated ID (becomes 1)
-            // - Migration inserts profile with explicit ID=1
+            // - onCreate inserts a profile with the stable default UUID
+            // - Migration inserts a profile with the same UUID
             val result = migrator.migrate()
 
             assertThat(result)
@@ -244,8 +246,8 @@ class Issue1839MigrationTest {
     /**
      * Creates a legacy hosts database with ONE host that has CUSTOM terminal settings.
      * This triggers the bug because migration will create 2 profiles:
-     * 1. Default profile (ID=1)
-     * 2. Migrated Profile 2 (ID=2) for the custom settings
+     * 1. Default profile (stable default UUID)
+     * 2. Migrated Profile 2 (new UUID) for the custom settings
      *
      * Settings that differ from default (fontSize=10, encoding=UTF-8, delKey=del):
      * - fontSize=12 (custom)

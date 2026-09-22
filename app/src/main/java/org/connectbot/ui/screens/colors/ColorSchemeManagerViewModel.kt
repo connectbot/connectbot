@@ -27,11 +27,12 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.entity.ColorScheme
+import java.util.UUID
 import javax.inject.Inject
 
 data class SchemeManagerUiState(
     val schemes: List<ColorScheme> = emptyList(),
-    val selectedSchemeId: Long? = null,
+    val selectedSchemeId: UUID? = null,
     val isLoading: Boolean = false,
     val error: String? = null,
     val showNewSchemeDialog: Boolean = false,
@@ -75,7 +76,7 @@ class ColorSchemeManagerViewModel @Inject constructor(
         }
     }
 
-    fun selectScheme(schemeId: Long) {
+    fun selectScheme(schemeId: UUID) {
         _uiState.update {
             it.copy(
                 selectedSchemeId = if (it.selectedSchemeId == schemeId) null else schemeId,
@@ -119,7 +120,7 @@ class ColorSchemeManagerViewModel @Inject constructor(
         }
     }
 
-    fun createNewScheme(name: String, description: String, basedOnSchemeId: Long) {
+    fun createNewScheme(name: String, description: String, basedOnSchemeId: UUID) {
         viewModelScope.launch {
             try {
                 // Validate name
@@ -146,7 +147,7 @@ class ColorSchemeManagerViewModel @Inject constructor(
         }
     }
 
-    fun deleteScheme(schemeId: Long) {
+    fun deleteScheme(schemeId: UUID) {
         viewModelScope.launch {
             try {
                 // Don't allow deleting built-in schemes

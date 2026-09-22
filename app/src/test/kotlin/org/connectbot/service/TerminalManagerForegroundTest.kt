@@ -48,6 +48,7 @@ import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 import java.lang.ref.WeakReference
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
@@ -116,8 +117,8 @@ class TerminalManagerForegroundTest {
     @Test
     fun openingConnectionsAlwaysStartsForegroundAndOnlyFinalDisconnectStopsIt() = runTest(dispatcher) {
         shadowOf(manager.getSystemService(NotificationManager::class.java)).setNotificationsEnabled(false)
-        val first = Host(id = 1L, nickname = "first")
-        val second = Host(id = 2L, nickname = "second")
+        val first = Host(id = UUID(0, 1), nickname = "first")
+        val second = Host(id = UUID(0, 2), nickname = "second")
         `when`(manager.hostRepository.findHostById(first.id)).thenReturn(first)
         `when`(manager.hostRepository.findHostById(second.id)).thenReturn(second)
         mockBridges().use {
@@ -139,7 +140,7 @@ class TerminalManagerForegroundTest {
     @Test
     fun acknowledgementAndMutingDoNotStopForegroundWithAlertsEnabled() = runTest(dispatcher) {
         manager.prefs.edit().putBoolean(PreferenceConstants.CONNECTION_ALERTS, true).apply()
-        val host = Host(id = 1L, nickname = "first")
+        val host = Host(id = UUID(0, 1), nickname = "first")
         `when`(manager.hostRepository.findHostById(host.id)).thenReturn(host)
         mockBridges().use {
             val bridge = manager.openConnectionForHostId(host.id)!!
@@ -156,7 +157,7 @@ class TerminalManagerForegroundTest {
 
     @Test
     fun pendingReconnectKeepsForegroundAfterLastBridgeIsRemoved() = runTest(dispatcher) {
-        val host = Host(id = 1L, nickname = "first")
+        val host = Host(id = UUID(0, 1), nickname = "first")
         `when`(manager.hostRepository.findHostById(host.id)).thenReturn(host)
         mockBridges().use {
             val bridge = manager.openConnectionForHostId(host.id)!!

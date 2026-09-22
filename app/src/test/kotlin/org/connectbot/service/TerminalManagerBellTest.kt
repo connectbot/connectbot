@@ -22,8 +22,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.util.HostConstants
 import org.connectbot.util.PreferenceConstants
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -41,13 +43,14 @@ import org.mockito.Mockito.`when`
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.annotation.Config
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
 class TerminalManagerBellTest {
     private val dispatcher = StandardTestDispatcher()
-    private val hostA = Host(id = 1L, nickname = "hostA")
-    private val hostB = Host(id = 2L, nickname = "hostB")
+    private val hostA = Host(id = UUID(0, 1), nickname = "hostA")
+    private val hostB = Host(id = UUID(0, 2), nickname = "hostB")
     private lateinit var manager: TerminalManager
     private lateinit var bridgeA: TerminalBridge
     private lateinit var bridgeB: TerminalBridge
@@ -159,7 +162,7 @@ class TerminalManagerBellTest {
         manager.setVisibleConsole(Any(), bridgeA)
         manager.onSessionEnded(bridgeA, DisconnectReason.NETWORK_LOST)
         advanceUntilIdle()
-        verify(manager.connectionNotifier).sessionEnded(manager, NotificationSession("session-1", hostA, connected = true), DisconnectReason.NETWORK_LOST, false)
+        verify(manager.connectionNotifier).sessionEnded(manager, NotificationSession("session-${hostA.id}", hostA, connected = true), DisconnectReason.NETWORK_LOST, false)
     }
 
     @Test
@@ -167,7 +170,7 @@ class TerminalManagerBellTest {
         manager.setVisibleConsole(Any(), bridgeB)
         manager.onSessionEnded(bridgeA, DisconnectReason.IO_ERROR)
         advanceUntilIdle()
-        verify(manager.connectionNotifier).sessionEnded(manager, NotificationSession("session-1", hostA, connected = true), DisconnectReason.IO_ERROR, true)
+        verify(manager.connectionNotifier).sessionEnded(manager, NotificationSession("session-${hostA.id}", hostA, connected = true), DisconnectReason.IO_ERROR, true)
     }
 
     @Test
@@ -176,7 +179,7 @@ class TerminalManagerBellTest {
         doReturn(false).`when`(manager).isUiVisible
         manager.onSessionEnded(bridgeA, DisconnectReason.NETWORK_LOST)
         advanceUntilIdle()
-        verify(manager.connectionNotifier).sessionEnded(manager, NotificationSession("session-1", hostA, connected = true), DisconnectReason.NETWORK_LOST, true)
+        verify(manager.connectionNotifier).sessionEnded(manager, NotificationSession("session-${hostA.id}", hostA, connected = true), DisconnectReason.NETWORK_LOST, true)
     }
 
     @Test
@@ -185,7 +188,7 @@ class TerminalManagerBellTest {
         manager.prefs.edit().putBoolean(PreferenceConstants.CONNECTION_LOST_NOTIFICATION, false).apply()
         manager.onSessionEnded(bridgeA, DisconnectReason.IO_ERROR)
         advanceUntilIdle()
-        verify(manager.connectionNotifier).sessionEnded(manager, NotificationSession("session-1", hostA, connected = true), DisconnectReason.IO_ERROR, false)
+        verify(manager.connectionNotifier).sessionEnded(manager, NotificationSession("session-${hostA.id}", hostA, connected = true), DisconnectReason.IO_ERROR, false)
     }
 
     @Test
@@ -195,7 +198,7 @@ class TerminalManagerBellTest {
         manager.onSessionEnded(bridgeA, DisconnectReason.IO_ERROR)
         advanceUntilIdle()
 
-        val session = NotificationSession("session-1", hostA, connected = true)
+        val session = NotificationSession("session-${hostA.id}", hostA, connected = true)
         verify(manager.connectionNotifier).showActivityNotification(manager, session)
         verify(manager.connectionNotifier).sessionEnded(manager, session, DisconnectReason.IO_ERROR, true)
     }
@@ -212,7 +215,7 @@ class TerminalManagerBellTest {
         manager.onSessionEnded(bridgeA, DisconnectReason.IO_ERROR)
         advanceUntilIdle()
 
-        val session = NotificationSession("session-1", hostA, connected = true)
+        val session = NotificationSession("session-${hostA.id}", hostA, connected = true)
         verify(manager.connectionNotifier, never()).showActivityNotification(manager, session)
         verify(manager.connectionNotifier).sessionEnded(manager, session, DisconnectReason.IO_ERROR, false)
     }
@@ -224,7 +227,7 @@ class TerminalManagerBellTest {
         doCallRealMethod().`when`(manager).sendActivityNotification(bridgeA)
         manager.sendActivityNotification(bridgeA)
 
-        verify(manager.connectionNotifier, never()).showActivityNotification(manager, NotificationSession("session-1", hostA, connected = true))
+        verify(manager.connectionNotifier, never()).showActivityNotification(manager, NotificationSession("session-${hostA.id}", hostA, connected = true))
     }
 
     @Test
@@ -238,7 +241,7 @@ class TerminalManagerBellTest {
         manager.onSessionEnded(bridgeA, DisconnectReason.IO_ERROR)
         advanceUntilIdle()
 
-        val session = NotificationSession("session-1", hostA, connected = true)
+        val session = NotificationSession("session-${hostA.id}", hostA, connected = true)
         verify(manager.connectionNotifier).showActivityNotification(manager, session)
         verify(manager.connectionNotifier).sessionEnded(manager, session, DisconnectReason.IO_ERROR, true)
     }
@@ -256,7 +259,7 @@ class TerminalManagerBellTest {
     fun reconnectActionRestartsOnlyItsDisconnectedSession() = runTest(dispatcher) {
         doReturn(true).`when`(bridgeA).isDisconnected
         doNothing().`when`(manager).requestReconnect(bridgeA)
-        manager.reconnectFromNotification(bridgeA, "session-1")
+        manager.reconnectFromNotification(bridgeA, "session-${hostA.id}")
         advanceUntilIdle()
         verify(manager).requestReconnect(bridgeA)
     }

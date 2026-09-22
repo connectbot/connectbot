@@ -67,6 +67,7 @@ import org.connectbot.R
 import org.connectbot.data.entity.PortForward
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.theme.ConnectBotTheme
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,7 +75,7 @@ fun PortForwardListScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PortForwardListViewModel = hiltViewModel(),
-    onNavigateToEditor: (Long?) -> Unit = {},
+    onNavigateToEditor: (UUID?) -> Unit = {},
 ) {
     val terminalManager = org.connectbot.ui.LocalTerminalManager.current
 
@@ -109,7 +110,7 @@ fun PortForwardListScreenContent(
     onEnablePortForward: (PortForward) -> Unit,
     onDisablePortForward: (PortForward) -> Unit,
     modifier: Modifier = Modifier,
-    onNavigateToEditor: (Long?) -> Unit = {},
+    onNavigateToEditor: (UUID?) -> Unit = {},
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -262,34 +263,34 @@ private fun PortForwardListScreenPopulatedPreview() {
             uiState = PortForwardListUiState(
                 portForwards = listOf(
                     PortForward(
-                        id = 1,
+                        id = UUID(0, 1),
                         nickname = "MySQL Tunnel",
                         type = "Local",
                         sourceAddr = "localhost",
                         sourcePort = 3306,
                         destAddr = "db.internal",
                         destPort = 3306,
-                        hostId = 1,
+                        hostId = UUID(0, 1),
                     ).apply { setEnabled(true) },
                     PortForward(
-                        id = 2,
+                        id = UUID(0, 2),
                         nickname = "Web Server",
                         type = "Remote",
                         sourceAddr = "localhost",
                         sourcePort = 8080,
                         destAddr = "localhost",
                         destPort = 80,
-                        hostId = 1,
+                        hostId = UUID(0, 1),
                     ).apply { setEnabled(false) },
                     PortForward(
-                        id = 3,
+                        id = UUID(0, 3),
                         nickname = "SOCKS Proxy",
                         type = "Dynamic",
                         sourceAddr = "localhost",
                         sourcePort = 1080,
                         destAddr = "",
                         destPort = 0,
-                        hostId = 1,
+                        hostId = UUID(0, 1),
                     ).apply { setEnabled(true) },
                 ),
                 isLoading = false,

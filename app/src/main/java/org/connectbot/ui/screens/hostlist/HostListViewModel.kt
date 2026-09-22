@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.R
+import org.connectbot.data.EntityIds
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
@@ -43,6 +44,7 @@ import org.connectbot.service.ServiceError
 import org.connectbot.service.SessionAttentionState
 import org.connectbot.service.TerminalManager
 import org.connectbot.util.PreferenceConstants
+import java.util.UUID
 import javax.inject.Inject
 
 enum class ConnectionState {
@@ -55,8 +57,8 @@ enum class ConnectionState {
 
 data class HostListUiState(
     val hosts: List<Host> = emptyList(),
-    val connectionStates: Map<Long, ConnectionState> = emptyMap(),
-    val disconnectReasons: Map<Long, DisconnectReason> = emptyMap(),
+    val connectionStates: Map<UUID, ConnectionState> = emptyMap(),
+    val disconnectReasons: Map<UUID, DisconnectReason> = emptyMap(),
     val isLoading: Boolean = false,
     val error: String? = null,
     val sortedByColor: Boolean = false,
@@ -244,7 +246,7 @@ class HostListViewModel @Inject constructor(
             try {
                 // Create new host with reset fields
                 val newHost = host.copy(
-                    id = 0L,
+                    id = UUID.randomUUID(),
                     nickname = context.getString(R.string.host_duplicate_nickname, host.nickname),
                     lastConnect = 0,
                     hostKeyAlgo = null,

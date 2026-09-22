@@ -38,6 +38,7 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withTimeout
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.TelnetEchoMode
 import org.connectbot.data.entity.TelnetNegotiationMode
@@ -46,6 +47,7 @@ import org.connectbot.terminal.VTermKey
 import org.connectbot.transport.AbsTransport
 import org.connectbot.transport.SSH
 import org.connectbot.ui.MainActivity
+import org.connectbot.util.HostConstants
 import org.connectbot.util.waitUntilServiceBound
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
@@ -57,6 +59,7 @@ import org.junit.rules.TestRule
 import org.junit.runner.RunWith
 import java.net.InetAddress
 import java.net.ServerSocket
+import java.util.UUID
 import java.util.concurrent.CompletableFuture
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
@@ -165,13 +168,13 @@ class TerminalBridgeWriteSerializationTest {
             scenario.onActivity { capturedActivity = it }
             val manager = runBlocking { requireNotNull(capturedActivity).waitUntilServiceBound() }.terminalManager
             val host = Host(
-                id = 0L,
+                id = UUID.randomUUID(),
                 nickname = "bridge-resize-test",
                 protocol = "ssh",
                 username = "",
                 hostname = "127.0.0.1",
                 port = 1,
-                profileId = 1L,
+                profileId = EntityIds.DEFAULT_PROFILE,
             )
             val testDispatcher = StandardTestDispatcher(testScheduler)
             val dispatchers = CoroutineDispatchers(
@@ -229,13 +232,13 @@ class TerminalBridgeWriteSerializationTest {
             // id <= 0 makes TerminalBridge take the short-circuit profile-
             // observation path (no host observer needed).
             val host = Host(
-                id = 0L,
+                id = UUID(0, 0),
                 nickname = "bridge-serialization-test",
                 protocol = "local",
                 username = "",
                 hostname = "",
                 port = 0,
-                profileId = 1L,
+                profileId = EntityIds.DEFAULT_PROFILE,
             )
             val dispatchers = CoroutineDispatchers(
                 default = Dispatchers.Default,
@@ -325,7 +328,7 @@ class TerminalBridgeWriteSerializationTest {
                     }
                 }
                 val host = Host(
-                    id = 0, nickname = "Telnet bridge test", protocol = "telnet", hostname = "127.0.0.1", port = server.localPort,
+                    id = UUID.randomUUID(), nickname = "Telnet bridge test", protocol = "telnet", hostname = "127.0.0.1", port = server.localPort,
                     telnetEchoMode = TelnetEchoMode.ON, telnetNegotiationMode = TelnetNegotiationMode.PASSIVE,
                     quickDisconnect = false, stayConnected = false,
                 )

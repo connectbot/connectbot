@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.ColorScheme
 import org.junit.After
@@ -57,7 +58,7 @@ class ColorSchemeDaoTest {
         val scheme = createTestScheme(name = "Monokai")
 
         val id = colorSchemeDao.insert(scheme)
-        assertThat(id).isGreaterThan(0)
+        assertThat(id).isNotEqualTo(EntityIds.NONE)
 
         val retrieved = colorSchemeDao.getById(id)
         assertThat(retrieved).isNotNull()
@@ -158,7 +159,7 @@ class ColorSchemeDaoTest {
         )
 
         val colorId = colorSchemeDao.insertColor(color)
-        assertThat(colorId).isGreaterThan(0)
+        assertThat(colorId).isNotEqualTo(EntityIds.NONE)
 
         val retrieved = colorSchemeDao.getColor(schemeId, 0)
         assertThat(retrieved).isNotNull()

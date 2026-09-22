@@ -21,22 +21,27 @@ import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
+import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.util.HostConstants
 import org.connectbot.util.SecurePasswordStorage
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.kotlin.mock
+import java.util.UUID
 
 /**
  * Regression test for https://github.com/connectbot/connectbot/issues/2060
  *
  * When the app is launched via an ssh:// URI against an empty host database,
  * [org.connectbot.service.TerminalManager.openConnection] synthesises an
- * in-memory Host with a negative "temporary" id and never inserts it into the
+ * in-memory Host marked as temporary and never inserts it into the
  * hosts table. If the SSH transport then calls
  * [HostRepository.saveKnownHost] (directly or via the verifier's
  * addServerHostKey callback), Room tries to insert a KnownHost row whose
@@ -64,6 +69,7 @@ class HostRepositoryKnownHostTest {
             database.portForwardDao(),
             database.knownHostDao(),
             mock<SecurePasswordStorage>(),
+            CoroutineDispatchers(Dispatchers.Unconfined, Dispatchers.Unconfined, Dispatchers.Unconfined),
         )
     }
 
@@ -75,10 +81,10 @@ class HostRepositoryKnownHostTest {
     @Test
     fun saveKnownHost_withTemporaryHost_doesNotThrowForeignKeyFailure() = runTest {
         // Simulates the URI-launch path on an empty database: the host exists
-        // only in memory with a negative id assigned by
-        // TerminalManager.generateTemporaryHostId().
+        // only in memory with a UUID and isTemporary set to true.
         val temporaryHost = Host(
-            id = -1L,
+            id = UUID.randomUUID(),
+            isTemporary = true,
             nickname = "",
             protocol = "ssh",
             username = "root",
@@ -126,7 +132,7 @@ class HostRepositoryKnownHostTest {
 
     @Test
     fun getHostKeyAlgorithmsForHost_withNoKnownHosts_returnsEmptyList() = runTest {
-        assertThat(repository.getHostKeyAlgorithmsForHost(123L)).isEmpty()
+        assertThat(repository.getHostKeyAlgorithmsForHost(UUID(0, 123))).isEmpty()
     }
 
     @Test

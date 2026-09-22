@@ -79,6 +79,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.connectbot.BuildConfig
 import org.connectbot.R
+import org.connectbot.data.EntityIds
 import org.connectbot.terminal.ImeShortcutInputMode
 import org.connectbot.ui.ObservePermissionOnResume
 import org.connectbot.ui.PreviewScreen
@@ -94,6 +95,7 @@ import org.connectbot.util.ThemeMode
 import org.connectbot.util.isNotificationPermissionGranted
 import org.xmlpull.v1.XmlPullParser
 import java.util.Locale
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -241,7 +243,7 @@ fun SettingsScreenContent(
     onImportLocalFont: (Uri, String) -> Unit,
     onDeleteLocalFont: (String) -> Unit,
     onClearImportError: () -> Unit,
-    onDefaultProfileChange: (Long) -> Unit,
+    onDefaultProfileChange: (UUID) -> Unit,
     onLanguageChange: (String) -> Unit,
     onThemeModeChange: (ThemeMode) -> Unit,
     onRotationChange: (String) -> Unit,
@@ -480,20 +482,20 @@ fun SettingsScreenContent(
             }
 
             item {
-                val selectedProfile = if (uiState.defaultProfileId == 0L) {
+                val selectedProfile = if (uiState.defaultProfileId == EntityIds.NONE) {
                     null
                 } else {
                     uiState.availableProfiles.find { it.id == uiState.defaultProfileId }
                 }
                 val noneLabel = stringResource(R.string.pref_default_profile_none)
-                val profileEntries = listOf(noneLabel to "0") +
+                val profileEntries = listOf(noneLabel to EntityIds.NONE.toString()) +
                     uiState.availableProfiles.map { it.name to it.id.toString() }
                 ListPreference(
                     title = stringResource(R.string.pref_default_profile_title),
                     summary = selectedProfile?.name ?: noneLabel,
                     value = uiState.defaultProfileId.toString(),
                     entries = profileEntries,
-                    onValueChange = { onDefaultProfileChange(it.toLong()) },
+                    onValueChange = { onDefaultProfileChange(EntityIds.parse(it)) },
                 )
             }
 

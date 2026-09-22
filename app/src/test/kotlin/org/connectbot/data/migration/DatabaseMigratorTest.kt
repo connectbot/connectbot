@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
@@ -34,10 +35,12 @@ import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.util.HostConstants
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(AndroidJUnit4::class)
@@ -177,10 +180,10 @@ class DatabaseMigratorTest {
 
     @Test
     fun duplicateHostNicknamesAreHandledCorrectly() = runTest {
-        val host1 = createTestHost(id = 1, nickname = "server")
-        val host2 = createTestHost(id = 2, nickname = "server")
-        val host3 = createTestHost(id = 3, nickname = "server")
-        val host4 = createTestHost(id = 4, nickname = "other")
+        val host1 = createTestHost(id = UUID(0, 1), nickname = "server")
+        val host2 = createTestHost(id = UUID(0, 2), nickname = "server")
+        val host3 = createTestHost(id = UUID(0, 3), nickname = "server")
+        val host4 = createTestHost(id = UUID(0, 4), nickname = "other")
 
         val legacyData = LegacyData(
             hosts = listOf(host1, host2, host3, host4),
@@ -202,9 +205,9 @@ class DatabaseMigratorTest {
 
     @Test
     fun duplicatePubkeyNicknamesAreHandledCorrectly() = runTest {
-        val pubkey1 = createTestPubkey(id = 1, nickname = "my key")
-        val pubkey2 = createTestPubkey(id = 2, nickname = "my key")
-        val pubkey3 = createTestPubkey(id = 3, nickname = "different")
+        val pubkey1 = createTestPubkey(id = UUID(0, 1), nickname = "my key")
+        val pubkey2 = createTestPubkey(id = UUID(0, 2), nickname = "my key")
+        val pubkey3 = createTestPubkey(id = UUID(0, 3), nickname = "different")
 
         val legacyData = LegacyData(
             hosts = emptyList(),
@@ -225,14 +228,14 @@ class DatabaseMigratorTest {
 
     @Test
     fun orphanedColorPaletteSynthesizesColorScheme() = runTest {
-        val scheme1 = createTestColorScheme(id = 1, name = "Default")
-        val scheme2 = createTestColorScheme(id = 2, name = "Dark")
+        val scheme1 = createTestColorScheme(id = UUID(0, 1), name = "Default")
+        val scheme2 = createTestColorScheme(id = UUID(0, 2), name = "Dark")
 
-        val palette1 = createTestColorPalette(schemeId = 1, colorIndex = 0, color = 0x000000)
-        val palette2 = createTestColorPalette(schemeId = 2, colorIndex = 0, color = 0xFFFFFF)
-        val orphanedPalette1 = createTestColorPalette(schemeId = 5, colorIndex = 0, color = 0xFF0000)
-        val orphanedPalette2 = createTestColorPalette(schemeId = 5, colorIndex = 1, color = 0x00FF00)
-        val orphanedPalette3 = createTestColorPalette(schemeId = 7, colorIndex = 0, color = 0x0000FF)
+        val palette1 = createTestColorPalette(schemeId = UUID(0, 1), colorIndex = 0, color = 0x000000)
+        val palette2 = createTestColorPalette(schemeId = UUID(0, 2), colorIndex = 0, color = 0xFFFFFF)
+        val orphanedPalette1 = createTestColorPalette(schemeId = UUID(0, 5), colorIndex = 0, color = 0xFF0000)
+        val orphanedPalette2 = createTestColorPalette(schemeId = UUID(0, 5), colorIndex = 1, color = 0x00FF00)
+        val orphanedPalette3 = createTestColorPalette(schemeId = UUID(0, 7), colorIndex = 0, color = 0x0000FF)
 
         val legacyData = LegacyData(
             hosts = emptyList(),
@@ -246,24 +249,24 @@ class DatabaseMigratorTest {
         val transformed = migrator.transformToRoomEntitiesForTesting(legacyData)
 
         assertThat(transformed.colorSchemes).hasSize(4)
-        assertThat(transformed.colorSchemes.map { it.id }).containsExactlyInAnyOrder(1, 2, 5, 7)
+        assertThat(transformed.colorSchemes.map { it.id }).containsExactlyInAnyOrder(UUID(0, 1), UUID(0, 2), UUID(0, 5), UUID(0, 7))
 
-        val synthesizedScheme5 = transformed.colorSchemes.find { it.id == 5L }
+        val synthesizedScheme5 = transformed.colorSchemes.find { it.id == UUID(0, 5) }
         assertThat(synthesizedScheme5).isNotNull
-        assertThat(synthesizedScheme5?.name).isEqualTo("Recovered Scheme 5")
+        assertThat(synthesizedScheme5?.name).isEqualTo("Recovered Scheme ${UUID(0, 5)}")
         assertThat(synthesizedScheme5?.isBuiltIn).isFalse()
         assertThat(synthesizedScheme5?.description).contains("Auto-generated during migration")
 
-        val synthesizedScheme7 = transformed.colorSchemes.find { it.id == 7L }
+        val synthesizedScheme7 = transformed.colorSchemes.find { it.id == UUID(0, 7) }
         assertThat(synthesizedScheme7).isNotNull
-        assertThat(synthesizedScheme7?.name).isEqualTo("Recovered Scheme 7")
+        assertThat(synthesizedScheme7?.name).isEqualTo("Recovered Scheme ${UUID(0, 7)}")
         assertThat(synthesizedScheme7?.isBuiltIn).isFalse()
 
         assertThat(transformed.colorPalettes).hasSize(5)
     }
 
     private fun createTestHost(
-        id: Long,
+        id: UUID,
         nickname: String,
     ) = LegacyHost(
         id = id,
@@ -278,21 +281,21 @@ class DatabaseMigratorTest {
         useKeys = true,
         useAuthAgent = null,
         postLogin = null,
-        pubkeyId = 0L,
+        pubkeyId = UUID(0, 0),
         wantSession = true,
         compression = false,
         encoding = "UTF-8",
         stayConnected = false,
         quickDisconnect = false,
         fontSize = 12,
-        colorSchemeId = 1L,
+        colorSchemeId = UUID(0, 1),
         delKey = "BACKSPACE",
         scrollbackLines = 140,
         useCtrlAltAsMetaKey = false,
     )
 
     private fun createTestPubkey(
-        id: Long,
+        id: UUID,
         nickname: String,
     ) = Pubkey(
         id = id,
@@ -310,7 +313,7 @@ class DatabaseMigratorTest {
     )
 
     private fun createTestColorScheme(
-        id: Long,
+        id: UUID,
         name: String,
     ) = ColorScheme(
         id = id,
@@ -320,11 +323,11 @@ class DatabaseMigratorTest {
     )
 
     private fun createTestColorPalette(
-        schemeId: Int,
+        schemeId: UUID,
         colorIndex: Int,
         color: Int,
     ) = ColorPalette(
-        schemeId = schemeId.toLong(),
+        schemeId = schemeId,
         colorIndex = colorIndex,
         color = color,
     )

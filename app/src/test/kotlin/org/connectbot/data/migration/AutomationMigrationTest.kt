@@ -63,11 +63,12 @@ class AutomationMigrationTest {
             db.version = 10
         }
         val database = Room.databaseBuilder(context, ConnectBotDatabase::class.java, name)
-            .addMigrations(ConnectBotDatabase.MIGRATION_10_11).build()
+            .addMigrations(ConnectBotDatabase.MIGRATION_10_11, ConnectBotDatabase.MIGRATION_14_15).build()
         try {
             val ids = mutableSetOf<String>()
             texts.forEachIndexed { i, text ->
-                val actions = database.automationActionDao().getByHost(i + 1L)
+                val host = database.hostDao().getAll().first { it.nickname == "host-$i" }
+                val actions = database.automationActionDao().getByHost(host.id)
                 if (text.isNullOrEmpty()) {
                     assertTrue(actions.isEmpty())
                 } else {
@@ -77,9 +78,9 @@ class AutomationMigrationTest {
                     assertEquals(4, UUID.fromString(action.id).version())
                     assertTrue(ids.add(action.id))
                 }
-                assertNull(database.hostDao().getById(i + 1L)!!.postLogin)
+                assertNull(host.postLogin)
             }
-            assertTrue(database.portForwardDao().getByHost(1).single().startEnabled)
+            assertTrue(database.portForwardDao().getByHost(database.hostDao().getAll().first { it.nickname == "host-0" }.id).single().startEnabled)
         } finally {
             database.close()
             context.deleteDatabase(name)

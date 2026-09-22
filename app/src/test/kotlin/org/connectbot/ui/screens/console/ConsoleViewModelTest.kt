@@ -27,11 +27,13 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.terminal.ProgressState
+import org.connectbot.util.HostConstants
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -45,6 +47,7 @@ import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.util.UUID
 
 /**
  * Tests for ConsoleViewModel.
@@ -80,7 +83,7 @@ class ConsoleViewModelTest {
 
     @Test
     fun initialState_IsLoading() {
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(UUID(0, 1).toString())
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
 
@@ -94,7 +97,7 @@ class ConsoleViewModelTest {
     @Test
     fun loadBridges_WithNoBridges_StopsLoading() = runTest {
         bridgesFlow.value = emptyList()
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -108,9 +111,9 @@ class ConsoleViewModelTest {
 
     @Test
     fun loadBridges_WithExistingBridges_LoadsSuccessfully() = runTest {
-        val mockBridge = createMockBridge(1L, "test-host")
+        val mockBridge = createMockBridge(UUID(0, 1), "test-host")
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -125,10 +128,10 @@ class ConsoleViewModelTest {
 
     @Test
     fun loadBridges_WithRequestedHost_ShowsAllBridgesAndSelectsRequestedHost() = runTest {
-        val mockBridge1 = createMockBridge(1L, "host1")
-        val mockBridge2 = createMockBridge(2L, "host2")
+        val mockBridge1 = createMockBridge(UUID(0, 1), "host1")
+        val mockBridge2 = createMockBridge(UUID(0, 2), "host2")
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(2L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(UUID(0, 2).toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -139,16 +142,16 @@ class ConsoleViewModelTest {
         assertFalse("Should stop loading once the requested bridge is present", state.isLoading)
         assertEquals("Should keep all active bridges visible", 2, state.bridges.size)
         assertEquals("Requested host should be the selected bridge", 1, state.currentBridgeIndex)
-        assertEquals("Requested bridge should be active", 2L, state.bridges[state.currentBridgeIndex].host.id)
+        assertEquals("Requested bridge should be active", UUID(0, 2), state.bridges[state.currentBridgeIndex].host.id)
     }
 
     @Test
     fun loadBridges_WhenRequestedHostIsOpening_KeepsLoadingUntilItAppears() = runTest {
-        val mockBridge1 = createMockBridge(1L, "host1")
-        val mockBridge2 = createMockBridge(2L, "host2")
+        val mockBridge1 = createMockBridge(UUID(0, 1), "host1")
+        val mockBridge2 = createMockBridge(UUID(0, 2), "host2")
         bridgesFlow.value = listOf(mockBridge1)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(2L)
-        whenever(terminalManager.openConnectionForHostId(2L)).thenReturn(mockBridge2)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(UUID(0, 2).toString())
+        whenever(terminalManager.openConnectionForHostId(UUID(0, 2))).thenReturn(mockBridge2)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -156,23 +159,23 @@ class ConsoleViewModelTest {
         advanceUntilIdle()
 
         assertTrue("Should keep showing loading until the requested bridge is active", viewModel.uiState.value.isLoading)
-        verify(terminalManager).openConnectionForHostId(2L)
+        verify(terminalManager).openConnectionForHostId(UUID(0, 2))
 
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
         advanceUntilIdle()
 
         val state = viewModel.uiState.value
         assertFalse("Should stop loading once the requested bridge appears", state.isLoading)
-        assertEquals("Requested bridge should become active when it appears", 2L, state.bridges[state.currentBridgeIndex].host.id)
+        assertEquals("Requested bridge should become active when it appears", UUID(0, 2), state.bridges[state.currentBridgeIndex].host.id)
     }
 
     @Test
     fun loadBridges_WithMultipleBridges_LoadsAll() = runTest {
-        val mockBridge1 = createMockBridge(1L, "host1")
-        val mockBridge2 = createMockBridge(2L, "host2")
-        val mockBridge3 = createMockBridge(3L, "host3")
+        val mockBridge1 = createMockBridge(UUID(0, 1), "host1")
+        val mockBridge2 = createMockBridge(UUID(0, 2), "host2")
+        val mockBridge3 = createMockBridge(UUID(0, 3), "host3")
         bridgesFlow.value = listOf(mockBridge1, mockBridge2, mockBridge3)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -188,10 +191,10 @@ class ConsoleViewModelTest {
 
     @Test
     fun selectBridge_ValidIndex_UpdatesCurrentBridge() = runTest {
-        val mockBridge1 = createMockBridge(1L, "host1")
-        val mockBridge2 = createMockBridge(2L, "host2")
+        val mockBridge1 = createMockBridge(UUID(0, 1), "host1")
+        val mockBridge2 = createMockBridge(UUID(0, 2), "host2")
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -207,10 +210,10 @@ class ConsoleViewModelTest {
 
     @Test
     fun selectNextBridge_UpdatesCurrentBridge() = runTest {
-        val mockBridge1 = createMockBridge(1L, "host1")
-        val mockBridge2 = createMockBridge(2L, "host2")
+        val mockBridge1 = createMockBridge(UUID(0, 1), "host1")
+        val mockBridge2 = createMockBridge(UUID(0, 2), "host2")
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -224,10 +227,10 @@ class ConsoleViewModelTest {
 
     @Test
     fun selectPreviousBridge_UpdatesCurrentBridge() = runTest {
-        val mockBridge1 = createMockBridge(1L, "host1")
-        val mockBridge2 = createMockBridge(2L, "host2")
+        val mockBridge1 = createMockBridge(UUID(0, 1), "host1")
+        val mockBridge2 = createMockBridge(UUID(0, 2), "host2")
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -242,9 +245,9 @@ class ConsoleViewModelTest {
 
     @Test
     fun selectBridge_InvalidIndex_DoesNotUpdate() = runTest {
-        val mockBridge = createMockBridge(1L, "test-host")
+        val mockBridge = createMockBridge(UUID(0, 1), "test-host")
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -262,9 +265,9 @@ class ConsoleViewModelTest {
 
     @Test
     fun selectBridge_NegativeIndex_DoesNotUpdate() = runTest {
-        val mockBridge = createMockBridge(1L, "test-host")
+        val mockBridge = createMockBridge(UUID(0, 1), "test-host")
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -282,9 +285,9 @@ class ConsoleViewModelTest {
 
     @Test
     fun refreshMenuState_IncrementsRevision() = runTest {
-        val mockBridge = createMockBridge(1L, "test-host")
+        val mockBridge = createMockBridge(UUID(0, 1), "test-host")
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -301,9 +304,9 @@ class ConsoleViewModelTest {
 
     @Test
     fun refreshMenuState_MultipleRefreshes_IncrementsEachTime() = runTest {
-        val mockBridge = createMockBridge(1L, "test-host")
+        val mockBridge = createMockBridge(UUID(0, 1), "test-host")
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -322,12 +325,12 @@ class ConsoleViewModelTest {
 
     @Test
     fun onDisconnected_RemovesBridge() = runTest {
-        val mockBridge1 = createMockBridge(1L, "host1")
-        val mockBridge2 = createMockBridge(2L, "host2")
-        val mockBridge3 = createMockBridge(3L, "host3")
+        val mockBridge1 = createMockBridge(UUID(0, 1), "host1")
+        val mockBridge2 = createMockBridge(UUID(0, 2), "host2")
+        val mockBridge3 = createMockBridge(UUID(0, 3), "host3")
 
         bridgesFlow.value = listOf(mockBridge1, mockBridge2, mockBridge3)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -347,12 +350,12 @@ class ConsoleViewModelTest {
 
     @Test
     fun onDisconnected_AdjustsCurrentBridgeIndex_WhenCurrentBridgeRemoved() = runTest {
-        val mockBridge1 = createMockBridge(1L, "host1")
-        val mockBridge2 = createMockBridge(2L, "host2")
-        val mockBridge3 = createMockBridge(3L, "host3")
+        val mockBridge1 = createMockBridge(UUID(0, 1), "host1")
+        val mockBridge2 = createMockBridge(UUID(0, 2), "host2")
+        val mockBridge3 = createMockBridge(UUID(0, 3), "host3")
 
         bridgesFlow.value = listOf(mockBridge1, mockBridge2, mockBridge3)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -373,12 +376,12 @@ class ConsoleViewModelTest {
 
     @Test
     fun onDisconnected_PreservesSelectedHost_WhenAnotherBridgeIsRemoved() = runTest {
-        val mockBridge1 = createMockBridge(1L, "host1")
-        val mockBridge2 = createMockBridge(2L, "host2")
-        val mockBridge3 = createMockBridge(3L, "host3")
+        val mockBridge1 = createMockBridge(UUID(0, 1), "host1")
+        val mockBridge2 = createMockBridge(UUID(0, 2), "host2")
+        val mockBridge3 = createMockBridge(UUID(0, 3), "host3")
 
         bridgesFlow.value = listOf(mockBridge1, mockBridge2, mockBridge3)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -391,15 +394,15 @@ class ConsoleViewModelTest {
 
         val state = viewModel.uiState.value
         assertEquals("Should still have 2 bridges", 2, state.bridges.size)
-        assertEquals("Selected host should remain the same after another bridge is removed", 3L, state.bridges[state.currentBridgeIndex].host.id)
+        assertEquals("Selected host should remain the same after another bridge is removed", UUID(0, 3), state.bridges[state.currentBridgeIndex].host.id)
     }
 
     @Test
     fun onDisconnected_LastBridge_KeepsIndexAtZero() = runTest {
-        val mockBridge = createMockBridge(1L, "test-host")
+        val mockBridge = createMockBridge(UUID(0, 1), "test-host")
 
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -420,9 +423,9 @@ class ConsoleViewModelTest {
     @Test
     fun progressState_UpdatesWhenBridgeEmitsProgress() = runTest {
         val progressFlow = MutableStateFlow<TerminalBridge.ProgressInfo?>(null)
-        val mockBridge = createMockBridge(1L, "test-host", progressFlow)
+        val mockBridge = createMockBridge(UUID(0, 1), "test-host", progressFlow)
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -444,9 +447,9 @@ class ConsoleViewModelTest {
     @Test
     fun progressState_ClearsWhenHidden() = runTest {
         val progressFlow = MutableStateFlow<TerminalBridge.ProgressInfo?>(null)
-        val mockBridge = createMockBridge(1L, "test-host", progressFlow)
+        val mockBridge = createMockBridge(UUID(0, 1), "test-host", progressFlow)
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -470,9 +473,9 @@ class ConsoleViewModelTest {
     @Test
     fun progressState_ClearsWhenNull() = runTest {
         val progressFlow = MutableStateFlow<TerminalBridge.ProgressInfo?>(null)
-        val mockBridge = createMockBridge(1L, "test-host", progressFlow)
+        val mockBridge = createMockBridge(UUID(0, 1), "test-host", progressFlow)
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -495,9 +498,9 @@ class ConsoleViewModelTest {
     @Test
     fun progressState_ShowsCorrectStateTypes() = runTest {
         val progressFlow = MutableStateFlow<TerminalBridge.ProgressInfo?>(null)
-        val mockBridge = createMockBridge(1L, "test-host", progressFlow)
+        val mockBridge = createMockBridge(UUID(0, 1), "test-host", progressFlow)
         bridgesFlow.value = listOf(mockBridge)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -524,10 +527,10 @@ class ConsoleViewModelTest {
     fun progressState_OnlyShowsForCurrentBridge() = runTest {
         val progressFlow1 = MutableStateFlow<TerminalBridge.ProgressInfo?>(null)
         val progressFlow2 = MutableStateFlow<TerminalBridge.ProgressInfo?>(null)
-        val mockBridge1 = createMockBridge(1L, "host1", progressFlow1)
-        val mockBridge2 = createMockBridge(2L, "host2", progressFlow2)
+        val mockBridge1 = createMockBridge(UUID(0, 1), "host1", progressFlow1)
+        val mockBridge2 = createMockBridge(UUID(0, 2), "host2", progressFlow2)
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -561,10 +564,10 @@ class ConsoleViewModelTest {
             MutableStateFlow<TerminalBridge.ProgressInfo?>(TerminalBridge.ProgressInfo(ProgressState.DEFAULT, 10))
         val progressFlow2 =
             MutableStateFlow<TerminalBridge.ProgressInfo?>(TerminalBridge.ProgressInfo(ProgressState.WARNING, 90))
-        val mockBridge1 = createMockBridge(1L, "host1", progressFlow1)
-        val mockBridge2 = createMockBridge(2L, "host2", progressFlow2)
+        val mockBridge1 = createMockBridge(UUID(0, 1), "host1", progressFlow1)
+        val mockBridge2 = createMockBridge(UUID(0, 2), "host2", progressFlow2)
         bridgesFlow.value = listOf(mockBridge1, mockBridge2)
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
         viewModel.setTerminalManager(terminalManager)
@@ -577,7 +580,7 @@ class ConsoleViewModelTest {
     }
 
     private fun createMockBridge(
-        id: Long,
+        id: UUID,
         hostname: String,
         progressFlow: MutableStateFlow<TerminalBridge.ProgressInfo?> = MutableStateFlow(null),
     ): TerminalBridge {

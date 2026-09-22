@@ -43,6 +43,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.BuildConfig
+import org.connectbot.data.EntityIds
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
@@ -56,6 +57,7 @@ import org.connectbot.util.TerminalFontProvider
 import org.connectbot.util.ThemeMode
 import org.connectbot.util.isNotificationPermissionGranted
 import timber.log.Timber
+import java.util.UUID
 import javax.inject.Inject
 
 data class SettingsUiState(
@@ -101,7 +103,7 @@ data class SettingsUiState(
     val language: String = "",
     val languageDownloadStates: Map<String, LanguageDownloadState> = emptyMap(),
     val installedLanguages: Set<String> = emptySet(),
-    val defaultProfileId: Long = 0L,
+    val defaultProfileId: UUID = EntityIds.NONE,
     val availableProfiles: List<Profile> = emptyList(),
 )
 
@@ -239,7 +241,7 @@ class SettingsViewModel @Inject constructor(
             localFonts = localFonts,
             themeMode = ThemeMode.fromString(prefs.getString(PreferenceConstants.THEME_MODE, null)),
             language = currentLanguage,
-            defaultProfileId = prefs.getLong("defaultProfileId", 0L),
+            defaultProfileId = EntityIds.parse(prefs.getString("defaultProfileId", null)),
         )
     }
 
@@ -431,9 +433,9 @@ class SettingsViewModel @Inject constructor(
         preloadFont(value)
     }
 
-    fun updateDefaultProfile(profileId: Long) {
+    fun updateDefaultProfile(profileId: UUID) {
         viewModelScope.launch {
-            prefs.edit { putLong("defaultProfileId", profileId) }
+            prefs.edit { putString("defaultProfileId", profileId.toString()) }
             _uiState.update { it.copy(defaultProfileId = profileId) }
         }
     }

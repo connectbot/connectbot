@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,14 +25,17 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.util.HostConstants
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.UUID
 
 /**
  * Tests to verify that migration properly rolls back when failures occur.
@@ -126,8 +129,8 @@ class DatabaseMigrationRollbackTest {
         try {
             database.withTransaction {
                 // Insert some color schemes (should succeed)
-                val scheme1 = ColorScheme(id = 1, name = "Scheme1", isBuiltIn = true)
-                val scheme2 = ColorScheme(id = 2, name = "Scheme2", isBuiltIn = true)
+                val scheme1 = ColorScheme(id = UUID(0, 1), name = "Scheme1", isBuiltIn = true)
+                val scheme2 = ColorScheme(id = UUID(0, 2), name = "Scheme2", isBuiltIn = true)
                 database.colorSchemeDao().insert(scheme1)
                 database.colorSchemeDao().insert(scheme2)
 
@@ -159,7 +162,7 @@ class DatabaseMigrationRollbackTest {
     fun `multiple successful inserts in transaction commit together`() = runTest {
         // Insert multiple items in a transaction successfully
         database.withTransaction {
-            val scheme = ColorScheme(id = 1, name = "Test Scheme", isBuiltIn = true)
+            val scheme = ColorScheme(id = UUID(0, 1), name = "Test Scheme", isBuiltIn = true)
             database.colorSchemeDao().insert(scheme)
 
             val pubkey = createTestPubkey(nickname = "key1")
@@ -178,7 +181,7 @@ class DatabaseMigrationRollbackTest {
     @Test
     fun `rollback preserves existing data when new transaction fails`() = runTest {
         // Insert some initial data (outside transaction)
-        val existingScheme = ColorScheme(id = 1, name = "Existing", isBuiltIn = true)
+        val existingScheme = ColorScheme(id = UUID(0, 1), name = "Existing", isBuiltIn = true)
         database.colorSchemeDao().insert(existingScheme)
 
         val existingPubkey = createTestPubkey(nickname = "existing-key")
@@ -196,7 +199,7 @@ class DatabaseMigrationRollbackTest {
         try {
             database.withTransaction {
                 // New color scheme
-                val newScheme = ColorScheme(id = 2, name = "New", isBuiltIn = true)
+                val newScheme = ColorScheme(id = UUID(0, 2), name = "New", isBuiltIn = true)
                 database.colorSchemeDao().insert(newScheme)
 
                 // New pubkey
@@ -286,7 +289,7 @@ class DatabaseMigrationRollbackTest {
         try {
             database.withTransaction {
                 // Step 1: Insert color schemes
-                val scheme1 = ColorScheme(id = 1, name = "Scheme1", isBuiltIn = true)
+                val scheme1 = ColorScheme(id = UUID(0, 1), name = "Scheme1", isBuiltIn = true)
                 database.colorSchemeDao().insert(scheme1)
 
                 // Step 2: Insert pubkeys
@@ -302,7 +305,7 @@ class DatabaseMigrationRollbackTest {
                 }
 
                 // Step 4: Fail on duplicate
-                val duplicateScheme = ColorScheme(id = 1, name = "Duplicate", isBuiltIn = true)
+                val duplicateScheme = ColorScheme(id = UUID(0, 1), name = "Duplicate", isBuiltIn = true)
                 database.colorSchemeDao().insert(duplicateScheme)
             }
         } catch (e: Exception) {
@@ -334,13 +337,13 @@ class DatabaseMigrationRollbackTest {
         useAuthAgent = null,
         stayConnected = false,
         postLogin = null,
-        pubkeyId = 0,
+        pubkeyId = UUID(0, 0),
         wantSession = true,
         compression = false,
         scrollbackLines = 140,
         useCtrlAltAsMetaKey = false,
         jumpHostId = null,
-        profileId = 1L,
+        profileId = EntityIds.DEFAULT_PROFILE,
     )
 
     private fun createTestPubkey(

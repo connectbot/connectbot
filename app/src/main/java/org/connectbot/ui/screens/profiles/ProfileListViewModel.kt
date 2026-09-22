@@ -20,6 +20,7 @@ package org.connectbot.ui.screens.profiles
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -35,6 +36,7 @@ data class ProfileListUiState(
     val showCreateDialog: Boolean = false,
     val showDeleteDialog: Profile? = null,
     val createError: String? = null,
+    val error: String? = null,
 )
 
 @HiltViewModel
@@ -92,15 +94,31 @@ class ProfileListViewModel @Inject constructor(
         _uiState.update { it.copy(showDeleteDialog = null) }
     }
 
-    fun deleteProfile(profile: Profile) {
+    fun clearError() {
+        _uiState.update { it.copy(error = null) }
+    }
+
+    private fun launchChange(block: suspend () -> Unit) {
         viewModelScope.launch {
+            try {
+                block()
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                _uiState.update { it.copy(error = e.message, showDeleteDialog = null) }
+            }
+        }
+    }
+
+    fun deleteProfile(profile: Profile) {
+        launchChange {
             profileRepository.delete(profile.id)
             _uiState.update { it.copy(showDeleteDialog = null) }
         }
     }
 
     fun duplicateProfile(profile: Profile) {
-        viewModelScope.launch {
+        launchChange {
             var newName = "${profile.name} (Copy)"
             var counter = 1
             while (profileRepository.nameExists(newName)) {

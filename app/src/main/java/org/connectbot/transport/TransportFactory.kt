@@ -19,6 +19,7 @@ package org.connectbot.transport
 
 import android.content.Context
 import android.net.Uri
+import org.connectbot.data.EntityIds
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
 import timber.log.Timber
@@ -96,6 +97,10 @@ object TransportFactory {
      * @return Matching host or null
      */
     suspend fun findHost(hostRepository: HostRepository, uri: Uri): Host? {
+        uri.getQueryParameter("hostId")?.let { value ->
+            val id = EntityIds.parse(value)
+            hostRepository.findHostById(id)?.let { return it }
+        }
         val transport = getTransport(uri.scheme) ?: run {
             Timber.e("Unknown transport scheme: ${uri.scheme}")
             throw IllegalStateException("Unknown transport scheme: ${uri.scheme}")

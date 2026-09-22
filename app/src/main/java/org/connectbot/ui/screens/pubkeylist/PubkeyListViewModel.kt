@@ -45,6 +45,7 @@ import org.connectbot.util.PubkeyUtils
 import org.connectbot.util.SshKeyType
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
+import java.util.UUID
 import javax.inject.Inject
 
 enum class ExportFormat {
@@ -866,7 +867,7 @@ class PubkeyListViewModel @Inject constructor(
             }
 
             return Pubkey(
-                id = 0,
+                id = UUID.randomUUID(),
                 nickname = nickname,
                 type = algorithm,
                 encrypted = encrypt,
@@ -925,7 +926,7 @@ class PubkeyListViewModel @Inject constructor(
             val algorithm = convertAlgorithmName(kp.private.algorithm)
             return ImportResult.Success(
                 Pubkey(
-                    id = 0,
+                    id = UUID.randomUUID(),
                     nickname = nickname,
                     type = algorithm,
                     encrypted = false,

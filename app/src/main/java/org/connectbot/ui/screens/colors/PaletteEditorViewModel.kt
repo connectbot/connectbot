@@ -33,12 +33,14 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.connectbot.data.ColorSchemePresets
 import org.connectbot.data.ColorSchemeRepository
+import org.connectbot.data.EntityIds
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.HostConstants
+import java.util.UUID
 import javax.inject.Inject
 
 data class PaletteEditorUiState(
-    val schemeId: Long = -1,
+    val schemeId: UUID = EntityIds.DEFAULT_SCHEME,
     val schemeName: String = "",
     val schemeDescription: String = "",
     val palette: IntArray = ColorSchemePresets.default.colors,
@@ -78,7 +80,7 @@ data class PaletteEditorUiState(
     }
 
     override fun hashCode(): Int {
-        var result = schemeId.toInt()
+        var result = schemeId.hashCode()
         result = 31 * result + schemeName.hashCode()
         result = 31 * result + schemeDescription.hashCode()
         result = 31 * result + palette.contentHashCode()
@@ -103,12 +105,12 @@ class PaletteEditorViewModel @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
 
-    private val schemeId = savedStateHandle.get<Long>("schemeId") ?: 0
+    private val schemeId = EntityIds.parse(savedStateHandle.get<String>("schemeId"))
     private val _uiState = MutableStateFlow(PaletteEditorUiState(schemeId = schemeId))
     val uiState: StateFlow<PaletteEditorUiState> = _uiState.asStateFlow()
 
-    private val _navigateToDuplicate = MutableSharedFlow<Long>()
-    val navigateToDuplicate: SharedFlow<Long> = _navigateToDuplicate.asSharedFlow()
+    private val _navigateToDuplicate = MutableSharedFlow<UUID>()
+    val navigateToDuplicate: SharedFlow<UUID> = _navigateToDuplicate.asSharedFlow()
 
     init {
         observeScheme()

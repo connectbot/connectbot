@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
+import java.util.UUID
 
 /**
  * Data Access Object for SSH public/private key pairs.
@@ -52,13 +53,13 @@ interface PubkeyDao {
      * Emits null if pubkey doesn't exist or is deleted.
      */
     @Query("SELECT * FROM pubkeys WHERE id = :pubkeyId")
-    fun observeById(pubkeyId: Long): Flow<Pubkey?>
+    fun observeById(pubkeyId: UUID): Flow<Pubkey?>
 
     /**
      * Get a single pubkey by ID.
      */
     @Query("SELECT * FROM pubkeys WHERE id = :pubkeyId")
-    suspend fun getById(pubkeyId: Long): Pubkey?
+    suspend fun getById(pubkeyId: UUID): Pubkey?
 
     /**
      * Get a pubkey by nickname.
@@ -96,7 +97,12 @@ interface PubkeyDao {
      * @return The ID of the newly inserted pubkey
      */
     @Insert
-    suspend fun insert(pubkey: Pubkey): Long
+    suspend fun insertRow(pubkey: Pubkey)
+
+    suspend fun insert(pubkey: Pubkey): UUID {
+        insertRow(pubkey)
+        return pubkey.id
+    }
 
     /**
      * Update an existing pubkey.
@@ -115,5 +121,5 @@ interface PubkeyDao {
      * Used when user toggles backup permission in settings.
      */
     @Query("UPDATE pubkeys SET allow_backup = :allowBackup WHERE id = :pubkeyId")
-    suspend fun updateBackupPermission(pubkeyId: Long, allowBackup: Boolean)
+    suspend fun updateBackupPermission(pubkeyId: UUID, allowBackup: Boolean)
 }

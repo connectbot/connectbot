@@ -27,6 +27,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import org.connectbot.BuildConfig
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
@@ -35,8 +36,10 @@ import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.util.HostConstants
 import timber.log.Timber
 import java.io.File
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -361,14 +364,14 @@ class DatabaseMigrator @Inject constructor(
         }
 
         // Validate hosts reference valid pubkeys (will be fixed in transformToRoomEntities)
-        val hostsWithInvalidPubkeys = data.hosts.filter { it.pubkeyId > 0 && it.pubkeyId !in pubkeyIds }
+        val hostsWithInvalidPubkeys = data.hosts.filter { EntityIds.isKey(it.pubkeyId) && it.pubkeyId !in pubkeyIds }
         if (hostsWithInvalidPubkeys.isNotEmpty()) {
             val warning = "Found ${hostsWithInvalidPubkeys.size} host(s) referencing non-existent SSH keys. References will be cleared."
             logWarning(warning)
         }
 
         // Validate hosts reference valid color schemes (will be fixed in transformToRoomEntities)
-        val hostsWithInvalidColorSchemes = data.hosts.filter { it.colorSchemeId > 0 && it.colorSchemeId !in colorSchemeIds }
+        val hostsWithInvalidColorSchemes = data.hosts.filter { !EntityIds.isPreset(it.colorSchemeId) && it.colorSchemeId !in colorSchemeIds }
         if (hostsWithInvalidColorSchemes.isNotEmpty()) {
             val warning = "Found ${hostsWithInvalidColorSchemes.size} host(s) referencing non-existent color schemes. Will use default color scheme."
             logWarning(warning)
@@ -387,7 +390,7 @@ class DatabaseMigrator @Inject constructor(
      * Key for grouping hosts by terminal settings for profile creation.
      */
     private data class ProfileSettingsKey(
-        val colorSchemeId: Long,
+        val colorSchemeId: UUID,
         val fontSize: Int,
         val delKey: String,
         val encoding: String,
@@ -427,15 +430,15 @@ class DatabaseMigrator @Inject constructor(
             var fixedHost = host
 
             // Clear invalid pubkey references
-            if (fixedHost.pubkeyId > 0 && fixedHost.pubkeyId !in pubkeyIds) {
+            if (EntityIds.isKey(fixedHost.pubkeyId) && fixedHost.pubkeyId !in pubkeyIds) {
                 logDebug("Clearing invalid pubkey reference (ID ${fixedHost.pubkeyId}) for host '${fixedHost.nickname}'")
-                fixedHost = fixedHost.copy(pubkeyId = -1L)
+                fixedHost = fixedHost.copy(pubkeyId = HostConstants.PUBKEYID_ANY)
             }
 
             // Reset invalid color scheme references to default
-            if (fixedHost.colorSchemeId > 0 && fixedHost.colorSchemeId !in colorSchemeIds) {
+            if (!EntityIds.isPreset(fixedHost.colorSchemeId) && fixedHost.colorSchemeId !in colorSchemeIds) {
                 logDebug("Resetting invalid color scheme reference (ID ${fixedHost.colorSchemeId}) to default for host '${fixedHost.nickname}'")
-                fixedHost = fixedHost.copy(colorSchemeId = -1L)
+                fixedHost = fixedHost.copy(colorSchemeId = EntityIds.DEFAULT_SCHEME)
             }
 
             fixedHost
@@ -443,7 +446,7 @@ class DatabaseMigrator @Inject constructor(
 
         // Create profiles from unique terminal settings combinations
         val defaultSettingsKey = ProfileSettingsKey(
-            colorSchemeId = -1L,
+            colorSchemeId = EntityIds.DEFAULT_SCHEME,
             fontSize = 10,
             delKey = "del",
             encoding = "UTF-8",
@@ -459,12 +462,12 @@ class DatabaseMigrator @Inject constructor(
             )
         }
 
-        // Create default profile (ID 1)
+        // Create the default profile with its stable UUID
         val profiles = mutableListOf(
             Profile(
-                id = 1,
+                id = EntityIds.DEFAULT_PROFILE,
                 name = "Default",
-                colorSchemeId = -1L,
+                colorSchemeId = EntityIds.DEFAULT_SCHEME,
                 fontSize = 10,
                 delKey = "del",
                 encoding = "UTF-8",
@@ -473,12 +476,12 @@ class DatabaseMigrator @Inject constructor(
 
         // Create additional profiles for non-default settings
         var nextProfileId = 2L
-        val settingsToProfileId = mutableMapOf<ProfileSettingsKey, Long>()
-        settingsToProfileId[defaultSettingsKey] = 1L
+        val settingsToProfileId = mutableMapOf<ProfileSettingsKey, UUID>()
+        settingsToProfileId[defaultSettingsKey] = EntityIds.DEFAULT_PROFILE
 
         settingsToHosts.keys.forEach { key ->
             if (key != defaultSettingsKey && key !in settingsToProfileId) {
-                val profileId = nextProfileId++
+                val profileId = UUID.randomUUID()
                 settingsToProfileId[key] = profileId
                 profiles.add(
                     Profile(
@@ -502,7 +505,7 @@ class DatabaseMigrator @Inject constructor(
                 delKey = legacyHost.delKey,
                 encoding = legacyHost.encoding,
             )
-            val profileId = settingsToProfileId[settingsKey] ?: 1L
+            val profileId = settingsToProfileId[settingsKey] ?: EntityIds.DEFAULT_PROFILE
 
             Host(
                 id = legacyHost.id,
@@ -621,8 +624,8 @@ class DatabaseMigrator @Inject constructor(
         // If any write fails, all writes are rolled back
         roomDatabase.withTransaction {
             // Insert color schemes first (referenced by profiles)
-            // Create ID mapping since Room auto-generates IDs
-            val colorSchemeIdMap = mutableMapOf<Long, Long>()
+            // Map legacy identities to the UUIDs used in Room
+            val colorSchemeIdMap = mutableMapOf<UUID, UUID>()
             data.colorSchemes.forEach { scheme ->
                 val oldId = scheme.id
                 val newId = roomDatabase.colorSchemeDao().insert(scheme)
@@ -638,11 +641,11 @@ class DatabaseMigrator @Inject constructor(
             }
 
             // Insert profiles (referenced by hosts) with remapped colorSchemeId
-            // Create ID mapping since Room auto-generates IDs
+            // Map legacy identities to the UUIDs used in Room
             // This fixes issue #1839: if Room's onCreate callback already inserted a
-            // default profile with ID=1, we must let Room auto-generate new IDs to
+            // default profile, imported profiles need fresh UUIDs to
             // avoid "UNIQUE constraint failed: profiles.id" error
-            val profileIdMap = mutableMapOf<Long, Long>()
+            val profileIdMap = mutableMapOf<UUID, UUID>()
 
             // Get existing profiles to check for name conflicts (e.g., "Default" from onCreate)
             val existingProfiles = roomDatabase.profileDao().getAll()
@@ -651,8 +654,7 @@ class DatabaseMigrator @Inject constructor(
             data.profiles.forEach { profile ->
                 val oldId = profile.id
                 // Remap colorSchemeId if it exists in colorSchemeIdMap (custom scheme)
-                // Built-in schemes (negative IDs) and the default scheme (ID 1) are not in
-                // the database and should be kept as-is
+                // Virtual built-in scheme UUIDs are kept as-is
                 val newColorSchemeId = colorSchemeIdMap[profile.colorSchemeId]
                     ?: profile.colorSchemeId
 
@@ -664,17 +666,17 @@ class DatabaseMigrator @Inject constructor(
                     logDebug("Using existing profile '${existingProfile.name}' (ID=${existingProfile.id}) instead of creating duplicate")
                     existingProfile.id
                 } else {
-                    // Set id = 0 to let Room auto-generate the ID, avoiding conflicts with
+                    // Allocate a fresh UUID to avoid identity conflicts with
                     // any existing profiles (e.g., from DatabaseModule.onCreate callback)
-                    val remappedProfile = profile.copy(id = 0, colorSchemeId = newColorSchemeId)
+                    val remappedProfile = profile.copy(id = UUID.randomUUID(), colorSchemeId = newColorSchemeId)
                     roomDatabase.profileDao().insert(remappedProfile)
                 }
                 profileIdMap[oldId] = newId
             }
 
             // Insert pubkeys (referenced by hosts)
-            // Create ID mapping since Room auto-generates IDs
-            val pubkeyIdMap = mutableMapOf<Long, Long>()
+            // Map legacy identities to the UUIDs used in Room
+            val pubkeyIdMap = mutableMapOf<UUID, UUID>()
             data.pubkeys.forEach { pubkey ->
                 val oldId = pubkey.id
                 val newId = roomDatabase.pubkeyDao().insert(pubkey)
@@ -682,19 +684,19 @@ class DatabaseMigrator @Inject constructor(
             }
 
             // Insert hosts with remapped foreign key references and create ID mapping
-            val hostIdMap = mutableMapOf<Long, Long>()
+            val hostIdMap = mutableMapOf<UUID, UUID>()
             data.hosts.forEach { host ->
                 val oldId = host.id
 
                 // Remap pubkeyId if it references a valid pubkey
-                val newPubkeyId = if (host.pubkeyId > 0) {
+                val newPubkeyId = if (EntityIds.isKey(host.pubkeyId)) {
                     pubkeyIdMap[host.pubkeyId]
                         ?: throw MigrationException("Host references unknown pubkey ID: ${host.pubkeyId}")
                 } else {
                     host.pubkeyId // Keep special values like -1 (any key), -2 (same as last), etc.
                 }
 
-                // Remap profileId to the new auto-generated ID (fixes #1839)
+                // Remap profileId to its destination UUID (fixes #1839)
                 val newProfileId = profileIdMap[host.profileId]
                     ?: throw MigrationException("Host references unknown profile ID: ${host.profileId}")
 

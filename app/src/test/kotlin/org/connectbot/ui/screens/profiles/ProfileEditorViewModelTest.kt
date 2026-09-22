@@ -29,19 +29,24 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
 import org.connectbot.data.ColorSchemeRepository
+import org.connectbot.data.EntityIds
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.util.HostConstants
 import org.junit.After
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.robolectric.RobolectricTestRunner
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
@@ -76,6 +81,24 @@ class ProfileEditorViewModelTest {
         Dispatchers.resetMain()
     }
 
+    @Test
+    fun rejectedSharedProfileSaveIsShownWithoutClosingEditor() = runTest {
+        val profile = Profile(name = "Shared", repositoryId = UUID.randomUUID())
+        `when`(profileRepository.getById(profile.id)).thenReturn(profile)
+        `when`(profileRepository.nameExists("Shared", profile.id)).thenReturn(false)
+        `when`(profileRepository.save(profile)).thenThrow(IllegalStateException("Repository is read-only"))
+        val viewModel = ProfileEditorViewModel(SavedStateHandle(mapOf("profileId" to profile.id.toString())), profileRepository, colorSchemeRepository, sharedPreferences, context, dispatchers)
+        var closed = false
+        viewModel.updateName("Shared")
+        viewModel.save { closed = true }
+        val saved = ArgumentCaptor.forClass(Profile::class.java)
+        verify(profileRepository).save(saved.capture() ?: Profile(name = "unused"))
+        assertEquals(profile, saved.value)
+        assertEquals("Repository is read-only", viewModel.uiState.value.saveError)
+        assertFalse(viewModel.uiState.value.isSaving)
+        assertFalse(closed)
+    }
+
     private fun createViewModel(): ProfileEditorViewModel = ProfileEditorViewModel(
         savedStateHandle = SavedStateHandle(),
         profileRepository = profileRepository,
@@ -94,16 +117,18 @@ class ProfileEditorViewModelTest {
         viewModel.updateBoldAsBright(false)
         assertTrue(viewModel.uiState.value.hasUnsavedChanges)
         `when`(profileRepository.nameExists("Colors", null)).thenReturn(false)
-        `when`(profileRepository.save(Profile(name = "Colors", boldAsBright = false))).thenReturn(1L)
         viewModel.save {}
-        verify(profileRepository).save(Profile(name = "Colors", boldAsBright = false))
+        val captured = ArgumentCaptor.forClass(Profile::class.java)
+        verify(profileRepository).save(captured.capture() ?: Profile(name = "unused"))
+        assertEquals("Colors", captured.value.name)
+        assertEquals(false, captured.value.boldAsBright)
     }
 
     @Test
     fun boldAsBrightLoadsSavedSelection() = runTest {
-        `when`(profileRepository.getById(2L)).thenReturn(Profile(id = 2L, name = "Colors", boldAsBright = false))
+        `when`(profileRepository.getById(UUID(0, 2))).thenReturn(Profile(id = UUID(0, 2), name = "Colors", boldAsBright = false))
         val viewModel = ProfileEditorViewModel(
-            SavedStateHandle(mapOf("profileId" to 2L)),
+            SavedStateHandle(mapOf("profileId" to UUID(0, 2).toString())),
             profileRepository,
             colorSchemeRepository,
             sharedPreferences,
@@ -121,16 +146,18 @@ class ProfileEditorViewModelTest {
         viewModel.updateName("Images")
         viewModel.updateInlineImages("on")
         `when`(profileRepository.nameExists("Images", null)).thenReturn(false)
-        `when`(profileRepository.save(Profile(name = "Images", inlineImages = "on"))).thenReturn(1L)
         viewModel.save {}
-        verify(profileRepository).save(Profile(name = "Images", inlineImages = "on"))
+        val captured = ArgumentCaptor.forClass(Profile::class.java)
+        verify(profileRepository).save(captured.capture() ?: Profile(name = "unused"))
+        assertEquals("Images", captured.value.name)
+        assertEquals("on", captured.value.inlineImages)
     }
 
     @Test
     fun inlineImagesLoadsSavedSelection() = runTest {
-        `when`(profileRepository.getById(2L)).thenReturn(Profile(id = 2L, name = "Images", inlineImages = "off"))
+        `when`(profileRepository.getById(UUID(0, 2))).thenReturn(Profile(id = UUID(0, 2), name = "Images", inlineImages = "off"))
         val viewModel = ProfileEditorViewModel(
-            SavedStateHandle(mapOf("profileId" to 2L)),
+            SavedStateHandle(mapOf("profileId" to UUID(0, 2).toString())),
             profileRepository,
             colorSchemeRepository,
             sharedPreferences,

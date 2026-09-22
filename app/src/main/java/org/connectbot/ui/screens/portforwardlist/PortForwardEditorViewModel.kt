@@ -26,15 +26,17 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.connectbot.data.EntityIds
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.PortForward
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalManager
 import org.connectbot.util.HostConstants
+import java.util.UUID
 import javax.inject.Inject
 
 data class PortForwardEditorUiState(
-    val forwardId: Long = 0L,
+    val forwardId: UUID = EntityIds.NONE,
     val nickname: String = "",
     val type: String = HostConstants.PORTFORWARD_LOCAL,
     val sourcePort: String = "",
@@ -71,8 +73,8 @@ class PortForwardEditorViewModel @Inject constructor(
     private val repository: HostRepository,
     private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
-    private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
-    private val forwardId: Long = savedStateHandle.get<Long>("forwardId") ?: 0L
+    private val hostId: UUID = EntityIds.parse(savedStateHandle.get<String>("hostId"))
+    private val forwardId: UUID = EntityIds.parse(savedStateHandle.get<String>("forwardId"))
     private var original: PortForward? = null
     private var terminalManager: TerminalManager? = null
 
@@ -80,7 +82,7 @@ class PortForwardEditorViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     init {
-        if (forwardId == 0L) {
+        if (forwardId == EntityIds.NONE) {
             _uiState.update { it.copy(isLoading = false, hasUnsavedChanges = true) }
         } else {
             viewModelScope.launch {
@@ -131,7 +133,7 @@ class PortForwardEditorViewModel @Inject constructor(
 
     fun save(onSuccess: () -> Unit) {
         val state = _uiState.value
-        if (state.isLoading || state.isSaving || !state.hasUnsavedChanges || !state.canSave || (forwardId != 0L && original == null)) return
+        if (state.isLoading || state.isSaving || !state.hasUnsavedChanges || !state.canSave || (forwardId != EntityIds.NONE && original == null)) return
         _uiState.update { it.copy(isSaving = true, error = null) }
         viewModelScope.launch {
             try {
@@ -143,7 +145,7 @@ class PortForwardEditorViewModel @Inject constructor(
                         "localhost"
                     }
                     val portForward = PortForward(
-                        id = original?.id ?: 0L,
+                        id = original?.id ?: UUID.randomUUID(),
                         hostId = hostId,
                         nickname = state.nickname,
                         type = state.type,

@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,18 +20,21 @@ package org.connectbot.data.migration
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.KnownHost
 import org.connectbot.data.entity.PortForward
+import org.connectbot.util.HostConstants
 import timber.log.Timber
+import java.util.UUID
 
 /**
  * Data class for hosts from the legacy database that includes
  * terminal-specific fields that are now in profiles.
  */
 data class LegacyHost(
-    val id: Long,
+    val id: UUID,
     val nickname: String,
     val protocol: String,
     val username: String,
@@ -43,14 +46,14 @@ data class LegacyHost(
     val useKeys: Boolean,
     val useAuthAgent: String?,
     val postLogin: String?,
-    val pubkeyId: Long,
+    val pubkeyId: UUID,
     val wantSession: Boolean,
     val compression: Boolean,
     val encoding: String,
     val stayConnected: Boolean,
     val quickDisconnect: Boolean,
     val fontSize: Int,
-    val colorSchemeId: Long,
+    val colorSchemeId: UUID,
     val delKey: String,
     val scrollbackLines: Int,
     val useCtrlAltAsMetaKey: Boolean,
@@ -257,7 +260,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
         val useCtrlAltAsMetaIndex = cursor.getColumnIndex("usectrlaltasmeta")
 
         return LegacyHost(
-            id = cursor.getLong(idIndex),
+            id = EntityIds.legacy("hosts", cursor.getLong(idIndex)),
             nickname = cursor.getString(nicknameIndex) ?: "",
             protocol = cursor.getString(protocolIndex) ?: "ssh",
             username = cursor.getString(usernameIndex) ?: "",
@@ -269,14 +272,14 @@ class LegacyHostDatabaseReader(private val context: Context) {
             useKeys = cursor.getStringAsBoolean(useKeysIndex),
             useAuthAgent = if (useAuthAgentIndex >= 0) cursor.getStringOrNull(useAuthAgentIndex) else null,
             postLogin = if (postLoginIndex >= 0) cursor.getStringOrNull(postLoginIndex) else null,
-            pubkeyId = cursor.getLong(pubkeyIdIndex),
+            pubkeyId = EntityIds.legacyKey(cursor.getLong(pubkeyIdIndex)),
             wantSession = cursor.getStringAsBoolean(wantSessionIndex),
             compression = cursor.getStringAsBoolean(compressionIndex),
             encoding = cursor.getString(encodingIndex) ?: "UTF-8",
             stayConnected = cursor.getStringAsBoolean(stayConnectedIndex),
             quickDisconnect = if (quickDisconnectIndex >= 0) cursor.getStringAsBoolean(quickDisconnectIndex) else false,
             fontSize = cursor.getInt(fontSizeIndex),
-            colorSchemeId = if (colorSchemeIdIndex >= 0) cursor.getLong(colorSchemeIdIndex) else 1L,
+            colorSchemeId = EntityIds.legacyScheme(if (colorSchemeIdIndex >= 0) cursor.getLong(colorSchemeIdIndex) else 1L),
             delKey = cursor.getString(delKeyIndex) ?: "del",
             scrollbackLines = if (scrollbackLinesIndex >= 0) cursor.getInt(scrollbackLinesIndex) else 140,
             useCtrlAltAsMetaKey = if (useCtrlAltAsMetaIndex >= 0) cursor.getStringAsBoolean(useCtrlAltAsMetaIndex) else false,
@@ -293,8 +296,8 @@ class LegacyHostDatabaseReader(private val context: Context) {
         val destPortIndex = cursor.getColumnIndexOrThrow("destport")
 
         return PortForward(
-            id = cursor.getLong(idIndex),
-            hostId = cursor.getLong(hostIdIndex),
+            id = EntityIds.legacy("port_forwards", cursor.getLong(idIndex)),
+            hostId = EntityIds.legacy("hosts", cursor.getLong(hostIdIndex)),
             nickname = cursor.getString(nicknameIndex) ?: "",
             type = cursor.getString(typeIndex) ?: "local",
             sourceAddr = "localhost",
@@ -328,8 +331,8 @@ class LegacyHostDatabaseReader(private val context: Context) {
         }
 
         return KnownHost(
-            id = id,
-            hostId = cursor.getLong(hostIdIndex),
+            id = EntityIds.legacy("known_hosts", id),
+            hostId = EntityIds.legacy("hosts", cursor.getLong(hostIdIndex)),
             hostname = cursor.getString(hostnameIndex) ?: "",
             port = cursor.getInt(portIndex),
             hostKeyAlgo = hostKeyAlgo,
@@ -348,7 +351,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
         }
 
         return ColorScheme(
-            id = id,
+            id = EntityIds.legacy("color_schemes", id),
             name = name,
             isBuiltIn = true, // Legacy schemes are treated as built-in
             description = if (descriptionIndex >= 0) cursor.getString(descriptionIndex) ?: "" else "",
@@ -361,7 +364,7 @@ class LegacyHostDatabaseReader(private val context: Context) {
         val valueIndex = cursor.getColumnIndexOrThrow("value")
 
         return ColorPalette(
-            schemeId = cursor.getInt(schemeIndex).toLong(),
+            schemeId = EntityIds.legacyScheme(cursor.getInt(schemeIndex).toLong()),
             colorIndex = cursor.getInt(numberIndex),
             color = cursor.getInt(valueIndex),
         )

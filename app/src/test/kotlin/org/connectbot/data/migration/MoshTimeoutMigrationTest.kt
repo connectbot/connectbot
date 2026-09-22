@@ -58,7 +58,7 @@ class MoshTimeoutMigrationTest {
             db.version = 11
         }
         val database = Room.databaseBuilder(context, ConnectBotDatabase::class.java, name)
-            .addMigrations(ConnectBotDatabase.MIGRATION_10_11).build()
+            .addMigrations(ConnectBotDatabase.MIGRATION_10_11, ConnectBotDatabase.MIGRATION_14_15).build()
         try {
             val host = database.hostDao().getAll().single()
             assertEquals("Existing", host.nickname)

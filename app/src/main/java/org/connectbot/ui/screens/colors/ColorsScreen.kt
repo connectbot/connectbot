@@ -80,6 +80,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.R
+import org.connectbot.data.EntityIds
 import org.connectbot.data.JsonImportReader
 import org.connectbot.data.JsonImportTooLargeException
 import org.connectbot.data.entity.ColorScheme
@@ -88,6 +89,7 @@ import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.components.FocusableAlertDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import java.io.IOException
+import java.util.UUID
 
 /**
  * Screen for managing color schemes (create, duplicate, delete).
@@ -97,7 +99,7 @@ import java.io.IOException
 fun ColorsScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
-    onNavigateToPaletteEditor: (Long) -> Unit = {},
+    onNavigateToPaletteEditor: (UUID) -> Unit = {},
     viewModel: ColorSchemeManagerViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
@@ -106,7 +108,7 @@ fun ColorsScreen(
     val repository = viewModel.repository
     val scope = rememberCoroutineScope()
 
-    var exportingSchemeId by remember { mutableLongStateOf(-1L) }
+    var exportingSchemeId by remember { mutableStateOf(EntityIds.NONE) }
 
     val exportLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.CreateDocument("application/json"),
@@ -230,16 +232,16 @@ fun ColorsScreen(
 fun ColorsScreenContent(
     uiState: SchemeManagerUiState,
     onNavigateBack: () -> Unit,
-    onNavigateToPaletteEditor: (Long) -> Unit,
-    onExportScheme: (Long) -> Unit,
+    onNavigateToPaletteEditor: (UUID) -> Unit,
+    onExportScheme: (UUID) -> Unit,
     onImportScheme: () -> Unit,
     onShowNewSchemeDialog: () -> Unit,
     onClearError: () -> Unit,
-    onSelectScheme: (Long) -> Unit,
+    onSelectScheme: (UUID) -> Unit,
     onShowDeleteDialog: () -> Unit,
-    onCreateNewScheme: (String, String, Long) -> Unit,
+    onCreateNewScheme: (String, String, UUID) -> Unit,
     onHideNewSchemeDialog: () -> Unit,
-    onDeleteScheme: (Long) -> Unit,
+    onDeleteScheme: (UUID) -> Unit,
     onHideDeleteDialog: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -435,19 +437,19 @@ private fun ColorsScreenPopulatedPreview() {
             uiState = SchemeManagerUiState(
                 schemes = listOf(
                     ColorScheme(
-                        id = 1,
+                        id = UUID(0, 1),
                         name = "Solarized Dark",
                         description = "Popular dark theme",
                         isBuiltIn = true,
                     ),
                     ColorScheme(
-                        id = 2,
+                        id = UUID(0, 2),
                         name = "Monokai",
                         description = "Vibrant color scheme",
                         isBuiltIn = true,
                     ),
                     ColorScheme(
-                        id = 3,
+                        id = UUID(0, 3),
                         name = "My Custom Theme",
                         description = "Personal customization",
                         isBuiltIn = false,
@@ -597,15 +599,15 @@ private fun SchemeItem(
 private fun NewSchemeDialog(
     availableSchemes: List<ColorScheme>,
     error: String?,
-    onConfirm: (name: String, description: String, baseSchemeId: Long) -> Unit,
+    onConfirm: (name: String, description: String, baseSchemeId: UUID) -> Unit,
     onDismiss: () -> Unit,
-    preselectedSchemeId: Long? = null,
+    preselectedSchemeId: UUID? = null,
     suggestedName: String? = null,
 ) {
     var name by remember { mutableStateOf(suggestedName ?: "") }
     var description by remember { mutableStateOf("") }
     var selectedBaseSchemeId by remember {
-        mutableLongStateOf(preselectedSchemeId ?: -1L)
+        mutableStateOf(preselectedSchemeId ?: EntityIds.DEFAULT_SCHEME)
     }
 
     FocusableAlertDialog(

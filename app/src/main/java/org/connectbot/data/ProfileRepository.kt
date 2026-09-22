@@ -23,6 +23,7 @@ import kotlinx.coroutines.withContext
 import org.connectbot.data.dao.ProfileDao
 import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -45,7 +46,7 @@ class ProfileRepository @Inject constructor(
     /**
      * Observe a single profile by ID.
      */
-    fun observeById(profileId: Long): Flow<Profile?> = profileDao.observeById(profileId)
+    fun observeById(profileId: UUID): Flow<Profile?> = profileDao.observeById(profileId)
 
     /**
      * Get all profiles.
@@ -57,7 +58,7 @@ class ProfileRepository @Inject constructor(
     /**
      * Get a profile by ID.
      */
-    suspend fun getById(profileId: Long): Profile? = withContext(dispatchers.io) {
+    suspend fun getById(profileId: UUID): Profile? = withContext(dispatchers.io) {
         profileDao.getById(profileId)
     }
 
@@ -77,8 +78,8 @@ class ProfileRepository @Inject constructor(
      */
     suspend fun create(
         name: String,
-        basedOnProfileId: Long? = null,
-    ): Long = withContext(dispatchers.io) {
+        basedOnProfileId: UUID? = null,
+    ): UUID = withContext(dispatchers.io) {
         val baseProfile = if (basedOnProfileId != null) {
             profileDao.getById(basedOnProfileId) ?: Profile.createDefault()
         } else {
@@ -86,7 +87,7 @@ class ProfileRepository @Inject constructor(
         }
 
         val newProfile = baseProfile.copy(
-            id = 0, // Auto-generate
+            id = UUID.randomUUID(),
             name = name,
         )
         profileDao.insert(newProfile)
@@ -104,8 +105,8 @@ class ProfileRepository @Inject constructor(
      *
      * @return The ID of the saved profile
      */
-    suspend fun save(profile: Profile): Long = withContext(dispatchers.io) {
-        if (profile.id == 0L) {
+    suspend fun save(profile: Profile): UUID = withContext(dispatchers.io) {
+        if (profileDao.getById(profile.id) == null) {
             profileDao.insert(profile)
         } else {
             profileDao.update(profile)
@@ -119,7 +120,7 @@ class ProfileRepository @Inject constructor(
      * @param profileId The profile ID to delete
      * @return true if deleted, false if not found
      */
-    suspend fun delete(profileId: Long): Boolean = withContext(dispatchers.io) {
+    suspend fun delete(profileId: UUID): Boolean = withContext(dispatchers.io) {
         profileDao.deleteById(profileId) > 0
     }
 
@@ -130,21 +131,21 @@ class ProfileRepository @Inject constructor(
      * @param excludeProfileId Optional profile ID to exclude from the check (for renames)
      * @return true if the name exists, false otherwise
      */
-    suspend fun nameExists(name: String, excludeProfileId: Long? = null): Boolean = withContext(dispatchers.io) {
+    suspend fun nameExists(name: String, excludeProfileId: UUID? = null): Boolean = withContext(dispatchers.io) {
         profileDao.nameExists(name, excludeProfileId)
     }
 
     /**
      * Get the count of hosts using a specific profile.
      */
-    suspend fun getHostsUsingProfile(profileId: Long): Int = withContext(dispatchers.io) {
+    suspend fun getHostsUsingProfile(profileId: UUID): Int = withContext(dispatchers.io) {
         profileDao.getHostsUsingProfile(profileId)
     }
 
     /**
      * Blocking wrapper for getById - for use from non-coroutine code.
      */
-    fun getByIdBlocking(profileId: Long): Profile? = runBlocking {
+    fun getByIdBlocking(profileId: UUID): Profile? = runBlocking {
         getById(profileId)
     }
 
@@ -152,7 +153,7 @@ class ProfileRepository @Inject constructor(
      * Blocking wrapper that returns the profile or the default if not found.
      * This ensures a profile is always returned.
      */
-    fun getByIdOrDefaultBlocking(profileId: Long?): Profile = runBlocking {
+    fun getByIdOrDefaultBlocking(profileId: UUID?): Profile = runBlocking {
         if (profileId == null) {
             getDefault()
         } else {
@@ -167,10 +168,10 @@ class ProfileRepository @Inject constructor(
      * @param newName The name for the duplicated profile
      * @return The ID of the newly created profile
      */
-    suspend fun duplicate(sourceProfileId: Long, newName: String): Long = withContext(dispatchers.io) {
+    suspend fun duplicate(sourceProfileId: UUID, newName: String): UUID = withContext(dispatchers.io) {
         val source = profileDao.getById(sourceProfileId) ?: Profile.createDefault()
         val newProfile = source.copy(
-            id = 0,
+            id = UUID.randomUUID(),
             name = newName,
         )
         profileDao.insert(newProfile)

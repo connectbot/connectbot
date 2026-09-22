@@ -22,6 +22,8 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import org.connectbot.data.EntityIds
+import java.util.UUID
 
 /**
  * Terminal color palette override entity.
@@ -43,11 +45,14 @@ import androidx.room.PrimaryKey
     ],
 )
 data class ColorPalette(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    @PrimaryKey
+    val id: UUID = UUID.randomUUID(),
+
+    @ColumnInfo(name = "repository_id", defaultValue = "'" + EntityIds.LOCAL_TEXT + "'")
+    val repositoryId: UUID = EntityIds.LOCAL,
 
     @ColumnInfo(name = "scheme_id")
-    val schemeId: Long,
+    val schemeId: UUID,
 
     @ColumnInfo(name = "color_index")
     val colorIndex: Int,

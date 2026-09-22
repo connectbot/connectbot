@@ -23,14 +23,17 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Profile
+import org.connectbot.util.HostConstants
 import org.json.JSONObject
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.UUID
 
 @RunWith(AndroidJUnit4::class)
 class SchemaBasedExporterTest {
@@ -91,12 +94,12 @@ class SchemaBasedExporterTest {
 
         val profile = json.getJSONArray("profiles").getJSONObject(0)
         assertThat(profile.getString("name")).isEqualTo("Ops")
-        assertThat(profile.getLong("id")).isEqualTo(profileId)
+        assertThat(profile.getString("id")).isEqualTo(profileId.toString())
 
         val host = json.getJSONArray("hosts").getJSONObject(0)
         assertThat(host.getString("nickname")).isEqualTo("prod")
         assertThat(host.getString("hostname")).isEqualTo("prod.example.com")
-        assertThat(host.getLong("profileId")).isEqualTo(profileId)
+        assertThat(host.getString("profileId")).isEqualTo(profileId.toString())
         assertThat(host.getString("ipVersion")).isEqualTo("IPV6_ONLY")
         assertThat(host.has("hostKeyAlgo")).isFalse()
         assertThat(host.has("lastConnect")).isFalse()
@@ -275,7 +278,7 @@ class SchemaBasedExporterTest {
         hostKeyAlgo: String? = null,
         lastConnect: Long = 0,
         postLogin: String? = null,
-        profileId: Long? = 1L,
+        profileId: UUID? = UUID(0, 1),
         ipVersion: String = "IPV4_AND_IPV6",
     ): Host = Host(
         nickname = nickname,
@@ -289,7 +292,7 @@ class SchemaBasedExporterTest {
         useKeys = false,
         useAuthAgent = "no",
         postLogin = postLogin,
-        pubkeyId = -1,
+        pubkeyId = HostConstants.PUBKEYID_ANY,
         wantSession = true,
         compression = false,
         stayConnected = false,

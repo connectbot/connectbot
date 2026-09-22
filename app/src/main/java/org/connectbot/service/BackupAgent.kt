@@ -111,14 +111,14 @@ class BackupAgent : BackupAgentHelper() {
             applicationContext,
             ConnectBotDatabase::class.java,
             DATABASE_NAME,
-        ).addMigrations(ConnectBotDatabase.MIGRATION_4_5, ConnectBotDatabase.MIGRATION_10_11).build()
+        ).addMigrations(ConnectBotDatabase.MIGRATION_4_5, ConnectBotDatabase.MIGRATION_10_11, ConnectBotDatabase.MIGRATION_14_15).build()
         val dispatchers = CoroutineDispatchers(default = Dispatchers.Default, io = Dispatchers.IO, main = Dispatchers.Main)
         val securePasswordStorage = org.connectbot.util.SecurePasswordStorage(applicationContext)
-        val hostRepository = HostRepository(applicationContext, database, database.hostDao(), database.portForwardDao(), database.knownHostDao(), securePasswordStorage)
+        val hostRepository = HostRepository(applicationContext, database, database.hostDao(), database.portForwardDao(), database.knownHostDao(), securePasswordStorage, dispatchers)
         val colorSchemeRepository = ColorSchemeRepository(database.colorSchemeDao(), dispatchers = dispatchers)
         val pubkeyRepository = PubkeyRepository(database.pubkeyDao())
 
-        val filter = BackupFilter(applicationContext, hostRepository, colorSchemeRepository, pubkeyRepository)
+        val filter = BackupFilter(applicationContext, hostRepository, colorSchemeRepository, pubkeyRepository, database)
         try {
             // Step 1: Build a temporary database with filtered data
             Timber.d("Building temporary database with backupable data")

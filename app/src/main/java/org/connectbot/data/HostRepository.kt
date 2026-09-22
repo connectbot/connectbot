@@ -22,6 +22,7 @@ import androidx.room.withTransaction
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import org.connectbot.data.dao.HostDao
 import org.connectbot.data.dao.KnownHostDao
 import org.connectbot.data.dao.PortForwardDao
@@ -29,6 +30,7 @@ import org.connectbot.data.entity.AutomationAction
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KnownHost
 import org.connectbot.data.entity.PortForward
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.SecurePasswordStorage
 import java.util.UUID
 import javax.inject.Inject
@@ -52,18 +54,19 @@ class HostRepository @Inject constructor(
     private val portForwardDao: PortForwardDao,
     private val knownHostDao: KnownHostDao,
     private val securePasswordStorage: SecurePasswordStorage,
+    private val dispatchers: CoroutineDispatchers,
 ) {
-    fun observeAutomation(hostId: Long) = database.automationActionDao().observeByHost(hostId)
+    fun observeAutomation(hostId: UUID) = database.automationActionDao().observeByHost(hostId)
 
-    suspend fun getAutomation(hostId: Long) = database.automationActionDao().getByHost(hostId)
+    suspend fun getAutomation(hostId: UUID) = database.automationActionDao().getByHost(hostId)
 
-    suspend fun saveAutomation(hostId: Long, actions: List<AutomationAction>) = database.automationActionDao().replace(hostId, actions)
+    suspend fun saveAutomation(hostId: UUID, actions: List<AutomationAction>) = database.automationActionDao().replace(hostId, actions)
 
     /** Duplicate settings atomically, allocating fresh action identities and remapping forwards. */
-    suspend fun duplicateHostSettings(sourceId: Long, newHost: Host): Host = database.withTransaction {
-        val savedHost = saveHost(newHost.copy(id = 0L, postLogin = null))
+    suspend fun duplicateHostSettings(sourceId: UUID, newHost: Host): Host = database.withTransaction {
+        val savedHost = saveHost(newHost.copy(id = UUID.randomUUID(), postLogin = null))
         val forwardIds = getPortForwardsForHost(sourceId).associate { forward ->
-            forward.id to savePortForward(forward.copy(id = 0L, hostId = savedHost.id)).id
+            forward.id to savePortForward(forward.copy(id = UUID.randomUUID(), hostId = savedHost.id)).id
         }
         saveAutomation(
             savedHost.id,
@@ -106,7 +109,7 @@ class HostRepository @Inject constructor(
      * @param hostId The host ID
      * @return Flow of host that updates automatically
      */
-    fun observeHost(hostId: Long): Flow<Host?> = hostDao.observeById(hostId)
+    fun observeHost(hostId: UUID): Flow<Host?> = hostDao.observeById(hostId)
 
     /**
      * Get all hosts.
@@ -128,7 +131,14 @@ class HostRepository @Inject constructor(
      * @param hostId The host ID
      * @return The host, or null if not found
      */
-    suspend fun findHostById(hostId: Long): Host? = hostDao.getById(hostId)
+    suspend fun findHostById(hostId: UUID): Host? = withContext(dispatchers.io) {
+        hostDao.getById(hostId)?.let { return@withContext it }
+        val db = database.openHelper.readableDatabase
+        val redirectsExist = db.query("SELECT 1 FROM sqlite_master WHERE type='table' AND name='sync_host_redirects'").use { it.moveToFirst() }
+        if (!redirectsExist) return@withContext null
+        val redirected = db.query("SELECT new_id FROM sync_host_redirects WHERE old_id=?", arrayOf(hostId.toString())).use { if (it.moveToFirst()) UUID.fromString(it.getString(0)) else null }
+        redirected?.let { hostDao.getById(it) }
+    }
 
     /**
      * Get all SSH hosts that can be used as jump hosts.
@@ -150,7 +160,7 @@ class HostRepository @Inject constructor(
      * @param hostId The host ID
      * @return The host, or null if not found
      */
-    fun findHostByIdBlocking(hostId: Long): Host? = runBlocking {
+    fun findHostByIdBlocking(hostId: UUID): Host? = runBlocking {
         findHostById(hostId)
     }
 
@@ -160,14 +170,10 @@ class HostRepository @Inject constructor(
      * @param host The host to save
      * @return The saved host with updated ID
      */
-    suspend fun saveHost(host: Host): Host = if (host.id <= 0L) {
-        // New or temporary host - insert (assigns new positive ID)
-        val newId = hostDao.insert(host)
-        host.copy(id = newId)
-    } else {
-        // Existing host - update
-        hostDao.update(host)
-        host
+    suspend fun saveHost(host: Host): Host {
+        val saved = host.copy(isTemporary = false)
+        if (hostDao.getById(host.id) == null) hostDao.insert(saved) else hostDao.update(saved)
+        return saved
     }
 
     /**
@@ -187,8 +193,8 @@ class HostRepository @Inject constructor(
      * @param host The host to update
      */
     suspend fun touchHost(host: Host) {
-        if (host.id <= 0L) {
-            // Skip for temporary hosts (negative IDs)
+        if (host.isTemporary) {
+            // Temporary sessions do not have a persisted record
             return
         }
         val updatedHost = host.copy(lastConnect = System.currentTimeMillis())
@@ -205,7 +211,7 @@ class HostRepository @Inject constructor(
      * @param hostId The host ID
      * @return Flow of port forwards that updates automatically
      */
-    fun observePortForwardsForHost(hostId: Long): Flow<List<PortForward>> = portForwardDao.observeByHost(hostId)
+    fun observePortForwardsForHost(hostId: UUID): Flow<List<PortForward>> = portForwardDao.observeByHost(hostId)
 
     /**
      * Get all port forwards for a host.
@@ -213,10 +219,10 @@ class HostRepository @Inject constructor(
      * @param hostId The host ID
      * @return List of port forwards
      */
-    suspend fun getPortForwardsForHost(hostId: Long): List<PortForward> = portForwardDao.getByHost(hostId)
+    suspend fun getPortForwardsForHost(hostId: UUID): List<PortForward> = portForwardDao.getByHost(hostId)
 
     /** Get one port forward for editing. */
-    suspend fun getPortForwardById(id: Long): PortForward? = portForwardDao.getById(id)
+    suspend fun getPortForwardById(id: UUID): PortForward? = portForwardDao.getById(id)
 
     /**
      * Save a port forward (insert or update).
@@ -224,14 +230,11 @@ class HostRepository @Inject constructor(
      * @param portForward The port forward to save
      * @return The saved port forward with updated ID
      */
-    suspend fun savePortForward(portForward: PortForward): PortForward = if (portForward.id == 0L) {
-        // New port forward - insert
-        val newId = portForwardDao.insert(portForward)
-        portForward.copy(id = newId)
-    } else {
-        // Existing port forward - update
-        portForwardDao.update(portForward)
-        portForward
+    suspend fun savePortForward(portForward: PortForward): PortForward {
+        val parent = hostDao.getById(portForward.hostId) ?: error("Host no longer exists")
+        val saved = portForward.copy(repositoryId = parent.repositoryId)
+        if (portForwardDao.getById(saved.id) == null) portForwardDao.insert(saved) else portForwardDao.update(saved)
+        return saved
     }
 
     /**
@@ -247,9 +250,9 @@ class HostRepository @Inject constructor(
     // Known Host Operations
     // ============================================================================
 
-    fun observeKnownHostsForHost(hostId: Long): Flow<List<KnownHost>> = knownHostDao.observeByHostId(hostId)
+    fun observeKnownHostsForHost(hostId: UUID): Flow<List<KnownHost>> = knownHostDao.observeByHostId(hostId)
 
-    suspend fun getKnownHostsForHost(hostId: Long): List<KnownHost> = knownHostDao.getByHostId(hostId)
+    suspend fun getKnownHostsForHost(hostId: UUID): List<KnownHost> = knownHostDao.getByHostId(hostId)
 
     /**
      * Get the list of host key algorithms known for a specific host.
@@ -257,7 +260,7 @@ class HostRepository @Inject constructor(
      * @param hostId The host ID
      * @return List of algorithm names
      */
-    suspend fun getHostKeyAlgorithmsForHost(hostId: Long): List<String> {
+    suspend fun getHostKeyAlgorithmsForHost(hostId: UUID): List<String> {
         val knownHosts = knownHostDao.getByHostId(hostId)
         return knownHosts
             .flatMap { expandHostKeyAlgorithms(it.hostKeyAlgo) }
@@ -284,12 +287,12 @@ class HostRepository @Inject constructor(
         port: Int,
         serverHostKeyAlgorithm: String,
         serverHostKey: ByteArray,
-    ) {
-        // Temporary hosts (negative ids) are never inserted into the hosts
+    ) = withContext(dispatchers.io) {
+        // Temporary hosts are never inserted into the hosts
         // table, so persisting a known_hosts row keyed by host.id would break
         // the foreign key constraint (issue #2060).
         if (host.isTemporary) {
-            return
+            return@withContext
         }
         // Check if this exact key already exists for this host
         val existing = knownHostDao.getByHostIdAlgoAndKey(
@@ -302,6 +305,7 @@ class HostRepository @Inject constructor(
             // Insert new key - this allows multiple keys per algorithm for key rotation
             val knownHost = KnownHost(
                 hostId = host.id,
+                repositoryId = if (host.repositoryId == EntityIds.LOCAL) EntityIds.LOCAL else database.openHelper.readableDatabase.query("SELECT role FROM sync_repositories WHERE id=?", arrayOf(host.repositoryId.toString())).use { if (it.moveToFirst() && it.getString(0) != "reader") host.repositoryId else EntityIds.LOCAL },
                 hostname = hostname,
                 port = port,
                 hostKeyAlgo = serverHostKeyAlgorithm,
@@ -319,7 +323,7 @@ class HostRepository @Inject constructor(
      * @param serverHostKey The public key bytes, or null to remove all keys for the algorithm
      */
     suspend fun removeKnownHost(
-        hostId: Long,
+        hostId: UUID,
         serverHostKeyAlgorithm: String,
         serverHostKey: ByteArray?,
     ) {
@@ -347,7 +351,7 @@ class HostRepository @Inject constructor(
      *
      * @param hostId The host ID
      */
-    suspend fun deleteKnownHostsForHost(hostId: Long) {
+    suspend fun deleteKnownHostsForHost(hostId: UUID) {
         knownHostDao.deleteByHostId(hostId)
     }
 
@@ -406,14 +410,14 @@ class HostRepository @Inject constructor(
     /**
      * Get known hosts for a specific host (blocking version for Java interop).
      */
-    fun getKnownHostsForHostBlocking(hostId: Long): List<KnownHost> = runBlocking {
+    fun getKnownHostsForHostBlocking(hostId: UUID): List<KnownHost> = runBlocking {
         getKnownHostsForHost(hostId)
     }
 
     /**
      * Get host key algorithms for a host (blocking version for Java interop).
      */
-    fun getHostKeyAlgorithmsForHostBlocking(hostId: Long): List<String> = runBlocking {
+    fun getHostKeyAlgorithmsForHostBlocking(hostId: UUID): List<String> = runBlocking {
         getHostKeyAlgorithmsForHost(hostId)
     }
 
@@ -421,7 +425,7 @@ class HostRepository @Inject constructor(
      * Remove a known host key (blocking version for Java interop).
      */
     fun removeKnownHostBlocking(
-        hostId: Long,
+        hostId: UUID,
         serverHostKeyAlgorithm: String,
         serverHostKey: ByteArray?,
     ) = runBlocking {
@@ -443,7 +447,7 @@ class HostRepository @Inject constructor(
         val nickname = selection["nickname"]
         if (nickname != null) {
             val allHosts = hostDao.getAll()
-            allHosts.find { it.nickname == nickname }?.let { return it }
+            allHosts.find { it.nickname == nickname && (selection["hostname"] == null || it.hostname == selection["hostname"]) && (selection["username"] == null || it.username == selection["username"]) }?.let { return it }
         }
 
         // Fall back to finding by protocol, username, hostname, port

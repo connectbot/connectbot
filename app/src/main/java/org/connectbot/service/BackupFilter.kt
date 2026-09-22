@@ -17,13 +17,17 @@
 
 package org.connectbot.service
 
+import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
+import android.database.sqlite.SQLiteDatabase
 import androidx.room.Room
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.ConnectBotDatabase
 import org.connectbot.data.HostRepository
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.KeyStorageType
+import org.connectbot.util.HostConstants
 import timber.log.Timber
 import java.io.File
 
@@ -38,6 +42,7 @@ class BackupFilter(
     private val hostRepository: HostRepository,
     private val colorSchemeRepository: ColorSchemeRepository,
     private val pubkeyRepository: PubkeyRepository,
+    private val sourceDatabase: ConnectBotDatabase? = null,
 ) {
     /**
      * Build a filtered database containing only backupable data.
@@ -58,6 +63,10 @@ class BackupFilter(
             .build()
 
         try {
+            if (sourceDatabase != null) {
+                copySnapshot(sourceDatabase, tempDb, backupKeys)
+                return
+            }
             // Get all data from main database
             val allHosts = hostRepository.getHosts()
             val allColorSchemes = colorSchemeRepository.getAllSchemes()
@@ -106,6 +115,54 @@ class BackupFilter(
             }
         } finally {
             tempDb.close()
+        }
+    }
+
+    /** Copy a consistent snapshot, including UUID relationships and unacknowledged tombstones. */
+    private fun copySnapshot(source: ConnectBotDatabase, target: ConnectBotDatabase, backupKeys: Boolean) {
+        val input = source.openHelper.writableDatabase
+        val output = target.openHelper.writableDatabase
+        input.beginTransaction()
+        output.beginTransaction()
+        try {
+            output.execSQL("PRAGMA defer_foreign_keys=ON")
+            val entities = listOf("pubkeys", "color_schemes", "profiles", "hosts", "color_palette", "port_forwards", "known_hosts")
+            val metadata = input.query("SELECT name,sql FROM sqlite_master WHERE type='table' AND (name LIKE 'sync_%' OR name IN ('settings','legacy_id_map'))").use { cursor ->
+                buildList {
+                    while (cursor.moveToNext()) {
+                        output.execSQL(cursor.getString(1))
+                        add(cursor.getString(0))
+                    }
+                }
+            }
+            for (table in entities + metadata) {
+                val filter = if (table == "pubkeys") {
+                    if (backupKeys) " WHERE allow_backup=1 AND storage_type!='ANDROID_KEYSTORE'" else " WHERE 0"
+                } else {
+                    ""
+                }
+                input.query("SELECT * FROM `$table`$filter").use { cursor ->
+                    while (cursor.moveToNext()) {
+                        val values = ContentValues()
+                        cursor.columnNames.forEachIndexed { index, name ->
+                            when (cursor.getType(index)) {
+                                Cursor.FIELD_TYPE_NULL -> values.putNull(name)
+                                Cursor.FIELD_TYPE_INTEGER -> values.put(name, cursor.getLong(index))
+                                Cursor.FIELD_TYPE_FLOAT -> values.put(name, cursor.getDouble(index))
+                                Cursor.FIELD_TYPE_BLOB -> values.put(name, cursor.getBlob(index))
+                                else -> values.put(name, cursor.getString(index))
+                            }
+                        }
+                        output.insert(table, SQLiteDatabase.CONFLICT_ABORT, values)
+                    }
+                }
+            }
+            output.execSQL("UPDATE hosts SET pubkey_id=? WHERE pubkey_id NOT IN (SELECT id FROM pubkeys) AND pubkey_id NOT IN (?,?)", arrayOf(HostConstants.PUBKEYID_ANY.toString(), HostConstants.PUBKEYID_ANY.toString(), HostConstants.PUBKEYID_NEVER.toString()))
+            output.setTransactionSuccessful()
+            input.setTransactionSuccessful()
+        } finally {
+            output.endTransaction()
+            input.endTransaction()
         }
     }
 

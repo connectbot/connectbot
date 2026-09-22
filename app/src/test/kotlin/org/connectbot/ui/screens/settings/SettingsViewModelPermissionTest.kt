@@ -29,9 +29,11 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.connectbot.data.EntityIds
 import org.connectbot.data.ProfileRepository
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.di.FakeLanguagePackManager
+import org.connectbot.util.HostConstants
 import org.connectbot.util.PreferenceConstants
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -45,6 +47,7 @@ import org.mockito.Mockito.`when`
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows.shadowOf
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)

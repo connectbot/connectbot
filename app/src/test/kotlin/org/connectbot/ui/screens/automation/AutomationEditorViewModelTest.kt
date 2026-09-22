@@ -41,6 +41,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.robolectric.RobolectricTestRunner
+import java.util.UUID
 
 @RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -52,9 +53,9 @@ class AutomationEditorViewModelTest {
 
     @Before fun setUp() = runTest {
         Dispatchers.setMain(dispatcher)
-        Mockito.`when`(repository.findHostById(1)).thenReturn(Host(id = 1, nickname = "test", protocol = "ssh", username = "user", hostname = "host", port = 22))
-        Mockito.`when`(repository.observeAutomation(1)).thenReturn(actions)
-        Mockito.`when`(repository.observePortForwardsForHost(1)).thenReturn(MutableStateFlow(emptyList()))
+        Mockito.`when`(repository.findHostById(UUID(0, 1))).thenReturn(Host(id = UUID(0, 1), nickname = "test", protocol = "ssh", username = "user", hostname = "host", port = 22))
+        Mockito.`when`(repository.observeAutomation(UUID(0, 1))).thenReturn(actions)
+        Mockito.`when`(repository.observePortForwardsForHost(UUID(0, 1))).thenReturn(MutableStateFlow(emptyList()))
     }
 
     @After fun tearDown() {
@@ -62,10 +63,10 @@ class AutomationEditorViewModelTest {
     }
 
     @Test fun editReorderUndoAndSavePreserveIds() = runTest(dispatcher) {
-        val a = AutomationAction(hostId = 1, text = "one")
-        val b = AutomationAction(hostId = 1, position = 1, text = "two")
+        val a = AutomationAction(hostId = UUID(0, 1), text = "one")
+        val b = AutomationAction(hostId = UUID(0, 1), position = 1, text = "two")
         actions.value = listOf(a, b)
-        val vm = AutomationEditorViewModel(SavedStateHandle(mapOf("hostId" to 1L)), repository, dispatchers)
+        val vm = AutomationEditorViewModel(SavedStateHandle(mapOf("hostId" to UUID(0, 1).toString())), repository, dispatchers)
         advanceUntilIdle()
         vm.move(a.id, 1)
         assertTrue(vm.state.value.dirty)
@@ -76,17 +77,17 @@ class AutomationEditorViewModelTest {
         assertTrue(vm.state.value.dirty)
         assertTrue(vm.save())
         assertFalse(vm.state.value.dirty)
-        Mockito.verify(repository).saveAutomation(1, listOf(a.copy(text = "edited"), b))
+        Mockito.verify(repository).saveAutomation(UUID(0, 1), listOf(a.copy(text = "edited"), b))
     }
 
     @Test fun unsavedDraftRestoresAndInvalidRegexDoesNotChangeSequence() = runTest(dispatcher) {
-        val handle = SavedStateHandle(mapOf("hostId" to 1L))
+        val handle = SavedStateHandle(mapOf("hostId" to UUID(0, 1).toString()))
         val vm = AutomationEditorViewModel(handle, repository, dispatchers)
         advanceUntilIdle()
-        val action = AutomationAction(hostId = 1, text = "secret\r\n")
+        val action = AutomationAction(hostId = UUID(0, 1), text = "secret\r\n")
         vm.applyEdit(action)
         advanceUntilIdle()
-        val restored = AutomationEditorViewModel(SavedStateHandle(mapOf("hostId" to 1L, "draft" to handle.get<String>("draft"))), repository, dispatchers)
+        val restored = AutomationEditorViewModel(SavedStateHandle(mapOf("hostId" to UUID(0, 1).toString(), "draft" to handle.get<String>("draft"))), repository, dispatchers)
         advanceUntilIdle()
         assertEquals(listOf(action), restored.state.value.actions)
         assertTrue(restored.state.value.dirty)
@@ -97,12 +98,12 @@ class AutomationEditorViewModelTest {
     }
 
     @Test fun failedSaveKeepsDraftDirty() = runTest(dispatcher) {
-        val vm = AutomationEditorViewModel(SavedStateHandle(mapOf("hostId" to 1L)), repository, dispatchers)
+        val vm = AutomationEditorViewModel(SavedStateHandle(mapOf("hostId" to UUID(0, 1).toString())), repository, dispatchers)
         advanceUntilIdle()
-        val action = AutomationAction(hostId = 1, text = "one")
+        val action = AutomationAction(hostId = UUID(0, 1), text = "one")
         vm.applyEdit(action)
         advanceUntilIdle()
-        Mockito.`when`(repository.saveAutomation(1, listOf(action))).thenThrow(IllegalStateException())
+        Mockito.`when`(repository.saveAutomation(UUID(0, 1), listOf(action))).thenThrow(IllegalStateException())
         assertFalse(vm.save())
         assertTrue(vm.state.value.dirty)
         assertEquals(listOf(action), vm.state.value.actions)

@@ -34,6 +34,7 @@ import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.KnownHost
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.sshlib.KeyFingerprint
+import java.util.UUID
 import javax.inject.Inject
 import kotlin.io.encoding.Base64
 
@@ -93,7 +94,7 @@ class KnownHostListViewModel @Inject constructor(
     private val repository: HostRepository,
     private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
-    private val hostId: Long = checkNotNull(savedStateHandle["hostId"])
+    private val hostId: UUID = UUID.fromString(checkNotNull(savedStateHandle["hostId"]))
     private val _uiState = MutableStateFlow(KnownHostListUiState())
     val uiState: StateFlow<KnownHostListUiState> = _uiState.asStateFlow()
 

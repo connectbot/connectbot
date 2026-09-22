@@ -64,6 +64,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.BuildConfig
 import org.connectbot.R
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.ui.common.getIconColors
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
@@ -72,6 +73,7 @@ import org.connectbot.ui.components.EditorScaffold
 import org.connectbot.ui.components.FontDownloadProgressDialog
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
+import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -96,7 +98,7 @@ fun ProfileEditorScreen(
 
     EditorScaffold(
         modifier = modifier,
-        title = stringResource(if (uiState.profileId == -1L) R.string.profile_editor_title_new else R.string.profile_editor_title_edit),
+        title = stringResource(if (uiState.profileId == EntityIds.NONE) R.string.profile_editor_title_new else R.string.profile_editor_title_edit),
         saveContentDescription = stringResource(R.string.profile_editor_save),
         saveVisible = !uiState.isLoading && uiState.hasUnsavedChanges && uiState.name.isNotBlank(),
         confirmDiscard = uiState.hasUnsavedChanges,
@@ -663,9 +665,9 @@ private fun EncodingSelector(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun ColorSchemeSelector(
-    colorSchemeId: Long,
+    colorSchemeId: UUID,
     availableSchemes: List<ColorScheme>,
-    onSelectColorScheme: (Long) -> Unit,
+    onSelectColorScheme: (UUID) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }

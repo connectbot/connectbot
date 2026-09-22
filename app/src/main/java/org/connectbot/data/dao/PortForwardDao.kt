@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import org.connectbot.data.entity.PortForward
+import java.util.UUID
 
 /**
  * Data Access Object for SSH port forwarding rules.
@@ -35,26 +36,31 @@ interface PortForwardDao {
      * Automatically updates when forwards are added, updated, or deleted.
      */
     @Query("SELECT * FROM port_forwards WHERE host_id = :hostId ORDER BY nickname ASC")
-    fun observeByHost(hostId: Long): Flow<List<PortForward>>
+    fun observeByHost(hostId: UUID): Flow<List<PortForward>>
 
     /**
      * Get all port forwards for a specific host (one-time query).
      */
     @Query("SELECT * FROM port_forwards WHERE host_id = :hostId ORDER BY nickname ASC")
-    suspend fun getByHost(hostId: Long): List<PortForward>
+    suspend fun getByHost(hostId: UUID): List<PortForward>
 
     /**
      * Get a single port forward by ID.
      */
     @Query("SELECT * FROM port_forwards WHERE id = :id")
-    suspend fun getById(id: Long): PortForward?
+    suspend fun getById(id: UUID): PortForward?
 
     /**
      * Insert a new port forward.
      * @return The ID of the newly inserted port forward
      */
     @Insert
-    suspend fun insert(portForward: PortForward): Long
+    suspend fun insertRow(portForward: PortForward)
+
+    suspend fun insert(portForward: PortForward): UUID {
+        insertRow(portForward)
+        return portForward.id
+    }
 
     /**
      * Update an existing port forward.
@@ -74,5 +80,5 @@ interface PortForwardDao {
      * when the host is deleted.
      */
     @Query("DELETE FROM port_forwards WHERE host_id = :hostId")
-    suspend fun deleteByHost(hostId: Long)
+    suspend fun deleteByHost(hostId: UUID)
 }

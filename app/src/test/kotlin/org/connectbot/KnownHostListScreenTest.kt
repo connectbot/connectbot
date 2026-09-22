@@ -38,6 +38,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.UUID
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -123,8 +124,8 @@ class KnownHostListScreenTest {
 
     private companion object {
         val TEST_KNOWN_HOST = KnownHost(
-            id = 7,
-            hostId = 3,
+            id = UUID(0, 7),
+            hostId = UUID(0, 3),
             hostname = "example.com",
             port = 22,
             hostKeyAlgo = "ssh-ed25519",

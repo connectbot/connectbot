@@ -33,6 +33,7 @@ import org.mockito.ArgumentMatchers.any
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
+import java.util.UUID
 
 class SSHImportedKeyTest {
     @Test
@@ -42,7 +43,7 @@ class SSHImportedKeyTest {
         val client = mock(SshClient::class.java)
         val bridge = mock(TerminalBridge::class.java)
         val pubkey = Pubkey(
-            id = 42,
+            id = UUID(0, 42),
             nickname = "broken",
             type = "IMPORTED",
             publicKey = byteArrayOf(),
@@ -53,14 +54,14 @@ class SSHImportedKeyTest {
             createdDate = 0,
         )
         `when`(manager.pubkeyRepository).thenReturn(repository)
-        `when`(repository.getByIdBlocking(42)).thenReturn(pubkey)
+        `when`(repository.getByIdBlocking(UUID(0, 42))).thenReturn(pubkey)
         val fallback = mock(AuthHandler::class.java)
         `when`(client.authenticate(eq("alice") ?: "alice", any(AuthHandler::class.java) ?: fallback)).thenAnswer {
             val handler = it.getArgument<AuthHandler>(1)
             assertEquals(emptyList<Any>(), runBlocking { handler.onPublicKeysNeeded() })
             AuthResult.Failure(setOf("password"))
         }
-        val ssh = SSH(Host(username = "alice", pubkeyId = 42), bridge, manager)
+        val ssh = SSH(Host(username = "alice", pubkeyId = UUID(0, 42)), bridge, manager)
         SSH::class.java.getDeclaredField("client").apply { isAccessible = true }.set(ssh, client)
         assertEquals(AuthResult.Failure(setOf("password")), ssh.authenticate())
     }

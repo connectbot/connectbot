@@ -24,6 +24,7 @@ import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import org.connectbot.data.entity.Host
+import java.util.UUID
 
 /**
  * Data Access Object for SSH/Telnet host configurations.
@@ -47,13 +48,13 @@ interface HostDao {
      * Observe a single host by ID.
      */
     @Query("SELECT * FROM hosts WHERE id = :hostId")
-    fun observeById(hostId: Long): Flow<Host?>
+    fun observeById(hostId: UUID): Flow<Host?>
 
     /**
      * Get a single host by ID (one-time query).
      */
     @Query("SELECT * FROM hosts WHERE id = :hostId")
-    suspend fun getById(hostId: Long): Host?
+    suspend fun getById(hostId: UUID): Host?
 
     /**
      * Get all hosts (one-time query).
@@ -72,7 +73,12 @@ interface HostDao {
      * @return The ID of the newly inserted host
      */
     @Insert
-    suspend fun insert(host: Host): Long
+    suspend fun insertRow(host: Host)
+
+    suspend fun insert(host: Host): UUID {
+        insertRow(host)
+        return host.id
+    }
 
     /**
      * Update an existing host.
@@ -91,7 +97,7 @@ interface HostDao {
      * Delete a host by ID.
      */
     @Query("DELETE FROM hosts WHERE id = :hostId")
-    suspend fun deleteById(hostId: Long)
+    suspend fun deleteById(hostId: UUID)
 
     /**
      * Find host associated with a known host entry.

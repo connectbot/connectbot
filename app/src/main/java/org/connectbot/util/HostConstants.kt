@@ -20,6 +20,7 @@ package org.connectbot.util
 import java.net.Inet4Address
 import java.net.Inet6Address
 import java.net.InetAddress
+import java.util.UUID
 
 /**
  * Constants for Host management.
@@ -112,6 +113,6 @@ object HostConstants {
     /*
      * Magic pubkey IDs
      */
-    val PUBKEYID_NEVER: Long = -2
-    val PUBKEYID_ANY: Long = -1
+    val PUBKEYID_NEVER: UUID = UUID.fromString("00000000-0000-0000-0000-000000000002")
+    val PUBKEYID_ANY: UUID = UUID.fromString("00000000-0000-0000-0000-000000000001")
 }

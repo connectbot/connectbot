@@ -32,6 +32,7 @@ import org.connectbot.R
 import org.connectbot.data.entity.AutomationAction
 import org.connectbot.data.entity.AutomationActionType
 import org.connectbot.data.entity.AutomationFailurePolicy
+import java.util.UUID
 
 data class AutomationState(
     val running: Boolean = false,
@@ -47,7 +48,7 @@ interface AutomationSession {
     val sessionOpen: Boolean
     suspend fun sendText(text: String)
     suspend fun sendKey(key: Int, modifiers: Int)
-    suspend fun setForward(id: Long, enabled: Boolean)
+    suspend fun setForward(id: UUID, enabled: Boolean)
     fun disconnect()
 }
 

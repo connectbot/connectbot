@@ -21,6 +21,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import org.connectbot.data.EntityIds
+import java.util.UUID
 
 /**
  * SSH public/private key pair entity with security-conscious backup controls.
@@ -36,14 +38,17 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "pubkeys",
     indices = [
-        Index(value = ["nickname"], unique = true),
+        Index(value = ["repository_id", "nickname"], unique = true),
         Index(value = ["storage_type"]),
         Index(value = ["allow_backup"]),
     ],
 )
 data class Pubkey(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    @PrimaryKey
+    val id: UUID = UUID.randomUUID(),
+
+    @ColumnInfo(name = "repository_id", defaultValue = "'" + EntityIds.LOCAL_TEXT + "'")
+    val repositoryId: UUID = EntityIds.LOCAL,
 
     val nickname: String,
 

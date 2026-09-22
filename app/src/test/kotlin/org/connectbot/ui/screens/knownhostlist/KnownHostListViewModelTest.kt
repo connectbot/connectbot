@@ -38,6 +38,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class KnownHostListViewModelTest {
@@ -127,14 +128,14 @@ class KnownHostListViewModelTest {
     }
 
     private fun createViewModel() = KnownHostListViewModel(
-        savedStateHandle = SavedStateHandle(mapOf("hostId" to HOST_ID)),
+        savedStateHandle = SavedStateHandle(mapOf("hostId" to HOST_ID.toString())),
         repository = repository,
         dispatchers = dispatchers,
     )
 
     private fun testKnownHost() = KnownHost(
-        id = 7,
-        hostId = 3,
+        id = UUID(0, 7),
+        hostId = UUID(0, 3),
         hostname = "example.com",
         port = 22,
         hostKeyAlgo = "ssh-ed25519",
@@ -142,7 +143,7 @@ class KnownHostListViewModelTest {
     )
 
     private companion object {
-        const val HOST_ID = 3L
+        val HOST_ID = UUID(0, 3)
         const val VALID_ED25519_KEY =
             "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEwaKyyFAR6BJpPCKMBKGZtN0SGOpxLWtJg7cz2Wu3+v delivered@example"
     }

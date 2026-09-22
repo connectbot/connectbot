@@ -27,6 +27,8 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.EntityIds
+import org.connectbot.data.sync.SyncDatabase
 import javax.inject.Singleton
 
 @Module
@@ -44,14 +46,18 @@ object TestDatabaseModule {
         ConnectBotDatabase::class.java,
         TEST_DATABASE_NAME,
     )
-        .addMigrations(ConnectBotDatabase.MIGRATION_4_5)
+        .addMigrations(ConnectBotDatabase.MIGRATION_4_5, ConnectBotDatabase.MIGRATION_10_11, ConnectBotDatabase.MIGRATION_14_15)
         .addCallback(object : RoomDatabase.Callback() {
+            override fun onOpen(db: SupportSQLiteDatabase) {
+                SyncDatabase.install(db)
+            }
+
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 db.execSQL(
                     """
-                        INSERT INTO profiles (name, color_scheme_id, font_size, del_key, encoding, emulation)
-                        VALUES ('Default', -1, 10, 'del', 'UTF-8', 'xterm-256color')
+                        INSERT INTO profiles (id, name, color_scheme_id, font_size, del_key, encoding, emulation)
+                        VALUES ('${EntityIds.DEFAULT_PROFILE}', 'Default', '${EntityIds.DEFAULT_SCHEME}', 10, 'del', 'UTF-8', 'xterm-256color')
                     """.trimIndent(),
                 )
             }

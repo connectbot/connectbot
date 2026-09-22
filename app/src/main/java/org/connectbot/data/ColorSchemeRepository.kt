@@ -22,11 +22,13 @@ import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import org.connectbot.data.EntityIds
 import org.connectbot.data.dao.ColorSchemeDao
 import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.HostConstants
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -53,7 +55,7 @@ class ColorSchemeRepository @Inject constructor(
         ColorSchemePresets.builtInSchemes.forEachIndexed { index, preset ->
             schemes.add(
                 ColorScheme(
-                    id = -(index + 1L), // Start from Default at -1
+                    id = EntityIds.preset(index), // Stable UUID for this built-in preset
                     name = preset.name,
                     isBuiltIn = true,
                     description = preset.description,
@@ -80,7 +82,7 @@ class ColorSchemeRepository @Inject constructor(
         ColorSchemePresets.builtInSchemes.forEachIndexed { index, preset ->
             schemes.add(
                 ColorScheme(
-                    id = -(index + 1L), // Start from Default at -1
+                    id = EntityIds.preset(index), // Stable UUID for this built-in preset
                     name = preset.name,
                     isBuiltIn = true,
                     description = preset.description,
@@ -99,8 +101,8 @@ class ColorSchemeRepository @Inject constructor(
      * @param schemeId The scheme ID
      * @return Flow of ColorScheme (or null if not found)
      */
-    fun observeScheme(schemeId: Long): Flow<ColorScheme?> = if (schemeId < 0) {
-        val presetIndex = -(schemeId + 1).toInt()
+    fun observeScheme(schemeId: UUID): Flow<ColorScheme?> = if (EntityIds.isPreset(schemeId)) {
+        val presetIndex = EntityIds.presetIndex(schemeId)
         if (presetIndex < 0 || presetIndex >= ColorSchemePresets.builtInSchemes.size) {
             flowOf(null)
         } else {
@@ -124,8 +126,8 @@ class ColorSchemeRepository @Inject constructor(
      * @param schemeId The scheme ID
      * @return Flow of IntArray of 16 ARGB colors
      */
-    fun observeSchemeColors(schemeId: Long): Flow<IntArray> = if (schemeId < 0) {
-        val presetIndex = -(schemeId + 1).toInt()
+    fun observeSchemeColors(schemeId: UUID): Flow<IntArray> = if (EntityIds.isPreset(schemeId)) {
+        val presetIndex = EntityIds.presetIndex(schemeId)
         val safeIndex = presetIndex.coerceIn(0, ColorSchemePresets.builtInSchemes.size - 1)
         flowOf(ColorSchemePresets.builtInSchemes[safeIndex].colors.clone())
     } else {
@@ -146,8 +148,8 @@ class ColorSchemeRepository @Inject constructor(
      * @param schemeId The scheme ID
      * @return Flow of Pair of (foreground index, background index)
      */
-    fun observeSchemeDefaults(schemeId: Long): Flow<Pair<Int, Int>> = if (schemeId < 0) {
-        val presetIndex = -(schemeId + 1).toInt().coerceIn(0, ColorSchemePresets.builtInSchemes.size - 1)
+    fun observeSchemeDefaults(schemeId: UUID): Flow<Pair<Int, Int>> = if (EntityIds.isPreset(schemeId)) {
+        val presetIndex = EntityIds.presetIndex(schemeId).coerceIn(0, ColorSchemePresets.builtInSchemes.size - 1)
         val preset = ColorSchemePresets.builtInSchemes[presetIndex]
         flowOf(Pair(preset.defaultFg, preset.defaultBg))
     } else {
@@ -162,19 +164,19 @@ class ColorSchemeRepository @Inject constructor(
     /**
      * Get the color palette for a specific scheme.
      *
-     * @param schemeId The scheme ID (negative for built-in, positive for custom)
+     * @param schemeId The UUID of a built-in preset or custom scheme
      * @return Array of 16 ARGB color values
      */
-    suspend fun getSchemeColors(schemeId: Long): IntArray = withContext(dispatchers.io) {
+    suspend fun getSchemeColors(schemeId: UUID): IntArray = withContext(dispatchers.io) {
         return@withContext when {
-            // A negative ID signifies a built-in, preset color scheme
-            schemeId < 0 -> {
-                val presetIndexUnbounded = -(schemeId + 1).toInt()
+            // Preset UUIDs identify virtual built-in color schemes
+            EntityIds.isPreset(schemeId) -> {
+                val presetIndexUnbounded = EntityIds.presetIndex(schemeId)
                 val presetIndex = presetIndexUnbounded.coerceIn(0, ColorSchemePresets.builtInSchemes.size - 1)
                 ColorSchemePresets.builtInSchemes[presetIndex].colors.clone()
             }
 
-            // Non-negative ID represents a scheme stored in the database.
+            // Custom scheme UUIDs identify rows stored in the database.
             else -> {
                 val colors = ColorSchemePresets.default.colors.clone()
                 colorSchemeDao.getColors(schemeId).map { colors[it.colorIndex] = it.color }
@@ -188,17 +190,17 @@ class ColorSchemeRepository @Inject constructor(
      *
      * @return Pair of (foreground index, background index)
      */
-    suspend fun getSchemeDefaults(schemeId: Long): Pair<Int, Int> = withContext(dispatchers.io) {
+    suspend fun getSchemeDefaults(schemeId: UUID): Pair<Int, Int> = withContext(dispatchers.io) {
         return@withContext when {
-            // A negative ID signifies a built-in, preset color scheme
-            schemeId < 0 -> {
-                val presetIndexUnbounded = -(schemeId + 1).toInt()
+            // Preset UUIDs identify virtual built-in color schemes
+            EntityIds.isPreset(schemeId) -> {
+                val presetIndexUnbounded = EntityIds.presetIndex(schemeId)
                 val presetIndex = presetIndexUnbounded.coerceIn(0, ColorSchemePresets.builtInSchemes.size - 1)
                 val preset = ColorSchemePresets.builtInSchemes[presetIndex]
                 Pair(preset.defaultFg, preset.defaultBg)
             }
 
-            // Non-negative ID represents a scheme stored in the database.
+            // Custom scheme UUIDs identify rows stored in the database.
             else -> {
                 val scheme = colorSchemeDao.getById(schemeId)
                 Pair(
@@ -212,13 +214,14 @@ class ColorSchemeRepository @Inject constructor(
     /**
      * Set a specific color in a scheme's palette.
      *
-     * @param schemeId The scheme ID (must be >= 0)
+     * @param schemeId The UUID of a custom scheme stored in the database
      * @param colorIndex The index in the color palette (0-15)
      * @param colorValue The RGB color value
      */
-    suspend fun setColorForScheme(schemeId: Long, colorIndex: Int, colorValue: Int) = withContext(dispatchers.io) {
+    suspend fun setColorForScheme(schemeId: UUID, colorIndex: Int, colorValue: Int) = withContext(dispatchers.io) {
         val colorEntry = ColorPalette(
             schemeId = schemeId,
+            repositoryId = colorSchemeDao.getById(schemeId)?.repositoryId ?: EntityIds.LOCAL,
             colorIndex = colorIndex,
             color = colorValue,
         )
@@ -228,12 +231,12 @@ class ColorSchemeRepository @Inject constructor(
     /**
      * Set the default foreground and background color indices for a scheme.
      *
-     * @param schemeId The scheme ID (must be >= 0)
+     * @param schemeId The UUID of a custom scheme stored in the database
      * @param foregroundColorIndex The index for the foreground color (0-15)
      * @param backgroundColorIndex The index for the background color (0-15)
      */
     suspend fun setDefaultColorsForScheme(
-        schemeId: Long,
+        schemeId: UUID,
         foregroundColorIndex: Int,
         backgroundColorIndex: Int,
     ) = withContext(dispatchers.io) {
@@ -251,10 +254,10 @@ class ColorSchemeRepository @Inject constructor(
     /**
      * Reset a scheme to standard defaults.
      *
-     * @param schemeId The scheme ID to reset (must be >= 0)
+     * @param schemeId The UUID of the custom scheme to reset
      */
-    suspend fun resetSchemeToDefaults(schemeId: Long) = withContext(dispatchers.io) {
-        if (schemeId >= 0) {
+    suspend fun resetSchemeToDefaults(schemeId: UUID) = withContext(dispatchers.io) {
+        if (!EntityIds.isPreset(schemeId)) {
             // Clear all custom colors for this scheme
             // This will make it fall back to default color scheme
             colorSchemeDao.clearColorsForScheme(schemeId)
@@ -277,21 +280,21 @@ class ColorSchemeRepository @Inject constructor(
      *
      * @param name The name for the new scheme
      * @param description Optional description
-     * @param basedOnSchemeId The scheme ID to copy colors from (default -1 for Default)
+     * @param basedOnSchemeId The scheme UUID to copy colors from (defaults to the Default preset)
      * @return The ID of the newly created scheme
      */
     suspend fun createCustomScheme(
         name: String,
         description: String = "",
-        basedOnSchemeId: Long = -1L,
-    ): Long = withContext(dispatchers.io) {
+        basedOnSchemeId: UUID = EntityIds.DEFAULT_SCHEME,
+    ): UUID = withContext(dispatchers.io) {
         // Copy colors from the base scheme
         val sourcePalette = getSchemeColors(basedOnSchemeId)
         val sourceDefaults = getSchemeDefaults(basedOnSchemeId)
 
-        // Create new color scheme in database (ID will be auto-generated)
+        // Create a custom color scheme with a new UUID before insertion
         val newScheme = ColorScheme(
-            id = 0, // Auto-generate (will be assigned by Room)
+            id = UUID.randomUUID(),
             name = name,
             description = description,
             isBuiltIn = false,
@@ -320,7 +323,7 @@ class ColorSchemeRepository @Inject constructor(
      * @param newName The name for the duplicated scheme
      * @return The ID of the newly created scheme
      */
-    suspend fun duplicateScheme(sourceSchemeId: Long, newName: String): Long = withContext(dispatchers.io) {
+    suspend fun duplicateScheme(sourceSchemeId: UUID, newName: String): UUID = withContext(dispatchers.io) {
         createCustomScheme(
             name = newName,
             description = "",
@@ -330,19 +333,19 @@ class ColorSchemeRepository @Inject constructor(
 
     /**
      * Rename a custom color scheme.
-     * Built-in schemes (ID <= 0) cannot be renamed.
+     * Built-in preset UUIDs cannot be renamed.
      *
-     * @param schemeId The scheme ID to rename (must be > 0)
+     * @param schemeId The UUID of the custom scheme to rename
      * @param newName The new name
      * @param newDescription Optional new description
      * @return true if successful, false otherwise
      */
     suspend fun renameScheme(
-        schemeId: Long,
+        schemeId: UUID,
         newName: String,
         newDescription: String = "",
     ): Boolean = withContext(dispatchers.io) {
-        if (schemeId <= 0) return@withContext false
+        if (EntityIds.isPreset(schemeId)) return@withContext false
 
         val scheme = colorSchemeDao.getById(schemeId) ?: return@withContext false
         colorSchemeDao.update(
@@ -356,12 +359,12 @@ class ColorSchemeRepository @Inject constructor(
 
     /**
      * Delete a custom color scheme.
-     * Built-in schemes (ID <= 0) cannot be deleted.
+     * Built-in preset UUIDs cannot be deleted.
      *
-     * @param schemeId The scheme ID to delete (must be > 0)
+     * @param schemeId The UUID of the custom scheme to delete
      */
-    suspend fun deleteCustomScheme(schemeId: Long) = withContext(dispatchers.io) {
-        if (schemeId > 0) {
+    suspend fun deleteCustomScheme(schemeId: UUID) = withContext(dispatchers.io) {
+        if (!EntityIds.isPreset(schemeId)) {
             // Delete all color data (CASCADE will handle this, but we'll do it explicitly)
             colorSchemeDao.clearColorsForScheme(schemeId)
 
@@ -380,13 +383,13 @@ class ColorSchemeRepository @Inject constructor(
      * @param excludeSchemeId Optional scheme ID to exclude from the check (for renames)
      * @return true if the name exists, false otherwise
      */
-    suspend fun schemeNameExists(name: String, excludeSchemeId: Long? = null): Boolean = withContext(dispatchers.io) {
+    suspend fun schemeNameExists(name: String, excludeSchemeId: UUID? = null): Boolean = withContext(dispatchers.io) {
         // Check against built-in schemes
         val builtInSchemes = ColorSchemePresets.builtInSchemes.map { it.name }
         if (builtInSchemes.any { it.equals(name, ignoreCase = true) }) {
             // If checking for a rename and the name matches a built-in scheme,
-            // only allow if we're renaming from a negative ID (which shouldn't happen)
-            return@withContext !(excludeSchemeId != null && excludeSchemeId < 0)
+            // exclude that preset's own UUID from the duplicate-name check
+            return@withContext !(excludeSchemeId != null && EntityIds.isPreset(excludeSchemeId))
         }
 
         // Check against custom schemes in database
@@ -399,7 +402,7 @@ class ColorSchemeRepository @Inject constructor(
      * @param schemeId The scheme ID to export
      * @return ColorSchemeJson object ready for serialization
      */
-    suspend fun exportScheme(schemeId: Long): ColorSchemeJson = withContext(dispatchers.io) {
+    suspend fun exportScheme(schemeId: UUID): ColorSchemeJson = withContext(dispatchers.io) {
         val schemes = getAllSchemes()
         val scheme = schemes.find { it.id == schemeId }
             ?: throw IllegalArgumentException("Scheme not found: $schemeId")
@@ -422,7 +425,7 @@ class ColorSchemeRepository @Inject constructor(
      * @throws org.json.JSONException if JSON is invalid
      * @throws IllegalArgumentException if schema is invalid
      */
-    suspend fun importScheme(jsonString: String, allowOverwrite: Boolean = false): Long = withContext(dispatchers.io) {
+    suspend fun importScheme(jsonString: String, allowOverwrite: Boolean = false): UUID = withContext(dispatchers.io) {
         // Parse JSON
         val schemeJson = ColorSchemeJson.fromJson(jsonString)
 
@@ -439,11 +442,11 @@ class ColorSchemeRepository @Inject constructor(
             }
         }
 
-        // Create new scheme (based on Default -1)
+        // Create a new scheme based on the Default preset
         val newSchemeId = createCustomScheme(
             name = finalName,
             description = schemeJson.description,
-            basedOnSchemeId = -1,
+            basedOnSchemeId = EntityIds.DEFAULT_SCHEME,
         )
 
         // Import colors (note: createCustomScheme already copies from base scheme,
@@ -465,13 +468,13 @@ class ColorSchemeRepository @Inject constructor(
      * Blocking wrapper for getSchemeColors - for use from non-coroutine code.
      * Returns the color palette for a scheme as an IntArray.
      */
-    fun getColorsForSchemeBlocking(schemeId: Long): IntArray = runBlocking { getSchemeColors(schemeId) }
+    fun getColorsForSchemeBlocking(schemeId: UUID): IntArray = runBlocking { getSchemeColors(schemeId) }
 
     /**
      * Blocking wrapper for getSchemeDefaults - for use from non-coroutine code.
      * Returns [foregroundIndex, backgroundIndex] as an int array.
      */
-    fun getDefaultColorsForSchemeBlocking(schemeId: Long): IntArray {
+    fun getDefaultColorsForSchemeBlocking(schemeId: UUID): IntArray {
         val (fg, bg) = runBlocking { getSchemeDefaults(schemeId) }
         return intArrayOf(fg, bg)
     }

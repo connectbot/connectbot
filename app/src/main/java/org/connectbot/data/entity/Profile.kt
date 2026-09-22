@@ -21,6 +21,8 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import org.connectbot.data.EntityIds
+import java.util.UUID
 
 /**
  * Terminal profile entity that bundles terminal-specific settings.
@@ -45,22 +47,24 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "profiles",
     indices = [
-        Index(value = ["name"], unique = true),
+        Index(value = ["repository_id", "name"], unique = true),
     ],
-    // Note: No foreign key to color_schemes because built-in color schemes use negative IDs
-    // and are virtual (not stored in the database). Only custom schemes have positive IDs.
+    // Built-in schemes have stable virtual UUIDs and are not rows in color_schemes.
 )
 data class Profile(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    @PrimaryKey
+    val id: UUID = UUID.randomUUID(),
+
+    @ColumnInfo(name = "repository_id", defaultValue = "'" + EntityIds.LOCAL_TEXT + "'")
+    val repositoryId: UUID = EntityIds.LOCAL,
 
     val name: String,
 
     @ColumnInfo(name = "icon_color")
     val iconColor: String? = null,
 
-    @ColumnInfo(name = "color_scheme_id", defaultValue = "-1")
-    val colorSchemeId: Long = -1L,
+    @ColumnInfo(name = "color_scheme_id")
+    val colorSchemeId: UUID = EntityIds.DEFAULT_SCHEME,
 
     @ColumnInfo(name = "bold_as_bright", defaultValue = "1")
     val boldAsBright: Boolean = true,
@@ -91,10 +95,10 @@ data class Profile(
 ) {
     companion object {
         /**
-         * Create a default profile with auto-generated ID.
+         * Create the Local default profile with its stable UUID.
          */
         fun createDefault(): Profile = Profile(
-            id = 0,
+            id = EntityIds.DEFAULT_PROFILE,
             name = "Default",
         )
     }

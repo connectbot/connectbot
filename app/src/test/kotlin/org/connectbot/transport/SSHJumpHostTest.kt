@@ -45,6 +45,7 @@ import org.mockito.Mockito.mockConstruction
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import java.io.IOException
+import java.util.UUID
 
 class SSHJumpHostTest {
     private val fallbackHandler = mock(AuthHandler::class.java)
@@ -54,27 +55,27 @@ class SSHJumpHostTest {
 
     @Test
     fun selfReferencingJumpHostDisconnectsWithoutOverflow() = runTest {
-        connectInvalidChain(Host(id = 2, nickname = "jump", jumpHostId = 2))
+        connectInvalidChain(Host(id = UUID(0, 2), nickname = "jump", jumpHostId = UUID(0, 2)))
     }
 
     @Test
     fun cyclicJumpHostsDisconnectWithoutOverflow() = runTest {
         connectInvalidChain(
-            Host(id = 2, nickname = "first", jumpHostId = 3),
-            Host(id = 3, nickname = "second", jumpHostId = 2),
+            Host(id = UUID(0, 2), nickname = "first", jumpHostId = UUID(0, 3)),
+            Host(id = UUID(0, 3), nickname = "second", jumpHostId = UUID(0, 2)),
         )
     }
 
     @Test
     fun jumpChainReturningToTargetDisconnectsWithoutOverflow() = runTest {
-        connectInvalidChain(Host(id = 2, nickname = "jump", jumpHostId = 1))
+        connectInvalidChain(Host(id = UUID(0, 2), nickname = "jump", jumpHostId = UUID(0, 1)))
     }
 
     @Test
     fun validChainConnectsAndAuthenticatesOutermostFirst() = runTest {
-        val outer = Host(id = 3, nickname = "outer", hostname = "outer.example", username = "alice")
-        val inner = Host(id = 2, nickname = "inner", hostname = "inner.example", username = "alice", jumpHostId = 3)
-        val target = Host(id = 1, nickname = "target", hostname = "target.example", username = "alice", jumpHostId = 2, wantSession = false)
+        val outer = Host(id = UUID(0, 3), nickname = "outer", hostname = "outer.example", username = "alice")
+        val inner = Host(id = UUID(0, 2), nickname = "inner", hostname = "inner.example", username = "alice", jumpHostId = UUID(0, 3))
+        val target = Host(id = UUID(0, 1), nickname = "target", hostname = "target.example", username = "alice", jumpHostId = UUID(0, 2), wantSession = false)
         stubHosts(inner, outer)
         `when`(repository.getHostKeyAlgorithmsForHostBlocking(outer.id)).thenReturn(listOf("rsa-sha2-512"))
         `when`(repository.getHostKeyAlgorithmsForHostBlocking(inner.id)).thenReturn(listOf("ecdsa-sha2-nistp256"))
@@ -120,8 +121,8 @@ class SSHJumpHostTest {
     @Test
     fun failedInnerHopClosesPreviouslyConnectedOuterHop() = runTest {
         stubHosts(
-            Host(id = 2, nickname = "inner", hostname = "inner.example", username = "alice", jumpHostId = 3),
-            Host(id = 3, nickname = "outer", hostname = "outer.example", username = "alice"),
+            Host(id = UUID(0, 2), nickname = "inner", hostname = "inner.example", username = "alice", jumpHostId = UUID(0, 3)),
+            Host(id = UUID(0, 3), nickname = "outer", hostname = "outer.example", username = "alice"),
         )
         mockConstruction(SshClient::class.java) { client, context ->
             val tunnel = mock(TransportFactory::class.java)
@@ -135,7 +136,7 @@ class SSHJumpHostTest {
                     .thenReturn(tunnel)
             }
         }.use { clients ->
-            SSH(Host(id = 1, jumpHostId = 2), bridge, manager).connect(this, dispatchers(), "UTF-8")
+            SSH(Host(id = UUID(0, 1), jumpHostId = UUID(0, 2)), bridge, manager).connect(this, dispatchers(), "UTF-8")
             assertEquals(2, clients.constructed().size)
             clients.constructed().forEach { verify(it).disconnect() }
             verify(bridge).dispatchDisconnect(DisconnectReason.IO_ERROR)
@@ -152,7 +153,7 @@ class SSHJumpHostTest {
     }
 
     private suspend fun TestScope.connectInvalidChain(vararg jumps: Host) {
-        val target = Host(id = 1, nickname = "target", jumpHostId = 2)
+        val target = Host(id = UUID(0, 1), nickname = "target", jumpHostId = UUID(0, 2))
         stubHosts(*(jumps.toList() + target).toTypedArray())
         mockConstruction(SshClient::class.java).use { connections ->
             SSH(target, bridge, manager).connect(this, dispatchers(), "UTF-8")

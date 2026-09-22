@@ -43,6 +43,7 @@ import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
@@ -51,8 +52,8 @@ class ConnectionNotifierTest {
     private lateinit var notifier: ConnectionNotifier
     private lateinit var service: NotificationTestService
     private lateinit var manager: NotificationManager
-    private val first = NotificationSession("session-1", Host(id = 1L, nickname = "production"), connected = true)
-    private val second = NotificationSession("session-2", Host(id = 2L, nickname = "staging"), connected = true)
+    private val first = NotificationSession("session-1", Host(id = UUID(0, 1), nickname = "production"), connected = true)
+    private val second = NotificationSession("session-2", Host(id = UUID(0, 2), nickname = "staging"), connected = true)
 
     @Before
     fun setUp() {
@@ -89,7 +90,7 @@ class ConnectionNotifierTest {
     @Test
     fun collapsedSummaryLimitsConnectedServerNamesAndKeepsPublicVersionPrivate() = runTest(dispatcher) {
         val sessions = listOf("delta", "charlie", "bravo", "alpha", "echo").mapIndexed { index, nickname ->
-            NotificationSession("session-$index", Host(id = index.toLong(), nickname = nickname), connected = true)
+            NotificationSession("session-$index", Host(id = UUID(0, index.toLong()), nickname = nickname), connected = true)
         }
         notifier.showRunningNotification(service, sessions)
         advanceUntilIdle()

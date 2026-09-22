@@ -17,11 +17,14 @@
 
 package org.connectbot.ui.screens.console
 
+import org.connectbot.data.EntityIds
+import org.connectbot.util.HostConstants
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.util.UUID
 
 class SessionSwipeNavigationTest {
     @Test
@@ -123,9 +126,9 @@ class SessionSwipeNavigationTest {
     fun shouldShowSoftwareKeyboardForSessionOpen_showsOnlyForSameBridgeOpening() {
         assertTrue(
             shouldShowSoftwareKeyboardForSessionOpen(
-                previousBridgeId = 1L,
+                previousBridgeId = UUID(0, 1),
                 previousSessionOpen = false,
-                currentBridgeId = 1L,
+                currentBridgeId = UUID(0, 1),
                 sessionOpen = true,
                 hasHardwareKeyboard = false,
             ),
@@ -133,9 +136,9 @@ class SessionSwipeNavigationTest {
 
         assertFalse(
             shouldShowSoftwareKeyboardForSessionOpen(
-                previousBridgeId = 1L,
+                previousBridgeId = UUID(0, 1),
                 previousSessionOpen = true,
-                currentBridgeId = 2L,
+                currentBridgeId = UUID(0, 2),
                 sessionOpen = true,
                 hasHardwareKeyboard = false,
             ),
@@ -146,9 +149,9 @@ class SessionSwipeNavigationTest {
     fun shouldShowSoftwareKeyboardForSessionOpen_ignoresHardwareKeyboard() {
         assertFalse(
             shouldShowSoftwareKeyboardForSessionOpen(
-                previousBridgeId = 1L,
+                previousBridgeId = UUID(0, 1),
                 previousSessionOpen = false,
-                currentBridgeId = 1L,
+                currentBridgeId = UUID(0, 1),
                 sessionOpen = true,
                 hasHardwareKeyboard = true,
             ),
@@ -159,8 +162,8 @@ class SessionSwipeNavigationTest {
     fun shouldPreserveSoftwareKeyboardForBridgeChange_preservesOnlyVisibleSoftKeyboard() {
         assertTrue(
             shouldPreserveSoftwareKeyboardForBridgeChange(
-                previousBridgeId = 1L,
-                currentBridgeId = 2L,
+                previousBridgeId = UUID(0, 1),
+                currentBridgeId = UUID(0, 2),
                 showSoftwareKeyboard = true,
                 hasHardwareKeyboard = false,
             ),
@@ -168,8 +171,8 @@ class SessionSwipeNavigationTest {
 
         assertFalse(
             shouldPreserveSoftwareKeyboardForBridgeChange(
-                previousBridgeId = 1L,
-                currentBridgeId = 2L,
+                previousBridgeId = UUID(0, 1),
+                currentBridgeId = UUID(0, 2),
                 showSoftwareKeyboard = false,
                 hasHardwareKeyboard = false,
             ),
@@ -177,8 +180,8 @@ class SessionSwipeNavigationTest {
 
         assertFalse(
             shouldPreserveSoftwareKeyboardForBridgeChange(
-                previousBridgeId = 1L,
-                currentBridgeId = 2L,
+                previousBridgeId = UUID(0, 1),
+                currentBridgeId = UUID(0, 2),
                 showSoftwareKeyboard = true,
                 hasHardwareKeyboard = true,
             ),

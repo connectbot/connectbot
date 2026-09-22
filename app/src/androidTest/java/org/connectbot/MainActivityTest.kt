@@ -101,7 +101,7 @@ class MainActivityTest {
                 }
 
                 assertNotNull("Shortcut should create connection", bridge)
-                assertTrue("Shortcut host should be temporary", bridge.host.id < 0)
+                assertTrue("Shortcut host should be temporary", bridge.host.isTemporary)
             }
         }
     }

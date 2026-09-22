@@ -24,13 +24,14 @@ import org.connectbot.service.TerminalManager
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
+import java.util.UUID
 
 class SSHHostKeyPreferenceTest {
     private val repository = mock(HostRepository::class.java)
     private val manager = mock(TerminalManager::class.java).also {
         `when`(it.hostRepository).thenReturn(repository)
     }
-    private val host = Host(id = 42)
+    private val host = Host(id = UUID(0, 42))
     private val ssh = SSH(host, null, manager)
     private val supported = "ssh-ed25519,ecdsa-sha2-nistp256,rsa-sha2-512,rsa-sha2-256"
 
@@ -57,7 +58,7 @@ class SSHHostKeyPreferenceTest {
 
     @Test
     fun usesEachJumpHostsOwnKnownAlgorithms() {
-        val jump = Host(id = 99)
+        val jump = Host(id = UUID(0, 99))
         `when`(repository.getHostKeyAlgorithmsForHostBlocking(jump.id)).thenReturn(listOf("ecdsa-sha2-nistp256"))
 
         assertThat(ssh.preferredHostKeyAlgorithms(jump, supported))

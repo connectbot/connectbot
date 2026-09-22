@@ -24,6 +24,7 @@ import androidx.room.Query
 import androidx.room.Update
 import kotlinx.coroutines.flow.Flow
 import org.connectbot.data.entity.KnownHost
+import java.util.UUID
 
 /**
  * Data Access Object for SSH known hosts (host key verification).
@@ -34,25 +35,25 @@ interface KnownHostDao {
      * Observe known hosts for one host configuration.
      */
     @Query("SELECT * FROM known_hosts WHERE host_id = :hostId ORDER BY hostname, port, host_key_algo")
-    fun observeByHostId(hostId: Long): Flow<List<KnownHost>>
+    fun observeByHostId(hostId: UUID): Flow<List<KnownHost>>
 
     /**
      * Get all known hosts for a specific host configuration.
      */
     @Query("SELECT * FROM known_hosts WHERE host_id = :hostId")
-    suspend fun getByHostId(hostId: Long): List<KnownHost>
+    suspend fun getByHostId(hostId: UUID): List<KnownHost>
 
     /**
      * Get all known hosts for a specific host configuration and algorithm.
      */
     @Query("SELECT * FROM known_hosts WHERE host_id = :hostId AND host_key_algo = :algo")
-    suspend fun getByHostIdAndAlgo(hostId: Long, algo: String): List<KnownHost>
+    suspend fun getByHostIdAndAlgo(hostId: UUID, algo: String): List<KnownHost>
 
     /**
      * Get a specific known host by exact match of hostId, algorithm, and key.
      */
     @Query("SELECT * FROM known_hosts WHERE host_id = :hostId AND host_key_algo = :algo AND host_key = :key LIMIT 1")
-    suspend fun getByHostIdAlgoAndKey(hostId: Long, algo: String, key: ByteArray): KnownHost?
+    suspend fun getByHostIdAlgoAndKey(hostId: UUID, algo: String, key: ByteArray): KnownHost?
 
     /**
      * Get all known hosts.
@@ -65,7 +66,12 @@ interface KnownHostDao {
      * @return The ID of the newly inserted known host
      */
     @Insert
-    suspend fun insert(knownHost: KnownHost): Long
+    suspend fun insertRow(knownHost: KnownHost)
+
+    suspend fun insert(knownHost: KnownHost): UUID {
+        insertRow(knownHost)
+        return knownHost.id
+    }
 
     /**
      * Update an existing known host (e.g., if host key changes).
@@ -83,7 +89,7 @@ interface KnownHostDao {
      * Delete all known hosts for a host configuration and algorithm.
      */
     @Query("DELETE FROM known_hosts WHERE host_id = :hostId AND host_key_algo = :algo")
-    suspend fun deleteByHostIdAndAlgo(hostId: Long, algo: String)
+    suspend fun deleteByHostIdAndAlgo(hostId: UUID, algo: String)
 
     /**
      * Delete a known host by hostname and port.
@@ -96,5 +102,5 @@ interface KnownHostDao {
      * Use this when the user wants to forget all stored host keys for a host.
      */
     @Query("DELETE FROM known_hosts WHERE host_id = :hostId")
-    suspend fun deleteByHostId(hostId: Long)
+    suspend fun deleteByHostId(hostId: UUID)
 }

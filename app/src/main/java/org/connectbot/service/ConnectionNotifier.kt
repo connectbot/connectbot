@@ -42,6 +42,7 @@ import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.ui.MainActivity
 import timber.log.Timber
 import java.util.Date
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -100,7 +101,7 @@ class ConnectionNotifier @Inject constructor(dispatchers: CoroutineDispatchers) 
             val uri = extras.getString(EXTRA_HOST_URI) ?: return@forEach
             val session = NotificationSession(
                 id = posted.tag,
-                host = Host(id = extras.getLong(EXTRA_HOST_ID), nickname = extras.getString(EXTRA_HOST_NAME).orEmpty()),
+                host = Host(id = UUID.fromString(extras.getString(EXTRA_HOST_ID)), nickname = extras.getString(EXTRA_HOST_NAME).orEmpty()),
                 connected = false,
                 uri = uri.toUri(),
             )
@@ -267,7 +268,7 @@ class ConnectionNotifier @Inject constructor(dispatchers: CoroutineDispatchers) 
             .setDeleteIntent(actionIntent(context, ACTION_SEEN, session.id))
             .addExtras(
                 Bundle().apply {
-                    putLong(EXTRA_HOST_ID, session.host.id)
+                    putString(EXTRA_HOST_ID, session.host.id.toString())
                     putString(EXTRA_HOST_NAME, session.host.nickname)
                     putString(EXTRA_HOST_URI, session.uri.toString())
                     putString(EXTRA_REASON, notice.reason?.name)

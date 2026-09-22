@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,12 +25,15 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Profile
+import org.connectbot.util.HostConstants
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.UUID
 
 @RunWith(AndroidJUnit4::class)
 class ProfileDaoTest {
@@ -59,7 +62,7 @@ class ProfileDaoTest {
         val profile = createTestProfile(name = "TestProfile")
 
         val id = profileDao.insert(profile)
-        assertThat(id).isGreaterThan(0)
+        assertThat(id).isNotEqualTo(EntityIds.NONE)
 
         val retrieved = profileDao.getById(id)
         assertThat(retrieved).isNotNull()
@@ -110,14 +113,14 @@ class ProfileDaoTest {
     fun getDefault() = runTest {
         // Insert the default profile
         val defaultProfile = Profile(
-            id = 1,
+            id = EntityIds.DEFAULT_PROFILE,
             name = "Default",
         )
         profileDao.insert(defaultProfile)
 
         val retrieved = profileDao.getDefault()
         assertThat(retrieved).isNotNull()
-        assertThat(retrieved?.id).isEqualTo(1)
+        assertThat(retrieved?.id).isEqualTo(EntityIds.DEFAULT_PROFILE)
         assertThat(retrieved?.name).isEqualTo("Default")
     }
 
@@ -139,7 +142,7 @@ class ProfileDaoTest {
         val profile = createTestProfile(name = "NewProfile")
         val id = profileDao.insertOrUpdate(profile)
 
-        assertThat(id).isGreaterThan(0)
+        assertThat(id).isNotEqualTo(EntityIds.NONE)
         val retrieved = profileDao.getById(id)
         assertThat(retrieved?.name).isEqualTo("NewProfile")
     }
@@ -173,7 +176,7 @@ class ProfileDaoTest {
 
     @Test
     fun deleteProfileById() = runTest {
-        // Insert a dummy profile first to ensure our test profile doesn't get ID 1
+        // Insert another profile to verify deletion preserves unrelated rows
         val dummy = createTestProfile(name = "Dummy")
         profileDao.insert(dummy)
 
@@ -189,15 +192,15 @@ class ProfileDaoTest {
 
     @Test
     fun deleteByIdDeletesAnyProfile() = runTest {
-        // Insert a profile with id = 1
-        val profile = Profile(id = 1, name = "Default")
+        // Insert a profile with id = UUID(0, 1)
+        val profile = Profile(id = UUID(0, 1), name = "Default")
         profileDao.insert(profile)
 
         // All profiles can now be deleted (no more built-in protection)
-        val deletedCount = profileDao.deleteById(1)
+        val deletedCount = profileDao.deleteById(UUID(0, 1))
         assertThat(deletedCount).isEqualTo(1)
 
-        val retrieved = profileDao.getById(1)
+        val retrieved = profileDao.getById(UUID(0, 1))
         assertThat(retrieved).isNull()
     }
 
@@ -296,11 +299,11 @@ class ProfileDaoTest {
 
     @Test
     fun colorSchemeIdStored() = runTest {
-        val profile = createTestProfile(name = "color-test", colorSchemeId = 5)
+        val profile = createTestProfile(name = "color-test", colorSchemeId = UUID(0, 5))
         val id = profileDao.insert(profile)
 
         val retrieved = profileDao.getById(id)
-        assertThat(retrieved?.colorSchemeId).isEqualTo(5)
+        assertThat(retrieved?.colorSchemeId).isEqualTo(UUID(0, 5))
     }
 
     @Test
@@ -347,7 +350,7 @@ class ProfileDaoTest {
     private fun createTestProfile(
         name: String,
         iconColor: String? = null,
-        colorSchemeId: Long = -1L,
+        colorSchemeId: UUID = EntityIds.DEFAULT_SCHEME,
         fontFamily: String? = null,
         fontSize: Int = 10,
         delKey: String = "del",
@@ -366,7 +369,7 @@ class ProfileDaoTest {
 
     private fun createTestHost(
         nickname: String,
-        profileId: Long?,
+        profileId: UUID?,
     ): Host = Host(
         nickname = nickname,
         protocol = "ssh",

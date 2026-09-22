@@ -21,22 +21,27 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import org.connectbot.data.EntityIds
+import java.util.UUID
 
 /**
  * Represents a terminal color scheme with metadata.
  *
- * @property id Database ID of the color scheme (0 = global default)
+ * @property id UUID of the color scheme (presets have stable virtual UUIDs)
  * @property name Display name of the scheme
  * @property isBuiltIn Whether this is a built-in preset scheme (cannot be deleted/renamed)
  * @property description User-friendly description of the color scheme
  */
 @Entity(
     tableName = "color_schemes",
-    indices = [Index(value = ["name"], unique = true)],
+    indices = [Index(value = ["repository_id", "name"], unique = true)],
 )
 data class ColorScheme(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    @PrimaryKey
+    val id: UUID = UUID.randomUUID(),
+
+    @ColumnInfo(name = "repository_id", defaultValue = "'" + EntityIds.LOCAL_TEXT + "'")
+    val repositoryId: UUID = EntityIds.LOCAL,
     val name: String,
     @ColumnInfo(name = "is_built_in")
     val isBuiltIn: Boolean,

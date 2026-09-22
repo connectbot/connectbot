@@ -56,6 +56,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
+import java.util.UUID
 import kotlin.coroutines.Continuation
 import kotlin.coroutines.intrinsics.COROUTINE_SUSPENDED
 
@@ -82,13 +83,13 @@ class AutomationEditorScreenTest {
         hiltRule.inject()
         repository = Mockito.mock(HostRepository::class.java)
         runBlocking {
-            Mockito.`when`(repository.findHostById(1)).thenReturn(Host(id = 1, nickname = "test", protocol = "ssh", username = "user", hostname = "host", port = 22))
+            Mockito.`when`(repository.findHostById(UUID(0, 1))).thenReturn(Host(id = UUID(0, 1), nickname = "test", protocol = "ssh", username = "user", hostname = "host", port = 22))
         }
-        Mockito.`when`(repository.observeAutomation(1)).thenReturn(MutableStateFlow<List<AutomationAction>>(emptyList()))
-        Mockito.`when`(repository.observePortForwardsForHost(1)).thenReturn(MutableStateFlow(emptyList()))
+        Mockito.`when`(repository.observeAutomation(UUID(0, 1))).thenReturn(MutableStateFlow<List<AutomationAction>>(emptyList()))
+        Mockito.`when`(repository.observePortForwardsForHost(UUID(0, 1))).thenReturn(MutableStateFlow(emptyList()))
         compose.runOnUiThread {
             val dispatcher = Dispatchers.Main.immediate
-            viewModel = AutomationEditorViewModel(SavedStateHandle(mapOf("hostId" to 1L)), repository, CoroutineDispatchers(dispatcher, dispatcher, dispatcher))
+            viewModel = AutomationEditorViewModel(SavedStateHandle(mapOf("hostId" to UUID(0, 1).toString())), repository, CoroutineDispatchers(dispatcher, dispatcher, dispatcher))
         }
         compose.setContent {
             CompositionLocalProvider(LocalHapticFeedback provides haptic) {
@@ -144,7 +145,7 @@ class AutomationEditorScreenTest {
         compose.runOnUiThread {
             viewModel.applyEdit(
                 AutomationAction(
-                    hostId = 1,
+                    hostId = UUID(0, 1),
                     type = AutomationActionType.SEND_KEY,
                     key = -'C'.code,
                     modifiers = TerminalKeyModifiers.CTRL,
@@ -167,7 +168,7 @@ class AutomationEditorScreenTest {
     @Test
     fun specialKeyUsesSeparateModifierToggles() {
         compose.runOnUiThread {
-            viewModel.applyEdit(AutomationAction(hostId = 1, type = AutomationActionType.SEND_KEY))
+            viewModel.applyEdit(AutomationAction(hostId = UUID(0, 1), type = AutomationActionType.SEND_KEY))
         }
         compose.waitForIdle()
         compose.onNodeWithText(text(R.string.automation_edit)).performClick()
@@ -194,7 +195,7 @@ class AutomationEditorScreenTest {
                 val continuation = invocation.rawArguments.last() as Continuation<Unit>
                 pendingSave = continuation
                 COROUTINE_SUSPENDED
-            }.`when`(repository).saveAutomation(1, actions)
+            }.`when`(repository).saveAutomation(UUID(0, 1), actions)
         }
         val handle = compose.onNodeWithContentDescription(text(R.string.automation_drag))
         val beforeSave = handle.fetchSemanticsNode().boundsInRoot
@@ -248,8 +249,8 @@ class AutomationEditorScreenTest {
 
     @Test
     fun trailingHandleDragReordersActionTilesWithHaptics() {
-        val firstAction = AutomationAction(hostId = 1, text = "first")
-        val secondAction = AutomationAction(hostId = 1, text = "second")
+        val firstAction = AutomationAction(hostId = UUID(0, 1), text = "first")
+        val secondAction = AutomationAction(hostId = UUID(0, 1), text = "second")
         compose.runOnUiThread {
             viewModel.applyEdit(firstAction)
             viewModel.applyEdit(secondAction)
@@ -267,7 +268,7 @@ class AutomationEditorScreenTest {
         compose.onNodeWithContentDescription(text(R.string.automation_save)).performClick()
         compose.waitForIdle()
         runBlocking {
-            Mockito.verify(repository).saveAutomation(1, listOf(secondAction.copy(position = 0), firstAction.copy(position = 1)))
+            Mockito.verify(repository).saveAutomation(UUID(0, 1), listOf(secondAction.copy(position = 0), firstAction.copy(position = 1)))
         }
         compose.onNodeWithContentDescription(text(R.string.automation_save)).assertDoesNotExist()
 
