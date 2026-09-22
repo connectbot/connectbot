@@ -84,11 +84,18 @@ class HostEditorScreenTest {
     }
 
     @Test
-    fun hostEditorScreen_newHost_displaysAddTitle() {
+    fun hostEditorScreen_newHost_addButtonHasContentDescription() {
         navigateToHostEditorScreen(-1L)
 
         composeTestRule
-            .onNodeWithTag("add_host_button")
+            .onNodeWithText("Quick connect")
+            .performClick()
+            .performTextInput("test@example.com")
+
+        composeTestRule.waitForIdle()
+
+        composeTestRule
+            .onNodeWithContentDescription("Add host")
             .assertIsDisplayed()
     }
 
