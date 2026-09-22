@@ -574,4 +574,20 @@
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Enganxa des del porta-retalls</string>
   <string name="auth_banner_title" tools:machine_translated="true">Missatge d’autenticació de %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Missatge d’autenticació:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Mostra la tecla d\'activació/desactivació de l\'IME.</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Afegeix un botó d’IME a la fila de tecles especials que permeti activar o desactivar el mode de composició per als idiomes que requereixen un buffer de composició (japonès, xinès, coreà, etc.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Dreceres de teclat Ctrl/Alt per a l’IME complet</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">No hi ha cap solució alternativa.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Esdeveniments de teclat sense processar.</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Força l’ús de teclat ASCII (recomanat)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Desliza per canviar de sessió.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Activeu el gest d’arrossegar horitzontalment per canviar entre les sessions del terminal. Per defecte, aquesta funció està desactivada per facilitar-ne l’ús a persones amb discapacitat.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Canvia de sessió</string>
+  <string name="console_previous_session" tools:machine_translated="true">Sessió anterior</string>
+  <string name="console_next_session" tools:machine_translated="true">Següent sessió</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Activa/desactiva la tecla Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Activa/desactiva el mode de composició per a la introducció de text mitjançant l’IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Mode de composició (IME)</string>
 </resources>

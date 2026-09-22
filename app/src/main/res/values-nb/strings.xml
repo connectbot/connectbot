@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Bekreft identiteten din for å fortsette.</string>
   <string name="auth_banner_title" tools:machine_translated="true">Autentiseringsmelding fra %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Autentiseringsmelding:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Vis IME-veksleknapp</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Legg til en IME-knapp i raden med spesialtaster som veksler mellom komposisjonsmodus for språk som krever en komposisjonsbuffer (japansk, kinesisk, koreansk osv.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Innstillinger for hurtigtaster (Ctrl/Alt) i IME</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Ingen midlertidig løsning.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Rå tastetrykkhendelser</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Bruk ASCII (anbefales)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Sveip for å bytte mellom sesjoner.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Aktiver horisontal sveiping for å bytte mellom terminaløkter. Deaktivert som standard for å forbedre tilgjengeligheten.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Bytt sesjon</string>
+  <string name="console_previous_session" tools:machine_translated="true">Forrige økt</string>
+  <string name="console_next_session" tools:machine_translated="true">Neste økt</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Slå Alt-tasten av og på.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Slå sammensetningsmodus for IME-inndata på/av.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Komponeringsmodus (IME)</string>
 </resources>

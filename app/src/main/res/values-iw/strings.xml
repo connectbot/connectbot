@@ -574,4 +574,20 @@
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">הדבק מלוח הגזירים</string>
   <string name="auth_banner_title" tools:machine_translated="true">הודעת אימות ממקור: %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] הודעת אימות:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">הצג את מקש ההחלפה של ה-IME.</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">הוסף כפתור IME לשורה של מקשי הקיצור, שיאפשר מעבר למצב הרכב עבור שפות הדורשות מאגר הרכב (יפנית, סינית, קוריאנית וכו\').</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">קיצורי דרך של IME מלא עבור מקשי Ctrl/Alt</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">אין פתרון זמני.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">אירועי מקלדת גולמיים</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">אפשרות המגדירה באופן זמני את המקלדת לפורמט ASCII כאשר לוחצים על מקשי Ctrl או Alt (מומלץ).</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">החלק כדי לעבור בין הפעלות</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">אפשר גלילה אופקית כדי לעבור בין סשנים במסוף. אפשרות זו כבויה כברירת מחדל לצורך שיפור הנגישות.</string>
+  <string name="console_switch_session" tools:machine_translated="true">החלף סשן</string>
+  <string name="console_previous_session" tools:machine_translated="true">הפעלת סשן קודם</string>
+  <string name="console_next_session" tools:machine_translated="true">המשך לפגישה הבאה</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">הפעל/כבה את מקש Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">הפעל/כבה את מצב ההרכבה עבור קלט IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">מצב הרכבה (עבור מערכות קלט שיטתיות)</string>
 </resources>

@@ -574,4 +574,20 @@
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">从剪贴板粘贴</string>
   <string name="auth_banner_title" tools:machine_translated="true">来自 %1$s 的身份验证消息。</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] 身份验证消息：</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">显示输入法切换键</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">在特殊按键行中添加一个输入法引擎 (IME) 按钮，用于切换需要组合缓冲区的语言（如日语、中文、韩语等）的组合模式。</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">完整 IME 的 Ctrl/Alt 快捷键</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">没有解决方法。</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">原始按键事件</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">强制使用 ASCII 键盘（推荐）</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">滑动切换会话。</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">启用水平滑动来切换终端会话。默认情况下已禁用，以提高可访问性。</string>
+  <string name="console_switch_session" tools:machine_translated="true">切换会话。</string>
+  <string name="console_previous_session" tools:machine_translated="true">上一会话</string>
+  <string name="console_next_session" tools:machine_translated="true">下一个会话。</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">切换 Alt 键。</string>
+  <string name="button_key_ime" tools:machine_translated="true">输入法</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">切换输入法编辑器的组合模式。</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">输入法合成模式</string>
 </resources>

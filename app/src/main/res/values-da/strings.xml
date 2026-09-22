@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Bekræft din identitet for at fortsætte</string>
   <string name="auth_banner_title" tools:machine_translated="true">Autentificeringsbesked fra %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Godkendelsesmeddelelse:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Vis IME-tast til skift af inputmetode</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Tilføj en IME-knap til rækken med specialtaster, som skifter mellem sammensættelsestilstand for sprog, der kræver en sammensætningsbuffer (japansk, kinesisk, koreansk osv.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Indstillinger for genveje med Ctrl/Alt i IME</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Ingen midlertidig løsning.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Ufiltrerede tastehændelser</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Brug ASCII (anbefales)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Skift mellem sessioner ved at swipe</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Aktivér vandret strygebevægelse for at skifte mellem terminalsessioner. Deaktiveret som standard for at forbedre tilgængeligheden.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Skift session</string>
+  <string name="console_previous_session" tools:machine_translated="true">Forrige session</string>
+  <string name="console_next_session" tools:machine_translated="true">Næste session</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Slå Alt-tasten til/fra.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Skift mellem kompositionstilstand og normal indtastning for IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Komponeringstilstand (IME)</string>
 </resources>

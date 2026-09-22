@@ -574,4 +574,20 @@
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Pegar desde el portapapeles</string>
   <string name="auth_banner_title" tools:machine_translated="true">Mensaje de autenticación procedente de %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Mensaje de autenticación:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Mostrar la tecla de alternancia de IME.</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Agrega un botón de IME a la fila de teclas especiales que active o desactive el modo de composición para los idiomas que requieren un búfer de composición (japonés, chino, coreano, etc.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Atajos de teclado Ctrl/Alt para el IME completo.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">No hay solución alternativa.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Eventos de teclado sin procesar.</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Forzar el uso de ASCII (recomendado)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Desliza para cambiar de sesión.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Active la función de deslizamiento horizontal para cambiar entre sesiones de terminal. Esta función está desactivada por defecto para facilitar la accesibilidad.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Cambiar sesión</string>
+  <string name="console_previous_session" tools:machine_translated="true">Sesión anterior</string>
+  <string name="console_next_session" tools:machine_translated="true">Siguiente sesión</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Alternar la tecla Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Activar/desactivar el modo de composición para la entrada de texto con el IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Modo de composición (IME)</string>
 </resources>

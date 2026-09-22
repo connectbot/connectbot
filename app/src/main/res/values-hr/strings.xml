@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Potvrdite svoj identitet kako biste nastavili.</string>
   <string name="auth_banner_title" tools:machine_translated="true">Poruka za autentifikaciju sa %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Poruka o autentifikaciji:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Prikaži tipku za prebacivanje IME-a.</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Dodajte gumb za IME u red posebnih tipki koji će prebacivati način unosa za jezike kojima je potreban međuspremnik za unos (japanski, kineski, korejski itd.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Prečaci za cijeli sustav unosa metoda (IME) pomoću tipki Ctrl/Alt</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Nema rješenja.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Neobrađeni događaji tipkovnice</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Prisilno postavi ASCII (preporučeno)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Prijeđite prstom po zaslonu za prebacivanje između sesija.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Omogućite horizontalno pomicanje prstom za prebacivanje između sesija terminala. Zadano je isključeno radi poboljšanja pristupačnosti.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Prebaci sesiju</string>
+  <string name="console_previous_session" tools:machine_translated="true">Prethodna sesija</string>
+  <string name="console_next_session" tools:machine_translated="true">Sljedeća sesija</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Prebacite stanje tipke Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Prebacite između načina za unos teksta pomoću virtualne tipkovnice.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Način unosa (IME)</string>
 </resources>

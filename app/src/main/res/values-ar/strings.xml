@@ -574,4 +574,20 @@
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">لصق من الحافظة</string>
   <string name="auth_banner_title" tools:machine_translated="true">رسالة التحقق من الهوية المرسلة من %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] رسالة التحقق من الهوية:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">عرض مفتاح تبديل طريقة الإدخال (IME)</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">أضف زرًا لبرنامج \"محرر طريقة الإدخال\" (IME) إلى صف المفاتيح الخاصة، بحيث يقوم هذا الزر بتفعيل أو إلغاء تفعيل وضع \"التركيب\" للغات التي تتطلب ذاكرة تخزين مؤقتة للتركيب (مثل اليابانية والصينية والكورية وغيرها).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">اختصارات لوحة الإدخال الكاملة (Ctrl/Alt)</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">لا يوجد حل بديل.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">أحداث المفاتيح الأولية</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">فرض استخدام لوحة مفاتيح ASCII (مُوصى به)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">مرِّر بين الجلسات.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">فعّل التمرير الأفقي للتبديل بين جلسات الطرفية. يتم تعطيل هذه الميزة افتراضيًا لتسهيل الاستخدام.</string>
+  <string name="console_switch_session" tools:machine_translated="true">تبديل الجلسة</string>
+  <string name="console_previous_session" tools:machine_translated="true">الجلسة السابقة</string>
+  <string name="console_next_session" tools:machine_translated="true">الجلسة التالية</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">تبديل مفتاح Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">وضع الإدخال (IME)</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">تبديل وضع التركيب لإدخال النص باستخدام محرر طريقة الإدخال (IME).</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">وضع التركيب (محرك إدخال اللغة)</string>
 </resources>

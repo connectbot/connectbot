@@ -574,4 +574,20 @@
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">چسباندن از حافظه موقت</string>
   <string name="auth_banner_title" tools:machine_translated="true">پیام احراز هویت از طرف %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">پیام احراز هویت برای [%1$s]:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">نمایش کلید تغییر حالت ورودی متنی</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">یک دکمه IME به ردیف کلیدهای ویژه اضافه کنید که حالت ترکیب‌بندی را برای زبان‌هایی که به بافر ترکیب‌بندی نیاز دارند (ژاپنی، چینی، کره‌ای و غیره) فعال یا غیرفعال می‌کند.</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">میانبرهای Ctrl/Alt در حالت کامل ورودی متنی (IME)</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">راه حل جایگزینی وجود ندارد.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">رویدادهای خام کلیدها</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">اجبار به استفاده از صفحه‌کلید ASCII (توصیه می‌شود)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">با کشیدن انگشت، بین جلسات مختلف جابه‌جا شوید.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">فعال‌سازی قابلیت کشیدن انگشت به صورت افقی برای تغییر بین جلسات ترمینال. به طور پیش‌فرض غیرفعال است تا دسترسی‌پذیری افزایش یابد.</string>
+  <string name="console_switch_session" tools:machine_translated="true">تغییر نشست</string>
+  <string name="console_previous_session" tools:machine_translated="true">نشست قبلی</string>
+  <string name="console_next_session" tools:machine_translated="true">نشست بعدی</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">فعال یا غیرفعال کردن کلید Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">ای‌ام‌ای</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">حالت ویرایش را برای ورودی‌های IME فعال یا غیرفعال کنید.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">حالت ویرایش (ورودی متنی چندزبانه)</string>
 </resources>

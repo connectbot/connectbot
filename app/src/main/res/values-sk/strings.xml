@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Overte svoju identitu, aby ste mohli pokračovať.</string>
   <string name="auth_banner_title" tools:machine_translated="true">Autentifikačná správa od %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Správa o overovaní:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Zobraziť kláves na prepínanie režimu IME</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Pridajte tlačidlo IME do riadka so špeciálnymi klávesmi, ktoré prepína režim zadávania pre jazyky vyžadujúce vyrovnávaciu pamäť pre kompozíciu (napr. japončina, čínština, kórejčina).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Klávesové skratky pre plnú verziu IME (Ctrl/Alt)</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Neexistuje žiadne obchádzajúce riešenie.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Surové udalosti kláves</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Použiť ASCII (odporúča sa)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Prechádzajte medzi reláciami pomocou gesta potiahnutia prstom.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Povoliť horizontálne posúvanie prstom na prepínanie medzi reláciami terminálu. Predvolene je táto funkcia vypnutá, aby bola zaistená prístupnosť.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Prepnúť reláciu</string>
+  <string name="console_previous_session" tools:machine_translated="true">Predchádzajúca relácia</string>
+  <string name="console_next_session" tools:machine_translated="true">Ďalšia relácia</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Prepínanie klávesu Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Prepnite režim zadávania znakov pre IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Režim na zadávanie znakov (IME)</string>
 </resources>

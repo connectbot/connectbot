@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Verificați-vă identitatea pentru a continua.</string>
   <string name="auth_banner_title" tools:machine_translated="true">Mesaj de autentificare de la %1$s.</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Mesaj de autentificare:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Afișează tasta de comutare IME.</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Adăugați un buton IME în rândul cu taste speciale, care să permită activarea/dezactivarea modului de compunere pentru limbile care necesită un buffer de compunere (japoneză, chineză, coreeană etc.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Comenzi rapide Ctrl/Alt pentru IME (metoda de introducere a textului)</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Nu există o soluție alternativă.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Evenimente brute ale tastelor</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Activează tastatura ASCII (recomandat)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Glisați pentru a comuta între sesiuni.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Activează gestul de glisare orizontală pentru a comuta între sesiunile terminalului. Opțiunea este dezactivată implicit pentru a facilita accesibilitatea.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Comută sesiunea</string>
+  <string name="console_previous_session" tools:machine_translated="true">Sesiunea anterioară</string>
+  <string name="console_next_session" tools:machine_translated="true">Sesiunea următoare</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Activează/dezactivează tasta Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Activați/dezactivați modul de compunere pentru introducerea textului prin intermediul IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Modul de compunere (IME)</string>
 </resources>

@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Потврдите свој идентитет да бисте наставили</string>
   <string name="auth_banner_title" tools:machine_translated="true">Порука за аутентификацију од %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Порука о аутентификацији:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Прикажи тастер за пребацивање режима уноса (IME)</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Dodajte IME dugme u red sa posebnim tasterima, koje će omogućavati/isključivati režim za unos složenih znakova za jezike kojima je potreban međuskladišni prostor za unos (japanski, kineski, korejski, itd.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Пречице за потпуни ИМЕ са комбинацијама тастера Ctrl/Alt</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Нема решења.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Neobrađeni događaji sa tastature</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Prisilno korišćenje ASCII (preporučeno)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Prebacujte se između sesija pomoću gesta klizanja.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Omogućite horizontalno prebacivanje prstom za promenu sesija terminala. Podrazumevano je isključeno radi poboljšanja pristupačnosti.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Пребаци се на другу сесију.</string>
+  <string name="console_previous_session" tools:machine_translated="true">Претходна сесија</string>
+  <string name="console_next_session" tools:machine_translated="true">Следећа сесија</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Prebacite stanje tastera Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">ИМЕ</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Prebacite između režima za unos i režima za komponovanje za IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Режим за унос текста (IME)</string>
 </resources>

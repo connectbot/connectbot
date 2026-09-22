@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Verifiera din identitet för att fortsätta</string>
   <string name="auth_banner_title" tools:machine_translated="true">Autentiseringsmeddelande från %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Autentiseringsmeddelande:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Visa IME-växlingsknapp</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Lägg till en IME-knapp i raden med specialknappar som växlar mellan läget för teckeninmatning och det läge där sammansatta tecken används för språk som kräver en buffert för sammansatta tecken (japanska, kinesiska, koreanska osv.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Snabbkommandon för fullständig IME-funktion (Ctrl/Alt)</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Ingen tillfällig lösning.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Ofiltrerade tangentbordsavtryck</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Tvinga fram ASCII-läge (rekommenderas)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Svep för att växla mellan sessioner.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Aktivera möjligheten att växla mellan terminalsessioner genom att svepa horisontellt. Inaktiverat som standard för att underlätta användningen för personer med funktionsnedsättning.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Byt session</string>
+  <string name="console_previous_session" tools:machine_translated="true">Föregående session</string>
+  <string name="console_next_session" tools:machine_translated="true">Nästa session</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Aktivera/inaktivera Alt-tangenten.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Aktivera/inaktivera kompositionsläge för IME-inmatning.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Komponeringsläge (IME)</string>
 </resources>

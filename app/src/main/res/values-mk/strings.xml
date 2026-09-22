@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Потврдете ја вашата идентификација за да продолжите.</string>
   <string name="auth_banner_title" tools:machine_translated="true">Порака за автентикација од %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Порака за автентикација:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Прикажи прекинувач за IME.</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Додадете копче за IME во редот со специјалните тастери, кое ќе го активира/деактивира режимот за составување за јазици кои бараат буфер за составување (јапонски, кинески, корејски итн.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Преки патишта за целосен IME при притискање на Ctrl/Alt</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Нема решение.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Необработени настани од тастатурата</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Принудно користење на ASCII (препорачано)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Повлечете за да префрлате меѓу сесиите.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Овозможете хоризонтално лизгање за да ги менувате сесиите на терминалот. Опцијата е исклучена по дифолт за да се подобри пристапноста.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Премини на друга сесија.</string>
+  <string name="console_previous_session" tools:machine_translated="true">Претходна сесија</string>
+  <string name="console_next_session" tools:machine_translated="true">Следна сесија</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Вклучи/исклучи го копчето Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">ИМЕ</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Вклучете/исклучете режимот за составување за внесување преку IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Режим за составување (IME)</string>
 </resources>

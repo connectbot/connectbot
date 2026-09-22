@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">தொடர, உங்கள் அடையாளத்தை உறுதிப்படுத்தவும்</string>
   <string name="auth_banner_title" tools:machine_translated="true">%1$s இலிருந்து வரும் அங்கீகாரச் செய்தி.</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] அங்கீகாரச் செய்தி:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">ஐ.எம்.இ. (IME) மாற்று பொத்தானைக் காட்டு.</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">ஒரு கலவை இடையகத்தை (composition buffer) தேவைப்படும் மொழிகளுக்கான (ஜப்பானியம், சீனம், கொரியம் போன்றவை) கலவை பயன்முறையை மாற்றும் ஒரு ஐ.எம்.இ பொத்தானை, சிறப்பு விசைகள் வரிசையில் சேர்க்கவும்.</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">முழுமையான உள்ளீட்டு முறை (IME) Ctrl/Alt குறுக்குவழிகள்</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">எந்த மாற்று வழியும் இல்லை.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">நேரடியாகப் பெறப்படும் விசை நிகழ்வுகள்</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">ஏஎஸ்ஸிஐ-ஐ கட்டாயமாகப் பயன்படுத்து (பரிந்துரைக்கப்படுகிறது)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">அமர்வு மாற்றங்களுக்கு இடது அல்லது வலதுபுறம் ஸ்வைப் செய்யவும்.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">கிடைமட்டமாக ஸ்வைப் செய்வதன் மூலம் டெர்மினல் அமர்வுகளை மாற்றும் வசதியை இயக்கவும். அணுகல்தன்மைக்காக இயல்பாக இது முடக்கப்பட்டுள்ளது.</string>
+  <string name="console_switch_session" tools:machine_translated="true">செயல்பாட்டில் உள்ள அமர்வுகளை மாற்றுக</string>
+  <string name="console_previous_session" tools:machine_translated="true">முந்தைய அமர்வு</string>
+  <string name="console_next_session" tools:machine_translated="true">அடுத்த அமர்வு</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">\"Alt\" பொத்தானை மாற்றி அமை.</string>
+  <string name="button_key_ime" tools:machine_translated="true">ஐ.எம்.இ.</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">ஐ.எம்.இ உள்ளீட்டிற்கான கலவை பயன்முறையை மாற்றவும்.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">உருவாக்கு முறை (ஐ.எம்.இ)</string>
 </resources>

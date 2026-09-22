@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Staðfestu auðkenni þitt til að halda áfram</string>
   <string name="auth_banner_title" tools:machine_translated="true">Staðfestingarskilaboð frá %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Skilaboð um auðkenningu:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Sýna takka til að skipta um IME.</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Bættu við IME-hnappi í röð sérstakra takka, sem skiptir á milli samsetningastillingar fyrir tungumál sem þurfa á samsetningarbuff að halda (japanska, kínverska, kóreska o.s.frv.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Stýriháttir fyrir IME með Ctrl/Alt-hnappum</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Engin lausn í boði.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Óbreyttar tákninnsendingar</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Nota ASCII (mælt með)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Sveipðu til að skipta um lotu.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Virkaðu fyrir valmöguleikanum til að skipta um skjá með því að draga fingrinum lárétt yfir skjáinn. Sjálfgefið er að þessi valmöguleiki er óvirkur til að auðvelda notkun fyrir notendur með sérþörfum.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Skipta um lotu</string>
+  <string name="console_previous_session" tools:machine_translated="true">Fyrri lota</string>
+  <string name="console_next_session" tools:machine_translated="true">Næsta lota</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Ræstu/slökktu á Alt-takkanum.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Ræstu við samsetningaraðgerð fyrir inntak með IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Samsetningaraðgerð (IME)</string>
 </resources>
