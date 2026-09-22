@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">ກວດສອບຂໍ້ມູນສ່ວນຕົວຂອງທ່ານເພື່ອດຳເນີນການຕໍ່ໄປ</string>
   <string name="auth_banner_title" tools:machine_translated="true">ຂໍ້ຄວາມຢືນຢັນຈາກ %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] ຂ່າວສານກ່ຽວກັບການຢືນຢັນຕົວຕົນ:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">ສະແດງປຸ່ມສະຫຼັບ IME</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">ເພີ່ມປຸ່ມ IME ໄປທີ່ແຖວຂອງປຸ່ມພິເສດ ເພື່ອສະຫຼັບໄປໃຊ້ໂໝດການແຕ້ມຕົວອັກສອນສຳລັບພາສາທີ່ຕ້ອງການບ່ອນເກັບຮັກສາຕົວອັກສອນ (ເຊັ່ນ ພາສາຢີ່ປຸ່ນ, ພາສາຈີນ, ພາສາເກົາຫຼີ, ແລະອື່ນໆ)</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">ທາງລັດ Ctrl/Alt ສຳລັບ IME ທັງໝົດ</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">ບໍ່ມີວິທີແກ້ໄຂ</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">ການກົດປຸ່ມໂດຍບໍ່ມີການປ້ອນຂໍ້ມູນ</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">ໃຊ້ ASCII (ແນະນຳ)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">ເລື່ອນນິ້ວເພື່ອປ່ຽນລະຫວ່າງເຊສຊັນ</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">ເປີດໃຊ້ການເລື່ອນນິ້ວໃນແນວນອນເພື່ອປ່ຽນໄປໃຊ້ງານເທີມິນອນທີ່ແຕກຕ່າງກັນ. ປິດໄວ້ໂດຍເລີ່ມຕົ້ນເພື່ອຄວາມສະດວກໃນການໃຊ້ງານ.</string>
+  <string name="console_switch_session" tools:machine_translated="true">ປ່ຽນໄປໃຊ້ງານອີກໜຶ່ງເຊສຊັນ</string>
+  <string name="console_previous_session" tools:machine_translated="true">ເຊສຊັນກ່ອນໜ້າ</string>
+  <string name="console_next_session" tools:machine_translated="true">ເຊສຊັນຕໍ່ໄປ</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">ປ່ຽນສະຖານະປຸ່ມ Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">ໄອເອັມອີ</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">ປ່ຽນໄປໃຊ້ໂໝດການປ້ອນຂໍ້ມູນແບບ IME</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">ໂໝດສ້າງຂໍ້ຄວາມ (IME)</string>
 </resources>

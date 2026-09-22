@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">請驗證您的身份以繼續。</string>
   <string name="auth_banner_title" tools:machine_translated="true">來自 %1$s 的驗證訊息。</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] 驗證訊息：</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">顯示輸入法切換按鈕</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">在特殊按鍵列中新增一個輸入法編輯器按鈕，用於切換需要組成緩衝區的語言（例如日語、中文、韓語等）的組成模式。</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">完整輸入法引擎的 Ctrl/Alt 快捷鍵</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">沒有替代方案。</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">原始鍵盤事件</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">強制使用 ASCII（建議）</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">滑動切換工作階段</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">啟用水平滑動手勢以切換終端機工作階段。預設為關閉，以提升無障礙功能。</string>
+  <string name="console_switch_session" tools:machine_translated="true">切換會話。</string>
+  <string name="console_previous_session" tools:machine_translated="true">上一個會話</string>
+  <string name="console_next_session" tools:machine_translated="true">切換至下一個活動的終端機會話。</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">切換 Alt 鍵。</string>
+  <string name="button_key_ime" tools:machine_translated="true">輸入法編輯器</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">切換輸入法編輯器（IME）的組合模式。</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">組合模式（輸入法編輯器）</string>
 </resources>

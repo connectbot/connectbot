@@ -574,4 +574,20 @@
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Vložit ze schránky</string>
   <string name="auth_banner_title" tools:machine_translated="true">Autentizační zpráva od %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Zpráva o ověření:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Zobrazit klávesu pro přepínání IME</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Přidejte tlačítko pro IME do řady speciálních kláves, které bude přepínat režim pro vkládání znaků pro jazyky, které vyžadují vyrovnávací paměť (japonština, čínština, korejština atd.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Klávesové zkratky pro plnou verzi IME (Ctrl/Alt)</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Neexistuje žádné řešení.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Nezpracované události stisku kláves</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Vynutit použití ASCII (doporučeno)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Přejeďte prstem pro přepnutí mezi relacemi.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Povolte horizontální gesta přejetím prstu pro přepínání mezi jednotlivými okny terminálu. Ve výchozím nastavení je tato funkce vypnutá, aby byla zajištěna lepší přístupnost.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Přepnout relaci</string>
+  <string name="console_previous_session" tools:machine_translated="true">Předchozí relace</string>
+  <string name="console_next_session" tools:machine_translated="true">Další relace</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Přepnout klávesu Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Přepněte režim pro zadávání znaků pomocí IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Režim pro vkládání znaků (IME)</string>
 </resources>

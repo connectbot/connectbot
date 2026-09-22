@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">जारी राख्न आफ्नो पहिचान प्रमाणित गर्नुहोस्।</string>
   <string name="auth_banner_title" tools:machine_translated="true">%1$s बाट प्रमाणीकरण सन्देश।</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] प्रमाणीकरण सन्देश:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">आईएमई (IME) टगल कुञ्जी देखाउनुहोस्।</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">विशेष कुञ्जीहरूको पङ्क्तिमा एउटा IME बटन थप्नुहोस् जसले रचना बफर आवश्यक पर्ने भाषाहरू (जापानी, चिनियाँ, कोरियाली, आदि) का लागि रचना मोड सक्रिय वा निष्क्रिय गर्ने।</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">पूर्ण IME Ctrl/Alt सर्टकटहरू</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">त्यसमा कुनै समाधान छैन।</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">कच्चा कुञ्जी घटनाहरू</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">आवश्यकता अनुसार ASCII प्रयोग गर्नुहोस् (सिफारिस गरिएको)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">सत्रहरू बीच स्वाइप गर्नुहोस्</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">आफ्नो टर्मिनल सत्रहरू बदल्न क्षैतिज दिशामा स्वाइप गर्ने सुविधा सक्रिय गर्नुहोस्। पहुँचयोग्यताका लागि यो सुविधा पूर्वनिर्धारित रूपमा बन्द गरिएको हुन्छ।</string>
+  <string name="console_switch_session" tools:machine_translated="true">सत्र बदल्नुहोस्</string>
+  <string name="console_previous_session" tools:machine_translated="true">अघिल्लो सत्र</string>
+  <string name="console_next_session" tools:machine_translated="true">अर्को सत्र</string>
+  <string name="button_key_alt" tools:machine_translated="true">अल्ट</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">अल्ट कुञ्जी सक्रिय/निष्क्रिय गर्नुहोस्।</string>
+  <string name="button_key_ime" tools:machine_translated="true">आईएमई</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">आईएमई इनपुटका लागि कम्पोज मोड सक्रिय/निष्क्रिय गर्नुहोस्।</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">लेखन मोड (आईएमई)</string>
 </resources>

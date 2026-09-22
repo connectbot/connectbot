@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Öňe geçmek üçin özüňizi tassyklaň.</string>
   <string name="auth_banner_title" tools:machine_translated="true">%1$s-den gelen awtentifikasiýa habary</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Täsdiqlama habary:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">IME-iň üýtgediji düwmesi</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Özel düwme sanawyna IME düwmesini goşup, bu düwme arkaly ýazylyşy talep edýän dilleriň (ýapon, hytaý, koreý we beýleki diller) üçin ýazylyş reżimini üýtgetmäge mümkinçilik döredilýär.</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Doluly IME-de Ctrl/Alt düwmeçelerini ulanyp, terminaldaky gyzgynç ýollaryň nähili işlemelidigi barada saýlama başlygy.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Çözgüli ýol ýok.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Çig açar wakaýalary</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">ASCII-ni mejbur edýär (maslahat berilýär)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Seanslary arasynda süýşürip geçiň.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Terminal seanslaryny üýtgetmek üçin gorizontal süýşürme hereketini işe giriziň. Kolay ulanylmagy üçin, ilki bilen bu mümkinçilik öçürilendir.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Özgerişdirilen oturym</string>
+  <string name="console_previous_session" tools:machine_translated="true">Öňki seans</string>
+  <string name="console_next_session" tools:machine_translated="true">Kiçi sessiýa geçiň</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Alt düwmüni öňüni-artyna getiriň.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">IME ulgamynyň girizilýän şypyndyz reżimini üýtgetmek üçin düwme</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Ýazmak reżimi (IME)</string>
 </resources>

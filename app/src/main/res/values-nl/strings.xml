@@ -574,4 +574,20 @@
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Plakken vanuit het klembord</string>
   <string name="auth_banner_title" tools:machine_translated="true">Authenticatiebericht van %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Authenticatiebericht:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Toon de IME-wisseltoets</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Voeg een IME-knop toe aan de rij met speciale toetsen waarmee de compositiemodus kan worden in- en uitgeschakeld voor talen die een compositiebuffer vereisen (zoals Japans, Chinees, Koreaans, enz.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Sneltoetsen voor de volledige IME met Ctrl/Alt</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Er is geen tijdelijke oplossing.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Onbewerkte toetsaanslaggebeurtenissen</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Forceer ASCII-modus (aanbevolen)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Veeg om tussen sessies te schakelen.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Schakel horizontaal vegen in om tussen terminalsessies te schakelen. Standaard is deze functie uitgeschakeld om de toegankelijkheid te verbeteren.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Schakel naar een andere sessie</string>
+  <string name="console_previous_session" tools:machine_translated="true">Vorige sessie</string>
+  <string name="console_next_session" tools:machine_translated="true">Volgende sessie</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Schakel de Alt-toets in/uit.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Schakel de compositiemodus in/uit voor IME-invoer.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Componeren-modus (IME)</string>
 </resources>

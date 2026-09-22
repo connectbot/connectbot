@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Devam etmek için kimliğinizi doğrulayın</string>
   <string name="auth_banner_title" tools:machine_translated="true">%1$s\'den gelen kimlik doğrulama mesajı</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Kimlik doğrulama mesajı:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">IME geçiş tuşunu göster</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Özel tuşlar satırına, bileşim arabelleği gerektiren diller (Japonca, Çince, Korece vb.) için bileşim modunu etkinleştiren bir IME düğmesi ekleyin.</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Tam IME için Ctrl/Alt kısayolları</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Herhangi bir geçici çözüm bulunmuyor.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Ham anahtar olayları</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">ASCII\'yi zorla etkinleştir (önerilir)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Oturumlar arasında kaydırarak geçiş yapın.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Terminal oturumları arasında geçiş yapmak için yatay kaydırma özelliğini etkinleştirin. Erişilebilirlik için varsayılan olarak devre dışıdır.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Oturumu değiştir</string>
+  <string name="console_previous_session" tools:machine_translated="true">Önceki oturum</string>
+  <string name="console_next_session" tools:machine_translated="true">Sonraki oturum</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Alt tuşunu etkinleştir/devre dışı bırak.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Sanal klavyedeki IME giriş alanı için kompozisyon modunu etkinleştir/devre dışı bırak.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Kompozisyon modu (IME)</string>
 </resources>

@@ -574,4 +574,20 @@
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Aus der Zwischenablage einfügen</string>
   <string name="auth_banner_title" tools:machine_translated="true">Authentifizierungsnachricht von %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Authentifizierungsnachricht:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">IME-Umschalttaste anzeigen</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Fügen Sie der Reihe mit den Sondertasten eine IME-Schaltfläche hinzu, mit der der Zusammensetzungsmodus für Sprachen aktiviert oder deaktiviert wird, die einen Zusammensetzungspuffer benötigen (z. B. Japanisch, Chinesisch, Koreanisch).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Einstellungen für Tastenkombinationen mit Strg/Alt für die vollständige IME-Eingabemethode</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Keine Problemumgehung möglich.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Rohe Tasteneingabeereignisse</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Erzwinge ASCII (empfohlen)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Durch Wischen zwischen den Sitzungen wechseln.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Aktivieren Sie die horizontale Wischgeste, um zwischen den Terminalsitzungen zu wechseln. Standardmäßig ist diese Funktion deaktiviert, um die Barrierefreiheit zu gewährleisten.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Sitzung wechseln</string>
+  <string name="console_previous_session" tools:machine_translated="true">Vorherige Sitzung</string>
+  <string name="console_next_session" tools:machine_translated="true">Nächste Sitzung</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Alt-Taste ein-/ausschalten.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Umschalten in den Zusammensetzungsmodus für die IME-Eingabe.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Kompositionsmodus (IME)</string>
 </resources>

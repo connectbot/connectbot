@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">გადასასვლელად გადაამოწმეთ თქვენი იდენტობა.</string>
   <string name="auth_banner_title" tools:machine_translated="true">ავტორიზაციის შეტყობინება %1$s-დან.</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] ავტორიზაციის შეტყობინება:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">აჩვენე IME-ის გადამრთველის კლავიში.</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">დამატეთ IME ღილაკი სპეციალურ ღილაკების რიგში, რომელიც ჩართავს/გამორთავს კომპოზიციის რეჟიმს ენებისთვის, რომლებსაც კომპოზიციის ბუფერი ესაჭიროებათ (იაპონური, ჩინური, კორეული და ა.შ.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">IME-ის სრული ვერსიის Ctrl/Alt კომბინაციები.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">არ არსებობს გამოსავალი.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">ხელური კლავიატურის პირდაპირი სიგნალები</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">ASCII-ის რეჟიმის იძულებითი ჩართვა (რეკომენდებულია)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">გაუსვი თითი და გადართეთ სესიებს შორის</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">აქტივირებულია ჰორიზონტალური გადატენვით სესიების შეცვლის ფუნქცია. ნაგულისხმევად, ეს ფუნქცია გამორთულია ხელმისაწვდომობის მიზნით.</string>
+  <string name="console_switch_session" tools:machine_translated="true">სესიის გადართვა</string>
+  <string name="console_previous_session" tools:machine_translated="true">წინა სესია</string>
+  <string name="console_next_session" tools:machine_translated="true">შემდეგი სესიա</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Alt კლავიშის ჩართვა/გამორთვა.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME (ვირტუალური კლავიატურის ღილაკი, რომელიც ჩასაწერ მოწყობილობის რეჟიმს ააქტივებს, მაგალითად, იაპონური ენისთვის).</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">გააქტივეთ/გაუქმეთ IME-ის შეყვანის რეჟიმი.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">შემადგენლობის რეჟიმი (IME)</string>
 </resources>

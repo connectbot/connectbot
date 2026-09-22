@@ -574,4 +574,20 @@
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Вставить из буфера обмена</string>
   <string name="auth_banner_title" tools:machine_translated="true">Сообщение об аутентификации от %1$s.</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Сообщение об аутентификации:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Отображать клавишу для переключения раскладки IME.</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Добавьте кнопку для переключения метода ввода текста в строку специальных клавиш, чтобы можно было переключать режим ввода для языков, требующих буфер композиции (японский, китайский, корейский и т. д.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Сочетания клавиш Ctrl/Alt в полнофункциональном редакторе ввода.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Обходного решения нет.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Необработанные события нажатия клавиш.</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Принудительно использовать раскладку ASCII (рекомендуется)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Переключайтесь между сессиями с помощью жеста смахивания.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Включите возможность переключения между сессиями терминала горизонтальным свайпом. По умолчанию эта функция отключена для удобства пользователей с ограниченными возможностями.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Переключить сеанс</string>
+  <string name="console_previous_session" tools:machine_translated="true">Предыдущая сессия</string>
+  <string name="console_next_session" tools:machine_translated="true">Следующая сессия</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Переключить клавишу Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">Ввод текста (для языков, использующих сложные системы ввода, например, японский)</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Переключить режим ввода текста с помощью IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Режим ввода (IME)</string>
 </resources>

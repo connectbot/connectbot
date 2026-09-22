@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Επαληθεύστε την ταυτότητά σας για να συνεχίσετε.</string>
   <string name="auth_banner_title" tools:machine_translated="true">Μήνυμα αυθεντικοποίησης από το %1$s.</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Μήνυμα αυθεντικοποίησης:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Εμφάνιση πλήκτρου εναλλαγής IME</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Προσθέστε ένα κουμπί IME στη σειρά των ειδικών πλήκτρων, το οποίο θα ενεργοποιεί/απενεργοποιεί τη λειτουργία σύνθεσης για γλώσσες που απαιτούν προσωρινή αποθήκευση σύνθεσης (ιαπωνική, κινεζική, κορεατική κ.λπ.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Συντομεύσεις πλήρους IME για τα πλήκτρα Ctrl/Alt</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Δεν υπάρχει προσωρινή λύση.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Ακατέργαστα γεγονότα πληκτρολόγησης</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Επιβολή διάταξης πληκτρολογίου ASCII (συνιστάται)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Μετακινηθείτε μεταξύ των συνεδριών με σάρωση.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Ενεργοποιήστε την οριζόντια κύλιση για εναλλαγή μεταξύ των συνεδριών του τερματικού. Απενεργοποιημένο από προεπιλογή για λόγους προσβασιμότητας.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Αλλαγή συνεδρίας</string>
+  <string name="console_previous_session" tools:machine_translated="true">Προηγούμενη συνεδρία</string>
+  <string name="console_next_session" tools:machine_translated="true">Επόμενη συνεδρία</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Εναλλαγή της λειτουργίας του πλήκτρου Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Ενεργοποίηση/απενεργοποίηση της λειτουργίας σύνθεσης για την εισαγωγή μέσω IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Λειτουργία σύνθεσης (IME)</string>
 </resources>

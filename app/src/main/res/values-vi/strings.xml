@@ -574,4 +574,20 @@
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Dán từ bộ nhớ tạm</string>
   <string name="auth_banner_title" tools:machine_translated="true">Thông báo xác thực từ %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Thông báo xác thực:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Hiển thị phím chuyển đổi IME</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Thêm một nút IME vào hàng các phím đặc biệt, nút này sẽ chuyển đổi giữa chế độ soạn thảo và chế độ bình thường cho các ngôn ngữ cần bộ đệm soạn thảo (ví dụ: tiếng Nhật, tiếng Trung, tiếng Hàn, v.v.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Phím tắt Ctrl/Alt của IME đầy đủ</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Không có giải pháp thay thế.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Các sự kiện bàn phím thô.</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Buộc sử dụng bàn phím ASCII (khuyến nghị)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Vuốt để chuyển giữa các phiên.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Bật tính năng vuốt ngang để chuyển đổi giữa các phiên làm việc. Tính năng này sẽ bị tắt theo mặc định để đảm bảo khả năng truy cập.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Chuyển phiên làm việc</string>
+  <string name="console_previous_session" tools:machine_translated="true">Phiên làm việc trước đó</string>
+  <string name="console_next_session" tools:machine_translated="true">Phiên tiếp theo</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Bật/tắt phím Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Chuyển đổi chế độ soạn thảo cho phương thức nhập liệu IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Chế độ soạn thảo (IME)</string>
 </resources>

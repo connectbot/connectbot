@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Egiaztatu zure identitatea jarraitzeko.</string>
   <string name="auth_banner_title" tools:machine_translated="true">%1$s-en autentifikazio mezua</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Autentifikazio-mezuak:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">IME tekla aldatzeko aukera erakutsi</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Gehitu IME botoi bat teklatuaren teklak berezietako lerroan, eta botoi horrek konposizio modua aktibatuko/desaktibatuko du konposizio-memoria behar duten hizkuntzetarako (japoniera, txinera, koreera, etab.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">IME osoaren Ctrl/Alt lasterbideak</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Ez dago irtenbiderik.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Tekla-sarrerako gertaera zuzenak</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Behartu ASCII (gomendatzen da)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Saioak hatz-mugimendu batez aldatu</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Gaitu bertikaleko hatz-mugimendua terminal-saioak aldatzeko. Lehenespenez, ezaugarri hau desgaiatuta dago irisgarritasun-arrazoiak direla eta.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Saioa aldatu</string>
+  <string name="console_previous_session" tools:machine_translated="true">Aurretiko saioa</string>
+  <string name="console_next_session" tools:machine_translated="true">Hurrengo saioa</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Aldatu Alt tekla.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">IME sarrerako modu konposatuaren aktibazio/desaktibazio botoia.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Idazteko modua (IME)</string>
 </resources>

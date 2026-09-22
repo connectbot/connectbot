@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Пацвердзіце сваю асобу, каб працягнуць</string>
   <string name="auth_banner_title" tools:machine_translated="true">Паведамленне аб аўтэнтыфікацыі ад %1$s.</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Паведамленне аб аўтэнтыфікацыі:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Паказаць клавішу для пераключэння рэжыму ўводу IME.</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Дадайце кнопку IME у рад спецыяльных клавіш, якая пераключае рэжым набору для моў, якія патрабуюць буфер для складання сімвалаў (японская, кітайская, карэйская і іншыя).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Поўныя клавішныя камбінацыі IME для Ctrl/Alt.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Рашэння не знойдзена.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Неапрацаваныя падзеі клавіш.</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Прымусова выкарыстоўваць раскладку ASCII (рэкамендуецца)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Правядзіце пальцам, каб пераключацца паміж сесіямі.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Уключыце гарызантальнае правядзіце пальцам, каб пераключацца паміж сесіямі тэрмінала. Па змаўчанні функцыя выключана для палягчэння доступу.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Пераключыць сеанс</string>
+  <string name="console_previous_session" tools:machine_translated="true">Папярэдняя сесія</string>
+  <string name="console_next_session" tools:machine_translated="true">Наступная сесія</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Пераключыць клавішу Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Пераключыць рэжым набору тэксту для ўводу з дапамогай IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Рэжым набору тэксту (IME)</string>
 </resources>

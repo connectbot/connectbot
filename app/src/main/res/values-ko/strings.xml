@@ -574,4 +574,20 @@
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">클립보드에서 붙여넣기</string>
   <string name="auth_banner_title" tools:machine_translated="true">%1$s에서 보낸 인증 메시지입니다.</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] 인증 메시지:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">IME 전환 키 표시</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">조합 버퍼가 필요한 언어(일본어, 중국어, 한국어 등)의 경우, 조합 모드를 전환하는 기능을 하는 IME 버튼을 특수 키 행에 추가합니다.</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">전체 IME Ctrl/Alt 단축키</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">해결 방법이 없습니다.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">처리되지 않은 키 이벤트</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">ASCII 키보드 사용 (권장)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">세션 간 전환 시 스와이프 기능 사용</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">터미널 세션 간 전환을 위해 가로 스와이프 기능을 활성화합니다. 기본적으로 접근성 향상을 위해 비활성화되어 있습니다.</string>
+  <string name="console_switch_session" tools:machine_translated="true">세션 전환</string>
+  <string name="console_previous_session" tools:machine_translated="true">이전 세션</string>
+  <string name="console_next_session" tools:machine_translated="true">다음 세션</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Alt 키를 전환합니다.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME(입력 방법 편집기)</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">IME 입력 방식을 전환하여 글자 조합 모드를 켜거나 끕니다.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">작성 모드(IME)</string>
 </resources>

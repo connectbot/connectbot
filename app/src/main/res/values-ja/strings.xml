@@ -574,4 +574,20 @@
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">クリップボードから貼り付け</string>
   <string name="auth_banner_title" tools:machine_translated="true">%1$sからの認証メッセージ</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] 認証メッセージ：</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">IME切り替えキーを表示</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">複合モードが必要な言語（日本語、中国語、韓国語など）の入力時に、複合入力バッファーを切り替えるためのIMEボタンを、特殊キーの行に追加します。</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">IMEのCtrl/Altキーによるショートカット機能</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">対処法はありません。</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">生のキーイベント</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">強制的にASCIIキーボードを使用（推奨）</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">セッションをスワイプして切り替える</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">横方向にスワイプしてターミナルセッションを切り替える機能を有効にします。デフォルトでは無効になっており、アクセシビリティを考慮しています。</string>
+  <string name="console_switch_session" tools:machine_translated="true">セッションを切り替える</string>
+  <string name="console_previous_session" tools:machine_translated="true">前のセッション</string>
+  <string name="console_next_session" tools:machine_translated="true">次のセッション</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Altキーの切り替え。</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME（入力メソッドエディター）</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">IME入力用の合成モードを切り替える</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">入力モード（IME）</string>
 </resources>

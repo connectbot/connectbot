@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">ยืนยันตัวตนของคุณเพื่อดำเนินการต่อ</string>
   <string name="auth_banner_title" tools:machine_translated="true">ข้อความยืนยันตัวตนจาก %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] ข้อความยืนยันตัวตน:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">แสดงปุ่มสลับ IME</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">เพิ่มปุ่ม IME ลงในแถวของปุ่มพิเศษ เพื่อใช้สลับโหมดการป้อนข้อมูลสำหรับภาษาที่ต้องใช้บัฟเฟอร์ในการสร้างคำ (เช่น ภาษาญี่ปุ่น จีน เกาหลี เป็นต้น)</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">ทางลัด Ctrl/Alt สำหรับ IME แบบเต็ม</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">ไม่มีวิธีแก้ไขชั่วคราว</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">เหตุการณ์การกดปุ่มแบบดิบ</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">บังคับใช้รูปแบบ ASCII (แนะนำ)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">ปัดเพื่อสลับระหว่างเซสชัน</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">เปิดใช้งานการปัดหน้าจอในแนวนอนเพื่อสลับระหว่างเซสชันต่างๆ หากต้องการปิด ให้ตั้งค่าเริ่มต้นเพื่อรองรับการใช้งานสำหรับผู้พิการ</string>
+  <string name="console_switch_session" tools:machine_translated="true">สลับเซสชัน</string>
+  <string name="console_previous_session" tools:machine_translated="true">เซสชันก่อนหน้า</string>
+  <string name="console_next_session" tools:machine_translated="true">เซสชันถัดไป</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">สลับปุ่ม Alt</string>
+  <string name="button_key_ime" tools:machine_translated="true">ไอเอ็มอี</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">สลับโหมดการป้อนข้อมูลเพื่อเปิด/ปิดฟังก์ชัน IME</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">โหมดการพิมพ์ (สำหรับระบบ IME)</string>
 </resources>

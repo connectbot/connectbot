@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">A folytatáshoz igazolja azonosítását.</string>
   <string name="auth_banner_title" tools:machine_translated="true">Hitelesítési üzenet a(z) %1$s szerverről.</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Hitelesítési üzenet:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Mutassa a beviteli mód váltó billentyűt.</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Adjon hozzá egy IME gombot a speciális billentyűk sorához, amely be- és kikapcsolja az összetett karakterek bevitelére szolgáló módot azoknál a nyelveknél, amelyekhez összetevő pufferre van szükség (pl. japán, kínai, koreai).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">A teljes IME-hez tartozó Ctrl/Alt gyorsbillentyűk.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Nincs megoldás.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Nyers billentyűesemények</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Kényszerített ASCII (ajánlott)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Húzza balra vagy jobbra a különböző munkamenetek között való váltáshoz.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Engedélyezze a vízszintes gesztusokkal történő lapozást a terminál-munkamenetek közötti váltáshoz. Alapértelmezés szerint ez a funkció kikapcsolva van a könnyebb használhatóság érdekében.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Váltás a munkamenetek között</string>
+  <string name="console_previous_session" tools:machine_translated="true">Előző munkamenet</string>
+  <string name="console_next_session" tools:machine_translated="true">Következő munkamenet</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Alt billentyű be- és kikapcsolása.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME (beviteli módszer)</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Kapcsolja be vagy ki az IME-hez tartozó összetett módot.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Összetevő mód (IME)</string>
 </resources>

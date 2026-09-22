@@ -574,4 +574,20 @@
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Coller depuis le presse-papiers</string>
   <string name="auth_banner_title" tools:machine_translated="true">Message d’authentification provenant de %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Message d’authentification :</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Afficher la touche de bascule IME</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Ajoutez un bouton IME à la rangée des touches spéciales qui permet d’activer ou de désactiver le mode de composition pour les langues nécessitant une mémoire tampon de composition (japonais, chinois, coréen, etc.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Raccourcis Ctrl/Alt pour l’ensemble de l’IME</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Aucune solution de contournement.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Événements de touches bruts</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Forcer l’utilisation du clavier ASCII (recommandé)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Faites glisser pour passer d’une session à l’autre.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Activez la fonction de défilement horizontal pour changer de session de terminal. Cette fonction est désactivée par défaut pour faciliter l’accessibilité.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Changer de session</string>
+  <string name="console_previous_session" tools:machine_translated="true">Session précédente</string>
+  <string name="console_next_session" tools:machine_translated="true">Session suivante</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Activer/désactiver la touche Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Activer/désactiver le mode de composition pour la saisie par IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Mode de composition (IME)</string>
 </resources>

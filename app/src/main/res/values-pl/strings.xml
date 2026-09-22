@@ -574,4 +574,20 @@
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Wklej z schowka</string>
   <string name="auth_banner_title" tools:machine_translated="true">Komunikat uwierzytelniający od %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Komunikat uwierzytelniania:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Wyświetl klawisz przełączający IME.</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Dodaj przycisk IME do rzędu klawiszy specjalnych, który będzie przełączał tryb wprowadzania znaków dla języków wymagających bufora kompozycji (np. japoński, chiński, koreański).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Skróty klawiszowe Ctrl/Alt w pełnym trybie IME.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Brak obejścia.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Surowe zdarzenia klawiaturowe</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Wymuś użycie układu klawiatury ASCII (zalecane)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Przesuwaj palcem, aby przełączać się między sesjami.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Włącz możliwość przełączania między sesjami terminala za pomocą gestu przesuwania palcem w poziomie. Domyślnie wyłączone ze względu na dostępność.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Przełącz sesję</string>
+  <string name="console_previous_session" tools:machine_translated="true">Poprzednia sesja</string>
+  <string name="console_next_session" tools:machine_translated="true">Następna sesja</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Przełącz klawisz Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Przełącz tryb wprowadzania znaków dla IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Tryb komponowania (IME)</string>
 </resources>

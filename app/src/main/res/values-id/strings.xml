@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Verifikasi identitas Anda untuk melanjutkan</string>
   <string name="auth_banner_title" tools:machine_translated="true">Pesan autentikasi dari %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Pesan autentikasi:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Tampilkan tombol peralihan IME</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Tambahkan tombol IME ke baris tombol khusus yang berfungsi untuk mengaktifkan atau menonaktifkan mode komposisi untuk bahasa yang memerlukan buffer komposisi (Jepang, Mandarin, Korea, dll.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Pintasan Ctrl/Alt IME lengkap</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Tidak ada solusi alternatif.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Peristiwa penekanan tombol mentah</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Paksa penggunaan ASCII (disarankan)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Geser untuk berpindah antar sesi.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Aktifkan gerakan menggesek horizontal untuk berpindah antar sesi terminal. Secara bawaan, fitur ini dinonaktifkan untuk memudahkan aksesibilitas.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Ganti sesi</string>
+  <string name="console_previous_session" tools:machine_translated="true">Sesi sebelumnya</string>
+  <string name="console_next_session" tools:machine_translated="true">Sesi berikutnya</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Aktifkan/nonaktifkan tombol Alt.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Aktifkan/nonaktifkan mode komposisi untuk input IME.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Mode komposisi (IME)</string>
 </resources>

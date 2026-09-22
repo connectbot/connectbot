@@ -574,4 +574,20 @@
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Patvirtinkite savo tapatybę, kad galėtumėte tęsti.</string>
   <string name="auth_banner_title" tools:machine_translated="true">Autentifikavimo pranešimas iš %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Autentifikacijos pranešimas:</string>
+  <string name="pref_imetogglekey_title" tools:machine_translated="true">Rodyti IME perjungimo klavišą</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">Į specialiųjų klavišų eilutę įterkite IME mygtuką, kuris įjungia arba išjungia simbolių įvedimo režimą kalboms, kurioms reikalingas simbolių įvedimo buferis (pvz., japonų, kinų, korėjiečių ir kt.).</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Viso IME klavišų kombinacijų „Ctrl“/„Alt“ nustatymai</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Aptariamoje situacijoje nėra jokio sprendimo.</string>
+  <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Neapdoroti klavišų įvykiai</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Priverstinė ASCII klaviatūra (rekomenduojama)</string>
+  <string name="pref_swipe_sessions_title" tools:machine_translated="true">Perbraukite, kad perjungtumėte sesijas.</string>
+  <string name="pref_swipe_sessions_summary" tools:machine_translated="true">Įjunkite horizontalius gestus, kad galėtumėte perjungti terminalo sesijas. Numatytoji būsena – išjungta, kad būtų užtikrintas prieinamumas.</string>
+  <string name="console_switch_session" tools:machine_translated="true">Perjunkite sesiją.</string>
+  <string name="console_previous_session" tools:machine_translated="true">Ankstesnė sesija</string>
+  <string name="console_next_session" tools:machine_translated="true">Kitas seansas</string>
+  <string name="button_key_alt" tools:machine_translated="true">Alt</string>
+  <string name="image_description_toggle_alt_key" tools:machine_translated="true">Perjunkite „Alt“ klavišą.</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
+  <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Perjunkite įvesties metodų rengimo režimą.</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">Rašymo režimas (IME)</string>
 </resources>
