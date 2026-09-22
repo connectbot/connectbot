@@ -491,17 +491,17 @@ fun HostListScreenContent(
                     }
                 }
             }
-        }
-    }
 
-    if (showDisconnectAllDialog) {
-        DisconnectAllDialog(
-            onDismiss = { showDisconnectAllDialog = false },
-            onConfirm = {
-                showDisconnectAllDialog = false
-                onDisconnectAll()
-            },
-        )
+            if (showDisconnectAllDialog) {
+                DisconnectAllDialog(
+                    onDismiss = { showDisconnectAllDialog = false },
+                    onConfirm = {
+                        showDisconnectAllDialog = false
+                        onDisconnectAll()
+                    },
+                )
+            }
+        }
     }
 }
 
@@ -572,7 +572,19 @@ private fun HostListItem(
         )
     }
 
-    Box(modifier = modifier) {
+    Column(
+        modifier = modifier
+            .combinedClickable(
+                onClick = onClick,
+                onLongClick = {
+                    // Show context menu on long press for connected hosts (when not making shortcut)
+                    if (isConnected && !makingShortcut) {
+                        showLongPressMenu = true
+                    }
+                },
+            )
+            .testTag(HostListTestTags.itemRow(host.id)),
+    ) {
         ListItem(
             supportingContent = {
                 Text("${host.protocol}://${host.hostname}:${host.port}")
@@ -750,17 +762,6 @@ private fun HostListItem(
                     }
                 }
             },
-            modifier = modifier
-                .combinedClickable(
-                    onClick = onClick,
-                    onLongClick = {
-                        // Show context menu on long press for connected hosts (when not making shortcut)
-                        if (isConnected && !makingShortcut) {
-                            showLongPressMenu = true
-                        }
-                    },
-                )
-                .testTag(HostListTestTags.itemRow(host.id)),
         ) {
             Text(
                 text = host.nickname,
@@ -784,40 +785,40 @@ private fun HostListItem(
                 },
             )
         }
-    }
-    HorizontalDivider()
+        HorizontalDivider()
 
-    if (showDeleteDialog) {
-        HostDeleteDialog(
-            host = host,
-            onDismiss = { showDeleteDialog = false },
-            onConfirm = {
-                showDeleteDialog = false
-                onDelete()
-            },
-        )
-    }
+        if (showDeleteDialog) {
+            HostDeleteDialog(
+                host = host,
+                onDismiss = { showDeleteDialog = false },
+                onConfirm = {
+                    showDeleteDialog = false
+                    onDelete()
+                },
+            )
+        }
 
-    if (showDisconnectDialog) {
-        HostDisconnectDialog(
-            host = host,
-            onDismiss = { showDisconnectDialog = false },
-            onConfirm = {
-                showDisconnectDialog = false
-                onDisconnect()
-            },
-        )
-    }
+        if (showDisconnectDialog) {
+            HostDisconnectDialog(
+                host = host,
+                onDismiss = { showDisconnectDialog = false },
+                onConfirm = {
+                    showDisconnectDialog = false
+                    onDisconnect()
+                },
+            )
+        }
 
-    if (showForgetHostKeysDialog) {
-        ForgetHostKeysDialog(
-            host = host,
-            onDismiss = { showForgetHostKeysDialog = false },
-            onConfirm = {
-                showForgetHostKeysDialog = false
-                onForgetHostKeys()
-            },
-        )
+        if (showForgetHostKeysDialog) {
+            ForgetHostKeysDialog(
+                host = host,
+                onDismiss = { showForgetHostKeysDialog = false },
+                onConfirm = {
+                    showForgetHostKeysDialog = false
+                    onForgetHostKeys()
+                },
+            )
+        }
     }
 }
 
