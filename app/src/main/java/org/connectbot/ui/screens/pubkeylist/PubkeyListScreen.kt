@@ -482,12 +482,6 @@ private fun PubkeyListItem(
 
     Column(modifier = modifier) {
         ListItem(
-            headlineContent = {
-                Text(
-                    text = pubkey.nickname,
-                    fontWeight = FontWeight.Bold,
-                )
-            },
             supportingContent = {
                 Text(
                     stringResource(
@@ -741,7 +735,12 @@ private fun PubkeyListItem(
                     showPasswordDialog = true
                 }
             }.testTag(PubkeyListTestTags.itemRow(pubkey.id)),
-        )
+        ) {
+            Text(
+                text = pubkey.nickname,
+                fontWeight = FontWeight.Bold,
+            )
+        }
         HorizontalDivider()
 
         // Password dialog for unlocking key

@@ -52,14 +52,13 @@ fun UrlScanDialog(
                 LazyColumn {
                     items(urls) { url ->
                         ListItem(
-                            headlineContent = { Text(url) },
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .clickable {
                                     onUrlClick(url)
                                     onDismiss()
                                 },
-                        )
+                        ) { Text(url) }
                         HorizontalDivider()
                     }
                 }

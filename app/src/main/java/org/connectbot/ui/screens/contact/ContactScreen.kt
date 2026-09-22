@@ -137,12 +137,6 @@ private fun ContactLinkItem(
 ) {
     Column {
         ListItem(
-            headlineContent = {
-                Text(
-                    text = label,
-                    style = MaterialTheme.typography.titleMedium,
-                )
-            },
             supportingContent = {
                 Text(
                     text = url,
@@ -151,7 +145,12 @@ private fun ContactLinkItem(
                 )
             },
             modifier = Modifier.clickable { onClick(url) },
-        )
+        ) {
+            Text(
+                text = label,
+                style = MaterialTheme.typography.titleMedium,
+            )
+        }
         HorizontalDivider()
     }
 }
