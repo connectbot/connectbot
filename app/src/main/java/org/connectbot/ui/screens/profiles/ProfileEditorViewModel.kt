@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.data.ColorSchemeRepository
+import org.connectbot.data.EntityIds
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Profile
@@ -39,13 +40,14 @@ import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
 import org.connectbot.util.TerminalFontProvider
 import java.nio.charset.Charset
+import java.util.UUID
 import javax.inject.Inject
 
 data class ProfileEditorUiState(
-    val profileId: Long = -1L,
+    val profileId: UUID = EntityIds.NONE,
     val name: String = "",
     val iconColor: String? = null,
-    val colorSchemeId: Long = -1L,
+    val colorSchemeId: UUID = EntityIds.DEFAULT_SCHEME,
     val availableColorSchemes: List<ColorScheme> = emptyList(),
     val fontFamily: String? = null,
     val fontSize: Int = 10,
@@ -91,7 +93,7 @@ class ProfileEditorViewModel @Inject constructor(
         charsets.sortedWith(String.CASE_INSENSITIVE_ORDER)
     }
 
-    private val profileId: Long = savedStateHandle.get<Long>("profileId") ?: -1L
+    private val profileId: UUID = EntityIds.parse(savedStateHandle.get<String>("profileId"))
     private val localFontProvider = LocalFontProvider(context)
     private val fontProvider = TerminalFontProvider(context, dispatchers.io)
 
@@ -103,7 +105,7 @@ class ProfileEditorViewModel @Inject constructor(
         loadLocalFonts()
         loadCustomTerminalTypes()
         observeColorSchemes()
-        if (profileId != -1L) {
+        if (profileId != EntityIds.NONE) {
             loadProfile()
         } else {
             _uiState.update { it.copy(isLoading = false) }
@@ -138,7 +140,8 @@ class ProfileEditorViewModel @Inject constructor(
     private fun observeColorSchemes() {
         viewModelScope.launch {
             colorSchemeRepository.observeAllSchemes().collect { schemes ->
-                _uiState.update { it.copy(availableColorSchemes = schemes) }
+                val owner = profileRepository.getById(profileId)?.repositoryId ?: EntityIds.LOCAL
+                _uiState.update { it.copy(availableColorSchemes = schemes.filter { scheme -> owner == EntityIds.LOCAL || scheme.isBuiltIn || scheme.repositoryId == owner }) }
             }
         }
     }
@@ -181,7 +184,7 @@ class ProfileEditorViewModel @Inject constructor(
         _uiState.update { it.copy(iconColor = value, hasUnsavedChanges = true) }
     }
 
-    fun updateColorSchemeId(value: Long) {
+    fun updateColorSchemeId(value: UUID) {
         _uiState.update { it.copy(colorSchemeId = value, hasUnsavedChanges = true) }
     }
 
@@ -251,7 +254,7 @@ class ProfileEditorViewModel @Inject constructor(
             }
 
             // Check for duplicate name (excluding current profile)
-            val excludeId = if (profileId != -1L) profileId else null
+            val excludeId = if (profileId != EntityIds.NONE) profileId else null
             val nameExists = try {
                 withContext(dispatchers.io) { profileRepository.nameExists(state.name, excludeId) }
             } catch (e: Exception) {
@@ -264,7 +267,8 @@ class ProfileEditorViewModel @Inject constructor(
             }
 
             val profile = Profile(
-                id = if (profileId != -1L) profileId else 0,
+                id = if (profileId != EntityIds.NONE) profileId else UUID.randomUUID(),
+                repositoryId = profileRepository.getById(profileId)?.repositoryId ?: EntityIds.LOCAL,
                 name = state.name,
                 iconColor = state.iconColor,
                 colorSchemeId = state.colorSchemeId,

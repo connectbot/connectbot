@@ -55,6 +55,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.ModifierLevel
@@ -77,6 +78,7 @@ import org.connectbot.ui.screens.console.ConsoleUiState
 import org.connectbot.ui.screens.console.ConsoleViewModel
 import org.connectbot.ui.screens.console.SessionPickerDialog
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.HostConstants
 import org.connectbot.util.PreferenceConstants
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -89,6 +91,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
+import java.util.UUID
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -136,7 +139,7 @@ class ConsoleScreenTest {
                         composable("start") { Text("Host list") }
                         composable(
                             route = "console/{hostId}",
-                            arguments = listOf(navArgument("hostId") { type = NavType.LongType }),
+                            arguments = listOf(navArgument("hostId") { type = NavType.StringType }),
                         ) {
                             if (mockConsoleViewModel != null) {
                                 ConsoleScreen(
@@ -163,7 +166,7 @@ class ConsoleScreenTest {
         }
     }
 
-    private fun navigateToConsoleScreen(hostId: Long = -1L) {
+    private fun navigateToConsoleScreen(hostId: UUID = EntityIds.NONE) {
         composeTestRule.runOnUiThread {
             navController.navigate("console/$hostId")
         }
@@ -173,7 +176,7 @@ class ConsoleScreenTest {
     fun sessionPicker_sameHostInTwoSessions_rendersAndSelectsEachSession() {
         val first = mock(TerminalBridge::class.java)
         val second = mock(TerminalBridge::class.java)
-        val host = Host(id = 1L, nickname = "Original session")
+        val host = Host(id = UUID(0, 1), nickname = "Original session")
         `when`(first.host).thenReturn(host)
         `when`(second.host).thenReturn(host.copy(nickname = "Updated session"))
         var selectedIndex = -1
@@ -206,17 +209,17 @@ class ConsoleScreenTest {
             }
             NavHost(navController, startDestination = "start") {
                 composable("start") {}
-                composable("console/{hostId}", arguments = listOf(navArgument("hostId") { type = NavType.LongType })) {}
+                composable("console/{hostId}", arguments = listOf(navArgument("hostId") { type = NavType.StringType })) {}
             }
         }
         composeTestRule.runOnIdle {
-            navController.navigateToConsole(-1L)
+            navController.navigateToConsole(EntityIds.NONE)
             val firstEntry = navController.currentBackStackEntry!!.id
-            navController.navigateToConsole(-2L)
+            navController.navigateToConsole(UUID(0, -2))
             val secondEntry = navController.currentBackStackEntry!!.id
             assertFalse(firstEntry == secondEntry)
-            assertEquals(-2L, navController.currentBackStackEntry!!.arguments!!.getLong("hostId"))
-            navController.navigateToConsole(-2L)
+            assertEquals(UUID(0, -2).toString(), navController.currentBackStackEntry!!.arguments!!.getString("hostId"))
+            navController.navigateToConsole(UUID(0, -2))
             assertEquals(secondEntry, navController.currentBackStackEntry!!.id)
             navController.popBackStack()
             assertEquals(firstEntry, navController.currentBackStackEntry!!.id)
@@ -227,7 +230,7 @@ class ConsoleScreenTest {
     fun consoleScreen_remoteDisconnect_showsReconnectAfterBridgeStateChanges() {
         val bridge = mock(TerminalBridge::class.java)
         `when`(bridge.transportMessages).thenReturn(MutableSharedFlow())
-        val host = Host(id = 1L, nickname = "test-host")
+        val host = Host(id = UUID(0, 1), nickname = "test-host")
         val emulator = TerminalEmulatorFactory.create()
         `when`(bridge.host).thenReturn(host)
         `when`(bridge.terminalEmulator).thenReturn(emulator)
@@ -243,7 +246,7 @@ class ConsoleScreenTest {
         `when`(viewModel.uiState).thenReturn(states)
         `when`(viewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
         setContent(mockConsoleViewModel = viewModel)
-        navigateToConsoleScreen(1L)
+        navigateToConsoleScreen(UUID(0, 1))
 
         val reconnect = composeTestRule.activity.getString(R.string.console_menu_reconnect)
         composeTestRule.onNodeWithText(reconnect).assertDoesNotExist()
@@ -569,7 +572,7 @@ class ConsoleScreenTest {
         `when`(mockViewModel.networkStatusMessages).thenReturn(networkStatusMessages)
 
         setContent(mockConsoleViewModel = mockViewModel)
-        navigateToConsoleScreen(hostId = 1L)
+        navigateToConsoleScreen(hostId = UUID(0, 1))
 
         composeTestRule.runOnIdle {
             val rootLayout = composeTestRule.activity.findViewById<View>(android.R.id.content)
@@ -601,7 +604,7 @@ class ConsoleScreenTest {
         `when`(mockViewModel.networkStatusMessages).thenReturn(networkStatusMessages)
 
         setContent(mockConsoleViewModel = mockViewModel)
-        navigateToConsoleScreen(hostId = 1L)
+        navigateToConsoleScreen(hostId = UUID(0, 1))
 
         composeTestRule.runOnIdle {
             val rootLayout = composeTestRule.activity.findViewById<View>(android.R.id.content)
@@ -633,7 +636,7 @@ class ConsoleScreenTest {
         `when`(mockViewModel.networkStatusMessages).thenReturn(networkStatusMessages)
 
         setContent(mockConsoleViewModel = mockViewModel)
-        navigateToConsoleScreen(hostId = 1L)
+        navigateToConsoleScreen(hostId = UUID(0, 1))
 
         composeTestRule.runOnIdle {
             val rootLayout = composeTestRule.activity.findViewById<View>(android.R.id.content)
@@ -655,7 +658,7 @@ class ConsoleScreenTest {
     fun consoleScreen_connectionInfoMenu_opensAndDismissesPanel() {
         val bridge = mock(TerminalBridge::class.java)
         `when`(bridge.transportMessages).thenReturn(MutableSharedFlow())
-        val host = Host(id = 1L, nickname = "test-host", hostname = "server.example")
+        val host = Host(id = UUID(0, 1), nickname = "test-host", hostname = "server.example")
         val emulator = TerminalEmulatorFactory.create()
         `when`(bridge.host).thenReturn(host)
         `when`(bridge.terminalEmulator).thenReturn(emulator)
@@ -670,7 +673,7 @@ class ConsoleScreenTest {
             org.connectbot.ui.screens.console.ConnectionDetails(host, org.connectbot.ui.screens.console.ConnectionStatus.CONNECTED, null, null),
         )
         setContent(mockConsoleViewModel = viewModel)
-        navigateToConsoleScreen(1L)
+        navigateToConsoleScreen(UUID(0, 1))
         val context = ApplicationProvider.getApplicationContext<Context>()
         composeTestRule.onNodeWithContentDescription(context.getString(R.string.button_more_options)).performClick()
         composeTestRule.onNodeWithText(context.getString(R.string.console_menu_connection_info)).performClick()

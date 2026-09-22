@@ -20,6 +20,7 @@ package org.connectbot.data.migration
 import android.content.Context
 import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
 import timber.log.Timber
@@ -98,7 +99,7 @@ class LegacyPubkeyDatabaseReader(private val context: Context) {
         }
 
         return Pubkey(
-            id = id,
+            id = EntityIds.legacy("pubkeys", id),
             nickname = cursor.getString(nicknameIndex) ?: "",
             type = type,
             privateKey = cursor.getBlob(privateIndex),

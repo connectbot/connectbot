@@ -32,6 +32,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import java.io.File
+import java.util.UUID
 
 @RunWith(RobolectricTestRunner::class)
 class TelnetOptionsMigrationTest {
@@ -75,7 +76,7 @@ class TelnetOptionsMigrationTest {
             db.version = startVersion
         }
         val database = Room.databaseBuilder(context, ConnectBotDatabase::class.java, name)
-            .addMigrations(ConnectBotDatabase.MIGRATION_10_11).build()
+            .addMigrations(ConnectBotDatabase.MIGRATION_10_11, ConnectBotDatabase.MIGRATION_14_15).build()
         try {
             val host = database.hostDao().getAll().first { it.protocol == "telnet" }
             assertEquals("Existing", host.nickname)
@@ -96,7 +97,7 @@ class TelnetOptionsMigrationTest {
             val ssh = database.hostDao().getAll().first { it.protocol == "ssh" }
             assertEquals("bob", ssh.username)
             assertEquals(TelnetEchoMode.AUTO, ssh.telnetEchoMode)
-            database.hostDao().insert(changed.copy(id = 0, nickname = "Copy", protocol = "ssh"))
+            database.hostDao().insert(changed.copy(id = UUID(0, 0), nickname = "Copy", protocol = "ssh"))
             assertEquals(TelnetEchoMode.OFF, database.hostDao().getAll().first { it.nickname == "Copy" }.telnetEchoMode)
         } finally {
             database.close()

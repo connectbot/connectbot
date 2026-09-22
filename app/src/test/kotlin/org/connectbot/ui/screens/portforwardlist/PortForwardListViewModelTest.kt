@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.connectbot.data.EntityIds
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
@@ -49,6 +50,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import timber.log.Timber
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PortForwardListViewModelTest {
@@ -66,7 +68,7 @@ class PortForwardListViewModelTest {
     private lateinit var bridgesFlow: MutableStateFlow<List<TerminalBridge>>
     private lateinit var viewModel: PortForwardListViewModel
 
-    private val testHostId = 1L
+    private val testHostId = UUID(0, 1)
 
     @Before
     fun setUp() {
@@ -84,7 +86,7 @@ class PortForwardListViewModelTest {
         portForwardsFlow = MutableStateFlow(emptyList())
         bridgesFlow = MutableStateFlow(emptyList())
 
-        whenever(savedStateHandle.get<Long>("hostId")).thenReturn(testHostId)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(testHostId.toString())
         whenever(repository.observePortForwardsForHost(testHostId)).thenReturn(portForwardsFlow)
         whenever(terminalManager.bridgesFlow).thenReturn(bridgesFlow)
     }
@@ -101,7 +103,7 @@ class PortForwardListViewModelTest {
         return vm
     }
 
-    private fun createMockBridge(hostId: Long, connected: Boolean = true): TerminalBridge {
+    private fun createMockBridge(hostId: UUID, connected: Boolean = true): TerminalBridge {
         val bridge = mock<TerminalBridge>()
         val host = Host(id = hostId, nickname = "test-host", protocol = "ssh", username = "user", hostname = "example.com", port = 22)
         val transport = mock<AbsTransport>()
@@ -115,7 +117,7 @@ class PortForwardListViewModelTest {
     }
 
     private fun createTestPortForward(
-        id: Long = 1L,
+        id: UUID = UUID(0, 1),
         nickname: String = "test-forward",
         type: String = "local",
         sourcePort: Int = 8080,
@@ -211,7 +213,7 @@ class PortForwardListViewModelTest {
     @Test
     fun addPortForward_WithActiveConnection_AddsToTransport() = runTest {
         // Mock repository to return the saved port forward with an ID
-        val savedPortForward = createTestPortForward(id = 100L, nickname = "new-forward", sourcePort = 9090, destAddr = "example.com", destPort = 443)
+        val savedPortForward = createTestPortForward(id = UUID(0, 100), nickname = "new-forward", sourcePort = 9090, destAddr = "example.com", destPort = 443)
         whenever(repository.savePortForward(any())).thenReturn(savedPortForward)
 
         val transport = mock<AbsTransport>()

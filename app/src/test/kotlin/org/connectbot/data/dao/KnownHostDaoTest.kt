@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,12 +24,15 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KnownHost
+import org.connectbot.util.HostConstants
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.UUID
 
 @RunWith(AndroidJUnit4::class)
 class KnownHostDaoTest {
@@ -65,7 +68,7 @@ class KnownHostDaoTest {
         )
 
         val id = knownHostDao.insert(knownHost)
-        assertThat(id).isGreaterThan(0)
+        assertThat(id).isNotEqualTo(EntityIds.NONE)
 
         val retrievedList = knownHostDao.getByHostId(hostId)
         assertThat(retrievedList).isNotEmpty
@@ -103,7 +106,7 @@ class KnownHostDaoTest {
 
     @Test
     fun getByHostId_ReturnsEmptyWhenNotFound() = runTest {
-        val retrieved = knownHostDao.getByHostId(99999L)
+        val retrieved = knownHostDao.getByHostId(UUID(0, 99999))
         assertThat(retrieved).isEmpty()
     }
 
@@ -485,7 +488,7 @@ class KnownHostDaoTest {
     )
 
     private fun createTestKnownHost(
-        hostId: Long,
+        hostId: UUID,
         hostname: String,
         port: Int,
         hostKeyAlgo: String = "ssh-rsa",

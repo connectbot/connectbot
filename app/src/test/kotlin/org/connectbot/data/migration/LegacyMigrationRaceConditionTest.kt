@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,6 +28,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.EntityIds
 import org.connectbot.di.CoroutineDispatchers
 import org.junit.After
 import org.junit.Before
@@ -129,8 +130,8 @@ class LegacyMigrationRaceConditionTest {
                     Timber.d("Room onCreate callback - inserting default profile")
                     db.execSQL(
                         """
-                        INSERT INTO profiles (name, color_scheme_id, font_size, del_key, encoding, emulation)
-                        VALUES ('Default', -1, 10, 'del', 'UTF-8', 'xterm-256color')
+                        INSERT INTO profiles (id, name, color_scheme_id, font_size, del_key, encoding, emulation)
+                        VALUES ('${EntityIds.DEFAULT_PROFILE}', 'Default', '${EntityIds.DEFAULT_SCHEME}', 10, 'del', 'UTF-8', 'xterm-256color')
                         """.trimIndent(),
                     )
                 }
@@ -193,8 +194,8 @@ class LegacyMigrationRaceConditionTest {
                     super.onCreate(db)
                     db.execSQL(
                         """
-                        INSERT INTO profiles (name, color_scheme_id, font_size, del_key, encoding, emulation)
-                        VALUES ('Default', -1, 10, 'del', 'UTF-8', 'xterm-256color')
+                        INSERT INTO profiles (id, name, color_scheme_id, font_size, del_key, encoding, emulation)
+                        VALUES ('${EntityIds.DEFAULT_PROFILE}', 'Default', '${EntityIds.DEFAULT_SCHEME}', 10, 'del', 'UTF-8', 'xterm-256color')
                         """.trimIndent(),
                     )
                 }

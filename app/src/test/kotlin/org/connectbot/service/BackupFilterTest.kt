@@ -24,12 +24,16 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.runBlocking
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.EntityIds
 import org.connectbot.data.HostRepository
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
+import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.data.sync.SyncDatabase
+import org.connectbot.util.HostConstants
 import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -40,6 +44,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.whenever
 import java.io.File
+import java.util.UUID
 
 /**
  * Unit tests for BackupFilter.
@@ -211,7 +216,7 @@ class BackupFilterTest {
     @Test
     fun filterBackupablePubkeys_PreservesKeyData() {
         val originalKey = Pubkey(
-            id = 123,
+            id = UUID(0, 123),
             nickname = "test-key",
             type = "RSA",
             privateKey = ByteArray(32) { 0x42 },
@@ -381,6 +386,41 @@ class BackupFilterTest {
             // Clean up temp database
             backupFilter.cleanupTempDatabase(tempDbFile)
             assertFalse(tempDbFile.exists())
+        }
+    }
+
+    @Test
+    fun snapshotPreservesProfilesAndTombstonesWhileFilteringKeys() = runBlocking {
+        val source = Room.inMemoryDatabaseBuilder(context, ConnectBotDatabase::class.java).allowMainThreadQueries().build()
+        SyncDatabase.install(source.openHelper.writableDatabase)
+        val profile = Profile.createDefault()
+        source.profileDao().insert(profile)
+        val key = createPubkey("excluded", false, KeyStorageType.EXPORTABLE)
+        source.pubkeyDao().insert(key)
+        val host = Host(nickname = "kept", profileId = profile.id, pubkeyId = key.id)
+        source.hostDao().insert(host)
+        val deleted = Host(nickname = "deleted")
+        source.hostDao().insert(deleted)
+        source.hostDao().delete(deleted)
+        val file = context.getDatabasePath("sync_backup_test.db")
+        val filter = BackupFilter(context, mockHostRepository, mockColorSchemeRepository, mockPubkeyRepository, source)
+        try {
+            filter.buildFilteredDatabase(file, true)
+            val restored = Room.databaseBuilder(context, ConnectBotDatabase::class.java, file.name).allowMainThreadQueries().build()
+            try {
+                assertEquals(profile, restored.profileDao().getById(profile.id))
+                assertEquals(HostConstants.PUBKEYID_ANY, restored.hostDao().getById(host.id)!!.pubkeyId)
+                assertTrue(restored.pubkeyDao().getAll().isEmpty())
+                restored.openHelper.readableDatabase.query("SELECT operation FROM sync_outbox WHERE object_id=?", arrayOf(deleted.id.toString())).use {
+                    assertTrue(it.moveToFirst())
+                    assertEquals("delete", it.getString(0))
+                }
+            } finally {
+                restored.close()
+            }
+        } finally {
+            source.close()
+            filter.cleanupTempDatabase(file)
         }
     }
 

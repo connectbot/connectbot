@@ -28,11 +28,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.connectbot.data.EntityIds
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.PubkeyUtils
 import timber.log.Timber
+import java.util.UUID
 import javax.inject.Inject
 
 data class PubkeyEditorUiState(
@@ -70,7 +72,7 @@ class PubkeyEditorViewModel @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
 
-    private val pubkeyId: Long = savedStateHandle.get<Long>("pubkeyId") ?: -1L
+    private val pubkeyId: UUID = EntityIds.parse(savedStateHandle.get<String>("pubkeyId"))
 
     private val _uiState = MutableStateFlow(PubkeyEditorUiState())
     val uiState: StateFlow<PubkeyEditorUiState> = _uiState.asStateFlow()

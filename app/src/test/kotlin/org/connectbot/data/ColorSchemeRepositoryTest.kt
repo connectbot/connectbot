@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
+import org.connectbot.data.EntityIds
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.HostConstants
 import org.junit.After
@@ -35,6 +36,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.UUID
 
 /**
  * Tests for ColorSchemeRepository.
@@ -75,7 +77,7 @@ class ColorSchemeRepositoryTest {
         assertTrue("Should have at least 8 schemes", schemes.size >= 8)
 
         // Check Default scheme exists
-        val defaultScheme = schemes.find { it.id == -1L }
+        val defaultScheme = schemes.find { it.id == EntityIds.DEFAULT_SCHEME }
         assertNotNull("Should have Default scheme", defaultScheme)
         assertEquals("Default", defaultScheme?.name)
         assertTrue("Default should be built-in", defaultScheme?.isBuiltIn == true)
@@ -84,7 +86,7 @@ class ColorSchemeRepositoryTest {
         val solarizedDark = schemes.find { it.name == "Solarized Dark" }
         assertNotNull("Should have Solarized Dark", solarizedDark)
         assertTrue("Solarized Dark should be built-in", solarizedDark?.isBuiltIn == true)
-        assertTrue("Solarized Dark should have negative ID", (solarizedDark?.id ?: 0) < 0)
+        assertTrue("Solarized Dark should have negative ID", solarizedDark?.id?.let(EntityIds::isPreset) == true)
     }
 
     @Test
@@ -92,10 +94,10 @@ class ColorSchemeRepositoryTest {
         val schemeId = repository.createCustomScheme(
             name = "My Custom Scheme",
             description = "A test scheme",
-            basedOnSchemeId = -1,
+            basedOnSchemeId = EntityIds.preset(0),
         )
 
-        assertTrue("Scheme ID should be positive", schemeId > 0)
+        assertTrue("Scheme ID should be positive", !EntityIds.isPreset(schemeId))
 
         val schemes = repository.getAllSchemes()
         val customScheme = schemes.find { it.id == schemeId }
@@ -108,20 +110,20 @@ class ColorSchemeRepositoryTest {
 
     @Test
     fun createCustomScheme_MultipleSchemes_IncrementingIds() = runBlocking {
-        val id1 = repository.createCustomScheme("Scheme 1", "", -1)
-        val id2 = repository.createCustomScheme("Scheme 2", "", -1)
-        val id3 = repository.createCustomScheme("Scheme 3", "", -1)
+        val id1 = repository.createCustomScheme("Scheme 1", "", EntityIds.preset(0))
+        val id2 = repository.createCustomScheme("Scheme 2", "", EntityIds.preset(0))
+        val id3 = repository.createCustomScheme("Scheme 3", "", EntityIds.preset(0))
 
-        assertEquals("IDs should increment", 1, id1)
-        assertEquals("IDs should increment", 2, id2)
-        assertEquals("IDs should increment", 3, id3)
+        assertEquals(4, id1.version())
+        assertEquals(4, id2.version())
+        assertEquals(4, id3.version())
     }
 
     @Test
     fun duplicateScheme_FromDefault_Success() = runBlocking {
-        val newId = repository.duplicateScheme(-1, "Copy of Default")
+        val newId = repository.duplicateScheme(EntityIds.preset(0), "Copy of Default")
 
-        assertTrue("New ID should be positive", newId > 0)
+        assertTrue("New ID should be positive", !EntityIds.isPreset(newId))
 
         val schemes = repository.getAllSchemes()
         val duplicated = schemes.find { it.id == newId }
@@ -132,8 +134,8 @@ class ColorSchemeRepositoryTest {
 
     @Test
     fun duplicateScheme_FromPreset_CopiesColors() = runBlocking {
-        // Duplicate Solarized Dark (ID -2 since Default is -1)
-        val newId = repository.duplicateScheme(-2, "My Solarized")
+        // Duplicate Solarized Dark using its stable preset UUID
+        val newId = repository.duplicateScheme(EntityIds.preset(1), "My Solarized")
 
         val schemes = repository.getAllSchemes()
         val duplicated = schemes.find { it.id == newId }
@@ -149,7 +151,7 @@ class ColorSchemeRepositoryTest {
 
     @Test
     fun renameScheme_CustomScheme_Success() = runBlocking {
-        val schemeId = repository.createCustomScheme("Original Name", "Original desc", -1)
+        val schemeId = repository.createCustomScheme("Original Name", "Original desc", EntityIds.preset(0))
 
         val success = repository.renameScheme(schemeId, "New Name", "New description")
 
@@ -164,14 +166,14 @@ class ColorSchemeRepositoryTest {
 
     @Test
     fun renameScheme_BuiltInScheme_Fails() = runBlocking {
-        val success = repository.renameScheme(-2, "Cannot Rename", "")
+        val success = repository.renameScheme(EntityIds.preset(1), "Cannot Rename", "")
 
         assertFalse("Should not rename built-in scheme", success)
     }
 
     @Test
     fun deleteCustomScheme_Exists_Success() = runBlocking {
-        val schemeId = repository.createCustomScheme("To Delete", "", -1)
+        val schemeId = repository.createCustomScheme("To Delete", "", EntityIds.preset(0))
 
         repository.deleteCustomScheme(schemeId)
 
@@ -186,7 +188,7 @@ class ColorSchemeRepositoryTest {
         val schemesBefore = repository.getAllSchemes()
         val builtInCount = schemesBefore.count { it.isBuiltIn }
 
-        repository.deleteCustomScheme(-2) // Try to delete built-in (Solarized Dark)
+        repository.deleteCustomScheme(EntityIds.preset(1)) // Try to delete built-in (Solarized Dark)
 
         val schemesAfter = repository.getAllSchemes()
         val builtInCountAfter = schemesAfter.count { it.isBuiltIn }
@@ -217,7 +219,7 @@ class ColorSchemeRepositoryTest {
 
     @Test
     fun schemeNameExists_CustomScheme_ReturnsTrue() = runBlocking {
-        repository.createCustomScheme("Custom Scheme", "", -1)
+        repository.createCustomScheme("Custom Scheme", "", EntityIds.preset(0))
 
         val exists = repository.schemeNameExists("Custom Scheme")
 
@@ -226,7 +228,7 @@ class ColorSchemeRepositoryTest {
 
     @Test
     fun schemeNameExists_CaseInsensitive_ReturnsTrue() = runBlocking {
-        repository.createCustomScheme("Test Scheme", "", -1)
+        repository.createCustomScheme("Test Scheme", "", EntityIds.preset(0))
 
         val exists = repository.schemeNameExists("test scheme")
 
@@ -235,7 +237,7 @@ class ColorSchemeRepositoryTest {
 
     @Test
     fun schemeNameExists_WithExclusion_IgnoresExcluded() = runBlocking {
-        val schemeId = repository.createCustomScheme("Test Scheme", "", -1)
+        val schemeId = repository.createCustomScheme("Test Scheme", "", EntityIds.preset(0))
 
         val exists = repository.schemeNameExists("Test Scheme", excludeSchemeId = schemeId)
 
@@ -244,21 +246,21 @@ class ColorSchemeRepositoryTest {
 
     @Test
     fun getSchemeColors_Default_Returns16Colors() = runBlocking {
-        val palette = repository.getSchemeColors(-1)
+        val palette = repository.getSchemeColors(EntityIds.preset(0))
 
         assertEquals("Should have 16 colors", 16, palette.size)
     }
 
     @Test
     fun getSchemeColors_Preset_Returns16Colors() = runBlocking {
-        val palette = repository.getSchemeColors(-2) // Solarized Dark (ID -2)
+        val palette = repository.getSchemeColors(EntityIds.preset(1)) // Solarized Dark preset
 
         assertEquals("Should have 16 colors", 16, palette.size)
     }
 
     @Test
     fun getSchemeDefaults_Default_ReturnsCorrectValues() = runBlocking {
-        val (fg, bg) = repository.getSchemeDefaults(-1)
+        val (fg, bg) = repository.getSchemeDefaults(EntityIds.preset(0))
 
         assertEquals("Default FG should be 7", HostConstants.DEFAULT_FG_COLOR, fg)
         assertEquals("Default BG should be 0", HostConstants.DEFAULT_BG_COLOR, bg)
@@ -266,7 +268,7 @@ class ColorSchemeRepositoryTest {
 
     @Test
     fun getSchemeDefaults_SolarizedDark_ReturnsCorrectValues() = runBlocking {
-        val (fg, bg) = repository.getSchemeDefaults(-2) // Solarized Dark (ID -2)
+        val (fg, bg) = repository.getSchemeDefaults(EntityIds.preset(1)) // Solarized Dark preset
 
         assertEquals("Solarized Dark FG should be 12", 12, fg)
         assertEquals("Solarized Dark BG should be 8", 8, bg)
@@ -275,7 +277,7 @@ class ColorSchemeRepositoryTest {
     @Test
     fun resetSchemeToDefaults_Success() = runBlocking {
         // Create a custom scheme based on Solarized Dark
-        val customId = repository.createCustomScheme("Test Scheme", "", basedOnSchemeId = -2)
+        val customId = repository.createCustomScheme("Test Scheme", "", basedOnSchemeId = EntityIds.preset(1))
 
         // Verify it has Solarized colors
         var (fg, bg) = repository.getSchemeDefaults(customId)

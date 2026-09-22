@@ -25,6 +25,7 @@ import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.connectbot.data.EntityIds
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
@@ -39,9 +40,12 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentCaptor
+import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class PortForwardEditorViewModelTest {
@@ -70,16 +74,16 @@ class PortForwardEditorViewModelTest {
     @Test
     fun newForwardSavesUntouchedDefaults() = runTest {
         val forward = PortForward(
-            hostId = 5L,
+            hostId = UUID(0, 5),
             nickname = "",
             type = HostConstants.PORTFORWARD_LOCAL,
             sourcePort = 8080,
             destAddr = "localhost",
             destPort = 80,
         )
-        `when`(repository.savePortForward(forward)).thenReturn(forward.copy(id = 7L))
+        `when`(repository.savePortForward(any(PortForward::class.java) ?: forward)).thenAnswer { it.getArgument<PortForward>(0) }
         val viewModel = PortForwardEditorViewModel(
-            SavedStateHandle(mapOf("hostId" to 5L, "forwardId" to 0L)),
+            SavedStateHandle(mapOf("hostId" to UUID(0, 5).toString(), "forwardId" to EntityIds.NONE.toString())),
             repository,
             dispatchers,
         )
@@ -90,24 +94,26 @@ class PortForwardEditorViewModelTest {
         var navigated = false
         viewModel.save { navigated = true }
 
-        verify(repository).savePortForward(forward)
+        val captured = ArgumentCaptor.forClass(PortForward::class.java)
+        verify(repository).savePortForward(captured.capture() ?: forward)
+        assertEquals(forward.copy(id = captured.value.id), captured.value)
         assertTrue(navigated)
     }
 
     @Test
     fun existingForwardStartsCleanAndRejectsInvalidPort() = runTest {
         val forward = PortForward(
-            id = 9L,
-            hostId = 5L,
+            id = UUID(0, 9),
+            hostId = UUID(0, 5),
             nickname = "web",
             type = HostConstants.PORTFORWARD_LOCAL,
             sourcePort = 8080,
             destAddr = "localhost",
             destPort = 80,
         )
-        `when`(repository.getPortForwardById(9L)).thenReturn(forward)
+        `when`(repository.getPortForwardById(UUID(0, 9))).thenReturn(forward)
         val viewModel = PortForwardEditorViewModel(
-            SavedStateHandle(mapOf("hostId" to 5L, "forwardId" to 9L)),
+            SavedStateHandle(mapOf("hostId" to UUID(0, 5).toString(), "forwardId" to UUID(0, 9).toString())),
             repository,
             dispatchers,
         )
@@ -123,8 +129,8 @@ class PortForwardEditorViewModelTest {
     @Test
     fun updatingLiveForwardPreservesEnabledState() = runTest {
         val original = PortForward(
-            id = 9L,
-            hostId = 5L,
+            id = UUID(0, 9),
+            hostId = UUID(0, 5),
             nickname = "web",
             type = HostConstants.PORTFORWARD_LOCAL,
             sourcePort = 8080,
@@ -132,12 +138,12 @@ class PortForwardEditorViewModelTest {
             destPort = 80,
         )
         val updated = original.copy(nickname = "web2")
-        `when`(repository.getPortForwardById(9L)).thenReturn(original)
+        `when`(repository.getPortForwardById(UUID(0, 9))).thenReturn(original)
         `when`(repository.savePortForward(updated)).thenReturn(updated)
 
         val bridgeForward = original.copy()
         bridgeForward.setEnabled(true)
-        val host = Host(id = 5L, nickname = "host", protocol = "ssh", username = "user", hostname = "example.com", port = 22)
+        val host = Host(id = UUID(0, 5), nickname = "host", protocol = "ssh", username = "user", hostname = "example.com", port = 22)
         val transport = mock(AbsTransport::class.java)
         `when`(transport.isConnected()).thenReturn(true)
         val bridge = mock(TerminalBridge::class.java)
@@ -148,7 +154,7 @@ class PortForwardEditorViewModelTest {
         `when`(manager.bridgesFlow).thenReturn(MutableStateFlow(listOf(bridge)))
 
         val viewModel = PortForwardEditorViewModel(
-            SavedStateHandle(mapOf("hostId" to 5L, "forwardId" to 9L)),
+            SavedStateHandle(mapOf("hostId" to UUID(0, 5).toString(), "forwardId" to UUID(0, 9).toString())),
             repository,
             dispatchers,
         )
@@ -164,16 +170,16 @@ class PortForwardEditorViewModelTest {
     @Test
     fun failedSaveKeepsDraftAndDoesNotNavigate() = runTest {
         val forward = PortForward(
-            hostId = 5L,
+            hostId = UUID(0, 5),
             nickname = "",
             type = HostConstants.PORTFORWARD_LOCAL,
             sourcePort = 8080,
             destAddr = "localhost",
             destPort = 80,
         )
-        `when`(repository.savePortForward(forward)).thenThrow(IllegalStateException("disk failed"))
+        `when`(repository.savePortForward(any(PortForward::class.java) ?: forward)).thenThrow(IllegalStateException("disk failed"))
         val viewModel = PortForwardEditorViewModel(
-            SavedStateHandle(mapOf("hostId" to 5L, "forwardId" to 0L)),
+            SavedStateHandle(mapOf("hostId" to UUID(0, 5).toString(), "forwardId" to EntityIds.NONE.toString())),
             repository,
             dispatchers,
         )
@@ -189,7 +195,7 @@ class PortForwardEditorViewModelTest {
     @Test
     fun remoteForwardSavesSpecificSourceAddress() = runTest {
         val saved = PortForward(
-            hostId = 5L,
+            hostId = UUID(0, 5),
             nickname = "admin",
             type = HostConstants.PORTFORWARD_REMOTE,
             sourceAddr = "192.168.1.10",
@@ -197,9 +203,9 @@ class PortForwardEditorViewModelTest {
             destAddr = "server.example",
             destPort = 22,
         )
-        `when`(repository.savePortForward(saved)).thenReturn(saved.copy(id = 12L))
+        `when`(repository.savePortForward(any(PortForward::class.java) ?: saved)).thenAnswer { it.getArgument<PortForward>(0) }
         val viewModel = PortForwardEditorViewModel(
-            SavedStateHandle(mapOf("hostId" to 5L, "forwardId" to 0L)),
+            SavedStateHandle(mapOf("hostId" to UUID(0, 5).toString(), "forwardId" to EntityIds.NONE.toString())),
             repository,
             dispatchers,
         )
@@ -212,6 +218,8 @@ class PortForwardEditorViewModelTest {
 
         assertTrue(viewModel.uiState.value.canSave)
         viewModel.save {}
-        verify(repository).savePortForward(saved)
+        val captured = ArgumentCaptor.forClass(PortForward::class.java)
+        verify(repository).savePortForward(captured.capture() ?: saved)
+        assertEquals(saved.copy(id = captured.value.id), captured.value)
     }
 }

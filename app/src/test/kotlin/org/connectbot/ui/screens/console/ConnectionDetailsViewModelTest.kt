@@ -44,6 +44,7 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class ConnectionDetailsViewModelTest {
@@ -67,9 +68,9 @@ class ConnectionDetailsViewModelTest {
         Dispatchers.resetMain()
     }
 
-    private fun bridge(id: Long): TerminalBridge {
+    private fun bridge(id: UUID): TerminalBridge {
         val bridge = mock(TerminalBridge::class.java)
-        `when`(bridge.host).thenReturn(Host(id = id, hostname = "server$id"))
+        `when`(bridge.host).thenReturn(Host(id = id, hostname = "server${id.leastSignificantBits}"))
         `when`(bridge.progressState).thenReturn(MutableStateFlow(null))
         `when`(bridge.networkStatusMessages).thenReturn(MutableSharedFlow())
         return bridge
@@ -83,8 +84,8 @@ class ConnectionDetailsViewModelTest {
 
     @Test
     fun switchingSessions_returnsCurrentHostAndTransport() = runTest {
-        val first = bridge(1)
-        val second = bridge(2)
+        val first = bridge(UUID(0, 1))
+        val second = bridge(UUID(0, 2))
         val transport = mock(AbsTransport::class.java)
         `when`(second.transport).thenReturn(transport)
         `when`(transport.getLocalIpAddress()).thenReturn("192.0.2.2")
@@ -98,7 +99,7 @@ class ConnectionDetailsViewModelTest {
 
     @Test
     fun connectionStateChanges_areReflectedInSnapshot() = runTest {
-        val bridge = bridge(1)
+        val bridge = bridge(UUID(0, 1))
         bridges.value = listOf(bridge)
         advanceUntilIdle()
         assertEquals(ConnectionStatus.CONNECTED, viewModel.connectionDetails()!!.status)
@@ -110,10 +111,10 @@ class ConnectionDetailsViewModelTest {
 
     @Test
     fun forwardingSnapshot_usesActualPortAndLiveStatusWithoutChangingConfiguration() = runTest {
-        val bridge = bridge(1)
+        val bridge = bridge(UUID(0, 1))
         val transport = mock(AbsTransport::class.java)
         val forwarder = mock(PortForwarder::class.java)
-        val forward = PortForward(hostId = 1, nickname = "Database", type = HostConstants.PORTFORWARD_REMOTE, sourcePort = 0, destAddr = "localhost", destPort = 5432)
+        val forward = PortForward(hostId = UUID(0, 1), nickname = "Database", type = HostConstants.PORTFORWARD_REMOTE, sourcePort = 0, destAddr = "localhost", destPort = 5432)
         forward.setIdentifier(forwarder)
         // The library's status takes precedence over the app's cached flag.
         forward.setEnabled(false)

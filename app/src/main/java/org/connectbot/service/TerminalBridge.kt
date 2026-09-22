@@ -47,6 +47,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import org.connectbot.R
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Profile
@@ -69,6 +70,7 @@ import org.connectbot.util.TerminalKeyModifiers
 import timber.log.Timber
 import java.io.IOException
 import java.nio.charset.Charset
+import java.util.UUID
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicLong
 
@@ -196,7 +198,7 @@ class TerminalBridge {
                     awaitAutomationWrite()
                 }
             }
-            override suspend fun setForward(id: Long, enabled: Boolean) {
+            override suspend fun setForward(id: UUID, enabled: Boolean) {
                 val t = transport ?: throw AutomationFailure(R.string.automation_action_failed)
                 if (!t.canForwardPorts()) throw AutomationFailure(R.string.automation_forward_unsupported)
                 val forward = t.getPortForwards()?.find { it.id == id && it.hostId == host.id }
@@ -243,11 +245,11 @@ class TerminalBridge {
     var defaultBg = HostConstants.DEFAULT_BG_COLOR
 
     // Store color scheme info for reapplication
-    private var currentColorSchemeId: Long = -1L
+    private var currentColorSchemeId: UUID = EntityIds.DEFAULT_SCHEME
     private var fullColorPalette: IntArray = IntArray(0)
 
     // Profile observation
-    private var currentProfileId: Long? = null
+    private var currentProfileId: UUID? = null
     private var inlineImagesSetting = "ask"
     private val sessionInlineImages = SessionInlineImages {
         scope.async(dispatchers.main) {
@@ -579,8 +581,8 @@ class TerminalBridge {
      */
     private fun startProfileObservation() {
         profileObservationJob = scope.launch {
-            // For temporary hosts (negative IDs), only observe the current profile
-            if (host.id <= 0) {
+            // For temporary hosts, only observe the current profile
+            if (host.isTemporary) {
                 currentProfileId?.let { profileId ->
                     manager.profileRepository.observeById(profileId)
                         .filterNotNull()
@@ -605,7 +607,7 @@ class TerminalBridge {
                     }
 
                     // Observe the current profile for attribute changes
-                    val profileToObserve = newProfileId ?: 1L // Default to profile 1 if null
+                    val profileToObserve = newProfileId ?: EntityIds.DEFAULT_PROFILE // Default to profile 1 if null
                     manager.profileRepository.observeById(profileToObserve)
                         .filterNotNull()
                         .collectLatest { profile ->
@@ -619,7 +621,7 @@ class TerminalBridge {
     /**
      * Apply changes when the host's profile_id changes.
      */
-    private suspend fun applyProfileChanges(newProfileId: Long?) {
+    private suspend fun applyProfileChanges(newProfileId: UUID?) {
         val profile = if (newProfileId != null) {
             manager.profileRepository.getById(newProfileId)
         } else {

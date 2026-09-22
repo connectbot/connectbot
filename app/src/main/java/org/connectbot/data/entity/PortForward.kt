@@ -22,6 +22,8 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import org.connectbot.data.EntityIds
+import java.util.UUID
 
 /**
  * SSH port forwarding rule entity.
@@ -40,11 +42,14 @@ import androidx.room.PrimaryKey
     indices = [Index("host_id")],
 )
 data class PortForward(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    @PrimaryKey
+    val id: UUID = UUID.randomUUID(),
+
+    @ColumnInfo(name = "repository_id", defaultValue = "'" + EntityIds.LOCAL_TEXT + "'")
+    val repositoryId: UUID = EntityIds.LOCAL,
 
     @ColumnInfo(name = "host_id")
-    val hostId: Long,
+    val hostId: UUID,
 
     val nickname: String,
 

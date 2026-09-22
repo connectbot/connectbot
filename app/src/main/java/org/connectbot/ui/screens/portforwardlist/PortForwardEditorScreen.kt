@@ -52,9 +52,11 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
+import org.connectbot.data.EntityIds
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.components.EditorScaffold
 import org.connectbot.util.HostConstants
+import java.util.UUID
 
 @Composable
 fun PortForwardEditorScreen(
@@ -113,8 +115,8 @@ fun PortForwardEditorScreenContent(
     EditorScaffold(
         modifier = modifier,
         snackbarHostState = snackbarHostState,
-        title = stringResource(if (uiState.forwardId == 0L) R.string.portforward_pos else R.string.portforward_edit),
-        saveContentDescription = stringResource(if (uiState.forwardId == 0L) R.string.portforward_pos else R.string.portforward_save),
+        title = stringResource(if (uiState.forwardId == EntityIds.NONE) R.string.portforward_pos else R.string.portforward_edit),
+        saveContentDescription = stringResource(if (uiState.forwardId == EntityIds.NONE) R.string.portforward_pos else R.string.portforward_save),
         saveVisible = !uiState.isLoading && uiState.hasUnsavedChanges && uiState.canSave,
         confirmDiscard = uiState.hasEdited,
         isSaving = uiState.isSaving,

@@ -25,6 +25,7 @@ import android.util.Base64
 import dagger.hilt.android.qualifiers.ApplicationContext
 import timber.log.Timber
 import java.security.KeyStore
+import java.util.UUID
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
 import javax.crypto.SecretKey
@@ -119,7 +120,7 @@ class SecurePasswordStorage @Inject constructor(
      * @param hostId The unique host ID
      * @param password The password to save (null or empty to clear)
      */
-    fun savePassword(hostId: Long, password: String?) {
+    fun savePassword(hostId: UUID, password: String?) {
         val key = getPasswordKey(hostId)
         if (password.isNullOrEmpty()) {
             prefs.edit().remove(key).apply()
@@ -137,7 +138,7 @@ class SecurePasswordStorage @Inject constructor(
      * @param hostId The unique host ID
      * @return The saved password, or null if none saved
      */
-    fun getPassword(hostId: Long): String? {
+    fun getPassword(hostId: UUID): String? {
         val encrypted = prefs.getString(getPasswordKey(hostId), null) ?: return null
         return decrypt(encrypted)
     }
@@ -148,7 +149,7 @@ class SecurePasswordStorage @Inject constructor(
      * @param hostId The unique host ID
      * @return true if a password is saved
      */
-    fun hasPassword(hostId: Long): Boolean = prefs.contains(getPasswordKey(hostId))
+    fun hasPassword(hostId: UUID): Boolean = prefs.contains(getPasswordKey(hostId))
 
     /**
      * Delete the saved password for a host.
@@ -156,11 +157,11 @@ class SecurePasswordStorage @Inject constructor(
      *
      * @param hostId The unique host ID
      */
-    fun deletePassword(hostId: Long) {
+    fun deletePassword(hostId: UUID) {
         prefs.edit().remove(getPasswordKey(hostId)).apply()
     }
 
-    private fun getPasswordKey(hostId: Long): String = "$KEY_PREFIX$hostId"
+    private fun getPasswordKey(hostId: UUID): String = "$KEY_PREFIX$hostId"
 
     companion object {
         private const val PREFS_FILE_NAME = "secure_host_passwords"

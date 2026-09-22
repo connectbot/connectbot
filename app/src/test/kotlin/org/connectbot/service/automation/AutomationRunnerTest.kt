@@ -32,6 +32,7 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
 class AutomationRunnerTest {
@@ -48,7 +49,7 @@ class AutomationRunnerTest {
         override suspend fun sendKey(key: Int, modifiers: Int) {
             events.add("key:$key:$modifiers")
         }
-        override suspend fun setForward(id: Long, enabled: Boolean) {
+        override suspend fun setForward(id: UUID, enabled: Boolean) {
             events.add("forward:$id:$enabled")
         }
         override fun disconnect() {
@@ -56,7 +57,7 @@ class AutomationRunnerTest {
         }
     }
 
-    private fun action(type: AutomationActionType, text: String = "", duration: Long = 1000) = AutomationAction(hostId = 1, type = type, text = text, durationMs = duration)
+    private fun action(type: AutomationActionType, text: String = "", duration: Long = 1000) = AutomationAction(hostId = UUID(0, 1), type = type, text = text, durationMs = duration)
 
     @Test
     fun capturesImmediateReplyAndPreservesVerbatimSends() = runTest {
@@ -68,13 +69,13 @@ class AutomationRunnerTest {
                 action(AutomationActionType.SEND_TEXT, "a\r\n\t"),
                 action(AutomationActionType.WAIT_FOR_TEXT, "Ready: "),
                 action(AutomationActionType.SEND_KEY).copy(key = -'C'.code, modifiers = TerminalKeyModifiers.CTRL),
-                action(AutomationActionType.ENABLE_FORWARD).copy(forwardId = 9),
-                action(AutomationActionType.DISABLE_FORWARD).copy(forwardId = 9),
+                action(AutomationActionType.ENABLE_FORWARD).copy(forwardId = UUID(0, 9)),
+                action(AutomationActionType.DISABLE_FORWARD).copy(forwardId = UUID(0, 9)),
                 action(AutomationActionType.DISCONNECT),
                 action(AutomationActionType.SEND_TEXT, "never"),
             ),
         )
-        assertEquals(listOf("a\r\n\t", "key:${-'C'.code}:${TerminalKeyModifiers.CTRL}", "forward:9:true", "forward:9:false", "disconnect"), session.events)
+        assertEquals(listOf("a\r\n\t", "key:${-'C'.code}:${TerminalKeyModifiers.CTRL}", "forward:${UUID(0, 9)}:true", "forward:${UUID(0, 9)}:false", "disconnect"), session.events)
         assertTrue(runner.state.value.completed)
     }
 

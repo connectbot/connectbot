@@ -42,6 +42,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.UUID
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -353,7 +354,7 @@ class PubkeyListScreenTest {
         encrypted: Boolean = true,
         isBiometric: Boolean = false,
     ): Pubkey = Pubkey(
-        id = nickname.hashCode().toLong(),
+        id = UUID.nameUUIDFromBytes(nickname.toByteArray()),
         nickname = nickname,
         type = type,
         encrypted = encrypted,

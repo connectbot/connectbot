@@ -18,6 +18,7 @@
 package org.connectbot.di
 
 import android.content.Context
+import androidx.preference.PreferenceManager
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.sqlite.db.SupportSQLiteDatabase
@@ -27,6 +28,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.EntityIds
+import org.connectbot.data.sync.SyncDatabase
 import javax.inject.Singleton
 
 @Module
@@ -41,20 +44,48 @@ object DatabaseModule {
         ConnectBotDatabase::class.java,
         DATABASE_NAME,
     )
-        .addMigrations(ConnectBotDatabase.MIGRATION_4_5, ConnectBotDatabase.MIGRATION_10_11)
+        .addMigrations(ConnectBotDatabase.MIGRATION_4_5, ConnectBotDatabase.MIGRATION_10_11, ConnectBotDatabase.MIGRATION_14_15)
         .addCallback(object : RoomDatabase.Callback() {
+            override fun onOpen(db: SupportSQLiteDatabase) {
+                SyncDatabase.install(db)
+                migrateExternalIds(context, db)
+            }
+
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 // Create default profile on fresh database creation
                 db.execSQL(
                     """
-                        INSERT INTO profiles (name, color_scheme_id, font_size, del_key, encoding, emulation)
-                        VALUES ('Default', -1, 10, 'del', 'UTF-8', 'xterm-256color')
+                        INSERT INTO profiles (id, name, color_scheme_id, font_size, del_key, encoding, emulation)
+                        VALUES ('${EntityIds.DEFAULT_PROFILE}', 'Default', '${EntityIds.DEFAULT_SCHEME}', 10, 'del', 'UTF-8', 'xterm-256color')
                     """.trimIndent(),
                 )
             }
         })
         .build()
+
+    private fun migrateExternalIds(context: Context, db: SupportSQLiteDatabase) {
+        db.query("SELECT name FROM sqlite_master WHERE type='table' AND name='legacy_id_map'").use {
+            if (!it.moveToFirst()) return
+        }
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val oldProfile = prefs.all["defaultProfileId"] as? Long
+        if (oldProfile != null) {
+            val mapped = db.query("SELECT uuid FROM legacy_id_map WHERE entity='profiles' AND old_id=?", arrayOf(oldProfile)).use { if (it.moveToFirst()) it.getString(0) else EntityIds.DEFAULT_PROFILE.toString() }
+            check(prefs.edit().putString("defaultProfileId", mapped).commit())
+        }
+        val passwords = context.getSharedPreferences("secure_host_passwords", Context.MODE_PRIVATE)
+        db.query("SELECT old_id,uuid FROM legacy_id_map WHERE entity='hosts'").use { cursor ->
+            while (cursor.moveToNext()) {
+                val oldKey = "password_${cursor.getLong(0)}"
+                val value = passwords.getString(oldKey, null) ?: continue
+                val newKey = "password_${cursor.getString(1)}"
+                val editor = passwords.edit()
+                if (!passwords.contains(newKey)) editor.putString(newKey, value)
+                check(editor.remove(oldKey).commit())
+            }
+        }
+    }
 
     @Provides
     fun provideHostDao(database: ConnectBotDatabase) = database.hostDao()

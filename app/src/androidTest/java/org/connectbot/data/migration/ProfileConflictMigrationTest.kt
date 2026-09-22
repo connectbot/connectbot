@@ -25,6 +25,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.EntityIds
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -37,12 +38,14 @@ import javax.inject.Inject
  * Integration test to reproduce issue #1806:
  * "Migration failed: UNIQUE constraint failed: profiles.id"
  *
- * This test reproduces the scenario where:
+ * The historical integer-ID failure occurred when:
  * 1. User has the stable version with legacy databases (hosts, pubkeys)
  * 2. User upgrades to beta version which has Room database with profiles table
  * 3. Room database is created with default profile (ID=1) via onCreate callback
  * 4. Legacy migration runs and tries to insert another profile with ID=1
  * 5. Crash: UNIQUE constraint failed
+ *
+ * Current fixtures use the stable default-profile UUID to verify the same conflict is avoided.
  *
  * @see <a href="https://github.com/connectbot/connectbot/issues/1806">Issue #1806</a>
  */
@@ -90,11 +93,11 @@ class ProfileConflictMigrationTest {
      *
      * This test verifies that the fix correctly prevents the migration from running
      * when Room already has data (including profiles), which avoids the UNIQUE constraint
-     * violation that would occur if migration tried to insert profile ID=1 again.
+     * violation from inserting the same default-profile UUID again.
      *
      * The scenario:
      * - User upgrades from stable (legacy DBs) to beta (Room with profiles)
-     * - Room database is initialized with default profile ID=1
+     * - Room database is initialized with the stable default-profile UUID
      * - Migration should be skipped because Room already has data (profiles)
      * - This prevents the UNIQUE constraint violation
      */
@@ -109,7 +112,7 @@ class ProfileConflictMigrationTest {
                 val existingProfiles = database.profileDao().getAll()
                 Timber.d("Existing profiles in Room database: ${existingProfiles.size}")
                 assertThat(existingProfiles).isNotEmpty()
-                assertThat(existingProfiles.any { it.id == 1L }).isTrue()
+                assertThat(existingProfiles.any { it.id == EntityIds.DEFAULT_PROFILE }).isTrue()
 
                 // Verify hosts and pubkeys are empty
                 val existingHosts = database.hostDao().getAll()

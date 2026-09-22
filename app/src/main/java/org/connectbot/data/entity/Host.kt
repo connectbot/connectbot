@@ -22,6 +22,9 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import org.connectbot.data.EntityIds
+import org.connectbot.util.HostConstants
+import java.util.UUID
 
 /**
  * SSH/Telnet/Local connection configuration entity.
@@ -29,13 +32,19 @@ import androidx.room.PrimaryKey
 @Entity(
     tableName = "hosts",
     indices = [
-        Index(value = ["nickname"], unique = true),
+        Index(value = ["repository_id", "nickname"], unique = true),
         Index(value = ["protocol", "username", "hostname", "port"]),
     ],
 )
 data class Host(
-    @PrimaryKey(autoGenerate = true)
-    val id: Long = 0,
+    @PrimaryKey
+    val id: UUID = UUID.randomUUID(),
+
+    @ColumnInfo(name = "repository_id", defaultValue = "'" + EntityIds.LOCAL_TEXT + "'")
+    val repositoryId: UUID = EntityIds.LOCAL,
+
+    @ColumnInfo(name = "temporary", defaultValue = "0")
+    val isTemporary: Boolean = false,
 
     val nickname: String = "",
 
@@ -65,7 +74,7 @@ data class Host(
     val postLogin: String? = null,
 
     @ColumnInfo(name = "pubkey_id")
-    val pubkeyId: Long = -1L,
+    val pubkeyId: UUID = HostConstants.PUBKEYID_ANY,
 
     @ColumnInfo(name = "want_session")
     val wantSession: Boolean = true,
@@ -90,14 +99,14 @@ data class Host(
      * A value of null means no jump host (direct connection).
      */
     @ColumnInfo(name = "jump_host_id")
-    val jumpHostId: Long? = null,
+    val jumpHostId: UUID? = null,
 
     /**
      * Profile ID for terminal-specific settings (font, colors, encoding, etc.).
-     * Defaults to 1 (the Default profile).
+     * Defaults to the stable UUID of the Local default profile.
      */
     @ColumnInfo(name = "profile_id")
-    val profileId: Long? = 1L,
+    val profileId: UUID? = EntityIds.DEFAULT_PROFILE,
 
     /**
      * IP version preference for connections.
@@ -144,13 +153,6 @@ data class Host(
     val telnetNewlinePolicy: TelnetNewlinePolicy = TelnetNewlinePolicy.LF_TO_CRLF,
 ) {
     /**
-     * Check if this host is temporary (not saved to database).
-     * Temporary hosts have negative IDs.
-     */
-    val isTemporary: Boolean
-        get() = id < 0L
-
-    /**
      * Get the URI representation of this host (Java interop helper).
      */
     fun getUri(): Uri {
@@ -181,6 +183,7 @@ data class Host(
             }
         }
 
+        if (!isTemporary) builder.appendQueryParameter("hostId", id.toString())
         return builder.build()
     }
 
@@ -190,7 +193,7 @@ data class Host(
          */
         @JvmStatic
         fun createSshHost(nickname: String, hostname: String, port: Int, username: String): Host = Host(
-            id = 0L,
+            id = UUID.randomUUID(),
             nickname = nickname,
             protocol = "ssh",
             username = username,
@@ -203,7 +206,7 @@ data class Host(
          */
         @JvmStatic
         fun createTelnetHost(nickname: String, hostname: String, port: Int): Host = Host(
-            id = 0L,
+            id = UUID.randomUUID(),
             nickname = nickname,
             protocol = "telnet",
             username = "",
@@ -216,7 +219,7 @@ data class Host(
          */
         @JvmStatic
         fun createLocalHost(nickname: String): Host = Host(
-            id = 0L,
+            id = UUID.randomUUID(),
             nickname = nickname,
             protocol = "local",
             username = "",
@@ -237,7 +240,7 @@ data class Host(
             moshServer: String? = null,
             locale: String = "en_US.UTF-8",
         ): Host = Host(
-            id = 0L,
+            id = UUID.randomUUID(),
             nickname = nickname,
             protocol = "mosh",
             username = username,

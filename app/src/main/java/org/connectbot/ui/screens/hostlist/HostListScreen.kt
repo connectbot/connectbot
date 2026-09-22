@@ -92,6 +92,7 @@ import kotlinx.coroutines.withContext
 import org.connectbot.R
 import org.connectbot.data.JsonImportReader
 import org.connectbot.data.JsonImportTooLargeException
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.service.DisconnectReason
@@ -104,10 +105,11 @@ import org.connectbot.ui.components.TextInputAlertDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.IconStyle
 import java.io.IOException
+import java.util.UUID
 
 internal object HostListTestTags {
-    fun itemRow(hostId: Long): String = "host_item_${hostId}_row"
-    fun itemMenuButton(hostId: Long): String = "host_item_${hostId}_menu_button"
+    fun itemRow(hostId: UUID): String = "host_item_${hostId}_row"
+    fun itemMenuButton(hostId: UUID): String = "host_item_${hostId}_menu_button"
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -930,7 +932,7 @@ private fun HostListScreenPopulatedPreview() {
             uiState = HostListUiState(
                 hosts = listOf(
                     Host(
-                        id = 1,
+                        id = UUID(0, 1),
                         nickname = "Production Server",
                         protocol = "ssh",
                         username = "root",
@@ -939,7 +941,7 @@ private fun HostListScreenPopulatedPreview() {
                         color = "#4CAF50",
                     ),
                     Host(
-                        id = 2,
+                        id = UUID(0, 2),
                         nickname = "Development",
                         protocol = "ssh",
                         username = "developer",
@@ -948,7 +950,7 @@ private fun HostListScreenPopulatedPreview() {
                         color = "#2196F3",
                     ),
                     Host(
-                        id = 3,
+                        id = UUID(0, 3),
                         nickname = "Local VM",
                         protocol = "ssh",
                         username = "admin",
@@ -958,9 +960,9 @@ private fun HostListScreenPopulatedPreview() {
                     ),
                 ),
                 connectionStates = mapOf(
-                    1L to ConnectionState.CONNECTED,
-                    2L to ConnectionState.DISCONNECTED,
-                    3L to ConnectionState.UNKNOWN,
+                    UUID(0, 1) to ConnectionState.CONNECTED,
+                    UUID(0, 2) to ConnectionState.DISCONNECTED,
+                    UUID(0, 3) to ConnectionState.UNKNOWN,
                 ),
                 isLoading = false,
             ),

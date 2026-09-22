@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,11 +25,14 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
+import org.connectbot.util.HostConstants
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.UUID
 
 @RunWith(AndroidJUnit4::class)
 class HostDaoTest {
@@ -56,7 +59,7 @@ class HostDaoTest {
         val host = createTestHost(nickname = "test-server")
 
         val id = hostDao.insert(host)
-        assertThat(id).isGreaterThan(0)
+        assertThat(id).isNotEqualTo(EntityIds.NONE)
 
         val retrieved = hostDao.getById(id)
         assertThat(retrieved).isNotNull()
@@ -227,20 +230,20 @@ class HostDaoTest {
 
     @Test
     fun pubkeyIdReference() = runTest {
-        val host = createTestHost(nickname = "with-key", pubkeyId = 42)
+        val host = createTestHost(nickname = "with-key", pubkeyId = UUID(0, 42))
         val id = hostDao.insert(host)
 
         val retrieved = hostDao.getById(id)
-        assertThat(retrieved?.pubkeyId).isEqualTo(42)
+        assertThat(retrieved?.pubkeyId).isEqualTo(UUID(0, 42))
     }
 
     @Test
     fun profileIdStored() = runTest {
-        val host = createTestHost(nickname = "profiled", profileId = 5)
+        val host = createTestHost(nickname = "profiled", profileId = UUID(0, 5))
         val id = hostDao.insert(host)
 
         val retrieved = hostDao.getById(id)
-        assertThat(retrieved?.profileId).isEqualTo(5)
+        assertThat(retrieved?.profileId).isEqualTo(UUID(0, 5))
     }
 
     @Test
@@ -291,13 +294,13 @@ class HostDaoTest {
         useAuthAgent: String? = null,
         stayConnected: Boolean = false,
         postLogin: String? = null,
-        pubkeyId: Long = 0,
+        pubkeyId: UUID = UUID(0, 0),
         wantSession: Boolean = true,
         compression: Boolean = false,
         scrollbackLines: Int = 140,
         useCtrlAltAsMetaKey: Boolean = false,
-        jumpHostId: Long? = null,
-        profileId: Long? = 1L,
+        jumpHostId: UUID? = null,
+        profileId: UUID? = UUID(0, 1),
     ): Host = Host(
         nickname = nickname,
         protocol = protocol,

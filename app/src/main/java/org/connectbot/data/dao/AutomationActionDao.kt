@@ -28,19 +28,19 @@ import java.util.UUID
 @Dao
 interface AutomationActionDao {
     @Query("SELECT * FROM automation_actions WHERE host_id = :hostId ORDER BY position, id")
-    fun observeByHost(hostId: Long): Flow<List<AutomationAction>>
+    fun observeByHost(hostId: UUID): Flow<List<AutomationAction>>
 
     @Query("SELECT * FROM automation_actions WHERE host_id = :hostId ORDER BY position, id")
-    suspend fun getByHost(hostId: Long): List<AutomationAction>
+    suspend fun getByHost(hostId: UUID): List<AutomationAction>
 
     @Insert
     suspend fun insert(actions: List<AutomationAction>)
 
     @Query("DELETE FROM automation_actions WHERE host_id = :hostId")
-    suspend fun deleteByHost(hostId: Long)
+    suspend fun deleteByHost(hostId: UUID)
 
     @Transaction
-    suspend fun replace(hostId: Long, actions: List<AutomationAction>) {
+    suspend fun replace(hostId: UUID, actions: List<AutomationAction>) {
         require(actions.all { it.hostId == hostId && UUID.fromString(it.id).toString() == it.id })
         require(actions.map { it.id }.distinct().size == actions.size)
         deleteByHost(hostId)

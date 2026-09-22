@@ -33,6 +33,7 @@ import org.mockito.Mockito.mockStatic
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.Shadows.shadowOf
+import java.util.UUID
 
 @RunWith(RobolectricTestRunner::class)
 class MainActivityShortcutTest {
@@ -40,7 +41,7 @@ class MainActivityShortcutTest {
 
     @Test
     fun emptyNicknameUsesHostnameForShortcutLabel() {
-        createShortcut(Host(id = 1, nickname = "", hostname = "example.org"))
+        createShortcut(Host(id = UUID(0, 1), nickname = "", hostname = "example.org"))
 
         assertEquals(Activity.RESULT_OK, shadowOf(activity).resultCode)
         assertEquals("example.org", shadowOf(activity).resultIntent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME))
@@ -49,7 +50,7 @@ class MainActivityShortcutTest {
 
     @Test
     fun blankNicknameUsesHostnameForShortcutLabel() {
-        createShortcut(Host(id = 1, nickname = "   ", hostname = "example.org"))
+        createShortcut(Host(id = UUID(0, 1), nickname = "   ", hostname = "example.org"))
 
         assertEquals("example.org", shadowOf(activity).resultIntent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME))
     }
@@ -63,7 +64,7 @@ class MainActivityShortcutTest {
 
     @Test
     fun namedHostKeepsItsShortcutLabel() {
-        createShortcut(Host(id = 1, nickname = "Production", hostname = "example.org"))
+        createShortcut(Host(id = UUID(0, 1), nickname = "Production", hostname = "example.org"))
 
         assertEquals("Production", shadowOf(activity).resultIntent.getStringExtra(Intent.EXTRA_SHORTCUT_NAME))
     }
@@ -75,7 +76,7 @@ class MainActivityShortcutTest {
                 ShortcutManagerCompat.createShortcutResultIntent(any(), any(ShortcutInfoCompat::class.java))
             }.thenThrow(IllegalStateException("Shortcut service unavailable"))
 
-            createShortcut(Host(id = 1, nickname = "Production", hostname = "example.org"))
+            createShortcut(Host(id = UUID(0, 1), nickname = "Production", hostname = "example.org"))
 
             assertEquals(Activity.RESULT_CANCELED, shadowOf(activity).resultCode)
             assertTrue(activity.isFinishing)

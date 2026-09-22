@@ -84,6 +84,7 @@ import java.security.KeyStore
 import java.security.PrivateKey
 import java.security.interfaces.RSAPublicKey
 import java.util.Locale
+import java.util.UUID
 import java.util.regex.Pattern
 
 /**
@@ -113,7 +114,7 @@ open class SSH : AbsTransport {
     private var session: SshSession? = null
     private val jumpClients = mutableListOf<SshClient>()
 
-    private val savedPasswordsTried = mutableSetOf<Long>()
+    private val savedPasswordsTried = mutableSetOf<UUID>()
     private val keyUseDecisions = mutableMapOf<Pair<SshClient, TerminalManager.KeyHolder>, Boolean>()
     private var loginCancelled = false
     private var jumpFailureReason = DisconnectReason.IO_ERROR
@@ -1345,7 +1346,7 @@ open class SSH : AbsTransport {
             if (agentLockPassphrase != null || lifetimeSeconds != null) return AgentResult.Success(false)
             val terminalManager = manager ?: return AgentResult.Success(false)
             val pubkey = Pubkey(
-                id = 0L,
+                id = UUID.randomUUID(),
                 nickname = comment,
                 type = "IMPORTED",
                 privateKey = byteArrayOf(),

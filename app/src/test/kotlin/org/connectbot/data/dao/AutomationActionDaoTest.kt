@@ -20,6 +20,7 @@ package org.connectbot.data.dao
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
+import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.runTest
 import org.connectbot.data.ConnectBotDatabase
 import org.connectbot.data.HostConfigJson
@@ -27,6 +28,7 @@ import org.connectbot.data.entity.AutomationAction
 import org.connectbot.data.entity.AutomationActionType
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
+import org.connectbot.di.CoroutineDispatchers
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotEquals
@@ -137,6 +139,11 @@ class AutomationActionDaoTest {
                 db.portForwardDao(),
                 db.knownHostDao(),
                 org.mockito.Mockito.mock(org.connectbot.util.SecurePasswordStorage::class.java),
+                CoroutineDispatchers(
+                    StandardTestDispatcher(testScheduler),
+                    StandardTestDispatcher(testScheduler),
+                    StandardTestDispatcher(testScheduler),
+                ),
             )
             val duplicate = repository.duplicateHostSettings(source.id, source.copy(nickname = "copy"))
             val copied = db.automationActionDao().getByHost(duplicate.id).single()

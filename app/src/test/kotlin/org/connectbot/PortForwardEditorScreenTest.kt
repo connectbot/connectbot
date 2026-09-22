@@ -43,6 +43,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.UUID
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -93,7 +94,7 @@ class PortForwardEditorScreenTest {
 
     @Test
     fun existingForwardNeedsValidEdit() {
-        show(PortForwardEditorUiState(forwardId = 12L, isLoading = false))
+        show(PortForwardEditorUiState(forwardId = UUID(0, 12), isLoading = false))
         composeTestRule.onNodeWithContentDescription("Save").assertDoesNotExist()
     }
 

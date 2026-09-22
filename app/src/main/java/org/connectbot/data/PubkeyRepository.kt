@@ -23,6 +23,7 @@ import kotlinx.coroutines.runBlocking
 import org.connectbot.data.dao.PubkeyDao
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.Pubkey
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -62,7 +63,7 @@ class PubkeyRepository @Inject constructor(
      * @param pubkeyId The pubkey ID
      * @return Flow of pubkey that updates automatically
      */
-    fun observePubkey(pubkeyId: Long): Flow<Pubkey?> = pubkeyDao.observeById(pubkeyId)
+    fun observePubkey(pubkeyId: UUID): Flow<Pubkey?> = pubkeyDao.observeById(pubkeyId)
 
     /**
      * Get all pubkeys.
@@ -77,7 +78,7 @@ class PubkeyRepository @Inject constructor(
      * @param pubkeyId The pubkey ID
      * @return The pubkey, or null if not found
      */
-    suspend fun getById(pubkeyId: Long): Pubkey? = pubkeyDao.getById(pubkeyId)
+    suspend fun getById(pubkeyId: UUID): Pubkey? = pubkeyDao.getById(pubkeyId)
 
     /**
      * Find a pubkey by its unique ID (blocking).
@@ -86,7 +87,7 @@ class PubkeyRepository @Inject constructor(
      * @param pubkeyId The pubkey ID
      * @return The pubkey, or null if not found
      */
-    fun getByIdBlocking(pubkeyId: Long): Pubkey? = runBlocking {
+    fun getByIdBlocking(pubkeyId: UUID): Pubkey? = runBlocking {
         pubkeyDao.getById(pubkeyId)
     }
 
@@ -135,7 +136,7 @@ class PubkeyRepository @Inject constructor(
      * @param pubkey The pubkey to save
      * @return The saved pubkey with updated ID
      */
-    suspend fun save(pubkey: Pubkey): Pubkey = if (pubkey.id == 0L) {
+    suspend fun save(pubkey: Pubkey): Pubkey = if (pubkeyDao.getById(pubkey.id) == null) {
         // New pubkey - insert
         val newId = pubkeyDao.insert(pubkey)
         pubkey.copy(id = newId)
@@ -160,7 +161,7 @@ class PubkeyRepository @Inject constructor(
      * @param pubkeyId The pubkey ID
      * @param allowBackup Whether to allow backup
      */
-    suspend fun updateBackupPermission(pubkeyId: Long, allowBackup: Boolean) {
+    suspend fun updateBackupPermission(pubkeyId: UUID, allowBackup: Boolean) {
         pubkeyDao.updateBackupPermission(pubkeyId, allowBackup)
     }
 }

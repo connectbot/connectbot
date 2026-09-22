@@ -27,6 +27,7 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
 import org.connectbot.service.DisconnectReason
 import org.connectbot.ui.screens.hostlist.ConnectionState
@@ -35,11 +36,13 @@ import org.connectbot.ui.screens.hostlist.HostListScreenContent
 import org.connectbot.ui.screens.hostlist.HostListTestTags
 import org.connectbot.ui.screens.hostlist.HostListUiState
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.HostConstants
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.UUID
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -258,8 +261,8 @@ class HostListScreenTest {
     @Test
     fun hostListScreenContent_hostRowsShowStateAndNavigate() {
         var navigatedHost: Host? = null
-        val connected = testHost(id = 1L, nickname = "prod", protocol = "ssh", color = "#4CAF50")
-        val disconnected = testHost(id = 2L, nickname = "legacy", protocol = "telnet", color = "#F44336")
+        val connected = testHost(id = UUID(0, 1), nickname = "prod", protocol = "ssh", color = "#4CAF50")
+        val disconnected = testHost(id = UUID(0, 2), nickname = "legacy", protocol = "telnet", color = "#F44336")
 
         setHostListContent(
             uiState = HostListUiState(
@@ -287,7 +290,7 @@ class HostListScreenTest {
     @Test
     fun hostListScreenContent_makingShortcutSelectsHost() {
         var selectedShortcutHost: Host? = null
-        val connected = testHost(id = 1L, nickname = "prod", protocol = "ssh", color = "#4CAF50")
+        val connected = testHost(id = UUID(0, 1), nickname = "prod", protocol = "ssh", color = "#4CAF50")
 
         setHostListContent(
             uiState = HostListUiState(hosts = listOf(connected)),
@@ -309,7 +312,7 @@ class HostListScreenTest {
         var forgottenHost: Host? = null
         var disconnectedHost: Host? = null
         var deletedHost: Host? = null
-        val host = testHost(id = 3L, nickname = "staging", protocol = "ssh")
+        val host = testHost(id = UUID(0, 3), nickname = "staging", protocol = "ssh")
 
         setHostListContent(
             uiState = HostListUiState(
@@ -354,7 +357,7 @@ class HostListScreenTest {
 
     @Test
     fun hostListScreenContent_disconnectDisabledWhenHostNotConnected() {
-        val host = testHost(id = 4L, nickname = "offline", protocol = "ssh", color = null)
+        val host = testHost(id = UUID(0, 4), nickname = "offline", protocol = "ssh", color = null)
 
         setHostListContent(
             uiState = HostListUiState(
@@ -371,7 +374,7 @@ class HostListScreenTest {
 
     @Test
     fun unreadStatusExplainsReasonWithoutOpeningConsole() {
-        val host = testHost(id = 5L, nickname = "dropped", protocol = "ssh", color = null)
+        val host = testHost(id = UUID(0, 5), nickname = "dropped", protocol = "ssh", color = null)
         var navigated = false
         setHostListContent(
             uiState = HostListUiState(
@@ -395,7 +398,7 @@ class HostListScreenTest {
 
     @Test
     fun disconnectedStatusExplainsIntentionalDisconnect() {
-        val host = testHost(id = 6L, nickname = "closed", protocol = "ssh", color = null)
+        val host = testHost(id = UUID(0, 6), nickname = "closed", protocol = "ssh", color = null)
         setHostListContent(
             uiState = HostListUiState(
                 hosts = listOf(host),
@@ -470,7 +473,7 @@ class HostListScreenTest {
     }
 
     private fun testHost(
-        id: Long,
+        id: UUID,
         nickname: String,
         protocol: String = "ssh",
         color: String? = "#2196F3",

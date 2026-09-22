@@ -51,6 +51,7 @@ import org.mockito.Mockito.never
 import org.mockito.Mockito.times
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
+import java.util.UUID
 
 @OptIn(kotlinx.coroutines.ExperimentalCoroutinesApi::class)
 class SSHMigrationTest {
@@ -66,7 +67,7 @@ class SSHMigrationTest {
         var starts = 0
         init {
             client = this@SSHMigrationTest.client
-            host = Host(username = "user", hostname = "server")
+            host = Host(id = UUID(0, 1), username = "user", hostname = "server")
             bridge = this@SSHMigrationTest.bridge
             connected = true
         }
@@ -288,7 +289,7 @@ class SSHMigrationTest {
         val manager = mock(TerminalManager::class.java)
         val storage = mock(SecurePasswordStorage::class.java)
         `when`(manager.securePasswordStorage).thenReturn(storage)
-        `when`(storage.getPassword(0)).thenReturn("saved")
+        `when`(storage.getPassword(UUID(0, 1))).thenReturn("saved")
         `when`(bridge.promptManager).thenReturn(prompts)
         val ssh = TestSSH().apply { setManager(manager) }
         assertEquals("saved", captureHandler(ssh).onPasswordNeeded())
@@ -305,7 +306,7 @@ class SSHMigrationTest {
         val manager = mock(TerminalManager::class.java)
         val storage = mock(SecurePasswordStorage::class.java)
         `when`(manager.securePasswordStorage).thenReturn(storage)
-        `when`(storage.getPassword(10)).thenReturn("saved-jump")
+        `when`(storage.getPassword(UUID(0, 10))).thenReturn("saved-jump")
         `when`(bridge.promptManager).thenReturn(prompts)
         val ssh = TestSSH().apply { setManager(manager) }
         lateinit var handler: AuthHandler
@@ -313,7 +314,7 @@ class SSHMigrationTest {
             handler = it.getArgument(1)
             AuthResult.Failure(emptySet())
         }
-        ssh.authenticateJumpHost(client, Host(id = 10, username = "user"))
+        ssh.authenticateJumpHost(client, Host(id = UUID(0, 10), username = "user"))
         val challenge = listOf(KeyboardInteractiveCallback.Prompt("Password", false))
         assertEquals(listOf("saved-jump"), handler.onKeyboardInteractivePrompt("", "", challenge))
         val retry = async { handler.onKeyboardInteractivePrompt("", "", challenge) }

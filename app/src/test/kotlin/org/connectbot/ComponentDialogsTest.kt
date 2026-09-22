@@ -38,6 +38,7 @@ import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.connectbot.data.EntityIds
 import org.connectbot.service.AuthBanner
 import org.connectbot.ui.components.AuthBannerDialog
 import org.connectbot.ui.components.AuthBannerDialogContent
@@ -54,6 +55,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.UUID
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)

@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,9 +25,11 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.connectbot.data.EntityIds
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.util.HostConstants
 import org.junit.After
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -37,6 +39,7 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 import timber.log.Timber
+import java.util.UUID
 
 /**
  * Regression tests for issue #2081: pubkey password prompt never appears for encrypted
@@ -71,8 +74,8 @@ class PubkeyEditorViewModelTest {
         Timber.uprootAll()
     }
 
-    private fun createViewModel(pubkeyId: Long): PubkeyEditorViewModel {
-        val savedStateHandle = SavedStateHandle(mapOf("pubkeyId" to pubkeyId))
+    private fun createViewModel(pubkeyId: UUID): PubkeyEditorViewModel {
+        val savedStateHandle = SavedStateHandle(mapOf("pubkeyId" to pubkeyId.toString()))
         return PubkeyEditorViewModel(savedStateHandle, repository, dispatchers)
     }
 
@@ -89,7 +92,7 @@ class PubkeyEditorViewModelTest {
     @Test
     fun save_encryptedKey_preservesUnlockAtStartup() = runTest {
         val existingKey = Pubkey(
-            id = 42L,
+            id = UUID(0, 42),
             nickname = "encrypted-key",
             type = "RSA",
             privateKey = byteArrayOf(1, 2, 3),
@@ -99,9 +102,9 @@ class PubkeyEditorViewModelTest {
             confirmation = false,
             createdDate = 1_000L,
         )
-        whenever(repository.getById(42L)).thenReturn(existingKey)
+        whenever(repository.getById(UUID(0, 42))).thenReturn(existingKey)
 
-        val viewModel = createViewModel(42L)
+        val viewModel = createViewModel(UUID(0, 42))
         advanceUntilIdle()
 
         viewModel.updateUnlockAtStartup(true)

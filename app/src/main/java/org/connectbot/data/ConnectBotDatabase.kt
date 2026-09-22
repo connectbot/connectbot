@@ -38,6 +38,7 @@ import org.connectbot.data.entity.KnownHost
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.data.migration.UuidMigration
 import java.util.UUID
 
 /**
@@ -67,6 +68,7 @@ import java.util.UUID
  * - Version 12: Added optional Mosh network timeout to hosts (AutoMigration)
  * - Version 13: Added bold_as_bright to profiles, defaulting to enabled (AutoMigration)
  * - Version 14: Added per-host Telnet compatibility preferences (AutoMigration)
+ * - Version 15: UUID repository identities and legacy identity mappings (manual migration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -84,7 +86,7 @@ import java.util.UUID
         Profile::class,
         AutomationAction::class,
     ],
-    version = 14,
+    version = 15,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -138,12 +140,14 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                     db.execSQL(
                         "INSERT INTO automation_actions (id, host_id, position, type, text, regex, duration_ms, `key`, modifiers, forward_id, failure_policy) " +
                             "VALUES (?, ?, 0, 'SEND_TEXT', ?, 0, 30000, 1, 0, NULL, 'STOP')",
-                        arrayOf<Any>(UUID.randomUUID().toString(), cursor.getLong(0), cursor.getString(1)),
+                        arrayOf<Any>(UUID.randomUUID().toString(), cursor.getString(0), cursor.getString(1)),
                     )
                 }
             }
             db.execSQL("UPDATE hosts SET post_login = NULL WHERE post_login IS NOT NULL")
         }
+
+        val MIGRATION_14_15 = UuidMigration
 
         /**
          * Migration from version 4 to 5: Add profiles table and profile_id to hosts.

@@ -28,6 +28,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.connectbot.data.EntityIds
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.PortForward
 import org.connectbot.di.CoroutineDispatchers
@@ -35,6 +36,7 @@ import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.util.HostConstants
 import timber.log.Timber
+import java.util.UUID
 import javax.inject.Inject
 
 data class PortForwardListUiState(
@@ -50,7 +52,7 @@ class PortForwardListViewModel @Inject constructor(
     private val repository: HostRepository,
     private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
-    private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
+    private val hostId: UUID = EntityIds.parse(savedStateHandle.get<String>("hostId"))
     private val _terminalManager = MutableStateFlow<TerminalManager?>(null)
     private val _refreshTrigger = MutableStateFlow(0)
 

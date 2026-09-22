@@ -21,6 +21,7 @@ import android.content.ContentValues
 import android.database.Cursor
 import android.util.Base64
 import androidx.room.RoomDatabase
+import org.connectbot.util.HostConstants
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.UUID
@@ -123,8 +124,10 @@ class SchemaBasedExporter(
                     // Device-local numeric IDs cannot identify rows from another backup.
                     // Without a natural unique index, deduplicate by the remapped contents.
                     entitySchema.fields.filterNot { it.columnName == "id" || it.excluded }.map { it.columnName }
-                } else {
+                } else if (tableName == "automation_actions") {
                     entitySchema.primaryKey.columnNames
+                } else {
+                    entitySchema.fields.filterNot { it.columnName == "id" || it.excluded }.map { it.columnName }
                 }
 
             // Find foreign keys that need remapping
@@ -136,7 +139,7 @@ class SchemaBasedExporter(
 
             for (i in 0 until rows.length()) {
                 val row = rows.getJSONObject(i)
-                val oldId = row.optString("id", "0")
+                val oldId = row.optString("id", "")
                 if (tableName == "automation_actions") {
                     require(UUID.fromString(oldId).toString() == oldId) { "Invalid automation UUID" }
                 }
@@ -210,7 +213,22 @@ class SchemaBasedExporter(
         idMappings: Map<String, Map<String, String>>,
         entitySchema: EntitySchema,
     ): JSONObject {
-        val remapped = JSONObject(row.toString())
+        val remapped = JSONObject(row.toString()).put("repositoryId", EntityIds.LOCAL_TEXT)
+        val portableRefs = mapOf("profileId" to "profiles", "colorSchemeId" to "color_schemes", "pubkeyId" to "pubkeys")
+        portableRefs.forEach { (field, table) ->
+            if (remapped.has(field) && !remapped.isNull(field)) {
+                val old = remapped.get(field).toString()
+                val mapped = idMappings[table]?.get(old)
+                val fallback = when (field) {
+                    "profileId" -> EntityIds.DEFAULT_PROFILE.toString()
+                    "pubkeyId" -> HostConstants.PUBKEYID_ANY.toString()
+                    else -> old.toLongOrNull()?.let { EntityIds.legacyScheme(it).toString() } ?: old
+                }
+                remapped.put(field, mapped ?: fallback)
+            }
+        }
+        if (!remapped.has("pubkeyId") && entitySchema.fields.any { it.fieldPath == "pubkeyId" }) remapped.put("pubkeyId", HostConstants.PUBKEYID_ANY.toString())
+        if (!remapped.has("colorSchemeId") && entitySchema.fields.any { it.fieldPath == "colorSchemeId" }) remapped.put("colorSchemeId", EntityIds.DEFAULT_SCHEME.toString())
 
         for (fk in foreignKeys) {
             val referencedMapping = idMappings[fk.table] ?: continue
@@ -220,7 +238,7 @@ class SchemaBasedExporter(
                 val fieldPath = field.fieldPath
 
                 if (remapped.has(fieldPath)) {
-                    val oldValue = remapped.optString(fieldPath, "0")
+                    val oldValue = remapped.optString(fieldPath, "")
                     val newValue = referencedMapping[oldValue]
                     if (newValue != null) {
                         remapped.put(fieldPath, if (field.affinity == "INTEGER") newValue.toLong() else newValue)
@@ -281,9 +299,12 @@ class SchemaBasedExporter(
         row: JSONObject,
         entitySchema: EntitySchema,
     ): String {
-        val values = jsonToContentValues(row, entitySchema, excludeId = entitySchema.primaryKey.autoGenerate)
-        val rowId = db.insert(tableName, 0, values)
-        return if (entitySchema.primaryKey.autoGenerate) rowId.toString() else row.getString("id")
+        val values = jsonToContentValues(row, entitySchema, excludeId = true)
+        val id = if (tableName == "automation_actions") row.getString("id") else UUID.randomUUID().toString()
+        values.put("id", id)
+        if (entitySchema.fields.any { it.columnName == "repository_id" }) values.put("repository_id", EntityIds.LOCAL_TEXT)
+        db.insert(tableName, 0, values)
+        return id
     }
 
     /**
@@ -301,7 +322,7 @@ class SchemaBasedExporter(
             entitySchema.foreignKeys.none { fk ->
                 fk.columns.contains(field.columnName)
             } && field.fieldPath.endsWith("Id") && field.fieldPath != "id" &&
-                field.affinity == "INTEGER"
+                field.fieldPath == "jumpHostId"
         }
 
         // Also check for explicit self-referencing foreign keys
@@ -319,13 +340,13 @@ class SchemaBasedExporter(
 
         for (i in 0 until originalRows.length()) {
             val row = originalRows.getJSONObject(i)
-            val oldId = row.optString("id", "0")
+            val oldId = row.optString("id", "")
             val newId = idMapping[oldId] ?: continue
 
             for (field in allSelfRefFields) {
                 if (!row.has(field.fieldPath)) continue
-                val oldRefId = row.optString(field.fieldPath, "0")
-                if (oldRefId == "0") continue
+                val oldRefId = row.optString(field.fieldPath, "")
+                if (oldRefId.isEmpty()) continue
 
                 val newRefId = idMapping[oldRefId] ?: continue
 
@@ -351,7 +372,7 @@ class SchemaBasedExporter(
             if (excludeId && field.columnName == "id") continue
 
             // For excluded fields, provide default values if NOT NULL
-            if (field.excluded) {
+            if (field.excluded && field.fieldPath != "pubkeyId") {
                 if (field.notNull) {
                     when (field.affinity) {
                         "INTEGER" -> values.put(field.columnName, 0L)

@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,11 +28,13 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.test.setMain
+import org.connectbot.data.EntityIds
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.ServiceError
 import org.connectbot.service.TerminalManager
+import org.connectbot.util.HostConstants
 import org.connectbot.util.PreferenceConstants
 import org.junit.After
 import org.junit.Assert.assertFalse
@@ -44,6 +46,7 @@ import org.mockito.kotlin.inOrder
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import java.util.UUID
 
 /**
  * Tests for HostListViewModel, focusing on sort order preference persistence.
@@ -219,7 +222,7 @@ class HostListViewModelTest {
     fun deleteHost_disconnectsActiveBridgeBeforeDeletingHost() = runTest {
         val viewModel = createViewModel()
         val terminalManager = createTerminalManager()
-        val host = Host(id = 42L, nickname = "test", hostname = "example.com")
+        val host = Host(id = UUID(0, 42), nickname = "test", hostname = "example.com")
         viewModel.setTerminalManager(terminalManager)
         advanceUntilIdle()
 

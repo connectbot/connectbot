@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,21 +25,25 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Profile
+import org.connectbot.util.HostConstants
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.util.UUID
 
 /**
  * Unit test to reproduce issue #1806:
  * "Migration failed: UNIQUE constraint failed: profiles.id"
  *
  * This test demonstrates the core issue: when the Room database already has
- * a default profile with ID=1, and the legacy migration tries to insert
- * another profile with ID=1, it fails with a unique constraint violation.
+ * a default profile, inserting another profile with the same identity fails
+ * with a unique constraint violation. The historical ID was 1; the current
+ * default profile uses a stable UUID.
  *
- * These tests define the EXPECTED behavior and will FAIL until the fix is implemented.
+ * These tests verify that existing profiles prevent a conflicting legacy migration.
  *
  * @see <a href="https://github.com/connectbot/connectbot/issues/1806">Issue #1806</a>
  */
@@ -75,9 +79,9 @@ class ProfileConflictUnitTest {
         // Step 1: Simulate Room database created with default profile
         // This is what DatabaseModule.onCreate() does
         val defaultProfile = Profile(
-            id = 0, // Auto-generate ID (will become 1)
+            id = EntityIds.DEFAULT_PROFILE, // Stable UUID shared with DatabaseModule
             name = "Default",
-            colorSchemeId = -1L,
+            colorSchemeId = EntityIds.preset(0),
             fontSize = 10,
             delKey = "del",
             encoding = "UTF-8",
@@ -85,10 +89,10 @@ class ProfileConflictUnitTest {
         )
         database.profileDao().insert(defaultProfile)
 
-        // Verify the default profile was inserted with ID=1
+        // Verify the default profile retains its stable UUID
         val existingProfiles = database.profileDao().getAll()
         assertThat(existingProfiles).hasSize(1)
-        assertThat(existingProfiles[0].id).isEqualTo(1L)
+        assertThat(existingProfiles[0].id).isEqualTo(EntityIds.DEFAULT_PROFILE)
 
         // Step 2: Simulate the fixed isMigrationNeeded() check
         // The fix adds profiles to the check, so roomHasData should be true
@@ -123,9 +127,9 @@ class ProfileConflictUnitTest {
         // Step 1: Room database is created with default profile
         // This happens via DatabaseModule.onCreate() callback
         val defaultProfile = Profile(
-            id = 0,
+            id = EntityIds.DEFAULT_PROFILE,
             name = "Default",
-            colorSchemeId = -1L,
+            colorSchemeId = EntityIds.preset(0),
             fontSize = 10,
             delKey = "del",
             encoding = "UTF-8",
@@ -160,7 +164,7 @@ class ProfileConflictUnitTest {
         // The default profile is preserved and no conflict occurs
         val finalProfiles = database.profileDao().getAll()
         assertThat(finalProfiles).hasSize(1)
-        assertThat(finalProfiles[0].id).isEqualTo(1L)
+        assertThat(finalProfiles[0].id).isEqualTo(EntityIds.DEFAULT_PROFILE)
         assertThat(finalProfiles[0].name).isEqualTo("Default")
     }
 
@@ -174,9 +178,9 @@ class ProfileConflictUnitTest {
     fun `isMigrationNeeded check includes profiles table`() = runTest {
         // Insert default profile (simulating DatabaseModule.onCreate())
         val defaultProfile = Profile(
-            id = 0,
+            id = EntityIds.DEFAULT_PROFILE,
             name = "Default",
-            colorSchemeId = -1L,
+            colorSchemeId = EntityIds.preset(0),
             fontSize = 10,
             delKey = "del",
             encoding = "UTF-8",

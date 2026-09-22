@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,10 @@
 package org.connectbot.data.entity
 
 import org.assertj.core.api.Assertions.assertThat
+import org.connectbot.data.EntityIds
+import org.connectbot.util.HostConstants
 import org.junit.Test
+import java.util.UUID
 
 class PubkeyEntityTest {
 
@@ -28,7 +31,7 @@ class PubkeyEntityTest {
         val publicKey = byteArrayOf(10, 20, 30, 40, 50)
 
         val pubkey1 = Pubkey(
-            id = 1,
+            id = UUID(0, 1),
             nickname = "test",
             type = "ssh-rsa",
             privateKey = privateKey,
@@ -43,7 +46,7 @@ class PubkeyEntityTest {
         )
 
         val pubkey2 = Pubkey(
-            id = 1,
+            id = UUID(0, 1),
             nickname = "test",
             type = "ssh-rsa",
             privateKey = byteArrayOf(1, 2, 3, 4, 5),
@@ -92,7 +95,7 @@ class PubkeyEntityTest {
     @Test
     fun `copy preserves all fields`() {
         val original = Pubkey(
-            id = 42,
+            id = UUID(0, 42),
             nickname = "original",
             type = "ssh-ed25519",
             privateKey = byteArrayOf(1, 2, 3),
@@ -177,7 +180,7 @@ class PubkeyEntityTest {
             createdDate = 123456789,
         )
 
-        assertThat(pubkey.id).isEqualTo(0) // Default from @PrimaryKey(autoGenerate = true)
+        assertThat(pubkey.id.version()).isEqualTo(4)
         assertThat(pubkey.storageType).isEqualTo(KeyStorageType.EXPORTABLE) // Default
         assertThat(pubkey.allowBackup).isTrue() // Default
         assertThat(pubkey.keystoreAlias).isNull() // Default

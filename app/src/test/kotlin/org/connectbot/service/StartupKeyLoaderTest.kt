@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,13 +17,16 @@
 
 package org.connectbot.service
 
+import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.util.HostConstants
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Test
 import java.security.KeyPair
 import java.security.KeyPairGenerator
+import java.util.UUID
 
 /**
  * Regression tests for issue #2081: encrypted startup keys must not be silently dropped.
@@ -37,7 +40,7 @@ class StartupKeyLoaderTest {
     }
 
     private fun pubkey(encrypted: Boolean) = Pubkey(
-        id = 1L,
+        id = UUID(0, 1),
         nickname = "k",
         type = "RSA",
         privateKey = byteArrayOf(0),

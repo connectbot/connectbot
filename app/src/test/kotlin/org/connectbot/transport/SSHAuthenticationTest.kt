@@ -22,6 +22,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
+import org.connectbot.data.EntityIds
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
@@ -46,6 +47,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import java.security.KeyPair
 import java.security.KeyPairGenerator
+import java.util.UUID
 
 class SSHAuthenticationTest {
     private val manager = mock(TerminalManager::class.java)
@@ -57,7 +59,7 @@ class SSHAuthenticationTest {
     private val offered = mutableListOf<List<AuthPublicKey>>()
     private var beforeKeyRequest: () -> Unit = {}
 
-    private suspend fun ssh(pubkeyId: Long = HostConstants.PUBKEYID_ANY): SSH {
+    private suspend fun ssh(pubkeyId: UUID = HostConstants.PUBKEYID_ANY): SSH {
         `when`(manager.loadedKeypairs).thenReturn(loadedKeys)
         `when`(manager.pubkeyRepository).thenReturn(repository)
         val fallback = mock(AuthHandler::class.java)
@@ -83,17 +85,17 @@ class SSHAuthenticationTest {
         load("alpha", firstKey)
         ssh().authenticate()
         assertOffered(firstKey, secondKey)
-        verify(repository, never()).getByIdBlocking(anyLong())
+        verify(repository, never()).getByIdBlocking(any(UUID::class.java) ?: EntityIds.NONE)
     }
 
     @Test
     fun specificKey_doesNotOfferOtherUnlockedKeys() = runTest {
         val selected = load("selected", firstKey)
         load("other", secondKey)
-        `when`(repository.getByIdBlocking(42)).thenReturn(selected)
+        `when`(repository.getByIdBlocking(UUID(0, 42))).thenReturn(selected)
         `when`(manager.isKeyLoaded("selected")).thenReturn(true)
         `when`(manager.getKey("selected")).thenReturn(firstKey)
-        ssh(42).authenticate()
+        ssh(UUID(0, 42)).authenticate()
         assertOffered(firstKey)
     }
 
@@ -102,7 +104,7 @@ class SSHAuthenticationTest {
         load("first", firstKey)
         ssh(HostConstants.PUBKEYID_NEVER).authenticate()
         assertOffered()
-        verify(repository, never()).getByIdBlocking(anyLong())
+        verify(repository, never()).getByIdBlocking(any(UUID::class.java) ?: EntityIds.NONE)
     }
 
     @Test
@@ -167,7 +169,7 @@ class SSHAuthenticationTest {
 
     private fun load(nickname: String, pair: KeyPair, confirmation: Boolean = false): Pubkey {
         val pubkey = Pubkey(
-            id = 42,
+            id = UUID(0, 42),
             nickname = nickname,
             type = "EC",
             publicKey = pair.public.encoded,

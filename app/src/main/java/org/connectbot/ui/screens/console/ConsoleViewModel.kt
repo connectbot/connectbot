@@ -31,11 +31,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.connectbot.data.EntityIds
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.sshlib.PortForwarder
 import org.connectbot.terminal.ProgressState
+import java.util.UUID
 import javax.inject.Inject
 
 data class ConsoleUiState(
@@ -55,13 +57,13 @@ class ConsoleViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
-    private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
+    private val hostId: UUID = EntityIds.parse(savedStateHandle.get<String>("hostId"))
     private var terminalManager: TerminalManager? = null
-    private var pendingInitialHostId: Long? = hostId.takeIf { it != -1L }
-    private var selectedHostId: Long? = null
+    private var pendingInitialHostId: UUID? = hostId.takeIf { it != EntityIds.NONE }
+    private var selectedHostId: UUID? = null
 
-    private val progressJobs = mutableMapOf<Long, Job>()
-    private val networkStatusJobs = mutableMapOf<Long, Job>()
+    private val progressJobs = mutableMapOf<UUID, Job>()
+    private val networkStatusJobs = mutableMapOf<UUID, Job>()
 
     private val _uiState = MutableStateFlow(ConsoleUiState())
     val uiState: StateFlow<ConsoleUiState> = _uiState.asStateFlow()
@@ -116,7 +118,7 @@ class ConsoleViewModel @Inject constructor(
                 }
             }
 
-            if (hostId != -1L) {
+            if (hostId != EntityIds.NONE) {
                 viewModelScope.launch {
                     ensureBridgeExists()
                 }
@@ -152,7 +154,7 @@ class ConsoleViewModel @Inject constructor(
 
     private fun syncBridgeJobs(
         bridges: List<TerminalBridge>,
-        jobs: MutableMap<Long, Job>,
+        jobs: MutableMap<UUID, Job>,
         createJob: (TerminalBridge) -> Job,
     ) {
         val activeHostIds = bridges.map { it.host.id }.toSet()
@@ -190,7 +192,7 @@ class ConsoleViewModel @Inject constructor(
         updateProgressState(progressInfo)
     }
 
-    private fun findBridgeIndex(bridges: List<TerminalBridge>, bridgeHostId: Long?): Int {
+    private fun findBridgeIndex(bridges: List<TerminalBridge>, bridgeHostId: UUID?): Int {
         if (bridgeHostId == null) {
             return -1
         }
@@ -239,7 +241,7 @@ class ConsoleViewModel @Inject constructor(
                 }
 
                 if (existingBridge == null) {
-                    if (hostId < 0L) {
+                    if (hostId == EntityIds.NONE) {
                         handleInitialSelectionError("Temporary connection not found")
                     } else {
                         val bridge = terminalManager?.openConnectionForHostId(hostId)

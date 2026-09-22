@@ -26,6 +26,7 @@ import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
@@ -47,10 +48,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
+import org.connectbot.data.EntityIds
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.ui.screens.hosteditor.HostEditorScreen
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.HostConstants
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -60,6 +63,7 @@ import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
 import org.robolectric.annotation.GraphicsMode
 import java.io.File
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltAndroidTest
@@ -75,7 +79,7 @@ class HostEditorScreenTest {
     lateinit var repository: HostRepository
 
     private lateinit var navController: TestNavHostController
-    private var knownHostsHostId: Long? = null
+    private var knownHostsHostId: UUID? = null
 
     @Before
     fun setUp() {
@@ -89,7 +93,7 @@ class HostEditorScreenTest {
                     composable("start") {}
                     composable(
                         route = "hostEditor/{hostId}",
-                        arguments = listOf(navArgument("hostId") { type = NavType.LongType }),
+                        arguments = listOf(navArgument("hostId") { type = NavType.StringType }),
                     ) {
                         HostEditorScreen(
                             onNavigateBack = { navController.popBackStack() },
@@ -102,7 +106,7 @@ class HostEditorScreenTest {
         }
     }
 
-    private fun navigateToHostEditorScreen(hostId: Long) {
+    private fun navigateToHostEditorScreen(hostId: UUID) {
         composeTestRule.runOnUiThread {
             navController.navigate("hostEditor/$hostId")
         }
@@ -110,18 +114,18 @@ class HostEditorScreenTest {
 
     @Test
     fun automationRowAlignsWithPreferencesAndRequiresSavedHost() {
-        navigateToHostEditorScreen(-1L)
+        navigateToHostEditorScreen(EntityIds.NONE)
         val automationTitle = composeTestRule.activity.getString(R.string.hostpref_postlogin_title)
         val precedingTitle = composeTestRule.activity.getString(R.string.hostpref_quickdisconnect_title)
         composeTestRule.onNodeWithText(automationTitle).performScrollTo().assertIsNotEnabled()
-        val automation = composeTestRule.onNodeWithText(automationTitle, useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
-        val preceding = composeTestRule.onNodeWithText(precedingTitle, useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
-        assertEquals(preceding.left, automation.left, 0.5f)
+        val automation = composeTestRule.onNodeWithText(automationTitle, useUnmergedTree = true).getUnclippedBoundsInRoot()
+        val preceding = composeTestRule.onNodeWithText(precedingTitle, useUnmergedTree = true).getUnclippedBoundsInRoot()
+        assertEquals(preceding.left.value, automation.left.value, 0.5f)
     }
 
     @Test
     fun hostEditorScreen_newHost_addButtonHasContentDescription() {
-        navigateToHostEditorScreen(-1L)
+        navigateToHostEditorScreen(EntityIds.NONE)
 
         composeTestRule
             .onNodeWithText("Nickname")
@@ -137,7 +141,7 @@ class HostEditorScreenTest {
 
     @Test
     fun hostEditorScreen_newHost_saveButtonIsHiddenByDefault() {
-        navigateToHostEditorScreen(-1L)
+        navigateToHostEditorScreen(EntityIds.NONE)
 
         composeTestRule
             .onNodeWithTag("add_host_button")
@@ -146,7 +150,7 @@ class HostEditorScreenTest {
 
     @Test
     fun hostEditorScreen_newHost_saveButtonEnabledAfterInput() {
-        navigateToHostEditorScreen(-1L)
+        navigateToHostEditorScreen(EntityIds.NONE)
 
         composeTestRule
             .onNodeWithText("Nickname")
@@ -162,7 +166,7 @@ class HostEditorScreenTest {
 
     @Test
     fun hostEditorScreen_newHost_callsNavigateBackOnSave() {
-        navigateToHostEditorScreen(-1L)
+        navigateToHostEditorScreen(EntityIds.NONE)
 
         composeTestRule
             .onNodeWithText("Nickname")
@@ -186,7 +190,7 @@ class HostEditorScreenTest {
 
     @Test
     fun hostEditorScreen_hasBackButton() {
-        navigateToHostEditorScreen(-1L)
+        navigateToHostEditorScreen(EntityIds.NONE)
 
         composeTestRule
             .onNodeWithContentDescription("Navigate up")
@@ -199,7 +203,7 @@ class HostEditorScreenTest {
 
     @Test
     fun hostEditorScreen_connectionDetailsVisibleAndAdvancedFieldsHiddenByDefault() {
-        navigateToHostEditorScreen(-1L)
+        navigateToHostEditorScreen(EntityIds.NONE)
 
         composeTestRule.onNodeWithText("Nickname").assertIsDisplayed()
         composeTestRule.onNodeWithText("Quick connect").assertDoesNotExist()
@@ -215,7 +219,7 @@ class HostEditorScreenTest {
 
     @Test
     fun hostEditorScreen_firstNicknameEntryPopulatesFieldsThroughIncompleteInput() {
-        navigateToHostEditorScreen(-1L)
+        navigateToHostEditorScreen(EntityIds.NONE)
         composeTestRule.onNodeWithText("Nickname").performClick().performTextInput("admin@")
         composeTestRule.onNodeWithTag("add_host_button").assertIsNotDisplayed()
         composeTestRule.onNodeWithText("Nickname").performTextInput("example.com:2222")
@@ -228,7 +232,7 @@ class HostEditorScreenTest {
 
     @Test
     fun hostEditorScreen_nicknameAndConnectionFieldsAreIndependentAfterFirstEntry() {
-        navigateToHostEditorScreen(-1L)
+        navigateToHostEditorScreen(EntityIds.NONE)
         composeTestRule.onNodeWithText("Nickname").performTextInput("admin@example.com:2222")
         composeTestRule.onNodeWithText("Host").performScrollTo().performClick()
         composeTestRule.onNodeWithText("Nickname").performScrollTo().performTextReplacement("root@other.example:8022")
@@ -242,7 +246,7 @@ class HostEditorScreenTest {
 
     @Test
     fun hostEditorScreen_advancedOptionsRetainValuesAndCollapseWithCustomNickname() {
-        navigateToHostEditorScreen(-1L)
+        navigateToHostEditorScreen(EntityIds.NONE)
         composeTestRule.onNodeWithText("Nickname").performTextInput("user@example.com")
         composeTestRule.onNodeWithText("Host").performScrollTo().performClick()
         composeTestRule.onNodeWithText("Nickname").performScrollTo().performTextReplacement("My Server")
@@ -313,7 +317,7 @@ class HostEditorScreenTest {
 
     @Test
     fun hostEditorScreen_telnetProtocolShowsHostAndPortWithoutUsernameOrPassword() {
-        navigateToHostEditorScreen(-1L)
+        navigateToHostEditorScreen(EntityIds.NONE)
         composeTestRule.onNodeWithText("ssh").performClick()
         composeTestRule.onNodeWithText("telnet").performClick()
 
@@ -328,19 +332,19 @@ class HostEditorScreenTest {
 
     @Test
     fun hostEditorScreen_existingSshHost_opensKnownHostKeys() {
-        navigateToHostEditorScreen(42L)
+        navigateToHostEditorScreen(UUID(0, 42))
 
         composeTestRule.onNodeWithText("Show advanced options").performScrollTo().performClick()
         composeTestRule.onNodeWithTag("known_host_keys_preference").performScrollTo().performClick()
 
         composeTestRule.runOnIdle {
-            assertTrue(knownHostsHostId == 42L)
+            assertTrue(knownHostsHostId == UUID(0, 42))
         }
     }
 
     @Test
     fun hostEditorScreen_localProtocol_hidesUserHostPortFields() {
-        navigateToHostEditorScreen(-1L)
+        navigateToHostEditorScreen(EntityIds.NONE)
 
         composeTestRule
             .onNodeWithText("Username")
@@ -381,7 +385,7 @@ class HostEditorScreenTest {
 
     @Test
     fun hostEditorScreen_localProtocol_saveButtonEnabled() {
-        navigateToHostEditorScreen(-1L)
+        navigateToHostEditorScreen(EntityIds.NONE)
 
         composeTestRule
             .onNodeWithTag("add_host_button")
@@ -410,7 +414,7 @@ class HostEditorScreenTest {
     @GraphicsMode(GraphicsMode.Mode.NATIVE)
     @SuppressLint("NewApi") // The native screenshot runs under Robolectric SDK 34.
     fun telnetAdvancedOptionsAreSelectableAndHiddenForSsh() {
-        navigateToHostEditorScreen(-1L)
+        navigateToHostEditorScreen(EntityIds.NONE)
         composeTestRule.onNodeWithText("ssh").performClick()
         composeTestRule.onNodeWithText("telnet").performClick()
         val advanced = composeTestRule.activity.getString(R.string.host_editor_show_advanced)

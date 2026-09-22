@@ -153,7 +153,7 @@ private fun AuthBannerDialogPreview() {
     ConnectBotTheme {
         AuthBannerDialogContent(
             banner = AuthBanner(
-                id = 1L,
+                id = 1,
                 sourceName = "exampleuser@ssh.example.com:2222",
                 message = "Welcome to example.com. Please visit this URL to authenticate: https://gateway.example.com/auth/892ea3hfeed for more information.",
                 urls = listOf("https://gateway.example.com/auth/892ea3hfeed"),

@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.connectbot.data.EntityIds
 import org.connectbot.data.HostRepository
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.PubkeyRepository
@@ -43,21 +44,23 @@ import org.connectbot.data.entity.TelnetNewlinePolicy
 import org.connectbot.data.entity.TelnetNonBinaryPolicy
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.transport.Transport
+import org.connectbot.util.HostConstants
 import org.connectbot.util.InstallMosh
 import org.connectbot.util.SecurePasswordStorage
+import java.util.UUID
 import javax.inject.Inject
 
 data class HostEditorUiState(
-    val hostId: Long = -1L,
+    val hostId: UUID = EntityIds.NONE,
     val nickname: String = "",
     val protocol: String = "ssh",
     val username: String = "",
     val hostname: String = "",
     val port: String = "22",
     val color: String = "gray",
-    val pubkeyId: Long = -1L,
+    val pubkeyId: UUID = HostConstants.PUBKEYID_ANY,
     val availablePubkeys: List<Pubkey> = emptyList(),
-    val profileId: Long? = 1L,
+    val profileId: UUID? = EntityIds.DEFAULT_PROFILE,
     val availableProfiles: List<Profile> = emptyList(),
     val useAuthAgent: String = "no",
     val compression: Boolean = false,
@@ -65,7 +68,7 @@ data class HostEditorUiState(
     val stayConnected: Boolean = false,
     val quickDisconnect: Boolean = false,
     val automationCount: Int = 0,
-    val jumpHostId: Long? = null,
+    val jumpHostId: UUID? = null,
     val availableJumpHosts: List<Host> = emptyList(),
     val ipVersion: String = "IPV4_AND_IPV6",
     val telnetEchoMode: TelnetEchoMode = TelnetEchoMode.AUTO,
@@ -102,24 +105,20 @@ class HostEditorViewModel @Inject constructor(
     private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
 
-    private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
-    private val _uiState = MutableStateFlow(
-        HostEditorUiState(
-            hostId = hostId,
-        ),
-    )
+    private val hostId: UUID = EntityIds.parse(savedStateHandle.get<String>("hostId"))
+    private val _uiState = MutableStateFlow(HostEditorUiState(hostId = hostId))
     val uiState: StateFlow<HostEditorUiState> = _uiState.asStateFlow()
 
     private var moshInstallJob: Job? = null
     private var preMoshProtocol: String = "ssh"
-    private var nicknameAutofillEnabled = hostId == -1L
+    private var nicknameAutofillEnabled = hostId == EntityIds.NONE
     private var hasEnteredNickname = false
 
     init {
         observePubkeys()
         observeJumpHosts()
         observeProfiles()
-        if (hostId != -1L) {
+        if (hostId != EntityIds.NONE) {
             loadHost()
             viewModelScope.launch {
                 repository.observeAutomation(hostId)
@@ -128,8 +127,8 @@ class HostEditorViewModel @Inject constructor(
             }
         } else {
             // For new hosts, apply the default profile from settings
-            val defaultProfileId = prefs.getLong("defaultProfileId", 0L)
-            if (defaultProfileId > 0) {
+            val defaultProfileId = EntityIds.parse(prefs.getString("defaultProfileId", null))
+            if (defaultProfileId != EntityIds.NONE) {
                 _uiState.update { it.copy(profileId = defaultProfileId) }
             }
         }
@@ -150,7 +149,8 @@ class HostEditorViewModel @Inject constructor(
             repository.observeSshHosts()
                 .catch { _uiState.update { it.copy(availableJumpHosts = emptyList()) } }
                 .collect { sshHosts ->
-                    val filteredHosts = sshHosts.filter { it.id != hostId }
+                    val owner = repository.findHostById(hostId)?.repositoryId ?: EntityIds.LOCAL
+                    val filteredHosts = sshHosts.filter { it.id != hostId && (owner == EntityIds.LOCAL || it.repositoryId == owner) }
                     _uiState.update { it.copy(availableJumpHosts = filteredHosts) }
                 }
         }
@@ -161,7 +161,8 @@ class HostEditorViewModel @Inject constructor(
             profileRepository.observeAll()
                 .catch { _uiState.update { it.copy(availableProfiles = emptyList()) } }
                 .collect { profiles ->
-                    _uiState.update { it.copy(availableProfiles = profiles) }
+                    val owner = repository.findHostById(hostId)?.repositoryId ?: EntityIds.LOCAL
+                    _uiState.update { it.copy(availableProfiles = profiles.filter { profile -> owner == EntityIds.LOCAL || profile.repositoryId == owner }) }
                 }
         }
     }
@@ -323,11 +324,11 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(color = value, hasUnsavedChanges = true) }
     }
 
-    fun updatePubkeyId(value: Long) {
+    fun updatePubkeyId(value: UUID) {
         _uiState.update { it.copy(pubkeyId = value, hasUnsavedChanges = true) }
     }
 
-    fun updateProfileId(value: Long?) {
+    fun updateProfileId(value: UUID?) {
         _uiState.update { it.copy(profileId = value, hasUnsavedChanges = true) }
     }
 
@@ -351,7 +352,7 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(quickDisconnect = value, hasUnsavedChanges = true) }
     }
 
-    fun updateJumpHostId(value: Long?) {
+    fun updateJumpHostId(value: UUID?) {
         _uiState.update { it.copy(jumpHostId = value, hasUnsavedChanges = true) }
     }
 
@@ -407,7 +408,7 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(isSaving = true, error = null) }
         try {
             val state = _uiState.value
-            val existingHost = if (hostId != -1L) {
+            val existingHost = if (hostId != EntityIds.NONE) {
                 repository.findHostById(hostId)
             } else {
                 null
@@ -417,7 +418,8 @@ class HostEditorViewModel @Inject constructor(
             val jumpHostId = if (state.protocol == "ssh" || state.protocol == "mosh") state.jumpHostId else null
 
             val host = Host(
-                id = existingHost?.id ?: 0L,
+                id = existingHost?.id ?: UUID.randomUUID(),
+                repositoryId = existingHost?.repositoryId ?: EntityIds.LOCAL,
                 nickname = state.nickname,
                 protocol = state.protocol,
                 username = state.username,

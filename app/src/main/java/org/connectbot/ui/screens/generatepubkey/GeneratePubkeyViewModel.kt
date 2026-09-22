@@ -39,6 +39,7 @@ import java.security.KeyPair
 import java.security.KeyPairGenerator
 import java.security.SecureRandom
 import java.security.Security
+import java.util.UUID
 import javax.inject.Inject
 
 enum class KeyType(
@@ -316,7 +317,7 @@ class GeneratePubkeyViewModel @Inject constructor(
                 val encrypted = state.password1.isNotEmpty()
 
                 val pubkey = Pubkey(
-                    id = 0, // Let Room auto-generate the ID
+                    id = UUID.randomUUID(),
                     nickname = state.nickname,
                     type = state.keyType.dbName,
                     privateKey = PubkeyUtils.getEncodedPrivate(keyPair.private, state.password1),
@@ -353,7 +354,7 @@ class GeneratePubkeyViewModel @Inject constructor(
         withContext(dispatchers.io) {
             try {
                 val pubkey = Pubkey(
-                    id = 0, // Let Room auto-generate the ID
+                    id = UUID.randomUUID(),
                     nickname = state.nickname,
                     type = state.keyType.dbName,
                     privateKey = null, // Private key stays in Android Keystore

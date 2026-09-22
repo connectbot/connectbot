@@ -21,17 +21,18 @@ import androidx.annotation.StringRes
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import java.io.IOException
+import java.util.UUID
 
 internal const val MAX_JUMP_HOSTS = 32
 
 internal class JumpHostChainException(@StringRes val messageResId: Int) : IOException("Invalid jump host chain")
 
 /** Resolve the whole chain before opening sockets, ordered from nearest to outermost hop. */
-internal fun resolveJumpHostChain(target: Host, findHost: (Long) -> Host?): List<Host> {
+internal fun resolveJumpHostChain(target: Host, findHost: (UUID) -> Host?): List<Host> {
     val chain = mutableListOf<Host>()
     val visited = mutableSetOf(target.id)
     var nextId = target.jumpHostId
-    while (nextId != null && nextId > 0) {
+    while (nextId != null) {
         if (!visited.add(nextId)) throw JumpHostChainException(R.string.terminal_jump_cycle)
         if (chain.size >= MAX_JUMP_HOSTS) throw JumpHostChainException(R.string.terminal_jump_too_deep)
         val nextHost = findHost(nextId) ?: throw JumpHostChainException(R.string.terminal_jump_not_found)
