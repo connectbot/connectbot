@@ -711,6 +711,10 @@
 	<string name="terminal_sucess">"Verified host '%1$s' key: %2$s"</string>
 	<!-- Error message shown in terminal when host key verification fails -->
 	<string name="terminal_failed">"Host key verification failed."</string>
+	<!-- Error message shown in terminal when an SSH connection attempt fails without a more specific message -->
+	<string name="terminal_connection_failed">"Connection failed."</string>
+	<!-- Message shown in terminal when an SSH connection succeeds -->
+	<string name="terminal_connected">"Connected."</string>
 
 	<!-- Displayed on the terminal describing the cryptographic algorithm names -->
 	<string name="terminal_using_s2c_algorithm">"Server-to-client algorithm: %1$s %2$s"</string>

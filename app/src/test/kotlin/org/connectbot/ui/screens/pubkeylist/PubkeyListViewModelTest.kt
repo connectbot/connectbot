@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,7 +18,6 @@
 package org.connectbot.ui.screens.pubkeylist
 
 import android.content.Context
-import com.trilead.ssh2.crypto.PEMEncoder
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,6 +29,7 @@ import kotlinx.coroutines.test.setMain
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.sshlib.SshKeys
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -38,18 +38,21 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.kotlin.any
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.never
 import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
+import org.robolectric.RobolectricTestRunner
 import timber.log.Timber
 import java.security.KeyPairGenerator
 
 /**
  * Tests for PubkeyListViewModel, focusing on the encrypted key import functionality.
  */
+@RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class PubkeyListViewModelTest {
 
@@ -73,12 +76,12 @@ class PubkeyListViewModelTest {
 
     // PEM-encoded unencrypted private key for testing
     private val testUnencryptedPemKey by lazy {
-        PEMEncoder.encodePrivateKey(testKeyPair.private, null)
+        SshKeys.encodePemPrivateKey(testKeyPair)
     }
 
     // PEM-encoded encrypted private key for testing (password: "testpass")
     private val testEncryptedPemKey by lazy {
-        PEMEncoder.encodePrivateKey(testKeyPair.private, "testpass")
+        SshKeys.encodeOpenSshPrivateKey(testKeyPair, "testpass")
     }
 
     @Before
