@@ -17,6 +17,11 @@
 
 package org.connectbot.ui.screens.hosteditor
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -31,6 +36,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.DropdownMenuItem
@@ -38,6 +44,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
+import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -54,15 +61,20 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.LiveRegionMode
+import androidx.compose.ui.semantics.liveRegion
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import kotlinx.coroutines.launch
 import org.connectbot.BuildConfig
 import org.connectbot.R
 import org.connectbot.data.entity.ColorScheme
@@ -140,14 +152,20 @@ fun HostEditorScreenContent(
     onIpVersionChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onClearPassword: () -> Unit,
-    onSaveHost: (Boolean) -> Unit,
+    onSaveHost: suspend (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     var showProtocolMenu by remember { mutableStateOf(false) }
     var expandedMode by remember(uiState.isLoading) {
         mutableStateOf(hostId != -1L && !uiState.isNicknameMatching)
     }
     val protocols = listOf("ssh", "telnet", "local")
+    val canSave = if (expandedMode) {
+        uiState.protocol == "local" || uiState.hostname.isNotBlank()
+    } else {
+        uiState.quickConnect.isNotBlank()
+    }
 
     Scaffold(
         topBar = {
@@ -169,24 +187,35 @@ fun HostEditorScreenContent(
                         )
                     }
                 },
-                actions = {
-                    TextButton(
-                        onClick = {
+            )
+        },
+        floatingActionButton = {
+            AnimatedVisibility(
+                visible = uiState.hasUnsavedChanges && canSave,
+                enter = fadeIn() + slideInVertically { it },
+                exit = fadeOut() + slideOutVertically { it },
+            ) {
+                FloatingActionButton(
+                    onClick = {
+                        coroutineScope.launch {
                             onSaveHost(expandedMode)
                             onNavigateBack()
-                        },
-                        modifier = Modifier.testTag("add_host_button"),
-                        enabled = if (expandedMode) {
-                            // For local protocol, hostname can be blank
-                            uiState.protocol == "local" || uiState.hostname.isNotBlank()
-                        } else {
-                            uiState.quickConnect.isNotBlank()
-                        },
-                    ) {
-                        Text(stringResource(if (hostId == -1L) R.string.hostpref_add_host else R.string.hostpref_save_host))
-                    }
-                },
-            )
+                        }
+                    },
+                    modifier = Modifier
+                        .testTag("add_host_button")
+                        .semantics { liveRegion = LiveRegionMode.Polite },
+                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Check,
+                        contentDescription = stringResource(
+                            if (hostId == -1L) R.string.hostpref_add_host else R.string.hostpref_save_host,
+                        ),
+                    )
+                }
+            }
         },
         modifier = modifier,
     ) { padding ->
