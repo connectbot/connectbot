@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -354,12 +354,6 @@ private fun PortForwardListItem(
     var showMenu by remember { mutableStateOf(false) }
     Column(modifier = modifier) {
         ListItem(
-            headlineContent = {
-                Text(
-                    text = portForward.nickname,
-                    fontWeight = FontWeight.Bold,
-                )
-            },
             supportingContent = {
                 Column {
                     Text(
@@ -444,7 +438,12 @@ private fun PortForwardListItem(
                 }
             },
             modifier = Modifier.clickable { onEdit() },
-        )
+        ) {
+            Text(
+                text = portForward.nickname,
+                fontWeight = FontWeight.Bold,
+            )
+        }
         HorizontalDivider()
     }
 }

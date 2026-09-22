@@ -547,12 +547,6 @@ private fun HostListItem(
 
     Column(modifier = modifier) {
         ListItem(
-            headlineContent = {
-                Text(
-                    text = host.nickname,
-                    fontWeight = FontWeight.Bold,
-                )
-            },
             supportingContent = {
                 Text("${host.protocol}://${host.hostname}:${host.port}")
             },
@@ -703,7 +697,12 @@ private fun HostListItem(
             modifier = Modifier
                 .clickable(onClick = onClick)
                 .testTag(HostListTestTags.itemRow(host.id)),
-        )
+        ) {
+            Text(
+                text = host.nickname,
+                fontWeight = FontWeight.Bold,
+            )
+        }
         HorizontalDivider()
 
         if (showDeleteDialog) {

@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -120,19 +120,18 @@ fun HintsScreen(
 
             items(hints) { hint ->
                 ListItem(
-                    headlineContent = {
-                        Text(
-                            text = hint.title,
-                            style = MaterialTheme.typography.titleMedium,
-                        )
-                    },
                     supportingContent = {
                         Text(
                             text = hint.description,
                             style = MaterialTheme.typography.bodyMedium,
                         )
                     },
-                )
+                ) {
+                    Text(
+                        text = hint.title,
+                        style = MaterialTheme.typography.titleMedium,
+                    )
+                }
                 HorizontalDivider()
             }
         }

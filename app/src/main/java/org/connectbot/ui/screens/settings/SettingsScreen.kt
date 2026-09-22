@@ -796,7 +796,6 @@ private fun SwitchPreference(
 ) {
     Column(modifier = modifier) {
         ListItem(
-            headlineContent = { Text(title) },
             supportingContent = { Text(summary) },
             trailingContent = {
                 Switch(
@@ -808,7 +807,7 @@ private fun SwitchPreference(
                 containerColor = highlightColor,
             ),
             modifier = Modifier.clickable { onCheckedChange(!checked) },
-        )
+        ) { Text(title) }
         HorizontalDivider()
     }
 }
@@ -825,10 +824,9 @@ private fun TextPreference(
 
     Column(modifier = modifier) {
         ListItem(
-            headlineContent = { Text(title) },
             supportingContent = { Text(summary) },
             modifier = Modifier.clickable { showDialog = true },
-        )
+        ) { Text(title) }
         HorizontalDivider()
 
         if (showDialog) {
@@ -891,10 +889,9 @@ private fun ListPreference(
 
     Column(modifier = modifier) {
         ListItem(
-            headlineContent = { Text(title) },
             supportingContent = { Text(summary) },
             modifier = Modifier.clickable { showDialog = true },
-        )
+        ) { Text(title) }
         HorizontalDivider()
 
         if (showDialog) {
@@ -927,9 +924,8 @@ private fun ListPreferenceDialog(
             Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
                 entries.forEach { (label, entryValue) ->
                     ListItem(
-                        headlineContent = { Text(label) },
                         modifier = Modifier.clickable { onConfirm(entryValue) },
-                    )
+                    ) { Text(label) }
                 }
             }
         },
@@ -966,10 +962,9 @@ private fun LanguageListPreference(
 
     Column(modifier = modifier) {
         ListItem(
-            headlineContent = { Text(title) },
             supportingContent = { Text(summary) },
             modifier = Modifier.clickable { showDialog = true },
-        )
+        ) { Text(title) }
         HorizontalDivider()
 
         if (showDialog) {
@@ -1017,7 +1012,6 @@ private fun LanguageListPreferenceDialog(
                     val isDownloading = state is LanguageDownloadState.Downloading
                     val needsDownload = tag.isNotEmpty() && !installedLanguages.contains(tag)
                     ListItem(
-                        headlineContent = { Text(label) },
                         trailingContent = when {
                             isDownloading -> {
                                 {
@@ -1050,7 +1044,7 @@ private fun LanguageListPreferenceDialog(
                             else -> null
                         },
                         modifier = if (isDownloading) Modifier else Modifier.clickable { onEntryClick(tag) },
-                    )
+                    ) { Text(label) }
                 }
             }
         },
@@ -1076,10 +1070,9 @@ private fun ListPreferenceWithCustom(
 
     Column(modifier = modifier) {
         ListItem(
-            headlineContent = { Text(title) },
             supportingContent = { Text(summary) },
             modifier = Modifier.clickable { showDialog = true },
-        )
+        ) { Text(title) }
         HorizontalDivider()
 
         if (showDialog) {
@@ -1155,23 +1148,21 @@ private fun ListPreferenceWithCustomDialog(
                 Column {
                     entries.forEach { (label, entryValue) ->
                         ListItem(
-                            headlineContent = { Text(label) },
                             modifier = Modifier.clickable { onConfirm(entryValue) },
-                        )
+                        ) { Text(label) }
                     }
                     HorizontalDivider(modifier = Modifier.padding(vertical = 8.dp))
                     ListItem(
-                        headlineContent = {
-                            Text(
-                                text = customLabel,
-                                color = MaterialTheme.colorScheme.primary,
-                            )
-                        },
                         modifier = Modifier.clickable {
                             customValue = value
                             showCustomInput = true
                         },
-                    )
+                    ) {
+                        Text(
+                            text = customLabel,
+                            color = MaterialTheme.colorScheme.primary,
+                        )
+                    }
                 }
             },
             confirmButton = {
@@ -1228,15 +1219,13 @@ private fun AddCustomTerminalTypePreference(
 
     Column(modifier = modifier) {
         ListItem(
-            headlineContent = { Text(stringResource(R.string.pref_customterminal_title)) },
             supportingContent = { Text(stringResource(R.string.pref_customterminal_summary)) },
             modifier = Modifier.clickable { showAddDialog = true },
-        )
+        ) { Text(stringResource(R.string.pref_customterminal_title)) }
 
         // Show existing custom terminal types with remove option
         customTerminalTypes.forEach { terminalType ->
             ListItem(
-                headlineContent = { Text(terminalType) },
                 leadingContent = {
                     Icon(
                         imageVector = Icons.Default.Terminal,
@@ -1253,7 +1242,7 @@ private fun AddCustomTerminalTypePreference(
                     }
                 },
                 modifier = Modifier.padding(start = 16.dp),
-            )
+            ) { Text(terminalType) }
         }
 
         HorizontalDivider()
@@ -1324,15 +1313,13 @@ private fun AddCustomFontPreference(
 
     Column(modifier = modifier) {
         ListItem(
-            headlineContent = { Text(stringResource(R.string.pref_customfont_title)) },
             supportingContent = { Text(stringResource(R.string.pref_customfont_summary)) },
             modifier = Modifier.clickable { showAddDialog = true },
-        )
+        ) { Text(stringResource(R.string.pref_customfont_title)) }
 
         // Show existing custom fonts with remove option
         customFonts.forEach { fontName ->
             ListItem(
-                headlineContent = { Text(fontName) },
                 leadingContent = {
                     Icon(
                         imageVector = Icons.Default.FontDownload,
@@ -1349,7 +1336,7 @@ private fun AddCustomFontPreference(
                     }
                 },
                 modifier = Modifier.padding(start = 16.dp),
-            )
+            ) { Text(fontName) }
         }
 
         HorizontalDivider()
@@ -1455,7 +1442,6 @@ private fun LocalFontPreference(
 
     Column(modifier = modifier) {
         ListItem(
-            headlineContent = { Text(stringResource(R.string.pref_localfont_title)) },
             supportingContent = {
                 Text(
                     if (importInProgress) {
@@ -1468,12 +1454,11 @@ private fun LocalFontPreference(
             modifier = Modifier.clickable(enabled = !importInProgress) {
                 fontPickerLauncher.launch(arrayOf("font/*", "application/x-font-ttf", "application/x-font-otf"))
             },
-        )
+        ) { Text(stringResource(R.string.pref_localfont_title)) }
 
         // Show existing local fonts with delete option
         localFonts.forEach { (displayName, fileName) ->
             ListItem(
-                headlineContent = { Text(displayName) },
                 leadingContent = {
                     Icon(
                         imageVector = Icons.Default.FolderOpen,
@@ -1490,7 +1475,7 @@ private fun LocalFontPreference(
                     }
                 },
                 modifier = Modifier.padding(start = 16.dp),
-            )
+            ) { Text(displayName) }
         }
 
         HorizontalDivider()
