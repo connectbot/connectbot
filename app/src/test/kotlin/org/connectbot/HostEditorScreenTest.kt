@@ -19,9 +19,7 @@ package org.connectbot
 
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotDisplayed
-import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
@@ -95,12 +93,12 @@ class HostEditorScreenTest {
     }
 
     @Test
-    fun hostEditorScreen_newHost_saveButtonDisabledByDefault() {
+    fun hostEditorScreen_newHost_saveButtonIsHiddenByDefault() {
         navigateToHostEditorScreen(-1L)
 
         composeTestRule
             .onNodeWithTag("add_host_button")
-            .assertIsNotEnabled()
+            .assertIsNotDisplayed()
     }
 
     @Test
@@ -116,7 +114,7 @@ class HostEditorScreenTest {
 
         composeTestRule
             .onNodeWithTag("add_host_button")
-            .assertIsEnabled()
+            .assertIsDisplayed()
     }
 
     @Test
@@ -211,7 +209,7 @@ class HostEditorScreenTest {
 
         composeTestRule
             .onNodeWithTag("add_host_button")
-            .assertIsNotEnabled()
+            .assertIsNotDisplayed()
 
         composeTestRule
             .onNodeWithText("ssh")
@@ -227,6 +225,6 @@ class HostEditorScreenTest {
 
         composeTestRule
             .onNodeWithTag("add_host_button")
-            .assertIsEnabled()
+            .assertIsDisplayed()
     }
 }

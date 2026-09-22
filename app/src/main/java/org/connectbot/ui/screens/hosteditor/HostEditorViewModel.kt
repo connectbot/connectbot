@@ -61,6 +61,7 @@ data class HostEditorUiState(
     val ipVersion: String = "IPV4_AND_IPV6",
     val password: String = "",
     val hasExistingPassword: Boolean = false,
+    val hasUnsavedChanges: Boolean = false,
     val isLoading: Boolean = false,
     val error: String? = null,
 ) {
@@ -211,6 +212,7 @@ class HostEditorViewModel @Inject constructor(
                             jumpHostId = host.jumpHostId,
                             ipVersion = host.ipVersion,
                             hasExistingPassword = hasPassword,
+                            hasUnsavedChanges = false,
                             isLoading = false,
                         )
                     }
@@ -243,14 +245,14 @@ class HostEditorViewModel @Inject constructor(
     }
 
     fun updateNickname(value: String, isExpanded: Boolean = false) {
-        _uiState.update { it.copy(nickname = value) }
+        _uiState.update { it.copy(nickname = value, hasUnsavedChanges = true) }
 
         if (isExpanded) {
             return
         }
 
         if (_uiState.value.protocol == "local") {
-            _uiState.update { it.copy(quickConnect = value) }
+            _uiState.update { it.copy(quickConnect = value, hasUnsavedChanges = true) }
             return
         }
 
@@ -265,6 +267,7 @@ class HostEditorViewModel @Inject constructor(
                     hostname = hostname,
                     port = parsedPort,
                     quickConnect = newRep,
+                    hasUnsavedChanges = true,
                 )
             }
         }
@@ -272,21 +275,21 @@ class HostEditorViewModel @Inject constructor(
 
     fun updateProtocol(value: String) {
         _uiState.update { old ->
-            val updated = old.copy(protocol = value)
+            val updated = old.copy(protocol = value, hasUnsavedChanges = true)
             updateNicknameIfMatching(old, updated)
         }
     }
 
     fun updateUsername(value: String) {
         _uiState.update { old ->
-            val updated = old.copy(username = value)
+            val updated = old.copy(username = value, hasUnsavedChanges = true)
             updateNicknameIfMatching(old, updated)
         }
     }
 
     fun updateHostname(value: String) {
         _uiState.update { old ->
-            val updated = old.copy(hostname = value)
+            val updated = old.copy(hostname = value, hasUnsavedChanges = true)
             updateNicknameIfMatching(old, updated)
         }
     }
@@ -295,14 +298,14 @@ class HostEditorViewModel @Inject constructor(
         // Only allow numeric input
         if (value.isEmpty() || value.all { it.isDigit() }) {
             _uiState.update { old ->
-                val updated = old.copy(port = value)
+                val updated = old.copy(port = value, hasUnsavedChanges = true)
                 updateNicknameIfMatching(old, updated)
             }
         }
     }
 
     fun updateQuickConnect(value: String) {
-        _uiState.update { it.copy(quickConnect = value, nickname = value) }
+        _uiState.update { it.copy(quickConnect = value, nickname = value, hasUnsavedChanges = true) }
 
         if (_uiState.value.protocol == "local") return
 
@@ -314,61 +317,62 @@ class HostEditorViewModel @Inject constructor(
                     username = username,
                     hostname = hostname,
                     port = port.ifBlank { getDefaultPort(state.protocol) },
+                    hasUnsavedChanges = true,
                 )
             }
         }
     }
 
     fun updateColor(value: String) {
-        _uiState.update { it.copy(color = value) }
+        _uiState.update { it.copy(color = value, hasUnsavedChanges = true) }
     }
 
     fun updatePubkeyId(value: Long) {
-        _uiState.update { it.copy(pubkeyId = value) }
+        _uiState.update { it.copy(pubkeyId = value, hasUnsavedChanges = true) }
     }
 
     fun updateProfileId(value: Long?) {
-        _uiState.update { it.copy(profileId = value) }
+        _uiState.update { it.copy(profileId = value, hasUnsavedChanges = true) }
     }
 
     fun updateUseAuthAgent(value: String) {
-        _uiState.update { it.copy(useAuthAgent = value) }
+        _uiState.update { it.copy(useAuthAgent = value, hasUnsavedChanges = true) }
     }
 
     fun updateCompression(value: Boolean) {
-        _uiState.update { it.copy(compression = value) }
+        _uiState.update { it.copy(compression = value, hasUnsavedChanges = true) }
     }
 
     fun updateWantSession(value: Boolean) {
-        _uiState.update { it.copy(wantSession = value) }
+        _uiState.update { it.copy(wantSession = value, hasUnsavedChanges = true) }
     }
 
     fun updateStayConnected(value: Boolean) {
-        _uiState.update { it.copy(stayConnected = value) }
+        _uiState.update { it.copy(stayConnected = value, hasUnsavedChanges = true) }
     }
 
     fun updateQuickDisconnect(value: Boolean) {
-        _uiState.update { it.copy(quickDisconnect = value) }
+        _uiState.update { it.copy(quickDisconnect = value, hasUnsavedChanges = true) }
     }
 
     fun updatePostLogin(value: String) {
-        _uiState.update { it.copy(postLogin = value) }
+        _uiState.update { it.copy(postLogin = value, hasUnsavedChanges = true) }
     }
 
     fun updateJumpHostId(value: Long?) {
-        _uiState.update { it.copy(jumpHostId = value) }
+        _uiState.update { it.copy(jumpHostId = value, hasUnsavedChanges = true) }
     }
 
     fun updateIpVersion(value: String) {
-        _uiState.update { it.copy(ipVersion = value) }
+        _uiState.update { it.copy(ipVersion = value, hasUnsavedChanges = true) }
     }
 
     fun updatePassword(value: String) {
-        _uiState.update { it.copy(password = value) }
+        _uiState.update { it.copy(password = value, hasUnsavedChanges = true) }
     }
 
     fun clearSavedPassword() {
-        _uiState.update { it.copy(password = "", hasExistingPassword = false) }
+        _uiState.update { it.copy(password = "", hasExistingPassword = false, hasUnsavedChanges = true) }
     }
 
     suspend fun saveHost(useExpandedMode: Boolean) {
