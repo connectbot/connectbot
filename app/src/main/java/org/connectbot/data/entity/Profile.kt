@@ -19,9 +19,11 @@ package org.connectbot.data.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import org.connectbot.data.EntityIds
+import org.connectbot.data.keyboard.KeyboardLayout
 import java.util.UUID
 
 /**
@@ -48,7 +50,9 @@ import java.util.UUID
     tableName = "profiles",
     indices = [
         Index(value = ["repository_id", "name"], unique = true),
+        Index(value = ["keyboard_layout_id"]),
     ],
+    foreignKeys = [ForeignKey(entity = KeyboardLayout::class, parentColumns = ["id"], childColumns = ["keyboard_layout_id"], onDelete = ForeignKey.SET_NULL)],
     // Built-in schemes have stable virtual UUIDs and are not rows in color_schemes.
 )
 data class Profile(
@@ -92,6 +96,9 @@ data class Profile(
 
     @ColumnInfo(name = "force_size_columns")
     val forceSizeColumns: Int? = null,
+
+    @ColumnInfo(name = "keyboard_layout_id")
+    val keyboardLayoutId: UUID? = null,
 ) {
     companion object {
         /**

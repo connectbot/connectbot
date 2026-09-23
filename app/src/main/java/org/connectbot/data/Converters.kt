@@ -25,11 +25,9 @@ import java.util.UUID
  * Room type converters for custom types used in database entities.
  */
 class Converters {
-    @TypeConverter
-    fun fromUuid(value: UUID?): String? = value?.toString()
+    @TypeConverter fun uuidToString(value: UUID?): String? = value?.toString()
 
-    @TypeConverter
-    fun toUuid(value: String?): UUID? = value?.let(UUID::fromString)
+    @TypeConverter fun stringToUuid(value: String?): UUID? = value?.let(UUID::fromString)
 
     @TypeConverter
     fun fromKeyStorageType(value: KeyStorageType): String = value.name

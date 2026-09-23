@@ -21,6 +21,7 @@ import android.content.ContentValues
 import android.database.Cursor
 import android.util.Base64
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import org.connectbot.util.HostConstants
 import org.json.JSONArray
 import org.json.JSONObject
@@ -117,22 +118,27 @@ class SchemaBasedExporter(
             var skippedCount = 0
 
             // Find unique constraint for conflict detection
-            val uniqueFields = entitySchema.uniqueIndices
-                .firstOrNull()
-                ?.columnNames
-                ?: if (entitySchema.primaryKey.autoGenerate) {
-                    // Device-local numeric IDs cannot identify rows from another backup.
-                    // Without a natural unique index, deduplicate by the remapped contents.
-                    entitySchema.fields.filterNot { it.columnName == "id" || it.excluded }.map { it.columnName }
-                } else if (tableName == "automation_actions") {
-                    entitySchema.primaryKey.columnNames
-                } else {
-                    entitySchema.fields.filterNot { it.columnName == "id" || it.excluded }.map { it.columnName }
-                }
+            val keyboardTable = tableName.startsWith("keyboard_")
+            val uniqueFields = if (keyboardTable) {
+                entitySchema.primaryKey.columnNames
+            } else {
+                entitySchema.uniqueIndices
+                    .firstOrNull()
+                    ?.columnNames
+                    ?: if (entitySchema.primaryKey.autoGenerate) {
+                        // Device-local numeric IDs cannot identify rows from another backup.
+                        // Without a natural unique index, deduplicate by the remapped contents.
+                        entitySchema.fields.filterNot { it.columnName == "id" || it.excluded }.map { it.columnName }
+                    } else if (tableName == "automation_actions") {
+                        entitySchema.primaryKey.columnNames
+                    } else {
+                        entitySchema.fields.filterNot { it.columnName == "id" || it.excluded }.map { it.columnName }
+                    }
+            }
 
             // Find foreign keys that need remapping
             val foreignKeys = entitySchema.foreignKeys + if (tableName == "automation_actions") {
-                listOf(ForeignKeySchema("port_forwards", listOf("forward_id"), listOf("id"), "NO ACTION"))
+                listOf(ForeignKeySchema("port_forwards", listOf("forward_id"), listOf("id"), "NO ACTION"), ForeignKeySchema("keyboard_macros", listOf("macro_id"), listOf("id"), "NO ACTION"))
             } else {
                 emptyList()
             }
@@ -140,8 +146,8 @@ class SchemaBasedExporter(
             for (i in 0 until rows.length()) {
                 val row = rows.getJSONObject(i)
                 val oldId = row.optString("id", "")
-                if (tableName == "automation_actions") {
-                    require(UUID.fromString(oldId).toString() == oldId) { "Invalid automation UUID" }
+                if (tableName == "automation_actions" || keyboardTable) {
+                    require(UUID.fromString(oldId).toString() == oldId) { "Invalid UUID in $tableName" }
                 }
 
                 // Remap foreign key values using previously imported ID mappings
@@ -257,7 +263,7 @@ class SchemaBasedExporter(
      * Find existing row ID by unique constraint.
      */
     private fun findExistingId(
-        db: androidx.sqlite.db.SupportSQLiteDatabase,
+        db: SupportSQLiteDatabase,
         tableName: String,
         row: JSONObject,
         uniqueFields: List<String>,
@@ -294,16 +300,17 @@ class SchemaBasedExporter(
      * Insert a new row into the database.
      */
     private fun insertRow(
-        db: androidx.sqlite.db.SupportSQLiteDatabase,
+        db: SupportSQLiteDatabase,
         tableName: String,
         row: JSONObject,
         entitySchema: EntitySchema,
     ): String {
         val values = jsonToContentValues(row, entitySchema, excludeId = true)
-        val id = if (tableName == "automation_actions") row.getString("id") else UUID.randomUUID().toString()
+        val id = if (tableName == "automation_actions" || tableName.startsWith("keyboard_")) row.getString("id") else UUID.randomUUID().toString()
         values.put("id", id)
         if (entitySchema.fields.any { it.columnName == "repository_id" }) values.put("repository_id", EntityIds.LOCAL_TEXT)
-        db.insert(tableName, 0, values)
+        if (tableName.startsWith("keyboard_")) require(UUID.fromString(id).toString() == id) { "Invalid UUID" }
+        check(db.insert(tableName, 0, values) != -1L) { "Could not import $tableName" }
         return id
     }
 
@@ -311,7 +318,7 @@ class SchemaBasedExporter(
      * Update self-referencing foreign keys after all rows are imported.
      */
     private fun updateSelfReferences(
-        db: androidx.sqlite.db.SupportSQLiteDatabase,
+        db: SupportSQLiteDatabase,
         tableName: String,
         entitySchema: EntitySchema,
         idMapping: Map<String, String>,

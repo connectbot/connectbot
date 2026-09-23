@@ -21,9 +21,11 @@ import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
 import org.connectbot.data.EntityIds
+import org.connectbot.data.keyboard.KeyboardLayout
 import org.connectbot.util.HostConstants
 import java.util.UUID
 
@@ -32,8 +34,10 @@ import java.util.UUID
  */
 @Entity(
     tableName = "hosts",
+    foreignKeys = [ForeignKey(entity = KeyboardLayout::class, parentColumns = ["id"], childColumns = ["keyboard_layout_id"], onDelete = ForeignKey.SET_NULL)],
     indices = [
         Index(value = ["repository_id", "nickname"], unique = true),
+        Index(value = ["keyboard_layout_id"]),
         Index(value = ["protocol", "username", "hostname", "port"]),
     ],
 )
@@ -111,6 +115,10 @@ data class Host(
      */
     @ColumnInfo(name = "profile_id")
     val profileId: UUID? = EntityIds.DEFAULT_PROFILE,
+
+    /** Null inherits the profile keyboard, then the app default. */
+    @ColumnInfo(name = "keyboard_layout_id")
+    val keyboardLayoutId: UUID? = null,
 
     /**
      * IP version preference for connections.
