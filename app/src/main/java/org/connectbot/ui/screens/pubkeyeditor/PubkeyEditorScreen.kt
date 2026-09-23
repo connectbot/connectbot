@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,7 +34,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -62,6 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
 import org.connectbot.ui.PreviewScreen
+import org.connectbot.ui.components.SaveEditorFab
 import org.connectbot.ui.theme.ConnectBotTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -123,6 +123,14 @@ fun PubkeyEditorScreenContent(
 
     Scaffold(
         snackbarHost = { SnackbarHost(snackbarHostState) },
+        floatingActionButton = {
+            SaveEditorFab(
+                visible = !uiState.isLoading && uiState.hasUnsavedChanges && uiState.canSave,
+                isSaving = uiState.isSaving,
+                contentDescription = stringResource(R.string.portforward_save),
+                onClick = onSave,
+            )
+        },
         topBar = {
             TopAppBar(
                 title = { Text(stringResource(R.string.title_pubkey_list)) },
@@ -316,17 +324,6 @@ fun PubkeyEditorScreenContent(
                         )
                         Spacer(modifier = Modifier.width(8.dp))
                         Text(stringResource(R.string.pubkey_confirm_use))
-                    }
-
-                    Spacer(modifier = Modifier.height(24.dp))
-
-                    // Save Button
-                    Button(
-                        onClick = onSave,
-                        enabled = uiState.canSave,
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text(stringResource(R.string.portforward_save))
                     }
                 }
             }

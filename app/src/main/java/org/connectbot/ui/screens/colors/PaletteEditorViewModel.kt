@@ -50,6 +50,8 @@ data class PaletteEditorUiState(
     val backgroundColorIndex: Int = HostConstants.DEFAULT_BG_COLOR,
     val isBuiltIn: Boolean = false,
     val showDuplicateDialog: Boolean = false,
+    val hasUnsavedMetadata: Boolean = false,
+    val isSavingMetadata: Boolean = false,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
@@ -69,6 +71,8 @@ data class PaletteEditorUiState(
         if (backgroundColorIndex != other.backgroundColorIndex) return false
         if (isBuiltIn != other.isBuiltIn) return false
         if (showDuplicateDialog != other.showDuplicateDialog) return false
+        if (hasUnsavedMetadata != other.hasUnsavedMetadata) return false
+        if (isSavingMetadata != other.isSavingMetadata) return false
 
         return true
     }
@@ -86,6 +90,8 @@ data class PaletteEditorUiState(
         result = 31 * result + backgroundColorIndex
         result = 31 * result + isBuiltIn.hashCode()
         result = 31 * result + showDuplicateDialog.hashCode()
+        result = 31 * result + hasUnsavedMetadata.hashCode()
+        result = 31 * result + isSavingMetadata.hashCode()
         return result
     }
 }
@@ -118,8 +124,8 @@ class PaletteEditorViewModel @Inject constructor(
                     if (scheme != null) {
                         _uiState.update {
                             it.copy(
-                                schemeName = scheme.name,
-                                schemeDescription = scheme.description,
+                                schemeName = if (it.hasUnsavedMetadata) it.schemeName else scheme.name,
+                                schemeDescription = if (it.hasUnsavedMetadata) it.schemeDescription else scheme.description,
                                 isBuiltIn = scheme.isBuiltIn,
                                 error = null,
                             )
@@ -268,24 +274,31 @@ class PaletteEditorViewModel @Inject constructor(
     }
 
     fun updateName(newName: String) {
-        _uiState.update { it.copy(schemeName = newName) }
+        _uiState.update { it.copy(schemeName = newName, hasUnsavedMetadata = true) }
     }
 
     fun updateDescription(newDescription: String) {
-        _uiState.update { it.copy(schemeDescription = newDescription) }
+        _uiState.update { it.copy(schemeDescription = newDescription, hasUnsavedMetadata = true) }
     }
 
-    fun saveNameAndDescription() {
-        if (_uiState.value.isBuiltIn) return
+    fun saveNameAndDescription(onSuccess: () -> Unit) {
+        val state = _uiState.value
+        if (state.isBuiltIn || state.isSavingMetadata || !state.hasUnsavedMetadata || state.schemeName.isBlank()) return
+        _uiState.update { it.copy(isSavingMetadata = true) }
         viewModelScope.launch {
             try {
-                repository.renameScheme(
+                val saved = repository.renameScheme(
                     schemeId,
-                    _uiState.value.schemeName,
-                    _uiState.value.schemeDescription,
+                    state.schemeName,
+                    state.schemeDescription,
                 )
+                if (!saved) throw IllegalStateException("Failed to save name")
+                _uiState.update { it.copy(hasUnsavedMetadata = false) }
+                onSuccess()
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = e.message ?: "Failed to save name") }
+            } finally {
+                _uiState.update { it.copy(isSavingMetadata = false) }
             }
         }
     }

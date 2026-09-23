@@ -17,11 +17,6 @@
 
 package org.connectbot.ui.screens.hosteditor
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -36,7 +31,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
-import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.DropdownMenuItem
@@ -44,7 +38,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -52,11 +45,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -67,9 +63,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.LiveRegionMode
-import androidx.compose.ui.semantics.liveRegion
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
@@ -85,6 +78,7 @@ import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.common.getIconColors
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.common.getLocalizedFontDisplayName
+import org.connectbot.ui.components.SaveEditorFab
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.HostConstants
 import org.connectbot.util.LocalFontProvider
@@ -152,10 +146,14 @@ fun HostEditorScreenContent(
     onIpVersionChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onClearPassword: () -> Unit,
-    onSaveHost: suspend (Boolean) -> Unit,
+    onSaveHost: suspend (Boolean) -> Boolean,
     modifier: Modifier = Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
+    LaunchedEffect(uiState.error) {
+        uiState.error?.let { snackbarHostState.showSnackbar(it, withDismissAction = true) }
+    }
     var showProtocolMenu by remember { mutableStateOf(false) }
     var expandedMode by remember(uiState.isLoading) {
         mutableStateOf(hostId != -1L && !uiState.isNicknameMatching)
@@ -168,6 +166,7 @@ fun HostEditorScreenContent(
     }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         topBar = {
             TopAppBar(
                 title = {
@@ -190,32 +189,21 @@ fun HostEditorScreenContent(
             )
         },
         floatingActionButton = {
-            AnimatedVisibility(
+            SaveEditorFab(
                 visible = uiState.hasUnsavedChanges && canSave,
-                enter = fadeIn() + slideInVertically { it },
-                exit = fadeOut() + slideOutVertically { it },
-            ) {
-                FloatingActionButton(
-                    onClick = {
-                        coroutineScope.launch {
-                            onSaveHost(expandedMode)
+                isSaving = uiState.isSaving,
+                contentDescription = stringResource(
+                    if (hostId == -1L) R.string.hostpref_add_host else R.string.hostpref_save_host,
+                ),
+                onClick = {
+                    coroutineScope.launch {
+                        if (onSaveHost(expandedMode)) {
                             onNavigateBack()
                         }
-                    },
-                    modifier = Modifier
-                        .testTag("add_host_button")
-                        .semantics { liveRegion = LiveRegionMode.Polite },
-                    containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Check,
-                        contentDescription = stringResource(
-                            if (hostId == -1L) R.string.hostpref_add_host else R.string.hostpref_save_host,
-                        ),
-                    )
-                }
-            }
+                    }
+                },
+                modifier = Modifier.testTag("add_host_button"),
+            )
         },
         modifier = modifier,
     ) { padding ->
@@ -1310,7 +1298,7 @@ private fun HostEditorScreenPreview() {
             onIpVersionChange = {},
             onPasswordChange = {},
             onClearPassword = {},
-            onSaveHost = {},
+            onSaveHost = { true },
         )
     }
 }

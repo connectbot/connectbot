@@ -62,6 +62,7 @@ data class HostEditorUiState(
     val password: String = "",
     val hasExistingPassword: Boolean = false,
     val hasUnsavedChanges: Boolean = false,
+    val isSaving: Boolean = false,
     val isLoading: Boolean = false,
     val error: String? = null,
 ) {
@@ -375,7 +376,9 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(password = "", hasExistingPassword = false, hasUnsavedChanges = true) }
     }
 
-    suspend fun saveHost(useExpandedMode: Boolean) {
+    suspend fun saveHost(useExpandedMode: Boolean): Boolean {
+        if (_uiState.value.isSaving) return false
+        _uiState.update { it.copy(isSaving = true, error = null) }
         try {
             val state = _uiState.value
             val existingHost = if (hostId != -1L) {
@@ -432,10 +435,14 @@ class HostEditorViewModel @Inject constructor(
                 }
                 // If password is empty but hasExistingPassword is true, keep existing
             }
+            return true
         } catch (e: Exception) {
             _uiState.update {
                 it.copy(error = e.message ?: "Failed to save host")
             }
+            return false
+        } finally {
+            _uiState.update { it.copy(isSaving = false) }
         }
     }
 }

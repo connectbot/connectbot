@@ -107,6 +107,19 @@ class HostEditorViewModelTest {
     }
 
     @Test
+    fun saveFailureKeepsUnsavedChanges() = runTest {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.updateHostname("example.com")
+        `when`(repository.saveHost(any(Host::class.java) ?: Host())).thenThrow(IllegalStateException("disk failed"))
+
+        assertFalse(viewModel.saveHost(useExpandedMode = true))
+        assertTrue(viewModel.uiState.value.hasUnsavedChanges)
+        assertEquals("disk failed", viewModel.uiState.value.error)
+        assertFalse(viewModel.uiState.value.isSaving)
+    }
+
+    @Test
     fun testLoadExistingHost_populatesFields() = runTest {
         val hostId = 42L
         val existingHost = Host(

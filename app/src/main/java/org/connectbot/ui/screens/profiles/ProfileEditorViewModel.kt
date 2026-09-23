@@ -29,6 +29,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.entity.ColorScheme
@@ -60,6 +61,7 @@ data class ProfileEditorUiState(
     val localFonts: List<Pair<String, String>> = emptyList(),
     val isLoading: Boolean = true,
     val isSaving: Boolean = false,
+    val hasUnsavedChanges: Boolean = false,
     val saveError: String? = null,
     val fontDownloadInProgress: Boolean = false,
 )
@@ -160,6 +162,7 @@ class ProfileEditorViewModel @Inject constructor(
                         forceSizeRows = profile.forceSizeRows ?: 24,
                         forceSizeColumns = profile.forceSizeColumns ?: 80,
                         isLoading = false,
+                        hasUnsavedChanges = false,
                     )
                 }
             } else {
@@ -169,19 +172,19 @@ class ProfileEditorViewModel @Inject constructor(
     }
 
     fun updateName(value: String) {
-        _uiState.update { it.copy(name = value, saveError = null) }
+        _uiState.update { it.copy(name = value, saveError = null, hasUnsavedChanges = true) }
     }
 
     fun updateIconColor(value: String?) {
-        _uiState.update { it.copy(iconColor = value) }
+        _uiState.update { it.copy(iconColor = value, hasUnsavedChanges = true) }
     }
 
     fun updateColorSchemeId(value: Long) {
-        _uiState.update { it.copy(colorSchemeId = value) }
+        _uiState.update { it.copy(colorSchemeId = value, hasUnsavedChanges = true) }
     }
 
     fun updateFontFamily(value: String?) {
-        _uiState.update { it.copy(fontFamily = value) }
+        _uiState.update { it.copy(fontFamily = value, hasUnsavedChanges = true) }
         // Preload the font
         if (value != null) {
             preloadFont(value)
@@ -200,54 +203,59 @@ class ProfileEditorViewModel @Inject constructor(
     }
 
     fun updateFontSize(value: Int) {
-        _uiState.update { it.copy(fontSize = value) }
+        _uiState.update { it.copy(fontSize = value, hasUnsavedChanges = true) }
     }
 
     fun updateDelKey(value: String) {
-        _uiState.update { it.copy(delKey = value) }
+        _uiState.update { it.copy(delKey = value, hasUnsavedChanges = true) }
     }
 
     fun updateInlineImages(value: String) {
-        _uiState.update { it.copy(inlineImages = value) }
+        _uiState.update { it.copy(inlineImages = value, hasUnsavedChanges = true) }
     }
 
     fun updateEncoding(value: String) {
-        _uiState.update { it.copy(encoding = value) }
+        _uiState.update { it.copy(encoding = value, hasUnsavedChanges = true) }
     }
 
     fun updateEmulation(value: String) {
-        _uiState.update { it.copy(emulation = value) }
+        _uiState.update { it.copy(emulation = value, hasUnsavedChanges = true) }
     }
 
     fun updateForceSizeEnabled(value: Boolean) {
-        _uiState.update { it.copy(forceSizeEnabled = value) }
+        _uiState.update { it.copy(forceSizeEnabled = value, hasUnsavedChanges = true) }
     }
 
     fun updateForceSizeRows(value: Int) {
-        _uiState.update { it.copy(forceSizeRows = value.coerceIn(1, 999)) }
+        _uiState.update { it.copy(forceSizeRows = value.coerceIn(1, 999), hasUnsavedChanges = true) }
     }
 
     fun updateForceSizeColumns(value: Int) {
-        _uiState.update { it.copy(forceSizeColumns = value.coerceIn(1, 999)) }
+        _uiState.update { it.copy(forceSizeColumns = value.coerceIn(1, 999), hasUnsavedChanges = true) }
     }
 
     fun save(onSuccess: () -> Unit) {
+        val state = _uiState.value
+        if (state.isSaving || !state.hasUnsavedChanges) return
+        _uiState.update { it.copy(isSaving = true, saveError = null) }
         viewModelScope.launch {
-            val state = _uiState.value
-
             if (state.name.isBlank()) {
-                _uiState.update { it.copy(saveError = "Name cannot be empty") }
+                _uiState.update { it.copy(isSaving = false, saveError = "Name cannot be empty") }
                 return@launch
             }
 
             // Check for duplicate name (excluding current profile)
             val excludeId = if (profileId != -1L) profileId else null
-            if (profileRepository.nameExists(state.name, excludeId)) {
-                _uiState.update { it.copy(saveError = "A profile with this name already exists") }
+            val nameExists = try {
+                withContext(dispatchers.io) { profileRepository.nameExists(state.name, excludeId) }
+            } catch (e: Exception) {
+                _uiState.update { it.copy(isSaving = false, saveError = e.message ?: "Failed to check profile name") }
                 return@launch
             }
-
-            _uiState.update { it.copy(isSaving = true) }
+            if (nameExists) {
+                _uiState.update { it.copy(isSaving = false, saveError = "A profile with this name already exists") }
+                return@launch
+            }
 
             val profile = Profile(
                 id = if (profileId != -1L) profileId else 0,
@@ -264,9 +272,13 @@ class ProfileEditorViewModel @Inject constructor(
                 forceSizeColumns = if (state.forceSizeEnabled) state.forceSizeColumns else null,
             )
 
-            profileRepository.save(profile)
-            _uiState.update { it.copy(isSaving = false) }
-            onSuccess()
+            try {
+                withContext(dispatchers.io) { profileRepository.save(profile) }
+                _uiState.update { it.copy(isSaving = false, hasUnsavedChanges = false) }
+                onSuccess()
+            } catch (e: Exception) {
+                _uiState.update { it.copy(isSaving = false, saveError = e.message ?: "Failed to save profile") }
+            }
         }
     }
 }

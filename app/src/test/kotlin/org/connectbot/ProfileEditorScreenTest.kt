@@ -22,6 +22,7 @@ import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -78,7 +79,7 @@ class ProfileEditorScreenTest {
     }
 
     @Test
-    fun profileEditorScreen_hasSaveButton() {
+    fun profileEditorScreen_showsSaveAfterNameEdit() {
         composeTestRule.setContent {
             ConnectBotTheme {
                 ProfileEditorScreen(onNavigateBack = {})
@@ -87,7 +88,10 @@ class ProfileEditorScreenTest {
 
         composeTestRule
             .onNodeWithContentDescription("Save")
-            .assertIsDisplayed()
+            .assertDoesNotExist()
+
+        composeTestRule.onNodeWithText("Profile Name").performTextInput("My profile")
+        composeTestRule.onNodeWithContentDescription("Save").assertIsDisplayed()
     }
 
     @Test
