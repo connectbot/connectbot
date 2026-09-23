@@ -21,6 +21,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
+import android.os.Handler
+import android.os.Looper
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -42,7 +44,10 @@ import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.TelnetEchoMode
 import org.connectbot.data.entity.TelnetNegotiationMode
+import org.connectbot.data.keyboard.MacroAction
+import org.connectbot.data.keyboard.MacroFormat
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.terminal.TerminalEmulatorFactory
 import org.connectbot.terminal.VTermKey
 import org.connectbot.transport.AbsTransport
 import org.connectbot.transport.SSH
@@ -57,10 +62,12 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 import org.junit.runner.RunWith
+import java.io.ByteArrayOutputStream
 import java.net.InetAddress
 import java.net.ServerSocket
 import java.util.UUID
 import java.util.concurrent.CompletableFuture
+import java.util.concurrent.CountDownLatch
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
@@ -397,6 +404,127 @@ class TerminalBridgeWriteSerializationTest {
             } finally {
                 release.complete(Unit)
                 bridge.cleanup()
+            }
+        }
+    }
+    private class RecordingInputTransport(private val beforeWrite: suspend () -> Unit = {}) : LossyNonThreadSafeTransport() {
+        private val bytes = ByteArrayOutputStream()
+        override suspend fun write(buffer: ByteArray) {
+            beforeWrite()
+            synchronized(bytes) { bytes.write(buffer) }
+        }
+        fun text(): String = synchronized(bytes) { bytes.toString("UTF-8") }
+        override fun isSessionOpen() = false
+    }
+
+    private fun withInputBridge(test: (TerminalBridge) -> Unit) {
+        ActivityScenario.launch<MainActivity>(Intent(context, MainActivity::class.java)).use { scenario ->
+            var activity: MainActivity? = null
+            scenario.onActivity { activity = it }
+            val manager = runBlocking { requireNotNull(activity).waitUntilServiceBound() }.terminalManager
+            val bridge = TerminalBridge(manager, Host(nickname = "Configured input test", protocol = "local"), CoroutineDispatchers(Dispatchers.Default, Dispatchers.IO, Dispatchers.Main))
+            try {
+                test(bridge)
+            } finally {
+                bridge.cleanup()
+            }
+        }
+    }
+
+    private fun macro(vararg text: String): String = MacroFormat.encode(text.map { MacroAction.Text(it) })
+
+    @Test
+    fun configuredKeysAndMacrosCannotMoveToReplacementTransport() = withInputBridge { bridge ->
+        val entered = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val release = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val original = RecordingInputTransport {
+            entered.complete(Unit)
+            release.await()
+        }
+        val replacement = RecordingInputTransport()
+        try {
+            bridge.transport = original
+            bridge.sendKeyboardMacro(macro("started", "old remainder"))
+            runBlocking { withTimeout(5000) { entered.await() } }
+            bridge.sendConfiguredKey("enter")
+            bridge.sendKeyboardMacro(macro("queued"))
+            bridge.transport = replacement
+            bridge.sendKeyboardMacro(macro("new"))
+            release.complete(Unit)
+            runBlocking { withTimeout(5000) { while (replacement.text() != "new") delay(10) } }
+            assertEquals("started", original.text())
+            assertEquals("new", replacement.text())
+        } finally {
+            release.complete(Unit)
+        }
+    }
+
+    @Test
+    fun disconnectInvalidatesQueuedInputEvenWhenTransportObjectIsReused() = withInputBridge { bridge ->
+        val entered = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val release = kotlinx.coroutines.CompletableDeferred<Unit>()
+        val original = RecordingInputTransport {
+            entered.complete(Unit)
+            release.await()
+        }
+        try {
+            bridge.transport = original
+            bridge.sendKeyboardMacro(macro("started", "old remainder"))
+            runBlocking { withTimeout(5000) { entered.await() } }
+            bridge.sendConfiguredKey("enter")
+            bridge.sendKeyboardMacro(macro("queued"))
+            bridge.dispatchDisconnect(DisconnectReason.IO_ERROR)
+            bridge.onConnected()
+            bridge.sendKeyboardMacro(macro("new"))
+            release.complete(Unit)
+            runBlocking { withTimeout(5000) { while (!original.text().endsWith("new")) delay(10) } }
+            assertEquals("startednew", original.text())
+        } finally {
+            release.complete(Unit)
+        }
+    }
+
+    @Test
+    fun delayedSemanticCallbacksStayOnTheirCapturedConnection() {
+        for (character in listOf(false, true)) {
+            withInputBridge { bridge ->
+                val original = RecordingInputTransport()
+                val replacement = RecordingInputTransport()
+                val outputQueued = CountDownLatch(1)
+                val releaseCallback = CountDownLatch(1)
+                val emulator = bridge.terminalEmulator
+
+                @Suppress("UNCHECKED_CAST")
+                val keyboardCallback = emulator.javaClass.getDeclaredField("onKeyboardInput").apply { isAccessible = true }.get(emulator) as (ByteArray) -> Unit
+                val delayedEmulator = TerminalEmulatorFactory.create(onKeyboardInput = { bytes ->
+                    outputQueued.countDown()
+                    assertTrue(releaseCallback.await(10, TimeUnit.SECONDS))
+                    keyboardCallback(bytes)
+                })
+                TerminalBridge::class.java.getDeclaredField("terminalEmulator").apply { isAccessible = true }.set(bridge, delayedEmulator)
+                try {
+                    bridge.transport = original
+                    if (character) {
+                        bridge.sendKeyboardMacro(MacroFormat.encode(listOf(MacroAction.Key(character = "x"), MacroAction.Text("old remainder"))))
+                    } else {
+                        bridge.sendConfiguredKey("enter")
+                    }
+                    assertTrue(outputQueued.await(5, TimeUnit.SECONDS))
+                    // Cover both replacement alone and cancellation while callbacks are pending.
+                    if (character) bridge.dispatchDisconnect(DisconnectReason.IO_ERROR)
+                    bridge.transport = replacement
+                    if (character) bridge.onConnected()
+                    releaseCallback.countDown()
+                    val callbacksDrained = CountDownLatch(1)
+                    Handler(Looper.getMainLooper()).post { callbacksDrained.countDown() }
+                    assertTrue(callbacksDrained.await(5, TimeUnit.SECONDS))
+                    bridge.sendKeyboardMacro(macro("new"))
+                    runBlocking { withTimeout(5000) { while (replacement.text() != "new") delay(10) } }
+                    assertEquals("", original.text())
+                    assertEquals("new", replacement.text())
+                } finally {
+                    releaseCallback.countDown()
+                }
             }
         }
     }

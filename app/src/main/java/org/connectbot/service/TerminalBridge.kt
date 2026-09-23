@@ -23,11 +23,15 @@ import android.content.Context
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.net.Network
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.NonCancellable
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
@@ -46,11 +50,16 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import org.connectbot.R
 import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Profile
+import org.connectbot.data.keyboard.MacroAction
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.automation.AutomationFailure
 import org.connectbot.service.automation.AutomationKeySupport
@@ -73,6 +82,7 @@ import java.nio.charset.Charset
 import java.util.UUID
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicLong
+import kotlin.coroutines.resume
 
 data class AuthBanner(
     val id: Long,
@@ -140,6 +150,7 @@ class TerminalBridge {
 
     private sealed class TransportOperation {
         var target: AbsTransport? = null
+        var inputGeneration: Long? = null
         data class WriteData(val data: ByteArray, val completion: CompletableDeferred<Unit>? = null, val keyboard: Boolean = false) : TransportOperation()
         data class Barrier(val completion: CompletableDeferred<Unit>) : TransportOperation()
         data class SetDimensions(val columns: Int, val rows: Int, val width: Int, val height: Int) : TransportOperation()
@@ -147,6 +158,28 @@ class TerminalBridge {
     }
 
     private val transportOperations = Channel<TransportOperation>(Channel.UNLIMITED)
+    private data class InputConnection(val transport: AbsTransport?, val generation: Long)
+    private val inputGeneration = AtomicLong()
+    private var configuredInputJob: Job? = null
+    private val semanticInputMutex = Mutex()
+
+    @Volatile private var semanticInputConnection: InputConnection? = null
+
+    private fun captureInputConnection(): InputConnection = synchronized(this) {
+        InputConnection(transport, inputGeneration.get())
+    }
+
+    private fun checkInputConnection(connection: InputConnection) {
+        check(
+            connection.generation == inputGeneration.get() && connection.transport === transport &&
+                !disconnected && !connecting && connection.transport?.isConnected() == true,
+        ) { "Session is disconnected" }
+    }
+
+    private fun invalidateConfiguredInput() = synchronized(this) {
+        inputGeneration.incrementAndGet()
+        configuredInputJob?.cancel()
+    }
 
     @Volatile private var transportFailure: Exception? = null
     private var automationJob: Job? = null
@@ -165,11 +198,13 @@ class TerminalBridge {
         automationRunner?.output?.append(text)
     }
 
-    private suspend fun awaitAutomationWrite(data: ByteArray? = null) {
+    private suspend fun awaitTransportWrite(data: ByteArray? = null, connection: InputConnection) {
+        checkInputConnection(connection)
         val completion = CompletableDeferred<Unit>()
         try {
             val operation = if (data != null) TransportOperation.WriteData(data, completion) else TransportOperation.Barrier(completion)
-            operation.target = transport
+            operation.target = connection.transport
+            operation.inputGeneration = connection.generation
             transportOperations.send(operation)
             completion.await()
         } catch (e: CancellationException) {
@@ -178,28 +213,47 @@ class TerminalBridge {
         }
     }
 
+    private suspend fun dispatchSemanticInput(connection: InputConnection, action: () -> Unit) = semanticInputMutex.withLock {
+        // Drain earlier callbacks before binding this dispatch to its captured connection.
+        awaitKeyboardOutput()
+        checkInputConnection(connection)
+        semanticInputConnection = connection
+        try {
+            action()
+        } finally {
+            // Native key dispatch posts callbacks before returning. Keep their target
+            // until the main queue drains, even when disconnect cancels this invocation.
+            withContext(NonCancellable) {
+                awaitKeyboardOutput()
+                semanticInputConnection = null
+            }
+        }
+        awaitTransportWrite(connection = connection)
+    }
+
+    private suspend fun dispatchTerminalKey(key: Int, modifiers: Int, connection: InputConnection) {
+        require(AutomationKeySupport.isSupported(key, modifiers))
+        if (AutomationKeySupport.isCharacterKey(key)) {
+            if (modifiers == TerminalKeyModifiers.CTRL) {
+                awaitTransportWrite(byteArrayOf(AutomationKeySupport.controlCodeForCharacter(key).toByte()), connection)
+            } else {
+                dispatchSemanticInput(connection) { terminalEmulator.dispatchCharacter(modifiers, AutomationKeySupport.characterCodePoint(key)) }
+            }
+        } else {
+            dispatchSemanticInput(connection) { terminalEmulator.dispatchKey(modifiers, key) }
+        }
+    }
+
     private fun startAutomation() {
         cancelAutomation()
+        val connection = captureInputConnection()
         val runner = AutomationRunner(object : AutomationSession {
             override val sessionOpen: Boolean get() = isSessionOpen
-            override suspend fun sendText(text: String) = awaitAutomationWrite(text.toByteArray(charset(encoding)))
-            override suspend fun sendKey(key: Int, modifiers: Int) {
-                require(AutomationKeySupport.isSupported(key, modifiers))
-                if (AutomationKeySupport.isCharacterKey(key)) {
-                    if (modifiers == TerminalKeyModifiers.CTRL) {
-                        // Use classic control bytes for uncombined Ctrl+character.
-                        awaitAutomationWrite(byteArrayOf(AutomationKeySupport.controlCodeForCharacter(key).toByte()))
-                    } else {
-                        terminalEmulator.dispatchCharacter(modifiers, AutomationKeySupport.characterCodePoint(key))
-                        awaitAutomationWrite()
-                    }
-                } else {
-                    terminalEmulator.dispatchKey(modifiers, key)
-                    awaitAutomationWrite()
-                }
-            }
+            override suspend fun sendText(text: String) = awaitTransportWrite(text.toByteArray(charset(encoding)), connection)
+            override suspend fun sendKey(key: Int, modifiers: Int) = dispatchTerminalKey(key, modifiers, connection)
             override suspend fun setForward(id: UUID, enabled: Boolean) {
-                val t = transport ?: throw AutomationFailure(R.string.automation_action_failed)
+                checkInputConnection(connection)
+                val t = connection.transport ?: throw AutomationFailure(R.string.automation_action_failed)
                 if (!t.canForwardPorts()) throw AutomationFailure(R.string.automation_forward_unsupported)
                 val forward = t.getPortForwards()?.find { it.id == id && it.hostId == host.id }
                     ?: throw AutomationFailure(R.string.automation_forward_missing)
@@ -437,7 +491,7 @@ class TerminalBridge {
             defaultForeground = Color(defaultFgColor),
             defaultBackground = Color(defaultBgColor),
             onKeyboardInput = { data ->
-                enqueueTransportOperation(TransportOperation.WriteData(data, keyboard = true))
+                enqueueTransportOperation(TransportOperation.WriteData(data, keyboard = true), semanticInputConnection)
             },
             onBell = {
                 manager.onBell(this)
@@ -501,6 +555,7 @@ class TerminalBridge {
                 val operationTransport = operation.target
                 try {
                     if (operationTransport !== transport) throw IOException("Transport replaced")
+                    if (operation.inputGeneration?.let { it != inputGeneration.get() } == true) throw IOException("Session ended")
                     when (operation) {
                         is TransportOperation.WriteData -> {
                             if (operation.completion?.isCancelled == true) continue
@@ -539,7 +594,7 @@ class TerminalBridge {
                 } catch (e: CancellationException) {
                     throw e
                 } catch (e: IOException) {
-                    if (transport === operationTransport) {
+                    if (transport === operationTransport && operation.inputGeneration?.let { it != inputGeneration.get() } != true) {
                         transportFailure = if (operation is TransportOperation.WriteData && operation.completion == null) e else null
                         operationTransport?.userMessageForError(e)?.let { message ->
                             _transportMessages.tryEmit(manager.res.getString(message))
@@ -552,7 +607,7 @@ class TerminalBridge {
                     }
                     Timber.e(e, "Error processing transport operation")
                 } catch (e: Exception) {
-                    if (transport === operationTransport) {
+                    if (transport === operationTransport && operation.inputGeneration?.let { it != inputGeneration.get() } != true) {
                         transportFailure = if (operation is TransportOperation.WriteData && operation.completion == null) e else null
                     }
                     when (operation) {
@@ -566,8 +621,9 @@ class TerminalBridge {
         }
     }
 
-    private fun enqueueTransportOperation(operation: TransportOperation) {
-        operation.target = transport
+    private fun enqueueTransportOperation(operation: TransportOperation, connection: InputConnection? = null) {
+        operation.target = if (connection != null) connection.transport else transport
+        operation.inputGeneration = connection?.generation
         transportOperations.trySend(operation)
     }
 
@@ -634,7 +690,7 @@ class TerminalBridge {
     /**
      * Apply profile settings to the terminal.
      */
-    private fun applyProfileSettings(profile: org.connectbot.data.entity.Profile) {
+    private fun applyProfileSettings(profile: Profile) {
         if (inlineImagesSetting != profile.inlineImages) {
             inlineImagesSetting = profile.inlineImages
             terminalEmulator.setInlineImages(sessionInlineImages.policy(inlineImagesSetting))
@@ -680,6 +736,7 @@ class TerminalBridge {
             Timber.w("No transport found for ${host.protocol}")
             return
         }
+        invalidateConfiguredInput()
         connectionJob?.cancel()
         relayJob?.cancel()
         relay = null
@@ -823,6 +880,106 @@ class TerminalBridge {
         enqueueTransportOperation(TransportOperation.WriteData(byteArrayOf(c.toByte())))
     }
 
+    private data class ConfiguredInput(
+        val connection: InputConnection,
+        val key: String? = null,
+        val modifiers: Int = 0,
+        val macro: String? = null,
+    )
+    private val configuredInputs = Channel<ConfiguredInput>(Channel.UNLIMITED)
+    val keyboardErrors = MutableSharedFlow<String>(extraBufferCapacity = 1)
+    private val configuredInputProcessor by lazy {
+        scope.launch(dispatchers.io) {
+            for (input in configuredInputs) {
+                coroutineScope {
+                    val invocation = launch(start = CoroutineStart.LAZY) {
+                        try {
+                            executeConfiguredInput(input)
+                        } catch (e: CancellationException) {
+                            throw e
+                        } catch (e: Exception) {
+                            keyboardErrors.tryEmit(e.message ?: "Keyboard action unavailable")
+                        }
+                    }
+                    synchronized(this@TerminalBridge) {
+                        if (input.connection.generation == inputGeneration.get() && input.connection.transport === transport) {
+                            configuredInputJob = invocation
+                            invocation.start()
+                        } else {
+                            invocation.cancel()
+                        }
+                    }
+                    try {
+                        invocation.join()
+                    } finally {
+                        synchronized(this@TerminalBridge) {
+                            if (configuredInputJob === invocation) configuredInputJob = null
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private suspend fun executeConfiguredInput(input: ConfiguredInput) {
+        val connection = input.connection
+        checkInputConnection(connection)
+        if (input.key != null) {
+            dispatchTerminalKey(KeyboardActions.key(input.key), input.modifiers, connection)
+            return
+        }
+        runKeyboardMacro(
+            input.macro!!,
+            object : MacroOutput {
+                override suspend fun checkConnected() = checkInputConnection(connection)
+                override suspend fun accepted() {
+                    withContext(dispatchers.main) {
+                        checkInputConnection(connection)
+                        keyHandler.clearTransients()
+                    }
+                }
+                override suspend fun text(text: String) {
+                    bytes(text.toByteArray(charset(encoding)))
+                }
+                override suspend fun bytes(bytes: ByteArray) {
+                    awaitTransportWrite(bytes, connection)
+                }
+                override suspend fun key(key: MacroAction.Key) {
+                    val modifiers = (if ("shift" in key.modifiers) 1 else 0) or
+                        (if ("alt" in key.modifiers) 2 else 0) or (if ("ctrl" in key.modifiers) 4 else 0)
+                    if (key.key != null) {
+                        dispatchTerminalKey(KeyboardActions.key(key.key), modifiers, connection)
+                    } else {
+                        dispatchSemanticInput(connection) { terminalEmulator.dispatchCharacter(modifiers, key.character!!.codePointAt(0)) }
+                    }
+                }
+            },
+        )
+    }
+
+    /** Called from UI: capture/consume transient modifiers before another tap can change them. */
+    fun sendConfiguredKey(target: String) {
+        val connection = captureInputConnection()
+        val modifiers = if (target == "escape" || target == "tab") 0 else keyHandler.modifiersForKeyboard()
+        keyHandler.clearTransients()
+        configuredInputProcessor
+        configuredInputs.trySend(ConfiguredInput(connection, key = target, modifiers = modifiers))
+    }
+
+    fun sendKeyboardMacro(document: String) {
+        val connection = captureInputConnection()
+        configuredInputProcessor
+        configuredInputs.trySend(ConfiguredInput(connection, macro = document))
+    }
+
+    private suspend fun awaitKeyboardOutput() {
+        // termlib posts output on the main looper before dispatch returns. Fence that
+        // queue so a following raw/text action cannot overtake semantic key output.
+        suspendCancellableCoroutine { continuation ->
+            Handler(Looper.getMainLooper()).post { continuation.resume(Unit) }
+        }
+    }
+
     /**
      * Enqueue a single byte for transport write. Goes through the same serialized
      * channel as [injectString] so keyboard input cannot interleave with paste data.
@@ -947,6 +1104,7 @@ class TerminalBridge {
      * IO_ERROR already marked disconnected.
      */
     fun dispatchDisconnect(reason: DisconnectReason) {
+        invalidateConfiguredInput()
         cancelAutomation()
         // We don't need to do this multiple times.
         synchronized(this) {
@@ -1154,12 +1312,14 @@ class TerminalBridge {
      * Releases bitmap and clears parent reference to prevent memory leaks.
      */
     fun cleanup() {
+        invalidateConfiguredInput()
         cancelAutomation()
         // Cancel grace period if active
         networkGracePeriodJob?.cancel()
         inGracePeriod = false
 
         profileObservationJob?.cancel()
+        configuredInputs.close()
         transportOperations.close()
         scope.cancel()
     }
