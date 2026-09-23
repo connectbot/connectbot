@@ -491,6 +491,7 @@ dependencies {
     implementation(libs.androidx.media3.common.ktx)
     implementation(libs.androidx.navigation.testing)
     implementation(libs.androidx.ui)
+    implementation(libs.reorderable)
     "googleImplementation"(libs.play.services.basement)
     "googleImplementation"(libs.play.feature.delivery)
     testImplementation(libs.play.feature.delivery)

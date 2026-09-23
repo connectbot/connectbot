@@ -18,6 +18,7 @@
 package org.connectbot.ui.screens.settings
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -100,6 +101,7 @@ fun SettingsScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     highlightItem: String? = null,
+    onNavigateToKeyboard: () -> Unit = {},
     viewModel: SettingsViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -170,6 +172,7 @@ fun SettingsScreen(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
         highlightItem = highlightItem,
+        onNavigateToKeyboard = onNavigateToKeyboard,
         onAuthOnLaunchChange = viewModel::updateAuthOnLaunch,
         onMemkeysChange = viewModel::updateMemkeys,
         onConnPersistChange = viewModel::updateConnPersist,
@@ -257,6 +260,7 @@ fun SettingsScreenContent(
     onBellNotificationChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     highlightItem: String? = null,
+    onNavigateToKeyboard: () -> Unit = {},
 ) {
     Scaffold(
         topBar = {
@@ -567,6 +571,9 @@ fun SettingsScreenContent(
 
             item {
                 PreferenceCategory(title = stringResource(R.string.pref_keyboard_category))
+                TextButton(onClick = onNavigateToKeyboard) {
+                    Text(stringResource(R.string.keyboard_settings_title))
+                }
             }
 
             item {
@@ -579,12 +586,6 @@ fun SettingsScreenContent(
             }
 
             item {
-                SwitchPreference(
-                    title = stringResource(R.string.pref_imetogglekey_title),
-                    summary = stringResource(R.string.pref_imetogglekey_summary),
-                    checked = uiState.imeTogglekey,
-                    onCheckedChange = onImeToggleKeyChange,
-                )
             }
 
             item {
@@ -745,7 +746,7 @@ fun SettingsScreenContent(
     }
 }
 
-private fun buildAvailableLanguageList(context: android.content.Context): List<Pair<String, String>> {
+private fun buildAvailableLanguageList(context: Context): List<Pair<String, String>> {
     val localeTags = mutableListOf<String>()
     val parser = context.resources.getXml(R.xml._generated_res_locale_config)
     while (parser.next() != XmlPullParser.END_DOCUMENT) {

@@ -1645,4 +1645,176 @@
 	<string name="automation_key_shift">Shift</string>
 	<!-- Action summary duration in seconds. -->
 	<string name="automation_seconds">%1$.3f s</string>
+
+	<!-- Terminal keyboard -->
+	<!-- Terminal keyboard configuration: key ctrl. -->
+	<string name="keyboard_key_ctrl">Ctrl</string>
+	<!-- Terminal keyboard configuration: key alt. -->
+	<string name="keyboard_key_alt">Alt</string>
+	<!-- Terminal keyboard configuration: key shift. -->
+	<string name="keyboard_key_shift">Shift</string>
+	<!-- Terminal keyboard configuration: key escape. -->
+	<string name="keyboard_key_escape">Esc</string>
+	<!-- Terminal keyboard configuration: key tab. -->
+	<string name="keyboard_key_tab">Tab</string>
+	<!-- Terminal keyboard configuration: key enter. -->
+	<string name="keyboard_key_enter">Enter</string>
+	<!-- Terminal keyboard configuration: key backspace. -->
+	<string name="keyboard_key_backspace">Backspace</string>
+	<!-- Terminal keyboard configuration: key delete. -->
+	<string name="keyboard_key_delete">Delete</string>
+	<!-- Terminal keyboard configuration: key insert. -->
+	<string name="keyboard_key_insert">Insert</string>
+	<!-- Terminal keyboard configuration: key arrow up. -->
+	<string name="keyboard_key_arrow_up">↑</string>
+	<!-- Terminal keyboard configuration: key arrow down. -->
+	<string name="keyboard_key_arrow_down">↓</string>
+	<!-- Terminal keyboard configuration: key arrow left. -->
+	<string name="keyboard_key_arrow_left">←</string>
+	<!-- Terminal keyboard configuration: key arrow right. -->
+	<string name="keyboard_key_arrow_right">→</string>
+	<!-- Terminal keyboard configuration: key home. -->
+	<string name="keyboard_key_home">Home</string>
+	<!-- Terminal keyboard configuration: key end. -->
+	<string name="keyboard_key_end">End</string>
+	<!-- Terminal keyboard configuration: key page up. -->
+	<string name="keyboard_key_page_up">PgUp</string>
+	<!-- Terminal keyboard configuration: key page down. -->
+	<string name="keyboard_key_page_down">PgDn</string>
+	<!-- Terminal keyboard configuration: key text input. -->
+	<string name="keyboard_key_text_input">Text input</string>
+	<!-- Terminal keyboard configuration: key toggle compose. -->
+	<string name="keyboard_key_toggle_compose">Compose</string>
+	<!-- Terminal keyboard configuration: key toggle ime. -->
+	<string name="keyboard_key_toggle_ime">Keyboard</string>
+	<!-- Terminal keyboard configuration: key f1. -->
+	<string name="keyboard_key_f1">F1</string>
+	<!-- Terminal keyboard configuration: key f2. -->
+	<string name="keyboard_key_f2">F2</string>
+	<!-- Terminal keyboard configuration: key f3. -->
+	<string name="keyboard_key_f3">F3</string>
+	<!-- Terminal keyboard configuration: key f4. -->
+	<string name="keyboard_key_f4">F4</string>
+	<!-- Terminal keyboard configuration: key f5. -->
+	<string name="keyboard_key_f5">F5</string>
+	<!-- Terminal keyboard configuration: key f6. -->
+	<string name="keyboard_key_f6">F6</string>
+	<!-- Terminal keyboard configuration: key f7. -->
+	<string name="keyboard_key_f7">F7</string>
+	<!-- Terminal keyboard configuration: key f8. -->
+	<string name="keyboard_key_f8">F8</string>
+	<!-- Terminal keyboard configuration: key f9. -->
+	<string name="keyboard_key_f9">F9</string>
+	<!-- Terminal keyboard configuration: key f10. -->
+	<string name="keyboard_key_f10">F10</string>
+	<!-- Terminal keyboard configuration: key f11. -->
+	<string name="keyboard_key_f11">F11</string>
+	<!-- Terminal keyboard configuration: key f12. -->
+	<string name="keyboard_key_f12">F12</string>
+	<!-- Terminal keyboard configuration: settings title. -->
+	<string name="keyboard_settings_title">Terminal keyboard</string>
+	<!-- Terminal keyboard configuration: layouts. -->
+	<string name="keyboard_layouts">Keyboard layouts</string>
+	<!-- Terminal keyboard configuration: macros. -->
+	<string name="keyboard_macros">Shared macros</string>
+	<!-- Terminal keyboard configuration: missing macro. -->
+	<string name="keyboard_missing_macro">Missing macro</string>
+	<!-- Terminal keyboard configuration: unsupported. -->
+	<string name="keyboard_unsupported">Unsupported configuration</string>
+	<!-- Terminal keyboard configuration: action failed. -->
+	<string name="keyboard_action_failed">Keyboard action failed</string>
+	<!-- Terminal keyboard configuration: move up. -->
+	<string name="keyboard_move_up">Move up</string>
+	<!-- Terminal keyboard configuration: move down. -->
+	<string name="keyboard_move_down">Move down</string>
+	<!-- Terminal keyboard configuration: move left. -->
+	<string name="keyboard_move_left">Move left</string>
+	<!-- Terminal keyboard configuration: move right. -->
+	<string name="keyboard_move_right">Move right</string>
+	<!-- Terminal keyboard configuration: off. -->
+	<string name="keyboard_off">Off</string>
+	<!-- Terminal keyboard configuration: once. -->
+	<string name="keyboard_once">Next key</string>
+	<!-- Terminal keyboard configuration: locked. -->
+	<string name="keyboard_locked">Locked</string>
+	<!-- Terminal keyboard configuration: new layout. -->
+	<string name="keyboard_new_layout">New layout</string>
+	<!-- Terminal keyboard configuration: new macro. -->
+	<string name="keyboard_new_macro">New macro</string>
+	<!-- Terminal keyboard configuration: copy suffix. -->
+	<string name="keyboard_copy_suffix"> (copy)</string>
+	<!-- Terminal keyboard configuration: back. -->
+	<string name="keyboard_back">Back</string>
+	<!-- Terminal keyboard configuration: error. -->
+	<string name="keyboard_error">Could not apply change: %1$s</string>
+	<!-- Terminal keyboard configuration: add layout. -->
+	<string name="keyboard_add_layout">Add layout</string>
+	<!-- Terminal keyboard configuration: add macro. -->
+	<string name="keyboard_add_macro">Add macro</string>
+	<!-- Terminal keyboard configuration: edit. -->
+	<string name="keyboard_edit">Edit</string>
+	<!-- Terminal keyboard configuration: duplicate. -->
+	<string name="keyboard_duplicate">Duplicate</string>
+	<!-- Terminal keyboard configuration: delete. -->
+	<string name="keyboard_delete">Delete</string>
+	<!-- Terminal keyboard configuration: default. -->
+	<string name="keyboard_default">Use as app default</string>
+	<!-- Terminal keyboard configuration: used by. -->
+	<string name="keyboard_used_by">Used in: %1$s</string>
+	<!-- Terminal keyboard configuration: confirm. -->
+	<string name="keyboard_confirm">Confirm</string>
+	<!-- Terminal keyboard configuration: confirm message. -->
+	<string name="keyboard_confirm_message">Apply this destructive change? Saved layout edits may be lost. Shared macros are kept when resetting a layout.</string>
+	<!-- Terminal keyboard configuration: cancel. -->
+	<string name="keyboard_cancel">Cancel</string>
+	<!-- Terminal keyboard configuration: name. -->
+	<string name="keyboard_name">Name</string>
+	<!-- Terminal keyboard configuration: width. -->
+	<string name="keyboard_width">Button width (dp, all buttons)</string>
+	<!-- Terminal keyboard configuration: height. -->
+	<string name="keyboard_height">Button height (dp, all buttons)</string>
+	<!-- Terminal keyboard configuration: grid help. -->
+	<string name="keyboard_grid_help">Tap a button to edit it. Drag a handle in the list below to reorder buttons; use row and column fields for exact placement. Width and height apply to all buttons in this layout; spans are multiples of that size.</string>
+	<!-- Terminal keyboard configuration: drag handle for a button in the layout editor. -->
+	<string name="keyboard_drag_button">Drag to reorder button</string>
+	<!-- Terminal keyboard configuration: add button. -->
+	<string name="keyboard_add_button">Add button</string>
+	<!-- Terminal keyboard configuration: visible. -->
+	<string name="keyboard_visible">Visible</string>
+	<!-- Terminal keyboard configuration: row. -->
+	<string name="keyboard_row">Row (starting at 0)</string>
+	<!-- Terminal keyboard configuration: column. -->
+	<string name="keyboard_column">Column (starting at 0)</string>
+	<!-- Terminal keyboard configuration: row span. -->
+	<string name="keyboard_row_span">Row span</string>
+	<!-- Terminal keyboard configuration: column span. -->
+	<string name="keyboard_column_span">Column span</string>
+	<!-- Terminal keyboard configuration: remove button. -->
+	<string name="keyboard_remove_button">Remove button</string>
+	<!-- Terminal keyboard configuration: save. -->
+	<string name="keyboard_save">Save</string>
+	<!-- Terminal keyboard configuration: reset. -->
+	<string name="keyboard_reset">Restore defaults</string>
+	<!-- Terminal keyboard configuration: use default. -->
+	<string name="keyboard_use_default">Use app default</string>
+	<!-- Terminal keyboard configuration: visual editor. -->
+	<string name="keyboard_visual_editor">Visual editor</string>
+	<!-- Terminal keyboard configuration: text editor. -->
+	<string name="keyboard_text_editor">Text editor</string>
+	<!-- Terminal keyboard configuration: macro help. -->
+	<string name="keyboard_macro_help">One action per line: key ctrl+b, text \"hello\", key enter, or bytes 1b 5b 41. Text uses JSON string escaping.</string>
+	<!-- Terminal keyboard configuration: steps. -->
+	<string name="keyboard_steps">Macro steps</string>
+	<!-- Terminal keyboard configuration: add text. -->
+	<string name="keyboard_add_text">Add text</string>
+	<!-- Terminal keyboard configuration: add key. -->
+	<string name="keyboard_add_key">Add key</string>
+	<!-- Terminal keyboard configuration: add bytes. -->
+	<string name="keyboard_add_bytes">Add bytes</string>
+	<!-- Terminal keyboard configuration: text. -->
+	<string name="keyboard_text">Text to send</string>
+	<!-- Terminal keyboard configuration: bytes. -->
+	<string name="keyboard_bytes">Exact bytes (hexadecimal)</string>
+	<!-- Terminal keyboard configuration: character. -->
+	<string name="keyboard_character">Character</string>
 </resources>

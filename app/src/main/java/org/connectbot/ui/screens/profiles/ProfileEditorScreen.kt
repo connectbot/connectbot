@@ -67,6 +67,7 @@ import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.common.getLocalizedFontDisplayName
 import org.connectbot.ui.components.EditorScaffold
 import org.connectbot.ui.components.FontDownloadProgressDialog
+import org.connectbot.ui.screens.keyboard.KeyboardLayoutSelector
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
 
@@ -119,6 +120,10 @@ fun ProfileEditorScreen(
                     .verticalScroll(rememberScrollState())
                     .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 88.dp),
             ) {
+                KeyboardLayoutSelector(
+                    selected = uiState.keyboardLayoutId,
+                    onSelect = viewModel::updateKeyboardLayoutId,
+                )
                 // Profile Name
                 OutlinedTextField(
                     value = uiState.name,
@@ -783,7 +788,7 @@ private fun ForceSizeSelector(
         )
 
         Row(
-            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically,
+            verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.fillMaxWidth(),
         ) {
             Text(
