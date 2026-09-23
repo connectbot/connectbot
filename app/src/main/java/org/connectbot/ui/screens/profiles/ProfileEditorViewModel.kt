@@ -52,6 +52,7 @@ data class ProfileEditorUiState(
     val fontFamily: String? = null,
     val fontSize: Int = 10,
     val boldAsBright: Boolean = true,
+    val keyboardLayoutId: UUID? = null,
     val delKey: String = "del",
     val inlineImages: String = "ask",
     val encoding: String = "UTF-8",
@@ -154,6 +155,7 @@ class ProfileEditorViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         name = profile.name,
+                        keyboardLayoutId = profile.keyboardLayoutId,
                         iconColor = profile.iconColor,
                         colorSchemeId = profile.colorSchemeId,
                         fontFamily = profile.fontFamily,
@@ -174,6 +176,10 @@ class ProfileEditorViewModel @Inject constructor(
                 _uiState.update { it.copy(isLoading = false) }
             }
         }
+    }
+
+    fun updateKeyboardLayoutId(value: UUID?) {
+        _uiState.update { it.copy(keyboardLayoutId = value, saveError = null, hasUnsavedChanges = true) }
     }
 
     fun updateName(value: String) {
@@ -270,6 +276,7 @@ class ProfileEditorViewModel @Inject constructor(
                 id = if (profileId != EntityIds.NONE) profileId else UUID.randomUUID(),
                 repositoryId = profileRepository.getById(profileId)?.repositoryId ?: EntityIds.LOCAL,
                 name = state.name,
+                keyboardLayoutId = state.keyboardLayoutId,
                 iconColor = state.iconColor,
                 colorSchemeId = state.colorSchemeId,
                 fontFamily = state.fontFamily,

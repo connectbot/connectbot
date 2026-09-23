@@ -34,6 +34,7 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
@@ -55,8 +56,13 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
+import org.connectbot.data.keyboard.KeyboardItem
+import org.connectbot.data.keyboard.KeyboardLayout
+import org.connectbot.data.keyboard.KeyboardRepository
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.ModifierLevel
 import org.connectbot.service.ModifierState
@@ -92,6 +98,7 @@ import org.junit.runner.RunWith
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import java.util.UUID
+import javax.inject.Inject
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -101,6 +108,8 @@ class ConsoleScreenTest {
 
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<HiltComponentActivity>()
+
+    @Inject lateinit var keyboardRepository: KeyboardRepository
 
     private lateinit var navController: TestNavHostController
 
@@ -230,6 +239,7 @@ class ConsoleScreenTest {
     fun consoleScreen_remoteDisconnect_showsReconnectAfterBridgeStateChanges() {
         val bridge = mock(TerminalBridge::class.java)
         `when`(bridge.transportMessages).thenReturn(MutableSharedFlow())
+        `when`(bridge.keyboardErrors).thenReturn(MutableSharedFlow())
         val host = Host(id = UUID(0, 1), nickname = "test-host")
         val emulator = TerminalEmulatorFactory.create()
         `when`(bridge.host).thenReturn(host)
@@ -436,6 +446,45 @@ class ConsoleScreenTest {
         }
         composeTestRule.onNodeWithText("Host list").assertIsDisplayed()
         composeTestRule.runOnIdle { assertEquals(1, navigationCount) }
+    }
+
+    @Test
+    fun customKeyboardTextInputButtonOpensExistingDialog() {
+        val layout = KeyboardLayout(name = "Optional text input")
+        val item = KeyboardItem(layoutId = layout.id, kind = "app", target = "text_input")
+        val previousDefault = runBlocking {
+            val original = keyboardRepository.configuration.first { it.layouts.isNotEmpty() }.settings?.defaultLayoutId
+            keyboardRepository.save(layout, listOf(item))
+            keyboardRepository.setDefault(layout.id)
+            original
+        }
+        val bridge = mock(TerminalBridge::class.java)
+        val emulator = TerminalEmulatorFactory.create()
+        `when`(bridge.host).thenReturn(Host(isTemporary = true, nickname = "Text input"))
+        `when`(bridge.terminalEmulator).thenReturn(emulator)
+        `when`(bridge.transportMessages).thenReturn(MutableSharedFlow())
+        `when`(bridge.keyboardErrors).thenReturn(MutableSharedFlow())
+        `when`(bridge.fontSizeFlow).thenReturn(MutableStateFlow(14f))
+        `when`(bridge.delKeyModeFlow).thenReturn(MutableStateFlow(DelKeyMode.Backspace))
+        `when`(bridge.promptManager).thenReturn(PromptManager())
+        `when`(bridge.keyHandler).thenReturn(TerminalKeyListener(TerminalEmulatorKeyDispatcher(emulator)))
+        val viewModel = mock(ConsoleViewModel::class.java)
+        `when`(viewModel.uiState).thenReturn(MutableStateFlow(ConsoleUiState(bridges = listOf(bridge), isLoading = false)))
+        `when`(viewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+        try {
+            setContent(mockConsoleViewModel = viewModel)
+            navigateToConsoleScreen(bridge.host.id)
+            composeTestRule.waitUntil(5000) {
+                composeTestRule.onAllNodesWithTag("keyboard_button_${item.id}").fetchSemanticsNodes().isNotEmpty()
+            }
+            composeTestRule.onNodeWithTag("keyboard_button_${item.id}").performClick()
+            composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.terminal_text_input_dialog_label)).assertIsDisplayed()
+        } finally {
+            runBlocking {
+                if (previousDefault != null) keyboardRepository.setDefault(previousDefault)
+                keyboardRepository.deleteLayout(layout.id)
+            }
+        }
     }
 
     @Test
@@ -658,6 +707,7 @@ class ConsoleScreenTest {
     fun consoleScreen_connectionInfoMenu_opensAndDismissesPanel() {
         val bridge = mock(TerminalBridge::class.java)
         `when`(bridge.transportMessages).thenReturn(MutableSharedFlow())
+        `when`(bridge.keyboardErrors).thenReturn(MutableSharedFlow())
         val host = Host(id = UUID(0, 1), nickname = "test-host", hostname = "server.example")
         val emulator = TerminalEmulatorFactory.create()
         `when`(bridge.host).thenReturn(host)
