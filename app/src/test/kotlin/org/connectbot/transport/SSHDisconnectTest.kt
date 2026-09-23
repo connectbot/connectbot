@@ -27,6 +27,7 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyInt
+import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.mock
@@ -64,6 +65,7 @@ class SSHDisconnectTest {
     fun read_withEof_delegatesCloseToBridgeWithoutClosingTransportDirectly() {
         val session = mock(Session::class.java)
         val bridge = mock(TerminalBridge::class.java)
+        `when`(session.exitStatus).thenReturn(null)
         `when`(session.waitForCondition(anyInt(), eq(0L))).thenReturn(ChannelCondition.EOF)
         val ssh = spy(SSH()).apply {
             setBridge(bridge)
@@ -101,6 +103,33 @@ class SSHDisconnectTest {
             DisconnectAction.CloseImmediately,
             DisconnectPolicy.decide(reason, quickDisconnect = false, stayConnected = false),
         )
+    }
+
+    @Test
+    fun getDisconnectReasonForClosedSession_whenExitStatusFollowsEof_reportsSessionExit() {
+        val session = mock(Session::class.java)
+        `when`(session.exitStatus).thenReturn(null, 0)
+        `when`(session.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), anyLong()))
+            .thenReturn(ChannelCondition.EXIT_STATUS)
+
+        assertEquals(DisconnectReason.SESSION_EXIT, SSH().getDisconnectReasonForClosedSession(session))
+    }
+
+    @Test
+    fun getDisconnectReasonForClosedSession_withoutExitStatus_reportsRemoteEof() {
+        val session = mock(Session::class.java)
+        `when`(session.exitStatus).thenReturn(null)
+
+        assertEquals(DisconnectReason.REMOTE_EOF, SSH().getDisconnectReasonForClosedSession(session))
+    }
+
+    @Test
+    fun getDisconnectReasonForClosedSession_withExitSignal_reportsRemoteEof() {
+        val session = mock(Session::class.java)
+        `when`(session.exitStatus).thenReturn(null)
+        `when`(session.exitSignal).thenReturn("TERM")
+
+        assertEquals(DisconnectReason.REMOTE_EOF, SSH().getDisconnectReasonForClosedSession(session))
     }
 
     private fun SSH.setPrivateField(name: String, value: Any?) {
