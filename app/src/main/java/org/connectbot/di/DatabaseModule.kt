@@ -27,6 +27,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.keyboard.KeyboardDefaults
 import javax.inject.Singleton
 
 @Module
@@ -45,6 +46,7 @@ object DatabaseModule {
         .addCallback(object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
+                KeyboardDefaults.seed(db)
                 // Create default profile on fresh database creation
                 db.execSQL(
                     """

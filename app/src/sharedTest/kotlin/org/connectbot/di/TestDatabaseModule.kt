@@ -27,6 +27,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.keyboard.KeyboardDefaults
 import javax.inject.Singleton
 
 @Module
@@ -48,6 +49,7 @@ object TestDatabaseModule {
         .addCallback(object : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
+                KeyboardDefaults.seed(db)
                 db.execSQL(
                     """
                         INSERT INTO profiles (name, color_scheme_id, font_size, del_key, encoding, emulation)

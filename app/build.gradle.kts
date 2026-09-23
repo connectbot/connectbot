@@ -412,9 +412,9 @@ tasks.withType<Test>().configureEach {
 }
 
 // Generate filtered export schema from Room schema
-// Only includes tables needed for export/import (profiles, hosts, port_forwards)
+// Includes keyboard configuration and host/profile tables in the export schema
 val generateExportSchema by tasks.registering {
-    val exportTables = setOf("profiles", "hosts", "port_forwards", "automation_actions")
+    val exportTables = setOf("profiles", "hosts", "port_forwards", "automation_actions", "keyboard_layouts", "keyboard_macros", "keyboard_items")
     val excludedFields = setOf("last_connect", "host_key_algo")
 
     // Read schema version from Room's @Database annotation.
