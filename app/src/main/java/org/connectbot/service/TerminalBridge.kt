@@ -23,6 +23,8 @@ import android.content.Context
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.net.Network
+import android.os.Handler
+import android.os.Looper
 import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
@@ -47,10 +49,13 @@ import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
+import kotlinx.coroutines.withContext
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Profile
+import org.connectbot.data.keyboard.MacroAction
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.automation.AutomationFailure
 import org.connectbot.service.automation.AutomationKeySupport
@@ -73,6 +78,7 @@ import java.io.IOException
 import java.nio.charset.Charset
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicLong
+import kotlin.coroutines.resume
 
 data class AuthBanner(
     val id: Long,
@@ -589,7 +595,7 @@ class TerminalBridge {
     /**
      * Apply profile settings to the terminal.
      */
-    private fun applyProfileSettings(profile: org.connectbot.data.entity.Profile) {
+    private fun applyProfileSettings(profile: Profile) {
         if (inlineImagesSetting != profile.inlineImages) {
             inlineImagesSetting = profile.inlineImages
             terminalEmulator.setInlineImages(sessionInlineImages.policy(inlineImagesSetting))
@@ -740,6 +746,90 @@ class TerminalBridge {
         transportOperations.trySend(
             TransportOperation.WriteData(string.toByteArray(charset(encoding))),
         )
+    }
+
+    private data class ConfiguredInput(val key: String? = null, val modifiers: Int = 0, val macro: String? = null)
+    private val configuredInputs = Channel<ConfiguredInput>(Channel.UNLIMITED)
+    val keyboardErrors = MutableSharedFlow<String>(extraBufferCapacity = 1)
+    private val configuredInputProcessor by lazy {
+        scope.launch(dispatchers.io) {
+            for (input in configuredInputs) {
+                try {
+                    if (input.key != null) {
+                        terminalEmulator.dispatchKey(input.modifiers, KeyboardActions.key(input.key))
+                        awaitKeyboardOutput()
+                    } else {
+                        runKeyboardMacro(
+                            input.macro!!,
+                            object : MacroOutput {
+                                override suspend fun checkConnected() {
+                                    check(!disconnected && !connecting && transport?.isConnected() == true) { "Session is disconnected" }
+                                }
+                                override suspend fun accepted() {
+                                    withContext(dispatchers.main) { keyHandler.clearTransients() }
+                                }
+                                override suspend fun text(text: String) {
+                                    bytes(text.toByteArray(charset(encoding)))
+                                }
+                                override suspend fun bytes(bytes: ByteArray) {
+                                    val completion = CompletableDeferred<Unit>()
+                                    try {
+                                        transportOperations.send(TransportOperation.WriteData(bytes, completion))
+                                        completion.await()
+                                    } catch (e: CancellationException) {
+                                        completion.cancel()
+                                        throw e
+                                    }
+                                }
+                                override suspend fun key(key: MacroAction.Key) {
+                                    val modifiers = (if ("shift" in key.modifiers) 1 else 0) or
+                                        (if ("alt" in key.modifiers) 2 else 0) or (if ("ctrl" in key.modifiers) 4 else 0)
+                                    if (key.key != null) {
+                                        terminalEmulator.dispatchKey(modifiers, KeyboardActions.key(key.key))
+                                    } else {
+                                        terminalEmulator.dispatchCharacter(modifiers, key.character!!.codePointAt(0))
+                                    }
+                                    awaitKeyboardOutput()
+                                    val completion = CompletableDeferred<Unit>()
+                                    try {
+                                        transportOperations.send(TransportOperation.Barrier(completion))
+                                        completion.await()
+                                    } catch (e: CancellationException) {
+                                        completion.cancel()
+                                        throw e
+                                    }
+                                }
+                            },
+                        )
+                    }
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    keyboardErrors.tryEmit(e.message ?: "Keyboard action unavailable")
+                }
+            }
+        }
+    }
+
+    /** Called from UI: capture/consume transient modifiers before another tap can change them. */
+    fun sendConfiguredKey(target: String) {
+        val modifiers = if (target == "escape" || target == "tab") 0 else keyHandler.modifiersForKeyboard()
+        keyHandler.clearTransients()
+        configuredInputProcessor
+        configuredInputs.trySend(ConfiguredInput(key = target, modifiers = modifiers))
+    }
+
+    fun sendKeyboardMacro(document: String) {
+        configuredInputProcessor
+        configuredInputs.trySend(ConfiguredInput(macro = document))
+    }
+
+    private suspend fun awaitKeyboardOutput() {
+        // termlib posts output on the main looper before dispatch returns. Fence that
+        // queue so a following raw/text action cannot overtake semantic key output.
+        suspendCancellableCoroutine { continuation ->
+            Handler(Looper.getMainLooper()).post { continuation.resume(Unit) }
+        }
     }
 
     /**
@@ -1052,6 +1142,7 @@ class TerminalBridge {
         inGracePeriod = false
 
         profileObservationJob?.cancel()
+        configuredInputs.close()
         transportOperations.close()
         scope.cancel()
     }
