@@ -128,6 +128,9 @@ fun ConnectBotNavHost(
         ) {
             HostEditorScreen(
                 onNavigateBack = { navController.safePopBackStack() },
+                onNavigateToProfile = { profileId ->
+                    navController.navigateSafely("${NavDestinations.PROFILE_EDITOR}/$profileId")
+                },
             )
         }
 

@@ -88,6 +88,7 @@ import org.connectbot.util.TerminalFont
 @Composable
 fun HostEditorScreen(
     onNavigateBack: () -> Unit,
+    onNavigateToProfile: (Long) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HostEditorViewModel = hiltViewModel(),
 ) {
@@ -106,6 +107,7 @@ fun HostEditorScreen(
         onColorChange = viewModel::updateColor,
         onPubkeyChange = viewModel::updatePubkeyId,
         onProfileChange = viewModel::updateProfileId,
+        onNavigateToProfile = onNavigateToProfile,
         onUseAuthAgentChange = viewModel::updateUseAuthAgent,
         onCompressionChange = viewModel::updateCompression,
         onWantSessionChange = viewModel::updateWantSession,
@@ -136,6 +138,7 @@ fun HostEditorScreenContent(
     onColorChange: (String) -> Unit,
     onPubkeyChange: (Long) -> Unit,
     onProfileChange: (Long?) -> Unit,
+    onNavigateToProfile: (Long) -> Unit,
     onUseAuthAgentChange: (String) -> Unit,
     onCompressionChange: (Boolean) -> Unit,
     onWantSessionChange: (Boolean) -> Unit,
@@ -422,6 +425,7 @@ fun HostEditorScreenContent(
                 profileId = uiState.profileId,
                 availableProfiles = uiState.availableProfiles,
                 onProfileSelect = onProfileChange,
+                onEditProfile = onNavigateToProfile,
             )
 
             // Jump host selector (only for SSH protocol)
@@ -854,10 +858,11 @@ private fun PubkeySelector(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ProfileSelector(
+internal fun ProfileSelector(
     profileId: Long?,
     availableProfiles: List<Profile>,
     onProfileSelect: (Long?) -> Unit,
+    onEditProfile: (Long) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
@@ -925,6 +930,11 @@ private fun ProfileSelector(
                         contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
                     )
                 }
+            }
+        }
+        if (profileId != null && availableProfiles.any { it.id == profileId }) {
+            TextButton(onClick = { onEditProfile(profileId) }) {
+                Text(stringResource(R.string.hostpref_profile_edit))
             }
         }
     }
@@ -1288,6 +1298,7 @@ private fun HostEditorScreenPreview() {
             onColorChange = {},
             onPubkeyChange = {},
             onProfileChange = {},
+            onNavigateToProfile = {},
             onUseAuthAgentChange = {},
             onCompressionChange = {},
             onWantSessionChange = {},
