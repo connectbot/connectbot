@@ -1037,22 +1037,6 @@ class SSH :
         bridge?.dispatchDisconnect(reason)
     }
 
-    @VisibleForTesting
-    internal fun getDisconnectReasonForClosedSession(session: Session): DisconnectReason {
-        if (session.exitStatus != null) return DisconnectReason.SESSION_EXIT
-
-        // EOF can precede the SSH exit-status request. Give that request a
-        // short window to arrive before treating the close as remote EOF.
-        val conditions = session.waitForCondition(
-            ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL,
-            EXIT_STATUS_WAIT_MS,
-        )
-        if ((conditions and ChannelCondition.EXIT_SIGNAL) != 0 || session.exitSignal != null) {
-            return DisconnectReason.REMOTE_EOF
-        }
-        return if (session.exitStatus != null) DisconnectReason.SESSION_EXIT else DisconnectReason.REMOTE_EOF
-    }
-
     @Throws(IOException::class)
     override fun flush() {
         stdin?.flush()
@@ -1090,7 +1074,7 @@ class SSH :
             // ConnectionMonitor.connectionLost().
             val currentBridge = bridge
             if (currentBridge != null) {
-                currentBridge.dispatchDisconnect(getDisconnectReasonForClosedSession(currentSession))
+                currentBridge.dispatchDisconnect(DisconnectReason.REMOTE_EOF)
             } else {
                 // SSH is normally always attached to a bridge. Preserve the
                 // transport contract for callers that use it independently.
@@ -1506,7 +1490,6 @@ class SSH :
         private const val AUTH_KEYBOARDINTERACTIVE = "keyboard-interactive"
 
         private const val AUTH_TRIES = 20
-        private const val EXIT_STATUS_WAIT_MS = 250L
 
         private val hostmask = Pattern.compile(
             "^(.+)@((?:[0-9a-z._-]+)|(?:\\[[a-f:0-9]+(?:%[-_.a-z0-9]+)?\\]))(?::(\\d+))?\$",

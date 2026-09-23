@@ -70,7 +70,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
         shellPid = pids[0]
         val exitWatcher = Runnable {
             Exec.waitFor(shellPid)
-            bridge?.dispatchDisconnect(DisconnectReason.SESSION_EXIT)
+            bridge?.dispatchDisconnect(DisconnectReason.REMOTE_EOF)
         }
 
         val exitWatcherThread = Thread(exitWatcher)
