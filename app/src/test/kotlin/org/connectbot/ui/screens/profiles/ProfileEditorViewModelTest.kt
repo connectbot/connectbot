@@ -109,6 +109,36 @@ class ProfileEditorViewModelTest {
     )
 
     @Test
+    fun changingOnlyKeyboardLayoutCanBeSavedIncludingAppDefault() = runTest {
+        val originalLayoutId = UUID.randomUUID()
+        val profile = Profile(name = "Keyboard", keyboardLayoutId = originalLayoutId)
+        `when`(profileRepository.getById(profile.id)).thenReturn(profile)
+        `when`(profileRepository.nameExists(profile.name, profile.id)).thenReturn(false)
+        for (layoutId in listOf(UUID.randomUUID(), null)) {
+            val viewModel = ProfileEditorViewModel(SavedStateHandle(mapOf("profileId" to profile.id.toString())), profileRepository, colorSchemeRepository, sharedPreferences, context, dispatchers)
+            assertFalse(viewModel.uiState.value.hasUnsavedChanges)
+            viewModel.updateKeyboardLayoutId(layoutId)
+            assertTrue(viewModel.uiState.value.hasUnsavedChanges)
+            var closed = false
+            viewModel.save { closed = true }
+            verify(profileRepository).save(profile.copy(keyboardLayoutId = layoutId))
+            assertTrue(closed)
+            assertFalse(viewModel.uiState.value.hasUnsavedChanges)
+        }
+    }
+
+    @Test
+    fun changingKeyboardLayoutClearsPreviousSaveError() = runTest {
+        val viewModel = createViewModel()
+        viewModel.updateName("Duplicate")
+        `when`(profileRepository.nameExists("Duplicate", null)).thenReturn(true)
+        viewModel.save {}
+        assertTrue(viewModel.uiState.value.saveError != null)
+        viewModel.updateKeyboardLayoutId(UUID.randomUUID())
+        assertEquals(null, viewModel.uiState.value.saveError)
+    }
+
+    @Test
     fun boldAsBrightDefaultsToEnabledAndSavesDisabledSelection() = runTest {
         val viewModel = createViewModel()
         assertTrue(viewModel.uiState.value.boldAsBright)
