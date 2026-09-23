@@ -633,6 +633,8 @@ fun ConsoleScreen(
     val currentBridge = uiState.bridges
         .getOrNull(uiState.currentBridgeIndex)
     val currentBridgeId = currentBridge?.host?.id
+    val automationState by currentBridge?.automationState?.collectAsState()
+        ?: remember { mutableStateOf(org.connectbot.service.automation.AutomationState()) }
 
     LifecycleResumeEffect(terminalManager, currentBridge) {
         val owner = Any()
@@ -1011,6 +1013,26 @@ fun ConsoleScreen(
                 .windowInsetsPadding(WindowInsets.imeAnimationTarget)
                 .onPreviewKeyEvent(handleShortcut),
         ) {
+            if (automationState.running || automationState.error != null) {
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
+                    Column(Modifier.weight(1f).padding(horizontal = 8.dp)) {
+                        if (automationState.running) {
+                            Text(stringResource(R.string.automation_progress, automationState.step, automationState.total))
+                        }
+                        automationState.error?.let { error ->
+                            Text(
+                                stringResource(R.string.automation_failure_step, automationState.failedStep ?: automationState.step, stringResource(error)),
+                                color = MaterialTheme.colorScheme.error,
+                            )
+                        }
+                    }
+                    if (automationState.running) {
+                        TextButton(onClick = { currentBridge?.cancelAutomation() }) {
+                            Text(stringResource(R.string.automation_cancel_run))
+                        }
+                    }
+                }
+            }
             when {
                 uiState.isLoading -> {
                     LoadingScreen(modifier = Modifier.fillMaxSize())

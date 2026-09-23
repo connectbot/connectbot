@@ -78,6 +78,7 @@ class BackupFilter(
                 // Also backup port forwards and known hosts for this host
                 val portForwards = hostRepository.getPortForwardsForHost(host.id)
                 portForwards.forEach { tempDb.portForwardDao().insert(it) }
+                tempDb.automationActionDao().insert(hostRepository.getAutomation(host.id))
 
                 val knownHosts = hostRepository.getKnownHostsForHost(host.id)
                 knownHosts.forEach { tempDb.knownHostDao().insert(it) }

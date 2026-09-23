@@ -122,7 +122,7 @@ class PortForwardListViewModel @Inject constructor(
         _refreshTrigger.value += 1
     }
 
-    fun addPortForward(nickname: String, type: String, sourcePort: String, sourceAddr: String, destination: String) {
+    fun addPortForward(nickname: String, type: String, sourcePort: String, sourceAddr: String, destination: String, startEnabled: Boolean = true) {
         viewModelScope.launch {
             try {
                 val srcPort = validatePort(sourcePort, "source")
@@ -141,6 +141,7 @@ class PortForwardListViewModel @Inject constructor(
                         sourcePort = srcPort,
                         destAddr = parsed.address,
                         destPort = parsed.port,
+                        startEnabled = startEnabled,
                     )
                     repository.savePortForward(portForward)
                 }
@@ -148,7 +149,7 @@ class PortForwardListViewModel @Inject constructor(
                 withActiveBridge { bridge ->
                     bridge.transport?.let {
                         it.addPortForward(newPortForward)
-                        it.enablePortForward(newPortForward)
+                        if (newPortForward.startEnabled) it.enablePortForward(newPortForward)
                     }
 
                     Timber.d("Added port forward ${newPortForward.nickname} to active connection")
@@ -168,6 +169,7 @@ class PortForwardListViewModel @Inject constructor(
         sourcePort: String,
         sourceAddr: String,
         destination: String,
+        startEnabled: Boolean = portForward.startEnabled,
     ) {
         viewModelScope.launch {
             try {
@@ -186,6 +188,7 @@ class PortForwardListViewModel @Inject constructor(
                         sourcePort = srcPort,
                         destAddr = parsed.address,
                         destPort = parsed.port,
+                        startEnabled = startEnabled,
                     )
                     repository.savePortForward(updatedPf)
                     updatedPf

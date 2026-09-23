@@ -23,12 +23,14 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import org.connectbot.data.dao.AutomationActionDao
 import org.connectbot.data.dao.ColorSchemeDao
 import org.connectbot.data.dao.HostDao
 import org.connectbot.data.dao.KnownHostDao
 import org.connectbot.data.dao.PortForwardDao
 import org.connectbot.data.dao.ProfileDao
 import org.connectbot.data.dao.PubkeyDao
+import org.connectbot.data.entity.AutomationAction
 import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
@@ -36,6 +38,7 @@ import org.connectbot.data.entity.KnownHost
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
+import java.util.UUID
 
 /**
  * ConnectBot Room database.
@@ -60,6 +63,7 @@ import org.connectbot.data.entity.Pubkey
  * - Version 8: Added source_addr to port forwards, defaulting to localhost (AutoMigration)
  * - Version 9: Added inline_images to profiles, defaulting to Ask (AutoMigration)
  * - Version 10: Added mosh_port, mosh_server, and locale columns to hosts for Mosh support (AutoMigration)
+ * - Version 11: UUID automation actions and port-forward startup preference (manual migration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -75,8 +79,9 @@ import org.connectbot.data.entity.Pubkey
         ColorScheme::class,
         ColorPalette::class,
         Profile::class,
+        AutomationAction::class,
     ],
-    version = 10,
+    version = 11,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -91,6 +96,7 @@ import org.connectbot.data.entity.Pubkey
 )
 @TypeConverters(Converters::class)
 abstract class ConnectBotDatabase : RoomDatabase() {
+    abstract fun automationActionDao(): AutomationActionDao
     abstract fun hostDao(): HostDao
     abstract fun pubkeyDao(): PubkeyDao
     abstract fun portForwardDao(): PortForwardDao
@@ -99,11 +105,45 @@ abstract class ConnectBotDatabase : RoomDatabase() {
     abstract fun profileDao(): ProfileDao
 
     companion object {
+        val MIGRATION_10_11 = object : Migration(10, 11) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE port_forwards ADD COLUMN start_enabled INTEGER NOT NULL DEFAULT 1")
+                db.execSQL(
+                    """
+                    CREATE TABLE IF NOT EXISTS automation_actions (
+                        id TEXT NOT NULL PRIMARY KEY, host_id INTEGER NOT NULL,
+                        position INTEGER NOT NULL, type TEXT NOT NULL, text TEXT NOT NULL,
+                        regex INTEGER NOT NULL, duration_ms INTEGER NOT NULL,
+                        `key` INTEGER NOT NULL, modifiers INTEGER NOT NULL, forward_id INTEGER,
+                        failure_policy TEXT NOT NULL,
+                        FOREIGN KEY(host_id) REFERENCES hosts(id) ON UPDATE NO ACTION ON DELETE CASCADE
+                    )
+                    """.trimIndent(),
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS index_automation_actions_host_id ON automation_actions(host_id)")
+                migratePostLogin(db)
+            }
+        }
+
+        /** Also used after importing an older JSON backup. Never trims or interprets text. */
+        fun migratePostLogin(db: SupportSQLiteDatabase) {
+            db.query("SELECT id, post_login FROM hosts WHERE post_login IS NOT NULL AND post_login <> ''").use { cursor ->
+                while (cursor.moveToNext()) {
+                    db.execSQL(
+                        "INSERT INTO automation_actions (id, host_id, position, type, text, regex, duration_ms, `key`, modifiers, forward_id, failure_policy) " +
+                            "VALUES (?, ?, 0, 'SEND_TEXT', ?, 0, 30000, 1, 0, NULL, 'STOP')",
+                        arrayOf<Any>(UUID.randomUUID().toString(), cursor.getLong(0), cursor.getString(1)),
+                    )
+                }
+            }
+            db.execSQL("UPDATE hosts SET post_login = NULL WHERE post_login IS NOT NULL")
+        }
+
         /**
          * Current database schema version.
          * This is also used for JSON export/import versioning.
          */
-        const val SCHEMA_VERSION = 10
+        const val SCHEMA_VERSION = 11
 
         /**
          * Migration from version 4 to 5: Add profiles table and profile_id to hosts.

@@ -31,6 +31,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material3.DropdownMenuItem
@@ -47,6 +49,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -62,6 +65,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -90,6 +94,7 @@ fun HostEditorScreen(
     onNavigateBack: () -> Unit,
     onNavigateToProfile: (Long) -> Unit,
     modifier: Modifier = Modifier,
+    onNavigateToAutomation: (Long) -> Unit = {},
     viewModel: HostEditorViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -113,7 +118,7 @@ fun HostEditorScreen(
         onWantSessionChange = viewModel::updateWantSession,
         onStayConnectedChange = viewModel::updateStayConnected,
         onQuickDisconnectChange = viewModel::updateQuickDisconnect,
-        onPostLoginChange = viewModel::updatePostLogin,
+        onEditAutomation = { onNavigateToAutomation(uiState.hostId) },
         onJumpHostChange = viewModel::updateJumpHostId,
         onIpVersionChange = viewModel::updateIpVersion,
         onPasswordChange = viewModel::updatePassword,
@@ -147,7 +152,7 @@ fun HostEditorScreenContent(
     onWantSessionChange: (Boolean) -> Unit,
     onStayConnectedChange: (Boolean) -> Unit,
     onQuickDisconnectChange: (Boolean) -> Unit,
-    onPostLoginChange: (String) -> Unit,
+    onEditAutomation: () -> Unit,
     onJumpHostChange: (Long?) -> Unit,
     onIpVersionChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
@@ -545,17 +550,33 @@ fun HostEditorScreenContent(
 
             // Post-login automation
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-            OutlinedTextField(
-                value = uiState.postLogin,
-                onValueChange = onPostLoginChange,
-                label = { Text(stringResource(R.string.hostpref_postlogin_title)) },
-                supportingText = { Text(stringResource(R.string.hostpref_postlogin_summary)) },
-                minLines = 3,
-                maxLines = 8,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 8.dp),
-            )
+            Surface(
+                onClick = onEditAutomation,
+                enabled = hostId != -1L,
+                modifier = Modifier.fillMaxWidth(),
+                shape = MaterialTheme.shapes.small,
+                color = MaterialTheme.colorScheme.surface,
+                contentColor = if (hostId == -1L) MaterialTheme.colorScheme.onSurfaceVariant else MaterialTheme.colorScheme.onSurface,
+            ) {
+                Row(
+                    modifier = Modifier.padding(vertical = 8.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Column(modifier = Modifier.weight(1f)) {
+                        Text(stringResource(R.string.hostpref_postlogin_title), style = MaterialTheme.typography.bodyLarge)
+                        Text(
+                            if (hostId == -1L) {
+                                stringResource(R.string.automation_save_host)
+                            } else {
+                                pluralStringResource(R.plurals.automation_count, uiState.automationCount, uiState.automationCount)
+                            },
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        )
+                    }
+                    Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null)
+                }
+            }
         }
     }
 }
@@ -1335,7 +1356,7 @@ private fun HostEditorScreenPreview() {
                 wantSession = true,
                 stayConnected = false,
                 quickDisconnect = false,
-                postLogin = "cd /var/www",
+                automationCount = 1,
             ),
             onNavigateBack = {},
             onQuickConnectChange = {},
@@ -1353,7 +1374,7 @@ private fun HostEditorScreenPreview() {
             onWantSessionChange = {},
             onStayConnectedChange = {},
             onQuickDisconnectChange = {},
-            onPostLoginChange = {},
+            onEditAutomation = {},
             onJumpHostChange = {},
             onIpVersionChange = {},
             onPasswordChange = {},

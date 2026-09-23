@@ -61,11 +61,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.OffsetMapping
-import androidx.compose.ui.text.input.TransformedText
-import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Popup
@@ -75,48 +71,6 @@ import androidx.preference.PreferenceManager
 import org.connectbot.R
 import org.connectbot.service.TerminalBridge
 import kotlin.math.roundToInt
-
-private const val NEWLINE_SYMBOL = "↩"
-private const val TAB_SYMBOL = "⇥"
-
-private object SpecialCharVisualTransformation : VisualTransformation {
-    override fun filter(text: AnnotatedString): TransformedText {
-        val original = text.text
-
-        // Build transformed string and a map from original index to transformed index
-        val transformedBuilder = StringBuilder()
-        val originalToTransformed = IntArray(original.length + 1)
-        for (i in original.indices) {
-            originalToTransformed[i] = transformedBuilder.length
-            when (original[i]) {
-                '\n' -> transformedBuilder.append("$NEWLINE_SYMBOL\n")
-                '\t' -> transformedBuilder.append(TAB_SYMBOL)
-                else -> transformedBuilder.append(original[i])
-            }
-        }
-        originalToTransformed[original.length] = transformedBuilder.length
-        val transformed = transformedBuilder.toString()
-
-        // Build reverse map from transformed index to original index
-        val transformedToOriginal = IntArray(transformed.length + 1)
-        for (i in original.indices) {
-            val tStart = originalToTransformed[i]
-            val tEnd = originalToTransformed[i + 1]
-            for (t in tStart until tEnd) {
-                transformedToOriginal[t] = i
-            }
-        }
-        transformedToOriginal[transformed.length] = original.length
-
-        val offsetMapping = object : OffsetMapping {
-            override fun originalToTransformed(offset: Int): Int = originalToTransformed[offset.coerceIn(0, original.length)]
-
-            override fun transformedToOriginal(offset: Int): Int = transformedToOriginal[offset.coerceIn(0, transformed.length)]
-        }
-
-        return TransformedText(AnnotatedString(transformed), offsetMapping)
-    }
-}
 
 private const val PREF_FLOATING_INPUT_X = "floating_input_x"
 private const val PREF_FLOATING_INPUT_Y = "floating_input_y"

@@ -69,7 +69,9 @@ import java.net.InetSocketAddress
 import java.net.NoRouteToHostException
 import java.nio.charset.StandardCharsets
 import java.security.KeyPair
+import java.security.KeyStore
 import java.security.NoSuchAlgorithmException
+import java.security.PrivateKey
 import java.security.PublicKey
 import java.security.interfaces.DSAPrivateKey
 import java.security.interfaces.DSAPublicKey
@@ -543,10 +545,10 @@ open class SSH :
 
             // Load the key from Keystore after successful biometric auth
             return try {
-                val keyStore = java.security.KeyStore.getInstance("AndroidKeyStore")
+                val keyStore = KeyStore.getInstance("AndroidKeyStore")
                 keyStore.load(null)
                 val publicKey = keyStore.getCertificate(keystoreAlias)?.publicKey
-                val privateKey = keyStore.getKey(keystoreAlias, null) as? java.security.PrivateKey
+                val privateKey = keyStore.getKey(keystoreAlias, null) as? PrivateKey
 
                 if (publicKey == null || privateKey == null) {
                     val message = String.format("Failed to load key '%s' from Keystore.", pubkey.nickname)
@@ -675,6 +677,7 @@ open class SSH :
         authenticated = true
 
         for (portForward in portForwards) {
+            if (!portForward.startEnabled) continue
             try {
                 enablePortForward(portForward)
                 bridge?.outputLine(manager?.res?.getString(R.string.terminal_enable_portfoward, portForward.getDescription()))

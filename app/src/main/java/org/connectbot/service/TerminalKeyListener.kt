@@ -23,6 +23,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import org.connectbot.terminal.ModifierManager
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.VTermKey
+import org.connectbot.util.TerminalKeyModifiers
 
 // Internal modifier bitmasks
 private const val OUR_CTRL_ON = 0x01
@@ -35,11 +36,6 @@ private const val OUR_SHIFT_LOCK = 0x20
 private const val OUR_CTRL_MASK = OUR_CTRL_ON or OUR_CTRL_LOCK
 private const val OUR_ALT_MASK = OUR_ALT_ON or OUR_ALT_LOCK
 private const val OUR_SHIFT_MASK = OUR_SHIFT_ON or OUR_SHIFT_LOCK
-
-// Terminal modifier bitmasks (per VTerm spec)
-private const val VTERM_MOD_SHIFT = 1
-private const val VTERM_MOD_ALT = 2
-private const val VTERM_MOD_CTRL = 4
 
 fun interface KeyDispatcher {
     fun dispatchKey(modifiers: Int, key: Int)
@@ -128,9 +124,9 @@ class TerminalKeyListener(
     private val modifiersForTerminal: Int
         get() {
             var mask = 0
-            if ((ourMetaState and OUR_SHIFT_MASK) != 0) mask = mask or VTERM_MOD_SHIFT
-            if ((ourMetaState and OUR_ALT_MASK) != 0) mask = mask or VTERM_MOD_ALT
-            if ((ourMetaState and OUR_CTRL_MASK) != 0) mask = mask or VTERM_MOD_CTRL
+            if ((ourMetaState and OUR_SHIFT_MASK) != 0) mask = mask or TerminalKeyModifiers.SHIFT
+            if ((ourMetaState and OUR_ALT_MASK) != 0) mask = mask or TerminalKeyModifiers.ALT
+            if ((ourMetaState and OUR_CTRL_MASK) != 0) mask = mask or TerminalKeyModifiers.CTRL
             return mask
         }
 

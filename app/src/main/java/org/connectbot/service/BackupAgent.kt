@@ -111,7 +111,7 @@ class BackupAgent : BackupAgentHelper() {
             applicationContext,
             ConnectBotDatabase::class.java,
             DATABASE_NAME,
-        ).build()
+        ).addMigrations(ConnectBotDatabase.MIGRATION_4_5, ConnectBotDatabase.MIGRATION_10_11).build()
         val dispatchers = CoroutineDispatchers(default = Dispatchers.Default, io = Dispatchers.IO, main = Dispatchers.Main)
         val securePasswordStorage = org.connectbot.util.SecurePasswordStorage(applicationContext)
         val hostRepository = HostRepository(applicationContext, database, database.hostDao(), database.portForwardDao(), database.knownHostDao(), securePasswordStorage)

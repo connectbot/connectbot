@@ -20,6 +20,7 @@ package org.connectbot.data
 import android.content.Context
 import androidx.room.RoomDatabase
 import org.json.JSONObject
+import java.util.concurrent.Callable
 
 /**
  * Result of exporting host configurations.
@@ -68,7 +69,7 @@ object HostConfigJson {
      * Note: Excluded fields (runtime state like last_connect, host_key_algo) are
      * configured in the generateExportSchema Gradle task and marked in the schema.
      */
-    val EXPORT_TABLES = listOf("profiles", "hosts", "port_forwards")
+    val EXPORT_TABLES = listOf("profiles", "hosts", "port_forwards", "automation_actions")
 
     /**
      * Export host configurations to JSON.
@@ -102,7 +103,13 @@ object HostConfigJson {
     fun importFromJson(context: Context, database: RoomDatabase, jsonString: String): ImportCounts {
         val schema = DatabaseSchema.load(context)
         val exporter = SchemaBasedExporter(database, schema)
-        val results = exporter.importFromJson(jsonString, EXPORT_TABLES)
+        val results = database.runInTransaction(
+            Callable {
+                val imported = exporter.importFromJson(jsonString, EXPORT_TABLES)
+                ConnectBotDatabase.migratePostLogin(database.openHelper.writableDatabase)
+                imported
+            },
+        )
 
         val hostCounts = results["hosts"] ?: Pair(0, 0)
         val profileCounts = results["profiles"] ?: Pair(0, 0)
