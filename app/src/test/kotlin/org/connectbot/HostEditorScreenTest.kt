@@ -70,6 +70,7 @@ class HostEditorScreenTest {
                     ) {
                         HostEditorScreen(
                             onNavigateBack = { navController.popBackStack() },
+                            onNavigateToProfile = {},
                         )
                     }
                 }
