@@ -19,6 +19,9 @@ package org.connectbot.transport
 
 import com.trilead.ssh2.ChannelCondition
 import com.trilead.ssh2.Session
+import org.connectbot.service.DisconnectAction
+import org.connectbot.service.DisconnectPolicy
+import org.connectbot.service.DisconnectReason
 import org.connectbot.service.TerminalBridge
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
@@ -27,6 +30,7 @@ import org.mockito.ArgumentMatchers.anyInt
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.mock
+import org.mockito.Mockito.mockingDetails
 import org.mockito.Mockito.never
 import org.mockito.Mockito.spy
 import org.mockito.Mockito.verify
@@ -73,6 +77,30 @@ class SSHDisconnectTest {
 
         verify(bridge).dispatchDisconnect(org.connectbot.service.DisconnectReason.REMOTE_EOF)
         verify(ssh, never()).close()
+    }
+
+    @Test
+    fun read_withShellExitStatus_closesTerminalInsteadOfShowingReconnect() {
+        val session = mock(Session::class.java)
+        val bridge = mock(TerminalBridge::class.java)
+        `when`(session.exitStatus).thenReturn(0)
+        `when`(session.waitForCondition(anyInt(), eq(0L))).thenReturn(ChannelCondition.EOF)
+        val ssh = SSH().apply {
+            setBridge(bridge)
+            setPrivateField("session", session)
+        }
+
+        assertThrows(java.io.IOException::class.java) {
+            ssh.read(ByteArray(32), 0, 32)
+        }
+
+        val reason = mockingDetails(bridge).invocations
+            .single { it.method.name == "dispatchDisconnect" }
+            .getArgument<DisconnectReason>(0)
+        assertEquals(
+            DisconnectAction.CloseImmediately,
+            DisconnectPolicy.decide(reason, quickDisconnect = false, stayConnected = false),
+        )
     }
 
     private fun SSH.setPrivateField(name: String, value: Any?) {
