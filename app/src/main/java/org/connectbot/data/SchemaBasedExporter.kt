@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import android.util.Base64
 import androidx.room.RoomDatabase
 import org.json.JSONArray
 import org.json.JSONObject
+import java.util.UUID
 
 /**
  * Schema-driven database exporter/importer.
@@ -102,13 +103,13 @@ class SchemaBasedExporter(
         val results = mutableMapOf<String, Pair<Int, Int>>()
 
         // Track ID mappings for foreign key remapping: tableName -> (oldId -> newId)
-        val idMappings = mutableMapOf<String, MutableMap<Long, Long>>()
+        val idMappings = mutableMapOf<String, MutableMap<String, String>>()
 
         // Process tables in order (parent tables first for foreign key resolution)
         for (tableName in tableNames) {
             val entitySchema = schema.getEntity(tableName) ?: continue
             val rows = json.optJSONArray(tableName) ?: continue
-            val idMapping = mutableMapOf<Long, Long>()
+            val idMapping = mutableMapOf<String, String>()
             idMappings[tableName] = idMapping
 
             var insertedCount = 0
@@ -118,14 +119,27 @@ class SchemaBasedExporter(
             val uniqueFields = entitySchema.uniqueIndices
                 .firstOrNull()
                 ?.columnNames
-                ?: listOf("id")
+                ?: if (entitySchema.primaryKey.autoGenerate) {
+                    // Device-local numeric IDs cannot identify rows from another backup.
+                    // Without a natural unique index, deduplicate by the remapped contents.
+                    entitySchema.fields.filterNot { it.columnName == "id" || it.excluded }.map { it.columnName }
+                } else {
+                    entitySchema.primaryKey.columnNames
+                }
 
             // Find foreign keys that need remapping
-            val foreignKeys = entitySchema.foreignKeys
+            val foreignKeys = entitySchema.foreignKeys + if (tableName == "automation_actions") {
+                listOf(ForeignKeySchema("port_forwards", listOf("forward_id"), listOf("id"), "NO ACTION"))
+            } else {
+                emptyList()
+            }
 
             for (i in 0 until rows.length()) {
                 val row = rows.getJSONObject(i)
-                val oldId = row.optLong("id", 0)
+                val oldId = row.optString("id", "0")
+                if (tableName == "automation_actions") {
+                    require(UUID.fromString(oldId).toString() == oldId) { "Invalid automation UUID" }
+                }
 
                 // Remap foreign key values using previously imported ID mappings
                 val remappedRow = remapForeignKeys(row, foreignKeys, idMappings, entitySchema)
@@ -193,7 +207,7 @@ class SchemaBasedExporter(
     private fun remapForeignKeys(
         row: JSONObject,
         foreignKeys: List<ForeignKeySchema>,
-        idMappings: Map<String, Map<Long, Long>>,
+        idMappings: Map<String, Map<String, String>>,
         entitySchema: EntitySchema,
     ): JSONObject {
         val remapped = JSONObject(row.toString())
@@ -206,10 +220,10 @@ class SchemaBasedExporter(
                 val fieldPath = field.fieldPath
 
                 if (remapped.has(fieldPath)) {
-                    val oldValue = remapped.optLong(fieldPath, 0)
+                    val oldValue = remapped.optString(fieldPath, "0")
                     val newValue = referencedMapping[oldValue]
                     if (newValue != null) {
-                        remapped.put(fieldPath, newValue)
+                        remapped.put(fieldPath, if (field.affinity == "INTEGER") newValue.toLong() else newValue)
                     } else {
                         // Foreign key references non-imported row, set to null
                         remapped.put(fieldPath, JSONObject.NULL)
@@ -230,7 +244,7 @@ class SchemaBasedExporter(
         row: JSONObject,
         uniqueFields: List<String>,
         entitySchema: EntitySchema,
-    ): Long? {
+    ): String? {
         val conditions = mutableListOf<String>()
         val args = mutableListOf<String>()
 
@@ -238,8 +252,12 @@ class SchemaBasedExporter(
             val field = entitySchema.fields.find { it.columnName == columnName } ?: continue
             val value = row.opt(field.fieldPath) ?: continue
 
-            conditions.add("$columnName = ?")
-            args.add(value.toString())
+            if (value == JSONObject.NULL) {
+                conditions.add("$columnName IS NULL")
+            } else {
+                conditions.add("$columnName = ?")
+                args.add(value.toString())
+            }
         }
 
         if (conditions.isEmpty()) return null
@@ -250,7 +268,7 @@ class SchemaBasedExporter(
         )
 
         return cursor.use {
-            if (it.moveToFirst()) it.getLong(0) else null
+            if (it.moveToFirst()) it.getString(0) else null
         }
     }
 
@@ -262,9 +280,10 @@ class SchemaBasedExporter(
         tableName: String,
         row: JSONObject,
         entitySchema: EntitySchema,
-    ): Long {
-        val values = jsonToContentValues(row, entitySchema, excludeId = true)
-        return db.insert(tableName, 0, values)
+    ): String {
+        val values = jsonToContentValues(row, entitySchema, excludeId = entitySchema.primaryKey.autoGenerate)
+        val rowId = db.insert(tableName, 0, values)
+        return if (entitySchema.primaryKey.autoGenerate) rowId.toString() else row.getString("id")
     }
 
     /**
@@ -274,7 +293,7 @@ class SchemaBasedExporter(
         db: androidx.sqlite.db.SupportSQLiteDatabase,
         tableName: String,
         entitySchema: EntitySchema,
-        idMapping: Map<Long, Long>,
+        idMapping: Map<String, String>,
         originalRows: JSONArray,
     ) {
         // Find self-referencing fields (foreign keys that reference the same table)
@@ -300,13 +319,13 @@ class SchemaBasedExporter(
 
         for (i in 0 until originalRows.length()) {
             val row = originalRows.getJSONObject(i)
-            val oldId = row.optLong("id", 0)
+            val oldId = row.optString("id", "0")
             val newId = idMapping[oldId] ?: continue
 
             for (field in allSelfRefFields) {
                 if (!row.has(field.fieldPath)) continue
-                val oldRefId = row.optLong(field.fieldPath, 0)
-                if (oldRefId == 0L) continue
+                val oldRefId = row.optString(field.fieldPath, "0")
+                if (oldRefId == "0") continue
 
                 val newRefId = idMapping[oldRefId] ?: continue
 

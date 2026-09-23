@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -61,6 +61,8 @@ data class PortForward(
 
     @ColumnInfo(name = "dest_port")
     val destPort: Int,
+    @ColumnInfo(name = "start_enabled", defaultValue = "1")
+    val startEnabled: Boolean = true,
 ) {
     // Transient fields (not stored in database)
     @Transient
@@ -112,6 +114,7 @@ data class PortForward(
         if (sourcePort != other.sourcePort) return false
         if (destAddr != other.destAddr) return false
         if (destPort != other.destPort) return false
+        if (startEnabled != other.startEnabled) return false
         if (enabled != other.enabled) return false
         if (identifier != other.identifier) return false
 
@@ -127,6 +130,7 @@ data class PortForward(
         result = 31 * result + sourcePort
         result = 31 * result + (destAddr?.hashCode() ?: 0)
         result = 31 * result + destPort
+        result = 31 * result + startEnabled.hashCode()
         result = 31 * result + enabled.hashCode()
         result = 31 * result + (identifier?.hashCode() ?: 0)
         return result

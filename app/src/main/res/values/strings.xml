@@ -1526,4 +1526,127 @@
 	<string name="inline_images_prompt_title">Display inline images?</string>
 	<!-- Permission applies to all Kitty and iTerm images for this session only. -->
 	<string name="inline_images_prompt_message">Allow this host to display inline images for the rest of this session?</string>
+
+  <!-- Post-login automation -->
+	<!-- Port forward editor switch controlling automatic startup. -->
+	<string name="automation_forward_start_enabled">Start enabled</string>
+	<!-- Automation editor load failure. -->
+	<string name="automation_load_failed">Could not load automation</string>
+	<!-- Automation editor save failure; draft is retained. -->
+	<string name="automation_save_failed">Could not save automation</string>
+	<!-- Action editor validation error. -->
+	<string name="automation_invalid_action">Check the text, pattern, duration, or selected port forward</string>
+	<!-- Generic automation execution failure; does not reveal sent text. -->
+	<string name="automation_action_failed">Action failed</string>
+	<!-- Wait-for-text timeout failure. -->
+	<string name="automation_timed_out">Timed out waiting for text</string>
+	<!-- Automation stops rather than silently dropping captured output. -->
+	<string name="automation_buffer_overflow">Too much output arrived before automation could process it</string>
+	<!-- Automation step requires a terminal session. -->
+	<string name="automation_no_session">This action requires an open terminal session</string>
+	<!-- Automation references a deleted or missing forward. -->
+	<string name="automation_forward_missing">Port forward is missing</string>
+	<!-- Port forward automation on a non-SSH connection. -->
+	<string name="automation_forward_unsupported">This connection does not support port forwarding</string>
+	<!-- Automation action type. -->
+	<string name="automation_wait_text">Wait for string</string>
+	<!-- Automation action type. -->
+	<string name="automation_send_text">Send string</string>
+	<!-- Automation action type. -->
+	<string name="automation_send_key">Send special key</string>
+	<!-- Automation action type. -->
+	<string name="automation_delay">Wait</string>
+	<!-- Automation action type. -->
+	<string name="automation_disconnect">Disconnect</string>
+	<!-- Automation action type. -->
+	<string name="automation_enable_forward">Enable port forward</string>
+	<!-- Automation action type. -->
+	<string name="automation_disable_forward">Disable port forward</string>
+	<!-- Small card at the end of the automation list. -->
+	<string name="automation_add">Add action</string>
+	<!-- Automation editor save FAB and confirmation action. -->
+	<string name="automation_save">Save</string>
+	<!-- Edit an automation action. -->
+	<string name="automation_edit">Edit</string>
+	<!-- Delete an automation action. -->
+	<string name="automation_delete">Delete</string>
+	<!-- Accessible reorder action. -->
+	<string name="automation_move_up">Move up</string>
+	<!-- Accessible reorder action. -->
+	<string name="automation_move_down">Move down</string>
+	<!-- Automation action drag handle accessibility description. -->
+	<string name="automation_drag">Drag to reorder</string>
+	<!-- Unsaved automation navigation dialog title. -->
+	<string name="automation_unsaved">Save changes?</string>
+	<!-- Discard the automation draft. -->
+	<string name="automation_discard">Discard</string>
+	<!-- Cancel automation or dismiss a dialog. -->
+	<string name="automation_cancel">Cancel</string>
+	<!-- Multiline action text input label. -->
+	<string name="automation_text">Text</string>
+	<!-- Match mode toggle label. -->
+	<string name="automation_regex">Regular expression</string>
+	<!-- RE2 regex limitations shown in the action editor. -->
+	<string name="automation_regex_help">Matches incoming text without ANSI formatting. Regex supports RE2 syntax; lookaround and backreferences are not supported.</string>
+	<!-- Action delay input label. -->
+	<string name="automation_duration">Duration (seconds)</string>
+	<!-- Wait-for-text timeout input label. -->
+	<string name="automation_timeout">Timeout (seconds)</string>
+	<!-- Special key picker label. -->
+	<string name="automation_key">Key</string>
+	<!-- Port forward selector label. -->
+	<string name="automation_forward">Port forward</string>
+	<!-- Failure policy selector label. -->
+	<string name="automation_failure">On failure</string>
+	<!-- Failure policy choice. -->
+	<string name="automation_stop">Stop automation</string>
+	<!-- Failure policy choice. -->
+	<string name="automation_continue">Continue</string>
+	<!-- Automation row for an unsaved host. -->
+	<string name="automation_save_host">Save host to configure automation</string>
+	<!-- Automation row summary; number of actions. -->
+	<plurals name="automation_count">
+		<item quantity="one">%1$d action</item>
+		<item quantity="other">%1$d actions</item>
+	</plurals>
+	<!-- Console automation status; current step and total. -->
+	<string name="automation_progress">Automation: %1$d / %2$d</string>
+	<!-- Console automation failure; step and reason. -->
+	<string name="automation_failure_step">Action %1$d: %2$s</string>
+	<!-- Console button to cancel automation while leaving connection open. -->
+	<string name="automation_cancel_run">Cancel automation</string>
+	<!-- Terminal key picker label for enter. -->
+	<string name="automation_key_enter">Enter</string>
+	<!-- Terminal key picker label for tab. -->
+	<string name="automation_key_tab">Tab</string>
+	<!-- Terminal key picker label for escape. -->
+	<string name="automation_key_escape">Escape</string>
+	<!-- Terminal key picker label for backspace. -->
+	<string name="automation_key_backspace">Backspace</string>
+	<!-- Terminal key picker label for delete. -->
+	<string name="automation_key_delete">Delete</string>
+	<!-- Terminal key picker label for up. -->
+	<string name="automation_key_up">Up arrow</string>
+	<!-- Terminal key picker label for down. -->
+	<string name="automation_key_down">Down arrow</string>
+	<!-- Terminal key picker label for left. -->
+	<string name="automation_key_left">Left arrow</string>
+	<!-- Terminal key picker label for right. -->
+	<string name="automation_key_right">Right arrow</string>
+	<!-- Terminal key picker label for home. -->
+	<string name="automation_key_home">Home</string>
+	<!-- Terminal key picker label for end. -->
+	<string name="automation_key_end">End</string>
+	<!-- Terminal key picker label for insert. -->
+	<string name="automation_key_insert">Insert</string>
+	<!-- Terminal key picker label for page_up. -->
+	<string name="automation_key_page_up">Page Up</string>
+	<!-- Terminal key picker label for page_down. -->
+	<string name="automation_key_page_down">Page Down</string>
+	<!-- Terminal key picker label for function. -->
+	<string name="automation_key_function">F%1$s</string>
+	<!-- Shift modifier toggle in the special-key editor and action summary. -->
+	<string name="automation_key_shift">Shift</string>
+	<!-- Action summary duration in seconds. -->
+	<string name="automation_seconds">%1$.3f s</string>
 </resources>

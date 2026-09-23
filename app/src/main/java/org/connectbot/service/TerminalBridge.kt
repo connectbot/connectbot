@@ -24,6 +24,8 @@ import android.graphics.Paint
 import android.graphics.Typeface
 import android.net.Network
 import androidx.compose.ui.graphics.Color
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -31,6 +33,7 @@ import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -49,6 +52,11 @@ import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.service.automation.AutomationFailure
+import org.connectbot.service.automation.AutomationKeySupport
+import org.connectbot.service.automation.AutomationRunner
+import org.connectbot.service.automation.AutomationSession
+import org.connectbot.service.automation.AutomationState
 import org.connectbot.terminal.DelKeyMode
 import org.connectbot.terminal.ProgressState
 import org.connectbot.terminal.TerminalEmulator
@@ -59,6 +67,7 @@ import org.connectbot.transport.SSH
 import org.connectbot.transport.TransportFactory
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.TerminalKeyModifiers
 import timber.log.Timber
 import java.io.IOException
 import java.nio.charset.Charset
@@ -129,12 +138,104 @@ class TerminalBridge {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
 
     private sealed class TransportOperation {
-        data class WriteData(val data: ByteArray) : TransportOperation()
+        data class WriteData(val data: ByteArray, val completion: CompletableDeferred<Unit>? = null) : TransportOperation()
+        data class Barrier(val completion: CompletableDeferred<Unit>) : TransportOperation()
         data class SetDimensions(val columns: Int, val rows: Int, val width: Int, val height: Int) : TransportOperation()
         data object Flush : TransportOperation()
     }
 
     private val transportOperations = Channel<TransportOperation>(Channel.UNLIMITED)
+
+    @Volatile private var transportFailure: Exception? = null
+    private var automationJob: Job? = null
+
+    @Volatile private var automationRunner: AutomationRunner? = null
+    private val mutableAutomationState = MutableStateFlow(AutomationState())
+    val automationState = mutableAutomationState.asStateFlow()
+
+    fun cancelAutomation() {
+        automationJob?.cancel()
+        automationRunner = null
+        mutableAutomationState.value = mutableAutomationState.value.copy(running = false)
+    }
+
+    fun onAutomationOutput(text: CharSequence) {
+        automationRunner?.output?.append(text)
+    }
+
+    private suspend fun awaitAutomationWrite(data: ByteArray? = null) {
+        val completion = CompletableDeferred<Unit>()
+        try {
+            transportOperations.send(
+                if (data != null) TransportOperation.WriteData(data, completion) else TransportOperation.Barrier(completion),
+            )
+            completion.await()
+        } catch (e: CancellationException) {
+            completion.cancel()
+            throw e
+        }
+    }
+
+    private fun startAutomation() {
+        cancelAutomation()
+        val runner = AutomationRunner(object : AutomationSession {
+            override val sessionOpen: Boolean get() = isSessionOpen
+            override suspend fun sendText(text: String) = awaitAutomationWrite(text.toByteArray(charset(encoding)))
+            override suspend fun sendKey(key: Int, modifiers: Int) {
+                require(AutomationKeySupport.isSupported(key, modifiers))
+                if (AutomationKeySupport.isCharacterKey(key)) {
+                    if (modifiers == TerminalKeyModifiers.CTRL) {
+                        // Use classic control bytes for uncombined Ctrl+character.
+                        awaitAutomationWrite(byteArrayOf(AutomationKeySupport.controlCodeForCharacter(key).toByte()))
+                    } else {
+                        terminalEmulator.dispatchCharacter(modifiers, AutomationKeySupport.characterCodePoint(key))
+                        awaitAutomationWrite()
+                    }
+                } else {
+                    terminalEmulator.dispatchKey(modifiers, key)
+                    awaitAutomationWrite()
+                }
+            }
+            override suspend fun setForward(id: Long, enabled: Boolean) {
+                val t = transport ?: throw AutomationFailure(R.string.automation_action_failed)
+                if (!t.canForwardPorts()) throw AutomationFailure(R.string.automation_forward_unsupported)
+                val forward = t.getPortForwards()?.find { it.id == id && it.hostId == host.id }
+                    ?: throw AutomationFailure(R.string.automation_forward_missing)
+                if (forward.isEnabled() != enabled) {
+                    val success = if (enabled) t.enablePortForward(forward) else t.disablePortForward(forward)
+                    if (!success) throw AutomationFailure(R.string.automation_action_failed)
+                    manager.notifyBridgeStateChanged()
+                }
+            }
+            override fun disconnect() = dispatchDisconnect(DisconnectReason.USER_REQUESTED)
+        })
+        automationRunner = runner
+        mutableAutomationState.value = AutomationState()
+        automationJob = scope.launch(dispatchers.io) {
+            try {
+                val actions = manager.hostRepository.getAutomation(host.id)
+                coroutineScope {
+                    val observer = launch {
+                        runner.state.collect {
+                            if (automationRunner === runner) mutableAutomationState.value = it
+                        }
+                    }
+                    try {
+                        runner.run(actions)
+                    } finally {
+                        if (automationRunner === runner) mutableAutomationState.value = runner.state.value
+                        observer.cancel()
+                    }
+                }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                if (automationRunner === runner) mutableAutomationState.value = AutomationState(error = R.string.automation_action_failed)
+            } finally {
+                if (automationRunner === runner) automationRunner = null
+            }
+        }
+    }
 
     var color: IntArray = IntArray(0)
 
@@ -379,7 +480,20 @@ class TerminalBridge {
                 try {
                     when (operation) {
                         is TransportOperation.WriteData -> {
-                            transport?.write(operation.data)
+                            if (operation.completion?.isCancelled == true) continue
+                            val t = transport ?: throw IOException("Transport unavailable")
+                            t.write(operation.data)
+                            operation.completion?.complete(Unit)
+                        }
+
+                        is TransportOperation.Barrier -> {
+                            if (operation.completion.isCancelled) continue
+                            val failure = transportFailure
+                            transportFailure = null
+                            failure?.let { throw it }
+                            val t = transport ?: throw IOException("Transport unavailable")
+                            t.flush()
+                            operation.completion.complete(Unit)
                         }
 
                         is TransportOperation.SetDimensions -> {
@@ -396,8 +510,20 @@ class TerminalBridge {
                         }
                     }
                 } catch (e: IOException) {
+                    transportFailure = if (operation is TransportOperation.WriteData && operation.completion == null) e else null
+                    when (operation) {
+                        is TransportOperation.WriteData -> operation.completion?.completeExceptionally(e)
+                        is TransportOperation.Barrier -> operation.completion.completeExceptionally(e)
+                        else -> Unit
+                    }
                     Timber.e(e, "Error processing transport operation")
                 } catch (e: Exception) {
+                    transportFailure = if (operation is TransportOperation.WriteData && operation.completion == null) e else null
+                    when (operation) {
+                        is TransportOperation.WriteData -> operation.completion?.completeExceptionally(e)
+                        is TransportOperation.Barrier -> operation.completion.completeExceptionally(e)
+                        else -> Unit
+                    }
                     Timber.e(e, "Unexpected error processing transport operation")
                 }
             }
@@ -658,6 +784,8 @@ class TerminalBridge {
     fun onConnected() {
         disconnected = false
         connecting = false
+        transportFailure = null
+        startAutomation()
 
         // We no longer need our local output.
         localOutput.clear()
@@ -685,9 +813,6 @@ class TerminalBridge {
 
         // force font-size to make sure we resizePTY as needed
         setFontSize(fontSizeSp)
-
-        // finally send any post-login string, if requested
-        injectString(host.postLogin)
 
         // Capture network state after successful connection
         captureNetworkState()
@@ -723,6 +848,7 @@ class TerminalBridge {
      * IO_ERROR already marked disconnected.
      */
     fun dispatchDisconnect(reason: DisconnectReason) {
+        cancelAutomation()
         // We don't need to do this multiple times.
         synchronized(this) {
             if (disconnected && reason != DisconnectReason.USER_REQUESTED) {
@@ -920,6 +1046,7 @@ class TerminalBridge {
      * Releases bitmap and clears parent reference to prevent memory leaks.
      */
     fun cleanup() {
+        cancelAutomation()
         // Cancel grace period if active
         networkGracePeriodJob?.cancel()
         inGracePeriod = false

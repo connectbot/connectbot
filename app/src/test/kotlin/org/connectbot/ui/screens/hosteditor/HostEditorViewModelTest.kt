@@ -70,6 +70,7 @@ class HostEditorViewModelTest {
         // Mock default behavior for observe calls
         `when`(pubkeyRepository.observeAll()).thenReturn(flowOf(emptyList()))
         `when`(repository.observeSshHosts()).thenReturn(flowOf(emptyList()))
+        `when`(repository.observeAutomation(org.mockito.ArgumentMatchers.anyLong())).thenReturn(flowOf(emptyList()))
         `when`(profileRepository.observeAll()).thenReturn(flowOf(emptyList()))
         `when`(prefs.getLong("defaultProfileId", 0L)).thenReturn(0L)
     }

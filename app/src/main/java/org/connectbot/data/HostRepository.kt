@@ -18,16 +18,19 @@
 package org.connectbot.data
 
 import android.content.Context
+import androidx.room.withTransaction
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.runBlocking
 import org.connectbot.data.dao.HostDao
 import org.connectbot.data.dao.KnownHostDao
 import org.connectbot.data.dao.PortForwardDao
+import org.connectbot.data.entity.AutomationAction
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KnownHost
 import org.connectbot.data.entity.PortForward
 import org.connectbot.util.SecurePasswordStorage
+import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -50,6 +53,31 @@ class HostRepository @Inject constructor(
     private val knownHostDao: KnownHostDao,
     private val securePasswordStorage: SecurePasswordStorage,
 ) {
+    fun observeAutomation(hostId: Long) = database.automationActionDao().observeByHost(hostId)
+
+    suspend fun getAutomation(hostId: Long) = database.automationActionDao().getByHost(hostId)
+
+    suspend fun saveAutomation(hostId: Long, actions: List<AutomationAction>) = database.automationActionDao().replace(hostId, actions)
+
+    /** Duplicate settings atomically, allocating fresh action identities and remapping forwards. */
+    suspend fun duplicateHostSettings(sourceId: Long, newHost: Host): Host = database.withTransaction {
+        val savedHost = saveHost(newHost.copy(id = 0L, postLogin = null))
+        val forwardIds = getPortForwardsForHost(sourceId).associate { forward ->
+            forward.id to savePortForward(forward.copy(id = 0L, hostId = savedHost.id)).id
+        }
+        saveAutomation(
+            savedHost.id,
+            getAutomation(sourceId).map { action ->
+                action.copy(
+                    id = UUID.randomUUID().toString(),
+                    hostId = savedHost.id,
+                    forwardId = action.forwardId?.let { forwardIds[it] },
+                )
+            },
+        )
+        savedHost
+    }
+
     private companion object {
         val RSA_HOST_KEY_ALGORITHMS = listOf("rsa-sha2-512", "rsa-sha2-256", "ssh-rsa")
     }

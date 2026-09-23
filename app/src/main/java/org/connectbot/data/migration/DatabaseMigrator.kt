@@ -701,8 +701,14 @@ class DatabaseMigrator @Inject constructor(
                 val remappedHost = host.copy(
                     pubkeyId = newPubkeyId,
                     profileId = newProfileId,
+                    postLogin = null,
                 )
                 val newId = roomDatabase.hostDao().insert(remappedHost)
+                host.postLogin?.takeIf { it.isNotEmpty() }?.let { text ->
+                    roomDatabase.automationActionDao().insert(
+                        listOf(org.connectbot.data.entity.AutomationAction(hostId = newId, text = text)),
+                    )
+                }
                 hostIdMap[oldId] = newId
             }
 

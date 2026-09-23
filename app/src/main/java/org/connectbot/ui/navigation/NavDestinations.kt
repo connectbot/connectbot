@@ -21,6 +21,7 @@ object NavDestinations {
     const val HOST_LIST = "host_list"
     const val CONSOLE = "console"
     const val HOST_EDITOR = "host_editor"
+    const val AUTOMATION_EDITOR = "automation_editor"
     const val PUBKEY_LIST = "pubkey_list"
     const val GENERATE_PUBKEY = "generate_pubkey"
     const val PUBKEY_EDITOR = "pubkey_editor"

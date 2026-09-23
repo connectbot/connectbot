@@ -394,7 +394,7 @@ tasks.withType<Test>().configureEach {
 // Generate filtered export schema from Room schema
 // Only includes tables needed for export/import (profiles, hosts, port_forwards)
 val generateExportSchema by tasks.registering {
-    val exportTables = setOf("profiles", "hosts", "port_forwards")
+    val exportTables = setOf("profiles", "hosts", "port_forwards", "automation_actions")
     val excludedFields = setOf("last_connect", "host_key_algo")
 
     // Read schema version from Room's @Database annotation.
@@ -482,6 +482,8 @@ dependencies {
     implementation(libs.androidx.preference)
     implementation(libs.material)
     implementation(libs.timber)
+    implementation(libs.re2j)
+    implementation(libs.reorderable)
 
     val composeBom = platform(libs.androidx.compose.bom)
     implementation(composeBom)

@@ -20,11 +20,13 @@ package org.connectbot
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.navigation.NavType
 import androidx.navigation.compose.ComposeNavigator
@@ -37,6 +39,7 @@ import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.connectbot.ui.screens.hosteditor.HostEditorScreen
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -82,6 +85,17 @@ class HostEditorScreenTest {
         composeTestRule.runOnUiThread {
             navController.navigate("hostEditor/$hostId")
         }
+    }
+
+    @Test
+    fun automationRowAlignsWithPreferencesAndRequiresSavedHost() {
+        navigateToHostEditorScreen(-1L)
+        val automationTitle = composeTestRule.activity.getString(R.string.hostpref_postlogin_title)
+        val precedingTitle = composeTestRule.activity.getString(R.string.hostpref_quickdisconnect_title)
+        composeTestRule.onNodeWithText(automationTitle).performScrollTo().assertIsNotEnabled()
+        val automation = composeTestRule.onNodeWithText(automationTitle, useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
+        val preceding = composeTestRule.onNodeWithText(precedingTitle, useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
+        assertEquals(preceding.left, automation.left, 0.5f)
     }
 
     @Test

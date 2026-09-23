@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -240,13 +240,7 @@ class HostListViewModel @Inject constructor(
                     lastConnect = 0,
                     hostKeyAlgo = null,
                 )
-                val savedHost = repository.saveHost(newHost)
-
-                // Copy port forwards
-                val portForwards = repository.getPortForwardsForHost(host.id)
-                for (pf in portForwards) {
-                    repository.savePortForward(pf.copy(id = 0L, hostId = savedHost.id))
-                }
+                repository.duplicateHostSettings(host.id, newHost)
             } catch (e: Exception) {
                 _uiState.update {
                     it.copy(error = e.message ?: "Failed to duplicate host")

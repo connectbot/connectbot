@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -268,6 +268,8 @@ class BackupFilterTest {
 
         // Mock repository behavior
         whenever(mockHostRepository.getHosts()).thenReturn(listOf(host1, host2))
+        whenever(mockHostRepository.getAutomation(host1.id)).thenReturn(emptyList())
+        whenever(mockHostRepository.getAutomation(host2.id)).thenReturn(emptyList())
         whenever(mockHostRepository.getPortForwardsForHost(host1.id)).thenReturn(emptyList())
         whenever(mockHostRepository.getKnownHostsForHost(host1.id)).thenReturn(emptyList())
         whenever(mockHostRepository.getPortForwardsForHost(host2.id)).thenReturn(emptyList())
@@ -340,6 +342,7 @@ class BackupFilterTest {
             createPubkey("key-2", allowBackup = true, storageType = KeyStorageType.EXPORTABLE)
 
         whenever(mockHostRepository.getHosts()).thenReturn(listOf(host))
+        whenever(mockHostRepository.getAutomation(host.id)).thenReturn(emptyList())
         whenever(mockHostRepository.getPortForwardsForHost(host.id)).thenReturn(emptyList())
         whenever(mockHostRepository.getKnownHostsForHost(host.id)).thenReturn(emptyList())
         whenever(mockPubkeyRepository.getAll()).thenReturn(
