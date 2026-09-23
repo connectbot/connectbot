@@ -29,6 +29,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import org.connectbot.data.ConnectBotDatabase
 import org.connectbot.data.EntityIds
+import org.connectbot.data.keyboard.KeyboardDefaults
 import org.connectbot.data.sync.SyncDatabase
 import javax.inject.Singleton
 
@@ -53,6 +54,7 @@ object DatabaseModule {
 
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
+                KeyboardDefaults.seed(db)
                 // Create default profile on fresh database creation
                 db.execSQL(
                     """

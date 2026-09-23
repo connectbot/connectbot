@@ -28,6 +28,7 @@ import dagger.hilt.components.SingletonComponent
 import dagger.hilt.testing.TestInstallIn
 import org.connectbot.data.ConnectBotDatabase
 import org.connectbot.data.EntityIds
+import org.connectbot.data.keyboard.KeyboardDefaults
 import org.connectbot.data.sync.SyncDatabase
 import javax.inject.Singleton
 
@@ -54,6 +55,7 @@ object TestDatabaseModule {
 
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
+                KeyboardDefaults.seed(db)
                 db.execSQL(
                     """
                         INSERT INTO profiles (id, name, color_scheme_id, font_size, del_key, encoding, emulation)
