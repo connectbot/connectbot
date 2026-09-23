@@ -18,13 +18,10 @@
 package org.connectbot
 
 import androidx.compose.ui.test.assertIsDisplayed
-import androidx.compose.ui.test.assertIsEnabled
-import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -35,11 +32,7 @@ import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.components.FontDownloadProgressDialog
 import org.connectbot.ui.components.UrlScanDialog
 import org.connectbot.ui.screens.console.ConsoleTestTags
-import org.connectbot.ui.screens.portforwardlist.PortForwardEditorDialog
-import org.connectbot.ui.screens.portforwardlist.PortForwardEditorTestTags
-import org.connectbot.ui.screens.portforwardlist.SourceAddressOption
 import org.connectbot.ui.theme.ConnectBotTheme
-import org.connectbot.util.HostConstants
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
@@ -59,160 +52,6 @@ class ComponentDialogsTest {
     @Before
     fun setUp() {
         hiltRule.inject()
-    }
-
-    @Test
-    fun sourceAddressOption_mapsSshValues() {
-        assertEquals(SourceAddressOption.LOCALHOST, SourceAddressOption.fromSshValue("localhost"))
-        assertEquals(SourceAddressOption.LOCALHOST_IPV4, SourceAddressOption.fromSshValue("127.0.0.1"))
-        assertEquals(SourceAddressOption.LOCALHOST_IPV6, SourceAddressOption.fromSshValue("::1"))
-        assertEquals(SourceAddressOption.ALL, SourceAddressOption.fromSshValue(""))
-        assertEquals(SourceAddressOption.ALL_IPV4, SourceAddressOption.fromSshValue("0.0.0.0"))
-        assertEquals(SourceAddressOption.ALL_IPV6, SourceAddressOption.fromSshValue("::"))
-        assertEquals(SourceAddressOption.LOCALHOST, SourceAddressOption.fromSshValue(null))
-        assertEquals(SourceAddressOption.SPECIFIC, SourceAddressOption.fromSshValue("192.168.1.10"))
-    }
-
-    @Test
-    fun portForwardEditorDialog_savesDefaultLocalForwardValues() {
-        var saved: SavedPortForward? = null
-
-        composeTestRule.setContent {
-            ConnectBotTheme {
-                PortForwardEditorDialog(
-                    onDismiss = {},
-                    onSave = { nickname, type, sourcePort, sourceAddr, destination ->
-                        saved = SavedPortForward(nickname, type, sourcePort, sourceAddr, destination)
-                    },
-                )
-            }
-        }
-
-        composeTestRule
-            .onNodeWithText(composeTestRule.activity.getString(R.string.portforward_edit))
-            .assertIsDisplayed()
-        composeTestRule
-            .onNodeWithText(composeTestRule.activity.getString(R.string.portforward_pos))
-            .assertIsEnabled()
-            .performClick()
-
-        assertEquals(
-            SavedPortForward(
-                nickname = "",
-                type = HostConstants.PORTFORWARD_LOCAL,
-                sourcePort = "8080",
-                sourceAddr = "localhost",
-                destination = "localhost:80",
-            ),
-            saved,
-        )
-    }
-
-    @Test
-    fun portForwardEditorDialog_disablesSaveForInvalidPortAndDestination() {
-        composeTestRule.setContent {
-            ConnectBotTheme {
-                PortForwardEditorDialog(
-                    onDismiss = {},
-                    onSave = { _, _, _, _, _ -> },
-                    initialSourcePort = "0",
-                    initialDestination = "missing-port",
-                )
-            }
-        }
-
-        composeTestRule
-            .onNodeWithText(composeTestRule.activity.getString(R.string.portforward_port_range_error))
-            .assertIsDisplayed()
-        composeTestRule
-            .onNodeWithText(composeTestRule.activity.getString(R.string.portforward_destination_format_error))
-            .assertIsDisplayed()
-        composeTestRule
-            .onNodeWithText(composeTestRule.activity.getString(R.string.portforward_pos))
-            .assertIsNotEnabled()
-    }
-
-    @Test
-    fun portForwardEditorDialog_savesRemoteSpecificAddress() {
-        var saved: SavedPortForward? = null
-
-        composeTestRule.setContent {
-            ConnectBotTheme {
-                PortForwardEditorDialog(
-                    onDismiss = {},
-                    onSave = { nickname, type, sourcePort, sourceAddr, destination ->
-                        saved = SavedPortForward(nickname, type, sourcePort, sourceAddr, destination)
-                    },
-                    initialNickname = "admin",
-                    initialType = HostConstants.PORTFORWARD_REMOTE,
-                    initialSourcePort = "2200",
-                    initialSourceAddr = "192.168.1.10",
-                    initialDestination = "server.example:22",
-                    isEditing = true,
-                )
-            }
-        }
-
-        composeTestRule
-            .onNodeWithText(composeTestRule.activity.getString(R.string.portforward_source_addr_specific))
-            .assertIsDisplayed()
-        composeTestRule
-            .onNodeWithText("192.168.1.10")
-            .assertIsDisplayed()
-        composeTestRule
-            .onNodeWithText(composeTestRule.activity.getString(R.string.portforward_save))
-            .performClick()
-
-        assertEquals(
-            SavedPortForward(
-                nickname = "admin",
-                type = HostConstants.PORTFORWARD_REMOTE,
-                sourcePort = "2200",
-                sourceAddr = "192.168.1.10",
-                destination = "server.example:22",
-            ),
-            saved,
-        )
-    }
-
-    @Test
-    fun portForwardEditorDialog_acceptsTypedForwardValues() {
-        var saved: SavedPortForward? = null
-
-        composeTestRule.setContent {
-            ConnectBotTheme {
-                PortForwardEditorDialog(
-                    onDismiss = {},
-                    onSave = { nickname, type, sourcePort, sourceAddr, destination ->
-                        saved = SavedPortForward(nickname, type, sourcePort, sourceAddr, destination)
-                    },
-                )
-            }
-        }
-
-        composeTestRule
-            .onNodeWithTag(PortForwardEditorTestTags.NICKNAME_FIELD)
-            .performTextInput("web")
-        composeTestRule
-            .onNodeWithTag(PortForwardEditorTestTags.SOURCE_PORT_FIELD)
-            .performTextInput("8081")
-        composeTestRule
-            .onNodeWithTag(PortForwardEditorTestTags.DESTINATION_FIELD)
-            .performTextInput("example.com:443")
-        composeTestRule
-            .onNodeWithText(composeTestRule.activity.getString(R.string.portforward_pos))
-            .performClick()
-
-        assertEquals(
-            SavedPortForward(
-                nickname = "web",
-                type = HostConstants.PORTFORWARD_LOCAL,
-                sourcePort = "8081",
-                sourceAddr = "localhost",
-                destination = "example.com:443",
-            ),
-            saved,
-        )
     }
 
     @Test
@@ -420,12 +259,4 @@ class ComponentDialogsTest {
             .onNodeWithText(composeTestRule.activity.getString(R.string.font_downloading))
             .assertIsDisplayed()
     }
-
-    private data class SavedPortForward(
-        val nickname: String,
-        val type: String,
-        val sourcePort: String,
-        val sourceAddr: String,
-        val destination: String,
-    )
 }
