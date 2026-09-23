@@ -187,6 +187,9 @@ class HostRepository @Inject constructor(
      */
     suspend fun getPortForwardsForHost(hostId: Long): List<PortForward> = portForwardDao.getByHost(hostId)
 
+    /** Get one port forward for editing. */
+    suspend fun getPortForwardById(id: Long): PortForward? = portForwardDao.getById(id)
+
     /**
      * Save a port forward (insert or update).
      *

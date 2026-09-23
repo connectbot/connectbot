@@ -62,6 +62,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import org.connectbot.R
 import org.connectbot.data.entity.PortForward
 import org.connectbot.ui.PreviewScreen
@@ -73,6 +74,7 @@ fun PortForwardListScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: PortForwardListViewModel = hiltViewModel(),
+    onNavigateToEditor: (Long?) -> Unit = {},
 ) {
     val terminalManager = org.connectbot.ui.LocalTerminalManager.current
 
@@ -82,12 +84,16 @@ fun PortForwardListScreen(
 
     val uiState by viewModel.uiState.collectAsState()
 
+    LifecycleResumeEffect(viewModel) {
+        viewModel.refreshBridgeState()
+        onPauseOrDispose { }
+    }
+
     PortForwardListScreenContent(
         uiState = uiState,
         onNavigateBack = onNavigateBack,
+        onNavigateToEditor = onNavigateToEditor,
         onDeletePortForward = viewModel::deletePortForward,
-        onAddPortForward = viewModel::addPortForward,
-        onUpdatePortForward = viewModel::updatePortForward,
         onEnablePortForward = viewModel::enablePortForward,
         onDisablePortForward = viewModel::disablePortForward,
         modifier = modifier,
@@ -100,14 +106,11 @@ fun PortForwardListScreenContent(
     uiState: PortForwardListUiState,
     onNavigateBack: () -> Unit,
     onDeletePortForward: (PortForward) -> Unit,
-    onAddPortForward: (String, String, String, String, String) -> Unit,
-    onUpdatePortForward: (PortForward, String, String, String, String, String) -> Unit,
     onEnablePortForward: (PortForward) -> Unit,
     onDisablePortForward: (PortForward) -> Unit,
     modifier: Modifier = Modifier,
+    onNavigateToEditor: (Long?) -> Unit = {},
 ) {
-    var showAddDialog by remember { mutableStateOf(false) }
-    var editingPortForward by remember { mutableStateOf<PortForward?>(null) }
     val snackbarHostState = remember { SnackbarHostState() }
 
     // Show snackbar when there's an error
@@ -134,7 +137,7 @@ fun PortForwardListScreenContent(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { showAddDialog = true },
+                onClick = { onNavigateToEditor(null) },
                 // This matches the FloatingActionButtonMenu padding
                 modifier = Modifier.padding(end = 16.dp, bottom = 16.dp),
             ) {
@@ -185,7 +188,7 @@ fun PortForwardListScreenContent(
                             PortForwardListItem(
                                 portForward = portForward,
                                 isEnabled = portForward.isEnabled(),
-                                onEdit = { editingPortForward = portForward },
+                                onEdit = { onNavigateToEditor(portForward.id) },
                                 onDelete = { onDeletePortForward(portForward) },
                                 onEnable = { onEnablePortForward(portForward) },
                                 onDisable = { onDisablePortForward(portForward) },
@@ -196,38 +199,6 @@ fun PortForwardListScreenContent(
                 }
             }
         }
-    }
-
-    if (showAddDialog) {
-        PortForwardEditorDialog(
-            onDismiss = { showAddDialog = false },
-            onSave = { nickname, type, sourcePort, sourceAddr, destination ->
-                showAddDialog = false
-                onAddPortForward(nickname, type, sourcePort, sourceAddr, destination)
-            },
-        )
-    }
-
-    editingPortForward?.let { portForward ->
-        val initialDest = if (portForward.destAddr != null && portForward.destPort > 0) {
-            "${portForward.destAddr}:${portForward.destPort}"
-        } else {
-            portForward.destAddr ?: ""
-        }
-
-        PortForwardEditorDialog(
-            onDismiss = { editingPortForward = null },
-            onSave = { nickname, type, sourcePort, sourceAddr, destination ->
-                editingPortForward = null
-                onUpdatePortForward(portForward, nickname, type, sourcePort, sourceAddr, destination)
-            },
-            initialNickname = portForward.nickname,
-            initialType = portForward.type,
-            initialSourcePort = portForward.sourcePort.toString(),
-            initialSourceAddr = portForward.sourceAddr,
-            initialDestination = initialDest,
-            isEditing = true,
-        )
     }
 }
 
@@ -242,8 +213,6 @@ private fun PortForwardListScreenEmptyPreview() {
             ),
             onNavigateBack = {},
             onDeletePortForward = {},
-            onAddPortForward = { _, _, _, _, _ -> },
-            onUpdatePortForward = { _, _, _, _, _, _ -> },
             onEnablePortForward = {},
             onDisablePortForward = {},
         )
@@ -261,8 +230,6 @@ private fun PortForwardListScreenLoadingPreview() {
             ),
             onNavigateBack = {},
             onDeletePortForward = {},
-            onAddPortForward = { _, _, _, _, _ -> },
-            onUpdatePortForward = { _, _, _, _, _, _ -> },
             onEnablePortForward = {},
             onDisablePortForward = {},
         )
@@ -281,8 +248,6 @@ private fun PortForwardListScreenErrorPreview() {
             ),
             onNavigateBack = {},
             onDeletePortForward = {},
-            onAddPortForward = { _, _, _, _, _ -> },
-            onUpdatePortForward = { _, _, _, _, _, _ -> },
             onEnablePortForward = {},
             onDisablePortForward = {},
         )
@@ -332,8 +297,6 @@ private fun PortForwardListScreenPopulatedPreview() {
             ),
             onNavigateBack = {},
             onDeletePortForward = {},
-            onAddPortForward = { _, _, _, _, _ -> },
-            onUpdatePortForward = { _, _, _, _, _, _ -> },
             onEnablePortForward = {},
             onDisablePortForward = {},
         )

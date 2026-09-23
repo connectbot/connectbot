@@ -39,6 +39,7 @@ import org.connectbot.ui.screens.help.HelpScreen
 import org.connectbot.ui.screens.hints.HintsScreen
 import org.connectbot.ui.screens.hosteditor.HostEditorScreen
 import org.connectbot.ui.screens.hostlist.HostListScreen
+import org.connectbot.ui.screens.portforwardlist.PortForwardEditorScreen
 import org.connectbot.ui.screens.portforwardlist.PortForwardListScreen
 import org.connectbot.ui.screens.profiles.ProfileEditorScreen
 import org.connectbot.ui.screens.profiles.ProfileListScreen
@@ -162,10 +163,25 @@ fun ConnectBotNavHost(
             arguments = listOf(
                 navArgument(NavArgs.HOST_ID) { type = NavType.LongType },
             ),
-        ) {
+        ) { entry ->
             PortForwardListScreen(
                 onNavigateBack = { navController.safePopBackStack() },
+                onNavigateToEditor = { forwardId ->
+                    entry.arguments?.getLong(NavArgs.HOST_ID)?.let { hostId ->
+                        navController.navigateSafely("${NavDestinations.PORT_FORWARD_EDITOR}/$hostId/${forwardId ?: 0L}")
+                    }
+                },
             )
+        }
+
+        composable(
+            route = "${NavDestinations.PORT_FORWARD_EDITOR}/{${NavArgs.HOST_ID}}/{${NavArgs.FORWARD_ID}}",
+            arguments = listOf(
+                navArgument(NavArgs.HOST_ID) { type = NavType.LongType },
+                navArgument(NavArgs.FORWARD_ID) { type = NavType.LongType },
+            ),
+        ) {
+            PortForwardEditorScreen(onNavigateBack = { navController.safePopBackStack() })
         }
 
         composable(
