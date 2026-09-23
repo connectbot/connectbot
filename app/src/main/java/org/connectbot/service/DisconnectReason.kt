@@ -19,7 +19,6 @@ package org.connectbot.service
 
 enum class DisconnectReason {
     USER_REQUESTED,
-    SESSION_EXIT,
     REMOTE_EOF,
     IO_ERROR,
     NETWORK_LOST,
