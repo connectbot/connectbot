@@ -653,7 +653,8 @@ fun ConsoleScreen(
 
     // Check if any modal (menu or dialog) is currently active
     val anyModalActive = showMenu || showUrlScanDialog || showResizeDialog ||
-        showDisconnectDialog || showTextInputDialog || isBiometricPromptActive || currentAuthBanner != null
+        showDisconnectDialog || showSessionPickerDialog || showTextInputDialog ||
+        isBiometricPromptActive || currentAuthBanner != null
 
     /**
      * Unified interaction handler for terminal and keyboard.
