@@ -120,4 +120,29 @@ class PubkeyEditorScreenTest {
             .onNodeWithText("Nickname:", useUnmergedTree = true)
             .assertExists()
     }
+
+    @Test
+    fun pubkeyEditorScreen_showsSaveForValidEdits() {
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                PubkeyEditorScreenContent(
+                    uiState = PubkeyEditorUiState(
+                        isLoading = false,
+                        nickname = "key",
+                        hasUnsavedChanges = true,
+                    ),
+                    onNavigateBack = {},
+                    onNicknameChange = {},
+                    onOldPasswordChange = {},
+                    onNewPassword1Change = {},
+                    onNewPassword2Change = {},
+                    onUnlockAtStartupChange = {},
+                    onConfirmUseChange = {},
+                    onSave = {},
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithContentDescription("Save").assertIsDisplayed()
+    }
 }

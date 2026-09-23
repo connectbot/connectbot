@@ -47,6 +47,8 @@ data class PubkeyEditorUiState(
     val isLoading: Boolean = true,
     val error: String? = null,
     val saveSuccess: Boolean = false,
+    val isSaving: Boolean = false,
+    val hasUnsavedChanges: Boolean = false,
     val wrongPassword: Boolean = false,
     val nicknameExists: Boolean = false,
 ) {
@@ -96,6 +98,7 @@ class PubkeyEditorViewModel @Inject constructor(
                             unlockAtStartup = pubkey.startup,
                             confirmUse = pubkey.confirmation,
                             isLoading = false,
+                            hasUnsavedChanges = false,
                         )
                     }
                 } else {
@@ -119,7 +122,7 @@ class PubkeyEditorViewModel @Inject constructor(
     }
 
     fun updateNickname(nickname: String) {
-        _uiState.update { it.copy(nickname = nickname) }
+        _uiState.update { it.copy(nickname = nickname, hasUnsavedChanges = true) }
         checkNicknameExists(nickname)
     }
 
@@ -145,32 +148,34 @@ class PubkeyEditorViewModel @Inject constructor(
     }
 
     fun updateOldPassword(password: String) {
-        _uiState.update { it.copy(oldPassword = password, wrongPassword = false) }
+        _uiState.update { it.copy(oldPassword = password, wrongPassword = false, hasUnsavedChanges = true) }
     }
 
     fun updateNewPassword1(password: String) {
-        _uiState.update { it.copy(newPassword1 = password) }
+        _uiState.update { it.copy(newPassword1 = password, hasUnsavedChanges = true) }
     }
 
     fun updateNewPassword2(password: String) {
-        _uiState.update { it.copy(newPassword2 = password) }
+        _uiState.update { it.copy(newPassword2 = password, hasUnsavedChanges = true) }
     }
 
     fun updateUnlockAtStartup(checked: Boolean) {
-        _uiState.update { it.copy(unlockAtStartup = checked) }
+        _uiState.update { it.copy(unlockAtStartup = checked, hasUnsavedChanges = true) }
     }
 
     fun updateConfirmUse(checked: Boolean) {
-        _uiState.update { it.copy(confirmUse = checked) }
+        _uiState.update { it.copy(confirmUse = checked, hasUnsavedChanges = true) }
     }
 
     fun save() {
         val pubkey = originalPubkey ?: return
         val state = _uiState.value
+        if (state.isSaving || !state.hasUnsavedChanges || !state.canSave) return
 
+        _uiState.update { it.copy(isSaving = true, error = null) }
         viewModelScope.launch {
             try {
-                withContext(dispatchers.io) {
+                val saved = withContext(dispatchers.io) {
                     // Handle password change if needed
                     // Password needs to be changed if:
                     // 1. Key is encrypted and user provided old password (removing or changing password)
@@ -190,7 +195,7 @@ class PubkeyEditorViewModel @Inject constructor(
                             withContext(dispatchers.main) {
                                 _uiState.update { it.copy(wrongPassword = true) }
                             }
-                            return@withContext
+                            return@withContext false
                         }
 
                         try {
@@ -205,7 +210,7 @@ class PubkeyEditorViewModel @Inject constructor(
                                 withContext(dispatchers.main) {
                                     _uiState.update { it.copy(wrongPassword = true) }
                                 }
-                                return@withContext
+                                return@withContext false
                             }
 
                             // Re-encode with new password
@@ -215,7 +220,7 @@ class PubkeyEditorViewModel @Inject constructor(
                             withContext(dispatchers.main) {
                                 _uiState.update { it.copy(wrongPassword = true) }
                             }
-                            return@withContext
+                            return@withContext false
                         }
                     }
 
@@ -232,14 +237,19 @@ class PubkeyEditorViewModel @Inject constructor(
                     repository.save(updatedPubkey)
 
                     Timber.d("Public key saved successfully")
+                    true
                 }
 
-                _uiState.update { it.copy(saveSuccess = true) }
+                if (saved) {
+                    _uiState.update { it.copy(saveSuccess = true, hasUnsavedChanges = false) }
+                }
             } catch (e: Exception) {
                 Timber.e(e, "Failed to save pubkey")
                 _uiState.update {
                     it.copy(error = "Failed to save: ${e.message}")
                 }
+            } finally {
+                _uiState.update { it.copy(isSaving = false) }
             }
         }
     }

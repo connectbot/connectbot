@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -467,12 +467,30 @@ class PaletteEditorViewModelTest {
     }
 
     @Test
+    fun `scheme updates do not replace unsaved metadata`() = runTest {
+        val customSchemeId = 99L
+        val scheme = setupCustomScheme(customSchemeId)
+        val schemes = MutableStateFlow(scheme)
+        whenever(repository.observeScheme(customSchemeId)).thenReturn(schemes)
+        viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
+        advanceUntilIdle()
+
+        viewModel.updateName("Draft name")
+        viewModel.updateDescription("Draft description")
+        schemes.value = scheme.copy(name = "Remote name", description = "Remote description")
+        advanceUntilIdle()
+
+        assertThat(viewModel.uiState.value.schemeName).isEqualTo("Draft name")
+        assertThat(viewModel.uiState.value.schemeDescription).isEqualTo("Draft description")
+    }
+
+    @Test
     fun `saveNameAndDescription is ignored for built-in schemes`() = runTest {
         viewModel = PaletteEditorViewModel(savedStateHandle, repository, dispatchers)
         advanceUntilIdle()
 
         viewModel.updateName("Attempted rename")
-        viewModel.saveNameAndDescription()
+        viewModel.saveNameAndDescription {}
         advanceUntilIdle()
 
         verify(repository, times(0)).renameScheme(testSchemeId, "Attempted rename", "")
@@ -489,10 +507,12 @@ class PaletteEditorViewModelTest {
 
         viewModel.updateName("New Name")
         viewModel.updateDescription("Desc")
-        viewModel.saveNameAndDescription()
+        var navigated = false
+        viewModel.saveNameAndDescription { navigated = true }
         advanceUntilIdle()
 
         verify(repository).renameScheme(customSchemeId, "New Name", "Desc")
+        assertThat(navigated).isTrue()
     }
 
     @Test
