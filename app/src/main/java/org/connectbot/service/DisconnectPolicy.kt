@@ -24,6 +24,7 @@ object DisconnectPolicy {
         stayConnected: Boolean,
     ): DisconnectAction {
         if (reason == DisconnectReason.USER_REQUESTED) return DisconnectAction.CloseImmediately
+        if (reason == DisconnectReason.SESSION_EXIT) return DisconnectAction.CloseImmediately
         if (quickDisconnect) return DisconnectAction.CloseImmediately
         // Never auto-reconnect on auth failures — looping would lock accounts
         if (reason == DisconnectReason.AUTH_FAIL) return DisconnectAction.ShowReconnectOverlay
