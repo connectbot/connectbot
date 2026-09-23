@@ -372,6 +372,7 @@ private fun ConsoleTerminalPage(
     hasPlayedKeyboardAnimation: Boolean,
     imeVisible: Boolean,
     handleTerminalInteraction: () -> Unit,
+    onTerminalTap: () -> Unit,
     onShowSoftwareKeyboardChange: (Boolean) -> Unit,
     onImeVisibilityChange: (Boolean) -> Unit,
     onTextInputRequest: () -> Unit,
@@ -434,7 +435,7 @@ private fun ConsoleTerminalPage(
                     onComposeControllerChange(controller)
                 }
             },
-            onTerminalTap = { handleTerminalInteraction() },
+            onTerminalTap = onTerminalTap,
             onImeVisibilityChanged = { visible ->
                 if (isActive) {
                     onImeVisibilityChange(visible)
@@ -1045,7 +1046,11 @@ fun ConsoleScreen(
                                 showExtraKeyboard = showExtraKeyboard,
                                 hasPlayedKeyboardAnimation = hasPlayedKeyboardAnimation,
                                 imeVisible = imeVisible,
-                                handleTerminalInteraction = { handleTerminalInteraction(isTerminalTap = true) },
+                                handleTerminalInteraction = { handleTerminalInteraction() },
+                                onTerminalTap = {
+                                    showSoftwareKeyboard = true
+                                    handleTerminalInteraction(isTerminalTap = true)
+                                },
                                 onShowSoftwareKeyboardChange = { showSoftwareKeyboard = it },
                                 onImeVisibilityChange = { imeVisible = it },
                                 onTextInputRequest = { showTextInputDialog = true },
