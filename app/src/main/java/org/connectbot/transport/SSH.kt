@@ -1138,22 +1138,24 @@ open class SSH :
 
     @Throws(IOException::class)
     override fun write(buffer: ByteArray) {
-        if (buffer.contains(EOT_BYTE)) {
-            lastUserSentEotAtMs.set(SystemClock.elapsedRealtime())
+        if (buffer.isNotEmpty()) {
+            recordUserWrite(buffer.last() == EOT_BYTE)
         }
         stdin?.write(buffer)
     }
 
     @Throws(IOException::class)
     override fun write(c: Int) {
-        if (c == EOT_BYTE.toInt()) {
-            lastUserSentEotAtMs.set(SystemClock.elapsedRealtime())
-        }
+        recordUserWrite(c == EOT_BYTE.toInt())
         stdin?.write(c)
     }
 
     private fun sentRecentEot(sentAtMs: Long): Boolean =
         sentAtMs != 0L && SystemClock.elapsedRealtime() - sentAtMs <= EXIT_STATUS_WAIT_MS
+
+    private fun recordUserWrite(wroteEot: Boolean) {
+        lastUserSentEotAtMs.set(if (wroteEot) SystemClock.elapsedRealtime() else 0L)
+    }
 
     private fun clearCurrentRecentEot() {
         val currentSentAtMs = lastUserSentEotAtMs.get()
