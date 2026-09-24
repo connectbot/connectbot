@@ -1046,6 +1046,7 @@ open class SSH :
 
     @VisibleForTesting
     internal fun determineDisconnectReasonForClosedSession(session: Session): DisconnectReason {
+        val recentEotAtMs = lastUserSentEotAtMs
         try {
             if (session.exitStatus != null) return DisconnectReason.SESSION_EXIT
             if (session.exitSignal != null) return DisconnectReason.REMOTE_EOF
@@ -1058,7 +1059,7 @@ open class SSH :
                 return DisconnectReason.REMOTE_EOF
             }
             if (session.exitStatus != null) return DisconnectReason.SESSION_EXIT
-            if (!sentRecentEot()) return DisconnectReason.REMOTE_EOF
+            if (!sentRecentEot(recentEotAtMs)) return DisconnectReason.REMOTE_EOF
 
             // Channel EOF may arrive before the server's exit-status request.
             // This runs in Relay's IO dispatcher, so the short wait does not block UI.
@@ -1071,7 +1072,7 @@ open class SSH :
             }
             return if (session.exitStatus != null) DisconnectReason.SESSION_EXIT else DisconnectReason.REMOTE_EOF
         } finally {
-            lastUserSentEotAtMs = 0L
+            clearRecentEotIfUnchanged(recentEotAtMs)
         }
     }
 
@@ -1140,8 +1141,14 @@ open class SSH :
         stdin?.write(c)
     }
 
-    private fun sentRecentEot(): Boolean =
-        SystemClock.elapsedRealtime() - lastUserSentEotAtMs <= EXIT_STATUS_WAIT_MS
+    private fun sentRecentEot(sentAtMs: Long): Boolean =
+        SystemClock.elapsedRealtime() - sentAtMs <= EXIT_STATUS_WAIT_MS
+
+    private fun clearRecentEotIfUnchanged(expectedSentAtMs: Long) {
+        if (expectedSentAtMs != 0L && lastUserSentEotAtMs == expectedSentAtMs) {
+            lastUserSentEotAtMs = 0L
+        }
+    }
 
     override fun getOptions(): Map<String, String> = mapOf("compression" to compressionEnabled.toString())
 
