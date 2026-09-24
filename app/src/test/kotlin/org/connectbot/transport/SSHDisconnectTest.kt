@@ -123,6 +123,24 @@ class SSHDisconnectTest {
     }
 
     @Test
+    fun determineDisconnectReasonForClosedSession_whenCtrlDPrecedesAnotherWrite_stillReportsSessionExit() {
+        val session = mock(Session::class.java)
+        val ssh = SSH().apply {
+            setPrivateField("stdin", ByteArrayOutputStream())
+        }
+        `when`(session.exitStatus).thenReturn(null, null, 0)
+        `when`(session.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(0L)))
+            .thenReturn(0)
+        `when`(session.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(250L)))
+            .thenReturn(ChannelCondition.EXIT_STATUS)
+
+        ssh.write(0x04)
+        ssh.write('x'.code)
+
+        assertEquals(DisconnectReason.SESSION_EXIT, ssh.determineDisconnectReasonForClosedSession(session))
+    }
+
+    @Test
     fun determineDisconnectReasonForClosedSession_withoutExitStatus_reportsRemoteEof() {
         val session = mock(Session::class.java)
         `when`(session.exitStatus).thenReturn(null)
