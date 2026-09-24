@@ -1073,18 +1073,17 @@ open class SSH :
 
         // Channel EOF may arrive before the server's exit-status request.
         // This runs in Relay's IO dispatcher, so the short wait does not block UI.
-        try {
-            val waitedCloseCondition = session.waitForCondition(
-                ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL,
-                EXIT_STATUS_WAIT_MS,
-            )
-            if ((waitedCloseCondition and ChannelCondition.EXIT_SIGNAL) != 0 || session.exitSignal != null) {
-                return DisconnectReason.REMOTE_EOF
-            }
-            return if (session.exitStatus != null) DisconnectReason.SESSION_EXIT else DisconnectReason.REMOTE_EOF
-        } finally {
-            clearRecentEotIfUnchanged(recentEotAtMs)
+        val waitedCloseCondition = session.waitForCondition(
+            ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL,
+            EXIT_STATUS_WAIT_MS,
+        )
+        val disconnectReason = if ((waitedCloseCondition and ChannelCondition.EXIT_SIGNAL) != 0 || session.exitSignal != null) {
+            DisconnectReason.REMOTE_EOF
+        } else {
+            if (session.exitStatus != null) DisconnectReason.SESSION_EXIT else DisconnectReason.REMOTE_EOF
         }
+        clearRecentEotIfUnchanged(recentEotAtMs)
+        return disconnectReason
     }
 
     @Throws(IOException::class)
