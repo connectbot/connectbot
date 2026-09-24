@@ -1067,9 +1067,8 @@ open class SSH :
             return DisconnectReason.REMOTE_EOF
         }
 
-        val recentEotAtMs = lastUserSentEotAtMs.get()
-        val recentEotShellToken = lastUserSentEotShellToken.get()
-        if (!sentRecentEot(recentEotAtMs, recentEotShellToken)) return DisconnectReason.REMOTE_EOF
+        val recentEotMarker = currentRecentEotMarker()
+        if (!sentRecentEot(recentEotMarker.sentAtMs, recentEotMarker.shellToken)) return DisconnectReason.REMOTE_EOF
 
         // Channel EOF may arrive before the server's exit-status request.
         // This runs in Relay's IO dispatcher, so the short wait does not block UI.
@@ -1082,7 +1081,7 @@ open class SSH :
         } else {
             if (session.exitStatus != null) DisconnectReason.SESSION_EXIT else DisconnectReason.REMOTE_EOF
         }
-        clearRecentEotIfUnchanged(recentEotAtMs, recentEotShellToken)
+        clearRecentEotIfUnchanged(recentEotMarker.sentAtMs, recentEotMarker.shellToken)
         return disconnectReason
     }
 
@@ -1155,6 +1154,11 @@ open class SSH :
             shellToken == interactiveShellToken.get() &&
             SystemClock.elapsedRealtime() - sentAtMs <= EXIT_STATUS_WAIT_MS
 
+    private fun currentRecentEotMarker(): RecentEotMarker =
+        synchronized(recentEotLock) {
+            RecentEotMarker(lastUserSentEotAtMs.get(), lastUserSentEotShellToken.get())
+        }
+
     private fun recordUserWrite(wroteEot: Boolean) {
         synchronized(recentEotLock) {
             if (!interactiveShellOpen) return
@@ -1217,6 +1221,11 @@ open class SSH :
             }
         }
     }
+
+    private data class RecentEotMarker(
+        val sentAtMs: Long,
+        val shellToken: Long,
+    )
 
     override fun getOptions(): Map<String, String> = mapOf("compression" to compressionEnabled.toString())
 
