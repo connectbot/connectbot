@@ -112,6 +112,7 @@ open class SSH :
     private var interactiveCanContinue = true
     private var savedPasswordTried = false
     private val lastUserSentEotAtMs = AtomicLong(0L)
+    private val recentEotLock = Any()
 
     protected var connection: Connection? = null
     private val jumpConnections: MutableList<Connection> = mutableListOf()
@@ -715,7 +716,7 @@ open class SSH :
             stderr = session?.stderr
 
             sessionOpen = true
-            interactiveShellOpen = true
+            activateInteractiveShell()
 
             bridge?.onConnected()
         } catch (e1: IOException) {
@@ -1028,8 +1029,7 @@ open class SSH :
         session?.close()
         session = null
         sessionOpen = false
-        interactiveShellOpen = false
-        clearRecentEotTracking()
+        deactivateInteractiveShell()
 
         connection?.let { unregisterUserAuthBanner(it) }
         connection?.close()
@@ -1162,13 +1162,31 @@ open class SSH :
         sentAtMs != 0L && SystemClock.elapsedRealtime() - sentAtMs <= EXIT_STATUS_WAIT_MS
 
     private fun recordUserWrite(wroteEot: Boolean) {
-        if (wroteEot && interactiveShellOpen) {
-            lastUserSentEotAtMs.set(SystemClock.elapsedRealtime())
+        synchronized(recentEotLock) {
+            if (wroteEot && interactiveShellOpen) {
+                lastUserSentEotAtMs.set(SystemClock.elapsedRealtime())
+            }
         }
     }
 
     private fun clearRecentEotTracking() {
-        lastUserSentEotAtMs.set(0L)
+        synchronized(recentEotLock) {
+            lastUserSentEotAtMs.set(0L)
+        }
+    }
+
+    private fun activateInteractiveShell() {
+        synchronized(recentEotLock) {
+            interactiveShellOpen = true
+            lastUserSentEotAtMs.set(0L)
+        }
+    }
+
+    private fun deactivateInteractiveShell() {
+        synchronized(recentEotLock) {
+            interactiveShellOpen = false
+            lastUserSentEotAtMs.set(0L)
+        }
     }
 
     private fun clearCurrentRecentEot() {

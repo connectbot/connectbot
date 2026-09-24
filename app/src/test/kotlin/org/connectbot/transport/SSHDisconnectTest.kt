@@ -143,6 +143,26 @@ class SSHDisconnectTest {
     }
 
     @Test
+    fun determineDisconnectReasonForClosedSession_afterShellClose_doesNotReuseOldCtrlD() {
+        val closedSession = mock(Session::class.java)
+        val laterSession = mock(Session::class.java)
+        val ssh = SSH().apply {
+            setPrivateField("stdin", ByteArrayOutputStream())
+            setPrivateField("interactiveShellOpen", true)
+            setPrivateField("session", closedSession)
+        }
+        `when`(laterSession.exitStatus).thenReturn(null)
+        `when`(laterSession.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(0L)))
+            .thenReturn(0)
+
+        ssh.write(0x04)
+        ssh.close()
+
+        assertEquals(DisconnectReason.REMOTE_EOF, ssh.determineDisconnectReasonForClosedSession(laterSession))
+        verify(laterSession, never()).waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(250L))
+    }
+
+    @Test
     fun determineDisconnectReasonForClosedSession_withoutExitStatus_reportsRemoteEof() {
         val session = mock(Session::class.java)
         `when`(session.exitStatus).thenReturn(null)
