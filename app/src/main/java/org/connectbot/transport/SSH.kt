@@ -1041,6 +1041,22 @@ open class SSH :
         bridge?.dispatchDisconnect(reason)
     }
 
+    @VisibleForTesting
+    internal fun getDisconnectReasonForClosedSession(session: Session): DisconnectReason {
+        if (session.exitStatus != null) return DisconnectReason.SESSION_EXIT
+
+        // Channel EOF may arrive before the server's exit-status request.
+        // This runs in Relay's IO dispatcher, so the short wait does not block UI.
+        val closeCondition = session.waitForCondition(
+            ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL,
+            EXIT_STATUS_WAIT_MS,
+        )
+        if ((closeCondition and ChannelCondition.EXIT_SIGNAL) != 0 || session.exitSignal != null) {
+            return DisconnectReason.REMOTE_EOF
+        }
+        return if (session.exitStatus != null) DisconnectReason.SESSION_EXIT else DisconnectReason.REMOTE_EOF
+    }
+
     @Throws(IOException::class)
     override fun flush() {
         stdin?.flush()
@@ -1078,7 +1094,7 @@ open class SSH :
             // ConnectionMonitor.connectionLost().
             val currentBridge = bridge
             if (currentBridge != null) {
-                currentBridge.dispatchDisconnect(DisconnectReason.REMOTE_EOF)
+                currentBridge.dispatchDisconnect(getDisconnectReasonForClosedSession(currentSession))
             } else {
                 // SSH is normally always attached to a bridge. Preserve the
                 // transport contract for callers that use it independently.
@@ -1499,7 +1515,8 @@ open class SSH :
         protected const val AUTH_PASSWORD = "password"
         protected const val AUTH_KEYBOARDINTERACTIVE = "keyboard-interactive"
 
-        protected const val AUTH_TRIES = 20
+        private const val AUTH_TRIES = 20
+        private const val EXIT_STATUS_WAIT_MS = 250L
 
         protected val hostmask = Pattern.compile(
             "^(.+)@((?:[0-9a-z._-]+)|(?:\\[[a-f:0-9]+(?:%[-_.a-z0-9]+)?\\]))(?::(\\d+))?\$",
