@@ -1046,23 +1046,24 @@ open class SSH :
 
     @VisibleForTesting
     internal fun determineDisconnectReasonForClosedSession(session: Session): DisconnectReason {
+        if (session.exitStatus != null) return DisconnectReason.SESSION_EXIT
+        if (session.exitSignal != null) return DisconnectReason.REMOTE_EOF
+
+        val closeCondition = session.waitForCondition(
+            ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL,
+            0,
+        )
+        if ((closeCondition and ChannelCondition.EXIT_SIGNAL) != 0 || session.exitSignal != null) {
+            return DisconnectReason.REMOTE_EOF
+        }
+        if (session.exitStatus != null) return DisconnectReason.SESSION_EXIT
+
         val recentEotAtMs = lastUserSentEotAtMs
+        if (!sentRecentEot(recentEotAtMs)) return DisconnectReason.REMOTE_EOF
+
+        // Channel EOF may arrive before the server's exit-status request.
+        // This runs in Relay's IO dispatcher, so the short wait does not block UI.
         try {
-            if (session.exitStatus != null) return DisconnectReason.SESSION_EXIT
-            if (session.exitSignal != null) return DisconnectReason.REMOTE_EOF
-
-            val closeCondition = session.waitForCondition(
-                ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL,
-                0,
-            )
-            if ((closeCondition and ChannelCondition.EXIT_SIGNAL) != 0 || session.exitSignal != null) {
-                return DisconnectReason.REMOTE_EOF
-            }
-            if (session.exitStatus != null) return DisconnectReason.SESSION_EXIT
-            if (!sentRecentEot(recentEotAtMs)) return DisconnectReason.REMOTE_EOF
-
-            // Channel EOF may arrive before the server's exit-status request.
-            // This runs in Relay's IO dispatcher, so the short wait does not block UI.
             val waitedCloseCondition = session.waitForCondition(
                 ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL,
                 EXIT_STATUS_WAIT_MS,
