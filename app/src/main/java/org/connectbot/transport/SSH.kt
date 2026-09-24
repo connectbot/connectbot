@@ -1139,7 +1139,7 @@ open class SSH :
     @Throws(IOException::class)
     override fun write(buffer: ByteArray) {
         if (buffer.isNotEmpty()) {
-            recordUserWrite(buffer.last() == EOT_BYTE)
+            recordUserWrite(buffer.contains(EOT_BYTE))
         }
         stdin?.write(buffer)
     }
