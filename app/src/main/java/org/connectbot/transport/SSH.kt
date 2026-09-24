@@ -693,12 +693,14 @@ open class SSH :
 
         val currentHost = host ?: return
         if (!currentHost.wantSession) {
+            clearRecentEotTracking()
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_no_session))
             bridge?.onConnected()
             return
         }
 
         try {
+            clearRecentEotTracking()
             session = connection?.openSession()
 
             if (useAuthAgent != HostConstants.AUTHAGENT_NO) {
@@ -717,6 +719,7 @@ open class SSH :
 
             bridge?.onConnected()
         } catch (e1: IOException) {
+            clearRecentEotTracking()
             Timber.e(e1, "Problem while trying to create PTY in finishConnection()")
         }
     }
@@ -1026,6 +1029,7 @@ open class SSH :
         session = null
         sessionOpen = false
         interactiveShellOpen = false
+        clearRecentEotTracking()
 
         connection?.let { unregisterUserAuthBanner(it) }
         connection?.close()
@@ -1161,6 +1165,10 @@ open class SSH :
         if (wroteEot && interactiveShellOpen) {
             lastUserSentEotAtMs.set(SystemClock.elapsedRealtime())
         }
+    }
+
+    private fun clearRecentEotTracking() {
+        lastUserSentEotAtMs.set(0L)
     }
 
     private fun clearCurrentRecentEot() {
