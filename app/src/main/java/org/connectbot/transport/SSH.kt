@@ -1046,17 +1046,27 @@ open class SSH :
 
     @VisibleForTesting
     internal fun determineDisconnectReasonForClosedSession(session: Session): DisconnectReason {
-        if (session.exitStatus != null) return DisconnectReason.SESSION_EXIT
-        if (session.exitSignal != null) return DisconnectReason.REMOTE_EOF
+        if (session.exitStatus != null) {
+            clearCurrentRecentEot()
+            return DisconnectReason.SESSION_EXIT
+        }
+        if (session.exitSignal != null) {
+            clearCurrentRecentEot()
+            return DisconnectReason.REMOTE_EOF
+        }
 
         val closeCondition = session.waitForCondition(
             ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL,
             0,
         )
         if ((closeCondition and ChannelCondition.EXIT_SIGNAL) != 0 || session.exitSignal != null) {
+            clearCurrentRecentEot()
             return DisconnectReason.REMOTE_EOF
         }
-        if (session.exitStatus != null) return DisconnectReason.SESSION_EXIT
+        if (session.exitStatus != null) {
+            clearCurrentRecentEot()
+            return DisconnectReason.SESSION_EXIT
+        }
 
         val recentEotAtMs = lastUserSentEotAtMs.get()
         if (!sentRecentEot(recentEotAtMs)) return DisconnectReason.REMOTE_EOF
@@ -1144,6 +1154,13 @@ open class SSH :
 
     private fun sentRecentEot(sentAtMs: Long): Boolean =
         SystemClock.elapsedRealtime() - sentAtMs <= EXIT_STATUS_WAIT_MS
+
+    private fun clearCurrentRecentEot() {
+        val currentSentAtMs = lastUserSentEotAtMs.get()
+        if (sentRecentEot(currentSentAtMs)) {
+            lastUserSentEotAtMs.compareAndSet(currentSentAtMs, 0L)
+        }
+    }
 
     private fun clearRecentEotIfUnchanged(expectedSentAtMs: Long) {
         if (expectedSentAtMs != 0L) {
