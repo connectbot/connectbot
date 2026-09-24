@@ -82,6 +82,7 @@ import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
 import java.security.spec.InvalidKeySpecException
 import java.util.Locale
+import java.util.concurrent.atomic.AtomicLong
 import java.util.regex.Pattern
 
 /**
@@ -108,8 +109,7 @@ open class SSH :
     private var pubkeysExhausted = false
     private var interactiveCanContinue = true
     private var savedPasswordTried = false
-    @Volatile
-    private var lastUserSentEotAtMs = 0L
+    private val lastUserSentEotAtMs = AtomicLong(0L)
 
     protected var connection: Connection? = null
     private val jumpConnections: MutableList<Connection> = mutableListOf()
@@ -1058,7 +1058,7 @@ open class SSH :
         }
         if (session.exitStatus != null) return DisconnectReason.SESSION_EXIT
 
-        val recentEotAtMs = lastUserSentEotAtMs
+        val recentEotAtMs = lastUserSentEotAtMs.get()
         if (!sentRecentEot(recentEotAtMs)) return DisconnectReason.REMOTE_EOF
 
         // Channel EOF may arrive before the server's exit-status request.
@@ -1129,7 +1129,7 @@ open class SSH :
     @Throws(IOException::class)
     override fun write(buffer: ByteArray) {
         if (buffer.contains(EOT_BYTE)) {
-            lastUserSentEotAtMs = SystemClock.elapsedRealtime()
+            lastUserSentEotAtMs.set(SystemClock.elapsedRealtime())
         }
         stdin?.write(buffer)
     }
@@ -1137,7 +1137,7 @@ open class SSH :
     @Throws(IOException::class)
     override fun write(c: Int) {
         if (c == EOT_BYTE.toInt()) {
-            lastUserSentEotAtMs = SystemClock.elapsedRealtime()
+            lastUserSentEotAtMs.set(SystemClock.elapsedRealtime())
         }
         stdin?.write(c)
     }
@@ -1146,8 +1146,8 @@ open class SSH :
         SystemClock.elapsedRealtime() - sentAtMs <= EXIT_STATUS_WAIT_MS
 
     private fun clearRecentEotIfUnchanged(expectedSentAtMs: Long) {
-        if (expectedSentAtMs != 0L && lastUserSentEotAtMs == expectedSentAtMs) {
-            lastUserSentEotAtMs = 0L
+        if (expectedSentAtMs != 0L) {
+            lastUserSentEotAtMs.compareAndSet(expectedSentAtMs, 0L)
         }
     }
 
