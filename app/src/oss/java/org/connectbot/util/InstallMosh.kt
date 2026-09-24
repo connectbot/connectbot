@@ -39,15 +39,12 @@ import kotlin.concurrent.withLock
  */
 object InstallMosh {
     private const val MOSH_CLIENT_FILE = "mosh-client"
-    private const val MOSH_CLIENT_SO_FILE = "libmosh-client.so"
     private const val MOSH_DOWNLOAD_DIR = "mosh"
     private const val MOSH_RELEASE_REPO = "connectbot/mosh4android"
     private const val TERMINFO_ZIP = "terminfo.zip"
     private const val TERMINFO_DIR = "terminfo"
     private const val TERMINFO_ZIP_ROOT = "share/terminfo"
     private const val INSTALL_MARKER = ".mosh_installed"
-    private const val EMBEDDED_CLIENT_MESSAGE =
-        "Release asset contains only embedded $MOSH_CLIENT_SO_FILE; executable $MOSH_CLIENT_FILE is required"
 
     private val lock = ReentrantLock()
     private val installComplete = lock.newCondition()
@@ -165,7 +162,7 @@ object InstallMosh {
         }
     }
 
-    fun installLatestRelease(context: Context): InstallResult {
+    fun installClient(context: Context): InstallResult {
         val appContext = context.applicationContext
         markInstallStarted()
         val result = try {
@@ -204,9 +201,6 @@ object InstallMosh {
 
             val installedClient = File(downloadDir, MOSH_CLIENT_FILE)
             if (!installedClient.isUsableExecutable()) {
-                if (File(downloadDir, MOSH_CLIENT_SO_FILE).isFile) {
-                    return InstallResult(false, tagName.ifBlank { null }, EMBEDDED_CLIENT_MESSAGE)
-                }
                 return InstallResult(
                     false,
                     tagName.ifBlank { null },
@@ -252,7 +246,7 @@ object InstallMosh {
             }
 
             Timber.i("Mosh resources are missing; downloading latest mosh4android release")
-            val result = installLatestRelease(context)
+            val result = installClient(context)
             if (!result.success) {
                 Timber.w("Mosh install failed: ${result.errorMessage}")
             }
@@ -281,13 +275,6 @@ object InstallMosh {
                         FileOutputStream(outputFile).use { output -> zipStream.copyTo(output) }
                         outputFile.setReadable(true, true)
                         outputFile.setExecutable(true, true)
-                        outputFile.setWritable(false, true)
-                    }
-
-                    name.endsWith("/$MOSH_CLIENT_SO_FILE") || name == MOSH_CLIENT_SO_FILE -> {
-                        val outputFile = File(downloadDir, MOSH_CLIENT_SO_FILE)
-                        FileOutputStream(outputFile).use { output -> zipStream.copyTo(output) }
-                        outputFile.setReadable(true, true)
                         outputFile.setWritable(false, true)
                     }
 

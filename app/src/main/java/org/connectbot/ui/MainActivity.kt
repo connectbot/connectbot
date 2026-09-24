@@ -148,8 +148,8 @@ class MainActivity : AppCompatActivity() {
         val serviceIntent = Intent(this, TerminalManager::class.java)
         bindService(serviceIntent, connection, BIND_AUTO_CREATE)
 
-        // Mosh is optional because its client binary is GPL-licensed and
-        // downloaded separately from mosh4android after explicit user consent.
+        // Mosh is optional. The Google build receives its GPL client through Play;
+        // the OSS build downloads it from mosh4android after user consent.
         if (InstallMosh.isMoshSupportEnabled(this)) {
             InstallMosh.startInstall(this)
         }

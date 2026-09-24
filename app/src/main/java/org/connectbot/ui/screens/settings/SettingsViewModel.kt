@@ -38,6 +38,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.connectbot.BuildConfig
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
@@ -96,6 +97,7 @@ data class SettingsUiState(
     val defaultProfileId: Long = 0L,
     val availableProfiles: List<Profile> = emptyList(),
     val moshSupport: Boolean = false,
+    val moshReleaseTag: String? = null,
     val moshInstallInProgress: Boolean = false,
     val moshInstallError: String? = null,
 )
@@ -231,6 +233,8 @@ class SettingsViewModel @Inject constructor(
             language = currentLanguage,
             defaultProfileId = prefs.getLong("defaultProfileId", 0L),
             moshSupport = prefs.getBoolean(PreferenceConstants.MOSH_SUPPORT, false),
+            moshReleaseTag = BuildConfig.MOSH_RELEASE_TAG.takeIf { it.isNotBlank() }
+                ?: prefs.getString(PreferenceConstants.MOSH_RELEASE_TAG, null),
         )
     }
 
@@ -337,11 +341,12 @@ class SettingsViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(moshInstallInProgress = true, moshInstallError = null) }
             val result = withContext(dispatchers.io) {
-                InstallMosh.installLatestRelease(context)
+                InstallMosh.installClient(context)
             }
             _uiState.update {
                 it.copy(
                     moshSupport = result.success,
+                    moshReleaseTag = result.releaseTag ?: it.moshReleaseTag,
                     moshInstallInProgress = false,
                     moshInstallError = result.errorMessage,
                 )
