@@ -1170,9 +1170,14 @@ open class SSH :
 
     private fun recordUserWrite(wroteEot: Boolean) {
         synchronized(recentEotLock) {
-            if (wroteEot && interactiveShellOpen) {
+            if (!interactiveShellOpen) return
+
+            if (wroteEot) {
                 lastUserSentEotAtMs.set(SystemClock.elapsedRealtime())
                 lastUserSentEotShellToken.set(interactiveShellToken.get())
+            } else if (lastUserSentEotShellToken.get() == interactiveShellToken.get()) {
+                lastUserSentEotAtMs.set(0L)
+                lastUserSentEotShellToken.set(0L)
             }
         }
     }
