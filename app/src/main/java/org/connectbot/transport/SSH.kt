@@ -1153,7 +1153,7 @@ open class SSH :
     }
 
     private fun sentRecentEot(sentAtMs: Long): Boolean =
-        SystemClock.elapsedRealtime() - sentAtMs <= EXIT_STATUS_WAIT_MS
+        sentAtMs != 0L && SystemClock.elapsedRealtime() - sentAtMs <= EXIT_STATUS_WAIT_MS
 
     private fun clearCurrentRecentEot() {
         val currentSentAtMs = lastUserSentEotAtMs.get()
