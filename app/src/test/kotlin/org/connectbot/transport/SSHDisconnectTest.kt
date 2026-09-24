@@ -112,9 +112,7 @@ class SSHDisconnectTest {
             setPrivateField("stdin", ByteArrayOutputStream())
             invokePrivateMethod("activateInteractiveShell")
         }
-        `when`(session.exitStatus).thenReturn(null, null, 0)
-        `when`(session.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(0L)))
-            .thenReturn(0)
+        `when`(session.exitStatus).thenReturn(null, 0)
         `when`(session.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(250L)))
             .thenReturn(ChannelCondition.EXIT_STATUS)
 
@@ -131,9 +129,6 @@ class SSHDisconnectTest {
             invokePrivateMethod("activateInteractiveShell")
         }
         `when`(session.exitStatus).thenReturn(null)
-        `when`(session.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(0L)))
-            .thenReturn(0)
-
         ssh.write(0x04)
         ssh.write('x'.code)
 
@@ -151,9 +146,6 @@ class SSHDisconnectTest {
             invokePrivateMethod("activateInteractiveShell")
         }
         `when`(laterSession.exitStatus).thenReturn(null)
-        `when`(laterSession.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(0L)))
-            .thenReturn(0)
-
         ssh.write(0x04)
         ssh.close()
 
@@ -165,9 +157,6 @@ class SSHDisconnectTest {
     fun determineDisconnectReasonForClosedSession_withoutExitStatus_reportsRemoteEof() {
         val session = mock(Session::class.java)
         `when`(session.exitStatus).thenReturn(null)
-        `when`(session.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(0L)))
-            .thenReturn(0)
-
         assertEquals(DisconnectReason.REMOTE_EOF, SSH().determineDisconnectReasonForClosedSession(session))
         verify(session, never()).waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(250L))
     }

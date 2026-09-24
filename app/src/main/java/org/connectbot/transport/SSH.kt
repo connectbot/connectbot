@@ -1067,19 +1067,6 @@ open class SSH :
             return DisconnectReason.REMOTE_EOF
         }
 
-        val closeCondition = session.waitForCondition(
-            ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL,
-            0,
-        )
-        if ((closeCondition and ChannelCondition.EXIT_SIGNAL) != 0 || session.exitSignal != null) {
-            clearCurrentRecentEot()
-            return DisconnectReason.REMOTE_EOF
-        }
-        if (session.exitStatus != null) {
-            clearCurrentRecentEot()
-            return DisconnectReason.SESSION_EXIT
-        }
-
         val recentEotAtMs = lastUserSentEotAtMs.get()
         val recentEotShellToken = lastUserSentEotShellToken.get()
         if (!sentRecentEot(recentEotAtMs, recentEotShellToken)) return DisconnectReason.REMOTE_EOF
