@@ -27,7 +27,6 @@ import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThrows
 import org.junit.Test
 import org.mockito.ArgumentMatchers.anyInt
-import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.ArgumentMatchers.eq
 import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.mock
@@ -38,6 +37,7 @@ import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyNoInteractions
 import org.mockito.Mockito.`when`
 import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 
 class SSHDisconnectTest {
 
@@ -108,19 +108,29 @@ class SSHDisconnectTest {
     @Test
     fun determineDisconnectReasonForClosedSession_whenExitStatusFollowsEof_reportsSessionExit() {
         val session = mock(Session::class.java)
-        `when`(session.exitStatus).thenReturn(null, 0)
-        `when`(session.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), anyLong()))
+        val ssh = SSH().apply {
+            setPrivateField("stdin", ByteArrayOutputStream())
+        }
+        `when`(session.exitStatus).thenReturn(null, null, 0)
+        `when`(session.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(0L)))
+            .thenReturn(0)
+        `when`(session.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(250L)))
             .thenReturn(ChannelCondition.EXIT_STATUS)
 
-        assertEquals(DisconnectReason.SESSION_EXIT, SSH().determineDisconnectReasonForClosedSession(session))
+        ssh.write(0x04)
+
+        assertEquals(DisconnectReason.SESSION_EXIT, ssh.determineDisconnectReasonForClosedSession(session))
     }
 
     @Test
     fun determineDisconnectReasonForClosedSession_withoutExitStatus_reportsRemoteEof() {
         val session = mock(Session::class.java)
         `when`(session.exitStatus).thenReturn(null)
+        `when`(session.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(0L)))
+            .thenReturn(0)
 
         assertEquals(DisconnectReason.REMOTE_EOF, SSH().determineDisconnectReasonForClosedSession(session))
+        verify(session, never()).waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(250L))
     }
 
     @Test

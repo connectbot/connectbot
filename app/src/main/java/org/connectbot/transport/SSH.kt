@@ -19,6 +19,7 @@ package org.connectbot.transport
 
 import android.content.Context
 import android.net.Uri
+import android.os.SystemClock
 import android.security.keystore.KeyPermanentlyInvalidatedException
 import android.security.keystore.UserNotAuthenticatedException
 import androidx.annotation.VisibleForTesting
@@ -107,6 +108,8 @@ open class SSH :
     private var pubkeysExhausted = false
     private var interactiveCanContinue = true
     private var savedPasswordTried = false
+    @Volatile
+    private var lastUserSentEotAtMs = 0L
 
     protected var connection: Connection? = null
     private val jumpConnections: MutableList<Connection> = mutableListOf()
@@ -1044,14 +1047,25 @@ open class SSH :
     @VisibleForTesting
     internal fun determineDisconnectReasonForClosedSession(session: Session): DisconnectReason {
         if (session.exitStatus != null) return DisconnectReason.SESSION_EXIT
+        if (session.exitSignal != null) return DisconnectReason.REMOTE_EOF
+
+        val closeCondition = session.waitForCondition(
+            ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL,
+            0,
+        )
+        if ((closeCondition and ChannelCondition.EXIT_SIGNAL) != 0 || session.exitSignal != null) {
+            return DisconnectReason.REMOTE_EOF
+        }
+        if (session.exitStatus != null) return DisconnectReason.SESSION_EXIT
+        if (!sentRecentEot()) return DisconnectReason.REMOTE_EOF
 
         // Channel EOF may arrive before the server's exit-status request.
         // This runs in Relay's IO dispatcher, so the short wait does not block UI.
-        val closeCondition = session.waitForCondition(
+        val waitedCloseCondition = session.waitForCondition(
             ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL,
             EXIT_STATUS_WAIT_MS,
         )
-        if ((closeCondition and ChannelCondition.EXIT_SIGNAL) != 0 || session.exitSignal != null) {
+        if ((waitedCloseCondition and ChannelCondition.EXIT_SIGNAL) != 0 || session.exitSignal != null) {
             return DisconnectReason.REMOTE_EOF
         }
         return if (session.exitStatus != null) DisconnectReason.SESSION_EXIT else DisconnectReason.REMOTE_EOF
@@ -1108,13 +1122,22 @@ open class SSH :
 
     @Throws(IOException::class)
     override fun write(buffer: ByteArray) {
+        if (buffer.contains(EOT_BYTE)) {
+            lastUserSentEotAtMs = SystemClock.elapsedRealtime()
+        }
         stdin?.write(buffer)
     }
 
     @Throws(IOException::class)
     override fun write(c: Int) {
+        if (c == EOT_BYTE.toInt()) {
+            lastUserSentEotAtMs = SystemClock.elapsedRealtime()
+        }
         stdin?.write(c)
     }
+
+    private fun sentRecentEot(): Boolean =
+        SystemClock.elapsedRealtime() - lastUserSentEotAtMs <= EXIT_STATUS_WAIT_MS
 
     override fun getOptions(): Map<String, String> = mapOf("compression" to compressionEnabled.toString())
 
@@ -1516,6 +1539,7 @@ open class SSH :
         protected const val AUTH_KEYBOARDINTERACTIVE = "keyboard-interactive"
 
         private const val AUTH_TRIES = 20
+        private const val EOT_BYTE: Byte = 0x04
         private const val EXIT_STATUS_WAIT_MS = 250L
 
         protected val hostmask = Pattern.compile(
