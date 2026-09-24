@@ -1042,7 +1042,7 @@ open class SSH :
     }
 
     @VisibleForTesting
-    internal fun getDisconnectReasonForClosedSession(session: Session): DisconnectReason {
+    internal fun determineDisconnectReasonForClosedSession(session: Session): DisconnectReason {
         if (session.exitStatus != null) return DisconnectReason.SESSION_EXIT
 
         // Channel EOF may arrive before the server's exit-status request.
@@ -1094,7 +1094,7 @@ open class SSH :
             // ConnectionMonitor.connectionLost().
             val currentBridge = bridge
             if (currentBridge != null) {
-                currentBridge.dispatchDisconnect(getDisconnectReasonForClosedSession(currentSession))
+                currentBridge.dispatchDisconnect(determineDisconnectReasonForClosedSession(currentSession))
             } else {
                 // SSH is normally always attached to a bridge. Preserve the
                 // transport contract for callers that use it independently.

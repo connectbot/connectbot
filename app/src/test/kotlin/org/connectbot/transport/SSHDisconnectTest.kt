@@ -106,30 +106,30 @@ class SSHDisconnectTest {
     }
 
     @Test
-    fun getDisconnectReasonForClosedSession_whenExitStatusFollowsEof_reportsSessionExit() {
+    fun determineDisconnectReasonForClosedSession_whenExitStatusFollowsEof_reportsSessionExit() {
         val session = mock(Session::class.java)
         `when`(session.exitStatus).thenReturn(null, 0)
         `when`(session.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), anyLong()))
             .thenReturn(ChannelCondition.EXIT_STATUS)
 
-        assertEquals(DisconnectReason.SESSION_EXIT, SSH().getDisconnectReasonForClosedSession(session))
+        assertEquals(DisconnectReason.SESSION_EXIT, SSH().determineDisconnectReasonForClosedSession(session))
     }
 
     @Test
-    fun getDisconnectReasonForClosedSession_withoutExitStatus_reportsRemoteEof() {
+    fun determineDisconnectReasonForClosedSession_withoutExitStatus_reportsRemoteEof() {
         val session = mock(Session::class.java)
         `when`(session.exitStatus).thenReturn(null)
 
-        assertEquals(DisconnectReason.REMOTE_EOF, SSH().getDisconnectReasonForClosedSession(session))
+        assertEquals(DisconnectReason.REMOTE_EOF, SSH().determineDisconnectReasonForClosedSession(session))
     }
 
     @Test
-    fun getDisconnectReasonForClosedSession_withExitSignal_reportsRemoteEof() {
+    fun determineDisconnectReasonForClosedSession_withExitSignal_reportsRemoteEof() {
         val session = mock(Session::class.java)
         `when`(session.exitStatus).thenReturn(null)
         `when`(session.exitSignal).thenReturn("TERM")
 
-        assertEquals(DisconnectReason.REMOTE_EOF, SSH().getDisconnectReasonForClosedSession(session))
+        assertEquals(DisconnectReason.REMOTE_EOF, SSH().determineDisconnectReasonForClosedSession(session))
     }
 
     private fun SSH.setPrivateField(name: String, value: Any?) {
