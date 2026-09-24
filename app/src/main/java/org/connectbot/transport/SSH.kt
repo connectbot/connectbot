@@ -1153,7 +1153,7 @@ open class SSH :
         sentAtMs != 0L && SystemClock.elapsedRealtime() - sentAtMs <= EXIT_STATUS_WAIT_MS
 
     private fun recordUserWrite(wroteEot: Boolean) {
-        if (wroteEot) {
+        if (wroteEot && sessionOpen) {
             lastUserSentEotAtMs.set(SystemClock.elapsedRealtime())
         }
     }
