@@ -1026,10 +1026,11 @@ open class SSH :
 
         connected = false
 
-        session?.close()
-        session = null
+        val currentSession = session
         sessionOpen = false
         deactivateInteractiveShell()
+        session = null
+        currentSession?.close()
 
         connection?.let { unregisterUserAuthBanner(it) }
         connection?.close()
