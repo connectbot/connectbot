@@ -52,7 +52,7 @@ import java.util.regex.Pattern
  * 2. Run mosh-server on remote host via SSH
  * 3. Parse MOSH CONNECT response to get UDP port and key
  * 4. Close SSH connection
- * 5. Fork the downloaded mosh-client executable to connect via UDP
+ * 5. Fork the installed mosh-client executable to connect via UDP
  *
  * @author Daniel Drown (original transport layer)
  * @author bqv (Tony O) - ConnectBot integration

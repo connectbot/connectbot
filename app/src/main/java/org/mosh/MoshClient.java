@@ -38,7 +38,7 @@ public class MoshClient {
     /**
      * Fork and exec mosh-client with the given parameters.
      *
-     * @param clientPath Absolute path to the downloaded mosh-client executable
+     * @param clientPath Absolute path to the installed mosh-client executable
      * @param ip The IP address of the mosh-server
      * @param port The UDP port of the mosh-server
      * @param key The MOSH_KEY for authentication

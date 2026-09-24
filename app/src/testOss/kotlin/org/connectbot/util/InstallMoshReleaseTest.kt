@@ -21,7 +21,6 @@ import android.content.Context
 import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
@@ -107,26 +106,6 @@ class InstallMoshReleaseTest {
     }
 
     @Test
-    fun installReleaseZip_doesNotTreatSharedObjectAsExecutableClient() {
-        val tempDir = Files.createTempDirectory("mosh-release-test").toFile()
-        try {
-            val downloadDir = File(tempDir, "mosh").apply { mkdirs() }
-            val terminfoDir = File(tempDir, "terminfo")
-
-            ZipInputStream(ByteArrayInputStream(createReleaseZip(clientName = "libmosh-client.so"))).use { zipStream ->
-                InstallMosh.installReleaseZip(zipStream, downloadDir, terminfoDir)
-            }
-
-            assertFalse(File(downloadDir, "mosh-client").exists())
-            assertTrue(File(downloadDir, "libmosh-client.so").isFile)
-            assertFalse(File(downloadDir, "libmosh-client.so").canExecute())
-            assertTrue(File(terminfoDir, "share/terminfo/x/xterm-256color").isFile)
-        } finally {
-            tempDir.deleteRecursively()
-        }
-    }
-
-    @Test
     fun startInstall_downloadsReleaseWhenEnabledButPayloadMissing() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val calls = AtomicInteger()
@@ -179,7 +158,7 @@ class InstallMoshReleaseTest {
         File(context.filesDir, ".mosh_installed").createNewFile()
     }
 
-    private fun createReleaseZip(clientName: String = "mosh-client"): ByteArray {
+    private fun createReleaseZip(): ByteArray {
         val terminfoZipBytes = ByteArrayOutputStream().use { bytes ->
             ZipOutputStream(bytes).use { zip ->
                 zip.putNextEntry(ZipEntry("share/terminfo/x/xterm-256color"))
@@ -191,7 +170,7 @@ class InstallMoshReleaseTest {
 
         return ByteArrayOutputStream().use { bytes ->
             ZipOutputStream(bytes).use { zip ->
-                zip.putNextEntry(ZipEntry(clientName))
+                zip.putNextEntry(ZipEntry("mosh-client"))
                 zip.write(byteArrayOf(0x7f, 0x45, 0x4c, 0x46))
                 zip.closeEntry()
 

@@ -813,6 +813,12 @@
 	<string name="pref_mosh_support_title">"Mosh support"</string>
 	<!-- Settings summary for optional Mosh support. -->
 	<string name="pref_mosh_support_summary">"Download and enable the latest mosh4android client binary"</string>
+	<!-- Settings link to the release that supplied the Mosh client and its source archives. -->
+	<string name="pref_mosh_release_title">"Mosh release and source code"</string>
+	<!-- Settings summary for a Mosh release whose page offers source archives. -->
+	<string name="pref_mosh_release_summary">"%1$s · source ZIP and tar.gz"</string>
+	<!-- Shown on the Mosh release link before a client version has been installed. -->
+	<string name="pref_mosh_release_latest">"Latest release"</string>
 	<!-- Dialog title shown before downloading the optional Mosh binary. -->
 	<string name="pref_mosh_confirm_title">"Enable Mosh support?"</string>
 	<!-- Dialog body shown before downloading the optional Mosh binary. -->
