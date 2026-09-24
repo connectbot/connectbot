@@ -17,14 +17,23 @@
 
 package org.connectbot
 
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
+import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
+import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.connectbot.ui.screens.portforwardlist.PortForwardEditorScreenContent
+import org.connectbot.ui.screens.portforwardlist.PortForwardEditorTestTags
 import org.connectbot.ui.screens.portforwardlist.PortForwardEditorUiState
 import org.connectbot.ui.screens.portforwardlist.SourceAddressOption
 import org.connectbot.ui.theme.ConnectBotTheme
@@ -49,12 +58,17 @@ class PortForwardEditorScreenTest {
         hiltRule.inject()
     }
 
-    private fun show(state: PortForwardEditorUiState, onSave: () -> Unit = {}) {
+    private fun show(
+        state: PortForwardEditorUiState,
+        modifier: Modifier = Modifier,
+        onNavigateBack: () -> Unit = {},
+        onSave: () -> Unit = {},
+    ) {
         composeTestRule.setContent {
             ConnectBotTheme {
                 PortForwardEditorScreenContent(
                     uiState = state,
-                    onNavigateBack = {},
+                    onNavigateBack = onNavigateBack,
                     onNicknameChange = {},
                     onTypeChange = {},
                     onSourcePortChange = {},
@@ -62,6 +76,7 @@ class PortForwardEditorScreenTest {
                     onSpecificAddressChange = {},
                     onDestinationChange = {},
                     onSave = onSave,
+                    modifier = modifier,
                 )
             }
         }
@@ -100,5 +115,68 @@ class PortForwardEditorScreenTest {
         )
 
         composeTestRule.onNodeWithContentDescription("Create port forward").assertDoesNotExist()
+    }
+
+    @Test
+    fun shortViewportCanScrollLastFieldAboveSaveFab() {
+        show(
+            PortForwardEditorUiState(isLoading = false, hasUnsavedChanges = true),
+            modifier = Modifier.fillMaxWidth().height(320.dp),
+        )
+
+        composeTestRule.onNodeWithTag(PortForwardEditorTestTags.DESTINATION_FIELD).performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription("Create port forward").assertIsDisplayed()
+    }
+
+    @Test
+    fun editedForwardPromptsBeforeDiscarding() {
+        var navigatedBack = false
+        show(
+            PortForwardEditorUiState(isLoading = false, hasUnsavedChanges = true, hasEdited = true),
+            onNavigateBack = { navigatedBack = true },
+        )
+
+        composeTestRule.onNodeWithContentDescription("Navigate up").performClick()
+        composeTestRule.onNodeWithText("Discard changes?").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Cancel").performClick()
+        assertTrue(!navigatedBack)
+
+        composeTestRule.onNodeWithContentDescription("Navigate up").performClick()
+        composeTestRule.onNodeWithText("Discard").performClick()
+        assertTrue(navigatedBack)
+    }
+
+    @Test
+    fun editedForwardCanSaveFromDiscardPrompt() {
+        var saved = false
+        show(
+            PortForwardEditorUiState(isLoading = false, hasUnsavedChanges = true, hasEdited = true),
+            onSave = { saved = true },
+        )
+
+        composeTestRule.onNodeWithContentDescription("Navigate up").performClick()
+        composeTestRule.onNodeWithText("Save").performClick()
+        assertTrue(saved)
+    }
+
+    @Test
+    fun invalidEditCannotSaveFromDiscardPrompt() {
+        show(PortForwardEditorUiState(isLoading = false, hasUnsavedChanges = true, hasEdited = true, sourcePort = "0"))
+
+        composeTestRule.onNodeWithContentDescription("Navigate up").performClick()
+        composeTestRule.onNodeWithText("Save").assertIsNotEnabled()
+    }
+
+    @Test
+    fun untouchedNewForwardLeavesWithoutPrompt() {
+        var navigatedBack = false
+        show(
+            PortForwardEditorUiState(isLoading = false, hasUnsavedChanges = true),
+            onNavigateBack = { navigatedBack = true },
+        )
+
+        composeTestRule.onNodeWithContentDescription("Navigate up").performClick()
+        assertTrue(navigatedBack)
+        composeTestRule.onNodeWithText("Discard changes?").assertDoesNotExist()
     }
 }

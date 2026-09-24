@@ -23,7 +23,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -42,18 +42,14 @@ import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -82,7 +78,7 @@ import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.common.getIconColors
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.common.getLocalizedFontDisplayName
-import org.connectbot.ui.components.SaveEditorFab
+import org.connectbot.ui.components.EditorScaffold
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.HostConstants
 import org.connectbot.util.LocalFontProvider
@@ -183,46 +179,20 @@ fun HostEditorScreenContent(
         uiState.quickConnect.isNotBlank()
     }
 
-    Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        if (hostId == -1L) {
-                            stringResource(R.string.hostpref_add_host)
-                        } else {
-                            stringResource(R.string.hostpref_setting_title)
-                        },
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.button_navigate_up),
-                        )
-                    }
-                },
-            )
+    EditorScaffold(
+        title = stringResource(if (hostId == -1L) R.string.hostpref_add_host else R.string.hostpref_setting_title),
+        saveContentDescription = stringResource(if (hostId == -1L) R.string.hostpref_add_host else R.string.hostpref_save_host),
+        saveVisible = uiState.hasUnsavedChanges && canSave,
+        confirmDiscard = uiState.hasUnsavedChanges,
+        isSaving = uiState.isSaving,
+        onNavigateBack = onNavigateBack,
+        onSave = {
+            coroutineScope.launch {
+                if (onSaveHost(expandedMode)) onNavigateBack()
+            }
         },
-        floatingActionButton = {
-            SaveEditorFab(
-                visible = uiState.hasUnsavedChanges && canSave,
-                isSaving = uiState.isSaving,
-                contentDescription = stringResource(
-                    if (hostId == -1L) R.string.hostpref_add_host else R.string.hostpref_save_host,
-                ),
-                onClick = {
-                    coroutineScope.launch {
-                        if (onSaveHost(expandedMode)) {
-                            onNavigateBack()
-                        }
-                    }
-                },
-                modifier = Modifier.testTag("add_host_button"),
-            )
-        },
+        snackbarHostState = snackbarHostState,
+        saveModifier = Modifier.testTag("add_host_button"),
         modifier = modifier,
     ) { padding ->
         Column(
@@ -230,8 +200,7 @@ fun HostEditorScreenContent(
                 .padding(padding)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState())
-                .padding(16.dp)
-                .imePadding(),
+                .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 88.dp),
         ) {
             if (!expandedMode) {
                 // Quick connect mode

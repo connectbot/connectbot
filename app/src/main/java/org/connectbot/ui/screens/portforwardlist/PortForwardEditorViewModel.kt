@@ -44,6 +44,7 @@ data class PortForwardEditorUiState(
     val isLoading: Boolean = true,
     val isSaving: Boolean = false,
     val hasUnsavedChanges: Boolean = false,
+    val hasEdited: Boolean = false,
     val error: String? = null,
 ) {
     val isRemote: Boolean get() = type == HostConstants.PORTFORWARD_REMOTE
@@ -125,7 +126,7 @@ class PortForwardEditorViewModel @Inject constructor(
     fun updateDestination(value: String) = update { it.copy(destination = value) }
 
     private fun update(change: (PortForwardEditorUiState) -> PortForwardEditorUiState) {
-        _uiState.update { change(it).copy(hasUnsavedChanges = true, error = null) }
+        _uiState.update { change(it).copy(hasUnsavedChanges = true, hasEdited = true, error = null) }
     }
 
     fun save(onSuccess: () -> Unit) {

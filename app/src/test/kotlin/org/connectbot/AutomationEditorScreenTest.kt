@@ -227,12 +227,23 @@ class AutomationEditorScreenTest {
     fun backWithChangesOffersDiscardAndCancel() {
         addString()
         compose.onNodeWithContentDescription(text(R.string.button_navigate_up)).performClick()
-        compose.onNodeWithText(text(R.string.automation_unsaved)).assertIsDisplayed()
-        compose.onNodeWithText(text(R.string.automation_cancel)).performClick()
+        compose.onNodeWithText(text(R.string.editor_discard_changes_title)).assertIsDisplayed()
+        compose.onNodeWithText(text(R.string.button_cancel)).performClick()
         assertTrue(!navigatedBack)
         compose.onNodeWithContentDescription(text(R.string.button_navigate_up)).performClick()
-        compose.onNodeWithText(text(R.string.automation_discard)).performClick()
+        compose.onNodeWithText(text(R.string.editor_discard)).performClick()
         assertTrue(navigatedBack)
+    }
+
+    @Test
+    fun backWithChangesCanSaveFromDiscardPrompt() {
+        addString()
+        compose.onNodeWithContentDescription(text(R.string.button_navigate_up)).performClick()
+        compose.onNodeWithText(text(R.string.editor_save)).performClick()
+        compose.waitForIdle()
+        assertTrue(navigatedBack)
+        assertEquals("echo test\n", viewModel.state.value.actions.single().text)
+        assertTrue(!viewModel.state.value.dirty)
     }
 
     @Test

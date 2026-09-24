@@ -17,11 +17,6 @@
 
 package org.connectbot.ui.components
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -45,30 +40,26 @@ fun SaveEditorFab(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    if (!visible) return
+
     val description = contentDescription
-    AnimatedVisibility(
-        visible = visible,
-        enter = fadeIn() + slideInVertically { it },
-        exit = fadeOut() + slideOutVertically { it },
+    FloatingActionButton(
+        onClick = { if (!isSaving) onClick() },
+        modifier = modifier.semantics {
+            liveRegion = LiveRegionMode.Polite
+            this.contentDescription = description
+        },
+        containerColor = MaterialTheme.colorScheme.tertiaryContainer,
+        contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
     ) {
-        FloatingActionButton(
-            onClick = { if (!isSaving) onClick() },
-            modifier = modifier.semantics {
-                liveRegion = LiveRegionMode.Polite
-                this.contentDescription = description
-            },
-            containerColor = MaterialTheme.colorScheme.tertiaryContainer,
-            contentColor = MaterialTheme.colorScheme.onTertiaryContainer,
-        ) {
-            if (isSaving) {
-                CircularProgressIndicator(
-                    modifier = Modifier.size(24.dp),
-                    color = MaterialTheme.colorScheme.onTertiaryContainer,
-                    strokeWidth = 2.dp,
-                )
-            } else {
-                Icon(Icons.Default.Check, contentDescription = null)
-            }
+        if (isSaving) {
+            CircularProgressIndicator(
+                modifier = Modifier.size(24.dp),
+                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                strokeWidth = 2.dp,
+            )
+        } else {
+            Icon(Icons.Default.Check, contentDescription = null)
         }
     }
 }

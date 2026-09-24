@@ -85,6 +85,7 @@ class PortForwardEditorViewModelTest {
         )
 
         assertTrue(viewModel.uiState.value.hasUnsavedChanges)
+        assertFalse(viewModel.uiState.value.hasEdited)
         assertTrue(viewModel.uiState.value.canSave)
         var navigated = false
         viewModel.save { navigated = true }
@@ -115,6 +116,7 @@ class PortForwardEditorViewModelTest {
         assertEquals("web", viewModel.uiState.value.nickname)
         viewModel.updateSourcePort("0")
         assertTrue(viewModel.uiState.value.hasUnsavedChanges)
+        assertTrue(viewModel.uiState.value.hasEdited)
         assertFalse(viewModel.uiState.value.canSave)
     }
 

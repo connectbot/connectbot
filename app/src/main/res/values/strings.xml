@@ -886,6 +886,15 @@
 	<!-- Button text for cancel action in dialogs -->
 	<string name="button_cancel">"Cancel"</string>
 
+	<!-- Title shown when leaving an item editor with unsaved changes. -->
+	<string name="editor_discard_changes_title">Discard changes?</string>
+	<!-- Message in the unsaved changes dialog shown by item editors. -->
+	<string name="editor_discard_changes_message">Your edits will be lost if you leave without saving.</string>
+	<!-- Button that leaves an item editor without saving changes. -->
+	<string name="editor_discard">Discard</string>
+	<!-- Button that saves changes from the unsaved changes dialog. -->
+	<string name="editor_save">Save</string>
+
 	<!-- Label indicating a scheme is built-in and cannot be deleted -->
 	<string name="label_built_in_scheme">"Built-in"</string>
 

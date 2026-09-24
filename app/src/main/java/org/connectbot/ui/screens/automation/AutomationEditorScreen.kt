@@ -17,28 +17,25 @@
 
 package org.connectbot.ui.screens.automation
 
-import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.DragHandle
-import androidx.compose.material.icons.filled.Save
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
@@ -48,19 +45,18 @@ import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilterChip
-import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -72,6 +68,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
@@ -90,6 +87,7 @@ import org.connectbot.data.entity.AutomationFailurePolicy
 import org.connectbot.data.entity.PortForward
 import org.connectbot.service.automation.AutomationKeySupport
 import org.connectbot.terminal.VTermKey
+import org.connectbot.ui.components.EditorScaffold
 import org.connectbot.ui.components.SpecialCharVisualTransformation
 import org.connectbot.util.TerminalKeyModifiers
 import sh.calvin.reorderable.ReorderableItem
@@ -150,14 +148,14 @@ fun AutomationEditorScreen(
     val addCardColors = CardDefaults.cardColors().let {
         it.copy(disabledContainerColor = it.containerColor, disabledContentColor = it.contentColor)
     }
-    var showAdd by rememberSaveable { mutableStateOf(false) }
-    var showExit by rememberSaveable { mutableStateOf(false) }
-    val back = {
-        if (!state.saving) {
-            if (state.dirty) showExit = true else onNavigateBack()
+    val snackbarHostState = remember { SnackbarHostState() }
+    val context = LocalContext.current
+    LaunchedEffect(state.error) {
+        state.error?.let {
+            snackbarHostState.showSnackbar(context.getString(it), withDismissAction = true)
         }
     }
-    BackHandler(enabled = state.dirty, onBack = back)
+    var showAdd by rememberSaveable { mutableStateOf(false) }
     val list = rememberLazyListState()
     val reorderableState = rememberReorderableLazyListState(list) { from, to ->
         if (!state.saving && to.index in state.actions.indices) {
@@ -166,36 +164,45 @@ fun AutomationEditorScreen(
         }
     }
 
-    Scaffold(
+    EditorScaffold(
+        title = stringResource(R.string.hostpref_postlogin_title),
+        saveContentDescription = stringResource(R.string.automation_save),
+        saveVisible = state.dirty && !state.loading && state.hostExists,
+        confirmDiscard = state.dirty,
+        isSaving = state.saving,
+        onNavigateBack = onNavigateBack,
+        onSave = { scope.launch { if (viewModel.save()) onNavigateBack() } },
+        snackbarHostState = snackbarHostState,
         modifier = modifier,
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(R.string.hostpref_postlogin_title)) },
-                navigationIcon = {
-                    IconButton(onClick = back, enabled = !state.saving, colors = iconButtonColors) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, stringResource(R.string.button_navigate_up))
-                    }
-                },
-            )
-        },
-        floatingActionButton = {
-            AnimatedVisibility(state.dirty && !state.loading && state.hostExists) {
-                FloatingActionButton(onClick = { if (!state.saving) scope.launch { viewModel.save() } }) {
-                    if (state.saving) {
-                        CircularProgressIndicator(Modifier.size(24.dp))
-                    } else {
-                        Icon(Icons.Default.Save, stringResource(R.string.automation_save))
-                    }
-                }
-            }
-        },
     ) { padding ->
-        Column(Modifier.padding(padding)) {
-            state.error?.let { Text(stringResource(it), color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(16.dp)) }
-            if (state.loading) {
-                CircularProgressIndicator(Modifier.padding(16.dp))
-            } else {
-                LazyColumn(state = list, verticalArrangement = Arrangement.spacedBy(8.dp), modifier = Modifier.padding(horizontal = 16.dp)) {
+        if (state.loading) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+                contentAlignment = Alignment.Center,
+            ) {
+                CircularProgressIndicator()
+            }
+        } else {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(padding),
+            ) {
+                state.error?.let {
+                    Text(
+                        stringResource(it),
+                        color = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.padding(16.dp),
+                    )
+                }
+                LazyColumn(
+                    state = list,
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 0.dp, bottom = 88.dp),
+                    modifier = Modifier.fillMaxSize(),
+                ) {
                     itemsIndexed(state.actions, key = { _, action -> action.id }) { index, action ->
                         val up = stringResource(R.string.automation_move_up)
                         val down = stringResource(R.string.automation_move_down)
@@ -203,7 +210,8 @@ fun AutomationEditorScreen(
                         ReorderableItem(reorderableState, key = action.id) { _ ->
                             val handleInteractionSource = remember { MutableInteractionSource() }
                             Card(
-                                modifier = Modifier.fillMaxWidth()
+                                modifier = Modifier
+                                    .fillMaxWidth()
                                     .semantics {
                                         customActions = listOf(
                                             CustomAccessibilityAction(up) {
@@ -217,13 +225,34 @@ fun AutomationEditorScreen(
                                         )
                                     },
                             ) {
-                                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.padding(12.dp)) {
-                                    Column(Modifier.weight(1f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                                        Text(stringResource(action.type.title()), style = MaterialTheme.typography.titleMedium)
+                                Row(
+                                    verticalAlignment = Alignment.CenterVertically,
+                                    modifier = Modifier.padding(12.dp),
+                                ) {
+                                    Column(
+                                        Modifier.weight(1f),
+                                        verticalArrangement = Arrangement.spacedBy(8.dp),
+                                    ) {
+                                        Text(
+                                            stringResource(action.type.title()),
+                                            style = MaterialTheme.typography.titleMedium,
+                                        )
                                         ActionSummary(action, state.forwards)
                                         Row {
-                                            TextButton(onClick = { viewModel.edit(action) }, enabled = !state.saving, colors = buttonColors) { Text(stringResource(R.string.automation_edit)) }
-                                            TextButton(onClick = { viewModel.delete(action.id) }, enabled = !state.saving, colors = buttonColors) { Text(stringResource(R.string.automation_delete)) }
+                                            TextButton(
+                                                onClick = { viewModel.edit(action) },
+                                                enabled = !state.saving,
+                                                colors = buttonColors,
+                                            ) {
+                                                Text(stringResource(R.string.automation_edit))
+                                            }
+                                            TextButton(
+                                                onClick = { viewModel.delete(action.id) },
+                                                enabled = !state.saving,
+                                                colors = buttonColors,
+                                            ) {
+                                                Text(stringResource(R.string.automation_delete))
+                                            }
                                         }
                                     }
                                     IconButton(
@@ -265,7 +294,6 @@ fun AutomationEditorScreen(
                             }
                         }
                     }
-                    item { Spacer(Modifier.size(96.dp)) }
                 }
             }
         }
@@ -293,23 +321,6 @@ fun AutomationEditorScreen(
     }
     state.editing?.let {
         ActionEditorDialog(it, state.forwards, state.editError, viewModel::dismissEdit, viewModel::applyEdit)
-    }
-    if (showExit) {
-        AlertDialog(
-            onDismissRequest = { showExit = false },
-            title = { Text(stringResource(R.string.automation_unsaved)) },
-            confirmButton = {
-                TextButton(onClick = { scope.launch { if (viewModel.save()) onNavigateBack() } }, enabled = !state.saving) {
-                    Text(stringResource(R.string.automation_save))
-                }
-            },
-            dismissButton = {
-                Row {
-                    TextButton(onClick = onNavigateBack, enabled = !state.saving) { Text(stringResource(R.string.automation_discard)) }
-                    TextButton(onClick = { showExit = false }) { Text(stringResource(R.string.automation_cancel)) }
-                }
-            },
-        )
     }
 }
 
