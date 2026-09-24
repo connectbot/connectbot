@@ -105,6 +105,8 @@ open class SSH :
 
     @Volatile
     protected var sessionOpen = false
+    @Volatile
+    private var interactiveShellOpen = false
 
     private var pubkeysExhausted = false
     private var interactiveCanContinue = true
@@ -711,6 +713,7 @@ open class SSH :
             stderr = session?.stderr
 
             sessionOpen = true
+            interactiveShellOpen = true
 
             bridge?.onConnected()
         } catch (e1: IOException) {
@@ -1021,6 +1024,8 @@ open class SSH :
 
         session?.close()
         session = null
+        sessionOpen = false
+        interactiveShellOpen = false
 
         connection?.let { unregisterUserAuthBanner(it) }
         connection?.close()
@@ -1153,7 +1158,7 @@ open class SSH :
         sentAtMs != 0L && SystemClock.elapsedRealtime() - sentAtMs <= EXIT_STATUS_WAIT_MS
 
     private fun recordUserWrite(wroteEot: Boolean) {
-        if (wroteEot && sessionOpen) {
+        if (wroteEot && interactiveShellOpen) {
             lastUserSentEotAtMs.set(SystemClock.elapsedRealtime())
         }
     }
