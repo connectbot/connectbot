@@ -30,7 +30,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Palette
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
@@ -43,13 +42,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -69,8 +65,8 @@ import org.connectbot.data.entity.ColorScheme
 import org.connectbot.ui.common.getIconColors
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.common.getLocalizedFontDisplayName
+import org.connectbot.ui.components.EditorScaffold
 import org.connectbot.ui.components.FontDownloadProgressDialog
-import org.connectbot.ui.components.SaveEditorFab
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
 
@@ -95,38 +91,16 @@ fun ProfileEditorScreen(
         FontDownloadProgressDialog()
     }
 
-    Scaffold(
+    EditorScaffold(
         modifier = modifier,
-        topBar = {
-            TopAppBar(
-                title = {
-                    Text(
-                        if (uiState.profileId == -1L) {
-                            stringResource(R.string.profile_editor_title_new)
-                        } else {
-                            stringResource(R.string.profile_editor_title_edit)
-                        },
-                    )
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(
-                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                            contentDescription = stringResource(R.string.button_navigate_up),
-                        )
-                    }
-                },
-            )
-        },
-        floatingActionButton = {
-            SaveEditorFab(
-                visible = !uiState.isLoading && uiState.hasUnsavedChanges && uiState.name.isNotBlank(),
-                isSaving = uiState.isSaving,
-                contentDescription = stringResource(R.string.profile_editor_save),
-                onClick = { viewModel.save(onNavigateBack) },
-            )
-        },
-        snackbarHost = { SnackbarHost(snackbarHostState) },
+        title = stringResource(if (uiState.profileId == -1L) R.string.profile_editor_title_new else R.string.profile_editor_title_edit),
+        saveContentDescription = stringResource(R.string.profile_editor_save),
+        saveVisible = !uiState.isLoading && uiState.hasUnsavedChanges && uiState.name.isNotBlank(),
+        confirmDiscard = uiState.hasUnsavedChanges,
+        isSaving = uiState.isSaving,
+        onNavigateBack = onNavigateBack,
+        onSave = { viewModel.save(onNavigateBack) },
+        snackbarHostState = snackbarHostState,
     ) { paddingValues ->
         if (uiState.isLoading) {
             Box(
@@ -142,8 +116,8 @@ fun ProfileEditorScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(paddingValues)
-                    .padding(16.dp)
-                    .verticalScroll(rememberScrollState()),
+                    .verticalScroll(rememberScrollState())
+                    .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 88.dp),
             ) {
                 // Profile Name
                 OutlinedTextField(
@@ -275,8 +249,6 @@ fun ProfileEditorScreen(
                     onColumnsChange = { viewModel.updateForceSizeColumns(it) },
                     modifier = Modifier.fillMaxWidth(),
                 )
-
-                Spacer(modifier = Modifier.height(32.dp))
             }
         }
     }

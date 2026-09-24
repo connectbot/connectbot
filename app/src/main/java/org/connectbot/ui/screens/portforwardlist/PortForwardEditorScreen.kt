@@ -22,27 +22,19 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuAnchorType
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -60,7 +52,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
 import org.connectbot.ui.LocalTerminalManager
-import org.connectbot.ui.components.SaveEditorFab
+import org.connectbot.ui.components.EditorScaffold
 import org.connectbot.util.HostConstants
 
 @Composable
@@ -117,27 +109,16 @@ fun PortForwardEditorScreenContent(
     val typeLabels = stringArrayResource(R.array.list_portforward_types)
     val typeIndex = types.indexOf(uiState.type).coerceAtLeast(0)
 
-    Scaffold(
+    EditorScaffold(
         modifier = modifier,
-        snackbarHost = { SnackbarHost(snackbarHostState) },
-        topBar = {
-            TopAppBar(
-                title = { Text(stringResource(if (uiState.forwardId == 0L) R.string.portforward_pos else R.string.portforward_edit)) },
-                navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.button_navigate_up))
-                    }
-                },
-            )
-        },
-        floatingActionButton = {
-            SaveEditorFab(
-                visible = !uiState.isLoading && uiState.hasUnsavedChanges && uiState.canSave,
-                isSaving = uiState.isSaving,
-                contentDescription = stringResource(if (uiState.forwardId == 0L) R.string.portforward_pos else R.string.portforward_save),
-                onClick = onSave,
-            )
-        },
+        snackbarHostState = snackbarHostState,
+        title = stringResource(if (uiState.forwardId == 0L) R.string.portforward_pos else R.string.portforward_edit),
+        saveContentDescription = stringResource(if (uiState.forwardId == 0L) R.string.portforward_pos else R.string.portforward_save),
+        saveVisible = !uiState.isLoading && uiState.hasUnsavedChanges && uiState.canSave,
+        confirmDiscard = uiState.hasEdited,
+        isSaving = uiState.isSaving,
+        onNavigateBack = onNavigateBack,
+        onSave = onSave,
     ) { padding ->
         if (uiState.isLoading) {
             Column(
@@ -150,8 +131,7 @@ fun PortForwardEditorScreenContent(
                     .fillMaxSize()
                     .padding(padding)
                     .verticalScroll(rememberScrollState())
-                    .padding(16.dp)
-                    .imePadding(),
+                    .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 88.dp),
             ) {
                 OutlinedTextField(
                     value = uiState.nickname,
@@ -261,7 +241,6 @@ fun PortForwardEditorScreenContent(
                         null
                     },
                 )
-                Spacer(Modifier.height(88.dp))
             }
         }
     }
