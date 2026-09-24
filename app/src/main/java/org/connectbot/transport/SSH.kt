@@ -112,6 +112,8 @@ open class SSH :
     private var interactiveCanContinue = true
     private var savedPasswordTried = false
     private val lastUserSentEotAtMs = AtomicLong(0L)
+    private val interactiveShellToken = AtomicLong(0L)
+    private val lastUserSentEotShellToken = AtomicLong(0L)
     private val recentEotLock = Any()
 
     protected var connection: Connection? = null
@@ -1079,7 +1081,8 @@ open class SSH :
         }
 
         val recentEotAtMs = lastUserSentEotAtMs.get()
-        if (!sentRecentEot(recentEotAtMs)) return DisconnectReason.REMOTE_EOF
+        val recentEotShellToken = lastUserSentEotShellToken.get()
+        if (!sentRecentEot(recentEotAtMs, recentEotShellToken)) return DisconnectReason.REMOTE_EOF
 
         // Channel EOF may arrive before the server's exit-status request.
         // This runs in Relay's IO dispatcher, so the short wait does not block UI.
@@ -1092,7 +1095,7 @@ open class SSH :
         } else {
             if (session.exitStatus != null) DisconnectReason.SESSION_EXIT else DisconnectReason.REMOTE_EOF
         }
-        clearRecentEotIfUnchanged(recentEotAtMs)
+        clearRecentEotIfUnchanged(recentEotAtMs, recentEotShellToken)
         return disconnectReason
     }
 
@@ -1159,13 +1162,17 @@ open class SSH :
         stdin?.write(c)
     }
 
-    private fun sentRecentEot(sentAtMs: Long): Boolean =
-        sentAtMs != 0L && SystemClock.elapsedRealtime() - sentAtMs <= EXIT_STATUS_WAIT_MS
+    private fun sentRecentEot(sentAtMs: Long, shellToken: Long): Boolean =
+        sentAtMs != 0L &&
+            shellToken != 0L &&
+            shellToken == interactiveShellToken.get() &&
+            SystemClock.elapsedRealtime() - sentAtMs <= EXIT_STATUS_WAIT_MS
 
     private fun recordUserWrite(wroteEot: Boolean) {
         synchronized(recentEotLock) {
             if (wroteEot && interactiveShellOpen) {
                 lastUserSentEotAtMs.set(SystemClock.elapsedRealtime())
+                lastUserSentEotShellToken.set(interactiveShellToken.get())
             }
         }
     }
@@ -1173,13 +1180,16 @@ open class SSH :
     private fun clearRecentEotTracking() {
         synchronized(recentEotLock) {
             lastUserSentEotAtMs.set(0L)
+            lastUserSentEotShellToken.set(0L)
         }
     }
 
     private fun activateInteractiveShell() {
         synchronized(recentEotLock) {
             interactiveShellOpen = true
+            interactiveShellToken.incrementAndGet()
             lastUserSentEotAtMs.set(0L)
+            lastUserSentEotShellToken.set(0L)
         }
     }
 
@@ -1187,18 +1197,24 @@ open class SSH :
         synchronized(recentEotLock) {
             interactiveShellOpen = false
             lastUserSentEotAtMs.set(0L)
+            lastUserSentEotShellToken.set(0L)
         }
     }
 
     private fun clearCurrentRecentEot() {
         val currentSentAtMs = lastUserSentEotAtMs.get()
-        if (sentRecentEot(currentSentAtMs)) {
+        val currentShellToken = lastUserSentEotShellToken.get()
+        if (sentRecentEot(currentSentAtMs, currentShellToken) && lastUserSentEotShellToken.compareAndSet(currentShellToken, 0L)) {
             lastUserSentEotAtMs.compareAndSet(currentSentAtMs, 0L)
         }
     }
 
-    private fun clearRecentEotIfUnchanged(expectedSentAtMs: Long) {
-        if (expectedSentAtMs != 0L) {
+    private fun clearRecentEotIfUnchanged(expectedSentAtMs: Long, expectedShellToken: Long) {
+        if (
+            expectedSentAtMs != 0L &&
+            expectedShellToken != 0L &&
+            lastUserSentEotShellToken.compareAndSet(expectedShellToken, 0L)
+        ) {
             lastUserSentEotAtMs.compareAndSet(expectedSentAtMs, 0L)
         }
     }

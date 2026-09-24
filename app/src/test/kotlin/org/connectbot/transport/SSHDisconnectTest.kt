@@ -110,7 +110,7 @@ class SSHDisconnectTest {
         val session = mock(Session::class.java)
         val ssh = SSH().apply {
             setPrivateField("stdin", ByteArrayOutputStream())
-            setPrivateField("interactiveShellOpen", true)
+            invokePrivateMethod("activateInteractiveShell")
         }
         `when`(session.exitStatus).thenReturn(null, null, 0)
         `when`(session.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(0L)))
@@ -128,7 +128,7 @@ class SSHDisconnectTest {
         val session = mock(Session::class.java)
         val ssh = SSH().apply {
             setPrivateField("stdin", ByteArrayOutputStream())
-            setPrivateField("interactiveShellOpen", true)
+            invokePrivateMethod("activateInteractiveShell")
         }
         `when`(session.exitStatus).thenReturn(null, null, 0)
         `when`(session.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(0L)))
@@ -148,8 +148,8 @@ class SSHDisconnectTest {
         val laterSession = mock(Session::class.java)
         val ssh = SSH().apply {
             setPrivateField("stdin", ByteArrayOutputStream())
-            setPrivateField("interactiveShellOpen", true)
             setPrivateField("session", closedSession)
+            invokePrivateMethod("activateInteractiveShell")
         }
         `when`(laterSession.exitStatus).thenReturn(null)
         `when`(laterSession.waitForCondition(eq(ChannelCondition.EXIT_STATUS or ChannelCondition.EXIT_SIGNAL), eq(0L)))
@@ -186,6 +186,13 @@ class SSHDisconnectTest {
         SSH::class.java.getDeclaredField(name).apply {
             isAccessible = true
             set(this@setPrivateField, value)
+        }
+    }
+
+    private fun SSH.invokePrivateMethod(name: String) {
+        SSH::class.java.getDeclaredMethod(name).apply {
+            isAccessible = true
+            invoke(this@invokePrivateMethod)
         }
     }
 }
