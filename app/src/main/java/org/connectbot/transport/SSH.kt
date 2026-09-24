@@ -1207,20 +1207,27 @@ open class SSH :
     }
 
     private fun clearCurrentRecentEot() {
-        val currentSentAtMs = lastUserSentEotAtMs.get()
-        val currentShellToken = lastUserSentEotShellToken.get()
-        if (sentRecentEot(currentSentAtMs, currentShellToken) && lastUserSentEotShellToken.compareAndSet(currentShellToken, 0L)) {
-            lastUserSentEotAtMs.compareAndSet(currentSentAtMs, 0L)
+        synchronized(recentEotLock) {
+            val currentSentAtMs = lastUserSentEotAtMs.get()
+            val currentShellToken = lastUserSentEotShellToken.get()
+            if (sentRecentEot(currentSentAtMs, currentShellToken)) {
+                lastUserSentEotAtMs.set(0L)
+                lastUserSentEotShellToken.set(0L)
+            }
         }
     }
 
     private fun clearRecentEotIfUnchanged(expectedSentAtMs: Long, expectedShellToken: Long) {
-        if (
-            expectedSentAtMs != 0L &&
-            expectedShellToken != 0L &&
-            lastUserSentEotShellToken.compareAndSet(expectedShellToken, 0L)
-        ) {
-            lastUserSentEotAtMs.compareAndSet(expectedSentAtMs, 0L)
+        synchronized(recentEotLock) {
+            if (
+                expectedSentAtMs != 0L &&
+                expectedShellToken != 0L &&
+                lastUserSentEotAtMs.get() == expectedSentAtMs &&
+                lastUserSentEotShellToken.get() == expectedShellToken
+            ) {
+                lastUserSentEotAtMs.set(0L)
+                lastUserSentEotShellToken.set(0L)
+            }
         }
     }
 
