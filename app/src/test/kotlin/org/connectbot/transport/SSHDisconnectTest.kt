@@ -110,6 +110,7 @@ class SSHDisconnectTest {
         val session = mock(Session::class.java)
         val ssh = SSH().apply {
             setPrivateField("stdin", ByteArrayOutputStream())
+            setPrivateField("session", session)
             invokePrivateMethod("activateInteractiveShell")
         }
         `when`(session.exitStatus).thenReturn(null, 0)
@@ -126,6 +127,7 @@ class SSHDisconnectTest {
         val session = mock(Session::class.java)
         val ssh = SSH().apply {
             setPrivateField("stdin", ByteArrayOutputStream())
+            setPrivateField("session", session)
             invokePrivateMethod("activateInteractiveShell")
         }
         `when`(session.exitStatus).thenReturn(null)

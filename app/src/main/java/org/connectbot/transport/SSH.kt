@@ -1066,6 +1066,9 @@ open class SSH :
             clearCurrentRecentEot()
             return DisconnectReason.REMOTE_EOF
         }
+        if (this.session != null && session !== this.session) {
+            return DisconnectReason.REMOTE_EOF
+        }
 
         val recentEotMarker = currentRecentEotMarker()
         if (!sentRecentEot(recentEotMarker.sentAtMs, recentEotMarker.shellToken)) return DisconnectReason.REMOTE_EOF
