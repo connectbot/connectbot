@@ -289,6 +289,7 @@ androidComponents {
         variant.sources.jniLibs?.addGeneratedSourceDirectory(prepareOssMoshArtifacts) { it.jniLibsDirectory }
         variant.sources.assets?.addGeneratedSourceDirectory(prepareOssMoshArtifacts) { it.assetsDirectory }
         variant.packaging.jniLibs.useLegacyPackaging.set(true)
+        variant.packaging.jniLibs.useLegacyPackagingFromBundle.set(true)
     }
 
     onVariants(selector().withFlavor("license" to "google")) { variant ->
