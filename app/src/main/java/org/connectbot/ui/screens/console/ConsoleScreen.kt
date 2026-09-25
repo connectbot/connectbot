@@ -21,6 +21,7 @@ import android.app.Activity
 import android.content.ActivityNotFoundException
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.res.Configuration
 import androidx.annotation.VisibleForTesting
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.tween
@@ -150,7 +151,6 @@ import org.connectbot.ui.components.AuthBannerDialog
 import org.connectbot.ui.components.FloatingTextInputDialog
 import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
-import org.connectbot.ui.components.TERMINAL_KEYBOARD_HEIGHT_DP
 import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
 import org.connectbot.ui.theme.terminal
@@ -171,8 +171,8 @@ private fun rememberHasHardwareKeyboard(): Boolean {
 
     return remember(configuration) {
         val keyboardType = configuration.keyboard
-        keyboardType == android.content.res.Configuration.KEYBOARD_QWERTY ||
-            keyboardType == android.content.res.Configuration.KEYBOARD_12KEY
+        keyboardType == Configuration.KEYBOARD_QWERTY ||
+            keyboardType == Configuration.KEYBOARD_12KEY
     }
 }
 
@@ -392,7 +392,10 @@ private fun ConsoleTerminalPage(
     modifier: Modifier = Modifier,
     terminalModifier: Modifier = Modifier,
 ) {
-    Box(modifier = modifier) {
+    val keyboardDensity = LocalDensity.current
+    var keyboardHeight by remember { mutableStateOf(0.dp) }
+    var consoleHeight by remember { mutableStateOf(480.dp) }
+    Box(modifier = modifier.onSizeChanged { consoleHeight = with(keyboardDensity) { it.height.toDp() } }) {
         val fontResult = rememberTerminalTypefaceResultFromStoredValue(bridge.fontFamily)
         val coroutineScope = rememberCoroutineScope()
         val fontSize by bridge.fontSizeFlow.collectAsState()
@@ -413,7 +416,7 @@ private fun ConsoleTerminalPage(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    bottom = if (keyboardAlwaysVisible) TERMINAL_KEYBOARD_HEIGHT_DP.dp else 0.dp,
+                    bottom = if (keyboardAlwaysVisible) keyboardHeight else 0.dp,
                 )
                 .then(terminalModifier)
                 .testTag("terminal"),
@@ -461,6 +464,7 @@ private fun ConsoleTerminalPage(
                     .testTag("terminal_keyboard"),
             ) {
                 TerminalKeyboard(
+                    modifier = Modifier.heightIn(max = consoleHeight / 2).onSizeChanged { keyboardHeight = with(keyboardDensity) { it.height.toDp() } },
                     bridge = bridge,
                     onInteraction = { handleTerminalInteraction() },
                     onHideIme = {

@@ -23,7 +23,9 @@ import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.ConnectBotDatabase
 import org.connectbot.data.HostRepository
 import org.connectbot.data.PubkeyRepository
+import org.connectbot.data.entity.ColorPalette
 import org.connectbot.data.entity.KeyStorageType
+import org.connectbot.data.entity.Pubkey
 import timber.log.Timber
 import java.io.File
 
@@ -38,6 +40,7 @@ class BackupFilter(
     private val hostRepository: HostRepository,
     private val colorSchemeRepository: ColorSchemeRepository,
     private val pubkeyRepository: PubkeyRepository,
+    private val sourceDatabase: ConnectBotDatabase? = null,
 ) {
     /**
      * Build a filtered database containing only backupable data.
@@ -72,6 +75,16 @@ class BackupFilter(
 
             Timber.d("Backing up ${allHosts.size} hosts, ${backupablePubkeys.size} pubkeys, ${allColorSchemes.size} color schemes")
 
+            sourceDatabase?.let { source ->
+                val keyboard = source.keyboardDao()
+                val target = tempDb.keyboardDao()
+                keyboard.layouts().forEach { target.saveLayout(it) }
+                keyboard.macros().forEach { target.saveMacro(it) }
+                target.saveItems(keyboard.items())
+                keyboard.settings()?.let { target.saveSettings(it) }
+                source.profileDao().getAll().forEach { tempDb.profileDao().insert(it) }
+            }
+
             // Insert all backupable data into temp database
             allHosts.forEach { host ->
                 tempDb.hostDao().insert(host)
@@ -95,7 +108,7 @@ class BackupFilter(
                     val colors = colorSchemeRepository.getSchemeColors(scheme.id)
                     colors.forEachIndexed { index, color ->
                         tempDb.colorSchemeDao().insertColor(
-                            org.connectbot.data.entity.ColorPalette(
+                            ColorPalette(
                                 schemeId = scheme.id,
                                 colorIndex = index,
                                 color = color,
@@ -121,7 +134,7 @@ class BackupFilter(
      * @param pubkeys The list of pubkeys to filter
      * @return The list of backupable pubkeys
      */
-    fun filterBackupablePubkeys(pubkeys: List<org.connectbot.data.entity.Pubkey>): List<org.connectbot.data.entity.Pubkey> = pubkeys.filter { pubkey ->
+    fun filterBackupablePubkeys(pubkeys: List<Pubkey>): List<Pubkey> = pubkeys.filter { pubkey ->
         val isBackupable = pubkey.allowBackup && pubkey.storageType != KeyStorageType.ANDROID_KEYSTORE
 
         if (!isBackupable) {
