@@ -77,6 +77,7 @@ import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.components.ColorPickerDialog
 import org.connectbot.ui.components.RgbColorPickerDialog
 import org.connectbot.ui.components.SaveEditorFab
+import org.connectbot.ui.components.TextInputAlertDialog
 
 /**
  * Screen for editing the full 256-color palette of a color scheme.
@@ -662,31 +663,16 @@ private fun DuplicateSchemeDialog(
 ) {
     var name by remember { mutableStateOf("Copy of $baseName") }
 
-    AlertDialog(
+    TextInputAlertDialog(
         onDismissRequest = onDismiss,
+        onConfirm = { onConfirm(name) },
+        value = name,
+        onValueChange = { name = it },
+        confirmEnabled = name.isNotBlank(),
+        confirmButtonText = stringResource(R.string.button_confirm),
+        dismissButtonText = stringResource(R.string.button_cancel),
         title = { Text(stringResource(R.string.dialog_title_new_scheme)) },
-        text = {
-            OutlinedTextField(
-                value = name,
-                onValueChange = { name = it },
-                label = { Text(stringResource(R.string.label_scheme_name)) },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        },
-        confirmButton = {
-            TextButton(
-                onClick = { onConfirm(name) },
-                enabled = name.isNotBlank(),
-            ) {
-                Text(stringResource(R.string.button_confirm))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.button_cancel))
-            }
-        },
+        label = { Text(stringResource(R.string.label_scheme_name)) },
     )
 }
 

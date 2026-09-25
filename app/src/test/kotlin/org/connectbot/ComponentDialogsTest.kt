@@ -17,11 +17,24 @@
 
 package org.connectbot
 
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performImeAction
+import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -29,7 +42,9 @@ import org.connectbot.service.AuthBanner
 import org.connectbot.ui.components.AuthBannerDialog
 import org.connectbot.ui.components.AuthBannerDialogContent
 import org.connectbot.ui.components.DisconnectAllDialog
+import org.connectbot.ui.components.FocusableAlertDialog
 import org.connectbot.ui.components.FontDownloadProgressDialog
+import org.connectbot.ui.components.TextInputAlertDialog
 import org.connectbot.ui.components.UrlScanDialog
 import org.connectbot.ui.screens.console.ConsoleTestTags
 import org.connectbot.ui.theme.ConnectBotTheme
@@ -258,5 +273,95 @@ class ComponentDialogsTest {
         composeTestRule
             .onNodeWithText(composeTestRule.activity.getString(R.string.font_downloading))
             .assertIsDisplayed()
+    }
+
+    @Test
+    fun textInputAlertDialog_focusesAndHandlesActions() {
+        var confirmedValue: String? = null
+        var dismissed = false
+
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                var text by remember { mutableStateOf("") }
+                TextInputAlertDialog(
+                    onDismissRequest = { dismissed = true },
+                    onConfirm = { confirmedValue = text },
+                    value = text,
+                    onValueChange = { text = it },
+                    title = { Text("Dialog Title") },
+                    message = { Text("Dialog Message") },
+                    label = { Text("Input Label") },
+                    confirmButtonText = "Confirm",
+                    dismissButtonText = "Cancel",
+                    confirmButtonTestTag = "confirm_btn",
+                    dismissButtonTestTag = "dismiss_btn",
+                    textFieldModifier = Modifier.testTag("text_input"),
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithText("Dialog Title").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Dialog Message").assertIsDisplayed()
+        composeTestRule
+            .onNodeWithTag("text_input")
+            .assertIsDisplayed()
+            .assertIsFocused()
+            .performTextInput("typed text")
+
+        composeTestRule.onNodeWithTag("confirm_btn").performClick()
+        assertEquals("typed text", confirmedValue)
+
+        composeTestRule.onNodeWithTag("dismiss_btn").performClick()
+        assertTrue(dismissed)
+    }
+
+    @Test
+    fun textInputAlertDialog_imeDoneTriggersConfirm() {
+        var confirmedValue: String? = null
+
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                var text by remember { mutableStateOf("") }
+                TextInputAlertDialog(
+                    onDismissRequest = {},
+                    onConfirm = { confirmedValue = text },
+                    value = text,
+                    onValueChange = { text = it },
+                    textFieldModifier = Modifier.testTag("text_input"),
+                )
+            }
+        }
+
+        val inputNode = composeTestRule.onNodeWithTag("text_input")
+        inputNode.performTextInput("submitted via ime")
+        inputNode.performImeAction()
+
+        assertEquals("submitted via ime", confirmedValue)
+    }
+
+    @Test
+    fun focusableAlertDialog_providesFocusRequester() {
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                var text by remember { mutableStateOf("") }
+                FocusableAlertDialog(
+                    onDismissRequest = {},
+                    confirmButton = { TextButton(onClick = {}) { Text("OK") } },
+                ) { focusRequester ->
+                    OutlinedTextField(
+                        value = text,
+                        onValueChange = { text = it },
+                        modifier = Modifier
+                            .testTag("focused_field")
+                            .focusRequester(focusRequester),
+                    )
+                }
+            }
+        }
+
+        composeTestRule
+            .onNodeWithTag("focused_field")
+            .assertIsDisplayed()
+            .assertIsFocused()
     }
 }

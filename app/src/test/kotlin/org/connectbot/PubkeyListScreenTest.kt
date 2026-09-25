@@ -18,6 +18,7 @@
 package org.connectbot
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsFocused
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
@@ -181,6 +182,7 @@ class PubkeyListScreenTest {
             .assertExists()
         composeTestRule
             .onNodeWithTag(PubkeyListTestTags.PASSWORD_FIELD)
+            .assertIsFocused()
             .performTextInput("secret")
         composeTestRule
             .onNodeWithTag(PubkeyListTestTags.PASSWORD_CONFIRM_BUTTON)
