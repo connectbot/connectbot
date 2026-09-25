@@ -17,24 +17,29 @@
 
 package org.connectbot.ui.screens.hosteditor
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.connectbot.data.HostRepository
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.transport.Transport
-import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.InstallMosh
 import org.connectbot.util.SecurePasswordStorage
 import javax.inject.Inject
 
@@ -68,7 +73,7 @@ data class HostEditorUiState(
     val moshPort: String = "0",
     val moshServer: String = "",
     val locale: String = "en_US.UTF-8",
-    val moshSupport: Boolean = false,
+    val isMoshInstalling: Boolean = false,
     val isLoading: Boolean = false,
     val error: String? = null,
 ) {
@@ -92,16 +97,20 @@ class HostEditorViewModel @Inject constructor(
     private val profileRepository: ProfileRepository,
     private val prefs: android.content.SharedPreferences,
     private val securePasswordStorage: SecurePasswordStorage,
+    @ApplicationContext private val context: Context,
+    private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
 
     private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
     private val _uiState = MutableStateFlow(
         HostEditorUiState(
             hostId = hostId,
-            moshSupport = prefs.getBoolean(PreferenceConstants.MOSH_SUPPORT, false),
         ),
     )
     val uiState: StateFlow<HostEditorUiState> = _uiState.asStateFlow()
+
+    private var moshInstallJob: Job? = null
+    private var preMoshProtocol: String = "ssh"
 
     init {
         observePubkeys()
@@ -294,9 +303,49 @@ class HostEditorViewModel @Inject constructor(
     }
 
     fun updateProtocol(value: String) {
+        val oldProtocol = _uiState.value.protocol
         _uiState.update { old ->
             val updated = old.copy(protocol = value, hasUnsavedChanges = true)
             updateNicknameIfMatching(old, updated)
+        }
+
+        if (value == "mosh" && !InstallMosh.isInstalled(context)) {
+            preMoshProtocol = oldProtocol
+            installMosh(oldProtocol)
+        }
+    }
+
+    fun cancelMoshInstall() {
+        moshInstallJob?.cancel()
+        moshInstallJob = null
+        _uiState.update { old ->
+            val reverted = old.copy(
+                protocol = preMoshProtocol,
+                isMoshInstalling = false,
+            )
+            updateNicknameIfMatching(old, reverted)
+        }
+    }
+
+    private fun installMosh(fallbackProtocol: String) {
+        moshInstallJob?.cancel()
+        moshInstallJob = viewModelScope.launch {
+            _uiState.update { it.copy(isMoshInstalling = true) }
+            val result = withContext(dispatchers.io) {
+                InstallMosh.installClient(context)
+            }
+            if (result.success) {
+                _uiState.update { it.copy(isMoshInstalling = false) }
+            } else {
+                _uiState.update { old ->
+                    val reverted = old.copy(
+                        protocol = fallbackProtocol,
+                        isMoshInstalling = false,
+                        error = result.errorMessage,
+                    )
+                    updateNicknameIfMatching(old, reverted)
+                }
+            }
         }
     }
 

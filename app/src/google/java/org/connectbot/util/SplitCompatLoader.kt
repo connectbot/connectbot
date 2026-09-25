@@ -15,28 +15,13 @@
  * limitations under the License.
  */
 
-package org.connectbot
+package org.connectbot.util
 
-import android.app.Application
 import android.content.Context
-import dagger.hilt.android.HiltAndroidApp
-import org.connectbot.logging.TimberInitializer
-import org.connectbot.util.SplitCompatLoader
-import javax.inject.Inject
+import com.google.android.play.core.splitcompat.SplitCompat
 
-@HiltAndroidApp
-class ConnectBotApplication : Application() {
-
-    @Inject
-    lateinit var timberInitializer: TimberInitializer
-
-    override fun attachBaseContext(base: Context) {
-        super.attachBaseContext(base)
-        SplitCompatLoader.install(this)
-    }
-
-    override fun onCreate() {
-        super.onCreate()
-        timberInitializer.initialize()
+object SplitCompatLoader {
+    fun install(context: Context) {
+        SplitCompat.install(context)
     }
 }

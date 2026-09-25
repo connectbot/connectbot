@@ -287,7 +287,6 @@ class SettingsScreenTest {
         onRemoveCustomTerminalType: (String) -> Unit = {},
         onDefaultProfileChange: (Long) -> Unit = {},
         onImeShortcutInputModeChange: (ImeShortcutInputMode) -> Unit = {},
-        onMoshSupportChange: (Boolean) -> Unit = {},
     ) {
         composeTestRule.setContent {
             ConnectBotTheme {
@@ -332,34 +331,8 @@ class SettingsScreenTest {
                     onBellVolumeChange = {},
                     onBellVibrateChange = {},
                     onBellNotificationChange = {},
-                    onMoshSupportChange = onMoshSupportChange,
                 )
             }
         }
-    }
-
-    @Test
-    fun settingsScreen_moshSupportShowsGplConfirmation() {
-        val moshTitle = composeTestRule.activity.getString(R.string.pref_mosh_support_title)
-        val confirmTitle = composeTestRule.activity.getString(R.string.pref_mosh_confirm_title)
-        val confirmMessage = composeTestRule.activity.getString(R.string.pref_mosh_confirm_message)
-
-        composeTestRule.setContent {
-            ConnectBotTheme {
-                SettingsScreen(onNavigateBack = {})
-            }
-        }
-
-        composeTestRule
-            .onNodeWithText(moshTitle)
-            .performScrollTo()
-            .performClick()
-
-        composeTestRule
-            .onNodeWithText(confirmTitle)
-            .assertIsDisplayed()
-        composeTestRule
-            .onNodeWithText(confirmMessage)
-            .assertIsDisplayed()
     }
 }

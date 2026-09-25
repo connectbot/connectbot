@@ -17,8 +17,10 @@
 
 package org.connectbot.ui.screens.hosteditor
 
+import android.content.Context
 import android.content.SharedPreferences
 import androidx.lifecycle.SavedStateHandle
+import androidx.test.core.app.ApplicationProvider
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flowOf
@@ -31,6 +33,7 @@ import org.connectbot.data.HostRepository
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.SecurePasswordStorage
 import org.junit.After
 import org.junit.Assert.assertEquals
@@ -38,17 +41,22 @@ import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.junit.runner.RunWith
 import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.any
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
+import org.robolectric.RobolectricTestRunner
 
+@RunWith(RobolectricTestRunner::class)
 @OptIn(ExperimentalCoroutinesApi::class)
 class HostEditorViewModelTest {
 
     private val testDispatcher = StandardTestDispatcher()
+    private val dispatchers = CoroutineDispatchers(testDispatcher, testDispatcher, testDispatcher)
 
+    private lateinit var context: Context
     private lateinit var savedStateHandle: SavedStateHandle
     private lateinit var repository: HostRepository
     private lateinit var pubkeyRepository: PubkeyRepository
@@ -59,6 +67,7 @@ class HostEditorViewModelTest {
     @Before
     fun setUp() {
         Dispatchers.setMain(testDispatcher)
+        context = ApplicationProvider.getApplicationContext()
 
         savedStateHandle = SavedStateHandle()
         repository = mock(HostRepository::class.java)
@@ -83,12 +92,14 @@ class HostEditorViewModelTest {
     private fun createViewModel(hostId: Long = -1L): HostEditorViewModel {
         savedStateHandle["hostId"] = hostId
         return HostEditorViewModel(
+            context = context,
             savedStateHandle = savedStateHandle,
             repository = repository,
             pubkeyRepository = pubkeyRepository,
             profileRepository = profileRepository,
             prefs = prefs,
             securePasswordStorage = securePasswordStorage,
+            dispatchers = dispatchers,
         )
     }
 
@@ -523,5 +534,30 @@ class HostEditorViewModelTest {
 
         val state = viewModel.uiState.value
         assertEquals("test-user@10.0.0.1:22", state.quickConnect)
+    }
+
+    @Test
+    fun testUpdateProtocol_toMosh_updatesProtocol() = runTest {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.updateProtocol("mosh")
+        assertEquals("mosh", viewModel.uiState.value.protocol)
+    }
+
+    @Test
+    fun testCancelMoshInstall_revertsProtocolAndStopsInstalling() = runTest {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+
+        viewModel.updateProtocol("telnet")
+        advanceUntilIdle()
+        assertEquals("telnet", viewModel.uiState.value.protocol)
+
+        viewModel.updateProtocol("mosh")
+        viewModel.cancelMoshInstall()
+
+        assertEquals("telnet", viewModel.uiState.value.protocol)
+        assertFalse(viewModel.uiState.value.isMoshInstalling)
     }
 }

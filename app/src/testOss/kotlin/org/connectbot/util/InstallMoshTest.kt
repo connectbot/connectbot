@@ -20,19 +20,16 @@ package org.connectbot.util
 import android.content.Context
 import androidx.preference.PreferenceManager
 import androidx.test.core.app.ApplicationProvider
-import com.google.android.gms.tasks.Tasks
-import com.google.android.play.core.splitinstall.SplitInstallManager
 import org.connectbot.BuildConfig
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
+import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.ArgumentMatchers.any
-import org.mockito.Mockito.mock
-import org.mockito.Mockito.`when`
 import org.robolectric.RobolectricTestRunner
 import java.io.File
 import java.nio.file.Files
@@ -47,7 +44,7 @@ class InstallMoshTest {
     @Before
     fun setUp() {
         context = ApplicationProvider.getApplicationContext<Context>()
-        nativeDir = Files.createTempDirectory("mosh-native").toFile()
+        nativeDir = Files.createTempDirectory("mosh-oss-native").toFile()
         originalNativeDir = context.applicationInfo.nativeLibraryDir
         terminfoDir = File(context.filesDir, "terminfo")
         terminfoDir.deleteRecursively()
@@ -57,8 +54,8 @@ class InstallMoshTest {
         client.setExecutable(true)
         context.applicationInfo.nativeLibraryDir = nativeDir.absolutePath
         InstallMosh.assetOpener = { _, name ->
-            File("src/testGoogle/assets", name).takeIf { it.isFile }?.inputStream()
-                ?: File("app/src/testGoogle/assets", name).inputStream()
+            File("src/testOss/assets", name).takeIf { it.isFile }?.inputStream()
+                ?: File("app/src/testOss/assets", name).inputStream()
         }
     }
 
@@ -72,11 +69,7 @@ class InstallMoshTest {
     }
 
     @Test
-    fun installClient_whenModuleAlreadyInstalled_usesPlayPayloadAndRecordsReleaseTag() {
-        val splitInstallManager = mock(SplitInstallManager::class.java)
-        `when`(splitInstallManager.installedModules).thenReturn(setOf(InstallMosh.MODULE_NAME))
-        InstallMosh.splitInstallManagerProvider = { splitInstallManager }
-
+    fun installClient_extractsBundledTerminfoAndSetsReleaseTag() {
         val result = InstallMosh.installClient(context)
 
         assertTrue(result.errorMessage.orEmpty(), result.success)
@@ -86,52 +79,39 @@ class InstallMoshTest {
             PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(PreferenceConstants.MOSH_RELEASE_TAG, null),
         )
+        assertNotNull(InstallMosh.getTerminfoPath())
         assertTrue(File(InstallMosh.getTerminfoPath(), "x/xterm-256color").isFile)
         assertEquals(File(nativeDir, "libmoshexec.so").absolutePath, InstallMosh.getMoshClientPath(context))
-    }
-
-    @Test
-    fun installClient_whenModuleNeedsDownloadAndSucceeds_completesSuccessfully() {
-        val splitInstallManager = mock(SplitInstallManager::class.java)
-        `when`(splitInstallManager.installedModules).thenReturn(emptySet())
-        InstallMosh.splitInstallManagerProvider = { splitInstallManager }
-        InstallMosh.downloadHandler = { _, _ -> true }
-
-        val result = InstallMosh.installClient(context)
-
-        assertTrue(result.errorMessage.orEmpty(), result.success)
-        assertEquals(BuildConfig.MOSH_RELEASE_TAG, result.releaseTag)
         assertTrue(InstallMosh.isInstallDone())
     }
 
     @Test
-    fun installClient_whenDownloadFails_returnsFailure() {
-        val splitInstallManager = mock(SplitInstallManager::class.java)
-        `when`(splitInstallManager.installedModules).thenReturn(emptySet())
-        InstallMosh.splitInstallManagerProvider = { splitInstallManager }
-        InstallMosh.downloadHandler = { _, _ -> false }
+    fun installClient_whenBinaryMissing_fails() {
+        File(nativeDir, "libmoshexec.so").delete()
 
         val result = InstallMosh.installClient(context)
 
         assertFalse(result.success)
-        assertEquals("Failed to download Mosh feature from Google Play", result.errorMessage)
+        assertNull(InstallMosh.getMoshClientPath(context))
     }
 
     @Test
-    fun isInstalled_whenModuleNotInstalled_returnsFalse() {
-        val splitInstallManager = mock(SplitInstallManager::class.java)
-        `when`(splitInstallManager.installedModules).thenReturn(emptySet())
-        InstallMosh.splitInstallManagerProvider = { splitInstallManager }
+    fun startInstall_completesSuccessfully() {
+        InstallMosh.startInstall(context)
 
+        assertTrue(InstallMosh.waitForInstall(5000))
+        assertTrue(InstallMosh.isInstallDone())
+        assertNotNull(InstallMosh.getTerminfoPath())
+        assertEquals(File(nativeDir, "libmoshexec.so").absolutePath, InstallMosh.getMoshClientPath(context))
+    }
+
+    @Test
+    fun isInstalled_whenNotInstalled_returnsFalse() {
         assertFalse(InstallMosh.isInstalled(context))
     }
 
     @Test
-    fun isInstalled_whenModuleInstalledAndFilesPresent_returnsTrue() {
-        val splitInstallManager = mock(SplitInstallManager::class.java)
-        `when`(splitInstallManager.installedModules).thenReturn(setOf(InstallMosh.MODULE_NAME))
-        InstallMosh.splitInstallManagerProvider = { splitInstallManager }
-
+    fun isInstalled_whenInstalled_returnsTrue() {
         InstallMosh.installClient(context)
         assertTrue(InstallMosh.isInstalled(context))
     }

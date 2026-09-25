@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Summary for Mosh shipped by Google Play. -->
-    <string name="pref_mosh_support_summary">"Enable the Mosh client delivered with ConnectBot by Google Play"</string>
-    <!-- Dialog body before enabling Play-delivered Mosh. -->
-    <string name="pref_mosh_confirm_message">"ConnectBot includes a GPL-licensed Mosh client delivered by Google Play. Its release page links to the matching source code in ZIP and tar formats."</string>
-    <!-- Dialog action for enabling Play-delivered Mosh. -->
-    <string name="pref_mosh_confirm_enable">"Enable"</string>
     <!-- Progress text while extracting Mosh terminfo. -->
     <string name="pref_mosh_installing">"Preparing Mosh support…"</string>
 </resources>

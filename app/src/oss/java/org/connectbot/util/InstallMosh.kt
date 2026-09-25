@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2012-2026 Kenny Root
+ * Copyright 2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,33 +18,22 @@
 package org.connectbot.util
 
 import android.content.Context
-import android.os.Build
 import androidx.core.content.edit
 import androidx.preference.PreferenceManager
-import org.json.JSONObject
 import timber.log.Timber
 import java.io.File
-import java.io.FileOutputStream
-import java.net.HttpURLConnection
-import java.net.URL
+import java.io.InputStream
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.locks.ReentrantLock
-import java.util.zip.ZipInputStream
 import kotlin.concurrent.withLock
 
 /**
- * Utility class to install the external mosh-client executable and terminfo
- * database from a mosh4android release archive.
- * This is thread-safe with a wait/notify mechanism for callers who need
- * to wait for installation to complete.
+ * Utility class to configure the external mosh-client executable and terminfo database bundled inside the OSS APK.
  */
 object InstallMosh {
-    private const val MOSH_CLIENT_FILE = "mosh-client"
-    private const val MOSH_DOWNLOAD_DIR = "mosh"
-    private const val MOSH_RELEASE_REPO = "connectbot/mosh4android"
-    private const val TERMINFO_ZIP = "terminfo.zip"
+    private const val CLIENT_NAME = "libmoshexec.so"
     private const val TERMINFO_DIR = "terminfo"
-    private const val TERMINFO_ZIP_ROOT = "share/terminfo"
-    private const val INSTALL_MARKER = ".mosh_installed"
+    private const val TERMINFO_FILE = "share/terminfo/x/xterm-256color"
 
     private val lock = ReentrantLock()
     private val installComplete = lock.newCondition()
@@ -53,38 +42,30 @@ object InstallMosh {
     private var installDone = false
 
     @Volatile
+    private var installSucceeded = false
+
+    @Volatile
     private var installThread: Thread? = null
 
     @Volatile
     private var terminfoPath: String? = null
 
     @Volatile
-    internal var releaseInstaller: (Context) -> InstallResult = ::downloadLatestRelease
+    internal var assetOpener: (Context, String) -> InputStream = { ctx, name -> ctx.assets.open(name) }
 
-    /**
-     * Start the installation process in the background.
-     * This method returns immediately. Use waitForInstall() if you need
-     * to wait for installation to complete.
-     *
-     * @param context The application context
-     */
+    fun isInstalled(context: Context): Boolean {
+        if (getMoshClientPath(context) == null) return false
+        val terminfoFile = File(context.filesDir, "$TERMINFO_DIR/$TERMINFO_FILE")
+        return terminfoFile.isFile
+    }
+
     fun startInstall(context: Context) {
         val appContext = context.applicationContext
-        if (!isMoshSupportEnabled(appContext)) {
-            return
-        }
-
         lock.withLock {
-            if (installThread != null) {
-                return
-            }
-            if (installDone && refreshInstalledResources(appContext)) {
-                return
-            }
+            if (installThread != null || (installDone && installSucceeded)) return
             installDone = false
-
             installThread = Thread {
-                performInstall(appContext)
+                installBundledClient(appContext)
             }.apply {
                 name = "MoshInstaller"
                 isDaemon = true
@@ -93,344 +74,87 @@ object InstallMosh {
         }
     }
 
-    /**
-     * Wait for the installation to complete.
-     * This will block until installation is done.
-     *
-     * @param timeoutMs Maximum time to wait in milliseconds, or 0 for no timeout
-     * @return true if installation completed successfully, false if timed out
-     */
-    fun waitForInstall(timeoutMs: Long = 0): Boolean {
-        lock.withLock {
-            if (installDone) {
-                return true
-            }
-
-            return try {
-                if (timeoutMs > 0) {
-                    val deadline = System.currentTimeMillis() + timeoutMs
-                    while (!installDone) {
-                        val remaining = deadline - System.currentTimeMillis()
-                        if (remaining <= 0) {
-                            return false
-                        }
-                        installComplete.await(remaining, java.util.concurrent.TimeUnit.MILLISECONDS)
-                    }
-                    true
-                } else {
-                    while (!installDone) {
-                        installComplete.await()
-                    }
-                    true
+    fun waitForInstall(timeoutMs: Long = 0): Boolean = lock.withLock {
+        try {
+            if (timeoutMs > 0) {
+                var remaining = TimeUnit.MILLISECONDS.toNanos(timeoutMs)
+                while (!installDone && remaining > 0) {
+                    remaining = installComplete.awaitNanos(remaining)
                 }
-            } catch (e: InterruptedException) {
-                Thread.currentThread().interrupt()
-                false
+                installDone
+            } else {
+                while (!installDone) installComplete.await()
+                true
             }
+        } catch (e: InterruptedException) {
+            Thread.currentThread().interrupt()
+            false
         }
     }
 
-    /**
-     * Check if installation is complete.
-     *
-     * @return true if installation has completed
-     */
     fun isInstallDone(): Boolean = installDone
 
-    /**
-     * Get the path to the terminfo directory.
-     * Returns null if installation is not complete.
-     *
-     * @return Path to terminfo directory, or null
-     */
     fun getTerminfoPath(): String? = terminfoPath
 
-    fun isMoshSupportEnabled(context: Context): Boolean = PreferenceManager.getDefaultSharedPreferences(context)
-        .getBoolean(PreferenceConstants.MOSH_SUPPORT, false)
-
-    fun setMoshSupportEnabled(context: Context, enabled: Boolean) {
-        PreferenceManager.getDefaultSharedPreferences(context).edit {
-            putBoolean(PreferenceConstants.MOSH_SUPPORT, enabled)
-        }
-        if (!enabled) {
-            lock.withLock {
-                installDone = false
-                installThread = null
-                terminfoPath = null
-                installComplete.signalAll()
-            }
-        }
-    }
-
-    fun installClient(context: Context): InstallResult {
-        val appContext = context.applicationContext
-        markInstallStarted()
-        val result = try {
-            releaseInstaller(appContext)
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to install latest mosh4android release")
-            InstallResult(false, null, e.message ?: "Failed to install mosh4android release")
-        }
-        if (result.success && !refreshInstalledResources(appContext)) {
-            markInstallComplete()
-            return result.copy(success = false, errorMessage = "Mosh release installed without usable payload")
-        }
-        markInstallComplete()
-        return result
-    }
-
-    private fun downloadLatestRelease(appContext: Context): InstallResult {
-        return try {
-            val releaseJson = httpGet(releaseApiUrl())
-            val tagName = JSONObject(releaseJson).optString("tag_name", "")
-            val abi = Build.SUPPORTED_ABIS.firstOrNull()
-                ?: return InstallResult(false, null, "No supported Android ABI found")
-            val assetUrl = findReleaseAssetDownloadUrl(releaseJson, abi)
-                ?: return InstallResult(false, tagName.ifBlank { null }, "No mosh4android release asset found for $abi")
-
-            val filesDir = appContext.filesDir
-            val downloadDir = File(filesDir, MOSH_DOWNLOAD_DIR)
-            val terminfoDir = File(filesDir, TERMINFO_DIR)
-            downloadDir.deleteRecursively()
-            terminfoDir.deleteRecursively()
-            downloadDir.mkdirs()
-
-            downloadZip(assetUrl).use { zipStream ->
-                installReleaseZip(zipStream, downloadDir, terminfoDir)
-            }
-
-            val installedClient = File(downloadDir, MOSH_CLIENT_FILE)
-            if (!installedClient.isUsableExecutable()) {
-                return InstallResult(
-                    false,
-                    tagName.ifBlank { null },
-                    "Release asset did not contain usable $MOSH_CLIENT_FILE",
-                )
-            }
-
-            val resolvedTerminfoPath = resolveTerminfoPath(terminfoDir)
-                ?: return InstallResult(false, tagName.ifBlank { null }, "Release asset did not contain xterm-256color terminfo")
-
-            File(filesDir, INSTALL_MARKER).createNewFile()
-            terminfoPath = resolvedTerminfoPath
-
-            PreferenceManager.getDefaultSharedPreferences(appContext).edit {
-                putBoolean(PreferenceConstants.MOSH_SUPPORT, true)
-                putString(PreferenceConstants.MOSH_RELEASE_TAG, tagName)
-            }
-            InstallResult(true, tagName.ifBlank { null }, null)
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to install latest mosh4android release")
-            InstallResult(false, null, e.message ?: "Failed to install mosh4android release")
-        }
-    }
-
-    /**
-     * Get the downloaded mosh-client executable path.
-     */
     fun getMoshClientPath(context: Context): String? {
-        val downloadedClient = File(File(context.filesDir, MOSH_DOWNLOAD_DIR), MOSH_CLIENT_FILE)
-        if (downloadedClient.isUsableExecutable()) {
-            return downloadedClient.absolutePath
+        val direct = File(context.applicationInfo.nativeLibraryDir, CLIENT_NAME)
+        if (direct.isFile && (direct.canExecute() || direct.setExecutable(true, true))) {
+            return direct.absolutePath
         }
-
         return null
     }
 
-    private fun performInstall(context: Context) {
-        try {
-            if (refreshInstalledResources(context)) {
-                Timber.d("Mosh resources already installed")
-                markInstallComplete()
-                return
-            }
+    fun installClient(context: Context): InstallResult = installBundledClient(context.applicationContext)
 
-            Timber.i("Mosh resources are missing; downloading latest mosh4android release")
-            val result = installClient(context)
-            if (!result.success) {
-                Timber.w("Mosh install failed: ${result.errorMessage}")
-            }
-        } catch (e: Exception) {
-            Timber.e(e, "Failed to install mosh resources")
-            // Mark as complete anyway to avoid blocking forever
-            markInstallComplete()
-        }
-    }
+    private fun installBundledClient(context: Context): InstallResult {
+        val result = try {
+            val clientPath = getMoshClientPath(context)
+            check(clientPath != null) { "Bundled Mosh executable is unavailable in native library directory" }
 
-    private fun File.isUsableExecutable(): Boolean {
-        if (!isFile) {
-            return false
-        }
-        return canExecute() || setExecutable(true, true)
-    }
+            val releaseTag = assetOpener(context, "mosh-release.txt").bufferedReader().use { it.readText().trim() }
+            val destination = File(context.filesDir, TERMINFO_DIR)
+            val terminfoTarget = File(destination, TERMINFO_FILE)
 
-    internal fun installReleaseZip(zipStream: ZipInputStream, downloadDir: File, terminfoDir: File) {
-        var entry = zipStream.nextEntry
-        while (entry != null) {
-            val name = entry.name
-            if (!entry.isDirectory) {
-                when {
-                    name.endsWith("/$MOSH_CLIENT_FILE") || name == MOSH_CLIENT_FILE -> {
-                        val outputFile = File(downloadDir, MOSH_CLIENT_FILE)
-                        FileOutputStream(outputFile).use { output -> zipStream.copyTo(output) }
-                        outputFile.setReadable(true, true)
-                        outputFile.setExecutable(true, true)
-                        outputFile.setWritable(false, true)
-                    }
-
-                    name.endsWith("/$TERMINFO_ZIP") || name == TERMINFO_ZIP -> {
-                        ZipInputStream(NonClosingInputStream(zipStream)).use { terminfoZip ->
-                            extractZip(terminfoZip, terminfoDir)
-                        }
-                    }
-
-                    name.contains("terminfo/") -> {
-                        val terminfoEntry = name.substringAfter("terminfo/")
-                        if (terminfoEntry.isNotBlank()) {
-                            val destFile = File(terminfoDir, terminfoEntry)
-                            writeZipEntry(zipStream, terminfoDir, destFile)
-                        }
-                    }
+            if (!terminfoTarget.isFile ||
+                PreferenceManager.getDefaultSharedPreferences(context)
+                    .getString(PreferenceConstants.MOSH_RELEASE_TAG, null) != releaseTag
+            ) {
+                terminfoTarget.parentFile?.mkdirs()
+                assetOpener(context, TERMINFO_FILE).use { input ->
+                    terminfoTarget.outputStream().use { output -> input.copyTo(output) }
                 }
             }
-            zipStream.closeEntry()
-            entry = zipStream.nextEntry
-        }
-    }
 
-    private fun extractZip(zipStream: ZipInputStream, destDir: File) {
-        destDir.mkdirs()
+            check(terminfoTarget.isFile) { "Bundled terminfo is incomplete" }
+            terminfoPath = File(destination, "share/terminfo").absolutePath
 
-        var entry = zipStream.nextEntry
-        while (entry != null) {
-            val destFile = File(destDir, entry.name)
-
-            // Security check: ensure the file is within destDir
-            if (!destFile.canonicalPath.startsWith(destDir.canonicalPath + File.separator)) {
-                throw SecurityException("Zip entry outside target directory: ${entry.name}")
+            PreferenceManager.getDefaultSharedPreferences(context).edit {
+                putString(PreferenceConstants.MOSH_RELEASE_TAG, releaseTag)
             }
-
-            if (entry.isDirectory) {
-                destFile.mkdirs()
-            } else {
-                writeZipEntry(zipStream, destDir, destFile)
-            }
-
-            zipStream.closeEntry()
-            entry = zipStream.nextEntry
-        }
-    }
-
-    private fun writeZipEntry(zipStream: ZipInputStream, destDir: File, destFile: File) {
-        if (!destFile.canonicalPath.startsWith(destDir.canonicalPath + File.separator)) {
-            throw SecurityException("Zip entry outside target directory: ${destFile.path}")
-        }
-        destFile.parentFile?.mkdirs()
-        FileOutputStream(destFile).use { output ->
-            zipStream.copyTo(output)
-        }
-    }
-
-    private fun resolveTerminfoPath(installDir: File): String? {
-        val directTerminfo = File(installDir, "x/xterm-256color")
-        if (directTerminfo.isFile) {
-            return installDir.absolutePath
+            InstallResult(true, releaseTag, null)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to initialize bundled Mosh")
+            InstallResult(false, null, e.message ?: "Failed to initialize bundled Mosh")
         }
 
-        val zippedTerminfoRoot = File(installDir, TERMINFO_ZIP_ROOT)
-        val zippedTerminfo = File(zippedTerminfoRoot, "x/xterm-256color")
-        if (zippedTerminfo.isFile) {
-            return zippedTerminfoRoot.absolutePath
-        }
-
-        return null
-    }
-
-    private fun refreshInstalledResources(context: Context): Boolean {
-        val filesDir = context.filesDir
-        val downloadDir = File(filesDir, MOSH_DOWNLOAD_DIR)
-        val downloadedClient = File(downloadDir, MOSH_CLIENT_FILE)
-        val terminfoDir = File(filesDir, TERMINFO_DIR)
-        val installMarker = File(filesDir, INSTALL_MARKER)
-
-        if (!installMarker.exists() || !downloadedClient.isUsableExecutable()) {
-            terminfoPath = null
-            return false
-        }
-
-        val resolvedTerminfoPath = resolveTerminfoPath(terminfoDir)
-        if (resolvedTerminfoPath == null) {
-            Timber.w("Installed terminfo directory is missing xterm-256color; reinstalling")
-            terminfoDir.deleteRecursively()
-            installMarker.delete()
-            terminfoPath = null
-            return false
-        }
-
-        terminfoPath = resolvedTerminfoPath
-        return true
-    }
-
-    private fun markInstallStarted() {
-        lock.withLock {
-            installDone = false
-        }
-    }
-
-    private fun markInstallComplete() {
         lock.withLock {
             installDone = true
+            installSucceeded = result.success
             installThread = null
             installComplete.signalAll()
         }
+        return result
     }
 
     internal fun resetForTest() {
         lock.withLock {
             installDone = false
+            installSucceeded = false
             installThread = null
             terminfoPath = null
-            releaseInstaller = ::downloadLatestRelease
+            assetOpener = { ctx, name -> ctx.assets.open(name) }
             installComplete.signalAll()
         }
-    }
-
-    internal fun releaseApiUrl(repo: String = MOSH_RELEASE_REPO): String = "https://api.github.com/repos/$repo/releases/latest"
-
-    internal fun findReleaseAssetDownloadUrl(releaseJson: String, abi: String): String? {
-        val assets = JSONObject(releaseJson).optJSONArray("assets") ?: return null
-        val expectedNames = setOf(
-            "mosh-android-$abi.zip",
-            "mosh4android-$abi.zip",
-            "mosh4android-android-$abi.zip",
-        )
-        for (i in 0 until assets.length()) {
-            val asset = assets.getJSONObject(i)
-            val name = asset.optString("name")
-            if (name in expectedNames || (name.contains(abi) && name.endsWith(".zip"))) {
-                return asset.optString("browser_download_url").takeIf { it.isNotBlank() }
-            }
-        }
-        return null
-    }
-
-    private fun httpGet(url: String): String {
-        val connection = (URL(url).openConnection() as HttpURLConnection).apply {
-            requestMethod = "GET"
-            setRequestProperty("Accept", "application/vnd.github+json")
-            connectTimeout = 15_000
-            readTimeout = 30_000
-        }
-        return connection.inputStream.bufferedReader().use { it.readText() }
-    }
-
-    private fun downloadZip(url: String): ZipInputStream {
-        val connection = (URL(url).openConnection() as HttpURLConnection).apply {
-            requestMethod = "GET"
-            connectTimeout = 15_000
-            readTimeout = 60_000
-        }
-        return ZipInputStream(connection.inputStream.buffered())
     }
 
     data class InstallResult(
@@ -438,12 +162,4 @@ object InstallMosh {
         val releaseTag: String?,
         val errorMessage: String?,
     )
-
-    private class NonClosingInputStream(
-        private val delegate: java.io.InputStream,
-    ) : java.io.FilterInputStream(delegate) {
-        override fun close() {
-            // Keep the outer release archive open while extracting nested terminfo.zip.
-        }
-    }
 }
