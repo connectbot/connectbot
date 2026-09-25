@@ -39,6 +39,7 @@ import org.connectbot.ui.screens.help.HelpScreen
 import org.connectbot.ui.screens.hints.HintsScreen
 import org.connectbot.ui.screens.hosteditor.HostEditorScreen
 import org.connectbot.ui.screens.hostlist.HostListScreen
+import org.connectbot.ui.screens.knownhostlist.KnownHostListScreen
 import org.connectbot.ui.screens.portforwardlist.PortForwardEditorScreen
 import org.connectbot.ui.screens.portforwardlist.PortForwardListScreen
 import org.connectbot.ui.screens.profiles.ProfileEditorScreen
@@ -134,6 +135,9 @@ fun ConnectBotNavHost(
                 onNavigateToAutomation = { hostId ->
                     navController.navigateSafely("${NavDestinations.AUTOMATION_EDITOR}/$hostId")
                 },
+                onNavigateToKnownHosts = { hostId ->
+                    navController.navigateSafely("${NavDestinations.KNOWN_HOST_LIST}/$hostId")
+                },
             )
         }
 
@@ -153,6 +157,17 @@ fun ConnectBotNavHost(
                 onNavigateToEdit = { pubkey ->
                     navController.navigateSafely("${NavDestinations.PUBKEY_EDITOR}/${pubkey.id}")
                 },
+            )
+        }
+
+        composable(
+            route = "${NavDestinations.KNOWN_HOST_LIST}/{${NavArgs.HOST_ID}}",
+            arguments = listOf(
+                navArgument(NavArgs.HOST_ID) { type = NavType.LongType },
+            ),
+        ) {
+            KnownHostListScreen(
+                onNavigateBack = { navController.safePopBackStack() },
             )
         }
 

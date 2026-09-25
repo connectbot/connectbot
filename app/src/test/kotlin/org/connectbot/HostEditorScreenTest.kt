@@ -56,6 +56,7 @@ class HostEditorScreenTest {
     val composeTestRule = createAndroidComposeRule<HiltComponentActivity>()
 
     private lateinit var navController: TestNavHostController
+    private var knownHostsHostId: Long? = null
 
     @Before
     fun setUp() {
@@ -74,6 +75,7 @@ class HostEditorScreenTest {
                         HostEditorScreen(
                             onNavigateBack = { navController.popBackStack() },
                             onNavigateToProfile = {},
+                            onNavigateToKnownHosts = { knownHostsHostId = it },
                         )
                     }
                 }
@@ -173,6 +175,18 @@ class HostEditorScreenTest {
 
         composeTestRule.runOnIdle {
             assertTrue(navController.currentBackStackEntry?.destination?.route == "start")
+        }
+    }
+
+    @Test
+    fun hostEditorScreen_existingSshHost_opensKnownHostKeys() {
+        navigateToHostEditorScreen(42L)
+
+        composeTestRule.onNodeWithText("Show advanced options").performClick()
+        composeTestRule.onNodeWithTag("known_host_keys_preference").performClick()
+
+        composeTestRule.runOnIdle {
+            assertTrue(knownHostsHostId == 42L)
         }
     }
 
