@@ -22,7 +22,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -32,7 +31,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import org.connectbot.R
@@ -45,6 +46,7 @@ fun ResizeDialog(
     onDismiss: () -> Unit,
     onResize: (Int, Int) -> Unit,
     onDisableForceSize: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     val dimensions = currentBridge.terminalEmulator.dimensions
 
@@ -53,53 +55,10 @@ fun ResizeDialog(
     var widthError by remember { mutableStateOf(false) }
     var heightError by remember { mutableStateOf(false) }
 
-    AlertDialog(
+    FocusableAlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.console_menu_resize)) },
-        text = {
-            Column(
-                modifier = Modifier.padding(vertical = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-            ) {
-                OutlinedTextField(
-                    value = widthText,
-                    onValueChange = {
-                        widthText = it
-                        widthError = it.toIntOrNull() == null || it.toInt() <= 0
-                    },
-                    label = { Text(stringResource(R.string.resize_width_label)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    isError = widthError,
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-
-                OutlinedTextField(
-                    value = heightText,
-                    onValueChange = {
-                        heightText = it
-                        heightError = it.toIntOrNull() == null || it.toInt() <= 0
-                    },
-                    label = { Text(stringResource(R.string.resize_height_label)) },
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    isError = heightError,
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-
-                if (isForced) {
-                    TextButton(
-                        onClick = {
-                            onDisableForceSize()
-                            onDismiss()
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                    ) {
-                        Text(stringResource(R.string.resize_disable_force_size))
-                    }
-                }
-            }
-        },
+        modifier = modifier,
         confirmButton = {
             TextButton(
                 onClick = {
@@ -111,8 +70,7 @@ fun ResizeDialog(
                         onDismiss()
                     }
                 },
-                enabled = !widthError && !heightError &&
-                    widthText.isNotEmpty() && heightText.isNotEmpty(),
+                enabled = !widthError && !heightError && widthText.isNotBlank() && heightText.isNotBlank(),
             ) {
                 Text(stringResource(R.string.button_resize))
             }
@@ -122,5 +80,56 @@ fun ResizeDialog(
                 Text(stringResource(R.string.delete_neg))
             }
         },
-    )
+    ) { focusRequester ->
+        Column(
+            modifier = Modifier.padding(vertical = 8.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+        ) {
+            OutlinedTextField(
+                value = widthText,
+                onValueChange = {
+                    widthText = it
+                    widthError = it.toIntOrNull() == null || it.toInt() <= 0
+                },
+                label = { Text(stringResource(R.string.resize_width_label)) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Next,
+                ),
+                isError = widthError,
+                singleLine = true,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester),
+            )
+
+            OutlinedTextField(
+                value = heightText,
+                onValueChange = {
+                    heightText = it
+                    heightError = it.toIntOrNull() == null || it.toInt() <= 0
+                },
+                label = { Text(stringResource(R.string.resize_height_label)) },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done,
+                ),
+                isError = heightError,
+                singleLine = true,
+                modifier = Modifier.fillMaxWidth(),
+            )
+
+            if (isForced) {
+                TextButton(
+                    onClick = {
+                        onDisableForceSize()
+                        onDismiss()
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(stringResource(R.string.resize_disable_force_size))
+                }
+            }
+        }
+    }
 }

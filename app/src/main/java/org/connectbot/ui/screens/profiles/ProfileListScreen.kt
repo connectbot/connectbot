@@ -45,7 +45,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -64,6 +63,7 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
 import org.connectbot.data.entity.Profile
 import org.connectbot.ui.common.getLocalizedFontDisplayName
+import org.connectbot.ui.components.TextInputAlertDialog
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -246,42 +246,28 @@ private fun CreateProfileDialog(
 ) {
     var name by remember { mutableStateOf("") }
 
-    AlertDialog(
+    TextInputAlertDialog(
         onDismissRequest = onDismiss,
+        onConfirm = { onConfirm(name) },
+        value = name,
+        onValueChange = { name = it },
+        confirmEnabled = name.isNotBlank(),
+        confirmButtonText = stringResource(R.string.profile_create_button),
+        dismissButtonText = stringResource(R.string.profile_create_cancel),
         title = { Text(stringResource(R.string.profile_create_dialog_title)) },
-        text = {
-            Column {
-                OutlinedTextField(
-                    value = name,
-                    onValueChange = { name = it },
-                    label = { Text(stringResource(R.string.profile_create_name_label)) },
-                    singleLine = true,
-                    isError = error != null,
-                    modifier = Modifier.fillMaxWidth(),
+        label = { Text(stringResource(R.string.profile_create_name_label)) },
+        supportingText = if (error != null) {
+            {
+                Text(
+                    text = error,
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall,
                 )
-                if (error != null) {
-                    Text(
-                        text = error,
-                        color = MaterialTheme.colorScheme.error,
-                        style = MaterialTheme.typography.bodySmall,
-                        modifier = Modifier.padding(top = 4.dp),
-                    )
-                }
             }
+        } else {
+            null
         },
-        confirmButton = {
-            TextButton(
-                onClick = { onConfirm(name) },
-                enabled = name.isNotBlank(),
-            ) {
-                Text(stringResource(R.string.profile_create_button))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.profile_create_cancel))
-            }
-        },
+        isError = error != null,
     )
 }
 

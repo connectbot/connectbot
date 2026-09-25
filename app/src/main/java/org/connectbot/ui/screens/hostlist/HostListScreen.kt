@@ -34,7 +34,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.CheckCircle
@@ -85,8 +84,6 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
@@ -98,6 +95,7 @@ import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.components.ShortcutCustomizationDialog
+import org.connectbot.ui.components.TextInputAlertDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.IconStyle
 
@@ -978,42 +976,27 @@ private fun StartupKeyPasswordDialog(
 ) {
     var password by remember(pubkey.id) { mutableStateOf("") }
 
-    AlertDialog(
+    TextInputAlertDialog(
         onDismissRequest = onDismiss,
+        onConfirm = { onProvidePassword(password) },
+        value = password,
+        onValueChange = { password = it },
+        confirmButtonText = stringResource(R.string.pubkey_unlock),
         icon = { Icon(Icons.Default.Lock, contentDescription = null) },
         title = { Text(stringResource(R.string.pubkey_unlock)) },
-        text = {
-            Column {
-                Text(
-                    text = stringResource(R.string.pubkey_unlock_message, pubkey.nickname),
-                    modifier = Modifier.padding(bottom = 16.dp),
-                )
-                OutlinedTextField(
-                    value = password,
-                    onValueChange = { password = it },
-                    label = { Text(stringResource(R.string.prompt_password)) },
-                    visualTransformation = PasswordVisualTransformation(),
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                    isError = wrongPassword,
-                    supportingText = if (wrongPassword) {
-                        { Text(stringResource(R.string.alert_wrong_password_msg)) }
-                    } else {
-                        null
-                    },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                )
-            }
+        message = {
+            Text(
+                text = stringResource(R.string.pubkey_unlock_message, pubkey.nickname),
+                modifier = Modifier.padding(bottom = 16.dp),
+            )
         },
-        confirmButton = {
-            TextButton(onClick = { onProvidePassword(password) }) {
-                Text(stringResource(R.string.pubkey_unlock))
-            }
+        label = { Text(stringResource(R.string.prompt_password)) },
+        supportingText = if (wrongPassword) {
+            { Text(stringResource(R.string.alert_wrong_password_msg)) }
+        } else {
+            null
         },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(android.R.string.cancel))
-            }
-        },
+        isError = wrongPassword,
+        isPassword = true,
     )
 }

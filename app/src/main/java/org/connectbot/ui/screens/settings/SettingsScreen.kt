@@ -53,7 +53,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.ListItem
 import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
@@ -72,6 +71,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import kotlinx.coroutines.delay
@@ -83,6 +83,7 @@ import org.connectbot.ui.ObservePermissionOnResume
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.common.getLocalizedFontDisplayName
 import org.connectbot.ui.components.FontDownloadProgressDialog
+import org.connectbot.ui.components.TextInputAlertDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.LanguageDownloadState
 import org.connectbot.util.LocalFontProvider
@@ -921,27 +922,13 @@ private fun TextPreferenceDialog(
 ) {
     var textValue by remember { mutableStateOf(value) }
 
-    AlertDialog(
+    TextInputAlertDialog(
         onDismissRequest = onDismiss,
+        onConfirm = { onConfirm(textValue) },
+        value = textValue,
+        onValueChange = { textValue = it },
+        dismissButtonText = stringResource(R.string.delete_neg),
         title = { Text(title) },
-        text = {
-            OutlinedTextField(
-                value = textValue,
-                onValueChange = { textValue = it },
-                singleLine = true,
-                modifier = Modifier.fillMaxWidth(),
-            )
-        },
-        confirmButton = {
-            TextButton(onClick = { onConfirm(textValue) }) {
-                Text(stringResource(android.R.string.ok))
-            }
-        },
-        dismissButton = {
-            TextButton(onClick = onDismiss) {
-                Text(stringResource(R.string.delete_neg))
-            }
-        },
     )
 }
 
@@ -1173,41 +1160,20 @@ private fun ListPreferenceWithCustomDialog(
     var customValue by remember { mutableStateOf(value) }
 
     if (showCustomInput) {
-        AlertDialog(
+        TextInputAlertDialog(
             onDismissRequest = {
                 showCustomInput = false
                 onDismiss()
             },
+            onConfirm = {
+                showCustomInput = false
+                onConfirm(customValue)
+            },
+            value = customValue,
+            onValueChange = { customValue = it },
+            confirmEnabled = customValue.isNotBlank(),
             title = { Text(title) },
-            text = {
-                OutlinedTextField(
-                    value = customValue,
-                    onValueChange = { customValue = it },
-                    label = { Text(stringResource(R.string.dialog_custom_value_label)) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        if (customValue.isNotBlank()) {
-                            onConfirm(customValue)
-                        }
-                    },
-                    enabled = customValue.isNotBlank(),
-                ) {
-                    Text(stringResource(android.R.string.ok))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = {
-                    showCustomInput = false
-                    onDismiss()
-                }) {
-                    Text(stringResource(android.R.string.cancel))
-                }
-            },
+            label = { Text(stringResource(R.string.dialog_custom_value_label)) },
         )
     } else {
         AlertDialog(
@@ -1318,43 +1284,25 @@ private fun AddCustomTerminalTypePreference(
     }
 
     if (showAddDialog) {
-        AlertDialog(
+        TextInputAlertDialog(
             onDismissRequest = {
                 showAddDialog = false
                 newTerminalType = ""
             },
-            title = { Text(stringResource(R.string.dialog_customterminal_title)) },
-            text = {
-                OutlinedTextField(
-                    value = newTerminalType,
-                    onValueChange = { newTerminalType = it },
-                    label = { Text(stringResource(R.string.dialog_customterminal_hint)) },
-                    singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
-                )
-            },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        if (newTerminalType.isNotBlank()) {
-                            onAddTerminalType(newTerminalType.trim())
-                            showAddDialog = false
-                            newTerminalType = ""
-                        }
-                    },
-                    enabled = newTerminalType.isNotBlank(),
-                ) {
-                    Text(stringResource(R.string.button_add))
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = {
+            onConfirm = {
+                if (newTerminalType.isNotBlank()) {
+                    onAddTerminalType(newTerminalType.trim())
                     showAddDialog = false
                     newTerminalType = ""
-                }) {
-                    Text(stringResource(R.string.delete_neg))
                 }
             },
+            value = newTerminalType,
+            onValueChange = { newTerminalType = it },
+            confirmEnabled = newTerminalType.isNotBlank(),
+            confirmButtonText = stringResource(R.string.button_add),
+            dismissButtonText = stringResource(R.string.delete_neg),
+            title = { Text(stringResource(R.string.dialog_customterminal_title)) },
+            label = { Text(stringResource(R.string.dialog_customterminal_hint)) },
         )
     }
 }
@@ -1412,7 +1360,7 @@ private fun AddCustomFontPreference(
     }
 
     if (showAddDialog) {
-        AlertDialog(
+        TextInputAlertDialog(
             onDismissRequest = {
                 if (!validationInProgress) {
                     showAddDialog = false
@@ -1420,57 +1368,34 @@ private fun AddCustomFontPreference(
                     onClearError()
                 }
             },
+            onConfirm = {
+                if (newFontName.isNotBlank() && !validationInProgress) {
+                    onAddFont(newFontName.trim())
+                }
+            },
+            value = newFontName,
+            onValueChange = {
+                newFontName = it
+                onClearError()
+            },
+            confirmEnabled = newFontName.isNotBlank() && !validationInProgress,
+            dismissEnabled = !validationInProgress,
+            confirmButtonText = stringResource(R.string.button_add),
+            enabled = !validationInProgress,
             title = { Text(stringResource(R.string.dialog_customfont_title)) },
-            text = {
-                Column {
-                    OutlinedTextField(
-                        value = newFontName,
-                        onValueChange = {
-                            newFontName = it
-                            onClearError()
-                        },
-                        label = { Text(stringResource(R.string.dialog_customfont_hint)) },
-                        singleLine = true,
-                        enabled = !validationInProgress,
-                        isError = validationError != null,
-                        supportingText = if (validationError != null) {
-                            { Text(validationError, color = MaterialTheme.colorScheme.error) }
-                        } else if (validationInProgress) {
-                            { Text(stringResource(R.string.font_validating)) }
-                        } else {
-                            null
-                        },
-                        keyboardOptions = KeyboardOptions(
-                            autoCorrectEnabled = false,
-                        ),
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
+            label = { Text(stringResource(R.string.dialog_customfont_hint)) },
+            supportingText = if (validationError != null) {
+                { Text(validationError, color = MaterialTheme.colorScheme.error) }
+            } else if (validationInProgress) {
+                { Text(stringResource(R.string.font_validating)) }
+            } else {
+                null
             },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        if (newFontName.isNotBlank()) {
-                            onAddFont(newFontName.trim())
-                        }
-                    },
-                    enabled = newFontName.isNotBlank() && !validationInProgress,
-                ) {
-                    Text(stringResource(R.string.button_add))
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = {
-                        showAddDialog = false
-                        newFontName = ""
-                        onClearError()
-                    },
-                    enabled = !validationInProgress,
-                ) {
-                    Text(stringResource(android.R.string.cancel))
-                }
-            },
+            isError = validationError != null,
+            keyboardOptions = KeyboardOptions(
+                autoCorrectEnabled = false,
+                imeAction = ImeAction.Done,
+            ),
         )
     }
 
@@ -1552,7 +1477,7 @@ private fun LocalFontPreference(
 
     // Dialog to get display name for imported font
     if (showNameDialog) {
-        AlertDialog(
+        TextInputAlertDialog(
             onDismissRequest = {
                 if (!importInProgress) {
                     showNameDialog = false
@@ -1561,57 +1486,32 @@ private fun LocalFontPreference(
                     onClearError()
                 }
             },
+            onConfirm = {
+                pendingUri?.let { uri ->
+                    if (fontDisplayName.isNotBlank() && !importInProgress) {
+                        onImportFont(uri, fontDisplayName.trim())
+                    }
+                }
+            },
+            value = fontDisplayName,
+            onValueChange = {
+                fontDisplayName = it
+                onClearError()
+            },
+            confirmEnabled = fontDisplayName.isNotBlank() && !importInProgress,
+            dismissEnabled = !importInProgress,
+            confirmButtonText = stringResource(R.string.button_import),
+            enabled = !importInProgress,
             title = { Text(stringResource(R.string.dialog_localfont_title)) },
-            text = {
-                Column {
-                    OutlinedTextField(
-                        value = fontDisplayName,
-                        onValueChange = {
-                            fontDisplayName = it
-                            onClearError()
-                        },
-                        label = { Text(stringResource(R.string.dialog_localfont_hint)) },
-                        singleLine = true,
-                        enabled = !importInProgress,
-                        isError = importError != null,
-                        supportingText = if (importError != null) {
-                            { Text(importError, color = MaterialTheme.colorScheme.error) }
-                        } else if (importInProgress) {
-                            { Text(stringResource(R.string.font_importing)) }
-                        } else {
-                            null
-                        },
-                        modifier = Modifier.fillMaxWidth(),
-                    )
-                }
+            label = { Text(stringResource(R.string.dialog_localfont_hint)) },
+            supportingText = if (importError != null) {
+                { Text(importError, color = MaterialTheme.colorScheme.error) }
+            } else if (importInProgress) {
+                { Text(stringResource(R.string.font_importing)) }
+            } else {
+                null
             },
-            confirmButton = {
-                TextButton(
-                    onClick = {
-                        pendingUri?.let { uri ->
-                            if (fontDisplayName.isNotBlank()) {
-                                onImportFont(uri, fontDisplayName.trim())
-                            }
-                        }
-                    },
-                    enabled = fontDisplayName.isNotBlank() && !importInProgress,
-                ) {
-                    Text(stringResource(R.string.button_import))
-                }
-            },
-            dismissButton = {
-                TextButton(
-                    onClick = {
-                        showNameDialog = false
-                        pendingUri = null
-                        fontDisplayName = ""
-                        onClearError()
-                    },
-                    enabled = !importInProgress,
-                ) {
-                    Text(stringResource(android.R.string.cancel))
-                }
-            },
+            isError = importError != null,
         )
     }
 
