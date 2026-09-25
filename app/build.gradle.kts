@@ -9,7 +9,7 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.net.URI
 import java.util.zip.ZipInputStream
 
-abstract class PrepareGoogleMoshArtifacts : DefaultTask() {
+abstract class PrepareOssMoshArtifacts : DefaultTask() {
     @get:Input abstract val releaseTag: Property<String>
 
     @get:OutputDirectory abstract val jniLibsDirectory: DirectoryProperty
@@ -45,18 +45,32 @@ abstract class PrepareGoogleMoshArtifacts : DefaultTask() {
 
                         "terminfo.zip" -> {
                             if (abi == abis.first()) {
-                                val target = assetsRoot.resolve("terminfo.zip")
-                                target.parentFile.mkdirs()
-                                target.outputStream().use { archive.copyTo(it) }
+                                val nonClosing = object : java.io.FilterInputStream(archive) {
+                                    override fun close() {}
+                                }
+                                ZipInputStream(nonClosing).use { nested ->
+                                    var nestedEntry = nested.nextEntry
+                                    while (nestedEntry != null) {
+                                        if (nestedEntry.name == "share/terminfo/x/xterm-256color") {
+                                            val target = assetsRoot.resolve("share/terminfo/x/xterm-256color")
+                                            target.parentFile.mkdirs()
+                                            target.outputStream().use { nested.copyTo(it) }
+                                            foundTerminfo = true
+                                        }
+                                        nested.closeEntry()
+                                        nestedEntry = nested.nextEntry
+                                    }
+                                }
+                            } else {
+                                foundTerminfo = true
                             }
-                            foundTerminfo = true
                         }
                     }
                     archive.closeEntry()
                     entry = archive.nextEntry
                 }
             }
-            check(foundClient && foundTerminfo) { "Missing mosh-client or terminfo.zip in $abi release archive" }
+            check(foundClient && foundTerminfo) { "Missing mosh-client or terminfo in $abi release archive" }
         }
         assetsRoot.resolve("mosh-release.txt").writeText(tag)
     }
@@ -77,11 +91,11 @@ plugins {
 val moshReleaseTag = rootProject.file("gradle/mosh4android.version")
     .readLines().first { it.isNotBlank() && !it.startsWith("#") }.trim()
 
-val generatedGoogleMosh = layout.buildDirectory.dir("generated/mosh/google")
-val prepareGoogleMoshArtifacts = tasks.register<PrepareGoogleMoshArtifacts>("prepareGoogleMoshArtifacts") {
+val generatedOssMosh = layout.buildDirectory.dir("generated/mosh/oss")
+val prepareOssMoshArtifacts = tasks.register<PrepareOssMoshArtifacts>("prepareOssMoshArtifacts") {
     releaseTag.set(moshReleaseTag)
-    jniLibsDirectory.set(generatedGoogleMosh.map { it.dir("jniLibs") })
-    assetsDirectory.set(generatedGoogleMosh.map { it.dir("assets") })
+    jniLibsDirectory.set(generatedOssMosh.map { it.dir("jniLibs") })
+    assetsDirectory.set(generatedOssMosh.map { it.dir("assets") })
 }
 
 appVersioning {
@@ -105,6 +119,8 @@ android {
         libs.versions.compileSdk
             .get()
             .toInt()
+
+    dynamicFeatures += setOf(":mosh")
 
     defaultConfig {
         applicationId = "org.connectbot"
@@ -197,7 +213,7 @@ android {
             versionNameSuffix = "-oss"
             // No Google Play Services available for downloadable fonts
             buildConfigField("Boolean", "HAS_DOWNLOADABLE_FONTS", "false")
-            buildConfigField("String", "MOSH_RELEASE_TAG", "\"\"")
+            buildConfigField("String", "MOSH_RELEASE_TAG", "\"$moshReleaseTag\"")
         }
 
         // This product flavor uses the Google Play Services library for
@@ -269,9 +285,13 @@ val sonarJavaTestBinaries = mutableListOf<Provider<String>>()
 val sonarAndroidLintReportPaths = mutableListOf<Provider<String>>()
 
 androidComponents {
+    onVariants(selector().withFlavor("license" to "oss")) { variant ->
+        variant.sources.jniLibs?.addGeneratedSourceDirectory(prepareOssMoshArtifacts) { it.jniLibsDirectory }
+        variant.sources.assets?.addGeneratedSourceDirectory(prepareOssMoshArtifacts) { it.assetsDirectory }
+        variant.packaging.jniLibs.useLegacyPackaging.set(true)
+    }
+
     onVariants(selector().withFlavor("license" to "google")) { variant ->
-        variant.sources.jniLibs?.addGeneratedSourceDirectory(prepareGoogleMoshArtifacts) { it.jniLibsDirectory }
-        variant.sources.assets?.addGeneratedSourceDirectory(prepareGoogleMoshArtifacts) { it.assetsDirectory }
         // The Play-delivered mosh-client needs an executable path in nativeLibraryDir.
         variant.packaging.jniLibs.useLegacyPackaging.set(true)
         variant.packaging.jniLibs.useLegacyPackagingFromBundle.set(true)

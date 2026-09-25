@@ -83,10 +83,10 @@ class Mosh : SSH {
 
     override fun connect() {
         val currentHost = host ?: return
-        val terminalManager = manager
-        if (terminalManager == null || !InstallMosh.isMoshSupportEnabled(terminalManager)) {
-            bridge?.outputLine(manager?.res?.getString(R.string.terminal_mosh_disabled))
-            return
+        val terminalManager = manager ?: return
+
+        if (!InstallMosh.isInstalled(terminalManager)) {
+            bridge?.outputLine(manager?.res?.getString(R.string.terminal_mosh_installing))
         }
 
         InstallMosh.startInstall(terminalManager)

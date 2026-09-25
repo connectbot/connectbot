@@ -79,6 +79,7 @@ import org.connectbot.ui.common.getIconColors
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.common.getLocalizedFontDisplayName
 import org.connectbot.ui.components.EditorScaffold
+import org.connectbot.ui.components.MoshInstallProgressDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.HostConstants
 import org.connectbot.util.LocalFontProvider
@@ -102,6 +103,7 @@ fun HostEditorScreen(
         onQuickConnectChange = viewModel::updateQuickConnect,
         onNicknameChange = { nickname, isExpanded -> viewModel.updateNickname(nickname, isExpanded) },
         onProtocolChange = viewModel::updateProtocol,
+        onCancelMoshInstall = viewModel::cancelMoshInstall,
         onUsernameChange = viewModel::updateUsername,
         onHostnameChange = viewModel::updateHostname,
         onPortChange = viewModel::updatePort,
@@ -136,6 +138,7 @@ fun HostEditorScreenContent(
     onQuickConnectChange: (String) -> Unit,
     onNicknameChange: (String, Boolean) -> Unit,
     onProtocolChange: (String) -> Unit,
+    onCancelMoshInstall: () -> Unit = {},
     onUsernameChange: (String) -> Unit,
     onHostnameChange: (String) -> Unit,
     onPortChange: (String) -> Unit,
@@ -168,11 +171,7 @@ fun HostEditorScreenContent(
     var expandedMode by remember(uiState.isLoading) {
         mutableStateOf(hostId != -1L && !uiState.isNicknameMatching)
     }
-    val protocols = if (uiState.moshSupport || uiState.protocol == "mosh") {
-        listOf("ssh", "mosh", "telnet", "local")
-    } else {
-        listOf("ssh", "telnet", "local")
-    }
+    val protocols = listOf("ssh", "mosh", "telnet", "local")
     val canSave = if (expandedMode) {
         uiState.protocol == "local" || uiState.hostname.isNotBlank()
     } else {
@@ -547,6 +546,12 @@ fun HostEditorScreenContent(
                 }
             }
         }
+    }
+
+    if (uiState.isMoshInstalling) {
+        MoshInstallProgressDialog(
+            onDismissRequest = onCancelMoshInstall,
+        )
     }
 }
 

@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -54,6 +54,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
@@ -169,6 +170,7 @@ fun HelpScreen(
             }
 
             item {
+                val uriHandler = LocalUriHandler.current
                 Text(
                     text = stringResource(R.string.help_section_about),
                     style = MaterialTheme.typography.titleMedium,
@@ -183,7 +185,18 @@ fun HelpScreen(
                     text = stringResource(R.string.app_copyright),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(bottom = 16.dp),
                 )
+                Button(
+                    onClick = {
+                        uriHandler.openUri("https://github.com/connectbot/mosh4android/releases/latest")
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 8.dp),
+                ) {
+                    Text(stringResource(R.string.pref_mosh_release_title))
+                }
             }
         }
     }

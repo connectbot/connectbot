@@ -43,7 +43,6 @@ import org.connectbot.data.ProfileRepository
 import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.terminal.ImeShortcutInputMode
-import org.connectbot.util.InstallMosh
 import org.connectbot.util.LanguageDownloadState
 import org.connectbot.util.LanguagePackManager
 import org.connectbot.util.LocalFontProvider
@@ -96,10 +95,6 @@ data class SettingsUiState(
     val installedLanguages: Set<String> = emptySet(),
     val defaultProfileId: Long = 0L,
     val availableProfiles: List<Profile> = emptyList(),
-    val moshSupport: Boolean = false,
-    val moshReleaseTag: String? = null,
-    val moshInstallInProgress: Boolean = false,
-    val moshInstallError: String? = null,
 )
 
 @HiltViewModel
@@ -232,9 +227,6 @@ class SettingsViewModel @Inject constructor(
             themeMode = ThemeMode.fromString(prefs.getString(PreferenceConstants.THEME_MODE, null)),
             language = currentLanguage,
             defaultProfileId = prefs.getLong("defaultProfileId", 0L),
-            moshSupport = prefs.getBoolean(PreferenceConstants.MOSH_SUPPORT, false),
-            moshReleaseTag = BuildConfig.MOSH_RELEASE_TAG.takeIf { it.isNotBlank() }
-                ?: prefs.getString(PreferenceConstants.MOSH_RELEASE_TAG, null),
         )
     }
 
@@ -321,37 +313,6 @@ class SettingsViewModel @Inject constructor(
 
     fun updateBellNotification(value: Boolean) {
         updateBooleanPref(PreferenceConstants.BELL_NOTIFICATION, value) { copy(bellNotification = value) }
-    }
-
-    fun updateMoshSupport(value: Boolean) {
-        if (!value) {
-            viewModelScope.launch {
-                InstallMosh.setMoshSupportEnabled(context, false)
-                _uiState.update {
-                    it.copy(
-                        moshSupport = false,
-                        moshInstallInProgress = false,
-                        moshInstallError = null,
-                    )
-                }
-            }
-            return
-        }
-
-        viewModelScope.launch {
-            _uiState.update { it.copy(moshInstallInProgress = true, moshInstallError = null) }
-            val result = withContext(dispatchers.io) {
-                InstallMosh.installClient(context)
-            }
-            _uiState.update {
-                it.copy(
-                    moshSupport = result.success,
-                    moshReleaseTag = result.releaseTag ?: it.moshReleaseTag,
-                    moshInstallInProgress = false,
-                    moshInstallError = result.errorMessage,
-                )
-            }
-        }
     }
 
     fun updateTitleBarHide(value: Boolean) {

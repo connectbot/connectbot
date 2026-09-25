@@ -60,7 +60,6 @@ import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.navigation.NavDestinations
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.IconStyle
-import org.connectbot.util.InstallMosh
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.ShortcutIconGenerator
 import org.connectbot.util.isNotificationPermissionGranted
@@ -147,12 +146,6 @@ class MainActivity : AppCompatActivity() {
 
         val serviceIntent = Intent(this, TerminalManager::class.java)
         bindService(serviceIntent, connection, BIND_AUTO_CREATE)
-
-        // Mosh is optional. The Google build receives its GPL client through Play;
-        // the OSS build downloads it from mosh4android after user consent.
-        if (InstallMosh.isMoshSupportEnabled(this)) {
-            InstallMosh.startInstall(this)
-        }
 
         setContent {
             val appUiState by appViewModel.uiState.collectAsState()

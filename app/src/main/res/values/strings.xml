@@ -778,8 +778,8 @@
 	<string name="local_shell_unavailable">"Failure! Local shell is unavailable on this phone."</string>
 
 	<!-- Mosh transport messages -->
-	<!-- Message shown when Mosh is used before the user enables and installs support. -->
-	<string name="terminal_mosh_disabled">"Mosh support is disabled. Enable it in Settings first."</string>
+	<!-- Message shown in terminal when Mosh support is being prepared or downloaded before connecting. -->
+	<string name="terminal_mosh_installing">"Preparing Mosh support…"</string>
 	<!-- Message shown in terminal when starting Mosh connection -->
 	<string name="terminal_mosh_starting">"Starting Mosh connection…"</string>
 	<!-- Message shown in terminal when Mosh installation times out -->
@@ -809,26 +809,13 @@
 	<!-- Summary for the Mosh locale setting -->
 	<string name="hostpref_locale_summary">"Locale for mosh session (e.g., en_US.UTF-8)"</string>
 
-	<!-- Settings title for optional Mosh support. -->
-	<string name="pref_mosh_support_title">"Mosh support"</string>
-	<!-- Settings summary for optional Mosh support. -->
-	<string name="pref_mosh_support_summary">"Download and enable the latest mosh4android client binary"</string>
-	<!-- Settings link to the release that supplied the Mosh client and its source archives. -->
+	<!-- Title of the dynamic feature module delivering Mosh support -->
+	<string name="mosh_feature_title">"Mosh"</string>
+
+	<!-- Link in About section to the release that supplied the Mosh client and its source archives. -->
 	<string name="pref_mosh_release_title">"Mosh release and source code"</string>
-	<!-- Settings summary for a Mosh release whose page offers source archives. -->
-	<string name="pref_mosh_release_summary">"%1$s · source ZIP and tar.gz"</string>
-	<!-- Shown on the Mosh release link before a client version has been installed. -->
-	<string name="pref_mosh_release_latest">"Latest release"</string>
-	<!-- Dialog title shown before downloading the optional Mosh binary. -->
-	<string name="pref_mosh_confirm_title">"Enable Mosh support?"</string>
-	<!-- Dialog body shown before downloading the optional Mosh binary. -->
-	<string name="pref_mosh_confirm_message">"ConnectBot will download the latest mosh4android binary from GitHub. The mosh client binary is licensed under the GPL, while ConnectBot remains under its own license."</string>
-	<!-- Dialog confirmation button for downloading Mosh. -->
-	<string name="pref_mosh_confirm_enable">"Download and enable"</string>
-	<!-- Dialog cancel button for optional Mosh download. -->
-	<string name="pref_mosh_confirm_cancel">"Cancel"</string>
-	<!-- Mosh download progress text. -->
-	<string name="pref_mosh_installing">"Downloading Mosh support…"</string>
+	<!-- Mosh installation progress text. -->
+	<string name="pref_mosh_installing">"Preparing Mosh support…"</string>
 
 	<!-- Text sent to the user to alert them that a Terminal Bell is received in a background session -->
 	<string name="notification_text">"%1$s wants your attention."</string>
