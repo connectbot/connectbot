@@ -87,8 +87,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.toColorInt
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.connectbot.R
+import org.connectbot.data.JsonImportReader
+import org.connectbot.data.JsonImportTooLargeException
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.ui.LocalTerminalManager
@@ -98,6 +102,7 @@ import org.connectbot.ui.components.ShortcutCustomizationDialog
 import org.connectbot.ui.components.TextInputAlertDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.IconStyle
+import java.io.IOException
 
 internal object HostListTestTags {
     fun itemRow(hostId: Long): String = "host_item_${hostId}_row"
@@ -175,12 +180,13 @@ fun HostListScreen(
         if (uri != null) {
             scope.launch {
                 try {
-                    val jsonString = context.contentResolver.openInputStream(uri)?.use { inputStream ->
-                        inputStream.bufferedReader().readText()
+                    val jsonString = withContext(Dispatchers.IO) {
+                        context.contentResolver.openInputStream(uri)?.use(JsonImportReader::read)
+                            ?: throw IOException(context.getString(R.string.import_file_unavailable))
                     }
-                    if (jsonString != null) {
-                        viewModel.importHosts(jsonString)
-                    }
+                    viewModel.importHosts(jsonString)
+                } catch (e: JsonImportTooLargeException) {
+                    Toast.makeText(context, R.string.import_json_file_too_large, Toast.LENGTH_LONG).show()
                 } catch (e: Exception) {
                     Toast.makeText(
                         context,
@@ -266,7 +272,8 @@ fun HostListScreen(
         onDisconnectHost = viewModel::disconnectHost,
         onDisconnectAll = viewModel::disconnectAll,
         onExportHosts = viewModel::exportHosts,
-        onImportHosts = { importLauncher.launch(arrayOf("application/json")) },
+        // Some document providers label JSON exports as text/plain or application/octet-stream.
+        onImportHosts = { importLauncher.launch(arrayOf("*/*")) },
         shouldShowNotificationWarning = shouldShowNotificationWarning,
         onNotificationSnackbarFinish = onNotificationSnackbarFinish,
         modifier = modifier,
