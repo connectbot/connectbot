@@ -486,6 +486,17 @@ tasks
         dependsOn(generateExportSchema)
     }
 
+// Lint analyzes Hilt-generated test sources, but AGP does not automatically make its
+// test-analysis tasks depend on the corresponding KSP tasks.
+tasks
+    .matching {
+        it.name.startsWith("lintAnalyze") &&
+            (it.name.endsWith("UnitTest") || it.name.endsWith("AndroidTest"))
+    }.configureEach {
+        val componentName = name.removePrefix("lintAnalyze")
+        dependsOn("ksp${componentName}Kotlin")
+    }
+
 dependencies {
     implementation(libs.sshlib)
     implementation(libs.termlib)
@@ -536,6 +547,11 @@ dependencies {
 
     implementation(libs.androidx.biometric)
     implementation(libs.androidx.core)
+
+    // FIDO2/CTAP2 support via YubiKit
+    implementation(libs.yubikit.android)
+    implementation(libs.yubikit.fido)
+    implementation(libs.cbor)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
