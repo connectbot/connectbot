@@ -10,6 +10,9 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Add profile-level support for iTerm2 and Kitty inline images, with off, per-session consent, and always-on policies
 - Add font shaping and fallback for Arabic and other complex scripts
 - Add improved rendering for combining characters, emoji sequences, box-drawing characters, and block characters
+- Add Mosh transport support, delivered via Play Feature Delivery on Google builds and included directly in open-source builds
+- Add action-based post-login automation to run sequence of prompts, inputs, delays, and port forward triggers
+- Add direct navigation to edit a host's profile from the host editor screen
 
 ### Fixed
 - Show bell notifications only while ConnectBot is not visible, and route bells through the currently visible console
@@ -19,12 +22,25 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Improve IME input handling for Hangul, backspaces, wide characters, cursor context, and paste actions
 - Require bare domains detected as URLs to end at a token boundary
 - Handle malformed terminal OSC input without exposing its payload in logs
+- Close SSH sessions immediately on clean exit (such as Ctrl-D or exit command) instead of prompting to reconnect
+- Fix SSH teardown race condition when receiving remote EOF
+- Fix biometric RSA key authentication with Android Keystore by preferring RSA-SHA2 when servers omit signature algorithm advertisements
+- Accept any MIME type when importing JSON configurations to support various document providers, and enforce a safe file size limit
+- Reopen the software keyboard reliably when tapping the terminal
+- Prevent keyboard input conflicts while the session picker dialog is visible
 
 ### Changed
 - Improve terminal rendering performance with frame-aware updates and less work on the UI thread
+- Unify editor screens (hosts, port forwards, pubkeys, profiles, palettes) with a floating save button, unsaved change tracking, discard confirmation, and improved keyboard handling
+- Convert the port forward editor from a dialog to a full-screen editor
+- Send terminal pixel dimensions in addition to rows and columns on resize
+- Reduce network queries during startup by querying only the active network
+
+### Translations
+- Update translations
 
 ### Dependencies
-- Update ConnectBot termlib from 0.1.0 to 0.3.3
+- Update ConnectBot termlib from 0.1.0 to 0.3.7
 
 ## [1.10.9][1.10.9]
 
