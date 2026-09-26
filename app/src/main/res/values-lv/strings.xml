@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Pārslēdziet IME ievades režīmu.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Rakstīšanas režīms (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Rediģēt atlasīto profilu</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Tiek sagatavots atbalsts programmai Mosh...</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Tiek izveidots Mosh savienojums...</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Brīdinājums: Mosh instalācijas process pārsniedza noteikto laiku.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Tiek palaists mosh serveris attālajā datorā...</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Neizdevās palaist programmu “mosh-server” attālajā serverī.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">Neizdevās palaist programmu “mosh-client”.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh savienojums izveidots.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Mosh kļūda: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh servera komanda</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Pielāgota “mosh-server” ceļa vai komandas norādīšana (atstājiet lauku tukšu, lai izmantotu noklusējuma vērtību).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh UDP ports</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Fiksēts UDP ports programmai “mosh” (ja norādīts 0, tiks izmantots automātiski izvēlēts ports diapazonā no 60000 līdz 61000).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Reģionālā iestatījuma nosaukums.</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh sesijas lokalizācija (piemēram, en_US.UTF-8).</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Atbalsts programmai “Mosh”</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh versija un avotkods</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Tiek sagatavots atbalsts programmai Mosh...</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Atteikties no izmaiņām?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Jūsu veiktās izmaiņas tiks zaudētas, ja jūs aizvērsit logu, nesaglabājot datus.</string>
+  <string name="editor_discard" tools:machine_translated="true">Atcelt</string>
+  <string name="editor_save" tools:machine_translated="true">Saglabāt</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">Importētā JSON faila izmērs pārsniedz pieļaujamo maksimālo vērtību (maksimums 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Nevar atvērt atlasīto failu.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Attēli rindā</string>
+  <string name="inline_images_off" tools:machine_translated="true">Izslēgt</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Pajautāt</string>
+  <string name="inline_images_on" tools:machine_translated="true">Ieslēgt</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Rādīt attēlus tekstā?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Atļaut šim serverim attēlot attēlus rindas režīmā visas pašreizējās sesijas laikā?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Automātiska palaišana ir iespējota.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Neizdevās ielādēt automatizācijas skriptu.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Automatizācijas darbību nevarēja saglabāt.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Pārbaudiet tekstu, modeli, ilgumu vai atlasīto porta pāradresācijas iestatījumu.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">Darbība neizdevās.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">Laika ierobežojums, kamēr tiek gaidīts teksts, ir beidzies.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Pirms automatizētā sistēma paspēja apstrādāt datus, tika saņemts pārāk liels datu daudzums.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Šai darbībai nepieciešama atvērta termināļa sesija.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">Pāradresācijas iestatījums nav atrasts.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Šis savienojums neatbalsta porta pāradresāciju.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Gaidīt, līdz tiks apstrādāta virkne.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Nosūtīt tekstu.</string>
+  <string name="automation_send_key" tools:machine_translated="true">Nosūtīt īpašu taustiņu.</string>
+  <string name="automation_delay" tools:machine_translated="true">Pagaidiet.</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Atvienot</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Ieslēgt porta pāradresāciju.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Atspējot porta novirzīšanu</string>
+  <string name="automation_add" tools:machine_translated="true">Pievienot darbību</string>
+  <string name="automation_save" tools:machine_translated="true">Saglabāt</string>
+  <string name="automation_edit" tools:machine_translated="true">Rediģēt</string>
+  <string name="automation_delete" tools:machine_translated="true">Dzēst</string>
+  <string name="automation_move_up" tools:machine_translated="true">Pārvietot augstāk</string>
+  <string name="automation_move_down" tools:machine_translated="true">Pārvietot uz leju</string>
+  <string name="automation_drag" tools:machine_translated="true">Pārvilciet, lai mainītu elementu secību.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Saglabāt izmaiņas?</string>
+  <string name="automation_discard" tools:machine_translated="true">Atcelt.</string>
+  <string name="automation_cancel" tools:machine_translated="true">Atcelt</string>
+  <string name="automation_text" tools:machine_translated="true">Teksts</string>
+  <string name="automation_regex" tools:machine_translated="true">Regulārā izteiksme</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Atbilst ienākošajam tekstam, neizmantojot ANSI formatēšanu. Regulārās izteiksmes atbalsta RE2 sintaksi; netiek atbalstītas “lookaround” un atsauces uz iepriekšējām grupām.</string>
+  <string name="automation_duration" tools:machine_translated="true">Ilgums (sekundēs)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Laika ierobežojums (sekundēs).</string>
+  <string name="automation_key" tools:machine_translated="true">Atslēga</string>
+  <string name="automation_forward" tools:machine_translated="true">Pārvirzošanas ports</string>
+  <string name="automation_failure" tools:machine_translated="true">Gadījumā, ja darbība neizdodas.</string>
+  <string name="automation_stop" tools:machine_translated="true">Apturiet automatizāciju.</string>
+  <string name="automation_continue" tools:machine_translated="true">Turpināt</string>
+  <string name="automation_save_host" tools:machine_translated="true">Saglabājiet resursdatoru, lai konfigurētu automatizāciju.</string>
+  <string name="automation_progress" tools:machine_translated="true">Automatizācija: %1$d/%2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Darbība nr. %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Atcelt automatizāciju.</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Ievadiet</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Cilne</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Iziet</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Aizstāt (taustiņš)</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Dzēst</string>
+  <string name="automation_key_up" tools:machine_translated="true">Uz augšu vērsta bultiņa</string>
+  <string name="automation_key_down" tools:machine_translated="true">Lejupejoša bultiņa</string>
+  <string name="automation_key_left" tools:machine_translated="true">Kreisā bultiņa</string>
+  <string name="automation_key_right" tools:machine_translated="true">Labā bultiņa</string>
+  <string name="automation_key_home" tools:machine_translated="true">Sākumlapa</string>
+  <string name="automation_key_end" tools:machine_translated="true">Beigas</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Ievietot</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Lapa uz augšu</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Nākamā lapa</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Pārslēdzēja taustiņš (Shift)</string>
+  <string name="automation_seconds" tools:machine_translated="true">%.3f sekundes</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d darbība</item>
+		<item quantity="other">%1$d darbības</item>
+	</plurals>
 </resources>

@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">ИМЕ</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Prebacite između režima za unos i režima za komponovanje za IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Режим за унос текста (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Uredi odabrani profil</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Priprema podrške za Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Покрећем Мош везу...</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Упозорење: Инсталација програма Mosh је истекла.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Покрећем сервер „mosh“ на удаљеном хосту...</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Неуспешно покретање програма `mosh-server` на удаљеном серверу.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">Неуспешно покретање клијентске апликације Mosh.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Успостављена је веза са програмом Mosh.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Грешка у програму Mosh: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Команда за сервер Mosh-а</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Прилагођена путања или команда за сервер „Mosh” (оставите празно ако желите да се користи подразумевана вредност).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">UDP порт за Mosh.</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Фиксирани УДП порт за Мош (0 за аутоматски опсег од 60000 до 61000).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Локација</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Локација за сесију програма „Mosh” (нпр. en_US.UTF-8).</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Мош</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Izdanje programa Mosh i izvorni kod.</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Priprema podrške za Mosh…</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Odbaciti izmene?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Ваше измене биће изгубљене ако напустите страницу без чувања.</string>
+  <string name="editor_discard" tools:machine_translated="true">Откажи</string>
+  <string name="editor_save" tools:machine_translated="true">Сачувајте</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">JSON datoteka je prevelika za uvoz (maksimalno 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Не може да се отвори изабрана датотека.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Уграђене слике</string>
+  <string name="inline_images_off" tools:machine_translated="true">Искључено.</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Питајте</string>
+  <string name="inline_images_on" tools:machine_translated="true">Укључено</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Прикажи слике у тексту?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Дозволите да овај сервер приказује слике у тексту током целог трајања ове сесије?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Omogućeno automatsko pokretanje.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Није успело учитавање аутоматизације.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Није било могуће сачувати аутоматизацију.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Проверите текст, шаблон, трајање или изабрано прослеђивање порта.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">Акција није успела.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">Истекао је задати временски период док се чекало на текст.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Previše podataka je stiglo pre nego što je automatizovani sistem mogao da ih obradi.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Ова акција захтева отворену сесију терминала.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">Прослеђивање порта недостаје.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Ова веза не подржава прослеђивање портова.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Сачекајте док се ниска не појави.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Пошаљи ниску знакова.</string>
+  <string name="automation_send_key" tools:machine_translated="true">Пошаљи посебан тастер.</string>
+  <string name="automation_delay" tools:machine_translated="true">Сачекајте.</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Искључи везу.</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Омогући прослеђивање порта.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Онемогући прослеђивање порта.</string>
+  <string name="automation_add" tools:machine_translated="true">Додај акцију</string>
+  <string name="automation_save" tools:machine_translated="true">Сачувајте</string>
+  <string name="automation_edit" tools:machine_translated="true">Измени</string>
+  <string name="automation_delete" tools:machine_translated="true">Избриши</string>
+  <string name="automation_move_up" tools:machine_translated="true">Pomeri nagore.</string>
+  <string name="automation_move_down" tools:machine_translated="true">Pomeri naniže.</string>
+  <string name="automation_drag" tools:machine_translated="true">Превуците да бисте променили редослед.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Sačuvati izmene?</string>
+  <string name="automation_discard" tools:machine_translated="true">Обавести</string>
+  <string name="automation_cancel" tools:machine_translated="true">Откажи</string>
+  <string name="automation_text" tools:machine_translated="true">Текст</string>
+  <string name="automation_regex" tools:machine_translated="true">Регуларни израз</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Усклађује улазни текст без АНСИ форматирања. Регуларне изразе подржава синтакса РЕ2; позитивна и негативна претрага, као и повратне референце нису подржани.</string>
+  <string name="automation_duration" tools:machine_translated="true">Trajanje (u sekundama)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Време чекања (у секундама).</string>
+  <string name="automation_key" tools:machine_translated="true">Кључ</string>
+  <string name="automation_forward" tools:machine_translated="true">Прослеђивање порта</string>
+  <string name="automation_failure" tools:machine_translated="true">U slučaju greške.</string>
+  <string name="automation_stop" tools:machine_translated="true">Зауставите аутоматизацију.</string>
+  <string name="automation_continue" tools:machine_translated="true">Nastavite.</string>
+  <string name="automation_save_host" tools:machine_translated="true">Sačuvajte uređaj da biste podesili automatizaciju.</string>
+  <string name="automation_progress" tools:machine_translated="true">Аутоматизација: %1$d од укупно %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Акција број %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Откажи аутоматизацију.</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Унесите</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Картица</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Izlaz</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Тастер за брисање</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Избриши</string>
+  <string name="automation_key_up" tools:machine_translated="true">Стрелица нагоре.</string>
+  <string name="automation_key_down" tools:machine_translated="true">Стрелица надоле</string>
+  <string name="automation_key_left" tools:machine_translated="true">Стрелица лево.</string>
+  <string name="automation_key_right" tools:machine_translated="true">Стрелица удесно.</string>
+  <string name="automation_key_home" tools:machine_translated="true">Почетна страница</string>
+  <string name="automation_key_end" tools:machine_translated="true">Кraj</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Уметни</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Sledeća stranica</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Sledeća stranica</string>
+  <string name="automation_key_function" tools:machine_translated="true">Ф%1$с</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Тастер Shift</string>
+  <string name="automation_seconds" tools:machine_translated="true">%.3f sekundi</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d радња</item>
+		<item quantity="other">%1$d радњи</item>
+	</plurals>
 </resources>

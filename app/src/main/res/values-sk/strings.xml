@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Prepnite režim zadávania znakov pre IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Režim na zadávanie znakov (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Upraviť vybratý profil</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Príprava podpory pre Mosh...</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Nadväzujem spojenie Mosh...</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Upozornenie: Inštalácia programu Mosh sa nedokončila včas.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Spúšťam server Mosh na vzdialenom počítači...</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Nepodarilo sa spustiť server Mosh na vzdialenom počítači.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">Nepodarilo sa spustiť klienta Mosh.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Spojenie Mosh úspešne nadviazané.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Chyba programu Mosh: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Príkaz pre server Mosh</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Vlastná cesta alebo príkaz pre server Mosh (ponechajte prázdne, ak chcete použiť predvolené nastavenie).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Port UDP pre Mosh</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Pevne nastavený port UDP pre program Mosh (hodnota 0 znamená automatický výber z rozsahu 60000–61000).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Nastavenie lokality</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Nastavenie lokality pre reláciu Mosh (napr. en_US.UTF-8).</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Podpora protokolu Mosh.</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Verzia programu Mosh a zdrojový kód.</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Pripravuje sa podpora pre Mosh...</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Zrušiť zmeny?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Vaše úpravy sa stratia, ak odídete bez uloženia zmien.</string>
+  <string name="editor_discard" tools:machine_translated="true">Zrušiť zmeny</string>
+  <string name="editor_save" tools:machine_translated="true">Uložiť</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">Súbor JSON je príliš veľký na importovanie (maximálna povolená veľkosť je 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Nie je možné otvoriť vybraný súbor.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Vnorené obrázky</string>
+  <string name="inline_images_off" tools:machine_translated="true">Vypnúť.</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Opýtajte sa.</string>
+  <string name="inline_images_on" tools:machine_translated="true">Zapnuté</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Zobraziť obrázky priamo v texte?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Povoliť tomuto počítaču zobrazovať obrázky priamo v texte počas zvyšku tejto relácie?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Automatické spustenie povolené.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Nepodarilo sa načítať automatizáciu.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Nepodarilo sa uložiť automatizáciu.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Skontrolujte text, vzor, trvanie alebo vybrané nastavenie preposielania portov.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">Operácia sa nepodarila.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">Časový limit na čakanie na text bol prekročený.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Predtým, ako automatizovaný systém stihol spracovať dáta, prišlo príliš veľké množstvo údajov.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Táto operácia vyžaduje otvorené okno terminálu.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">Prepustenie portu chýba.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Toto pripojenie nepodporuje automatické presmerovanie portov.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Počkajte na reťazec znakov.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Odoslať reťazec.</string>
+  <string name="automation_send_key" tools:machine_translated="true">Odoslať špeciálny kláves.</string>
+  <string name="automation_delay" tools:machine_translated="true">Počkaj.</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Odpojiť</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Povoliť presmerovanie portu.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Zakázať presmerovanie portu.</string>
+  <string name="automation_add" tools:machine_translated="true">Pridať akciu</string>
+  <string name="automation_save" tools:machine_translated="true">Uložiť</string>
+  <string name="automation_edit" tools:machine_translated="true">Upraviť</string>
+  <string name="automation_delete" tools:machine_translated="true">Odstrániť</string>
+  <string name="automation_move_up" tools:machine_translated="true">Posuňte nahor.</string>
+  <string name="automation_move_down" tools:machine_translated="true">Posuňte nadol.</string>
+  <string name="automation_drag" tools:machine_translated="true">Potiahnutím zmeňte poradie.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Uložiť zmeny?</string>
+  <string name="automation_discard" tools:machine_translated="true">Zrušiť.</string>
+  <string name="automation_cancel" tools:machine_translated="true">Zrušiť</string>
+  <string name="automation_text" tools:machine_translated="true">Text</string>
+  <string name="automation_regex" tools:machine_translated="true">Pravidelný výraz</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Porovnáva prichádzajúci text bez formátovania podľa štandardu ANSI. Regulárne výrazy podporujú syntax RE2; vyhľadávanie dopredu a spätné odkazy nie sú podporované.</string>
+  <string name="automation_duration" tools:machine_translated="true">Dĺžka trvania (v sekundách)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Časový limit (v sekundách).</string>
+  <string name="automation_key" tools:machine_translated="true">Kľúč</string>
+  <string name="automation_forward" tools:machine_translated="true">Prepustenie portu</string>
+  <string name="automation_failure" tools:machine_translated="true">Pri chybe.</string>
+  <string name="automation_stop" tools:machine_translated="true">Zastaviť automatizáciu.</string>
+  <string name="automation_continue" tools:machine_translated="true">Pokračovať</string>
+  <string name="automation_save_host" tools:machine_translated="true">Uložte hosťa, aby ste mohli nakonfigurovať automatizáciu.</string>
+  <string name="automation_progress" tools:machine_translated="true">Automatizácia: %1$d z celkového počtu %2$d.</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Akcia č. %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Zrušiť automatizáciu</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Stlačiť [tlačidlo Enter]</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Záložka</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Ukončiť/Zrušiť</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Spätná klávesa</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Vymazať</string>
+  <string name="automation_key_up" tools:machine_translated="true">Šípka smerujúca nahor.</string>
+  <string name="automation_key_down" tools:machine_translated="true">Šípka smerujúca nadol.</string>
+  <string name="automation_key_left" tools:machine_translated="true">Šípka doľava</string>
+  <string name="automation_key_right" tools:machine_translated="true">Šípka doprava</string>
+  <string name="automation_key_home" tools:machine_translated="true">Domov</string>
+  <string name="automation_key_end" tools:machine_translated="true">Koniec</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Vložiť</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Strana nahor</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Strana nadol</string>
+  <string name="automation_key_function" tools:machine_translated="true">F %1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Tlačidlo Shift</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f sekundy</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d akcií</item>
+		<item quantity="other">%1$d akcií</item>
+	</plurals>
 </resources>

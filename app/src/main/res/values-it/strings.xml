@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Attiva/disattiva la modalità di composizione per l’immissione di testo tramite IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Modalità di composizione (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Modifica il profilo selezionato.</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Si sta preparando il supporto per Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Avvio della connessione Mosh…</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Avviso: l’installazione di Mosh ha superato il tempo limite.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Avvio di mosh-server sull’host remoto…</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Impossibile avviare mosh-server sull’host remoto.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">Impossibile avviare il client Mosh.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Connessione Mosh stabilita.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Errore di Mosh: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Comando per il server Mosh</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Percorso o comando personalizzato per il server Mosh (lasciare vuoto per utilizzare l’impostazione predefinita).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Porta UDP di Mosh</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Porta UDP fissa per Mosh (0 per l’intervallo automatico 60000-61000).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Impostazione della lingua</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Impostazione della localizzazione per la sessione Mosh (ad esempio, en_US.UTF-8).</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Versione di Mosh e codice sorgente</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Preparazione del supporto per Mosh…</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Annullare le modifiche?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Le modifiche apportate andranno perse se si esce senza salvare.</string>
+  <string name="editor_discard" tools:machine_translated="true">Annulla</string>
+  <string name="editor_save" tools:machine_translated="true">Salva</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">Il file JSON è troppo grande per essere importato (il limite massimo è di 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Impossibile aprire il file selezionato.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Immagini incorporate</string>
+  <string name="inline_images_off" tools:machine_translated="true">Disattivato</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Chiedi.</string>
+  <string name="inline_images_on" tools:machine_translated="true">Attivo</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Mostra le immagini direttamente nel testo?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Consenti a questo host di visualizzare le immagini direttamente nel testo per il resto della sessione?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Avvio abilitato</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Impossibile caricare l\'automazione.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Impossibile salvare l’automazione.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Verifica il testo, il modello, la durata o la porta di inoltro selezionata.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">L\'azione non è andata a buon fine.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">Timeout durante l’attesa del testo.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">È stato generato un volume di dati eccessivo prima che l’automazione potesse elaborarlo.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Questa operazione richiede una sessione di terminale attiva.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">La regola di inoltro delle porte è mancante.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Questa connessione non supporta la funzione di inoltro di porte.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Attendi il completamento della stringa.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Invia stringa</string>
+  <string name="automation_send_key" tools:machine_translated="true">Invia un tasto speciale.</string>
+  <string name="automation_delay" tools:machine_translated="true">Attendi</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Disconnetti</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Abilita l’inoltro di porte.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Disattiva il port forwarding.</string>
+  <string name="automation_add" tools:machine_translated="true">Aggiungi azione</string>
+  <string name="automation_save" tools:machine_translated="true">Salva</string>
+  <string name="automation_edit" tools:machine_translated="true">Modifica</string>
+  <string name="automation_delete" tools:machine_translated="true">Elimina</string>
+  <string name="automation_move_up" tools:machine_translated="true">Sposta in alto</string>
+  <string name="automation_move_down" tools:machine_translated="true">Sposta in basso</string>
+  <string name="automation_drag" tools:machine_translated="true">Trascina per riordinare.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Salvare le modifiche?</string>
+  <string name="automation_discard" tools:machine_translated="true">Elimina</string>
+  <string name="automation_cancel" tools:machine_translated="true">Annulla</string>
+  <string name="automation_text" tools:machine_translated="true">Testo</string>
+  <string name="automation_regex" tools:machine_translated="true">Espressione regolare</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Confronta il testo in ingresso senza applicare la formattazione ANSI. L’espressione regolare supporta la sintassi RE2; le espressioni di ricerca anticipata e i riferimenti inversi non sono supportati.</string>
+  <string name="automation_duration" tools:machine_translated="true">Durata (in secondi)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Tempo massimo di attesa (in secondi)</string>
+  <string name="automation_key" tools:machine_translated="true">Chiave</string>
+  <string name="automation_forward" tools:machine_translated="true">Inoltro porta</string>
+  <string name="automation_failure" tools:machine_translated="true">In caso di errore.</string>
+  <string name="automation_stop" tools:machine_translated="true">Interrompi l\'automazione.</string>
+  <string name="automation_continue" tools:machine_translated="true">Continua</string>
+  <string name="automation_save_host" tools:machine_translated="true">Salva l’host per configurare l’automazione.</string>
+  <string name="automation_progress" tools:machine_translated="true">Automazione: %1$d / %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Azione numero %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Annulla l’automazione</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Invio</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Scheda</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esci</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Backspace</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Elimina</string>
+  <string name="automation_key_up" tools:machine_translated="true">Freccia rivolta verso l’alto</string>
+  <string name="automation_key_down" tools:machine_translated="true">Freccia rivolta verso il basso</string>
+  <string name="automation_key_left" tools:machine_translated="true">Freccia sinistra</string>
+  <string name="automation_key_right" tools:machine_translated="true">Freccia destra</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
+  <string name="automation_key_end" tools:machine_translated="true">Fine</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Inserisci</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Pagina successiva</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Pagina successiva</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Maiuscolo</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f secondi</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d azione</item>
+		<item quantity="other">%1$d azioni</item>
+	</plurals>
 </resources>

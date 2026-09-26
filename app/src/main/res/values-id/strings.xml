@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Aktifkan/nonaktifkan mode komposisi untuk input IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Mode komposisi (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Edit profil yang dipilih</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Menyiapkan dukungan Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Memulai koneksi Mosh…</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Peringatan: Proses instalasi Mosh mengalami waktu tunggu yang berlebihan.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Menjalankan mosh-server pada host jarak jauh…</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Gagal memulai mosh-server pada host jarak jauh.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">Mosh-client gagal dijalankan.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Koneksi Mosh berhasil dibuat.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Terjadi kesalahan pada Mosh: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Perintah server Mosh</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Jalur atau perintah khusus untuk mosh-server (biarkan kosong untuk menggunakan pengaturan bawaan)</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Port UDP Mosh</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Port UDP tetap untuk Mosh (0 untuk rentang otomatis 60000-61000)</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Lokal</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Pengaturan lokal untuk sesi Mosh (misalnya, en_US.UTF-8)</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Rilis Mosh dan kode sumbernya</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Menyiapkan dukungan Mosh…</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Batalkan perubahan?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Perubahan yang Anda buat akan hilang jika Anda keluar tanpa menyimpan.</string>
+  <string name="editor_discard" tools:machine_translated="true">Batalkan</string>
+  <string name="editor_save" tools:machine_translated="true">Simpan</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">Ukuran file JSON terlalu besar untuk diimpor (maksimum 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Tidak dapat membuka file yang dipilih.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Gambar Inline</string>
+  <string name="inline_images_off" tools:machine_translated="true">Mati</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Tanyakan</string>
+  <string name="inline_images_on" tools:machine_translated="true">Aktif</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Tampilkan gambar sebaris?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Izinkan host ini untuk menampilkan gambar secara langsung selama sisa sesi ini?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Aktifkan saat memulai.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Tidak dapat memuat otomatisasi.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Tidak dapat menyimpan otomatisasi.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Periksa teks, pola, durasi, atau port penerusan yang dipilih.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">Aksi gagal.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">Waktu tunggu untuk teks telah habis.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Terlalu banyak data yang masuk sebelum sistem otomatisasi dapat memprosesnya.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Tindakan ini memerlukan sesi terminal yang terbuka.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">Pengaturan penerusan port tidak ditemukan.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Koneksi ini tidak mendukung fitur penerusan port.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Tunggu hingga string selesai.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Kirim string</string>
+  <string name="automation_send_key" tools:machine_translated="true">Kirim tombol khusus.</string>
+  <string name="automation_delay" tools:machine_translated="true">Tunggu</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Putuskan sambungan</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Aktifkan penerusan port.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Nonaktifkan penerusan port.</string>
+  <string name="automation_add" tools:machine_translated="true">Tambahkan tindakan</string>
+  <string name="automation_save" tools:machine_translated="true">Simpan</string>
+  <string name="automation_edit" tools:machine_translated="true">Edit</string>
+  <string name="automation_delete" tools:machine_translated="true">Hapus</string>
+  <string name="automation_move_up" tools:machine_translated="true">Naikkan</string>
+  <string name="automation_move_down" tools:machine_translated="true">Pindahkan ke bawah</string>
+  <string name="automation_drag" tools:machine_translated="true">Seret untuk mengubah urutan.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Simpan perubahan?</string>
+  <string name="automation_discard" tools:machine_translated="true">Buang</string>
+  <string name="automation_cancel" tools:machine_translated="true">Batalkan</string>
+  <string name="automation_text" tools:machine_translated="true">Teks</string>
+  <string name="automation_regex" tools:machine_translated="true">Ekspresi reguler</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Mencocokkan teks yang masuk tanpa format ANSI. Ekspresi reguler mendukung sintaks RE2; fitur pencarian ke depan dan referensi balik tidak didukung.</string>
+  <string name="automation_duration" tools:machine_translated="true">Durasi (detik)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Batas waktu (detik)</string>
+  <string name="automation_key" tools:machine_translated="true">Kunci</string>
+  <string name="automation_forward" tools:machine_translated="true">Pengaturan penerusan port</string>
+  <string name="automation_failure" tools:machine_translated="true">Jika terjadi kegagalan</string>
+  <string name="automation_stop" tools:machine_translated="true">Hentikan otomatisasi.</string>
+  <string name="automation_continue" tools:machine_translated="true">Lanjutkan</string>
+  <string name="automation_save_host" tools:machine_translated="true">Simpan host untuk mengonfigurasi otomatisasi.</string>
+  <string name="automation_progress" tools:machine_translated="true">Otomatisasi: %1$d / %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Aksi %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Batalkan otomatisasi</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Masukkan</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Keluar</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Tombol Hapus</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Hapus</string>
+  <string name="automation_key_up" tools:machine_translated="true">Panah atas</string>
+  <string name="automation_key_down" tools:machine_translated="true">Panah ke bawah</string>
+  <string name="automation_key_left" tools:machine_translated="true">Panah kiri</string>
+  <string name="automation_key_right" tools:machine_translated="true">Panah kanan</string>
+  <string name="automation_key_home" tools:machine_translated="true">Beranda</string>
+  <string name="automation_key_end" tools:machine_translated="true">Akhir</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Sisipkan</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Naik Halaman</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Gulir ke Bawah</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Tombol Shift</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f detik</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d tindakan</item>
+		<item quantity="other">%1$d tindakan</item>
+	</plurals>
 </resources>

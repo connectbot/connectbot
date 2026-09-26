@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Ræstu við samsetningaraðgerð fyrir inntak með IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Samsetningaraðgerð (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Breyta valinni stillingu</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Bú er verið að undirbúa Mosh-stuðning…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Heimtening Mosh er að hefjast…</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Viðvörun: Uppsetning Mosh tók of langa tíma og var hætt við.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Ræsi mosh-þjóni á fjarþjóni…</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Tókst ekki að ræsa mosh-þjóninn á fjarþjóninum.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">Tókst ekki að ræsa mosh-forritið.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh-tenging er komin á</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Villa í Mosh: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Skipun fyrir Mosh-þjóninn</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Sérsniðin slóð eða skipun fyrir Mosh-þjóninn (látið þetta reit vera tómt til að nota sjálfgefið gildi).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">UDP-tenging Mosh</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Fastur UDP-töluhafn fyrir Mosh (0 fyrir sjálfvirkt svið 60000-61000)</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Staðsetning</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Staðsetning fyrir Mosh-lotu (td. en_US.UTF-8)</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Útgáfa af Mosh og uppsprettaforritið</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Bú er verið að undirbúa stuðning við Mosh…</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Viltu afgreiða breytingarnar?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Ef þú hættir án þess að vista breytingarnar muntu missa þær.</string>
+  <string name="editor_discard" tools:machine_translated="true">Hætta við</string>
+  <string name="editor_save" tools:machine_translated="true">Vista</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">JSON-skráin er of stór til að flytja inn (hámarkið er 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Ekki tókst að opna valda skrá.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Innlínmyndir</string>
+  <string name="inline_images_off" tools:machine_translated="true">Slökkt</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Spurðu</string>
+  <string name="inline_images_on" tools:machine_translated="true">Í gangi</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Sýna myndir beint í textanum?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Leyfa þessum tölvutæki að sýna myndir beint í texta fyrir alla tíðina sem þessi tenging stendur?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Sjálfvirk ræsing er virkjuð.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Tókst ekki að hlaða inn stillingum fyrir sjálfvirka gerð.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Tókst ekki að vista sjálfvirkni.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Athugaðu textann, sniðið, tímalengdina eða valda portið sem er notað fyrir port sendingu.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">Aðgerðin mistókst.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">Beið eftir texti, en tíminn rann út.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Of mikið af gögnum barst áður en sjálfvirkni gat unnið þau.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Þessi aðgerð krefst þess að terminal-glugginn sé opinn.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">Beinar tenglar eru ekki tiltækar.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Þessi tenging styður ekki við beina umleiðingu gagnagáta.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Bíð eftir streng.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Sendu streng.</string>
+  <string name="automation_send_key" tools:machine_translated="true">Sendu sérstaka táknrænislykil.</string>
+  <string name="automation_delay" tools:machine_translated="true">Bíðtu</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Tengja frá</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Virkaðu portsendingu</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Gjörið portsendingu óvirka.</string>
+  <string name="automation_add" tools:machine_translated="true">Bæta við aðgerð</string>
+  <string name="automation_save" tools:machine_translated="true">Vista</string>
+  <string name="automation_edit" tools:machine_translated="true">Breyta</string>
+  <string name="automation_delete" tools:machine_translated="true">Eyða</string>
+  <string name="automation_move_up" tools:machine_translated="true">Færðu upp</string>
+  <string name="automation_move_down" tools:machine_translated="true">Færðu niður</string>
+  <string name="automation_drag" tools:machine_translated="true">Dragðu til að breyta röð.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Viltu vista breytingarnar?</string>
+  <string name="automation_discard" tools:machine_translated="true">Hættu við.</string>
+  <string name="automation_cancel" tools:machine_translated="true">Hætta við</string>
+  <string name="automation_text" tools:machine_translated="true">Texti</string>
+  <string name="automation_regex" tools:machine_translated="true">Reglulegt táknmál</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Finna samsvarandi texta án ANSI-formats. Regex styður RE2-syntax; ekki er hægt að nota „lookaround“ og tilvísanir til fyrri hluta.</string>
+  <string name="automation_duration" tools:machine_translated="true">Lengd (sekúndur)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Hámarksbiðtími (sekúndur)</string>
+  <string name="automation_key" tools:machine_translated="true">Lykill</string>
+  <string name="automation_forward" tools:machine_translated="true">Stillt port</string>
+  <string name="automation_failure" tools:machine_translated="true">Ef mistakst</string>
+  <string name="automation_stop" tools:machine_translated="true">Hættu við sjálfvirka gerð.</string>
+  <string name="automation_continue" tools:machine_translated="true">Halda áfram</string>
+  <string name="automation_save_host" tools:machine_translated="true">Vista þennan tækjabúnað til að stilla sjálfvirka kerfið.</string>
+  <string name="automation_progress" tools:machine_translated="true">Sjálfvirkni: %1$d / %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Aðgerð %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Hættu við sjálfvirka stillingu.</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Hægt er að nota þennan takka til að staðfesta.</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Flipir</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Hætta við</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Backspace-takkur</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Eyða</string>
+  <string name="automation_key_up" tools:machine_translated="true">Upplátarhnapp</string>
+  <string name="automation_key_down" tools:machine_translated="true">Niður ör</string>
+  <string name="automation_key_left" tools:machine_translated="true">Vinstri ör.</string>
+  <string name="automation_key_right" tools:machine_translated="true">Hægri ör.</string>
+  <string name="automation_key_home" tools:machine_translated="true">Heim</string>
+  <string name="automation_key_end" tools:machine_translated="true">Loka</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Setja inn</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Fara á næstu síðu</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Fara á næstu síðu.</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Shift-hnappur</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f sek.</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d aðgerð</item>
+		<item quantity="other">%1$d aðgerðir</item>
+	</plurals>
 </resources>

@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME (ვირტუალური კლავიატურის ღილაკი, რომელიც ჩასაწერ მოწყობილობის რეჟიმს ააქტივებს, მაგალითად, იაპონური ენისთვის).</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">გააქტივეთ/გაუქმეთ IME-ის შეყვანის რეჟიმი.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">შემადგენლობის რეჟიმი (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">შერჩეული პროფილის რედაქტირება</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Mosh-ის მხარდაჭერის მომზადება მიმდინარეობს...</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh-თან კავშირის დაწყება...</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">გაფრთხილება: Mosh-ის ინსტალაციის დრო ამოწურულია.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">mosh-სერვერის გაშვება დისტანციურ ჰოსტზე...</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">მშორს მდებარე კომპიუტერზე mosh-server-ის გაშვება ვერ მოხერხდა.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">mosh-კლიენტის გაშვება ვერ მოხერხდა.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh-თან კავშირი დაწესდა.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Mosh-ის შეცდომა: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh სერვერის ბრძანება</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">მორგებული Mosh სერვერის გზა ან ბრძანება (დატოვეთ ცარიeli, თუ სტანდარტული პარამეტრები გსურთ).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh-ის UDP პორტი</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">მუდმივი UDP პორტი პროგრამა Mosh-ისთვის (0 ავტომატური დიაპაზონის მისამართად, 60000-61000).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">ადგილმდებარეობა</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh სესიისთვის დაყენებული ლოკალი (მაგ., en_US.UTF-8).</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">მოშის მხარდაჭერა</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh-ის ვერსია და პროგრამული კოდი</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">მზადდება Mosh-ის მხარდაჭერა...</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">შეინახოთ ცვლილებები?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">თქვენი ცვლილებები დაკარგვა, თუ შენახვის გარეშე დახურავთ.</string>
+  <string name="editor_discard" tools:machine_translated="true">უარყოფა</string>
+  <string name="editor_save" tools:machine_translated="true">შენახვა</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">იმპორტირებული JSON ფაილი ძალიან დიდია (მაქსიმალური ზომა – 8 მბ).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">არ ხერხდება არჩეული ფაილის გახსნა.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">ინლაინ გამოსახულებები</string>
+  <string name="inline_images_off" tools:machine_translated="true">გამორთვა</string>
+  <string name="inline_images_ask" tools:machine_translated="true">მოითხოვე</string>
+  <string name="inline_images_on" tools:machine_translated="true">ჩართულია</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">ჩვენება ტექსტში ჩასმული გამოსახულებები?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">დავუშვათ, ამ სესიის განმავლობაში, ეს ჰოსტი იყენებს ინლაინ გამოსახულებებს?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">ავტომატური ჩართვა აქტივირებულია.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">ავტომატიზაციის მოდულის ჩატვირთვა ვერ მოხერხდა.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">ავტომატიზაციის შენახვა ვერ მოხერხდა.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">გაამოწმეთ ტექსტი, შაბლონი, ხანგრძლივობა ან არჩეული პორტის გადას redirection.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">მოქმედება წარუმატებლად დასრულდა.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">ტექსტის ჩატვირთვამდე დანიშნული დრო ამოწურულია.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">ავტომატიზაციის სისტემამ საჭირო მოცულობაზე მეტი ინფორმაცია მიიღო, სანამ მას შეძლებოდა ამ მონაცემების დამუშავება.</string>
+  <string name="automation_no_session" tools:machine_translated="true">ეს მოქმედებისთვის საჭიროა ღია ტერმინალის სესიա.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">პორტის გადაგზავნის პარამეტრი არ არის მითითებული.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">ეს კავშირი პორტის გადაგზავნას არ მხარს უჭერს.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">დაელოდეთ სტრინგს.</string>
+  <string name="automation_send_text" tools:machine_translated="true">გამოიგზავნეთ ტექსტი.</string>
+  <string name="automation_send_key" tools:machine_translated="true">გამოიყენეთ სპეციალური კლავიშა</string>
+  <string name="automation_delay" tools:machine_translated="true">დაელოდეთ</string>
+  <string name="automation_disconnect" tools:machine_translated="true">გამორთვა</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">აქტივირებულია პორტის გადაგზავნა.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">პორტის გადაგზავნის ფუნქცია გაუქმდეს.</string>
+  <string name="automation_add" tools:machine_translated="true">მოქმედების დამატება</string>
+  <string name="automation_save" tools:machine_translated="true">შენახვა</string>
+  <string name="automation_edit" tools:machine_translated="true">რედაქტირება</string>
+  <string name="automation_delete" tools:machine_translated="true">წაშალეთ</string>
+  <string name="automation_move_up" tools:machine_translated="true">გადაიტანეთ ზემოთ</string>
+  <string name="automation_move_down" tools:machine_translated="true">შემოიწიეთ ქვევით</string>
+  <string name="automation_drag" tools:machine_translated="true">გადაიტანეთ, რათა შეცვალოთ თანმიმდევრობა.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">შეინახოთ ცვლილებები?</string>
+  <string name="automation_discard" tools:machine_translated="true">გაუქმება</string>
+  <string name="automation_cancel" tools:machine_translated="true">გაუქმება</string>
+  <string name="automation_text" tools:machine_translated="true">ტექსტი</string>
+  <string name="automation_regex" tools:machine_translated="true">რეგულარული გამოსახულება</string>
+  <string name="automation_regex_help" tools:machine_translated="true">მოიძევს შესული ტექსტის იმ ნაწილებს, რომლებიც არ შეიცავს ANSI ფორმატირებას. რეგულარული გამოსახულება მხარს უჭერს RE2 სინტაქსს; წინასწარი და უკანა მითითებები არ არის მხარდაჭერილი.</string>
+  <string name="automation_duration" tools:machine_translated="true">ხანგრძლივობა (წამი)</string>
+  <string name="automation_timeout" tools:machine_translated="true">მაქსიმალური დრო (წამებში).</string>
+  <string name="automation_key" tools:machine_translated="true">კლავიში/მთავარი სიტყვა</string>
+  <string name="automation_forward" tools:machine_translated="true">პორტის გადაგზავნა</string>
+  <string name="automation_failure" tools:machine_translated="true">შეცდომის შემთხვევაში</string>
+  <string name="automation_stop" tools:machine_translated="true">ავტომატიზაციის შეწყვეტა</string>
+  <string name="automation_continue" tools:machine_translated="true">გაგრძელება</string>
+  <string name="automation_save_host" tools:machine_translated="true">შენახეთ მასპინძელი, რათა დააკონფიგურიროთ ავტომატიზაცია.</string>
+  <string name="automation_progress" tools:machine_translated="true">ავტომატიზაცია: %1$d / %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">ქმედება %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">ავტომატიზაციის გაუქმება</string>
+  <string name="automation_key_enter" tools:machine_translated="true">შეიყვანეთ</string>
+  <string name="automation_key_tab" tools:machine_translated="true">ფურცელი</string>
+  <string name="automation_key_escape" tools:machine_translated="true">გაუქმება</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">უკანა გასაღები (ტერმინალის კლავიატურაზე).</string>
+  <string name="automation_key_delete" tools:machine_translated="true">წაშლა</string>
+  <string name="automation_key_up" tools:machine_translated="true">ზემო მიმართულების ისარი</string>
+  <string name="automation_key_down" tools:machine_translated="true">ქვემოთ მიმავალი ისარი</string>
+  <string name="automation_key_left" tools:machine_translated="true">მარცხნივ მიმავალი ისარი</string>
+  <string name="automation_key_right" tools:machine_translated="true">მარჯვენა ისარი</string>
+  <string name="automation_key_home" tools:machine_translated="true">მთავარი გვერდი</string>
+  <string name="automation_key_end" tools:machine_translated="true">დასასრული</string>
+  <string name="automation_key_insert" tools:machine_translated="true">ჩასმა</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">გვერდის წინ გადასვლა</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">გვერდის გადახვევა ქვემოთ</string>
+  <string name="automation_key_function" tools:machine_translated="true">ფ%1$ს</string>
+  <string name="automation_key_shift" tools:machine_translated="true">შეფტი</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f წმ.</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d მოქმედება</item>
+		<item quantity="other">%1$d მოქმედება</item>
+	</plurals>
 </resources>

@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME (beviteli módszer)</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Kapcsolja be vagy ki az IME-hez tartozó összetett módot.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Összetevő mód (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">A kiválasztott profil szerkesztése</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">A Mosh támogatás előkészítése folyamatban…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">A Mosh-kapcsolat indítása…</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Figyelem: A Mosh telepítése időtúllépést ért el.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Az mosh-szerver indítása a távoli gépen…</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">A mosh-szerver nem indult el a távoli gépen.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">A mosh-kliens indítása sikertelen volt.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">A Mosh-kapcsolat létrejött.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Mosh hiba: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh szerver parancs</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Egyéni mosh-szerver elérési út vagy parancs (ha az alapértelmezett beállítás a kívánatos, hagyja üresen).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh UDP port</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Rögzített UDP port a mosh-hoz (0 esetén automatikusan a 60000–61000 tartományban kerül kiválasztásra).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Nyelvi beállítás</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">A Mosh-munkamenet helyi beállítása (pl. en_US.UTF-8).</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh-támogatás (dinamikus funkciómodul címe)</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">A Mosh verziója és a forráskódja</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">A Mosh támogatás előkészítése folyamatban…</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">A módosítások elvetése?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">A módosításai elvesznek, ha elmentés nélkül kilép.</string>
+  <string name="editor_discard" tools:machine_translated="true">Mégse mentsd el</string>
+  <string name="editor_save" tools:machine_translated="true">Mentés</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">A JSON-fájl túl nagy ahhoz, hogy importálható legyen (a maximális méret 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">A kiválasztott fájl nem nyitható meg.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Befoglaló képek</string>
+  <string name="inline_images_off" tools:machine_translated="true">Ki</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Kérdezzen.</string>
+  <string name="inline_images_on" tools:machine_translated="true">Bekapcsolva</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Mutassam a képeket a szövegben?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Engedélyezzük, hogy ez a szerver a jelenlegi munkamenet során beágyazott képeket jelenítsen meg?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Automatikus indítás engedélyezve.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Nem sikerült betölteni az automatizálási beállításokat.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Az automatizálási beállítások nem menthetők.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Ellenőrizze a szöveget, a mintát, az időtartamot vagy a kiválasztott porttovábbítást.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">A művelet sikertelen volt.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">A szöveg megjelenésére várakozás időtúllépést okozott.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Túl sok adat érkezett, mielőtt az automatizált rendszer feldolgozhatta volna.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Ez a művelet nyitott terminálmunkamenetet igényel.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">A portátalakítás beállítása hiányzik.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Ez a kapcsolat nem támogatja a portátirányítást.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Várjon, amíg a szöveg megjelenik.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Küldje el a szövegsort.</string>
+  <string name="automation_send_key" tools:machine_translated="true">Küldj speciális billentyűparancsot.</string>
+  <string name="automation_delay" tools:machine_translated="true">Várj.</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Kapcsolat bontása</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Engedélyezze a portátirányítást.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Porttovábbítás letiltása</string>
+  <string name="automation_add" tools:machine_translated="true">Új művelet hozzáadása</string>
+  <string name="automation_save" tools:machine_translated="true">Mentés</string>
+  <string name="automation_edit" tools:machine_translated="true">Szerkesztés</string>
+  <string name="automation_delete" tools:machine_translated="true">Törlés</string>
+  <string name="automation_move_up" tools:machine_translated="true">Vigye feljebb!</string>
+  <string name="automation_move_down" tools:machine_translated="true">Lépjen lefelé.</string>
+  <string name="automation_drag" tools:machine_translated="true">Húzza, hogy megváltoztassa a sorrendet.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Mentse a módosításokat?</string>
+  <string name="automation_discard" tools:machine_translated="true">Elvetni/Törölni</string>
+  <string name="automation_cancel" tools:machine_translated="true">Mégsem</string>
+  <string name="automation_text" tools:machine_translated="true">Szöveg</string>
+  <string name="automation_regex" tools:machine_translated="true">Rendszeres kifejezés</string>
+  <string name="automation_regex_help" tools:machine_translated="true">A beérkező szöveget ANSI-formázás nélkül egyezteti. A reguláris kifejezések támogatják az RE2 szintaxist; a „lookaround” és a visszahivatkozások nem támogatottak.</string>
+  <string name="automation_duration" tools:machine_translated="true">Időtartam (másodpercben)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Időtúllépés (másodpercben)</string>
+  <string name="automation_key" tools:machine_translated="true">Kulcs</string>
+  <string name="automation_forward" tools:machine_translated="true">Porttovábbítás</string>
+  <string name="automation_failure" tools:machine_translated="true">Hiba esetén</string>
+  <string name="automation_stop" tools:machine_translated="true">Állítsa le az automatizálást!</string>
+  <string name="automation_continue" tools:machine_translated="true">Folytassa.</string>
+  <string name="automation_save_host" tools:machine_translated="true">Mentse el a szervert, hogy konfigurálhassa az automatizálást.</string>
+  <string name="automation_progress" tools:machine_translated="true">Automatizálás: %1$d / %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Művelet %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Állítsa le az automatizálást.</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter (billentyű)</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Lap</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Kilépés</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Visszatörlés gomb</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Törlés</string>
+  <string name="automation_key_up" tools:machine_translated="true">Felfelé mutató nyíl</string>
+  <string name="automation_key_down" tools:machine_translated="true">Le nyíl</string>
+  <string name="automation_key_left" tools:machine_translated="true">Balra mutató nyíl</string>
+  <string name="automation_key_right" tools:machine_translated="true">Jobbra mutató nyíl</string>
+  <string name="automation_key_home" tools:machine_translated="true">Kezdőlap</string>
+  <string name="automation_key_end" tools:machine_translated="true">Befejezés</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Beszúrás</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Lapozzon felfelé</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Lap aljára ugrás</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Shift billentyű</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f másodperc</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d művelet</item>
+		<item quantity="other">%1$d művelet</item>
+	</plurals>
 </resources>

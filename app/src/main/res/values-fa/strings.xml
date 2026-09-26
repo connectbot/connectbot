@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">ای‌ام‌ای</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">حالت ویرایش را برای ورودی‌های IME فعال یا غیرفعال کنید.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">حالت ویرایش (ورودی متنی چندزبانه)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">ویرایش پروفایل انتخاب‌شده</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">در حال آماده‌سازی پشتیبانی از Mosh...</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">در حال برقراری ارتباط Mosh...</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">هشدار: زمان نصب Mosh به پایان رسید.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">در حال راه‌اندازی mosh-server در سرور راه دور...</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">راه‌اندازی mosh-server در سرور راه دور با شکست مواجه شد.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">راه‌اندازی mosh-client با خطا مواجه شد.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">اتصال Mosh برقرار شد.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">خطای Mosh: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">دستور سرور Mosh</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">مسیر یا دستور سفارشی برای mosh-server (اگر می‌خواهید از تنظیمات پیش‌فرض استفاده کنید، این قسمت را خالی بگذارید).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">پورت UDP مربوط به Mosh</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">پورت UDP ثابت برای Mosh (اگر 0 باشد، به صورت خودکار از بازه 60000 تا 61000 انتخاب می‌شود).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">محل/منطقه</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">تنظیمات منطقه‌ای برای جلسه Mosh (مثلاً en_US.UTF-8)</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">مُش</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">نسخه و کد منبع Mosh</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">در حال آماده‌سازی پشتیبانی از Mosh...</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">آیا می‌خواهید تغییرات را ذخیره نکنید؟</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">اگر بدون ذخیره کردن، از این صفحه خارج شوید، تغییرات شما از بین خواهد رفت.</string>
+  <string name="editor_discard" tools:machine_translated="true">ذخیره نکردن</string>
+  <string name="editor_save" tools:machine_translated="true">ذخیره</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">حجم فایل JSON برای وارد کردن بیش از حد مجاز است (حداکثر ۸ مگابایت).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">نمی‌توان فایل انتخاب‌شده را باز کرد.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">تصاویر درون‌خطی</string>
+  <string name="inline_images_off" tools:machine_translated="true">خاموش</string>
+  <string name="inline_images_ask" tools:machine_translated="true">بپرسید</string>
+  <string name="inline_images_on" tools:machine_translated="true">روشن</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">آیا تصاویر درون‌خطی را نمایش دهم؟</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">آیا به این میزبان اجازه داده شود تا در طول این نشست، تصاویر را به صورت درون‌خطی نمایش دهد؟</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">راه‌اندازی خودکار فعال است.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">بارگذاری خودکارسازی با مشکل مواجه شد.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">ذخیره تنظیمات خودکار انجام نشد.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">متن، الگو، مدت زمان یا پورت فوروارد انتخاب‌شده را بررسی کنید.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">عملیات با شکست مواجه شد.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">زمان انتظار برای دریافت متن به پایان رسید.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">مقدار زیادی داده قبل از اینکه سیستم خودکار بتواند آن را پردازش کند، دریافت شد.</string>
+  <string name="automation_no_session" tools:machine_translated="true">این عملیات به یک پنجره ترمینال باز نیاز دارد.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">پورت فوروارد حذف یا از دست رفته است.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">این اتصال از پورت فورواردینگ پشتیبانی نمی‌کند.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">منتظر بمانید تا رشته پردازش شود.</string>
+  <string name="automation_send_text" tools:machine_translated="true">ارسال رشته</string>
+  <string name="automation_send_key" tools:machine_translated="true">ارسال کلید ویژه</string>
+  <string name="automation_delay" tools:machine_translated="true">صبر کنید</string>
+  <string name="automation_disconnect" tools:machine_translated="true">قطع اتصال</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">فعال‌سازی انتقال پورت</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">غیرفعال کردن انتقال پورت</string>
+  <string name="automation_add" tools:machine_translated="true">افزودن عملیات</string>
+  <string name="automation_save" tools:machine_translated="true">ذخیره</string>
+  <string name="automation_edit" tools:machine_translated="true">ویرایش</string>
+  <string name="automation_delete" tools:machine_translated="true">حذف کن</string>
+  <string name="automation_move_up" tools:machine_translated="true">به بالا منتقل کن</string>
+  <string name="automation_move_down" tools:machine_translated="true">به پایین حرکت دهید</string>
+  <string name="automation_drag" tools:machine_translated="true">برای تغییر ترتیب، بکشید و رها کنید.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">آیا می‌خواهید تغییرات را ذخیره کنید؟</string>
+  <string name="automation_discard" tools:machine_translated="true">حذف کنید</string>
+  <string name="automation_cancel" tools:machine_translated="true">لغو کن</string>
+  <string name="automation_text" tools:machine_translated="true">متن</string>
+  <string name="automation_regex" tools:machine_translated="true">عبارت با قاعده</string>
+  <string name="automation_regex_help" tools:machine_translated="true">متن ورودی را بدون قالب‌بندی ANSI تطبیق می‌دهد. عبارت با قاعده (Regex) از نحو RE2 پشتیبانی می‌کند؛ جستجوی پیش‌نگر و ارجاع‌های پسین پشتیبانی نمی‌شوند.</string>
+  <string name="automation_duration" tools:machine_translated="true">مدت زمان (به ثانیه)</string>
+  <string name="automation_timeout" tools:machine_translated="true">حداکثر زمان انتظار (به ثانیه)</string>
+  <string name="automation_key" tools:machine_translated="true">کلید</string>
+  <string name="automation_forward" tools:machine_translated="true">پورت فوروارد</string>
+  <string name="automation_failure" tools:machine_translated="true">در صورت بروز خطا</string>
+  <string name="automation_stop" tools:machine_translated="true">اتوماسیون را متوقف کنید.</string>
+  <string name="automation_continue" tools:machine_translated="true">ادامه دهید</string>
+  <string name="automation_save_host" tools:machine_translated="true">برای پیکربندی اتوماسیون، هاست را ذخیره کنید.</string>
+  <string name="automation_progress" tools:machine_translated="true">اتوماسیون: %1$d از %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">اقدام شماره %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">لغو خودکارسازی</string>
+  <string name="automation_key_enter" tools:machine_translated="true">وارد شوید</string>
+  <string name="automation_key_tab" tools:machine_translated="true">برگه</string>
+  <string name="automation_key_escape" tools:machine_translated="true">خروج</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">کلید حذف (بک‌اسپیس)</string>
+  <string name="automation_key_delete" tools:machine_translated="true">حذف</string>
+  <string name="automation_key_up" tools:machine_translated="true">فلش جهت‌نما به سمت بالا</string>
+  <string name="automation_key_down" tools:machine_translated="true">فلش پایین</string>
+  <string name="automation_key_left" tools:machine_translated="true">فلش چپ</string>
+  <string name="automation_key_right" tools:machine_translated="true">فلش راست</string>
+  <string name="automation_key_home" tools:machine_translated="true">صفحه اصلی</string>
+  <string name="automation_key_end" tools:machine_translated="true">پایان</string>
+  <string name="automation_key_insert" tools:machine_translated="true">درج</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">رفتن به صفحه قبل</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">رفتن به صفحه‌ی بعدی</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">کلید Shift</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f ثانیه</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d عمل</item>
+		<item quantity="other">%1$d عمل</item>
+	</plurals>
 </resources>

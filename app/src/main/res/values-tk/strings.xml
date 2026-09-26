@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">IME ulgamynyň girizilýän şypyndyz reżimini üýtgetmek üçin düwme</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Ýazmak reżimi (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Saýlanan profili üýtgetmek üçin aşakdaky baglanty.</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Mosh ulgamyny gurmakda...</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh baglanşygyny ýola salýarys...</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Duýdurma: Mosh-yň gurnama wagty dolup geçdi.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Daşky serwerde mosh-serwery işe girizilýär...</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Daşky serwerde mosh-serweryni işe girizmek başarısız boldy.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">Mosh-klient ulgamdyryş başarilmady.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh baglanşygy ýola salyndy.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Mosh-da ýüze çykýan päsgallik: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh serweri buýrugy</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Kesgitlenän \"mosh-serwer\" ýoly ýa-da buýruk (standart ulanyň üçin boş goýuň).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh-yň UDP porty</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Mosh üçin gurnama edilen UDP porty (awtomatikiň özi üçin 0, şol birnäçe 60000-61000 aralygy).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Ýerli dil ulgamynyň sazlamalary</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh seansy üçin dil ýerleşişi (mysal, en_US.UTF-8).</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh (Moshy goldamak üçin niýetlenen dinamiki modul).</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh-yň täze nusgasy we çeşme kody</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Mosh ulgamynyň işläp başlamagy üçin taýarlanylýar...</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Üzgertmeleri saklamadykmy?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Siz özüňizi saklap bilmän gitseňiz, siz edýän üýtgetmeleriňiz ýitiriler.</string>
+  <string name="editor_discard" tools:machine_translated="true">Üýtgetmeleri saklamadan çykyp gitmek</string>
+  <string name="editor_save" tools:machine_translated="true">Saklaň</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">Import edilen JSON faýlyň ölçegi çäkden aşdy (maksimum 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Saýlanan faýly açmak başartmady.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Satyrdaky suratlaryň görnüşi</string>
+  <string name="inline_images_off" tools:machine_translated="true">Öçüriň</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Sorap geçiň</string>
+  <string name="inline_images_on" tools:machine_translated="true">Ýokarda</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Satyrly şekilleri görkezmekmi?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Bu serweriň şu seansiň galan wagtynda içki görnüşdäki suratlary ýüze çykarmagyna rugsat berilsinmi?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Awtomatik başlangyç ýola goýuldy.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Awomatlaşdyrylan ulgam ýüklenmedi.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Awomatlaşdyrylan işlem saklanyp bilinmedi.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Teksti, şablon, dowamlylyk ýa-da saýlanan derweze geçişini barlap geçiň.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">Amal ýol bermedi.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">Tekstiň gelmegi üçin berlen wagt gutardy.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Awomatlaşdyrylan ulgam ony işläp geçmäge ýetmänkä, köp sanly maglumat gelip gowşdy.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Bu işlem üçin açyk terminal seansy gerekdir.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">Port ýoly tapylmaýar.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Bu baglanyşyk port geçirilişini goldamaýar.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Sapa garaýyň.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Sazly ýazgy ugratmak</string>
+  <string name="automation_send_key" tools:machine_translated="true">Aýratyn açar ugratmak.</string>
+  <string name="automation_delay" tools:machine_translated="true">Garaşyň</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Baglantysyzdyr</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Port ýolyň ulanylyşyny işe giriz.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Port ýolyň işini bes etmäge</string>
+  <string name="automation_add" tools:machine_translated="true">Hereket goşmak</string>
+  <string name="automation_save" tools:machine_translated="true">Saklaň</string>
+  <string name="automation_edit" tools:machine_translated="true">Üýtgetmek</string>
+  <string name="automation_delete" tools:machine_translated="true">Aýyrmak</string>
+  <string name="automation_move_up" tools:machine_translated="true">Ýokary süýşürip geçiň</string>
+  <string name="automation_move_down" tools:machine_translated="true">Aşaşak getir</string>
+  <string name="automation_drag" tools:machine_translated="true">Yernini üýtgetmek üçin süräp geçiň.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Üzgertmeleri saklamakmy?</string>
+  <string name="automation_discard" tools:machine_translated="true">Gideriň</string>
+  <string name="automation_cancel" tools:machine_translated="true">Yatyryň</string>
+  <string name="automation_text" tools:machine_translated="true">Tekst</string>
+  <string name="automation_regex" tools:machine_translated="true">Kadaly ulgamly ibara</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Gelýän teksti ANSI formatlamasyz deňeşdirýär. RegEx, RE2 sintaksyny goldaýar; öňünden barlap geçmek we yza salgy beriş mümkinçilikleri goldanmaýar.</string>
+  <string name="automation_duration" tools:machine_translated="true">Dowamlylyk (sekuntlar)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Wagt çägi (sekundda).</string>
+  <string name="automation_key" tools:machine_translated="true">Kilidiň nyşany</string>
+  <string name="automation_forward" tools:machine_translated="true">Port ýöneldirmek</string>
+  <string name="automation_failure" tools:machine_translated="true">Eger ýalňyşlyk bolanda</string>
+  <string name="automation_stop" tools:machine_translated="true">Awomatlaşdyrylan işlemeleri bes etmelisiniz.</string>
+  <string name="automation_continue" tools:machine_translated="true">Dowam etdiriň</string>
+  <string name="automation_save_host" tools:machine_translated="true">Otomatizasiýany gurmak üçin serweri saklaň.</string>
+  <string name="automation_progress" tools:machine_translated="true">Awomatlaşdyrylan işlem: %1$d / %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Ämalyň %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Awomatlaşdyrylan işlemden ýüz döndürmek</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Giriz</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Sesiýa</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Çykyp gitmek</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Geri aýryň düwmesi</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Aýyrmak</string>
+  <string name="automation_key_up" tools:machine_translated="true">Ýokary ýönelişli öýke</string>
+  <string name="automation_key_down" tools:machine_translated="true">Aşakky öňe süren ok</string>
+  <string name="automation_key_left" tools:machine_translated="true">Çep tarapky öňe süýşüriji nyşan</string>
+  <string name="automation_key_right" tools:machine_translated="true">Saý ýöňe ok</string>
+  <string name="automation_key_home" tools:machine_translated="true">Öý</string>
+  <string name="automation_key_end" tools:machine_translated="true">Ahyrky</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Goýmak</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Sahapany ýokary süýşürmek</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Sahapany aşak süýşürmek</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Üýtgetmek düwmesi</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f sekunt</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d işlem</item>
+		<item quantity="other">%1$d işlem</item>
+	</plurals>
 </resources>
