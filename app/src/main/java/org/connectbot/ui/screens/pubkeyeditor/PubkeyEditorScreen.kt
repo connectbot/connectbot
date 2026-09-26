@@ -379,6 +379,7 @@ private fun PubkeyEditorScreenLoadingPreview() {
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
             onFido2TransportChange = {},
+            onSave = {},
         )
     }
 }
@@ -400,6 +401,7 @@ private fun PubkeyEditorScreenErrorPreview() {
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
             onFido2TransportChange = {},
+            onSave = {},
         )
     }
 }
@@ -425,6 +427,7 @@ private fun PubkeyEditorScreenUnencryptedPreview() {
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
             onFido2TransportChange = {},
+            onSave = {},
         )
     }
 }
@@ -451,6 +454,7 @@ private fun PubkeyEditorScreenEncryptedPreview() {
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
             onFido2TransportChange = {},
+            onSave = {},
         )
     }
 }
@@ -479,6 +483,7 @@ private fun PubkeyEditorScreenPasswordMismatchPreview() {
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
             onFido2TransportChange = {},
+            onSave = {},
         )
     }
 }
@@ -508,6 +513,7 @@ private fun PubkeyEditorScreenWrongPasswordPreview() {
             onUnlockAtStartupChange = {},
             onConfirmUseChange = {},
             onFido2TransportChange = {},
+            onSave = {},
         )
     }
 }
