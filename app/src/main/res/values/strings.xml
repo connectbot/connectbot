@@ -1470,6 +1470,10 @@
 	<string name="export_hosts_failed">Failed to export hosts: %s</string>
 	<!-- Error message when host import fails -->
 	<string name="import_hosts_failed">Failed to import hosts: %s</string>
+	<!-- Error shown when an imported JSON file exceeds the safe size limit. -->
+	<string name="import_json_file_too_large">JSON file is too large to import (maximum 8 MB)</string>
+	<!-- Error shown when a selected import file cannot be opened. -->
+	<string name="import_file_unavailable">Cannot open selected file</string>
 	<!-- Title for the export hosts file picker dialog -->
 	<string name="export_hosts_title">Export Hosts</string>
 
