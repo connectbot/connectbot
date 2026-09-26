@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">ไอเอ็มอี</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">สลับโหมดการป้อนข้อมูลเพื่อเปิด/ปิดฟังก์ชัน IME</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">โหมดการพิมพ์ (สำหรับระบบ IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">แก้ไขโปรไฟล์ที่เลือก</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">กำลังเตรียมการติดตั้งส่วนประกอบที่รองรับโปรแกรม Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">กำลังเริ่มต้นการเชื่อมต่อแบบ Mosh...</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">คำเตือน: การติดตั้งโปรแกรม Mosh ใช้เวลานานเกินไป</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">กำลังเริ่มการทำงานของโปรแกรม mosh-server บนเครื่องเซิร์ฟเวอร์ระยะไกล...</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">ไม่สามารถเริ่มต้นใช้งาน mosh-server บนเครื่องระยะไกลได้</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">ไม่สามารถเริ่มต้นโปรแกรม mosh-client ได้</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">การเชื่อมต่อแบบ Mosh สำเร็จแล้ว</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">เกิดข้อผิดพลาดในโปรแกรม Mosh: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">คำสั่งสำหรับเซิร์ฟเวอร์ Mosh</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">ระบุเส้นทางหรือคำสั่งสำหรับเซิร์ฟเวอร์ Mosh ที่กำหนดเอง (หากต้องการใช้ค่าเริ่มต้น ให้เว้นว่างไว้)</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">พอร์ต UDP ของ Mosh</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">กำหนดพอร์ต UDP ที่แน่นอนสำหรับโปรแกรม mosh (หากตั้งค่าเป็น 0 โปรแกรมจะเลือกพอร์ตโดยอัตโนมัติในช่วง 60000-61000)</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">ภาษาท้องถิ่น</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">ภาษาที่ใช้สำหรับเซสชันของโปรแกรม Mosh (เช่น en_US.UTF-8)</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">โมช</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">รุ่นของโปรแกรม Mosh และซอร์สโค้ด</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">กำลังเตรียมการติดตั้งส่วนประกอบที่รองรับ Mosh…</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">ต้องการยกเลิกการเปลี่ยนแปลงหรือไม่</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">การเปลี่ยนแปลงที่คุณทำจะหายไปหากคุณออกจากโปรแกรมโดยไม่ได้บันทึก</string>
+  <string name="editor_discard" tools:machine_translated="true">ยกเลิก</string>
+  <string name="editor_save" tools:machine_translated="true">บันทึก</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">ไฟล์ JSON มีขนาดใหญ่เกินไป ไม่สามารถนำเข้าได้ (สูงสุด 8 เมกะไบต์)</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">ไม่สามารถเปิดไฟล์ที่เลือกได้</string>
+  <string name="profile_inline_images" tools:machine_translated="true">เปิด/ปิดการแสดงรูปภาพแบบอินไลน์</string>
+  <string name="inline_images_off" tools:machine_translated="true">ปิด</string>
+  <string name="inline_images_ask" tools:machine_translated="true">สอบถาม</string>
+  <string name="inline_images_on" tools:machine_translated="true">เปิดอยู่</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">แสดงรูปภาพที่แทรกในข้อความหรือไม่</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">อนุญาตให้เครื่องนี้แสดงรูปภาพแบบแทรกในเนื้อหาสำหรับช่วงเวลาที่เหลือของการใช้งานครั้งนี้หรือไม่</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">เปิดใช้งานการเริ่มต้นระบบ</string>
+  <string name="automation_load_failed" tools:machine_translated="true">ไม่สามารถโหลดระบบอัตโนมัติได้</string>
+  <string name="automation_save_failed" tools:machine_translated="true">ไม่สามารถบันทึกการตั้งค่าอัตโนมัติได้</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">ตรวจสอบข้อความ รูปแบบ ระยะเวลา หรือพอร์ตที่เลือกสำหรับการส่งต่อข้อมูล</string>
+  <string name="automation_action_failed" tools:machine_translated="true">การดำเนินการล้มเหลว</string>
+  <string name="automation_timed_out" tools:machine_translated="true">หมดเวลาในการรอข้อความ</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">มีข้อมูลจำนวนมากเกินไปที่ส่งเข้ามา ก่อนที่ระบบอัตโนมัติจะสามารถประมวลผลได้ทัน</string>
+  <string name="automation_no_session" tools:machine_translated="true">การดำเนินการนี้จำเป็นต้องเปิดใช้งานหน้าต่างเทอร์มินัล</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">การตั้งค่าพอร์ตเพื่อส่งต่อข้อมูลหายไป</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">การเชื่อมต่อนี้ไม่รองรับการส่งต่อพอร์ต</string>
+  <string name="automation_wait_text" tools:machine_translated="true">รอจนกว่าสตริงจะเสร็จสิ้น</string>
+  <string name="automation_send_text" tools:machine_translated="true">ส่งสตริง</string>
+  <string name="automation_send_key" tools:machine_translated="true">ส่งปุ่มพิเศษ</string>
+  <string name="automation_delay" tools:machine_translated="true">รอ</string>
+  <string name="automation_disconnect" tools:machine_translated="true">ยกเลิกการเชื่อมต่อ</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">เปิดใช้งานการส่งต่อพอร์ต</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">ปิดใช้งานการส่งต่อพอร์ต</string>
+  <string name="automation_add" tools:machine_translated="true">เพิ่มการดำเนินการ</string>
+  <string name="automation_save" tools:machine_translated="true">บันทึก</string>
+  <string name="automation_edit" tools:machine_translated="true">แก้ไข</string>
+  <string name="automation_delete" tools:machine_translated="true">ลบ</string>
+  <string name="automation_move_up" tools:machine_translated="true">เลื่อนขึ้น</string>
+  <string name="automation_move_down" tools:machine_translated="true">เลื่อนลง</string>
+  <string name="automation_drag" tools:machine_translated="true">ลากเพื่อจัดเรียงลำดับใหม่</string>
+  <string name="automation_unsaved" tools:machine_translated="true">บันทึกการเปลี่ยนแปลงหรือไม่</string>
+  <string name="automation_discard" tools:machine_translated="true">ลบทิ้ง</string>
+  <string name="automation_cancel" tools:machine_translated="true">ยกเลิก</string>
+  <string name="automation_text" tools:machine_translated="true">ข้อความ</string>
+  <string name="automation_regex" tools:machine_translated="true">นิพจน์ปกติ</string>
+  <string name="automation_regex_help" tools:machine_translated="true">ค้นหาข้อความที่รับเข้ามาโดยไม่ใช้รูปแบบ ANSI รูปแบบเรกซ์ (Regex) รองรับไวยากรณ์ RE2 แต่ไม่รองรับการอ้างอิงย้อนกลับและการตรวจสอบล่วงหน้า</string>
+  <string name="automation_duration" tools:machine_translated="true">ระยะเวลา (วินาที)</string>
+  <string name="automation_timeout" tools:machine_translated="true">ระยะหมดเวลา (วินาที)</string>
+  <string name="automation_key" tools:machine_translated="true">คีย์</string>
+  <string name="automation_forward" tools:machine_translated="true">การส่งต่อพอร์ต</string>
+  <string name="automation_failure" tools:machine_translated="true">เมื่อเกิดข้อผิดพลาด</string>
+  <string name="automation_stop" tools:machine_translated="true">หยุดการทำงานอัตโนมัติ</string>
+  <string name="automation_continue" tools:machine_translated="true">ดำเนินการต่อ</string>
+  <string name="automation_save_host" tools:machine_translated="true">บันทึกโฮสต์เพื่อกำหนดค่าระบบอัตโนมัติ</string>
+  <string name="automation_progress" tools:machine_translated="true">ระบบอัตโนมัติ: ขั้นตอนปัจจุบันคือ %1$d จากทั้งหมด %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">ขั้นตอนที่ %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">ยกเลิกการทำงานอัตโนมัติ</string>
+  <string name="automation_key_enter" tools:machine_translated="true">ป้อนข้อมูล</string>
+  <string name="automation_key_tab" tools:machine_translated="true">แท็บ</string>
+  <string name="automation_key_escape" tools:machine_translated="true">ปุ่มสำหรับออกจากหน้าจอ</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">ปุ่มลบอักขระก่อนหน้า</string>
+  <string name="automation_key_delete" tools:machine_translated="true">ลบ</string>
+  <string name="automation_key_up" tools:machine_translated="true">ลูกศรชี้ขึ้น</string>
+  <string name="automation_key_down" tools:machine_translated="true">ลูกศรชี้ลง</string>
+  <string name="automation_key_left" tools:machine_translated="true">ลูกศรชี้ไปทางซ้าย</string>
+  <string name="automation_key_right" tools:machine_translated="true">ลูกศรชี้ไปทางขวา</string>
+  <string name="automation_key_home" tools:machine_translated="true">หน้าหลัก</string>
+  <string name="automation_key_end" tools:machine_translated="true">สิ้นสุด</string>
+  <string name="automation_key_insert" tools:machine_translated="true">แทรก</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">เลื่อนไปยังหน้าก่อนหน้า</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">เลื่อนหน้าลง</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">ปุ่ม Shift</string>
+  <string name="automation_seconds" tools:machine_translated="true">%.3f วินาที</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">ดำเนินการทั้งหมด %1$d รายการ</item>
+		<item quantity="other">ดำเนินการทั้งหมด %1$d รายการ</item>
+	</plurals>
 </resources>

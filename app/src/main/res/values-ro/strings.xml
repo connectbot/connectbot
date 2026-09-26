@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Activați/dezactivați modul de compunere pentru introducerea textului prin intermediul IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Modul de compunere (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Editează profilul selectat.</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Se pregătește suportul pentru Mosh...</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Se inițializează conexiunea Mosh...</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Atenție: Instalarea Mosh a depășit timpul limită.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Se lansează serverul Mosh pe gazda de la distanță...</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Nu s-a putut porni serverul Mosh pe gazda de la distanță.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">Nu s-a putut porni clientul Mosh.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Conexiunea Mosh a fost stabilită.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Eroare Mosh: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Comanda pentru serverul Mosh.</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Cale personalizată sau comandă pentru serverul Mosh (lăsați câmpul gol pentru a utiliza valoarea implicită).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Portul UDP pentru Mosh</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Port UDP fix pentru Mosh (0 pentru intervalul automat 60000-61000).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Setări regionale</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Setarea locală pentru sesiunea Mosh (de exemplu, en_US.UTF-8).</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Versiunea și codul sursă ale programului Mosh.</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Se pregătește suportul pentru Mosh...</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Anulați modificările?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Modificările efectuate vor fi pierdute dacă închideți fereastra fără a salva.</string>
+  <string name="editor_discard" tools:machine_translated="true">Anulează</string>
+  <string name="editor_save" tools:machine_translated="true">Salvează</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">Fișierul JSON este prea mare pentru a fi importat (dimensiunea maximă admisă este de 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Nu se poate deschide fișierul selectat.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Imagini în linie</string>
+  <string name="inline_images_off" tools:machine_translated="true">Dezactivat</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Întreabă</string>
+  <string name="inline_images_on" tools:machine_translated="true">Activat</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Afișați imaginile în linie?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Permiteți ca acest server să afișeze imagini direct în fluxul de date pentru durata acestei sesiuni?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Pornire activată.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Nu s-a putut încărca automatizarea.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Nu s-a putut salva automatizarea.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Verificați textul, șablonul, durata sau redirecționarea de port selectată.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">Acțiunea a eșuat.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">A expirat timpul de așteptare pentru afișarea textului.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">S-a generat o cantitate prea mare de date înainte ca sistemul automatizat să poată procesa totul.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Această acțiune necesită o sesiune de terminal activă.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">Redirecționarea portului lipsește.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Această conexiune nu acceptă redirecționarea de porturi.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Așteaptă până când șirul de caractere este gata.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Trimite șirul de caractere.</string>
+  <string name="automation_send_key" tools:machine_translated="true">Trimite o comandă specifică.</string>
+  <string name="automation_delay" tools:machine_translated="true">Așteaptă</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Deconectare</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Activează redirecționarea de porturi.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Dezactivează redirecționarea de porturi.</string>
+  <string name="automation_add" tools:machine_translated="true">Adaugă acțiune.</string>
+  <string name="automation_save" tools:machine_translated="true">Salvează</string>
+  <string name="automation_edit" tools:machine_translated="true">Editează</string>
+  <string name="automation_delete" tools:machine_translated="true">Șterge</string>
+  <string name="automation_move_up" tools:machine_translated="true">Mută în sus.</string>
+  <string name="automation_move_down" tools:machine_translated="true">Mută în jos.</string>
+  <string name="automation_drag" tools:machine_translated="true">Trageți pentru a schimba ordinea.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Salvați modificările?</string>
+  <string name="automation_discard" tools:machine_translated="true">Anulează.</string>
+  <string name="automation_cancel" tools:machine_translated="true">Anulează</string>
+  <string name="automation_text" tools:machine_translated="true">Text</string>
+  <string name="automation_regex" tools:machine_translated="true">Expresie regulată</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Potrivește textul de intrare fără formatare ANSI. Expresiile regulate acceptă sintaxa RE2; căutările înainte și referințele inverse nu sunt acceptate.</string>
+  <string name="automation_duration" tools:machine_translated="true">Durată (în secunde)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Timp maxim de așteptare (în secunde).</string>
+  <string name="automation_key" tools:machine_translated="true">Cheie</string>
+  <string name="automation_forward" tools:machine_translated="true">Redirecționare port</string>
+  <string name="automation_failure" tools:machine_translated="true">În caz de eșec.</string>
+  <string name="automation_stop" tools:machine_translated="true">Oprește automatizarea.</string>
+  <string name="automation_continue" tools:machine_translated="true">Continuă</string>
+  <string name="automation_save_host" tools:machine_translated="true">Salvează gazda pentru a configura automatizarea.</string>
+  <string name="automation_progress" tools:machine_translated="true">Automatizare: pasul curent %1$d din totalul de %2$d.</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Acțiune nr. %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Anulează automatizarea.</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Introducere</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Filă</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Ieșire</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Ștergere (caracter)</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Șterge</string>
+  <string name="automation_key_up" tools:machine_translated="true">Săgeată în sus.</string>
+  <string name="automation_key_down" tools:machine_translated="true">Săgeată în jos</string>
+  <string name="automation_key_left" tools:machine_translated="true">Săgeată spre stânga</string>
+  <string name="automation_key_right" tools:machine_translated="true">Săgeată spre dreapta.</string>
+  <string name="automation_key_home" tools:machine_translated="true">Acasă</string>
+  <string name="automation_key_end" tools:machine_translated="true">Sfârșit</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Inserare</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Pagina următoare</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Pagina următoare</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Modificator Shift</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f secunde</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d acțiune</item>
+		<item quantity="other">%1$d acțiuni</item>
+	</plurals>
 </resources>

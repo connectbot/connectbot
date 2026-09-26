@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME(입력 방법 편집기)</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">IME 입력 방식을 전환하여 글자 조합 모드를 켜거나 끕니다.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">작성 모드(IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">선택한 프로필 수정</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Mosh 지원을 준비 중입니다.…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh 연결을 시작합니다...</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">경고: Mosh 설치 시간이 초과되었습니다.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">원격 호스트에서 mosh 서버를 시작합니다.</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">원격 호스트에서 mosh 서버를 시작하는 데 실패했습니다.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">mosh 클라이언트 시작에 실패했습니다.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">모시 연결이 설정되었습니다.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">모시 오류: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">모시 서버 명령어</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">사용자 지정 `mosh-server` 경로 또는 명령(기본값을 사용하려면 비워 두세요).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">모시(Mosh) UDP 포트</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Mosh에 사용할 고정된 UDP 포트(자동으로 60000~61000 범위 내에서 선택하려면 0을 입력합니다).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">지역 설정</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh 세션에 사용할 로케일 설정(예: en_US.UTF-8)</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">모시(Mosh) 지원 기능 모듈</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh 버전 및 소스 코드</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Mosh 지원 준비 중입니다.…</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">변경 사항을 저장하지 않고 종료하시겠습니까?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">저장하지 않고 나가면 변경 사항이 모두 사라집니다.</string>
+  <string name="editor_discard" tools:machine_translated="true">변경 내용 저장하지 않고 종료</string>
+  <string name="editor_save" tools:machine_translated="true">저장</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">가져온 JSON 파일의 크기가 허용 범위를 초과했습니다(최대 8MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">선택한 파일을 열 수 없습니다.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">인라인 이미지</string>
+  <string name="inline_images_off" tools:machine_translated="true">끔</string>
+  <string name="inline_images_ask" tools:machine_translated="true">묻습니다.</string>
+  <string name="inline_images_on" tools:machine_translated="true">켜기</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">인라인 이미지를 표시하시겠습니까?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">이 호스트가 현재 세션 동안 인라인 이미지를 표시하도록 허용하시겠습니까?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">자동 시작 활성화됨</string>
+  <string name="automation_load_failed" tools:machine_translated="true">자동화 기능을 불러오는 데 실패했습니다.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">자동화 설정을 저장할 수 없습니다.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">텍스트, 패턴, 기간 또는 선택한 포트 전달 설정을 확인하세요.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">작업 실패</string>
+  <string name="automation_timed_out" tools:machine_translated="true">지정된 시간 내에 텍스트를 기다리는 데 실패했습니다.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">자동화 시스템이 처리하기 전에 너무 많은 양의 데이터가 도착했습니다.</string>
+  <string name="automation_no_session" tools:machine_translated="true">이 작업은 활성 상태의 터미널 세션이 필요합니다.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">포트 포워딩 설정이 누락되었습니다.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">이 연결은 포트 전달을 지원하지 않습니다.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">문자열을 기다립니다.</string>
+  <string name="automation_send_text" tools:machine_translated="true">문자열 전송</string>
+  <string name="automation_send_key" tools:machine_translated="true">특수 키 보내기</string>
+  <string name="automation_delay" tools:machine_translated="true">대기하세요.</string>
+  <string name="automation_disconnect" tools:machine_translated="true">연결 해제</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">포트 포워딩 활성화</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">포트 포워딩 비활성화</string>
+  <string name="automation_add" tools:machine_translated="true">동작 추가</string>
+  <string name="automation_save" tools:machine_translated="true">저장</string>
+  <string name="automation_edit" tools:machine_translated="true">수정</string>
+  <string name="automation_delete" tools:machine_translated="true">삭제합니다.</string>
+  <string name="automation_move_up" tools:machine_translated="true">위로 이동</string>
+  <string name="automation_move_down" tools:machine_translated="true">아래로 이동</string>
+  <string name="automation_drag" tools:machine_translated="true">드래그하여 순서를 변경하세요.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">변경 사항을 저장하시겠습니까?</string>
+  <string name="automation_discard" tools:machine_translated="true">삭제하다</string>
+  <string name="automation_cancel" tools:machine_translated="true">취소</string>
+  <string name="automation_text" tools:machine_translated="true">텍스트</string>
+  <string name="automation_regex" tools:machine_translated="true">정규 표현식</string>
+  <string name="automation_regex_help" tools:machine_translated="true">ANSI 서식이 적용되지 않은 입력 텍스트와 일치합니다. 정규 표현식은 RE2 구문을 지원하며, 전방 탐색 및 역참조는 지원하지 않습니다.</string>
+  <string name="automation_duration" tools:machine_translated="true">지속 시간(초)</string>
+  <string name="automation_timeout" tools:machine_translated="true">시간 초과(초)</string>
+  <string name="automation_key" tools:machine_translated="true">키</string>
+  <string name="automation_forward" tools:machine_translated="true">포트 포워딩</string>
+  <string name="automation_failure" tools:machine_translated="true">실패 시</string>
+  <string name="automation_stop" tools:machine_translated="true">자동화를 중지합니다.</string>
+  <string name="automation_continue" tools:machine_translated="true">계속 진행합니다.</string>
+  <string name="automation_save_host" tools:machine_translated="true">자동화를 구성하기 위해 호스트를 저장합니다.</string>
+  <string name="automation_progress" tools:machine_translated="true">자동화 진행 상황: 현재 단계 %1$d / 총 단계 %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">작업 %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">자동화 취소</string>
+  <string name="automation_key_enter" tools:machine_translated="true">입력</string>
+  <string name="automation_key_tab" tools:machine_translated="true">탭</string>
+  <string name="automation_key_escape" tools:machine_translated="true">종료</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">백스페이스</string>
+  <string name="automation_key_delete" tools:machine_translated="true">삭제</string>
+  <string name="automation_key_up" tools:machine_translated="true">위쪽 화살표</string>
+  <string name="automation_key_down" tools:machine_translated="true">아래쪽 화살표</string>
+  <string name="automation_key_left" tools:machine_translated="true">왼쪽 화살표</string>
+  <string name="automation_key_right" tools:machine_translated="true">오른쪽 화살표</string>
+  <string name="automation_key_home" tools:machine_translated="true">홈</string>
+  <string name="automation_key_end" tools:machine_translated="true">종료</string>
+  <string name="automation_key_insert" tools:machine_translated="true">삽입</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">페이지 위로 이동</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">페이지 아래로 이동</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Shift 키</string>
+  <string name="automation_seconds" tools:machine_translated="true">%.3f초</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">총 %1$d개의 작업</item>
+		<item quantity="other">총 %1$d개의 작업</item>
+	</plurals>
 </resources>

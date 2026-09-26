@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Schakel de compositiemodus in/uit voor IME-invoer.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Componeren-modus (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Bewerken van het geselecteerde profiel</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Mosh-ondersteuning wordt voorbereid …</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh-verbinding wordt gestart …</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Waarschuwing: de installatie van Mosh is mislukt vanwege een time-out.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Mosh-server wordt gestart op de externe host …</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Kon de mosh-server op de externe host niet starten.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">De mosh-client kon niet worden gestart.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">De Mosh-verbinding is tot stand gebracht.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Fout bij Mosh: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Opdracht voor de Mosh-server</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Aangepast pad of commando voor de Mosh-server (laat dit leeg om de standaardinstelling te gebruiken).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh UDP-poort</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Vaste UDP-poort voor Mosh (gebruik 0 om een automatische poort in het bereik 60000-61000 te laten kiezen).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Taalinstelling</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Taalinstelling voor de Mosh-sessie (bijv. en_US.UTF-8).</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Ondersteuning voor Mosh</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">De versie van Mosh en de bijbehorende broncode</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Bezig met het voorbereiden van ondersteuning voor Mosh …</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Wijzigingen annuleren?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Uw wijzigingen gaan verloren als u de pagina verlaat zonder op te slaan.</string>
+  <string name="editor_discard" tools:machine_translated="true">Annuleren</string>
+  <string name="editor_save" tools:machine_translated="true">Opslaan</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">Het JSON-bestand is te groot om te importeren (het maximum is 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Het geselecteerde bestand kan niet worden geopend.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Afbeeldingen in tekstweergave</string>
+  <string name="inline_images_off" tools:machine_translated="true">Uit</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Vraag het eenmalig tijdens de huidige sessie.</string>
+  <string name="inline_images_on" tools:machine_translated="true">Aan</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Afbeeldingen direct weergeven?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Sta toe dat deze computer voor de duur van deze sessie afbeeldingen direct in de tekst weergeeft?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Automatisch starten ingeschakeld.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Kon de automatisering niet laden.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">De automatisering kon niet worden opgeslagen.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Controleer de tekst, het patroon, de duur of de geselecteerde poortdoorvoer.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">De actie is mislukt.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">De tijd is verstreken tijdens het wachten op tekst.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Er werd te veel data gegenereerd voordat de geautomatiseerde verwerking kon beginnen.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Deze actie vereist een geopende terminalsessie.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">De poortdoorvoer ontbreekt.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Deze verbinding ondersteunt geen poortdoorvoer.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Wacht op de tekstreeks.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Verzend de tekst.</string>
+  <string name="automation_send_key" tools:machine_translated="true">Stuur een speciale toets</string>
+  <string name="automation_delay" tools:machine_translated="true">Wacht.</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Verbinding verbreken</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Poortdoorvoer inschakelen</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Poortdoorvoer uitschakelen</string>
+  <string name="automation_add" tools:machine_translated="true">Voeg actie toe</string>
+  <string name="automation_save" tools:machine_translated="true">Opslaan</string>
+  <string name="automation_edit" tools:machine_translated="true">Bewerken</string>
+  <string name="automation_delete" tools:machine_translated="true">Verwijderen</string>
+  <string name="automation_move_up" tools:machine_translated="true">Naar boven verplaatsen</string>
+  <string name="automation_move_down" tools:machine_translated="true">Naar beneden verplaatsen</string>
+  <string name="automation_drag" tools:machine_translated="true">Sleep om de volgorde te wijzigen.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Wijzigingen opslaan?</string>
+  <string name="automation_discard" tools:machine_translated="true">Verwijder</string>
+  <string name="automation_cancel" tools:machine_translated="true">Annuleren</string>
+  <string name="automation_text" tools:machine_translated="true">Tekst</string>
+  <string name="automation_regex" tools:machine_translated="true">Reguliere expressie</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Zoekt naar overeenkomsten in de binnenkomende tekst zonder gebruik te maken van ANSI-opmaak. De regex ondersteunt de RE2-syntaxis; vooruitkijkende en achterwaartse verwijzingen worden niet ondersteund.</string>
+  <string name="automation_duration" tools:machine_translated="true">Duur (in seconden)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Time-out (in seconden)</string>
+  <string name="automation_key" tools:machine_translated="true">Sleutel</string>
+  <string name="automation_forward" tools:machine_translated="true">Poort doorsturen</string>
+  <string name="automation_failure" tools:machine_translated="true">Bij een fout</string>
+  <string name="automation_stop" tools:machine_translated="true">Automatische uitvoering stoppen</string>
+  <string name="automation_continue" tools:machine_translated="true">Ga verder</string>
+  <string name="automation_save_host" tools:machine_translated="true">Sla de host op om automatisering in te stellen.</string>
+  <string name="automation_progress" tools:machine_translated="true">Automatisering: stap %1$d van de %2$d.</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Actie %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Automatisering annuleren</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Invoeren</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tabblad</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc-toets</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Terugtoets</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Verwijderen</string>
+  <string name="automation_key_up" tools:machine_translated="true">Pijl omhoog</string>
+  <string name="automation_key_down" tools:machine_translated="true">Pijl omlaag</string>
+  <string name="automation_key_left" tools:machine_translated="true">Linkerpijl</string>
+  <string name="automation_key_right" tools:machine_translated="true">Pijl naar rechts</string>
+  <string name="automation_key_home" tools:machine_translated="true">Startpagina</string>
+  <string name="automation_key_end" tools:machine_translated="true">Einde</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Invoegen</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Volgende pagina</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Pagina omlaag</string>
+  <string name="automation_key_function" tools:machine_translated="true">M%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Shift-toets</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f seconden</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d actie</item>
+		<item quantity="other">%1$d acties</item>
+	</plurals>
 </resources>

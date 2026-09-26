@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">وضع الإدخال (IME)</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">تبديل وضع التركيب لإدخال النص باستخدام محرر طريقة الإدخال (IME).</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">وضع التركيب (محرك إدخال اللغة)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">تعديل الملف الشخصي المحدد</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">جارٍ تجهيز دعم برنامج Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">بدء الاتصال عبر برنامج Mosh…</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">تحذير: تجاوز الوقت المخصص لتثبيت برنامج Mosh.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">بدء تشغيل برنامج mosh-server على الخادم البعيد…</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">فشل تشغيل برنامج mosh-server على الجهاز البعيد.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">فشل تشغيل برنامج mosh-client.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">تم إنشاء اتصال Mosh.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">حدث خطأ في برنامج Mosh: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">أمر خادم Mosh</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">مسار أو أمر مخصص لخادم Mosh (اتركه فارغًا لاستخدام الإعداد الافتراضي).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">منفذ UDP الخاص بـ Mosh</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">منفذ UDP ثابت لبرنامج Mosh (0 يعني تحديد تلقائي للنطاق 60000-61000).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">الإعدادات المحلية</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">الإعدادات المحلية لجلسة برنامج Mosh (مثل: en_US.UTF-8)</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">موش</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">إصدار برنامج Mosh وشفرة المصدر الخاصة به</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">جارٍ تجهيز دعم برنامج Mosh…</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">هل تريد إلغاء التغييرات؟</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">سيتم فقدان التعديلات التي أجريتها إذا غادرت دون حفظها.</string>
+  <string name="editor_discard" tools:machine_translated="true">تجاهل التغييرات</string>
+  <string name="editor_save" tools:machine_translated="true">حفظ</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">حجم ملف JSON كبير جدًا بحيث لا يمكن استيراده (الحد الأقصى 8 ميجابايت).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">لا يمكن فتح الملف المحدد.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">الصور المضمّنة</string>
+  <string name="inline_images_off" tools:machine_translated="true">إيقاف التشغيل</string>
+  <string name="inline_images_ask" tools:machine_translated="true">اسأل</string>
+  <string name="inline_images_on" tools:machine_translated="true">مُفعَّل</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">عرض الصور المضمّنة؟</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">هل تسمح لهذا الجهاز بعرض الصور المضمنة طوال مدة الجلسة الحالية؟</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">تم تفعيل التشغيل التلقائي.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">فشل تحميل الأتمتة.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">فشل حفظ عملية الأتمتة.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">تحقق من النص، أو النمط، أو المدة، أو منفذ إعادة التوجيه المحدد.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">فشل الإجراء.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">انتهت المهلة الزمنية أثناء انتظار ظهور النص.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">وصلت كمية كبيرة جدًا من البيانات قبل أن يتمكن نظام التشغيل الآلي من معالجتها.</string>
+  <string name="automation_no_session" tools:machine_translated="true">يتطلب هذا الإجراء فتح نافذة طرفية.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">إعادة توجيه المنفذ مفقودة.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">لا يدعم هذا الاتصال إعادة توجيه المنافذ.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">انتظر حتى تظهر السلسلة.</string>
+  <string name="automation_send_text" tools:machine_translated="true">إرسال سلسلة نصية.</string>
+  <string name="automation_send_key" tools:machine_translated="true">إرسال مفتاح خاص</string>
+  <string name="automation_delay" tools:machine_translated="true">انتظر</string>
+  <string name="automation_disconnect" tools:machine_translated="true">فصل الاتصال</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">تفعيل إعادة توجيه المنفذ.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">تعطيل إعادة توجيه المنفذ</string>
+  <string name="automation_add" tools:machine_translated="true">إضافة إجراء</string>
+  <string name="automation_save" tools:machine_translated="true">حفظ</string>
+  <string name="automation_edit" tools:machine_translated="true">تعديل</string>
+  <string name="automation_delete" tools:machine_translated="true">حذف</string>
+  <string name="automation_move_up" tools:machine_translated="true">ارفع للأعلى</string>
+  <string name="automation_move_down" tools:machine_translated="true">انتقل للأسفل</string>
+  <string name="automation_drag" tools:machine_translated="true">اسحب لإعادة الترتيب.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">هل تريد حفظ التغييرات؟</string>
+  <string name="automation_discard" tools:machine_translated="true">تجاهل/احذف/ألغِ</string>
+  <string name="automation_cancel" tools:machine_translated="true">إلغاء</string>
+  <string name="automation_text" tools:machine_translated="true">نص</string>
+  <string name="automation_regex" tools:machine_translated="true">تعبير نمطي</string>
+  <string name="automation_regex_help" tools:machine_translated="true">يطابق النص الوارد دون تطبيق تنسيق ANSI. يدعم التعبير النمطي (Regex) بناء جملة RE2؛ ولا يدعم البحث المسبق والإشارات الخلفية.</string>
+  <string name="automation_duration" tools:machine_translated="true">المدة (بالثواني)</string>
+  <string name="automation_timeout" tools:machine_translated="true">الحد الزمني (بالثواني)</string>
+  <string name="automation_key" tools:machine_translated="true">مفتاح</string>
+  <string name="automation_forward" tools:machine_translated="true">إعادة توجيه المنفذ</string>
+  <string name="automation_failure" tools:machine_translated="true">في حالة الفشل.</string>
+  <string name="automation_stop" tools:machine_translated="true">إيقاف التشغيل التلقائي.</string>
+  <string name="automation_continue" tools:machine_translated="true">تابع</string>
+  <string name="automation_save_host" tools:machine_translated="true">احفظ الجهاز لتكوين الأتمتة.</string>
+  <string name="automation_progress" tools:machine_translated="true">الأتمتة: %1$d من %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">الإجراء رقم %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">إلغاء التشغيل التلقائي</string>
+  <string name="automation_key_enter" tools:machine_translated="true">أدخِل</string>
+  <string name="automation_key_tab" tools:machine_translated="true">علامة تبويب</string>
+  <string name="automation_key_escape" tools:machine_translated="true">الخروج</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">مفتاح \"مسح للخلف\"</string>
+  <string name="automation_key_delete" tools:machine_translated="true">حذف</string>
+  <string name="automation_key_up" tools:machine_translated="true">سهم للأعلى</string>
+  <string name="automation_key_down" tools:machine_translated="true">سهم لأسفل</string>
+  <string name="automation_key_left" tools:machine_translated="true">سهم يسار</string>
+  <string name="automation_key_right" tools:machine_translated="true">سهم يمين</string>
+  <string name="automation_key_home" tools:machine_translated="true">الرئيسية</string>
+  <string name="automation_key_end" tools:machine_translated="true">نهاية</string>
+  <string name="automation_key_insert" tools:machine_translated="true">إدراج</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">صفحة للأعلى</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">انتقال إلى الصفحة التالية</string>
+  <string name="automation_key_function" tools:machine_translated="true">مفتاح الوحدة الطرفية: %1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">مفتاح \"Shift\"</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f ثانية</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d إجراء</item>
+		<item quantity="other">%1$d إجراء</item>
+	</plurals>
 </resources>

@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Sanal klavyedeki IME giriş alanı için kompozisyon modunu etkinleştir/devre dışı bırak.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Kompozisyon modu (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Seçili profili düzenle</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Mosh desteği hazırlanıyor...</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh bağlantısı başlatılıyor...</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Uyarı: Mosh kurulumu zaman aşımına uğradı.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Uzak sunucuda mosh-server başlatılıyor...</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Uzak sunucuda mosh-server başlatılamadı.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">mosh istemcisi başlatılamadı.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh bağlantısı kuruldu.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Mosh hatası: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh sunucu komutu</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Özel mosh sunucu yolu veya komutu (varsayılanı kullanmak için boş bırakın).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh UDP bağlantı noktası</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Mosh için sabit bir UDP bağlantı noktası (otomatik olarak 60000-61000 aralığında çalışması için 0 girin).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Yerel Ayar</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh oturumu için kullanılacak yerel ayar (örneğin, en_US.UTF-8).</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh desteği sağlayan dinamik özellik modülünün başlığı</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh sürümü ve kaynak kodu</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Mosh desteği hazırlanıyor...</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Değişiklikleri kaydetmeden çıkmak istiyor musunuz?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Kaydetmeden çıkarsanız, yaptığınız değişiklikler kaybolacaktır.</string>
+  <string name="editor_discard" tools:machine_translated="true">Kaydetmeden çıkış yap</string>
+  <string name="editor_save" tools:machine_translated="true">Kaydet</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">İçe aktarılmak istenen JSON dosyası çok büyük (maksimum 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Seçilen dosya açılamıyor.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Satır İçi Görüntüler</string>
+  <string name="inline_images_off" tools:machine_translated="true">Kapalı</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Sor</string>
+  <string name="inline_images_on" tools:machine_translated="true">Açık</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Satır içi resimleri gösterilsin mi?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Bu oturumun geri kalanında bu ana bilgisayarın satır içi görüntüleri göstermesine izin verilsin mi?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Otomatik başlatma etkinleştirildi.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Otomasyon yüklenemedi.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Otomasyon kaydedilemedi.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Metni, deseni, süreyi veya seçilen bağlantı noktası yönlendirmesini kontrol edin.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">İşlem başarısız oldu.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">Belirlenen süre içinde metin gelmediği için işlem başarısız oldu.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Otomasyonun işleyebileceğinden daha fazla veri geldi.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Bu işlem için açık bir terminal oturumu gereklidir.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">Bağlantı noktası yönlendirmesi eksik.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Bu bağlantı, port yönlendirmeyi desteklemiyor.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Dize için bekleyin.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Dizeyi gönder</string>
+  <string name="automation_send_key" tools:machine_translated="true">Özel tuşu gönder</string>
+  <string name="automation_delay" tools:machine_translated="true">Bekle</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Bağlantıyı Kes</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Port yönlendirmesini etkinleştir</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Port yönlendirmeyi devre dışı bırak</string>
+  <string name="automation_add" tools:machine_translated="true">İşlem ekle</string>
+  <string name="automation_save" tools:machine_translated="true">Kaydet</string>
+  <string name="automation_edit" tools:machine_translated="true">Düzenle</string>
+  <string name="automation_delete" tools:machine_translated="true">Sil</string>
+  <string name="automation_move_up" tools:machine_translated="true">Yukarı taşı</string>
+  <string name="automation_move_down" tools:machine_translated="true">Aşağı kaydır</string>
+  <string name="automation_drag" tools:machine_translated="true">Sırayı değiştirmek için sürükleyin.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Değişiklikleri kaydetmek ister misiniz?</string>
+  <string name="automation_discard" tools:machine_translated="true">İptal et</string>
+  <string name="automation_cancel" tools:machine_translated="true">İptal et</string>
+  <string name="automation_text" tools:machine_translated="true">Metin</string>
+  <string name="automation_regex" tools:machine_translated="true">Düzenli ifade</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Gelen metni, ANSI biçimlendirmesi olmadan eşleştirir. Düzenli ifade (regex), RE2 sözdizimini destekler; ileriye dönük ve geriye dönük referanslar desteklenmez.</string>
+  <string name="automation_duration" tools:machine_translated="true">Süre (saniye)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Zaman Aşımı (saniye)</string>
+  <string name="automation_key" tools:machine_translated="true">Anahtar</string>
+  <string name="automation_forward" tools:machine_translated="true">Bağlantı yönlendirme</string>
+  <string name="automation_failure" tools:machine_translated="true">Başarısızlık durumunda</string>
+  <string name="automation_stop" tools:machine_translated="true">Otomasyonu durdurun.</string>
+  <string name="automation_continue" tools:machine_translated="true">Devam et</string>
+  <string name="automation_save_host" tools:machine_translated="true">Otomasyon ayarlarını yapmak için sunucuyu kaydedin.</string>
+  <string name="automation_progress" tools:machine_translated="true">Otomasyon: %1$d / %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">İşlem %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Otomasyonu iptal et</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Giriş yapın</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Sekme</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Çıkış</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Geri Tuşu</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Sil</string>
+  <string name="automation_key_up" tools:machine_translated="true">Yukarı ok</string>
+  <string name="automation_key_down" tools:machine_translated="true">Aşağı ok</string>
+  <string name="automation_key_left" tools:machine_translated="true">Sol ok</string>
+  <string name="automation_key_right" tools:machine_translated="true">Sağ ok</string>
+  <string name="automation_key_home" tools:machine_translated="true">Ana Sayfa</string>
+  <string name="automation_key_end" tools:machine_translated="true">Son</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Ekle</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Sayfa Yukarı</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Sayfa Aşağı</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Shift tuşu</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f sn</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d işlem</item>
+		<item quantity="other">%1$d işlem</item>
+	</plurals>
 </resources>

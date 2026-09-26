@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">הפעל/כבה את מצב ההרכבה עבור קלט IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">מצב הרכבה (עבור שיטות קלט כמו IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">ערוך את הפרופיל שנבחר</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">מתבצעת הכנה לתמיכה ב-Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">מתחבר ל-Mosh…</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">אזהרה: התהליך להתקנת Mosh הסתיים לפני זמן.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">הפעלת mosh-server במחשב מרוחק…</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">לא ניתן היה להפעיל את mosh-server במחשב המרוחק.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">לא ניתן היה להפעיל את תוכנת mosh-client.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">התקיים חיבור Mosh.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">שגיאה ב-Mosh: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">פקודה להגדרת שרת Mosh</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">נתיב או פקודה מותאמת אישית עבור שרת Mosh (השאירו ריק כדי להשתמש בהגדרות ברירת המחדל).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">יציאת UDP של Mosh</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">יציאת UDP קבועה עבור mosh (0 מציין שימוש בטווח אוטומטי של 60000-61000).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">אזור תרבותי/שפה</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">הגדרת אזור עבור סשן Mosh (לדוגמה, en_US.UTF-8).</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">מוש</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">גרסת Mosh וקוד המקור שלה</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">מתבצעת הכנה לתמיכה ב-Mosh…</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">לזנוח את השינויים?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">השינויים שביצעת יימחקו אם תצא בלי לשמור.</string>
+  <string name="editor_discard" tools:machine_translated="true">בטל</string>
+  <string name="editor_save" tools:machine_translated="true">שמור</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">קובץ ה-JSON גדול מדי מכדי לייבא אותו (הגודל המקסימלי הוא 8 מגה-בייט).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">לא ניתן לפתוח את הקובץ שנבחר.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">תמונות מוטמעות</string>
+  <string name="inline_images_off" tools:machine_translated="true">כבוי</string>
+  <string name="inline_images_ask" tools:machine_translated="true">שאל</string>
+  <string name="inline_images_on" tools:machine_translated="true">מופעל</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">הצג תמונות מוטמעות?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">האם לאפשר למחשב זה להציג תמונות מוטמעות במהלך יתר הסשן הנוכחי?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">הפעלה מופעלת.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">לא ניתן לטעון את תוכנית האוטומציה.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">לא ניתן לשמור את האוטומציה.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">בדוק את הטקסט, התבנית, משך הפעולה או יציאת ההעברה שנבחרה.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">הפעולה נכשלה.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">פג תוקף ההמתנה לקבלת הטקסט.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">נפח גדול מדי של נתונים הגיע לפני שהמערכת האוטומטית הספיקה לעבד אותם.</string>
+  <string name="automation_no_session" tools:machine_translated="true">פעולה זו דורשת פתיחת סשן טרמינל.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">הגדרת העברת הפורט חסרה.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">חיבור זה אינו תומך בהעברת פורטים.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">המתן עד להופעת המחרוזת.</string>
+  <string name="automation_send_text" tools:machine_translated="true">שלח מחרוזת.</string>
+  <string name="automation_send_key" tools:machine_translated="true">שלח מקש מיוחד.</string>
+  <string name="automation_delay" tools:machine_translated="true">המתן</string>
+  <string name="automation_disconnect" tools:machine_translated="true">נתק</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">אפשר העברת פורטים.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">בטל העברת פורטים</string>
+  <string name="automation_add" tools:machine_translated="true">הוסף פעולה</string>
+  <string name="automation_save" tools:machine_translated="true">שמור</string>
+  <string name="automation_edit" tools:machine_translated="true">ערוך</string>
+  <string name="automation_delete" tools:machine_translated="true">מחק</string>
+  <string name="automation_move_up" tools:machine_translated="true">העלה למעלה</string>
+  <string name="automation_move_down" tools:machine_translated="true">הזז למטה</string>
+  <string name="automation_drag" tools:machine_translated="true">גרור כדי לשנות את הסדר.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">לשמור את השינויים?</string>
+  <string name="automation_discard" tools:machine_translated="true">בטל</string>
+  <string name="automation_cancel" tools:machine_translated="true">בטל</string>
+  <string name="automation_text" tools:machine_translated="true">טקסט</string>
+  <string name="automation_regex" tools:machine_translated="true">ביטוי רגולרי</string>
+  <string name="automation_regex_help" tools:machine_translated="true">מתאים את הטקסט הנכנס ללא עיצוב ANSI. ביטויים רגולריים תומכים בתחביר RE2; לא נתמכים חיפושים מראש והפניות אחוריות.</string>
+  <string name="automation_duration" tools:machine_translated="true">משך זמן (בשניות)</string>
+  <string name="automation_timeout" tools:machine_translated="true">זמן המתנה (בשניות)</string>
+  <string name="automation_key" tools:machine_translated="true">מפתח</string>
+  <string name="automation_forward" tools:machine_translated="true">העברת פורטים</string>
+  <string name="automation_failure" tools:machine_translated="true">במקרה של כשל.</string>
+  <string name="automation_stop" tools:machine_translated="true">הפסק את האוטומציה.</string>
+  <string name="automation_continue" tools:machine_translated="true">המשך</string>
+  <string name="automation_save_host" tools:machine_translated="true">שמרו את המארח כדי להגדיר אוטומציה.</string>
+  <string name="automation_progress" tools:machine_translated="true">אוטומציה: שלב נוכחי %1$d מתוך סך %2$d.</string>
+  <string name="automation_failure_step" tools:machine_translated="true">פעולה מספר %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">בטל אוטומציה</string>
+  <string name="automation_key_enter" tools:machine_translated="true">הזן</string>
+  <string name="automation_key_tab" tools:machine_translated="true">לשונית</string>
+  <string name="automation_key_escape" tools:machine_translated="true">יציאה</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">מחק אחורה</string>
+  <string name="automation_key_delete" tools:machine_translated="true">מחק</string>
+  <string name="automation_key_up" tools:machine_translated="true">חץ למעלה</string>
+  <string name="automation_key_down" tools:machine_translated="true">חץ כלפי מטה</string>
+  <string name="automation_key_left" tools:machine_translated="true">חץ שמאלה</string>
+  <string name="automation_key_right" tools:machine_translated="true">חץ ימינה</string>
+  <string name="automation_key_home" tools:machine_translated="true">בית</string>
+  <string name="automation_key_end" tools:machine_translated="true">סוף</string>
+  <string name="automation_key_insert" tools:machine_translated="true">הוסף</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">עבור לדף הבא</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">דף למטה</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Shift</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f שניות</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d פעולות</item>
+		<item quantity="other">%1$d פעולות</item>
+	</plurals>
 </resources>

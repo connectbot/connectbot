@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">输入法</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">切换输入法编辑器的组合模式。</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">输入法合成模式</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">编辑所选资料。</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">正在准备 Mosh 支持……</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">正在启动 Mosh 连接……</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">警告：Mosh 安装超时。</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">正在远程主机上启动 mosh 服务器……</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">无法在远程主机上启动 mosh 服务器。</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">mosh客户端启动失败。</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh 连接已建立。</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Mosh 出错：%1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh 服务器命令</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">自定义 `mosh-server` 的路径或命令（留空则使用默认设置）。</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh UDP 端口</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">为 Mosh 设置固定的 UDP 端口（设置为 0 时，将自动选择 60000-61000 范围内的端口）。</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">区域设置。</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh 会话的区域设置（例如，en_US.UTF-8）</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">支持 Mosh 的动态功能模块。</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh 版本及其源代码。</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">正在准备 Mosh 支持……</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">放弃更改？</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">如果您在未保存的情况下离开，您所做的修改将会丢失。</string>
+  <string name="editor_discard" tools:machine_translated="true">放弃（更改）</string>
+  <string name="editor_save" tools:machine_translated="true">保存</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">导入的 JSON 文件过大（最大限制为 8MB）。</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">无法打开所选文件。</string>
+  <string name="profile_inline_images" tools:machine_translated="true">内联图像</string>
+  <string name="inline_images_off" tools:machine_translated="true">关闭。</string>
+  <string name="inline_images_ask" tools:machine_translated="true">询问。</string>
+  <string name="inline_images_on" tools:machine_translated="true">开启。</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">显示内联图片吗？</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">是否允许此主机在此会话期间显示内联图像？</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">启用启动。</string>
+  <string name="automation_load_failed" tools:machine_translated="true">无法加载自动化程序。</string>
+  <string name="automation_save_failed" tools:machine_translated="true">无法保存自动化配置。</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">请检查文本、模式、持续时间或所选的端口转发设置。</string>
+  <string name="automation_action_failed" tools:machine_translated="true">操作失败。</string>
+  <string name="automation_timed_out" tools:machine_translated="true">等待文本超时。</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">在自动化程序处理之前，已经产生了过多的输出。</string>
+  <string name="automation_no_session" tools:machine_translated="true">此操作需要一个已打开的终端会话。</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">端口转发配置丢失。</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">此连接不支持端口转发。</string>
+  <string name="automation_wait_text" tools:machine_translated="true">等待字符串。</string>
+  <string name="automation_send_text" tools:machine_translated="true">发送字符串。</string>
+  <string name="automation_send_key" tools:machine_translated="true">发送特殊按键。</string>
+  <string name="automation_delay" tools:machine_translated="true">等待。</string>
+  <string name="automation_disconnect" tools:machine_translated="true">断开连接。</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">启用端口转发。</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">禁用端口转发。</string>
+  <string name="automation_add" tools:machine_translated="true">添加操作。</string>
+  <string name="automation_save" tools:machine_translated="true">保存</string>
+  <string name="automation_edit" tools:machine_translated="true">编辑</string>
+  <string name="automation_delete" tools:machine_translated="true">删除</string>
+  <string name="automation_move_up" tools:machine_translated="true">向上移动。</string>
+  <string name="automation_move_down" tools:machine_translated="true">向下移动。</string>
+  <string name="automation_drag" tools:machine_translated="true">拖动以重新排序。</string>
+  <string name="automation_unsaved" tools:machine_translated="true">保存更改？</string>
+  <string name="automation_discard" tools:machine_translated="true">放弃。</string>
+  <string name="automation_cancel" tools:machine_translated="true">取消。</string>
+  <string name="automation_text" tools:machine_translated="true">文本</string>
+  <string name="automation_regex" tools:machine_translated="true">正则表达式</string>
+  <string name="automation_regex_help" tools:machine_translated="true">匹配传入的文本，不进行 ANSI 格式化。正则表达式支持 RE2 语法；不支持环视和反向引用。</string>
+  <string name="automation_duration" tools:machine_translated="true">持续时间（秒）</string>
+  <string name="automation_timeout" tools:machine_translated="true">超时时间（秒）</string>
+  <string name="automation_key" tools:machine_translated="true">键。</string>
+  <string name="automation_forward" tools:machine_translated="true">端口转发。</string>
+  <string name="automation_failure" tools:machine_translated="true">发生错误时</string>
+  <string name="automation_stop" tools:machine_translated="true">停止自动化。</string>
+  <string name="automation_continue" tools:machine_translated="true">继续。</string>
+  <string name="automation_save_host" tools:machine_translated="true">保存主机以配置自动化。</string>
+  <string name="automation_progress" tools:machine_translated="true">自动化：当前步骤：%1$d，总步骤：%2$d。</string>
+  <string name="automation_failure_step" tools:machine_translated="true">操作步骤：%1$d： %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">取消自动化操作。</string>
+  <string name="automation_key_enter" tools:machine_translated="true">输入</string>
+  <string name="automation_key_tab" tools:machine_translated="true">选项卡</string>
+  <string name="automation_key_escape" tools:machine_translated="true">退出</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">退格键</string>
+  <string name="automation_key_delete" tools:machine_translated="true">删除</string>
+  <string name="automation_key_up" tools:machine_translated="true">向上箭头。</string>
+  <string name="automation_key_down" tools:machine_translated="true">向下箭头。</string>
+  <string name="automation_key_left" tools:machine_translated="true">向左箭头。</string>
+  <string name="automation_key_right" tools:machine_translated="true">右箭头。</string>
+  <string name="automation_key_home" tools:machine_translated="true">主页</string>
+  <string name="automation_key_end" tools:machine_translated="true">结束。</string>
+  <string name="automation_key_insert" tools:machine_translated="true">插入</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">翻页（向上）</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">向下翻页</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Shift（切换）</string>
+  <string name="automation_seconds" tools:machine_translated="true">%.3f 秒</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d 个操作</item>
+		<item quantity="other">共 %1$d 个操作。</item>
+	</plurals>
 </resources>

@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME（入力メソッドエディター）</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">IME入力用の合成モードを切り替える</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">入力モード（IME）</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">選択したプロファイルを編集</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Moshのサポートを準備中です…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh接続を開始します…</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">警告：Moshのインストールがタイムアウトしました。</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">リモートホストで mosh-server を起動しています…</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">リモートホストで mosh-server の起動に失敗しました。</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">mosh-client の起動に失敗しました。</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh接続が確立されました。</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Mosh エラー：%1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Moshサーバーコマンド</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">カスタムの mosh-server パスまたはコマンド（デフォルトを使用する場合は空白のままにします）</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh UDPポート</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Moshで使用する固定のUDPポート（自動の場合は0、ポート範囲は60000～61000）</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">地域設定</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Moshセッションのロケール設定（例：en_US.UTF-8）</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh（モッシュ）</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Moshのリリース版とソースコード</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Moshのサポート機能を準備しています…</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">変更を破棄しますか？</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">変更を保存せずに終了すると、編集内容が失われます。</string>
+  <string name="editor_discard" tools:machine_translated="true">変更を保存せずに終了</string>
+  <string name="editor_save" tools:machine_translated="true">保存</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">JSONファイルのサイズが大きすぎて、インポートできません（最大8MB）。</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">選択したファイルを読み込めません。</string>
+  <string name="profile_inline_images" tools:machine_translated="true">インライン画像</string>
+  <string name="inline_images_off" tools:machine_translated="true">オフ</string>
+  <string name="inline_images_ask" tools:machine_translated="true">尋ねる</string>
+  <string name="inline_images_on" tools:machine_translated="true">オン</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">インライン画像を非表示にしますか？</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">このホストで、現在のセッションの残りの期間、インライン画像を表示することを許可しますか？</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">自動起動を有効にする</string>
+  <string name="automation_load_failed" tools:machine_translated="true">自動化機能の読み込みに失敗しました。</string>
+  <string name="automation_save_failed" tools:machine_translated="true">自動化設定の保存に失敗しました。</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">テキスト、パターン、期間、または選択したポートフォワーディングの設定を確認してください。</string>
+  <string name="automation_action_failed" tools:machine_translated="true">操作に失敗しました。</string>
+  <string name="automation_timed_out" tools:machine_translated="true">テキストの表示を待機する時間が制限を超えました。</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">自動処理が間に合わず、生成されたデータが多すぎて処理しきれませんでした。</string>
+  <string name="automation_no_session" tools:machine_translated="true">この操作には、ターミナルセッションを開いている必要があります。</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">ポートフォワーディングの設定がありません。</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">この接続ではポートフォワーディングがサポートされていません。</string>
+  <string name="automation_wait_text" tools:machine_translated="true">文字列の完了を待機</string>
+  <string name="automation_send_text" tools:machine_translated="true">文字列を送信</string>
+  <string name="automation_send_key" tools:machine_translated="true">特別なキーを送信</string>
+  <string name="automation_delay" tools:machine_translated="true">待機</string>
+  <string name="automation_disconnect" tools:machine_translated="true">接続解除</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">ポートフォワーディングを有効にする</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">ポートフォワーディングを無効にする</string>
+  <string name="automation_add" tools:machine_translated="true">アクションを追加</string>
+  <string name="automation_save" tools:machine_translated="true">保存</string>
+  <string name="automation_edit" tools:machine_translated="true">編集</string>
+  <string name="automation_delete" tools:machine_translated="true">削除</string>
+  <string name="automation_move_up" tools:machine_translated="true">上に移動</string>
+  <string name="automation_move_down" tools:machine_translated="true">下に移動</string>
+  <string name="automation_drag" tools:machine_translated="true">ドラッグして並べ替え</string>
+  <string name="automation_unsaved" tools:machine_translated="true">変更を保存しますか？</string>
+  <string name="automation_discard" tools:machine_translated="true">破棄する</string>
+  <string name="automation_cancel" tools:machine_translated="true">キャンセル</string>
+  <string name="automation_text" tools:machine_translated="true">テキスト</string>
+  <string name="automation_regex" tools:machine_translated="true">正規表現</string>
+  <string name="automation_regex_help" tools:machine_translated="true">ANSI形式の書式設定を適用せずに、入力されたテキストと一致させます。正規表現はRE2構文をサポートしますが、前方参照と後方参照はサポートされません。</string>
+  <string name="automation_duration" tools:machine_translated="true">時間（秒）</string>
+  <string name="automation_timeout" tools:machine_translated="true">タイムアウト時間（秒）</string>
+  <string name="automation_key" tools:machine_translated="true">キー</string>
+  <string name="automation_forward" tools:machine_translated="true">ポート転送</string>
+  <string name="automation_failure" tools:machine_translated="true">エラー発生時</string>
+  <string name="automation_stop" tools:machine_translated="true">自動化を停止</string>
+  <string name="automation_continue" tools:machine_translated="true">続行</string>
+  <string name="automation_save_host" tools:machine_translated="true">ホストを保存して、自動化の設定を行います。</string>
+  <string name="automation_progress" tools:machine_translated="true">自動化処理：現在ステップ %1$d / 全ステップ %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">操作 %1$d： %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">自動化をキャンセル</string>
+  <string name="automation_key_enter" tools:machine_translated="true">入力</string>
+  <string name="automation_key_tab" tools:machine_translated="true">タブ</string>
+  <string name="automation_key_escape" tools:machine_translated="true">エスケープ</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">バックスペース</string>
+  <string name="automation_key_delete" tools:machine_translated="true">削除</string>
+  <string name="automation_key_up" tools:machine_translated="true">上向き矢印</string>
+  <string name="automation_key_down" tools:machine_translated="true">下向き矢印</string>
+  <string name="automation_key_left" tools:machine_translated="true">左向き矢印</string>
+  <string name="automation_key_right" tools:machine_translated="true">右向き矢印</string>
+  <string name="automation_key_home" tools:machine_translated="true">ホーム</string>
+  <string name="automation_key_end" tools:machine_translated="true">終了</string>
+  <string name="automation_key_insert" tools:machine_translated="true">挿入</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">ページアップ</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">ページ下へ</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Shiftキー</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f 秒</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d 件のアクション</item>
+		<item quantity="other">%1$d 件のアクション</item>
+	</plurals>
 </resources>

@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Ota käyttöön tai poista käytöstä IME-syöttötilan yhdistelmätoiminto.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Kirjoitustila (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Muokkaa valittua profiilia</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Valmistellaan Mosh-tuen käyttöä…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh-yhteyden muodostaminen…</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Varoitus: Moshin asennusyritys epäonnistui, koska se ylitti aikarajan.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Mosh-palvelin käynnistetään etäkoneessa…</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Mosh-palvelimen käynnistäminen etäpalvelimella epäonnistui.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">Mosh-asiakkaan käynnistäminen epäonnistui.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh-yhteys on muodostettu.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Moshin virhe: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh-palvelimen komento</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Mukautettu Mosh-palvelimen polku tai komento (jätä tyhjäksi, jos haluat käyttää oletusarvoa)</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh-protokollan UDP-portti</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Kiinteä UDP-portti mosh-yhteydelle (0 tarkoittaa automaattista porttivalintaa väliltä 60000–61000).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Alueasetus</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh-yhteyden kieliasetus (esim. en_US.UTF-8)</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh-tuen tarjoavan dynaamisen moduulin otsikko</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Moshin julkaisu ja lähdekoodi</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Valmistellaan Mosh-tuen käyttöönottoa…</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Hylätäänkö muutokset?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Muutoksesi menetetään, jos suljet ikkunan tallentamatta.</string>
+  <string name="editor_discard" tools:machine_translated="true">Peruuta</string>
+  <string name="editor_save" tools:machine_translated="true">Tallenna</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">Tuotavan JSON-tiedoston koko ylittää sallitun enimmäiskoon (enintään 8 Mt).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Valittua tiedostoa ei voida avata.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Rivikuvat</string>
+  <string name="inline_images_off" tools:machine_translated="true">Pois päältä.</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Kysy</string>
+  <string name="inline_images_on" tools:machine_translated="true">Päällä</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Näytetäänkö kuvat suoraan tekstissä?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Salli, että tämä palvelin näyttää kuvat suoraan tekstissä tämän istunnon loppuun asti?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Automaattinen käynnistys käytössä</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Automaatioeditorin lataaminen epäonnistui.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Automaatio ei tallentunut.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Tarkista teksti, kuvio, kesto tai valittu portinohjaus.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">Toiminto epäonnistui.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">Tekstin odotusaika ylitetty.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Liian suuri määrä dataa saapui ennen kuin automaatio ehti käsitellä sen.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Tämä toiminto edellyttää, että terminaali-istunto on avoinna.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">Portin uudelleenohjaus on poistettu tai sitä ei ole määritetty.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Tämä yhteys ei tue porttien uudelleenohjausta.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Odotetaan, että merkkijono valmistuu.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Lähetä merkkijono</string>
+  <string name="automation_send_key" tools:machine_translated="true">Lähetä erityinen näppäinkomento.</string>
+  <string name="automation_delay" tools:machine_translated="true">Odota</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Katkaise yhteys</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Ota portin edelleenohjaus käyttöön.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Poista portinohjaus käytöstä.</string>
+  <string name="automation_add" tools:machine_translated="true">Lisää toiminto</string>
+  <string name="automation_save" tools:machine_translated="true">Tallenna</string>
+  <string name="automation_edit" tools:machine_translated="true">Muokkaa</string>
+  <string name="automation_delete" tools:machine_translated="true">Poista</string>
+  <string name="automation_move_up" tools:machine_translated="true">Siirrä ylöspäin.</string>
+  <string name="automation_move_down" tools:machine_translated="true">Siirrä alaspäin.</string>
+  <string name="automation_drag" tools:machine_translated="true">Vedä ja järjestä uudelleen.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Tallenna muutokset?</string>
+  <string name="automation_discard" tools:machine_translated="true">Poista</string>
+  <string name="automation_cancel" tools:machine_translated="true">Peruuta</string>
+  <string name="automation_text" tools:machine_translated="true">Teksti</string>
+  <string name="automation_regex" tools:machine_translated="true">Säännöllinen lauseke</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Vertaa saapuvaa tekstiä ilman ANSI-muotoilua. Regex-syntaksi tukee RE2-syntaksia; eteen- ja taaksepäinviittauksia ei tueta.</string>
+  <string name="automation_duration" tools:machine_translated="true">Kesto (sekunteina)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Aikaraja (sekunteina)</string>
+  <string name="automation_key" tools:machine_translated="true">Avain</string>
+  <string name="automation_forward" tools:machine_translated="true">Portin uudelleenohjaus</string>
+  <string name="automation_failure" tools:machine_translated="true">Virhetilanteessa</string>
+  <string name="automation_stop" tools:machine_translated="true">Lopeta automatisointi.</string>
+  <string name="automation_continue" tools:machine_translated="true">Jatka</string>
+  <string name="automation_save_host" tools:machine_translated="true">Tallenna kohde, jotta voit määrittää automaatioasetukset.</string>
+  <string name="automation_progress" tools:machine_translated="true">Automaatio: %1$d / %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Toiminto %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Peruuta automaatio</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Valitse näppäin</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Välilehti</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Poistu</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Poista-näppäin</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Poista</string>
+  <string name="automation_key_up" tools:machine_translated="true">Ylöspäin osoittava nuoli</string>
+  <string name="automation_key_down" tools:machine_translated="true">Alaspäin osoittava nuoli</string>
+  <string name="automation_key_left" tools:machine_translated="true">Vasemmanpuoleinen nuoli</string>
+  <string name="automation_key_right" tools:machine_translated="true">Oikea nuoli</string>
+  <string name="automation_key_home" tools:machine_translated="true">Aloitusnäyttö</string>
+  <string name="automation_key_end" tools:machine_translated="true">Loppu</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Lisää</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Siirry yhdellä sivulla ylöspäin</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Sivu alas</string>
+  <string name="automation_key_function" tools:machine_translated="true">F %1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Shift-näppäin</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f sekuntia</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d toiminto</item>
+		<item quantity="other">%1$d toimintoa</item>
+	</plurals>
 </resources>

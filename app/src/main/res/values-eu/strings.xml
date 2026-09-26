@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">IME sarrerako modu konposatuaren aktibazio/desaktibazio botoia.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Idazteko modua (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Hautatutako profila editatu</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Mosh-en laguntza prestatzen…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh konexioa abiarazten…</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Abisua: Mosh-en instalazioak denbora muga gainditu du.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">mosh-server abiarazten da urruneko ostalarian…</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">mosh-server ez da arrakastaz abiarazi host urrunean.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">Mosh-client abiaraztea huts egin du.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh konexioa ezarri da.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Mosh-en errore bat: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh zerbitzariaren komandoa</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Mosh-server bide edo komando pertsonalizatua (balio lehenetsia erabili nahi baduzu, utzi hutsik).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh-en UDP ataka</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Mosh-erako UDP portua zehaztu (0 automatikoa da, 60000-61000 tartean).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Hizkuntza-ingurunea</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh saioaren hizkuntza-ingurunea (adibidez, en_US.UTF-8)</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh (Mosh-en laguntza ematen duen dinamikako funtzio-moduluaren izenburua)</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh bertsioa eta iturburu-kodea</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Mosh-erako prestaketa…</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Aldaketak ezabatu?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Zure aldaketak galdu egingo dira gorde gabe irteten bazara.</string>
+  <string name="editor_discard" tools:machine_translated="true">Aldatu gabe utzi</string>
+  <string name="editor_save" tools:machine_translated="true">Gorde</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">JSON fitxategia handiegia da inportatzeko (gehienez 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Ezin da hautatutako fitxategia ireki.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Lerroan dauden irudiak</string>
+  <string name="inline_images_off" tools:machine_translated="true">Itzalita</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Galdetu</string>
+  <string name="inline_images_on" tools:machine_translated="true">Pikatuta</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Erakutsi irudiak testuaren barruan?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Baimendu al host honi, saio honetan zehar, irudiak lerroan erakustea?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Abiaraztea gaituta</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Ezin izan da automatizazioa kargatu.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Ezin izan da automatizazioa gorde.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Egiaztatu testua, eredua, iraupena edo hautatutako ataka-birzabalpena.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">Ekintza ez da arrakastaz burutu.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">Denbora muga gainditu da, testuaren zain egon den bitartean.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Automatizazioak prozesatu ahal izan aurretik, emaitza gehiegi iritsi ziren.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Ekintza horrek terminal-saio bat irekita egotea eskatzen du.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">Portaren bideraketa falta da.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Konexio honek ez du portuen bideraketa onartzen.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Itxaron katearen arte.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Katea bidali</string>
+  <string name="automation_send_key" tools:machine_translated="true">Tekla berezi bat bidali</string>
+  <string name="automation_delay" tools:machine_translated="true">Itxaron</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Deskonektatu</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Gaitu portaren birzuzenketa.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Desaktibatu porteen bideraketa.</string>
+  <string name="automation_add" tools:machine_translated="true">Ekintza gehitu</string>
+  <string name="automation_save" tools:machine_translated="true">Gorde</string>
+  <string name="automation_edit" tools:machine_translated="true">Editatu</string>
+  <string name="automation_delete" tools:machine_translated="true">Ezabatu</string>
+  <string name="automation_move_up" tools:machine_translated="true">Gora mugitu</string>
+  <string name="automation_move_down" tools:machine_translated="true">Beherantz mugitu</string>
+  <string name="automation_drag" tools:machine_translated="true">Arrastatu ordena aldatzeko.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Aldaketak gorde al?</string>
+  <string name="automation_discard" tools:machine_translated="true">Baztertu.</string>
+  <string name="automation_cancel" tools:machine_translated="true">Utzi edo eten.</string>
+  <string name="automation_text" tools:machine_translated="true">Testua</string>
+  <string name="automation_regex" tools:machine_translated="true">Adierazpen erregularra</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Sarrerako testua ANSI formaturik gabean batzen du. Regex-ek RE2 sintaxia onartzen du; aurretik begiratzea eta atzerapausoak ez dira onartzen.</string>
+  <string name="automation_duration" tools:machine_translated="true">Iraupena (segunduetan)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Denbora-muga (segunduetan)</string>
+  <string name="automation_key" tools:machine_translated="true">Gako</string>
+  <string name="automation_forward" tools:machine_translated="true">Ataka bideratu</string>
+  <string name="automation_failure" tools:machine_translated="true">Hutsunean</string>
+  <string name="automation_stop" tools:machine_translated="true">Automatizazioa eten</string>
+  <string name="automation_continue" tools:machine_translated="true">Jarraitu</string>
+  <string name="automation_save_host" tools:machine_translated="true">Gorde ostalaria automatizazioa konfiguratzeko.</string>
+  <string name="automation_progress" tools:machine_translated="true">Automatizazioa: %1$d / %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Ekintza %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Automatizazioa bertan behera utzi</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Sartu</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Fitxa</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Ihes</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Atzera botoia</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Ezabatu</string>
+  <string name="automation_key_up" tools:machine_translated="true">Gora noranzkoaren gezia</string>
+  <string name="automation_key_down" tools:machine_translated="true">Beheko gezia</string>
+  <string name="automation_key_left" tools:machine_translated="true">Ezkerreko gezia</string>
+  <string name="automation_key_right" tools:machine_translated="true">Eskuineko gezia</string>
+  <string name="automation_key_home" tools:machine_translated="true">Hasiera</string>
+  <string name="automation_key_end" tools:machine_translated="true">Amaiera</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Txertatu</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Orrialde aurrera</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Hurrengo orria</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Shift</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f seg.</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d ekintza</item>
+		<item quantity="other">%1$d ekintza</item>
+	</plurals>
 </resources>

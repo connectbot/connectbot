@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">आईएमई</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">आईएमई इनपुटका लागि कम्पोज मोड सक्रिय/निष्क्रिय गर्नुहोस्।</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">लेखन मोड (आईएमई)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">चयन गरिएको प्रोफाइल सम्पादन गर्नुहोस्।</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">मोश समर्थन तयार भइरहेको छ...</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">मोश जडान सुरु गर्दै...</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">चेतावनी: मोश स्थापनाको समय समाप्त भयो।</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">दूरस्थ होस्टमा मोश सर्भर सुरु गर्दै...</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">दूरस्थ होस्टमा मोश सर्भर सुरु गर्न असफल।</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">मोश क्लाइन्ट सुरु गर्न असफल।</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">मोश जडान स्थापित भयो।</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">मोश त्रुटि: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">मोश सर्भर आदेश</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">अनुकूलित मोश सर्भर मार्ग वा आदेश (पूर्वनिर्धारित विकल्पको लागि खाली छाडिदिनुहोस्)।</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">मोश यूडीपी पोर्ट</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">मोशका लागि निश्चित यूडीपी पोर्ट (स्वचालित रूपमा ६००००-६१००० दायराको लागि ०)।</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">क्षेत्रीय सेटिङ</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">मोश सत्रको लागि स्थानीय भाषा सेटिङ (उदाहरणका लागि, en_US.UTF-8)।</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">मोश</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">मोशको जारी गरिएको संस्करण र स्रोत कोड।</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">मोश समर्थनको लागि तयारी भइरहेको छ...</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">परिवर्तनहरू रद्द गर्नुहुन्छ?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">तपाईंले परिवर्तनहरू बचत नगरी छोड्नुभयो भने, तपाईंको गरिएका सम्पादनहरू हराउनेछन्।</string>
+  <string name="editor_discard" tools:machine_translated="true">त्याग गर्नुहोस्।</string>
+  <string name="editor_save" tools:machine_translated="true">सेभ गर्नुहोस्</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">आयात गरिएको JSON फाइल धेरै ठूलो छ (अधिकतम ८ एमबी)।</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">चयन गरिएको फाइल खोल्न सकिएन।</string>
+  <string name="profile_inline_images" tools:machine_translated="true">इनलाइन छविहरू</string>
+  <string name="inline_images_off" tools:machine_translated="true">बन्द गर्नुहोस्।</string>
+  <string name="inline_images_ask" tools:machine_translated="true">पूछनुहोस्।</string>
+  <string name="inline_images_on" tools:machine_translated="true">चालू गर्नुहोस्।</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">लाइनमा राखिएका छविहरू देखाउने?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">के यो होस्टलाई यस सत्रको बाँकी अवधिको लागि इनलाइन छविहरू प्रदर्शन गर्न अनुमति दिने?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">सुरूवात सक्षम गरियो।</string>
+  <string name="automation_load_failed" tools:machine_translated="true">स्वचालित प्रणाली लोड गर्न सकिएन।</string>
+  <string name="automation_save_failed" tools:machine_translated="true">स्वचालित प्रक्रिया बचत गर्न सकिएन।</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">पाठ, ढाँचा, अवधि वा चयन गरिएको पोर्ट फर्वार्ड जाँच गर्नुहोस्।</string>
+  <string name="automation_action_failed" tools:machine_translated="true">कार्य असफल भयो।</string>
+  <string name="automation_timed_out" tools:machine_translated="true">निर्धारित समयमा पाठको लागि पर्खिरहे, तर समय समाप्त भयो।</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">स्वचालित प्रणालीले प्रशोधन गर्नु अघि नै धेरै आउटपुट आए।</string>
+  <string name="automation_no_session" tools:machine_translated="true">यो कार्यका लागि एउटा सक्रिय टर्मिनल सत्र आवश्यक पर्छ।</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">पोर्ट फार्वर्ड हराइरहेको छ।</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">यो जडानले पोर्ट फर्वार्डिङलाई समर्थन गर्दैन।</string>
+  <string name="automation_wait_text" tools:machine_translated="true">स्ट्रिङको लागि पर्खनुहोस्।</string>
+  <string name="automation_send_text" tools:machine_translated="true">स्ट्रिङ पठाउनुहोस्।</string>
+  <string name="automation_send_key" tools:machine_translated="true">विशेष कुञ्जी पठाउनुहोस्।</string>
+  <string name="automation_delay" tools:machine_translated="true">कुनैबेलासम्म पर्खनुहोस्।</string>
+  <string name="automation_disconnect" tools:machine_translated="true">जोडन बिच्छेद गर्नुहोस्।</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">पोर्ट फर्वार्ड सक्रिय गर्नुहोस्।</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">पोर्ट फार्वर्डिङ बन्द गर्नुहोस्।</string>
+  <string name="automation_add" tools:machine_translated="true">कारबाही थप्नुहोस्।</string>
+  <string name="automation_save" tools:machine_translated="true">सेभ गर्नुहोस्।</string>
+  <string name="automation_edit" tools:machine_translated="true">परिवर्तन गर्नुहोस्।</string>
+  <string name="automation_delete" tools:machine_translated="true">हटाउनुहोस्।</string>
+  <string name="automation_move_up" tools:machine_translated="true">माथि सार्नुहोस्।</string>
+  <string name="automation_move_down" tools:machine_translated="true">तलतिर सार्नुहोस्।</string>
+  <string name="automation_drag" tools:machine_translated="true">पुनःक्रमबद्ध गर्न तान्नुहोस्।</string>
+  <string name="automation_unsaved" tools:machine_translated="true">परिवर्तनहरू सुरक्षित गर्नुहुन्छ?</string>
+  <string name="automation_discard" tools:machine_translated="true">त्याग गर्नुहोस्।</string>
+  <string name="automation_cancel" tools:machine_translated="true">रद्द गर्नुहोस्।</string>
+  <string name="automation_text" tools:machine_translated="true">पाठ्य</string>
+  <string name="automation_regex" tools:machine_translated="true">नियमित अभिव्यक्ति</string>
+  <string name="automation_regex_help" tools:machine_translated="true">आउने पाठलाई एएनएसआई ढाँचा बिना मिलाउँछ। रेगुलर एक्सप्रेशनले आरई२ सिन्ट्याक्स समर्थन गर्दछ; तर यसमा लुकअराउन्ड र ब्याक रेफरेन्सहरू समर्थित छैनन्।</string>
+  <string name="automation_duration" tools:machine_translated="true">अवधि (सेकेन्डमा)</string>
+  <string name="automation_timeout" tools:machine_translated="true">समय सीमा (सेकेन्डमा)</string>
+  <string name="automation_key" tools:machine_translated="true">कुञ्जी</string>
+  <string name="automation_forward" tools:machine_translated="true">पोर्ट फर्वार्ड गर्नुहोस्।</string>
+  <string name="automation_failure" tools:machine_translated="true">असफल भएमा</string>
+  <string name="automation_stop" tools:machine_translated="true">स्वचालित प्रक्रिया रोक्नुहोस्।</string>
+  <string name="automation_continue" tools:machine_translated="true">जारी राख्नुहोस्।</string>
+  <string name="automation_save_host" tools:machine_translated="true">स्वचालित प्रक्रियाको लागि होस्टलाई सुरक्षित गर्नुहोस्।</string>
+  <string name="automation_progress" tools:machine_translated="true">स्वचालित प्रक्रिया: %1$d / %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">कार्य %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">स्वचालित प्रक्रिया रद्द गर्नुहोस्।</string>
+  <string name="automation_key_enter" tools:machine_translated="true">प्रवेश गर्नुहोस्।</string>
+  <string name="automation_key_tab" tools:machine_translated="true">ट्याब</string>
+  <string name="automation_key_escape" tools:machine_translated="true">बाहिर निस्कनुहोस्।</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">ब्याकस्पेस</string>
+  <string name="automation_key_delete" tools:machine_translated="true">मेट्नुहोस्</string>
+  <string name="automation_key_up" tools:machine_translated="true">माथिल्लो तीर</string>
+  <string name="automation_key_down" tools:machine_translated="true">तलतिर तीर</string>
+  <string name="automation_key_left" tools:machine_translated="true">बायाँ तीर।</string>
+  <string name="automation_key_right" tools:machine_translated="true">दायाँ तीर</string>
+  <string name="automation_key_home" tools:machine_translated="true">घर</string>
+  <string name="automation_key_end" tools:machine_translated="true">अन्तिम।</string>
+  <string name="automation_key_insert" tools:machine_translated="true">प्रविष्ट गर्नुहोस्।</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">पृष्ठ माथि</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">पृष्ठ तल</string>
+  <string name="automation_key_function" tools:machine_translated="true">एफ %१$एस</string>
+  <string name="automation_key_shift" tools:machine_translated="true">शिफ्ट</string>
+  <string name="automation_seconds" tools:machine_translated="true">%.3f सेकेन्ड</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d कार्यहरू</item>
+		<item quantity="other">%1$d कार्यहरू</item>
+	</plurals>
 </resources>

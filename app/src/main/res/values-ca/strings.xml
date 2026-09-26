@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Activa/desactiva el mode de composició per a la introducció de text mitjançant l’IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Mode de composició (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Edita el perfil seleccionat.</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">S’està preparant el suport per a Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">S’està establint la connexió Mosh…</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Avís: s’ha superat el temps màxim per a la instal·lació de Mosh.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">S’està iniciant el servidor mosh a l’ordinador remot…</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">No s’ha pogut iniciar mosh-server a l’ordinador remot.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">No s’ha pogut iniciar mosh-client.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">S’ha establert la connexió Mosh.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Error de Mosh: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Ordre del servidor Mosh</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Ruta o ordre personalitzada per al servidor Mosh (deixeu-ho en blanc per utilitzar la configuració per defecte).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Port UDP de Mosh</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Port UDP fix per a mosh (0 per a l’assignació automàtica en el rang 60000-61000)</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Configuració regional</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Configuració regional per a la sessió de Mosh (per exemple, en_US.UTF-8)</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Versió de Mosh i codi font.</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">S’està preparant el suport per a Mosh…</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Desfer els canvis?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Les modificacions que heu fet es perdran si sortiu sense desar.</string>
+  <string name="editor_discard" tools:machine_translated="true">Descarta</string>
+  <string name="editor_save" tools:machine_translated="true">Desa</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">El fitxer JSON és massa gran per importar-lo (el límit màxim és de 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">No s’ha pogut obrir el fitxer seleccionat.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Imatges en línia</string>
+  <string name="inline_images_off" tools:machine_translated="true">Desactivat</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Pregunta.</string>
+  <string name="inline_images_on" tools:machine_translated="true">Activat</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Mostrar les imatges en línia?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Permetre que aquest servidor mostri imatges en línia durant la resta d’aquesta sessió?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Arrencada activada.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">No s’ha pogut carregar l’automatització.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">No s’ha pogut desar l’automatització.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Comproveu el text, el patró, la durada o el port de reenvio seleccionat.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">L’acció ha fallat.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">S’ha superat el temps d’espera per rebre el text.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Es va generar massa informació abans que l’automatització pogués processar-la.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Aquesta acció requereix una sessió de terminal activa.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">El reenvio de ports no està disponible.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Aquesta connexió no admet la redirecció de ports.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Espera la cadena.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Envia la cadena.</string>
+  <string name="automation_send_key" tools:machine_translated="true">Envia una tecla especial.</string>
+  <string name="automation_delay" tools:machine_translated="true">Espera</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Desconnectar</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Activa el reenviaments de ports.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Desactiva el reenviaments de ports.</string>
+  <string name="automation_add" tools:machine_translated="true">Afegeix una acció</string>
+  <string name="automation_save" tools:machine_translated="true">Desa</string>
+  <string name="automation_edit" tools:machine_translated="true">Edita</string>
+  <string name="automation_delete" tools:machine_translated="true">Suprimeix</string>
+  <string name="automation_move_up" tools:machine_translated="true">Pugeu-ho.</string>
+  <string name="automation_move_down" tools:machine_translated="true">Mou-ho cap avall.</string>
+  <string name="automation_drag" tools:machine_translated="true">Arrossegueu per reordenar.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Voleu desar els canvis?</string>
+  <string name="automation_discard" tools:machine_translated="true">Elimina.</string>
+  <string name="automation_cancel" tools:machine_translated="true">Cancel·la</string>
+  <string name="automation_text" tools:machine_translated="true">Text</string>
+  <string name="automation_regex" tools:machine_translated="true">Expressió regular</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Compara el text entrant sense format ANSI. L’expressió regular admet la sintaxi RE2; no admet la cerca anticipada ni les referències enrere.</string>
+  <string name="automation_duration" tools:machine_translated="true">Durada (segons)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Temps màxim d\'espera (segons)</string>
+  <string name="automation_key" tools:machine_translated="true">Clau</string>
+  <string name="automation_forward" tools:machine_translated="true">Reenvia el port</string>
+  <string name="automation_failure" tools:machine_translated="true">En cas d’error.</string>
+  <string name="automation_stop" tools:machine_translated="true">Atura l\'automatització.</string>
+  <string name="automation_continue" tools:machine_translated="true">Continua</string>
+  <string name="automation_save_host" tools:machine_translated="true">Guarda l’amfitrió per configurar l’automatització.</string>
+  <string name="automation_progress" tools:machine_translated="true">Automatització: %1$d / %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Acció número %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Cancel·la l\'automatització</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Introdueix</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Pestanya</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Sortir</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Tecla de retrocess.</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Suprimeix</string>
+  <string name="automation_key_up" tools:machine_translated="true">Fletxa cap amunt</string>
+  <string name="automation_key_down" tools:machine_translated="true">Fletxa cap avall</string>
+  <string name="automation_key_left" tools:machine_translated="true">Fletxa esquerra</string>
+  <string name="automation_key_right" tools:machine_translated="true">Fletxa cap a la dreta</string>
+  <string name="automation_key_home" tools:machine_translated="true">Inici</string>
+  <string name="automation_key_end" tools:machine_translated="true">Final</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Insereix</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Pàgina següent</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Pàgina següent</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Tecla Shift</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f seg.</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d acció</item>
+		<item quantity="other">%1$d accions</item>
+	</plurals>
 </resources>

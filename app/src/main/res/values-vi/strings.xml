@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Chuyển đổi chế độ soạn thảo cho phương thức nhập liệu IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Chế độ soạn thảo (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Chỉnh sửa hồ sơ đã chọn</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Đang chuẩn bị các tính năng hỗ trợ Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Đang khởi tạo kết nối Mosh...</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Cảnh báo: Quá trình cài đặt Mosh đã hết thời gian cho phép.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Đang khởi động mosh-server trên máy chủ từ xa...</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Không thể khởi động mosh-server trên máy chủ từ xa.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">Không thể khởi động chương trình mosh-client.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Kết nối Mosh đã được thiết lập.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Lỗi của Mosh: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Lệnh máy chủ Mosh</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Đường dẫn hoặc lệnh tùy chỉnh cho máy chủ Mosh (để trống để sử dụng mặc định).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Cổng UDP của Mosh</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Cố định cổng UDP cho Mosh (sử dụng 0 để tự động chọn trong khoảng từ 60000 đến 61000).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Ngôn ngữ/Khu vực</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Cấu hình ngôn ngữ cho phiên làm việc của Mosh (ví dụ: en_US.UTF-8).</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Phiên bản phát hành và mã nguồn của Mosh.</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Đang chuẩn bị hỗ trợ cho Mosh…</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Bỏ qua các thay đổi chưa lưu?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Các thay đổi của bạn sẽ bị mất nếu bạn rời đi mà không lưu lại.</string>
+  <string name="editor_discard" tools:machine_translated="true">Hủy bỏ</string>
+  <string name="editor_save" tools:machine_translated="true">Lưu</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">Tệp JSON quá lớn, không thể nhập được (tối đa 8MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Không thể mở tệp đã chọn.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Hiển thị hình ảnh trực tiếp trong dòng lệnh.</string>
+  <string name="inline_images_off" tools:machine_translated="true">Tắt</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Hỏi</string>
+  <string name="inline_images_on" tools:machine_translated="true">Đã bật.</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Hiển thị hình ảnh trực tiếp trong văn bản?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Cho phép máy chủ này hiển thị hình ảnh trực tiếp trong suốt thời gian còn lại của phiên làm việc này không?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Bật tính năng khởi động tự động.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Không thể tải quy trình tự động hóa.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Không thể lưu quy trình tự động hóa.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Kiểm tra văn bản, mẫu, thời lượng hoặc cổng chuyển tiếp đã chọn.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">Thao tác không thành công.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">Đã hết thời gian chờ để nhận văn bản.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Có quá nhiều dữ liệu được tạo ra trước khi hệ thống tự động có thể xử lý.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Thao tác này yêu cầu một phiên lệnh đang mở.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">Cấu hình chuyển tiếp cổng bị thiếu.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Kết nối này không hỗ trợ chuyển tiếp cổng.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Chờ cho đến khi chuỗi hoàn tất.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Gửi chuỗi ký tự.</string>
+  <string name="automation_send_key" tools:machine_translated="true">Gửi phím đặc biệt.</string>
+  <string name="automation_delay" tools:machine_translated="true">Chờ.</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Ngắt kết nối</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Bật tính năng chuyển tiếp cổng.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Tắt tính năng chuyển tiếp cổng.</string>
+  <string name="automation_add" tools:machine_translated="true">Thêm hành động</string>
+  <string name="automation_save" tools:machine_translated="true">Lưu</string>
+  <string name="automation_edit" tools:machine_translated="true">Chỉnh sửa</string>
+  <string name="automation_delete" tools:machine_translated="true">Xóa</string>
+  <string name="automation_move_up" tools:machine_translated="true">Di chuyển lên trên.</string>
+  <string name="automation_move_down" tools:machine_translated="true">Di chuyển xuống dưới.</string>
+  <string name="automation_drag" tools:machine_translated="true">Kéo để sắp xếp lại.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Lưu các thay đổi không?</string>
+  <string name="automation_discard" tools:machine_translated="true">Hủy bỏ.</string>
+  <string name="automation_cancel" tools:machine_translated="true">Hủy bỏ</string>
+  <string name="automation_text" tools:machine_translated="true">Văn bản</string>
+  <string name="automation_regex" tools:machine_translated="true">Biểu thức chính quy</string>
+  <string name="automation_regex_help" tools:machine_translated="true">So sánh văn bản nhập vào mà không áp dụng định dạng ANSI. Biểu thức chính quy hỗ trợ cú pháp RE2; các tính năng tìm kiếm trước/sau và tham chiếu ngược không được hỗ trợ.</string>
+  <string name="automation_duration" tools:machine_translated="true">Thời lượng (giây)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Thời gian chờ tối đa (giây).</string>
+  <string name="automation_key" tools:machine_translated="true">Phím</string>
+  <string name="automation_forward" tools:machine_translated="true">Chuyển tiếp cổng</string>
+  <string name="automation_failure" tools:machine_translated="true">Khi xảy ra lỗi</string>
+  <string name="automation_stop" tools:machine_translated="true">Dừng tự động hóa.</string>
+  <string name="automation_continue" tools:machine_translated="true">Tiếp tục</string>
+  <string name="automation_save_host" tools:machine_translated="true">Lưu máy chủ để cấu hình tự động hóa.</string>
+  <string name="automation_progress" tools:machine_translated="true">Tự động hóa: Bước hiện tại là %1$d, tổng số bước là %2$d.</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Hành động số %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Hủy bỏ chế độ tự động hóa.</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Nhập</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Thẻ/Nút chuyển đổi</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Thoát ra</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Phím xóa lùi</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Xóa</string>
+  <string name="automation_key_up" tools:machine_translated="true">Mũi tên chỉ lên</string>
+  <string name="automation_key_down" tools:machine_translated="true">Mũi tên chỉ xuống</string>
+  <string name="automation_key_left" tools:machine_translated="true">Mũi tên chỉ sang trái.</string>
+  <string name="automation_key_right" tools:machine_translated="true">Mũi tên chỉ sang phải</string>
+  <string name="automation_key_home" tools:machine_translated="true">Trang chủ</string>
+  <string name="automation_key_end" tools:machine_translated="true">Kết thúc</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Chèn vào</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Lật lên một trang</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Cuộn xuống một trang.</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Phím Shift</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f giây</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d thao tác</item>
+		<item quantity="other">%1$d thao tác</item>
+	</plurals>
 </resources>

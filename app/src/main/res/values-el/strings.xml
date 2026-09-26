@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Ενεργοποίηση/απενεργοποίηση της λειτουργίας σύνθεσης για την εισαγωγή μέσω IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Λειτουργία σύνθεσης (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Επεξεργασία του επιλεγμένου προφίλ</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Ετοιμάζεται η υποστήριξη για το Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Έναρξη σύνδεσης Mosh…</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Προειδοποίηση: Η εγκατάσταση του Mosh έλαβε χρονικό όριο και διακόπηκε.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Εκκίνηση του mosh-server στον απομακρυσμένο διακομιστή…</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Αδυναμία εκκίνησης του mosh-server στον απομακρυσμένο διακομιστή.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">Αδυναμία εκκίνησης του mosh-client.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Η σύνδεση Mosh έχει δημιουργηθεί.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Σφάλμα του Mosh: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Εντολή διαμόρφωσης του διακομιστή Mosh</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Προσαρμοσμένη διαδρομή ή εντολή για τον διακομιστή Mosh (αφήστε το κενό για την προεπιλεγμένη ρύθμιση).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Θύρα UDP του Mosh</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Σταθερή θύρα UDP για το Mosh (0 για αυτόματη επιλογή από το εύρος 60000-61000).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Τοπικές ρυθμίσεις</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Τοπικές ρυθμίσεις για τη συνεδρία του Mosh (π.χ., en_US.UTF-8)</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Έκδοση του Mosh και πηγαίος κώδικας</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Ετοιμάζεται η υποστήριξη για το Mosh…</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Να απορριφθούν οι αλλαγές;</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Οι αλλαγές που κάνατε θα χαθούν αν αποχωρήσετε χωρίς να τις αποθηκεύσετε.</string>
+  <string name="editor_discard" tools:machine_translated="true">Ακύρωση</string>
+  <string name="editor_save" tools:machine_translated="true">Αποθήκευση</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">Το αρχείο JSON είναι πολύ μεγάλο για να εισαχθεί (μέγιστο μέγεθος: 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Δεν είναι δυνατή η ανάγνωση του επιλεγμένου αρχείου.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Ενσωματωμένες εικόνες</string>
+  <string name="inline_images_off" tools:machine_translated="true">Απενεργοποίηση</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Ρωτήστε</string>
+  <string name="inline_images_on" tools:machine_translated="true">Ενεργό</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Εμφάνιση εικόνων ενσωματωμένων στο κείμενο;</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Να επιτραπεί σε αυτόν τον υπολογιστή να εμφανίζει ενσωματωμένες εικόνες για το υπόλοιπο της τρέχουσας συνεδρίας;</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Ενεργοποίηση αυτόματης εκκίνησης.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Αδυναμία φόρτωσης της αυτοματοποίησης.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Αποfailed η αποθήκευση της αυτοματοποίησης.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Ελέγξτε το κείμενο, το μοτίβο, τη διάρκεια ή τη διαμορφωμένη θύρα προώθησης.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">Η ενέργεια απέτυχε.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">Έληξε ο χρόνος αναμονής για την εμφάνιση του κειμένου.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Έφτασε υπερβολική ποσότητα δεδομένων πριν προλάβει η αυτοματοποιημένη διαδικασία να τα επεξεργαστεί.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Αυτή η ενέργεια απαιτεί μια ενεργή συνεδρία τερματικού.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">Η ρύθμιση ανακατεύθυνσης θυρών λείπει.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Αυτή η σύνδεση δεν υποστηρίζει την αυτόματη προώθηση θυρών.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Περιμένετε μέχρι να εμφανιστεί η συμβολοσειρά.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Αποστολή συμβολοσειράς</string>
+  <string name="automation_send_key" tools:machine_translated="true">Αποστολή ειδικού πλήκτρου.</string>
+  <string name="automation_delay" tools:machine_translated="true">Περιμένετε</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Αποσύνδεση</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Ενεργοποίηση προώθησης θύρας.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Απενεργοποίηση προώθησης θύρας.</string>
+  <string name="automation_add" tools:machine_translated="true">Προσθήκη ενέργειας</string>
+  <string name="automation_save" tools:machine_translated="true">Αποθήκευση</string>
+  <string name="automation_edit" tools:machine_translated="true">Επεξεργασία</string>
+  <string name="automation_delete" tools:machine_translated="true">Διαγραφή</string>
+  <string name="automation_move_up" tools:machine_translated="true">Μετακίνηση προς τα πάνω</string>
+  <string name="automation_move_down" tools:machine_translated="true">Μετακίνηση προς τα κάτω</string>
+  <string name="automation_drag" tools:machine_translated="true">Σύρετε για να αλλάξετε τη σειρά.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Αποθηκεύετε τις αλλαγές;</string>
+  <string name="automation_discard" tools:machine_translated="true">Απορρίψτε.</string>
+  <string name="automation_cancel" tools:machine_translated="true">Ακύρωση</string>
+  <string name="automation_text" tools:machine_translated="true">Κείμενο</string>
+  <string name="automation_regex" tools:machine_translated="true">Κανονική έκφραση</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Αντιστοιχεί στο εισερχόμενο κείμενο χωρίς μορφοποίηση ANSI. Οι κανονικές εκφράσεις υποστηρίζουν τη σύνταξη RE2· δεν υποστηρίζονται οι αναζητήσεις και οι αναφορές προς τα πίσω.</string>
+  <string name="automation_duration" tools:machine_translated="true">Διάρκεια (δευτερόλεπτα)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Χρονικό όριο (δευτερόλεπτα)</string>
+  <string name="automation_key" tools:machine_translated="true">Κλειδί</string>
+  <string name="automation_forward" tools:machine_translated="true">Επιλογή προώθησης θύρας.</string>
+  <string name="automation_failure" tools:machine_translated="true">Σε περίπτωση αποτυχίας.</string>
+  <string name="automation_stop" tools:machine_translated="true">Διακόψτε την αυτοματοποίηση.</string>
+  <string name="automation_continue" tools:machine_translated="true">Συνεχίστε</string>
+  <string name="automation_save_host" tools:machine_translated="true">Αποθηκεύστε τον κεντρικό υπολογιστή για να ρυθμίσετε τις αυτόματες λειτουργίες.</string>
+  <string name="automation_progress" tools:machine_translated="true">Αυτοματοποίηση: %1$d / %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Ενέργεια %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Ακύρωση αυτοματοποίησης</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Εισαγωγή</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Καρτέλα</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Έξοδος</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Πλήκτρο διαγραφής (Backspace)</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Διαγραφή</string>
+  <string name="automation_key_up" tools:machine_translated="true">Βέλος προς τα πάνω</string>
+  <string name="automation_key_down" tools:machine_translated="true">Βέλος προς τα κάτω</string>
+  <string name="automation_key_left" tools:machine_translated="true">Βέλος προς τα αριστερά</string>
+  <string name="automation_key_right" tools:machine_translated="true">Βέλος προς τα δεξιά</string>
+  <string name="automation_key_home" tools:machine_translated="true">Αρχική σελίδα</string>
+  <string name="automation_key_end" tools:machine_translated="true">Τέλος</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Εισαγωγή</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Μετάβαση στην επόμενη σελίδα</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Μετάβαση στην επόμενη σελίδα.</string>
+  <string name="automation_key_function" tools:machine_translated="true">Α%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Shift (πλήκτρο μετατόπισης)</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f δευτ.</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d ενέργεια</item>
+		<item quantity="other">%1$d ενέργειες</item>
+	</plurals>
 </resources>

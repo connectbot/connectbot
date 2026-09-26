@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Slå sammensetningsmodus for IME-inndata på/av.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Komponeringsmodus (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Rediger valgt profil</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Klargjør støtte for Mosh …</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Oppretter forbindelse med Mosh …</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Advarsel: Installasjonen av Mosh tok for lang tid og ble avsluttet.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Starter mosh-tjeneren på den eksterne serveren …</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Kunne ikke starte mosh-tjeneren på den eksterne maskinen.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">Kunne ikke starte mosh-klienten.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh-tilkoblingen er opprettet.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Mosh-feil: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh-serverkommando</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Egendefinert sti eller kommando for Mosh-serveren (la feltet stå tomt for å bruke standardinnstillingene).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh UDP-port</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Fast UDP-port for mosh (bruk 0 for automatisk valg av port i området 60000–61000).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Språkinnstilling</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Språkinnstilling for Mosh-sesjonen (f.eks. nb_NO.UTF-8)</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh-støtte</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh-utgivelse og kildekode</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Klargjør støtte for Mosh …</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Vil du forkaste endringene?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Endringene dine vil gå tapt hvis du forlater siden uten å lagre dem.</string>
+  <string name="editor_discard" tools:machine_translated="true">Avbryt uten å lagre</string>
+  <string name="editor_save" tools:machine_translated="true">Lagre</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">JSON-filen er for stor til å importeres (maksimum 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Kunne ikke åpne den valgte filen.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Innlagede bilder</string>
+  <string name="inline_images_off" tools:machine_translated="true">Av</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Spør</string>
+  <string name="inline_images_on" tools:machine_translated="true">På</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Vis bilder direkte i teksten?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Skal denne datamaskinen få tillatelse til å vise bilder direkte i teksten resten av denne økten?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Automatisk oppstart aktivert.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Kunne ikke laste inn automatiseringsprogrammet.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Kunne ikke lagre automatiseringen.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Kontroller teksten, mønsteret, varigheten eller den valgte portvideresendingen.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">Handlingen mislyktes.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">Tidsgrensen ble overskredet mens vi ventet på tekst.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">For mye data kom inn før automatiseringssystemet kunne behandle det.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Denne handlingen krever en åpen terminalsesjon.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">Portvideresending mangler.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Denne tilkoblingen støtter ikke portvideresending.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Vent på strengen.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Send tekststreng</string>
+  <string name="automation_send_key" tools:machine_translated="true">Send spesifikk tast.</string>
+  <string name="automation_delay" tools:machine_translated="true">Vent.</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Koble fra</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Aktiver portvideresending</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Deaktiver portvideresending.</string>
+  <string name="automation_add" tools:machine_translated="true">Legg til handling</string>
+  <string name="automation_save" tools:machine_translated="true">Lagre</string>
+  <string name="automation_edit" tools:machine_translated="true">Rediger</string>
+  <string name="automation_delete" tools:machine_translated="true">Slett</string>
+  <string name="automation_move_up" tools:machine_translated="true">Flytt opp</string>
+  <string name="automation_move_down" tools:machine_translated="true">Flytt nedover</string>
+  <string name="automation_drag" tools:machine_translated="true">Dra og slipp for å endre rekkefølgen.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Vil du lagre endringene?</string>
+  <string name="automation_discard" tools:machine_translated="true">Forkast</string>
+  <string name="automation_cancel" tools:machine_translated="true">Avbryt</string>
+  <string name="automation_text" tools:machine_translated="true">Tekst</string>
+  <string name="automation_regex" tools:machine_translated="true">Regulært uttrykk</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Matcher innkommende tekst uten ANSI-formatering. Regulære uttrykk støtter RE2-syntaks; «lookaround» og tilbakekoblinger støttes ikke.</string>
+  <string name="automation_duration" tools:machine_translated="true">Varighet (sekunder)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Tidsgrense (sekunder)</string>
+  <string name="automation_key" tools:machine_translated="true">Nøkkel</string>
+  <string name="automation_forward" tools:machine_translated="true">Viderekobling av port</string>
+  <string name="automation_failure" tools:machine_translated="true">Ved feil</string>
+  <string name="automation_stop" tools:machine_translated="true">Stopp automatiseringen.</string>
+  <string name="automation_continue" tools:machine_translated="true">Fortsett</string>
+  <string name="automation_save_host" tools:machine_translated="true">Lagre verten for å konfigurere automatisering.</string>
+  <string name="automation_progress" tools:machine_translated="true">Automatisering: %1$d av %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Handling %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Avbryt automatisering</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Trykk/velg</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Fane</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Avbryt</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Tilbake-tast</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Slett</string>
+  <string name="automation_key_up" tools:machine_translated="true">Pil opp</string>
+  <string name="automation_key_down" tools:machine_translated="true">Nedpil</string>
+  <string name="automation_key_left" tools:machine_translated="true">Venstrepil</string>
+  <string name="automation_key_right" tools:machine_translated="true">Pil høyre</string>
+  <string name="automation_key_home" tools:machine_translated="true">Hjem</string>
+  <string name="automation_key_end" tools:machine_translated="true">Slutt</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Sett inn</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Gå til neste side</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Bla nedover side</string>
+  <string name="automation_key_function" tools:machine_translated="true">F %1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Skift</string>
+  <string name="automation_seconds" tools:machine_translated="true">%.3f sekunder</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d handling(er)</item>
+		<item quantity="other">%1$d handlinger</item>
+	</plurals>
 </resources>

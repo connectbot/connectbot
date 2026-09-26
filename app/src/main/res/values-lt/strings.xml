@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Perjunkite įvesties metodų rengimo režimą.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Rašymo režimas (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Redaguoti pasirinktą profilį</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Ruošiamas „Mosh“ palaikymas...</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Pradedamas „Mosh“ ryšio užmezgimas...</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Įspėjimas: „Mosh“ įdiegimo laikas baigėsi.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Paleidžiamas „mosh-server“ nuotoliniame kompiuteryje...</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Nepavyko paleisti „mosh-server“ nuotoliniame kompiuteryje.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">Nepavyko paleisti „mosh“ kliento.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">„Mosh“ ryšys užmegztas.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">„Mosh“ klaida: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">„Mosh“ serverio komanda</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Nurodykite pasirinktinį „mosh-server“ kelio arba komandos nustatymą (palikite laukelį tuščia, jei norite naudoti numatytąjį).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">„Mosh“ UDP prievadas</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Nustatytas UDP portas, skirtas „mosh“ programai (jei nurodyta 0, naudojamas automatiškai parinktas portas iš intervalo 60000–61000).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Regionas / Kalbos nustatymai</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">„Mosh“ sesijos lokalė (pvz., „en_US.UTF-8“)</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">„Mosh“ palaikymas</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">„Mosh“ versija ir šaltinio kodas</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Ruošiamasi įdiegti „Mosh“ palaikymą...</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Ar atsisakyti pakeitimų?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Jūsų atlikti pakeitimai bus prarasti, jei išeisite neįrašę jų.</string>
+  <string name="editor_discard" tools:machine_translated="true">Atšaukti</string>
+  <string name="editor_save" tools:machine_translated="true">Įrašyti</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">Importuojamo JSON failo dydis viršija leistiną ribą (maksimalus dydis – 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Nepavyko atidaryti pasirinkto failo.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Eilutėje rodomi paveikslėliai</string>
+  <string name="inline_images_off" tools:machine_translated="true">Išjungta.</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Klauskite.</string>
+  <string name="inline_images_on" tools:machine_translated="true">Įjungta</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Ar rodyti paveikslėlius tiesiogiai tekste?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Ar leisti šiam kompiuteriui rodyti paveikslėlius tiesiogiai tekste visos likusios sesijos metu?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Įjungtas automatinis paleidimas.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Nepavyko įkelti automatizavimo nustatymų.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Nepavyko išsaugoti automatizavimo nustatymų.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Patikrinkite tekstą, šabloną, trukmę arba pasirinktą prievado nukreipimą.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">Veiksmas nepavyko.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">Nurodytas laikas, per kurį turėjo būti gautas tekstas, baigėsi.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Per daug duomenų buvo gauta iki tol, kol automatizavimo sistema spėjo juos apdoroti.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Šiam veiksmui reikia atidarytos komandų eilutės sesijos.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">Nustatytas prievado perdavimas neberastas.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Šis ryšys nepalaiko prievadų nukreipimo.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Laukite, kol bus gautas tekstas.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Siųsti tekstą.</string>
+  <string name="automation_send_key" tools:machine_translated="true">Siųsti specialų klavišą.</string>
+  <string name="automation_delay" tools:machine_translated="true">Palaukite.</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Atjunkite.</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Įjunkite prievado nukreipimą.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Išjunkite prievado nukreipimą.</string>
+  <string name="automation_add" tools:machine_translated="true">Pridėti veiksmą</string>
+  <string name="automation_save" tools:machine_translated="true">Išsaugoti</string>
+  <string name="automation_edit" tools:machine_translated="true">Redaguoti</string>
+  <string name="automation_delete" tools:machine_translated="true">Ištrinti</string>
+  <string name="automation_move_up" tools:machine_translated="true">Perkelti aukštyn.</string>
+  <string name="automation_move_down" tools:machine_translated="true">Perkelkite žemyn.</string>
+  <string name="automation_drag" tools:machine_translated="true">Perkelkite, kad pakeistumėte tvarką.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Ar išsaugoti pakeitimus?</string>
+  <string name="automation_discard" tools:machine_translated="true">Atmeskite.</string>
+  <string name="automation_cancel" tools:machine_translated="true">Atšaukti</string>
+  <string name="automation_text" tools:machine_translated="true">Tekstas</string>
+  <string name="automation_regex" tools:machine_translated="true">Reguliarioji išraiška</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Atitinka gaunamą tekstą be ANSI formatavimo. Reguliariosios išraiškos palaiko RE2 sintaksę; atgalinės nuorodos ir „lookaround“ funkcijos nepalaikomos.</string>
+  <string name="automation_duration" tools:machine_translated="true">Trukmė (sekundėmis)</string>
+  <string name="automation_timeout" tools:machine_translated="true">Maksimalus laukimo laikas (sekundėmis).</string>
+  <string name="automation_key" tools:machine_translated="true">Raktas</string>
+  <string name="automation_forward" tools:machine_translated="true">Uostų nukreipimas</string>
+  <string name="automation_failure" tools:machine_translated="true">Esant gedimui</string>
+  <string name="automation_stop" tools:machine_translated="true">Sustabdyti automatizavimą.</string>
+  <string name="automation_continue" tools:machine_translated="true">Tęsti</string>
+  <string name="automation_save_host" tools:machine_translated="true">Išsaugokite įrenginį, kad galėtumėte nustatyti automatizavimo parametrus.</string>
+  <string name="automation_progress" tools:machine_translated="true">Automatizavimas: %1$d iš %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Veiksmas Nr. %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Atšaukti automatizavimą.</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Įveskite</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Skirtukas</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Išeiti</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">„Backspace“ klavišas (trinimo klavišas)</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Ištrinti</string>
+  <string name="automation_key_up" tools:machine_translated="true">Rodyklė į viršų</string>
+  <string name="automation_key_down" tools:machine_translated="true">Žemyn nukreipta rodyklė</string>
+  <string name="automation_key_left" tools:machine_translated="true">Rodyklė į kairę</string>
+  <string name="automation_key_right" tools:machine_translated="true">Dešinioji rodyklė</string>
+  <string name="automation_key_home" tools:machine_translated="true">Pagrindinis puslapis</string>
+  <string name="automation_key_end" tools:machine_translated="true">Pabaiga</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Įterpti</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Perkelti puslapį aukštyn</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">„Page Down“ (perkelkite puslapį žemyn)</string>
+  <string name="automation_key_function" tools:machine_translated="true">F %1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">„Shift“ klavišas</string>
+  <string name="automation_seconds" tools:machine_translated="true">%.3f sekundės</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d veiksmas</item>
+		<item quantity="other">%1$d veiksmai</item>
+	</plurals>
 </resources>

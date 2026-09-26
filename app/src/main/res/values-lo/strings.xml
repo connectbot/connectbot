@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">ໄອເອັມອີ</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">ປ່ຽນໄປໃຊ້ໂໝດການປ້ອນຂໍ້ມູນແບບ IME</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">ໂໝດສ້າງຂໍ້ຄວາມ (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">ແກ້ໄຂຂໍ້ມູນທີ່ເລືອກໄວ້</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">ກຳລັງກະກຽມການຕິດຕັ້ງສ່ວນປະກອບເພີ່ມເຕີມຂອງ Mosh...</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">ກຳລັງສ້າງການເຊື່ອມຕໍ່ກັບ Mosh...</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">ຄຳເຕືອນ: ການຕິດຕັ້ງໂປຣແກຼມ Mosh ສิ้นສຸດເວລາ.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">ກຳລັງເປີດໃຊ້ງານ mosh-server ໃນເຄື່ອງແມ່ຂ່າຍທາງໄກ...</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">ບໍ່ສາມາດເປີດໃຊ້ງານ mosh-server ໃນເຄື່ອງແມ່ຂ່າຍທາງໄກໄດ້</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">ບໍ່ສາມາດເປີດໂປຣແກຼມ mosh-client ເລີ່ມຕົ້ນໄດ້</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">ການເຊື່ອມຕໍ່ Mosh ສ້າງສຳເລັດແລ້ວ</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">ເກີດຂໍ້ຜິດພາດໃນໂປຣແກຼມ Mosh: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">ຄຳສັ່ງຂອງເຊີເວີ Mosh</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">ກຳນົດເສັ້ນທາງ ຫຼື ຄຳສັ່ງຂອງ mosh-server ແບບກຳນົດເອງ (ຖ້າບໍ່ຕ້ອງການ, ປ່ອຍໄວ້ຫວ່າງເພື່ອໃຊ້ຄ່າເລີ່ມຕົ້ນ)</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">ພອດ UDP ສຳລັບ Mosh</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">ກຳນົດພອດ UDP ແບບຄົງທີ່ສໍາລັບ Mosh (ຕັ້ງເປັນ 0 ເພື່ອໃຫ້ລະບົບເລືອກເອງໃນຊ່ວງ 60000-61000)</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">ການຕັ້ງຄ່າພາສາ ແລະພື້ນທີ່</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">ການຕັ້ງຄ່າພາສາສໍາລັບເຊສຊັນຂອງ Mosh (ຕົວຢ່າງ: en_US.UTF-8)</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">ໂມຊ໌</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">ສະບັບປ່ອຍອອກມາຂອງ Mosh ແລະລະຫັດແຫຼ່ງ</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">ກຳລັງກະກຽມເພື່ອຕິດຕັ້ງສ່ວນປະກອບທີ່ຮອງຮັບ Mosh...</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">ຍົກເລີກການປ່ຽນແປງບໍ?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">ການແກ້ໄຂຂອງທ່ານຈະສູນຫາຍໄປຖ້າທ່ານອອກຈາກໜ້າຈໍໂດຍບໍ່ໄດ້ບັນທຶກໄວ້.</string>
+  <string name="editor_discard" tools:machine_translated="true">ຍົກເລີກ</string>
+  <string name="editor_save" tools:machine_translated="true">ບັນທຶກ</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">ໄຟລ໌ JSON ມີຂະໜາດໃຫຍ່ເກີນໄປ, ຈຶ່ງບໍ່ສາມາດນຳເຂົ້າໄດ້ (ຂະໜາດສູງສຸດແມ່ນ 8 MB).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">ບໍ່ສາມາດເປີດໄຟລ໌ທີ່ເລືອກໄດ້</string>
+  <string name="profile_inline_images" tools:machine_translated="true">ຮູບພາບທີ່ສະແດງໃນແຖວเดียวกัน</string>
+  <string name="inline_images_off" tools:machine_translated="true">ປິດ</string>
+  <string name="inline_images_ask" tools:machine_translated="true">ຖາມ</string>
+  <string name="inline_images_on" tools:machine_translated="true">ເປີດ</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">ສະແດງຮູບພາບທີ່ຝັງໄວ້ໃນຂໍ້ຄວາມບໍ?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">ອະນຸຍາດໃຫ້ເຄື່ອງນີ້ສະແດງຮູບພາບແບບຝັງໄວ້ໃນໄລຍະເວລາທີ່ເຫຼືອຂອງການເຊື່ອມຕໍ່ນີ້ບໍ?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">ເປີດການເຮັດວຽກອັດຕະໂນມັດ</string>
+  <string name="automation_load_failed" tools:machine_translated="true">ບໍ່ສາມາດໂຫຼດຟັງຊັນການເຮັດວຽກແບບອັດຕະໂນມັດໄດ້</string>
+  <string name="automation_save_failed" tools:machine_translated="true">ບໍ່ສາມາດບັນທຶກການຕັ້ງຄ່າອັດຕະໂນມັດໄດ້</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">ກວດສອບຂໍ້ຄວາມ, ຮູບແບບ, ເວລາ ຫຼືພອດທີ່ເລືອກໄວ້ເພື່ອສົ່ງຕໍ່ຂໍ້ມູນ</string>
+  <string name="automation_action_failed" tools:machine_translated="true">ການປະຕິບັດງານບໍ່ສຳເລັດຮຽບຮ້ອຍ</string>
+  <string name="automation_timed_out" tools:machine_translated="true">ເວລາລໍຖ້າຂໍ້ຄວາມໝົດແລ້ວ</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">ມີຂໍ້ມູນສົ່ງມາຫຼາຍເກີນໄປ ກ່ອນທີ່ລະບົບອັດຕະໂນມັດຈະສາມາດປະມວນຜົນໄດ້ທັນ.</string>
+  <string name="automation_no_session" tools:machine_translated="true">ການກະທຳນີ້ຮຽກຮ້ອງໃຫ້ມີເຊສຊັນຂອງເທີມິນອນທີ່ເປີດໄວ້</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">ການສົ່ງຕໍ່ພອດບໍ່ມີ ຫຼືຖືກລຶບອອກແລ້ວ</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">ການເຊື່ອມຕໍ່ນີ້ບໍ່ຮອງຮັບການສົ່ງຕໍ່ພອດ</string>
+  <string name="automation_wait_text" tools:machine_translated="true">ລໍຖ້າສາຍຂໍ້ຄວາມ</string>
+  <string name="automation_send_text" tools:machine_translated="true">ສົ່ງຂໍ້ຄວາມ</string>
+  <string name="automation_send_key" tools:machine_translated="true">ສົ່ງປຸ່ມພິເສດ</string>
+  <string name="automation_delay" tools:machine_translated="true">ລໍຖ້າ</string>
+  <string name="automation_disconnect" tools:machine_translated="true">ຕັດການເຊື່ອມຕໍ່</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">ເປີດການສົ່ງຕໍ່ພອດ</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">ປິດການສົ່ງຕໍ່ພອດ</string>
+  <string name="automation_add" tools:machine_translated="true">ເພີ່ມການກະທຳ</string>
+  <string name="automation_save" tools:machine_translated="true">ບັນທຶກ</string>
+  <string name="automation_edit" tools:machine_translated="true">ແກ້ໄຂ</string>
+  <string name="automation_delete" tools:machine_translated="true">ລຶບອອກ</string>
+  <string name="automation_move_up" tools:machine_translated="true">ຍ້າຍຂຶ້ນເທິງ</string>
+  <string name="automation_move_down" tools:machine_translated="true">ເລື່ອນລົງ</string>
+  <string name="automation_drag" tools:machine_translated="true">ລາກເພື່ອຈັດລຽງໃຫມ່</string>
+  <string name="automation_unsaved" tools:machine_translated="true">ບັນທຶກການປ່ຽນແປງບໍ?</string>
+  <string name="automation_discard" tools:machine_translated="true">ຍົກເລີກ</string>
+  <string name="automation_cancel" tools:machine_translated="true">ຍົກເລີກ</string>
+  <string name="automation_text" tools:machine_translated="true">ຂໍ້ຄວາມ</string>
+  <string name="automation_regex" tools:machine_translated="true">ການປ້ອນຂໍ້ມູນແບບເຄື່ອນໄຫວ</string>
+  <string name="automation_regex_help" tools:machine_translated="true">ຄົ້ນຫາຂໍ້ຄວາມທີ່ເຂົ້າມາໂດຍບໍ່ຕ້ອງມີການຈັດຮູບແບບ ANSI။ ການໃຊ້ງານ regex ຮອງຮັບໄວຍະກອນຂອງ RE2; ສິ່ງທີ່ເອີ້ນວ່າ \"lookaround\" ແລະ \"backreferences\" ແມ່ນບໍ່ໄດ້ຮັບການຮອງรับ.</string>
+  <string name="automation_duration" tools:machine_translated="true">ໄລຍະເວລາ (ວິນາທີ)</string>
+  <string name="automation_timeout" tools:machine_translated="true">ເວລາສິ້ນສຸດ (ວິນາທີ)</string>
+  <string name="automation_key" tools:machine_translated="true">ປຸ່ມຫຼັກ</string>
+  <string name="automation_forward" tools:machine_translated="true">ຕົວເລືອກການສົ່ງຕໍ່ພອດ</string>
+  <string name="automation_failure" tools:machine_translated="true">ເມື່ອເກີດຄວາມຜິດພາດ</string>
+  <string name="automation_stop" tools:machine_translated="true">ຢຸດການເຮັດວຽກແບບອັດຕະໂນມັດ</string>
+  <string name="automation_continue" tools:machine_translated="true">ສືບຕໍ່</string>
+  <string name="automation_save_host" tools:machine_translated="true">ບັນທຶກຂໍ້ມູນຂອງເຄື່ອງເພື່ອຕັ້ງຄ່າການເຮັດວຽກແບບອັດຕະໂນມັດ</string>
+  <string name="automation_progress" tools:machine_translated="true">ການເຮັດວຽກແບບອັດຕະໂນມັດ: %1$d / %2$d</string>
+  <string name="automation_failure_step" tools:machine_translated="true">ການກະທຳທີ %1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">ຍົກເລີກການເຮັດວຽກແບບອັດຕະໂນມັດ</string>
+  <string name="automation_key_enter" tools:machine_translated="true">ກົດເພື່ອເລືອກ</string>
+  <string name="automation_key_tab" tools:machine_translated="true">ແຖບ</string>
+  <string name="automation_key_escape" tools:machine_translated="true">ອອກຈາກ​ລະບົບ</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">ປຸ່ມລຶບຕົວອັກສອນ</string>
+  <string name="automation_key_delete" tools:machine_translated="true">ລຶບອອກ</string>
+  <string name="automation_key_up" tools:machine_translated="true">ສັນຍາລັກຫົວໜ່ວຍເລື່ອນຂຶ້ນ</string>
+  <string name="automation_key_down" tools:machine_translated="true">ລູກສອນຊີ້ລົງ</string>
+  <string name="automation_key_left" tools:machine_translated="true">ລູກສອນຊີ້ໄປທາງຊ້າຍ</string>
+  <string name="automation_key_right" tools:machine_translated="true">ລູກສອນຊີ້ໄປທາງຂວາ</string>
+  <string name="automation_key_home" tools:machine_translated="true">ໜ້າຫຼັກ</string>
+  <string name="automation_key_end" tools:machine_translated="true">ສຸດທ້າຍ</string>
+  <string name="automation_key_insert" tools:machine_translated="true">ໃສ່ເຂົ້າໄປ</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">ໄປໜ້າຕໍ່ໄປ</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">ເລື່ອນໜ້າລົງ</string>
+  <string name="automation_key_function" tools:machine_translated="true">ຟັງຊັນ %1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">ປຸ່ມ Shift</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f ວິນາທີ</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">ມີການກະທຳ %1$d ຄັ້ງ</item>
+		<item quantity="other">ມີການກະທຳ %1$d ຄັ້ງ</item>
+	</plurals>
 </resources>

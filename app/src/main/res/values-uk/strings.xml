@@ -590,4 +590,96 @@
   <string name="button_key_ime" tools:machine_translated="true">Введення тексту (для мов, як-от японська)</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Увімкнути/вимкнути режим введення символів для IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Режим введення тексту (IME)</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">Редагувати обраний профіль</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Підготовка підтримки Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Встановлення з’єднання Mosh…</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Увага: час встановлення Mosh перевищено.</string>
+  <string name="terminal_mosh_launching_server" tools:machine_translated="true">Запуск сервера Mosh на віддаленому хості…</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Не вдалося запустити сервер Mosh на віддаленому хості.</string>
+  <string name="terminal_mosh_client_failed" tools:machine_translated="true">Не вдалося запустити клієнтську програму Mosh.</string>
+  <string name="terminal_mosh_connected" tools:machine_translated="true">З’єднання Mosh встановлено.</string>
+  <string name="terminal_mosh_error" tools:machine_translated="true">Помилка в програмі Mosh: %1$s</string>
+  <string name="hostpref_mosh_server_title" tools:machine_translated="true">Команда для сервера Mosh.</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Вкажіть власний шлях або команду для сервера Mosh (залиште поле порожнім, щоб використати значення за замовчуванням).</string>
+  <string name="hostpref_mosh_port_title" tools:machine_translated="true">Порт UDP для Mosh</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Зафіксований порт UDP для програми Mosh (0 означає автоматичний вибір порту в діапазоні 60000–61000).</string>
+  <string name="hostpref_locale_title" tools:machine_translated="true">Регіон</string>
+  <string name="hostpref_locale_summary" tools:machine_translated="true">Локаль для сеансу Mosh (наприклад, en_US.UTF-8).</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Підтримка Mosh</string>
+  <string name="pref_mosh_release_title" tools:machine_translated="true">Реліз і вихідний код Mosh.</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Підготовка до підтримки Mosh…</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Відхилити зміни?</string>
+  <string name="editor_discard_changes_message" tools:machine_translated="true">Ваші зміни буде втрачено, якщо ви закриєте вікно без збереження.</string>
+  <string name="editor_discard" tools:machine_translated="true">Відмінити зміни</string>
+  <string name="editor_save" tools:machine_translated="true">Зберегти</string>
+  <string name="import_json_file_too_large" tools:machine_translated="true">Файл у форматі JSON занадто великий для імпорту (максимальний розмір – 8 МБ).</string>
+  <string name="import_file_unavailable" tools:machine_translated="true">Не вдалося відкрити вибраний файл.</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Вбудовані зображення</string>
+  <string name="inline_images_off" tools:machine_translated="true">Вимкнути</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Запитати</string>
+  <string name="inline_images_on" tools:machine_translated="true">Увімкнути</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Відображати зображення безпосередньо в тексті?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Дозволити цьому хосту відображати зображення безпосередньо в тексті протягом усієї поточної сесії?</string>
+  <string name="automation_forward_start_enabled" tools:machine_translated="true">Автоматичний запуск увімкнено.</string>
+  <string name="automation_load_failed" tools:machine_translated="true">Не вдалося завантажити автоматизовані налаштування.</string>
+  <string name="automation_save_failed" tools:machine_translated="true">Не вдалося зберегти автоматизацію.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Перевірте текст, шаблон, тривалість або вибране правило перенаправлення порту.</string>
+  <string name="automation_action_failed" tools:machine_translated="true">Дію не вдалося виконати.</string>
+  <string name="automation_timed_out" tools:machine_translated="true">Час очікування на отримання тексту вичерпано.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Надто великий обсяг даних надійшов до того, як система автоматизації встигла їх опрацювати.</string>
+  <string name="automation_no_session" tools:machine_translated="true">Для виконання цієї дії потрібне відкрите вікно термінала.</string>
+  <string name="automation_forward_missing" tools:machine_translated="true">Відсутнє налаштування перенаправлення порту.</string>
+  <string name="automation_forward_unsupported" tools:machine_translated="true">Це з’єднання не підтримує перенаправлення портів.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Зачекайте, поки не з’явиться рядок.</string>
+  <string name="automation_send_text" tools:machine_translated="true">Надіслати рядок</string>
+  <string name="automation_send_key" tools:machine_translated="true">Надіслати спеціальну клавішу.</string>
+  <string name="automation_delay" tools:machine_translated="true">Зачекайте.</string>
+  <string name="automation_disconnect" tools:machine_translated="true">Від’єднати</string>
+  <string name="automation_enable_forward" tools:machine_translated="true">Увімкнути перенаправлення портів.</string>
+  <string name="automation_disable_forward" tools:machine_translated="true">Вимкнути перенаправлення портів.</string>
+  <string name="automation_add" tools:machine_translated="true">Додати дію</string>
+  <string name="automation_save" tools:machine_translated="true">Зберегти</string>
+  <string name="automation_edit" tools:machine_translated="true">Редагувати</string>
+  <string name="automation_delete" tools:machine_translated="true">Видалити</string>
+  <string name="automation_move_up" tools:machine_translated="true">Перемістити вгору</string>
+  <string name="automation_move_down" tools:machine_translated="true">Перемістити вниз</string>
+  <string name="automation_drag" tools:machine_translated="true">Перетягніть, щоб змінити порядок.</string>
+  <string name="automation_unsaved" tools:machine_translated="true">Зберегти зміни?</string>
+  <string name="automation_discard" tools:machine_translated="true">Відхилити/Скасувати.</string>
+  <string name="automation_cancel" tools:machine_translated="true">Скасувати</string>
+  <string name="automation_text" tools:machine_translated="true">Текст</string>
+  <string name="automation_regex" tools:machine_translated="true">Регулярний вираз</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Здійснює зіставлення з вхідним текстом без застосування форматування ANSI. Синтаксис регулярних виразів відповідає синтаксису RE2; підтримки для пошуку вперед/назад і зворотних посилань немає.</string>
+  <string name="automation_duration" tools:machine_translated="true">Тривалість (у секундах).</string>
+  <string name="automation_timeout" tools:machine_translated="true">Час очікування (у секундах).</string>
+  <string name="automation_key" tools:machine_translated="true">Ключ</string>
+  <string name="automation_forward" tools:machine_translated="true">Налаштування перенаправлення портів</string>
+  <string name="automation_failure" tools:machine_translated="true">У разі збою</string>
+  <string name="automation_stop" tools:machine_translated="true">Зупинити автоматизацію.</string>
+  <string name="automation_continue" tools:machine_translated="true">Продовжити</string>
+  <string name="automation_save_host" tools:machine_translated="true">Збережіть хост, щоб налаштувати автоматизацію.</string>
+  <string name="automation_progress" tools:machine_translated="true">Автоматизація: крок %1$d з %2$d.</string>
+  <string name="automation_failure_step" tools:machine_translated="true">Дія №%1$d: %2$s</string>
+  <string name="automation_cancel_run" tools:machine_translated="true">Скасувати автоматизацію</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Введіть</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Вкладка</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Вихід</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Клавіша «Назад» (для видалення символу)</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Видалити</string>
+  <string name="automation_key_up" tools:machine_translated="true">Стрілка вгору</string>
+  <string name="automation_key_down" tools:machine_translated="true">Стрілка вниз</string>
+  <string name="automation_key_left" tools:machine_translated="true">Стрілка вліво</string>
+  <string name="automation_key_right" tools:machine_translated="true">Стрілка вправо</string>
+  <string name="automation_key_home" tools:machine_translated="true">Головна сторінка</string>
+  <string name="automation_key_end" tools:machine_translated="true">Кінець</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Вставити</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Перемістити на сторінку вперед</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Перемістити на сторінку вниз</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Клавіша Shift</string>
+  <string name="automation_seconds" tools:machine_translated="true">%1$.3f сек.</string>
+  <plurals name="automation_count" tools:machine_translated="true">
+		<item quantity="one">%1$d дія</item>
+		<item quantity="other">%1$d дії</item>
+	</plurals>
 </resources>
