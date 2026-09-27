@@ -2116,4 +2116,78 @@
 	<string name="keyboard_bytes">Exact bytes (hexadecimal)</string>
 	<!-- Terminal keyboard configuration: character. -->
 	<string name="keyboard_character">Character</string>
+	<!-- Label for the space key in the shared automation and keyboard key picker. -->
+	<string name="terminal_key_space">Space</string>
+	<!-- Numeric keypad key name in the shared key picker; argument is the key's symbol or name. -->
+	<string name="terminal_key_keypad">Keypad %1$s</string>
+	<!-- Editable text shown on a configured terminal keyboard button. -->
+	<string name="keyboard_button_label">Button label</string>
+	<!-- Short name for the compact terminal keyboard preset. -->
+	<string name="keyboard_preset_citrus">Citrus</string>
+	<!-- Subtitle for the Citrus keyboard preset. -->
+	<string name="keyboard_preset_citrus_subtitle">Compact terminal controls</string>
+	<!-- Short playful name for the roomy terminal keyboard preset. -->
+	<string name="keyboard_preset_last_stop">Last Stop</string>
+	<!-- Subtitle for the Last Stop keyboard preset. -->
+	<string name="keyboard_preset_last_stop_subtitle">Roomy terminal controls</string>
+	<!-- Short playful name for the Claude Code keyboard preset. -->
+	<string name="keyboard_preset_claw">Claw</string>
+	<!-- Subtitle identifying the CLI targeted by the Claw preset. -->
+	<string name="keyboard_preset_claw_subtitle">Optimized for Claude Code</string>
+	<!-- Short name for the Codex CLI keyboard preset. -->
+	<string name="keyboard_preset_scribe">Scribe</string>
+	<!-- Subtitle identifying the CLI targeted by the Scribe preset. -->
+	<string name="keyboard_preset_scribe_subtitle">Optimized for Codex CLI</string>
+	<!-- Title of the preset picker opened when adding a layout. -->
+	<string name="keyboard_choose_preset">Choose a keyboard preset</string>
+	<!-- Option that creates the original keyboard layout. -->
+	<string name="keyboard_original_layout">Default</string>
+	<!-- Checkbox to fit all keyboard columns within the screen without scrolling. -->
+	<string name="keyboard_fit_to_width">Fit to width</string>
+	<!-- Layer tab or destination name, numbered from zero to four. -->
+	<string name="keyboard_layer">Layer %1$d</string>
+	<!-- Compact label on a button that selects a numbered keyboard layer. -->
+	<string name="keyboard_layer_short">L%1$d</string>
+	<!-- Button type in the keyboard editor for changing keyboard layers. -->
+	<string name="keyboard_add_layer_switch">Layer switch</string>
+	<!-- Label above the destination picker of a layer-switch button. -->
+	<string name="keyboard_layer_destination">Layer destination</string>
+	<!-- Destination option that cycles through populated keyboard layers. -->
+	<string name="keyboard_layer_next">Next non-empty layer</string>
+	<!-- Compact label on a keyboard button that cycles through non-empty layers. -->
+	<string name="keyboard_fn">FN</string>
+	<!-- Accessibility state of a layer button whose target has no visible content keys. -->
+	<string name="keyboard_layer_empty">Destination layer is empty</string>
+	<!-- Short label for the Control+C interrupt shortcut. -->
+	<string name="keyboard_action_stop">Stop</string>
+	<!-- Abbreviated History label for the Control+R shortcut; keep short. -->
+	<string name="keyboard_action_history">Hist</string>
+	<!-- Short label for the Shift+Tab permission mode shortcut. -->
+	<string name="keyboard_action_mode">Mode</string>
+	<!-- Abbreviated Newline label for Control+J; keep short. -->
+	<string name="keyboard_action_newline">Newln</string>
+	<!-- Short label for the Control+O transcript shortcut. -->
+	<string name="keyboard_action_log">Log</string>
+	<!-- Short label for the Control+G external editor shortcut. -->
+	<string name="keyboard_action_edit">Edit</string>
+	<!-- Short label for the Control+O copy-response shortcut. -->
+	<string name="keyboard_action_copy">Copy</string>
+	<!-- Keyboard app action that pastes the Android clipboard into the terminal. -->
+	<string name="keyboard_key_paste">Paste</string>
+	<!-- Accessibility description: the button action label followed by its full key combination. -->
+	<string name="keyboard_shortcut_description">%1$s (%2$s)</string>
+	<!-- Full accessible action name for the abbreviated stop keyboard shortcut. -->
+	<string name="keyboard_action_stop_full">Interrupt</string>
+	<!-- Full accessible action name for the abbreviated history keyboard shortcut. -->
+	<string name="keyboard_action_history_full">Search history</string>
+	<!-- Full accessible action name for the abbreviated mode keyboard shortcut. -->
+	<string name="keyboard_action_mode_full">Cycle permission modes</string>
+	<!-- Full accessible action name for the abbreviated newline keyboard shortcut. -->
+	<string name="keyboard_action_newline_full">Insert newline</string>
+	<!-- Full accessible action name for the abbreviated log keyboard shortcut. -->
+	<string name="keyboard_action_log_full">Toggle transcript</string>
+	<!-- Full accessible action name for the abbreviated edit keyboard shortcut. -->
+	<string name="keyboard_action_edit_full">Open external editor</string>
+	<!-- Full accessible action name for the abbreviated copy keyboard shortcut. -->
+	<string name="keyboard_action_copy_full">Copy response</string>
 </resources>

@@ -17,6 +17,7 @@
 
 package org.connectbot.service.automation
 
+import org.connectbot.terminal.TerminalKeyCatalog
 import org.connectbot.terminal.VTermKey
 import org.connectbot.util.TerminalKeyModifiers
 
@@ -26,14 +27,10 @@ object AutomationKeySupport {
     const val DELETE_CONTROL_CODE = '\u007f'.code
 
     // VTermKey values are nonnegative; negative values identify printable keys.
-    val characterKeys = ('@'..'_').map { -it.code } + -'?'.code
+    val characterKeys = TerminalKeyCatalog.characterKeys.map { it.value }
     private const val ALL_MODIFIERS = TerminalKeyModifiers.SHIFT or TerminalKeyModifiers.CTRL or TerminalKeyModifiers.ALT
 
-    private val terminalKeys = setOf(
-        VTermKey.ENTER, VTermKey.TAB, VTermKey.ESCAPE, VTermKey.BACKSPACE,
-        VTermKey.DEL, VTermKey.UP, VTermKey.DOWN, VTermKey.LEFT, VTermKey.RIGHT,
-        VTermKey.HOME, VTermKey.END, VTermKey.INS, VTermKey.PAGEUP, VTermKey.PAGEDOWN,
-    )
+    private val terminalKeys = TerminalKeyCatalog.namedKeys.map { it.value }.toSet()
 
     fun isCharacterKey(key: Int): Boolean = key in characterKeys
 
@@ -42,8 +39,12 @@ object AutomationKeySupport {
         return -key
     }
 
+    fun hasControlCode(key: Int): Boolean = isCharacterKey(key) &&
+        (characterCodePoint(key).toChar().uppercaseChar() in '@'..'_' || characterCodePoint(key) == '?'.code)
+
     fun controlCodeForCharacter(key: Int): Int {
-        val codePoint = characterCodePoint(key)
+        require(hasControlCode(key))
+        val codePoint = characterCodePoint(key).toChar().uppercaseChar().code
         return if (codePoint == '?'.code) DELETE_CONTROL_CODE else codePoint and CONTROL_CODE_MASK
     }
 

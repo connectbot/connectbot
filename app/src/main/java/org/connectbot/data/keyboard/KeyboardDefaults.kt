@@ -18,17 +18,19 @@
 package org.connectbot.data.keyboard
 
 import androidx.sqlite.db.SupportSQLiteDatabase
+import org.connectbot.terminal.TerminalKeyCatalog
 import java.util.UUID
 
 object KeyboardDefaults {
     val layoutId: UUID = UUID.fromString("5a46e491-229f-4ff9-a9ce-7b975f300001")
     val settingsId: UUID = UUID.fromString("5a46e491-229f-4ff9-a9ce-7b975f300002")
-    val keys = listOf("escape", "tab", "arrow_up", "arrow_down", "arrow_left", "arrow_right", "home", "end", "page_up", "page_down") +
-        (1..12).map { "f$it" } + listOf("enter", "backspace", "delete", "insert")
+    val keys = TerminalKeyCatalog.targets
+    private val defaultKeys = listOf("escape", "tab", "arrow_up", "arrow_down", "arrow_left", "arrow_right", "home", "end", "page_up", "page_down") +
+        (1..12).map { "f$it" }
     val modifiers = listOf("ctrl", "alt", "shift")
-    val controls = listOf("text_input", "toggle_compose", "toggle_ime")
+    val controls = listOf("text_input", "toggle_compose", "toggle_ime", "paste")
     fun items(id: UUID): List<KeyboardItem> = (
-        listOf("modifier" to "ctrl", "modifier" to "alt") + keys.dropLast(4).map { "key" to it } +
+        listOf("modifier" to "ctrl", "modifier" to "alt") + defaultKeys.map { "key" to it } +
             listOf("app" to "text_input", "app" to "toggle_compose", "app" to "toggle_ime")
         ).withIndex().filterNot { it.value == "app" to "text_input" }.mapIndexed { column, (identityIndex, action) ->
         val (kind, target) = action

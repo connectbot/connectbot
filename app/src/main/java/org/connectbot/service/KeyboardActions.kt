@@ -17,45 +17,30 @@
 
 package org.connectbot.service
 
-import org.connectbot.terminal.VTermKey
+import org.connectbot.data.keyboard.MacroAction
+import org.connectbot.data.keyboard.MacroFormat
+import org.connectbot.terminal.TerminalKeyCatalog
+import org.connectbot.util.TerminalKeyModifiers
 
 /** Runtime-only mapping; these library constants never enter persisted configuration. */
 object KeyboardActions {
-    fun key(target: String): Int = when (target) {
-        "escape" -> VTermKey.ESCAPE
+    fun key(target: String): Int = requireNotNull(TerminalKeyCatalog.byTarget(target)) { "Unsupported key" }.value
+    fun presetModifiers(target: String, definition: String?): Int {
+        if (definition == null) return TerminalKeyModifiers.NONE
+        val action = MacroFormat.decode(definition).single() as MacroAction.Key
+        require(action.key == target) { "Key definition does not match button" }
+        return terminalModifiers(action.modifiers)
+    }
 
-        "tab" -> VTermKey.TAB
-
-        "enter" -> VTermKey.ENTER
-
-        "backspace" -> VTermKey.BACKSPACE
-
-        "delete" -> VTermKey.DEL
-
-        "insert" -> VTermKey.INS
-
-        "arrow_up" -> VTermKey.UP
-
-        "arrow_down" -> VTermKey.DOWN
-
-        "arrow_left" -> VTermKey.LEFT
-
-        "arrow_right" -> VTermKey.RIGHT
-
-        "home" -> VTermKey.HOME
-
-        "end" -> VTermKey.END
-
-        "page_up" -> VTermKey.PAGEUP
-
-        "page_down" -> VTermKey.PAGEDOWN
-
-        else -> {
-            val number = target.removePrefix("f").toIntOrNull()
-            require(target.startsWith("f") && number != null && number in 1..12) { "Unsupported key" }
-            VTermKey.FUNCTION_1 + number - 1
+    fun terminalModifiers(names: List<String>): Int = names.fold(TerminalKeyModifiers.NONE) { mask, name ->
+        mask or when (name) {
+            "ctrl" -> TerminalKeyModifiers.CTRL
+            "alt" -> TerminalKeyModifiers.ALT
+            "shift" -> TerminalKeyModifiers.SHIFT
+            else -> error("Unsupported modifier")
         }
     }
+
     fun modifier(target: String): Int = when (target) {
         "ctrl" -> TerminalKeyListener.CTRL_ON
         "alt" -> TerminalKeyListener.ALT_ON

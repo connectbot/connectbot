@@ -62,6 +62,18 @@ class KeyboardRepositoryTest {
         db.close()
     }
 
+    @Test fun labelledKeyCombinationIsSavedWithLayout() = runTest {
+        val layout = KeyboardLayout(name = "Shortcuts")
+        val action = MacroAction.Key(key = "character_97", modifiers = listOf("ctrl"))
+        val macro = KeyboardMacro(name = "Select all", document = MacroFormat.encode(listOf(action)))
+        val button = KeyboardItem(layoutId = layout.id, kind = "key", target = "character_97", macroId = macro.id)
+        repository.save(layout, listOf(button), listOf(macro))
+        val restored = db.keyboardDao().macros().single()
+        assertEquals("Select all", restored.name)
+        assertEquals(listOf(action), MacroFormat.decode(restored.document))
+        assertEquals(button, db.keyboardDao().items().single())
+    }
+
     @Test fun rejectsInvalidButtonAppearance() = runTest {
         val layout = KeyboardLayout(name = "Invalid appearance")
         val item = KeyboardItem(layoutId = layout.id)
@@ -283,5 +295,41 @@ class KeyboardRepositoryTest {
         db.keyboardDao().saveItems(listOf(compose.copy(visible = true)))
         repository.configuration.first()
         assertTrue(db.keyboardDao().items().first { it.target == "toggle_compose" }.visible)
+    }
+
+    @Test fun fittedLayeredPresetSurvivesSaveDuplicationAndExport() = runTest {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val draft = KeyboardPresets.create(KeyboardPreset.SCRIBE, "My Scribe", context::getString)
+        val items = draft.items.map { if (it.kind == "layer") it.copy(target = if (it.layer == 0) "1" else "0") else it }
+        repository.save(draft.layout, items, draft.macros)
+        repository.setDefault(draft.layout.id)
+        val copyId = repository.duplicate(draft.layout, items)
+        val copy = db.keyboardDao().layouts().single { it.id == copyId }
+        assertEquals(draft.layout.copy(id = copyId), copy)
+        assertEquals(draft.layout.id, db.keyboardDao().settings()!!.defaultLayoutId)
+        assertEquals(items.groupingBy { it.layer }.eachCount(), db.keyboardDao().items().filter { it.layoutId == copyId }.groupingBy { it.layer }.eachCount())
+        val json = HostConfigJson.exportToJson(context, db).first
+        val target = Room.inMemoryDatabaseBuilder(context, ConnectBotDatabase::class.java).allowMainThreadQueries().build()
+        try {
+            HostConfigJson.importFromJson(context, target, json)
+            assertEquals(db.keyboardDao().layouts().toSet(), target.keyboardDao().layouts().toSet())
+            assertEquals(db.keyboardDao().items().toSet(), target.keyboardDao().items().toSet())
+            assertEquals(draft.macros.toSet(), target.keyboardDao().macros().toSet())
+            val older = JSONObject(json)
+            val layouts = older.getJSONArray("keyboard_layouts")
+            for (index in 0 until layouts.length()) {
+                layouts.getJSONObject(index).remove("fitToWidth")
+                layouts.getJSONObject(index).remove("presetKey")
+            }
+            val buttons = older.getJSONArray("keyboard_items")
+            for (index in 0 until buttons.length()) buttons.getJSONObject(index).remove("layer")
+            // Older exports can omit these fields; SQLite column defaults preserve compatibility.
+            target.clearAllTables()
+            HostConfigJson.importFromJson(context, target, older.toString())
+            assertTrue(target.keyboardDao().layouts().all { !it.fitToWidth && it.presetKey == null })
+            assertTrue(target.keyboardDao().items().all { it.layer == 0 })
+        } finally {
+            target.close()
+        }
     }
 }

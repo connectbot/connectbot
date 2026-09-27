@@ -56,10 +56,15 @@ class KeyboardRepository @Inject constructor(private val database: ConnectBotDat
         }
     }
 
-    suspend fun save(layout: KeyboardLayout, items: List<KeyboardItem>) = withContext(dispatchers.io) {
+    suspend fun save(layout: KeyboardLayout, items: List<KeyboardItem>, macros: List<KeyboardMacro> = emptyList()) = withContext(dispatchers.io) {
         KeyboardDefaults.validate(layout, items)
+        macros.forEach { macro ->
+            require(macro.name.isNotBlank()) { "A macro needs a name" }
+            MacroFormat.decode(macro.document)
+        }
         database.withTransaction {
             dao.saveLayout(layout)
+            macros.forEach { dao.saveMacro(it) }
             dao.deleteItems(layout.id)
             dao.saveItems(items)
         }

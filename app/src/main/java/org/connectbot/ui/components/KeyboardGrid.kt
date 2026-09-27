@@ -17,6 +17,7 @@
 
 package org.connectbot.ui.components
 
+import android.content.SharedPreferences
 import android.view.HapticFeedbackConstants
 import android.view.ViewConfiguration
 import android.widget.Toast
@@ -32,6 +33,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowLeft
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
+import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material.icons.filled.KeyboardArrowDown
@@ -48,6 +50,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
@@ -70,8 +74,11 @@ import androidx.compose.ui.semantics.onClick
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.stateDescription
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.unit.constrainHeight
+import androidx.compose.ui.unit.constrainWidth
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.preference.PreferenceManager
@@ -80,19 +87,27 @@ import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.keyboard.KeyboardDefaults
 import org.connectbot.data.keyboard.KeyboardItem
+import org.connectbot.data.keyboard.KeyboardLayers
 import org.connectbot.data.keyboard.KeyboardLayout
 import org.connectbot.data.keyboard.KeyboardMacro
+import org.connectbot.data.keyboard.MacroAction
+import org.connectbot.data.keyboard.MacroFormat
 import org.connectbot.service.KeyboardActions
 import org.connectbot.service.ModifierLevel
 import org.connectbot.service.ModifierState
 import org.connectbot.service.TerminalBridge
+import org.connectbot.terminal.TerminalKeyCatalog
 import org.connectbot.ui.screens.keyboard.KeyboardViewModel
 import org.connectbot.util.PreferenceConstants
 import java.util.UUID
 
 @Composable
-internal fun keyboardLabel(item: KeyboardItem, macros: List<KeyboardMacro>): String = if (item.kind == "macro") {
+internal fun keyboardLabel(item: KeyboardItem, macros: List<KeyboardMacro>): String = if (item.kind == "layer") {
+    if (item.target == "next") stringResource(R.string.keyboard_fn) else stringResource(R.string.keyboard_layer_short, item.target.toIntOrNull() ?: 0)
+} else if (item.kind == "macro" || (item.kind == "key" && item.macroId != null)) {
     macros.find { it.id == item.macroId }?.name ?: stringResource(R.string.keyboard_missing_macro)
+} else if (TerminalKeyCatalog.byTarget(item.target)?.character != null || item.target.startsWith("keypad_")) {
+    TerminalKeyCatalog.byTarget(item.target)?.displayName() ?: stringResource(R.string.keyboard_unsupported)
 } else {
     val resource = when (item.target) {
         "ctrl" -> R.string.keyboard_key_ctrl
@@ -112,6 +127,7 @@ internal fun keyboardLabel(item: KeyboardItem, macros: List<KeyboardMacro>): Str
         "end" -> R.string.keyboard_key_end
         "page_up" -> R.string.keyboard_key_page_up
         "page_down" -> R.string.keyboard_key_page_down
+        "paste" -> R.string.keyboard_key_paste
         "text_input" -> R.string.keyboard_key_text_input
         "toggle_compose" -> R.string.keyboard_key_toggle_compose
         "toggle_ime" -> R.string.keyboard_key_toggle_ime
@@ -139,6 +155,7 @@ internal fun ConfigurableTerminalKeyboard(
     onHideIme: () -> Unit,
     onShowIme: () -> Unit,
     onOpenTextInput: () -> Unit,
+    onPasteRequest: () -> Unit,
     onScrollInProgressChange: (Boolean) -> Unit,
     imeVisible: Boolean,
     playAnimation: Boolean,
@@ -154,7 +171,17 @@ internal fun ConfigurableTerminalKeyboard(
     val modifiers by bridge.keyHandler.modifierState.collectAsState()
     val context = LocalContext.current
     val view = LocalView.current
-    val bumpy = remember { PreferenceManager.getDefaultSharedPreferences(context).getBoolean(PreferenceConstants.BUMPY_ARROWS, false) }
+    val preferences = remember(context) { PreferenceManager.getDefaultSharedPreferences(context) }
+    var bumpy by remember(preferences) { mutableStateOf(preferences.getBoolean(PreferenceConstants.BUMPY_ARROWS, true)) }
+    DisposableEffect(preferences) {
+        val listener = SharedPreferences.OnSharedPreferenceChangeListener { prefs, key ->
+            if (key == PreferenceConstants.BUMPY_ARROWS || key == null) {
+                bumpy = prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, true)
+            }
+        }
+        preferences.registerOnSharedPreferenceChangeListener(listener)
+        onDispose { preferences.unregisterOnSharedPreferenceChangeListener(listener) }
+    }
     val errorLabel = stringResource(R.string.keyboard_action_failed)
     LaunchedEffect(bridge) {
         bridge.keyboardErrors.collect { Toast.makeText(context, "$errorLabel: $it", Toast.LENGTH_LONG).show() }
@@ -168,14 +195,14 @@ internal fun ConfigurableTerminalKeyboard(
     KeyboardGrid(
         layout = layout, items = items, macros = config.macros, modifierState = modifiers,
         unsupportedMacroIds = config.unsupportedMacroIds,
-        imeVisible = imeVisible, composeActive = isComposeModeActive,
+        imeVisible = imeVisible, composeActive = isComposeModeActive, sessionKey = bridge,
         modifier = modifier, playAnimation = playAnimation, onScrollInProgressChange = onScrollInProgressChange,
         onPress = { item ->
             onInteraction()
+            if (bumpy) view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
             when (item.kind) {
                 "key" -> {
-                    bridge.sendConfiguredKey(item.target)
-                    if (bumpy && item.target.startsWith("arrow_")) view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+                    bridge.sendConfiguredKey(item.target, config.macros.find { it.id == item.macroId }?.document)
                 }
 
                 "modifier" -> {
@@ -186,6 +213,7 @@ internal fun ConfigurableTerminalKeyboard(
                 "macro" -> config.macros.find { it.id == item.macroId }?.let { bridge.sendKeyboardMacro(it.document) }
 
                 "app" -> when (item.target) {
+                    "paste" -> onPasteRequest()
                     "text_input" -> onOpenTextInput()
                     "toggle_compose" -> onToggleComposeMode()
                     "toggle_ime" -> if (imeVisible) onHideIme() else onShowIme()
@@ -208,10 +236,22 @@ internal fun KeyboardGrid(
     imeVisible: Boolean = false,
     composeActive: Boolean = false,
     editing: Boolean = false,
+    activeLayer: Int? = null,
+    sessionKey: Any? = null,
     onMove: ((KeyboardItem, Int, Int) -> Unit)? = null,
     playAnimation: Boolean = false,
     onScrollInProgressChange: (Boolean) -> Unit = {},
 ) {
+    var selectedLayer by remember(layout.id, sessionKey) { mutableIntStateOf(KeyboardLayers.initial(items)) }
+    val populated = KeyboardLayers.populated(items)
+    val layer = if (editing) activeLayer ?: 0 else selectedLayer.takeIf { it in populated } ?: KeyboardLayers.initial(items)
+    val press: (KeyboardItem) -> Unit = { item ->
+        if (!editing && item.kind == "layer") {
+            val current = selectedLayer.takeIf { it in populated } ?: KeyboardLayers.initial(items)
+            KeyboardLayers.destination(items, current, item.target)?.let { selectedLayer = it }
+        }
+        onPress(item)
+    }
     val horizontal = rememberScrollState()
     val vertical = rememberScrollState()
     val scrolling by rememberUpdatedState(onScrollInProgressChange)
@@ -220,49 +260,79 @@ internal fun KeyboardGrid(
     }
     DisposableEffect(Unit) { onDispose { scrolling(false) } }
     LaunchedEffect(layout.id, playAnimation) {
-        if (playAnimation) {
+        if (playAnimation && !layout.fitToWidth) {
             delay(100)
             horizontal.animateScrollTo(horizontal.maxValue)
             delay(300)
             horizontal.animateScrollTo(0)
         }
     }
-    val visible = items.filter { editing || it.visible }
+    val visible = items.filter { it.layer == layer && (editing || it.visible) }
     val columns = (items.maxOfOrNull { it.column + it.columnSpan } ?: 0).coerceIn(0, 1000)
     val rows = (items.maxOfOrNull { it.row + it.rowSpan } ?: 0).coerceIn(0, 1000)
     val width = layout.buttonWidth.takeIf { it.isFinite() && it > 0 }?.coerceAtMost(1000f) ?: 45f
     val height = layout.buttonHeight.takeIf { it.isFinite() && it > 0 }?.coerceAtMost(1000f) ?: 30f
-    Box(modifier = modifier.horizontalScroll(horizontal).verticalScroll(vertical)) {
+    Box(modifier = modifier.then(if (layout.fitToWidth) Modifier else Modifier.horizontalScroll(horizontal).verticalScroll(vertical))) {
         Layout(content = {
             visible.forEach { item ->
                 key(item.id) {
                     val label = keyboardLabel(item, macros)
-                    val active = when (item.target) {
-                        "ctrl" -> modifierState?.ctrlState ?: ModifierLevel.OFF
-                        "alt" -> modifierState?.altState ?: ModifierLevel.OFF
-                        "shift" -> modifierState?.shiftState ?: ModifierLevel.OFF
-                        "toggle_compose" -> if (composeActive) ModifierLevel.LOCKED else ModifierLevel.OFF
-                        "toggle_ime" -> if (imeVisible) ModifierLevel.TRANSIENT else ModifierLevel.OFF
-                        else -> ModifierLevel.OFF
+                    val active = if (item.kind == "layer" && (item.target == layer.toString() || (item.target == "next" && layer != KeyboardLayers.initial(items)))) {
+                        ModifierLevel.LOCKED
+                    } else {
+                        when (item.target) {
+                            "ctrl" -> modifierState?.ctrlState ?: ModifierLevel.OFF
+                            "alt" -> modifierState?.altState ?: ModifierLevel.OFF
+                            "shift" -> modifierState?.shiftState ?: ModifierLevel.OFF
+                            "toggle_compose" -> if (composeActive) ModifierLevel.LOCKED else ModifierLevel.OFF
+                            "toggle_ime" -> if (imeVisible) ModifierLevel.TRANSIENT else ModifierLevel.OFF
+                            else -> ModifierLevel.OFF
+                        }
                     }
                     val supported = when (item.kind) {
-                        "key" -> item.target in KeyboardDefaults.keys
+                        "key" ->
+                            item.target in KeyboardDefaults.keys &&
+                                (item.macroId == null || (item.macroId !in unsupportedMacroIds && macros.any { it.id == item.macroId }))
+
                         "modifier" -> item.target in KeyboardDefaults.modifiers
+
                         "app" -> item.target in KeyboardDefaults.controls
+
+                        "layer" -> KeyboardLayers.destination(items, layer, item.target) != null
+
                         "macro" -> item.macroId !in unsupportedMacroIds && macros.any { it.id == item.macroId }
+
                         else -> false
                     }
-                    GridButton(item, label, active, editing || supported, editing, onPress, onMove)
+                    val shortcut = macros.find { it.id == item.macroId }?.let { macro ->
+                        runCatching { MacroFormat.decode(macro.document).singleOrNull() as? MacroAction.Key }.getOrNull()
+                    }
+                    val combination = shortcut?.key?.let { target ->
+                        TerminalKeyCatalog.byTarget(target)?.let { key ->
+                            (shortcut.modifiers.map { shortcutModifier -> keyboardLabel(KeyboardItem(layoutId = layout.id, kind = "modifier", target = shortcutModifier), emptyList()) } + key.displayName()).joinToString("+")
+                        }
+                    }
+                    val description = combination?.let { stringResource(R.string.keyboard_shortcut_description, fullShortcutLabel(label, shortcut), it) }
+                    GridButton(item, label, active, editing || supported, editing, press, onMove, shortcutDescription = description, layerNumber = layer)
                 }
             }
-        }) { measurables, _ ->
-            val cellWidth = width.dp.roundToPx().coerceAtLeast(1)
-            val cellHeight = height.dp.roundToPx().coerceAtLeast(1)
-            val placeables = measurables.zip(visible).map { (measurable, item) ->
-                measurable.measure(Constraints.fixed((cellWidth * item.columnSpan.coerceIn(1, 1000)).coerceAtMost(16000), (cellHeight * item.rowSpan.coerceIn(1, 1000)).coerceAtMost(16000)))
+        }) { measurables, constraints ->
+            val fit = layout.fitToWidth && constraints.hasBoundedWidth
+            val gridWidth = if (fit) constraints.maxWidth else (width.dp.roundToPx().coerceAtLeast(1) * columns).coerceAtMost(16000)
+            val cellHeight = height.dp.roundToPx().coerceAtLeast(1).let {
+                if (fit && constraints.hasBoundedHeight && rows > 0) minOf(it, constraints.maxHeight / rows) else it
             }
-            layout((cellWidth * columns).coerceAtMost(16000), (cellHeight * rows).coerceAtMost(16000)) {
-                placeables.zip(visible).forEach { (placeable, item) -> placeable.place(item.column * cellWidth, item.row * cellHeight) }
+            fun x(column: Int): Int = if (columns == 0) 0 else (column.toLong() * gridWidth / columns).toInt()
+            val placeables = measurables.zip(visible).map { (measurable, item) ->
+                measurable.measure(
+                    Constraints.fixed(
+                        (x(item.column + item.columnSpan) - x(item.column)).coerceIn(0, 16000),
+                        (cellHeight * item.rowSpan.coerceIn(1, 1000)).coerceAtMost(16000),
+                    ),
+                )
+            }
+            layout(gridWidth, (cellHeight * rows).coerceAtMost(16000)) {
+                placeables.zip(visible).forEach { (placeable, item) -> placeable.place(x(item.column), item.row * cellHeight) }
             }
         }
     }
@@ -278,6 +348,8 @@ private fun GridButton(
     onPress: (KeyboardItem) -> Unit,
     onMove: ((KeyboardItem, Int, Int) -> Unit)?,
     modifier: Modifier = Modifier,
+    shortcutDescription: String? = null,
+    layerNumber: Int = 0,
 ) {
     val currentPress by rememberUpdatedState(onPress)
     val currentMove by rememberUpdatedState(onMove)
@@ -287,16 +359,21 @@ private fun GridButton(
     val moveDown = stringResource(R.string.keyboard_move_down)
     val moveLeft = stringResource(R.string.keyboard_move_left)
     val moveRight = stringResource(R.string.keyboard_move_right)
-    val description = when (item.target) {
-        "arrow_up" -> stringResource(R.string.image_description_up)
-        "arrow_down" -> stringResource(R.string.image_description_down)
-        "arrow_left" -> stringResource(R.string.image_description_left)
-        "arrow_right" -> stringResource(R.string.image_description_right)
-        "text_input" -> stringResource(R.string.terminal_keyboard_text_input_button)
-        "toggle_ime" -> stringResource(if (active == ModifierLevel.OFF) R.string.image_description_show_keyboard else R.string.image_description_hide_keyboard)
-        else -> label
+    val description = shortcutDescription ?: if (item.kind == "layer") {
+        if (item.target == "next") stringResource(R.string.keyboard_layer_next) else stringResource(R.string.keyboard_layer, item.target.toIntOrNull() ?: 0)
+    } else {
+        when (item.target) {
+            "arrow_up" -> stringResource(R.string.image_description_up)
+            "arrow_down" -> stringResource(R.string.image_description_down)
+            "arrow_left" -> stringResource(R.string.image_description_left)
+            "arrow_right" -> stringResource(R.string.image_description_right)
+            "text_input" -> stringResource(R.string.terminal_keyboard_text_input_button)
+            "toggle_ime" -> stringResource(if (active == ModifierLevel.OFF) R.string.image_description_show_keyboard else R.string.image_description_hide_keyboard)
+            else -> label
+        }
     }
-    val unsupported = stringResource(R.string.keyboard_unsupported)
+    val layerState = if (item.kind == "layer") stringResource(R.string.keyboard_layer, layerNumber) else null
+    val unsupported = stringResource(if (item.kind == "layer") R.string.keyboard_layer_empty else R.string.keyboard_unsupported)
     val level = when (active) {
         ModifierLevel.OFF -> stringResource(R.string.keyboard_off)
         ModifierLevel.TRANSIENT -> stringResource(R.string.keyboard_once)
@@ -306,6 +383,7 @@ private fun GridButton(
         contentDescription = description
         role = Role.Button
         if (item.kind == "modifier") stateDescription = level
+        if (layerState != null) stateDescription = layerState
         if (!enabled) stateDescription = unsupported
         if (enabled) {
             onClick {
@@ -377,12 +455,13 @@ private fun GridButton(
                 "arrow_down" -> Icons.Default.KeyboardArrowDown
                 "arrow_left" -> Icons.AutoMirrored.Filled.KeyboardArrowLeft
                 "arrow_right" -> Icons.AutoMirrored.Filled.KeyboardArrowRight
+                "paste" -> Icons.Default.ContentPaste
                 "text_input" -> Icons.Default.Edit
                 "toggle_ime" -> if (active == ModifierLevel.OFF) Icons.Default.Keyboard else Icons.Default.KeyboardHide
                 else -> null
             }
             if (icon == null) {
-                Text(if (item.kind == "app" && item.target == "toggle_compose") stringResource(R.string.button_key_ime) else label, style = MaterialTheme.typography.labelSmall, maxLines = 1)
+                FittedKeyboardLabel(if (item.kind == "app" && item.target == "toggle_compose") stringResource(R.string.button_key_ime) else label)
             } else {
                 // Terminal directions retain their physical meaning in RTL layouts.
                 CompositionLocalProvider(LocalLayoutDirection provides LayoutDirection.Ltr) {
@@ -391,4 +470,38 @@ private fun GridButton(
             }
         }
     }
+}
+
+/** Measure at the user-selected font size, then compress only as much as the cell requires. */
+@Composable
+private fun FittedKeyboardLabel(label: String) {
+    val style = MaterialTheme.typography.labelSmall
+    val measurer = rememberTextMeasurer()
+    val measured = remember(label, style, measurer) { measurer.measure(label, style = style, softWrap = false, maxLines = 1) }
+    Layout(content = { Text(label, style = style, softWrap = false, maxLines = 1) }) { measurables, constraints ->
+        val placeable = measurables.single().measure(Constraints())
+        val available = (constraints.maxWidth - 4.dp.roundToPx()).coerceAtLeast(0)
+        val scaleX = if (measured.size.width == 0) 1f else minOf(1f, available.toFloat() / measured.size.width)
+        val scaleY = if (placeable.height == 0) 1f else minOf(1f, constraints.maxHeight.toFloat() / placeable.height)
+        val width = constraints.constrainWidth((placeable.width * scaleX).toInt())
+        val height = constraints.constrainHeight((placeable.height * scaleY).toInt())
+        layout(width, height) {
+            placeable.placeWithLayer((width - placeable.width) / 2, (height - placeable.height) / 2) {
+                this.scaleX = scaleX
+                this.scaleY = scaleY
+            }
+        }
+    }
+}
+
+@Composable
+private fun fullShortcutLabel(label: String, shortcut: MacroAction.Key?): String = when {
+    shortcut?.key == "character_99" && shortcut.modifiers == listOf("ctrl") && label == stringResource(R.string.keyboard_action_stop) -> stringResource(R.string.keyboard_action_stop_full)
+    shortcut?.key == "character_114" && shortcut.modifiers == listOf("ctrl") && label == stringResource(R.string.keyboard_action_history) -> stringResource(R.string.keyboard_action_history_full)
+    shortcut?.key == "tab" && shortcut.modifiers == listOf("shift") && label == stringResource(R.string.keyboard_action_mode) -> stringResource(R.string.keyboard_action_mode_full)
+    shortcut?.key == "character_106" && shortcut.modifiers == listOf("ctrl") && label == stringResource(R.string.keyboard_action_newline) -> stringResource(R.string.keyboard_action_newline_full)
+    shortcut?.key == "character_111" && shortcut.modifiers == listOf("ctrl") && label == stringResource(R.string.keyboard_action_log) -> stringResource(R.string.keyboard_action_log_full)
+    shortcut?.key == "character_103" && shortcut.modifiers == listOf("ctrl") && label == stringResource(R.string.keyboard_action_edit) -> stringResource(R.string.keyboard_action_edit_full)
+    shortcut?.key == "character_111" && shortcut.modifiers == listOf("ctrl") && label == stringResource(R.string.keyboard_action_copy) -> stringResource(R.string.keyboard_action_copy_full)
+    else -> label
 }

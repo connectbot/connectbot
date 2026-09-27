@@ -34,6 +34,7 @@ fun TerminalKeyboard(
     onHideIme: () -> Unit = {},
     onShowIme: () -> Unit = {},
     onOpenTextInput: () -> Unit = {},
+    onPasteRequest: () -> Unit = {},
     onScrollInProgressChange: (Boolean) -> Unit = {},
     imeVisible: Boolean = false,
     playAnimation: Boolean = false,
@@ -44,7 +45,7 @@ fun TerminalKeyboard(
 ) {
     ConfigurableTerminalKeyboard(
         bridge = bridge, onInteraction = onInteraction, modifier = modifier,
-        onHideIme = onHideIme, onShowIme = onShowIme, onOpenTextInput = onOpenTextInput,
+        onHideIme = onHideIme, onShowIme = onShowIme, onOpenTextInput = onOpenTextInput, onPasteRequest = onPasteRequest,
         onScrollInProgressChange = onScrollInProgressChange, imeVisible = imeVisible,
         playAnimation = playAnimation, showImeToggleKey = showImeToggleKey,
         isComposeModeActive = isComposeModeActive, onToggleComposeMode = onToggleComposeMode,

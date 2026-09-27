@@ -73,6 +73,7 @@ data class KeyboardItem(
     @ColumnInfo(name = "repeat_on_hold") val repeatOnHold: Boolean? = null,
     /** Null follows the app-wide keyboard haptics preference. */
     @ColumnInfo(name = "haptic_feedback") val hapticFeedback: Boolean? = null,
+    /** Key buttons can reuse a single-key macro for their label and preset modifiers. */
     @ColumnInfo(name = "macro_id") val macroId: UUID? = null,
 )
 
