@@ -234,7 +234,7 @@ class TerminalBridge {
     private suspend fun dispatchTerminalKey(key: Int, modifiers: Int, connection: InputConnection) {
         require(AutomationKeySupport.isSupported(key, modifiers))
         if (AutomationKeySupport.isCharacterKey(key)) {
-            if (modifiers == TerminalKeyModifiers.CTRL) {
+            if (modifiers == TerminalKeyModifiers.CTRL && AutomationKeySupport.hasControlCode(key)) {
                 awaitTransportWrite(byteArrayOf(AutomationKeySupport.controlCodeForCharacter(key).toByte()), connection)
             } else {
                 dispatchSemanticInput(connection) { terminalEmulator.dispatchCharacter(modifiers, AutomationKeySupport.characterCodePoint(key)) }
@@ -885,6 +885,7 @@ class TerminalBridge {
         val key: String? = null,
         val modifiers: Int = 0,
         val macro: String? = null,
+        val keyDefinition: String? = null,
     )
     private val configuredInputs = Channel<ConfiguredInput>(Channel.UNLIMITED)
     val keyboardErrors = MutableSharedFlow<String>(extraBufferCapacity = 1)
@@ -925,7 +926,8 @@ class TerminalBridge {
         val connection = input.connection
         checkInputConnection(connection)
         if (input.key != null) {
-            dispatchTerminalKey(KeyboardActions.key(input.key), input.modifiers, connection)
+            val presetModifiers = KeyboardActions.presetModifiers(input.key, input.keyDefinition)
+            dispatchTerminalKey(KeyboardActions.key(input.key), input.modifiers or presetModifiers, connection)
             return
         }
         runKeyboardMacro(
@@ -945,8 +947,7 @@ class TerminalBridge {
                     awaitTransportWrite(bytes, connection)
                 }
                 override suspend fun key(key: MacroAction.Key) {
-                    val modifiers = (if ("shift" in key.modifiers) 1 else 0) or
-                        (if ("alt" in key.modifiers) 2 else 0) or (if ("ctrl" in key.modifiers) 4 else 0)
+                    val modifiers = KeyboardActions.terminalModifiers(key.modifiers)
                     if (key.key != null) {
                         dispatchTerminalKey(KeyboardActions.key(key.key), modifiers, connection)
                     } else {
@@ -958,12 +959,12 @@ class TerminalBridge {
     }
 
     /** Called from UI: capture/consume transient modifiers before another tap can change them. */
-    fun sendConfiguredKey(target: String) {
+    fun sendConfiguredKey(target: String, keyDefinition: String? = null) {
         val connection = captureInputConnection()
         val modifiers = if (target == "escape" || target == "tab") 0 else keyHandler.modifiersForKeyboard()
         keyHandler.clearTransients()
         configuredInputProcessor
-        configuredInputs.trySend(ConfiguredInput(connection, key = target, modifiers = modifiers))
+        configuredInputs.trySend(ConfiguredInput(connection, key = target, modifiers = modifiers, keyDefinition = keyDefinition))
     }
 
     fun sendKeyboardMacro(document: String) {

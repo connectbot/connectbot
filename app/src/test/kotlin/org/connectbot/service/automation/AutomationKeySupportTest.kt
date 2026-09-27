@@ -41,7 +41,20 @@ class AutomationKeySupportTest {
         assertFalse(AutomationKeySupport.isSupported(VTermKey.FUNCTION_0, TerminalKeyModifiers.NONE))
         assertFalse(AutomationKeySupport.isSupported(VTermKey.FUNCTION_0 + AutomationKeySupport.functionNumbers.last + 1, TerminalKeyModifiers.NONE))
         assertFalse(AutomationKeySupport.isSupported('A'.code, TerminalKeyModifiers.CTRL))
-        assertFalse(AutomationKeySupport.isSupported(-'a'.code, TerminalKeyModifiers.CTRL))
+        assertTrue(AutomationKeySupport.isSupported(-'a'.code, TerminalKeyModifiers.CTRL))
         assertFalse(AutomationKeySupport.isSupported(-'A'.code, 1 shl 4))
+    }
+
+    @Test
+    fun printableKeysSupportAltAndControlWithoutInventingControlBytes() {
+        assertTrue(AutomationKeySupport.isSupported(-'a'.code, TerminalKeyModifiers.ALT))
+        assertTrue(AutomationKeySupport.isSupported(-'7'.code, TerminalKeyModifiers.ALT or TerminalKeyModifiers.CTRL))
+        assertEquals(1, AutomationKeySupport.controlCodeForCharacter(-'a'.code))
+        assertEquals(0, AutomationKeySupport.controlCodeForCharacter(-'@'.code))
+        assertTrue(AutomationKeySupport.hasControlCode(-'z'.code))
+        assertFalse(AutomationKeySupport.hasControlCode(-'7'.code))
+        assertFalse(AutomationKeySupport.hasControlCode(-' '.code))
+        assertFalse(AutomationKeySupport.isSupported(-'é'.code, TerminalKeyModifiers.NONE))
+        assertTrue(AutomationKeySupport.isSupported(VTermKey.KP_ENTER, TerminalKeyModifiers.ALT))
     }
 }

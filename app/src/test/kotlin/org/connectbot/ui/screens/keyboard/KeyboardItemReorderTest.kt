@@ -44,4 +44,16 @@ class KeyboardItemReorderTest {
         assertEquals(2, reordered.single { it.id == wide.id }.columnSpan)
         assertEquals(1, reordered.single { it.id == wide.id }.row)
     }
+
+    @Test fun reorderingLeavesOtherLayersUntouched() {
+        val layout = KeyboardLayout(name = "Layers")
+        val first = KeyboardItem(layoutId = layout.id)
+        val second = KeyboardItem(layoutId = layout.id, column = 1)
+        val other = KeyboardItem(layoutId = layout.id, layer = 4)
+        val items = listOf(first, second, other)
+        val reordered = reorderKeyboardItems(layout, items, first.id, second.id)
+        assertEquals(other, reordered.single { it.id == other.id })
+        assertEquals(1, reordered.single { it.id == first.id }.column)
+        org.junit.Assert.assertTrue(runCatching { reorderKeyboardItems(layout, items, first.id, other.id) }.isFailure)
+    }
 }

@@ -13,9 +13,10 @@ default to 45 × 30 dp. All buttons, including modifiers, macro buttons, and app
 controls, use those dimensions. A button's column_span and row_span multiply the
 base dimensions. Changing dimensions never rewrites button coordinates or spans.
 
-Positions are zero-based physical rows and columns in a single arrangement shared
-by portrait and landscape. Hidden buttons retain their reserved cells. Positions
-must be nonnegative, spans positive, and rectangles must not overlap. Dimensions
+Positions are zero-based physical rows and columns, shared by portrait and
+landscape. Each item has a layer number from 0 through 4 (default 0). Rectangles may overlap
+only on different layers. Hidden buttons retain their reserved cells. Positions
+must be nonnegative and spans positive. Dimensions
 must be finite, positive, and at most 1000 dp; each grid axis is limited to 1000
 cells, with a maximum extent of 3000 dp per axis and 256 buttons per layout.
 These are resource limits, not enum encodings.
@@ -26,7 +27,8 @@ Button kinds and targets are explicit protocol strings:
   `arrow_down`, `arrow_left`, `arrow_right`, `home`, `end`, `page_up`, `page_down`,
   and `f1` through `f12`.
 - `modifier`: `ctrl`, `alt`, or `shift`. Tap cycles off → one-shot → locked → off.
-- `app`: `text_input`, `toggle_compose`, or `toggle_ime`.
+- `app`: `text_input`, `toggle_compose`, `toggle_ime`, or `paste`.
+- `layer`: `next`, or the destination layer number `0` through `4`.
 - `macro`: references a shared macro UUID in macro_id; target is unused.
 
 Default layout UUID: `5a46e491-229f-4ff9-a9ce-7b975f300001`.
@@ -37,6 +39,41 @@ button does not renumber surviving identities; visible columns remain compact.
 They remain stable on migration and reset. Text input is optional in custom layouts
 and is omitted from fresh, reset, and fallback defaults. Existing saved layouts
 are preserved. Labels and resource identifiers are not wire identifiers.
+
+## Presets, sizing, and layers
+
+The Add layout picker offers Default plus four editable presets: Citrus (compact
+terminal controls), Last Stop (roomy terminal controls), Claw (optimized for Claude
+Code), and Scribe (optimized for Codex CLI). Presets are templates, not additional
+seeded layouts. Creating or cancelling a draft does not change the database or
+app-default selection. Saving includes its labelled shortcut definitions in the
+same transaction. `preset_key` records the originating template so reset restores
+its keys and dimensions while retaining the layout name and UUID. Duplicates keep
+that template reference; unknown preset IDs use the ordinary default on reset.
+
+`fit_to_width` defaults to false, preserving existing fixed-dimension layouts.
+All four new presets enable it. The grid divides available width proportionally
+by column spans, reserves the same geometry across layers, and shrinks row height
+when bounded terminal space requires it. Fitted grids have no scrolling. Button
+labels remain single-line and compress horizontally to fit; accessibility retains
+the action label and full key combination. Citrus uses two 36 dp rows, the other
+presets two 44 dp rows. The editor can change these preferred heights.
+
+Preset layer 0 contains its main two rows, layer 1 provides editable F1–F12 and
+modifier controls, and layers 2–4 start empty. The initial layer is the first
+populated layer, normally 0. A layer is populated when it has a visible non-switch
+button. FN (`kind=layer`, `target=next`) cycles ascending populated layers and wraps
+around. Numbered layer buttons (`target=0`…`4`) select their destination directly
+and default to labels L0…L4. Empty destinations are disabled; selecting the current
+layer is a no-op. Reachable layers must offer a route back to the initial layer,
+through either direct or cycling buttons. Switching layers never sends terminal
+input or consumes sticky modifiers. The active layer is per terminal/layout and
+is reset when either changes; it is not stored or exported.
+
+These fields are included in the unreleased Room schema 17 and its existing
+16→17 migration. Existing buttons migrate to layer 0, existing layouts remain
+fixed-width, and preset template keys are nullable. Older JSON exports may omit
+the new fields and use the same defaults. No separate schema 18 migration is needed.
 
 ## Macro document version 1
 

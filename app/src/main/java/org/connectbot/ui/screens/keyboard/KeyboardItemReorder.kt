@@ -25,7 +25,9 @@ import java.util.UUID
 /** Reassign ordered buttons to existing grid anchors, leaving spans and IDs intact. */
 internal fun reorderKeyboardItems(layout: KeyboardLayout, items: List<KeyboardItem>, from: UUID, to: UUID): List<KeyboardItem> {
     KeyboardDefaults.validate(layout, items)
-    val anchors = items.sortedWith(compareBy<KeyboardItem> { it.row }.thenBy { it.column }.thenBy { it.id })
+    val layer = items.firstOrNull { it.id == from }?.layer
+    require(layer != null && items.firstOrNull { it.id == to }?.layer == layer) { "Buttons must belong to the same layer" }
+    val anchors = items.filter { it.layer == layer }.sortedWith(compareBy<KeyboardItem> { it.row }.thenBy { it.column }.thenBy { it.id })
     val source = anchors.indexOfFirst { it.id == from }
     val destination = anchors.indexOfFirst { it.id == to }
     require(source >= 0 && destination >= 0) { "Button no longer exists" }
@@ -58,6 +60,7 @@ internal fun reorderKeyboardItems(layout: KeyboardLayout, items: List<KeyboardIt
         }
         require(placed.size == index + 1) { "No space for this button in the grid" }
     }
-    KeyboardDefaults.validate(layout, placed)
-    return items.map { original -> placed.first { it.id == original.id } }
+    val result = items.map { original -> placed.find { it.id == original.id } ?: original }
+    KeyboardDefaults.validate(layout, result)
+    return result
 }

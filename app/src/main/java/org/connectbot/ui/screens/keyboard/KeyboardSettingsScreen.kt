@@ -44,8 +44,10 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.PrimaryScrollableTabRow
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Tab
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
@@ -54,12 +56,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
 import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
 import androidx.compose.ui.semantics.customActions
@@ -70,12 +74,18 @@ import org.connectbot.R
 import org.connectbot.data.keyboard.KeyboardConfiguration
 import org.connectbot.data.keyboard.KeyboardDefaults
 import org.connectbot.data.keyboard.KeyboardItem
+import org.connectbot.data.keyboard.KeyboardLayers
 import org.connectbot.data.keyboard.KeyboardLayout
 import org.connectbot.data.keyboard.KeyboardMacro
+import org.connectbot.data.keyboard.KeyboardPreset
+import org.connectbot.data.keyboard.KeyboardPresets
 import org.connectbot.data.keyboard.MacroAction
 import org.connectbot.data.keyboard.MacroFormat
+import org.connectbot.terminal.TerminalKeyCatalog
 import org.connectbot.ui.components.KeyboardGrid
+import org.connectbot.ui.components.TerminalKeyButtonDialog
 import org.connectbot.ui.components.keyboardLabel
+import org.connectbot.util.TerminalKeyModifiers
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
 import java.util.UUID
@@ -87,8 +97,11 @@ fun KeyboardSettingsScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modi
     val error by viewModel.error.collectAsState()
     var layout by remember { mutableStateOf<KeyboardLayout?>(null) }
     var items by remember { mutableStateOf(emptyList<KeyboardItem>()) }
+    var draftMacros by remember { mutableStateOf(emptyList<KeyboardMacro>()) }
     var macro by remember { mutableStateOf<KeyboardMacro?>(null) }
     var confirmation by remember { mutableStateOf<(() -> Unit)?>(null) }
+    val resources = LocalResources.current
+    var choosingPreset by remember { mutableStateOf(false) }
     val newLayoutName = stringResource(R.string.keyboard_new_layout)
     val newMacroName = stringResource(R.string.keyboard_new_macro)
     val copySuffix = stringResource(R.string.keyboard_copy_suffix)
@@ -117,41 +130,51 @@ fun KeyboardSettingsScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modi
                 }, onCancel = { macro = null })
 
                 layout != null -> LayoutEditor(
-                    layout = layout!!, items = items, config = config,
+                    layout = layout!!, items = items, config = config.copy(macros = config.macros + draftMacros),
+                    onMacroChange = { value -> draftMacros = draftMacros + value },
                     onLayoutChange = { layout = it }, onItemsChange = { items = it },
                     onError = { viewModel.error.value = it },
                     onSave = {
                         viewModel.perform {
-                            viewModel.repository.save(layout!!, items)
+                            viewModel.repository.save(layout!!, items, draftMacros.filter { macro -> items.any { it.macroId == macro.id } })
                             layout = null
                         }
                     },
                     onCancel = { layout = null },
                     onReset = {
                         confirmation = {
-                            items = KeyboardDefaults.items(layout!!.id)
-                            layout = layout!!.copy(buttonWidth = 45f, buttonHeight = 30f)
+                            val current = layout!!
+                            val preset = KeyboardPresets.find(current.presetKey)
+                            if (preset == null) {
+                                items = KeyboardDefaults.items(current.id)
+                                draftMacros = emptyList()
+                                layout = current.copy(buttonWidth = 45f, buttonHeight = 30f, fitToWidth = false)
+                            } else {
+                                val reset = KeyboardPresets.create(preset, current.name, resources::getString, current.id)
+                                items = reset.items
+                                draftMacros = reset.macros
+                                layout = reset.layout
+                            }
                         }
                     },
                 )
 
                 else -> {
                     Text(stringResource(R.string.keyboard_layouts), style = MaterialTheme.typography.titleLarge)
-                    Button(onClick = {
-                        val value = KeyboardLayout(name = newLayoutName)
-                        layout = value
-                        items = KeyboardDefaults.items(value.id)
-                    }) { Text(stringResource(R.string.keyboard_add_layout)) }
+                    Button(onClick = { choosingPreset = true }) { Text(stringResource(R.string.keyboard_add_layout)) }
                     config.layouts.forEach { value ->
                         Card {
                             Column(Modifier.padding(8.dp)) {
                                 Text(value.name, style = MaterialTheme.typography.titleMedium)
+                                KeyboardPresets.find(value.presetKey)?.let { Text(stringResource(it.subtitleRes), style = MaterialTheme.typography.bodySmall) }
                                 Row {
                                     TextButton(onClick = {
+                                        draftMacros = emptyList()
                                         layout = value
                                         items = config.items.filter { it.layoutId == value.id }
                                     }) { Text(stringResource(R.string.keyboard_edit)) }
                                     TextButton(onClick = {
+                                        draftMacros = emptyList()
                                         layout = value.copy(id = UUID.randomUUID(), name = value.name + copySuffix)
                                         items = config.items.filter { it.layoutId == value.id }.map { it.copy(id = UUID.randomUUID(), layoutId = layout!!.id) }
                                     }) { Text(stringResource(R.string.keyboard_duplicate)) }
@@ -183,6 +206,40 @@ fun KeyboardSettingsScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modi
             }
         }
     }
+    if (choosingPreset) {
+        AlertDialog(
+            onDismissRequest = { choosingPreset = false },
+            title = { Text(stringResource(R.string.keyboard_choose_preset)) },
+            text = {
+                Column {
+                    TextButton(onClick = {
+                        val value = KeyboardLayout(name = newLayoutName)
+                        layout = value
+                        items = KeyboardDefaults.items(value.id)
+                        draftMacros = emptyList()
+                        choosingPreset = false
+                    }) { Text(stringResource(R.string.keyboard_original_layout)) }
+                    KeyboardPreset.entries.forEach { preset ->
+                        val presetName = stringResource(preset.nameRes)
+                        TextButton(onClick = {
+                            val draft = KeyboardPresets.create(preset, presetName, resources::getString)
+                            layout = draft.layout
+                            items = draft.items
+                            draftMacros = draft.macros
+                            choosingPreset = false
+                        }) {
+                            Column(Modifier.fillMaxWidth()) {
+                                Text(presetName, style = MaterialTheme.typography.titleMedium)
+                                Text(stringResource(preset.subtitleRes), style = MaterialTheme.typography.bodySmall)
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {},
+            dismissButton = { TextButton(onClick = { choosingPreset = false }) { Text(stringResource(R.string.keyboard_cancel)) } },
+        )
+    }
     if (confirmation != null) {
         AlertDialog(
             onDismissRequest = { confirmation = null },
@@ -204,6 +261,7 @@ private fun LayoutEditor(
     layout: KeyboardLayout,
     items: List<KeyboardItem>,
     config: KeyboardConfiguration,
+    onMacroChange: (KeyboardMacro) -> Unit,
     onLayoutChange: (KeyboardLayout) -> Unit,
     onItemsChange: (List<KeyboardItem>) -> Unit,
     onError: (String?) -> Unit,
@@ -212,12 +270,17 @@ private fun LayoutEditor(
     onReset: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var activeLayer by remember(layout.id) { mutableIntStateOf(0) }
+    val layerItems = items.filter { it.layer == activeLayer }
+    var choosingDestination by remember(layout.id) { mutableStateOf(false) }
     var selected by remember(layout.id) { mutableStateOf<UUID?>(null) }
+    var showKeyDialog by remember(layout.id) { mutableStateOf(false) }
+    var editingKey by remember(layout.id) { mutableStateOf<KeyboardItem?>(null) }
     val validation = runCatching { KeyboardDefaults.validate(layout, items) }
     val updateItem: (KeyboardItem) -> Unit = { replacement ->
         onItemsChange(items.map { if (it.id == replacement.id) replacement else it })
     }
-    val ordered = items.sortedWith(compareBy<KeyboardItem> { it.row }.thenBy { it.column }.thenBy { it.id })
+    val ordered = layerItems.sortedWith(compareBy<KeyboardItem> { it.row }.thenBy { it.column }.thenBy { it.id })
     val listState = rememberLazyListState()
     val haptic = LocalHapticFeedback.current
     val moveItem: (UUID, UUID) -> Unit = { from, to ->
@@ -234,8 +297,20 @@ private fun LayoutEditor(
     }
     Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         OutlinedTextField(value = layout.name, onValueChange = { onLayoutChange(layout.copy(name = it)) }, label = { Text(stringResource(R.string.keyboard_name)) })
-        DimensionField(stringResource(R.string.keyboard_width), layout.buttonWidth, { onLayoutChange(layout.copy(buttonWidth = it)) })
+        Row {
+            Checkbox(checked = layout.fitToWidth, onCheckedChange = { onLayoutChange(layout.copy(fitToWidth = it)) })
+            Text(stringResource(R.string.keyboard_fit_to_width))
+        }
+        if (!layout.fitToWidth) DimensionField(stringResource(R.string.keyboard_width), layout.buttonWidth, { onLayoutChange(layout.copy(buttonWidth = it)) })
         DimensionField(stringResource(R.string.keyboard_height), layout.buttonHeight, { onLayoutChange(layout.copy(buttonHeight = it)) })
+        PrimaryScrollableTabRow(selectedTabIndex = activeLayer, edgePadding = 0.dp) {
+            repeat(KeyboardLayers.count) { layer ->
+                Tab(selected = activeLayer == layer, onClick = {
+                    activeLayer = layer
+                    selected = null
+                }, text = { Text(stringResource(R.string.keyboard_layer, layer)) })
+            }
+        }
         Text(stringResource(R.string.keyboard_grid_help))
         KeyboardGrid(
             layout,
@@ -243,6 +318,7 @@ private fun LayoutEditor(
             config.macros,
             onPress = { selected = it.id },
             editing = true,
+            activeLayer = activeLayer,
             onMove = { item, row, column ->
                 val moved = item.copy(row = row, column = column)
                 val proposed = items.map { if (it.id == item.id) moved else it }
@@ -289,17 +365,28 @@ private fun LayoutEditor(
                 }
             }
         }
-        val catalog = KeyboardDefaults.keys.map { KeyboardItem(layoutId = layout.id, target = it) } +
-            KeyboardDefaults.modifiers.map { KeyboardItem(layoutId = layout.id, kind = "modifier", target = it) } +
+        val catalog = KeyboardDefaults.modifiers.map { KeyboardItem(layoutId = layout.id, kind = "modifier", target = it) } +
             KeyboardDefaults.controls.map { KeyboardItem(layoutId = layout.id, kind = "app", target = it) } +
             config.macros.map { KeyboardItem(layoutId = layout.id, kind = "macro", target = "", macroId = it.id) }
         var adding by remember { mutableStateOf(false) }
         Box {
             Button(onClick = { adding = true }) { Text(stringResource(R.string.keyboard_add_button)) }
             DropdownMenu(expanded = adding, onDismissRequest = { adding = false }) {
+                DropdownMenuItem(text = { Text(stringResource(R.string.keyboard_add_key)) }, onClick = {
+                    editingKey = null
+                    showKeyDialog = true
+                    adding = false
+                })
+                DropdownMenuItem(text = { Text(stringResource(R.string.keyboard_add_layer_switch)) }, onClick = {
+                    val added = KeyboardItem(layoutId = layout.id, layer = activeLayer, row = layerItems.maxOfOrNull { it.row + it.rowSpan } ?: 0, kind = "layer", target = "next")
+                    onItemsChange(items + added)
+                    selected = added.id
+                    adding = false
+                    choosingDestination = true
+                })
                 catalog.forEach { item ->
                     DropdownMenuItem(text = { Text(keyboardLabel(item, config.macros)) }, onClick = {
-                        val added = item.copy(row = items.maxOfOrNull { it.row + it.rowSpan } ?: 0)
+                        val added = item.copy(layer = activeLayer, row = layerItems.maxOfOrNull { it.row + it.rowSpan } ?: 0)
                         onItemsChange(items + added)
                         selected = added.id
                         adding = false
@@ -311,6 +398,46 @@ private fun LayoutEditor(
         if (item != null) {
             key(item.id) {
                 Text(keyboardLabel(item, config.macros), style = MaterialTheme.typography.titleMedium)
+                if (item.kind == "layer") {
+                    TextButton(onClick = { choosingDestination = true }) {
+                        Text(stringResource(R.string.keyboard_layer_destination))
+                    }
+                    if (choosingDestination) {
+                        AlertDialog(
+                            onDismissRequest = { choosingDestination = false },
+                            title = { Text(stringResource(R.string.keyboard_layer_destination)) },
+                            text = {
+                                Column {
+                                    (listOf("next") + (0 until KeyboardLayers.count).map(Int::toString)).forEach { target ->
+                                        Row {
+                                            RadioButton(selected = item.target == target, onClick = {
+                                                updateItem(item.copy(target = target))
+                                                choosingDestination = false
+                                            })
+                                            TextButton(onClick = {
+                                                updateItem(item.copy(target = target))
+                                                choosingDestination = false
+                                            }) {
+                                                Text(if (target == "next") stringResource(R.string.keyboard_layer_next) else stringResource(R.string.keyboard_layer, target.toInt()))
+                                            }
+                                        }
+                                    }
+                                }
+                            },
+                            confirmButton = {},
+                            dismissButton = { TextButton(onClick = { choosingDestination = false }) { Text(stringResource(R.string.keyboard_cancel)) } },
+                        )
+                    }
+                }
+                val macro = config.macros.find { it.id == item.macroId }
+                val macroKey = macro?.let { runCatching { MacroFormat.decode(it.document).singleOrNull() as? MacroAction.Key }.getOrNull() }
+                val target = if (item.kind == "key") item.target else macroKey?.key
+                if (target != null && TerminalKeyCatalog.byTarget(target) != null) {
+                    TextButton(onClick = {
+                        editingKey = item
+                        showKeyDialog = true
+                    }) { Text(stringResource(R.string.keyboard_edit)) }
+                }
                 Row {
                     Checkbox(checked = item.visible, onCheckedChange = { updateItem(item.copy(visible = it)) })
                     Text(stringResource(R.string.keyboard_visible))
@@ -324,6 +451,39 @@ private fun LayoutEditor(
                     selected = null
                 }) { Text(stringResource(R.string.keyboard_remove_button)) }
             }
+        }
+        if (showKeyDialog) {
+            val existing = editingKey
+            val macro = config.macros.find { it.id == existing?.macroId }
+            val macroKey = macro?.let { runCatching { MacroFormat.decode(it.document).singleOrNull() as? MacroAction.Key }.getOrNull() }
+            val mask = macroKey?.modifiers.orEmpty().fold(0) { value, name ->
+                value or when (name) {
+                    "ctrl" -> TerminalKeyModifiers.CTRL
+                    "alt" -> TerminalKeyModifiers.ALT
+                    "shift" -> TerminalKeyModifiers.SHIFT
+                    else -> 0
+                }
+            }
+            TerminalKeyButtonDialog(
+                initialTarget = macroKey?.key ?: existing?.target ?: "enter",
+                initialModifiers = mask,
+                initialLabel = existing?.let { keyboardLabel(it, config.macros) },
+                onDismiss = { showKeyDialog = false },
+                onConfirm = { key, modifiers, label ->
+                    val names = buildList {
+                        if (modifiers and TerminalKeyModifiers.CTRL != 0) add("ctrl")
+                        if (modifiers and TerminalKeyModifiers.ALT != 0) add("alt")
+                        if (modifiers and TerminalKeyModifiers.SHIFT != 0) add("shift")
+                    }
+                    val value = KeyboardMacro(name = label, document = MacroFormat.encode(listOf(MacroAction.Key(key = key.target, modifiers = names))))
+                    onMacroChange(value)
+                    val button = (existing ?: KeyboardItem(layoutId = layout.id, layer = activeLayer, row = layerItems.maxOfOrNull { it.row + it.rowSpan } ?: 0))
+                        .copy(kind = "key", target = key.target, macroId = value.id)
+                    if (existing == null) onItemsChange(items + button) else updateItem(button)
+                    selected = button.id
+                    showKeyDialog = false
+                },
+            )
         }
         validation.exceptionOrNull()?.message?.let { Text(stringResource(R.string.keyboard_error, it), color = MaterialTheme.colorScheme.error) }
         Row {

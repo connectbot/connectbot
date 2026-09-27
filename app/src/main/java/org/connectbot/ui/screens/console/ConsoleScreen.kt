@@ -495,6 +495,7 @@ private fun ConsoleTerminalPage(
                         onShowSoftwareKeyboardChange(true)
                     },
                     onOpenTextInput = onTextInputRequest,
+                    onPasteRequest = onPasteRequest,
                     onScrollInProgressChange = onKeyboardScrollInProgressChange,
                     imeVisible = imeVisible,
                     playAnimation = !hasPlayedKeyboardAnimation,
