@@ -27,6 +27,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.connectbot.util.InstallMosh
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertNotNull
+import org.junit.Assert.assertThrows
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -35,6 +36,7 @@ import org.junit.runner.RunWith
 import org.mosh.MoshClient
 import java.io.File
 import java.io.FileDescriptor
+import java.io.IOException
 
 /**
  * On-device integration test verifying that the bundled mosh-client binary
@@ -54,6 +56,13 @@ class MoshExecutionIntegrationTest {
     fun setUp() {
         hiltRule.inject()
         context = InstrumentationRegistry.getInstrumentation().targetContext
+    }
+
+    @Test
+    fun resizingInvalidDescriptorReportsFailure() {
+        assertThrows(IOException::class.java) {
+            MoshClient.setPtyWindowSize(FileDescriptor(), 24, 80, 0, 0)
+        }
     }
 
     @Test

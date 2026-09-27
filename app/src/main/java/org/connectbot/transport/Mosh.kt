@@ -60,6 +60,9 @@ import java.util.regex.Pattern
 class Mosh : SSH {
 
     private var moshClientFd: FileDescriptor? = null
+    private val moshPtyWindow = MoshPtyWindow { fd, size ->
+        MoshClient.setPtyWindowSize(fd, size.rows, size.columns, size.width, size.height)
+    }
     private var moshProcessId: Long = 0
 
     private var moshInputStream: FileInputStream? = null
@@ -339,10 +342,7 @@ class Mosh : SSH {
             }
 
             val locale = currentHost.locale.takeIf { it.isNotBlank() } ?: "en_US.UTF-8"
-            val initialRows = rows.takeIf { it > 0 } ?: 24
-            val initialColumns = columns.takeIf { it > 0 } ?: 80
-            val initialWidth = width.takeIf { it > 0 } ?: 0
-            val initialHeight = height.takeIf { it > 0 } ?: 0
+            val initialSize = moshPtyWindow.snapshot()
 
             val processIdArray = LongArray(1)
             moshClientFd = MoshClient.forkExec(
@@ -352,10 +352,10 @@ class Mosh : SSH {
                 credentials.key,
                 terminfoPath,
                 locale,
-                initialRows,
-                initialColumns,
-                initialWidth,
-                initialHeight,
+                initialSize.rows,
+                initialSize.columns,
+                initialSize.width,
+                initialSize.height,
                 processIdArray,
             )
 
@@ -365,6 +365,7 @@ class Mosh : SSH {
             }
 
             moshProcessId = processIdArray[0]
+            moshPtyWindow.attach(moshClientFd!!)
             Timber.d("Mosh-client started with PID: $moshProcessId")
 
             // Set up I/O streams
@@ -425,6 +426,7 @@ class Mosh : SSH {
     override fun close() {
         moshConnected = false
         initialSshDetached = false
+        moshPtyWindow.detach()
 
         // Close mosh client streams
         try {
@@ -472,12 +474,10 @@ class Mosh : SSH {
         this.width = width
         this.height = height
 
-        moshClientFd?.let { fd ->
-            try {
-                MoshClient.setPtyWindowSize(fd, rows, columns, width, height)
-            } catch (e: Exception) {
-                Timber.e(e, "Failed to set mosh PTY window size")
-            }
+        try {
+            moshPtyWindow.update(columns, rows, width, height)
+        } catch (e: Exception) {
+            Timber.e(e, "Failed to set mosh PTY window size")
         }
     }
 

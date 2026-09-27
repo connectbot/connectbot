@@ -167,7 +167,11 @@ static int create_mosh_subprocess(
     sz.ws_col = col > 0 ? col : 80;
     sz.ws_xpixel = xpixel > 0 ? xpixel : 0;
     sz.ws_ypixel = ypixel > 0 ? ypixel : 0;
-    ioctl(pts, TIOCSWINSZ, &sz);
+    if (ioctl(pts, TIOCSWINSZ, &sz) < 0) {
+      exec_errno = errno;
+      write(exec_error_pipe[1], &exec_errno, sizeof(exec_errno));
+      _exit(127);
+    }
 
     close(ptm);
 
@@ -305,7 +309,9 @@ JNIEXPORT void JNICALL Java_org_mosh_MoshClient_setPtyWindowSize(
   sz.ws_xpixel = xpixel;
   sz.ws_ypixel = ypixel;
 
-  ioctl(fd, TIOCSWINSZ, &sz);
+  if (ioctl(fd, TIOCSWINSZ, &sz) < 0) {
+    JNU_ThrowByName(env, "java/io/IOException", strerror(errno));
+  }
 }
 
 JNIEXPORT jint JNICALL Java_org_mosh_MoshClient_setenv(
