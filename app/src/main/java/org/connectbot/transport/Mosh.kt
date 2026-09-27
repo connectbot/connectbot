@@ -223,7 +223,7 @@ class Mosh : SSH {
     /**
      * Build the mosh-server command based on host configuration.
      */
-    private fun buildMoshServerCommand(currentHost: Host): String {
+    internal fun buildMoshServerCommand(currentHost: Host): String {
         val serverCmd = currentHost.moshServer?.takeIf { it.isNotBlank() } ?: "mosh-server"
 
         val portArg = if (currentHost.moshPort > 0) {
@@ -238,7 +238,8 @@ class Mosh : SSH {
         // so the server keeps its default bind behavior instead of being pinned
         // to the SSH-facing interface.
         return "sh -c '[ -n \"\$SSH_CONNECTION\" ] && printf \"\\nMOSH SSH_CONNECTION %s\\n\" \"\$SSH_CONNECTION\"; " +
-            "exec env LANG=$locale LC_ALL=$locale $serverCmd$portArg new'"
+            // Match the xterm-256color environment used by the native client.
+            "exec env LANG=$locale LC_ALL=$locale $serverCmd new -c 256$portArg'"
     }
 
     private fun parseExplicitIp(output: String): String? {
