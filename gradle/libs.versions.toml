@@ -46,7 +46,7 @@ junit = "1.3.0"
 
 junitClassic = "4.13.2"
 mockito = "5.24.0"
-mockitoKotlin = "6.3.0"
+mockitoKotlin = "6.4.0"
 assertj = "3.27.7"
 robolectric = "4.17"
 kover = "0.9.9"
