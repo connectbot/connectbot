@@ -19,8 +19,11 @@ package org.connectbot.data.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.Index
 import androidx.room.PrimaryKey
+import org.connectbot.data.keyboard.KeyboardLayout
+import java.util.UUID
 
 /**
  * Terminal profile entity that bundles terminal-specific settings.
@@ -45,7 +48,9 @@ import androidx.room.PrimaryKey
     tableName = "profiles",
     indices = [
         Index(value = ["name"], unique = true),
+        Index(value = ["keyboard_layout_id"]),
     ],
+    foreignKeys = [ForeignKey(entity = KeyboardLayout::class, parentColumns = ["id"], childColumns = ["keyboard_layout_id"], onDelete = ForeignKey.SET_NULL)],
     // Note: No foreign key to color_schemes because built-in color schemes use negative IDs
     // and are virtual (not stored in the database). Only custom schemes have positive IDs.
 )
@@ -84,6 +89,9 @@ data class Profile(
 
     @ColumnInfo(name = "force_size_columns")
     val forceSizeColumns: Int? = null,
+
+    @ColumnInfo(name = "keyboard_layout_id")
+    val keyboardLayoutId: UUID? = null,
 ) {
     companion object {
         /**

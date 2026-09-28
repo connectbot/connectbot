@@ -130,6 +130,8 @@ class TerminalKeyListener(
             return mask
         }
 
+    fun modifiersForKeyboard(): Int = modifiersForTerminal
+
     override fun isCtrlActive(): Boolean = (ourMetaState and OUR_CTRL_MASK) != 0
 
     override fun isAltActive(): Boolean = (ourMetaState and OUR_ALT_MASK) != 0

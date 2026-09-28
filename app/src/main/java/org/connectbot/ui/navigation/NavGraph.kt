@@ -39,6 +39,7 @@ import org.connectbot.ui.screens.help.HelpScreen
 import org.connectbot.ui.screens.hints.HintsScreen
 import org.connectbot.ui.screens.hosteditor.HostEditorScreen
 import org.connectbot.ui.screens.hostlist.HostListScreen
+import org.connectbot.ui.screens.keyboard.KeyboardSettingsScreen
 import org.connectbot.ui.screens.portforwardlist.PortForwardEditorScreen
 import org.connectbot.ui.screens.portforwardlist.PortForwardListScreen
 import org.connectbot.ui.screens.profiles.ProfileEditorScreen
@@ -213,7 +214,12 @@ fun ConnectBotNavHost(
             SettingsScreen(
                 onNavigateBack = { navController.safePopBackStack() },
                 highlightItem = highlight,
+                onNavigateToKeyboard = { navController.navigateSafely("keyboard_settings") },
             )
+        }
+
+        composable("keyboard_settings") {
+            KeyboardSettingsScreen(onNavigateBack = { navController.safePopBackStack() })
         }
 
         composable(NavDestinations.COLORS) {

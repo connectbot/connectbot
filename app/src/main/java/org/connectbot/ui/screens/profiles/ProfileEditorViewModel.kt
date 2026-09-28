@@ -39,6 +39,7 @@ import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
 import org.connectbot.util.TerminalFontProvider
 import java.nio.charset.Charset
+import java.util.UUID
 import javax.inject.Inject
 
 data class ProfileEditorUiState(
@@ -49,6 +50,7 @@ data class ProfileEditorUiState(
     val availableColorSchemes: List<ColorScheme> = emptyList(),
     val fontFamily: String? = null,
     val fontSize: Int = 10,
+    val keyboardLayoutId: UUID? = null,
     val delKey: String = "del",
     val inlineImages: String = "ask",
     val encoding: String = "UTF-8",
@@ -150,6 +152,7 @@ class ProfileEditorViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         name = profile.name,
+                        keyboardLayoutId = profile.keyboardLayoutId,
                         iconColor = profile.iconColor,
                         colorSchemeId = profile.colorSchemeId,
                         fontFamily = profile.fontFamily,
@@ -169,6 +172,10 @@ class ProfileEditorViewModel @Inject constructor(
                 _uiState.update { it.copy(isLoading = false) }
             }
         }
+    }
+
+    fun updateKeyboardLayoutId(value: UUID?) {
+        _uiState.update { it.copy(keyboardLayoutId = value) }
     }
 
     fun updateName(value: String) {
@@ -260,6 +267,7 @@ class ProfileEditorViewModel @Inject constructor(
             val profile = Profile(
                 id = if (profileId != -1L) profileId else 0,
                 name = state.name,
+                keyboardLayoutId = state.keyboardLayoutId,
                 iconColor = state.iconColor,
                 colorSchemeId = state.colorSchemeId,
                 fontFamily = state.fontFamily,

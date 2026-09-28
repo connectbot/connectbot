@@ -17,23 +17,26 @@
 
 package org.connectbot
 
-import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.test.assertHeightIsEqualTo
+import androidx.compose.ui.test.assertWidthIsEqualTo
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
-import androidx.compose.ui.test.onNodeWithContentDescription
-import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
-import androidx.compose.ui.test.performTouchInput
-import androidx.compose.ui.test.swipeLeft
+import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
-import org.connectbot.service.ModifierLevel
-import org.connectbot.service.ModifierState
-import org.connectbot.terminal.VTermKey
-import org.connectbot.ui.components.TerminalKeyboardContent
+import org.connectbot.data.keyboard.KeyboardItem
+import org.connectbot.data.keyboard.KeyboardLayout
+import org.connectbot.data.keyboard.KeyboardMacro
+import org.connectbot.data.keyboard.MacroAction
+import org.connectbot.data.keyboard.MacroFormat
+import org.connectbot.ui.components.KeyboardGrid
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -46,199 +49,46 @@ class TerminalKeyboardContentTest {
     val hiltRule = HiltAndroidRule(this)
 
     @get:Rule(order = 1)
-    val composeTestRule = createAndroidComposeRule<HiltComponentActivity>()
+    val rule = createAndroidComposeRule<HiltComponentActivity>()
 
-    @Before
-    fun setUp() {
+    @Before fun setUp() {
         hiltRule.inject()
     }
 
-    @Test
-    fun terminalKeyboardContent_displaysCoreKeysAndInvokesCallbacks() {
-        var ctrlPressed = false
-        var altPressed = false
-        var escapePressed = false
-        var tabPressed = false
-        var interactionCount = 0
-        var textInputOpened = false
-        var showImeCalled = false
-
-        setKeyboardContent(
-            onCtrlPress = { ctrlPressed = true },
-            onAltPress = { altPressed = true },
-            onEscPress = { escapePressed = true },
-            onTabPress = { tabPressed = true },
-            onInteraction = { interactionCount++ },
-            onOpenTextInput = { textInputOpened = true },
-            onShowIme = { showImeCalled = true },
+    @Test fun allButtonKindsResizeTogetherAndSpansStayProportional() {
+        val layout = mutableStateOf(KeyboardLayout(name = "Sizing", buttonWidth = 45f, buttonHeight = 30f))
+        val macro = KeyboardMacro(name = "Run", document = MacroFormat.encode(listOf(MacroAction.Text("ls"))))
+        val items = listOf(
+            KeyboardItem(layoutId = layout.value.id, target = "arrow_up"),
+            KeyboardItem(layoutId = layout.value.id, row = 1, kind = "modifier", target = "ctrl"),
+            KeyboardItem(layoutId = layout.value.id, row = 2, kind = "macro", macroId = macro.id),
+            KeyboardItem(layoutId = layout.value.id, row = 3, kind = "app", target = "toggle_ime", columnSpan = 2),
         )
-
-        composeTestRule
-            .onNodeWithText(composeTestRule.activity.getString(R.string.button_key_ctrl))
-            .assertIsDisplayed()
-            .performClick()
-        composeTestRule
-            .onNodeWithText(composeTestRule.activity.getString(R.string.button_key_alt))
-            .assertIsDisplayed()
-            .performClick()
-        composeTestRule
-            .onNodeWithText(composeTestRule.activity.getString(R.string.button_key_esc))
-            .assertIsDisplayed()
-            .performClick()
-        composeTestRule
-            .onNodeWithText("⇥")
-            .assertIsDisplayed()
-            .performClick()
-        composeTestRule
-            .onNodeWithContentDescription(composeTestRule.activity.getString(R.string.terminal_keyboard_text_input_button))
-            .performClick()
-        composeTestRule
-            .onNodeWithContentDescription(composeTestRule.activity.getString(R.string.image_description_show_keyboard))
-            .performClick()
-
-        assertTrue(ctrlPressed)
-        assertTrue(altPressed)
-        assertTrue(escapePressed)
-        assertTrue(tabPressed)
-        assertTrue(textInputOpened)
-        assertTrue(showImeCalled)
-        assertEquals(2, interactionCount)
+        rule.setContent { ConnectBotTheme { KeyboardGrid(layout.value, items, listOf(macro), onPress = {}, modifier = Modifier.heightIn(max = 400.dp)) } }
+        items.forEach { rule.onNodeWithTag("keyboard_button_${it.id}").assertWidthIsEqualTo((45 * it.columnSpan).dp).assertHeightIsEqualTo(30.dp) }
+        rule.runOnIdle { layout.value = layout.value.copy(buttonWidth = 64f, buttonHeight = 48f) }
+        items.forEach { rule.onNodeWithTag("keyboard_button_${it.id}").assertWidthIsEqualTo((64 * it.columnSpan).dp).assertHeightIsEqualTo(48.dp) }
     }
 
-    @Test
-    fun terminalKeyboardContent_imeVisibleInvokesHideKeyboard() {
-        var hideImeCalled = false
-        var interactionCount = 0
-
-        setKeyboardContent(
-            imeVisible = true,
-            modifierState = ModifierState(
-                ctrlState = ModifierLevel.LOCKED,
-                altState = ModifierLevel.OFF,
-                shiftState = ModifierLevel.OFF,
-            ),
-            onHideIme = { hideImeCalled = true },
-            onInteraction = { interactionCount++ },
-        )
-
-        composeTestRule
-            .onNodeWithContentDescription(composeTestRule.activity.getString(R.string.image_description_hide_keyboard))
-            .assertIsDisplayed()
-            .performClick()
-
-        assertTrue(hideImeCalled)
-        assertEquals(1, interactionCount)
+    @Test fun hiddenButtonsDoNotAppearAndUtilityButtonsDispatchTheirOwnAction() {
+        val layout = KeyboardLayout(name = "Controls")
+        val hidden = KeyboardItem(layoutId = layout.id, target = "escape", visible = false)
+        val text = KeyboardItem(layoutId = layout.id, row = 1, kind = "app", target = "text_input")
+        val compose = KeyboardItem(layoutId = layout.id, row = 2, kind = "app", target = "toggle_compose")
+        val pressed = mutableListOf<KeyboardItem>()
+        rule.setContent { ConnectBotTheme { KeyboardGrid(layout, listOf(hidden, text, compose), emptyList(), onPress = { pressed.add(it) }) } }
+        rule.onNodeWithTag("keyboard_button_${hidden.id}").assertDoesNotExist()
+        rule.onNodeWithTag("keyboard_button_${text.id}").performClick()
+        rule.onNodeWithTag("keyboard_button_${compose.id}").performClick()
+        assertEquals(listOf(text, compose), pressed)
     }
 
-    @Test
-    fun terminalKeyboardContent_arrowAndFunctionKeysInvokeKeyCallback() {
-        val pressedKeys = mutableListOf<Int>()
-
-        setKeyboardContent(
-            modifierState = ModifierState(
-                ctrlState = ModifierLevel.TRANSIENT,
-                altState = ModifierLevel.OFF,
-                shiftState = ModifierLevel.OFF,
-            ),
-            onKeyPress = { pressedKeys += it },
-            bumpyArrows = true,
-        )
-
-        composeTestRule
-            .onNodeWithContentDescription(composeTestRule.activity.getString(R.string.image_description_up))
-            .performTouchInput {
-                down(center)
-                up()
-            }
-        composeTestRule
-            .onNodeWithText(composeTestRule.activity.getString(R.string.button_key_f1))
-            .performClick()
-
-        assertEquals(listOf(VTermKey.UP, VTermKey.FUNCTION_1), pressedKeys)
-    }
-
-    @Test
-    fun terminalKeyboardContent_reportsHorizontalScrollInteractions() {
-        val scrollStates = mutableListOf<Boolean>()
-
-        setKeyboardContent(
-            onScrollInProgressChange = { scrollStates += it },
-        )
-
-        composeTestRule
-            .onNodeWithText(composeTestRule.activity.getString(R.string.button_key_ctrl))
-            .performTouchInput { swipeLeft() }
-
-        assertTrue(scrollStates.isNotEmpty())
-    }
-
-    @Test
-    fun imeToggleInvokesCallbackAndReportsInteraction() {
-        var toggles = 0
-        var interactions = 0
-        setKeyboardContent(
-            onToggleComposeMode = { toggles++ },
-            onInteraction = { interactions++ },
-        )
-
-        composeTestRule.onNodeWithText("IME").assertIsDisplayed().performClick()
-
-        assertEquals(1, toggles)
-        assertTrue(interactions > 0)
-    }
-
-    @Test
-    fun imeToggleCanBeHiddenWithoutRemovingTextInput() {
-        setKeyboardContent(showImeToggleKey = false)
-
-        composeTestRule.onNodeWithText("IME").assertDoesNotExist()
-        composeTestRule.onNodeWithContentDescription(
-            composeTestRule.activity.getString(R.string.terminal_keyboard_text_input_button),
-        ).assertIsDisplayed()
-    }
-
-    private fun setKeyboardContent(
-        modifierState: ModifierState = ModifierState(
-            ctrlState = ModifierLevel.OFF,
-            altState = ModifierLevel.OFF,
-            shiftState = ModifierLevel.OFF,
-        ),
-        onCtrlPress: () -> Unit = {},
-        onAltPress: () -> Unit = {},
-        onEscPress: () -> Unit = {},
-        onTabPress: () -> Unit = {},
-        onKeyPress: (Int) -> Unit = {},
-        onInteraction: () -> Unit = {},
-        onHideIme: () -> Unit = {},
-        onShowIme: () -> Unit = {},
-        onOpenTextInput: () -> Unit = {},
-        onScrollInProgressChange: (Boolean) -> Unit = {},
-        imeVisible: Boolean = false,
-        bumpyArrows: Boolean = false,
-        showImeToggleKey: Boolean = true,
-        onToggleComposeMode: () -> Unit = {},
-    ) {
-        composeTestRule.setContent {
-            ConnectBotTheme {
-                TerminalKeyboardContent(
-                    modifierState = modifierState,
-                    onCtrlPress = onCtrlPress,
-                    onAltPress = onAltPress,
-                    onEscPress = onEscPress,
-                    onTabPress = onTabPress,
-                    onKeyPress = onKeyPress,
-                    onInteraction = onInteraction,
-                    onHideIme = onHideIme,
-                    onShowIme = onShowIme,
-                    onOpenTextInput = onOpenTextInput,
-                    onScrollInProgressChange = onScrollInProgressChange,
-                    imeVisible = imeVisible,
-                    playAnimation = false,
-                    bumpyArrows = bumpyArrows,
-                    showImeToggleKey = showImeToggleKey,
-                    onToggleComposeMode = onToggleComposeMode,
-                )
-            }
-        }
+    @Test fun editingDisplaysHiddenButtonsWithoutExecutingThem() {
+        val layout = KeyboardLayout(name = "Edit")
+        val item = KeyboardItem(layoutId = layout.id, visible = false)
+        var selected: KeyboardItem? = null
+        rule.setContent { ConnectBotTheme { KeyboardGrid(layout, listOf(item), emptyList(), onPress = { selected = it }, editing = true) } }
+        rule.onNodeWithTag("keyboard_button_${item.id}").performClick()
+        assertEquals(item, selected)
     }
 }

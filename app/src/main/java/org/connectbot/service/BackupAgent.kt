@@ -25,12 +25,14 @@ import android.os.ParcelFileDescriptor
 import androidx.preference.PreferenceManager
 import androidx.room.Room
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
 import org.connectbot.data.ColorSchemeRepository
 import org.connectbot.data.ConnectBotDatabase
 import org.connectbot.data.HostRepository
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.SecurePasswordStorage
 import timber.log.Timber
 import java.io.File
 import java.io.FileInputStream
@@ -113,16 +115,16 @@ class BackupAgent : BackupAgentHelper() {
             DATABASE_NAME,
         ).addMigrations(ConnectBotDatabase.MIGRATION_4_5, ConnectBotDatabase.MIGRATION_10_11).build()
         val dispatchers = CoroutineDispatchers(default = Dispatchers.Default, io = Dispatchers.IO, main = Dispatchers.Main)
-        val securePasswordStorage = org.connectbot.util.SecurePasswordStorage(applicationContext)
+        val securePasswordStorage = SecurePasswordStorage(applicationContext)
         val hostRepository = HostRepository(applicationContext, database, database.hostDao(), database.portForwardDao(), database.knownHostDao(), securePasswordStorage)
         val colorSchemeRepository = ColorSchemeRepository(database.colorSchemeDao(), dispatchers = dispatchers)
         val pubkeyRepository = PubkeyRepository(database.pubkeyDao())
 
-        val filter = BackupFilter(applicationContext, hostRepository, colorSchemeRepository, pubkeyRepository)
+        val filter = BackupFilter(applicationContext, hostRepository, colorSchemeRepository, pubkeyRepository, database)
         try {
             // Step 1: Build a temporary database with filtered data
             Timber.d("Building temporary database with backupable data")
-            kotlinx.coroutines.runBlocking {
+            runBlocking {
                 filter.buildFilteredDatabase(tempDbFile, backupKeys)
             }
 

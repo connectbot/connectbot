@@ -21,6 +21,7 @@ import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.AutoMigrationSpec
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import org.connectbot.data.dao.AutomationActionDao
@@ -38,6 +39,12 @@ import org.connectbot.data.entity.KnownHost
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.data.keyboard.KeyboardDao
+import org.connectbot.data.keyboard.KeyboardDefaults
+import org.connectbot.data.keyboard.KeyboardItem
+import org.connectbot.data.keyboard.KeyboardLayout
+import org.connectbot.data.keyboard.KeyboardMacro
+import org.connectbot.data.keyboard.KeyboardSettings
 import java.util.UUID
 
 /**
@@ -64,6 +71,7 @@ import java.util.UUID
  * - Version 9: Added inline_images to profiles, defaulting to Ask (AutoMigration)
  * - Version 10: Added mosh_port, mosh_server, and locale columns to hosts for Mosh support (AutoMigration)
  * - Version 11: UUID automation actions and port-forward startup preference (manual migration)
+ * - Version 12: UUID keyboard layouts, buttons, macros, and profile layout selection (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -80,8 +88,12 @@ import java.util.UUID
         ColorPalette::class,
         Profile::class,
         AutomationAction::class,
+        KeyboardLayout::class,
+        KeyboardItem::class,
+        KeyboardMacro::class,
+        KeyboardSettings::class,
     ],
-    version = 11,
+    version = 12,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -92,11 +104,18 @@ import java.util.UUID
         AutoMigration(from = 7, to = 8),
         AutoMigration(from = 8, to = 9),
         AutoMigration(from = 9, to = 10),
+        AutoMigration(from = 11, to = 12, spec = ConnectBotDatabase.KeyboardMigration::class),
     ],
 )
 @TypeConverters(Converters::class)
 abstract class ConnectBotDatabase : RoomDatabase() {
     abstract fun automationActionDao(): AutomationActionDao
+    class KeyboardMigration : AutoMigrationSpec {
+        override fun onPostMigrate(db: SupportSQLiteDatabase) {
+            KeyboardDefaults.seed(db)
+        }
+    }
+    abstract fun keyboardDao(): KeyboardDao
     abstract fun hostDao(): HostDao
     abstract fun pubkeyDao(): PubkeyDao
     abstract fun portForwardDao(): PortForwardDao

@@ -57,9 +57,11 @@ data class ImportCounts(
  * Room database schema.
  *
  * Tables exported (in order for foreign key resolution):
- * 1. profiles - Terminal profile configurations
- * 2. hosts - Main host configurations (references profiles)
- * 3. port_forwards - Port forwarding rules (references hosts)
+ * 1. keyboard_layouts and keyboard_macros - Reusable UUID-backed definitions
+ * 2. keyboard_items - Grid buttons referencing layouts and macros
+ * 3. profiles - Terminal profiles referencing layouts
+ * 4. hosts - Main host configurations (references profiles)
+ * 5. port_forwards - Port forwarding rules (references hosts)
  */
 object HostConfigJson {
     /**
@@ -69,7 +71,7 @@ object HostConfigJson {
      * Note: Excluded fields (runtime state like last_connect, host_key_algo) are
      * configured in the generateExportSchema Gradle task and marked in the schema.
      */
-    val EXPORT_TABLES = listOf("profiles", "hosts", "port_forwards", "automation_actions")
+    val EXPORT_TABLES = listOf("profiles", "hosts", "port_forwards", "automation_actions", "keyboard_layouts", "keyboard_macros", "keyboard_items")
 
     /**
      * Export host configurations to JSON.

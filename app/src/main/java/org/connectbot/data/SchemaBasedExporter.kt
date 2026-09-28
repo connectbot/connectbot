@@ -21,6 +21,7 @@ import android.content.ContentValues
 import android.database.Cursor
 import android.util.Base64
 import androidx.room.RoomDatabase
+import androidx.sqlite.db.SupportSQLiteDatabase
 import org.json.JSONArray
 import org.json.JSONObject
 import java.util.UUID
@@ -239,7 +240,7 @@ class SchemaBasedExporter(
      * Find existing row ID by unique constraint.
      */
     private fun findExistingId(
-        db: androidx.sqlite.db.SupportSQLiteDatabase,
+        db: SupportSQLiteDatabase,
         tableName: String,
         row: JSONObject,
         uniqueFields: List<String>,
@@ -276,21 +277,27 @@ class SchemaBasedExporter(
      * Insert a new row into the database.
      */
     private fun insertRow(
-        db: androidx.sqlite.db.SupportSQLiteDatabase,
+        db: SupportSQLiteDatabase,
         tableName: String,
         row: JSONObject,
         entitySchema: EntitySchema,
     ): String {
-        val values = jsonToContentValues(row, entitySchema, excludeId = entitySchema.primaryKey.autoGenerate)
+        val generated = entitySchema.primaryKey.autoGenerate
+        val values = jsonToContentValues(row, entitySchema, excludeId = generated)
+        if (tableName.startsWith("keyboard_")) {
+            val id = row.getString("id")
+            require(UUID.fromString(id).toString() == id) { "Invalid UUID" }
+        }
         val rowId = db.insert(tableName, 0, values)
-        return if (entitySchema.primaryKey.autoGenerate) rowId.toString() else row.getString("id")
+        check(rowId != -1L) { "Could not import $tableName" }
+        return if (generated) rowId.toString() else row.getString("id")
     }
 
     /**
      * Update self-referencing foreign keys after all rows are imported.
      */
     private fun updateSelfReferences(
-        db: androidx.sqlite.db.SupportSQLiteDatabase,
+        db: SupportSQLiteDatabase,
         tableName: String,
         entitySchema: EntitySchema,
         idMapping: Map<String, String>,
