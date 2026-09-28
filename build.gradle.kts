@@ -54,7 +54,7 @@ spotless {
     kotlin {
         target("app/src/**/*.kt")
         ktlint("1.8.0")
-            .customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.6.6"))
+            .customRuleSets(listOf("io.nlopez.compose.rules:ktlint:0.6.7"))
         licenseHeaderFile("spotless/license-header.txt")
     }
 
