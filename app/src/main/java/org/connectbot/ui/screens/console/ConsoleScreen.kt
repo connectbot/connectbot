@@ -364,6 +364,7 @@ private fun ConsoleTerminalPage(
     bridge: TerminalBridge,
     isActive: Boolean,
     keyboardAlwaysVisible: Boolean,
+    pgUpDnGestureEnabled: Boolean,
     showSoftwareKeyboard: Boolean,
     resizeSuspended: Boolean,
     forceSize: Pair<Int, Int>?,
@@ -445,6 +446,14 @@ private fun ConsoleTerminalPage(
             delKeyMode = delKeyMode,
             onPasteRequest = onPasteRequest,
             onInterceptKey = onInterceptKey,
+            onPageGesture = if (pgUpDnGestureEnabled) {
+                { key ->
+                    bridge.keyHandler.sendPressedKey(key)
+                    bridge.tryKeyVibrate()
+                }
+            } else {
+                null
+            },
         )
 
         SideEffect {
@@ -574,6 +583,9 @@ fun ConsoleScreen(
         )
         ImeShortcutInputMode.entries.firstOrNull { it.name == storedMode }
             ?: ImeShortcutInputMode.FORCE_ASCII
+    }
+    val pgUpDnGestureEnabled = remember {
+        prefs.getBoolean(PreferenceConstants.PG_UPDN_GESTURE, false)
     }
     var fullscreen by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.FULLSCREEN, false)) }
     var titleBarHide by remember { mutableStateOf(prefs.getBoolean(PreferenceConstants.TITLEBARHIDE, false)) }
@@ -1062,6 +1074,7 @@ fun ConsoleScreen(
                                 bridge = bridge,
                                 isActive = true,
                                 keyboardAlwaysVisible = keyboardAlwaysVisible,
+                                pgUpDnGestureEnabled = pgUpDnGestureEnabled,
                                 showSoftwareKeyboard = showSoftwareKeyboard,
                                 resizeSuspended = resizeSuspended,
                                 forceSize = forceSize,
