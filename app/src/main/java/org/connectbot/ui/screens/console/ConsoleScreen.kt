@@ -562,7 +562,7 @@ fun ConsoleScreen(
 
     // Read preferences
     val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
-    val keyboardAlwaysVisible = remember { prefs.getBoolean(PreferenceConstants.KEY_ALWAYS_VISIBLE, false) }
+    val keyboardAlwaysVisible = remember { prefs.getBoolean(PreferenceConstants.KEY_ALWAYS_VISIBLE, true) }
     val swipeSessionsEnabled = remember {
         prefs.getBoolean(PreferenceConstants.SWIPE_SESSIONS, false)
     }
