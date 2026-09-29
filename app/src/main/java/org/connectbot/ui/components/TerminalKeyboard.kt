@@ -188,6 +188,7 @@ internal fun TerminalKeyboardContent(
 ) {
     val scrollState = rememberScrollState()
     val currentOnScrollInProgressChange by rememberUpdatedState(onScrollInProgressChange)
+    val currentOnInteraction by rememberUpdatedState(onInteraction)
     val view = LocalView.current
 
     if (bumpyArrows) {
@@ -226,7 +227,7 @@ internal fun TerminalKeyboardContent(
                 // Reset timer on any touch interaction
                 detectTapGestures(
                     onPress = {
-                        onInteraction()
+                        currentOnInteraction()
                         tryAwaitRelease()
                     },
                 )
@@ -585,6 +586,7 @@ private fun RepeatableKeyButton(
     val coroutineScope = rememberCoroutineScope()
     var isPressed by remember { mutableStateOf(false) }
     var repeatJob by remember { mutableStateOf<Job?>(null) }
+    val currentOnPress by rememberUpdatedState(onPress)
 
     // Cleanup on unmount
     DisposableEffect(Unit) {
@@ -619,13 +621,13 @@ private fun RepeatableKeyButton(
 
                         // First press after initial tap delay
                         sentPress = true
-                        onPress()
+                        currentOnPress()
 
                         // Wait before starting repeat
                         delay(500 - tapTimeout)
                         while (isPressed) {
                             sentPress = true
-                            onPress()
+                            currentOnPress()
                             delay(50) // Repeat interval
                         }
                     }
@@ -637,7 +639,7 @@ private fun RepeatableKeyButton(
                     if (released && !sentPress) {
                         // User released but key hasn't been sent yet (quick tap) - send it now
                         repeatJob?.cancel()
-                        onPress()
+                        currentOnPress()
                     } else {
                         repeatJob?.cancel()
                     }

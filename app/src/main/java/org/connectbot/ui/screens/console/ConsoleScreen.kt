@@ -54,6 +54,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ContentPaste
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Language
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
@@ -147,6 +148,7 @@ import org.connectbot.terminal.Terminal
 import org.connectbot.ui.LoadingScreen
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.components.AuthBannerDialog
+import org.connectbot.ui.components.ConnectionInfoDialog
 import org.connectbot.ui.components.FloatingTextInputDialog
 import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
@@ -362,6 +364,8 @@ private fun Modifier.sessionSwipeNavigation(
 @Composable
 private fun ConsoleTerminalPage(
     bridge: TerminalBridge,
+    disconnected: Boolean,
+    connecting: Boolean,
     isActive: Boolean,
     keyboardAlwaysVisible: Boolean,
     showSoftwareKeyboard: Boolean,
@@ -497,7 +501,7 @@ private fun ConsoleTerminalPage(
             )
 
             AnimatedVisibility(
-                visible = bridge.isDisconnected && !bridge.isConnecting && promptState == null,
+                visible = disconnected && !connecting && promptState == null,
                 enter = slideInVertically(initialOffsetY = { it }),
                 exit = slideOutVertically(targetOffsetY = { it }),
                 modifier = Modifier.align(Alignment.BottomCenter),
@@ -633,6 +637,7 @@ fun ConsoleScreen(
     val currentBridge = uiState.bridges
         .getOrNull(uiState.currentBridgeIndex)
     val currentBridgeId = currentBridge?.host?.id
+    var showConnectionInfoDialog by remember(currentBridgeId) { mutableStateOf(false) }
     val automationState by currentBridge?.automationState?.collectAsState()
         ?: remember { mutableStateOf(org.connectbot.service.automation.AutomationState()) }
 
@@ -655,7 +660,7 @@ fun ConsoleScreen(
 
     // Check if any modal (menu or dialog) is currently active
     val anyModalActive = showMenu || showUrlScanDialog || showResizeDialog ||
-        showDisconnectDialog || showSessionPickerDialog || showTextInputDialog ||
+        showDisconnectDialog || showSessionPickerDialog || showTextInputDialog || showConnectionInfoDialog ||
         isBiometricPromptActive || currentAuthBanner != null
 
     /**
@@ -850,6 +855,7 @@ fun ConsoleScreen(
     // These values are computed from bridge state and will recompute when uiState.revision changes
     val sessionOpen = currentBridge?.isSessionOpen == true
     val disconnected = currentBridge?.isDisconnected == true
+    val connecting = currentBridge?.isConnecting == true
     val canForwardPorts = currentBridge?.canFowardPorts() == true
     val snackbarHostState = remember { SnackbarHostState() }
 
@@ -1060,6 +1066,8 @@ fun ConsoleScreen(
                         key(bridge.host.id) {
                             ConsoleTerminalPage(
                                 bridge = bridge,
+                                disconnected = disconnected,
+                                connecting = connecting,
                                 isActive = true,
                                 keyboardAlwaysVisible = keyboardAlwaysVisible,
                                 showSoftwareKeyboard = showSoftwareKeyboard,
@@ -1105,6 +1113,19 @@ fun ConsoleScreen(
                         }
                     }
                 }
+            }
+        }
+
+        if (showConnectionInfoDialog) {
+            var details by remember(currentBridgeId) { mutableStateOf(viewModel.connectionDetails()) }
+            LaunchedEffect(currentBridgeId, viewModel) {
+                while (true) {
+                    details = viewModel.connectionDetails()
+                    delay(1_000)
+                }
+            }
+            details?.let { details ->
+                ConnectionInfoDialog(details = details, onDismiss = { showConnectionInfoDialog = false })
             }
         }
 
@@ -1330,6 +1351,16 @@ fun ConsoleScreen(
                                 leadingIcon = {
                                     Icon(Icons.Default.LinkOff, null)
                                 },
+                            )
+
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.console_menu_connection_info)) },
+                                onClick = {
+                                    showMenu = false
+                                    showConnectionInfoDialog = true
+                                },
+                                leadingIcon = { Icon(Icons.Default.Info, contentDescription = null) },
+                                enabled = currentBridge != null,
                             )
 
                             // URL Scan

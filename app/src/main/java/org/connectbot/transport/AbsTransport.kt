@@ -19,10 +19,12 @@ package org.connectbot.transport
 
 import android.content.Context
 import android.net.Uri
+import kotlinx.coroutines.channels.ReceiveChannel
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
+import org.connectbot.sshlib.ConnectionInfo
 import java.io.IOException
 
 /**
@@ -53,7 +55,7 @@ abstract class AbsTransport {
      * session is started, must call back to [TerminalBridge.onConnected].
      * After that call a session may be opened.
      */
-    abstract fun connect()
+    abstract suspend fun connect()
 
     /**
      * Reads from the transport. Transport must support reading into a the byte array
@@ -67,7 +69,14 @@ abstract class AbsTransport {
      * @throws IOException when remote host disconnects
      */
     @Throws(IOException::class)
-    abstract fun read(buffer: ByteArray, offset: Int, length: Int): Int
+    abstract suspend fun read(buffer: ByteArray, offset: Int, length: Int): Int
+
+    /** Separate streams keep their own character decoder in the relay. */
+    open fun getOutputStreams(): List<ReceiveChannel<ByteArray>>? = null
+
+    open suspend fun onOutputComplete() = Unit
+
+    open fun onOutputFailure(cause: Exception) = Unit
 
     /**
      * Writes to the transport. If the host is not yet connected, simply return without
@@ -77,7 +86,7 @@ abstract class AbsTransport {
      * @throws IOException when there is a problem writing after connection
      */
     @Throws(IOException::class)
-    abstract fun write(buffer: ByteArray)
+    abstract suspend fun write(buffer: ByteArray)
 
     /**
      * Writes to the transport. See [write] for behavior details.
@@ -85,20 +94,20 @@ abstract class AbsTransport {
      * @throws IOException when there is a problem writing after connection
      */
     @Throws(IOException::class)
-    abstract fun write(c: Int)
+    abstract suspend fun write(c: Int)
 
     /**
      * Flushes the write commands to the transport.
      * @throws IOException when there is a problem writing after connection
      */
     @Throws(IOException::class)
-    abstract fun flush()
+    abstract suspend fun flush()
 
     /**
      * Closes the connection to the terminal. Note that the resulting failure to read
      * should call [TerminalBridge.dispatchDisconnect].
      */
-    abstract fun close()
+    abstract suspend fun close()
 
     /**
      * Tells the transport what dimensions the display is currently
@@ -107,7 +116,7 @@ abstract class AbsTransport {
      * @param width width in pixels
      * @param height height in pixels
      */
-    abstract fun setDimensions(columns: Int, rows: Int, width: Int, height: Int)
+    abstract suspend fun setDimensions(columns: Int, rows: Int, width: Int, height: Int)
 
     open fun setOptions(options: Map<String, String>) {
         // do nothing
@@ -160,7 +169,7 @@ abstract class AbsTransport {
      * @param portForward member of our current port forwards list to enable
      * @return true on successful port forward setup
      */
-    open fun enablePortForward(portForward: PortForward): Boolean = false
+    open suspend fun enablePortForward(portForward: PortForward): Boolean = false
 
     /**
      * Disables a port forward member. After calling this method, the port forward should
@@ -168,14 +177,14 @@ abstract class AbsTransport {
      * @param portForward member of our current port forwards list to enable
      * @return true on successful port forward tear-down
      */
-    open fun disablePortForward(portForward: PortForward): Boolean = false
+    open suspend fun disablePortForward(portForward: PortForward): Boolean = false
 
     /**
      * Removes the [PortForward] from the available port forwards.
      * @param portForward the port forward bean to remove
      * @return true on successful removal
      */
-    open fun removePortForward(portForward: PortForward): Boolean = false
+    open suspend fun removePortForward(portForward: PortForward): Boolean = false
 
     /**
      * Gets a list of the [PortForward] currently used by this transport.
@@ -221,6 +230,9 @@ abstract class AbsTransport {
      * @return the local IP address or null
      */
     abstract fun getLocalIpAddress(): String?
+
+    /** Negotiated SSH details, retained for inspection after disconnect or Mosh handoff. */
+    open fun getSshConnectionInfo(): ConnectionInfo? = null
 
     /**
      * Called when the application goes to background.

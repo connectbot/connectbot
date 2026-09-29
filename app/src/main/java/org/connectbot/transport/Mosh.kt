@@ -21,6 +21,12 @@ import android.content.Context
 import android.net.Uri
 import android.os.Process
 import androidx.core.net.toUri
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withTimeoutOrNull
 import org.connectbot.R
 import org.connectbot.data.entity.Host
 import org.connectbot.service.DisconnectReason
@@ -80,11 +86,11 @@ class Mosh : SSH {
 
     override fun instanceProtocolName(): String = PROTOCOL
 
-    override fun finishConnection() {
+    override suspend fun finishConnection() {
         authenticated = true
     }
 
-    override fun connect() {
+    override suspend fun connect() {
         val currentHost = host ?: return
         val terminalManager = manager ?: return
 
@@ -139,6 +145,7 @@ class Mosh : SSH {
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_mosh_connected))
             bridge?.onConnected()
         } catch (e: Exception) {
+            currentCoroutineContext().ensureActive()
             Timber.e(e, "Failed to establish mosh connection")
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_mosh_error, e.message ?: "Unknown error"))
             close()
@@ -152,41 +159,43 @@ class Mosh : SSH {
      * @param currentHost The host configuration
      * @return MoshCredentials containing IP, port, and key, or null on failure
      */
-    private fun launchMoshServer(currentHost: Host): MoshCredentials? {
+    internal suspend fun launchMoshServer(currentHost: Host): MoshCredentials? {
         try {
             val moshServerCmd = buildMoshServerCommand(currentHost)
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_mosh_launching_server))
             Timber.d("Launching mosh-server: $moshServerCmd")
 
             // Open a session and execute mosh-server
-            val moshSession = connection?.openSession() ?: return null
-            moshSession.execCommand(moshServerCmd)
+            val moshSession = client?.openSession() ?: return null
 
-            // Read the output to get MOSH CONNECT line
-            val stdout = moshSession.stdout
-            val buffer = ByteArray(4096)
+            // Wait for mosh-server to output connection info.
             val outputBuilder = StringBuilder()
-
-            // Wait for mosh-server to output connection info
-            var attempts = 0
-            while (attempts < 50) { // 5 second timeout (100ms * 50)
-                val available = stdout.available()
-                if (available > 0) {
-                    val bytesRead = stdout.read(buffer, 0, minOf(available, buffer.size))
-                    if (bytesRead > 0) {
-                        outputBuilder.append(String(buffer, 0, bytesRead))
-
-                        // Check if we have the MOSH CONNECT line
-                        if (outputBuilder.contains("MOSH CONNECT")) {
-                            break
+            try {
+                if (!moshSession.requestExec(moshServerCmd)) {
+                    Timber.e("Server rejected mosh-server exec request")
+                    return null
+                }
+                withTimeoutOrNull(5_000L) {
+                    coroutineScope {
+                        val stderrReader = launch(start = CoroutineStart.UNDISPATCHED) {
+                            for (data in moshSession.stderr) {
+                                bridge?.outputLine(String(data, Charsets.UTF_8))
+                            }
+                        }
+                        try {
+                            while (true) {
+                                val data = moshSession.read() ?: break
+                                outputBuilder.append(String(data, Charsets.UTF_8))
+                                if (MOSH_CONNECT_PATTERN.matcher(outputBuilder).find()) break
+                            }
+                        } finally {
+                            stderrReader.cancel()
                         }
                     }
                 }
-                Thread.sleep(100)
-                attempts++
+            } finally {
+                moshSession.close()
             }
-
-            moshSession.close()
 
             val output = outputBuilder.toString()
             Timber.d("Mosh-server output: $output")
@@ -218,6 +227,7 @@ class Mosh : SSH {
                 key = key,
             )
         } catch (e: Exception) {
+            currentCoroutineContext().ensureActive()
             Timber.e(e, "Error launching mosh-server")
             return null
         }
@@ -309,15 +319,9 @@ class Mosh : SSH {
 
     private fun InetAddress.isUniqueLocalIpv6(): Boolean = address.size == IPV6_ADDRESS_LENGTH && (address[0].toInt() and IPV6_UNIQUE_LOCAL_MASK) == IPV6_UNIQUE_LOCAL_PREFIX
 
-    private fun detachInitialSsh() {
+    private suspend fun detachInitialSsh() {
         initialSshDetached = true
         super.close()
-        session?.close()
-        session = null
-        sessionOpen = false
-        stdin = null
-        stdout = null
-        stderr = null
     }
 
     /**
@@ -386,11 +390,11 @@ class Mosh : SSH {
      * Start a thread to watch for mosh-client process exit.
      */
     private fun startExitWatcher() {
+        val processId = moshProcessId
         Thread {
-            val exitCode = MoshClient.waitFor(moshProcessId)
+            val exitCode = MoshClient.waitFor(processId)
             Timber.d("Mosh-client exited with code: $exitCode")
             if (moshConnected) {
-                moshConnected = false
                 bridge?.dispatchDisconnect(DisconnectReason.REMOTE_EOF)
             }
         }.apply {
@@ -400,30 +404,35 @@ class Mosh : SSH {
         }
     }
 
-    override fun read(buffer: ByteArray, offset: Int, length: Int): Int {
+    override suspend fun read(buffer: ByteArray, offset: Int, length: Int): Int {
         val inputStream = moshInputStream ?: throw IOException("Mosh client not connected")
 
-        val bytesRead = inputStream.read(buffer, offset, length)
+        val bytesRead = try {
+            inputStream.read(buffer, offset, length)
+        } catch (e: IOException) {
+            bridge?.dispatchDisconnect(DisconnectReason.IO_ERROR)
+            throw e
+        }
         if (bytesRead < 0) {
-            moshConnected = false
+            bridge?.dispatchDisconnect(DisconnectReason.REMOTE_EOF)
             throw IOException("Mosh client disconnected")
         }
         return bytesRead
     }
 
-    override fun write(buffer: ByteArray) {
+    override suspend fun write(buffer: ByteArray) {
         moshOutputStream?.write(buffer)
     }
 
-    override fun write(c: Int) {
+    override suspend fun write(c: Int) {
         moshOutputStream?.write(c)
     }
 
-    override fun flush() {
+    override suspend fun flush() {
         moshOutputStream?.flush()
     }
 
-    override fun close() {
+    override suspend fun close() {
         moshConnected = false
         initialSshDetached = false
         moshPtyWindow.detach()
@@ -459,16 +468,16 @@ class Mosh : SSH {
 
     override fun isSessionOpen(): Boolean = moshConnected
 
-    override fun connectionLost(reason: Throwable) {
+    override fun onDisconnect(reason: DisconnectReason) {
         if (initialSshDetached || moshConnected) {
             Timber.d("Ignoring initial SSH connection loss after mosh handoff")
             return
         }
 
-        super.connectionLost(reason)
+        super.onDisconnect(reason)
     }
 
-    override fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) {
+    override suspend fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) {
         this.columns = columns
         this.rows = rows
         this.width = width
@@ -553,7 +562,7 @@ class Mosh : SSH {
     /**
      * Mosh connection credentials parsed from MOSH CONNECT output.
      */
-    private data class MoshCredentials(
+    internal data class MoshCredentials(
         val ip: String,
         val port: String,
         val key: String,
@@ -574,7 +583,7 @@ class Mosh : SSH {
         // Pattern to match MOSH CONNECT output
         // Format: MOSH CONNECT <port> <key>
         private val MOSH_CONNECT_PATTERN = Pattern.compile(
-            "MOSH CONNECT (\\d+) (\\S+)",
+            "^MOSH CONNECT (\\d+) (\\S+)\\r?\\n",
             Pattern.MULTILINE,
         )
         private val MOSH_IP_PATTERN = Pattern.compile(
