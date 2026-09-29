@@ -248,6 +248,19 @@ jobs:
           disk-size: 2G
           script: ./gradlew --profile :app:connected${FLAVOR_TASK}DebugAndroidTest :mosh:connected${FLAVOR_TASK}DebugAndroidTest :app:create${FLAVOR_TASK}DebugAndroidTestCoverageReport --continue
 
+      - name: Store instrumentation test results
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: android-test-results-${{ matrix.flavor }}
+          path: |
+            app/build/reports/androidTests/connected/
+            app/build/outputs/androidTest-results/connected/
+            mosh/build/reports/androidTests/connected/
+            mosh/build/outputs/androidTest-results/connected/
+          if-no-files-found: warn
+          retention-days: 14
+
       - name: Store Gradle profile
         if: always()
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
