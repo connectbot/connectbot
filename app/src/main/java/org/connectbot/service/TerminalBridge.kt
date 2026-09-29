@@ -648,6 +648,16 @@ class TerminalBridge {
             host.useAuthAgent?.let { newTransport.setUseAuthAgent(it) }
         }
         newTransport.setEmulation(emulation)
+        // A retained terminal may not emit another resize when reconnecting.
+        // Seed the new transport before SSH requests its PTY.
+        terminalEmulator.dimensions.let { dimensions ->
+            newTransport.setDimensions(
+                dimensions.columns,
+                dimensions.rows,
+                dimensions.widthPixels,
+                dimensions.heightPixels,
+            )
+        }
 
         outputLine(manager.res.getString(R.string.terminal_connecting, host.hostname, host.port, host.protocol))
 

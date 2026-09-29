@@ -1317,6 +1317,8 @@ open class SSH :
     override fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) {
         this.columns = columns
         this.rows = rows
+        this.width = width
+        this.height = height
 
         if (sessionOpen) {
             try {

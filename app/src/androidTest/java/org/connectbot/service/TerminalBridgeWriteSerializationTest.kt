@@ -36,6 +36,7 @@ import kotlinx.coroutines.withTimeout
 import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.transport.AbsTransport
+import org.connectbot.transport.SSH
 import org.connectbot.ui.MainActivity
 import org.connectbot.util.waitUntilServiceBound
 import org.junit.Assert.assertEquals
@@ -143,6 +144,49 @@ class TerminalBridgeWriteSerializationTest {
         override fun createHost(uri: Uri) = Host()
         override fun usesNetwork() = true
         override fun getLocalIpAddress(): String = "127.0.0.1"
+    }
+
+    @Test
+    fun newSshTransportUsesExistingTerminalDimensions() {
+        val intent = Intent(context, MainActivity::class.java)
+        ActivityScenario.launch<MainActivity>(intent).use { scenario ->
+            var capturedActivity: MainActivity? = null
+            scenario.onActivity { capturedActivity = it }
+            val manager = runBlocking { requireNotNull(capturedActivity).waitUntilServiceBound() }.terminalManager
+            val host = Host(
+                id = 0L,
+                nickname = "bridge-resize-test",
+                protocol = "ssh",
+                username = "",
+                hostname = "127.0.0.1",
+                port = 1,
+                profileId = 1L,
+            )
+            val dispatchers = CoroutineDispatchers(
+                default = Dispatchers.Default,
+                io = Dispatchers.IO,
+                main = Dispatchers.Main,
+            )
+            val bridge = TerminalBridge(manager, host, dispatchers)
+            try {
+                bridge.terminalEmulator.resize(42, 100)
+                val dimensions = bridge.terminalEmulator.dimensions
+
+                bridge.startConnection()
+
+                val transport = bridge.transport as SSH
+                fun dimension(name: String): Int = SSH::class.java.getDeclaredField(name).let { field ->
+                    field.isAccessible = true
+                    field.getInt(transport)
+                }
+                assertEquals(dimensions.columns, dimension("columns"))
+                assertEquals(dimensions.rows, dimension("rows"))
+                assertEquals(dimensions.widthPixels, dimension("width"))
+                assertEquals(dimensions.heightPixels, dimension("height"))
+            } finally {
+                bridge.cleanup()
+            }
+        }
     }
 
     @Test
