@@ -24,6 +24,7 @@ import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
+import org.connectbot.sshlib.ConnectionInfo
 import java.io.IOException
 
 /**
@@ -229,6 +230,9 @@ abstract class AbsTransport {
      * @return the local IP address or null
      */
     abstract fun getLocalIpAddress(): String?
+
+    /** Negotiated SSH details, retained for inspection after disconnect or Mosh handoff. */
+    open fun getSshConnectionInfo(): ConnectionInfo? = null
 
     /**
      * Called when the application goes to background.

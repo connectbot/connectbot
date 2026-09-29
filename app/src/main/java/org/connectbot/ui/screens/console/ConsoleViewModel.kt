@@ -35,6 +35,7 @@ import kotlinx.coroutines.withContext
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
+import org.connectbot.sshlib.PortForwarder
 import org.connectbot.terminal.ProgressState
 import org.connectbot.util.NotificationPermissionHelper
 import org.connectbot.util.PreferenceConstants
@@ -72,6 +73,35 @@ class ConsoleViewModel @Inject constructor(
 
     private val _networkStatusMessages = MutableSharedFlow<String>(extraBufferCapacity = 8)
     val networkStatusMessages: SharedFlow<String> = _networkStatusMessages.asSharedFlow()
+
+    fun connectionDetails(): ConnectionDetails? {
+        val state = _uiState.value
+        val bridge = state.bridges.getOrNull(state.currentBridgeIndex) ?: return null
+        val transport = bridge.transport
+        return ConnectionDetails(
+            host = bridge.host,
+            status = when {
+                bridge.isDisconnected -> ConnectionStatus.DISCONNECTED
+                bridge.isConnecting -> ConnectionStatus.CONNECTING
+                else -> ConnectionStatus.CONNECTED
+            },
+            localAddress = transport?.getLocalIpAddress(),
+            ssh = transport?.getSshConnectionInfo(),
+            portForwards = transport?.getPortForwards().orEmpty().map { forward ->
+                val forwarder = forward.getIdentifier() as? PortForwarder
+                PortForwardDetails(
+                    nickname = forward.nickname,
+                    type = forward.type,
+                    sourceAddress = forward.sourceAddr,
+                    configuredPort = forward.sourcePort,
+                    destinationAddress = forward.destAddr,
+                    destinationPort = forward.destPort,
+                    boundPort = forwarder?.boundPort,
+                    isActive = !bridge.isDisconnected && forwarder?.isActive == true,
+                )
+            },
+        )
+    }
 
     fun shouldShowNotificationWarning(): Boolean {
         if (!prefs.contains(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED)) return false

@@ -1661,4 +1661,68 @@
 	<string name="automation_key_shift">Shift</string>
 	<!-- Action summary duration in seconds. -->
 	<string name="automation_seconds">%1$.3f s</string>
+	<!-- Console overflow menu entry and title of the connection information dialog. -->
+	<string name="console_menu_connection_info">Connection info</string>
+	<!-- Connection information field showing SSH, Mosh, or another transport protocol. -->
+	<string name="connection_info_protocol">Protocol</string>
+	<!-- Connection information field showing the configured server hostname. -->
+	<string name="connection_info_host">Host</string>
+	<!-- Connection information field showing the server TCP port. -->
+	<string name="connection_info_port">Port</string>
+	<!-- Connection information field showing the TCP port used to start Mosh over SSH. -->
+	<string name="connection_info_ssh_port">SSH port</string>
+	<!-- Connection information field showing the remote login username. -->
+	<string name="connection_info_username">Username</string>
+	<!-- Connection information field showing the current connection state. -->
+	<string name="connection_info_status">Status</string>
+	<!-- Connection information status while a connection is being established. -->
+	<string name="connection_info_connecting">Connecting</string>
+	<!-- Connection information status for an established connection. -->
+	<string name="connection_info_connected">Connected</string>
+	<!-- Connection information status after a connection has closed. -->
+	<string name="connection_info_disconnected">Disconnected</string>
+	<!-- Connection information field showing the local network IP address. -->
+	<string name="connection_info_local_address">Local address</string>
+	<!-- Heading for the initial SSH negotiation used to launch Mosh, not the active Mosh connection. -->
+	<string name="connection_info_ssh_bootstrap">SSH bootstrap details</string>
+	<!-- Heading for the algorithms negotiated by the SSH connection. -->
+	<string name="connection_info_ssh_negotiation">SSH negotiation details</string>
+	<!-- Shown when no negotiated SSH connection information is available. -->
+	<string name="connection_info_unavailable">SSH negotiation details are not available.</string>
+	<!-- Connection information field showing the negotiated SSH key exchange algorithm. -->
+	<string name="connection_info_key_exchange">Key exchange</string>
+	<!-- Connection information field showing the SSH server host key algorithm. -->
+	<string name="connection_info_host_key">Server host key</string>
+	<!-- Connection information field showing the outbound SSH cipher. -->
+	<string name="connection_info_cipher_outbound">Encryption: client to server</string>
+	<!-- Connection information field showing the inbound SSH cipher. -->
+	<string name="connection_info_cipher_inbound">Encryption: server to client</string>
+	<!-- Connection information field showing the outbound SSH message authentication algorithm. -->
+	<string name="connection_info_mac_outbound">Integrity: client to server</string>
+	<!-- Connection information field showing the inbound SSH message authentication algorithm. -->
+	<string name="connection_info_mac_inbound">Integrity: server to client</string>
+	<!-- Displayed when an SSH authenticated encryption cipher needs no separate message authentication algorithm. -->
+	<string name="connection_info_integrated_mac">Integrated with encryption</string>
+	<!-- Connection information field indicating whether the negotiated SSH key exchange is post-quantum secure. -->
+	<string name="connection_info_post_quantum">Post-quantum key exchange</string>
+	<!-- Positive value for the post-quantum key exchange field in connection information. -->
+	<string name="connection_info_yes">Yes</string>
+	<!-- Negative value for the post-quantum key exchange field in connection information. -->
+	<string name="connection_info_no">No</string>
+	<!-- Section heading for forwarding details in the connection information panel. -->
+	<string name="connection_info_port_forwards">Port forwards</string>
+	<!-- Saved bind address and port for a port forward. -->
+	<string name="connection_info_configured_source">Configured source</string>
+	<!-- Actual port assigned to a forwarding listener by SSH or the operating system. -->
+	<string name="connection_info_bound_port">Bound port</string>
+	<!-- Shown when a port forward has no runtime listener. -->
+	<string name="connection_info_not_bound">Not bound</string>
+	<!-- Label for the current status of an individual port forward. -->
+	<string name="connection_info_forward_status">Forwarding status</string>
+	<!-- Shown when the SSH library reports a port forward as active. -->
+	<string name="connection_info_forward_active">Active</string>
+	<!-- Shown when a forward has stopped or the connection has disconnected. -->
+	<string name="connection_info_forward_inactive">Inactive</string>
+	<!-- Destination address and port of a local or remote forward. -->
+	<string name="connection_info_forward_destination">Destination</string>
 </resources>

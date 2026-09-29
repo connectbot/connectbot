@@ -55,6 +55,7 @@ import org.connectbot.sshlib.AuthHandler
 import org.connectbot.sshlib.AuthPublicKey
 import org.connectbot.sshlib.AuthResult
 import org.connectbot.sshlib.ConnectResult
+import org.connectbot.sshlib.ConnectionInfo
 import org.connectbot.sshlib.HostKeyVerifier
 import org.connectbot.sshlib.KeyFingerprint
 import org.connectbot.sshlib.KeyboardInteractiveCallback
@@ -101,6 +102,9 @@ open class SSH : AbsTransport {
 
     @Volatile
     private var localIpAddress: String? = null
+
+    @Volatile
+    private var lastConnectionInfo: ConnectionInfo? = null
 
     protected var client: SshClient? = null
     private var session: SshSession? = null
@@ -841,6 +845,7 @@ open class SSH : AbsTransport {
 
     override suspend fun connect() {
         locallyClosed = false
+        lastConnectionInfo = null
         connectionLossCause = null
         outputDrained = null
         savedPasswordsTried.clear()
@@ -878,7 +883,10 @@ open class SSH : AbsTransport {
 
         try {
             when (val connectResult = client?.connect()) {
-                is ConnectResult.Success -> updateLocalIpAddress(client)
+                is ConnectResult.Success -> {
+                    lastConnectionInfo = client?.connectionInfo
+                    updateLocalIpAddress(client)
+                }
 
                 else -> {
                     bridge?.outputLine(describeConnectResult(connectResult))
@@ -978,6 +986,7 @@ open class SSH : AbsTransport {
             return
         }
 
+        getSshConnectionInfo()
         locallyClosed = true
         connected = false
         sessionOpen = false
@@ -1053,6 +1062,11 @@ open class SSH : AbsTransport {
     @Throws(IOException::class)
     override suspend fun flush() {
         // New library handles flushing internally
+    }
+
+    override fun getSshConnectionInfo(): ConnectionInfo? {
+        client?.connectionInfo?.let { lastConnectionInfo = it }
+        return lastConnectionInfo
     }
 
     override fun getOutputStreams(): List<ReceiveChannel<ByteArray>>? {

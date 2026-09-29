@@ -34,6 +34,7 @@ import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.sshlib.AuthHandler
 import org.connectbot.sshlib.AuthResult
+import org.connectbot.sshlib.ConnectionInfo
 import org.connectbot.sshlib.KeyboardInteractiveCallback
 import org.connectbot.sshlib.SessionExit
 import org.connectbot.sshlib.SshClient
@@ -400,5 +401,17 @@ class SSHMigrationTest {
         `when`(client.authenticate(eq("user") ?: "user", matchingHandler())).thenReturn(AuthResult.Failure(emptySet()))
         ssh.authenticateConnection()
         verify(bridge, never()).outputLine("Authentication successful.")
+    }
+
+    @Test
+    fun connectionInfo_retainsLatestNegotiationAfterClose() = runTest {
+        val initial = ConnectionInfo("curve25519-sha256", "ssh-ed25519", "aes128-ctr", "aes128-ctr", "hmac-sha2-256", "hmac-sha2-256")
+        val rekeyed = initial.copy(encryptionAlgorithmC2S = "aes256-ctr")
+        `when`(client.connectionInfo).thenReturn(initial)
+        val ssh = TestSSH()
+        assertEquals(initial, ssh.getSshConnectionInfo())
+        `when`(client.connectionInfo).thenReturn(rekeyed)
+        ssh.close()
+        assertEquals(rekeyed, ssh.getSshConnectionInfo())
     }
 }
