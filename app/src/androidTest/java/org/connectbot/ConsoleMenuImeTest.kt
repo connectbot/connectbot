@@ -29,11 +29,14 @@ import androidx.activity.compose.setContent
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.v2.createEmptyComposeRule
 import androidx.compose.ui.test.onAllNodesWithContentDescription
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
 import androidx.core.content.edit
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
@@ -166,6 +169,71 @@ class ConsoleMenuImeTest {
         settle()
         composeRule.onNodeWithText(context.getString(R.string.console_menu_resize)).assertDoesNotExist()
         instrumentation.runOnMainSync { assertFalse("Menu must not reopen a dismissed keyboard", imeVisible()) }
+    }
+
+    @Test
+    fun openMenu_preventsTitleBarAutoHide() {
+        PreferenceManager.getDefaultSharedPreferences(context).edit {
+            putBoolean(PreferenceConstants.TITLEBARHIDE, true)
+        }
+
+        withLocalConsole {
+            composeRule.onNodeWithTag("terminal").performTouchInput {
+                down(center)
+                up()
+            }
+            composeRule.onNodeWithTag("top_app_bar").assertIsDisplayed()
+            openMenu()
+
+            composeRule.mainClock.advanceTimeBy(3_500)
+            composeRule.waitForIdle()
+
+            composeRule.onNodeWithTag("top_app_bar").assertIsDisplayed()
+            composeRule.onNodeWithText(context.getString(R.string.console_menu_resize)).assertIsDisplayed()
+        }
+    }
+
+    @Test
+    fun keyboardKey_doesNotExtendTitleBarAutoHide() {
+        PreferenceManager.getDefaultSharedPreferences(context).edit {
+            putBoolean(PreferenceConstants.TITLEBARHIDE, true)
+        }
+
+        withLocalConsole {
+            composeRule.onNodeWithTag("terminal").performTouchInput {
+                down(center)
+                up()
+            }
+            composeRule.onNodeWithTag("top_app_bar").assertIsDisplayed()
+
+            composeRule.mainClock.advanceTimeBy(2_000)
+            composeRule.onNodeWithContentDescription(context.getString(R.string.image_description_up)).performClick()
+            composeRule.mainClock.advanceTimeBy(1_500)
+            composeRule.waitForIdle()
+
+            composeRule.onNodeWithTag("top_app_bar").assertDoesNotExist()
+        }
+    }
+
+    @Test
+    fun textInputDialog_allowsTitleBarAutoHide() {
+        PreferenceManager.getDefaultSharedPreferences(context).edit {
+            putBoolean(PreferenceConstants.TITLEBARHIDE, true)
+        }
+
+        withLocalConsole {
+            composeRule.onNodeWithTag("terminal").performTouchInput {
+                down(center)
+                up()
+            }
+            composeRule.onNodeWithTag("top_app_bar").assertIsDisplayed()
+            composeRule.onNodeWithTag("title_bar_text_input").performClick()
+
+            composeRule.mainClock.advanceTimeBy(3_500)
+            composeRule.waitForIdle()
+
+            composeRule.onNodeWithTag("top_app_bar").assertIsNotDisplayed()
+        }
     }
 
     private fun openMenu() {
