@@ -125,7 +125,7 @@ class HostEditorViewModelTest {
         viewModel.updateHostname("example.com")
         `when`(repository.saveHost(any(Host::class.java) ?: Host())).thenThrow(IllegalStateException("disk failed"))
 
-        assertFalse(viewModel.saveHost(useExpandedMode = true))
+        assertFalse(viewModel.saveHost())
         assertTrue(viewModel.uiState.value.hasUnsavedChanges)
         assertEquals("disk failed", viewModel.uiState.value.error)
         assertFalse(viewModel.uiState.value.isSaving)
@@ -155,7 +155,6 @@ class HostEditorViewModelTest {
         assertEquals("test-user", state.username)
         assertEquals("10.0.0.1", state.hostname)
         assertEquals("23", state.port)
-        assertEquals("10.0.0.1", state.quickConnect) // Verify quickConnect is populated
         assertTrue(state.hasExistingPassword)
         assertFalse(state.isNicknameMatching)
     }
@@ -182,7 +181,7 @@ class HostEditorViewModelTest {
     }
 
     @Test
-    fun testUpdateNickname_withValidQuickConnect_syncsFields() = runTest {
+    fun testUpdateNickname_withConnectionSyntax_syncsFields() = runTest {
         val viewModel = createViewModel()
         advanceUntilIdle()
 
@@ -224,25 +223,98 @@ class HostEditorViewModelTest {
     }
 
     @Test
-    fun testUpdateNickname_whenExpanded_doesNotSyncFields() = runTest {
-        val viewModel = createViewModel()
+    fun testUpdateNickname_whenCustom_doesNotSyncFields() = runTest {
+        val host = Host(
+            id = 42L,
+            nickname = "Production",
+            username = "user",
+            hostname = "192.168.1.1",
+            port = 22,
+        )
+        `when`(repository.findHostById(host.id)).thenReturn(host)
+        val viewModel = createViewModel(host.id)
         advanceUntilIdle()
 
-        // Set explicit host settings first
-        viewModel.updateHostname("192.168.1.1")
-        viewModel.updateUsername("user")
-        viewModel.updatePort("22")
-        advanceUntilIdle()
+        viewModel.onNicknameFocusChanged(true)
+        viewModel.updateNickname("john@myhost:2222")
+        viewModel.onNicknameFocusChanged(false)
 
-        // Change nickname with isExpanded = true
-        viewModel.updateNickname("john@myhost:2222", isExpanded = true)
-        advanceUntilIdle()
-
-        // Should keep old hostname, username, port, but update nickname
         assertEquals("john@myhost:2222", viewModel.uiState.value.nickname)
         assertEquals("192.168.1.1", viewModel.uiState.value.hostname)
         assertEquals("user", viewModel.uiState.value.username)
         assertEquals("22", viewModel.uiState.value.port)
+    }
+
+    @Test
+    fun testUpdateNickname_linkedEdit_recoversAfterIncompleteInput() = runTest {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.updateNickname("user@example.com")
+        viewModel.onNicknameFocusChanged(true)
+
+        viewModel.updateNickname("admin@")
+        assertEquals("user", viewModel.uiState.value.username)
+        assertEquals("example.com", viewModel.uiState.value.hostname)
+        assertFalse(viewModel.uiState.value.isNicknameMatching)
+
+        viewModel.updateNickname("admin@other.example:")
+        assertEquals("example.com", viewModel.uiState.value.hostname)
+        viewModel.updateNickname("admin@other.example:2222")
+        assertEquals("admin", viewModel.uiState.value.username)
+        assertEquals("other.example", viewModel.uiState.value.hostname)
+        assertEquals("2222", viewModel.uiState.value.port)
+        assertTrue(viewModel.uiState.value.isNicknameMatching)
+        viewModel.onNicknameFocusChanged(false)
+    }
+
+    @Test
+    fun testUpdateNickname_customEditEndsLinkUntilNicknameMatchesAgain() = runTest {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.updateNickname("user@example.com")
+        viewModel.onNicknameFocusChanged(true)
+        viewModel.updateNickname("My Server")
+        viewModel.onNicknameFocusChanged(false)
+
+        viewModel.onNicknameFocusChanged(true)
+        viewModel.updateNickname("admin@other.example:2222")
+        assertEquals("user", viewModel.uiState.value.username)
+        assertEquals("example.com", viewModel.uiState.value.hostname)
+        assertEquals("22", viewModel.uiState.value.port)
+        viewModel.updateNickname("user@example.com")
+        viewModel.onNicknameFocusChanged(false)
+
+        viewModel.onNicknameFocusChanged(true)
+        viewModel.updateNickname("admin@other.example:2222")
+        assertEquals("other.example", viewModel.uiState.value.hostname)
+        viewModel.onNicknameFocusChanged(false)
+    }
+
+    @Test
+    fun testMoshNickname_includesUsernameAndStaysLinked() = runTest {
+        val host = Host(
+            id = 42L,
+            nickname = "user@example.com:22",
+            protocol = "mosh",
+            username = "user",
+            hostname = "example.com",
+            port = 22,
+        )
+        `when`(repository.findHostById(host.id)).thenReturn(host)
+        val viewModel = createViewModel(host.id)
+        advanceUntilIdle()
+        assertTrue(viewModel.uiState.value.isNicknameMatching)
+
+        viewModel.updateUsername("admin")
+        assertEquals("admin@example.com", viewModel.uiState.value.nickname)
+        viewModel.updatePort("2222")
+        assertEquals("admin@example.com:2222", viewModel.uiState.value.nickname)
+        viewModel.onNicknameFocusChanged(true)
+        viewModel.updateNickname("root@[2001:db8::1]:8022")
+        assertEquals("root", viewModel.uiState.value.username)
+        assertEquals("[2001:db8::1]", viewModel.uiState.value.hostname)
+        assertEquals("8022", viewModel.uiState.value.port)
+        assertTrue(viewModel.uiState.value.isNicknameMatching)
     }
 
     @Test
@@ -251,23 +323,21 @@ class HostEditorViewModelTest {
         advanceUntilIdle()
 
         // Start with nickname in sync with default host/port representation
-        viewModel.updateQuickConnect("user@192.168.1.1:22")
+        viewModel.updateNickname("user@192.168.1.1:22")
         advanceUntilIdle()
 
         // Change hostname directly
         viewModel.updateHostname("192.168.1.2")
         advanceUntilIdle()
 
-        // Nickname and quickConnect should automatically update
+        // Matching nicknames should automatically update
         assertEquals("user@192.168.1.2", viewModel.uiState.value.nickname)
-        assertEquals("user@192.168.1.2", viewModel.uiState.value.quickConnect)
 
         // Change port directly
         viewModel.updatePort("2222")
         advanceUntilIdle()
 
         assertEquals("user@192.168.1.2:2222", viewModel.uiState.value.nickname)
-        assertEquals("user@192.168.1.2:2222", viewModel.uiState.value.quickConnect)
     }
 
     @Test
@@ -276,7 +346,7 @@ class HostEditorViewModelTest {
         advanceUntilIdle()
 
         // Start with nickname in sync
-        viewModel.updateQuickConnect("user@192.168.1.1")
+        viewModel.updateNickname("user@192.168.1.1")
         advanceUntilIdle()
 
         // Change nickname to a custom friendly name
@@ -287,9 +357,8 @@ class HostEditorViewModelTest {
         viewModel.updateHostname("192.168.1.2")
         advanceUntilIdle()
 
-        // Nickname should NOT change, but quickConnect should change
+        // Custom nicknames should not change
         assertEquals("My Custom Server", viewModel.uiState.value.nickname)
-        assertEquals("user@192.168.1.2", viewModel.uiState.value.quickConnect)
     }
 
     @Test
@@ -313,13 +382,13 @@ class HostEditorViewModelTest {
         val viewModel = createViewModel(hostId)
         advanceUntilIdle()
 
-        // Modify host values in Expanded Mode (default for editing)
+        // Modify the explicit connection fields
         viewModel.updateHostname("10.0.0.2")
         viewModel.updatePort("2222")
         viewModel.updateUsername("new-user")
         advanceUntilIdle()
 
-        viewModel.saveHost(useExpandedMode = true)
+        viewModel.saveHost()
         advanceUntilIdle()
 
         // Capture saved host and verify it was updated
@@ -355,7 +424,7 @@ class HostEditorViewModelTest {
         advanceUntilIdle()
 
         viewModel.updatePort("4022")
-        viewModel.saveHost(useExpandedMode = true)
+        viewModel.saveHost()
 
         val hostCaptor = ArgumentCaptor.forClass(Host::class.java)
         verify(repository).saveHost(hostCaptor.capture() ?: Host())
@@ -385,7 +454,7 @@ class HostEditorViewModelTest {
         viewModel.updateHostname("10.0.0.2")
         advanceUntilIdle()
 
-        viewModel.saveHost(useExpandedMode = true)
+        viewModel.saveHost()
         advanceUntilIdle()
 
         val hostCaptor = ArgumentCaptor.forClass(Host::class.java)
@@ -406,7 +475,6 @@ class HostEditorViewModelTest {
         assertEquals("[2001:db8::1]", viewModel.uiState.value.hostname)
         assertEquals("", viewModel.uiState.value.username)
         assertEquals("22", viewModel.uiState.value.port)
-        assertEquals("[2001:db8::1]", viewModel.uiState.value.quickConnect)
     }
 
     @Test
@@ -419,33 +487,6 @@ class HostEditorViewModelTest {
         assertEquals("[2001:db8::1]", viewModel.uiState.value.hostname)
         assertEquals("admin", viewModel.uiState.value.username)
         assertEquals("8022", viewModel.uiState.value.port)
-        assertEquals("admin@[2001:db8::1]:8022", viewModel.uiState.value.quickConnect)
-    }
-
-    @Test
-    fun testUpdateQuickConnect_withIPv6_syncsFields() = runTest {
-        val viewModel = createViewModel()
-        advanceUntilIdle()
-
-        viewModel.updateQuickConnect("[2001:db8::1]")
-        advanceUntilIdle()
-        assertEquals("[2001:db8::1]", viewModel.uiState.value.hostname)
-        assertEquals("", viewModel.uiState.value.username)
-        assertEquals("22", viewModel.uiState.value.port)
-        assertEquals("[2001:db8::1]", viewModel.uiState.value.nickname)
-    }
-
-    @Test
-    fun testUpdateQuickConnect_withIPv6AndPort_syncsFields() = runTest {
-        val viewModel = createViewModel()
-        advanceUntilIdle()
-
-        viewModel.updateQuickConnect("admin@[2001:db8::1]:8022")
-        advanceUntilIdle()
-        assertEquals("[2001:db8::1]", viewModel.uiState.value.hostname)
-        assertEquals("admin", viewModel.uiState.value.username)
-        assertEquals("8022", viewModel.uiState.value.port)
-        assertEquals("admin@[2001:db8::1]:8022", viewModel.uiState.value.nickname)
     }
 
     @Test
@@ -454,7 +495,7 @@ class HostEditorViewModelTest {
         advanceUntilIdle()
 
         // Syncs hostname/port. Set port to blank.
-        viewModel.updateQuickConnect("john@myhost")
+        viewModel.updateNickname("john@myhost")
         advanceUntilIdle()
         viewModel.updatePort("")
         advanceUntilIdle()
@@ -486,7 +527,7 @@ class HostEditorViewModelTest {
         viewModel.updatePort("") // Clear the port
         advanceUntilIdle()
 
-        viewModel.saveHost(useExpandedMode = true)
+        viewModel.saveHost()
         advanceUntilIdle()
 
         val hostCaptor = ArgumentCaptor.forClass(Host::class.java)
@@ -497,7 +538,7 @@ class HostEditorViewModelTest {
     }
 
     @Test
-    fun testLocalProtocol_doesNotSyncNicknameOrQuickConnect() = runTest {
+    fun testLocalProtocol_doesNotSyncNickname() = runTest {
         val viewModel = createViewModel()
         advanceUntilIdle()
 
@@ -505,18 +546,16 @@ class HostEditorViewModelTest {
         viewModel.updateNickname("my-local-shell")
         advanceUntilIdle()
 
-        // Changing hostname or username shouldn't sync nickname or quickConnect
+        // Changing hostname or username should not change a local nickname
         viewModel.updateHostname("somehost")
         viewModel.updateUsername("someuser")
         advanceUntilIdle()
 
         assertEquals("my-local-shell", viewModel.uiState.value.nickname)
-        // Since isNicknameMatching is false for local, quickConnect shouldn't sync either
-        assertEquals("my-local-shell", viewModel.uiState.value.quickConnect)
     }
 
     @Test
-    fun testLoadExistingHost_matchingNickname_initializesQuickConnectToNickname() = runTest {
+    fun testLoadExistingHost_preservesExplicitDefaultPortInNickname() = runTest {
         val hostId = 42L
         val existingHost = Host(
             id = hostId,
@@ -532,8 +571,37 @@ class HostEditorViewModelTest {
         val viewModel = createViewModel(hostId)
         advanceUntilIdle()
 
-        val state = viewModel.uiState.value
-        assertEquals("test-user@10.0.0.1:22", state.quickConnect)
+        assertEquals("test-user@10.0.0.1:22", viewModel.uiState.value.nickname)
+    }
+
+    @Test
+    fun testSaveHost_persistsNicknameAndAdvancedValuesDuringLinkedEdit() = runTest {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        `when`(repository.saveHost(any(Host::class.java) ?: Host())).thenAnswer { invocation ->
+            invocation.arguments[0] as Host
+        }
+
+        viewModel.onNicknameFocusChanged(true)
+        viewModel.updateNickname("admin@")
+        viewModel.updateNickname("admin@example.com:22")
+        viewModel.updateIpVersion("IPV4_ONLY")
+        viewModel.updateMoshPort("60001")
+        viewModel.updateMoshServer("custom-mosh-server")
+        viewModel.updateLocale("de_DE.UTF-8")
+
+        assertTrue(viewModel.saveHost())
+        val hostCaptor = ArgumentCaptor.forClass(Host::class.java)
+        verify(repository).saveHost(hostCaptor.capture() ?: Host())
+        val savedHost = hostCaptor.value
+        assertEquals("admin@example.com:22", savedHost.nickname)
+        assertEquals("admin", savedHost.username)
+        assertEquals("example.com", savedHost.hostname)
+        assertEquals(22, savedHost.port)
+        assertEquals("IPV4_ONLY", savedHost.ipVersion)
+        assertEquals(60001, savedHost.moshPort)
+        assertEquals("custom-mosh-server", savedHost.moshServer)
+        assertEquals("de_DE.UTF-8", savedHost.locale)
     }
 
     @Test

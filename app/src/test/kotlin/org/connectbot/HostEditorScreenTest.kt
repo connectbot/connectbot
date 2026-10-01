@@ -18,16 +18,20 @@
 package org.connectbot
 
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
+import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
+import androidx.compose.ui.test.performTextReplacement
 import androidx.navigation.NavType
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.compose.NavHost
@@ -37,6 +41,9 @@ import androidx.navigation.testing.TestNavHostController
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.runBlocking
+import org.connectbot.data.HostRepository
+import org.connectbot.data.entity.Host
 import org.connectbot.ui.screens.hosteditor.HostEditorScreen
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.junit.Assert.assertEquals
@@ -45,6 +52,7 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import javax.inject.Inject
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -54,6 +62,9 @@ class HostEditorScreenTest {
 
     @get:Rule(order = 1)
     val composeTestRule = createAndroidComposeRule<HiltComponentActivity>()
+
+    @Inject
+    lateinit var repository: HostRepository
 
     private lateinit var navController: TestNavHostController
 
@@ -103,7 +114,7 @@ class HostEditorScreenTest {
         navigateToHostEditorScreen(-1L)
 
         composeTestRule
-            .onNodeWithText("Quick connect")
+            .onNodeWithText("Nickname")
             .performClick()
             .performTextInput("test@example.com")
 
@@ -128,7 +139,7 @@ class HostEditorScreenTest {
         navigateToHostEditorScreen(-1L)
 
         composeTestRule
-            .onNodeWithText("Quick connect")
+            .onNodeWithText("Nickname")
             .performClick()
             .performTextInput("test@example.com")
 
@@ -144,7 +155,7 @@ class HostEditorScreenTest {
         navigateToHostEditorScreen(-1L)
 
         composeTestRule
-            .onNodeWithText("Quick connect")
+            .onNodeWithText("Nickname")
             .performClick()
             .performTextInput("test@example.com")
 
@@ -177,27 +188,131 @@ class HostEditorScreenTest {
     }
 
     @Test
+    fun hostEditorScreen_connectionDetailsVisibleAndAdvancedFieldsHiddenByDefault() {
+        navigateToHostEditorScreen(-1L)
+
+        composeTestRule.onNodeWithText("Nickname").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Quick connect").assertDoesNotExist()
+        composeTestRule.onNodeWithText("ssh").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Username").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText("Host").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText("Port").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.hostpref_ipversion_title)).assertDoesNotExist()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.hostpref_password_title)).assertDoesNotExist()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.hostpref_jumphost_title)).performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.hostpref_postlogin_title)).performScrollTo().assertIsDisplayed()
+    }
+
+    @Test
+    fun hostEditorScreen_linkedNicknameUpdatesFieldsThroughIncompleteInput() {
+        navigateToHostEditorScreen(-1L)
+        composeTestRule.onNodeWithText("Nickname").performClick().performTextInput("admin@")
+        composeTestRule.onNodeWithTag("add_host_button").assertIsNotDisplayed()
+        composeTestRule.onNodeWithText("Nickname").performTextInput("example.com:2222")
+
+        composeTestRule.onNodeWithText("Username").performScrollTo().assert(hasText("admin"))
+        composeTestRule.onNodeWithText("Host").performScrollTo().assert(hasText("example.com"))
+        composeTestRule.onNodeWithText("Port").performScrollTo().assert(hasText("2222"))
+        composeTestRule.onNodeWithTag("add_host_button").assertIsDisplayed()
+    }
+
+    @Test
+    fun hostEditorScreen_advancedOptionsRetainValuesAndCollapseWithCustomNickname() {
+        navigateToHostEditorScreen(-1L)
+        composeTestRule.onNodeWithText("Nickname").performTextInput("user@example.com")
+        composeTestRule.onNodeWithText("Host").performScrollTo().performClick()
+        composeTestRule.onNodeWithText("Nickname").performScrollTo().performTextReplacement("My Server")
+        composeTestRule.onNodeWithText("Show advanced options").performScrollTo().performClick()
+
+        val passwordLabel = composeTestRule.activity.getString(R.string.hostpref_password_title)
+        val ipVersionLabel = composeTestRule.activity.getString(R.string.hostpref_ipversion_title)
+        composeTestRule.onNodeWithText(ipVersionLabel).performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText(passwordLabel).performScrollTo().performTextInput("secret")
+        composeTestRule.onNodeWithText("Hide advanced options").performScrollTo().performClick()
+
+        composeTestRule.onNodeWithText(ipVersionLabel).assertDoesNotExist()
+        composeTestRule.onNodeWithText(passwordLabel).assertDoesNotExist()
+        composeTestRule.onNodeWithText("My Server").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText("example.com").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithTag("add_host_button").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Show advanced options").performScrollTo().performClick()
+        composeTestRule.onNodeWithText(passwordLabel).performScrollTo().assert(hasText("secret"))
+    }
+
+    @Test
+    fun hostEditorScreen_moshOptionsAreAdvancedAndRetainValues() {
+        val host = runBlocking {
+            repository.saveHost(
+                Host(
+                    nickname = "Mosh Server",
+                    protocol = "mosh",
+                    username = "user",
+                    hostname = "example.com",
+                    port = 22,
+                    moshPort = 60001,
+                    moshServer = "custom-mosh-server",
+                    locale = "de_DE.UTF-8",
+                ),
+            )
+        }
+        navigateToHostEditorScreen(host.id)
+        composeTestRule.waitUntil(timeoutMillis = 5_000) {
+            composeTestRule.onAllNodesWithText("Mosh Server").fetchSemanticsNodes().isNotEmpty()
+        }
+
+        val commandLabel = composeTestRule.activity.getString(R.string.hostpref_mosh_server_title)
+        val moshPortLabel = composeTestRule.activity.getString(R.string.hostpref_mosh_port_title)
+        val localeLabel = composeTestRule.activity.getString(R.string.hostpref_locale_title)
+        composeTestRule.onNodeWithText("Username").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText(commandLabel).assertDoesNotExist()
+        composeTestRule.onNodeWithText(moshPortLabel).assertDoesNotExist()
+        composeTestRule.onNodeWithText(localeLabel).assertDoesNotExist()
+        composeTestRule.onNodeWithText("Show advanced options").performScrollTo().performClick()
+
+        composeTestRule.onNodeWithText(commandLabel).performScrollTo().assert(hasText("custom-mosh-server"))
+        composeTestRule.onNodeWithText(moshPortLabel).performScrollTo().assert(hasText("60001"))
+        composeTestRule.onNodeWithText(localeLabel).performScrollTo().assert(hasText("de_DE.UTF-8"))
+        composeTestRule.onNodeWithText("Hide advanced options").performScrollTo().performClick()
+        composeTestRule.onNodeWithText(commandLabel).assertDoesNotExist()
+        composeTestRule.onNodeWithText("Show advanced options").performScrollTo().performClick()
+        composeTestRule.onNodeWithText(commandLabel).performScrollTo().assert(hasText("custom-mosh-server"))
+    }
+
+    @Test
+    fun hostEditorScreen_telnetProtocolShowsHostAndPortWithoutUsernameOrPassword() {
+        navigateToHostEditorScreen(-1L)
+        composeTestRule.onNodeWithText("ssh").performClick()
+        composeTestRule.onNodeWithText("telnet").performClick()
+
+        composeTestRule.onNodeWithText("Nickname").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Username").assertDoesNotExist()
+        composeTestRule.onNodeWithText("Host").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText("Port").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText("Show advanced options").performScrollTo().performClick()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.hostpref_ipversion_title)).performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.hostpref_password_title)).assertDoesNotExist()
+    }
+
+    @Test
     fun hostEditorScreen_localProtocol_hidesUserHostPortFields() {
         navigateToHostEditorScreen(-1L)
 
         composeTestRule
-            .onNodeWithText("Show advanced options")
-            .performClick()
-
-        composeTestRule.waitForIdle()
-
-        composeTestRule
             .onNodeWithText("Username")
+            .performScrollTo()
             .assertIsDisplayed()
         composeTestRule
             .onNodeWithText("Host")
+            .performScrollTo()
             .assertIsDisplayed()
         composeTestRule
             .onNodeWithText("Port")
+            .performScrollTo()
             .assertIsDisplayed()
 
         composeTestRule
             .onNodeWithText("ssh")
+            .performScrollTo()
             .performClick()
 
         composeTestRule.waitForIdle()
@@ -224,17 +339,12 @@ class HostEditorScreenTest {
         navigateToHostEditorScreen(-1L)
 
         composeTestRule
-            .onNodeWithText("Show advanced options")
-            .performClick()
-
-        composeTestRule.waitForIdle()
-
-        composeTestRule
             .onNodeWithTag("add_host_button")
             .assertIsNotDisplayed()
 
         composeTestRule
             .onNodeWithText("ssh")
+            .performScrollTo()
             .performClick()
 
         composeTestRule.waitForIdle()
