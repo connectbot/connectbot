@@ -57,9 +57,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
@@ -100,8 +102,8 @@ fun HostEditorScreen(
         hostId = uiState.hostId,
         uiState = uiState,
         onNavigateBack = onNavigateBack,
-        onQuickConnectChange = viewModel::updateQuickConnect,
-        onNicknameChange = { nickname, isExpanded -> viewModel.updateNickname(nickname, isExpanded) },
+        onNicknameChange = viewModel::updateNickname,
+        onNicknameFocusChange = viewModel::onNicknameFocusChanged,
         onProtocolChange = viewModel::updateProtocol,
         onCancelMoshInstall = viewModel::cancelMoshInstall,
         onUsernameChange = viewModel::updateUsername,
@@ -124,7 +126,7 @@ fun HostEditorScreen(
         onMoshPortChange = viewModel::updateMoshPort,
         onMoshServerChange = viewModel::updateMoshServer,
         onLocaleChange = viewModel::updateLocale,
-        onSaveHost = { expandedMode -> viewModel.saveHost(expandedMode) },
+        onSaveHost = viewModel::saveHost,
         modifier = modifier,
     )
 }
@@ -135,8 +137,8 @@ fun HostEditorScreenContent(
     hostId: Long,
     uiState: HostEditorUiState,
     onNavigateBack: () -> Unit,
-    onQuickConnectChange: (String) -> Unit,
-    onNicknameChange: (String, Boolean) -> Unit,
+    onNicknameChange: (String) -> Unit,
+    onNicknameFocusChange: (Boolean) -> Unit,
     onProtocolChange: (String) -> Unit,
     onCancelMoshInstall: () -> Unit = {},
     onUsernameChange: (String) -> Unit,
@@ -159,7 +161,7 @@ fun HostEditorScreenContent(
     onMoshPortChange: (String) -> Unit = {},
     onMoshServerChange: (String) -> Unit = {},
     onLocaleChange: (String) -> Unit = {},
-    onSaveHost: suspend (Boolean) -> Boolean,
+    onSaveHost: suspend () -> Boolean,
     modifier: Modifier = Modifier,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -168,15 +170,9 @@ fun HostEditorScreenContent(
         uiState.error?.let { snackbarHostState.showSnackbar(it, withDismissAction = true) }
     }
     var showProtocolMenu by remember { mutableStateOf(false) }
-    var expandedMode by remember(uiState.isLoading) {
-        mutableStateOf(hostId != -1L && !uiState.isNicknameMatching)
-    }
+    var showAdvancedOptions by rememberSaveable(hostId) { mutableStateOf(false) }
     val protocols = listOf("ssh", "mosh", "telnet", "local")
-    val canSave = if (expandedMode) {
-        uiState.protocol == "local" || uiState.hostname.isNotBlank()
-    } else {
-        uiState.quickConnect.isNotBlank()
-    }
+    val canSave = uiState.protocol == "local" || uiState.hostname.isNotBlank()
 
     EditorScaffold(
         title = stringResource(if (hostId == -1L) R.string.hostpref_add_host else R.string.hostpref_setting_title),
@@ -187,7 +183,7 @@ fun HostEditorScreenContent(
         onNavigateBack = onNavigateBack,
         onSave = {
             coroutineScope.launch {
-                if (onSaveHost(expandedMode)) onNavigateBack()
+                if (onSaveHost()) onNavigateBack()
             }
         },
         snackbarHostState = snackbarHostState,
@@ -201,151 +197,118 @@ fun HostEditorScreenContent(
                 .verticalScroll(rememberScrollState())
                 .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 88.dp),
         ) {
-            if (!expandedMode) {
-                // Quick connect mode
+            OutlinedTextField(
+                value = uiState.nickname,
+                onValueChange = onNicknameChange,
+                label = { Text(stringResource(R.string.hostpref_nickname_title)) },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onFocusChanged { onNicknameFocusChange(it.isFocused) },
+                singleLine = true,
+            )
+
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+
+            // Protocol selector
+            ExposedDropdownMenuBox(
+                expanded = showProtocolMenu,
+                onExpandedChange = { showProtocolMenu = it },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 8.dp),
+            ) {
                 OutlinedTextField(
-                    value = uiState.quickConnect,
-                    onValueChange = onQuickConnectChange,
-                    label = { Text(stringResource(R.string.host_editor_quick_connect_label)) },
-                    placeholder = { Text(stringResource(R.string.host_editor_quick_connect_placeholder)) },
-                    supportingText = { Text(stringResource(R.string.host_editor_quick_connect_example)) },
-                    modifier = Modifier.fillMaxWidth(),
+                    value = uiState.protocol,
+                    onValueChange = {},
+                    label = { Text(stringResource(R.string.protocol_spinner_label)) },
+                    readOnly = true,
+                    singleLine = true,
+                    trailingIcon = {
+                        ExposedDropdownMenuDefaults.TrailingIcon(expanded = showProtocolMenu)
+                    },
+                    colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
+                    modifier = Modifier
+                        .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
+                        .fillMaxWidth(),
+                )
+
+                ExposedDropdownMenu(
+                    expanded = showProtocolMenu,
+                    onDismissRequest = { showProtocolMenu = false },
+                ) {
+                    protocols.forEach { protocol ->
+                        DropdownMenuItem(
+                            text = { Text(protocol) },
+                            onClick = {
+                                onProtocolChange(protocol)
+                                showProtocolMenu = false
+                            },
+                            contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
+                        )
+                    }
+                }
+            }
+
+            // Only show username, hostname, and port for non-local protocols
+            if (uiState.protocol != "local") {
+                // Show username field for SSH and Mosh protocols
+                if (uiState.protocol == "ssh" || uiState.protocol == "mosh") {
+                    OutlinedTextField(
+                        value = uiState.username,
+                        onValueChange = onUsernameChange,
+                        label = { Text(stringResource(R.string.hostpref_username_title)) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(top = 8.dp),
+                        singleLine = true,
+                    )
+                }
+
+                OutlinedTextField(
+                    value = uiState.hostname,
+                    onValueChange = onHostnameChange,
+                    label = { Text(stringResource(R.string.hostpref_hostname_title)) },
+                    isError = uiState.hostname.isBlank(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
+                    singleLine = true,
+                )
+
+                OutlinedTextField(
+                    value = uiState.port,
+                    onValueChange = onPortChange,
+                    label = { Text(stringResource(R.string.hostpref_port_title)) },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 8.dp),
                     singleLine = true,
                 )
 
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .clickable { expandedMode = true }
+                        .clickable { showAdvancedOptions = !showAdvancedOptions }
                         .padding(vertical = 8.dp),
                 ) {
                     Text(
-                        text = stringResource(R.string.host_editor_show_advanced),
+                        text = stringResource(
+                            if (showAdvancedOptions) R.string.host_editor_hide_advanced else R.string.host_editor_show_advanced,
+                        ),
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.primary,
                     )
                     Spacer(Modifier.width(4.dp))
                     Icon(
-                        Icons.Default.ExpandMore,
-                        contentDescription = stringResource(R.string.expand),
+                        if (showAdvancedOptions) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                        contentDescription = stringResource(
+                            if (showAdvancedOptions) R.string.button_collapse else R.string.expand,
+                        ),
                         tint = MaterialTheme.colorScheme.primary,
                     )
                 }
-            } else {
-                // Expanded mode
-                OutlinedTextField(
-                    value = uiState.nickname,
-                    onValueChange = { onNicknameChange(it, expandedMode) },
-                    label = { Text(stringResource(R.string.hostpref_nickname_title)) },
-                    modifier = Modifier.fillMaxWidth(),
-                    singleLine = true,
-                )
 
-                val isCollapseEnabled = uiState.isNicknameMatching
-                val collapseColor = if (isCollapseEnabled) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    MaterialTheme.colorScheme.onSurface.copy(alpha = 0.38f)
-                }
-
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .clickable(enabled = isCollapseEnabled) { expandedMode = false }
-                        .padding(vertical = 8.dp),
-                ) {
-                    Text(
-                        text = stringResource(R.string.host_editor_hide_advanced),
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = collapseColor,
-                    )
-                    Spacer(Modifier.width(4.dp))
-                    Icon(
-                        Icons.Default.ExpandLess,
-                        contentDescription = stringResource(R.string.button_collapse),
-                        tint = collapseColor,
-                    )
-                }
-            }
-
-            // Only show individual fields in expanded mode
-            if (expandedMode) {
-                // Protocol selector
-                ExposedDropdownMenuBox(
-                    expanded = showProtocolMenu,
-                    onExpandedChange = { showProtocolMenu = it },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp),
-                ) {
-                    OutlinedTextField(
-                        value = uiState.protocol,
-                        onValueChange = {},
-                        label = { Text(stringResource(R.string.protocol_spinner_label)) },
-                        readOnly = true,
-                        singleLine = true,
-                        trailingIcon = {
-                            ExposedDropdownMenuDefaults.TrailingIcon(expanded = showProtocolMenu)
-                        },
-                        colors = ExposedDropdownMenuDefaults.outlinedTextFieldColors(),
-                        modifier = Modifier
-                            .menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable)
-                            .fillMaxWidth(),
-                    )
-
-                    ExposedDropdownMenu(
-                        expanded = showProtocolMenu,
-                        onDismissRequest = { showProtocolMenu = false },
-                    ) {
-                        protocols.forEach { protocol ->
-                            DropdownMenuItem(
-                                text = { Text(protocol) },
-                                onClick = {
-                                    onProtocolChange(protocol)
-                                    showProtocolMenu = false
-                                },
-                                contentPadding = ExposedDropdownMenuDefaults.ItemContentPadding,
-                            )
-                        }
-                    }
-                }
-
-                // Only show username, hostname, and port for non-local protocols
-                if (uiState.protocol != "local") {
-                    // Show username field for SSH and Mosh protocols
-                    if (uiState.protocol == "ssh" || uiState.protocol == "mosh") {
-                        OutlinedTextField(
-                            value = uiState.username,
-                            onValueChange = onUsernameChange,
-                            label = { Text(stringResource(R.string.hostpref_username_title)) },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(top = 8.dp),
-                            singleLine = true,
-                        )
-                    }
-
-                    OutlinedTextField(
-                        value = uiState.hostname,
-                        onValueChange = onHostnameChange,
-                        label = { Text(stringResource(R.string.hostpref_hostname_title)) },
-                        isError = uiState.hostname.isBlank(),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp),
-                        singleLine = true,
-                    )
-
-                    OutlinedTextField(
-                        value = uiState.port,
-                        onValueChange = onPortChange,
-                        label = { Text(stringResource(R.string.hostpref_port_title)) },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = 8.dp),
-                        singleLine = true,
-                    )
-
+                if (showAdvancedOptions) {
                     // IP version selector (disabled for literal IP addresses)
                     IpVersionSelector(
                         ipVersion = uiState.ipVersion,
@@ -356,13 +319,14 @@ fun HostEditorScreenContent(
 
                     // Mosh-specific fields
                     if (uiState.protocol == "mosh") {
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
                         OutlinedTextField(
                             value = uiState.moshServer,
                             onValueChange = onMoshServerChange,
                             label = { Text(stringResource(R.string.hostpref_mosh_server_title)) },
                             supportingText = { Text(stringResource(R.string.hostpref_mosh_server_summary)) },
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp),
                             singleLine = true,
                         )
 
@@ -392,7 +356,6 @@ fun HostEditorScreenContent(
 
                     // Save password section (SSH and Mosh)
                     if (uiState.protocol == "ssh" || uiState.protocol == "mosh") {
-                        HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
                         OutlinedTextField(
                             value = uiState.password,
                             onValueChange = onPasswordChange,
@@ -410,7 +373,9 @@ fun HostEditorScreenContent(
                             },
                             visualTransformation = PasswordVisualTransformation(),
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 8.dp),
                             singleLine = true,
                         )
 
@@ -1333,8 +1298,8 @@ private fun HostEditorScreenPreview() {
                 automationCount = 1,
             ),
             onNavigateBack = {},
-            onQuickConnectChange = {},
-            onNicknameChange = { _, _ -> },
+            onNicknameChange = {},
+            onNicknameFocusChange = {},
             onProtocolChange = {},
             onUsernameChange = {},
             onHostnameChange = {},
