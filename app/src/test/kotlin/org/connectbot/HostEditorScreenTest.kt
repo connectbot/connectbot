@@ -204,7 +204,7 @@ class HostEditorScreenTest {
     }
 
     @Test
-    fun hostEditorScreen_linkedNicknameUpdatesFieldsThroughIncompleteInput() {
+    fun hostEditorScreen_firstNicknameEntryPopulatesFieldsThroughIncompleteInput() {
         navigateToHostEditorScreen(-1L)
         composeTestRule.onNodeWithText("Nickname").performClick().performTextInput("admin@")
         composeTestRule.onNodeWithTag("add_host_button").assertIsNotDisplayed()
@@ -214,6 +214,20 @@ class HostEditorScreenTest {
         composeTestRule.onNodeWithText("Host").performScrollTo().assert(hasText("example.com"))
         composeTestRule.onNodeWithText("Port").performScrollTo().assert(hasText("2222"))
         composeTestRule.onNodeWithTag("add_host_button").assertIsDisplayed()
+    }
+
+    @Test
+    fun hostEditorScreen_nicknameAndConnectionFieldsAreIndependentAfterFirstEntry() {
+        navigateToHostEditorScreen(-1L)
+        composeTestRule.onNodeWithText("Nickname").performTextInput("admin@example.com:2222")
+        composeTestRule.onNodeWithText("Host").performScrollTo().performClick()
+        composeTestRule.onNodeWithText("Nickname").performScrollTo().performTextReplacement("root@other.example:8022")
+
+        composeTestRule.onNodeWithText("Username").performScrollTo().assert(hasText("admin"))
+        composeTestRule.onNodeWithText("Host").performScrollTo().assert(hasText("example.com"))
+        composeTestRule.onNodeWithText("Port").performScrollTo().assert(hasText("2222"))
+        composeTestRule.onNodeWithText("Host").performTextReplacement("third.example")
+        composeTestRule.onNodeWithText("Nickname").performScrollTo().assert(hasText("root@other.example:8022"))
     }
 
     @Test

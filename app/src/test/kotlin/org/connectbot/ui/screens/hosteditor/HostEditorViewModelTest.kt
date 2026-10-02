@@ -115,7 +115,6 @@ class HostEditorViewModelTest {
         assertEquals("", state.username)
         assertEquals("", state.hostname)
         assertEquals("22", state.port)
-        assertTrue(state.isNicknameMatching)
     }
 
     @Test
@@ -156,11 +155,10 @@ class HostEditorViewModelTest {
         assertEquals("10.0.0.1", state.hostname)
         assertEquals("23", state.port)
         assertTrue(state.hasExistingPassword)
-        assertFalse(state.isNicknameMatching)
     }
 
     @Test
-    fun testLoadExistingHost_matchingNickname_isNicknameMatchingIsTrue() = runTest {
+    fun testLoadExistingHost_matchingNickname_doesNotPopulateFieldsOnEdit() = runTest {
         val hostId = 42L
         val existingHost = Host(
             id = hostId,
@@ -176,8 +174,11 @@ class HostEditorViewModelTest {
         val viewModel = createViewModel(hostId)
         advanceUntilIdle()
 
-        val state = viewModel.uiState.value
-        assertTrue(state.isNicknameMatching)
+        viewModel.onNicknameFocusChanged(true)
+        viewModel.updateNickname("other@new.example:2222")
+        assertEquals("test-user", viewModel.uiState.value.username)
+        assertEquals("10.0.0.1", viewModel.uiState.value.hostname)
+        assertEquals("22", viewModel.uiState.value.port)
     }
 
     @Test
@@ -246,7 +247,7 @@ class HostEditorViewModelTest {
     }
 
     @Test
-    fun testUpdateNickname_linkedEdit_recoversAfterIncompleteInput() = runTest {
+    fun testUpdateNickname_firstCreationEntry_recoversAfterIncompleteInput() = runTest {
         val viewModel = createViewModel()
         advanceUntilIdle()
         viewModel.updateNickname("user@example.com")
@@ -255,7 +256,6 @@ class HostEditorViewModelTest {
         viewModel.updateNickname("admin@")
         assertEquals("user", viewModel.uiState.value.username)
         assertEquals("example.com", viewModel.uiState.value.hostname)
-        assertFalse(viewModel.uiState.value.isNicknameMatching)
 
         viewModel.updateNickname("admin@other.example:")
         assertEquals("example.com", viewModel.uiState.value.hostname)
@@ -263,35 +263,64 @@ class HostEditorViewModelTest {
         assertEquals("admin", viewModel.uiState.value.username)
         assertEquals("other.example", viewModel.uiState.value.hostname)
         assertEquals("2222", viewModel.uiState.value.port)
-        assertTrue(viewModel.uiState.value.isNicknameMatching)
         viewModel.onNicknameFocusChanged(false)
     }
 
     @Test
-    fun testUpdateNickname_customEditEndsLinkUntilNicknameMatchesAgain() = runTest {
+    fun testUpdateNickname_afterFirstCreationEntry_neverPopulatesFieldsAgain() = runTest {
         val viewModel = createViewModel()
         advanceUntilIdle()
-        viewModel.updateNickname("user@example.com")
         viewModel.onNicknameFocusChanged(true)
-        viewModel.updateNickname("My Server")
+        viewModel.updateNickname("user@example.com:2222")
         viewModel.onNicknameFocusChanged(false)
 
         viewModel.onNicknameFocusChanged(true)
-        viewModel.updateNickname("admin@other.example:2222")
+        viewModel.updateNickname("admin@other.example:8022")
         assertEquals("user", viewModel.uiState.value.username)
         assertEquals("example.com", viewModel.uiState.value.hostname)
-        assertEquals("22", viewModel.uiState.value.port)
-        viewModel.updateNickname("user@example.com")
+        assertEquals("2222", viewModel.uiState.value.port)
+        viewModel.updateNickname("")
         viewModel.onNicknameFocusChanged(false)
-
         viewModel.onNicknameFocusChanged(true)
-        viewModel.updateNickname("admin@other.example:2222")
-        assertEquals("other.example", viewModel.uiState.value.hostname)
-        viewModel.onNicknameFocusChanged(false)
+        viewModel.updateNickname("root@third.example:22")
+        assertEquals("user", viewModel.uiState.value.username)
+        assertEquals("example.com", viewModel.uiState.value.hostname)
+        assertEquals("2222", viewModel.uiState.value.port)
     }
 
     @Test
-    fun testMoshNickname_includesUsernameAndStaysLinked() = runTest {
+    fun testUpdateNickname_clearingFirstEntryDoesNotRestartAutofill() = runTest {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.onNicknameFocusChanged(true)
+        viewModel.updateNickname("user@example.com:2222")
+        viewModel.updateNickname("")
+        viewModel.onNicknameFocusChanged(false)
+
+        viewModel.onNicknameFocusChanged(true)
+        viewModel.updateNickname("admin@other.example:8022")
+        assertEquals("user", viewModel.uiState.value.username)
+        assertEquals("example.com", viewModel.uiState.value.hostname)
+        assertEquals("2222", viewModel.uiState.value.port)
+    }
+
+    @Test
+    fun testUpdateNickname_afterManualConnectionEntry_doesNotPopulateFields() = runTest {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        viewModel.updateUsername("user")
+        viewModel.updateHostname("example.com")
+        viewModel.updatePort("2222")
+
+        viewModel.onNicknameFocusChanged(true)
+        viewModel.updateNickname("admin@other.example:8022")
+        assertEquals("user", viewModel.uiState.value.username)
+        assertEquals("example.com", viewModel.uiState.value.hostname)
+        assertEquals("2222", viewModel.uiState.value.port)
+    }
+
+    @Test
+    fun testMoshNickname_existingHostEditsAreIndependent() = runTest {
         val host = Host(
             id = 42L,
             nickname = "user@example.com:22",
@@ -303,41 +332,29 @@ class HostEditorViewModelTest {
         `when`(repository.findHostById(host.id)).thenReturn(host)
         val viewModel = createViewModel(host.id)
         advanceUntilIdle()
-        assertTrue(viewModel.uiState.value.isNicknameMatching)
 
         viewModel.updateUsername("admin")
-        assertEquals("admin@example.com", viewModel.uiState.value.nickname)
+        viewModel.updateHostname("other.example")
         viewModel.updatePort("2222")
-        assertEquals("admin@example.com:2222", viewModel.uiState.value.nickname)
+        assertEquals(host.nickname, viewModel.uiState.value.nickname)
         viewModel.onNicknameFocusChanged(true)
         viewModel.updateNickname("root@[2001:db8::1]:8022")
-        assertEquals("root", viewModel.uiState.value.username)
-        assertEquals("[2001:db8::1]", viewModel.uiState.value.hostname)
-        assertEquals("8022", viewModel.uiState.value.port)
-        assertTrue(viewModel.uiState.value.isNicknameMatching)
+        assertEquals("admin", viewModel.uiState.value.username)
+        assertEquals("other.example", viewModel.uiState.value.hostname)
+        assertEquals("2222", viewModel.uiState.value.port)
     }
 
     @Test
-    fun testUpdateHostFields_syncsNickname_whenNicknameWasMatching() = runTest {
+    fun testUpdateConnectionFieldsAndProtocol_neverRewriteNickname() = runTest {
         val viewModel = createViewModel()
         advanceUntilIdle()
-
-        // Start with nickname in sync with default host/port representation
         viewModel.updateNickname("user@192.168.1.1:22")
-        advanceUntilIdle()
 
-        // Change hostname directly
         viewModel.updateHostname("192.168.1.2")
-        advanceUntilIdle()
-
-        // Matching nicknames should automatically update
-        assertEquals("user@192.168.1.2", viewModel.uiState.value.nickname)
-
-        // Change port directly
+        viewModel.updateUsername("admin")
         viewModel.updatePort("2222")
-        advanceUntilIdle()
-
-        assertEquals("user@192.168.1.2:2222", viewModel.uiState.value.nickname)
+        viewModel.updateProtocol("telnet")
+        assertEquals("user@192.168.1.1:22", viewModel.uiState.value.nickname)
     }
 
     @Test
@@ -400,7 +417,7 @@ class HostEditorViewModelTest {
         assertEquals("10.0.0.2", savedHost.hostname)
         assertEquals(2222, savedHost.port)
         assertEquals("new-user", savedHost.username)
-        assertEquals("new-user@10.0.0.2:2222", savedHost.nickname) // Sync updated nickname
+        assertEquals(existingHost.nickname, savedHost.nickname) // Connection edits preserve the nickname
     }
 
     @Test
@@ -490,7 +507,7 @@ class HostEditorViewModelTest {
     }
 
     @Test
-    fun testIsNicknameMatching_blankPort_isMatching() = runTest {
+    fun testUpdatePort_blankPort_preservesNickname() = runTest {
         val viewModel = createViewModel()
         advanceUntilIdle()
 
@@ -500,8 +517,7 @@ class HostEditorViewModelTest {
         viewModel.updatePort("")
         advanceUntilIdle()
 
-        // Nickname should still be matching
-        assertTrue(viewModel.uiState.value.isNicknameMatching)
+        assertEquals("john@myhost", viewModel.uiState.value.nickname)
     }
 
     @Test
@@ -575,7 +591,7 @@ class HostEditorViewModelTest {
     }
 
     @Test
-    fun testSaveHost_persistsNicknameAndAdvancedValuesDuringLinkedEdit() = runTest {
+    fun testSaveHost_persistsNicknameAndAdvancedValuesDuringFirstEntry() = runTest {
         val viewModel = createViewModel()
         advanceUntilIdle()
         `when`(repository.saveHost(any(Host::class.java) ?: Host())).thenAnswer { invocation ->

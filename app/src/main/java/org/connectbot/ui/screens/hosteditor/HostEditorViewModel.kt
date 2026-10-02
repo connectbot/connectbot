@@ -75,18 +75,7 @@ data class HostEditorUiState(
     val isMoshInstalling: Boolean = false,
     val isLoading: Boolean = false,
     val error: String? = null,
-) {
-    val isNicknameMatching: Boolean
-        get() {
-            if (nickname.isBlank()) return true
-            if (protocol == "local") return false
-            val defaultPort = (Transport.fromProtocol(protocol)?.defaultPort ?: 0).toString()
-            val effectivePort = port.ifBlank { defaultPort }
-            val repWithPort = if (username.isNotEmpty() && (protocol == "ssh" || protocol == "mosh")) "$username@$hostname:$effectivePort" else "$hostname:$effectivePort"
-            val repWithoutPort = if (username.isNotEmpty() && (protocol == "ssh" || protocol == "mosh")) "$username@$hostname" else hostname
-            return nickname == repWithPort || (effectivePort == defaultPort && nickname == repWithoutPort)
-        }
-}
+)
 
 @HiltViewModel
 class HostEditorViewModel @Inject constructor(
@@ -110,7 +99,8 @@ class HostEditorViewModel @Inject constructor(
 
     private var moshInstallJob: Job? = null
     private var preMoshProtocol: String = "ssh"
-    private var nicknameEditLinked: Boolean? = null
+    private var nicknameAutofillEnabled = hostId == -1L
+    private var hasEnteredNickname = false
 
     init {
         observePubkeys()
@@ -164,35 +154,6 @@ class HostEditorViewModel @Inject constructor(
     }
 
     private fun getDefaultPort(protocol: String): String = (Transport.fromProtocol(protocol)?.defaultPort ?: 0).toString()
-
-    private fun getHostRepresentation(username: String, hostname: String, port: String, protocol: String): String {
-        if (protocol == "local") return ""
-        val defaultPort = getDefaultPort(protocol)
-        return buildString {
-            if (username.isNotEmpty() && (protocol == "ssh" || protocol == "mosh")) {
-                append(username)
-                append('@')
-            }
-            append(hostname)
-            if (port.isNotEmpty() && port != defaultPort) {
-                append(':')
-                append(port)
-            }
-        }
-    }
-
-    private fun updateNicknameIfMatching(
-        oldState: HostEditorUiState,
-        newState: HostEditorUiState,
-    ): HostEditorUiState {
-        if (newState.protocol == "local") return newState
-        val newRep = getHostRepresentation(newState.username, newState.hostname, newState.port, newState.protocol)
-        return if (oldState.isNicknameMatching) {
-            newState.copy(nickname = newRep)
-        } else {
-            newState
-        }
-    }
 
     private fun loadHost() {
         viewModelScope.launch {
@@ -256,14 +217,17 @@ class HostEditorViewModel @Inject constructor(
     }
 
     fun onNicknameFocusChanged(isFocused: Boolean) {
-        // Keep the initial link through incomplete input until this editing session ends.
-        nicknameEditLinked = if (isFocused) _uiState.value.isNicknameMatching else null
+        // Only the first nickname entry for a new host can populate connection fields.
+        if (!isFocused && hasEnteredNickname) {
+            nicknameAutofillEnabled = false
+        }
     }
 
     fun updateNickname(value: String) {
+        if (value.isNotEmpty()) hasEnteredNickname = true
         _uiState.update { state ->
             val updated = state.copy(nickname = value, hasUnsavedChanges = true)
-            if (state.protocol == "local" || !(nicknameEditLinked ?: state.isNicknameMatching)) {
+            if (state.protocol == "local" || !nicknameAutofillEnabled) {
                 return@update updated
             }
 
@@ -279,10 +243,7 @@ class HostEditorViewModel @Inject constructor(
 
     fun updateProtocol(value: String) {
         val oldProtocol = _uiState.value.protocol
-        _uiState.update { old ->
-            val updated = old.copy(protocol = value, hasUnsavedChanges = true)
-            updateNicknameIfMatching(old, updated)
-        }
+        _uiState.update { it.copy(protocol = value, hasUnsavedChanges = true) }
 
         if (value == "mosh" && !InstallMosh.isInstalled(context)) {
             preMoshProtocol = oldProtocol
@@ -294,11 +255,10 @@ class HostEditorViewModel @Inject constructor(
         moshInstallJob?.cancel()
         moshInstallJob = null
         _uiState.update { old ->
-            val reverted = old.copy(
+            old.copy(
                 protocol = preMoshProtocol,
                 isMoshInstalling = false,
             )
-            updateNicknameIfMatching(old, reverted)
         }
     }
 
@@ -313,38 +273,31 @@ class HostEditorViewModel @Inject constructor(
                 _uiState.update { it.copy(isMoshInstalling = false) }
             } else {
                 _uiState.update { old ->
-                    val reverted = old.copy(
+                    old.copy(
                         protocol = fallbackProtocol,
                         isMoshInstalling = false,
                         error = result.errorMessage,
                     )
-                    updateNicknameIfMatching(old, reverted)
                 }
             }
         }
     }
 
     fun updateUsername(value: String) {
-        _uiState.update { old ->
-            val updated = old.copy(username = value, hasUnsavedChanges = true)
-            updateNicknameIfMatching(old, updated)
-        }
+        nicknameAutofillEnabled = false
+        _uiState.update { it.copy(username = value, hasUnsavedChanges = true) }
     }
 
     fun updateHostname(value: String) {
-        _uiState.update { old ->
-            val updated = old.copy(hostname = value, hasUnsavedChanges = true)
-            updateNicknameIfMatching(old, updated)
-        }
+        nicknameAutofillEnabled = false
+        _uiState.update { it.copy(hostname = value, hasUnsavedChanges = true) }
     }
 
     fun updatePort(value: String) {
         // Only allow numeric input
         if (value.isEmpty() || value.all { it.isDigit() }) {
-            _uiState.update { old ->
-                val updated = old.copy(port = value, hasUnsavedChanges = true)
-                updateNicknameIfMatching(old, updated)
-            }
+            nicknameAutofillEnabled = false
+            _uiState.update { it.copy(port = value, hasUnsavedChanges = true) }
         }
     }
 
