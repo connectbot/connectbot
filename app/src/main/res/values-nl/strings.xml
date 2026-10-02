@@ -7,7 +7,6 @@
   <string name="title_port_forwards_list">Port forwards</string>
   <string name="title_help">Help</string>
   <string name="title_eula">Licentie</string>
-  <string name="title_colors">Kleuren</string>
   <string name="title_color_picker">Kies een kleur</string>
   <string name="title_settings">Instellingen</string>
   <string name="title_pubkey_generate">Genereer</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password">Gebruik hetzelfde wachtwoord voor de versleuteling</string>
   <string name="pubkey_import_new_password">Nieuw wachtwoord</string>
   <string name="pubkey_import_confirm_password">Bevestig wachtwoord</string>
-  <string name="pubkey_list_empty">Tik op \"Menu\" om sleutelparen te maken\nof te importeren.</string>
-  <string name="pubkey_unknown_format">Onbekend formaat</string>
   <string name="pubkey_change_password">Verander wachtwoord</string>
   <string name="pubkey_unlock">Ontgrendel sleutel</string>
   <string name="pubkey_unlock_message">Voer het wachtwoord in om de sleutel \'%1$s\' te ontgrendelen.</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key">Sta host toe om \'%1$s\' \nsleutel te gebruiken ?</string>
   <string name="host_verification_failure_warning_header">WAARSCHUWING: REMOTE HOST IDENTIFICATIE IS VERANDERD!</string>
   <string name="host_verification_failure_warning">HET IS MOGELIJK DAT IEMAND ONGEWILD BEZIG IS!\nIemand kan nu misschien mee kijken met wat je aan het doen bent (man-in-the-middle attack)!\nHet is ook mogelijk dat de host sleutel veranderd is.</string>
-  <string name="prompt_host_disconnected">Host heeft de verbinding verbroken.\nSessie afsluiten?</string>
   <string name="prompt_continue_connecting">Weet je zeker dat je\nwilt doorgaan met verbinden?</string>
   <string name="host_authenticity_warning">De authenticatie van host \'%1$s\' kan niet worden vastgesteld.</string>
   <string name="host_fingerprint">Host %1$s sleutel vingerafdruk is %2$s</string>
@@ -115,7 +111,6 @@
   <string name="pref_theme_system">Standaard systeeminstelling</string>
   <string name="pref_theme_light">Licht</string>
   <string name="pref_theme_dark">Donker</string>
-  <string name="pref_rotation_title">Rotatie mode</string>
   <string name="pref_titlebarhide_title">Titelbalk automatisch verbergen</string>
   <string name="pref_titlebarhide_summary">Tik op de console om de titelbalk weer te geven en het menu te openen.</string>
   <string name="pref_alwaysvisible_title">Speciale toetsen altijd zichtbaar</string>
@@ -181,7 +176,6 @@
   <string name="hostpref_pubkeyid_title">Gebruik pubkey authenticatie</string>
   <string name="hostpref_authagent_title">Gebruik SSH auth agent</string>
   <string name="hostpref_postlogin_title">Na-login automatie</string>
-  <string name="hostpref_postlogin_summary">Commando\'s om uit te voeren op de remote server wanneer geauthenticeerd</string>
   <string name="hostpref_compression_title">Compressie</string>
   <string name="hostpref_compression_summary">Dit kan helpen bij langzame netwerken</string>
   <string name="hostpref_wantsession_title">Start shell sessie</string>
@@ -268,10 +262,6 @@
   <string name="list_host_delete">Verwijder hosts</string>
   <string name="list_host_duplicate">Hostnaam komt al voor</string>
   <string name="list_host_forget_keys">Vergeet de hostkeys</string>
-  <string name="list_rotation_default">Standaard</string>
-  <string name="list_rotation_land">Forceer landschap</string>
-  <string name="list_rotation_port">Forceer portret</string>
-  <string name="list_rotation_auto">Automatisch</string>
   <string name="list_camera_ctrlaspace">Ctrl+A en dan Spatie</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -311,16 +301,11 @@
   <string name="notification_text">%1$s wil je aandacht.</string>
   <string name="no">Nee</string>
   <string name="yes">Ja</string>
-  <string name="list_color_schemes">Kleurenschema\'s</string>
-  <string name="menu_colors_reset">Terug naar standaardinstellingen</string>
-  <string name="button_manage_schemes">Schema\'s beheren</string>
   <string name="title_scheme_manager">Kleurenschema\'s beheren</string>
   <string name="button_new_scheme">Nieuw schema</string>
   <string name="button_duplicate_scheme">Duplicaat</string>
-  <string name="button_rename_scheme">Hernoemen</string>
   <string name="button_delete_scheme">Verwijderen</string>
   <string name="dialog_title_new_scheme">Nieuw kleurenschema</string>
-  <string name="dialog_title_rename_scheme">Hernoem kleurenschema</string>
   <string name="label_scheme_name">Naam van het schema</string>
   <string name="label_scheme_description">Beschrijving (optioneel)</string>
   <string name="dialog_title_delete_scheme">Schema verwijderen?</string>
@@ -330,7 +315,6 @@
   <string name="label_built_in_scheme">Ingebouwd</string>
   <string name="label_custom_scheme">Aangepast</string>
   <string name="empty_custom_schemes">Er zijn geen aangepaste schema\'s. Tik op \"Nieuw schema\" om er een aan te maken.</string>
-  <string name="button_edit_palette">Bewerk palet</string>
   <string name="button_export_scheme">Schema exporteren</string>
   <string name="button_import_scheme">Importeer schema</string>
   <string name="message_export_success">%1$s geëxporteerd</string>
@@ -349,14 +333,11 @@
   <string name="label_green">Groen</string>
   <string name="label_blue">Blauw</string>
   <string name="label_hex_color">Hex-kleur</string>
-  <string name="colors_fg_label">FG: %1$d</string>
-  <string name="color_bg_label">BG: %1$d</string>
   <string name="section_fg_bg_colors">Voorgrond en achtergrond</string>
   <string name="label_foreground_color">Voorgrond</string>
   <string name="label_background_color">Achtergrond</string>
   <string name="label_base_scheme">Basisschema</string>
   <string name="menu_manage_colors">Kleurenschema\'s beheren</string>
-  <string name="palette_editor_builtin_note">De vooraf ingestelde schema\'s zijn niet bewerkbaar. Kopieer ze om ze aan te passen.</string>
   <string name="section_color_preview">Voorbeeld</string>
   <string name="image_description_connected">Verbonden.</string>
   <string name="image_description_disconnected">Verbinding verbroken.</string>
@@ -411,9 +392,6 @@
   <string name="empty_port_forwards_message">Er zijn geen poortdoorstuurregels geconfigureerd.</string>
   <string name="empty_urls_message">Geen URL\'s gevonden in de terminalbuffer</string>
   <string name="console_default_title">Console</string>
-  <string name="host_editor_quick_connect_label">Snel verbinden</string>
-  <string name="host_editor_quick_connect_placeholder">gebruiker\@hostnaam:poort</string>
-  <string name="host_editor_quick_connect_example">Voorbeeld: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced">Toon geavanceerde opties</string>
   <string name="host_editor_hide_advanced">Verberg geavanceerde opties</string>
   <string name="resize_width_label">Breedte (kolommen)</string>
@@ -480,7 +458,6 @@
   <string name="forget_host_keys_confirm">Weet u zeker dat u de opgeslagen hostkeys voor \'%1$s\' wilt verwijderen? U wordt gevraagd om de hostkey te verifiëren bij de volgende verbinding.</string>
   <string name="list_pubkey_edit">Bewerk de publieke sleutel</string>
   <string name="hostpref_ipversion_title">IP-versie</string>
-  <string name="hostpref_ipversion_summary">Selecteer welke IP-adresversie u wilt gebruiken bij het maken van verbinding.</string>
   <string name="ipversion_auto">Automatisch</string>
   <string name="ipversion_ipv4">Alleen IPv4</string>
   <string name="ipversion_ipv6">Alleen IPv6</string>
@@ -525,9 +502,6 @@
   <string name="pref_customterminal_summary">Voeg aangepaste TERM-waarden toe voor externe servers.</string>
   <string name="dialog_customterminal_title">Voeg een aangepast terminaltype toe</string>
   <string name="dialog_customterminal_hint">Type terminal (bijv. rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title">Pas aangepaste terminaltypen aan</string>
-  <string name="button_add_custom">Voeg aangepaste optie toe…</string>
-  <string name="button_manage_custom">Pas aangepaste instellingen aan…</string>
   <string name="dialog_custom_value_label">Voer een aangepaste waarde in</string>
   <string name="list_camera_ctrlaspace_description">Ctrl+A gevolgd door de spatiebalk</string>
   <string name="list_camera_ctrla_description">Ctrl+A</string>
@@ -541,7 +515,6 @@
   <string name="import_hosts_success">%1$d hosts geïmporteerd (%2$d overgeslagen) en %3$d profielen (%4$d overgeslagen)</string>
   <string name="export_hosts_failed">Kon de hosts niet exporteren: %s</string>
   <string name="import_hosts_failed">Kon de hosts niet importeren: %s</string>
-  <string name="export_hosts_title">Hosts exporteren</string>
   <string name="shortcut_customize_title">Pas de sneltoets aan</string>
   <string name="shortcut_icon_color">Pictogramkleur</string>
   <string name="shortcut_icon_style">Pictogramstijl</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">Aan</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Afbeeldingen direct weergeven?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Sta toe dat deze computer voor de duur van deze sessie afbeeldingen direct in de tekst weergeeft?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Automatisch starten ingeschakeld.</string>
   <string name="automation_load_failed" tools:machine_translated="true">Kon de automatisering niet laden.</string>
   <string name="automation_save_failed" tools:machine_translated="true">De automatisering kon niet worden opgeslagen.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Controleer de tekst, het patroon, de duur of de geselecteerde poortdoorvoer.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Naar boven verplaatsen</string>
   <string name="automation_move_down" tools:machine_translated="true">Naar beneden verplaatsen</string>
   <string name="automation_drag" tools:machine_translated="true">Sleep om de volgorde te wijzigen.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Wijzigingen opslaan?</string>
-  <string name="automation_discard" tools:machine_translated="true">Verwijder</string>
   <string name="automation_cancel" tools:machine_translated="true">Annuleren</string>
   <string name="automation_text" tools:machine_translated="true">Tekst</string>
   <string name="automation_regex" tools:machine_translated="true">Reguliere expressie</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Shift-toets</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f seconden</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d actie</item>
-		<item quantity="other">%1$d acties</item>
-	</plurals>
+    <item quantity="one">%1$d actie</item>
+    <item quantity="other">%1$d acties</item>
+  </plurals>
 </resources>

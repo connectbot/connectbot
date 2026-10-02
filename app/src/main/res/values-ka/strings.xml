@@ -4,7 +4,6 @@
   <string name="title_pubkey_list">საჯგასაღებები</string>
   <string name="title_port_forwards_list">პორტის გადამისამართებები</string>
   <string name="title_help">დახმარება</string>
-  <string name="title_colors">ფერები</string>
   <string name="title_color_picker">აირჩიეთ ფერი</string>
   <string name="title_settings">მორგება</string>
   <string name="title_pubkey_generate">გენერაცია</string>
@@ -68,8 +67,6 @@
   <string name="list_host_disconnect">გათიშვა</string>
   <string name="list_host_edit">ჰოსტის ჩასწორება</string>
   <string name="list_host_delete">ჰოსტის წაშლა</string>
-  <string name="list_rotation_default">ნაგულისხმევი</string>
-  <string name="list_rotation_auto">ავტომატური</string>
   <string name="list_camera_ctrlaspace">Ctrl+A შემდეგ ჰარე</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -82,7 +79,6 @@
   <string name="terminal_auth">ავთენტიკაციის მცდელობა</string>
   <string name="no">არა</string>
   <string name="yes">დიახ</string>
-  <string name="menu_colors_reset">ჩამოყრა</string>
   <string name="image_description_connected">დაკავშირებულია.</string>
   <string name="image_description_disconnected">კავშირი გაწყვეტილია.</string>
   <string name="image_description_hide_keyboard">კლავიატურის დამალვა.</string>
@@ -143,8 +139,6 @@
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">გამოიყენეთ იგივე პაროლი დაშიფრვისთვის.</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">ახალი პაროლი</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">დადასტურებული პაროლი</string>
-  <string name="pubkey_list_empty" tools:machine_translated="true">დააწკაპეთ „მენიუ“-ზე, რათა შექმნათ\nან იმპორტირეთ გასაღები წყვილები.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">უცნობი ფორმატი</string>
   <string name="pubkey_unlock" tools:machine_translated="true">კოდის გახსნა</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">შეიყვანეთ პაროლი, რათა გახსნათ დაშიფრული გასაღები „%1$s“</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">ასეთი სახელით კლავიში უკვე არსებობს.</string>
@@ -158,7 +152,6 @@
   <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">დაუშვით, რომ დისტანციურმა სერვერმა გამოიყენოს გასაღები „%1$s“?</string>
   <string name="host_verification_failure_warning_header" tools:machine_translated="true">გაფრთხილება: დისტანციური სერვერის იდენტიფიკაცია შეიცვალა!</string>
   <string name="host_verification_failure_warning" tools:machine_translated="true">სავარაუდოდ, ვინმე ცუდი რამ აკეთებს!\nშესაძლოა, ამჟამად თქვენს შესახებ ინფორმაციას იკ gatheringებს (მესამე მხარის შეტევა)!\nასევე შესაძლებელია, რომ მასპინძელი კლუჩი ახლახან შეიცვალა.</string>
-  <string name="prompt_host_disconnected" tools:machine_translated="true">სერვერი გაითიშა.\n\nდახუროთ სესიա?</string>
   <string name="prompt_continue_connecting" tools:machine_translated="true">დარწმუნებული ხართ, რომ კავშირს განაგრძობთ?</string>
   <string name="host_authenticity_warning" tools:machine_translated="true">ვერ შეგვიძლია დავწმუნდოთ, რომ \'%1$s\'-ის ავთენტურობა დადასტურებულია.</string>
   <string name="host_fingerprint" tools:machine_translated="true">ჰოსტის %1$s-ის გასაღების ციფრული თითბეჭდა არის %2$s.</string>
@@ -199,7 +192,6 @@
   <string name="pref_theme_system" tools:machine_translated="true">სისტემის სტანდარტული პარამეტრი</string>
   <string name="pref_theme_light" tools:machine_translated="true">მსუბუქი</string>
   <string name="pref_theme_dark" tools:machine_translated="true">მუქი</string>
-  <string name="pref_rotation_title" tools:machine_translated="true">როტაციის რეჟიმი</string>
   <string name="pref_titlebarhide_title" tools:machine_translated="true">ტიტულის ზოლის ავტომატური დამალვა</string>
   <string name="pref_titlebarhide_summary" tools:machine_translated="true">დააკლიკეთ კონსოლზე, რათა გამოჩენილიყო ტიტულის ზოლი და გახსნილიყო მენიუ.</string>
   <string name="pref_alwaysvisible_title" tools:machine_translated="true">სპეციალური კლავიშები ყოველთვის ხილადია.</string>
@@ -253,7 +245,6 @@
   <string name="hostpref_pubkeyid_title" tools:machine_translated="true">გამოიყენეთ საჯარო გასაღების ავთენტიფიკაცია</string>
   <string name="hostpref_authagent_title" tools:machine_translated="true">გამოიყენეთ SSH ავტორიზაციის აგენტი</string>
   <string name="hostpref_postlogin_title" tools:machine_translated="true">ავტომატიზაცია სისტემაში შესვლის შემდეგ</string>
-  <string name="hostpref_postlogin_summary" tools:machine_translated="true">ავტორიზაციის შემდეგ, დისტანციურ სერვერზე შესასრულებელი ბრძანებები.</string>
   <string name="hostpref_compression_summary" tools:machine_translated="true">ეს შესაძლოა დაგეხმაროთ უფრო ნელი კავშირის შემთხვევაში.</string>
   <string name="hostpref_wantsession_title" tools:machine_translated="true">გაიხსნას ტერმინალის სესია</string>
   <string name="hostpref_wantsession_summary" tools:machine_translated="true">გაითიშეთ ეს პარამეტრი, რათა გამოიყენოთ მხოლოდ პორტის გადაგზავნა.</string>
@@ -317,8 +308,6 @@
   <string name="list_host_portforwards" tools:machine_translated="true">პორტის გადაგზავნის რედაქტირება</string>
   <string name="list_host_duplicate" tools:machine_translated="true">შერჩეული მასპინძელის დუბლირება</string>
   <string name="list_host_forget_keys" tools:machine_translated="true">შენახული მასპინძელი კომპიუტერის გასაღებიების მოხსნა</string>
-  <string name="list_rotation_land" tools:machine_translated="true">დააყენეთ ჰორიზონტალური ორიენტაცია</string>
-  <string name="list_rotation_port" tools:machine_translated="true">გადააყენეთ პორტრეტულ რეჟიმში</string>
   <string name="list_camera_text_input" tools:machine_translated="true">ტექსტის შეყვანა</string>
   <string name="delete_message" tools:machine_translated="true">დარწმუნებული ხართ, რომ \'%1$s\'-ს წაშლით?</string>
   <string name="disconnect_all_message" tools:machine_translated="true">დარწმუნებული ხართ, რომ ყველა დამაკავშირებელ სერვერთან კავშირს გაწყვეტთ?</string>
@@ -346,15 +335,11 @@
   <string name="terminal_enable_portfoward" tools:machine_translated="true">აქტივირებულია პორტის გადაგზავნა: %1$s</string>
   <string name="local_shell_unavailable" tools:machine_translated="true">შეცდომა! ამ ტელეფონზე ადგილობრივი ინტერფეისი არ არის ხელმისაწვდომი.</string>
   <string name="notification_text" tools:machine_translated="true">%1$s-ს თქვენი ყურადღება სჭირდება.</string>
-  <string name="list_color_schemes" tools:machine_translated="true">ფერების სქემები</string>
-  <string name="button_manage_schemes" tools:machine_translated="true">შემების მართვა</string>
   <string name="title_scheme_manager" tools:machine_translated="true">ფერების სქემების მართვა</string>
   <string name="button_new_scheme" tools:machine_translated="true">ახალი სქემა</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">კოპირება</string>
-  <string name="button_rename_scheme" tools:machine_translated="true">გადარქმევა</string>
   <string name="button_delete_scheme" tools:machine_translated="true">წაშლა</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">ახალი ფერების სქემა</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">ფერების სქემის სახელი შეცვალეთ</string>
   <string name="label_scheme_name" tools:machine_translated="true">სქემის სახელი</string>
   <string name="label_scheme_description" tools:machine_translated="true">აღწერა (სურვილისამებრ)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">სქემის წაშლა?</string>
@@ -364,7 +349,6 @@
   <string name="label_built_in_scheme" tools:machine_translated="true">ჩაშენებული</string>
   <string name="label_custom_scheme" tools:machine_translated="true">მომხმარებლის მიერ შექმნილი/ინდივიდუალური</string>
   <string name="empty_custom_schemes" tools:machine_translated="true">სამომხმარებლო სქემები არ არის. ახალი სქემის შესასაჩრელად, შეეხეთ „ახალი სქემა“-ს.</string>
-  <string name="button_edit_palette" tools:machine_translated="true">პალიტრის რედაქტირება</string>
   <string name="button_export_scheme" tools:machine_translated="true">სქემის ექსპორტი</string>
   <string name="button_import_scheme" tools:machine_translated="true">სქემის იმპორტი</string>
   <string name="message_export_success" tools:machine_translated="true">%1$s-ის ექსპორტი წარმატებით დასრულდა.</string>
@@ -383,14 +367,11 @@
   <string name="label_green" tools:machine_translated="true">მწვანე</string>
   <string name="label_blue" tools:machine_translated="true">ლურჯი</string>
   <string name="label_hex_color" tools:machine_translated="true">ჰექსადეციმალური ფერი</string>
-  <string name="colors_fg_label" tools:machine_translated="true">ფონი: %1$d</string>
-  <string name="color_bg_label" tools:machine_translated="true">ფონი: %1$d</string>
   <string name="section_fg_bg_colors" tools:machine_translated="true">წინა პლანი და ფონი</string>
   <string name="label_foreground_color" tools:machine_translated="true">წინა პლანი</string>
   <string name="label_background_color" tools:machine_translated="true">ფონი</string>
   <string name="label_base_scheme" tools:machine_translated="true">ძირითადი სქემა:</string>
   <string name="menu_manage_colors" tools:machine_translated="true">ფერთა სქემების მართვა</string>
-  <string name="palette_editor_builtin_note" tools:machine_translated="true">წინასწარ დაყენებული სქემები რედაქტირებას არ ექვემდებარება. მათი პერსონალიზებისთვის, შექმენით დუბლიკატი.</string>
   <string name="section_color_preview" tools:machine_translated="true">წინასწარი ჩვენება</string>
   <string name="image_description_toggle_control_character" tools:machine_translated="true">მართვის სიმბოლოს ჩართვა/გამორთვა.</string>
   <string name="image_description_send_escape_character" tools:machine_translated="true">გადასვით სპეციალური სიმბოლო.</string>
@@ -419,9 +400,6 @@
   <string name="empty_port_forwards_message" tools:machine_translated="true">პორტის გადაგზავნის პარამეტრები არ არის დაყენებული.</string>
   <string name="empty_urls_message" tools:machine_translated="true">ტერმინალის ბუფერში URL-ები არ აღმოჩნდა.</string>
   <string name="console_default_title" tools:machine_translated="true">კონსოლი</string>
-  <string name="host_editor_quick_connect_label" tools:machine_translated="true">სწრაფი კავშირი</string>
-  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">მომხმარებელი\@სერვერის_სახელი:პორტი</string>
-  <string name="host_editor_quick_connect_example" tools:machine_translated="true">მაგალითი: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced" tools:machine_translated="true">გამოაჩინეთ დამატებითი პარამეტრები</string>
   <string name="host_editor_hide_advanced" tools:machine_translated="true">დამალეთ დამატებითი პარამეტრები</string>
   <string name="resize_width_label" tools:machine_translated="true">სიგანე (სვეტები)</string>
@@ -494,7 +472,6 @@
   <string name="forget_host_keys_confirm" tools:machine_translated="true">დარწმუნებული ხართ, რომ გსურთ, შენახული მასპინძელი კლუჩების დავიწყება \'%1$s\'-ისთვის? მომავალ შეერთებისას, თქვენ მოგეწოდებათ მოთხოვნა, დაადასტუროთ მასპინძელი კლუჩი.</string>
   <string name="list_pubkey_edit" tools:machine_translated="true">პუბლიკური გასაღების რედაქტირება</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">IP ვერსია</string>
-  <string name="hostpref_ipversion_summary" tools:machine_translated="true">აირჩიეთ, რომელი IP-მისამართის ვერსია გამოიყენოთ კავშირისას.</string>
   <string name="ipversion_auto" tools:machine_translated="true">ავტომატური</string>
   <string name="ipversion_ipv4" tools:machine_translated="true">მხოლოდ IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">მხოლოდ IPv6</string>
@@ -539,9 +516,6 @@
   <string name="pref_customterminal_summary" tools:machine_translated="true">დამატეთ მორგებული TERM მნიშვნელობები დისტანციური სერვერებისთვის.</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">დაამატეთ მორგებული ტიპის ტერმინალი.</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">ტერმინალის ტიპი (მაგ., rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">მორგებული ტერმინალის ტიპების მართვა</string>
-  <string name="button_add_custom" tools:machine_translated="true">დამატება…</string>
-  <string name="button_manage_custom" tools:machine_translated="true">მორგებული ელემენტების მართვა…</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">შეიყვანეთ სასურველი მნიშვნელობა</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, შემდეგ – კოსმოსური ღილაკი.</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
@@ -555,7 +529,6 @@
   <string name="import_hosts_success" tools:machine_translated="true">მონაცემთა ბაზაში დამატებულია %1$d მასპინძელი (გატოვებულია %2$d), ასევე %3$d პროფილი (გატოვებულია %4$d).</string>
   <string name="export_hosts_failed" tools:machine_translated="true">ჰოსტების ექსპორტი ვერ მოხერხდა: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">უძრაობის ჩატვირთვა წარუმატებელი აღმოჩნდა: %s</string>
-  <string name="export_hosts_title" tools:machine_translated="true">ექსპორტისთვის განკუთვნილი ჰოსტების არჩევის ფანჯარა</string>
   <string name="shortcut_customize_title" tools:machine_translated="true">მალსახელის რედაქტირება</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">პიქტოგრამის ფერი</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">მინიშნების სტილი</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">ჩართულია</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">ჩვენება ტექსტში ჩასმული გამოსახულებები?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">დავუშვათ, ამ სესიის განმავლობაში, ეს ჰოსტი იყენებს ინლაინ გამოსახულებებს?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">ავტომატური ჩართვა აქტივირებულია.</string>
   <string name="automation_load_failed" tools:machine_translated="true">ავტომატიზაციის მოდულის ჩატვირთვა ვერ მოხერხდა.</string>
   <string name="automation_save_failed" tools:machine_translated="true">ავტომატიზაციის შენახვა ვერ მოხერხდა.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">გაამოწმეთ ტექსტი, შაბლონი, ხანგრძლივობა ან არჩეული პორტის გადას redirection.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">გადაიტანეთ ზემოთ</string>
   <string name="automation_move_down" tools:machine_translated="true">შემოიწიეთ ქვევით</string>
   <string name="automation_drag" tools:machine_translated="true">გადაიტანეთ, რათა შეცვალოთ თანმიმდევრობა.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">შეინახოთ ცვლილებები?</string>
-  <string name="automation_discard" tools:machine_translated="true">გაუქმება</string>
   <string name="automation_cancel" tools:machine_translated="true">გაუქმება</string>
   <string name="automation_text" tools:machine_translated="true">ტექსტი</string>
   <string name="automation_regex" tools:machine_translated="true">რეგულარული გამოსახულება</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">შეფტი</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f წმ.</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d მოქმედება</item>
-		<item quantity="other">%1$d მოქმედება</item>
-	</plurals>
+    <item quantity="one">%1$d მოქმედება</item>
+    <item quantity="other">%1$d მოქმედება</item>
+  </plurals>
 </resources>

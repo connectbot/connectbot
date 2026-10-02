@@ -7,7 +7,6 @@
   <string name="title_port_forwards_list">連接埠轉址</string>
   <string name="title_help">說明</string>
   <string name="title_eula">授權條款</string>
-  <string name="title_colors">顏色</string>
   <string name="title_color_picker">挑選顏色</string>
   <string name="title_settings">設置</string>
   <string name="title_pubkey_generate">生成</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password">使用相同的密碼進行加密</string>
   <string name="pubkey_import_new_password">新密碼</string>
   <string name="pubkey_import_confirm_password">確認密碼</string>
-  <string name="pubkey_list_empty">點擊《選單》，以建立或匯入金鑰配對。</string>
-  <string name="pubkey_unknown_format">格式不明</string>
   <string name="pubkey_change_password">變更密碼</string>
   <string name="pubkey_unlock">解鎖金鑰</string>
   <string name="pubkey_unlock_message">請輸入密碼以解鎖金鑰 \'%1$s\'</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key">允許遠端主機\n使用金鑰 \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">警告：遠端主機的識別已變更！</string>
   <string name="host_verification_failure_warning">可能某人正在做非善意的事情！\n可能有人正在側錄您的連線(中間攻擊法)！\n但也許僅僅是主機金鑰已變更。</string>
-  <string name="prompt_host_disconnected">已經中斷連線。\n是否關閉本次階段？</string>
   <string name="prompt_continue_connecting">是否要繼續連線？</string>
   <string name="host_authenticity_warning">主機\"%1$s\"的驗證無法建立。</string>
   <string name="host_fingerprint">主機 %1$s 金鑰指紋是 %2$s</string>
@@ -115,7 +111,6 @@
   <string name="pref_theme_system">系統預設值</string>
   <string name="pref_theme_light">輕巧</string>
   <string name="pref_theme_dark">深色</string>
-  <string name="pref_rotation_title">螢幕旋轉模式</string>
   <string name="pref_titlebarhide_title">自動隱藏標題列</string>
   <string name="pref_titlebarhide_summary">輕觸終端機來顯示標題列並存取選單</string>
   <string name="pref_alwaysvisible_title">特殊鍵永遠顯示</string>
@@ -181,7 +176,6 @@
   <string name="hostpref_pubkeyid_title">使用公鑰驗證</string>
   <string name="hostpref_authagent_title">使用 SSH 認證</string>
   <string name="hostpref_postlogin_title">登入後自動執行</string>
-  <string name="hostpref_postlogin_summary">每次驗證後在遠端伺服器上執行的命令</string>
   <string name="hostpref_compression_title">壓縮</string>
   <string name="hostpref_compression_summary">此選項對低速網路會有幫助</string>
   <string name="hostpref_wantsession_title">開始 Shell 連線階段</string>
@@ -268,10 +262,6 @@
   <string name="list_host_delete">刪除主機</string>
   <string name="list_host_duplicate">複製主機</string>
   <string name="list_host_forget_keys">忘記主機金鑰</string>
-  <string name="list_rotation_default">預設值</string>
-  <string name="list_rotation_land">強制橫屏顯示</string>
-  <string name="list_rotation_port">強制竪屏顯示</string>
-  <string name="list_rotation_auto">自動</string>
   <string name="list_camera_ctrlaspace">Ctrl+A 然後 Space</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -311,16 +301,11 @@
   <string name="notification_text">%1$s 需要您的注意。</string>
   <string name="no">否</string>
   <string name="yes">是</string>
-  <string name="list_color_schemes">色彩配置</string>
-  <string name="menu_colors_reset">重設</string>
-  <string name="button_manage_schemes">管理設定方案</string>
   <string name="title_scheme_manager">管理色彩配置</string>
   <string name="button_new_scheme">新的方案</string>
   <string name="button_duplicate_scheme">重複</string>
-  <string name="button_rename_scheme">重新命名</string>
   <string name="button_delete_scheme">刪除</string>
   <string name="dialog_title_new_scheme">新的配色方案</string>
-  <string name="dialog_title_rename_scheme">重新命名配色方案</string>
   <string name="label_scheme_name">方案名稱</string>
   <string name="label_scheme_description">說明（可選）</string>
   <string name="dialog_title_delete_scheme">刪除設定？</string>
@@ -330,7 +315,6 @@
   <string name="label_built_in_scheme">內建</string>
   <string name="label_custom_scheme">自訂</string>
   <string name="empty_custom_schemes">沒有自訂配置。點擊「新增配置」以建立一個。</string>
-  <string name="button_edit_palette">編輯調色盤</string>
   <string name="button_export_scheme">匯出配置</string>
   <string name="button_import_scheme">匯入配置</string>
   <string name="message_export_success">已匯出 %1$s</string>
@@ -349,14 +333,11 @@
   <string name="label_green">綠色</string>
   <string name="label_blue">藍色</string>
   <string name="label_hex_color">十六進位顏色</string>
-  <string name="colors_fg_label">前景：%1$d</string>
-  <string name="color_bg_label">背景：%1$d</string>
   <string name="section_fg_bg_colors">前景與背景</string>
   <string name="label_foreground_color">前景</string>
   <string name="label_background_color">背景</string>
   <string name="label_base_scheme">基本配置：</string>
   <string name="menu_manage_colors">管理色彩配置</string>
-  <string name="palette_editor_builtin_note">內建的設定方案為唯讀模式。請複製一份以進行自訂。</string>
   <string name="section_color_preview">預覽</string>
   <string name="image_description_connected">已連線。</string>
   <string name="image_description_disconnected">已中斷連線。</string>
@@ -411,9 +392,6 @@
   <string name="empty_port_forwards_message">沒有設定任何連接埠轉發。</string>
   <string name="empty_urls_message">在終端緩衝區中未找到任何網址</string>
   <string name="console_default_title">控制台</string>
-  <string name="host_editor_quick_connect_label">快速連線</string>
-  <string name="host_editor_quick_connect_placeholder">user\@hostname:port</string>
-  <string name="host_editor_quick_connect_example">範例：root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced">顯示進階選項</string>
   <string name="host_editor_hide_advanced">隱藏進階選項</string>
   <string name="resize_width_label">寬度（欄數）</string>
@@ -480,7 +458,6 @@
   <string name="forget_host_keys_confirm">您確定要忘記儲存的 \'%1$s\' 主機金鑰嗎？下次連線時，系統會提示您驗證主機金鑰。</string>
   <string name="list_pubkey_edit">編輯公鑰</string>
   <string name="hostpref_ipversion_title">IP 版本</string>
-  <string name="hostpref_ipversion_summary">選擇連線時要使用的 IP 位址版本</string>
   <string name="ipversion_auto">自動</string>
   <string name="ipversion_ipv4">僅限 IPv4</string>
   <string name="ipversion_ipv6">僅限 IPv6</string>
@@ -525,9 +502,6 @@
   <string name="pref_customterminal_summary">為遠端伺服器新增自訂的 TERM 值</string>
   <string name="dialog_customterminal_title">新增自訂終端機類型</string>
   <string name="dialog_customterminal_hint">終端機類型（例如：rxvt-unicode）</string>
-  <string name="dialog_manage_customterminal_title">管理自訂終端機類型</string>
-  <string name="button_add_custom">新增自訂…</string>
-  <string name="button_manage_custom">管理自訂…</string>
   <string name="dialog_custom_value_label">輸入自訂值</string>
   <string name="list_camera_ctrlaspace_description">按 Ctrl+A，然後按空格鍵</string>
   <string name="list_camera_ctrla_description">Ctrl+A</string>
@@ -541,7 +515,6 @@
   <string name="import_hosts_success">已匯入 %1$d 個主機（跳過 %2$d 個）和 %3$d 個設定檔（跳過 %4$d 個）</string>
   <string name="export_hosts_failed">匯出主機失敗：%s</string>
   <string name="import_hosts_failed">匯入主機失敗：%s</string>
-  <string name="export_hosts_title">匯出主機清單</string>
   <string name="shortcut_customize_title">自訂快捷鍵</string>
   <string name="shortcut_icon_color">圖示顏色</string>
   <string name="shortcut_icon_style">圖示樣式</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">開啟</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">顯示內嵌圖片嗎？</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">是否允許此主機在本會話的剩餘時間內顯示嵌入式圖片？</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">啟用自動啟動。</string>
   <string name="automation_load_failed" tools:machine_translated="true">無法載入自動化設定。</string>
   <string name="automation_save_failed" tools:machine_translated="true">無法儲存自動化設定。</string>
   <string name="automation_invalid_action" tools:machine_translated="true">請檢查文字、模式、時長或選取的端口轉發設定。</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">向上移動</string>
   <string name="automation_move_down" tools:machine_translated="true">向下移動</string>
   <string name="automation_drag" tools:machine_translated="true">拖曳以重新排序。</string>
-  <string name="automation_unsaved" tools:machine_translated="true">儲存變更？</string>
-  <string name="automation_discard" tools:machine_translated="true">捨棄。</string>
   <string name="automation_cancel" tools:machine_translated="true">取消</string>
   <string name="automation_text" tools:machine_translated="true">文字</string>
   <string name="automation_regex" tools:machine_translated="true">正規表達式</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Shift 鍵。</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f 秒</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">共 %1$d 個動作。</item>
-		<item quantity="other">共 %1$d 個動作。</item>
-	</plurals>
+    <item quantity="one">共 %1$d 個動作。</item>
+    <item quantity="other">共 %1$d 個動作。</item>
+  </plurals>
 </resources>

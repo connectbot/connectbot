@@ -5,7 +5,6 @@
   <string name="title_pubkey_list">Julkiset avaimet</string>
   <string name="title_port_forwards_list">Porttiohjaukset</string>
   <string name="title_help">Ohje</string>
-  <string name="title_colors">Värit</string>
   <string name="title_settings">Asetukset</string>
   <string name="title_pubkey_generate">Luo</string>
   <string name="terms_and_conditions">Ehdot ja määräykset</string>
@@ -37,7 +36,6 @@
   <string name="prompt_allow_agent_to_use_key">Hyväksy etäyhteys:\nkäytä avainta \'%1$s\'</string>
   <string name="host_verification_failure_warning_header">VAROITUS: ETÄPÄÄN KONEEN TUNNISTE ON MUUTTUNUT!</string>
   <string name="host_verification_failure_warning">JOKU SAATTAA OLLA TEKEMÄSSÄ PAHOJAAN!\nOn mahdollista, että yhteyttäsi salakuunnellaan (niin kutsuttu man-in-the-middle -hyökkäys)!\nOn toki myös mahdollista, että palvelimen avainta vain on muutettu.</string>
-  <string name="prompt_host_disconnected">Palvelin katkaisi yhteyden.\nSuljetaanko istunto?</string>
   <string name="prompt_continue_connecting">Haluatko varmasti\njatkaa yhdistämistä?</string>
   <string name="host_authenticity_warning">Palvelimen \'%1$s\' aitoutta ei voida varmentaa</string>
   <string name="host_fingerprint">Palvelimen %1$s avaimen sormenjälki: %2$s</string>
@@ -51,7 +49,6 @@
   <string name="pref_scrollback_summary">Konsolikohtainen koko vierityspuskurille, jossa pidetään konsolin historiaa</string>
   <string name="pref_backupkeys_title">Varmuuskopioi julkiset avaimet</string>
   <string name="pref_ui_category">Käyttöliittymä</string>
-  <string name="pref_rotation_title">Näytön pyöritys</string>
   <string name="pref_fullscreen_title">Kokoruutu</string>
   <string name="pref_fullscreen_summary">Piilota ilmoitusalue konsolikäytössä</string>
   <string name="pref_memkeys_title">Pidä avaimet muistissa</string>
@@ -80,7 +77,6 @@
   <string name="hostpref_pubkeyid_title">Kirjaudu avainparilla</string>
   <string name="hostpref_authagent_title">Käytä SSH-kirjautumisagenttia</string>
   <string name="hostpref_postlogin_title">Kirjautumisen jälkeiset automaattiset toimenpiteet</string>
-  <string name="hostpref_postlogin_summary">Palvelimella kirjautumisen jälkeen ajettavat komennot</string>
   <string name="hostpref_compression_title">Pakkaus</string>
   <string name="hostpref_compression_summary">Tämä voi helpottaa hitaiden yhteyksien käyttämistä</string>
   <string name="hostpref_wantsession_title">Käynnistä komentorivi-istunto</string>
@@ -114,10 +110,6 @@
   <string name="list_host_edit">Muokkaa palvelinta</string>
   <string name="list_host_portforwards">Muokkaa porttiohjauksia</string>
   <string name="list_host_delete">Poista palvelin</string>
-  <string name="list_rotation_default">Oletus</string>
-  <string name="list_rotation_land">Pakota vaakatasoon</string>
-  <string name="list_rotation_port">Pakota pystysuuntaan</string>
-  <string name="list_rotation_auto">Automaattinen</string>
   <string name="list_camera_ctrlaspace">Ctrl+A ja välilyönti</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -148,7 +140,6 @@
   <string name="notification_text">%1$s kaipaa huomiotasi.</string>
   <string name="no">Ei</string>
   <string name="yes">Kyllä</string>
-  <string name="menu_colors_reset">Palauta</string>
   <string name="app_is_running">ConnectBot on käynnissä</string>
   <string name="image_description_connected">Yhdistetty.</string>
   <string name="image_description_disconnected">Yhteys katkaistu</string>
@@ -207,8 +198,6 @@
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">Käytä samaa salasanaa salaukseen</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Uusi salasana</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Vahvista salasana</string>
-  <string name="pubkey_list_empty" tools:machine_translated="true">Napauta ”Valikko”, jotta voit luoda tai tuoda avainpareja.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">Tuntematon tiedostomuoto</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Syötä salasana avataksesi salatun avaimen \'%1$s\'.</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">Tällä nimellä on jo olemassa oleva avain.</string>
   <string name="prompt_username" tools:machine_translated="true">Käyttäjänimi:</string>
@@ -344,15 +333,11 @@
   <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Tallennetun salasanan avulla tapahtuva tunnistautuminen epäonnistui.</string>
   <string name="terminal_auth_biometric" tools:machine_translated="true">Pyydetään biometristä tunnistusta avaimen \'%1$s\' avaamiseksi.</string>
   <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">Biometrinen avain \'%1$s\' on mitätöity. Tämä voi tapahtua, kun laitteeseen rekisteröidään uusia sormenjälkitietoja. Luo uusi avain.</string>
-  <string name="list_color_schemes" tools:machine_translated="true">Väriteemat</string>
-  <string name="button_manage_schemes" tools:machine_translated="true">Hallitse teemoja</string>
   <string name="title_scheme_manager" tools:machine_translated="true">Hallitse väriteemoja</string>
   <string name="button_new_scheme" tools:machine_translated="true">Uusi teema</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">Kopioi</string>
-  <string name="button_rename_scheme" tools:machine_translated="true">Nimeä uudelleen</string>
   <string name="button_delete_scheme" tools:machine_translated="true">Poista</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">Uusi värimaailma</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Nimeä väriteema uudelleen</string>
   <string name="label_scheme_name" tools:machine_translated="true">Kaavion nimi</string>
   <string name="label_scheme_description" tools:machine_translated="true">Kuvaus (valinnainen)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">Haluatko poistaa tämän mallin?</string>
@@ -362,7 +347,6 @@
   <string name="label_built_in_scheme" tools:machine_translated="true">Sisäänrakennettu</string>
   <string name="label_custom_scheme" tools:machine_translated="true">Mukautettu</string>
   <string name="empty_custom_schemes" tools:machine_translated="true">Mukautettuja teemoja ei ole. Napauta ”Uusi teema” luodaksesi uuden.</string>
-  <string name="button_edit_palette" tools:machine_translated="true">Muokkaa väripalettia</string>
   <string name="button_export_scheme" tools:machine_translated="true">Vie värimaailma</string>
   <string name="button_import_scheme" tools:machine_translated="true">Tuo värimaailma</string>
   <string name="message_export_success" tools:machine_translated="true">%1$s on viety onnistuneesti.</string>
@@ -380,14 +364,11 @@
   <string name="label_green" tools:machine_translated="true">Vihreä</string>
   <string name="label_blue" tools:machine_translated="true">Sininen</string>
   <string name="label_hex_color" tools:machine_translated="true">Heksadesimaaliväri</string>
-  <string name="colors_fg_label" tools:machine_translated="true">Etualan väri: %1$d</string>
-  <string name="color_bg_label" tools:machine_translated="true">Tausta: %1$d</string>
   <string name="section_fg_bg_colors" tools:machine_translated="true">Etualan ja taustan värit</string>
   <string name="label_foreground_color" tools:machine_translated="true">Etualan väri</string>
   <string name="label_background_color" tools:machine_translated="true">Taustaväri</string>
   <string name="label_base_scheme" tools:machine_translated="true">Perusväriteema:</string>
   <string name="menu_manage_colors" tools:machine_translated="true">Hallitse väriteemoja</string>
-  <string name="palette_editor_builtin_note" tools:machine_translated="true">Valmiiksi määritetyt teemat ovat muokkaamattomia. Kopioi teema, jos haluat muokata sitä.</string>
   <string name="section_color_preview" tools:machine_translated="true">Esikatselu</string>
   <string name="image_description_toggle_control_character" tools:machine_translated="true">Vaihda ohjausmerkkiä.</string>
   <string name="image_description_send_tab_character" tools:machine_translated="true">Lähetä TAB-merkki.</string>
@@ -419,9 +400,6 @@
   <string name="empty_port_forwards_message" tools:machine_translated="true">Porttiohjauksia ei ole määritetty.</string>
   <string name="empty_urls_message" tools:machine_translated="true">Terminaalin puskurista ei löytynyt yhtään URL-osoitetta.</string>
   <string name="console_default_title" tools:machine_translated="true">Konsoli</string>
-  <string name="host_editor_quick_connect_label" tools:machine_translated="true">Pikayhteys</string>
-  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">käyttäjä\@palvelimen_nimi:portti</string>
-  <string name="host_editor_quick_connect_example" tools:machine_translated="true">Esimerkki: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced" tools:machine_translated="true">Näytä lisäasetukset</string>
   <string name="host_editor_hide_advanced" tools:machine_translated="true">Piilota lisäasetukset</string>
   <string name="resize_width_label" tools:machine_translated="true">Leveys (sarakkeina)</string>
@@ -494,7 +472,6 @@
   <string name="forget_host_keys_confirm" tools:machine_translated="true">Oletko varma, että haluat poistaa tallennetut isäntäavaimet laitteelle \'%1$s\'? Sinua pyydetään vahvistamaan isäntäavain seuraavan yhteyden yhteydessä.</string>
   <string name="list_pubkey_edit" tools:machine_translated="true">Muokkaa julkista avainta</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">IP-version</string>
-  <string name="hostpref_ipversion_summary" tools:machine_translated="true">Valitse, mitä IP-osoiteversiota käytetään yhteyden muodostamisessa.</string>
   <string name="ipversion_auto" tools:machine_translated="true">Automaattinen</string>
   <string name="ipversion_ipv4" tools:machine_translated="true">Vain IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">Vain IPv6</string>
@@ -539,9 +516,6 @@
   <string name="pref_customterminal_summary" tools:machine_translated="true">Lisää mukautettuja TERM-arvoja etäpalvelimille.</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">Lisää mukautettu terminaalityyppi</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">Päätelaitteen tyyppi (esim. rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Hallitse mukautettuja pääteasetustyyppejä</string>
-  <string name="button_add_custom" tools:machine_translated="true">Lisää mukautettu…</string>
-  <string name="button_manage_custom" tools:machine_translated="true">Hallitse mukautettuja kohteita…</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">Syötä mukautettu arvo.</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, jonka jälkeen välilyöntinäppäin</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
@@ -555,7 +529,6 @@
   <string name="import_hosts_success" tools:machine_translated="true">Tuotiin %1$d määrä hosteja (%2$d jätettiin tuomatta) ja %3$d määrä profiileja (%4$d jätettiin tuomatta).</string>
   <string name="export_hosts_failed" tools:machine_translated="true">Host-tiedostojen vienti epäonnistui: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">Hostien tuonti epäonnistui: %s</string>
-  <string name="export_hosts_title" tools:machine_translated="true">Vie isäntäluettelo</string>
   <string name="shortcut_customize_title" tools:machine_translated="true">Muokkaa pikakuvaketta</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Ikonin väri</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Ikonin tyyli</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">Päällä</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Näytetäänkö kuvat suoraan tekstissä?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Salli, että tämä palvelin näyttää kuvat suoraan tekstissä tämän istunnon loppuun asti?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Automaattinen käynnistys käytössä</string>
   <string name="automation_load_failed" tools:machine_translated="true">Automaatioeditorin lataaminen epäonnistui.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Automaatio ei tallentunut.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Tarkista teksti, kuvio, kesto tai valittu portinohjaus.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Siirrä ylöspäin.</string>
   <string name="automation_move_down" tools:machine_translated="true">Siirrä alaspäin.</string>
   <string name="automation_drag" tools:machine_translated="true">Vedä ja järjestä uudelleen.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Tallenna muutokset?</string>
-  <string name="automation_discard" tools:machine_translated="true">Poista</string>
   <string name="automation_cancel" tools:machine_translated="true">Peruuta</string>
   <string name="automation_text" tools:machine_translated="true">Teksti</string>
   <string name="automation_regex" tools:machine_translated="true">Säännöllinen lauseke</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Shift-näppäin</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f sekuntia</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d toiminto</item>
-		<item quantity="other">%1$d toimintoa</item>
-	</plurals>
+    <item quantity="one">%1$d toiminto</item>
+    <item quantity="other">%1$d toimintoa</item>
+  </plurals>
 </resources>

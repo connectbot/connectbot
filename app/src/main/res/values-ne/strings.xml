@@ -7,7 +7,6 @@
   <string name="title_port_forwards_list" tools:machine_translated="true">पोर्ट फार्वर्डहरू</string>
   <string name="title_help" tools:machine_translated="true">सहायता</string>
   <string name="title_eula" tools:machine_translated="true">लाइसेन्स</string>
-  <string name="title_colors" tools:machine_translated="true">रङहरू</string>
   <string name="title_color_picker" tools:machine_translated="true">रङ छान्नुहोस्।</string>
   <string name="title_settings" tools:machine_translated="true">सेटिङहरू</string>
   <string name="title_pubkey_generate" tools:machine_translated="true">उत्पन्न गर्नुहोस्</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">समान पासवर्ड प्रयोग गर्नुहोस्।</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">नयाँ पासवर्ड</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">पासवर्ड दोहोर्याउनुहोस्</string>
-  <string name="pubkey_list_empty" tools:machine_translated="true">“मेनु” मा ट्याप गर्नुहोस् र कुञ्जी जोडीहरू बनाउनुहोस् वा आयात गर्नुहोस्।</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">अज्ञात ढाँचा</string>
   <string name="pubkey_change_password" tools:machine_translated="true">पासवर्ड परिवर्तन गर्नुहोस्</string>
   <string name="pubkey_unlock" tools:machine_translated="true">कुञ्जी अनलक गर्नुहोस्</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">गुप्तीकृत कुञ्जी \'%1$s\' खोल्न पासवर्ड प्रविष्ट गर्नुहोस्।</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">दूरस्थ होस्टलाई \'%1$s\' कुञ्जी प्रयोग गर्न अनुमति दिने?</string>
   <string name="host_verification_failure_warning_header" tools:machine_translated="true">चेतावनी: टाँसको होस्ट पहिचान परिवर्तन भएको छ!</string>
   <string name="host_verification_failure_warning" tools:machine_translated="true">यो सम्भव छ कि कसैले केही नराम्रो काम गरिरहेको छ!\nकसैले अहिले नै तपाईंको कुराकानी सुनि रहनुपर्छ (मध्यस्थ आक्रमण)!\nत्यसैले, होस्ट कुञ्जी हालै परिवर्तन गरिएको पनि हुन सक्छ।</string>
-  <string name="prompt_host_disconnected" tools:machine_translated="true">होस्टले जडान तोडेको छ।\nसत्र बन्द गर्नुहुन्छ?</string>
   <string name="prompt_continue_connecting" tools:machine_translated="true">के तपाईं निश्चित हुनुहुन्छ कि तपाईं जडान जारी राख्न चाहनुहुन्छ?</string>
   <string name="host_authenticity_warning" tools:machine_translated="true">होस्ट \'%1$s\' को प्रामाणिकता स्थापित गर्न सकिँदैन।</string>
   <string name="host_fingerprint" tools:machine_translated="true">होस्ट %1$s को कुञ्जीको फिंगरप्रिन्ट %2$s हो।</string>
@@ -117,7 +113,6 @@
   <string name="pref_theme_system" tools:machine_translated="true">सिस्टमको पूर्वनिर्धारित सेटिङ</string>
   <string name="pref_theme_light" tools:machine_translated="true">हल्का</string>
   <string name="pref_theme_dark" tools:machine_translated="true">अँध्यारो</string>
-  <string name="pref_rotation_title" tools:machine_translated="true">घुमाउने मोड</string>
   <string name="pref_titlebarhide_title" tools:machine_translated="true">टाइटल बारलाई स्वतः लुकाउने विकल्प</string>
   <string name="pref_titlebarhide_summary" tools:machine_translated="true">टाइटल बार देखाउन र मेनु खोल्न कन्सोलमा ट्याप गर्नुहोस्।</string>
   <string name="pref_alwaysvisible_title" tools:machine_translated="true">विशेष कुञ्जीहरू सधैँ देखिने गरी राख्नुहोस्।</string>
@@ -183,7 +178,6 @@
   <string name="hostpref_pubkeyid_title" tools:machine_translated="true">पब्लिक की प्रमाणीकरण प्रयोग गर्नुहोस्।</string>
   <string name="hostpref_authagent_title" tools:machine_translated="true">एसएसएच प्रमाणीकरण एजेन्ट प्रयोग गर्नुहोस्।</string>
   <string name="hostpref_postlogin_title" tools:machine_translated="true">लগ इन गरेपछि स्वचालित कार्य</string>
-  <string name="hostpref_postlogin_summary" tools:machine_translated="true">प्रमाणीकरण गरिसकेपछि रिमोट सर्भरमा चलाउनका लागि आदेशहरू</string>
   <string name="hostpref_compression_title" tools:machine_translated="true">संकुचन</string>
   <string name="hostpref_compression_summary" tools:machine_translated="true">यसले कम गति भएका नेटवर्कहरूमा मद्दत गर्न सक्छ।</string>
   <string name="hostpref_wantsession_title" tools:machine_translated="true">शेल सत्र सुरु गर्नुहोस्</string>
@@ -270,10 +264,6 @@
   <string name="list_host_delete" tools:machine_translated="true">चयन गरिएको होस्ट हटाउनुहोस्।</string>
   <string name="list_host_duplicate" tools:machine_translated="true">चयन गरिएको होस्टको प्रतिलिपि बनाउनुहोस्</string>
   <string name="list_host_forget_keys" tools:machine_translated="true">चयन गरिएको होस्टका लागि भण्डारण गरिएका होस्ट कुञ्जीहरू बिर्सनुहोस्।</string>
-  <string name="list_rotation_default" tools:machine_translated="true">पूर्वनिर्धारित</string>
-  <string name="list_rotation_land" tools:machine_translated="true">ल्यान्डस्केप मोडमा सेट गर्नुहोस्।</string>
-  <string name="list_rotation_port" tools:machine_translated="true">पोर्ट्रेट मोडमा राख्नुहोस्।</string>
-  <string name="list_rotation_auto" tools:machine_translated="true">स्वचालित</string>
   <string name="list_camera_ctrlaspace" tools:machine_translated="true">कन्ट्रोल+ए, त्यसपछि स्पेसबार थिच्नुहोस्।</string>
   <string name="list_camera_ctrla" tools:machine_translated="true">Ctrl+A</string>
   <string name="list_camera_esc" tools:machine_translated="true">एस्केप</string>
@@ -313,16 +303,11 @@
   <string name="notification_text" tools:machine_translated="true">%1$s ले तपाईंको ध्यान चाहन्छ।</string>
   <string name="no" tools:machine_translated="true">होइन</string>
   <string name="yes" tools:machine_translated="true">हो।</string>
-  <string name="list_color_schemes" tools:machine_translated="true">रङ योजनाहरू</string>
-  <string name="menu_colors_reset" tools:machine_translated="true">पुनःसेट गर्नुहोस्</string>
-  <string name="button_manage_schemes" tools:machine_translated="true">रङ योजनाहरू व्यवस्थापन गर्नुहोस्</string>
   <string name="title_scheme_manager" tools:machine_translated="true">रङ योजनाहरू व्यवस्थापन गर्नुहोस्</string>
   <string name="button_new_scheme" tools:machine_translated="true">नयाँ योजना</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">दोहोर्याउनुहोस्</string>
-  <string name="button_rename_scheme" tools:machine_translated="true">रङ योजनाको नाम परिवर्तन गर्नुहोस्</string>
   <string name="button_delete_scheme" tools:machine_translated="true">हटाउनुहोस्</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">नयाँ रङ योजना</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">रङ योजनाको नाम परिवर्तन गर्नुहोस्</string>
   <string name="label_scheme_name" tools:machine_translated="true">योजनाको नाम</string>
   <string name="label_scheme_description" tools:machine_translated="true">विवरण (वैकल्पिक)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">स्कीम मेट्नुहुन्छ?</string>
@@ -332,7 +317,6 @@
   <string name="label_built_in_scheme" tools:machine_translated="true">निर्मित</string>
   <string name="label_custom_scheme" tools:machine_translated="true">अनुकूलित/प्रयोगकर्ताद्वारा निर्मित</string>
   <string name="empty_custom_schemes" tools:machine_translated="true">कुनै पनि अनुकूलित योजना छैन। नयाँ योजना बनाउन \"नयाँ योजना\" मा ट्याप गर्नुहोस्।</string>
-  <string name="button_edit_palette" tools:machine_translated="true">रङको प्यालेट सम्पादन गर्नुहोस्</string>
   <string name="button_export_scheme" tools:machine_translated="true">स्कीम निर्यात गर्नुहोस्</string>
   <string name="button_import_scheme" tools:machine_translated="true">स्कीम आयात गर्नुहोस्</string>
   <string name="message_export_success" tools:machine_translated="true">%1$s सफलतापूर्वक निर्यात गरियो।</string>
@@ -351,14 +335,11 @@
   <string name="label_green" tools:machine_translated="true">हरियो</string>
   <string name="label_blue" tools:machine_translated="true">नीलो</string>
   <string name="label_hex_color" tools:machine_translated="true">हेक्स रंग</string>
-  <string name="colors_fg_label" tools:machine_translated="true">एफजी: %1$d</string>
-  <string name="color_bg_label" tools:machine_translated="true">पृष्ठभूमि: %1$d</string>
   <string name="section_fg_bg_colors" tools:machine_translated="true">अग्रभूमि र पृष्ठभूमि</string>
   <string name="label_foreground_color" tools:machine_translated="true">अग्रभूमि</string>
   <string name="label_background_color" tools:machine_translated="true">पृष्ठभूमि</string>
   <string name="label_base_scheme" tools:machine_translated="true">आधार योजना:</string>
   <string name="menu_manage_colors" tools:machine_translated="true">रङ योजनाहरू व्यवस्थापन गर्नुहोस्</string>
-  <string name="palette_editor_builtin_note" tools:machine_translated="true">निर्मित योजनाहरू केवल पढ्न सकिन्छन्। अनुकूलन गर्न प्रतिलिपि गर्नुहोस्।</string>
   <string name="section_color_preview" tools:machine_translated="true">पूर्वावलोकन</string>
   <string name="image_description_connected" tools:machine_translated="true">जुडिएको।</string>
   <string name="image_description_disconnected" tools:machine_translated="true">जडान भएन।</string>
@@ -413,9 +394,6 @@
   <string name="empty_port_forwards_message" tools:machine_translated="true">कुनै पनि पोर्ट फरवार्डहरू सेट गरिएको छैन।</string>
   <string name="empty_urls_message" tools:machine_translated="true">टर्मिनल बफरमा कुनै पनि यूआरएल फेला परेन।</string>
   <string name="console_default_title" tools:machine_translated="true">कन्सोल</string>
-  <string name="host_editor_quick_connect_label" tools:machine_translated="true">छिटो जडान गर्नुहोस्</string>
-  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">प्रयोगकर्ता\@होस्टनेम:पोर्ट</string>
-  <string name="host_editor_quick_connect_example" tools:machine_translated="true">उदाहरण: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced" tools:machine_translated="true">अतिरिक्त विकल्पहरू देखाउनुहोस्</string>
   <string name="host_editor_hide_advanced" tools:machine_translated="true">उन्नत विकल्पहरू लुकाउनुहोस्</string>
   <string name="resize_width_label" tools:machine_translated="true">चौडाइ (स्तम्भहरू)</string>
@@ -494,7 +472,6 @@
   <string name="forget_host_keys_confirm" tools:machine_translated="true">के तपाईं निश्चित हुनुहुन्छ कि तपाईं \'%1$s\' का लागि भण्डार गरिएको होस्ट कुञ्जीहरू बिर्सन चाहनुहुन्छ? तपाईंलाई अर्को जडानमा होस्ट कुञ्जी प्रमाणित गर्न अनुरोध गरिनेछ।</string>
   <string name="list_pubkey_edit" tools:machine_translated="true">पब्लिक की विवरण (जस्तै, उपनाम) सम्पादन गर्नुहोस्।</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">आईपी संस्करण</string>
-  <string name="hostpref_ipversion_summary" tools:machine_translated="true">जडान गर्दा कुन आईपी ठेगाना संस्करण प्रयोग गर्ने, छनौट गर्नुहोस्।</string>
   <string name="ipversion_auto" tools:machine_translated="true">स्वचालित</string>
   <string name="ipversion_ipv4" tools:machine_translated="true">केवल IPv4 मात्र</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">केवल IPv6 मात्र</string>
@@ -539,9 +516,6 @@
   <string name="pref_customterminal_summary" tools:machine_translated="true">दूरस्थ सर्भरहरूका लागि अनुकूल टर्मिनल मानहरू थप्नुहोस्।</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">कस्टम टर्मिनल प्रकार थप्नुहोस्</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">टर्मिनलको प्रकार (उदाहरणका लागि, rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">अनुकूलित टर्मिनल प्रकारहरू व्यवस्थापन गर्नुहोस्</string>
-  <string name="button_add_custom" tools:machine_translated="true">कस्टम वस्तु थप्नुहोस्…</string>
-  <string name="button_manage_custom" tools:machine_translated="true">अनुकूलित वस्तुहरू व्यवस्थापन गर्नुहोस्…</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">आफ्नो इच्छानुसारको मान प्रविष्ट गर्नुहोस्।</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, त्यसपछि स्पेस (Space) थिच्नुहोस्।</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
@@ -555,7 +529,6 @@
   <string name="import_hosts_success" tools:machine_translated="true">%1$d होस्टहरू आयात गरियो (%2$d होस्टहरू छाडियो) र %3$d प्रोफाइलहरू आयात गरियो (%4$d प्रोफाइलहरू छाडियो)।</string>
   <string name="export_hosts_failed" tools:machine_translated="true">होस्टहरू निर्यात गर्न असफल भयो: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">होस्टहरू आयात गर्न असफल भयो: %s</string>
-  <string name="export_hosts_title" tools:machine_translated="true">निर्यात गरिएका होस्टहरू</string>
   <string name="shortcut_customize_title" tools:machine_translated="true">शटकट अनुकूलित गर्नुहोस्</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">आइकन रङ</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">आइकन शैली</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">चालू गर्नुहोस्।</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">लाइनमा राखिएका छविहरू देखाउने?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">के यो होस्टलाई यस सत्रको बाँकी अवधिको लागि इनलाइन छविहरू प्रदर्शन गर्न अनुमति दिने?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">सुरूवात सक्षम गरियो।</string>
   <string name="automation_load_failed" tools:machine_translated="true">स्वचालित प्रणाली लोड गर्न सकिएन।</string>
   <string name="automation_save_failed" tools:machine_translated="true">स्वचालित प्रक्रिया बचत गर्न सकिएन।</string>
   <string name="automation_invalid_action" tools:machine_translated="true">पाठ, ढाँचा, अवधि वा चयन गरिएको पोर्ट फर्वार्ड जाँच गर्नुहोस्।</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">माथि सार्नुहोस्।</string>
   <string name="automation_move_down" tools:machine_translated="true">तलतिर सार्नुहोस्।</string>
   <string name="automation_drag" tools:machine_translated="true">पुनःक्रमबद्ध गर्न तान्नुहोस्।</string>
-  <string name="automation_unsaved" tools:machine_translated="true">परिवर्तनहरू सुरक्षित गर्नुहुन्छ?</string>
-  <string name="automation_discard" tools:machine_translated="true">त्याग गर्नुहोस्।</string>
   <string name="automation_cancel" tools:machine_translated="true">रद्द गर्नुहोस्।</string>
   <string name="automation_text" tools:machine_translated="true">पाठ्य</string>
   <string name="automation_regex" tools:machine_translated="true">नियमित अभिव्यक्ति</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">शिफ्ट</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f सेकेन्ड</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d कार्यहरू</item>
-		<item quantity="other">%1$d कार्यहरू</item>
-	</plurals>
+    <item quantity="one">%1$d कार्यहरू</item>
+    <item quantity="other">%1$d कार्यहरू</item>
+  </plurals>
 </resources>

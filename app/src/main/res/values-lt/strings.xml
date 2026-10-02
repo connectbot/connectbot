@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <string name="title_help">Pagalba</string>
-  <string name="title_colors">Spalvos</string>
   <string name="app_desc" tools:machine_translated="true">Paprastas, galingas, atvirojo kodo SSH klientas.</string>
   <string name="service_desc" tools:machine_translated="true">Palaiko SSH ryšius ir įkeltus viešuosius raktus.</string>
   <string name="app_copyright" tools:machine_translated="true">Autorių teisės © Kenny Root</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">Naudokite tą patį slaptažodį šifravimui</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Naujas slaptažodis</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Patvirtinkite slaptažodį.</string>
-  <string name="pubkey_list_empty" tools:machine_translated="true">Palieskite „Meniu“, kad sukurtumėte arba įkeltumėte raktų poras.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">Nežinomas formatas</string>
   <string name="pubkey_change_password" tools:machine_translated="true">Pakeisti slaptažodį</string>
   <string name="pubkey_unlock" tools:machine_translated="true">Atrakinti raktą</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Įveskite slaptažodį, kad atrakintumėte šifruotą raktą „%1$s“.</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">Ar leisti nuotoliniam kompiuteriui naudoti raktą „%1$s“?</string>
   <string name="host_verification_failure_warning_header" tools:machine_translated="true">ĮSPĖJIMAS: NUOTOLINIO SERVERIO IDENTIFIKATORIUS PASIKEITĖ!</string>
   <string name="host_verification_failure_warning" tools:machine_translated="true">ĮMANOMA, KAD KAS NORS DARO KĄ NORS BLOGO!\nGalbūt kažkas šiuo metu stebi jūsų veiklą (atlieka „perimto ryšio“ ataką)!\nTaip pat įmanoma, kad host rakto duomenys ką tik buvo pakeisti.</string>
-  <string name="prompt_host_disconnected" tools:machine_translated="true">Nuotolinis serveris atjungtas.\nAr uždaryti sesiją?</string>
   <string name="prompt_continue_connecting" tools:machine_translated="true">Ar esate tikri, kad norite tęsti ryšį?</string>
   <string name="host_authenticity_warning" tools:machine_translated="true">Negalima patvirtinti serverio „%1$s“ autentiskumo.</string>
   <string name="host_fingerprint" tools:machine_translated="true">Šeimininko %1$s rakto pirštų atspaudas yra %2$s.</string>
@@ -117,7 +113,6 @@
   <string name="pref_theme_system" tools:machine_translated="true">Sistemos numatytasis nustatymas</string>
   <string name="pref_theme_light" tools:machine_translated="true">Šviesi tema</string>
   <string name="pref_theme_dark" tools:machine_translated="true">Tamsi</string>
-  <string name="pref_rotation_title" tools:machine_translated="true">Pasukimo režimas</string>
   <string name="pref_titlebarhide_title" tools:machine_translated="true">Automatiškai paslėpti pavadinimų juostą</string>
   <string name="pref_titlebarhide_summary" tools:machine_translated="true">Palieskite konsolę, kad būtų rodoma pavadinimų juosta ir būtų galima pasiekti meniu.</string>
   <string name="pref_alwaysvisible_title" tools:machine_translated="true">Visada matomi specialieji klavišai.</string>
@@ -183,7 +178,6 @@
   <string name="hostpref_pubkeyid_title" tools:machine_translated="true">Naudokite viešojo rakto autentifikaciją.</string>
   <string name="hostpref_authagent_title" tools:machine_translated="true">Naudokite SSH autentifikavimo agentą.</string>
   <string name="hostpref_postlogin_title" tools:machine_translated="true">Automatizuotos užduotys po prisijungimo</string>
-  <string name="hostpref_postlogin_summary" tools:machine_translated="true">Komandos, kurias reikia vykdyti nuotoliniame serveryje, kai vartotojas prisijungia.</string>
   <string name="hostpref_compression_title" tools:machine_translated="true">Suspaudimas</string>
   <string name="hostpref_compression_summary" tools:machine_translated="true">Tai gali padėti, jei tinklas veikia lėčiau.</string>
   <string name="hostpref_wantsession_title" tools:machine_translated="true">Paleisti komandų interpretatoriaus sesiją</string>
@@ -270,10 +264,6 @@
   <string name="list_host_delete" tools:machine_translated="true">Ištrinti kompiuterį</string>
   <string name="list_host_duplicate" tools:machine_translated="true">Duplikuoti pasirinktą įrenginį.</string>
   <string name="list_host_forget_keys" tools:machine_translated="true">Pamirškite saugomus pagrindinio kompiuterio raktus.</string>
-  <string name="list_rotation_default" tools:machine_translated="true">Numatytasis</string>
-  <string name="list_rotation_land" tools:machine_translated="true">Nustatyti kraštovaizdinį režimą.</string>
-  <string name="list_rotation_port" tools:machine_translated="true">Nustatyti portreto režimą</string>
-  <string name="list_rotation_auto" tools:machine_translated="true">Automatinis</string>
   <string name="list_camera_ctrlaspace" tools:machine_translated="true">„Ctrl+A“, tada tarpo klavišas.</string>
   <string name="list_camera_ctrla" tools:machine_translated="true">Ctrl+A</string>
   <string name="list_camera_esc" tools:machine_translated="true">Esc</string>
@@ -313,16 +303,11 @@
   <string name="notification_text" tools:machine_translated="true">%1$s nori, kad atkreiptumėte dėmesį.</string>
   <string name="no" tools:machine_translated="true">Ne</string>
   <string name="yes" tools:machine_translated="true">Taip</string>
-  <string name="list_color_schemes" tools:machine_translated="true">Spalvų schemos</string>
-  <string name="menu_colors_reset" tools:machine_translated="true">Atkurti numatytuosius nustatymus.</string>
-  <string name="button_manage_schemes" tools:machine_translated="true">Tvarkyti spalvų schemas</string>
   <string name="title_scheme_manager" tools:machine_translated="true">Tvarkyti spalvų schemas</string>
   <string name="button_new_scheme" tools:machine_translated="true">Nauja spalvų schema</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">Duplikuoti</string>
-  <string name="button_rename_scheme" tools:machine_translated="true">Pervardykite</string>
   <string name="button_delete_scheme" tools:machine_translated="true">Ištrinti</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">Nauja spalvų schema</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Pervardykite spalvų schemą</string>
   <string name="label_scheme_name" tools:machine_translated="true">Schemos pavadinimas</string>
   <string name="label_scheme_description" tools:machine_translated="true">Aprašymas (neprivaloma)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">Ar ištrinti schemą?</string>
@@ -332,7 +317,6 @@
   <string name="label_built_in_scheme" tools:machine_translated="true">Įdiegtas sistemoje</string>
   <string name="label_custom_scheme" tools:machine_translated="true">Pritaikytas / Sukurtas naudotojo</string>
   <string name="empty_custom_schemes" tools:machine_translated="true">Nėra sukurtų pasirinktinių schemų. Norėdami sukurti naują schemą, palieskite mygtuką „Nauja schema“.</string>
-  <string name="button_edit_palette" tools:machine_translated="true">Redaguoti paletę</string>
   <string name="button_export_scheme" tools:machine_translated="true">Eksportuoti schemą</string>
   <string name="button_import_scheme" tools:machine_translated="true">Importuoti schemą</string>
   <string name="message_export_success" tools:machine_translated="true">%1$s sėkmingai eksportuotas.</string>
@@ -351,14 +335,11 @@
   <string name="label_green" tools:machine_translated="true">Žalias</string>
   <string name="label_blue" tools:machine_translated="true">Mėlyna</string>
   <string name="label_hex_color" tools:machine_translated="true">Šešioliktainis spalvos kodas</string>
-  <string name="colors_fg_label" tools:machine_translated="true">FG: %1$d</string>
-  <string name="color_bg_label" tools:machine_translated="true">Fonas: %1$d</string>
   <string name="section_fg_bg_colors" tools:machine_translated="true">Pirmo plano ir fono spalvos</string>
   <string name="label_foreground_color" tools:machine_translated="true">Pirmaplanas</string>
   <string name="label_background_color" tools:machine_translated="true">Fonas</string>
   <string name="label_base_scheme" tools:machine_translated="true">Pagrindinė schema:</string>
   <string name="menu_manage_colors" tools:machine_translated="true">Tvarkyti spalvų schemas</string>
-  <string name="palette_editor_builtin_note" tools:machine_translated="true">Įdiegtos schemos yra skirtos tik peržiūrai. Norėdami jas pritaikyti, sukopijuokite.</string>
   <string name="section_color_preview" tools:machine_translated="true">Peržiūra</string>
   <string name="image_description_connected" tools:machine_translated="true">Prisijungta.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">Atjungtas.</string>
@@ -413,9 +394,6 @@
   <string name="empty_port_forwards_message" tools:machine_translated="true">Nėra nustatytų prievadų nukreipimų.</string>
   <string name="empty_urls_message" tools:machine_translated="true">Terminalo buferyje nerasta jokių URL adresų.</string>
   <string name="console_default_title" tools:machine_translated="true">Konsolė</string>
-  <string name="host_editor_quick_connect_label" tools:machine_translated="true">Greitas prisijungimas</string>
-  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">vartotojas\@serverioadresas:portas</string>
-  <string name="host_editor_quick_connect_example" tools:machine_translated="true">Pavyzdys: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced" tools:machine_translated="true">Rodyti papildomas parinktis.</string>
   <string name="host_editor_hide_advanced" tools:machine_translated="true">Slėpti papildomas parinktis.</string>
   <string name="resize_width_label" tools:machine_translated="true">Plotis (stulpeliai)</string>
@@ -494,7 +472,6 @@
   <string name="forget_host_keys_confirm" tools:machine_translated="true">Ar tikrai norite ištrinti išsaugotus šio kompiuterio (host) raktus, susietus su adresu „%1$s“? Kitą kartą prisijungdami, būsite paprašyti patvirtinti šio kompiuterio raktą.</string>
   <string name="list_pubkey_edit" tools:machine_translated="true">Redaguoti viešąjį raktą</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">IP versija</string>
-  <string name="hostpref_ipversion_summary" tools:machine_translated="true">Pasirinkite, kokią IP adresų versiją naudoti jungiantis.</string>
   <string name="ipversion_auto" tools:machine_translated="true">Automatinis</string>
   <string name="ipversion_ipv4" tools:machine_translated="true">Tik IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">Tik IPv6</string>
@@ -539,9 +516,6 @@
   <string name="pref_customterminal_summary" tools:machine_translated="true">Pridėkite pasirinktinių „TERM“ reikšmių nuotoliniams serveriams.</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">Pridėti pasirinktinį terminalo tipą</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">Terminalo tipas (pvz., rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Tvarkykite pasirinktinius terminalo tipus.</string>
-  <string name="button_add_custom" tools:machine_translated="true">Pridėti pasirinktinį…</string>
-  <string name="button_manage_custom" tools:machine_translated="true">Tvarkyti pasirinktinius…</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">Įveskite pasirinktinę reikšmę.</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Paspauskite „Ctrl+A“, o paskui – tarpo klavišą.</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
@@ -555,7 +529,6 @@
   <string name="import_hosts_success" tools:machine_translated="true">Įkelta %1$d įrenginių (praleista %2$d), %3$d profilių (praleista %4$d).</string>
   <string name="export_hosts_failed" tools:machine_translated="true">Nepavyko eksportuoti hostų: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">Nepavyko importuoti hostų: %s</string>
-  <string name="export_hosts_title" tools:machine_translated="true">Eksportuoti serverių sąrašą</string>
   <string name="shortcut_customize_title" tools:machine_translated="true">Pritaikykite spartųjį klavišą</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Piktogramos spalva</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Piktogramos stilius</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">Įjungta</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Ar rodyti paveikslėlius tiesiogiai tekste?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Ar leisti šiam kompiuteriui rodyti paveikslėlius tiesiogiai tekste visos likusios sesijos metu?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Įjungtas automatinis paleidimas.</string>
   <string name="automation_load_failed" tools:machine_translated="true">Nepavyko įkelti automatizavimo nustatymų.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Nepavyko išsaugoti automatizavimo nustatymų.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Patikrinkite tekstą, šabloną, trukmę arba pasirinktą prievado nukreipimą.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Perkelti aukštyn.</string>
   <string name="automation_move_down" tools:machine_translated="true">Perkelkite žemyn.</string>
   <string name="automation_drag" tools:machine_translated="true">Perkelkite, kad pakeistumėte tvarką.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Ar išsaugoti pakeitimus?</string>
-  <string name="automation_discard" tools:machine_translated="true">Atmeskite.</string>
   <string name="automation_cancel" tools:machine_translated="true">Atšaukti</string>
   <string name="automation_text" tools:machine_translated="true">Tekstas</string>
   <string name="automation_regex" tools:machine_translated="true">Reguliarioji išraiška</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">„Shift“ klavišas</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f sekundės</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d veiksmas</item>
-		<item quantity="other">%1$d veiksmai</item>
-	</plurals>
+    <item quantity="one">%1$d veiksmas</item>
+    <item quantity="other">%1$d veiksmai</item>
+  </plurals>
 </resources>

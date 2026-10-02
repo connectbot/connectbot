@@ -5,7 +5,6 @@
   <string name="title_pubkey_list">Javni ključi</string>
   <string name="title_port_forwards_list">Posredovana vrata</string>
   <string name="title_help">Pomoč</string>
-  <string name="title_colors">Barve</string>
   <string name="title_color_picker">Izberite barvo</string>
   <string name="title_settings">Nastavitve</string>
   <string name="title_pubkey_generate">Generiraj</string>
@@ -44,7 +43,6 @@
   <string name="prompt_allow_agent_to_use_key">Dovoli oddaljenemu gostitelju\nuporabo ključa \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">OPOZORILO: ISTOVETENJE ODDALJENEGA GOSTITELJA SE JE SPREMENILO!</string>
   <string name="host_verification_failure_warning">MOŽNO JE, DA NEKDO POČNE NEKAJ ZLOBNEGA!\nNekdo vam lahko prisluškuje (napad s posrednikom)!\nMožno pa je tudi, da se je spremenil ključ gostitelja.</string>
-  <string name="prompt_host_disconnected">Gostitelj je prekinil povezavo.\nZaprem sejo?</string>
   <string name="prompt_continue_connecting">Ali ste prepričani, da želite\nnadaljevati s povezovanjem?</string>
   <string name="host_authenticity_warning">Istovetnost gostitelja \'%1$s\' ni mogoče ugotoviti.</string>
   <string name="host_fingerprint">Ključ gostitelja %1$s ima zgoščeno vrednost %2$s</string>
@@ -57,7 +55,6 @@
   <string name="pref_scrollback_title">Velikost pomnjenja vrstic</string>
   <string name="pref_scrollback_summary">Velikost medpomnilnika pomnjenih vrstic ohraniti v spomnu za vsako konzolo</string>
   <string name="pref_ui_category">Uporabniški vmesnik</string>
-  <string name="pref_rotation_title">Način za sukanje</string>
   <string name="pref_fullscreen_title">Celozaslonski način</string>
   <string name="pref_fullscreen_summary">Skrij vrstico stanja, ko v konzoli</string>
   <string name="pref_keyboard_category">Tipkovnica</string>
@@ -117,10 +114,6 @@
   <string name="list_host_edit">Urejaj gostitelja</string>
   <string name="list_host_portforwards">Urejaj posredovanja vrat</string>
   <string name="list_host_delete">Izbriši gostitelja</string>
-  <string name="list_rotation_default">Privzeto</string>
-  <string name="list_rotation_land">Prisili ležeče</string>
-  <string name="list_rotation_port">Prisili pokončno</string>
-  <string name="list_rotation_auto">Samodejno</string>
   <string name="list_camera_ctrlaspace">Ctrl+A nato Space</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -144,7 +137,6 @@
   <string name="notification_text">%1$s želi vašo pozornost.</string>
   <string name="no">Ne</string>
   <string name="yes">Da</string>
-  <string name="menu_colors_reset">Ponastavi</string>
   <string name="app_is_running">ConnectBot je dejaven</string>
   <string name="image_description_connected">Povezano.</string>
   <string name="image_description_disconnected">Prekinjeno.</string>
@@ -189,8 +181,6 @@
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">Uporabite isto geslo za šifriranje.</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Novo geslo</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Potrdite geslo</string>
-  <string name="pubkey_list_empty" tools:machine_translated="true">Tapnite »Meni«, da ustvarite\nali uvozite par ključev.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">Neznana oblika</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Vnesite geslo, da odklenete ključ »%1$s«.</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">Ključ z istim vzdevkom že obstaja</string>
   <string name="prompt_username" tools:machine_translated="true">Uporabniško ime:</string>
@@ -264,7 +254,6 @@
   <string name="hostpref_fontfamily_title" tools:machine_translated="true">Pisava</string>
   <string name="hostpref_colorscheme_title" tools:machine_translated="true">Barvna shema terminala</string>
   <string name="hostpref_postlogin_title" tools:machine_translated="true">Avtomatizacija po prijavi</string>
-  <string name="hostpref_postlogin_summary" tools:machine_translated="true">Ukazi, ki se izvedejo na oddaljenem strežniku po uspešni avtentikaciji.</string>
   <string name="hostpref_wantsession_summary" tools:machine_translated="true">Onemogočite to možnost, če želite uporabljati samo preusmerjanje vrat.</string>
   <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Zapri ob prekinitvi povezave.</string>
   <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Takoj po prekinitvi oddaljene povezave se konzola samodejno zapre, ne da bi se prikazalo kakršno koli obvestilo.</string>
@@ -337,15 +326,11 @@
   <string name="terminal_no_session" tools:machine_translated="true">Seja se ne bo začela, ker je uporabnik to onemogočil v nastavitvah gostitelja.</string>
   <string name="terminal_enable_portfoward" tools:machine_translated="true">Omogočanje preusmeritve vrat: %1$s</string>
   <string name="local_shell_unavailable" tools:machine_translated="true">Napaka! Lokalna lupina ni na voljo na tem telefonu.</string>
-  <string name="list_color_schemes" tools:machine_translated="true">Barvne sheme</string>
-  <string name="button_manage_schemes" tools:machine_translated="true">Upravljanje barvnih shem</string>
   <string name="title_scheme_manager" tools:machine_translated="true">Upravljanje barvnih shem</string>
   <string name="button_new_scheme" tools:machine_translated="true">Nova barvna shema</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">Podvoji</string>
-  <string name="button_rename_scheme" tools:machine_translated="true">Preimenuj</string>
   <string name="button_delete_scheme" tools:machine_translated="true">Izbriši</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">Nova barvna shema</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Preimenuj barvno shemo</string>
   <string name="label_scheme_name" tools:machine_translated="true">Ime sheme</string>
   <string name="label_scheme_description" tools:machine_translated="true">Opis (neobvezno)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">Želite izbrisati shemo?</string>
@@ -355,7 +340,6 @@
   <string name="label_built_in_scheme" tools:machine_translated="true">Vgrajen</string>
   <string name="label_custom_scheme" tools:machine_translated="true">Po meri</string>
   <string name="empty_custom_schemes" tools:machine_translated="true">Ni definiranih prilagojenih shem. Dotaknite se možnosti »Nova shema«, da jo ustvarite.</string>
-  <string name="button_edit_palette" tools:machine_translated="true">Uredi paleto</string>
   <string name="button_export_scheme" tools:machine_translated="true">Izvozi barvno shemo.</string>
   <string name="button_import_scheme" tools:machine_translated="true">Uvozi barvno shemo</string>
   <string name="message_export_success" tools:machine_translated="true">Shema je bila uspešno izvozena.</string>
@@ -373,14 +357,11 @@
   <string name="label_green" tools:machine_translated="true">Zelena</string>
   <string name="label_blue" tools:machine_translated="true">Modra</string>
   <string name="label_hex_color" tools:machine_translated="true">Šestnajstiška barva</string>
-  <string name="colors_fg_label" tools:machine_translated="true">FG: %1$d</string>
-  <string name="color_bg_label" tools:machine_translated="true">OZADJE: %1$d</string>
   <string name="section_fg_bg_colors" tools:machine_translated="true">Prednji in zadnji plan</string>
   <string name="label_foreground_color" tools:machine_translated="true">Osnovna barva</string>
   <string name="label_background_color" tools:machine_translated="true">Ozadje</string>
   <string name="label_base_scheme" tools:machine_translated="true">Osnovna barvna shema:</string>
   <string name="menu_manage_colors" tools:machine_translated="true">Upravljanje barvnih shem</string>
-  <string name="palette_editor_builtin_note" tools:machine_translated="true">Vgrajene barvne sheme so samo za branje. Če jih želite prilagoditi, jih najprej kopirajte.</string>
   <string name="section_color_preview" tools:machine_translated="true">Predogled</string>
   <string name="image_description_toggle_control_character" tools:machine_translated="true">Izklopi/vklopi nadzorni znak.</string>
   <string name="image_description_send_escape_character" tools:machine_translated="true">Pošlji znak za pobeg.</string>
@@ -415,9 +396,6 @@
   <string name="empty_port_forwards_message" tools:machine_translated="true">Ni nastavljeno preusmerjanje vrat.</string>
   <string name="empty_urls_message" tools:machine_translated="true">V predpomnilniku terminala ni bilo najdenih URL-jev.</string>
   <string name="console_default_title" tools:machine_translated="true">Konzola</string>
-  <string name="host_editor_quick_connect_label" tools:machine_translated="true">Hitra povezava</string>
-  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">uporabnik\@ime_gostitelja:vrata</string>
-  <string name="host_editor_quick_connect_example" tools:machine_translated="true">Primer: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced" tools:machine_translated="true">Prikaži napredne možnosti</string>
   <string name="host_editor_hide_advanced" tools:machine_translated="true">Skrij napredne možnosti</string>
   <string name="resize_width_label" tools:machine_translated="true">Širina (stolpci)</string>
@@ -494,7 +472,6 @@
   <string name="forget_host_keys_confirm" tools:machine_translated="true">Ali ste prepričani, da želite izbrisati shranjene ključe gostitelja za \'%1$s\'? Pri naslednji povezavi boste pozvani, da potrdite ključ gostitelja.</string>
   <string name="list_pubkey_edit" tools:machine_translated="true">Uredi javni ključ</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">Različica protokola IP</string>
-  <string name="hostpref_ipversion_summary" tools:machine_translated="true">Izberite različico IP-naslova, ki jo želite uporabiti pri vzpostavljanju povezave.</string>
   <string name="ipversion_auto" tools:machine_translated="true">Samodejno</string>
   <string name="ipversion_ipv4" tools:machine_translated="true">Samo IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">Samo IPv6</string>
@@ -539,9 +516,6 @@
   <string name="pref_customterminal_summary" tools:machine_translated="true">Dodajte prilagojene vrednosti za spremenljivko TERM za oddaljene strežnike.</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">Dodajanje novega tipa terminala</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">Vrsta terminala (npr. rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Upravljanje s prilagojenimi vrstami terminalov</string>
-  <string name="button_add_custom" tools:machine_translated="true">Dodaj po meri …</string>
-  <string name="button_manage_custom" tools:machine_translated="true">Upravljanje s prilagojenimi elementi …</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">Vnesite prilagojeno vrednost.</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, nato pa preslednica.</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
@@ -555,7 +529,6 @@
   <string name="import_hosts_success" tools:machine_translated="true">Uvozili smo %1$d gostiteljev (%2$d preskočenih) in %3$d profilov (%4$d preskočenih).</string>
   <string name="export_hosts_failed" tools:machine_translated="true">Izvoz gostiteljev je bil neuspešen: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">Uvoz gostiteljev je bil neuspešen: %s</string>
-  <string name="export_hosts_title" tools:machine_translated="true">Izvoz gostiteljev</string>
   <string name="shortcut_customize_title" tools:machine_translated="true">Prilagodite bližnjico.</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Barva ikone</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Slog ikone</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">Vklopljeno</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Prikaži slike v besedilu?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Ali naj ta gostitelj prikazuje slike neposredno v besedilu za preostanek te seje?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Omogočen samodejni zagon.</string>
   <string name="automation_load_failed" tools:machine_translated="true">Ni bilo mogoče naložiti avtomatizacije.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Shranjevanje avtomatizacije ni uspelo.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Preverite besedilo, vzorec, trajanje ali izbrano možnost preusmeritve vrat.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Premakni navzgor.</string>
   <string name="automation_move_down" tools:machine_translated="true">Premakni navzdol.</string>
   <string name="automation_drag" tools:machine_translated="true">Povlecite, da spremenite vrstni red.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Shrani spremembe?</string>
-  <string name="automation_discard" tools:machine_translated="true">Odstrani.</string>
   <string name="automation_cancel" tools:machine_translated="true">Prekliči</string>
   <string name="automation_text" tools:machine_translated="true">Besedilo</string>
   <string name="automation_regex" tools:machine_translated="true">Redni izraz</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Tipka Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f sekunde</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d dejanje</item>
-		<item quantity="other">%1$d dejanj</item>
-	</plurals>
+    <item quantity="one">%1$d dejanje</item>
+    <item quantity="other">%1$d dejanj</item>
+  </plurals>
 </resources>

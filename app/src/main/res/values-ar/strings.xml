@@ -7,7 +7,6 @@
   <string name="title_port_forwards_list">تحويلات المنافذ</string>
   <string name="title_help">المساعدة</string>
   <string name="title_eula">الترخيص</string>
-  <string name="title_colors">الألوان</string>
   <string name="title_color_picker">إختر لوناً</string>
   <string name="title_settings">إعدادات</string>
   <string name="title_pubkey_generate">توليد</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password">استخدم نفس كلمة المرور للتشفير</string>
   <string name="pubkey_import_new_password">كلمة المرور الجديدة</string>
   <string name="pubkey_import_confirm_password">تأكيد كلمة المرور</string>
-  <string name="pubkey_list_empty">اضغط على \"القائمة\" لإنشاء أو استيراد أزواج المفاتيح.</string>
-  <string name="pubkey_unknown_format">تنسيق غير معروف</string>
   <string name="pubkey_change_password">تعديل الكلمة السرية</string>
   <string name="pubkey_unlock">مفتاح فتح</string>
   <string name="pubkey_unlock_message">أدخل كلمة المرور لفتح المفتاح \'%1$s\'</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key">هل تسمح للمضيف البعيد باستخدام المفتاح \'%1$s\'؟</string>
   <string name="host_verification_failure_warning_header">تحذير: تم تغيير تعريف المضيف البعيد!</string>
   <string name="host_verification_failure_warning">من المحتمل أن يقوم شخص ما بفعل شيء سيئ!\nقد يكون شخص ما يتنصت عليك الآن (هجوم \"الرجل في المنتصف\")!\nمن المحتمل أيضًا أن يكون مفتاح المضيف قد تغير للتو.</string>
-  <string name="prompt_host_disconnected">انقطع اتصال المضيف.\nهل تريد إغلاق الجلسة؟</string>
   <string name="prompt_continue_connecting">هل أنت متأكد أنك تريد المتابعة في الاتصال؟</string>
   <string name="host_authenticity_warning">لا يمكن التحقق من صحة المضيف \'%1$s\'.</string>
   <string name="host_fingerprint">بصمة مفتاح المضيف %1$s هي %2$s</string>
@@ -115,7 +111,6 @@
   <string name="pref_theme_system">الإعدادات الافتراضية للنظام</string>
   <string name="pref_theme_light">خفيف</string>
   <string name="pref_theme_dark">داكن</string>
-  <string name="pref_rotation_title">وضع التدوير</string>
   <string name="pref_titlebarhide_title">إخفاء شريط العنوان تلقائيًا</string>
   <string name="pref_titlebarhide_summary">اضغط على وحدة التحكم لعرض شريط العنوان والوصول إلى القائمة.</string>
   <string name="pref_alwaysvisible_title">المفاتيح الخاصة تظهر دائمًا</string>
@@ -181,7 +176,6 @@
   <string name="hostpref_pubkeyid_title">استخدم مصادقة المفتاح العام</string>
   <string name="hostpref_authagent_title">استخدم وكيل مصادقة SSH</string>
   <string name="hostpref_postlogin_title">الأتمتة بعد تسجيل الدخول</string>
-  <string name="hostpref_postlogin_summary">الأوامر التي سيتم تشغيلها على الخادم البعيد بعد المصادقة</string>
   <string name="hostpref_compression_title">الضغط</string>
   <string name="hostpref_compression_summary">قد يساعد هذا في تحسين الأداء على الشبكات البطيئة.</string>
   <string name="hostpref_wantsession_title">ابدأ جلسة الطرفية</string>
@@ -268,10 +262,6 @@
   <string name="list_host_delete">احذف الخادم</string>
   <string name="list_host_duplicate">تكرار اسم المضيف</string>
   <string name="list_host_forget_keys">تجاهل مفاتيح المضيف</string>
-  <string name="list_rotation_default">افتراضي</string>
-  <string name="list_rotation_land">فرض وضع العرض الأفقي</string>
-  <string name="list_rotation_port">فرض وضع الشاشة الرأسي</string>
-  <string name="list_rotation_auto">تلقائي</string>
   <string name="list_camera_ctrlaspace">Ctrl+A ثم مسافة</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -311,16 +301,11 @@
   <string name="notification_text">يريد %1$s أن يلفت انتباهك.</string>
   <string name="no">لا</string>
   <string name="yes">نعم</string>
-  <string name="list_color_schemes">مخططات الألوان</string>
-  <string name="menu_colors_reset">صفّر</string>
-  <string name="button_manage_schemes">إدارة المخططات</string>
   <string name="title_scheme_manager">إدارة مخططات الألوان</string>
   <string name="button_new_scheme">مخطط جديد</string>
   <string name="button_duplicate_scheme">تكرار</string>
-  <string name="button_rename_scheme">أعد التسمية</string>
   <string name="button_delete_scheme">حذف</string>
   <string name="dialog_title_new_scheme">مخطط ألوان جديد</string>
-  <string name="dialog_title_rename_scheme">أعد تسمية نظام الألوان</string>
   <string name="label_scheme_name">اسم المخطط</string>
   <string name="label_scheme_description">وصف (اختياري)</string>
   <string name="dialog_title_delete_scheme">هل تريد حذف المخطط؟</string>
@@ -330,7 +315,6 @@
   <string name="label_built_in_scheme">مدمج</string>
   <string name="label_custom_scheme">مخصص</string>
   <string name="empty_custom_schemes">لا توجد مخططات مخصصة. اضغط على \"مخطط جديد\" لإنشاء مخطط.</string>
-  <string name="button_edit_palette">تعديل لوحة الألوان</string>
   <string name="button_export_scheme">تصدير المخطط</string>
   <string name="button_import_scheme">استيراد مخطط</string>
   <string name="message_export_success">تم تصدير %1$s</string>
@@ -349,14 +333,11 @@
   <string name="label_green">أخضر</string>
   <string name="label_blue">أزرق</string>
   <string name="label_hex_color">لون سداسي عشري</string>
-  <string name="colors_fg_label">FG: %1$d</string>
-  <string name="color_bg_label">الخلفية: %1$d</string>
   <string name="section_fg_bg_colors">الخلفية والأمام</string>
   <string name="label_foreground_color">المقدمة</string>
   <string name="label_background_color">الخلفية</string>
   <string name="label_base_scheme">الخطة الأساسية:</string>
   <string name="menu_manage_colors">إدارة مخططات الألوان</string>
-  <string name="palette_editor_builtin_note">الأنظمة المضمنة للقراءة فقط. قم بعمل نسخة لتخصيصها.</string>
   <string name="section_color_preview">معاينة</string>
   <string name="image_description_connected">متصل.</string>
   <string name="image_description_disconnected">غير متّصل.</string>
@@ -411,9 +392,6 @@
   <string name="empty_port_forwards_message">لم يتم تكوين أي إعادة توجيه للمنافذ.</string>
   <string name="empty_urls_message">لم يتم العثور على أي عناوين URL في ذاكرة التخزين المؤقت للطرفية.</string>
   <string name="console_default_title">وحدة التحكم</string>
-  <string name="host_editor_quick_connect_label">اتصال سريع</string>
-  <string name="host_editor_quick_connect_placeholder">user\@hostname:port</string>
-  <string name="host_editor_quick_connect_example">مثال: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced">عرض الخيارات المتقدمة</string>
   <string name="host_editor_hide_advanced">إخفاء الخيارات المتقدمة</string>
   <string name="resize_width_label">العرض (بالأعمدة)</string>
@@ -480,7 +458,6 @@
   <string name="forget_host_keys_confirm">هل أنت متأكد من أنك تريد نسيان مفاتيح المضيف المحفوظة لـ \'%1$s\'؟ سيُطلب منك التحقق من مفتاح المضيف في المرة القادمة التي تتصل فيها.</string>
   <string name="list_pubkey_edit">تعديل المفتاح العام</string>
   <string name="hostpref_ipversion_title">إصدار بروتوكول الإنترنت</string>
-  <string name="hostpref_ipversion_summary">حدد إصدار عنوان IP الذي سيتم استخدامه عند الاتصال.</string>
   <string name="ipversion_auto">تلقائي</string>
   <string name="ipversion_ipv4">IPv4 فقط</string>
   <string name="ipversion_ipv6">يدعم بروتوكول IPv6 فقط</string>
@@ -525,9 +502,6 @@
   <string name="pref_customterminal_summary">أضف قيم TERM مخصصة للخوادم البعيدة</string>
   <string name="dialog_customterminal_title">أضف نوع طرفية مخصص</string>
   <string name="dialog_customterminal_hint">نوع الطرفية (مثل rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title">إدارة أنواع المحطات المخصصة</string>
-  <string name="button_add_custom">أضف خيارًا مخصصًا...</string>
-  <string name="button_manage_custom">إدارة الإعدادات المخصصة...</string>
   <string name="dialog_custom_value_label">أدخل قيمة مخصصة</string>
   <string name="list_camera_ctrlaspace_description">Ctrl+A ثم مسافة</string>
   <string name="list_camera_ctrla_description">Ctrl+A</string>
@@ -541,7 +515,6 @@
   <string name="import_hosts_success">تم استيراد %1$d من المضيفين (%2$d تم تخطيهم) و %3$d من الملفات الشخصية (%4$d تم تخطيهم)</string>
   <string name="export_hosts_failed">فشل تصدير قائمة المضيفين: %s</string>
   <string name="import_hosts_failed">فشل استيراد قائمة المضيفين: %s</string>
-  <string name="export_hosts_title">تصدير قائمة المضيفين</string>
   <string name="shortcut_customize_title">تخصيص الاختصار</string>
   <string name="shortcut_icon_color">لون الأيقونة</string>
   <string name="shortcut_icon_style">نمط الأيقونة</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">مُفعَّل</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">عرض الصور المضمّنة؟</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">هل تسمح لهذا الجهاز بعرض الصور المضمنة طوال مدة الجلسة الحالية؟</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">تم تفعيل التشغيل التلقائي.</string>
   <string name="automation_load_failed" tools:machine_translated="true">فشل تحميل الأتمتة.</string>
   <string name="automation_save_failed" tools:machine_translated="true">فشل حفظ عملية الأتمتة.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">تحقق من النص، أو النمط، أو المدة، أو منفذ إعادة التوجيه المحدد.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">ارفع للأعلى</string>
   <string name="automation_move_down" tools:machine_translated="true">انتقل للأسفل</string>
   <string name="automation_drag" tools:machine_translated="true">اسحب لإعادة الترتيب.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">هل تريد حفظ التغييرات؟</string>
-  <string name="automation_discard" tools:machine_translated="true">تجاهل/احذف/ألغِ</string>
   <string name="automation_cancel" tools:machine_translated="true">إلغاء</string>
   <string name="automation_text" tools:machine_translated="true">نص</string>
   <string name="automation_regex" tools:machine_translated="true">تعبير نمطي</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">مفتاح \"Shift\"</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f ثانية</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d إجراء</item>
-		<item quantity="other">%1$d إجراء</item>
-	</plurals>
+    <item quantity="one">%1$d إجراء</item>
+    <item quantity="other">%1$d إجراء</item>
+  </plurals>
 </resources>

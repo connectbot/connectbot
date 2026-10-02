@@ -5,7 +5,6 @@
   <string name="title_pubkey_list">ຄີສາທາລະນະ</string>
   <string name="title_port_forwards_list">ການສົ່ງຕໍ່ພອດ</string>
   <string name="title_help">ຊ່ວຍເຫຼືອ</string>
-  <string name="title_colors">ສີ</string>
   <string name="title_color_picker">ເລືອກສີ</string>
   <string name="title_settings">ການຕັ້ງຄ່າ</string>
   <string name="title_pubkey_generate">ສ້າງ</string>
@@ -44,7 +43,6 @@
   <string name="prompt_allow_agent_to_use_key">ອະນຸຍາດໃຫ້ໂຮສທາງໄກ\nໃຊ້ຄີ \'%1$s\' ບໍ?</string>
   <string name="host_verification_failure_warning_header">ຄຳເຕືອນ: ການລະບຸຕົວຕົນຂອງໂຮສທາງໄກມີການປ່ຽນແປງ!</string>
   <string name="host_verification_failure_warning">ອາດຈະມີບາງຄົນກຳລັງເຮັດສິ່ງທີ່ບໍ່ດີ!\nອາດມີຄົນກຳລັງລັກຟັງທ່ານຢູ່ຕອນນີ້ (ການໂຈມຕີແບບ man-in-the-middle)!\nກໍເປັນໄປໄດ້ວ່າຄີຂອງໂຮສຫາກໍຖືກປ່ຽນ.</string>
-  <string name="prompt_host_disconnected">ໂຮສໄດ້ຕັດການເຊື່ອມຕໍ່ແລ້ວ.\nປິດເຊດຊັນບໍ່?</string>
   <string name="prompt_continue_connecting">ທ່ານແນ່ໃຈບໍ່ວ່າຕ້ອງການ\nເຊື່ອມຕໍ່ຕໍ່ໄປ?</string>
   <string name="host_authenticity_warning">ບໍ່ສາມາດຢືນຢັນຄວາມຖືກຕ້ອງຂອງໂຮສ \'%1$s\' ໄດ້.</string>
   <string name="host_fingerprint">ລາຍນິ້ວມືຄີຂອງໂຮສ %1$s ແມ່ນ %2$s</string>
@@ -59,7 +57,6 @@
   <string name="pref_backupkeys_title">ສຳຮອງຂໍ້ມູນ pubkeys</string>
   <string name="pref_backupkeys_summary">ເກັບຮັກສາການສຳຮອງຂໍ້ມູນຂອງຄີສ່ວນຕົວໂດຍໃຊ້ກົນໄກການສຳຮອງຂໍ້ມູນຂອງ Android</string>
   <string name="pref_ui_category">ສ່ວນຕິດຕໍ່ຜູ້ໃຊ້</string>
-  <string name="pref_rotation_title">ໂໝດການໝຸນ</string>
   <string name="pref_titlebarhide_title">ເຊື່ອງແຖບຫົວຂໍ້ອັດຕະໂນມັດ</string>
   <string name="pref_titlebarhide_summary">ແຕະ console ເພື່ອສະແດງແຖບຫົວຂໍ້ ແລະ ເຂົ້າເຖິງເມນູ</string>
   <string name="pref_alwaysvisible_title">ສະແດງປຸ່ມພິເສດຕະຫຼອດເວລາ</string>
@@ -103,7 +100,6 @@
   <string name="hostpref_pubkeyid_title">ໃຊ້ການກວດສອບສິດ pubkey</string>
   <string name="hostpref_authagent_title">ໃຊ້ຕົວແທນກວດສອບສິດ SSH</string>
   <string name="hostpref_postlogin_title">ການເຮັດວຽກອັດຕະໂນມັດຫຼັງເຂົ້າສູ່ລະບົບ</string>
-  <string name="hostpref_postlogin_summary">ຄຳສັ່ງທີ່ຈະໃຫ້ເຮັດວຽກເທິງເຊີບເວີທາງໄກ ຫຼັງຈາກກວດສອບສິດແລ້ວ</string>
   <string name="hostpref_compression_title">ການບີບອັດ</string>
   <string name="hostpref_compression_summary">ອັນນີ້ອາດຈະຊ່ວຍໃນເຄືອຂ່າຍທີ່ຊ້າ</string>
   <string name="hostpref_wantsession_title">ເລີ່ມເຊດຊັນ shell</string>
@@ -140,10 +136,6 @@
   <string name="list_host_edit">ແກ້ໄຂໂຮສ</string>
   <string name="list_host_portforwards">ແກ້ໄຂການສົ່ງຕໍ່ພອດ</string>
   <string name="list_host_delete">ລຶບໂຮສ</string>
-  <string name="list_rotation_default">ຄ່າເລີ່ມຕົ້ນ</string>
-  <string name="list_rotation_land">ບັງຄັບແນວນອນ</string>
-  <string name="list_rotation_port">ບັງຄັບແນວຕັ້ງ</string>
-  <string name="list_rotation_auto">ອັດຕະໂນມັດ</string>
   <string name="list_camera_ctrlaspace">Ctrl+A ແລ້ວ Space</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -178,10 +170,7 @@
   <string name="notification_text">%1$s ຕ້ອງການຄວາມສົນໃຈຈາກທ່ານ.</string>
   <string name="no">ບໍ່</string>
   <string name="yes">ແມ່ນ</string>
-  <string name="menu_colors_reset">ຣີເຊັດ</string>
   <string name="app_is_running">ConnectBot ກຳລັງເຮັດວຽກຢູ່</string>
-  <string name="colors_fg_label">FG: %1$d</string>
-  <string name="color_bg_label">BG: %1$d</string>
   <string name="image_description_connected">ເຊື່ອມຕໍ່ແລ້ວ.</string>
   <string name="image_description_disconnected">ຕັດການເຊື່ອມຕໍ່ແລ້ວ.</string>
   <string name="image_description_toggle_control_character">ສະຫຼັບຕົວອັກສອນຄວບຄຸມ.</string>
@@ -238,8 +227,6 @@
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">ໃຊ້ລະຫັດຜ່ານດຽວກັນສໍາລັບການເຂົ້າລະຫັດ</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">ລະຫັດຜ່ານໃໝ່</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">ຢືນຢັນລະຫັດຜ່ານ</string>
-  <string name="pubkey_list_empty" tools:machine_translated="true">ແຕະທີ່ \"ເມນູ\" ເພື່ອສ້າງ\nຫຼື ນຳເຂົ້າຄູ່ກະແຈ.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">ຮູບແບບທີ່ບໍ່ຮູ້ຈັກ</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">ປ້ອນລະຫັດຜ່ານເພື່ອປົດລັອກກະແຈ \'%1$s\'</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">ມີຄີທີ່ໃຊ້ຊື່ຫຼິ້ນນີ້ແລ້ວ</string>
   <string name="prompt_username" tools:machine_translated="true">ຊື່ຜູ້ໃຊ້:</string>
@@ -352,15 +339,11 @@
   <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">ການກວດສອບລະຫັດຜ່ານທີ່ບັນທຶກໄວ້ບໍ່ສຳເລັດ</string>
   <string name="terminal_auth_biometric" tools:machine_translated="true">ກຳລັງຮ້ອງຂໍການຢືນຢັນທາງຊີວະມິຕິເພື່ອປົດລັອກກະແຈ \'%1$s\'</string>
   <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">ລະບົບກວດກາລາຍນິ້ວມື \'%1$s\' ບໍ່ສາມາດນຳໃຊ້ໄດ້ແລ້ວ. ສິ່ງນີ້ອາດຈະເກີດຂຶ້ນເມື່ອມີການເພີ່ມລາຍນິ້ວມືໃໝ່ເຂົ້າໃນອຸປະກອນ. ກະລຸນາສ້າງລະບົບກວດກາລາຍນິ້ວມືໃໝ່.</string>
-  <string name="list_color_schemes" tools:machine_translated="true">ແຜນສີ</string>
-  <string name="button_manage_schemes" tools:machine_translated="true">ຈັດການແຜນສີ</string>
   <string name="title_scheme_manager" tools:machine_translated="true">ຈັດການແຜນສີ</string>
   <string name="button_new_scheme" tools:machine_translated="true">ສ້າງແຜນສີໃໝ່</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">ສ້າງແບບສີຄືນ</string>
-  <string name="button_rename_scheme" tools:machine_translated="true">ປ່ຽນຊື່</string>
   <string name="button_delete_scheme" tools:machine_translated="true">ລຶບ</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">ສ້າງແຜນສີໃໝ່</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">ປ່ຽນຊື່ແຜນສີ</string>
   <string name="label_scheme_name" tools:machine_translated="true">ຊື່ຂອງໂຄງການ</string>
   <string name="label_scheme_description" tools:machine_translated="true">ຄຳອະທິບາຍ (ທາງເລືອກ)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">ຕ້ອງການລຶບແຜນບໍ?</string>
@@ -370,7 +353,6 @@
   <string name="label_built_in_scheme" tools:machine_translated="true">ຕິດຕັ້ງໄວ້ໃນລະບົບ</string>
   <string name="label_custom_scheme" tools:machine_translated="true">ທີ່ຜູ້ໃຊ້ສ້າງຂຶ້ນ</string>
   <string name="empty_custom_schemes" tools:machine_translated="true">ບໍ່ມີແຜນທີ່ກຳນົດເອງ. ແຕະທີ່ \"ສ້າງແຜນທີ່ໃໝ່\" ເພື່ອສ້າງແຜນທີ່.</string>
-  <string name="button_edit_palette" tools:machine_translated="true">ແກ້ໄຂສີ</string>
   <string name="button_export_scheme" tools:machine_translated="true">ສົ່ງອອກແຜນສີ</string>
   <string name="button_import_scheme" tools:machine_translated="true">ນຳເຂົ້າແຜນສີ</string>
   <string name="message_export_success" tools:machine_translated="true">ສົ່ງອອກ %1$s ສຳເລັດແລ້ວ</string>
@@ -393,7 +375,6 @@
   <string name="label_background_color" tools:machine_translated="true">ສີພື້ນຫຼັງ</string>
   <string name="label_base_scheme" tools:machine_translated="true">ແບບເລີ່ມຕົ້ນ:</string>
   <string name="menu_manage_colors" tools:machine_translated="true">ຈັດການແຜນສີ</string>
-  <string name="palette_editor_builtin_note" tools:machine_translated="true">ໂຄງການທີ່ຕິດຕັ້ງໄວ້ແລ້ວບໍ່ສາມາດແກ້ໄຂໄດ້. ສ້າງສຳເນົາເພື່ອປັບແຕ່ງ.</string>
   <string name="section_color_preview" tools:machine_translated="true">ຕົວຢ່າງ</string>
   <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">ປ້ອນຂໍ້ຄວາມ</string>
   <string name="terminal_text_input_dialog_title" tools:machine_translated="true">ປ້ອນຂໍ້ຄວາມ</string>
@@ -419,9 +400,6 @@
   <string name="empty_port_forwards_message" tools:machine_translated="true">ບໍ່ມີການຕັ້ງຄ່າການສົ່ງຕໍ່ພອດ.</string>
   <string name="empty_urls_message" tools:machine_translated="true">ບໍ່ພົບ URL ໃດໆໃນບ່ອນເກັບຂໍ້ມູນຂອງ terminal</string>
   <string name="console_default_title" tools:machine_translated="true">ໜ້າຈໍຄອນໂຊນ</string>
-  <string name="host_editor_quick_connect_label" tools:machine_translated="true">ເຊື່ອມຕໍ່ໄວ</string>
-  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">ຜູ້ໃຊ້\@ຊື່ເຄື່ອງ:ພອດ</string>
-  <string name="host_editor_quick_connect_example" tools:machine_translated="true">ຕົວຢ່າງ: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced" tools:machine_translated="true">ສະແດງຕົວເລືອກຂັ້ນສູງ</string>
   <string name="host_editor_hide_advanced" tools:machine_translated="true">ເຊື່ອງຕົວເລືອກຂັ້ນສູງ</string>
   <string name="resize_width_label" tools:machine_translated="true">ຄວາມກວ້າງ (ຈໍານວນຄໍ)</string>
@@ -494,7 +472,6 @@
   <string name="forget_host_keys_confirm" tools:machine_translated="true">ທ່ານແນ່ໃຈບໍວ່າຕ້ອງການລຶບຄີຂອງເຈົ້າພາບທີ່ບັນທຶກໄວ້ສຳລັບ \'%1$s\'? ຫຼັງຈາກນັ້ນ, ທ່ານຈະຖືກແຈ້ງໃຫ້ກວດສອບຄີຂອງເຈົ້າພາບໃນການເຊື່ອມຕໍ່ຄັ້ງຕໍ່ໄປ.</string>
   <string name="list_pubkey_edit" tools:machine_translated="true">ແກ້ໄຂຂໍ້ມູນກ່ຽວກັບຄີສາທາລະນະ</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">ສະບັບ IP</string>
-  <string name="hostpref_ipversion_summary" tools:machine_translated="true">ເລືອກວ່າຈະໃຊ້ສະບັບຂອງ IP address ໃດ ເມື່ອເຊື່ອມຕໍ່</string>
   <string name="ipversion_auto" tools:machine_translated="true">ໂດຍອັດຕະໂນມັດ</string>
   <string name="ipversion_ipv4" tools:machine_translated="true">ໃຊ້ພຽງ IPv4 ເທົ່ານັ້ນ</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">ໃຊ້ພຽງ IPv6 ເທົ່ານັ້ນ</string>
@@ -539,9 +516,6 @@
   <string name="pref_customterminal_summary" tools:machine_translated="true">ເພີ່ມຄ່າ TERM ທີ່ກຳນົດເອງສຳລັບເຄື່ອງແມ່ຂ່າຍທາງໄກ</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">ເພີ່ມປະເພດ Terminal ທີ່ກຳນົດເອງ</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">ປະເພດຂອງ terminal (ຕົວຢ່າງ: rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">ຈັດການປະເພດ Terminal ທີ່ກຳນົດເອງ</string>
-  <string name="button_add_custom" tools:machine_translated="true">ເພີ່ມສິ່ງຂອງທີ່ກຳນົດເອງ…</string>
-  <string name="button_manage_custom" tools:machine_translated="true">ຈັດການສິນຄ້າທີ່ກຳນົດເອງ…</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">ປ້ອນຄ່າທີ່ກຳນົດເອງ</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">ກົດ Ctrl+A ຫຼັງຈາກນັ້ນກົດປຸ່ມ Space</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
@@ -555,7 +529,6 @@
   <string name="import_hosts_success" tools:machine_translated="true">ໄດ້ນຳເຂົ້າເຄື່ອງຈັກ %1$d ເຄື່ອງ (ບໍ່ໄດ້ນຳເຂົ້າ %2$d ເຄື່ອງ) ແລະ ໂປຣໄຟລ໌ %3$d (ບໍ່ໄດ້ນຳເຂົ້າ %4$d ໂປຣໄຟລ໌)</string>
   <string name="export_hosts_failed" tools:machine_translated="true">ສົ່ງອອກຂໍ້ມູນເຈົ້າພາບບໍ່ສຳເລັດ: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">ບໍ່ສາມາດນຳເຂົ້າຂໍ້ມູນເຈົ້າພາບໄດ້: %s</string>
-  <string name="export_hosts_title" tools:machine_translated="true">ສົ່ງອອກບັນຊີລາຍຊື່ໂຮສຕ໌</string>
   <string name="shortcut_customize_title" tools:machine_translated="true">ປັບແຕ່ງທາງລັດ</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">ສີຂອງໄອຄອນ</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">ຮູບແບບໄອຄອນ</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">ເປີດ</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">ສະແດງຮູບພາບທີ່ຝັງໄວ້ໃນຂໍ້ຄວາມບໍ?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">ອະນຸຍາດໃຫ້ເຄື່ອງນີ້ສະແດງຮູບພາບແບບຝັງໄວ້ໃນໄລຍະເວລາທີ່ເຫຼືອຂອງການເຊື່ອມຕໍ່ນີ້ບໍ?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">ເປີດການເຮັດວຽກອັດຕະໂນມັດ</string>
   <string name="automation_load_failed" tools:machine_translated="true">ບໍ່ສາມາດໂຫຼດຟັງຊັນການເຮັດວຽກແບບອັດຕະໂນມັດໄດ້</string>
   <string name="automation_save_failed" tools:machine_translated="true">ບໍ່ສາມາດບັນທຶກການຕັ້ງຄ່າອັດຕະໂນມັດໄດ້</string>
   <string name="automation_invalid_action" tools:machine_translated="true">ກວດສອບຂໍ້ຄວາມ, ຮູບແບບ, ເວລາ ຫຼືພອດທີ່ເລືອກໄວ້ເພື່ອສົ່ງຕໍ່ຂໍ້ມູນ</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">ຍ້າຍຂຶ້ນເທິງ</string>
   <string name="automation_move_down" tools:machine_translated="true">ເລື່ອນລົງ</string>
   <string name="automation_drag" tools:machine_translated="true">ລາກເພື່ອຈັດລຽງໃຫມ່</string>
-  <string name="automation_unsaved" tools:machine_translated="true">ບັນທຶກການປ່ຽນແປງບໍ?</string>
-  <string name="automation_discard" tools:machine_translated="true">ຍົກເລີກ</string>
   <string name="automation_cancel" tools:machine_translated="true">ຍົກເລີກ</string>
   <string name="automation_text" tools:machine_translated="true">ຂໍ້ຄວາມ</string>
   <string name="automation_regex" tools:machine_translated="true">ການປ້ອນຂໍ້ມູນແບບເຄື່ອນໄຫວ</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">ປຸ່ມ Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f ວິນາທີ</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">ມີການກະທຳ %1$d ຄັ້ງ</item>
-		<item quantity="other">ມີການກະທຳ %1$d ຄັ້ງ</item>
-	</plurals>
+    <item quantity="one">ມີການກະທຳ %1$d ຄັ້ງ</item>
+    <item quantity="other">ມີການກະທຳ %1$d ຄັ້ງ</item>
+  </plurals>
 </resources>

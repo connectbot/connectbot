@@ -7,7 +7,6 @@
   <string name="title_port_forwards_list">Redirecció de Ports</string>
   <string name="title_help">Ajuda</string>
   <string name="title_eula">Llicència</string>
-  <string name="title_colors">Colors</string>
   <string name="title_color_picker">Trieu un color</string>
   <string name="title_settings">Configuració</string>
   <string name="title_pubkey_generate">Genera</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password">Feu servir la mateixa contrasenya per al xifrat</string>
   <string name="pubkey_import_new_password">Nova contrasenya</string>
   <string name="pubkey_import_confirm_password">Confirmeu la contrasenya</string>
-  <string name="pubkey_list_empty">Toqueu \"Menú\" per crear o importar parells de claus.</string>
-  <string name="pubkey_unknown_format">Format desconegut</string>
   <string name="pubkey_change_password">Canvia la contrasenya</string>
   <string name="pubkey_unlock">Desbloqueja clau</string>
   <string name="pubkey_unlock_message">Introduïu la contrasenya per desbloquejar la clau \'%1$s\'</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key">Permet al servidor remot\nutilitzar la clau \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">ALERTA: LA IDENTIFICACIÓ DEL SERVIDOR REMOT HA CANVIAT!</string>
   <string name="host_verification_failure_warning">ES POSSIBLE QUE ALGÚ ESTIGUI FENT ALGUNA COSA LLETGA!\nAlgú pot estar escoltant la teva comunicació (atac home-al-mig)!\nTambé és possible que simplement el servidor hagi canviat la clau.</string>
-  <string name="prompt_host_disconnected">Servidor desconnectat.\nTancar sessió?</string>
   <string name="prompt_continue_connecting">Estàs segur que vols\ncontinuar connectant?</string>
   <string name="host_authenticity_warning">La autenticació amb el servidor \'%1$s\' no es pot establir.</string>
   <string name="host_fingerprint">Servidor %1$s empremta de la clau és %2$s</string>
@@ -115,7 +111,6 @@
   <string name="pref_theme_system">Configuració per defecte del sistema</string>
   <string name="pref_theme_light">Llum</string>
   <string name="pref_theme_dark">Fosc</string>
-  <string name="pref_rotation_title">Mode de rotació</string>
   <string name="pref_titlebarhide_title">Amaga automàticament la barra de títol</string>
   <string name="pref_titlebarhide_summary">Toqueu la consola per mostrar la barra de títol i el menú d\'accés</string>
   <string name="pref_alwaysvisible_title">Tecles especials sempre visibles</string>
@@ -181,7 +176,6 @@
   <string name="hostpref_pubkeyid_title">Usa autenticació de claus públiques</string>
   <string name="hostpref_authagent_title">Usa agent d\'autenticació SSH</string>
   <string name="hostpref_postlogin_title">Automatització post-entrada</string>
-  <string name="hostpref_postlogin_summary">Comandes a executar en el servidor remot un cop autenticat.</string>
   <string name="hostpref_compression_title">Compressió</string>
   <string name="hostpref_compression_summary">Això pot ajudar per xarxes lentes</string>
   <string name="hostpref_wantsession_title">Inicia una sessió de shell</string>
@@ -268,10 +262,6 @@
   <string name="list_host_delete">Elimina servidors</string>
   <string name="list_host_duplicate">Amfitrió duplicat</string>
   <string name="list_host_forget_keys">Omet les claus d\'amfitrió</string>
-  <string name="list_rotation_default">Per defecte</string>
-  <string name="list_rotation_land">Força horitzontal</string>
-  <string name="list_rotation_port">Força vertical</string>
-  <string name="list_rotation_auto">Automàtic</string>
   <string name="list_camera_ctrlaspace">Ctrl+A llavors Espai</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -311,16 +301,11 @@
   <string name="notification_text">%1$s necessita la teva atenció.</string>
   <string name="no">No</string>
   <string name="yes">Sí</string>
-  <string name="list_color_schemes">Esquemes de colors</string>
-  <string name="menu_colors_reset">Reinicia</string>
-  <string name="button_manage_schemes">Gestiona els esquemes</string>
   <string name="title_scheme_manager">Gestiona els esquemes de colors</string>
   <string name="button_new_scheme">Nou esquema</string>
   <string name="button_duplicate_scheme">Duplicat</string>
-  <string name="button_rename_scheme">Canvia el nom</string>
   <string name="button_delete_scheme">Suprimeix</string>
   <string name="dialog_title_new_scheme">Nou esquema de colors</string>
-  <string name="dialog_title_rename_scheme">Canviar el nom del esquema de colors</string>
   <string name="label_scheme_name">Nom de l\'esquema</string>
   <string name="label_scheme_description">Descripció (opcional)</string>
   <string name="dialog_title_delete_scheme">Vols eliminar l\'esquema?</string>
@@ -330,7 +315,6 @@
   <string name="label_built_in_scheme">Integrat</string>
   <string name="label_custom_scheme">Personalitzat</string>
   <string name="empty_custom_schemes">No hi ha esquemes personalitzats. Toqueu \"Nou esquema\" per crear-ne un.</string>
-  <string name="button_edit_palette">Edita la paleta</string>
   <string name="button_export_scheme">Exporta l\'esquema</string>
   <string name="button_import_scheme">Importa l\'esquema</string>
   <string name="message_export_success">S\'ha exportat %1$s</string>
@@ -349,14 +333,11 @@
   <string name="label_green">Verd</string>
   <string name="label_blue">Blau</string>
   <string name="label_hex_color">Color hexadecimal</string>
-  <string name="colors_fg_label">Principal: %1$d</string>
-  <string name="color_bg_label">Fons: %1$d</string>
   <string name="section_fg_bg_colors">Primer pla i segon pla</string>
   <string name="label_foreground_color">Primer pla</string>
   <string name="label_background_color">Informació general</string>
   <string name="label_base_scheme">Esquema bàsic:</string>
   <string name="menu_manage_colors">Gestiona els esquemes de colors</string>
-  <string name="palette_editor_builtin_note">Els esquemes integrats són de només lectura. Dupliqueu-los per personalitzar-los.</string>
   <string name="section_color_preview">Visualització prèvia</string>
   <string name="image_description_connected">Connectat.</string>
   <string name="image_description_disconnected">Desconnectat.</string>
@@ -411,9 +392,6 @@
   <string name="empty_port_forwards_message">No s\'han configurat reenviaments de ports.</string>
   <string name="empty_urls_message">No s\'han trobat URL a la memòria intermèdia del terminal.</string>
   <string name="console_default_title">Consola</string>
-  <string name="host_editor_quick_connect_label">Connexió ràpida</string>
-  <string name="host_editor_quick_connect_placeholder">usuari\@nomdelservidor:port</string>
-  <string name="host_editor_quick_connect_example">Exemple: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced">Mostra les opcions avançades</string>
   <string name="host_editor_hide_advanced">Amaga les opcions avançades</string>
   <string name="resize_width_label">Amplada (columnes)</string>
@@ -480,7 +458,6 @@
   <string name="forget_host_keys_confirm">Estàs segur que vols oblidar les claus d\'amfitrió emmagatzemades per a \'%1$s\'? Se\'t demanarà que verifiquis la clau d\'amfitrió la propera vegada que et connectis.</string>
   <string name="list_pubkey_edit">Edita la clau pública</string>
   <string name="hostpref_ipversion_title">Versió IP</string>
-  <string name="hostpref_ipversion_summary">Seleccioneu la versió d\'adreça IP que voleu utilitzar quan us connecteu</string>
   <string name="ipversion_auto">Automàtic</string>
   <string name="ipversion_ipv4">Només IPv4</string>
   <string name="ipversion_ipv6">Només IPv6</string>
@@ -525,9 +502,6 @@
   <string name="pref_customterminal_summary">Afegeix valors TERM personalitzats per als servidors remots</string>
   <string name="dialog_customterminal_title">Afegeix un tipus de terminal personalitzat</string>
   <string name="dialog_customterminal_hint">Tipus de terminal (per exemple, rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title">Gestiona els tipus de terminal personalitzats</string>
-  <string name="button_add_custom">Afegeix personalitzat…</string>
-  <string name="button_manage_custom">Gestiona els perfils personalitzats…</string>
   <string name="dialog_custom_value_label">Introduïu un valor personalitzat</string>
   <string name="list_camera_ctrlaspace_description">Ctrl+A i després la barra espaiadora</string>
   <string name="list_camera_ctrla_description">Ctrl+A</string>
@@ -541,7 +515,6 @@
   <string name="import_hosts_success">S\'han importat %1$d hosts (%2$d ignorats) i %3$d perfils (%4$d ignorats).</string>
   <string name="export_hosts_failed">No s\'han pogut exportar els hostes: %s</string>
   <string name="import_hosts_failed">No s\'han pogut importar els hostals: %s</string>
-  <string name="export_hosts_title">Exporta els hostes</string>
   <string name="shortcut_customize_title">Personalitza la dreçana d\'accés ràpid</string>
   <string name="shortcut_icon_color">Color de la icona</string>
   <string name="shortcut_icon_style">Estil de la icona</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">Activat</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Mostrar les imatges en línia?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Permetre que aquest servidor mostri imatges en línia durant la resta d’aquesta sessió?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Arrencada activada.</string>
   <string name="automation_load_failed" tools:machine_translated="true">No s’ha pogut carregar l’automatització.</string>
   <string name="automation_save_failed" tools:machine_translated="true">No s’ha pogut desar l’automatització.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Comproveu el text, el patró, la durada o el port de reenvio seleccionat.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Pugeu-ho.</string>
   <string name="automation_move_down" tools:machine_translated="true">Mou-ho cap avall.</string>
   <string name="automation_drag" tools:machine_translated="true">Arrossegueu per reordenar.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Voleu desar els canvis?</string>
-  <string name="automation_discard" tools:machine_translated="true">Elimina.</string>
   <string name="automation_cancel" tools:machine_translated="true">Cancel·la</string>
   <string name="automation_text" tools:machine_translated="true">Text</string>
   <string name="automation_regex" tools:machine_translated="true">Expressió regular</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Tecla Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f seg.</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d acció</item>
-		<item quantity="other">%1$d accions</item>
-	</plurals>
+    <item quantity="one">%1$d acció</item>
+    <item quantity="other">%1$d accions</item>
+  </plurals>
 </resources>

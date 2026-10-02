@@ -7,7 +7,6 @@
   <string name="title_port_forwards_list">포트 포워딩</string>
   <string name="title_help">도움말</string>
   <string name="title_eula">라이선스</string>
-  <string name="title_colors">색상</string>
   <string name="title_color_picker">색상 선택</string>
   <string name="title_settings">설정</string>
   <string name="title_pubkey_generate">생성</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password">\"암호화에 동일한 비밀번호를 사용하세요.\"</string>
   <string name="pubkey_import_new_password">새 비밀번호</string>
   <string name="pubkey_import_confirm_password">비밀번호 확인</string>
-  <string name="pubkey_list_empty">\"메뉴\"를 탭하여 키 쌍을 생성하거나 가져옵니다.</string>
-  <string name="pubkey_unknown_format">알 수 없는 형식</string>
   <string name="pubkey_change_password">암호 바꾸기</string>
   <string name="pubkey_unlock">키 잠금 해제</string>
   <string name="pubkey_unlock_message">비밀번호를 입력하여 키 \'%1$s\'를 해제하세요</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key">원격 호스트가 키 \'%1$s\'를 사용하도록 허용합니까?</string>
   <string name="host_verification_failure_warning_header">경고: 원격 호스트의 식별이 바뀌었습니다!</string>
   <string name="host_verification_failure_warning">누군가가 나쁜 짓을 하고 있는 것일 수 있습니다!\n지금 누군가가 당신을 도청하고 있을 수도 있습니다 (중간자 공격)!\n또는, 단순히 호스트 키가 바뀐 것일 수도 있습니다.</string>
-  <string name="prompt_host_disconnected">호스트 연결이 끊겼습니다.\n세션을 닫을까요?</string>
   <string name="prompt_continue_connecting">정말로 연결을 진행하기\n바랍니까?</string>
   <string name="host_authenticity_warning">호스트 \'%1$s\'의 인증서가 확인할 수 없습니다.</string>
   <string name="host_fingerprint">호스트 %1$s 키 지문은 %2$s</string>
@@ -115,7 +111,6 @@
   <string name="pref_theme_system">시스템 기본값</string>
   <string name="pref_theme_light">가벼운</string>
   <string name="pref_theme_dark">어둡다</string>
-  <string name="pref_rotation_title">회전 모드</string>
   <string name="pref_titlebarhide_title">제목 표시 줄 자동 숨기기</string>
   <string name="pref_titlebarhide_summary">제목 표시 줄과 액세스 메뉴를 표시하려면 콘솔을 누르십시오.</string>
   <string name="pref_alwaysvisible_title">특수 키 항상 보이기</string>
@@ -181,7 +176,6 @@
   <string name="hostpref_pubkeyid_title">공개 키 인증 사용</string>
   <string name="hostpref_authagent_title">SSH 인증 에이전트 사용</string>
   <string name="hostpref_postlogin_title">로그인 후 자동 실행</string>
-  <string name="hostpref_postlogin_summary">인증 후 원격 서버에서 실행될 명령어들</string>
   <string name="hostpref_compression_title">압축</string>
   <string name="hostpref_compression_summary">네트워크가 느린 경우 유용</string>
   <string name="hostpref_wantsession_title">쉘 세션 시작</string>
@@ -268,10 +262,6 @@
   <string name="list_host_delete">호스트 삭제</string>
   <string name="list_host_duplicate">중복된 호스트</string>
   <string name="list_host_forget_keys">호스트 키를 잊어버리세요</string>
-  <string name="list_rotation_default">기본</string>
-  <string name="list_rotation_land">가로 고정</string>
-  <string name="list_rotation_port">세로 고정</string>
-  <string name="list_rotation_auto">자동</string>
   <string name="list_camera_ctrlaspace">Ctrl+A 후 Space</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -311,16 +301,11 @@
   <string name="notification_text">%1$s에서 알림이 있습니다.</string>
   <string name="no">아니오</string>
   <string name="yes">예</string>
-  <string name="list_color_schemes">색상 스키마</string>
-  <string name="menu_colors_reset">초기화</string>
-  <string name="button_manage_schemes">스키마 관리</string>
   <string name="title_scheme_manager">색상 스키마 관리</string>
   <string name="button_new_scheme">새로운 스키마</string>
   <string name="button_duplicate_scheme">중복</string>
-  <string name="button_rename_scheme">이름 바꾸기</string>
   <string name="button_delete_scheme">삭제</string>
   <string name="dialog_title_new_scheme">새로운 색상 스키마</string>
-  <string name="dialog_title_rename_scheme">색상 스키마 이름 바꾸기</string>
   <string name="label_scheme_name">스키마 이름</string>
   <string name="label_scheme_description">설명은 선택사항입니다</string>
   <string name="dialog_title_delete_scheme">삭제할 스키마?</string>
@@ -330,7 +315,6 @@
   <string name="label_built_in_scheme">내장된</string>
   <string name="label_custom_scheme">사용자 지정</string>
   <string name="empty_custom_schemes">사용자 지정 스키마가 없습니다. 새 스키마를 만들려면 \"새 스키마\"를 탭하세요.</string>
-  <string name="button_edit_palette">팔레트 편집하기</string>
   <string name="button_export_scheme">스키마 내보내기</string>
   <string name="button_import_scheme">스키마 가져오기</string>
   <string name="message_export_success">내보낸 %1$s</string>
@@ -349,14 +333,11 @@
   <string name="label_green">그린</string>
   <string name="label_blue">블루</string>
   <string name="label_hex_color">16진 색상</string>
-  <string name="colors_fg_label">FG %1$d</string>
-  <string name="color_bg_label">BG %1d</string>
   <string name="section_fg_bg_colors">전경 및 배경</string>
   <string name="label_foreground_color">전경</string>
   <string name="label_background_color">배경</string>
   <string name="label_base_scheme">기본 방식:</string>
   <string name="menu_manage_colors">색 구성표 관리</string>
-  <string name="palette_editor_builtin_note">기본 스키마는 읽기 전용입니다. 복사하여 사용자 지정하세요.</string>
   <string name="section_color_preview">미리보기</string>
   <string name="image_description_connected">연결되었습니다</string>
   <string name="image_description_disconnected">연결 해제됨.</string>
@@ -411,9 +392,6 @@
   <string name="empty_port_forwards_message">포트 전달 설정이 구성되지 않음</string>
   <string name="empty_urls_message">터미널 버퍼에서 URL을 찾을 수 없습니다</string>
   <string name="console_default_title">콘솔</string>
-  <string name="host_editor_quick_connect_label">퀵 커넥트</string>
-  <string name="host_editor_quick_connect_placeholder">사용자이름\@호스트이름:포트번호</string>
-  <string name="host_editor_quick_connect_example">예시 root\@192.168.1.122</string>
   <string name="host_editor_show_advanced">고급 옵션 표시</string>
   <string name="host_editor_hide_advanced">고급 옵션 숨기기</string>
   <string name="resize_width_label">너비 열</string>
@@ -480,7 +458,6 @@
   <string name="forget_host_keys_confirm">\'%1$s\'에 저장된 호스트 키를 삭제하시겠습니까? 다음 연결 시 호스트 키를 확인하라는 메시지가 표시됩니다.</string>
   <string name="list_pubkey_edit">公開키 편집</string>
   <string name="hostpref_ipversion_title">IP 버전</string>
-  <string name="hostpref_ipversion_summary">연결할 때 사용할 IP 주소 버전을 선택하세요</string>
   <string name="ipversion_auto">자동</string>
   <string name="ipversion_ipv4">IPv4만 사용</string>
   <string name="ipversion_ipv6">IPv6만 사용</string>
@@ -525,9 +502,6 @@
   <string name="pref_customterminal_summary">원격 서버에 사용자 지정 TERM 값을 추가합니다</string>
   <string name="dialog_customterminal_title">사용자 지정 터미널 유형 추가</string>
   <string name="dialog_customterminal_hint">터미널 종류 예를 들어 rxvt 유니코드</string>
-  <string name="dialog_manage_customterminal_title">사용자 지정 터미널 유형 관리</string>
-  <string name="button_add_custom">사용자 지정 항목 추가</string>
-  <string name="button_manage_custom">사용자 지정 항목 관리</string>
   <string name="dialog_custom_value_label">사용자 지정 값을 입력하세요</string>
   <string name="list_camera_ctrlaspace_description">CtrlA，然后空格을 누르면 CtrlA스페이스</string>
   <string name="list_camera_ctrla_description">컨트롤A</string>
@@ -541,7 +515,6 @@
   <string name="import_hosts_success">\"%1$d개의 호스트(건너뛴 항목 %2$d개)와 %3$d개의 프로필(건너뛴 항목 %4$d개)을 가져왔습니다.\"</string>
   <string name="export_hosts_failed">호스트 내보내기에 실패했습니다: %s</string>
   <string name="import_hosts_failed">호스트 가져오기에 실패했습니다: %s</string>
-  <string name="export_hosts_title">호스트 내보내기</string>
   <string name="shortcut_customize_title">단축키 사용자 지정</string>
   <string name="shortcut_icon_color">아이콘 색상</string>
   <string name="shortcut_icon_style">아이콘 스타일</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">켜기</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">인라인 이미지를 표시하시겠습니까?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">이 호스트가 현재 세션 동안 인라인 이미지를 표시하도록 허용하시겠습니까?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">자동 시작 활성화됨</string>
   <string name="automation_load_failed" tools:machine_translated="true">자동화 기능을 불러오는 데 실패했습니다.</string>
   <string name="automation_save_failed" tools:machine_translated="true">자동화 설정을 저장할 수 없습니다.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">텍스트, 패턴, 기간 또는 선택한 포트 전달 설정을 확인하세요.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">위로 이동</string>
   <string name="automation_move_down" tools:machine_translated="true">아래로 이동</string>
   <string name="automation_drag" tools:machine_translated="true">드래그하여 순서를 변경하세요.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">변경 사항을 저장하시겠습니까?</string>
-  <string name="automation_discard" tools:machine_translated="true">삭제하다</string>
   <string name="automation_cancel" tools:machine_translated="true">취소</string>
   <string name="automation_text" tools:machine_translated="true">텍스트</string>
   <string name="automation_regex" tools:machine_translated="true">정규 표현식</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Shift 키</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f초</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">총 %1$d개의 작업</item>
-		<item quantity="other">총 %1$d개의 작업</item>
-	</plurals>
+    <item quantity="one">총 %1$d개의 작업</item>
+    <item quantity="other">총 %1$d개의 작업</item>
+  </plurals>
 </resources>

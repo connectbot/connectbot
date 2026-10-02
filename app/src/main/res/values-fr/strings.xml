@@ -7,7 +7,6 @@
   <string name="title_port_forwards_list">Redirections de ports</string>
   <string name="title_help">Aide</string>
   <string name="title_eula">Licence</string>
-  <string name="title_colors">Couleurs</string>
   <string name="title_color_picker">Choisissez une couleur</string>
   <string name="title_settings">Préférences</string>
   <string name="title_pubkey_generate">Générer</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password">Utilisez le même mot de passe pour le chiffrement</string>
   <string name="pubkey_import_new_password">Nouveau mot de passe</string>
   <string name="pubkey_import_confirm_password">Confirmer le mot de passe</string>
-  <string name="pubkey_list_empty">Appuyez sur \"Menu\" pour créer ou importer des paires de clés.</string>
-  <string name="pubkey_unknown_format">Format inconnu</string>
   <string name="pubkey_change_password">Changer le mot de passe</string>
   <string name="pubkey_unlock">Déverrouiller la clé</string>
   <string name="pubkey_unlock_message">Entrez le mot de passe pour déverrouiller la clé \'%1$s\'</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key">Autoriser l\'hôte distant à\nutiliser la clé \'%1$s\' ?</string>
   <string name="host_verification_failure_warning_header">ATTENTION : L\'IDENTIFICATION DE L\'HÔTE DISTANT A CHANGÉ !</string>
   <string name="host_verification_failure_warning">IL EST POSSIBLE QUE QUELQU\'UN FASSE QUELQUE CHOSE DE NUISIBLE !\nQuelqu\'un pourrait vous écouter en ce moment (attaque de l\'homme du milieu) !\nIl est aussi possible que la clé du serveur ait juste changée.</string>
-  <string name="prompt_host_disconnected">L\'hôte s\'est déconnecté.\nFermer la session ?</string>
   <string name="prompt_continue_connecting">Êtes-vous sûr de vouloir\ncontinuer à vous connecter ?</string>
   <string name="host_authenticity_warning">L\'authenticité du serveur \'%1$s\' ne peut être établie</string>
   <string name="host_fingerprint">L\'empreinte de la clé du serveur %1$s est %2$s</string>
@@ -115,7 +111,6 @@
   <string name="pref_theme_system">Paramètres par défaut du système</string>
   <string name="pref_theme_light">Léger</string>
   <string name="pref_theme_dark">Sombre</string>
-  <string name="pref_rotation_title">Mode de rotation</string>
   <string name="pref_titlebarhide_title">Masquer automatiquement la barre de titre</string>
   <string name="pref_titlebarhide_summary">Appuyez sur console pour montrer la barre de titre et accèder au menu</string>
   <string name="pref_alwaysvisible_title">Toujours afficher les touches spéciales</string>
@@ -181,7 +176,6 @@
   <string name="hostpref_pubkeyid_title">Utiliser l\'authentification par clé publique</string>
   <string name="hostpref_authagent_title">Utiliser l\'agent d\'authentification SSH</string>
   <string name="hostpref_postlogin_title">Commande à exécuter automatiquement après l\'authentification</string>
-  <string name="hostpref_postlogin_summary">Commandes à lancer sur le serveur distant après s\'être authentifié</string>
   <string name="hostpref_compression_title">Compression</string>
   <string name="hostpref_compression_summary">Cela peut aider pour les réseaux lents</string>
   <string name="hostpref_wantsession_title">Démarrer une session en ligne de commande</string>
@@ -268,10 +262,6 @@
   <string name="list_host_delete">Effacer le serveur</string>
   <string name="list_host_duplicate">Hôte dupliqué</string>
   <string name="list_host_forget_keys">Oublier les clés d\'hôte</string>
-  <string name="list_rotation_default">Par défaut</string>
-  <string name="list_rotation_land">Forcer le mode paysage</string>
-  <string name="list_rotation_port">Forcer le mode portrait</string>
-  <string name="list_rotation_auto">Automatique</string>
   <string name="list_camera_ctrlaspace">Ctrl+A puis Espace</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Échap</string>
@@ -311,16 +301,11 @@
   <string name="notification_text">%1$s requiert votre attention.</string>
   <string name="no">Non</string>
   <string name="yes">Oui</string>
-  <string name="list_color_schemes">Schémas de couleurs</string>
-  <string name="menu_colors_reset">Réinitialiser</string>
-  <string name="button_manage_schemes">Gérer les schémas</string>
   <string name="title_scheme_manager">Gérer les schémas de couleurs</string>
   <string name="button_new_scheme">Nouveau Schéma</string>
   <string name="button_duplicate_scheme">Dupliquer</string>
-  <string name="button_rename_scheme">Renommer</string>
   <string name="button_delete_scheme">Supprimer</string>
   <string name="dialog_title_new_scheme">Nouvelle palette de couleurs</string>
-  <string name="dialog_title_rename_scheme">Renommer le schéma de couleur</string>
   <string name="label_scheme_name">Nom de schéma</string>
   <string name="label_scheme_description">Description facultative</string>
   <string name="dialog_title_delete_scheme">Supprimer le schéma</string>
@@ -330,7 +315,6 @@
   <string name="label_built_in_scheme">intégré</string>
   <string name="label_custom_scheme">Personnalisé</string>
   <string name="empty_custom_schemes">Aucun schéma personnalisé. Tapez sur \"Nouveau schéma\" pour en créer un.</string>
-  <string name="button_edit_palette">Éditer la palette</string>
   <string name="button_export_scheme">Schéma d exportation</string>
   <string name="button_import_scheme">Importer le schéma</string>
   <string name="message_export_success">Exporté %1$s</string>
@@ -349,14 +333,11 @@
   <string name="label_green">Vert</string>
   <string name="label_blue">Bleu</string>
   <string name="label_hex_color">Couleur Hexa</string>
-  <string name="colors_fg_label">PP: %1$d</string>
-  <string name="color_bg_label">AP: %1$d</string>
   <string name="section_fg_bg_colors">Premier plan et arrière-plan</string>
   <string name="label_foreground_color">Premier plan</string>
   <string name="label_background_color">Arrière-plan</string>
   <string name="label_base_scheme">Schéma de base :</string>
   <string name="menu_manage_colors">Gérer les schémas de couleurs</string>
-  <string name="palette_editor_builtin_note">Les schémas intégrés sont en lecture seule. Dupliquez-les pour les personnaliser.</string>
   <string name="section_color_preview">Aperçu</string>
   <string name="image_description_connected">Connecté</string>
   <string name="image_description_disconnected">Déconnecté</string>
@@ -411,9 +392,6 @@
   <string name="empty_port_forwards_message">Aucun transfert de ports configuré</string>
   <string name="empty_urls_message">Aucune URL trouvée dans le tampon du terminal</string>
   <string name="console_default_title">console</string>
-  <string name="host_editor_quick_connect_label">Connexion rapide</string>
-  <string name="host_editor_quick_connect_placeholder">utilisateur\@nomdeshote:port</string>
-  <string name="host_editor_quick_connect_example">Exemple root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced">Afficher les options avancées</string>
   <string name="host_editor_hide_advanced">Masquer les options avancées</string>
   <string name="resize_width_label">Largeur colonnes</string>
@@ -480,7 +458,6 @@
   <string name="forget_host_keys_confirm">Êtes-vous sûr de vouloir supprimer les clés d\'hôte enregistrées pour \'%1$s\' ? Vous devrez vérifier la clé d\'hôte lors de la prochaine connexion.</string>
   <string name="list_pubkey_edit">Éditer la clé publique</string>
   <string name="hostpref_ipversion_title">Version IP</string>
-  <string name="hostpref_ipversion_summary">Sélectionnez la version d\'adresse IP à utiliser lors de la connexion</string>
   <string name="ipversion_auto">Automatique</string>
   <string name="ipversion_ipv4">IPv4 uniquement</string>
   <string name="ipversion_ipv6">IPv6 uniquement</string>
@@ -525,9 +502,6 @@
   <string name="pref_customterminal_summary">Ajouter des valeurs TERM personnalisées pour les serveurs distants</string>
   <string name="dialog_customterminal_title">Ajouter un type de terminal personnalisé</string>
   <string name="dialog_customterminal_hint">Type de terminal par exemple rxvt-unicode</string>
-  <string name="dialog_manage_customterminal_title">Gérez les types de terminaux personnalisés</string>
-  <string name="button_add_custom">Ajouter un élément personnalisé…</string>
-  <string name="button_manage_custom">Gérez les paramètres personnalisés…</string>
   <string name="dialog_custom_value_label">Entrez une valeur personnalisée</string>
   <string name="list_camera_ctrlaspace_description">Ctrl+A puis Espace</string>
   <string name="list_camera_ctrla_description">Ctrl+A</string>
@@ -541,7 +515,6 @@
   <string name="import_hosts_success">%1$d hôtes importés (%2$d ignorés) et %3$d profils (%4$d ignorés)</string>
   <string name="export_hosts_failed">Échec de l\'exportation des hôtes : %s</string>
   <string name="import_hosts_failed">Échec de l\'importation des hôtes : %s</string>
-  <string name="export_hosts_title">Exporter les hôtes</string>
   <string name="shortcut_customize_title">Personnaliser le raccourci</string>
   <string name="shortcut_icon_color">Couleur de l\'icône</string>
   <string name="shortcut_icon_style">Style d\'icône</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">Activé</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Afficher les images intégrées ?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Autoriser cet hôte à afficher les images en ligne pour le reste de cette session ?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Démarrage activé</string>
   <string name="automation_load_failed" tools:machine_translated="true">Impossible de charger l’automatisation.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Impossible de sauvegarder l’automatisation.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Vérifiez le texte, le modèle, la durée ou le port sélectionné pour le transfert.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Monter</string>
   <string name="automation_move_down" tools:machine_translated="true">Déplacer vers le bas</string>
   <string name="automation_drag" tools:machine_translated="true">Faites glisser pour modifier l’ordre.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Enregistrer les modifications ?</string>
-  <string name="automation_discard" tools:machine_translated="true">Supprimer</string>
   <string name="automation_cancel" tools:machine_translated="true">Annuler</string>
   <string name="automation_text" tools:machine_translated="true">Texte</string>
   <string name="automation_regex" tools:machine_translated="true">Expression régulière</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Touche Maj.</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f seconde(s)</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d action(s)</item>
-		<item quantity="other">%1$d actions</item>
-	</plurals>
+    <item quantity="one">%1$d action(s)</item>
+    <item quantity="other">%1$d actions</item>
+  </plurals>
 </resources>

@@ -7,7 +7,6 @@
   <string name="title_port_forwards_list">端口转发</string>
   <string name="title_help">帮助</string>
   <string name="title_eula">许可协议</string>
-  <string name="title_colors">颜色</string>
   <string name="title_color_picker">选取颜色</string>
   <string name="title_settings">设置</string>
   <string name="title_pubkey_generate">生成</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password">使用相同的密码进行加密</string>
   <string name="pubkey_import_new_password">新密码</string>
   <string name="pubkey_import_confirm_password">确认密码</string>
-  <string name="pubkey_list_empty">点击“菜单”以创建或导入密钥对。</string>
-  <string name="pubkey_unknown_format">未知格式</string>
   <string name="pubkey_change_password">更改密码</string>
   <string name="pubkey_unlock">解锁密钥</string>
   <string name="pubkey_unlock_message">请输入密码以解锁密钥“%1$s”</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key">允许远程主机\n使用密钥 \'%1$s\'？</string>
   <string name="host_verification_failure_warning_header">警告：远程主机身份标识已改变！</string>
   <string name="host_verification_failure_warning">可能有人正在做非善意的事情！\n可能有人正在偷听你的会话(中间人攻击)！\n但也可能是主机密钥刚刚被更改。</string>
-  <string name="prompt_host_disconnected">主机已经断开。\n关闭本次会话？</string>
   <string name="prompt_continue_connecting">你确定要\n继续连接？</string>
   <string name="host_authenticity_warning">无法验证‘%1$s’主机</string>
   <string name="host_fingerprint">主机 %1$s 密钥指纹是 %2$s</string>
@@ -115,7 +111,6 @@
   <string name="pref_theme_system">系统默认</string>
   <string name="pref_theme_light">轻量</string>
   <string name="pref_theme_dark">深色</string>
-  <string name="pref_rotation_title">旋转模式</string>
   <string name="pref_titlebarhide_title">自动隐藏标题栏</string>
   <string name="pref_titlebarhide_summary">点击控制台以显示标题栏和访问菜单</string>
   <string name="pref_alwaysvisible_title">特殊键始终可见</string>
@@ -181,7 +176,6 @@
   <string name="hostpref_pubkeyid_title">使用密钥验证</string>
   <string name="hostpref_authagent_title">使用 SSH 认证代理</string>
   <string name="hostpref_postlogin_title">登录后自动运行</string>
-  <string name="hostpref_postlogin_summary">登录后在远程服务器上自动运行的命令</string>
   <string name="hostpref_compression_title">压缩</string>
   <string name="hostpref_compression_summary">此选项对低速网络会有帮助</string>
   <string name="hostpref_wantsession_title">启动Shell会话</string>
@@ -268,10 +262,6 @@
   <string name="list_host_delete">删除主机</string>
   <string name="list_host_duplicate">复制主机</string>
   <string name="list_host_forget_keys">忘记主机密钥</string>
-  <string name="list_rotation_default">默认</string>
-  <string name="list_rotation_land">强制横屏显示</string>
-  <string name="list_rotation_port">强制竖屏显示</string>
-  <string name="list_rotation_auto">自动</string>
   <string name="list_camera_ctrlaspace">Ctrl+A 然后 Space</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -311,16 +301,11 @@
   <string name="notification_text">%1$s 需要你关注。</string>
   <string name="no">不使用</string>
   <string name="yes">使用</string>
-  <string name="list_color_schemes">配色方案</string>
-  <string name="menu_colors_reset">重置</string>
-  <string name="button_manage_schemes">管理方案</string>
   <string name="title_scheme_manager">管理配色方案</string>
   <string name="button_new_scheme">新方案</string>
   <string name="button_duplicate_scheme">重复</string>
-  <string name="button_rename_scheme">重命名</string>
   <string name="button_delete_scheme">删除</string>
   <string name="dialog_title_new_scheme">新的配色方案</string>
-  <string name="dialog_title_rename_scheme">重命名配色方案</string>
   <string name="label_scheme_name">方案名称</string>
   <string name="label_scheme_description">描述（可选）</string>
   <string name="dialog_title_delete_scheme">删除方案？</string>
@@ -330,7 +315,6 @@
   <string name="label_built_in_scheme">内置</string>
   <string name="label_custom_scheme">自定义</string>
   <string name="empty_custom_schemes">没有自定义方案。点击“新建方案”以创建一个。</string>
-  <string name="button_edit_palette">编辑调色板</string>
   <string name="button_export_scheme">导出配置</string>
   <string name="button_import_scheme">导入配置</string>
   <string name="message_export_success">已导出 %1$s</string>
@@ -349,14 +333,11 @@
   <string name="label_green">绿色</string>
   <string name="label_blue">蓝色</string>
   <string name="label_hex_color">十六进制颜色</string>
-  <string name="colors_fg_label">前景色：%1$d</string>
-  <string name="color_bg_label">背景色：%1$d</string>
   <string name="section_fg_bg_colors">前台和后台</string>
   <string name="label_foreground_color">前台</string>
   <string name="label_background_color">背景</string>
   <string name="label_base_scheme">基本方案：</string>
   <string name="menu_manage_colors">管理配色方案</string>
-  <string name="palette_editor_builtin_note">内置方案为只读模式。复制后可进行自定义。</string>
   <string name="section_color_preview">预览</string>
   <string name="image_description_connected">已连接。</string>
   <string name="image_description_disconnected">已断开连接。</string>
@@ -411,9 +392,6 @@
   <string name="empty_port_forwards_message">未配置端口转发。</string>
   <string name="empty_urls_message">未在终端缓冲区中找到 URL</string>
   <string name="console_default_title">控制台</string>
-  <string name="host_editor_quick_connect_label">快速连接</string>
-  <string name="host_editor_quick_connect_placeholder">user\@hostname:port</string>
-  <string name="host_editor_quick_connect_example">示例：root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced">显示高级选项</string>
   <string name="host_editor_hide_advanced">隐藏高级选项</string>
   <string name="resize_width_label">宽度（列数）</string>
@@ -480,7 +458,6 @@
   <string name="forget_host_keys_confirm">您确定要删除已保存的 \'%1$s\' 的主机密钥吗？下次连接时，系统会提示您验证主机密钥。</string>
   <string name="list_pubkey_edit">编辑公钥</string>
   <string name="hostpref_ipversion_title">IP版本</string>
-  <string name="hostpref_ipversion_summary">选择连接时要使用的 IP 地址版本</string>
   <string name="ipversion_auto">自动</string>
   <string name="ipversion_ipv4">仅支持 IPv4</string>
   <string name="ipversion_ipv6">仅支持 IPv6</string>
@@ -525,9 +502,6 @@
   <string name="pref_customterminal_summary">为远程服务器添加自定义 TERM 值</string>
   <string name="dialog_customterminal_title">添加自定义终端类型</string>
   <string name="dialog_customterminal_hint">终端类型（例如：rxvt-unicode）</string>
-  <string name="dialog_manage_customterminal_title">管理自定义终端类型</string>
-  <string name="button_add_custom">添加自定义…</string>
-  <string name="button_manage_custom">管理自定义……</string>
   <string name="dialog_custom_value_label">输入自定义值</string>
   <string name="list_camera_ctrlaspace_description">按 Ctrl+A，然后按空格键</string>
   <string name="list_camera_ctrla_description">Ctrl+A</string>
@@ -541,7 +515,6 @@
   <string name="import_hosts_success">已导入 %1$d 个主机（跳过 %2$d 个）和 %3$d 个配置（跳过 %4$d 个）</string>
   <string name="export_hosts_failed">无法导出主机列表：%s</string>
   <string name="import_hosts_failed">导入主机失败：%s</string>
-  <string name="export_hosts_title">导出主机列表</string>
   <string name="shortcut_customize_title">自定义快捷方式</string>
   <string name="shortcut_icon_color">图标颜色</string>
   <string name="shortcut_icon_style">图标样式</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">开启。</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">显示内联图片吗？</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">是否允许此主机在此会话期间显示内联图像？</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">启用启动。</string>
   <string name="automation_load_failed" tools:machine_translated="true">无法加载自动化程序。</string>
   <string name="automation_save_failed" tools:machine_translated="true">无法保存自动化配置。</string>
   <string name="automation_invalid_action" tools:machine_translated="true">请检查文本、模式、持续时间或所选的端口转发设置。</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">向上移动。</string>
   <string name="automation_move_down" tools:machine_translated="true">向下移动。</string>
   <string name="automation_drag" tools:machine_translated="true">拖动以重新排序。</string>
-  <string name="automation_unsaved" tools:machine_translated="true">保存更改？</string>
-  <string name="automation_discard" tools:machine_translated="true">放弃。</string>
   <string name="automation_cancel" tools:machine_translated="true">取消。</string>
   <string name="automation_text" tools:machine_translated="true">文本</string>
   <string name="automation_regex" tools:machine_translated="true">正则表达式</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Shift（切换）</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f 秒</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d 个操作</item>
-		<item quantity="other">共 %1$d 个操作。</item>
-	</plurals>
+    <item quantity="one">%1$d 个操作</item>
+    <item quantity="other">共 %1$d 个操作。</item>
+  </plurals>
 </resources>

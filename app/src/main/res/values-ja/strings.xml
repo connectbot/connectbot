@@ -7,7 +7,6 @@
   <string name="title_port_forwards_list">ポート転送</string>
   <string name="title_help">ヘルプ</string>
   <string name="title_eula">ライセンス</string>
-  <string name="title_colors">配色</string>
   <string name="title_color_picker">色の取得</string>
   <string name="title_settings">設定</string>
   <string name="title_pubkey_generate">生成</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password">暗号化に同じパスワードを使用する</string>
   <string name="pubkey_import_new_password">新しいパスワード</string>
   <string name="pubkey_import_confirm_password">パスワードを確認してください</string>
-  <string name="pubkey_list_empty">「メニュー」をタップして、キーペアを作成またはインポートします。</string>
-  <string name="pubkey_unknown_format">不明な形式</string>
   <string name="pubkey_change_password">パスワードを変更</string>
   <string name="pubkey_unlock">鍵をアンロック</string>
   <string name="pubkey_unlock_message">パスワードを入力してキー\'%1$s\'を解除する</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key">リモートホストが鍵 \'%1$s\' を使用することを許可しますか?</string>
   <string name="host_verification_failure_warning_header">警告: リモートホストのIDが変わっています!</string>
   <string name="host_verification_failure_warning">何者かが不正を行っている可能性があります!\n現在誰かに盗聴されているかもしれません (中間者攻撃)!\n単にホストキーが変更されただけの可能性もあります。</string>
-  <string name="prompt_host_disconnected">ホスト切断されました．\nセッションを閉じますか？</string>
   <string name="prompt_continue_connecting">このまま接続しますか?</string>
   <string name="host_authenticity_warning">ホスト \'%1$s\' の真正性を確認できません。</string>
   <string name="host_fingerprint">ホストの%1$sキーフィンガープリントは%2$s</string>
@@ -115,7 +111,6 @@
   <string name="pref_theme_system">システムのデフォルト</string>
   <string name="pref_theme_light">明るい</string>
   <string name="pref_theme_dark">暗い</string>
-  <string name="pref_rotation_title">画面の向き</string>
   <string name="pref_titlebarhide_title">タイトルバーを自動的に隠す</string>
   <string name="pref_titlebarhide_summary">タイトルバーとアクセスメニューを表示するにはコンソールをタップ</string>
   <string name="pref_alwaysvisible_title">特殊キーを常に表示</string>
@@ -181,7 +176,6 @@
   <string name="hostpref_pubkeyid_title">公開鍵認証を使用</string>
   <string name="hostpref_authagent_title">SSH認証エージェントを使う</string>
   <string name="hostpref_postlogin_title">ログイン後の自動実行</string>
-  <string name="hostpref_postlogin_summary">認証後にリモートで実行するコマンド</string>
   <string name="hostpref_compression_title">圧縮</string>
   <string name="hostpref_compression_summary">遅いネットワークで有効かもしれません</string>
   <string name="hostpref_wantsession_title">シェルセッションを使う</string>
@@ -268,10 +262,6 @@
   <string name="list_host_delete">ホストを削除</string>
   <string name="list_host_duplicate">ホストをコピー</string>
   <string name="list_host_forget_keys">ホストキーを削除</string>
-  <string name="list_rotation_default">デフォルト</string>
-  <string name="list_rotation_land">横向き固定</string>
-  <string name="list_rotation_port">縦向き固定</string>
-  <string name="list_rotation_auto">自動判定</string>
   <string name="list_camera_ctrlaspace">Ctrl+Aに続いてSpace</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Escキー</string>
@@ -311,16 +301,11 @@
   <string name="notification_text">%1$s でベルが鳴りました。</string>
   <string name="no">いいえ</string>
   <string name="yes">はい</string>
-  <string name="list_color_schemes">カラースキーム</string>
-  <string name="menu_colors_reset">リセット</string>
-  <string name="button_manage_schemes">スキームの管理</string>
   <string name="title_scheme_manager">カラースキームの管理</string>
   <string name="button_new_scheme">ニュー スキーム</string>
   <string name="button_duplicate_scheme">複製</string>
-  <string name="button_rename_scheme">名前を変更する</string>
   <string name="button_delete_scheme">削除</string>
   <string name="dialog_title_new_scheme">ニューカラースキーム</string>
-  <string name="dialog_title_rename_scheme">カラースキームの名前を変更する</string>
   <string name="label_scheme_name">スキーム名</string>
   <string name="label_scheme_description">説明（オプション）</string>
   <string name="dialog_title_delete_scheme">スキームを削除しますか?</string>
@@ -330,7 +315,6 @@
   <string name="label_built_in_scheme">内蔵の</string>
   <string name="label_custom_scheme">カスタム</string>
   <string name="empty_custom_schemes">カスタムスキームがありません。「新しいスキーム」をタップして作成してください。</string>
-  <string name="button_edit_palette">パレットを編集する</string>
   <string name="button_export_scheme">エクスポートスキーム</string>
   <string name="button_import_scheme">インポートスキーム</string>
   <string name="message_export_success">エクスポートしました %1$s</string>
@@ -349,14 +333,11 @@
   <string name="label_green">グリーン</string>
   <string name="label_blue">ブルー</string>
   <string name="label_hex_color">16進カラーコード</string>
-  <string name="colors_fg_label">FG: %1$d</string>
-  <string name="color_bg_label">BG: %1$d</string>
   <string name="section_fg_bg_colors">フォアグラウンドとバックグラウンド</string>
   <string name="label_foreground_color">フォアグラウンド</string>
   <string name="label_background_color">背景</string>
   <string name="label_base_scheme">基本的な仕組み：</string>
   <string name="menu_manage_colors">カラーテーマを管理する</string>
-  <string name="palette_editor_builtin_note">組み込みのスキームは読み取り専用です。カスタマイズするには、コピーを作成してください。</string>
   <string name="section_color_preview">プレビュー</string>
   <string name="image_description_connected">接続しました。</string>
   <string name="image_description_disconnected">切断しました</string>
@@ -411,9 +392,6 @@
   <string name="empty_port_forwards_message">ポートフォワードが設定されていません。</string>
   <string name="empty_urls_message">ターミナルバッファ内にURLは見つかりませんでした</string>
   <string name="console_default_title">コンソール</string>
-  <string name="host_editor_quick_connect_label">クイック接続</string>
-  <string name="host_editor_quick_connect_placeholder">ユーザー名\@ホスト名:ポート番号</string>
-  <string name="host_editor_quick_connect_example">例: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced">高度なオプションを表示する</string>
   <string name="host_editor_hide_advanced">高度なオプションを隠す</string>
   <string name="resize_width_label">カラム数</string>
@@ -480,7 +458,6 @@
   <string name="forget_host_keys_confirm">\'%1$s\' の保存済みホストキーを削除してもよろしいですか？次回の接続時に、ホストキーの確認を求められます。</string>
   <string name="list_pubkey_edit">公開鍵を編集</string>
   <string name="hostpref_ipversion_title">IPバージョン</string>
-  <string name="hostpref_ipversion_summary">接続時に使用するIPアドレスのバージョンを選択してください</string>
   <string name="ipversion_auto">自動</string>
   <string name="ipversion_ipv4">IPv4のみ</string>
   <string name="ipversion_ipv6">IPv6のみ</string>
@@ -525,9 +502,6 @@
   <string name="pref_customterminal_summary">リモートサーバーにカスタムTERM値を追加する</string>
   <string name="dialog_customterminal_title">カスタムターミナルタイプを追加する</string>
   <string name="dialog_customterminal_hint">ターミナルタイプ（例：rxvt-unicode）</string>
-  <string name="dialog_manage_customterminal_title">カスタムターミナルタイプの管理</string>
-  <string name="button_add_custom">カスタムを追加</string>
-  <string name="button_manage_custom">カスタム設定を管理</string>
   <string name="dialog_custom_value_label">カスタム値を入力してください</string>
   <string name="list_camera_ctrlaspace_description">CtrlAの後スペース</string>
   <string name="list_camera_ctrla_description">CtrlA</string>
@@ -541,7 +515,6 @@
   <string name="import_hosts_success">%1$d個のホスト（%2$d個をスキップ）と%3$d個のプロファイル（%4$d個をスキップ）をインポートしました</string>
   <string name="export_hosts_failed">ホストのエクスポートに失敗しました：%s</string>
   <string name="import_hosts_failed">ホストのインポートに失敗しました：%s</string>
-  <string name="export_hosts_title">ホストをエクスポート</string>
   <string name="shortcut_customize_title">ショートカットをカスタマイズ</string>
   <string name="shortcut_icon_color">アイコンの色</string>
   <string name="shortcut_icon_style">アイコンスタイル</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">オン</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">インライン画像を非表示にしますか？</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">このホストで、現在のセッションの残りの期間、インライン画像を表示することを許可しますか？</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">自動起動を有効にする</string>
   <string name="automation_load_failed" tools:machine_translated="true">自動化機能の読み込みに失敗しました。</string>
   <string name="automation_save_failed" tools:machine_translated="true">自動化設定の保存に失敗しました。</string>
   <string name="automation_invalid_action" tools:machine_translated="true">テキスト、パターン、期間、または選択したポートフォワーディングの設定を確認してください。</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">上に移動</string>
   <string name="automation_move_down" tools:machine_translated="true">下に移動</string>
   <string name="automation_drag" tools:machine_translated="true">ドラッグして並べ替え</string>
-  <string name="automation_unsaved" tools:machine_translated="true">変更を保存しますか？</string>
-  <string name="automation_discard" tools:machine_translated="true">破棄する</string>
   <string name="automation_cancel" tools:machine_translated="true">キャンセル</string>
   <string name="automation_text" tools:machine_translated="true">テキスト</string>
   <string name="automation_regex" tools:machine_translated="true">正規表現</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Shiftキー</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f 秒</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d 件のアクション</item>
-		<item quantity="other">%1$d 件のアクション</item>
-	</plurals>
+    <item quantity="one">%1$d 件のアクション</item>
+    <item quantity="other">%1$d 件のアクション</item>
+  </plurals>
 </resources>

@@ -7,7 +7,6 @@
   <string name="title_port_forwards_list">Chuyển tiếp cổng</string>
   <string name="title_help">Trợ Giúp</string>
   <string name="title_eula">Giấy phép</string>
-  <string name="title_colors">Màu Sắc</string>
   <string name="title_color_picker">Chọn màu</string>
   <string name="title_settings">Cài Đặt</string>
   <string name="title_pubkey_generate">Tạo Khoá</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password">Sử dụng cùng một mật khẩu để mã hóa.</string>
   <string name="pubkey_import_new_password">Mật khẩu mới</string>
   <string name="pubkey_import_confirm_password">Xác nhận mật khẩu</string>
-  <string name="pubkey_list_empty">Nhấn vào \"Menu\" để tạo hoặc nhập cặp khóa.</string>
-  <string name="pubkey_unknown_format">Định dạng không xác định</string>
   <string name="pubkey_change_password">Đổi mật khẩu</string>
   <string name="pubkey_unlock">Mở khóa khóa</string>
   <string name="pubkey_unlock_message">Nhập mật khẩu để mở khóa \'%1$s\'</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key">Cho phép máy chủ từ xa\nsử dụng khóa \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">CẢNH BÁO: NHẬN DẠNG MÁY CHỦ TỪ XA ĐÃ THAY ĐỔI!</string>
   <string name="host_verification_failure_warning">CÓ THỂ AI ĐÓ ĐANG LÀM ĐIỀU GÌ ĐÓ BẤT THƯỜNG!\nCó thể ai đó đang nghe lén bạn ngay lúc này (tấn công man-in-the-middle)!\nCũng có thể là khóa máy chủ vừa mới bị thay đổi.</string>
-  <string name="prompt_host_disconnected">Máy chủ đã ngắt kết nối.\nĐóng phiên?</string>
   <string name="prompt_continue_connecting">Bạn có chắc chắn muốn\ntiếp tục kết nối không?</string>
   <string name="host_authenticity_warning">Không thể xác định tính xác thực của máy chủ \'%1$s\'.</string>
   <string name="host_fingerprint">Dấu vân tay khóa của máy chủ %1$s là %2$s</string>
@@ -115,7 +111,6 @@
   <string name="pref_theme_system">Mặc định của hệ thống</string>
   <string name="pref_theme_light">Nhẹ</string>
   <string name="pref_theme_dark">Tối</string>
-  <string name="pref_rotation_title">Chế độ xoay</string>
   <string name="pref_titlebarhide_title">Tự động ẩn thanh tiêu đề</string>
   <string name="pref_titlebarhide_summary">Nhấn vào console để hiển thị thanh tiêu đề và truy cập menu</string>
   <string name="pref_alwaysvisible_title">Các phím đặc biệt luôn hiển thị</string>
@@ -181,7 +176,6 @@
   <string name="hostpref_pubkeyid_title">Dùng xác thực pubkey</string>
   <string name="hostpref_authagent_title">Dùng SSH auth agent</string>
   <string name="hostpref_postlogin_title">Tự động sau khi login</string>
-  <string name="hostpref_postlogin_summary">Các lệnh sẽ chạy ở server truy cập đến ngay sau khi xác thực thành công</string>
   <string name="hostpref_compression_title">Nén</string>
   <string name="hostpref_compression_summary">Điều này có thể hữu ích đối với các mạng có kết nối chậm</string>
   <string name="hostpref_wantsession_title">Bắt đầu phiên làm việc</string>
@@ -268,10 +262,6 @@
   <string name="list_host_delete">Xoá host</string>
   <string name="list_host_duplicate">Tên máy chủ trùng lặp</string>
   <string name="list_host_forget_keys">Quên các khóa máy chủ</string>
-  <string name="list_rotation_default">Mặc định</string>
-  <string name="list_rotation_land">Bắt buộc màn hình ngang</string>
-  <string name="list_rotation_port">Bắt buộc màn hình dọc</string>
-  <string name="list_rotation_auto">Tự động</string>
   <string name="list_camera_ctrlaspace">Ctrl+A, sau đó Space</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -311,16 +301,11 @@
   <string name="notification_text">%1$s cần sự chú ý của bạn.</string>
   <string name="no">Không</string>
   <string name="yes">Đồng ý</string>
-  <string name="list_color_schemes">Chế độ màu</string>
-  <string name="menu_colors_reset">Tái Thiết Lập</string>
-  <string name="button_manage_schemes">Quản lý lược đồ</string>
   <string name="title_scheme_manager">Quản lý các chủ đề màu</string>
   <string name="button_new_scheme">Chế độ mới</string>
   <string name="button_duplicate_scheme">Trùng lặp</string>
-  <string name="button_rename_scheme">Đổi tên</string>
   <string name="button_delete_scheme">Xóa</string>
   <string name="dialog_title_new_scheme">Chế độ màu mới</string>
-  <string name="dialog_title_rename_scheme">Đổi tên chủ đề màu</string>
   <string name="label_scheme_name">Tên lược đồ</string>
   <string name="label_scheme_description">Mô tả (tùy chọn)</string>
   <string name="dialog_title_delete_scheme">Xóa lược đồ?</string>
@@ -330,7 +315,6 @@
   <string name="label_built_in_scheme">Tích hợp sẵn</string>
   <string name="label_custom_scheme">Tùy chỉnh</string>
   <string name="empty_custom_schemes">Không có lược đồ tùy chỉnh nào. Nhấn vào \"Lược đồ mới\" để tạo một lược đồ.</string>
-  <string name="button_edit_palette">Chỉnh sửa bảng màu</string>
   <string name="button_export_scheme">Xuất lược đồ</string>
   <string name="button_import_scheme">Nhập lược đồ</string>
   <string name="message_export_success">Đã xuất %1$s</string>
@@ -349,14 +333,11 @@
   <string name="label_green">Màu xanh lá cây</string>
   <string name="label_blue">Xanh lam</string>
   <string name="label_hex_color">Mã màu hệ thập lục phân</string>
-  <string name="colors_fg_label">Màu trên nền: %1$d</string>
-  <string name="color_bg_label">Màu nền: %1$d</string>
   <string name="section_fg_bg_colors">Màu nền &amp; Màu tiền cảnh</string>
   <string name="label_foreground_color">Màu tiền</string>
   <string name="label_background_color">Màu nền</string>
   <string name="label_base_scheme">Sơ đồ cơ bản:</string>
   <string name="menu_manage_colors">Quản lý các chủ đề màu</string>
-  <string name="palette_editor_builtin_note">Các lược đồ tích hợp sẵn chỉ có thể đọc. Sao chép để tùy chỉnh.</string>
   <string name="section_color_preview">Xem trước</string>
   <string name="image_description_connected">Đã kết nối.</string>
   <string name="image_description_disconnected">Đã ngắt kết nối.</string>
@@ -411,9 +392,6 @@
   <string name="empty_port_forwards_message">Không có chuyển tiếp cổng nào được cấu hình.</string>
   <string name="empty_urls_message">Không tìm thấy URL nào trong bộ nhớ đệm của thiết bị đầu cuối</string>
   <string name="console_default_title">Bảng điều khiển</string>
-  <string name="host_editor_quick_connect_label">Kết nối nhanh</string>
-  <string name="host_editor_quick_connect_placeholder">user\@hostname:port</string>
-  <string name="host_editor_quick_connect_example">Ví dụ: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced">Hiển thị các tùy chọn nâng cao</string>
   <string name="host_editor_hide_advanced">Ẩn các tùy chọn nâng cao</string>
   <string name="resize_width_label">Chiều rộng (số cột)</string>
@@ -480,7 +458,6 @@
   <string name="forget_host_keys_confirm">Bạn có chắc muốn xóa các khóa máy chủ đã lưu cho \'%1$s\' không? Bạn sẽ được yêu cầu xác minh khóa máy chủ trong lần kết nối tiếp theo.</string>
   <string name="list_pubkey_edit">Chỉnh sửa khóa công khai</string>
   <string name="hostpref_ipversion_title">Phiên bản IP</string>
-  <string name="hostpref_ipversion_summary">Chọn phiên bản địa chỉ IP cần sử dụng khi kết nối</string>
   <string name="ipversion_auto">Tự động</string>
   <string name="ipversion_ipv4">Chỉ sử dụng IPv4</string>
   <string name="ipversion_ipv6">Chỉ sử dụng IPv6</string>
@@ -525,9 +502,6 @@
   <string name="pref_customterminal_summary">Thêm các giá trị TERM tùy chỉnh cho các máy chủ từ xa</string>
   <string name="dialog_customterminal_title">Thêm loại giao diện dòng lệnh tùy chỉnh</string>
   <string name="dialog_customterminal_hint">Loại thiết bị đầu cuối (ví dụ: rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title">Quản lý các loại giao diện dòng lệnh tùy chỉnh</string>
-  <string name="button_add_custom">Thêm tùy chỉnh…</string>
-  <string name="button_manage_custom">Quản lý các tùy chỉnh…</string>
   <string name="dialog_custom_value_label">Nhập giá trị tùy chỉnh</string>
   <string name="list_camera_ctrlaspace_description">Nhấn Ctrl+A, sau đó nhấn phím cách</string>
   <string name="list_camera_ctrla_description">Ctrl+A</string>
@@ -541,7 +515,6 @@
   <string name="import_hosts_success">Đã nhập %1$d máy chủ (%2$d máy bị bỏ qua) và %3$d cấu hình (%4$d cấu hình bị bỏ qua)</string>
   <string name="export_hosts_failed">Không thể xuất danh sách máy chủ: %s</string>
   <string name="import_hosts_failed">Không thể nhập danh sách máy chủ: %s</string>
-  <string name="export_hosts_title">Xuất danh sách máy chủ</string>
   <string name="shortcut_customize_title">Tùy chỉnh phím tắt</string>
   <string name="shortcut_icon_color">Màu biểu tượng</string>
   <string name="shortcut_icon_style">Kiểu biểu tượng</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">Đã bật.</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Hiển thị hình ảnh trực tiếp trong văn bản?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Cho phép máy chủ này hiển thị hình ảnh trực tiếp trong suốt thời gian còn lại của phiên làm việc này không?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Bật tính năng khởi động tự động.</string>
   <string name="automation_load_failed" tools:machine_translated="true">Không thể tải quy trình tự động hóa.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Không thể lưu quy trình tự động hóa.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Kiểm tra văn bản, mẫu, thời lượng hoặc cổng chuyển tiếp đã chọn.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Di chuyển lên trên.</string>
   <string name="automation_move_down" tools:machine_translated="true">Di chuyển xuống dưới.</string>
   <string name="automation_drag" tools:machine_translated="true">Kéo để sắp xếp lại.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Lưu các thay đổi không?</string>
-  <string name="automation_discard" tools:machine_translated="true">Hủy bỏ.</string>
   <string name="automation_cancel" tools:machine_translated="true">Hủy bỏ</string>
   <string name="automation_text" tools:machine_translated="true">Văn bản</string>
   <string name="automation_regex" tools:machine_translated="true">Biểu thức chính quy</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Phím Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f giây</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d thao tác</item>
-		<item quantity="other">%1$d thao tác</item>
-	</plurals>
+    <item quantity="one">%1$d thao tác</item>
+    <item quantity="other">%1$d thao tác</item>
+  </plurals>
 </resources>

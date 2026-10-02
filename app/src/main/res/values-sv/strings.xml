@@ -5,7 +5,6 @@
   <string name="title_pubkey_list">Publika nycklar</string>
   <string name="title_port_forwards_list">Vidarebefordring av portar</string>
   <string name="title_help">Hjälp</string>
-  <string name="title_colors">Färger</string>
   <string name="pubkey_generate">Generera</string>
   <string name="pubkey_delete">Ta bort nyckel</string>
   <string name="pubkey_gather_entropy">Samlar in entropi</string>
@@ -33,7 +32,6 @@
   <string name="prompt_allow_agent_to_use_key">Tillåt fjärrvärd att\nanvända nyckel \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">VARNING: IDENTIFIERING AV FJÄRRVÄRD HAR ÄNDRATS!</string>
   <string name="host_verification_failure_warning">MÖJLIGT INTRÅNGSFÖRSÖK!\nNågon skulle kunna avlyssna dig nu (man-in-the-middle attack)!\nDet är även möjligt att värdnyckeln just har ändrats.</string>
-  <string name="prompt_host_disconnected">Värden har kopplat ner anslutningen.\nStäng?</string>
   <string name="prompt_continue_connecting">Är du säker att du vill\nfortsätta att ansluta?</string>
   <string name="host_authenticity_warning">Identiteten av värden \'%1$s\' går ej att fastställa.</string>
   <string name="host_fingerprint">Värd %1$s nyckel-fingeravtryck är %2$s</string>
@@ -46,7 +44,6 @@
   <string name="pref_scrollback_title">Textbufferstorlek</string>
   <string name="pref_scrollback_summary">Storlek på textbuffer för varje konsol</string>
   <string name="pref_ui_category">Användargränssnitt</string>
-  <string name="pref_rotation_title">Rotationsläge</string>
   <string name="pref_fullscreen_title">Helskärm</string>
   <string name="pref_fullscreen_summary">Göm status medan konsol visas</string>
   <string name="pref_memkeys_title">Kom ihåg nycklar</string>
@@ -75,7 +72,6 @@
   <string name="hostpref_pubkeyid_title">Använd publik nyckelverifiering</string>
   <string name="hostpref_authagent_title">Använd SSH-verifieringsagent</string>
   <string name="hostpref_postlogin_title">Automatisering efter inloggning</string>
-  <string name="hostpref_postlogin_summary">Kommandon att köras på fjärrservern när verifierad</string>
   <string name="hostpref_compression_title">Kompression</string>
   <string name="hostpref_compression_summary">Detta kan hjälpa på långsammare nätverk</string>
   <string name="hostpref_wantsession_title">Starta shell-session</string>
@@ -109,10 +105,6 @@
   <string name="list_host_edit">Inställningar för värd</string>
   <string name="list_host_portforwards">Ändra vidarebefodringar av portar</string>
   <string name="list_host_delete">Ta bort värd</string>
-  <string name="list_rotation_default">Förvalt värde</string>
-  <string name="list_rotation_land">Tvinga horisontellt läge</string>
-  <string name="list_rotation_port">Tvinga vertikalt läge</string>
-  <string name="list_rotation_auto">Automatiskt</string>
   <string name="list_camera_ctrlaspace">Ctrl+A sen Space</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -143,7 +135,6 @@
   <string name="notification_text">%1$s vill ha din uppmärksamhet.</string>
   <string name="no">Nej</string>
   <string name="yes">Ja</string>
-  <string name="menu_colors_reset">Återställ</string>
   <string name="app_is_running">ConnectBot är igång</string>
   <string name="app_copyright" tools:machine_translated="true">Copyright © Kenny Root</string>
   <string name="title_eula" tools:machine_translated="true">Licens</string>
@@ -177,8 +168,6 @@
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">Använd samma lösenord för kryptering</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Nytt lösenord</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Bekräfta lösenord</string>
-  <string name="pubkey_list_empty" tools:machine_translated="true">Tryck på ”Meny” för att skapa eller importera nyckelpar.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">Okänt format</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Ange lösenord för att låsa upp nyckeln \"%1$s\"</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">En nyckel med detta alias finns redan.</string>
   <string name="prompt_username" tools:machine_translated="true">Användarnamn:</string>
@@ -315,15 +304,11 @@
   <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Autentiseringen med det sparade lösenordet misslyckades</string>
   <string name="terminal_auth_biometric" tools:machine_translated="true">Begär biometrisk autentisering för nyckeln \"%1$s\"</string>
   <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">Den biometriska nyckeln \'%1$s\' har ogiltigförklarats. Detta kan hända när nya fingeravtryck registreras på enheten. Vänligen skapa en ny nyckel.</string>
-  <string name="list_color_schemes" tools:machine_translated="true">Färgteman</string>
-  <string name="button_manage_schemes" tools:machine_translated="true">Hantera färgteman</string>
   <string name="title_scheme_manager" tools:machine_translated="true">Hantera färgteman</string>
   <string name="button_new_scheme" tools:machine_translated="true">Nytt färgtema</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">Duplicera</string>
-  <string name="button_rename_scheme" tools:machine_translated="true">Byt namn</string>
   <string name="button_delete_scheme" tools:machine_translated="true">Ta bort</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">Nytt färgschema</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Byt namn på färgtema</string>
   <string name="label_scheme_name" tools:machine_translated="true">Schemats namn</string>
   <string name="label_scheme_description" tools:machine_translated="true">Beskrivning (valfritt)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">Vill du ta bort schemat?</string>
@@ -333,7 +318,6 @@
   <string name="label_built_in_scheme" tools:machine_translated="true">Inbyggd</string>
   <string name="label_custom_scheme" tools:machine_translated="true">Anpassad</string>
   <string name="empty_custom_schemes" tools:machine_translated="true">Inga anpassade scheman finns. Tryck på ”Nytt schema” för att skapa ett.</string>
-  <string name="button_edit_palette" tools:machine_translated="true">Redigera färgpalett</string>
   <string name="button_export_scheme" tools:machine_translated="true">Exportera färgtema</string>
   <string name="button_import_scheme" tools:machine_translated="true">Importera färgtema</string>
   <string name="message_export_success" tools:machine_translated="true">%1$s har exporterats</string>
@@ -351,14 +335,11 @@
   <string name="label_green" tools:machine_translated="true">Grön</string>
   <string name="label_blue" tools:machine_translated="true">Blå</string>
   <string name="label_hex_color" tools:machine_translated="true">Hex-färgkod</string>
-  <string name="colors_fg_label" tools:machine_translated="true">Förgrundsfärg: %1$d</string>
-  <string name="color_bg_label" tools:machine_translated="true">Bakgrundsfärg: %1$d</string>
   <string name="section_fg_bg_colors" tools:machine_translated="true">Förgrunds- och bakgrundsfärg</string>
   <string name="label_foreground_color" tools:machine_translated="true">Förgrundsfärg</string>
   <string name="label_background_color" tools:machine_translated="true">Bakgrundsfärg</string>
   <string name="label_base_scheme" tools:machine_translated="true">Grundläggande färgtema:</string>
   <string name="menu_manage_colors" tools:machine_translated="true">Hantera färgteman</string>
-  <string name="palette_editor_builtin_note" tools:machine_translated="true">De fördefinierade färgpaletterna är skrivskyddade. Du kan skapa en kopia för att anpassa dem.</string>
   <string name="section_color_preview" tools:machine_translated="true">Förhandsvisning</string>
   <string name="image_description_connected" tools:machine_translated="true">Ansluten.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">Frånkopplad.</string>
@@ -413,9 +394,6 @@
   <string name="empty_port_forwards_message" tools:machine_translated="true">Inga portvidarebefordringar har konfigurerats.</string>
   <string name="empty_urls_message" tools:machine_translated="true">Inga webbadresser hittades i terminalbufferten</string>
   <string name="console_default_title" tools:machine_translated="true">Konsol</string>
-  <string name="host_editor_quick_connect_label" tools:machine_translated="true">Snabbanslutning</string>
-  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">användare\@värdnamn:port</string>
-  <string name="host_editor_quick_connect_example" tools:machine_translated="true">Exempel: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced" tools:machine_translated="true">Visa avancerade alternativ</string>
   <string name="host_editor_hide_advanced" tools:machine_translated="true">Dölj avancerade inställningar</string>
   <string name="resize_width_label" tools:machine_translated="true">Bredd (kolumner)</string>
@@ -494,7 +472,6 @@
   <string name="forget_host_keys_confirm" tools:machine_translated="true">Är du säker på att du vill ta bort de sparade värdnycklarna för \"%1$s\"? Du kommer att bli ombedd att verifiera värdnyckeln vid nästa anslutning.</string>
   <string name="list_pubkey_edit" tools:machine_translated="true">Redigera pubnyckel</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">IP-version</string>
-  <string name="hostpref_ipversion_summary" tools:machine_translated="true">Välj vilken version av IP-adress som ska användas när du ansluter.</string>
   <string name="ipversion_auto" tools:machine_translated="true">Automatiskt</string>
   <string name="ipversion_ipv4" tools:machine_translated="true">Endast IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">Endast IPv6</string>
@@ -539,9 +516,6 @@
   <string name="pref_customterminal_summary" tools:machine_translated="true">Lägg till anpassade TERM-värden för fjärrservrar.</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">Lägg till en anpassad terminaltyp</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">Terminaltyp (t.ex. rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Hantera anpassade terminaltyper</string>
-  <string name="button_add_custom" tools:machine_translated="true">Lägg till anpassad…</string>
-  <string name="button_manage_custom" tools:machine_translated="true">Hantera anpassade…</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">Ange ett anpassat värde</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A följt av mellanslagstangenten</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
@@ -555,7 +529,6 @@
   <string name="import_hosts_success" tools:machine_translated="true">Importerade %1$d värdar (%2$d hoppades över) och %3$d profiler (%4$d hoppades över)</string>
   <string name="export_hosts_failed" tools:machine_translated="true">Det gick inte att exportera värdar: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">Det gick inte att importera värdar: %s</string>
-  <string name="export_hosts_title" tools:machine_translated="true">Exportera värdar</string>
   <string name="shortcut_customize_title" tools:machine_translated="true">Anpassa snabbkommando</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Ikonfärg</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Ikonstil</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">På</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Visa bilder direkt i texten?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Tillåt att den här värddatorn visar bilder direkt i texten under resten av denna session?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Automatisk start aktiverad.</string>
   <string name="automation_load_failed" tools:machine_translated="true">Kunde inte ladda automatiseringen.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Det gick inte att spara automatiseringen.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Kontrollera texten, mönstret, varaktigheten eller den valda portvidarekopplingen.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Flytta uppåt</string>
   <string name="automation_move_down" tools:machine_translated="true">Flytta nedåt</string>
   <string name="automation_drag" tools:machine_translated="true">Dra för att ändra ordningen.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Vill du spara ändringarna?</string>
-  <string name="automation_discard" tools:machine_translated="true">Avbryt/Radera</string>
   <string name="automation_cancel" tools:machine_translated="true">Avbryt</string>
   <string name="automation_text" tools:machine_translated="true">Text</string>
   <string name="automation_regex" tools:machine_translated="true">Reguljärt uttryck</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Skiftlägesknapp</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f sekunder</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d åtgärder</item>
-		<item quantity="other">%1$d åtgärder</item>
-	</plurals>
+    <item quantity="one">%1$d åtgärder</item>
+    <item quantity="other">%1$d åtgärder</item>
+  </plurals>
 </resources>
