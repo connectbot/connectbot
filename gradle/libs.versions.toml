@@ -49,7 +49,7 @@ mockito = "5.24.0"
 mockitoKotlin = "6.4.0"
 assertj = "3.27.7"
 robolectric = "4.17"
-kover = "0.9.10"
+kover = "0.9.11"
 
 media3CommonKtx = "1.11.1"
 navigationTesting = "2.10.2"
