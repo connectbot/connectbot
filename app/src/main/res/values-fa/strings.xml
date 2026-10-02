@@ -7,7 +7,6 @@
   <string name="title_port_forwards_list">پورت فوروارد</string>
   <string name="title_help">راهنما</string>
   <string name="title_eula">لایسنس</string>
-  <string name="title_colors">رنگ‌ها</string>
   <string name="title_color_picker">رنگی برگزینید</string>
   <string name="title_settings">تنظیمات</string>
   <string name="title_pubkey_generate">تولید</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password">از یک رمز عبور برای رمزگذاری استفاده کنید.</string>
   <string name="pubkey_import_new_password">گذرواژه جدید</string>
   <string name="pubkey_import_confirm_password">تایید رمز عبور</string>
-  <string name="pubkey_list_empty">برای ایجاد یا وارد کردن جفت کلیدها، روی \"منو\" ضربه بزنید.</string>
-  <string name="pubkey_unknown_format">فرمت ناشناخته</string>
   <string name="pubkey_change_password">تغییر گذرواژه</string>
   <string name="pubkey_unlock">بازکردن کلید</string>
   <string name="pubkey_unlock_message">برای باز کردن کلید \'%1$s\'، رمز عبور را وارد کنید.</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key">اجازه به میزبان راه دور برای\nاستفاده از کلید \'%1$s\'</string>
   <string name="host_verification_failure_warning_header">هشدار: تعیین هویت میزبان راه دور تغییر کرده است!</string>
   <string name="host_verification_failure_warning">ممکن است کسی در حال انجام یک کار خرابکارانه باشد!\nممکن است کسی در حال حاضر در حال استراق سمع از شما باشد (حمله \"مرد میانی\")!\nهمچنین ممکن است کلید میزبان به تازگی تغییر کرده باشد.</string>
-  <string name="prompt_host_disconnected">اتصال میزبان قطع شد.\nسیژن را ببندم؟</string>
   <string name="prompt_continue_connecting">مطمئن هستید که میخواهید\nبه برقراری اتصال، ادامه دهید؟</string>
   <string name="host_authenticity_warning">میزبان \'%1$s\' نمیتواند احراز هویت شود.</string>
   <string name="host_fingerprint">"%2$s کلید اثرانگشت میزبان  %1$s  می باشد"</string>
@@ -115,7 +111,6 @@
   <string name="pref_theme_system">مقدار پیش‌فرض سیستم</string>
   <string name="pref_theme_light">نور</string>
   <string name="pref_theme_dark">تاریک</string>
-  <string name="pref_rotation_title">حالت چرخش</string>
   <string name="pref_titlebarhide_title">"مخفی شدن خودکار  نوار عنوان"</string>
   <string name="pref_titlebarhide_summary">برای نمایش نوار عنوان و دسترسی به منو، روی کنسول ضربه بزنید.</string>
   <string name="pref_alwaysvisible_title">کلیدهای ویژه همواره دیده شوند</string>
@@ -181,7 +176,6 @@
   <string name="hostpref_pubkeyid_title">تصدیق هویت با استفاده از کلید عمومی</string>
   <string name="hostpref_authagent_title">از احراز هویت SSH استفاده کنید.</string>
   <string name="hostpref_postlogin_title">خودکارسازی پس از ورود</string>
-  <string name="hostpref_postlogin_summary">دستوراتی که پس از تصدیق هویت باید روی کارساز راه‌دور اجرا شوند</string>
   <string name="hostpref_compression_title">فشرده‌سازی</string>
   <string name="hostpref_compression_summary">این گزینه می‌تواند برای شبکه‌های کند مفید باشد</string>
   <string name="hostpref_wantsession_title">آغاز جلسه Shell</string>
@@ -268,10 +262,6 @@
   <string name="list_host_delete">پاک کردن میزبان</string>
   <string name="list_host_duplicate">میزبان تکراری</string>
   <string name="list_host_forget_keys">کلیدهای میزبان را فراموش کن</string>
-  <string name="list_rotation_default">پیش‌گزیده</string>
-  <string name="list_rotation_land">الزام بر حالت افقی</string>
-  <string name="list_rotation_port">الزام بر حالت عمودی</string>
-  <string name="list_rotation_auto">خوکار</string>
   <string name="list_camera_ctrlaspace">Ctrl+A و سپس کلید Space</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -311,16 +301,11 @@
   <string name="notification_text">%1$s می‌خواهد توجه شما را جلب کند.</string>
   <string name="no">خیر</string>
   <string name="yes">بله</string>
-  <string name="list_color_schemes">طرح‌های رنگی</string>
-  <string name="menu_colors_reset">تنظیم دوباره</string>
-  <string name="button_manage_schemes">مدیریت طرح‌ها</string>
   <string name="title_scheme_manager">مدیریت طرح‌های رنگی</string>
   <string name="button_new_scheme">طرح جدید</string>
   <string name="button_duplicate_scheme">تکراری</string>
-  <string name="button_rename_scheme">تغییر نام</string>
   <string name="button_delete_scheme">حذف</string>
   <string name="dialog_title_new_scheme">طرح رنگی جدید</string>
-  <string name="dialog_title_rename_scheme">تغییر نام طرح رنگ</string>
   <string name="label_scheme_name">نام طرح</string>
   <string name="label_scheme_description">توضیحات (اختیاری)</string>
   <string name="dialog_title_delete_scheme">آیا می‌خواهید طرح را حذف کنید؟</string>
@@ -330,7 +315,6 @@
   <string name="label_built_in_scheme">به صورت پیش‌فرض موجود</string>
   <string name="label_custom_scheme">سفارشی</string>
   <string name="empty_custom_schemes">هیچ طرح سفارشی وجود ندارد. برای ایجاد یک طرح جدید، روی \"طرح جدید\" ضربه بزنید.</string>
-  <string name="button_edit_palette">ویرایش پالت</string>
   <string name="button_export_scheme">طرح خروجی</string>
   <string name="button_import_scheme">وارد کردن طرح‌واره</string>
   <string name="message_export_success">صادر شد: %1$s</string>
@@ -349,14 +333,11 @@
   <string name="label_green">سبز</string>
   <string name="label_blue">آبی</string>
   <string name="label_hex_color">رنگ هگزادسیمال</string>
-  <string name="colors_fg_label">متن: %1$d</string>
-  <string name="color_bg_label">پشت: %1$d</string>
   <string name="section_fg_bg_colors">پیش‌زمینه و پس‌زمینه</string>
   <string name="label_foreground_color">پیش‌زمینه</string>
   <string name="label_background_color">پس‌زمینه</string>
   <string name="label_base_scheme">طرح پایه:</string>
   <string name="menu_manage_colors">مدیریت طرح‌های رنگی</string>
-  <string name="palette_editor_builtin_note">طرح‌های پیش‌فرض فقط خواندنی هستند. برای سفارشی‌سازی، آن‌ها را کپی کنید.</string>
   <string name="section_color_preview">پیش‌نمایش</string>
   <string name="image_description_connected">وصل.</string>
   <string name="image_description_disconnected">قطع.</string>
@@ -411,9 +392,6 @@
   <string name="empty_port_forwards_message">هیچ پورت فورواردی پیکربندی نشده است.</string>
   <string name="empty_urls_message">هیچ آدرس اینترنتی در حافظه ترمینال یافت نشد.</string>
   <string name="console_default_title">کنسول</string>
-  <string name="host_editor_quick_connect_label">اتصال سریع</string>
-  <string name="host_editor_quick_connect_placeholder">user\@hostname:port</string>
-  <string name="host_editor_quick_connect_example">به عنوان مثال: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced">نمایش گزینه‌های پیشرفته</string>
   <string name="host_editor_hide_advanced">گزینه‌های پیشرفته را پنهان کن</string>
   <string name="resize_width_label">عرض (تعداد ستون‌ها)</string>
@@ -480,7 +458,6 @@
   <string name="forget_host_keys_confirm">آیا مطمئن هستید که می‌خواهید کلیدهای میزبانی ذخیره شده برای «%1$s» را حذف کنید؟ در اتصال بعدی، از شما خواسته می‌شود تا کلید میزبانی را تأیید کنید.</string>
   <string name="list_pubkey_edit">ویرایش کلید عمومی</string>
   <string name="hostpref_ipversion_title">نسخه IP</string>
-  <string name="hostpref_ipversion_summary">انتخاب کنید که از کدام نسخه آدرس IP هنگام اتصال استفاده شود.</string>
   <string name="ipversion_auto">خودکار</string>
   <string name="ipversion_ipv4">فقط IPv4</string>
   <string name="ipversion_ipv6">فقط IPv6</string>
@@ -525,9 +502,6 @@
   <string name="pref_customterminal_summary">مقادیر سفارشی TERM را برای سرورهای راه دور اضافه کنید.</string>
   <string name="dialog_customterminal_title">اضافه کردن نوع ترمینال سفارشی</string>
   <string name="dialog_customterminal_hint">نوع ترمینال (به عنوان مثال، rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title">مدیریت انواع ترمینال سفارشی</string>
-  <string name="button_add_custom">افزودن سفارشی...</string>
-  <string name="button_manage_custom">مدیریت تنظیمات دلخواه...</string>
   <string name="dialog_custom_value_label">مقدار دلخواه را وارد کنید</string>
   <string name="list_camera_ctrlaspace_description">Ctrl+A و سپس کلید Space</string>
   <string name="list_camera_ctrla_description">Ctrl+A</string>
@@ -541,7 +515,6 @@
   <string name="import_hosts_success">%1$d هاست وارد شد (%2$d نادیده گرفته شد) و %3$d پروفایل (%4$d نادیده گرفته شد)</string>
   <string name="export_hosts_failed">بروز خطا در هنگام ذخیره لیست سرورها: %s</string>
   <string name="import_hosts_failed">وارد کردن لیست سرورها با شکست مواجه شد: %s</string>
-  <string name="export_hosts_title">لیست سرورها را صادر کنید</string>
   <string name="shortcut_customize_title">میانبر را سفارشی کنید</string>
   <string name="shortcut_icon_color">رنگ آیکون</string>
   <string name="shortcut_icon_style">سبک آیکون</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">روشن</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">آیا تصاویر درون‌خطی را نمایش دهم؟</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">آیا به این میزبان اجازه داده شود تا در طول این نشست، تصاویر را به صورت درون‌خطی نمایش دهد؟</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">راه‌اندازی خودکار فعال است.</string>
   <string name="automation_load_failed" tools:machine_translated="true">بارگذاری خودکارسازی با مشکل مواجه شد.</string>
   <string name="automation_save_failed" tools:machine_translated="true">ذخیره تنظیمات خودکار انجام نشد.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">متن، الگو، مدت زمان یا پورت فوروارد انتخاب‌شده را بررسی کنید.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">به بالا منتقل کن</string>
   <string name="automation_move_down" tools:machine_translated="true">به پایین حرکت دهید</string>
   <string name="automation_drag" tools:machine_translated="true">برای تغییر ترتیب، بکشید و رها کنید.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">آیا می‌خواهید تغییرات را ذخیره کنید؟</string>
-  <string name="automation_discard" tools:machine_translated="true">حذف کنید</string>
   <string name="automation_cancel" tools:machine_translated="true">لغو کن</string>
   <string name="automation_text" tools:machine_translated="true">متن</string>
   <string name="automation_regex" tools:machine_translated="true">عبارت با قاعده</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">کلید Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f ثانیه</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d عمل</item>
-		<item quantity="other">%1$d عمل</item>
-	</plurals>
+    <item quantity="one">%1$d عمل</item>
+    <item quantity="other">%1$d عمل</item>
+  </plurals>
 </resources>

@@ -1,6 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <string name="title_colors">Colours</string>
   <string name="title_color_picker">Pick a colour</string>
   <string name="hostpref_color_title">Colour category</string>
   <string name="list_menu_sortcolor">Sort by colour</string>
@@ -9,12 +8,8 @@
   <string name="profile_editor_section_icon_color">Icon Colour</string>
   <string name="profile_editor_section_color_scheme">Colour Scheme</string>
   <string name="profile_icon_color_none">None (use the host\'s colour)</string>
-  <string name="list_color_schemes">Colour schemes</string>
-  <string name="button_manage_schemes">Manage Colour Schemes</string>
   <string name="title_scheme_manager">Manage Colour Schemes</string>
   <string name="dialog_title_new_scheme">New Colour Scheme</string>
-  <string name="dialog_title_rename_scheme">Rename Colour Scheme</string>
-  <string name="button_edit_palette">Edit Colour Palette</string>
   <string name="button_export_scheme">Export Colour Scheme</string>
   <string name="title_palette_editor">Edit Colour Palette</string>
   <string name="section_ansi_colors">ANSI Colours (0–15)</string>
@@ -25,7 +20,6 @@
   <string name="label_foreground_color">Foreground colour</string>
   <string name="label_background_color">Background colour</string>
   <string name="menu_manage_colors">Manage Colour Schemes</string>
-  <string name="palette_editor_builtin_note">Built-in schemes are read-only. Duplicate to customize.</string>
   <string name="error_color_scheme_load_failed">Failed to load colour scheme: %s</string>
   <string name="colorscheme_default_description">Default terminal colours</string>
   <string name="colorscheme_solarized_dark_description">Precision colours for machines and people</string>

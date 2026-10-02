@@ -5,7 +5,6 @@
   <string name="title_pubkey_list">กุญแจสาธารณะ</string>
   <string name="title_port_forwards_list">ฟอร์เวิร์ดพอร์ต</string>
   <string name="title_help">ช่วยเหลือ</string>
-  <string name="title_colors">สี</string>
   <string name="title_color_picker">เลือกสี</string>
   <string name="title_settings">ค่าตั้ง</string>
   <string name="title_pubkey_generate">สร้าง</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">ใช้รหัสผ่านเดิมสำหรับการเข้ารหัส</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">รหัสผ่านใหม่</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">ยืนยันรหัสผ่าน</string>
-  <string name="pubkey_list_empty" tools:machine_translated="true">แตะที่ \"เมนู\" เพื่อสร้างหรือนำเข้าคู่คีย์.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">รูปแบบไม่รู้จัก</string>
   <string name="pubkey_change_password" tools:machine_translated="true">เปลี่ยนรหัสผ่าน</string>
   <string name="pubkey_unlock" tools:machine_translated="true">ปลดล็อกคีย์</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">กรุณากรอกรหัสผ่านเพื่อปลดล็อกคีย์ \'%1$s\'</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">อนุญาตให้เครื่องโฮสต์ระยะไกลใช้คีย์ \'%1$s\' หรือไม่?</string>
   <string name="host_verification_failure_warning_header" tools:machine_translated="true">คำเตือน: การระบุตัวตนของเซิร์ฟเวอร์ระยะไกลมีการเปลี่ยนแปลง!</string>
   <string name="host_verification_failure_warning" tools:machine_translated="true">เป็นไปได้ว่ามีใครบางคนกำลังทำเรื่องที่ไม่ดี!\nอาจมีใครบางคนกำลังแอบฟังหรือดักจับข้อมูลของคุณอยู่ตอนนี้ (การโจมตีแบบ Man-in-the-Middle)!\nนอกจากนี้ ยังเป็นไปได้ว่าคีย์ของโฮสต์เพิ่งถูกเปลี่ยนไป.</string>
-  <string name="prompt_host_disconnected" tools:machine_translated="true">เซิร์ฟเวอร์ได้ตัดการเชื่อมต่อแล้ว\nต้องการปิดเซสชันหรือไม่?</string>
   <string name="prompt_continue_connecting" tools:machine_translated="true">คุณแน่ใจหรือไม่ว่าต้องการเชื่อมต่อต่อไป?</string>
   <string name="host_authenticity_warning" tools:machine_translated="true">ไม่สามารถยืนยันความถูกต้องของโฮสต์ \'%1$s\' ได้.</string>
   <string name="host_fingerprint" tools:machine_translated="true">ค่าแฮชของคีย์สำหรับโฮสต์ %1$s คือ %2$s</string>
@@ -117,7 +113,6 @@
   <string name="pref_theme_system" tools:machine_translated="true">ค่าเริ่มต้นของระบบ</string>
   <string name="pref_theme_light" tools:machine_translated="true">ธีมสีอ่อน</string>
   <string name="pref_theme_dark" tools:machine_translated="true">สีเข้ม</string>
-  <string name="pref_rotation_title" tools:machine_translated="true">โหมดการหมุน</string>
   <string name="pref_titlebarhide_title" tools:machine_translated="true">ซ่อนแถบชื่อหน้าต่างโดยอัตโนมัติ</string>
   <string name="pref_titlebarhide_summary" tools:machine_translated="true">แตะที่ส่วนคอนโซลเพื่อแสดงแถบชื่อเรื่องและเข้าถึงเมนู</string>
   <string name="pref_alwaysvisible_title" tools:machine_translated="true">แสดงปุ่มพิเศษไว้เสมอ</string>
@@ -183,7 +178,6 @@
   <string name="hostpref_pubkeyid_title" tools:machine_translated="true">ใช้การยืนยันตัวตนด้วยคีย์สาธารณะ</string>
   <string name="hostpref_authagent_title" tools:machine_translated="true">ใช้ตัวแทนการรับรองความถูกต้องของ SSH</string>
   <string name="hostpref_postlogin_title" tools:machine_translated="true">การทำงานอัตโนมัติหลังเข้าสู่ระบบ</string>
-  <string name="hostpref_postlogin_summary" tools:machine_translated="true">คำสั่งที่จะรันบนเซิร์ฟเวอร์ระยะไกลหลังจากยืนยันตัวตนแล้ว</string>
   <string name="hostpref_compression_title" tools:machine_translated="true">การบีบอัด</string>
   <string name="hostpref_compression_summary" tools:machine_translated="true">วิธีนี้อาจช่วยให้การใช้งานบนเครือข่ายที่ช้าลงเป็นไปได้ด้วยดี</string>
   <string name="hostpref_wantsession_title" tools:machine_translated="true">เริ่มเซสชันเชลล์</string>
@@ -270,10 +264,6 @@
   <string name="list_host_delete" tools:machine_translated="true">ลบโฮสต์</string>
   <string name="list_host_duplicate" tools:machine_translated="true">ทำสำเนาโฮสต์</string>
   <string name="list_host_forget_keys" tools:machine_translated="true">ลบข้อมูลคีย์โฮสต์ที่บันทึกไว้</string>
-  <string name="list_rotation_default" tools:machine_translated="true">ค่าเริ่มต้น</string>
-  <string name="list_rotation_land" tools:machine_translated="true">บังคับให้แสดงผลในแนวนอน</string>
-  <string name="list_rotation_port" tools:machine_translated="true">บังคับให้แสดงผลในแนวนอน</string>
-  <string name="list_rotation_auto" tools:machine_translated="true">อัตโนมัติ</string>
   <string name="list_camera_ctrlaspace" tools:machine_translated="true">กด Ctrl+A แล้วตามด้วยปุ่ม Space</string>
   <string name="list_camera_ctrla" tools:machine_translated="true">Ctrl+A</string>
   <string name="list_camera_esc" tools:machine_translated="true">Esc</string>
@@ -313,16 +303,11 @@
   <string name="notification_text" tools:machine_translated="true">%1$s ต้องการให้คุณใส่ใจ.</string>
   <string name="no" tools:machine_translated="true">ไม่</string>
   <string name="yes" tools:machine_translated="true">ใช่</string>
-  <string name="list_color_schemes" tools:machine_translated="true">ชุดสี</string>
-  <string name="menu_colors_reset" tools:machine_translated="true">รีเซ็ต</string>
-  <string name="button_manage_schemes" tools:machine_translated="true">จัดการชุดสี</string>
   <string name="title_scheme_manager" tools:machine_translated="true">จัดการชุดสี</string>
   <string name="button_new_scheme" tools:machine_translated="true">สร้างชุดสีใหม่</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">ทำซ้ำ</string>
-  <string name="button_rename_scheme" tools:machine_translated="true">เปลี่ยนชื่อ</string>
   <string name="button_delete_scheme" tools:machine_translated="true">ลบ</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">ชุดสีใหม่</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">เปลี่ยนชื่อชุดสี</string>
   <string name="label_scheme_name" tools:machine_translated="true">ชื่อแผนงาน</string>
   <string name="label_scheme_description" tools:machine_translated="true">คำอธิบาย (ไม่บังคับ)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">ต้องการลบแผนผังหรือไม่?</string>
@@ -332,7 +317,6 @@
   <string name="label_built_in_scheme" tools:machine_translated="true">เป็นส่วนหนึ่งของระบบ</string>
   <string name="label_custom_scheme" tools:machine_translated="true">ปรับแต่งเอง</string>
   <string name="empty_custom_schemes" tools:machine_translated="true">ไม่มีรูปแบบที่กำหนดเอง หากต้องการสร้างรูปแบบใหม่ ให้แตะที่ \"รูปแบบใหม่\"</string>
-  <string name="button_edit_palette" tools:machine_translated="true">แก้ไขชุดสี</string>
   <string name="button_export_scheme" tools:machine_translated="true">ส่งออกชุดสี</string>
   <string name="button_import_scheme" tools:machine_translated="true">นำเข้าชุดสี</string>
   <string name="message_export_success" tools:machine_translated="true">ส่งออก %1$s เรียบร้อยแล้ว</string>
@@ -351,14 +335,11 @@
   <string name="label_green" tools:machine_translated="true">สีเขียว</string>
   <string name="label_blue" tools:machine_translated="true">สีน้ำเงิน</string>
   <string name="label_hex_color" tools:machine_translated="true">รหัสสีฐานสิบหก</string>
-  <string name="colors_fg_label" tools:machine_translated="true">สีพื้นหน้า: %1$d</string>
-  <string name="color_bg_label" tools:machine_translated="true">สีพื้นหลัง: %1$d</string>
   <string name="section_fg_bg_colors" tools:machine_translated="true">สีพื้นหน้าและสีพื้นหลัง</string>
   <string name="label_foreground_color" tools:machine_translated="true">สีพื้นหน้า</string>
   <string name="label_background_color" tools:machine_translated="true">พื้นหลัง</string>
   <string name="label_base_scheme" tools:machine_translated="true">รูปแบบเริ่มต้น:</string>
   <string name="menu_manage_colors" tools:machine_translated="true">จัดการชุดสี</string>
-  <string name="palette_editor_builtin_note" tools:machine_translated="true">ชุดรูปแบบเริ่มต้นจะไม่สามารถแก้ไขได้ หากต้องการปรับแต่ง ให้ทำสำเนาชุดรูปแบบก่อน.</string>
   <string name="section_color_preview" tools:machine_translated="true">ตัวอย่าง</string>
   <string name="image_description_connected" tools:machine_translated="true">เชื่อมต่อแล้ว.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">ตัดการเชื่อมต่อแล้ว.</string>
@@ -413,9 +394,6 @@
   <string name="empty_port_forwards_message" tools:machine_translated="true">ยังไม่ได้ตั้งค่าการส่งต่อพอร์ต.</string>
   <string name="empty_urls_message" tools:machine_translated="true">ไม่พบ URL ใดๆ ในบัฟเฟอร์ของเทอร์มินัล</string>
   <string name="console_default_title" tools:machine_translated="true">หน้าจอคอนโซล</string>
-  <string name="host_editor_quick_connect_label" tools:machine_translated="true">เชื่อมต่ออย่างรวดเร็ว</string>
-  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">ผู้ใช้\@ชื่อโฮสต์:พอร์ต</string>
-  <string name="host_editor_quick_connect_example" tools:machine_translated="true">ตัวอย่าง: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced" tools:machine_translated="true">แสดงตัวเลือกขั้นสูง</string>
   <string name="host_editor_hide_advanced" tools:machine_translated="true">ซ่อนตัวเลือกขั้นสูง</string>
   <string name="resize_width_label" tools:machine_translated="true">ความกว้าง (จำนวนคอลัมน์)</string>
@@ -494,7 +472,6 @@
   <string name="forget_host_keys_confirm" tools:machine_translated="true">คุณแน่ใจหรือไม่ว่าต้องการลบข้อมูลคีย์โฮสต์ที่บันทึกไว้สำหรับ \'%1$s\'? ระบบจะแจ้งให้คุณตรวจสอบคีย์โฮสต์ในการเชื่อมต่อครั้งถัดไป.</string>
   <string name="list_pubkey_edit" tools:machine_translated="true">แก้ไขข้อมูลคีย์สาธารณะ</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">รุ่นของ IP</string>
-  <string name="hostpref_ipversion_summary" tools:machine_translated="true">เลือกเวอร์ชันของที่อยู่ IP ที่ต้องการใช้เมื่อเชื่อมต่อ</string>
   <string name="ipversion_auto" tools:machine_translated="true">อัตโนมัติ</string>
   <string name="ipversion_ipv4" tools:machine_translated="true">ใช้เฉพาะ IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">ใช้เฉพาะ IPv6</string>
@@ -539,9 +516,6 @@
   <string name="pref_customterminal_summary" tools:machine_translated="true">เพิ่มค่า TERM ที่กำหนดเองสำหรับเซิร์ฟเวอร์ระยะไกล</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">เพิ่มประเภทเทอร์มินัลที่กำหนดเอง</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">ประเภทของเทอร์มินัล (เช่น rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">จัดการประเภทเทอร์มินัลที่กำหนดเอง</string>
-  <string name="button_add_custom" tools:machine_translated="true">เพิ่มรายการที่กำหนดเอง…</string>
-  <string name="button_manage_custom" tools:machine_translated="true">จัดการรายการที่กำหนดเอง…</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">ป้อนค่าที่กำหนดเอง</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">กด Ctrl+A แล้วตามด้วยปุ่ม Space</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
@@ -555,7 +529,6 @@
   <string name="import_hosts_success" tools:machine_translated="true">นำเข้าโฮสต์จำนวน %1$d รายการ (ข้ามไป %2$d รายการ) และโปรไฟล์จำนวน %3$d รายการ (ข้ามไป %4$d รายการ)</string>
   <string name="export_hosts_failed" tools:machine_translated="true">ไม่สามารถส่งออกข้อมูลโฮสต์ได้: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">ไม่สามารถนำเข้าข้อมูลโฮสต์ได้: %s</string>
-  <string name="export_hosts_title" tools:machine_translated="true">ส่งออกรายการโฮสต์</string>
   <string name="shortcut_customize_title" tools:machine_translated="true">ปรับแต่งทางลัด</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">สีไอคอน</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">รูปแบบไอคอน</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">เปิดอยู่</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">แสดงรูปภาพที่แทรกในข้อความหรือไม่</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">อนุญาตให้เครื่องนี้แสดงรูปภาพแบบแทรกในเนื้อหาสำหรับช่วงเวลาที่เหลือของการใช้งานครั้งนี้หรือไม่</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">เปิดใช้งานการเริ่มต้นระบบ</string>
   <string name="automation_load_failed" tools:machine_translated="true">ไม่สามารถโหลดระบบอัตโนมัติได้</string>
   <string name="automation_save_failed" tools:machine_translated="true">ไม่สามารถบันทึกการตั้งค่าอัตโนมัติได้</string>
   <string name="automation_invalid_action" tools:machine_translated="true">ตรวจสอบข้อความ รูปแบบ ระยะเวลา หรือพอร์ตที่เลือกสำหรับการส่งต่อข้อมูล</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">เลื่อนขึ้น</string>
   <string name="automation_move_down" tools:machine_translated="true">เลื่อนลง</string>
   <string name="automation_drag" tools:machine_translated="true">ลากเพื่อจัดเรียงลำดับใหม่</string>
-  <string name="automation_unsaved" tools:machine_translated="true">บันทึกการเปลี่ยนแปลงหรือไม่</string>
-  <string name="automation_discard" tools:machine_translated="true">ลบทิ้ง</string>
   <string name="automation_cancel" tools:machine_translated="true">ยกเลิก</string>
   <string name="automation_text" tools:machine_translated="true">ข้อความ</string>
   <string name="automation_regex" tools:machine_translated="true">นิพจน์ปกติ</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">ปุ่ม Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f วินาที</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">ดำเนินการทั้งหมด %1$d รายการ</item>
-		<item quantity="other">ดำเนินการทั้งหมด %1$d รายการ</item>
-	</plurals>
+    <item quantity="one">ดำเนินการทั้งหมด %1$d รายการ</item>
+    <item quantity="other">ดำเนินการทั้งหมด %1$d รายการ</item>
+  </plurals>
 </resources>

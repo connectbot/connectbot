@@ -37,8 +37,6 @@
 	<string name="title_help">"Help"</string>
 	<!-- Window title for the license/EULA screen -->
 	<string name="title_eula">License</string>
-	<!-- Window title for color list editing screen -->
-	<string name="title_colors">"Colors"</string>
 	<!-- Dialog title for color picker dialog -->
 	<string name="title_color_picker">"Pick a color"</string>
 	<!-- Window title for the global applications settings activity. -->
@@ -119,9 +117,6 @@
 	<string name="pubkey_import_new_password">"New password"</string>
 	<!-- Label for the password confirmation field when setting a new password to encrypt the imported key. -->
 	<string name="pubkey_import_confirm_password">"Confirm password"</string>
-	<!-- Note that the '\n' just splits lines, so it's actually "create or import" -->
-	<string name="pubkey_list_empty">"Tap \"Menu\" to create"\n"or import key pairs."</string>
-	<string name="pubkey_unknown_format">"Unknown format"</string>
 	<!-- Context menu action to change the password protecting a private key -->
 	<string name="pubkey_change_password">"Change password"</string>
 	<!-- Context menu action to unlock an encrypted key for use in authentication -->
@@ -172,8 +167,6 @@
 	<!-- The body of the warning a user gets when the host key has changed. Note that this can be a very serious attack, so we try to be as "loud" to the user as possible. -->
 	<string name="host_verification_failure_warning">"IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!"\n"Someone could be eavesdropping on you right now (man-in-the-middle attack)!"\n"It is also possible that the host key has just been changed."</string>
 
-	<!-- Prompt user gets when the remote host has disconnected unexpectedly. -->
-	<string name="prompt_host_disconnected">"Host has disconnected."\n"Close session?"</string>
 	<!-- Prompt user must answer yes or no to when the remote host fails verification of encryption fingerprint -->
 	<string name="prompt_continue_connecting">"Are you sure you want to continue connecting?"</string>
 
@@ -284,9 +277,6 @@
 	<string name="pref_theme_light">Light</string>
 	<!-- Theme option: always use the dark theme regardless of OS setting -->
 	<string name="pref_theme_dark">Dark</string>
-
-	<!-- Name for the rotation mode preference -->
-	<string name="pref_rotation_title">"Rotation mode"</string>
 
 	<!-- Name for the titlebar hide preference -->
 	<string name="pref_titlebarhide_title">"Autohide title bar"</string>
@@ -468,8 +458,6 @@
 
 	<!-- Host post-login automation preference title -->
 	<string name="hostpref_postlogin_title">"Post-login automation"</string>
-	<!-- Host post-login automation preference summary -->
-	<string name="hostpref_postlogin_summary">"Commands to run on remote server once authenticated"</string>
 
 	<!-- Host compression preference title -->
 	<string name="hostpref_compression_title">"Compression"</string>
@@ -677,15 +665,6 @@
 	<!-- Context menu action to forget stored host keys for the selected host -->
 	<string name="list_host_forget_keys">"Forget host keys"</string>
 
-	<!-- Default screen rotation preference selection -->
-	<string name="list_rotation_default">"Default"</string>
-	<!-- Preference selection to force landscape orientation -->
-	<string name="list_rotation_land">"Force landscape"</string>
-	<!-- Preference selection to force portrait orientation -->
-	<string name="list_rotation_port">"Force portrait"</string>
-	<!-- Selection to indicate the rotation should be selected automatically based on the tilt sensor. -->
-	<string name="list_rotation_auto">"Automatic"</string>
-
 	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A then Space". -->
 	<string name="list_camera_ctrlaspace">"Ctrl+A then Space"</string>
 	<!-- Selection to indicate pressing the Camera button should send "Ctrl+A". -->
@@ -825,15 +804,6 @@
 	<!-- Preference selection for SSH Authentication Agent to be able to use pubkeys -->
 	<string name="yes">"Yes"</string>
 
-	<!-- Selector title for the list of color schemes. -->
-	<string name="list_color_schemes">"Color schemes"</string>
-
-	<!-- Menu selection to reset colors to their defaults. -->
-	<string name="menu_colors_reset">"Reset"</string>
-
-	<!-- Button text to open color scheme manager -->
-	<string name="button_manage_schemes">"Manage Schemes"</string>
-
 	<!-- Window title for color scheme manager screen -->
 	<string name="title_scheme_manager">"Manage Color Schemes"</string>
 
@@ -843,17 +813,11 @@
 	<!-- Button text to duplicate a color scheme -->
 	<string name="button_duplicate_scheme">"Duplicate"</string>
 
-	<!-- Button text to rename a color scheme -->
-	<string name="button_rename_scheme">"Rename"</string>
-
 	<!-- Button text to delete a color scheme -->
 	<string name="button_delete_scheme">"Delete"</string>
 
 	<!-- Dialog title when creating a new color scheme -->
 	<string name="dialog_title_new_scheme">"New Color Scheme"</string>
-
-	<!-- Dialog title when renaming a color scheme -->
-	<string name="dialog_title_rename_scheme">"Rename Color Scheme"</string>
 
 	<!-- Label for scheme name input field -->
 	<string name="label_scheme_name">"Scheme Name"</string>
@@ -890,9 +854,6 @@
 
 	<!-- Empty state message when no custom schemes exist -->
 	<string name="empty_custom_schemes">"No custom schemes. Tap \"New Scheme\" to create one."</string>
-
-	<!-- Button text to edit full color palette -->
-	<string name="button_edit_palette">"Edit Palette"</string>
 
 	<!-- Button text to export a color scheme to JSON file -->
 	<string name="button_export_scheme">"Export Scheme"</string>
@@ -949,12 +910,6 @@
 	<!-- Label for the hex color input field where users can type a hex color code -->
 	<string name="label_hex_color">"Hex Color"</string>
 
-	<!-- Very short label indicating the number next to it is "foreground color" number. -->
-	<string name="colors_fg_label">"FG: %1$d"</string>
-
-	<!-- Very short label indicating the number next to it is "background color" number. -->
-	<string name="color_bg_label">"BG: %1$d"</string>
-
 	<!-- Section header for the foreground and background color selectors in the palette editor -->
 	<string name="section_fg_bg_colors">Foreground &amp; Background</string>
 	<!-- Label under the foreground color swatch in the palette editor -->
@@ -966,8 +921,6 @@
 	<string name="label_base_scheme">Base scheme:</string>
 	<!-- Icon button in the profile list screen to open color scheme management -->
 	<string name="menu_manage_colors">Manage Color Schemes</string>
-	<!-- Note shown in palette editor for built-in schemes that cannot be edited -->
-	<string name="palette_editor_builtin_note">Built-in schemes are read-only. Duplicate to customize.</string>
 	<!-- Section header for the terminal color preview shown below the ANSI color grid -->
 	<string name="section_color_preview">Preview</string>
 
@@ -1128,12 +1081,6 @@
 	<string name="console_default_title">Console</string>
 
 	<!-- Host editor screen labels -->
-	<!-- Label for quick connect input field -->
-	<string name="host_editor_quick_connect_label">Quick connect</string>
-	<!-- Placeholder text showing format for quick connect field -->
-	<string name="host_editor_quick_connect_placeholder">user@hostname:port</string>
-	<!-- Supporting text showing example for quick connect field -->
-	<string name="host_editor_quick_connect_example">Example: root@192.168.1.1:22</string>
 	<!-- Text for button to show advanced host options -->
 	<string name="host_editor_show_advanced">Show advanced options</string>
 	<!-- Text for button to hide advanced host options -->
@@ -1324,8 +1271,6 @@
 	<!-- IP Version selection for host connections -->
 	<!-- Title for IP version preference in host editor -->
 	<string name="hostpref_ipversion_title">IP version</string>
-	<!-- Summary text explaining what the IP version setting controls -->
-	<string name="hostpref_ipversion_summary">Select which IP address version to use when connecting</string>
 	<!-- Option for automatic IP version selection (try both IPv4 and IPv6) -->
 	<string name="ipversion_auto">Automatic</string>
 	<!-- Option to force IPv4-only connections -->
@@ -1434,12 +1379,6 @@
 	<string name="dialog_customterminal_title">Add Custom Terminal Type</string>
 	<!-- Label/hint for terminal type input field -->
 	<string name="dialog_customterminal_hint">Terminal type (e.g., rxvt-unicode)</string>
-	<!-- Dialog title for managing custom terminal types -->
-	<string name="dialog_manage_customterminal_title">Manage Custom Terminal Types</string>
-	<!-- Button to add a custom item -->
-	<string name="button_add_custom">Add custom…</string>
-	<!-- Button to manage custom items -->
-	<string name="button_manage_custom">Manage custom…</string>
 	<!-- Label for custom value input in list preference dialogs -->
 	<string name="dialog_custom_value_label">Enter custom value</string>
 	<!-- Summary description for Ctrl+A then Space camera button action -->
@@ -1474,8 +1413,6 @@
 	<string name="import_json_file_too_large">JSON file is too large to import (maximum 8 MB)</string>
 	<!-- Error shown when a selected import file cannot be opened. -->
 	<string name="import_file_unavailable">Cannot open selected file</string>
-	<!-- Title for the export hosts file picker dialog -->
-	<string name="export_hosts_title">Export Hosts</string>
 
 	<!-- Shortcut customization dialog strings -->
 	<!-- Dialog title when customizing a shortcut icon -->
@@ -1528,8 +1465,6 @@
 	<string name="inline_images_prompt_message">Allow this host to display inline images for the rest of this session?</string>
 
   <!-- Post-login automation -->
-	<!-- Port forward editor switch controlling automatic startup. -->
-	<string name="automation_forward_start_enabled">Start enabled</string>
 	<!-- Automation editor load failure. -->
 	<string name="automation_load_failed">Could not load automation</string>
 	<!-- Automation editor save failure; draft is retained. -->
@@ -1576,10 +1511,6 @@
 	<string name="automation_move_down">Move down</string>
 	<!-- Automation action drag handle accessibility description. -->
 	<string name="automation_drag">Drag to reorder</string>
-	<!-- Unsaved automation navigation dialog title. -->
-	<string name="automation_unsaved">Save changes?</string>
-	<!-- Discard the automation draft. -->
-	<string name="automation_discard">Discard</string>
 	<!-- Cancel automation or dismiss a dialog. -->
 	<string name="automation_cancel">Cancel</string>
 	<!-- Multiline action text input label. -->

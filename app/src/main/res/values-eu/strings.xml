@@ -5,7 +5,6 @@
   <string name="title_pubkey_list">Gako publikoak</string>
   <string name="title_port_forwards_list">Ataka birbidalketak</string>
   <string name="title_help">Laguntza</string>
-  <string name="title_colors">Koloreak</string>
   <string name="title_color_picker">Aukeratu kolore bat</string>
   <string name="title_settings">Ezarpenak</string>
   <string name="title_pubkey_generate">Sortu</string>
@@ -44,7 +43,6 @@
   <string name="prompt_allow_agent_to_use_key">Urruneko ostalariak \'%1$s\'\ngakoa erabil dezan onartu?</string>
   <string name="host_verification_failure_warning_header">KONTUZ: URRUNEKO OSTALARIAREN IDENTIFIKAZIOA ALDATU DA!</string>
   <string name="host_verification_failure_warning">POSIBLE DA NORBAIT ZERBAIT MALTZURRA EGITEN ARITZEA!\nNorbait ezkutuan entzuten aritu daiteke (man-in-the-middle erasoa)!\nBeste aukera ostalariaren gakoa aldatu izana da.</string>
-  <string name="prompt_host_disconnected">Ostalaria deskonektatu egin da.\nSaioa itxi nahi duzu?</string>
   <string name="prompt_continue_connecting">Ziur zaude konektatzen\njarraitu nahi duzula?</string>
   <string name="host_authenticity_warning">Ezin izan da \'%1$s\' ostalariaren benetakotasuna ziurtatu.</string>
   <string name="host_fingerprint">%1$s ostalariaren hatz-marka %2$s da</string>
@@ -59,7 +57,6 @@
   <string name="pref_backupkeys_title">Gako publikoen babeskopia</string>
   <string name="pref_backupkeys_summary">Gako pribatuen babeskopiak egin Androiden babeskopia mekanismoa erabiliz</string>
   <string name="pref_ui_category">Erabiltzaile-interfazea</string>
-  <string name="pref_rotation_title">Biratze modua</string>
   <string name="pref_titlebarhide_title">Ezkutatu titulu-barra automatikoki</string>
   <string name="pref_titlebarhide_summary">Ukitu kontsola titulu-barra eta sarbide-menua erakusteko</string>
   <string name="pref_alwaysvisible_title">Tekla bereziak beti ikusgai</string>
@@ -103,7 +100,6 @@
   <string name="hostpref_pubkeyid_title">Erabili gako publiko bidezko autentifikazioa</string>
   <string name="hostpref_authagent_title">Erabili SSH autentifikazio-eragilea</string>
   <string name="hostpref_postlogin_title">Saio hasiera ondoko automatizazioa</string>
-  <string name="hostpref_postlogin_summary">Autentifikatu ondoren urruneko zerbitzarian exekutatu beharreko komandoak</string>
   <string name="hostpref_compression_title">Konpresioa</string>
   <string name="hostpref_compression_summary">Hau lagungarri izan daiteke konexio mantsoekin</string>
   <string name="hostpref_wantsession_title">Hasi shell saioa</string>
@@ -140,10 +136,6 @@
   <string name="list_host_edit">Editatu ostalaria</string>
   <string name="list_host_portforwards">Editatu ataka birbidalketak</string>
   <string name="list_host_delete">Ezabatu ostalaria</string>
-  <string name="list_rotation_default">Lehenetsia</string>
-  <string name="list_rotation_land">Behartu horizontala</string>
-  <string name="list_rotation_port">Behartu bertikala</string>
-  <string name="list_rotation_auto">Automatikoa</string>
   <string name="list_camera_ctrlaspace">Ktrl+A ondoren zuriunea</string>
   <string name="list_camera_ctrla">Ktrl+A</string>
   <string name="list_camera_esc">Ihes</string>
@@ -178,10 +170,7 @@
   <string name="notification_text">%1$s(e)k zure arreta behar du.</string>
   <string name="no">Ez</string>
   <string name="yes">Bai</string>
-  <string name="menu_colors_reset">Berrezarri</string>
   <string name="app_is_running">ConnectBot martxan dago</string>
-  <string name="colors_fg_label">Aur: %1$d</string>
-  <string name="color_bg_label">Atz: %1$d</string>
   <string name="image_description_connected">Konektatuta.</string>
   <string name="image_description_disconnected">Deskonektatuta.</string>
   <string name="image_description_toggle_control_character">Txandakatu kontrol karakterea.</string>
@@ -238,8 +227,6 @@
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">Erabili pasahitz berbera enkriptatzeko.</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Pasahitz berria</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Pasahitza berretsi</string>
-  <string name="pubkey_list_empty" tools:machine_translated="true">Ukitu \"Menu\" aukera, gako-bikote bat sortzeko edo inportatzeko.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">Format ezezaguna</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Sartu pasahitza \'%1$s\' gakoa desblokeatzeko.</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">Lehenago erabiltzen zen izen hori duen beste gako bat dago.</string>
   <string name="prompt_username" tools:machine_translated="true">Erabiltzaile-izena:</string>
@@ -352,15 +339,11 @@
   <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Gorde den pasahitzaren autentifikazioak huts egin du.</string>
   <string name="terminal_auth_biometric" tools:machine_translated="true">\'%1$s\' gakoa desblokeatzeko autentifikazio biometrikoa eskatzen ari da.</string>
   <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">\'%1$s\' gako biometrikoa ezgaitu egin da. Hori gerta daiteke gailuan hatz-marka berriak erregistratzen direnean. Mesedez, sortu gako berri bat.</string>
-  <string name="list_color_schemes" tools:machine_translated="true">Kolore-eskema</string>
-  <string name="button_manage_schemes" tools:machine_translated="true">Kolore-eskema kudeatu</string>
   <string name="title_scheme_manager" tools:machine_translated="true">Kolore-eskema kudeatu</string>
   <string name="button_new_scheme" tools:machine_translated="true">Esquema berria</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">Bikoiztu</string>
-  <string name="button_rename_scheme" tools:machine_translated="true">Izena aldatu</string>
   <string name="button_delete_scheme" tools:machine_translated="true">Ezabatu</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">Kolore-eskema berria</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Aldatu kolore-eskemaren izena.</string>
   <string name="label_scheme_name" tools:machine_translated="true">Esquema-izenaren etiketa</string>
   <string name="label_scheme_description" tools:machine_translated="true">Deskribapena (hautazkoa)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">Esquema ezabatu?</string>
@@ -370,7 +353,6 @@
   <string name="label_built_in_scheme" tools:machine_translated="true">Barnean integratua.</string>
   <string name="label_custom_scheme" tools:machine_translated="true">Pertsonalizatua</string>
   <string name="empty_custom_schemes" tools:machine_translated="true">Ez dago eskema pertsonalizaturik. Ukitu «Eskema berria» aukera bat sortzeko.</string>
-  <string name="button_edit_palette" tools:machine_translated="true">Paleta aldatu</string>
   <string name="button_export_scheme" tools:machine_translated="true">Esportatu eskema</string>
   <string name="button_import_scheme" tools:machine_translated="true">Esportatu eskema</string>
   <string name="message_export_success" tools:machine_translated="true">%1$s esportatu da</string>
@@ -393,7 +375,6 @@
   <string name="label_background_color" tools:machine_translated="true">Atzeko planoa</string>
   <string name="label_base_scheme" tools:machine_translated="true">Oinarrizko eskema:</string>
   <string name="menu_manage_colors" tools:machine_translated="true">Kolore-eskema kudeatu</string>
-  <string name="palette_editor_builtin_note" tools:machine_translated="true">Aurrez aurreko eskemaak irakurtzeko soilik dira. Kopiatu eta pertsonalizatu.</string>
   <string name="section_color_preview" tools:machine_translated="true">Aurrebista</string>
   <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">Testua sartu</string>
   <string name="terminal_text_input_dialog_title" tools:machine_translated="true">Testua sartu</string>
@@ -419,9 +400,6 @@
   <string name="empty_port_forwards_message" tools:machine_translated="true">Ez dago portu-birzuzketarik konfiguraturik.</string>
   <string name="empty_urls_message" tools:machine_translated="true">Ez da URLrik aurkitu terminalaren memorian.</string>
   <string name="console_default_title" tools:machine_translated="true">Kontsola</string>
-  <string name="host_editor_quick_connect_label" tools:machine_translated="true">Konexio azkarra</string>
-  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">erabiltzailea\@ostalaria:portua</string>
-  <string name="host_editor_quick_connect_example" tools:machine_translated="true">Adibidea: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced" tools:machine_translated="true">Aukera aurreratuak erakutsi</string>
   <string name="host_editor_hide_advanced" tools:machine_translated="true">Aukera aurreratuak ezkutatu</string>
   <string name="resize_width_label" tools:machine_translated="true">Zabalera (zutabeetan)</string>
@@ -494,7 +472,6 @@
   <string name="forget_host_keys_confirm" tools:machine_translated="true">Ziur zaude \'%1$s\'-rako gordetako ostalako gakoak ezabatu nahi duzula? Hurrengo konexioan ostalako gakoa egiazteko eskatuko zaizu.</string>
   <string name="list_pubkey_edit" tools:machine_translated="true">Gako publikoa editatu</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">IP bertsioa</string>
-  <string name="hostpref_ipversion_summary" tools:machine_translated="true">Aukeratu zein IP helbide-bertsio erabili konektatzeko.</string>
   <string name="ipversion_auto" tools:machine_translated="true">Automatikoa</string>
   <string name="ipversion_ipv4" tools:machine_translated="true">IPv4 soilik</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">IPv6 soilik</string>
@@ -539,9 +516,6 @@
   <string name="pref_customterminal_summary" tools:machine_translated="true">Gehitu TERM balio pertsonalizatuak urruneko zerbitzarietarako.</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">Gehitu terminal mota pertsonalizatua</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">Terminalaren mota (adibidez, rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Terminal mota pertsonalizatuak kudeatu</string>
-  <string name="button_add_custom" tools:machine_translated="true">Gehitu elementu pertsonalizatua…</string>
-  <string name="button_manage_custom" tools:machine_translated="true">Pertsonalizatutako elementuak kudeatu…</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">Sartu balio pertsonalizatua.</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, gero Espazio-barra.</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
@@ -555,7 +529,6 @@
   <string name="import_hosts_success" tools:machine_translated="true">%1$d host inportatu (%2$d saltatu) eta %3$d profil (%4$d saltatu)</string>
   <string name="export_hosts_failed" tools:machine_translated="true">Hostak esportatzean huts egin du: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">Hostak inportatzean huts egin du: %s</string>
-  <string name="export_hosts_title" tools:machine_translated="true">Esportatu ostalerako zerbitzariak</string>
   <string name="shortcut_customize_title" tools:machine_translated="true">Lastebidearen ikonoa pertsonalizatu</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Ikonoaren kolorea</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Ikur-estiloa</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">Pikatuta</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Erakutsi irudiak testuaren barruan?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Baimendu al host honi, saio honetan zehar, irudiak lerroan erakustea?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Abiaraztea gaituta</string>
   <string name="automation_load_failed" tools:machine_translated="true">Ezin izan da automatizazioa kargatu.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Ezin izan da automatizazioa gorde.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Egiaztatu testua, eredua, iraupena edo hautatutako ataka-birzabalpena.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Gora mugitu</string>
   <string name="automation_move_down" tools:machine_translated="true">Beherantz mugitu</string>
   <string name="automation_drag" tools:machine_translated="true">Arrastatu ordena aldatzeko.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Aldaketak gorde al?</string>
-  <string name="automation_discard" tools:machine_translated="true">Baztertu.</string>
   <string name="automation_cancel" tools:machine_translated="true">Utzi edo eten.</string>
   <string name="automation_text" tools:machine_translated="true">Testua</string>
   <string name="automation_regex" tools:machine_translated="true">Adierazpen erregularra</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f seg.</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d ekintza</item>
-		<item quantity="other">%1$d ekintza</item>
-	</plurals>
+    <item quantity="one">%1$d ekintza</item>
+    <item quantity="other">%1$d ekintza</item>
+  </plurals>
 </resources>

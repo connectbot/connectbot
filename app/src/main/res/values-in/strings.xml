@@ -7,7 +7,6 @@
   <string name="title_port_forwards_list">Penerusan port</string>
   <string name="title_help">Bantuan</string>
   <string name="title_eula">Lisensi</string>
-  <string name="title_colors">Warna</string>
   <string name="title_color_picker">Pilih warna</string>
   <string name="title_settings">Setelan</string>
   <string name="title_pubkey_generate">Buat</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password">Gunakan kata sandi yang sama untuk enkripsi</string>
   <string name="pubkey_import_new_password">Kata sandi baru</string>
   <string name="pubkey_import_confirm_password">Konfirmasi kata sandi</string>
-  <string name="pubkey_list_empty">Ketuk \"Menu\" untuk membuat atau mengimpor pasangan kunci.</string>
-  <string name="pubkey_unknown_format">Format tidak dikenal</string>
   <string name="pubkey_change_password">Ubah kata sandi</string>
   <string name="pubkey_unlock">Buka kunci</string>
   <string name="pubkey_unlock_message">Masukkan kata sandi untuk membuka kunci \'%1$s\'</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key">Ijinkan remote host untuk\nmenggunakan kunci \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">PERINGATAN: IDENTIFIKASI REMOTE HOST TELAH BERUBAH!</string>
   <string name="host_verification_failure_warning">KEMUNGKINAN SESEORANG SEDANG BERBUAT KOTOR!\nSeseorang mungkin tengah menyadap anda saat ini (serangan man-in-the-middle)!\nMungkin juga kunci host baru saja diubah.</string>
-  <string name="prompt_host_disconnected">Sambungan dengan host telah terputus.\nTutup sesi ini?</string>
   <string name="prompt_continue_connecting">Apakah Anda yakin ingin\nterus mencoba menyambungkan?</string>
   <string name="host_authenticity_warning">Authentifikasi dari host \'%1$s\' tidak dapat dibuat.</string>
   <string name="host_fingerprint">Host %1$s tanda tangan kunci adalah %2$s</string>
@@ -115,7 +111,6 @@
   <string name="pref_theme_system">Pengaturan bawaan sistem</string>
   <string name="pref_theme_light">Ringan</string>
   <string name="pref_theme_dark">Gelap</string>
-  <string name="pref_rotation_title">Mode rotasi</string>
   <string name="pref_titlebarhide_title">Sembunyikan bilah judul secara otomatis</string>
   <string name="pref_titlebarhide_summary">Ketuk konsol untuk menampilkan bilah judul dan mengakses menu</string>
   <string name="pref_alwaysvisible_title">Tombol-tombol khusus selalu terlihat</string>
@@ -181,7 +176,6 @@
   <string name="hostpref_pubkeyid_title">Gunakan otentifikasi pubkey</string>
   <string name="hostpref_authagent_title">Gunakan SSH auth agent</string>
   <string name="hostpref_postlogin_title">otomasi setelah login</string>
-  <string name="hostpref_postlogin_summary">Perintah yang dijalankan diremote server sekali terotentifikasi</string>
   <string name="hostpref_compression_title">Kompresi</string>
   <string name="hostpref_compression_summary">Ini mungkin akan membantu dengan jaringan lambat</string>
   <string name="hostpref_wantsession_title">Jalankan sesi shell</string>
@@ -268,10 +262,6 @@
   <string name="list_host_delete">Hapus host</string>
   <string name="list_host_duplicate">Host duplikat</string>
   <string name="list_host_forget_keys">Abaikan kunci host</string>
-  <string name="list_rotation_default">Baku</string>
-  <string name="list_rotation_land">Paksakan bentuk datar</string>
-  <string name="list_rotation_port">Paksakan bentuk tegak</string>
-  <string name="list_rotation_auto">Otomatis</string>
   <string name="list_camera_ctrlaspace">Ctrl+A kemudian spasi</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -311,16 +301,11 @@
   <string name="notification_text">%1$s memerlukan perhatian anda.</string>
   <string name="no">Tidak</string>
   <string name="yes">Ya</string>
-  <string name="list_color_schemes">Skema warna</string>
-  <string name="menu_colors_reset">Atur ulang</string>
-  <string name="button_manage_schemes">Kelola Skema</string>
   <string name="title_scheme_manager">Kelola Skema Warna</string>
   <string name="button_new_scheme">Skema Baru</string>
   <string name="button_duplicate_scheme">Duplikat</string>
-  <string name="button_rename_scheme">Ubah nama</string>
   <string name="button_delete_scheme">Hapus</string>
   <string name="dialog_title_new_scheme">Skema Warna Baru</string>
-  <string name="dialog_title_rename_scheme">Ubah Nama Skema Warna</string>
   <string name="label_scheme_name">Nama Skema</string>
   <string name="label_scheme_description">Deskripsi (opsional)</string>
   <string name="dialog_title_delete_scheme">Hapus Skema?</string>
@@ -330,7 +315,6 @@
   <string name="label_built_in_scheme">Terintegrasi</string>
   <string name="label_custom_scheme">Kustom</string>
   <string name="empty_custom_schemes">Tidak ada skema khusus. Ketuk \"Skema Baru\" untuk membuatnya.</string>
-  <string name="button_edit_palette">Edit Palet</string>
   <string name="button_export_scheme">Ekspor Skema</string>
   <string name="button_import_scheme">Impor Skema</string>
   <string name="message_export_success">%1$s telah diekspor</string>
@@ -349,14 +333,11 @@
   <string name="label_green">Hijau</string>
   <string name="label_blue">Biru</string>
   <string name="label_hex_color">Kode Warna Heksadesimal</string>
-  <string name="colors_fg_label">WD: %1$d</string>
-  <string name="color_bg_label">WB: %1$d</string>
   <string name="section_fg_bg_colors">Latar Depan &amp; Latar Belakang</string>
   <string name="label_foreground_color">Latar Depan</string>
   <string name="label_background_color">Latar Belakang</string>
   <string name="label_base_scheme">Skema dasar:</string>
   <string name="menu_manage_colors">Kelola Skema Warna</string>
-  <string name="palette_editor_builtin_note">Skema bawaan bersifat hanya baca. Duplikat untuk menyesuaikan.</string>
   <string name="section_color_preview">Pratinjau</string>
   <string name="image_description_connected">Tersambung.</string>
   <string name="image_description_disconnected">Koneksi terputus.</string>
@@ -411,9 +392,6 @@
   <string name="empty_port_forwards_message">Tidak ada pengalihan port yang dikonfigurasi.</string>
   <string name="empty_urls_message">Tidak ada URL yang ditemukan di buffer terminal</string>
   <string name="console_default_title">Konsol</string>
-  <string name="host_editor_quick_connect_label">Hubungkan dengan cepat</string>
-  <string name="host_editor_quick_connect_placeholder">pengguna\@nama_host:port</string>
-  <string name="host_editor_quick_connect_example">Contoh: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced">Tampilkan opsi lanjutan</string>
   <string name="host_editor_hide_advanced">Sembunyikan opsi lanjutan</string>
   <string name="resize_width_label">Lebar (kolom)</string>
@@ -480,7 +458,6 @@
   <string name="forget_host_keys_confirm">Apakah Anda yakin ingin menghapus kunci host yang tersimpan untuk \'%1$s\'? Anda akan diminta untuk memverifikasi kunci host pada koneksi berikutnya.</string>
   <string name="list_pubkey_edit">Edit kunci publik</string>
   <string name="hostpref_ipversion_title">Versi IP</string>
-  <string name="hostpref_ipversion_summary">Pilih versi alamat IP yang akan digunakan saat terhubung</string>
   <string name="ipversion_auto">Otomatis</string>
   <string name="ipversion_ipv4">Hanya IPv4</string>
   <string name="ipversion_ipv6">Hanya IPv6</string>
@@ -525,9 +502,6 @@
   <string name="pref_customterminal_summary">Tambahkan nilai TERM khusus untuk server jarak jauh</string>
   <string name="dialog_customterminal_title">Tambahkan Jenis Terminal Kustom</string>
   <string name="dialog_customterminal_hint">Jenis terminal (misalnya, rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title">Kelola Jenis Terminal Kustom</string>
-  <string name="button_add_custom">Tambahkan khusus…</string>
-  <string name="button_manage_custom">Kelola pengaturan khusus…</string>
   <string name="dialog_custom_value_label">Masukkan nilai khusus</string>
   <string name="list_camera_ctrlaspace_description">Ctrl+A lalu Spasi</string>
   <string name="list_camera_ctrla_description">Ctrl+A</string>
@@ -541,7 +515,6 @@
   <string name="import_hosts_success">Mengimpor %1$d host ( %2$d dilewati) dan %3$d profil ( %4$d dilewati)</string>
   <string name="export_hosts_failed">Gagal mengekspor daftar host: %s</string>
   <string name="import_hosts_failed">Gagal mengimpor daftar host: %s</string>
-  <string name="export_hosts_title">Ekspor Daftar Host</string>
   <string name="shortcut_customize_title">Sesuaikan Pintasan</string>
   <string name="shortcut_icon_color">Warna Ikon</string>
   <string name="shortcut_icon_style">Gaya Ikon</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">Aktif</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Tampilkan gambar sebaris?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Izinkan host ini untuk menampilkan gambar secara langsung selama sisa sesi ini?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Aktifkan saat memulai.</string>
   <string name="automation_load_failed" tools:machine_translated="true">Tidak dapat memuat otomatisasi.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Tidak dapat menyimpan otomatisasi.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Periksa teks, pola, durasi, atau port penerusan yang dipilih.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Naikkan</string>
   <string name="automation_move_down" tools:machine_translated="true">Pindahkan ke bawah</string>
   <string name="automation_drag" tools:machine_translated="true">Seret untuk mengubah urutan.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Simpan perubahan?</string>
-  <string name="automation_discard" tools:machine_translated="true">Buang</string>
   <string name="automation_cancel" tools:machine_translated="true">Batalkan</string>
   <string name="automation_text" tools:machine_translated="true">Teks</string>
   <string name="automation_regex" tools:machine_translated="true">Ekspresi reguler</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Tombol Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f detik</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d tindakan</item>
-		<item quantity="other">%1$d tindakan</item>
-	</plurals>
+    <item quantity="one">%1$d tindakan</item>
+    <item quantity="other">%1$d tindakan</item>
+  </plurals>
 </resources>

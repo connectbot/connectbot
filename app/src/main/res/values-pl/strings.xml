@@ -7,7 +7,6 @@
   <string name="title_port_forwards_list">Przekierowania portów</string>
   <string name="title_help">Pomoc</string>
   <string name="title_eula">Licencja</string>
-  <string name="title_colors">Kolory</string>
   <string name="title_color_picker">Wybór koloru</string>
   <string name="title_settings">Ustawienia</string>
   <string name="title_pubkey_generate">Generuj</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password">Użyj tego samego hasła do szyfrowania</string>
   <string name="pubkey_import_new_password">Nowe hasło</string>
   <string name="pubkey_import_confirm_password">Potwierdź hasło</string>
-  <string name="pubkey_list_empty">Dotknij opcji „Menu”, aby utworzyć lub zaimportować pary kluczy.</string>
-  <string name="pubkey_unknown_format">Nieznany format</string>
   <string name="pubkey_change_password">Zmień hasło</string>
   <string name="pubkey_unlock">Odblokuj klucz</string>
   <string name="pubkey_unlock_message">Wprowadź hasło aby odblokować klucz \'%1$s\'</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key">Zezwolić zdalnemu hostowi na\nużycie klucza \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">OSTRZEŻENIE: DANE IDENTYFIKACYJNE ZDALNEGO HOSTU ZMIENIŁY SIĘ!</string>
   <string name="host_verification_failure_warning">MOŻLIWE, ŻE STAŁEŚ SIĘ OFIARĄ ATAKU!\nPrawdopodobnie jest to atak: man-in-the-middle!\nJednak możliwe jest to, że zmienił się tylko klucz hostu.</string>
-  <string name="prompt_host_disconnected">Host rozłączył się.\nZamknąć sesję?</string>
   <string name="prompt_continue_connecting">Czy na pewno chcesz\nkontynuować połączenie?</string>
   <string name="host_authenticity_warning">Autentyczność hostu \'%1$s\' nie może zostać ustalona.</string>
   <string name="host_fingerprint">Odcisk hostu %1$s to %2$s</string>
@@ -115,7 +111,6 @@
   <string name="pref_theme_system">Domyślne ustawienia systemu</string>
   <string name="pref_theme_light">Lekki</string>
   <string name="pref_theme_dark">Ciemny</string>
-  <string name="pref_rotation_title">Sposób orientacji ekranu</string>
   <string name="pref_titlebarhide_title">Automatycznie chowaj pasek tytułowy</string>
   <string name="pref_titlebarhide_summary">Naciśnij konsolę aby wyświetlić pasek tytułowy i uzyskać dostęp do menu</string>
   <string name="pref_alwaysvisible_title">Specjalne klawisze zawsze widoczne</string>
@@ -181,7 +176,6 @@
   <string name="hostpref_pubkeyid_title">Używaj kluczy publicznych do uwierzytelnienia</string>
   <string name="hostpref_authagent_title">Używaj agenta SSH dla uwierzytelniania</string>
   <string name="hostpref_postlogin_title">Wykonaj po zalogowaniu</string>
-  <string name="hostpref_postlogin_summary">Komendy do wykonania po stronie serwera po zalogowaniu</string>
   <string name="hostpref_compression_title">Kompresja</string>
   <string name="hostpref_compression_summary">Może pomóc przy wolniejszych łączach</string>
   <string name="hostpref_wantsession_title">Uruchom sesję powłoki</string>
@@ -268,10 +262,6 @@
   <string name="list_host_delete">Usuń host</string>
   <string name="list_host_duplicate">Zduplikowany host</string>
   <string name="list_host_forget_keys">Zapomnij o kluczach hosta</string>
-  <string name="list_rotation_default">Domyślne</string>
-  <string name="list_rotation_land">Wymuś orientację poziomą</string>
-  <string name="list_rotation_port">Wymuś orientację pionową</string>
-  <string name="list_rotation_auto">Automatycznie</string>
   <string name="list_camera_ctrlaspace">Ctrl+A następnie Spacja</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -311,16 +301,11 @@
   <string name="notification_text">%1$s wymaga reakcji</string>
   <string name="no">Nie</string>
   <string name="yes">Tak</string>
-  <string name="list_color_schemes">Schematy kolorów</string>
-  <string name="menu_colors_reset">Przywróć</string>
-  <string name="button_manage_schemes">Zarządzaj schematami</string>
   <string name="title_scheme_manager">Zarządzaj schematami kolorów</string>
   <string name="button_new_scheme">Nowy Schemat</string>
   <string name="button_duplicate_scheme">Kopiuj</string>
-  <string name="button_rename_scheme">Zamień nazwę</string>
   <string name="button_delete_scheme">Usuń</string>
   <string name="dialog_title_new_scheme">Nowy schemat kolorów</string>
-  <string name="dialog_title_rename_scheme">Zmień schemat kolorów</string>
   <string name="label_scheme_name">Nazwa schematu</string>
   <string name="label_scheme_description">Opis (opcjonalny)</string>
   <string name="dialog_title_delete_scheme">Usuń schemat?</string>
@@ -330,7 +315,6 @@
   <string name="label_built_in_scheme">Wbudowany</string>
   <string name="label_custom_scheme">Niestandardowy</string>
   <string name="empty_custom_schemes">Brak niestandardowych schematów. Naciśnij „Nowy schemat”, aby utworzyć nowy.</string>
-  <string name="button_edit_palette">Edytuj Paletę</string>
   <string name="button_export_scheme">Eksportuj schemat</string>
   <string name="button_import_scheme">Schemat importu</string>
   <string name="message_export_success">Eksportowano %1$s</string>
@@ -349,14 +333,11 @@
   <string name="label_green">Zielony</string>
   <string name="label_blue">Niebieski</string>
   <string name="label_hex_color">Kolor heksadecymalny</string>
-  <string name="colors_fg_label">FG: %1$d</string>
-  <string name="color_bg_label">BG: %1$d</string>
   <string name="section_fg_bg_colors">Tryb pierwszoplanowy i drugoplanowy</string>
   <string name="label_foreground_color">Tryb pierwszoplanowy</string>
   <string name="label_background_color">Tło</string>
   <string name="label_base_scheme">Podstawowy schemat:</string>
   <string name="menu_manage_colors">Zarządzaj schematami kolorów</string>
-  <string name="palette_editor_builtin_note">Wbudowane schematy są tylko do odczytu. Skopiuj, aby je dostosować.</string>
   <string name="section_color_preview">Podgląd</string>
   <string name="image_description_connected">Połączono</string>
   <string name="image_description_disconnected">Rozłączono.</string>
@@ -411,9 +392,6 @@
   <string name="empty_port_forwards_message">Żadne przekierowania portów nie zostały skonfigurowane.</string>
   <string name="empty_urls_message">Nie znaleziono adresów URL w buforze terminala</string>
   <string name="console_default_title">Konsola</string>
-  <string name="host_editor_quick_connect_label">Szybkie połączenie</string>
-  <string name="host_editor_quick_connect_placeholder">użytkownik\@hosta:port</string>
-  <string name="host_editor_quick_connect_example">Przykład root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced">Pokaż zaawansowane opcje</string>
   <string name="host_editor_hide_advanced">Ukryj zaawansowane opcje</string>
   <string name="resize_width_label">Szerokość (kolumny)</string>
@@ -480,7 +458,6 @@
   <string name="forget_host_keys_confirm">Czy na pewno chcesz usunąć zapisane klucze hosta dla \'%1$s\'? Przy następnym połączeniu zostaniesz poproszony o weryfikację klucza hosta.</string>
   <string name="list_pubkey_edit">Edytuj klucz publiczny</string>
   <string name="hostpref_ipversion_title">Wersja IP</string>
-  <string name="hostpref_ipversion_summary">Wybierz, której wersji adresu IP chcesz używać podczas nawiązywania połączenia</string>
   <string name="ipversion_auto">Automatyczny</string>
   <string name="ipversion_ipv4">tylko IPv4</string>
   <string name="ipversion_ipv6">tylko IPv6</string>
@@ -525,9 +502,6 @@
   <string name="pref_customterminal_summary">Dodaj niestandardowe wartości TERM dla serwerów zdalnych</string>
   <string name="dialog_customterminal_title">Dodaj niestandardowy typ terminala</string>
   <string name="dialog_customterminal_hint">Typ terminala (np. rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title">Zarządzaj niestandardowymi typami terminali</string>
-  <string name="button_add_custom">Dodaj niestandardowe…</string>
-  <string name="button_manage_custom">Zarządzaj niestandardowymi…</string>
   <string name="dialog_custom_value_label">Wprowadź wartość niestandardową</string>
   <string name="list_camera_ctrlaspace_description">Ctrl+A następnie Spacja</string>
   <string name="list_camera_ctrla_description">Ctrl+A</string>
@@ -541,7 +515,6 @@
   <string name="import_hosts_success">Zaimportowano %1$d hostów (%2$d pominięto) i %3$d profili (%4$d pominięto).</string>
   <string name="export_hosts_failed">Nie udało się wyeksportować listy hostów: %s</string>
   <string name="import_hosts_failed">Nie udało się zaimportować listy hostów: %s</string>
-  <string name="export_hosts_title">Eksportuj hosty</string>
   <string name="shortcut_customize_title">Dostosuj skrót</string>
   <string name="shortcut_icon_color">Kolor ikony</string>
   <string name="shortcut_icon_style">Styl ikony</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">Włączono</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Wyświetlać obrazy bezpośrednio w tekście?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Czy zezwolić temu serwerowi na wyświetlanie obrazów bezpośrednio w tekście przez cały czas trwania tej sesji?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Automatyczny start włączony.</string>
   <string name="automation_load_failed" tools:machine_translated="true">Nie można załadować automatyzacji.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Nie udało się zapisać automatyzacji.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Sprawdź tekst, wzorzec, czas trwania lub wybrane przekierowanie portu.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Przesuń w górę.</string>
   <string name="automation_move_down" tools:machine_translated="true">Przesuń w dół.</string>
   <string name="automation_drag" tools:machine_translated="true">Przeciągnij, aby zmienić kolejność.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Zapisz zmiany?</string>
-  <string name="automation_discard" tools:machine_translated="true">Usuń.</string>
   <string name="automation_cancel" tools:machine_translated="true">Anuluj</string>
   <string name="automation_text" tools:machine_translated="true">Tekst</string>
   <string name="automation_regex" tools:machine_translated="true">Wyrażenie regularne</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Przycisk Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f sekundy</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d akcji</item>
-		<item quantity="other">%1$d operacji</item>
-	</plurals>
+    <item quantity="one">%1$d akcji</item>
+    <item quantity="other">%1$d operacji</item>
+  </plurals>
 </resources>

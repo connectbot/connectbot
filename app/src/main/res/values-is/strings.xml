@@ -4,7 +4,6 @@
   <string name="title_pubkey_list">Almennir lyklar</string>
   <string name="title_port_forwards_list">Áframsending ports</string>
   <string name="title_help">Hjálp</string>
-  <string name="title_colors">Litir</string>
   <string name="pubkey_generate">Búa til</string>
   <string name="pubkey_delete">Eyða lykli</string>
   <string name="pubkey_gather_entropy">Safna bitum af handahófi</string>
@@ -32,7 +31,6 @@
   <string name="prompt_allow_agent_to_use_key">Leyfa þjóninum að\nnota lykilinn \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">VIÐVÖRUN: AUÐKENNING ÞJÓNSINS HEFUR BREYST!</string>
   <string name="host_verification_failure_warning">ÞAÐ ER MÖGULEIKI Á AÐ EINHVER SÉ AÐ GERA EITTHVAÐ LJÓTT!\nÞað gæti verið að einhver sé að fylgjast með með þér (man-in-the-middle árás)!\nEn það gæti líka verið að lykill þjónsins hafi einfaldlega breyst.</string>
-  <string name="prompt_host_disconnected">Þjónninn hefur verið aftengdur.\nViltu loka?</string>
   <string name="prompt_continue_connecting">Ertu viss um að þú\nviljir halda áfram að tengjast?</string>
   <string name="host_authenticity_warning">Upprunaleiki lykilsins fyrir þjóninn \'%1$s\' getur ekki verið staðfestur.</string>
   <string name="host_fingerprint">Þjónninn er %1$s fingrafar lykilsins er %2$s</string>
@@ -41,7 +39,6 @@
   <string name="button_resize">Breyta stærð</string>
   <string name="alert_disconnect_msg">Tengingu tapað</string>
   <string name="pref_ui_category">Notenda viðmót</string>
-  <string name="pref_rotation_title">Snúnings hamur</string>
   <string name="pref_fullscreen_title">Fullskjáhamur</string>
   <string name="pref_fullscreen_summary">Fela stöðustiku þegar tenging er virk</string>
   <string name="pref_memkeys_title">Geyma lykla í minni</string>
@@ -67,7 +64,6 @@
   <string name="hostpref_color_title">Lita flokk</string>
   <string name="hostpref_fontsize_title">Leturstærð (pt)</string>
   <string name="hostpref_pubkeyid_title">Innskráning með almennum lykli</string>
-  <string name="hostpref_postlogin_summary">Skipanir til þess að keyra á þjóni eftir innskráningu</string>
   <string name="hostpref_compression_title">Þjöppun</string>
   <string name="hostpref_compression_summary">Þetta getur hjálpað á hægu neti</string>
   <string name="hostpref_stayconnected_title">Halda tengingu</string>
@@ -94,10 +90,6 @@
   <string name="list_host_edit">Breyta þjóni</string>
   <string name="list_host_portforwards">Breyta áframsendingu ports</string>
   <string name="list_host_delete">Eyða þjóni</string>
-  <string name="list_rotation_default">Sjálfgefið</string>
-  <string name="list_rotation_land">þvinga á hlið</string>
-  <string name="list_rotation_port">þvinga beint</string>
-  <string name="list_rotation_auto">Sjálfgefið</string>
   <string name="list_camera_ctrlaspace">Ctrl+A og Space</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -116,7 +108,6 @@
   <string name="notification_text">%1$s krefst athygli þinnar.</string>
   <string name="no">Nei</string>
   <string name="yes">Já</string>
-  <string name="menu_colors_reset">Frumstilla</string>
   <string name="app_is_running">ConnectBot er í gangi</string>
   <string name="app_desc" tools:machine_translated="true">Einfaldur, öflugur og opinn SSH-viðmótsforrit.</string>
   <string name="app_copyright" tools:machine_translated="true">Höfundarréttur © Kenny Root</string>
@@ -151,8 +142,6 @@
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">Nota sama lykilorðið til að dulkóða</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Nýtt lykilorð</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Staðfestu lykilorðið</string>
-  <string name="pubkey_list_empty" tools:machine_translated="true">Smelltu á „Valmynd“ til að búa til\neða flytja inn lykjarúmsmynd.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">Óþekkt snið</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Sláðu inn lykilorðið til að opna lykilinn \'%1$s\'.</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">Lykill með þetta nafn er þegar í notkun.</string>
   <string name="prompt_username" tools:machine_translated="true">Notendarnafn:</string>
@@ -315,15 +304,11 @@
   <string name="terminal_auth_fail" tools:machine_translated="true">[Netþjónninn þinn styður ekki kennsluaðferðirnar „lykilorð“ eða „tastatur-viðburðarkennd“.]</string>
   <string name="terminal_no_session" tools:machine_translated="true">Hægt er ekki að hefja lotu þar sem notandinn hefur slökkt á henni í stillingum tölvunnar.</string>
   <string name="local_shell_unavailable" tools:machine_translated="true">Ekki tókst! Lokaðu kerfisforritið er ekki tiltækt á þessari símtæki.</string>
-  <string name="list_color_schemes" tools:machine_translated="true">Litapallettur</string>
-  <string name="button_manage_schemes" tools:machine_translated="true">Stýra litasettum</string>
   <string name="title_scheme_manager" tools:machine_translated="true">Stýra litasettum</string>
   <string name="button_new_scheme" tools:machine_translated="true">Nýtt litasett</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">Endurtaka</string>
-  <string name="button_rename_scheme" tools:machine_translated="true">Endurnefna</string>
   <string name="button_delete_scheme" tools:machine_translated="true">Eyða</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">Nýtt litatema</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Endurnefna litapalettu</string>
   <string name="label_scheme_name" tools:machine_translated="true">Nafn á kerfinu</string>
   <string name="label_scheme_description" tools:machine_translated="true">Lýsing (valfrjálst)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">Eyða skipulagi?</string>
@@ -333,7 +318,6 @@
   <string name="label_built_in_scheme" tools:machine_translated="true">Innbyggt</string>
   <string name="label_custom_scheme" tools:machine_translated="true">Sérsniðið</string>
   <string name="empty_custom_schemes" tools:machine_translated="true">Engin sérsniðin kerfi. Smelltu á „Nýtt kerfi“ til að búa til eitt.</string>
-  <string name="button_edit_palette" tools:machine_translated="true">Breyta litapalettu</string>
   <string name="button_export_scheme" tools:machine_translated="true">Senda litapallett í JSON-skrá</string>
   <string name="button_import_scheme" tools:machine_translated="true">Flytja inn litapalettu</string>
   <string name="message_export_success" tools:machine_translated="true">Útfærslan %1$s hefur verið send út.</string>
@@ -351,14 +335,11 @@
   <string name="label_green" tools:machine_translated="true">Grænt</string>
   <string name="label_blue" tools:machine_translated="true">Blár</string>
   <string name="label_hex_color" tools:machine_translated="true">Hex-litur</string>
-  <string name="colors_fg_label" tools:machine_translated="true">FG: %1$d</string>
-  <string name="color_bg_label" tools:machine_translated="true">BG: %1$d</string>
   <string name="section_fg_bg_colors" tools:machine_translated="true">Forgrunnslit og bakgrunnslit</string>
   <string name="label_foreground_color" tools:machine_translated="true">Forgrunnarlitur</string>
   <string name="label_background_color" tools:machine_translated="true">Bakgrunnur</string>
   <string name="label_base_scheme" tools:machine_translated="true">Grunnlitur:</string>
   <string name="menu_manage_colors" tools:machine_translated="true">Stýra litasettum</string>
-  <string name="palette_editor_builtin_note" tools:machine_translated="true">Forstillingar sem eru fyrirfram stilltar eru eingöngu til skoðunar. Duplíkat til að breyta.</string>
   <string name="section_color_preview" tools:machine_translated="true">Forskotssýnishorn</string>
   <string name="image_description_connected" tools:machine_translated="true">Tengt.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">Tengingin er rofin.</string>
@@ -413,9 +394,6 @@
   <string name="empty_port_forwards_message" tools:machine_translated="true">Engar tenglarstillingar hafa verið stilltar.</string>
   <string name="empty_urls_message" tools:machine_translated="true">Engar vefslóðir fundust í minni búferðarinnar.</string>
   <string name="console_default_title" tools:machine_translated="true">Stýriborð</string>
-  <string name="host_editor_quick_connect_label" tools:machine_translated="true">Tengjast hratt</string>
-  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">notandi\@vefþjóni:tengi</string>
-  <string name="host_editor_quick_connect_example" tools:machine_translated="true">Dæmi: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced" tools:machine_translated="true">Sýna viðbótarstillingar</string>
   <string name="host_editor_hide_advanced" tools:machine_translated="true">Falir viðbættar stillingar</string>
   <string name="resize_width_label" tools:machine_translated="true">Breidd (dálkar)</string>
@@ -494,7 +472,6 @@
   <string name="forget_host_keys_confirm" tools:machine_translated="true">Ertu viss um að þú viljir eyða geymdu lyklunum fyrir \'%1$s\'? Þú verður beðinn um að staðfesta lykilinn við næstu tengingu.</string>
   <string name="list_pubkey_edit" tools:machine_translated="true">Breyta upplýsingum um almannlega lykil</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">IP-útgáfa</string>
-  <string name="hostpref_ipversion_summary" tools:machine_translated="true">Veldu hvaða útgáfu af IP-heimili skal nota þegar tengist er.</string>
   <string name="ipversion_auto" tools:machine_translated="true">Sjálfvirkt</string>
   <string name="ipversion_ipv4" tools:machine_translated="true">Aðeins IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">Aðeins IPv6</string>
@@ -539,9 +516,6 @@
   <string name="pref_customterminal_summary" tools:machine_translated="true">Bættu við sérsniðnum TERM-gildum fyrir fjarþjóna.</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">Bæta við sérsniðnum terminalgerð.</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">Tegund tengiútgáfu (td. rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Stýra sérsniðnum tegundum skjáforrita</string>
-  <string name="button_add_custom" tools:machine_translated="true">Bæta við sérsniðnum…</string>
-  <string name="button_manage_custom" tools:machine_translated="true">Stjórna sérsniðnum…</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">Sláðu inn sérsniðið gildi.</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Haltu niður Ctrl+A og ýttu síðan á bilastangina.</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
@@ -555,7 +529,6 @@
   <string name="import_hosts_success" tools:machine_translated="true">Innfluttir %1$d tölvuker, (%2$d hunsaðir) og %3$d stillingar (%4$d hunsaðar).</string>
   <string name="export_hosts_failed" tools:machine_translated="true">Ekki tókst að flytja út lista yfir þjónustur: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">Ekki tókst að flytja inn vefþjóna: %s</string>
-  <string name="export_hosts_title" tools:machine_translated="true">Útfærslulista yfir þjónustuaðila</string>
   <string name="shortcut_customize_title" tools:machine_translated="true">Sérsníddu flýtistíga</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Lit táknsins</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Stíll tákns</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">Í gangi</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Sýna myndir beint í textanum?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Leyfa þessum tölvutæki að sýna myndir beint í texta fyrir alla tíðina sem þessi tenging stendur?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Sjálfvirk ræsing er virkjuð.</string>
   <string name="automation_load_failed" tools:machine_translated="true">Tókst ekki að hlaða inn stillingum fyrir sjálfvirka gerð.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Tókst ekki að vista sjálfvirkni.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Athugaðu textann, sniðið, tímalengdina eða valda portið sem er notað fyrir port sendingu.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Færðu upp</string>
   <string name="automation_move_down" tools:machine_translated="true">Færðu niður</string>
   <string name="automation_drag" tools:machine_translated="true">Dragðu til að breyta röð.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Viltu vista breytingarnar?</string>
-  <string name="automation_discard" tools:machine_translated="true">Hættu við.</string>
   <string name="automation_cancel" tools:machine_translated="true">Hætta við</string>
   <string name="automation_text" tools:machine_translated="true">Texti</string>
   <string name="automation_regex" tools:machine_translated="true">Reglulegt táknmál</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Shift-hnappur</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f sek.</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d aðgerð</item>
-		<item quantity="other">%1$d aðgerðir</item>
-	</plurals>
+    <item quantity="one">%1$d aðgerð</item>
+    <item quantity="other">%1$d aðgerðir</item>
+  </plurals>
 </resources>

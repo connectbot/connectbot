@@ -5,7 +5,6 @@
   <string name="title_pubkey_list">Pub клучеви</string>
   <string name="title_port_forwards_list">Проследување на порти</string>
   <string name="title_help">Помош</string>
-  <string name="title_colors">Бои</string>
   <string name="title_color_picker">Одбери боја</string>
   <string name="title_settings">Подесувања</string>
   <string name="title_pubkey_generate">Генерирај</string>
@@ -44,7 +43,6 @@
   <string name="prompt_allow_agent_to_use_key">Дозволи му на одалечениот хост\nда го искористи \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">ПРЕДУПРЕДУВАЊЕ: ИДЕНТИФИКАЦИЈАТА НА ОДАЛЕЧЕНИОТ ХОСТ Е ПРОМЕНЕТА!</string>
   <string name="host_verification_failure_warning">МОЖНО Е НЕКОЈ ДА ПРАВИ НЕШТО ЛОШО!\nНекој можеби ве прислушкува сега (напад човек во средина)!\nИсто така можно е да се променил клучот на одалечениот хост.</string>
-  <string name="prompt_host_disconnected">Хостот се дисконектираше.\nЗатвори ја сесијата?</string>
   <string name="prompt_continue_connecting">Дали си сигурен дека\nсакаш да продолжиш со поврзување?</string>
   <string name="host_authenticity_warning">Автентичноста на \'%1$s\' не може да биде потврдена.</string>
   <string name="host_fingerprint">Отпечаток на клучот на хостот %1$s е %2$s</string>
@@ -81,8 +79,6 @@
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">Користете ја истата лозинка за шифрирање</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Нова лозинка</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Потврдете ја лозинката</string>
-  <string name="pubkey_list_empty" tools:machine_translated="true">Допрете „Мени“ за да креирате или да увезете парови на клучеви.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">Непознат формат.</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Внесете ја лозинката за да го отклучите клучот „%1$s“.</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">Веќе постои клуч со ова име.</string>
   <string name="prompt_username" tools:machine_translated="true">Корисничко име:</string>
@@ -120,7 +116,6 @@
   <string name="pref_theme_system" tools:machine_translated="true">Поставена вредност од системот</string>
   <string name="pref_theme_light" tools:machine_translated="true">Светла тема</string>
   <string name="pref_theme_dark" tools:machine_translated="true">Темна</string>
-  <string name="pref_rotation_title" tools:machine_translated="true">Режим на ротација</string>
   <string name="pref_titlebarhide_title" tools:machine_translated="true">Автоматско скривање на лентата со наслов</string>
   <string name="pref_titlebarhide_summary" tools:machine_translated="true">Допрете ја конзолата за да го прикажете насловот и да пристапите до менито.</string>
   <string name="pref_alwaysvisible_title" tools:machine_translated="true">Специјалните копчиња секогаш видливи.</string>
@@ -183,7 +178,6 @@
   <string name="hostpref_pubkeyid_title" tools:machine_translated="true">Користете автентикација со јавен клуч.</string>
   <string name="hostpref_authagent_title" tools:machine_translated="true">Користете SSH агент за автентикација</string>
   <string name="hostpref_postlogin_title" tools:machine_translated="true">Автоматизација по најавување</string>
-  <string name="hostpref_postlogin_summary" tools:machine_translated="true">Команди кои треба да се извршат на далечинскиот сервер откако ќе се потврди идентитетот.</string>
   <string name="hostpref_compression_title" tools:machine_translated="true">Компресија</string>
   <string name="hostpref_compression_summary" tools:machine_translated="true">Ова може да помогне при користење на побавни мрежи</string>
   <string name="hostpref_wantsession_title" tools:machine_translated="true">Покренете сесија во командна обвивка</string>
@@ -270,10 +264,6 @@
   <string name="list_host_delete" tools:machine_translated="true">Избриши го хостот</string>
   <string name="list_host_duplicate" tools:machine_translated="true">Дуплицирај го избраниот хост</string>
   <string name="list_host_forget_keys" tools:machine_translated="true">Заборави ги клучните податоци за хостот.</string>
-  <string name="list_rotation_default" tools:machine_translated="true">Стандардно</string>
-  <string name="list_rotation_land" tools:machine_translated="true">Принудно поставување на хоризонтален режим</string>
-  <string name="list_rotation_port" tools:machine_translated="true">Принудно портретно прикажување</string>
-  <string name="list_rotation_auto" tools:machine_translated="true">Автоматски</string>
   <string name="list_camera_ctrlaspace" tools:machine_translated="true">Ctrl+A, потоа интервал.</string>
   <string name="list_camera_ctrla" tools:machine_translated="true">Ctrl+A</string>
   <string name="list_camera_esc" tools:machine_translated="true">Esc</string>
@@ -313,16 +303,11 @@
   <string name="notification_text" tools:machine_translated="true">%1$s сака да привлече ваше внимание.</string>
   <string name="no" tools:machine_translated="true">Не</string>
   <string name="yes" tools:machine_translated="true">Да</string>
-  <string name="list_color_schemes" tools:machine_translated="true">Шеми на бои</string>
-  <string name="menu_colors_reset" tools:machine_translated="true">Врати ги на стандардните вредности</string>
-  <string name="button_manage_schemes" tools:machine_translated="true">Управувај ги шемите</string>
   <string name="title_scheme_manager" tools:machine_translated="true">Управување со шеми на бои</string>
   <string name="button_new_scheme" tools:machine_translated="true">Нова шема</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">Дуплицирај</string>
-  <string name="button_rename_scheme" tools:machine_translated="true">Преименувај</string>
   <string name="button_delete_scheme" tools:machine_translated="true">Избриши</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">Нова шема на бои</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Преименувај ја шемата на боите</string>
   <string name="label_scheme_name" tools:machine_translated="true">Име на шемата</string>
   <string name="label_scheme_description" tools:machine_translated="true">Опис (опционално)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">Дали сакате да го избришете шемата?</string>
@@ -332,7 +317,6 @@
   <string name="label_built_in_scheme" tools:machine_translated="true">Вграден</string>
   <string name="label_custom_scheme" tools:machine_translated="true">Прилагодено</string>
   <string name="empty_custom_schemes" tools:machine_translated="true">Не постојат прилагодени шеми. Допрете „Нова шема“ за да креирате една.</string>
-  <string name="button_edit_palette" tools:machine_translated="true">Уреди палета</string>
   <string name="button_export_scheme" tools:machine_translated="true">Извезете шема</string>
   <string name="button_import_scheme" tools:machine_translated="true">Увези шема</string>
   <string name="message_export_success" tools:machine_translated="true">Извезени %1$s</string>
@@ -351,14 +335,11 @@
   <string name="label_green" tools:machine_translated="true">Зелена</string>
   <string name="label_blue" tools:machine_translated="true">Сина</string>
   <string name="label_hex_color" tools:machine_translated="true">Хексадецимална боја</string>
-  <string name="colors_fg_label" tools:machine_translated="true">ПГ: %1$d</string>
-  <string name="color_bg_label" tools:machine_translated="true">Основна боја: %1$d</string>
   <string name="section_fg_bg_colors" tools:machine_translated="true">Преден план и позадина</string>
   <string name="label_foreground_color" tools:machine_translated="true">Преден план</string>
   <string name="label_background_color" tools:machine_translated="true">Позадина</string>
   <string name="label_base_scheme" tools:machine_translated="true">Основна шема:</string>
   <string name="menu_manage_colors" tools:machine_translated="true">Управувајте ги шемите на бои</string>
-  <string name="palette_editor_builtin_note" tools:machine_translated="true">Вградените шеми се само за преглед и не може да се менуваат. Дуплицирајте ги за да ги прилагодите.</string>
   <string name="section_color_preview" tools:machine_translated="true">Преглед</string>
   <string name="image_description_connected" tools:machine_translated="true">Поврзан.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">Исклучен.</string>
@@ -413,9 +394,6 @@
   <string name="empty_port_forwards_message" tools:machine_translated="true">Не се конфигурирани пренасочувања на порти.</string>
   <string name="empty_urls_message" tools:machine_translated="true">Не се пронајдени URL-адреси во мемориската област на терминалот.</string>
   <string name="console_default_title" tools:machine_translated="true">Конзола</string>
-  <string name="host_editor_quick_connect_label" tools:machine_translated="true">Брза врска</string>
-  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">корисник\@име_на_домаќин:порт</string>
-  <string name="host_editor_quick_connect_example" tools:machine_translated="true">Пример: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced" tools:machine_translated="true">Прикажи напредни опции</string>
   <string name="host_editor_hide_advanced" tools:machine_translated="true">Прикажи ги напредните опции</string>
   <string name="resize_width_label" tools:machine_translated="true">Ширина (колони)</string>
@@ -494,7 +472,6 @@
   <string name="forget_host_keys_confirm" tools:machine_translated="true">Дали сте сигурни дека сакате да ги избришете зачуваните клучни податоци за хостот за \'%1$s\'? Ќе бидете побарани да го потврдите клучниот податок за хостот при следната конекција.</string>
   <string name="list_pubkey_edit" tools:machine_translated="true">Уредете јабничкиот клуч</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">IP верзија</string>
-  <string name="hostpref_ipversion_summary" tools:machine_translated="true">Изберете која верзија на IP адреса да се користи при поврзување.</string>
   <string name="ipversion_auto" tools:machine_translated="true">Автоматски</string>
   <string name="ipversion_ipv4" tools:machine_translated="true">Само IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">Само IPv6</string>
@@ -539,9 +516,6 @@
   <string name="pref_customterminal_summary" tools:machine_translated="true">Додадете прилагодени вредности за променливата TERM за оддалечените сервери.</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">Додадете приспособен тип на терминал.</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">Тип на терминал (на пример, rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Управување со кориснички дефинирани типови на терминал</string>
-  <string name="button_add_custom" tools:machine_translated="true">Додај прилагодено…</string>
-  <string name="button_manage_custom" tools:machine_translated="true">Управувај со прилагодените елементи…</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">Внесете прилагодена вредност</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, потоа интервал.</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
@@ -555,7 +529,6 @@
   <string name="import_hosts_success" tools:machine_translated="true">Увезени се %1$d хостови (%2$d пропуштени) и %3$d профили (%4$d пропуштени)</string>
   <string name="export_hosts_failed" tools:machine_translated="true">Неуспешно извршен извоз на хостови: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">Неуспешно внесување на хостовите: %s</string>
-  <string name="export_hosts_title" tools:machine_translated="true">Извезете ги хостовите.</string>
   <string name="shortcut_customize_title" tools:machine_translated="true">Прилагодете ја прекуShortcut-от</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Боја на иконата</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Стил на икона</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">Вклучено</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Прикажи слики во текстов формат?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Дозволете на овој хост да прикажува слики во тек за време на остатокот од оваа сесија?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Овозможено автоматско стартување.</string>
   <string name="automation_load_failed" tools:machine_translated="true">Не можеше да се вчита автоматизацијата.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Не можеше да се зачува автоматизацијата.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Проверете го текстот, шаблонот, времетраењето или избраното пренасочување на портата.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Премести нагоре.</string>
   <string name="automation_move_down" tools:machine_translated="true">Преместете надолу.</string>
   <string name="automation_drag" tools:machine_translated="true">Повлечете за да го промените редоследот.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Да ги зачувам промените?</string>
-  <string name="automation_discard" tools:machine_translated="true">Отфрлете го</string>
   <string name="automation_cancel" tools:machine_translated="true">Откажи</string>
   <string name="automation_text" tools:machine_translated="true">Текст</string>
   <string name="automation_regex" tools:machine_translated="true">Регуларен израз</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Shift (клавиш)</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f секунди</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d акција</item>
-		<item quantity="other">%1$d извршени операции</item>
-	</plurals>
+    <item quantity="one">%1$d акција</item>
+    <item quantity="other">%1$d извршени операции</item>
+  </plurals>
 </resources>

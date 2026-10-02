@@ -7,7 +7,6 @@
   <string name="title_port_forwards_list">Переадресація портів</string>
   <string name="title_help">Допомога</string>
   <string name="title_eula">Ліцензія</string>
-  <string name="title_colors">Кольори</string>
   <string name="title_color_picker">Оберіть колір</string>
   <string name="title_settings">Налаштування</string>
   <string name="title_pubkey_generate">Генерувати</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password">Використовуйте той самий пароль для шифрування</string>
   <string name="pubkey_import_new_password">Новий пароль</string>
   <string name="pubkey_import_confirm_password">Підтвердіть пароль</string>
-  <string name="pubkey_list_empty">Торкніться «Меню», щоб створити або імпортувати пари ключів.</string>
-  <string name="pubkey_unknown_format">Невідомий формат</string>
   <string name="pubkey_change_password">Змінити пароль</string>
   <string name="pubkey_unlock">Розблокувати ключ</string>
   <string name="pubkey_unlock_message">Введіть пароль, щоб розблокувати ключ \'%1$s\'</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key">Дозволити віддаленому хосту\nвикористовувати ключ \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">УВАГА: ІДИНТИФІКАТОР ВІДДАЛЕНОГО ХОСТУ ЗМІНИВСЯ!</string>
   <string name="host_verification_failure_warning">МОЖЛИВО, ЩО ХТОСЬ РОБИТЬ ЩОСЬ НЕГАРНЕ!\nХтось може зараз підслуховувати ваші дані (атака «людина посередині»)!\nТакож можливо, що ключ хоста щойно було змінено.</string>
-  <string name="prompt_host_disconnected">Хост відключений.\nЗакрити сеанс?</string>
   <string name="prompt_continue_connecting">Ви впевнені, що бажаєте\nпродовжити підключення?</string>
   <string name="host_authenticity_warning">Аутентичність хоста \'%1$s\' неможливо встановити.</string>
   <string name="host_fingerprint">Відбиток ключа хоста %1$s: %2$s</string>
@@ -115,7 +111,6 @@
   <string name="pref_theme_system">Системні налаштування за замовчуванням</string>
   <string name="pref_theme_light">Легкий</string>
   <string name="pref_theme_dark">Темний</string>
-  <string name="pref_rotation_title">Режим обертання</string>
   <string name="pref_titlebarhide_title">"Автоматичне приховуваня головної  панелі"</string>
   <string name="pref_titlebarhide_summary">"Натисніть на консоль, щоб відобразити панель заголовку та  меню доступу"</string>
   <string name="pref_alwaysvisible_title">Особливі клавіші завжди показувати</string>
@@ -181,7 +176,6 @@
   <string name="hostpref_pubkeyid_title">Використовуйте автентифікацію за допомогою відкритого ключа</string>
   <string name="hostpref_authagent_title">Використовуйте SSH-аутентифікатор</string>
   <string name="hostpref_postlogin_title">Автоматизація дій після входу в систему</string>
-  <string name="hostpref_postlogin_summary">Команди для виконання на віддаленому сервері після успішної автентифікації</string>
   <string name="hostpref_compression_title">Стиснення</string>
   <string name="hostpref_compression_summary">Це може допомогти у випадках повільного з’єднання</string>
   <string name="hostpref_wantsession_title">Розпочніть сеанс оболонки</string>
@@ -268,10 +262,6 @@
   <string name="list_host_delete">Видалити хост</string>
   <string name="list_host_duplicate">Повторюваний хост</string>
   <string name="list_host_forget_keys">Не запам’ятовувати ключі хоста</string>
-  <string name="list_rotation_default">За замовчуванням</string>
-  <string name="list_rotation_land">Примусово встановити альбомну орієнтацію</string>
-  <string name="list_rotation_port">Примусово встановити портретну орієнтацію</string>
-  <string name="list_rotation_auto">Автоматичний</string>
   <string name="list_camera_ctrlaspace">Ctrl+A, потім пробіл</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -311,16 +301,11 @@
   <string name="notification_text">Програмі %1$s потрібна ваша увага.</string>
   <string name="no">Ні</string>
   <string name="yes">Так</string>
-  <string name="list_color_schemes">Колірні схеми</string>
-  <string name="menu_colors_reset">Скинути</string>
-  <string name="button_manage_schemes">Керуйте схемами</string>
   <string name="title_scheme_manager">Керування колірними схемами</string>
   <string name="button_new_scheme">Нова схема</string>
   <string name="button_duplicate_scheme">Дублікат</string>
-  <string name="button_rename_scheme">Перейменувати</string>
   <string name="button_delete_scheme">Видалити</string>
   <string name="dialog_title_new_scheme">Нова колірна схема</string>
-  <string name="dialog_title_rename_scheme">Перейменувати колірну схему</string>
   <string name="label_scheme_name">Назва схеми</string>
   <string name="label_scheme_description">Опис (необов’язково)</string>
   <string name="dialog_title_delete_scheme">Видалити схему?</string>
@@ -330,7 +315,6 @@
   <string name="label_built_in_scheme">Вбудований</string>
   <string name="label_custom_scheme">Налаштування</string>
   <string name="empty_custom_schemes">Немає спеціальних схем. Торкніться «Нова схема», щоб створити її.</string>
-  <string name="button_edit_palette">Редагувати палітру</string>
   <string name="button_export_scheme">Експортувати схему</string>
   <string name="button_import_scheme">Імпортувати схему</string>
   <string name="message_export_success">Експортовано %1$s</string>
@@ -349,14 +333,11 @@
   <string name="label_green">Зелений</string>
   <string name="label_blue">Синій</string>
   <string name="label_hex_color">Шістнадцяткове представлення кольору</string>
-  <string name="colors_fg_label">FG: %1$d</string>
-  <string name="color_bg_label">BG: %1$d</string>
   <string name="section_fg_bg_colors">На передньому та задньому плані</string>
   <string name="label_foreground_color">На передньому плані</string>
   <string name="label_background_color">Передумови</string>
   <string name="label_base_scheme">Основна схема:</string>
   <string name="menu_manage_colors">Керування колірними схемами</string>
-  <string name="palette_editor_builtin_note">Вбудовані схеми призначені лише для перегляду. Щоб налаштувати їх, створіть копію.</string>
   <string name="section_color_preview">Перегляд</string>
   <string name="image_description_connected">Під’єднано.</string>
   <string name="image_description_disconnected">Від’єднано.</string>
@@ -411,9 +392,6 @@
   <string name="empty_port_forwards_message">Не налаштовано жодного перенаправлення портів.</string>
   <string name="empty_urls_message">Не знайдено URL-адрес у буфері термінала.</string>
   <string name="console_default_title">Консоль</string>
-  <string name="host_editor_quick_connect_label">Швидке підключення</string>
-  <string name="host_editor_quick_connect_placeholder">користувач\@ім’я_хоста:порт</string>
-  <string name="host_editor_quick_connect_example">Наприклад: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced">Показати розширені параметри</string>
   <string name="host_editor_hide_advanced">Приховати розширені параметри</string>
   <string name="resize_width_label">Ширина (кількість стовпців)</string>
@@ -480,7 +458,6 @@
   <string name="forget_host_keys_confirm">Чи справді ви хочете видалити збережені ключі хоста для \'%1$s\'? Під час наступного підключення вам буде запропоновано підтвердити ключ хоста.</string>
   <string name="list_pubkey_edit">Редагувати публічний ключ</string>
   <string name="hostpref_ipversion_title">Версія IP</string>
-  <string name="hostpref_ipversion_summary">Оберіть, яку версію IP-адреси використовувати під час підключення</string>
   <string name="ipversion_auto">Автоматичний</string>
   <string name="ipversion_ipv4">Лише IPv4</string>
   <string name="ipversion_ipv6">Лише IPv6</string>
@@ -525,9 +502,6 @@
   <string name="pref_customterminal_summary">Додайте власні значення TERM для віддалених серверів</string>
   <string name="dialog_customterminal_title">Додати власний тип термінала</string>
   <string name="dialog_customterminal_hint">Тип термінала (наприклад, rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title">Керуйте налаштуваннями типів терміналу</string>
-  <string name="button_add_custom">Додати користувацький…</string>
-  <string name="button_manage_custom">Керуйте налаштуваннями…</string>
   <string name="dialog_custom_value_label">Введіть власне значення</string>
   <string name="list_camera_ctrlaspace_description">Ctrl+A, потім пробіл</string>
   <string name="list_camera_ctrla_description">Ctrl+A</string>
@@ -541,7 +515,6 @@
   <string name="import_hosts_success">Імпортовано %1$d хостів (%2$d пропущено) і %3$d профілів (%4$d пропущено)</string>
   <string name="export_hosts_failed">Не вдалося експортувати список хостів: %s</string>
   <string name="import_hosts_failed">Не вдалося імпортувати список хостів: %s</string>
-  <string name="export_hosts_title">Експортувати хости</string>
   <string name="shortcut_customize_title">Налаштуйте ярлик</string>
   <string name="shortcut_icon_color">Колір іконки</string>
   <string name="shortcut_icon_style">Стиль піктограми</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">Увімкнути</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Відображати зображення безпосередньо в тексті?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Дозволити цьому хосту відображати зображення безпосередньо в тексті протягом усієї поточної сесії?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Автоматичний запуск увімкнено.</string>
   <string name="automation_load_failed" tools:machine_translated="true">Не вдалося завантажити автоматизовані налаштування.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Не вдалося зберегти автоматизацію.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Перевірте текст, шаблон, тривалість або вибране правило перенаправлення порту.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Перемістити вгору</string>
   <string name="automation_move_down" tools:machine_translated="true">Перемістити вниз</string>
   <string name="automation_drag" tools:machine_translated="true">Перетягніть, щоб змінити порядок.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Зберегти зміни?</string>
-  <string name="automation_discard" tools:machine_translated="true">Відхилити/Скасувати.</string>
   <string name="automation_cancel" tools:machine_translated="true">Скасувати</string>
   <string name="automation_text" tools:machine_translated="true">Текст</string>
   <string name="automation_regex" tools:machine_translated="true">Регулярний вираз</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Клавіша Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f сек.</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d дія</item>
-		<item quantity="other">%1$d дії</item>
-	</plurals>
+    <item quantity="one">%1$d дія</item>
+    <item quantity="other">%1$d дії</item>
+  </plurals>
 </resources>

@@ -5,7 +5,6 @@
   <string name="title_pubkey_list">Offentlige nøkler</string>
   <string name="title_port_forwards_list">Portvideresending</string>
   <string name="title_help">Hjelp</string>
-  <string name="title_colors">Farger</string>
   <string name="title_color_picker">Velg en farge</string>
   <string name="title_settings">Innstillinger</string>
   <string name="title_pubkey_generate">Generer</string>
@@ -44,7 +43,6 @@
   <string name="prompt_allow_agent_to_use_key">Godta ekstern vert til\nå bruke nøkkel \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">ADVARSEL: EKSTERN VERT IDENTIFIKASJON HAR BLITT ENDRET!</string>
   <string name="host_verification_failure_warning">DET KAN VÆRE UGLER I MOSEN!\nNoen kan lytte på deg akkurat nå (et mellommann-angrep)!\nMen det er også mulig at vertsnøkkelen har blitt endret.</string>
-  <string name="prompt_host_disconnected">Vert har koblet fra.\nLukk sesjon?</string>
   <string name="prompt_continue_connecting">Er du sikker på at\ndu vil koble til?</string>
   <string name="host_authenticity_warning">Kan ikke bekrefte integriteten til \'%1$s\'.</string>
   <string name="host_fingerprint">Nøkkelfingeravtrykk til vert %1$s er %2$s</string>
@@ -57,7 +55,6 @@
   <string name="pref_scrollback_title">Husk skjermtekst</string>
   <string name="pref_scrollback_summary">Mengde skjermtekst som skal beholdes i minnet for hvert konsollvindu</string>
   <string name="pref_ui_category">Brukergrensesnitt</string>
-  <string name="pref_rotation_title">Rotasjonsretning</string>
   <string name="pref_fullscreen_title">Full skjerm</string>
   <string name="pref_fullscreen_summary">Gjem statuslinje mens du er i konsoll</string>
   <string name="pref_keyboard_category">Tastatur</string>
@@ -87,7 +84,6 @@
   <string name="hostpref_pubkeyid_title">Bruk offentlig nøkkel som godkjenning</string>
   <string name="hostpref_authagent_title">Bruk SSH auth-agent</string>
   <string name="hostpref_postlogin_title">Kommandoer etter innlogging</string>
-  <string name="hostpref_postlogin_summary">Kommandoer som kjøres på tilkoblet tjener etter vellykket autentisering</string>
   <string name="hostpref_compression_title">Komprimering</string>
   <string name="hostpref_compression_summary">Dette kan hjelpe på trege nettverk</string>
   <string name="hostpref_wantsession_title">Start skallsesjon</string>
@@ -121,10 +117,6 @@
   <string name="list_host_edit">Rediger vert</string>
   <string name="list_host_portforwards">Rediger portvidersendinger</string>
   <string name="list_host_delete">Slett vert</string>
-  <string name="list_rotation_default">Forvalg</string>
-  <string name="list_rotation_land">Tving landskap</string>
-  <string name="list_rotation_port">Tving portrett</string>
-  <string name="list_rotation_auto">Automatisk</string>
   <string name="list_camera_ctrlaspace">Ctrl+A og mellomrom</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -155,7 +147,6 @@
   <string name="notification_text">%1$s ønsker din oppmerksomhet.</string>
   <string name="no">Nei</string>
   <string name="yes">Ja</string>
-  <string name="menu_colors_reset">Tilbakestill</string>
   <string name="app_is_running">ConnectBot kjører</string>
   <string name="app_copyright" tools:machine_translated="true">Copyright © Kenny Root</string>
   <string name="title_eula" tools:machine_translated="true">Lisens</string>
@@ -178,8 +169,6 @@
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">Bruk samme passord for kryptering</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Nytt passord</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Bekreft passord</string>
-  <string name="pubkey_list_empty" tools:machine_translated="true">Trykk på «Meny» for å opprette\neller importere nøkkelpar.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">Ukjent format</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Skriv inn passord for å låse opp nøkkelen \'%1$s\'.</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">En nøkkel med dette kallenavnet finnes allerede</string>
   <string name="prompt_username" tools:machine_translated="true">Brukernavn:</string>
@@ -315,15 +304,11 @@
   <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Autentiseringen med lagret passord mislyktes</string>
   <string name="terminal_auth_biometric" tools:machine_translated="true">Ber om biometrisk autentisering for nøkkelen «%1$s».</string>
   <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">Den biometriske nøkkelen \'%1$s\' er ugyldiggjort. Dette kan skje når nye fingeravtrykk registreres på enheten. Vennligst generer en ny nøkkel.</string>
-  <string name="list_color_schemes" tools:machine_translated="true">Fargepaletter</string>
-  <string name="button_manage_schemes" tools:machine_translated="true">Administrer fargepaletter</string>
   <string name="title_scheme_manager" tools:machine_translated="true">Administrer fargepaletter</string>
   <string name="button_new_scheme" tools:machine_translated="true">Nytt fargevalg</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">Dupliser</string>
-  <string name="button_rename_scheme" tools:machine_translated="true">Gi nytt navn</string>
   <string name="button_delete_scheme" tools:machine_translated="true">Slett</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">Nytt fargevalg</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Gi nytt navn til fargepaletten</string>
   <string name="label_scheme_name" tools:machine_translated="true">Skjemanavn</string>
   <string name="label_scheme_description" tools:machine_translated="true">Beskrivelse (valgfritt)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">Vil du slette dette oppsettet?</string>
@@ -333,7 +318,6 @@
   <string name="label_built_in_scheme" tools:machine_translated="true">Innebygd</string>
   <string name="label_custom_scheme" tools:machine_translated="true">Egendefinert</string>
   <string name="empty_custom_schemes" tools:machine_translated="true">Ingen egendefinerte skjemaer. Trykk på «Nytt skjema» for å opprette et.</string>
-  <string name="button_edit_palette" tools:machine_translated="true">Rediger fargepalett</string>
   <string name="button_export_scheme" tools:machine_translated="true">Eksporter fargepalett</string>
   <string name="button_import_scheme" tools:machine_translated="true">Importer fargepalett</string>
   <string name="message_export_success" tools:machine_translated="true">%1$s er eksportert</string>
@@ -351,14 +335,11 @@
   <string name="label_green" tools:machine_translated="true">Grønn</string>
   <string name="label_blue" tools:machine_translated="true">Blå</string>
   <string name="label_hex_color" tools:machine_translated="true">Heksadesimal fargekode</string>
-  <string name="colors_fg_label" tools:machine_translated="true">FG: %1$d</string>
-  <string name="color_bg_label" tools:machine_translated="true">BG: %1$d</string>
   <string name="section_fg_bg_colors" tools:machine_translated="true">Forgrunn og bakgrunn</string>
   <string name="label_foreground_color" tools:machine_translated="true">Forgrunn</string>
   <string name="label_background_color" tools:machine_translated="true">Bakgrunn</string>
   <string name="label_base_scheme" tools:machine_translated="true">Grunnleggende fargepalett:</string>
   <string name="menu_manage_colors" tools:machine_translated="true">Administrer fargepaletter</string>
-  <string name="palette_editor_builtin_note" tools:machine_translated="true">De forhåndsdefinerte fargepalettene kan ikke redigeres. Dupliser dem for å tilpasse dem.</string>
   <string name="section_color_preview" tools:machine_translated="true">Forhåndsvisning</string>
   <string name="image_description_connected" tools:machine_translated="true">Tilkoblet.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">Tilkoblingen er brutt.</string>
@@ -413,9 +394,6 @@
   <string name="empty_port_forwards_message" tools:machine_translated="true">Ingen portvideresendinger er konfigurert.</string>
   <string name="empty_urls_message" tools:machine_translated="true">Ingen URL-er funnet i terminalbufferen</string>
   <string name="console_default_title" tools:machine_translated="true">Konsoll</string>
-  <string name="host_editor_quick_connect_label" tools:machine_translated="true">Hurtigkobling</string>
-  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">bruker\@vertsnavn:port</string>
-  <string name="host_editor_quick_connect_example" tools:machine_translated="true">Eksempel: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced" tools:machine_translated="true">Vis avanserte alternativer</string>
   <string name="host_editor_hide_advanced" tools:machine_translated="true">Skjul avanserte alternativer</string>
   <string name="resize_width_label" tools:machine_translated="true">Bredde (kolonner)</string>
@@ -494,7 +472,6 @@
   <string name="forget_host_keys_confirm" tools:machine_translated="true">Er du sikker på at du vil slette de lagrede vertsnøklene for «%1$s»? Du blir bedt om å bekrefte vertsnøkkelen ved neste tilkobling.</string>
   <string name="list_pubkey_edit" tools:machine_translated="true">Rediger offentlig nøkkel</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">IP-versjon</string>
-  <string name="hostpref_ipversion_summary" tools:machine_translated="true">Velg hvilken IP-adresseversjon som skal brukes når du kobler til.</string>
   <string name="ipversion_auto" tools:machine_translated="true">Automatisk</string>
   <string name="ipversion_ipv4" tools:machine_translated="true">Kun IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">Kun IPv6</string>
@@ -539,9 +516,6 @@
   <string name="pref_customterminal_summary" tools:machine_translated="true">Legg til egendefinerte TERM-verdier for eksterne servere.</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">Legg til en egendefinert terminaltype</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">Terminaltype (f.eks. rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Administrer egendefinerte terminaltyper</string>
-  <string name="button_add_custom" tools:machine_translated="true">Legg til egendefinert …</string>
-  <string name="button_manage_custom" tools:machine_translated="true">Administrer egendefinerte elementer …</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">Angi egendefinert verdi</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, deretter mellomromstasten</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
@@ -555,7 +529,6 @@
   <string name="import_hosts_success" tools:machine_translated="true">Importerte %1$d verter (%2$d hoppet over) og %3$d profiler (%4$d hoppet over)</string>
   <string name="export_hosts_failed" tools:machine_translated="true">Kunne ikke eksportere verter: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">Kunne ikke importere verter: %s</string>
-  <string name="export_hosts_title" tools:machine_translated="true">Eksporter verter</string>
   <string name="shortcut_customize_title" tools:machine_translated="true">Tilpass snarvei</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Ikonfarge</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Ikonstil</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">På</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Vis bilder direkte i teksten?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Skal denne datamaskinen få tillatelse til å vise bilder direkte i teksten resten av denne økten?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Automatisk oppstart aktivert.</string>
   <string name="automation_load_failed" tools:machine_translated="true">Kunne ikke laste inn automatiseringsprogrammet.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Kunne ikke lagre automatiseringen.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Kontroller teksten, mønsteret, varigheten eller den valgte portvideresendingen.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Flytt opp</string>
   <string name="automation_move_down" tools:machine_translated="true">Flytt nedover</string>
   <string name="automation_drag" tools:machine_translated="true">Dra og slipp for å endre rekkefølgen.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Vil du lagre endringene?</string>
-  <string name="automation_discard" tools:machine_translated="true">Forkast</string>
   <string name="automation_cancel" tools:machine_translated="true">Avbryt</string>
   <string name="automation_text" tools:machine_translated="true">Tekst</string>
   <string name="automation_regex" tools:machine_translated="true">Regulært uttrykk</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Skift</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f sekunder</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d handling(er)</item>
-		<item quantity="other">%1$d handlinger</item>
-	</plurals>
+    <item quantity="one">%1$d handling(er)</item>
+    <item quantity="other">%1$d handlinger</item>
+  </plurals>
 </resources>

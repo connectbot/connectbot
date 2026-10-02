@@ -1,7 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <string name="title_help">உதவி</string>
-  <string name="title_colors">வண்ணங்கள்</string>
   <string name="title_color_picker">நிறத்தை தேர்ந்தெடு</string>
   <string name="title_settings">அமைப்புகள்</string>
   <string name="keyboard_shortcuts">விசைப்பலகை குறுக்குவழிகள்</string>
@@ -60,8 +59,6 @@
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">அதே கடவுச்சொல்லை மறையாக்கத்திற்குப் பயன்படுத்தவும்</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">புதிய கடவுச்சொல்</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">கடவுச்சொல்லை மீண்டும் உள்ளிடவும்</string>
-  <string name="pubkey_list_empty" tools:machine_translated="true">\"மெனு\" என்பதைத் தட்டி, புதிய ஜோடி விசைகளை உருவாக்கவும் அல்லது ஏற்கனவே உள்ளவற்றை இறக்குமதி செய்யவும்.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">தெரியாத வடிவம் / அடையாளம் காண முடியாத வடிவம்</string>
   <string name="pubkey_unlock" tools:machine_translated="true">பூட்டப்பட்ட குறியீட்டைத் திறக்கவும்</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">குறியாக்கம் செய்யப்பட்ட \'%1$s\' என்ற திறவுகோலைத் திறக்க கடவுச்சொல்லை உள்ளிடவும்</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">இந்த புனைப்பெயர் ஏற்கனவே வேறொரு அடையாளத்துடன் பயன்படுத்தப்படுகிறது.</string>
@@ -81,7 +78,6 @@
   <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">தொலைதூர ஹோஸ்ட் \'%1$s\' என்ற குறிப்பிட்ட விசையைப் பயன்படுத்த அனுமதிக்கவா?</string>
   <string name="host_verification_failure_warning_header" tools:machine_translated="true">எச்சரிக்கை: தொலைநிலை சேவையக அடையாளங்காட்டி மாற்றப்பட்டுள்ளது!</string>
   <string name="host_verification_failure_warning" tools:machine_translated="true">யாரோ கெட்ட காரியத்தைச் செய்து கொண்டிருக்கலாம்!\nயாரோ உங்களைப் பற்றி இப்போது ரகசியமாகக் கேட்டுக்கொண்டிருக்கலாம் (நடுவில் புகுந்து தாக்குதல்)!\nமேலும், ஹோஸ்ட் கீ (host key) இப்போது மாற்றப்பட்டிருக்கவும் வாய்ப்புள்ளது.</string>
-  <string name="prompt_host_disconnected" tools:machine_translated="true">சேவையகம் துண்டிக்கப்பட்டது. அமர்வை முடிக்கவா?</string>
   <string name="prompt_continue_connecting" tools:machine_translated="true">தொடர்ந்து இணைக்க விரும்புகிறீர்களா என்பதை உறுதிப்படுத்தவும்?</string>
   <string name="host_authenticity_warning" tools:machine_translated="true">\'%1$s\' என்ற ஹோஸ்டின் நம்பகத்தன்மையை உறுதிப்படுத்த முடியவில்லை.</string>
   <string name="host_fingerprint" tools:machine_translated="true">ஹோஸ்ட் %1$s-ன் முக்கிய கைரேகை %2$s ஆகும்</string>
@@ -127,7 +123,6 @@
   <string name="pref_theme_system" tools:machine_translated="true">அமைப்பு இயல்புநிலை</string>
   <string name="pref_theme_light" tools:machine_translated="true">ஒளி</string>
   <string name="pref_theme_dark" tools:machine_translated="true">கருப்பு</string>
-  <string name="pref_rotation_title" tools:machine_translated="true">சுழற்சி முறை</string>
   <string name="pref_titlebarhide_title" tools:machine_translated="true">தானாக மறைக்கும் தலைப்புப் பட்டை</string>
   <string name="pref_titlebarhide_summary" tools:machine_translated="true">தலைப்புப் பட்டியை காண்பிக்கவும், மெனுவை அணுகவும் கன்சோலைத் தட்டவும்.</string>
   <string name="pref_alwaysvisible_title" tools:machine_translated="true">சிறப்பு விசைகள் எப்போதும் தெரியும் வகையில் இருக்க வேண்டும்</string>
@@ -189,7 +184,6 @@
   <string name="hostpref_pubkeyid_title" tools:machine_translated="true">பொது விசையைப் பயன்படுத்தி அங்கீகரிக்கவும்</string>
   <string name="hostpref_authagent_title" tools:machine_translated="true">எஸ்எஸ்எச் அங்கீகார முகவரைப் பயன்படுத்தவும்</string>
   <string name="hostpref_postlogin_title" tools:machine_translated="true">உள்நுழைந்த பிறகு தானியங்கி செயல்பாடு</string>
-  <string name="hostpref_postlogin_summary" tools:machine_translated="true">அங்கீகரிக்கப்பட்ட பிறகு தொலைநிலை சேவையகத்தில் இயக்க வேண்டிய கட்டளைகள்</string>
   <string name="hostpref_compression_summary" tools:machine_translated="true">இது மெதுவான இணைய இணைப்புகளில் உதவக்கூடும்</string>
   <string name="hostpref_wantsession_title" tools:machine_translated="true">ஷெல் அமர்வைத் தொடங்குக</string>
   <string name="hostpref_wantsession_summary" tools:machine_translated="true">இந்த விருப்பத்தை முடக்குவதன் மூலம், இணைப்பு ஏற்பட்டவுடன் ஷெல் அமர்வை (shell session) தொடங்காமல், போர்ட் ஃபார்வர்டிங்கை மட்டும் பயன்படுத்தலாம்.</string>
@@ -270,10 +264,6 @@
   <string name="list_host_delete" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட ஹோஸ்டை நீக்கு</string>
   <string name="list_host_duplicate" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட ஹோஸ்டை நகலெடு</string>
   <string name="list_host_forget_keys" tools:machine_translated="true">தேர்ந்தெடுக்கப்பட்ட ஹோஸ்டுக்கான சேமிக்கப்பட்ட ஹோஸ்ட் விசைகளை நீக்கு</string>
-  <string name="list_rotation_default" tools:machine_translated="true">இயல்புநிலை</string>
-  <string name="list_rotation_land" tools:machine_translated="true">கிடைமட்டக் காட்சிக்கு முன்னுரிமை கொடு</string>
-  <string name="list_rotation_port" tools:machine_translated="true">செங்குத்துத் திசையில் கட்டாயமாக மாற்றவும்</string>
-  <string name="list_rotation_auto" tools:machine_translated="true">தானியங்கி</string>
   <string name="list_camera_ctrlaspace" tools:machine_translated="true">முதலில் Ctrl+A ஐ அழுத்தி, பின்னர் இடைவெளி விசையை அழுத்தவும்</string>
   <string name="list_camera_ctrla" tools:machine_translated="true">கட்டுப்பாட்டு (Ctrl) மற்றும் ஏ (A) ஆகிய விசைகளை ஒரே நேரத்தில் அழுத்தவும்</string>
   <string name="list_camera_esc" tools:machine_translated="true">எஸ்க்</string>
@@ -313,16 +303,11 @@
   <string name="notification_text" tools:machine_translated="true">%1$s உங்கள் கவனத்தை ஈர்க்க விரும்புகிறது.</string>
   <string name="no" tools:machine_translated="true">இல்லை</string>
   <string name="yes" tools:machine_translated="true">ஆம்</string>
-  <string name="list_color_schemes" tools:machine_translated="true">வண்ணத் திட்டங்கள்</string>
-  <string name="menu_colors_reset" tools:machine_translated="true">மீட்டமை</string>
-  <string name="button_manage_schemes" tools:machine_translated="true">வடிவமைப்பு விருப்பங்களை நிர்வகி</string>
   <string name="title_scheme_manager" tools:machine_translated="true">வண்ணத் திட்டங்களை நிர்வகி</string>
   <string name="button_new_scheme" tools:machine_translated="true">புதிய வண்ணத் திட்டம்</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">நகல் உருவாக்கு</string>
-  <string name="button_rename_scheme" tools:machine_translated="true">வண்ணத் திட்டத்திற்குப் புதிய பெயர் கொடு</string>
   <string name="button_delete_scheme" tools:machine_translated="true">நீக்கு</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">புதிய வண்ணத் திட்டம்</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">வண்ணத் திட்டத்தின் பெயரை மாற்றுக</string>
   <string name="label_scheme_name" tools:machine_translated="true">திட்டத்தின் பெயர்</string>
   <string name="label_scheme_description" tools:machine_translated="true">விளக்கம் (விரும்பினால்)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">வடிவமைப்பை நீக்கவா?</string>
@@ -332,7 +317,6 @@
   <string name="label_built_in_scheme" tools:machine_translated="true">உள்ளமைக்கப்பட்டது</string>
   <string name="label_custom_scheme" tools:machine_translated="true">தனிப்பயனாக்கப்பட்டது</string>
   <string name="empty_custom_schemes" tools:machine_translated="true">தனிப்பயன் திட்டங்கள் எதுவும் இல்லை. புதிய திட்டத்தை உருவாக்க, \"புதிய திட்டம்\" என்பதைத் தட்டவும்.</string>
-  <string name="button_edit_palette" tools:machine_translated="true">வண்ணத் தட்டினைத் திருத்து</string>
   <string name="button_export_scheme" tools:machine_translated="true">வடிவமைப்பை ஏற்றுமதி செய்</string>
   <string name="button_import_scheme" tools:machine_translated="true">வடிவமைப்பை இறக்குமதி செய்</string>
   <string name="message_export_success" tools:machine_translated="true">%1$s வெற்றிகரமாக ஏற்றுமதி செய்யப்பட்டது</string>
@@ -351,14 +335,11 @@
   <string name="label_green" tools:machine_translated="true">பச்சை</string>
   <string name="label_blue" tools:machine_translated="true">நீலம்</string>
   <string name="label_hex_color" tools:machine_translated="true">ஹெக்ஸ் நிறம்</string>
-  <string name="colors_fg_label" tools:machine_translated="true">முன்னணி நிறம்: %1$d</string>
-  <string name="color_bg_label" tools:machine_translated="true">பின்புல நிறம்: %1$d</string>
   <string name="section_fg_bg_colors" tools:machine_translated="true">முன்னணி மற்றும் பின்னணி</string>
   <string name="label_foreground_color" tools:machine_translated="true">முன்னணி நிறம்</string>
   <string name="label_background_color" tools:machine_translated="true">பின்புல நிறம்</string>
   <string name="label_base_scheme" tools:machine_translated="true">அடிப்படை அமைப்பு:</string>
   <string name="menu_manage_colors" tools:machine_translated="true">வண்ணத் திட்டங்களை நிர்வகி</string>
-  <string name="palette_editor_builtin_note" tools:machine_translated="true">உள்ளமைக்கப்பட்ட திட்டங்களை மாற்ற முடியாது. தனிப்பயனாக்க, நகல் எடுத்துப் பயன்படுத்தவும்.</string>
   <string name="section_color_preview" tools:machine_translated="true">முன்னோட்டம்</string>
   <string name="image_description_connected" tools:machine_translated="true">இணைக்கப்பட்டுள்ளது.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">இணைப்பு துண்டிக்கப்பட்டது.</string>
@@ -413,9 +394,6 @@
   <string name="empty_port_forwards_message" tools:machine_translated="true">எந்த போர்ட் ஃபார்வர்டுகளும் கட்டமைக்கப்படவில்லை.</string>
   <string name="empty_urls_message" tools:machine_translated="true">டெர்மினல் நினைவகத்தில் எந்த இணைய முகவரிகளும் காணப்படவில்லை</string>
   <string name="console_default_title" tools:machine_translated="true">கட்டுப்பாட்டுத் திரை</string>
-  <string name="host_editor_quick_connect_label" tools:machine_translated="true">விரைவாக இணைக்கவும்</string>
-  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">பயனர்\@ஹோஸ்ட்பெயர்:போர்ட்</string>
-  <string name="host_editor_quick_connect_example" tools:machine_translated="true">உதாரணம்: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced" tools:machine_translated="true">மேம்பட்ட விருப்பங்களைக் காட்டு</string>
   <string name="host_editor_hide_advanced" tools:machine_translated="true">மேம்பட்ட விருப்பங்களை மறை</string>
   <string name="resize_width_label" tools:machine_translated="true">அகலம் (நிரல்கள்)</string>
@@ -494,7 +472,6 @@
   <string name="forget_host_keys_confirm" tools:machine_translated="true">\'%1$s\'-க்கான சேமிக்கப்பட்ட ஹோஸ்ட் விசைகளை நீக்க விரும்புகிறீர்களா? அடுத்த முறை இணைக்கும்போது ஹோஸ்ட் விசையைச் சரிபார்க்கும்படி கேட்கப்படுவீர்கள்.</string>
   <string name="list_pubkey_edit" tools:machine_translated="true">பொது விசைக் குறியீட்டைத் திருத்து</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">ஐபி பதிப்பு</string>
-  <string name="hostpref_ipversion_summary" tools:machine_translated="true">இணைக்கும்போது எந்த ஐபி முகவரி பதிப்பை பயன்படுத்த வேண்டும் என்பதைத் தேர்ந்தெடுக்கவும்</string>
   <string name="ipversion_auto" tools:machine_translated="true">தானியங்கி</string>
   <string name="ipversion_ipv4" tools:machine_translated="true">IPv4 மட்டும்</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">IPv6 மட்டும்</string>
@@ -539,9 +516,6 @@
   <string name="pref_customterminal_summary" tools:machine_translated="true">தொலைதூர சேவையகங்களுக்கான தனிப்பயன் TERM மதிப்புகளைச் சேர்க்கவும்</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">தனிப்பயன் டெர்மினல் வகையைச் சேர்</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">டெர்மினல் வகை (எ.கா., rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">தனிப்பயன் டெர்மினல் வகைகளை நிர்வகி</string>
-  <string name="button_add_custom" tools:machine_translated="true">தனிப்பயன் உருப்படியைச் சேர்…</string>
-  <string name="button_manage_custom" tools:machine_translated="true">தனிப்பயனாக்கப்பட்ட விருப்பங்களை நிர்வகிக்கவும்…</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">தனிப்பயன் மதிப்பீட்டை உள்ளிடவும்</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, பின்னர் இடைவெளி (Space) பட்டனை அழுத்தவும்</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
@@ -555,7 +529,6 @@
   <string name="import_hosts_success" tools:machine_translated="true">%1$d எண்ணிக்கையிலான கணினிகள் வெற்றிகரமாக இறக்குமதி செய்யப்பட்டன (%2$d கணினிகள் தவிர்க்கப்பட்டன), மேலும் %3$d சுயவிவரங்கள் (%4$d சுயவிவரங்கள் தவிர்க்கப்பட்டன) இறக்குமதி செய்யப்பட்டன</string>
   <string name="export_hosts_failed" tools:machine_translated="true">ஹோஸ்ட்களை ஏற்றுமதி செய்வதில் தோல்வி: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">ஹோஸ்ட்களை இறக்குமதி செய்வதில் தோல்வி: %s</string>
-  <string name="export_hosts_title" tools:machine_translated="true">ஏற்றுமதி செய்ய வேண்டிய ஹோஸ்ட்களைத் தேர்ந்தெடுக்கவும்</string>
   <string name="shortcut_customize_title" tools:machine_translated="true">குறுக்குவழி ஐகானை விருப்பப்படி மாற்றியமைக்கவும்</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">ஐகான் நிறம்</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">சின்னத்தின் பாணி</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">இயக்க நிலையில் / இயங்குகிறது</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">உள்ளே இருக்கும் படங்களைக்காட்டவா?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">இந்த அமர்வின் மீதமுள்ள காலத்திற்கு, இந்த கணினியில் உள்ளடக்கத்தில் படங்கள் காட்ட அனுமதிக்கவா?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">தானியங்கி துவக்கம் செயல்படுத்தப்பட்டது.</string>
   <string name="automation_load_failed" tools:machine_translated="true">தானியங்கி அமைப்பை ஏற்ற முடியவில்லை.</string>
   <string name="automation_save_failed" tools:machine_translated="true">தானியங்கி அமைப்பைச் சேமிக்க முடியவில்லை.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">உரை, அமைப்பு, காலம் அல்லது தேர்ந்தெடுக்கப்பட்ட போர்ட் ஃபார்வர்டிங் ஆகியவற்றைச் சரிபார்க்கவும்.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">மேலே நகர்த்து</string>
   <string name="automation_move_down" tools:machine_translated="true">கீழே நகர்த்து.</string>
   <string name="automation_drag" tools:machine_translated="true">வரிசையை மாற்ற இழுத்து விடுங்கள்.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">மாற்றங்களைச் சேமிக்கவா?</string>
-  <string name="automation_discard" tools:machine_translated="true">கைவிடவும்</string>
   <string name="automation_cancel" tools:machine_translated="true">ரத்து செய்</string>
   <string name="automation_text" tools:machine_translated="true">உரை</string>
   <string name="automation_regex" tools:machine_translated="true">வழக்கமான கோவை</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">ஷிஃப்ட்</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f வினாடிகள்</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d செயல்</item>
-		<item quantity="other">%1$d செயல்கள்</item>
-	</plurals>
+    <item quantity="one">%1$d செயல்</item>
+    <item quantity="other">%1$d செயல்கள்</item>
+  </plurals>
 </resources>

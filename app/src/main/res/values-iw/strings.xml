@@ -7,7 +7,6 @@
   <string name="title_port_forwards_list">הפניית פתחות</string>
   <string name="title_help">עזרה</string>
   <string name="title_eula">רישיון</string>
-  <string name="title_colors">צבעים</string>
   <string name="title_color_picker">בחירת צבע</string>
   <string name="title_settings">הגדרות</string>
   <string name="title_pubkey_generate">צור</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password">השתמש באותה סיסמה להצפנה</string>
   <string name="pubkey_import_new_password">סיסמה חדשה</string>
   <string name="pubkey_import_confirm_password">אשר סיסמה</string>
-  <string name="pubkey_list_empty">הקש על \"תפריט\" כדי ליצור או לייבא צמדי מפתחות.</string>
-  <string name="pubkey_unknown_format">פורמט לא ידוע</string>
   <string name="pubkey_change_password">החלפת הססמה</string>
   <string name="pubkey_unlock">שחרור המפתח</string>
   <string name="pubkey_unlock_message">הזן סיסמה כדי לפתוח את המפתח \'%1$s\'</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key">האם לאפשר למארח המרוחק\nלהשתמש במפתח \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">אזהרה: זיהוי המארח המרוחק השתנה!</string>
   <string name="host_verification_failure_warning">יתכן שמישהו עושה טריק מלוכלך!\nיכול להיות שמישהו מנסה לצוטט לך ברגעים אלה (מתקפת סוכן אמצע)!\nיכול גם להיות שמפתח המארח הוחלף.</string>
-  <string name="prompt_host_disconnected">המארח התנתק.\nלסגור את החלון?</string>
   <string name="prompt_continue_connecting">האם אכן\nלהמשיך בהליך החיבור?</string>
   <string name="host_authenticity_warning">לא ניתן לאמת את אותנטיות המארח\'%1$s\'.</string>
   <string name="host_fingerprint">טביעת האצבע של המפתח שלהמארח %1$s היא %2$s</string>
@@ -115,7 +111,6 @@
   <string name="pref_theme_system">ברירת המחדל של המערכת</string>
   <string name="pref_theme_light">קַל</string>
   <string name="pref_theme_dark">חושך</string>
-  <string name="pref_rotation_title">מצב סיבוב</string>
   <string name="pref_titlebarhide_title">הסתר אוטומטית של סרגל הכותרת</string>
   <string name="pref_titlebarhide_summary">הקש על המסוף כדי להציג את סרגל הכותרת ולגשת לתפריט.</string>
   <string name="pref_alwaysvisible_title">מפתחות מיוחדים תמיד גלויים</string>
@@ -181,7 +176,6 @@
   <string name="hostpref_pubkeyid_title">שימוש באימות מפתח ציבורי</string>
   <string name="hostpref_authagent_title">שימוש בסוכן אימות SSH</string>
   <string name="hostpref_postlogin_title">אוטומציה שלאחר הכניסה</string>
-  <string name="hostpref_postlogin_summary">פקודות להפעלה בשרת המרוחק לאחר האימות</string>
   <string name="hostpref_compression_title">דחיסה</string>
   <string name="hostpref_compression_summary">אפשרות זו עשויה להועיל במקרה של רשתות אטיות</string>
   <string name="hostpref_wantsession_title">הפעלת חלון מעטפת</string>
@@ -268,10 +262,6 @@
   <string name="list_host_delete">מחיקת מארח</string>
   <string name="list_host_duplicate">שם מארח כפול</string>
   <string name="list_host_forget_keys">שכח מפתחות מארח</string>
-  <string name="list_rotation_default">בררת מחדל</string>
-  <string name="list_rotation_land">אילוץ מצב אופקי</string>
-  <string name="list_rotation_port">אילוץ מצב אנכי</string>
-  <string name="list_rotation_auto">אוטומטי</string>
   <string name="list_camera_ctrlaspace">Ctrl+A ואז רווח</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -311,16 +301,11 @@
   <string name="notification_text">ל־%1$s נדרשת תשומת הלב שלך.</string>
   <string name="no">לא</string>
   <string name="yes">כן</string>
-  <string name="list_color_schemes">ערכות צבעים</string>
-  <string name="menu_colors_reset">איפוס</string>
-  <string name="button_manage_schemes">ניהול ערכות צבעים</string>
   <string name="title_scheme_manager">ניהול ערכות צבעים</string>
   <string name="button_new_scheme">סכמה חדשה</string>
   <string name="button_duplicate_scheme">כפול</string>
-  <string name="button_rename_scheme">שנה שם</string>
   <string name="button_delete_scheme">מחק</string>
   <string name="dialog_title_new_scheme">ערכת צבעים חדשה</string>
-  <string name="dialog_title_rename_scheme">שנה שם של ערכת צבעים</string>
   <string name="label_scheme_name">שם הסכמה</string>
   <string name="label_scheme_description">תיאור (אופציונלי)</string>
   <string name="dialog_title_delete_scheme">למחוק ערכת צבעים?</string>
@@ -330,7 +315,6 @@
   <string name="label_built_in_scheme">מובנה</string>
   <string name="label_custom_scheme">מותאם אישית</string>
   <string name="empty_custom_schemes">אין סכמות מותאמות אישית. הקש על \"סכמה חדשה\" כדי ליצור אחת.</string>
-  <string name="button_edit_palette">ערוך את הפלטה</string>
   <string name="button_export_scheme">ייצא סכמה</string>
   <string name="button_import_scheme">ייבוא ערכה</string>
   <string name="message_export_success">יוצא %1$s</string>
@@ -349,14 +333,11 @@
   <string name="label_green">ירוק</string>
   <string name="label_blue">כחול</string>
   <string name="label_hex_color">צבע הקסדצימלי</string>
-  <string name="colors_fg_label">קדמה:%1$d</string>
-  <string name="color_bg_label">רקע:%1$d</string>
   <string name="section_fg_bg_colors">ברקע ובקדמה</string>
   <string name="label_foreground_color">קדמה</string>
   <string name="label_background_color">רקע</string>
   <string name="label_base_scheme">תכנית בסיסית:</string>
   <string name="menu_manage_colors">ניהול ערכות צבעים</string>
-  <string name="palette_editor_builtin_note">התבניות המובנות הן לקריאה בלבד. שכפל כדי להתאים אישית.</string>
   <string name="section_color_preview">תצוגה מקדימה</string>
   <string name="image_description_connected">יש חיבור.</string>
   <string name="image_description_disconnected">מנותק.</string>
@@ -411,9 +392,6 @@
   <string name="empty_port_forwards_message">לא הוגדרו העברות פורטים.</string>
   <string name="empty_urls_message">לא נמצאו כתובות URL בחיץ המסוף.</string>
   <string name="console_default_title">מסוף</string>
-  <string name="host_editor_quick_connect_label">התחברות מהירה</string>
-  <string name="host_editor_quick_connect_placeholder">משתמש\@שם_מארח:פורט</string>
-  <string name="host_editor_quick_connect_example">דוגמה: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced">הצג אפשרויות מתקדמות</string>
   <string name="host_editor_hide_advanced">הסתר אפשרויות מתקדמות</string>
   <string name="resize_width_label">רוחב (עמודות)</string>
@@ -480,7 +458,6 @@
   <string name="forget_host_keys_confirm">האם אתה בטוח שאתה רוצה למחוק את מפתחות המארח השמורים עבור \'%1$s\'? תתבקש לאמת את מפתח המארח בחיבור הבא.</string>
   <string name="list_pubkey_edit">ערוך את מפתח ה-SSH</string>
   <string name="hostpref_ipversion_title">גרסת IP</string>
-  <string name="hostpref_ipversion_summary">בחר איזו גרסת כתובת IP להשתמש בה בעת ההתחברות.</string>
   <string name="ipversion_auto">אוטומטי</string>
   <string name="ipversion_ipv4">רק IPv4</string>
   <string name="ipversion_ipv6">רק IPv6</string>
@@ -525,9 +502,6 @@
   <string name="pref_customterminal_summary">הוסף ערכי TERM מותאמים אישית עבור שרתים מרוחקים.</string>
   <string name="dialog_customterminal_title">הוסף סוג טרמינל מותאם אישית</string>
   <string name="dialog_customterminal_hint">סוג מסוף (לדוגמה, rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title">נהל סוגי מסופים מותאמים אישית</string>
-  <string name="button_add_custom">הוסף מותאם אישית...</string>
-  <string name="button_manage_custom">נהל הגדרות מותאמות אישית…</string>
   <string name="dialog_custom_value_label">הזן ערך מותאם אישית</string>
   <string name="list_camera_ctrlaspace_description">Ctrl+A ואז רווח</string>
   <string name="list_camera_ctrla_description">Ctrl+A</string>
@@ -541,7 +515,6 @@
   <string name="import_hosts_success">יובאו %1$d מארחים (%2$d נדחו) ו-%3$d פרופילים (%4$d נדחו)</string>
   <string name="export_hosts_failed">לא ניתן לייצא את רשימת המארחים: %s</string>
   <string name="import_hosts_failed">נכשלה הטעינה של רשימת המארחים: %s</string>
-  <string name="export_hosts_title">ייצא רשימת מארחים</string>
   <string name="shortcut_customize_title">התאם אישית קיצור דרך</string>
   <string name="shortcut_icon_color">צבע הסמל</string>
   <string name="shortcut_icon_style">סגנון אייקון</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">מופעל</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">הצג תמונות מוטמעות?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">האם לאפשר למחשב זה להציג תמונות מוטמעות במהלך יתר הסשן הנוכחי?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">הפעלה מופעלת.</string>
   <string name="automation_load_failed" tools:machine_translated="true">לא ניתן לטעון את תוכנית האוטומציה.</string>
   <string name="automation_save_failed" tools:machine_translated="true">לא ניתן לשמור את האוטומציה.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">בדוק את הטקסט, התבנית, משך הפעולה או יציאת ההעברה שנבחרה.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">העלה למעלה</string>
   <string name="automation_move_down" tools:machine_translated="true">הזז למטה</string>
   <string name="automation_drag" tools:machine_translated="true">גרור כדי לשנות את הסדר.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">לשמור את השינויים?</string>
-  <string name="automation_discard" tools:machine_translated="true">בטל</string>
   <string name="automation_cancel" tools:machine_translated="true">בטל</string>
   <string name="automation_text" tools:machine_translated="true">טקסט</string>
   <string name="automation_regex" tools:machine_translated="true">ביטוי רגולרי</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f שניות</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d פעולות</item>
-		<item quantity="other">%1$d פעולות</item>
-	</plurals>
+    <item quantity="one">%1$d פעולות</item>
+    <item quantity="other">%1$d פעולות</item>
+  </plurals>
 </resources>

@@ -7,7 +7,6 @@
   <string name="title_port_forwards_list">Проброс портов</string>
   <string name="title_help">Помощь</string>
   <string name="title_eula">Лицензия</string>
-  <string name="title_colors">Настройка цветов</string>
   <string name="title_color_picker">Выбор цвета</string>
   <string name="title_settings">Настройки</string>
   <string name="title_pubkey_generate">Генерация</string>
@@ -46,8 +45,6 @@
   <string name="pubkey_import_reuse_password">Используйте один и тот же пароль для шифрования</string>
   <string name="pubkey_import_new_password">Новый пароль</string>
   <string name="pubkey_import_confirm_password">Подтвердите пароль</string>
-  <string name="pubkey_list_empty">Нажмите «Меню», чтобы создать или импортировать пары ключей.</string>
-  <string name="pubkey_unknown_format">Неизвестный формат</string>
   <string name="pubkey_change_password">Сменить пароль</string>
   <string name="pubkey_unlock">Разблокировать ключ</string>
   <string name="pubkey_unlock_message">Введите пароль для разблокировки ключа «%1$s»</string>
@@ -70,7 +67,6 @@
   <string name="prompt_allow_agent_to_use_key">Разрешить удалённому\nсерверу использовать ключ \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">ВНИМАНИЕ! ИДЕНТИФИКАЦИЯ УДАЛЕННОГО СЕРВЕРА ЗАМЕНЕНА</string>
   <string name="host_verification_failure_warning">Похоже есть возможность что вас ломают. Или кто-то изменил ключ на удаленном сервере.</string>
-  <string name="prompt_host_disconnected">Сервер отключился.\nЗакрыть сессию ?</string>
   <string name="prompt_continue_connecting">Хотите продолжить\nпопытки соединения?</string>
   <string name="host_authenticity_warning">Подлинность сервера \'%1$s\' не может быть установлена</string>
   <string name="host_fingerprint">Отпечаток ключа сервера %1$s - %2$s</string>
@@ -115,7 +111,6 @@
   <string name="pref_theme_system">Системные настройки по умолчанию</string>
   <string name="pref_theme_light">Легкий</string>
   <string name="pref_theme_dark">Темный</string>
-  <string name="pref_rotation_title">Ориентация экрана</string>
   <string name="pref_titlebarhide_title">Автоскрытие заголовка</string>
   <string name="pref_titlebarhide_summary">Нажмите на консоль, чтобы показать заголовок и меню</string>
   <string name="pref_alwaysvisible_title">Специальные клавиши всегда видны</string>
@@ -181,7 +176,6 @@
   <string name="hostpref_pubkeyid_title">Использовать авторизацию по открытому ключу</string>
   <string name="hostpref_authagent_title">Использовать агента SSH</string>
   <string name="hostpref_postlogin_title">Автоматизация после авторизации</string>
-  <string name="hostpref_postlogin_summary">Комманды, выполняемые на удаленной машине после подключения</string>
   <string name="hostpref_compression_title">Сжатие</string>
   <string name="hostpref_compression_summary">Это может быть полезным в медленных сетях</string>
   <string name="hostpref_wantsession_title">Начать сеанс оболочки</string>
@@ -268,10 +262,6 @@
   <string name="list_host_delete">Удалить сервер</string>
   <string name="list_host_duplicate">Дублирующийся хост</string>
   <string name="list_host_forget_keys">Забыть ключи хоста</string>
-  <string name="list_rotation_default">По умолчанию</string>
-  <string name="list_rotation_land">Только альбомная</string>
-  <string name="list_rotation_port">Только портретная</string>
-  <string name="list_rotation_auto">Автоматически</string>
   <string name="list_camera_ctrlaspace">Ctrl+A затем пробел</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -311,16 +301,11 @@
   <string name="notification_text">%1$s требует Вашего внимания.</string>
   <string name="no">Нет</string>
   <string name="yes">Да</string>
-  <string name="list_color_schemes">Цветовые схемы</string>
-  <string name="menu_colors_reset">Сбросить</string>
-  <string name="button_manage_schemes">Управлять схемами</string>
   <string name="title_scheme_manager">Управление цветовыми схемами</string>
   <string name="button_new_scheme">Новая схема</string>
   <string name="button_duplicate_scheme">Дубликат</string>
-  <string name="button_rename_scheme">Переименовать</string>
   <string name="button_delete_scheme">Удалить</string>
   <string name="dialog_title_new_scheme">Новая цветовая схема</string>
-  <string name="dialog_title_rename_scheme">Переименовать цветовую схему</string>
   <string name="label_scheme_name">Название схемы</string>
   <string name="label_scheme_description">Описание не обязательное</string>
   <string name="dialog_title_delete_scheme">Удалить схему?</string>
@@ -330,7 +315,6 @@
   <string name="label_built_in_scheme">Встроенный</string>
   <string name="label_custom_scheme">Настройка</string>
   <string name="empty_custom_schemes">Нет пользовательских схем. Нажмите «Новая схема», чтобы создать новую.</string>
-  <string name="button_edit_palette">Редактировать палитру</string>
   <string name="button_export_scheme">Экспорт схемы</string>
   <string name="button_import_scheme">Импорт схемы</string>
   <string name="message_export_success">Экспортировано %1$s</string>
@@ -349,14 +333,11 @@
   <string name="label_green">Зеленый</string>
   <string name="label_blue">Синий</string>
   <string name="label_hex_color">Цвет в формате HEX</string>
-  <string name="colors_fg_label">ПП: %1$d</string>
-  <string name="color_bg_label">ЗП: %1$d</string>
   <string name="section_fg_bg_colors">Основной и фоновый</string>
   <string name="label_foreground_color">Основной</string>
   <string name="label_background_color">Фон</string>
   <string name="label_base_scheme">Базовая схема:</string>
   <string name="menu_manage_colors">Управление цветовыми схемами</string>
-  <string name="palette_editor_builtin_note">Встроенные схемы доступны только для чтения. Создайте их копию, чтобы настроить.</string>
   <string name="section_color_preview">Превью</string>
   <string name="image_description_connected">Подключено.</string>
   <string name="image_description_disconnected">Отключено.</string>
@@ -411,9 +392,6 @@
   <string name="empty_port_forwards_message">Ни один перенаправление портов не настроено.</string>
   <string name="empty_urls_message">Нет найденных URL в буфере терминала</string>
   <string name="console_default_title">Консоль</string>
-  <string name="host_editor_quick_connect_label">Быстрое подключение</string>
-  <string name="host_editor_quick_connect_placeholder">user\@host:port</string>
-  <string name="host_editor_quick_connect_example">Пример root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced">Показать расширенные опции</string>
   <string name="host_editor_hide_advanced">Скрыть расширенные параметры</string>
   <string name="resize_width_label">Ширина (столбцы)</string>
@@ -480,7 +458,6 @@
   <string name="forget_host_keys_confirm">Вы уверены, что хотите удалить сохраненные ключи хоста для \"%1$s\"? При следующем подключении вам будет предложено подтвердить ключ хоста.</string>
   <string name="list_pubkey_edit">Редактировать открытый ключ</string>
   <string name="hostpref_ipversion_title">Версия IP</string>
-  <string name="hostpref_ipversion_summary">Выберите, какую версию IP-адреса использовать при подключении</string>
   <string name="ipversion_auto">Автоматический</string>
   <string name="ipversion_ipv4">Только IPv4</string>
   <string name="ipversion_ipv6">Только IPv6</string>
@@ -525,9 +502,6 @@
   <string name="pref_customterminal_summary">Добавить пользовательские значения TERM для удаленных серверов</string>
   <string name="dialog_customterminal_title">Добавить пользовательский тип терминала</string>
   <string name="dialog_customterminal_hint">Тип терминала (например, rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title">Управление пользовательскими типами терминала</string>
-  <string name="button_add_custom">Добавить пользовательский…</string>
-  <string name="button_manage_custom">Управление пользовательскими настройками…</string>
   <string name="dialog_custom_value_label">Введите пользовательское значение</string>
   <string name="list_camera_ctrlaspace_description">Ctrl+A затем пробел</string>
   <string name="list_camera_ctrla_description">Ctrl+A</string>
@@ -541,7 +515,6 @@
   <string name="import_hosts_success">Импортировано %1$d хостов (%2$d пропущено) и %3$d профилей (%4$d пропущено)</string>
   <string name="export_hosts_failed">Не удалось экспортировать список хостов: %s</string>
   <string name="import_hosts_failed">Не удалось импортировать список хостов: %s</string>
-  <string name="export_hosts_title">Экспорт хостов</string>
   <string name="shortcut_customize_title">Настроить сочетание клавиш</string>
   <string name="shortcut_icon_color">Цвет значка</string>
   <string name="shortcut_icon_style">Стиль значка</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">Включено</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Отображать встроенные изображения?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Разрешить этому хосту отображать встроенные изображения в течение текущей сессии?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Автоматический запуск включен.</string>
   <string name="automation_load_failed" tools:machine_translated="true">Не удалось загрузить автоматизированный процесс.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Не удалось сохранить настройки автоматизации.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Проверьте текст, шаблон, продолжительность или выбранные настройки перенаправления портов.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Переместить вверх</string>
   <string name="automation_move_down" tools:machine_translated="true">Переместить вниз</string>
   <string name="automation_drag" tools:machine_translated="true">Перетащите, чтобы изменить порядок.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Сохранить изменения?</string>
-  <string name="automation_discard" tools:machine_translated="true">Отменить, отклонить, выбросить.</string>
   <string name="automation_cancel" tools:machine_translated="true">Отменить</string>
   <string name="automation_text" tools:machine_translated="true">Текст</string>
   <string name="automation_regex" tools:machine_translated="true">Регулярное выражение</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Клавиша Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f сек.</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d действие</item>
-		<item quantity="other">%1$d действий</item>
-	</plurals>
+    <item quantity="one">%1$d действие</item>
+    <item quantity="other">%1$d действий</item>
+  </plurals>
 </resources>

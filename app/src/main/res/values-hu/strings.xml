@@ -5,7 +5,6 @@
   <string name="title_pubkey_list">Publikus kulcsok</string>
   <string name="title_port_forwards_list">Port átiránytások</string>
   <string name="title_help">Súgó</string>
-  <string name="title_colors">Színek</string>
   <string name="pubkey_generate">Generálás</string>
   <string name="pubkey_delete">Kulcs törlése</string>
   <string name="pubkey_gather_entropy">Entrópia gyűjtés</string>
@@ -33,7 +32,6 @@
   <string name="prompt_allow_agent_to_use_key">A \'%1$s\' kulcs engedélyezése\na távoli gépnek?</string>
   <string name="host_verification_failure_warning_header">FIGYELEM: A TÁVOLI GÉP AZONOSÍTÓJA MEGVÁLTOZOTT!</string>
   <string name="host_verification_failure_warning">FELTEHETŐEN VALAKI GYANÚS DOLGOKAT MŰVEL! \nValaki feltehetően megpróbál lehallgatni (man-in-the-middle attack) téged! \\ nDe az is lehetséges, hogy a távoli fél kulcsa közben megváltozott.</string>
-  <string name="prompt_host_disconnected">A kapcsolat megszakadt.\nBezárja a folyamatot?</string>
   <string name="prompt_continue_connecting">Biztosan folytatja a csatlakozást?</string>
   <string name="host_authenticity_warning">A \'%1$s\' kiszolgáló azonosítása sikertelen.</string>
   <string name="host_fingerprint">A %1$s kulcs újlenyomata a(-z) %2$s</string>
@@ -46,7 +44,6 @@
   <string name="pref_scrollback_title">Előzmények mérete</string>
   <string name="pref_scrollback_summary">Az előzmények memóriában tartandó mérete konzolonként</string>
   <string name="pref_ui_category">Felhasználói felület</string>
-  <string name="pref_rotation_title">Forgatási mód</string>
   <string name="pref_fullscreen_title">Teljes képernyő</string>
   <string name="pref_fullscreen_summary">Rejtett állapotsor a konzol használata során</string>
   <string name="pref_memkeys_title">Kulcsok megörzése a memóriában</string>
@@ -75,7 +72,6 @@
   <string name="hostpref_pubkeyid_title">Nyilvános kulcs használata azonosításhoz</string>
   <string name="hostpref_authagent_title">Az SSH auth agent használata</string>
   <string name="hostpref_postlogin_title">Bejelentkezést követő automatikus parancsok</string>
-  <string name="hostpref_postlogin_summary">Olyan parancsok amelyek a bejelentkezést követően kerülnek futtatásra</string>
   <string name="hostpref_compression_title">Tömörítés</string>
   <string name="hostpref_compression_summary">Jól jöhet lassú házatok esetén</string>
   <string name="hostpref_wantsession_title">Parancssor indítása</string>
@@ -109,10 +105,6 @@
   <string name="list_host_edit">Kiszolgáló szerkesztése</string>
   <string name="list_host_portforwards">Port átirányítások szerkesztése</string>
   <string name="list_host_delete">Kiszolgáló törlése</string>
-  <string name="list_rotation_default">Alapbeállitás</string>
-  <string name="list_rotation_land">Fekvő mód kényszerítése</string>
-  <string name="list_rotation_port">Álló mód kényszerítése</string>
-  <string name="list_rotation_auto">Automatikus</string>
   <string name="list_camera_ctrlaspace">Ctrl+A majd Space</string>
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
@@ -143,7 +135,6 @@
   <string name="notification_text">%1$s a figyelmére szorul.</string>
   <string name="no">Nem</string>
   <string name="yes">Igen</string>
-  <string name="menu_colors_reset">Visszaállít</string>
   <string name="app_is_running">ConnectBot már fut</string>
   <string name="image_description_connected">Kapcsolódva</string>
   <string name="image_description_toggle_control_character">Vezérlő jel i/n</string>
@@ -181,8 +172,6 @@
   <string name="pubkey_import_reuse_password" tools:machine_translated="true">Használja ugyanazt a jelszót a titkosításhoz</string>
   <string name="pubkey_import_new_password" tools:machine_translated="true">Új jelszó</string>
   <string name="pubkey_import_confirm_password" tools:machine_translated="true">Jelszó megerősítése</string>
-  <string name="pubkey_list_empty" tools:machine_translated="true">Érintse meg a „Menü” gombot a kulcspárok létrehozásához vagy importálásához.</string>
-  <string name="pubkey_unknown_format" tools:machine_translated="true">Ismeretlen formátum</string>
   <string name="pubkey_unlock_message" tools:machine_translated="true">Adja meg a jelszót a(z) \'%1$s\' kulcs feloldásához.</string>
   <string name="pubkey_nickname_exists" tools:machine_translated="true">Már létezik egy kulcs ezzel a felhasználónévvel.</string>
   <string name="prompt_username" tools:machine_translated="true">Felhasználónév:</string>
@@ -319,15 +308,11 @@
   <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">A mentett jelszóval történő hitelesítés sikertelen volt.</string>
   <string name="terminal_auth_biometric" tools:machine_translated="true">Biometrikus azonosítás kérése a(z) „%1$s” nevű kulcs feloldásához.</string>
   <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">A(z) „%1$s” biometrikus kulcs érvényét vesztette. Ez akkor fordulhat elő, ha új ujjlenyomatokat regisztrálnak az eszközön. Kérjük, hozzon létre egy új kulcsot.</string>
-  <string name="list_color_schemes" tools:machine_translated="true">Színpaletták</string>
-  <string name="button_manage_schemes" tools:machine_translated="true">Színsémák kezelése</string>
   <string name="title_scheme_manager" tools:machine_translated="true">Színvilágok kezelése</string>
   <string name="button_new_scheme" tools:machine_translated="true">Új színpaletta</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">Másolás</string>
-  <string name="button_rename_scheme" tools:machine_translated="true">Átnevezés</string>
   <string name="button_delete_scheme" tools:machine_translated="true">Törlés</string>
   <string name="dialog_title_new_scheme" tools:machine_translated="true">Új színséma</string>
-  <string name="dialog_title_rename_scheme" tools:machine_translated="true">Színpaletta átnevezése</string>
   <string name="label_scheme_name" tools:machine_translated="true">Séma neve</string>
   <string name="label_scheme_description" tools:machine_translated="true">Leírás (nem kötelező)</string>
   <string name="dialog_title_delete_scheme" tools:machine_translated="true">Törölni a sablont?</string>
@@ -337,7 +322,6 @@
   <string name="label_built_in_scheme" tools:machine_translated="true">Beépített</string>
   <string name="label_custom_scheme" tools:machine_translated="true">Egyedi/Felhasználó által létrehozott</string>
   <string name="empty_custom_schemes" tools:machine_translated="true">Nincs egyéni elrendezés. A létrehozásához érintse meg az „Új elrendezés” gombot.</string>
-  <string name="button_edit_palette" tools:machine_translated="true">Színpaletta szerkesztése</string>
   <string name="button_export_scheme" tools:machine_translated="true">Színséma exportálása</string>
   <string name="button_import_scheme" tools:machine_translated="true">Színséma importálása</string>
   <string name="message_export_success" tools:machine_translated="true">A(z) %1$s sikeresen exportálva</string>
@@ -355,14 +339,11 @@
   <string name="label_green" tools:machine_translated="true">Zöld</string>
   <string name="label_blue" tools:machine_translated="true">Kék</string>
   <string name="label_hex_color" tools:machine_translated="true">Hex színkód</string>
-  <string name="colors_fg_label" tools:machine_translated="true">Előterű szín: %1$d</string>
-  <string name="color_bg_label" tools:machine_translated="true">BG: %1$d</string>
   <string name="section_fg_bg_colors" tools:machine_translated="true">Első- és háttérszín</string>
   <string name="label_foreground_color" tools:machine_translated="true">Elsőterű szín</string>
   <string name="label_background_color" tools:machine_translated="true">Háttérszín</string>
   <string name="label_base_scheme" tools:machine_translated="true">Alapséma:</string>
   <string name="menu_manage_colors" tools:machine_translated="true">Színsémák kezelése</string>
-  <string name="palette_editor_builtin_note" tools:machine_translated="true">A beépített témák csak olvashatóak. Ha módosítani szeretné, másolja le őket.</string>
   <string name="section_color_preview" tools:machine_translated="true">Előnézet</string>
   <string name="image_description_disconnected" tools:machine_translated="true">Kapcsolat bontva.</string>
   <string name="image_description_send_tab_character" tools:machine_translated="true">Küldje el a TAB karaktert.</string>
@@ -413,9 +394,6 @@
   <string name="empty_port_forwards_message" tools:machine_translated="true">Nem konfiguráltak portátirányításokat.</string>
   <string name="empty_urls_message" tools:machine_translated="true">Nem találtunk URL-eket a terminál pufferében.</string>
   <string name="console_default_title" tools:machine_translated="true">Konzol</string>
-  <string name="host_editor_quick_connect_label" tools:machine_translated="true">Gyors csatlakozás</string>
-  <string name="host_editor_quick_connect_placeholder" tools:machine_translated="true">felhasználónév\@hosztnév:port</string>
-  <string name="host_editor_quick_connect_example" tools:machine_translated="true">Példa: root\@192.168.1.1:22</string>
   <string name="host_editor_show_advanced" tools:machine_translated="true">További beállítások megjelenítése</string>
   <string name="host_editor_hide_advanced" tools:machine_translated="true">Rejtse el a további beállításokat.</string>
   <string name="resize_width_label" tools:machine_translated="true">Szélesség (oszlopokban)</string>
@@ -494,7 +472,6 @@
   <string name="forget_host_keys_confirm" tools:machine_translated="true">Biztosan törölni szeretné a \'%1$s\' szolgáltatóhoz tartozó, tárolt kulcsokat? A következő kapcsolódáskor felkérik Önt, hogy ellenőrizze a szolgáltatói kulcsot.</string>
   <string name="list_pubkey_edit" tools:machine_translated="true">Szerkeszd a nyilvános kulcsot</string>
   <string name="hostpref_ipversion_title" tools:machine_translated="true">IP-verzió</string>
-  <string name="hostpref_ipversion_summary" tools:machine_translated="true">Válassza ki, hogy mely IP-címformátumot használja a kapcsolat során.</string>
   <string name="ipversion_auto" tools:machine_translated="true">Automatikus</string>
   <string name="ipversion_ipv4" tools:machine_translated="true">Csak IPv4</string>
   <string name="ipversion_ipv6" tools:machine_translated="true">Csak IPv6</string>
@@ -539,9 +516,6 @@
   <string name="pref_customterminal_summary" tools:machine_translated="true">Adjon hozzá egyéni TERM értékeket a távoli szerverekhez.</string>
   <string name="dialog_customterminal_title" tools:machine_translated="true">Egyéni terminál típus hozzáadása</string>
   <string name="dialog_customterminal_hint" tools:machine_translated="true">Terminál típusa (pl. rxvt-unicode)</string>
-  <string name="dialog_manage_customterminal_title" tools:machine_translated="true">Egyéni terminál típusok kezelése</string>
-  <string name="button_add_custom" tools:machine_translated="true">Egyéni elem hozzáadása…</string>
-  <string name="button_manage_custom" tools:machine_translated="true">Egyéni elemek kezelése…</string>
   <string name="dialog_custom_value_label" tools:machine_translated="true">Adja meg a saját értékét</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, majd a szóköz billentyű</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
@@ -555,7 +529,6 @@
   <string name="import_hosts_success" tools:machine_translated="true">%1$d gazdagépet importáltunk (%2$d-et kihagytunk), és %3$d profilt (%4$d-et kihagytunk).</string>
   <string name="export_hosts_failed" tools:machine_translated="true">A gazdagépek exportálása sikertelen: %s</string>
   <string name="import_hosts_failed" tools:machine_translated="true">A gazdagépek importálása sikertelen: %s</string>
-  <string name="export_hosts_title" tools:machine_translated="true">Exportálható gazdagépek</string>
   <string name="shortcut_customize_title" tools:machine_translated="true">Testreszabás: Gyorsbillentyű</string>
   <string name="shortcut_icon_color" tools:machine_translated="true">Ikon színe</string>
   <string name="shortcut_icon_style" tools:machine_translated="true">Ikonstílus</string>
@@ -620,7 +593,6 @@
   <string name="inline_images_on" tools:machine_translated="true">Bekapcsolva</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Mutassam a képeket a szövegben?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Engedélyezzük, hogy ez a szerver a jelenlegi munkamenet során beágyazott képeket jelenítsen meg?</string>
-  <string name="automation_forward_start_enabled" tools:machine_translated="true">Automatikus indítás engedélyezve.</string>
   <string name="automation_load_failed" tools:machine_translated="true">Nem sikerült betölteni az automatizálási beállításokat.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Az automatizálási beállítások nem menthetők.</string>
   <string name="automation_invalid_action" tools:machine_translated="true">Ellenőrizze a szöveget, a mintát, az időtartamot vagy a kiválasztott porttovábbítást.</string>
@@ -644,8 +616,6 @@
   <string name="automation_move_up" tools:machine_translated="true">Vigye feljebb!</string>
   <string name="automation_move_down" tools:machine_translated="true">Lépjen lefelé.</string>
   <string name="automation_drag" tools:machine_translated="true">Húzza, hogy megváltoztassa a sorrendet.</string>
-  <string name="automation_unsaved" tools:machine_translated="true">Mentse a módosításokat?</string>
-  <string name="automation_discard" tools:machine_translated="true">Elvetni/Törölni</string>
   <string name="automation_cancel" tools:machine_translated="true">Mégsem</string>
   <string name="automation_text" tools:machine_translated="true">Szöveg</string>
   <string name="automation_regex" tools:machine_translated="true">Rendszeres kifejezés</string>
@@ -679,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Shift billentyű</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f másodperc</string>
   <plurals name="automation_count" tools:machine_translated="true">
-		<item quantity="one">%1$d művelet</item>
-		<item quantity="other">%1$d művelet</item>
-	</plurals>
+    <item quantity="one">%1$d művelet</item>
+    <item quantity="other">%1$d művelet</item>
+  </plurals>
 </resources>
