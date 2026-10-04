@@ -652,4 +652,52 @@
     <item quantity="one">%1$d дія</item>
     <item quantity="other">%1$d дії</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Непереглянуті дані</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Ви від’єдналися від цього сервера.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Віддалене підключення завершено.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Сервер розірвав з’єднання. Ви можете повторно підключитися.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">З’єднання було втрачено. Ви можете повторно встановити з’єднання.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">З’єднання з мережею було втрачено. Відновіть з’єднання, коли мережа знову стане доступною.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Аутентифікація не вдалася. Перевірте ім’я користувача, пароль або ключ перед повторним підключенням.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">З’єднання завершено.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Необхідно перевірити з’єднання.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Відкрийте консоль, щоб переглянути решту вихідних даних.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android може припинити роботу ConnectBot і розірвати з’єднання під час перемикання між програмами.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Час очікування мережевого підключення Mosh (у секундах)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Час, протягом якого сервер чекає на оновлення від клієнта перед завершенням роботи. Залиште поле порожнім, щоб використовувати налаштування сервера або встановити термін у один тиждень; вкажіть 0, щоб вимкнути встановлення терміну дії.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Введіть ціле число від 0 до 2147483647 або залиште поле порожнім.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Активні сеанси</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Сеанси, які потребують уваги.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Звукові сигнали термінала</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Відсутність з’єднання.</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Керуйте каналами сповіщень у налаштуваннях.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Підключено</string>
+  <string name="notification_connecting" tools:machine_translated="true">Встановлення з’єднання…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Від’єднано</string>
+  <string name="notification_bell" tools:machine_translated="true">Звуковий сигнал термінала</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Повідомлення прочитано.</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Вимкнути звукові сповіщення.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Сповіщення про втрату з’єднання.</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Відображати спливаюче вікно без звуку, коли сеанс, який ви не переглядаєте, несподівано припиняється.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+    <item quantity="one">Підключено %d сеанс</item>
+    <item quantity="few">Підключено %d сеанси</item>
+    <item quantity="many">Підключено %d сеансів</item>
+    <item quantity="other">Підключено %d сеансу</item>
+  </plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+    <item quantity="one">%d потребує уваги</item>
+    <item quantity="few">%d потребують уваги</item>
+    <item quantity="many">%d потребують уваги</item>
+    <item quantity="other">%d потребують уваги</item>
+  </plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+    <item quantity="one">Ще %d сеанс</item>
+    <item quantity="few">Ще %d сеанси</item>
+    <item quantity="many">Ще %d сеансів</item>
+    <item quantity="other">Ще %d сеансу</item>
+  </plurals>
 </resources>

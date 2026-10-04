@@ -652,4 +652,46 @@
     <item quantity="one">%1$d действие</item>
     <item quantity="other">%1$d действия</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Непрочетени данни от конзолата</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Прекъснахте връзката с този хост.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Отдалечената сесия приключи.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Сървърът затвори връзката. Можете да се свържете отново.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Връзката беше прекъсната. Можете да се опитате да се свържете отново.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Връзката с мрежата беше прекъсната. Възстановете връзката, когато мрежата е достъпна.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Удостоверяването не беше успешно. Преди да се опитате да се свържете отново, проверете потребителското си име, паролата или ключа.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Връзката беше прекъсната.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Връзката изисква внимание.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Отворете конзолата, за да видите останалата част от изходните данни.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android може да прекрати работата на ConnectBot и да прекъсне връзката ви, когато превключвате между приложения.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Време за изчакване на мрежовата връзка на Mosh (в секунди)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Време, през което не се получават актуализации от клиента, преди сървърът да се затвори. Оставете полето празно, за да се използва настройката на сървъра или една седмица; използвайте 0, за да деактивирате изтичането на срока.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Въведете цяло число между 0 и 2147483647 или оставете полето празно.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Активни сесии</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Сесии, които изискват внимание.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Звукови сигнали от терминала</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Прекъснати връзки</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Управлявайте каналите за известия в настройките.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Свързан</string>
+  <string name="notification_connecting" tools:machine_translated="true">Установяване на връзка…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Прекъсната връзка</string>
+  <string name="notification_bell" tools:machine_translated="true">Звуков сигнал на терминала</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Отбелязано като прочетено.</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Заглушаване на звуковите сигнали.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Известия при прекъсване на връзката</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Показвайте известие без звук, когато сесия, която не сте отворили, неочаквано прекъсне връзката.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">%d сесии са свързани.</item>
+		<item quantity="other">%d активни сесии</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">%d изисква внимание.</item>
+		<item quantity="other">%d изискват внимание.</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">+%d още сесии</item>
+		<item quantity="other">+%d още сесии</item>
+	</plurals>
 </resources>

@@ -652,4 +652,46 @@
     <item quantity="one">%1$d ενέργεια</item>
     <item quantity="other">%1$d ενέργειες</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Μηνύματα που δεν έχουν διαβαστεί.</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Αποσυνδεθήκατε από αυτόν τον κεντρικό υπολογιστή.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Η απομακρυσμένη σύνδεση ολοκληρώθηκε.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Ο διακομιστής έκλεισε τη σύνδεση. Μπορείτε να επανασυνδεθείτε.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Η σύνδεση διακόπηκε. Μπορείτε να επιχειρήσετε να επανασυνδεθείτε.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Η σύνδεση δικτύου διακόπηκε. Επανασυνδεθείτε όταν το δίκτυο είναι διαθέσιμο.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Η διαδικασία αυθεντικοποίησης απέτυχε. Ελέγξτε το όνομα χρήστη, τον κωδικό πρόσβασης ή το κλειδί σας πριν επιχειρήσετε να συνδεθείτε ξανά.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Η σύνδεση τερματίστηκε.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Απαιτείται προσοχή στη σύνδεση.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Ανοίξτε την κονσόλα για να δείτε το υπόλοιπο της εξόδου.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Το Android ενδέχεται να τερματίσει το ConnectBot και να διακόψει τις τρέχουσες συνδέσεις σας όταν αλλάζετε εφαρμογές.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Χρονικό όριο σύνδεσης δικτύου Mosh (δευτερόλεπτα)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Χρόνος που μετράει πριν ο διακομιστής τερματιστεί, χωρίς να έχει λάβει ενημερώσεις από τον πελάτη. Αφήστε το πεδίο κενό για να χρησιμοποιηθεί η προεπιλεγμένη ρύθμιση του διακομιστή ή μια εβδομάδα· χρησιμοποιήστε το 0 για να απενεργοποιήσετε την αυτόματη διακοπή λειτουργίας.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Εισαγάγετε έναν ακέραιο αριθμό από 0 έως 2147483647 ή αφήστε το πεδίο κενό.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Ενεργές συνεδρίες</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Συνεδρίες που χρήζουν προσοχής.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Ηχητικά σήματα τερματικού</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Αποσυνδεδεμένες συνδέσεις</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Διαχείριση των καναλιών ειδοποιήσεων στις ρυθμίσεις.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Συνδεδεμένο</string>
+  <string name="notification_connecting" tools:machine_translated="true">Συνδέομαι…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Αποσυνδεδεμένο</string>
+  <string name="notification_bell" tools:machine_translated="true">Ηχητικό σήμα τερματικού</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Έγινε καταγραφή της τελευταίας δραστηριότητας.</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Απενεργοποίηση ηχητικών σημάτων.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Ειδοποιήσεις για απώλεια σύνδεσης</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Εμφάνισε ένα αναδυόμενο παράθυρο χωρίς ήχο όταν μια συνεδρία που δεν παρακολουθείς διακόπτεται απροσδόκητα.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">%d συνεδρίες συνδέθηκαν</item>
+		<item quantity="other">%d συνεδρίες σε εξέλιξη.</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">Απαιτείται προσοχή σε %d περιπτώσεις.</item>
+		<item quantity="other">%d απαιτούν προσοχή</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">+%d επιπλέον συνεδρίες</item>
+		<item quantity="other">+%d επιπλέον συνεδρίες</item>
+	</plurals>
 </resources>

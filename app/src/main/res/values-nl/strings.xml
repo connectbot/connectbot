@@ -652,4 +652,46 @@
     <item quantity="one">%1$d actie</item>
     <item quantity="other">%1$d acties</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Nieuwe uitvoer</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">U bent losgekoppeld van dit apparaat.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">De externe sessie is beëindigd.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">De server heeft de verbinding verbroken. U kunt opnieuw verbinding maken.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">De verbinding is verbroken. U kunt opnieuw verbinding maken.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">De netwerkverbinding is verbroken. Maak opnieuw verbinding zodra het netwerk weer beschikbaar is.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">De authenticatie is mislukt. Controleer uw gebruikersnaam, wachtwoord of sleutel voordat u opnieuw verbinding maakt.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">De verbinding is verbroken.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">De verbinding vereist aandacht.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Open de console om de resterende uitvoer te bekijken.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android kan ConnectBot stoppen en uw actieve verbindingen verbreken wanneer u van app wisselt.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh-netwerktime-out (in seconden)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Tijd zonder updates van de client voordat de server wordt afgesloten. Laat dit veld leeg om de serverinstelling of één week te gebruiken; gebruik 0 om de vervaldatum uit te schakelen.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Voer een geheel getal tussen 0 en 2147483647 in, of laat het veld leeg.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Actieve sessies</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Sessies waar actie vereist is</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Achtergrondgeluiden van de terminal</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Verloren verbindingen</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Beheer de meldingen in de instellingen.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Verbonden</string>
+  <string name="notification_connecting" tools:machine_translated="true">Verbinding wordt gemaakt…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Verbinding verbroken</string>
+  <string name="notification_bell" tools:machine_translated="true">Terminaalgeluid</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Markeer als gezien</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Schakel de geluidsmeldingen uit.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Meldingen bij onverwachte onderbreking van de verbinding</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Toon een melding zonder geluid als een sessie die je niet actief bekijkt, onverwacht wordt onderbroken.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">%d sessie actief</item>
+		<item quantity="other">%d actieve sessies</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">%d vereist aandacht.</item>
+		<item quantity="other">%d sessies vereisen aandacht.</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">Nog %d sessies meer</item>
+		<item quantity="other">+%d sessies meer</item>
+	</plurals>
 </resources>

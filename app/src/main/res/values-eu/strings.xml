@@ -652,4 +652,46 @@
     <item quantity="one">%1$d ekintza</item>
     <item quantity="other">%1$d ekintza</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Irakurri gabeko emaitza</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Asmatu host horretatik.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Urruneko saioa amaitu da.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Zerbitzariak konexioa itxi du. Berriro konektatu dezakezu.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Konexioa eten egin da. Berriro konektatu dezakezu.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Sare-konexioa galdu da. Konektatu berriro sarea eskuragarri dagoenean.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Autentifikazioa huts egin du. Egiaztatu zure erabiltzaile-izena, pasahitza edo gakoa berriro konektatu aurretik.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Konexioa amaitu da.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Konexioak arreta berezia behar du.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Ireki kontsola gainerako informazioa ikusteko.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Androidek ConnectBot itxi eta zure saioak desaktiba ditzake aplikazioen artean aldatzen zarenean.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh sareko denbora-muga (segunduetan)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Zerbitzaria itxi aurretik bezeroaren azken eguneratzearen eta hurrengoaren arteko denbora. Utzi hutsik zerbitzariaren ezarpenari eusteko edo aste bat erabiltzeko; erabili 0 balioa iraungipena desgaitu nahi baduzu.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Sartu 0 eta 2147483647 arteko zenbaki oso bat, edo utzi hutsik.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Saio aktiboak</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Arreta bereiziko duten saioak</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Terminaleko soinu-alertak</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Konexio etenak</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Jakinarazpen-kanalak konfigurazioetan kudeatu.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Konektatuta</string>
+  <string name="notification_connecting" tools:machine_translated="true">Konexioa ezartzen…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Deskonexioa</string>
+  <string name="notification_bell" tools:machine_translated="true">Terminaleko soinu-seinalea</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Ikusi egin da</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Desaktibatu soinu-alertak.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Konexio-galera jakinarazpenak</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Erakutsi pop-up bat, soinurik gabe, saio bat ikusten ez baduzu eta ustekabean deskonektatzen bada.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">%d saio konektatuta</item>
+		<item quantity="other">%d saio konektatuta</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">%d-ri arreta eman behar zaio.</item>
+		<item quantity="other">%d-ek arreta behar du.</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">%+d saio gehiago</item>
+		<item quantity="other">%+d saio gehiago</item>
+	</plurals>
 </resources>

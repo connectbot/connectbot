@@ -652,4 +652,52 @@
     <item quantity="one">%1$d akcji</item>
     <item quantity="other">%1$d operacji</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Nieuodczytane dane wyjściowe</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Rozłączyłeś się z tym hostem.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Zdalna sesja została zakończona.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Serwer zamknął połączenie. Możesz spróbować nawiązać połączenie ponownie.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Połączenie zostało przerwane. Możesz spróbować nawiązać je ponownie.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Utracono połączenie z siecią. Ponów połączenie, gdy sieć będzie dostępna.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Uwierzytelnianie nie powiodło się. Przed ponownym połączeniem sprawdź nazwę użytkownika, hasło lub klucz.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Połączenie zostało zakończone.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Połączenie wymaga interwencji.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Otwórz konsolę, aby wyświetlić pozostałą część danych.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android może zamknąć aplikację ConnectBot i zakończyć połączenia, gdy przełączysz się na inną aplikację.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Czas oczekiwania na połączenie sieciowe Mosh (w sekundach)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Czas, po którym serwer zakończy działanie, jeśli nie otrzyma aktualizacji od klienta. Pozostawienie pola pustego spowoduje użycie ustawienia serwera lub okresu jednego tygodnia; użycie wartości 0 wyłączy mechanizm wygasania.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Wprowadź liczbę całkowitą z zakresu od 0 do 2147483647 lub pozostaw puste pole.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Aktywne sesje</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Sesje wymagające interwencji.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Sygnały dźwiękowe terminala.</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Utracone połączenia</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Zarządzaj kanałami powiadomień w ustawieniach.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Połączono</string>
+  <string name="notification_connecting" tools:machine_translated="true">Nawiązywanie połączenia…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Rozłączono</string>
+  <string name="notification_bell" tools:machine_translated="true">Sygnał dźwiękowy terminala.</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Oznaczono jako przeczytane.</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Wyłącz dźwięki powiadomień.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Powiadomienia o utracie połączenia</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Wyświetlaj powiadomienie bez dźwięku, gdy sesja, której aktualnie nie obserwujesz, niespodziewanie się zakończy.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+    <item quantity="one">%d sesja połączona</item>
+    <item quantity="few">%d sesje połączone</item>
+    <item quantity="many">%d sesji połączonych</item>
+    <item quantity="other">%d sesji połączonych</item>
+  </plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+    <item quantity="one">%d wymaga uwagi</item>
+    <item quantity="few">%d wymagają uwagi</item>
+    <item quantity="many">%d wymaga uwagi</item>
+    <item quantity="other">%d wymaga uwagi</item>
+  </plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+    <item quantity="one">+%d dodatkowa sesja</item>
+    <item quantity="few">+%d dodatkowe sesje</item>
+    <item quantity="many">+%d dodatkowych sesji</item>
+    <item quantity="other">+%d dodatkowych sesji</item>
+  </plurals>
 </resources>

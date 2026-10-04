@@ -652,4 +652,46 @@
     <item quantity="one">ดำเนินการทั้งหมด %1$d รายการ</item>
     <item quantity="other">ดำเนินการทั้งหมด %1$d รายการ</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">ข้อมูลที่ยังไม่ได้อ่าน</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">คุณได้ตัดการเชื่อมต่อจากโฮสต์นี้แล้ว</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">เซสชันระยะไกลสิ้นสุดลงแล้ว</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">เซิร์ฟเวอร์ได้ปิดการเชื่อมต่อ คุณสามารถเชื่อมต่อใหม่อีกครั้งได้</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">การเชื่อมต่อขาดหายไป คุณสามารถลองเชื่อมต่อใหม่อีกครั้งได้</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">การเชื่อมต่อเครือข่ายขาดหายไป โปรดเชื่อมต่อใหม่อีกครั้งเมื่อเครือข่ายพร้อมใช้งาน</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">การยืนยันตัวตนล้มเหลว โปรดตรวจสอบชื่อผู้ใช้ รหัสผ่าน หรือคีย์ ก่อนที่จะลองเชื่อมต่อใหม่อีกครั้ง</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">การเชื่อมต่อสิ้นสุดลงแล้ว</string>
+  <string name="host_status_action_required" tools:machine_translated="true">จำเป็นต้องตรวจสอบการเชื่อมต่อ</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s เปิดคอนโซลเพื่อดูผลลัพธ์ที่เหลือ</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android อาจหยุดการทำงานของ ConnectBot และตัดการเชื่อมต่อเซสชันของคุณเมื่อคุณเปลี่ยนไปใช้แอปอื่น</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">ระยะหมดเวลาเชื่อมต่อเครือข่ายของ Mosh (วินาที)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">ระยะเวลาที่เซิร์ฟเวอร์จะรอโดยไม่มีการอัปเดตจากไคลเอนต์ ก่อนที่จะปิดการทำงาน หากปล่อยว่างไว้ เซิร์ฟเวอร์จะใช้ค่าที่ตั้งไว้ หรือหนึ่งสัปดาห์ หากใส่ 0 จะปิดการตั้งค่าระยะเวลาหมดอายุ</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">ป้อนตัวเลขจำนวนเต็มตั้งแต่ 0 ถึง 2147483647 หรือเว้นว่างไว้</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">เซสชันที่ใช้งานอยู่</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">เซสชันที่ต้องได้รับการดูแล</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">เสียงแจ้งเตือนจากเทอร์มินัล</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">การเชื่อมต่อขาดหายไป</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">จัดการช่องทางการแจ้งเตือนในส่วนการตั้งค่า</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">เชื่อมต่อแล้ว</string>
+  <string name="notification_connecting" tools:machine_translated="true">กำลังเชื่อมต่อ…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">เซสชันถูกตัดการเชื่อมต่อ</string>
+  <string name="notification_bell" tools:machine_translated="true">เสียงแจ้งเตือนจากเทอร์มินัล</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">รับทราบเหตุการณ์ล่าสุด</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">ปิดเสียงแจ้งเตือน</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">การแจ้งเตือนเมื่อการเชื่อมต่อขาดหายไป</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">แสดงข้อความแจ้งเตือนแบบป๊อปอัปโดยไม่มีเสียง เมื่อเซสชันที่คุณไม่ได้กำลังดูถูกตัดการเชื่อมต่อโดยไม่คาดคิด</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">มีการเชื่อมต่อเซสชันแล้ว %d เซสชัน</item>
+		<item quantity="other">มีการเชื่อมต่อเซสชันทั้งหมด %d เซสชัน</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">มี %d รายการที่ต้องได้รับการตรวจสอบ</item>
+		<item quantity="other">มี %d รายการที่ต้องได้รับการแก้ไข</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">มีเซสชันเพิ่มเติมอีก %d เซสชัน</item>
+		<item quantity="other">มีเซสชันเพิ่มเติมอีก %d เซสชัน</item>
+	</plurals>
 </resources>

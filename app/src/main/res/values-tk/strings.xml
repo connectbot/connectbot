@@ -652,4 +652,46 @@
     <item quantity="one">%1$d işlem</item>
     <item quantity="other">%1$d işlem</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Okalmagyň çykgytlary</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Siz bu serwerden baglanyşyňyzy kesdiňiz.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Daşky seans tamamlandy.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Serwer baglanşygy ýapdy. Täzeden baglanyşyp bilersiňiz.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Baglanşyk kesildi. Täzeden baglanşyk edip bilersiňiz.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Tor ulgam bilen baglanyşyk kesildi. Tor ulgam ýene işläp başlanda, gaýtadan baglanyşyk edin.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Awtentifikasi amal etmedi. Gaýtadan birleşmeden öň ulanyjy adyňyzy, parolyňyzy ýa-da açaryňyzy barlaň.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Baglanyşyk kesildi.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Baglanyşyk gözden geçirilmeli.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Galan maglumatlary okamak üçin konsoly açyň.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android, ulgam geçişi edilen wagty ConnectBot-yň işleýşini bes edip biler we ulgamdaky baglanyşyklaryňyzy kesip biler.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh serwer ulgamynyň baglanşyk wagty (sekund)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Serwer işden çykarylançä, klientleriň täzelenmän galan wagty. Serweriň sazlamalaryny ýa-da bir hepdelik wagty saklamak üçin boş goýuň; möhletli işlemäni ýatyrmak üçin 0-y ulanýň.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">0-dan 2147483647-ä çenli butin san giriziň ýa-da boş goýuň.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Aktiw oturylar</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Üns berilmeli bolan seanslar</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Terminal ýaňy</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Baglanyşyklar ýitdi.</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Täzelenişleri almak üçin ulgamda kanallary dolandyryň.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Baglanyşyk saklanýar</string>
+  <string name="notification_connecting" tools:machine_translated="true">Baglanyşyk ýasalýar…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Baglanyşyk kesildi.</string>
+  <string name="notification_bell" tools:machine_translated="true">Terminal ýaňy</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Soňky waka anyklanyldy.</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Ses çykarmagy bes et</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Baglanyşyk ýitirilende habarnamalar</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Ses çykarmayan açylýan habarnama, gözeg salýan seansiň gözlenmedik ýagdaýda kesilmegi ýagdaýynda peýda bolsun.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">%d seans baglanýar</item>
+		<item quantity="other">%d sany ses ulgamlary birleşdi</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">%d-ä esasy üns berilmelidir.</item>
+		<item quantity="other">%d-si ünsi talep edýär.</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">+%d köp oturum</item>
+		<item quantity="other">+%d köp oturym</item>
+	</plurals>
 </resources>

@@ -652,4 +652,46 @@
     <item quantity="one">%1$d 件のアクション</item>
     <item quantity="other">%1$d 件のアクション</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">未読の出力</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">このホストとの接続を切断しました。</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">リモートセッションが終了しました。</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">サーバーが接続を閉じました。再度接続してください。</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">接続が途切りました。再度接続してください。</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">ネットワーク接続が失われました。ネットワークが利用可能になったら、再接続してください。</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">認証に失敗しました。再度接続する前に、ユーザー名、パスワード、またはキーを確認してください。</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">接続が終了しました。</string>
+  <string name="host_status_action_required" tools:machine_translated="true">接続に問題があります。</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s コンソールを開いて、残りの出力を確認してください。</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Androidでは、アプリを切り替えると、ConnectBotが停止し、接続が切断される場合があります。</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Moshネットワークのタイムアウト時間（秒）</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">サーバーが終了する前にクライアントからの更新が途絶えてからの時間。空白のままにすると、サーバーの設定または1週間が適用されます。0を指定すると、有効期限が無効になります。</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">0から2147483647までの整数を入力するか、空白のままにしてください。</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">アクティブなセッション</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">対応が必要なセッション</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">ターミナルベル</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">接続が失われました。</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">設定画面で通知チャンネルを管理する</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">接続済み</string>
+  <string name="notification_connecting" tools:machine_translated="true">接続中です…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">切断されました</string>
+  <string name="notification_bell" tools:machine_translated="true">端末ベル</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s：%2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">確認済み</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">ベル音を消す</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">予期せぬバックグラウンド接続の切断に関する通知</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">現在表示していないセッションが予期せず切断された場合に、音を出さずにポップアップを表示します。</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">%d 件のセッションが接続されました</item>
+		<item quantity="other">現在 %d 件のセッションが接続中です。</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">%d 件の対応が必要です。</item>
+		<item quantity="other">%d 件のセッションで、未対応の通知や接続エラーが発生しています。</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">さらに%d件のセッションがあります</item>
+		<item quantity="other">さらに%d件のセッションがあります</item>
+	</plurals>
 </resources>

@@ -652,4 +652,49 @@
     <item quantity="one">%1$d acțiune</item>
     <item quantity="other">%1$d acțiuni</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Date de ieșire necitite.</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">V-ați deconectat de la acest server.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Sesiunea de la distanță s-a încheiat.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Serverul a închis conexiunea. Puteți să vă reconectați.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Conexiunea a fost întreruptă. Puteți să vă reconectați.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Conexiunea la rețea a fost întreruptă. Reconectați-vă când rețeaua va fi disponibilă.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Autentificarea a eșuat. Verificați numele de utilizator, parola sau cheia înainte de a vă reconecta.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Conexiunea a fost întreruptă.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Conexiunea necesită atenție.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Deschideți consola pentru a vizualiza restul informațiilor.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Este posibil ca Android să oprească ConnectBot și să închidă sesiunile atunci când schimbați aplicațiile.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Timpul maxim de așteptare pentru conexiunea Mosh (în secunde)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Perioada de timp în care nu se primesc actualizări de la client înainte ca serverul să se închidă. Lăsați câmpul gol pentru a utiliza setarea serverului sau o săptămână; utilizați 0 pentru a dezactiva expirarea.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Introduceți un număr întreg cuprins între 0 și 2147483647 sau lăsați câmpul necompletat.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Sesiuni active</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Sesiuni care necesită atenție.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Sunete de alertă ale terminalului</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Conexiuni întrerupte.</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Gestionează canalele de notificări în setări.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Conectat</string>
+  <string name="notification_connecting" tools:machine_translated="true">Se realizează conexiunea…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Sesiune deconectată.</string>
+  <string name="notification_bell" tools:machine_translated="true">Semnal sonor al terminalului</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">A fost marcat ca fiind vizualizat.</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Dezactivează sunetele de alertă.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Notificări privind pierderea conexiunii</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Afișează o notificare temporară fără sunet atunci când o sesiune pe care nu o urmărești se deconectează neașteptat.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+    <item quantity="one">%d sesiune conectată</item>
+    <item quantity="few">%d sesiuni conectate</item>
+    <item quantity="other">%d de sesiuni conectate</item>
+  </plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+    <item quantity="one">%d necesită atenție</item>
+    <item quantity="few">%d necesită atenție</item>
+    <item quantity="other">%d necesită atenție</item>
+  </plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+    <item quantity="one">+%d sesiune suplimentară</item>
+    <item quantity="few">+%d sesiuni suplimentare</item>
+    <item quantity="other">+%d de sesiuni suplimentare</item>
+  </plurals>
 </resources>

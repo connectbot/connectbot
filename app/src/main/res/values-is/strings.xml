@@ -652,4 +652,46 @@
     <item quantity="one">%1$d aðgerð</item>
     <item quantity="other">%1$d aðgerðir</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Ólesin úttak</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Þú tengdist af þessum tækjabúnaði.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Fjarfundurinn er lokið.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Netþjóninn lokaði tengingunni. Þú getur tengst aftur.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Tengingin rætist. Þú getur reynt að tengja aftur.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Tengingin við netið rýrnast. Tengstu aftur þegar netið er í boði.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Auðkenning mistókst. Athugaðu notendanafnið, lykilorðið eða auðkenningarupplýsingarnar áður en þú reynir aftur.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Tengingin var rofin.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Þarf að athuga tenginguna.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Opnaðu stjórnborðið til að skoða eftirstandandi útprentan.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android-kerfið gæti hætt ConnectBot og aftengt tengslin þegar þú skiptir um forrit.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Tímamörk tengingar Mosh (sekúndur)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Tími sem líður án uppfærslna frá notanda áður en þjónninn hættir. Láttu reitinn auðan til að nota stillingar þjónsins eða stilla tímamark á einni viku; notaðu 0 til að slökkva á tímamörkunum.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Sláðu inn heiltölu á bilinu 0 til 2147483647, eða skildu reitinn auðan.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Virkar tengingar</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Hljóðlátar viðvörunir sem þurfa athugun.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Hljóðmerki úr terminal</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Tenglar hafa rofnað.</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Stjórna tilkynningastílkunum í stillingum</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Tengt</string>
+  <string name="notification_connecting" tools:machine_translated="true">Tenging er í gangi…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Afslitað</string>
+  <string name="notification_bell" tools:machine_translated="true">Hljóð sem gefið er frá með tækinu</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Athugað</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Slökva á hljóðmerkjum</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Tilkynningar um tengslatruflanir</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Sýna hljóðlausa tilkynningarglugga þegar tenging við lotu sem þú ert ekki að skoða er rofin óvænt.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">%d tengd lota</item>
+		<item quantity="other">%d tengd fundur</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">%d þarf að sinna</item>
+		<item quantity="other">%d þarf að sinna</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">+%d viðbótar lota</item>
+		<item quantity="other">+%d viðbótarfundir</item>
+	</plurals>
 </resources>

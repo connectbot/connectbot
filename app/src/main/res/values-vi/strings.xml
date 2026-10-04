@@ -652,4 +652,46 @@
     <item quantity="one">%1$d thao tác</item>
     <item quantity="other">%1$d thao tác</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Dữ liệu chưa đọc.</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Bạn đã ngắt kết nối với máy chủ này.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Phiên làm việc từ xa đã kết thúc.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Máy chủ đã đóng kết nối. Bạn có thể kết nối lại.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Kết nối bị gián đoạn. Bạn có thể kết nối lại.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Kết nối mạng đã bị mất. Vui lòng kết nối lại khi có kết nối mạng.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Xác thực không thành công. Vui lòng kiểm tra tên người dùng, mật khẩu hoặc khóa trước khi kết nối lại.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Kết nối đã kết thúc.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Kết nối cần được kiểm tra.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Mở bảng điều khiển để xem phần còn lại của thông báo.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android có thể dừng ConnectBot và ngắt kết nối các phiên của bạn khi bạn chuyển đổi giữa các ứng dụng.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Thời gian chờ kết nối mạng của Mosh (giây)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Thời gian chờ trước khi máy chủ ngừng hoạt động nếu không nhận được bản cập nhật từ máy khách. Để trống để sử dụng cài đặt của máy chủ hoặc một tuần; sử dụng 0 để tắt chức năng hết hạn.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Nhập một số nguyên từ 0 đến 2147483647, hoặc để trống.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Các phiên hoạt động.</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Các phiên cần được xử lý.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Chuông báo hiệu của thiết bị đầu cuối.</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Kết nối bị gián đoạn.</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Quản lý các kênh thông báo trong phần cài đặt.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Đã kết nối.</string>
+  <string name="notification_connecting" tools:machine_translated="true">Đang kết nối…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Đã ngắt kết nối.</string>
+  <string name="notification_bell" tools:machine_translated="true">Tiếng chuông báo hiệu từ thiết bị đầu cuối.</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Đã đánh dấu là đã xem.</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Tắt chuông.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Thông báo khi mất kết nối.</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Hiển thị một thông báo nổi không phát âm thanh khi một phiên làm việc mà bạn không đang xem bị ngắt kết nối đột ngột.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">%d phiên đang kết nối</item>
+		<item quantity="other">%d phiên đang hoạt động</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">Có %d phiên cần được xử lý.</item>
+		<item quantity="other">Có %d phiên cần được xử lý.</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">Còn %d phiên khác</item>
+		<item quantity="other">Còn %d phiên khác</item>
+	</plurals>
 </resources>

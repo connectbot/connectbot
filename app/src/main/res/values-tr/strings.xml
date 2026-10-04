@@ -652,4 +652,46 @@
     <item quantity="one">%1$d işlem</item>
     <item quantity="other">%1$d işlem</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Okunmamış çıktı</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Bu sunucudan bağlantınız kesildi.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Uzak oturum sona erdi.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Sunucu bağlantıyı kapattı. Tekrar bağlanabilirsiniz.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Bağlantı kesildi. Tekrar bağlanabilirsiniz.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Ağ bağlantısı kesildi. Ağ bağlantısı yeniden kurulduğunda yeniden bağlanın.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Kimlik doğrulama başarısız oldu. Yeniden bağlanmadan önce kullanıcı adınızı, parolanızı veya anahtarınızı kontrol edin.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Bağlantı sona erdi.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Bağlantıya müdahale gerekiyor.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Konsolu açarak kalan çıktıları görüntüleyin.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android, uygulama değiştirirken ConnectBot\'u durdurabilir ve oturumlarınızı sonlandırabilir.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh ağ zaman aşımı (saniye)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Sunucunun kapanmasından önce istemci güncellemelerinin yapılmaması için geçen süre. Sunucu ayarını kullanmak veya bir hafta sürmesi için boş bırakın; sürenin devre dışı bırakılması için 0 kullanın.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">0 ile 2147483647 arasında bir tam sayı girin veya boş bırakın.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Devam eden oturumlar</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">İlgilenilmesi gereken oturumlar</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Terminal zil sesleri</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Kesilen bağlantılar</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Ayarlar bölümünde bildirim kanallarını yönetin.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Bağlantı kuruldu.</string>
+  <string name="notification_connecting" tools:machine_translated="true">Bağlantı kuruluyor…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Bağlantısı Kesildi</string>
+  <string name="notification_bell" tools:machine_translated="true">Terminal uyarı sesi</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Görüldü olarak işaretle</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Uyarı seslerini kapat</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Beklenmedik bağlantı kesilmesi uyarıları</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Görüntülemediğiniz bir oturum beklenmedik şekilde bağlantısı kesildiğinde ses çıkarmayan bir açılır pencere gösterin.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">%d oturum bağlandı</item>
+		<item quantity="other">%d oturum bağlı</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">%d öğeye müdahale gerekiyor.</item>
+		<item quantity="other">%d öğeye müdahale gerekiyor.</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">+%d oturum daha</item>
+		<item quantity="other">+%d oturum daha</item>
+	</plurals>
 </resources>

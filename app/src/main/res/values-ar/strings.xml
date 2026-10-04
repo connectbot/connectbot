@@ -652,4 +652,58 @@
     <item quantity="one">%1$d إجراء</item>
     <item quantity="other">%1$d إجراء</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">مخرجات لم تتم قراءتها.</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">لقد قمت بفصل الاتصال بهذا الجهاز.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">انتهى الاتصال عن بُعد.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">أغلق الخادم الاتصال. يمكنك إعادة الاتصال.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">فُقد الاتصال. يمكنك إعادة الاتصال.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">فُقد الاتصال بالشبكة. يرجى إعادة الاتصال عندما تكون الشبكة متاحة.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">فشل التحقق. يرجى التحقق من اسم المستخدم أو كلمة المرور أو المفتاح قبل إعادة الاتصال.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">انتهى الاتصال.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">يتطلب الاتصال بعض الاهتمام.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s افتح وحدة التحكم لعرض بقية المخرجات.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">قد يقوم نظام Android بإيقاف تطبيق ConnectBot وفصل الجلسات عند التبديل بين التطبيقات.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">مهلة الشبكة في برنامج Mosh (بالثواني)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">المدة الزمنية التي يمر خلالها دون تلقي تحديثات من العميل قبل إغلاق الخادم. اترك الحقل فارغًا لاستخدام إعدادات الخادم أو مدة أسبوع واحد؛ واستخدم القيمة 0 لتعطيل تحديد تاريخ انتهاء الصلاحية.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">أدخل رقمًا صحيحًا يتراوح بين 0 و2147483647، أو اتركه فارغًا.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">الجلسات النشطة</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">الجلسات التي تحتاج إلى اهتمام.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">أصوات تنبيه الطرفية</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">الاتصالات المفقودة</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">إدارة قنوات الإشعارات في الإعدادات.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">متصل</string>
+  <string name="notification_connecting" tools:machine_translated="true">جارٍ الاتصال…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">تم قطع الاتصال</string>
+  <string name="notification_bell" tools:machine_translated="true">صوت تنبيه الطرفية</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">تم الإقرار بآخر حدث في الجلسة.</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">كتم صوت التنبيهات</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">إشعارات فقدان الاتصال</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">اعرض نافذة منبثقة صامتة عندما تنقطع الجلسة التي لا تشاهدها بشكل غير متوقع.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+    <item quantity="zero">عدد الجلسات المتصلة: %d</item>
+    <item quantity="one">عدد الجلسات المتصلة: %d</item>
+    <item quantity="two">عدد الجلسات المتصلة: %d</item>
+    <item quantity="few">%d جلسات متصلة</item>
+    <item quantity="many">%d جلسة متصلة</item>
+    <item quantity="other">%d جلسة متصلة</item>
+  </plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+    <item quantity="zero">عدد الجلسات التي تحتاج إلى انتباه: %d</item>
+    <item quantity="one">عدد الجلسات التي تحتاج إلى انتباه: %d</item>
+    <item quantity="two">عدد الجلسات التي تحتاج إلى انتباه: %d</item>
+    <item quantity="few">%d جلسات تحتاج إلى انتباه</item>
+    <item quantity="many">%d جلسة تحتاج إلى انتباه</item>
+    <item quantity="other">%d جلسة تحتاج إلى انتباه</item>
+  </plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+    <item quantity="zero">عدد الجلسات الإضافية: %d</item>
+    <item quantity="one">عدد الجلسات الإضافية: %d</item>
+    <item quantity="two">عدد الجلسات الإضافية: %d</item>
+    <item quantity="few">+%d جلسات إضافية</item>
+    <item quantity="many">+%d جلسة إضافية</item>
+    <item quantity="other">+%d جلسة إضافية</item>
+  </plurals>
 </resources>

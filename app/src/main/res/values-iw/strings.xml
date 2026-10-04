@@ -652,4 +652,49 @@
     <item quantity="one">%1$d פעולות</item>
     <item quantity="other">%1$d פעולות</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">פלט לא נקרא</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">ניתקת את החיבור ממכשיר זה.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">החיבור למערכת המרוחקת הסתיים.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">השרת ניתק את החיבור. ניתן להתחבר מחדש.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">החיבור אבד. ניתן להתחבר מחדש.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">התנתקה התקשרות הרשת. התחברו מחדש כאשר הרשת תהיה זמינה.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">האימות נכשל. בדוק את שם המשתמש, הסיסמה או המפתח שלך לפני שתנסה להתחבר שוב.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">החיבור הסתיים.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">יש צורך לבדוק את החיבור.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s פתחו את המסוף כדי לראות את הפלט הנותר.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">ייתכן שאנדרואיד תפסיק את הפעולה של ConnectBot ותנתק את החיבורים שלך כאשר תעבור בין אפליקציות.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">זמן קצוב לרשת של Mosh (בשניות)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">משך הזמן שבו השרת ממתין ללא עדכונים מהלקוח לפני שהוא מפסיק לפעול. השאירו את השדה ריק כדי להשתמש בהגדרת השרת או בפרק זמן של שבוע; השתמשו ב-0 כדי לבטל את הגדרת התפוגה.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">הזן מספר שלם בין 0 ל-2147483647, או השאר את השדה ריק.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">חיבורים פעילים</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">מפגשים הדורשים טיפול</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">צלצולי התראה של הטרמינל.</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">חיבורים שנקטעו.</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">נהל את ערוצי ההתראות בהגדרות.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">מחובר</string>
+  <string name="notification_connecting" tools:machine_translated="true">מתחבר…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">מנותק</string>
+  <string name="notification_bell" tools:machine_translated="true">צליל התראה של הטרמינל</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">סמן כ\"נראה\"</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">השתק את הצלצולים.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">התראות על ניתוק לא צפוי מהרשת</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">הצג חלון קופץ ללא קול כאשר חיבור לסשן שאתם לא צופים בו מנותק באופן לא צפוי.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+    <item quantity="one">%d חיבור פעיל</item>
+    <item quantity="two">%d חיבורים פעילים</item>
+    <item quantity="other">%d חיבורים פעילים</item>
+  </plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+    <item quantity="one">%d דורש תשומת לב</item>
+    <item quantity="two">%d דורשים תשומת לב</item>
+    <item quantity="other">%d דורשים תשומת לב</item>
+  </plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+    <item quantity="one">עוד %d חיבור</item>
+    <item quantity="two">עוד %d חיבורים</item>
+    <item quantity="other">עוד %d חיבורים</item>
+  </plurals>
 </resources>

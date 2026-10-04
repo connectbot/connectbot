@@ -652,4 +652,49 @@
     <item quantity="one">%1$d радња</item>
     <item quantity="other">%1$d радњи</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Nepročitana izlazna poruka</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Прекинули сте везу са овим уређајем.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Удаљена сесија је завршена.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Домаћин је прекинуо везу. Можете поново да се повежете.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Veza je prekinuta. Možete se ponovo povezati.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Изгубљена је мрежна веза. Поново се повежите када мрежа буде доступна.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Аутентификација није успела. Проверите корисничко име, лозинку или кључ пре поновног повезивања.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Веза је прекинута.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Потребна је интервенција у вези са повезаношћу.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Otvorite konzolu da biste pročitali preostali izlaz.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Андроид може да заустави ConnectBot и прекине везу са вашим сесијама када прелазите на друге апликације.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Временски лимит мреже за Mosh (у секундама)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Vreme za koje server čeka na ažuriranja od strane klijenta pre nego što se isključi. Ostavite polje prazno da bi se koristila serverova konfiguracija ili jedan nedelja; koristite 0 da biste onemogućili postavljanje roka važenja.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Unesite ceo broj između 0 i 2147483647, ili ostavite polje prazno.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Aktivne sesije</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Сесије којима је потребна пажња.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Звучни сигнали терминала</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Прекинуте везе</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Upravljajte kanalima za obaveštenja u podešavanjima.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Повезано</string>
+  <string name="notification_connecting" tools:machine_translated="true">Успоставља се веза…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Прекинута веза</string>
+  <string name="notification_bell" tools:machine_translated="true">Звучни сигнал терминала</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Означено као прочитано.</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Искључи звучне сигнале.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Обавештења о прекинутој вези</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Prikaži iskačući prozor bez zvuka kada se sesija koju ne pratite neočekivano prekine.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+    <item quantity="one">%d сесија повезана</item>
+    <item quantity="few">%d сесије повезане</item>
+    <item quantity="other">%d сесија повезано</item>
+  </plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+    <item quantity="one">%d захтева пажњу</item>
+    <item quantity="few">%d захтевају пажњу</item>
+    <item quantity="other">%d захтева пажњу</item>
+  </plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+    <item quantity="one">+%d додатна сесија</item>
+    <item quantity="few">+%d додатне сесије</item>
+    <item quantity="other">+%d додатних сесија</item>
+  </plurals>
 </resources>
