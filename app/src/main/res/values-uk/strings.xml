@@ -693,4 +693,13 @@
     <item quantity="many">Ще %d сеансів</item>
     <item quantity="other">Ще %d сеансу</item>
   </plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Сповіщення про втрату з’єднання</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Відображати звуковий сигнал термінала та сповіщення про втрату з’єднання.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Сповіщення про підключення вимкнено. Підтримка фонового підключення залишається ввімкненою.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">У системі Android відображення сповіщення про поточне підключення контролюється незалежно від сповіщень про підключення.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">У системі Android заблоковано сповіщення для ConnectBot. Підтримка фонового з’єднання залишається ввімкненою.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Сповіщення про підключення</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Дозвольте надсилати сповіщення, щоб бачити під’єднані пристрої та отримувати повідомлення про звуковий сигнал і втрату з’єднання. З’єднання все ще можуть працювати у фоновому режимі без цієї дозволу.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Увімкнути сповіщення</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Увімкніть сповіщення для ConnectBot у налаштуваннях Android, щоб бачити під’єднані пристрої та отримувати сповіщення про звуковий сигнал термінала та втрату з’єднання. Підтримка фонових з’єднань залишається ввімкненою.</string>
 </resources>

@@ -685,4 +685,13 @@
 		<item quantity="one">+%d meer sessie</item>
 		<item quantity="other">+%d meer sessies</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Verbindingswaarskuwings</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Wys die terminalklok en waarskuwings vir verbreekte verbindings.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Verbindingswaarskuwings is af. Ondersteuning vir verbindings in die agtergrond bly geaktiveer.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android beheer die sigbaarheid van die lopende verbindingskennisgewing, onafhanklik van verbindingswaarskuwings.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android het kennisgewings vir ConnectBot geblokkeer. Ondersteuning vir agtergrondverbinding bly geaktiveer.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Kennisgewings oor verbinding</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Laat toe dat kennisgewings vertoon word om gekoppelde gasheere te sien en waarskuwings vir terminale sein en verbindingsverlies te ontvang. Verbindings kan steeds op die agtergrond werk, selfs sonder hierdie toestemming.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Skakel kennisgewings in.</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Aktiveer kennisgewings vir ConnectBot in die Android-instellings om gekoppelde gasheere te sien en waarskuwings vir terminale-klanke en verbindingsverlies te ontvang. Agtergrondverbindingondersteuning bly geaktiveer.</string>
 </resources>

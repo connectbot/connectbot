@@ -693,4 +693,13 @@
     <item quantity="many">Ещё %d сеансов</item>
     <item quantity="other">Ещё %d сеанса</item>
   </plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Уведомления об отключении</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Отображать звуковой сигнал терминала и уведомления об отключении соединения.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Уведомления о подключении отключены. Поддержка фонового подключения остается включенной.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">В Android отображение уведомления об активном соединении контролируется независимо от уведомлений о состоянии соединения.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">В Android заблокированы уведомления для ConnectBot. Поддержка фонового подключения остается включенной.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Уведомления о подключении</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Разрешите получение уведомлений, чтобы видеть список подключенных устройств и получать оповещения о звуковом сигнале терминала и разрыве соединения. Даже без этого разрешения подключения могут продолжать работать в фоновом режиме.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Разрешить уведомления</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Включите уведомления для ConnectBot в настройках Android, чтобы видеть список подключенных устройств и получать оповещения о звуковом сигнале терминала и разрыве соединения. Поддержка фонового подключения остается включенной.</string>
 </resources>

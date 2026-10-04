@@ -685,4 +685,13 @@
 		<item quantity="one">さらに%d件のセッションがあります</item>
 		<item quantity="other">さらに%d件のセッションがあります</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">接続アラート</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">ターミナルベルと接続喪失時の警告を表示</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">接続に関する警告はオフになっています。バックグラウンド接続のサポートは引き続き有効です。</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Androidは、接続状況の通知を、接続に関するアラートとは独立して表示または非表示に制御します。</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">AndroidでConnectBotからの通知がブロックされました。バックグラウンド接続のサポートは引き続き有効です。</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">接続通知</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">通知を許可すると、接続されているホストを確認したり、ターミナルベルや接続切断の警告を受け取ったりできます。この許可を与えなくても、接続はバックグラウンドで引き続き実行できます。</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">通知を許可する</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Androidの設定でConnectBotの通知を有効にすると、接続されているホストを確認でき、ターミナルベルや接続切断の警告を受け取ることができます。バックグラウンド接続のサポートは引き続き有効です。</string>
 </resources>

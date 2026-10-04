@@ -685,4 +685,13 @@
 		<item quantity="one">+%d oturum daha</item>
 		<item quantity="other">+%d oturum daha</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Bağlantı uyarıları</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Terminal zil sesi ve bağlantı kesintisi uyarılarını göster.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Bağlantı uyarıları devre dışı. Arka plan bağlantı desteği etkin kalmaya devam ediyor.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android, devam eden bağlantı bildiriminin görünürlüğünü, bağlantı uyarılarından bağımsız olarak kontrol eder.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android, ConnectBot için bildirimleri engelledi. Arka plan bağlantı desteği etkin kalmaya devam ediyor.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Bağlantı bildirimleri</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Bağlı cihazları görmek ve terminal uyarı sesi ile bağlantı kesilmesi uyarılarını almak için bildirimlere izin verin. Bu izne gerek olmasa bile bağlantılar arka planda çalışmaya devam edebilir.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Bildirimleri etkinleştir</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Android ayarlarında ConnectBot için bildirimleri etkinleştirerek bağlı cihazları görüntüleyebilir ve terminal zil sesi ile bağlantı kesilmesi uyarılarını alabilirsiniz. Arka plan bağlantı desteği etkin kalır.</string>
 </resources>

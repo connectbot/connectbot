@@ -689,4 +689,13 @@
     <item quantity="other">+%d sessioni in più</item>
     <item quantity="many">+%d sessioni in più</item>
   </plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Avvisi di connessione</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Mostra gli avvisi di segnale acustico del terminale e di interruzione della connessione.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Le notifiche relative alla connessione sono disattivate. Il supporto per la connessione in background rimane attivo.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android gestisce la visualizzazione della notifica relativa alla connessione attiva, indipendentemente dagli avvisi di connessione.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android ha bloccato le notifiche per ConnectBot. Il supporto per la connessione in background rimane attivo.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Notifiche di connessione</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Consenti le notifiche per visualizzare gli host connessi e ricevere avvisi relativi al segnale acustico del terminale e alla perdita di connessione. Anche senza questa autorizzazione, le connessioni possono comunque essere eseguite in background.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Abilita le notifiche</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Abilita le notifiche per ConnectBot nelle impostazioni di Android per visualizzare gli host connessi e ricevere avvisi relativi al segnale acustico del terminale e alla perdita di connessione. Il supporto per le connessioni in background rimane attivo.</string>
 </resources>

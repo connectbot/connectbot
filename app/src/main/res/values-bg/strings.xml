@@ -685,4 +685,13 @@
 		<item quantity="one">+%d още сесии</item>
 		<item quantity="other">+%d още сесии</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Известия при прекъсване на връзката</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Показвай звуков сигнал при получаване на съобщение в терминала и предупреждения при прекъсване на връзката.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Известията за връзката са изключени. Поддръжката за връзка във фонов режим остава активирана.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">В Android видимостта на известието за текущата връзка се контролира независимо от известията за състоянието на връзката.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android блокира известията за ConnectBot. Поддръжката за връзка във фонов режим остава активирана.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Известия за връзката</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Разрешете известията, за да виждате свързаните хостове и да получавате сигнали за звуков сигнал и прекъсване на връзката. Връзките все пак могат да продължат да работят във фонов режим, дори и без това разрешение.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Активиране на известията</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Активирайте известията за ConnectBot в настройките на Android, за да виждате свързаните хостове и да получавате сигнали за звуков сигнал в терминала и за прекъсване на връзката. Поддръжката за връзка във фонов режим остава активирана.</string>
 </resources>

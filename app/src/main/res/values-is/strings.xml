@@ -685,4 +685,13 @@
 		<item quantity="one">+%d viðbótar lota</item>
 		<item quantity="other">+%d viðbótarfundir</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Viðvörun um tengsl</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Sýna viðvörunartákn fyrir tengsl og tilkynna um tengslatruflanir.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Viðvaranir um tengingar eru slökktar. Stuðningur við tengingar í bakgrunni er enn virkur.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android stýrir því hvort tilkynning um virka tengingu sé sýnileg, óháð því hvort tengislíkindi séu virk eða ekki.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android hefur hindrað tilkynningar frá ConnectBot. Stuðningur við bakgrunntengingar er enn virkur.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Tilkynningar um tengingu</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Leyfðu tilkynningum að sýna tengda tæki og senda tilkynningar um hljóð og tengisrof. Tengingar geta samt virkað í bakgrunni, jafnvel þó þessi leyfi sé ekki veitt.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Virkaðu fyrir tilkynningum</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Virktu valkostinn um tilkynningar fyrir ConnectBot í stillingum Android til að sjá tengda tæki og fá tilkynningar um hljóð og tengisrof. Stuðningur við tengingu í bakgrunni er enn virkur.</string>
 </resources>

@@ -693,4 +693,13 @@
     <item quantity="few">Še %d seje</item>
     <item quantity="other">Še %d sej</item>
   </plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Opozorila o izgubi povezave</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Prikaži opozorila o zvoku terminala in izgubi povezave.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Opozorila o povezavi so izklopljena. Podpora za povezavo v ozadju ostaja omogočena.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android upravlja z vidnostjo obvestila o aktivni povezavi, neodvisno od opozoril o povezavi.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android je blokiral obvestila za ConnectBot. Podpora za povezavo v ozadju ostaja omogočena.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Obvestila o povezavi</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Omogočite prejem obvestil, da boste videli povezane naprave in prejeli opozorila o zvoku terminala ter prekinitvi povezave. Povezave lahko še vedno delujejo v ozadju, tudi če ne omogočite te možnosti.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Omogoči obvestila.</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Omogočite obvestila za ConnectBot v nastavitvah sistema Android, da boste videli povezane gostitelje in prejeli opozorila o zvoku terminala ter prekinitvi povezave. Podpora za povezavo v ozadju ostaja omogočena.</string>
 </resources>

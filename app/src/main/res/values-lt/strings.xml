@@ -693,4 +693,13 @@
     <item quantity="many">Dar %d seanso</item>
     <item quantity="other">Dar %d seansų</item>
   </plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Pranešimai apie ryšio būseną</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Rodyti terminalo garsinį signalą ir pranešimus apie ryšio nutrūkimą.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Pranešimai apie ryšį yra išjungti. Fono ryšio palaikymas lieka įjungtas.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">„Android“ valdo, ar rodomas pranešimas apie vykstantį ryšį, nepriklausomai nuo ryšio įspėjimų.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">„Android“ užblokavo „ConnectBot“ pranešimus. Fono ryšio palaikymas vis dar įjungtas.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Pranešimai apie ryšį</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Leiskite gauti pranešimus, kad matytumėte prijungtus įrenginius ir gautumėte įspėjimus apie garsinį signalą bei ryšio nutrūkimą. Net jei šis leidimas neįgalintas, ryšiai vis tiek gali veikti fone.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Įjunkite pranešimus.</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Įjunkite „ConnectBot“ pranešimus „Android“ nustatymuose, kad matytumėte prijungtus įrenginius ir gautumėte terminalo signalo bei ryšio nutrūkimo pranešimus. Fono ryšio palaikymas lieka įjungtas.</string>
 </resources>

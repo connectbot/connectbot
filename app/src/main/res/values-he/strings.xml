@@ -689,4 +689,13 @@
     <item quantity="two">עוד %d חיבורים</item>
     <item quantity="other">עוד %d חיבורים</item>
   </plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">התראות על ניתוק חיבור</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">הצג התראות על צליל התראה וניתוק חיבור.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">התראות על חיבורים כבויות. תמיכה בחיבורים ברקע נשארת פעילה.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">מערכת Android שולטת בנראות של ההתראה על החיבור הפעיל, באופן עצמאי מהתראות החיבור האופציונליות.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">מערכת Android חסמה את ההתראות עבור ConnectBot. תמיכה בחיבורים ברקע עדיין מופעלת.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">התראות חיבור</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">אפשר הודעות כדי לראות את המכשירים המחוברים ולקבל התראות על צליל התראה ואובדן חיבור. גם בלי הרשאה זו, חיבורים עדיין יכולים לפעול ברקע.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">אפשר התראות</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">הפעל התראות עבור ConnectBot בהגדרות האנדרואיד כדי לראות את המכשירים המחוברים ולקבל התראות על צליל התראה וניתוק חיבור. תמיכה בחיבור ברקע נשארת פעילה.</string>
 </resources>

@@ -685,4 +685,13 @@
 		<item quantity="one">+%d flere sessioner</item>
 		<item quantity="other">+%d flere sessioner</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Notifikationer om forbindelsesstatus</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Vis terminalsignal og meddelelser om forbindelsesafbrydelser.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Notifikationer om forbindelsesproblemer er slået fra. Understøttelse af baggrundsforbindelser er stadig aktiveret.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android styrer, om den aktuelle forbindelsesmeddelelse vises eller ej, uafhængigt af forbindelsesalarmer.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android har blokeret notifikationer for ConnectBot. Understøttelsen af baggrundsforbindelser er stadig aktiveret.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Notifikationer om forbindelser</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Tillad notifikationer, så du kan se tilsluttede enheder og modtage alarmer om terminalsignaler og forbindelsesafbrydelser. Forbindelser kan stadig køre i baggrunden, selvom du ikke giver denne tilladelse.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Aktiver notifikationer</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Aktivér notifikationer for ConnectBot i Android-indstillingerne for at se tilsluttede enheder og modtage alarmer om terminalsignaler og forbindelsesafbrydelser. Understøttelsen af baggrundsforbindelser forbliver aktiveret.</string>
 </resources>

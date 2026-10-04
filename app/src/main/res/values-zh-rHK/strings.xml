@@ -685,4 +685,13 @@
 		<item quantity="one">還有 %d 個會話</item>
 		<item quantity="other">還有 %d 個會話。</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">連線警示</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">顯示終端提示音和連線中斷警示。</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">已關閉連線警示。背景連線功能仍然啟用。</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android 控制目前連線通知的顯示與否，與連線警示無關。</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android 已阻止 ConnectBot 的通知。背景連線功能仍然啟用。</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">連線通知</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">允許接收通知，以便查看已連接的主機，並接收終端提示音和連線中斷警報。即使未授予此權限，連線仍可在背景執行。</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">啟用通知</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">在 Android 設定中啟用 ConnectBot 的通知，以便查看已連線的主機，並接收終端鈴聲和連線中斷警報。背景連線功能將繼續啟用。</string>
 </resources>

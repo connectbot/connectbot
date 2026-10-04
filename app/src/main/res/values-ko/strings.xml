@@ -685,4 +685,13 @@
 		<item quantity="one">+%d개의 세션 추가</item>
 		<item quantity="other">+%d개의 세션 추가</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">연결 알림</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">터미널 벨 소리와 연결 끊김 알림을 표시합니다.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">연결 알림이 꺼져 있습니다. 백그라운드 연결 지원은 계속 활성화됩니다.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android는 연결 알림과 별개로 현재 연결 상태 알림의 표시 여부를 제어합니다.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android에서 ConnectBot의 알림을 차단했습니다. 백그라운드 연결 지원은 계속 활성화됩니다.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">연결 알림</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">알림을 허용하면 연결된 호스트를 확인하고 터미널 벨 소리와 연결 끊김 알림을 받을 수 있습니다. 이 권한을 허용하지 않아도 연결은 백그라운드에서 계속 실행될 수 있습니다.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">알림 사용</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Android 설정에서 ConnectBot의 알림을 활성화하여 연결된 호스트를 확인하고 터미널 벨 소리와 연결 끊김 알림을 받으세요. 백그라운드 연결 지원은 계속 활성화됩니다.</string>
 </resources>

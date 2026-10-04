@@ -693,4 +693,13 @@
     <item quantity="many">+%d další relace</item>
     <item quantity="other">+%d dalších relací</item>
   </plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Upozornění na přerušení připojení</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Zobrazovat zvukové upozornění a upozornění na ztrátu připojení.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Upozornění na problémy s připojením jsou vypnutá. Podpora pro připojení na pozadí zůstává aktivní.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android spravuje viditelnost oznámení o probíhajícím připojení nezávisle na upozorněních týkajících se připojení.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android zablokoval oznámení pro aplikaci ConnectBot. Podpora připojení na pozadí zůstává aktivní.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Upozornění při připojení</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Povolte notifikace, abyste viděli připojená zařízení a dostávali upozornění na zvukový signál a přerušení připojení. I bez tohoto oprávnění mohou připojení fungovat na pozadí.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Povolit oznámení</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Povolte v nastavení systému Android upozornění pro aplikaci ConnectBot, abyste viděli seznam připojených zařízení a dostávali upozornění na zvukový signál terminálu a přerušení připojení. Podpora pro připojení na pozadí zůstává aktivní.</string>
 </resources>
