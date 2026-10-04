@@ -29,6 +29,8 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
@@ -112,6 +114,7 @@ class ConsoleScreenTest {
         mockConsoleViewModel: ConsoleViewModel? = null,
         lifecycleOwner: LifecycleOwner = composeTestRule.activity,
         onAutomaticBack: () -> Unit = {},
+        keyboardController: SoftwareKeyboardController? = null,
     ) {
         composeTestRule.setContent {
             val context = LocalContext.current
@@ -124,6 +127,7 @@ class ConsoleScreenTest {
                 CompositionLocalProvider(
                     LocalTerminalManager provides mockTerminalManager,
                     LocalLifecycleOwner provides lifecycleOwner,
+                    LocalSoftwareKeyboardController provides (keyboardController ?: LocalSoftwareKeyboardController.current),
                 ) {
                     NavHost(navController = navController, startDestination = "start") {
                         composable("start") { Text("Host list") }
@@ -392,6 +396,63 @@ class ConsoleScreenTest {
         composeTestRule.runOnIdle {
             assertTrue(navController.currentBackStackEntry?.destination?.route == "start")
         }
+    }
+
+    private class RecordingKeyboardController : SoftwareKeyboardController {
+        var visible = false
+        override fun show() {
+            visible = true
+        }
+        override fun hide() {
+            visible = false
+        }
+    }
+
+    @Test
+    fun consoleScreen_backButtonHidesKeyboardBeforeNavigating() {
+        val keyboard = RecordingKeyboardController()
+        val viewModel = mock(ConsoleViewModel::class.java)
+        `when`(viewModel.uiState).thenReturn(MutableStateFlow(ConsoleUiState()))
+        `when`(viewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+        var navigationCount = 0
+        setContent(
+            mockConsoleViewModel = viewModel,
+            keyboardController = keyboard,
+            onAutomaticBack = {
+                assertFalse("Hide the keyboard before leaving the console", keyboard.visible)
+                navigationCount++
+            },
+        )
+        navigateToConsoleScreen()
+        composeTestRule.runOnIdle { keyboard.show() }
+        composeTestRule.onNodeWithContentDescription("Back").performClick()
+        composeTestRule.onNodeWithText("Host list").assertIsDisplayed()
+        composeTestRule.runOnIdle { assertEquals(1, navigationCount) }
+    }
+
+    @Test
+    fun consoleScreen_lastSessionClosedHidesKeyboardBeforeNavigating() {
+        val keyboard = RecordingKeyboardController()
+        val states = MutableStateFlow(ConsoleUiState())
+        val viewModel = mock(ConsoleViewModel::class.java)
+        `when`(viewModel.uiState).thenReturn(states)
+        `when`(viewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+        var navigationCount = 0
+        setContent(
+            mockConsoleViewModel = viewModel,
+            keyboardController = keyboard,
+            onAutomaticBack = {
+                assertFalse("Hide the keyboard before leaving the console", keyboard.visible)
+                navigationCount++
+            },
+        )
+        navigateToConsoleScreen()
+        composeTestRule.runOnIdle {
+            keyboard.show()
+            states.value = ConsoleUiState(isLoading = false)
+        }
+        composeTestRule.onNodeWithText("Host list").assertIsDisplayed()
+        composeTestRule.runOnIdle { assertEquals(1, navigationCount) }
     }
 
     @Test
