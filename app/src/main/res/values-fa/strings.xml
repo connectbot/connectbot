@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">نمایش کلید تغییر حالت ورودی متنی</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">یک دکمه IME به ردیف کلیدهای ویژه اضافه کنید که حالت ترکیب‌بندی را برای زبان‌هایی که به بافر ترکیب‌بندی نیاز دارند (ژاپنی، چینی، کره‌ای و غیره) فعال یا غیرفعال می‌کند.</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">میانبرهای Ctrl/Alt در حالت کامل ورودی متنی (IME)</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">راه حل جایگزینی وجود ندارد.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">بدون استفاده از راهکار جایگزین</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">رویدادهای خام کلیدها</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">اجبار به استفاده از صفحه‌کلید ASCII (توصیه می‌شود)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">با کشیدن انگشت، بین جلسات مختلف جابه‌جا شوید.</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">پورت UDP ثابت برای Mosh (اگر 0 باشد، به صورت خودکار از بازه 60000 تا 61000 انتخاب می‌شود).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">محل/منطقه</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">تنظیمات منطقه‌ای برای جلسه Mosh (مثلاً en_US.UTF-8)</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">مُش</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">نسخه و کد منبع Mosh</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">در حال آماده‌سازی پشتیبانی از Mosh...</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">آیا می‌خواهید تغییرات را ذخیره نکنید؟</string>
@@ -602,7 +602,7 @@
   <string name="automation_no_session" tools:machine_translated="true">این عملیات به یک پنجره ترمینال باز نیاز دارد.</string>
   <string name="automation_forward_missing" tools:machine_translated="true">پورت فوروارد حذف یا از دست رفته است.</string>
   <string name="automation_forward_unsupported" tools:machine_translated="true">این اتصال از پورت فورواردینگ پشتیبانی نمی‌کند.</string>
-  <string name="automation_wait_text" tools:machine_translated="true">منتظر بمانید تا رشته پردازش شود.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">انتظار برای رشته</string>
   <string name="automation_send_text" tools:machine_translated="true">ارسال رشته</string>
   <string name="automation_send_key" tools:machine_translated="true">ارسال کلید ویژه</string>
   <string name="automation_delay" tools:machine_translated="true">صبر کنید</string>
@@ -619,7 +619,7 @@
   <string name="automation_cancel" tools:machine_translated="true">لغو کن</string>
   <string name="automation_text" tools:machine_translated="true">متن</string>
   <string name="automation_regex" tools:machine_translated="true">عبارت با قاعده</string>
-  <string name="automation_regex_help" tools:machine_translated="true">متن ورودی را بدون قالب‌بندی ANSI تطبیق می‌دهد. عبارت با قاعده (Regex) از نحو RE2 پشتیبانی می‌کند؛ جستجوی پیش‌نگر و ارجاع‌های پسین پشتیبانی نمی‌شوند.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">متن ورودی را بدون قالب‌بندی ANSI تطبیق می‌دهد. عبارت باقاعده از نحو RE2 پشتیبانی می‌کند؛ پیش‌نگری و پس‌نگری (lookaround) و ارجاع‌های پسین پشتیبانی نمی‌شوند.</string>
   <string name="automation_duration" tools:machine_translated="true">مدت زمان (به ثانیه)</string>
   <string name="automation_timeout" tools:machine_translated="true">حداکثر زمان انتظار (به ثانیه)</string>
   <string name="automation_key" tools:machine_translated="true">کلید</string>
@@ -631,16 +631,16 @@
   <string name="automation_progress" tools:machine_translated="true">اتوماسیون: %1$d از %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">اقدام شماره %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">لغو خودکارسازی</string>
-  <string name="automation_key_enter" tools:machine_translated="true">وارد شوید</string>
-  <string name="automation_key_tab" tools:machine_translated="true">برگه</string>
-  <string name="automation_key_escape" tools:machine_translated="true">خروج</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">کلید حذف (بک‌اسپیس)</string>
   <string name="automation_key_delete" tools:machine_translated="true">حذف</string>
   <string name="automation_key_up" tools:machine_translated="true">فلش جهت‌نما به سمت بالا</string>
   <string name="automation_key_down" tools:machine_translated="true">فلش پایین</string>
   <string name="automation_key_left" tools:machine_translated="true">فلش چپ</string>
   <string name="automation_key_right" tools:machine_translated="true">فلش راست</string>
-  <string name="automation_key_home" tools:machine_translated="true">صفحه اصلی</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">پایان</string>
   <string name="automation_key_insert" tools:machine_translated="true">درج</string>
   <string name="automation_key_page_up" tools:machine_translated="true">رفتن به صفحه قبل</string>
@@ -664,7 +664,7 @@
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s برای مشاهده خروجی‌های باقی‌مانده، کنسول را باز کنید.</string>
   <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">سیستم‌عامل اندروید ممکن است ConnectBot را متوقف کرده و ارتباطات شما را قطع کند، به‌ویژه زمانی که بین برنامه‌ها جابه‌جا می‌شوید.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">زمان انقضای اتصال شبکه Mosh (به ثانیه)</string>
-  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">مدت زمانی که سرور باید منتظر بماند تا زمانی که کلاینت‌ها به‌روزرسانی‌های خود را انجام دهند، قبل از اینکه سرور از کار بیفتد. اگر این فیلد را خالی بگذارید، سرور از تنظیمات پیش‌فرض یا یک هفته استفاده می‌کند؛ اگر مقدار 0 را وارد کنید، زمان انقضا غیرفعال می‌شود.</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">مدت زمان بدون دریافت به‌روزرسانی از کلاینت پیش از خروج سرور. برای استفاده از تنظیم سرور یا یک هفته، خالی بگذارید؛ برای غیرفعال کردن انقضا، 0 وارد کنید.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">یک عدد صحیح بین ۰ تا ۲۱۴۷۴۸۳۶۴۷ وارد کنید، یا این فیلد را خالی بگذارید.</string>
   <string name="notification_channel_sessions" tools:machine_translated="true">نشست‌های فعال</string>
   <string name="notification_channel_attention" tools:machine_translated="true">جلساتی که نیاز به بررسی دارند</string>
@@ -678,13 +678,13 @@
   <string name="notification_bell" tools:machine_translated="true">صدای آلارم ترمینال</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">به عنوان خوانده شده علامت‌گذاری شد.</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">علامت‌گذاری به‌عنوان خوانده‌شده</string>
   <string name="notification_mute_bells" tools:machine_translated="true">خاموش کردن صدای زنگ‌ها</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">اعلان‌های قطع ارتباط ناگهانی</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">وقتی یک جلسه که در حال مشاهده آن نیستید، به طور غیرمنتظره قطع می‌شود، یک پنجره‌ی اطلاع‌رسانی بدون صدا نمایش داده شود.</string>
   <plurals name="notification_connected_sessions" tools:machine_translated="true">
-		<item quantity="one">%d جلسه در حال برقراری ارتباط</item>
-		<item quantity="other">%d جلسه در حال برقراری ارتباط</item>
+		<item quantity="one">%d نشست متصل</item>
+		<item quantity="other">%d نشست متصل</item>
 	</plurals>
   <plurals name="notification_attention_sessions" tools:machine_translated="true">
 		<item quantity="one">%d مورد نیاز به بررسی دارد.</item>

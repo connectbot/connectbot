@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Tampilkan tombol peralihan IME</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Tambahkan tombol IME ke baris tombol khusus yang berfungsi untuk mengaktifkan atau menonaktifkan mode komposisi untuk bahasa yang memerlukan buffer komposisi (Jepang, Mandarin, Korea, dll.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Pintasan Ctrl/Alt dalam mode IME penuh</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Tidak ada solusi alternatif.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Tanpa solusi alternatif</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Peristiwa penekanan tombol mentah</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Paksa penggunaan ASCII (disarankan)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Geser untuk berpindah antar sesi.</string>

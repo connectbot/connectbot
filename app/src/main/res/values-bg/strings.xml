@@ -132,10 +132,10 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">При софтуерните клавиатури, натискането на клавишите с цифри изпраща сигнали за клавишите F1-F10, когато е натиснат клавишът Ctrl.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Бутоните за силата на звука променят размера на шрифта.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Размерът на шрифта може да бъде променен и в настройките на профила</string>
-  <string name="pref_memkeys_title" tools:machine_translated="true">Запомняне на клавишите в паметта</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">Запазване на ключовете в паметта</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Запазете отключените клавиши в паметта, докато не бъде прекратена работата на основната услуга.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Поддържайте връзката във фонов режим</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Поддържайте активни текущите си сесии, дори когато превключвате към други приложения.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Използвайте постоянно известие, за да запазите сесиите отворени при превключване между приложения</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Бързи клавишни комбинации за директории</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Запазващи се модификатори</string>
   <string name="only_alt" tools:machine_translated="true">Само Alt</string>
@@ -144,7 +144,7 @@
   <string name="pref_keepalive_summary" tools:machine_translated="true">Предотвратете изключването на екрана, когато работите в конзола</string>
   <string name="pref_wifilock_title" tools:machine_translated="true">Поддържайте Wi-Fi връзката активна</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">Предотвратете изключването на Wi-Fi, когато е активна сесия.</string>
-  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Релефни стрелки</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Вибрация при натискане на стрелките</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Вибрирайте при изпращане на команди с клавишите със стрелки; полезно при нестабилни връзки.</string>
   <string name="pref_bell_category" tools:machine_translated="true">Звуков сигнал на терминала</string>
   <string name="pref_bell_title" tools:machine_translated="true">Звуков сигнал</string>
@@ -153,7 +153,7 @@
   <string name="pref_bell_vibrate_title" tools:machine_translated="true">Вибриране при звуков сигнал</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Вибриране при сигнал от терминала</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">Фонови известия</string>
-  <string name="pref_bell_notification_summary" tools:machine_translated="true">Изпращайте известие, когато програма, работеща във фонов режим, издаде звуков сигнал.</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">Показване на беззвучно изскачащо известие, когато прозвучи сигнал в сесия, която не преглеждате</string>
   <string name="list_keymode_right" tools:machine_translated="true">Използвайте клавишите от дясната страна</string>
   <string name="list_keymode_left" tools:machine_translated="true">Използвайте клавишите от лявата страна.</string>
   <string name="list_pubkeyids_none" tools:machine_translated="true">Не използвайте ключове</string>
@@ -217,7 +217,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Терминал</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Семейство шрифтове</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Размер на шрифта: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Размер на силата</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Фиксиран размер</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Задайте конкретен размер (брой колони x брой редове) за терминала, вместо да позволявате автоматичното му оразмеряване, за да се приспособи към размера на екрана.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">Активиране на принудителна настройка на размера</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Колони</string>
@@ -344,7 +344,7 @@
   <string name="image_description_connected" tools:machine_translated="true">Свързан.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">Прекъсната връзка.</string>
   <string name="image_description_toggle_control_character" tools:machine_translated="true">Превключване на управляващия символ.</string>
-  <string name="image_description_send_escape_character" tools:machine_translated="true">Изпращане на управляващ символ.</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">Изпращане на символ ESC.</string>
   <string name="image_description_send_tab_character" tools:machine_translated="true">Изпращане на символа TAB.</string>
   <string name="image_description_hide_keyboard" tools:machine_translated="true">Скрий клавиатурата.</string>
   <string name="image_description_show_keyboard" tools:machine_translated="true">Покажи клавиатурата.</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Необходими са разрешения за известия</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">За да поддържате връзките си активни във фонов режим, моля, разрешете известията за ConnectBot в системните настройки.</string>
   <string name="open_settings" tools:machine_translated="true">Отвори настройките</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Възможно е връзките да бъдат прекъснати, ако не е дадено разрешение за получаване на известия.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Връзките може да се прекъснат при превключване между приложения</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Връзката може да прекъсне, когато приложението работи във фонов режим</string>
   <string name="terminal_no_route" tools:machine_translated="true">Опитвате ли се да получите достъп до локален хост? Предоставете необходимите разрешения за локалната мрежа.</string>
   <string name="loading_message" tools:machine_translated="true">Зареждане…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Показване на клавиша за превключване на IME</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Добавете бутон за IME към реда със специалните клавиши, който превключва режима за съставяне на символи за езици, изискващи буфер за съставяне (японски, китайски, корейски и т.н.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Преки пътища с клавишните комбинации Ctrl/Alt за пълния IME.</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Няма решение.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Без заобиколно решение</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Необработени събития от натискане на клавиши</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Принудително използване на ASCII (препоръчително)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Плъзнете, за да превключвате между сесиите.</string>
@@ -622,7 +622,7 @@
   <string name="automation_regex_help" tools:machine_translated="true">Съпоставя входящия текст, без да прилага ANSI форматиране. Регулярните изрази поддържат синтаксиса на RE2; не се поддържат функциите за търсене напред и назад и обратните препратки.</string>
   <string name="automation_duration" tools:machine_translated="true">Продължителност (в секунди)</string>
   <string name="automation_timeout" tools:machine_translated="true">Време за изчакване (в секунди)</string>
-  <string name="automation_key" tools:machine_translated="true">Ключ</string>
+  <string name="automation_key" tools:machine_translated="true">Клавиш</string>
   <string name="automation_forward" tools:machine_translated="true">Пренасочване на порт</string>
   <string name="automation_failure" tools:machine_translated="true">При възникване на грешка.</string>
   <string name="automation_stop" tools:machine_translated="true">Спрете автоматизацията.</string>
@@ -631,9 +631,9 @@
   <string name="automation_progress" tools:machine_translated="true">Автоматизация: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Действие %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Отмени автоматизацията.</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Въведете</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Раздел</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Изход</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Клавиш за изтриване (Backspace)</string>
   <string name="automation_key_delete" tools:machine_translated="true">Изтриване</string>
   <string name="automation_key_up" tools:machine_translated="true">Стрелка нагоре</string>
@@ -678,7 +678,7 @@
   <string name="notification_bell" tools:machine_translated="true">Звуков сигнал на терминала</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">Отбелязано като прочетено.</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Отбележи като прочетено</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Заглушаване на звуковите сигнали.</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Известия при прекъсване на връзката</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Показвайте известие без звук, когато сесия, която не сте отворили, неочаквано прекъсне връзката.</string>

@@ -127,10 +127,10 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">บนแป้นพิมพ์เสมือนของซอฟต์แวร์ เมื่อกดปุ่มตัวเลข จะส่งสัญญาณ F1-F10 พร้อมกับการกดปุ่ม Ctrl</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">ปุ่มปรับระดับเสียงจะเปลี่ยนขนาดตัวอักษร</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">นอกจากนี้ คุณยังสามารถปรับขนาดตัวอักษรได้ในการตั้งค่าโปรไฟล์</string>
-  <string name="pref_memkeys_title" tools:machine_translated="true">บันทึกปุ่มที่ใช้บ่อยไว้ในหน่วยความจำ</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">เก็บคีย์ไว้ในหน่วยความจำ</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">เก็บรักษาคีย์ที่ไม่ได้ล็อกไว้ในหน่วยความจำ จนกว่าบริการส่วนหลัง (backend service) จะหยุดทำงาน</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">คงการเชื่อมต่อไว้ในเบื้องหลัง</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">รักษาการเชื่อมต่อไว้ แม้ว่าคุณจะสลับไปใช้งานแอปพลิเคชันอื่น</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">ใช้การแจ้งเตือนแบบถาวรเพื่อให้เซสชันยังเปิดอยู่เมื่อคุณสลับแอป</string>
   <string name="pref_keymode_title" tools:machine_translated="true">ทางลัดสำหรับโฟลเดอร์</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">ตัวปรับแต่งแบบคงที่</string>
   <string name="only_alt" tools:machine_translated="true">เฉพาะปุ่ม Alt</string>
@@ -139,7 +139,7 @@
   <string name="pref_keepalive_summary" tools:machine_translated="true">ป้องกันไม่ให้หน้าจอดับเมื่อใช้งานในโหมดคอนโซล</string>
   <string name="pref_wifilock_title" tools:machine_translated="true">เปิดใช้งาน Wi-Fi ไว้</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">ป้องกันไม่ให้ Wi-Fi ปิดใช้งานเมื่อมีการใช้งานอยู่</string>
-  <string name="pref_bumpyarrows_title" tools:machine_translated="true">ลูกศรที่มีพื้นผิวขรุขระ</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">สั่นเมื่อกดปุ่มลูกศร</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">สั่นเมื่อส่งสัญญาณปุ่มลูกศร เหมาะสำหรับใช้ในกรณีที่การเชื่อมต่อไม่เสถียร</string>
   <string name="pref_bell_category" tools:machine_translated="true">เสียงแจ้งเตือนของเทอร์มินัล</string>
   <string name="pref_bell_title" tools:machine_translated="true">เปิด/ปิดเสียงสัญญาณเตือน</string>
@@ -148,7 +148,7 @@
   <string name="pref_bell_vibrate_title" tools:machine_translated="true">สั่นเมื่อมีเสียงแจ้งเตือน</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">สั่นเมื่อมีการแจ้งเตือนจากอุปกรณ์</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">การแจ้งเตือนแบบเบื้องหลัง</string>
-  <string name="pref_bell_notification_summary" tools:machine_translated="true">ส่งการแจ้งเตือนเมื่อโปรแกรมที่ทำงานอยู่เบื้องหลังส่งเสียงสัญญาณ.</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">แสดงป๊อปอัปแบบไม่มีเสียงเมื่อมีสัญญาณกระดิ่งในเซสชันที่คุณไม่ได้ดูอยู่</string>
   <string name="list_keymode_right" tools:machine_translated="true">ใช้ปุ่มด้านขวา</string>
   <string name="list_keymode_left" tools:machine_translated="true">ใช้ปุ่มด้านซ้ายของแป้นพิมพ์</string>
   <string name="list_keymode_none" tools:machine_translated="true">ปิดใช้งาน</string>
@@ -344,7 +344,7 @@
   <string name="image_description_connected" tools:machine_translated="true">เชื่อมต่อแล้ว.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">ตัดการเชื่อมต่อแล้ว.</string>
   <string name="image_description_toggle_control_character" tools:machine_translated="true">สลับอักขระควบคุม.</string>
-  <string name="image_description_send_escape_character" tools:machine_translated="true">ส่งอักขระควบคุม.</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">ส่งอักขระ ESC</string>
   <string name="image_description_send_tab_character" tools:machine_translated="true">ส่งอักขระ TAB.</string>
   <string name="image_description_hide_keyboard" tools:machine_translated="true">ซ่อนแป้นพิมพ์.</string>
   <string name="image_description_show_keyboard" tools:machine_translated="true">แสดงแป้นพิมพ์.</string>
@@ -354,7 +354,7 @@
   <string name="image_description_right" tools:machine_translated="true">ลูกศรชี้ไปทางขวา</string>
   <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
-  <string name="button_key_home" tools:machine_translated="true">หน้าหลัก</string>
+  <string name="button_key_home" tools:machine_translated="true">Home</string>
   <string name="button_key_end" tools:machine_translated="true">สิ้นสุด</string>
   <string name="button_key_pgup" tools:machine_translated="true">เลื่อนหน้าขึ้น</string>
   <string name="button_key_pgdn" tools:machine_translated="true">เลื่อนหน้าลง</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">จำเป็นต้องให้สิทธิ์การแจ้งเตือน</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">เพื่อให้การเชื่อมต่อของคุณยังคงทำงานอยู่เบื้องหลัง โปรดเปิดการแจ้งเตือนสำหรับ ConnectBot ในการตั้งค่าของระบบ.</string>
   <string name="open_settings" tools:machine_translated="true">เปิดการตั้งค่า</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">การเชื่อมต่ออาจถูกตัดการเชื่อมต่อหากไม่ได้ให้สิทธิ์การแจ้งเตือน</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">การเชื่อมต่ออาจหลุดเมื่อคุณสลับแอป</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">การเชื่อมต่ออาจถูกตัดเมื่อแอปทำงานอยู่เบื้องหลัง</string>
   <string name="terminal_no_route" tools:machine_translated="true">คุณกำลังพยายามเข้าถึงเครื่องในเครือข่ายท้องถิ่นใช่หรือไม่ โปรดอนุญาตสิทธิ์การเข้าถึงเครือข่ายท้องถิ่น.</string>
   <string name="loading_message" tools:machine_translated="true">กำลังโหลด…</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">กำหนดพอร์ต UDP ที่แน่นอนสำหรับโปรแกรม mosh (หากตั้งค่าเป็น 0 โปรแกรมจะเลือกพอร์ตโดยอัตโนมัติในช่วง 60000-61000)</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">ภาษาท้องถิ่น</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">ภาษาที่ใช้สำหรับเซสชันของโปรแกรม Mosh (เช่น en_US.UTF-8)</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">โมช</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">รุ่นของโปรแกรม Mosh และซอร์สโค้ด</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">กำลังเตรียมการติดตั้งส่วนประกอบที่รองรับ Mosh…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">ต้องการยกเลิกการเปลี่ยนแปลงหรือไม่</string>
@@ -602,7 +602,7 @@
   <string name="automation_no_session" tools:machine_translated="true">การดำเนินการนี้จำเป็นต้องเปิดใช้งานหน้าต่างเทอร์มินัล</string>
   <string name="automation_forward_missing" tools:machine_translated="true">การตั้งค่าพอร์ตเพื่อส่งต่อข้อมูลหายไป</string>
   <string name="automation_forward_unsupported" tools:machine_translated="true">การเชื่อมต่อนี้ไม่รองรับการส่งต่อพอร์ต</string>
-  <string name="automation_wait_text" tools:machine_translated="true">รอจนกว่าสตริงจะเสร็จสิ้น</string>
+  <string name="automation_wait_text" tools:machine_translated="true">รอสตริง</string>
   <string name="automation_send_text" tools:machine_translated="true">ส่งสตริง</string>
   <string name="automation_send_key" tools:machine_translated="true">ส่งปุ่มพิเศษ</string>
   <string name="automation_delay" tools:machine_translated="true">รอ</string>
@@ -631,16 +631,16 @@
   <string name="automation_progress" tools:machine_translated="true">ระบบอัตโนมัติ: ขั้นตอนปัจจุบันคือ %1$d จากทั้งหมด %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">ขั้นตอนที่ %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">ยกเลิกการทำงานอัตโนมัติ</string>
-  <string name="automation_key_enter" tools:machine_translated="true">ป้อนข้อมูล</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
   <string name="automation_key_tab" tools:machine_translated="true">แท็บ</string>
-  <string name="automation_key_escape" tools:machine_translated="true">ปุ่มสำหรับออกจากหน้าจอ</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">ปุ่มลบอักขระก่อนหน้า</string>
   <string name="automation_key_delete" tools:machine_translated="true">ลบ</string>
   <string name="automation_key_up" tools:machine_translated="true">ลูกศรชี้ขึ้น</string>
   <string name="automation_key_down" tools:machine_translated="true">ลูกศรชี้ลง</string>
   <string name="automation_key_left" tools:machine_translated="true">ลูกศรชี้ไปทางซ้าย</string>
   <string name="automation_key_right" tools:machine_translated="true">ลูกศรชี้ไปทางขวา</string>
-  <string name="automation_key_home" tools:machine_translated="true">หน้าหลัก</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">สิ้นสุด</string>
   <string name="automation_key_insert" tools:machine_translated="true">แทรก</string>
   <string name="automation_key_page_up" tools:machine_translated="true">เลื่อนไปยังหน้าก่อนหน้า</string>

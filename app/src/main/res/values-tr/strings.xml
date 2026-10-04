@@ -220,7 +220,7 @@
   <string name="pref_volumefont_title" tools:machine_translated="true">Ses tuşları yazı tipi boyutunu değiştirir.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Yazı tipi boyutu, profil ayarlarından da değiştirilebilir.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Arka planda bağlantıyı sürdür.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Diğer uygulamalara geçseniz bile oturumlarınızı açık tutun.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Uygulamalar arasında geçiş yaptığınızda oturumları açık tutmak için kalıcı bildirim kullanın</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Sabit değiştiriciler</string>
   <string name="only_alt" tools:machine_translated="true">Yalnızca Alt</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Yön tuşlarına basıldığında titreşim; gecikmeli bağlantılarda kullanışlıdır.</string>
@@ -230,7 +230,7 @@
   <string name="color_pink" tools:machine_translated="true">Pembe</string>
   <string name="color_purple" tools:machine_translated="true">Mor</string>
   <string name="color_deep_purple" tools:machine_translated="true">Koyu Mor</string>
-  <string name="color_indigo" tools:machine_translated="true">Koyu mavi</string>
+  <string name="color_indigo" tools:machine_translated="true">Çivit mavisi</string>
   <string name="color_blue" tools:machine_translated="true">Mavi</string>
   <string name="color_light_blue" tools:machine_translated="true">Açık Mavi</string>
   <string name="color_cyan" tools:machine_translated="true">Camgöbeği</string>
@@ -239,12 +239,12 @@
   <string name="color_light_green" tools:machine_translated="true">Açık Yeşil</string>
   <string name="color_lime" tools:machine_translated="true">Limon yeşili</string>
   <string name="color_yellow" tools:machine_translated="true">Sarı</string>
-  <string name="color_amber" tools:machine_translated="true">Krem rengi</string>
+  <string name="color_amber" tools:machine_translated="true">Kehribar</string>
   <string name="color_orange" tools:machine_translated="true">Turuncu</string>
   <string name="color_gray" tools:machine_translated="true">Gri</string>
   <string name="hostpref_fontfamily_title" tools:machine_translated="true">Yazı tipi</string>
   <string name="hostpref_colorscheme_title" tools:machine_translated="true">Terminal renk teması</string>
-  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Bağlantı kesildiğinde kapatma seçeneğini göster</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Bağlantı kesildiğinde kapat</string>
   <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Bağlantı kesildikten sonra herhangi bir uyarı göstermeden hemen kapatın.</string>
   <string name="hostpref_save_password_summary" tools:machine_translated="true">Oturum açma parolasını güvenli bir şekilde saklayarak otomatik kimlik doğrulamayı etkinleştirin</string>
   <string name="hostpref_password_title" tools:machine_translated="true">Şifre</string>
@@ -268,7 +268,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Terminal</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Yazı Tipi Ailesi</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Yazı Tipi Boyutu: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Kuvvet Boyutu</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Boyutu zorla</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Terminalin boyutunu otomatik olarak ekran boyutuna göre ayarlamak yerine, belirli bir boyuta (sütun x satır) zorla ayarlayın.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">Zorunlu boyutlandırma özelliğini etkinleştir</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Sütunlar</string>
@@ -354,8 +354,8 @@
   <string name="image_description_right" tools:machine_translated="true">Sağa bakan ok</string>
   <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
-  <string name="button_key_home" tools:machine_translated="true">Ana Sayfa</string>
-  <string name="button_key_end" tools:machine_translated="true">Bitti</string>
+  <string name="button_key_home" tools:machine_translated="true">Home</string>
+  <string name="button_key_end" tools:machine_translated="true">End</string>
   <string name="button_key_pgup" tools:machine_translated="true">Sayfa Yukarı</string>
   <string name="button_key_pgdn" tools:machine_translated="true">Sayfa Aşağı</string>
   <string name="button_key_f1" tools:machine_translated="true">F1</string>
@@ -379,7 +379,7 @@
   <string name="button_ok" tools:machine_translated="true">Tamam</string>
   <string name="button_close" tools:machine_translated="true">Kapat</string>
   <string name="button_back" tools:machine_translated="true">Geri</string>
-  <string name="button_navigate_up" tools:machine_translated="true">Yukarı kaydır</string>
+  <string name="button_navigate_up" tools:machine_translated="true">Üst düzeye git</string>
   <string name="button_more_options" tools:machine_translated="true">Daha fazla seçenek</string>
   <string name="button_host_options" tools:machine_translated="true">Ev sahibi seçenekleri</string>
   <string name="button_collapse" tools:machine_translated="true">Daralt</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Bildirim izni gerekiyor</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Arka planda bağlantılarınızın aktif kalmasını sağlamak için lütfen sistem ayarlarında ConnectBot için bildirimleri etkinleştirin.</string>
   <string name="open_settings" tools:machine_translated="true">Ayarları aç</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Bildirim izni verilmezse bağlantılar kesilebilir.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Uygulamalar arasında geçiş yaptığınızda bağlantılar kesilebilir</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Arka planda bağlantı kesilebilir.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Yerel bir sunucuya erişmeye mi çalışıyorsunuz? Yerel ağ izinlerini verin.</string>
   <string name="loading_message" tools:machine_translated="true">Yükleniyor…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">IME geçiş tuşunu göster</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Özel tuşlar satırına, bileşim arabelleği gerektiren diller (Japonca, Çince, Korece vb.) için bileşim modunu etkinleştiren bir IME düğmesi ekleyin.</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Tam IME için Ctrl/Alt kısayolları</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Herhangi bir geçici çözüm bulunmuyor.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Geçici çözüm kullanma</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Ham anahtar olayları</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">ASCII\'yi zorla etkinleştir (önerilir)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Oturumlar arasında kaydırarak geçiş yapın.</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Mosh için sabit bir UDP bağlantı noktası (otomatik olarak 60000-61000 aralığında çalışması için 0 girin).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Yerel Ayar</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh oturumu için kullanılacak yerel ayar (örneğin, en_US.UTF-8).</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">Mosh desteği sağlayan dinamik özellik modülünün başlığı</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh sürümü ve kaynak kodu</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Mosh desteği hazırlanıyor...</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Değişiklikleri kaydetmeden çıkmak istiyor musunuz?</string>
@@ -591,7 +591,7 @@
   <string name="inline_images_off" tools:machine_translated="true">Kapalı</string>
   <string name="inline_images_ask" tools:machine_translated="true">Sor</string>
   <string name="inline_images_on" tools:machine_translated="true">Açık</string>
-  <string name="inline_images_prompt_title" tools:machine_translated="true">Satır içi resimleri gösterilsin mi?</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Satır içi resimler gösterilsin mi?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Bu oturumun geri kalanında bu ana bilgisayarın satır içi görüntüleri göstermesine izin verilsin mi?</string>
   <string name="automation_load_failed" tools:machine_translated="true">Otomasyon yüklenemedi.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Otomasyon kaydedilemedi.</string>
@@ -622,7 +622,7 @@
   <string name="automation_regex_help" tools:machine_translated="true">Gelen metni, ANSI biçimlendirmesi olmadan eşleştirir. Düzenli ifade (regex), RE2 sözdizimini destekler; ileriye dönük ve geriye dönük referanslar desteklenmez.</string>
   <string name="automation_duration" tools:machine_translated="true">Süre (saniye)</string>
   <string name="automation_timeout" tools:machine_translated="true">Zaman Aşımı (saniye)</string>
-  <string name="automation_key" tools:machine_translated="true">Anahtar</string>
+  <string name="automation_key" tools:machine_translated="true">Tuş</string>
   <string name="automation_forward" tools:machine_translated="true">Bağlantı yönlendirme</string>
   <string name="automation_failure" tools:machine_translated="true">Başarısızlık durumunda</string>
   <string name="automation_stop" tools:machine_translated="true">Otomasyonu durdurun.</string>
@@ -631,16 +631,16 @@
   <string name="automation_progress" tools:machine_translated="true">Otomasyon: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">İşlem %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Otomasyonu iptal et</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Giriş yapın</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
   <string name="automation_key_tab" tools:machine_translated="true">Sekme</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Çıkış</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Geri Tuşu</string>
   <string name="automation_key_delete" tools:machine_translated="true">Sil</string>
   <string name="automation_key_up" tools:machine_translated="true">Yukarı ok</string>
   <string name="automation_key_down" tools:machine_translated="true">Aşağı ok</string>
   <string name="automation_key_left" tools:machine_translated="true">Sol ok</string>
   <string name="automation_key_right" tools:machine_translated="true">Sağ ok</string>
-  <string name="automation_key_home" tools:machine_translated="true">Ana Sayfa</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">Son</string>
   <string name="automation_key_insert" tools:machine_translated="true">Ekle</string>
   <string name="automation_key_page_up" tools:machine_translated="true">Sayfa Yukarı</string>

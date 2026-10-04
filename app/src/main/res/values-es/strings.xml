@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Mostrar la tecla de alternancia de IME.</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Agrega un botón de IME a la fila de teclas especiales que active o desactive el modo de composición para los idiomas que requieren un búfer de composición (japonés, chino, coreano, etc.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Atajos de teclado Ctrl/Alt para el IME completo.</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">No hay solución alternativa.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">No usar solución alternativa</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Eventos de teclado sin procesar.</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Forzar el uso de ASCII (recomendado)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Desliza para cambiar de sesión.</string>
@@ -595,14 +595,14 @@
   <string name="inline_images_prompt_message" tools:machine_translated="true">¿Permitir que este host muestre imágenes en línea durante el resto de esta sesión?</string>
   <string name="automation_load_failed" tools:machine_translated="true">No se pudo cargar la automatización.</string>
   <string name="automation_save_failed" tools:machine_translated="true">No se pudo guardar la automatización.</string>
-  <string name="automation_invalid_action" tools:machine_translated="true">Verifique el texto, el patrón, la duración o el puerto de reenvío seleccionado.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Compruebe el texto, el patrón, la duración o el reenvío de puertos seleccionado</string>
   <string name="automation_action_failed" tools:machine_translated="true">La acción no se completó.</string>
   <string name="automation_timed_out" tools:machine_translated="true">Se agotó el tiempo de espera para la aparición del texto.</string>
   <string name="automation_buffer_overflow" tools:machine_translated="true">Se generó demasiada información antes de que la automatización pudiera procesarla.</string>
   <string name="automation_no_session" tools:machine_translated="true">Esta acción requiere una sesión de terminal activa.</string>
   <string name="automation_forward_missing" tools:machine_translated="true">Falta la configuración de reenvío de puertos.</string>
   <string name="automation_forward_unsupported" tools:machine_translated="true">Esta conexión no admite la redirección de puertos.</string>
-  <string name="automation_wait_text" tools:machine_translated="true">Esperar a que se complete la cadena.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Esperar una cadena de texto</string>
   <string name="automation_send_text" tools:machine_translated="true">Enviar cadena</string>
   <string name="automation_send_key" tools:machine_translated="true">Enviar tecla especial</string>
   <string name="automation_delay" tools:machine_translated="true">Esperar</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Cancelar</string>
   <string name="automation_text" tools:machine_translated="true">Texto</string>
   <string name="automation_regex" tools:machine_translated="true">Expresión regular</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Coincide con el texto entrante sin aplicar formato ANSI. La expresión regular admite la sintaxis RE2; no se admiten las búsquedas anticipadas ni las referencias inversas.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Busca coincidencias en el texto entrante sin formato ANSI. Las expresiones regulares admiten la sintaxis RE2; no se admiten las aserciones de anticipación y retrospección (lookaround) ni las referencias inversas.</string>
   <string name="automation_duration" tools:machine_translated="true">Duración (en segundos)</string>
   <string name="automation_timeout" tools:machine_translated="true">Tiempo de espera (en segundos)</string>
-  <string name="automation_key" tools:machine_translated="true">Clave</string>
+  <string name="automation_key" tools:machine_translated="true">Tecla</string>
   <string name="automation_forward" tools:machine_translated="true">Reenvío de puertos</string>
   <string name="automation_failure" tools:machine_translated="true">En caso de error.</string>
   <string name="automation_stop" tools:machine_translated="true">Detener la automatización.</string>
@@ -632,8 +632,8 @@
   <string name="automation_failure_step" tools:machine_translated="true">Acción %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Cancelar la automatización</string>
   <string name="automation_key_enter" tools:machine_translated="true">Intro</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Pestaña</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Salir</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tabulador</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Retroceso</string>
   <string name="automation_key_delete" tools:machine_translated="true">Eliminar</string>
   <string name="automation_key_up" tools:machine_translated="true">Flecha hacia arriba</string>
@@ -641,15 +641,16 @@
   <string name="automation_key_left" tools:machine_translated="true">Flecha izquierda</string>
   <string name="automation_key_right" tools:machine_translated="true">Flecha derecha</string>
   <string name="automation_key_home" tools:machine_translated="true">Inicio</string>
-  <string name="automation_key_end" tools:machine_translated="true">Finalizar</string>
+  <string name="automation_key_end" tools:machine_translated="true">Fin</string>
   <string name="automation_key_insert" tools:machine_translated="true">Insertar</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">Avance de página</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Retroceso de página</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Avance de página</string>
   <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Tecla Mayús.</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f segundos</string>
   <plurals name="automation_count" tools:machine_translated="true">
     <item quantity="one">%1$d acción</item>
+    <item quantity="many">%1$d acciones</item>
     <item quantity="other">%1$d acciones</item>
   </plurals>
   <string name="host_status_unread_output" tools:machine_translated="true">Salida no leída.</string>
@@ -678,7 +679,7 @@
   <string name="notification_bell" tools:machine_translated="true">Sonido de alerta del terminal.</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">Se ha confirmado la recepción.</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Marcar como leído</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Silenciar las alertas sonoras.</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Notificaciones de pérdida de conexión.</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Muestra una ventana emergente sin sonido cuando una sesión que no estás visualizando se desconecta inesperadamente.</string>

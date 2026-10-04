@@ -263,7 +263,7 @@
   <string name="pref_theme_light" tools:machine_translated="true">Argi</string>
   <string name="pref_theme_dark" tools:machine_translated="true">Ilun</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Mantendu konektatuta atzeplanean.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Mantendu saioak irekita, baita beste aplikazioetara aldatzen zarenean ere.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Erabili jakinarazpen iraunkor bat saioak irekita mantentzeko aplikazioz aldatzean</string>
   <string name="pref_bell_summary" tools:machine_translated="true">Erreproduzitu soinu bat terminaleko alertan.</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Bibratu terminaleko alertan</string>
   <string name="color_red" tools:machine_translated="true">Gorria</string>
@@ -306,7 +306,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Terminala</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Letra-familia</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Letra-tamaina: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Indar-tamaina</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Behartu tamaina</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Behartu terminala tamaina zehatz batera (zutabeak x lerroak), pantailara egokitzeko automatikoki tamaina aldatu beharrean.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">Tamaina derrigorrezko modua aktibatu</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Zutabeak</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Jakinarazpen-baimena behar da.</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Atzeko planoan zure konexioak aktibo mantentzeko, gaitu ConnectBot-en jakinarazpenak sistemaren ezarpenetan.</string>
   <string name="open_settings" tools:machine_translated="true">Ezarpenak ireki</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Baliteke konexioak eten daitezela jakinarazteko baimena ukatzen bada.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Konexioak eten daitezke aplikazioz aldatzean</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Konexioa eten egin daiteke atzeplanean.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Sare lokaleko host batera konektatzen saiatzen ari zara? Baimendu sare lokaleko baimenak.</string>
   <string name="loading_message" tools:machine_translated="true">Kargatzen…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">IME tekla aldatzeko aukera erakutsi</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Gehitu IME botoi bat teklatuaren teklak berezietako lerroan, eta botoi horrek konposizio modua aktibatuko/desaktibatuko du konposizio-memoria behar duten hizkuntzetarako (japoniera, txinera, koreera, etab.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">IME osoaren Ctrl/Alt lasterbideak</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Ez dago irtenbiderik.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Ez erabili ordezko konponbiderik</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Tekla-sarrerako gertaera zuzenak</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Behartu ASCII (gomendatzen da)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Saioak hatz-mugimendu batez aldatu</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Mosh-erako UDP portua zehaztu (0 automatikoa da, 60000-61000 tartean).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Hizkuntza-ingurunea</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh saioaren hizkuntza-ingurunea (adibidez, en_US.UTF-8)</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">Mosh (Mosh-en laguntza ematen duen dinamikako funtzio-moduluaren izenburua)</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh bertsioa eta iturburu-kodea</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Mosh-erako prestaketa…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Aldaketak ezabatu?</string>
@@ -602,7 +602,7 @@
   <string name="automation_no_session" tools:machine_translated="true">Ekintza horrek terminal-saio bat irekita egotea eskatzen du.</string>
   <string name="automation_forward_missing" tools:machine_translated="true">Portaren bideraketa falta da.</string>
   <string name="automation_forward_unsupported" tools:machine_translated="true">Konexio honek ez du portuen bideraketa onartzen.</string>
-  <string name="automation_wait_text" tools:machine_translated="true">Itxaron katearen arte.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Itxaron testu-kateari</string>
   <string name="automation_send_text" tools:machine_translated="true">Katea bidali</string>
   <string name="automation_send_key" tools:machine_translated="true">Tekla berezi bat bidali</string>
   <string name="automation_delay" tools:machine_translated="true">Itxaron</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Utzi edo eten.</string>
   <string name="automation_text" tools:machine_translated="true">Testua</string>
   <string name="automation_regex" tools:machine_translated="true">Adierazpen erregularra</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Sarrerako testua ANSI formaturik gabean batzen du. Regex-ek RE2 sintaxia onartzen du; aurretik begiratzea eta atzerapausoak ez dira onartzen.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Sarrerako testua ANSI formaturik gabe parekatzen du. Adierazpen erregularrek RE2 sintaxia onartzen dute; lookaround eta atzeranzko erreferentziak ez dira onartzen.</string>
   <string name="automation_duration" tools:machine_translated="true">Iraupena (segunduetan)</string>
   <string name="automation_timeout" tools:machine_translated="true">Denbora-muga (segunduetan)</string>
-  <string name="automation_key" tools:machine_translated="true">Gako</string>
+  <string name="automation_key" tools:machine_translated="true">Tekla</string>
   <string name="automation_forward" tools:machine_translated="true">Ataka bideratu</string>
   <string name="automation_failure" tools:machine_translated="true">Hutsunean</string>
   <string name="automation_stop" tools:machine_translated="true">Automatizazioa eten</string>
@@ -632,7 +632,7 @@
   <string name="automation_failure_step" tools:machine_translated="true">Ekintza %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Automatizazioa bertan behera utzi</string>
   <string name="automation_key_enter" tools:machine_translated="true">Sartu</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Fitxa</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
   <string name="automation_key_escape" tools:machine_translated="true">Ihes</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Atzera botoia</string>
   <string name="automation_key_delete" tools:machine_translated="true">Ezabatu</string>
@@ -643,7 +643,7 @@
   <string name="automation_key_home" tools:machine_translated="true">Hasiera</string>
   <string name="automation_key_end" tools:machine_translated="true">Amaiera</string>
   <string name="automation_key_insert" tools:machine_translated="true">Txertatu</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">Orrialde aurrera</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Page Up</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Hurrengo orria</string>
   <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Shift</string>
@@ -678,7 +678,7 @@
   <string name="notification_bell" tools:machine_translated="true">Terminaleko soinu-seinalea</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">Ikusi egin da</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Markatu ikusita gisa</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Desaktibatu soinu-alertak.</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Konexio-galera jakinarazpenak</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Erakutsi pop-up bat, soinurik gabe, saio bat ikusten ez baduzu eta ustekabean deskonektatzen bada.</string>

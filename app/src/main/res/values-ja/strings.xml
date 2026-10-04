@@ -540,7 +540,7 @@
   <string name="portforward_source_addr_all" tools:machine_translated="true">すべてのホストアドレス</string>
   <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">すべてのIPv4アドレス</string>
   <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">すべてのIPv6アドレス</string>
-  <string name="portforward_source_addr_specific" tools:machine_translated="true">特定の住所</string>
+  <string name="portforward_source_addr_specific" tools:machine_translated="true">特定のアドレス</string>
   <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">クリップボードからインポート</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">秘密鍵の内容</string>
@@ -548,9 +548,9 @@
   <string name="auth_banner_title" tools:machine_translated="true">%1$sからの認証メッセージ</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] 認証メッセージ：</string>
   <string name="pref_imetogglekey_title" tools:machine_translated="true">IME切り替えキーを表示</string>
-  <string name="pref_imetogglekey_summary" tools:machine_translated="true">複合モードが必要な言語（日本語、中国語、韓国語など）の入力時に、複合入力バッファーを切り替えるためのIMEボタンを、特殊キーの行に追加します。</string>
+  <string name="pref_imetogglekey_summary" tools:machine_translated="true">変換中の文字列を保持するバッファーが必要な言語（日本語、中国語、韓国語など）向けに、文字入力の組み立てモードを切り替える IME ボタンを特殊キーの行に追加します。</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">IMEのCtrl/Altキーによるショートカット機能</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">対処法はありません。</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">回避策を使用しない</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">生のキーイベント</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">強制的にASCIIキーボードを使用（推奨）</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">セッションをスワイプして切り替える</string>
@@ -560,7 +560,7 @@
   <string name="console_next_session" tools:machine_translated="true">次のセッション</string>
   <string name="button_key_alt" tools:machine_translated="true">Alt</string>
   <string name="image_description_toggle_alt_key" tools:machine_translated="true">Altキーの切り替え。</string>
-  <string name="button_key_ime" tools:machine_translated="true">IME（入力メソッドエディター）</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">IME入力用の合成モードを切り替える</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">入力モード（IME）</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">選択したプロファイルを編集</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Moshで使用する固定のUDPポート（自動の場合は0、ポート範囲は60000～61000）</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">地域設定</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Moshセッションのロケール設定（例：en_US.UTF-8）</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">Mosh（モッシュ）</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Moshのリリース版とソースコード</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Moshのサポート機能を準備しています…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">変更を破棄しますか？</string>
@@ -591,7 +591,7 @@
   <string name="inline_images_off" tools:machine_translated="true">オフ</string>
   <string name="inline_images_ask" tools:machine_translated="true">尋ねる</string>
   <string name="inline_images_on" tools:machine_translated="true">オン</string>
-  <string name="inline_images_prompt_title" tools:machine_translated="true">インライン画像を非表示にしますか？</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">インライン画像を表示しますか？</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">このホストで、現在のセッションの残りの期間、インライン画像を表示することを許可しますか？</string>
   <string name="automation_load_failed" tools:machine_translated="true">自動化機能の読み込みに失敗しました。</string>
   <string name="automation_save_failed" tools:machine_translated="true">自動化設定の保存に失敗しました。</string>
@@ -602,7 +602,7 @@
   <string name="automation_no_session" tools:machine_translated="true">この操作には、ターミナルセッションを開いている必要があります。</string>
   <string name="automation_forward_missing" tools:machine_translated="true">ポートフォワーディングの設定がありません。</string>
   <string name="automation_forward_unsupported" tools:machine_translated="true">この接続ではポートフォワーディングがサポートされていません。</string>
-  <string name="automation_wait_text" tools:machine_translated="true">文字列の完了を待機</string>
+  <string name="automation_wait_text" tools:machine_translated="true">文字列を待機</string>
   <string name="automation_send_text" tools:machine_translated="true">文字列を送信</string>
   <string name="automation_send_key" tools:machine_translated="true">特別なキーを送信</string>
   <string name="automation_delay" tools:machine_translated="true">待機</string>
@@ -619,7 +619,7 @@
   <string name="automation_cancel" tools:machine_translated="true">キャンセル</string>
   <string name="automation_text" tools:machine_translated="true">テキスト</string>
   <string name="automation_regex" tools:machine_translated="true">正規表現</string>
-  <string name="automation_regex_help" tools:machine_translated="true">ANSI形式の書式設定を適用せずに、入力されたテキストと一致させます。正規表現はRE2構文をサポートしますが、前方参照と後方参照はサポートされません。</string>
+  <string name="automation_regex_help" tools:machine_translated="true">ANSI 書式を除いた受信テキストと照合します。正規表現は RE2 構文をサポートしますが、先読み・後読み（lookaround）と後方参照はサポートしません。</string>
   <string name="automation_duration" tools:machine_translated="true">時間（秒）</string>
   <string name="automation_timeout" tools:machine_translated="true">タイムアウト時間（秒）</string>
   <string name="automation_key" tools:machine_translated="true">キー</string>
@@ -631,7 +631,7 @@
   <string name="automation_progress" tools:machine_translated="true">自動化処理：現在ステップ %1$d / 全ステップ %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">操作 %1$d： %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">自動化をキャンセル</string>
-  <string name="automation_key_enter" tools:machine_translated="true">入力</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
   <string name="automation_key_tab" tools:machine_translated="true">タブ</string>
   <string name="automation_key_escape" tools:machine_translated="true">エスケープ</string>
   <string name="automation_key_backspace" tools:machine_translated="true">バックスペース</string>
@@ -641,7 +641,7 @@
   <string name="automation_key_left" tools:machine_translated="true">左向き矢印</string>
   <string name="automation_key_right" tools:machine_translated="true">右向き矢印</string>
   <string name="automation_key_home" tools:machine_translated="true">ホーム</string>
-  <string name="automation_key_end" tools:machine_translated="true">終了</string>
+  <string name="automation_key_end" tools:machine_translated="true">End</string>
   <string name="automation_key_insert" tools:machine_translated="true">挿入</string>
   <string name="automation_key_page_up" tools:machine_translated="true">ページアップ</string>
   <string name="automation_key_page_down" tools:machine_translated="true">ページ下へ</string>
@@ -678,7 +678,7 @@
   <string name="notification_bell" tools:machine_translated="true">端末ベル</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s：%2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">確認済み</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">確認済みにする</string>
   <string name="notification_mute_bells" tools:machine_translated="true">ベル音を消す</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">予期せぬバックグラウンド接続の切断に関する通知</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">現在表示していないセッションが予期せず切断された場合に、音を出さずにポップアップを表示します。</string>
@@ -687,8 +687,8 @@
 		<item quantity="other">現在 %d 件のセッションが接続中です。</item>
 	</plurals>
   <plurals name="notification_attention_sessions" tools:machine_translated="true">
-		<item quantity="one">%d 件の対応が必要です。</item>
-		<item quantity="other">%d 件のセッションで、未対応の通知や接続エラーが発生しています。</item>
+		<item quantity="one">%d 件のセッションで対応が必要です</item>
+		<item quantity="other">%d 件のセッションで対応が必要です</item>
 	</plurals>
   <plurals name="notification_more_sessions" tools:machine_translated="true">
 		<item quantity="one">さらに%d件のセッションがあります</item>

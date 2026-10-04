@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Показувати клавішу перемикання IME.</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Додайте кнопку IME до рядка спеціальних клавіш, яка перемикатиме режим введення для мов, що потребують буфера для введення складних символів (японська, китайська, корейська тощо).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Повні комбінації клавіш Ctrl/Alt для IME</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Немає обхідного рішення.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Не використовувати обхідний спосіб</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Необроблені події натискання клавіш</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Примусово використовувати ASCII (рекомендовано)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Перемикайтеся між сесіями за допомогою змахування.</string>
@@ -560,7 +560,7 @@
   <string name="console_next_session" tools:machine_translated="true">Наступна сесія</string>
   <string name="button_key_alt" tools:machine_translated="true">Alt</string>
   <string name="image_description_toggle_alt_key" tools:machine_translated="true">Увімкнути/вимкнути клавішу Alt.</string>
-  <string name="button_key_ime" tools:machine_translated="true">Введення тексту (для мов, як-от японська)</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">Увімкнути/вимкнути режим введення символів для IME.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">Режим введення тексту (IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">Редагувати обраний профіль</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Зафіксований порт UDP для програми Mosh (0 означає автоматичний вибір порту в діапазоні 60000–61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Регіон</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Локаль для сеансу Mosh (наприклад, en_US.UTF-8).</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">Підтримка Mosh</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Реліз і вихідний код Mosh.</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Підготовка до підтримки Mosh…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Відхилити зміни?</string>
@@ -622,7 +622,7 @@
   <string name="automation_regex_help" tools:machine_translated="true">Здійснює зіставлення з вхідним текстом без застосування форматування ANSI. Синтаксис регулярних виразів відповідає синтаксису RE2; підтримки для пошуку вперед/назад і зворотних посилань немає.</string>
   <string name="automation_duration" tools:machine_translated="true">Тривалість (у секундах).</string>
   <string name="automation_timeout" tools:machine_translated="true">Час очікування (у секундах).</string>
-  <string name="automation_key" tools:machine_translated="true">Ключ</string>
+  <string name="automation_key" tools:machine_translated="true">Клавіша</string>
   <string name="automation_forward" tools:machine_translated="true">Налаштування перенаправлення портів</string>
   <string name="automation_failure" tools:machine_translated="true">У разі збою</string>
   <string name="automation_stop" tools:machine_translated="true">Зупинити автоматизацію.</string>
@@ -631,25 +631,27 @@
   <string name="automation_progress" tools:machine_translated="true">Автоматизація: крок %1$d з %2$d.</string>
   <string name="automation_failure_step" tools:machine_translated="true">Дія №%1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Скасувати автоматизацію</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Введіть</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Вкладка</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Вихід</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Клавіша «Назад» (для видалення символу)</string>
   <string name="automation_key_delete" tools:machine_translated="true">Видалити</string>
   <string name="automation_key_up" tools:machine_translated="true">Стрілка вгору</string>
   <string name="automation_key_down" tools:machine_translated="true">Стрілка вниз</string>
   <string name="automation_key_left" tools:machine_translated="true">Стрілка вліво</string>
   <string name="automation_key_right" tools:machine_translated="true">Стрілка вправо</string>
-  <string name="automation_key_home" tools:machine_translated="true">Головна сторінка</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">Кінець</string>
   <string name="automation_key_insert" tools:machine_translated="true">Вставити</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">Перемістити на сторінку вперед</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Page Up</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Перемістити на сторінку вниз</string>
   <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Клавіша Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f сек.</string>
   <plurals name="automation_count" tools:machine_translated="true">
     <item quantity="one">%1$d дія</item>
+    <item quantity="few">%1$d дії</item>
+    <item quantity="many">%1$d дій</item>
     <item quantity="other">%1$d дії</item>
   </plurals>
   <string name="host_status_unread_output" tools:machine_translated="true">Непереглянуті дані</string>
@@ -678,7 +680,7 @@
   <string name="notification_bell" tools:machine_translated="true">Звуковий сигнал термінала</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">Повідомлення прочитано.</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Позначити як прочитане</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Вимкнути звукові сповіщення.</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Сповіщення про втрату з’єднання.</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Відображати спливаюче вікно без звуку, коли сеанс, який ви не переглядаєте, несподівано припиняється.</string>

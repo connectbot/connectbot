@@ -534,9 +534,9 @@
   <string name="pref_language_download" tools:machine_translated="true">Taalpakket downloaden</string>
   <string name="pref_language_download_failed" tools:machine_translated="true">Het downloaden is mislukt, tik om het opnieuw te proberen.</string>
   <string name="portforward_host_address" tools:machine_translated="true">Hostadres</string>
-  <string name="portforward_source_addr_localhost" tools:machine_translated="true">Lokaal netwerk</string>
-  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Lokaal netwerk (alleen IPv4)</string>
-  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">Lokaal netwerk (alleen IPv6)</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">Localhost</string>
+  <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Localhost (alleen IPv4)</string>
+  <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">Localhost (alleen IPv6)</string>
   <string name="portforward_source_addr_all" tools:machine_translated="true">Alle adressen</string>
   <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">Alle IPv4-adressen</string>
   <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Alle IPv6-adressen</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Toon de IME-wisseltoets</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Voeg een IME-knop toe aan de rij met speciale toetsen waarmee de compositiemodus kan worden in- en uitgeschakeld voor talen die een compositiebuffer vereisen (zoals Japans, Chinees, Koreaans, enz.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Sneltoetsen voor de volledige IME met Ctrl/Alt</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Er is geen tijdelijke oplossing.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Geen omweg gebruiken</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Onbewerkte toetsaanslaggebeurtenissen</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Forceer ASCII-modus (aanbevolen)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Veeg om tussen sessies te schakelen.</string>
@@ -578,18 +578,18 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Vaste UDP-poort voor Mosh (gebruik 0 om een automatische poort in het bereik 60000-61000 te laten kiezen).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Taalinstelling</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Taalinstelling voor de Mosh-sessie (bijv. en_US.UTF-8).</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">Ondersteuning voor Mosh</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">De versie van Mosh en de bijbehorende broncode</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Bezig met het voorbereiden van ondersteuning voor Mosh …</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Wijzigingen annuleren?</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">Uw wijzigingen gaan verloren als u de pagina verlaat zonder op te slaan.</string>
-  <string name="editor_discard" tools:machine_translated="true">Annuleren</string>
+  <string name="editor_discard" tools:machine_translated="true">Verwerpen</string>
   <string name="editor_save" tools:machine_translated="true">Opslaan</string>
   <string name="import_json_file_too_large" tools:machine_translated="true">Het JSON-bestand is te groot om te importeren (het maximum is 8 MB).</string>
   <string name="import_file_unavailable" tools:machine_translated="true">Het geselecteerde bestand kan niet worden geopend.</string>
   <string name="profile_inline_images" tools:machine_translated="true">Afbeeldingen in tekstweergave</string>
   <string name="inline_images_off" tools:machine_translated="true">Uit</string>
-  <string name="inline_images_ask" tools:machine_translated="true">Vraag het eenmalig tijdens de huidige sessie.</string>
+  <string name="inline_images_ask" tools:machine_translated="true">Vragen</string>
   <string name="inline_images_on" tools:machine_translated="true">Aan</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Afbeeldingen direct weergeven?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Sta toe dat deze computer voor de duur van deze sessie afbeeldingen direct in de tekst weergeeft?</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Annuleren</string>
   <string name="automation_text" tools:machine_translated="true">Tekst</string>
   <string name="automation_regex" tools:machine_translated="true">Reguliere expressie</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Zoekt naar overeenkomsten in de binnenkomende tekst zonder gebruik te maken van ANSI-opmaak. De regex ondersteunt de RE2-syntaxis; vooruitkijkende en achterwaartse verwijzingen worden niet ondersteund.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Zoekt overeenkomsten in binnenkomende tekst zonder ANSI-opmaak. Reguliere expressies ondersteunen de RE2-syntaxis; lookaround en terugverwijzingen worden niet ondersteund.</string>
   <string name="automation_duration" tools:machine_translated="true">Duur (in seconden)</string>
   <string name="automation_timeout" tools:machine_translated="true">Time-out (in seconden)</string>
-  <string name="automation_key" tools:machine_translated="true">Sleutel</string>
+  <string name="automation_key" tools:machine_translated="true">Toets</string>
   <string name="automation_forward" tools:machine_translated="true">Poort doorsturen</string>
   <string name="automation_failure" tools:machine_translated="true">Bij een fout</string>
   <string name="automation_stop" tools:machine_translated="true">Automatische uitvoering stoppen</string>
@@ -631,8 +631,8 @@
   <string name="automation_progress" tools:machine_translated="true">Automatisering: stap %1$d van de %2$d.</string>
   <string name="automation_failure_step" tools:machine_translated="true">Actie %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Automatisering annuleren</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Invoeren</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Tabblad</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
   <string name="automation_key_escape" tools:machine_translated="true">Esc-toets</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Terugtoets</string>
   <string name="automation_key_delete" tools:machine_translated="true">Verwijderen</string>
@@ -640,12 +640,12 @@
   <string name="automation_key_down" tools:machine_translated="true">Pijl omlaag</string>
   <string name="automation_key_left" tools:machine_translated="true">Linkerpijl</string>
   <string name="automation_key_right" tools:machine_translated="true">Pijl naar rechts</string>
-  <string name="automation_key_home" tools:machine_translated="true">Startpagina</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">Einde</string>
   <string name="automation_key_insert" tools:machine_translated="true">Invoegen</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">Volgende pagina</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Page Up</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Pagina omlaag</string>
-  <string name="automation_key_function" tools:machine_translated="true">M%1$s</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Shift-toets</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f seconden</string>
   <plurals name="automation_count" tools:machine_translated="true">
@@ -668,9 +668,9 @@
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Voer een geheel getal tussen 0 en 2147483647 in, of laat het veld leeg.</string>
   <string name="notification_channel_sessions" tools:machine_translated="true">Actieve sessies</string>
   <string name="notification_channel_attention" tools:machine_translated="true">Sessies waar actie vereist is</string>
-  <string name="notification_channel_bells" tools:machine_translated="true">Achtergrondgeluiden van de terminal</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Signaaltonen van de terminal</string>
   <string name="notification_channel_connections" tools:machine_translated="true">Verloren verbindingen</string>
-  <string name="pref_notification_channels_title" tools:machine_translated="true">Beheer de meldingen in de instellingen.</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Meldingskanalen beheren in de instellingen</string>
   <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
   <string name="notification_connected" tools:machine_translated="true">Verbonden</string>
   <string name="notification_connecting" tools:machine_translated="true">Verbinding wordt gemaakt…</string>
@@ -691,7 +691,7 @@
 		<item quantity="other">%d sessies vereisen aandacht.</item>
 	</plurals>
   <plurals name="notification_more_sessions" tools:machine_translated="true">
-		<item quantity="one">Nog %d sessies meer</item>
+		<item quantity="one">+%d extra sessie</item>
 		<item quantity="other">+%d sessies meer</item>
 	</plurals>
 </resources>

@@ -542,15 +542,15 @@
   <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">Wszystkie adresy IPv6</string>
   <string name="portforward_source_addr_specific" tools:machine_translated="true">Konkretny adres</string>
   <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
-  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importuj z schowka.</string>
+  <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importuj ze schowka</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Zawartość klucza prywatnego</string>
-  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Wklej z schowka</string>
+  <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Wklej ze schowka</string>
   <string name="auth_banner_title" tools:machine_translated="true">Komunikat uwierzytelniający od %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Komunikat uwierzytelniania:</string>
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Wyświetl klawisz przełączający IME.</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Dodaj przycisk IME do rzędu klawiszy specjalnych, który będzie przełączał tryb wprowadzania znaków dla języków wymagających bufora kompozycji (np. japoński, chiński, koreański).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Skróty klawiszowe Ctrl/Alt w pełnym trybie IME.</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Brak obejścia.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Nie stosuj obejścia</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Surowe zdarzenia klawiaturowe</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Wymuś użycie układu klawiatury ASCII (zalecane)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Przesuwaj palcem, aby przełączać się między sesjami.</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Stały port UDP dla programu Mosh (wartość 0 oznacza automatyczny wybór z zakresu 60000–61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Ustawienia regionalne</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Ustawienia regionalne dla sesji Mosh (np. en_US.UTF-8).</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">Moduł obsługujący funkcję Mosh.</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Wersja programu Mosh i kod źródłowy.</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Przygotowywanie obsługi programu Mosh...</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Czy chcesz odrzucić zmiany?</string>
@@ -622,7 +622,7 @@
   <string name="automation_regex_help" tools:machine_translated="true">Dopasowuje wprowadzany tekst bez stosowania formatowania ANSI. Wyrażenia regularne obsługują składnię RE2; nieobsługiwane są konstrukcje „lookaround” i odwołania wsteczne.</string>
   <string name="automation_duration" tools:machine_translated="true">Czas trwania (w sekundach)</string>
   <string name="automation_timeout" tools:machine_translated="true">Limit czasu oczekiwania (w sekundach).</string>
-  <string name="automation_key" tools:machine_translated="true">Klucz</string>
+  <string name="automation_key" tools:machine_translated="true">Klawisz</string>
   <string name="automation_forward" tools:machine_translated="true">Przekierowanie portu</string>
   <string name="automation_failure" tools:machine_translated="true">W przypadku niepowodzenia.</string>
   <string name="automation_stop" tools:machine_translated="true">Zatrzymaj automatyzację.</string>
@@ -631,16 +631,16 @@
   <string name="automation_progress" tools:machine_translated="true">Automatyzacja: krok %1$d z %2$d.</string>
   <string name="automation_failure_step" tools:machine_translated="true">Akcja nr %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Anuluj automatyzację.</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Wprowadź</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Zakładka</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Wyjdź/Anuluj</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Usuń ostatni znak / Wsteczny klawisz</string>
   <string name="automation_key_delete" tools:machine_translated="true">Usuń</string>
   <string name="automation_key_up" tools:machine_translated="true">Strzałka w górę</string>
   <string name="automation_key_down" tools:machine_translated="true">Strzałka w dół</string>
   <string name="automation_key_left" tools:machine_translated="true">Strzałka w lewo</string>
   <string name="automation_key_right" tools:machine_translated="true">Strzałka w prawo</string>
-  <string name="automation_key_home" tools:machine_translated="true">Strona główna</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">Koniec</string>
   <string name="automation_key_insert" tools:machine_translated="true">Wstaw</string>
   <string name="automation_key_page_up" tools:machine_translated="true">Przewiń w górę o stronę</string>
@@ -649,10 +649,12 @@
   <string name="automation_key_shift" tools:machine_translated="true">Przycisk Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f sekundy</string>
   <plurals name="automation_count" tools:machine_translated="true">
-    <item quantity="one">%1$d akcji</item>
-    <item quantity="other">%1$d operacji</item>
+    <item quantity="one">%1$d akcja</item>
+    <item quantity="few">%1$d akcje</item>
+    <item quantity="many">%1$d akcji</item>
+    <item quantity="other">%1$d akcji</item>
   </plurals>
-  <string name="host_status_unread_output" tools:machine_translated="true">Nieuodczytane dane wyjściowe</string>
+  <string name="host_status_unread_output" tools:machine_translated="true">Nieodczytane dane wyjściowe</string>
   <string name="host_status_user_disconnected" tools:machine_translated="true">Rozłączyłeś się z tym hostem.</string>
   <string name="host_status_session_exit" tools:machine_translated="true">Zdalna sesja została zakończona.</string>
   <string name="host_status_remote_closed" tools:machine_translated="true">Serwer zamknął połączenie. Możesz spróbować nawiązać połączenie ponownie.</string>
@@ -678,7 +680,7 @@
   <string name="notification_bell" tools:machine_translated="true">Sygnał dźwiękowy terminala.</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">Oznaczono jako przeczytane.</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Oznacz jako przeczytane</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Wyłącz dźwięki powiadomień.</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Powiadomienia o utracie połączenia</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Wyświetlaj powiadomienie bez dźwięku, gdy sesja, której aktualnie nie obserwujesz, niespodziewanie się zakończy.</string>

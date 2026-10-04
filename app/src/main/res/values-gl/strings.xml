@@ -262,8 +262,8 @@
   <string name="pref_theme_light" tools:machine_translated="true">Claro</string>
   <string name="pref_theme_dark" tools:machine_translated="true">Escuro</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Mantéñase conectado en segundo plano.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Manteña as súas sesións activas aínda que cambie a outras aplicacións.</string>
-  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Frechas con textura</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Usar unha notificación permanente para manter as sesións abertas ao cambiar de aplicación</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Vibración coas frechas</string>
   <string name="pref_bell_summary" tools:machine_translated="true">Reproducir son ao activarse a alerta do terminal</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Vibrar ao recibir unha alerta do terminal.</string>
   <string name="color_red" tools:machine_translated="true">Vermello</string>
@@ -306,7 +306,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Terminal</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Familia de fontes</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Tamaño da letra: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Tamaño da forza</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Forzar tamaño</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Forza a que o terminal adopte un tamaño específico (columnas x filas) en lugar de axustarse automaticamente para adaptarse á pantalla.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">Activar o axuste forzado do tamaño</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Columnas</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">É necesario conceder o permiso de notificación.</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Para manter as túas conexións activas en segundo plano, activa as notificacións para ConnectBot na configuración do sistema.</string>
   <string name="open_settings" tools:machine_translated="true">Abrir configuración</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">As conexións poden interromperse se non se concede o permiso de notificación.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">As conexións poden interromperse ao cambiar de aplicación</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">A conexión pode interromperse en segundo plano.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Está intentando acceder a un host local? Conceda os permisos da rede local.</string>
   <string name="loading_message" tools:machine_translated="true">Cargando…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Mostrar a tecla de alternancia do IME</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Engade un botón IME na fila de teclas especiais que active ou desactive o modo de composición para os idiomas que requiren un búfer de composición (xaponés, chinés, coreano, etc.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Atallos completos de Ctrl/Alt do IME</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Non hai solución alternativa.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Non usar solución alternativa</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Eventos de teclado sen procesar</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Forzar ASCII (recomendado)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Desliza para cambiar entre sesións.</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Cancelar</string>
   <string name="automation_text" tools:machine_translated="true">Texto</string>
   <string name="automation_regex" tools:machine_translated="true">Expresión regular</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Busca coincidencias no texto entrante sen aplicar a formatación ANSI. As expresións regulares admiten a sintaxe RE2; non se admiten as expresións de busca anticipada nin as referencias inversas.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Busca coincidencias no texto entrante sen formato ANSI. As expresións regulares admiten a sintaxe RE2; non se admiten lookaround nin referencias inversas.</string>
   <string name="automation_duration" tools:machine_translated="true">Duración (segundos)</string>
   <string name="automation_timeout" tools:machine_translated="true">Tempo máximo de espera (en segundos)</string>
-  <string name="automation_key" tools:machine_translated="true">Chave</string>
+  <string name="automation_key" tools:machine_translated="true">Tecla</string>
   <string name="automation_forward" tools:machine_translated="true">Selector de reenvío de portos.</string>
   <string name="automation_failure" tools:machine_translated="true">En caso de fallo.</string>
   <string name="automation_stop" tools:machine_translated="true">Detener a automatización.</string>
@@ -631,9 +631,9 @@
   <string name="automation_progress" tools:machine_translated="true">Automatización: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Acción %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Cancelar a automatización</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Introduza</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Pestaña</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Saír</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Retroceso</string>
   <string name="automation_key_delete" tools:machine_translated="true">Eliminar</string>
   <string name="automation_key_up" tools:machine_translated="true">Frecha cara arriba</string>
@@ -643,7 +643,7 @@
   <string name="automation_key_home" tools:machine_translated="true">Inicio</string>
   <string name="automation_key_end" tools:machine_translated="true">Final</string>
   <string name="automation_key_insert" tools:machine_translated="true">Inserir</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">Páxina seguinte</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Page Up</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Páxina seguinte</string>
   <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Modificador Shift</string>

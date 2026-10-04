@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Hiển thị phím chuyển đổi IME</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Thêm một nút IME vào hàng các phím đặc biệt, nút này sẽ chuyển đổi giữa chế độ soạn thảo và chế độ bình thường cho các ngôn ngữ cần bộ đệm soạn thảo (ví dụ: tiếng Nhật, tiếng Trung, tiếng Hàn, v.v.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Phím tắt Ctrl/Alt của IME đầy đủ</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Không có giải pháp thay thế.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Không dùng giải pháp thay thế</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Các sự kiện bàn phím thô.</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Buộc sử dụng bàn phím ASCII (khuyến nghị)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Vuốt để chuyển giữa các phiên.</string>
@@ -602,7 +602,7 @@
   <string name="automation_no_session" tools:machine_translated="true">Thao tác này yêu cầu một phiên lệnh đang mở.</string>
   <string name="automation_forward_missing" tools:machine_translated="true">Cấu hình chuyển tiếp cổng bị thiếu.</string>
   <string name="automation_forward_unsupported" tools:machine_translated="true">Kết nối này không hỗ trợ chuyển tiếp cổng.</string>
-  <string name="automation_wait_text" tools:machine_translated="true">Chờ cho đến khi chuỗi hoàn tất.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Chờ chuỗi văn bản</string>
   <string name="automation_send_text" tools:machine_translated="true">Gửi chuỗi ký tự.</string>
   <string name="automation_send_key" tools:machine_translated="true">Gửi phím đặc biệt.</string>
   <string name="automation_delay" tools:machine_translated="true">Chờ.</string>
@@ -631,16 +631,16 @@
   <string name="automation_progress" tools:machine_translated="true">Tự động hóa: Bước hiện tại là %1$d, tổng số bước là %2$d.</string>
   <string name="automation_failure_step" tools:machine_translated="true">Hành động số %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Hủy bỏ chế độ tự động hóa.</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Nhập</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Thẻ/Nút chuyển đổi</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Thoát ra</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Phím xóa lùi</string>
   <string name="automation_key_delete" tools:machine_translated="true">Xóa</string>
   <string name="automation_key_up" tools:machine_translated="true">Mũi tên chỉ lên</string>
   <string name="automation_key_down" tools:machine_translated="true">Mũi tên chỉ xuống</string>
   <string name="automation_key_left" tools:machine_translated="true">Mũi tên chỉ sang trái.</string>
   <string name="automation_key_right" tools:machine_translated="true">Mũi tên chỉ sang phải</string>
-  <string name="automation_key_home" tools:machine_translated="true">Trang chủ</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">Kết thúc</string>
   <string name="automation_key_insert" tools:machine_translated="true">Chèn vào</string>
   <string name="automation_key_page_up" tools:machine_translated="true">Lật lên một trang</string>
@@ -678,13 +678,13 @@
   <string name="notification_bell" tools:machine_translated="true">Tiếng chuông báo hiệu từ thiết bị đầu cuối.</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">Đã đánh dấu là đã xem.</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Đánh dấu là đã xem</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Tắt chuông.</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Thông báo khi mất kết nối.</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Hiển thị một thông báo nổi không phát âm thanh khi một phiên làm việc mà bạn không đang xem bị ngắt kết nối đột ngột.</string>
   <plurals name="notification_connected_sessions" tools:machine_translated="true">
-		<item quantity="one">%d phiên đang kết nối</item>
-		<item quantity="other">%d phiên đang hoạt động</item>
+		<item quantity="one">%d phiên đã kết nối</item>
+		<item quantity="other">%d phiên đã kết nối</item>
 	</plurals>
   <plurals name="notification_attention_sessions" tools:machine_translated="true">
 		<item quantity="one">Có %d phiên cần được xử lý.</item>

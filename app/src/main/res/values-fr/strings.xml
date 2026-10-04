@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Afficher la touche de bascule IME</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Ajoutez un bouton IME à la rangée des touches spéciales qui permet d’activer ou de désactiver le mode de composition pour les langues nécessitant une mémoire tampon de composition (japonais, chinois, coréen, etc.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Raccourcis Ctrl/Alt pour l’ensemble de l’IME</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Aucune solution de contournement.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Ne pas utiliser de contournement</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Événements de touches bruts</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Forcer l’utilisation du clavier ASCII (recommandé)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Faites glisser pour passer d’une session à l’autre.</string>
@@ -565,7 +565,7 @@
   <string name="console_menu_compose_mode" tools:machine_translated="true">Mode de composition (IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">Modifier le profil sélectionné</string>
   <string name="terminal_mosh_installing" tools:machine_translated="true">Préparation du support Mosh…</string>
-  <string name="terminal_mosh_starting" tools:machine_translated="true">Démarage de la connexion Mosh…</string>
+  <string name="terminal_mosh_starting" tools:machine_translated="true">Démarrage de la connexion Mosh…</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Avertissement : le délai d’installation de Mosh a été dépassé.</string>
   <string name="terminal_mosh_launching_server" tools:machine_translated="true">Démarrage du serveur Mosh sur l’hôte distant…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">Impossible de démarrer le serveur Mosh sur l’hôte distant.</string>
@@ -592,10 +592,10 @@
   <string name="inline_images_ask" tools:machine_translated="true">Demander</string>
   <string name="inline_images_on" tools:machine_translated="true">Activé</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Afficher les images intégrées ?</string>
-  <string name="inline_images_prompt_message" tools:machine_translated="true">Autoriser cet hôte à afficher les images en ligne pour le reste de cette session ?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Autoriser cet hôte à afficher les images intégrées pour le reste de cette session ?</string>
   <string name="automation_load_failed" tools:machine_translated="true">Impossible de charger l’automatisation.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Impossible de sauvegarder l’automatisation.</string>
-  <string name="automation_invalid_action" tools:machine_translated="true">Vérifiez le texte, le modèle, la durée ou le port sélectionné pour le transfert.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Vérifiez le texte, le motif, la durée ou la redirection de port sélectionnée</string>
   <string name="automation_action_failed" tools:machine_translated="true">L’action a échoué.</string>
   <string name="automation_timed_out" tools:machine_translated="true">Délai d’attente dépassé pour l’affichage du texte.</string>
   <string name="automation_buffer_overflow" tools:machine_translated="true">Un trop grand nombre de données est arrivé avant que l’automatisation ne puisse les traiter.</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Annuler</string>
   <string name="automation_text" tools:machine_translated="true">Texte</string>
   <string name="automation_regex" tools:machine_translated="true">Expression régulière</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Correspond au texte entrant sans appliquer de formatage ANSI. L’expression régulière prend en charge la syntaxe RE2 ; les assertions et les références arrière ne sont pas prises en charge.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Recherche des correspondances dans le texte entrant sans formatage ANSI. Les expressions régulières prennent en charge la syntaxe RE2 ; les assertions avant/arrière (lookaround) et les références arrière ne sont pas prises en charge.</string>
   <string name="automation_duration" tools:machine_translated="true">Durée (en secondes)</string>
   <string name="automation_timeout" tools:machine_translated="true">Délai d’attente (en secondes)</string>
-  <string name="automation_key" tools:machine_translated="true">Clé</string>
+  <string name="automation_key" tools:machine_translated="true">Touche</string>
   <string name="automation_forward" tools:machine_translated="true">Redirection de port</string>
   <string name="automation_failure" tools:machine_translated="true">En cas d’échec.</string>
   <string name="automation_stop" tools:machine_translated="true">Arrêter l’automatisation.</string>
@@ -632,9 +632,9 @@
   <string name="automation_failure_step" tools:machine_translated="true">Action n° %1$d : %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Annuler l’automatisation</string>
   <string name="automation_key_enter" tools:machine_translated="true">Entrée</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Onglet</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Quitter</string>
-  <string name="automation_key_backspace" tools:machine_translated="true">Suppr</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tabulation</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Échap</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Retour arrière</string>
   <string name="automation_key_delete" tools:machine_translated="true">Supprimer</string>
   <string name="automation_key_up" tools:machine_translated="true">Flèche vers le haut</string>
   <string name="automation_key_down" tools:machine_translated="true">Flèche vers le bas</string>
@@ -643,13 +643,14 @@
   <string name="automation_key_home" tools:machine_translated="true">Accueil</string>
   <string name="automation_key_end" tools:machine_translated="true">Fin</string>
   <string name="automation_key_insert" tools:machine_translated="true">Insérer</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">Page suivante</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Page précédente</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Page suivante</string>
   <string name="automation_key_function" tools:machine_translated="true">F %1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Touche Maj.</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f seconde(s)</string>
   <plurals name="automation_count" tools:machine_translated="true">
-    <item quantity="one">%1$d action(s)</item>
+    <item quantity="one">%1$d action</item>
+    <item quantity="many">%1$d actions</item>
     <item quantity="other">%1$d actions</item>
   </plurals>
   <string name="host_status_unread_output" tools:machine_translated="true">Données non lues</string>

@@ -136,7 +136,7 @@
   <string name="pref_volumefont_title" tools:machine_translated="true">Tipke za podešavanje glasnoće mijenjaju veličinu fonta.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Veličina fonta može se promijeniti i u postavkama profila.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Ostanite povezani u pozadini</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Održavajte svoje sesije aktivnima čak i kada prelazite na druge aplikacije.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Koristi stalnu obavijest za održavanje sesija otvorenima pri prebacivanju između aplikacija</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Trajni modificatori</string>
   <string name="only_alt" tools:machine_translated="true">Samo Alt</string>
   <string name="pref_bumpyarrows_title" tools:machine_translated="true">Strelice s taktilnom povratnom informacijom</string>
@@ -148,7 +148,7 @@
   <string name="pref_bell_vibrate_title" tools:machine_translated="true">Vibriraj pri zvuku zvona</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Vibracija prilikom upozorenja na uređaju</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">Obavijesti u pozadini</string>
-  <string name="pref_bell_notification_summary" tools:machine_translated="true">Pošalji obavijest kada aplikacija koja radi u pozadini emitira zvučni signal.</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">Prikaži skočnu obavijest bez zvuka kada se oglasi zvono u sesiji koju ne pregledavaš</string>
   <string name="list_keymode_right" tools:machine_translated="true">Koristite tipke na desnoj strani tipkovnice.</string>
   <string name="list_keymode_left" tools:machine_translated="true">Koristite tipke na lijevoj strani tipkovnice.</string>
   <string name="list_keymode_none" tools:machine_translated="true">Onemogući</string>
@@ -213,7 +213,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Terminal</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Odr ed fonta</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Veličina fonta: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Veličina sile</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Fiksna veličina</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Prisilno postavite terminal na određenu veličinu (broj stupaca x broj redaka) umjesto da se automatski prilagođava veličini zaslona.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">Omogući prisilno postavljanje veličine.</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Stupci</string>
@@ -344,7 +344,7 @@
   <string name="image_description_connected" tools:machine_translated="true">Povezano.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">Isključeno.</string>
   <string name="image_description_toggle_control_character" tools:machine_translated="true">Prebacite kontrolni znak.</string>
-  <string name="image_description_send_escape_character" tools:machine_translated="true">Pošalji znak za upravljanje.</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">Pošalji znak ESC.</string>
   <string name="image_description_send_tab_character" tools:machine_translated="true">Pošalji znak TAB.</string>
   <string name="image_description_hide_keyboard" tools:machine_translated="true">Sakrij tipkovnicu.</string>
   <string name="image_description_show_keyboard" tools:machine_translated="true">Prikaži tipkovnicu.</string>
@@ -354,9 +354,9 @@
   <string name="image_description_right" tools:machine_translated="true">Strelica udesno</string>
   <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
-  <string name="button_key_home" tools:machine_translated="true">Početna</string>
+  <string name="button_key_home" tools:machine_translated="true">Home</string>
   <string name="button_key_end" tools:machine_translated="true">Kraj</string>
-  <string name="button_key_pgup" tools:machine_translated="true">Slijedeća stranica</string>
+  <string name="button_key_pgup" tools:machine_translated="true">PgUp</string>
   <string name="button_key_pgdn" tools:machine_translated="true">Sljedeća stranica</string>
   <string name="button_key_f1" tools:machine_translated="true">F1</string>
   <string name="button_key_f2" tools:machine_translated="true">F2</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Potrebno je odobriti dopuštenje za obavijesti</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Kako biste omogućili da se vaše veze održavaju aktivnima u pozadini, omogućite obavijesti za ConnectBot u postavkama sustava.</string>
   <string name="open_settings" tools:machine_translated="true">Otvorite postavke</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Veze se mogu prekinuti ako korisnik nije odobrio dopuštenje za obavijesti.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Veze se mogu prekinuti pri prebacivanju između aplikacija</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Veza se može prekinuti u pozadini.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Pokušavate li pristupiti lokalnom računalu? Odobrite dopuštenja za lokalnu mrežu.</string>
   <string name="loading_message" tools:machine_translated="true">Učitavanje…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Prikaži tipku za prebacivanje IME-a.</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Dodajte gumb za IME u red posebnih tipki koji će prebacivati način unosa za jezike kojima je potreban međuspremnik za unos (japanski, kineski, korejski itd.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Prečaci za cijeli sustav unosa metoda (IME) pomoću tipki Ctrl/Alt</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Nema rješenja.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Bez zaobilaznog rješenja</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Neobrađeni događaji tipkovnice</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Prisilno postavi ASCII (preporučeno)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Prijeđite prstom po zaslonu za prebacivanje između sesija.</string>
@@ -602,7 +602,7 @@
   <string name="automation_no_session" tools:machine_translated="true">Ova radnja zahtijeva otvorenu sesiju terminala.</string>
   <string name="automation_forward_missing" tools:machine_translated="true">Port za prosljeđivanje podataka ne postoji.</string>
   <string name="automation_forward_unsupported" tools:machine_translated="true">Ova veza ne podržava prosljeđivanje portova.</string>
-  <string name="automation_wait_text" tools:machine_translated="true">Pričekajte dok se niz ne dovrši.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Čekaj niz znakova</string>
   <string name="automation_send_text" tools:machine_translated="true">Pošalji niz znakova.</string>
   <string name="automation_send_key" tools:machine_translated="true">Pošalji posebni tipku.</string>
   <string name="automation_delay" tools:machine_translated="true">Pričekajte.</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Poništi</string>
   <string name="automation_text" tools:machine_translated="true">Tekst</string>
   <string name="automation_regex" tools:machine_translated="true">Regularni izraz</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Uspoređuje ulazni tekst bez ANSI formatiranja. Izraz podržava sintaksu RE2; funkcije pretraživanja i povratne reference nisu podržane.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Uspoređuje dolazni tekst bez ANSI formatiranja. Regularni izrazi podržavaju sintaksu RE2; lookaround i povratne reference nisu podržani.</string>
   <string name="automation_duration" tools:machine_translated="true">Trajanje (u sekundama)</string>
   <string name="automation_timeout" tools:machine_translated="true">Vremensko ograničenje (u sekundama)</string>
-  <string name="automation_key" tools:machine_translated="true">Ključ</string>
+  <string name="automation_key" tools:machine_translated="true">Tipka</string>
   <string name="automation_forward" tools:machine_translated="true">Prosljeđivanje porta</string>
   <string name="automation_failure" tools:machine_translated="true">U slučaju neuspjeha.</string>
   <string name="automation_stop" tools:machine_translated="true">Zaustavi automatizaciju.</string>
@@ -631,26 +631,27 @@
   <string name="automation_progress" tools:machine_translated="true">Automatizacija: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Akcija %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Otkaži automatizaciju</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Unesite</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Kartica</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Izlaz</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Tipka za brisanje</string>
   <string name="automation_key_delete" tools:machine_translated="true">Izbriši</string>
   <string name="automation_key_up" tools:machine_translated="true">Strelica prema gore</string>
   <string name="automation_key_down" tools:machine_translated="true">Strelica prema dolje</string>
   <string name="automation_key_left" tools:machine_translated="true">Strelica ulijevo.</string>
   <string name="automation_key_right" tools:machine_translated="true">Strelica udesno.</string>
-  <string name="automation_key_home" tools:machine_translated="true">Početna</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">Kraj</string>
   <string name="automation_key_insert" tools:machine_translated="true">Umetni</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">Slijedeća stranica</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Page Up</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Sljedeća stranica</string>
   <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Tipka Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f sekundi</string>
   <plurals name="automation_count" tools:machine_translated="true">
-    <item quantity="one">%1$d akcija</item>
-    <item quantity="other">%1$d akcija</item>
+    <item quantity="one">%1$d radnja</item>
+    <item quantity="few">%1$d radnje</item>
+    <item quantity="other">%1$d radnji</item>
   </plurals>
   <string name="host_status_unread_output" tools:machine_translated="true">Nepročitani izlaz.</string>
   <string name="host_status_user_disconnected" tools:machine_translated="true">Prekinuli ste vezu s ovim uređajem.</string>
@@ -678,7 +679,7 @@
   <string name="notification_bell" tools:machine_translated="true">Zvuk terminala</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">Označeno kao pročitano.</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Označi kao pročitano</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Isključi zvuk zvona.</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Obavijesti o izgubljenoj vezi</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Prikaži obavijest bez zvuka kada se sesija koju ne pratite neočekivano prekine.</string>

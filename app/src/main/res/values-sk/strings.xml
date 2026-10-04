@@ -218,7 +218,7 @@
   <string name="pref_volumefont_title" tools:machine_translated="true">Tlačidlá na ovládanie hlasitosti menia veľkosť písma.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Veľkosť písma sa dá zmeniť aj v nastaveniach profilu.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Zostaňte pripojení aj na pozadí.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Udržujte svoje relácie aktívne aj pri prepínaní medzi rôznymi aplikáciami.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Použiť trvalé upozornenie na udržanie otvorených relácií pri prepínaní medzi aplikáciami</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Trvalé modifikátory</string>
   <string name="only_alt" tools:machine_translated="true">Len kláves Alt</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibrujte pri odosielaní príkazov pomocou šípkových kláves; užitočné pri pomalom pripojení.</string>
@@ -232,7 +232,7 @@
   <string name="color_blue" tools:machine_translated="true">Modrá</string>
   <string name="color_light_blue" tools:machine_translated="true">Svetlomodrá</string>
   <string name="color_cyan" tools:machine_translated="true">Azúrová</string>
-  <string name="color_teal" tools:machine_translated="true">Námorná modrá</string>
+  <string name="color_teal" tools:machine_translated="true">Modrozelená</string>
   <string name="color_green" tools:machine_translated="true">Zelená</string>
   <string name="color_light_green" tools:machine_translated="true">Svetlozelená</string>
   <string name="color_lime" tools:machine_translated="true">Zelená farba (odtieň limetky)</string>
@@ -242,7 +242,7 @@
   <string name="color_gray" tools:machine_translated="true">Šedá</string>
   <string name="hostpref_fontfamily_title" tools:machine_translated="true">Písmo</string>
   <string name="hostpref_colorscheme_title" tools:machine_translated="true">Farebná schéma terminálu</string>
-  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Pri odpojení zobraz notifikáciu o ukončení.</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Zavrieť pri odpojení</string>
   <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Okamžite sa zatvorí po odpojení od vzdialeného systému, bez zobrazovania akýchkoľvek upozornení.</string>
   <string name="hostpref_save_password_summary" tools:machine_translated="true">Bezpečne uložte heslo na prihlásenie, aby sa zabezpečila automatická autentifikácia.</string>
   <string name="hostpref_password_title" tools:machine_translated="true">Heslo</string>
@@ -266,7 +266,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Terminál</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Typ písma</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Veľkosť písma: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Veľkosť sily</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Pevná veľkosť</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Nastavte terminálu konkrétnu veľkosť (počet stĺpcov x počet riadkov) namiesto automatického prispôsobovania veľkosti obrazovke.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">Povoliť vynútenú veľkosť</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Stĺpce</string>
@@ -344,7 +344,7 @@
   <string name="image_description_connected" tools:machine_translated="true">Pripojené.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">Odpojené.</string>
   <string name="image_description_toggle_control_character" tools:machine_translated="true">Prepnite ovládací znak.</string>
-  <string name="image_description_send_escape_character" tools:machine_translated="true">Odoslať riadiaci znak.</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">Odoslať znak ESC.</string>
   <string name="image_description_send_tab_character" tools:machine_translated="true">Odoslať znak TAB.</string>
   <string name="image_description_hide_keyboard" tools:machine_translated="true">Skryť klávesnicu.</string>
   <string name="image_description_show_keyboard" tools:machine_translated="true">Zobraziť klávesnicu.</string>
@@ -354,7 +354,7 @@
   <string name="image_description_right" tools:machine_translated="true">Šípka smerujúca doprava</string>
   <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
-  <string name="button_key_home" tools:machine_translated="true">Domov</string>
+  <string name="button_key_home" tools:machine_translated="true">Home</string>
   <string name="button_key_end" tools:machine_translated="true">Koniec</string>
   <string name="button_key_pgup" tools:machine_translated="true">Strana nahor</string>
   <string name="button_key_pgdn" tools:machine_translated="true">Strana nadol</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Potrebné povolenie pre upozornenia</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Ak chcete, aby vaše pripojenia zostali aktívne aj na pozadí, povoľte prosím upozornenia pre aplikáciu ConnectBot v nastaveniach systému.</string>
   <string name="open_settings" tools:machine_translated="true">Otvoriť nastavenia</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Pripojenia sa môžu prerušiť, ak neudelite povolenie na zobrazovanie upozornení.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Pripojenia sa môžu prerušiť pri prepínaní medzi aplikáciami</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Pripojenie sa môže v pozadí prerušiť.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Pokúšate sa pripojiť k lokálnemu hostiteľovi? Povolenie pre lokálnu sieť musíte udeliť.</string>
   <string name="loading_message" tools:machine_translated="true">Načítava sa…</string>
@@ -542,7 +542,7 @@
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Pri otváraní aplikácie vyžadujte overenie pomocou snímača odtlačkov prstov, rozpoznávania tváre alebo PIN kódu zariadenia.</string>
   <string name="pref_security_category" tools:machine_translated="true">Zabezpečenie</string>
   <string name="auth_screen_title" tools:machine_translated="true">Aplikácia ConnectBot je uzamknutá.</string>
-  <string name="auth_screen_unlock_button" tools:machine_translated="true">Ťuknite na obrazovku, aby ste odomkli zariadenie.</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">Ťuknite na odomknutie</string>
   <string name="auth_prompt_title" tools:machine_translated="true">Odomknite ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Overte svoju identitu, aby ste mohli pokračovať.</string>
   <string name="auth_banner_title" tools:machine_translated="true">Autentifikačná správa od %1$s</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Zobraziť kláves na prepínanie režimu IME</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Pridajte tlačidlo IME do riadka so špeciálnymi klávesmi, ktoré prepína režim zadávania pre jazyky vyžadujúce vyrovnávaciu pamäť pre kompozíciu (napr. japončina, čínština, kórejčina).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Klávesové skratky pre plnú verziu IME (Ctrl/Alt)</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Neexistuje žiadne obchádzajúce riešenie.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Nepoužívať náhradné riešenie</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Surové udalosti kláves</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Použiť ASCII (odporúča sa)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Prechádzajte medzi reláciami pomocou gesta potiahnutia prstom.</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Pevne nastavený port UDP pre program Mosh (hodnota 0 znamená automatický výber z rozsahu 60000–61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Nastavenie lokality</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Nastavenie lokality pre reláciu Mosh (napr. en_US.UTF-8).</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">Podpora protokolu Mosh.</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Verzia programu Mosh a zdrojový kód.</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Pripravuje sa podpora pre Mosh...</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Zrušiť zmeny?</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Zrušiť</string>
   <string name="automation_text" tools:machine_translated="true">Text</string>
   <string name="automation_regex" tools:machine_translated="true">Pravidelný výraz</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Porovnáva prichádzajúci text bez formátovania podľa štandardu ANSI. Regulárne výrazy podporujú syntax RE2; vyhľadávanie dopredu a spätné odkazy nie sú podporované.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Porovnáva prichádzajúci text bez formátovania ANSI. Regulárne výrazy podporujú syntax RE2; lookaround a spätné odkazy nie sú podporované.</string>
   <string name="automation_duration" tools:machine_translated="true">Dĺžka trvania (v sekundách)</string>
   <string name="automation_timeout" tools:machine_translated="true">Časový limit (v sekundách).</string>
-  <string name="automation_key" tools:machine_translated="true">Kľúč</string>
+  <string name="automation_key" tools:machine_translated="true">Kláves</string>
   <string name="automation_forward" tools:machine_translated="true">Prepustenie portu</string>
   <string name="automation_failure" tools:machine_translated="true">Pri chybe.</string>
   <string name="automation_stop" tools:machine_translated="true">Zastaviť automatizáciu.</string>
@@ -631,16 +631,16 @@
   <string name="automation_progress" tools:machine_translated="true">Automatizácia: %1$d z celkového počtu %2$d.</string>
   <string name="automation_failure_step" tools:machine_translated="true">Akcia č. %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Zrušiť automatizáciu</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Stlačiť [tlačidlo Enter]</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Záložka</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Ukončiť/Zrušiť</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Spätná klávesa</string>
   <string name="automation_key_delete" tools:machine_translated="true">Vymazať</string>
   <string name="automation_key_up" tools:machine_translated="true">Šípka smerujúca nahor.</string>
   <string name="automation_key_down" tools:machine_translated="true">Šípka smerujúca nadol.</string>
   <string name="automation_key_left" tools:machine_translated="true">Šípka doľava</string>
   <string name="automation_key_right" tools:machine_translated="true">Šípka doprava</string>
-  <string name="automation_key_home" tools:machine_translated="true">Domov</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">Koniec</string>
   <string name="automation_key_insert" tools:machine_translated="true">Vložiť</string>
   <string name="automation_key_page_up" tools:machine_translated="true">Strana nahor</string>
@@ -649,7 +649,9 @@
   <string name="automation_key_shift" tools:machine_translated="true">Tlačidlo Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f sekundy</string>
   <plurals name="automation_count" tools:machine_translated="true">
-    <item quantity="one">%1$d akcií</item>
+    <item quantity="one">%1$d akcia</item>
+    <item quantity="few">%1$d akcie</item>
+    <item quantity="many">%1$d akcie</item>
     <item quantity="other">%1$d akcií</item>
   </plurals>
   <string name="host_status_unread_output" tools:machine_translated="true">Nezpracovaný výstup</string>

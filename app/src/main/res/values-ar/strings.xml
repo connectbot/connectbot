@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">عرض مفتاح تبديل طريقة الإدخال (IME)</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">أضف زرًا لبرنامج \"محرر طريقة الإدخال\" (IME) إلى صف المفاتيح الخاصة، بحيث يقوم هذا الزر بتفعيل أو إلغاء تفعيل وضع \"التركيب\" للغات التي تتطلب ذاكرة تخزين مؤقتة للتركيب (مثل اليابانية والصينية والكورية وغيرها).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">اختصارات لوحة الإدخال الكاملة (Ctrl/Alt)</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">لا يوجد حل بديل.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">عدم استخدام حل بديل</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">أحداث المفاتيح الأولية</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">فرض استخدام لوحة مفاتيح ASCII (مُوصى به)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">مرِّر بين الجلسات.</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">منفذ UDP ثابت لبرنامج Mosh (0 يعني تحديد تلقائي للنطاق 60000-61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">الإعدادات المحلية</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">الإعدادات المحلية لجلسة برنامج Mosh (مثل: en_US.UTF-8)</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">موش</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">إصدار برنامج Mosh وشفرة المصدر الخاصة به</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">جارٍ تجهيز دعم برنامج Mosh…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">هل تريد إلغاء التغييرات؟</string>
@@ -595,7 +595,7 @@
   <string name="inline_images_prompt_message" tools:machine_translated="true">هل تسمح لهذا الجهاز بعرض الصور المضمنة طوال مدة الجلسة الحالية؟</string>
   <string name="automation_load_failed" tools:machine_translated="true">فشل تحميل الأتمتة.</string>
   <string name="automation_save_failed" tools:machine_translated="true">فشل حفظ عملية الأتمتة.</string>
-  <string name="automation_invalid_action" tools:machine_translated="true">تحقق من النص، أو النمط، أو المدة، أو منفذ إعادة التوجيه المحدد.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">تحقق من النص أو النمط أو المدة أو قاعدة إعادة توجيه المنفذ المحددة</string>
   <string name="automation_action_failed" tools:machine_translated="true">فشل الإجراء.</string>
   <string name="automation_timed_out" tools:machine_translated="true">انتهت المهلة الزمنية أثناء انتظار ظهور النص.</string>
   <string name="automation_buffer_overflow" tools:machine_translated="true">وصلت كمية كبيرة جدًا من البيانات قبل أن يتمكن نظام التشغيل الآلي من معالجتها.</string>
@@ -619,7 +619,7 @@
   <string name="automation_cancel" tools:machine_translated="true">إلغاء</string>
   <string name="automation_text" tools:machine_translated="true">نص</string>
   <string name="automation_regex" tools:machine_translated="true">تعبير نمطي</string>
-  <string name="automation_regex_help" tools:machine_translated="true">يطابق النص الوارد دون تطبيق تنسيق ANSI. يدعم التعبير النمطي (Regex) بناء جملة RE2؛ ولا يدعم البحث المسبق والإشارات الخلفية.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">يطابق النص الوارد دون تنسيق ANSI. تدعم التعبيرات النمطية صيغة RE2؛ ولا تدعم الاستباق والاسترجاع (lookaround) أو المراجع الخلفية.</string>
   <string name="automation_duration" tools:machine_translated="true">المدة (بالثواني)</string>
   <string name="automation_timeout" tools:machine_translated="true">الحد الزمني (بالثواني)</string>
   <string name="automation_key" tools:machine_translated="true">مفتاح</string>
@@ -631,9 +631,9 @@
   <string name="automation_progress" tools:machine_translated="true">الأتمتة: %1$d من %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">الإجراء رقم %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">إلغاء التشغيل التلقائي</string>
-  <string name="automation_key_enter" tools:machine_translated="true">أدخِل</string>
-  <string name="automation_key_tab" tools:machine_translated="true">علامة تبويب</string>
-  <string name="automation_key_escape" tools:machine_translated="true">الخروج</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">مفتاح \"مسح للخلف\"</string>
   <string name="automation_key_delete" tools:machine_translated="true">حذف</string>
   <string name="automation_key_up" tools:machine_translated="true">سهم للأعلى</string>
@@ -645,11 +645,15 @@
   <string name="automation_key_insert" tools:machine_translated="true">إدراج</string>
   <string name="automation_key_page_up" tools:machine_translated="true">صفحة للأعلى</string>
   <string name="automation_key_page_down" tools:machine_translated="true">انتقال إلى الصفحة التالية</string>
-  <string name="automation_key_function" tools:machine_translated="true">مفتاح الوحدة الطرفية: %1$s</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">مفتاح \"Shift\"</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f ثانية</string>
   <plurals name="automation_count" tools:machine_translated="true">
+    <item quantity="zero">عدد الإجراءات: %1$d</item>
     <item quantity="one">%1$d إجراء</item>
+    <item quantity="two">عدد الإجراءات: %1$d</item>
+    <item quantity="few">%1$d إجراءات</item>
+    <item quantity="many">%1$d إجراءً</item>
     <item quantity="other">%1$d إجراء</item>
   </plurals>
   <string name="host_status_unread_output" tools:machine_translated="true">مخرجات لم تتم قراءتها.</string>
@@ -678,7 +682,7 @@
   <string name="notification_bell" tools:machine_translated="true">صوت تنبيه الطرفية</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">تم الإقرار بآخر حدث في الجلسة.</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">وضع علامة كمقروء</string>
   <string name="notification_mute_bells" tools:machine_translated="true">كتم صوت التنبيهات</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">إشعارات فقدان الاتصال</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">اعرض نافذة منبثقة صامتة عندما تنقطع الجلسة التي لا تشاهدها بشكل غير متوقع.</string>

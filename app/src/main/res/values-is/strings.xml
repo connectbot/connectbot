@@ -196,10 +196,10 @@
   <string name="pref_volumefont_title" tools:machine_translated="true">Með því að nota hnappana til að stýra hljóðstyrknum er hægt að breyta leturstærð.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Hægt er einnig að breyta leturstærð í stillingum fyrir notendaperfil.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Haltu tengingunni við áfram í bakgrunninum</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Haltu tengingum þínum virkum, jafnvel þegar þú skiptir yfir í önnur forrit.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Nota viðvarandi tilkynningu til að halda tengingum opnum þegar skipt er á milli forrita</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Stillt breytir</string>
   <string name="only_alt" tools:machine_translated="true">Aðeins Alt-takinn</string>
-  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Ójafnar örvar</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Titringur við örvatakka</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibrera þegar áttarhnapparnir eru notaðir; gagnlegt þegar tengingin er óstöðug.</string>
   <string name="pref_bell_summary" tools:machine_translated="true">Spilaðu hljóð þegar viðvörun kemur fram í kerfinu.</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Vibrera við viðvörun frá kerfinu.</string>
@@ -214,9 +214,9 @@
   <string name="color_teal" tools:machine_translated="true">Turkísblár</string>
   <string name="color_green" tools:machine_translated="true">Grænn</string>
   <string name="color_light_green" tools:machine_translated="true">Ljósgrænt</string>
-  <string name="color_lime" tools:machine_translated="true">límtón</string>
+  <string name="color_lime" tools:machine_translated="true">Límónugrænn</string>
   <string name="color_yellow" tools:machine_translated="true">Gulur</string>
-  <string name="color_amber" tools:machine_translated="true">Berslitur</string>
+  <string name="color_amber" tools:machine_translated="true">Rafgulur</string>
   <string name="color_orange" tools:machine_translated="true">Appelsínugulur</string>
   <string name="color_gray" tools:machine_translated="true">Grár</string>
   <string name="hostpref_fontfamily_title" tools:machine_translated="true">Leturgerð</string>
@@ -250,7 +250,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Staðsetning</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Letursnið</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Leturstærð: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Stærð áherslu</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Föst stærð</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Stilltu því að terminalinn taki ákveðið stærðarmál (breidd x hæð) í stað þess að hann stækki sjálfkrafa til að passa við skjáinn.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">Virkaðu stillinguna fyrir ákveðna stærð.</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Dálkar</string>
@@ -320,7 +320,7 @@
   <string name="empty_custom_schemes" tools:machine_translated="true">Engin sérsniðin kerfi. Smelltu á „Nýtt kerfi“ til að búa til eitt.</string>
   <string name="button_export_scheme" tools:machine_translated="true">Senda litapallett í JSON-skrá</string>
   <string name="button_import_scheme" tools:machine_translated="true">Flytja inn litapalettu</string>
-  <string name="message_export_success" tools:machine_translated="true">Útfærslan %1$s hefur verið send út.</string>
+  <string name="message_export_success" tools:machine_translated="true">%1$s flutt út</string>
   <string name="message_import_success" tools:machine_translated="true">Innflutningur %1$s tókst</string>
   <string name="error_export_failed" tools:machine_translated="true">Ekki tókst að flytja út skipulagið: %1$s</string>
   <string name="error_import_failed" tools:machine_translated="true">Ekki tókst að flytja inn skipulag: %1$s</string>
@@ -344,7 +344,7 @@
   <string name="image_description_connected" tools:machine_translated="true">Tengt.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">Tengingin er rofin.</string>
   <string name="image_description_toggle_control_character" tools:machine_translated="true">Ræsa/slökkva á stjórntákni.</string>
-  <string name="image_description_send_escape_character" tools:machine_translated="true">Sendir stjórntákn.</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">Senda ESC-staf.</string>
   <string name="image_description_send_tab_character" tools:machine_translated="true">Sendir TAB-stafirinn.</string>
   <string name="image_description_hide_keyboard" tools:machine_translated="true">Fela lyklaborðið.</string>
   <string name="image_description_show_keyboard" tools:machine_translated="true">Sýna lyklaborðið.</string>
@@ -354,10 +354,10 @@
   <string name="image_description_right" tools:machine_translated="true">Hliðandi ör →</string>
   <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
-  <string name="button_key_home" tools:machine_translated="true">Heim</string>
-  <string name="button_key_end" tools:machine_translated="true">Ljúka</string>
+  <string name="button_key_home" tools:machine_translated="true">Home</string>
+  <string name="button_key_end" tools:machine_translated="true">End</string>
   <string name="button_key_pgup" tools:machine_translated="true">Fyrri síða</string>
-  <string name="button_key_pgdn" tools:machine_translated="true">Stigfella niður</string>
+  <string name="button_key_pgdn" tools:machine_translated="true">PgDn</string>
   <string name="button_key_f1" tools:machine_translated="true">F1</string>
   <string name="button_key_f2" tools:machine_translated="true">F2</string>
   <string name="button_key_f3" tools:machine_translated="true">F3</string>
@@ -418,7 +418,7 @@
   <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
   <string name="portforward_destination_format_error" tools:machine_translated="true">Formatið skal vera: vefþjónn:port (td., localhost:80)</string>
   <string name="portforward_host_address" tools:machine_translated="true">Heimilisfang tækisins</string>
-  <string name="portforward_source_addr_localhost" tools:machine_translated="true">Staðbundin vefþjón</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">Localhost</string>
   <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">Staðbundin vefþjón (aðeins IPv4)</string>
   <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">Staðbundin vefþjón (aðeins IPv6)</string>
   <string name="portforward_source_addr_all" tools:machine_translated="true">Öll netföng</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Þarf að veita leyfi fyrir tilkynningum.</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Til þess að viðhalda virkum tengingum þínum þegar þú ert ekki að nota appið, vinsamlegast virkjaðu tilkynningar fyrir ConnectBot í stillingum kerfisins.</string>
   <string name="open_settings" tools:machine_translated="true">Opnaðu stillingar</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Tengingar gætu rofnað ef ekki er veitt leyfi til að senda tilkynningar.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Tengingar geta rofnað þegar skipt er á milli forrita</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Tengingin gæti rofnað þegar forritið er í bakgrunni.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Ertu að reyna að tengjast tæki á staðarnetinu? Gefðu leyfi fyrir aðgang að staðarnetinu.</string>
   <string name="loading_message" tools:machine_translated="true">Er verið að hlaða…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Sýna takka til að skipta um IME.</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Bættu við IME-hnappi í röð sérstakra takka, sem skiptir á milli samsetningastillingar fyrir tungumál sem þurfa á samsetningarbuff að halda (japanska, kínverska, kóreska o.s.frv.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Stýriháttir fyrir IME með Ctrl/Alt-hnappum</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Engin lausn í boði.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Ekki nota hjáleið</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Óbreyttar tákninnsendingar</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Nota ASCII (mælt með)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Sveipðu til að skipta um lotu.</string>
@@ -622,7 +622,7 @@
   <string name="automation_regex_help" tools:machine_translated="true">Finna samsvarandi texta án ANSI-formats. Regex styður RE2-syntax; ekki er hægt að nota „lookaround“ og tilvísanir til fyrri hluta.</string>
   <string name="automation_duration" tools:machine_translated="true">Lengd (sekúndur)</string>
   <string name="automation_timeout" tools:machine_translated="true">Hámarksbiðtími (sekúndur)</string>
-  <string name="automation_key" tools:machine_translated="true">Lykill</string>
+  <string name="automation_key" tools:machine_translated="true">Lykill á lyklaborði</string>
   <string name="automation_forward" tools:machine_translated="true">Stillt port</string>
   <string name="automation_failure" tools:machine_translated="true">Ef mistakst</string>
   <string name="automation_stop" tools:machine_translated="true">Hættu við sjálfvirka gerð.</string>
@@ -631,19 +631,19 @@
   <string name="automation_progress" tools:machine_translated="true">Sjálfvirkni: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Aðgerð %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Hættu við sjálfvirka stillingu.</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Hægt er að nota þennan takka til að staðfesta.</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Flipir</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Hætta við</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Backspace-takkur</string>
   <string name="automation_key_delete" tools:machine_translated="true">Eyða</string>
-  <string name="automation_key_up" tools:machine_translated="true">Upplátarhnapp</string>
+  <string name="automation_key_up" tools:machine_translated="true">Ör upp</string>
   <string name="automation_key_down" tools:machine_translated="true">Niður ör</string>
   <string name="automation_key_left" tools:machine_translated="true">Vinstri ör.</string>
   <string name="automation_key_right" tools:machine_translated="true">Hægri ör.</string>
-  <string name="automation_key_home" tools:machine_translated="true">Heim</string>
-  <string name="automation_key_end" tools:machine_translated="true">Loka</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
+  <string name="automation_key_end" tools:machine_translated="true">End</string>
   <string name="automation_key_insert" tools:machine_translated="true">Setja inn</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">Fara á næstu síðu</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Page Up</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Fara á næstu síðu.</string>
   <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Shift-hnappur</string>
@@ -678,7 +678,7 @@
   <string name="notification_bell" tools:machine_translated="true">Hljóð sem gefið er frá með tækinu</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">Athugað</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Merkja sem lesið</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Slökva á hljóðmerkjum</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Tilkynningar um tengslatruflanir</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Sýna hljóðlausa tilkynningarglugga þegar tenging við lotu sem þú ert ekki að skoða er rofin óvænt.</string>

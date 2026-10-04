@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">IME-Umschalttaste anzeigen</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Fügen Sie der Reihe mit den Sondertasten eine IME-Schaltfläche hinzu, mit der der Zusammensetzungsmodus für Sprachen aktiviert oder deaktiviert wird, die einen Zusammensetzungspuffer benötigen (z. B. Japanisch, Chinesisch, Koreanisch).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Einstellungen für Tastenkombinationen mit Strg/Alt für die vollständige IME-Eingabemethode</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Keine Problemumgehung möglich.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Keine Umgehung verwenden</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Rohe Tasteneingabeereignisse</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Erzwinge ASCII (empfohlen)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Durch Wischen zwischen den Sitzungen wechseln.</string>
@@ -566,7 +566,7 @@
   <string name="hostpref_profile_edit" tools:machine_translated="true">Ausgewähltes Profil bearbeiten</string>
   <string name="terminal_mosh_installing" tools:machine_translated="true">Bereite die Mosh-Unterstützung vor …</string>
   <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh-Verbindung wird hergestellt …</string>
-  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Warnung: Die Installation von Mosh ist abgelaufen.</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Warnung: Zeitüberschreitung bei der Mosh-Installation</string>
   <string name="terminal_mosh_launching_server" tools:machine_translated="true">Starte mosh-Server auf dem entfernten Host …</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">Der Start des Mosh-Servers auf dem entfernten Host ist fehlgeschlagen.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">Der Start von mosh-client ist fehlgeschlagen.</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Fester UDP-Port für Mosh (0 für automatische Verwendung des Bereichs 60000–61000)</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Spracheinstellungen</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Spracheinstellung für die Mosh-Sitzung (z. B. en_US.UTF-8)</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">Mosh-Unterstützung</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh-Version und Quellcode</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Bereite die Mosh-Unterstützung vor …</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Änderungen verwerfen?</string>
@@ -590,7 +590,7 @@
   <string name="profile_inline_images" tools:machine_translated="true">Inline-Bilder</string>
   <string name="inline_images_off" tools:machine_translated="true">Aus</string>
   <string name="inline_images_ask" tools:machine_translated="true">Fragen</string>
-  <string name="inline_images_on" tools:machine_translated="true">Ein.</string>
+  <string name="inline_images_on" tools:machine_translated="true">Ein</string>
   <string name="inline_images_prompt_title" tools:machine_translated="true">Inline-Bilder anzeigen?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Soll dieser Host für die Dauer dieser Sitzung Inline-Bilder anzeigen dürfen?</string>
   <string name="automation_load_failed" tools:machine_translated="true">Automatisierung konnte nicht geladen werden.</string>
@@ -622,17 +622,17 @@
   <string name="automation_regex_help" tools:machine_translated="true">Es werden eingehende Texte ohne ANSI-Formatierung abgeglichen. Die regulären Ausdrücke unterstützen die RE2-Syntax; Lookarounds und Rückbezüge werden nicht unterstützt.</string>
   <string name="automation_duration" tools:machine_translated="true">Dauer (in Sekunden)</string>
   <string name="automation_timeout" tools:machine_translated="true">Zeitüberschreitung (in Sekunden)</string>
-  <string name="automation_key" tools:machine_translated="true">Schlüssel</string>
+  <string name="automation_key" tools:machine_translated="true">Taste</string>
   <string name="automation_forward" tools:machine_translated="true">Portweiterleitung</string>
   <string name="automation_failure" tools:machine_translated="true">Bei Fehler</string>
   <string name="automation_stop" tools:machine_translated="true">Automatisierung beenden</string>
-  <string name="automation_continue" tools:machine_translated="true">Weiterfahren</string>
+  <string name="automation_continue" tools:machine_translated="true">Fortfahren</string>
   <string name="automation_save_host" tools:machine_translated="true">Host speichern, um die Automatisierung zu konfigurieren.</string>
   <string name="automation_progress" tools:machine_translated="true">Automatisierung: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Aktion %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Automatisierung abbrechen</string>
   <string name="automation_key_enter" tools:machine_translated="true">Eingabe</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Registerkarte</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tabulator</string>
   <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Rücktaste</string>
   <string name="automation_key_delete" tools:machine_translated="true">Löschen</string>
@@ -640,11 +640,11 @@
   <string name="automation_key_down" tools:machine_translated="true">Pfeil nach unten</string>
   <string name="automation_key_left" tools:machine_translated="true">Linkspfeil</string>
   <string name="automation_key_right" tools:machine_translated="true">Pfeil nach rechts</string>
-  <string name="automation_key_home" tools:machine_translated="true">Startseite</string>
+  <string name="automation_key_home" tools:machine_translated="true">Pos1</string>
   <string name="automation_key_end" tools:machine_translated="true">Ende</string>
   <string name="automation_key_insert" tools:machine_translated="true">Einfügen</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">Seite aufwärts</string>
-  <string name="automation_key_page_down" tools:machine_translated="true">Seite nach unten</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Bild auf</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Bild ab</string>
   <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Umschalt-Taste</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f Sek.</string>
@@ -678,7 +678,7 @@
   <string name="notification_bell" tools:machine_translated="true">Terminal-Signalton</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">Als gelesen markiert</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Als gelesen markieren</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Klingeltöne stummschalten</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Benachrichtigungen bei Verbindungsverlust</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Zeige ein stummes Popup-Fenster an, wenn eine Sitzung, die du gerade nicht verwendest, unerwartet unterbrochen wird.</string>

@@ -263,7 +263,7 @@
   <string name="pref_theme_light" tools:machine_translated="true">ສີອ່ອນ</string>
   <string name="pref_theme_dark" tools:machine_translated="true">ສີເຂັ້ມ</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">ຮັກສາການເຊື່ອມຕໍ່ໄວ້ໃນພື້ນຫຼັງ</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">ຮັກສາການເຊື່ອມຕໍ່ໄວ້ເຖິງແມ່ນວ່າທ່ານຈະປ່ຽນໄປໃຊ້ແອັບຯອື່ນໆ</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">ໃຊ້ການແຈ້ງເຕືອນຖາວອນເພື່ອຮັກສາເຊດຊັນໄວ້ເມື່ອທ່ານສະຫຼັບແອັບ</string>
   <string name="pref_bell_summary" tools:machine_translated="true">ຫຼີ້ນສຽງເມື່ອມີການແຈ້ງເຕືອນໃນໜ້າຈໍ</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">ສັ່ນເມື່ອມີການແຈ້ງເຕືອນຈາກອຸປະກອນ</string>
   <string name="color_red" tools:machine_translated="true">ສີແດງ</string>
@@ -274,10 +274,10 @@
   <string name="color_blue" tools:machine_translated="true">ສີຟ້າ</string>
   <string name="color_light_blue" tools:machine_translated="true">ສີຟ້າອ່ອນ</string>
   <string name="color_cyan" tools:machine_translated="true">ສີຟ້າອ່ອນ</string>
-  <string name="color_teal" tools:machine_translated="true">ສີເທົາເຂັ້ມ</string>
+  <string name="color_teal" tools:machine_translated="true">ສີຂຽວອົມຟ້າ</string>
   <string name="color_green" tools:machine_translated="true">ສີຂຽວ</string>
   <string name="color_light_green" tools:machine_translated="true">ສີຂຽວອ່ອນ</string>
-  <string name="color_lime" tools:machine_translated="true">ສີສົ້ມສົ້ມ</string>
+  <string name="color_lime" tools:machine_translated="true">ສີຂຽວອ່ອນ</string>
   <string name="color_yellow" tools:machine_translated="true">ສີເຫຼືອງ</string>
   <string name="color_amber" tools:machine_translated="true">ສີອຳເບີ</string>
   <string name="color_orange" tools:machine_translated="true">ສີສົ້ມ</string>
@@ -306,7 +306,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">ທຳການຕັ້ງຄ່າ</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">ໝວດຕົວອັກສອນ</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">ຂະໜາດຕົວອັກສອນ: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">ຂະໜາດຂອງແຮງ</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">ກຳນົດຂະໜາດຄົງທີ່</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">ກຳນົດຂະໜາດຂອງໜ້າຈໍ (ຈຳນວນຄໍລຳ ແລະ ຈຳນວນແຖວ) ແທນທີ່ຈະປັບຂະໜາດໂດຍອັດຕະໂນມັດເພື່ອໃຫ້ພໍດີກັບໜ້າຈໍ.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">ເປີດໃຊ້ຟັງຊັນປັບຂະໜາດ</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">ຄໍລຳ</string>
@@ -424,7 +424,7 @@
   <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
   <string name="portforward_destination_format_error" tools:machine_translated="true">ຮູບແບບຕ້ອງເປັນ host:port (ຕົວຢ່າງ: localhost:80)</string>
   <string name="portforward_host_address" tools:machine_translated="true">ທີ່ຢູ່ຂອງເຄື່ອງແມ່ຂ່າຍ</string>
-  <string name="portforward_source_addr_localhost" tools:machine_translated="true">ທີ່ຢູ່ຂອງເຄື່ອງແມ່ຂ່າຍ: ຜູກເຂົ້າກັບ localhost (ຄ່າເລີ່ມຕົ້ນ)</string>
+  <string name="portforward_source_addr_localhost" tools:machine_translated="true">Localhost</string>
   <string name="portforward_source_addr_localhost_ipv4" tools:machine_translated="true">ໂຮສທ໌ທ້ອງຖິ່ນ (ພຽງແຕ່ IPv4)</string>
   <string name="portforward_source_addr_localhost_ipv6" tools:machine_translated="true">ໂຮສທ໌ທ້ອງຖິ່ນ (ພຽງແຕ່ IPv6)</string>
   <string name="portforward_source_addr_all" tools:machine_translated="true">ທີ່ຢູ່ທັງໝົດ</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">ຕ້ອງໄດ້ຮັບອະນຸຍາດສຳລັບການແຈ້ງເຕືອນ</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">ເພື່ອຮັກສາການເຊື່ອມຕໍ່ຂອງທ່ານໃຫ້ເຄື່ອນໄຫວຢູ່ເບື້ອງຫຼັງ, ກະລຸນາເປີດການແຈ້ງເຕືອນສໍາລັບ ConnectBot ໃນການຕັ້ງຄ່າຂອງລະບົບ.</string>
   <string name="open_settings" tools:machine_translated="true">ເປີດການຕັ້ງຄ່າ</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">ການເຊື່ອມຕໍ່ອາດຈະຖືກຕັດການເຊື່ອມຕໍ່ໂດຍບໍ່ຕ້ອງມີການອະນຸຍາດສຳລັບການແຈ້ງເຕືອນ</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">ການເຊື່ອມຕໍ່ອາດຂາດເມື່ອທ່ານສະຫຼັບແອັບ</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">ການເຊື່ອມຕໍ່ອາດຈະຖືກຕັດເມື່ອແອັບພລິເຄຊັນເຮັດວຽກຢູ່ພື້ນຫຼັງ</string>
   <string name="terminal_no_route" tools:machine_translated="true">ທ່ານກໍາລັງພະຍາຍາມເຂົ້າເຖິງເຄື່ອງແມ່ຂ່າຍໃນເຄືອນຂ່າຍທ້ອງຖິ່ນບໍ? ກະລຸນາອະນຸຍາດສິດໃນເຄືອນຂ່າຍທ້ອງຖິ່ນ.</string>
   <string name="loading_message" tools:machine_translated="true">ກຳລັງໂຫຼດ…</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">ກຳນົດພອດ UDP ແບບຄົງທີ່ສໍາລັບ Mosh (ຕັ້ງເປັນ 0 ເພື່ອໃຫ້ລະບົບເລືອກເອງໃນຊ່ວງ 60000-61000)</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">ການຕັ້ງຄ່າພາສາ ແລະພື້ນທີ່</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">ການຕັ້ງຄ່າພາສາສໍາລັບເຊສຊັນຂອງ Mosh (ຕົວຢ່າງ: en_US.UTF-8)</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">ໂມຊ໌</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">ສະບັບປ່ອຍອອກມາຂອງ Mosh ແລະລະຫັດແຫຼ່ງ</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">ກຳລັງກະກຽມເພື່ອຕິດຕັ້ງສ່ວນປະກອບທີ່ຮອງຮັບ Mosh...</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">ຍົກເລີກການປ່ຽນແປງບໍ?</string>
@@ -622,7 +622,7 @@
   <string name="automation_regex_help" tools:machine_translated="true">ຄົ້ນຫາຂໍ້ຄວາມທີ່ເຂົ້າມາໂດຍບໍ່ຕ້ອງມີການຈັດຮູບແບບ ANSI။ ການໃຊ້ງານ regex ຮອງຮັບໄວຍະກອນຂອງ RE2; ສິ່ງທີ່ເອີ້ນວ່າ \"lookaround\" ແລະ \"backreferences\" ແມ່ນບໍ່ໄດ້ຮັບການຮອງรับ.</string>
   <string name="automation_duration" tools:machine_translated="true">ໄລຍະເວລາ (ວິນາທີ)</string>
   <string name="automation_timeout" tools:machine_translated="true">ເວລາສິ້ນສຸດ (ວິນາທີ)</string>
-  <string name="automation_key" tools:machine_translated="true">ປຸ່ມຫຼັກ</string>
+  <string name="automation_key" tools:machine_translated="true">ປຸ່ມ</string>
   <string name="automation_forward" tools:machine_translated="true">ຕົວເລືອກການສົ່ງຕໍ່ພອດ</string>
   <string name="automation_failure" tools:machine_translated="true">ເມື່ອເກີດຄວາມຜິດພາດ</string>
   <string name="automation_stop" tools:machine_translated="true">ຢຸດການເຮັດວຽກແບບອັດຕະໂນມັດ</string>
@@ -631,21 +631,21 @@
   <string name="automation_progress" tools:machine_translated="true">ການເຮັດວຽກແບບອັດຕະໂນມັດ: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">ການກະທຳທີ %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">ຍົກເລີກການເຮັດວຽກແບບອັດຕະໂນມັດ</string>
-  <string name="automation_key_enter" tools:machine_translated="true">ກົດເພື່ອເລືອກ</string>
-  <string name="automation_key_tab" tools:machine_translated="true">ແຖບ</string>
-  <string name="automation_key_escape" tools:machine_translated="true">ອອກຈາກ​ລະບົບ</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">ປຸ່ມລຶບຕົວອັກສອນ</string>
   <string name="automation_key_delete" tools:machine_translated="true">ລຶບອອກ</string>
-  <string name="automation_key_up" tools:machine_translated="true">ສັນຍາລັກຫົວໜ່ວຍເລື່ອນຂຶ້ນ</string>
+  <string name="automation_key_up" tools:machine_translated="true">ລູກສອນຂຶ້ນ</string>
   <string name="automation_key_down" tools:machine_translated="true">ລູກສອນຊີ້ລົງ</string>
   <string name="automation_key_left" tools:machine_translated="true">ລູກສອນຊີ້ໄປທາງຊ້າຍ</string>
   <string name="automation_key_right" tools:machine_translated="true">ລູກສອນຊີ້ໄປທາງຂວາ</string>
-  <string name="automation_key_home" tools:machine_translated="true">ໜ້າຫຼັກ</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">ສຸດທ້າຍ</string>
   <string name="automation_key_insert" tools:machine_translated="true">ໃສ່ເຂົ້າໄປ</string>
   <string name="automation_key_page_up" tools:machine_translated="true">ໄປໜ້າຕໍ່ໄປ</string>
   <string name="automation_key_page_down" tools:machine_translated="true">ເລື່ອນໜ້າລົງ</string>
-  <string name="automation_key_function" tools:machine_translated="true">ຟັງຊັນ %1$s</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">ປຸ່ມ Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f ວິນາທີ</string>
   <plurals name="automation_count" tools:machine_translated="true">

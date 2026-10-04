@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">显示输入法切换键</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">在特殊按键行中添加一个输入法引擎 (IME) 按钮，用于切换需要组合缓冲区的语言（如日语、中文、韩语等）的组合模式。</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">完整 IME 的 Ctrl/Alt 快捷键</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">没有解决方法。</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">不使用变通方法</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">原始按键事件</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">强制使用 ASCII 键盘（推荐）</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">滑动切换会话。</string>
@@ -563,7 +563,7 @@
   <string name="button_key_ime" tools:machine_translated="true">输入法</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">切换输入法编辑器的组合模式。</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">输入法合成模式</string>
-  <string name="hostpref_profile_edit" tools:machine_translated="true">编辑所选资料。</string>
+  <string name="hostpref_profile_edit" tools:machine_translated="true">编辑所选配置文件</string>
   <string name="terminal_mosh_installing" tools:machine_translated="true">正在准备 Mosh 支持……</string>
   <string name="terminal_mosh_starting" tools:machine_translated="true">正在启动 Mosh 连接……</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">警告：Mosh 安装超时。</string>
@@ -573,12 +573,12 @@
   <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh 连接已建立。</string>
   <string name="terminal_mosh_error" tools:machine_translated="true">Mosh 出错：%1$s</string>
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh 服务器命令</string>
-  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">自定义 `mosh-server` 的路径或命令（留空则使用默认设置）。</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">自定义 mosh-server 的路径或命令（留空则使用默认设置）。</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh UDP 端口</string>
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">为 Mosh 设置固定的 UDP 端口（设置为 0 时，将自动选择 60000-61000 范围内的端口）。</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">区域设置。</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh 会话的区域设置（例如，en_US.UTF-8）</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">支持 Mosh 的动态功能模块。</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh 版本及其源代码。</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">正在准备 Mosh 支持……</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">放弃更改？</string>
@@ -631,17 +631,17 @@
   <string name="automation_progress" tools:machine_translated="true">自动化：当前步骤：%1$d，总步骤：%2$d。</string>
   <string name="automation_failure_step" tools:machine_translated="true">操作步骤：%1$d： %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">取消自动化操作。</string>
-  <string name="automation_key_enter" tools:machine_translated="true">输入</string>
-  <string name="automation_key_tab" tools:machine_translated="true">选项卡</string>
-  <string name="automation_key_escape" tools:machine_translated="true">退出</string>
+  <string name="automation_key_enter" tools:machine_translated="true">回车</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">退格键</string>
   <string name="automation_key_delete" tools:machine_translated="true">删除</string>
   <string name="automation_key_up" tools:machine_translated="true">向上箭头。</string>
   <string name="automation_key_down" tools:machine_translated="true">向下箭头。</string>
   <string name="automation_key_left" tools:machine_translated="true">向左箭头。</string>
   <string name="automation_key_right" tools:machine_translated="true">右箭头。</string>
-  <string name="automation_key_home" tools:machine_translated="true">主页</string>
-  <string name="automation_key_end" tools:machine_translated="true">结束。</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
+  <string name="automation_key_end" tools:machine_translated="true">End</string>
   <string name="automation_key_insert" tools:machine_translated="true">插入</string>
   <string name="automation_key_page_up" tools:machine_translated="true">翻页（向上）</string>
   <string name="automation_key_page_down" tools:machine_translated="true">向下翻页</string>
@@ -678,7 +678,7 @@
   <string name="notification_bell" tools:machine_translated="true">终端提示音</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s：%2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">已读</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">标记为已读</string>
   <string name="notification_mute_bells" tools:machine_translated="true">静音提示音</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">连接中断通知</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">当您未查看的会话意外断开连接时，会显示一个无声音的弹出窗口。</string>

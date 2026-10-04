@@ -169,10 +169,10 @@
   <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl+num — funkciju taustiņi.</string>
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Programmatūras tastatūrās ciparu taustiņi, nospiežot tos kopā ar taustiņu Ctrl, aktivizē funkciju taustiņus F1–F10.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Varat mainīt arī fonta izmēru profila iestatījumos.</string>
-  <string name="pref_memkeys_title" tools:machine_translated="true">Atcerēties taustiņus atmiņā.</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">Saglabāt atslēgas atmiņā</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Saglabājiet atslēgas atmiņā, kamēr darbību nav pārtraucis fona pakalpojums.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Uzturiet savienojumu fonrežīmā.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Atstājiet savas sesijas atvērtas arī tad, kad pārslēdzaties uz citām lietotnēm.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Izmantot pastāvīgu paziņojumu, lai sesijas paliktu atvērtas, pārslēdzoties starp lietotnēm</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Saīsinājumtaustiņi direktorijām</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Fiksētie modifikatori</string>
   <string name="only_alt" tools:machine_translated="true">Tikai Alt</string>
@@ -181,7 +181,7 @@
   <string name="pref_keepalive_summary" tools:machine_translated="true">Neļaujiet ekrānam izslēgties, strādājot konsolē.</string>
   <string name="pref_wifilock_title" tools:machine_translated="true">Atstājiet Wi-Fi savienojumu ieslēgtu</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">Nodrošiniet, lai Wi-Fi neatslēgtos, kad ir aktīva sesija.</string>
-  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Reljefa bultiņas</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Vibrācija, nospiežot bultiņas</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibrējiet, kad tiek nospiestas bultiņu pogas; noderīgi, ja ir lēns savienojums.</string>
   <string name="pref_bell_category" tools:machine_translated="true">Termināļa signāls</string>
   <string name="pref_bell_title" tools:machine_translated="true">Skaņas signāls</string>
@@ -190,7 +190,7 @@
   <string name="pref_bell_vibrate_title" tools:machine_translated="true">Vibrēt, kad atskan zvans.</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Vibrēt, kad tiek aktivizēta termināļa brīdinājuma funkcija.</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">Fona paziņojumi</string>
-  <string name="pref_bell_notification_summary" tools:machine_translated="true">Nosūtiet paziņojumu, kad fona režīmā darbojošā termināla skaņas signāls atskan.</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">Rādīt uznirstošu paziņojumu bez skaņas, kad atskan zvans sesijā, kuru neskatāties</string>
   <string name="list_keymode_right" tools:machine_translated="true">Izmantojiet tastatūras labās puses taustiņus.</string>
   <string name="list_keymode_left" tools:machine_translated="true">Izmantojiet kreisās puses taustiņus.</string>
   <string name="list_pubkeyids_none" tools:machine_translated="true">Neizmantojiet atslēgas.</string>
@@ -249,9 +249,9 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Termināls</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Fontu grupa</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Fonta izmērs: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Spēka izmērs</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Fiksēts izmērs</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Piespiediet terminālim izmantot noteiktu izmēru (kolonnas x rindas), nevis automātiski pielāgoties ekrāna izmēram.</string>
-  <string name="profile_editor_force_size_enable" tools:machine_translated="true">Ieslēgt automātisko izmēra pielāgošanu.</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">Ieslēgt fiksētu izmēru</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Kolonnas</string>
   <string name="profile_editor_force_size_rows" tools:machine_translated="true">Rindas</string>
   <string name="profile_icon_color_none" tools:machine_translated="true">Neviens (izmantot noklusējuma krāsu)</string>
@@ -361,7 +361,7 @@
   <string name="image_description_connected" tools:machine_translated="true">Izveidots savienojums.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">Atvienots.</string>
   <string name="image_description_toggle_control_character" tools:machine_translated="true">Pārslēgt vadības simbolu.</string>
-  <string name="image_description_send_escape_character" tools:machine_translated="true">Nosūtīt speciālo simbolu.</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">Nosūtīt ESC rakstzīmi.</string>
   <string name="image_description_send_tab_character" tools:machine_translated="true">Nosūtīt TAB simbolu.</string>
   <string name="image_description_hide_keyboard" tools:machine_translated="true">Paslēpt tastatūru.</string>
   <string name="image_description_show_keyboard" tools:machine_translated="true">Rādīt tastatūru.</string>
@@ -372,7 +372,7 @@
   <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
   <string name="button_key_home" tools:machine_translated="true">Sākums</string>
-  <string name="button_key_end" tools:machine_translated="true">Beigt</string>
+  <string name="button_key_end" tools:machine_translated="true">End</string>
   <string name="button_key_pgup" tools:machine_translated="true">Lapa augšup</string>
   <string name="button_key_pgdn" tools:machine_translated="true">Nākamā lapa</string>
   <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">Teksta ievadīšana</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Nepieciešama atļauja saņemt paziņojumus.</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Lai nodrošinātu, ka jūsu savienojumi darbojas fonā, lūdzu, aktivizējiet paziņojumus lietotnei ConnectBot sistēmas iestatījumos.</string>
   <string name="open_settings" tools:machine_translated="true">Atvērt iestatījumus</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Savienojumi var tikt pārtraukti, ja nav piešķirta atļauja saņemt paziņojumus.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Savienojumi var pārtrūkt, pārslēdzoties starp lietotnēm</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Savienojums var tikt pārtraukts, kad lietotne darbojas fonā.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Vai mēģināt piekļūt lokālajam serverim? Piešķiriet atļaujas lokālajam tīklam.</string>
   <string name="loading_message" tools:machine_translated="true">Ielādē…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Rādīt IME pārslēgšanas taustiņu.</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Pievienojiet IME pogu speciālo taustiņu rindā, kas pārslēdz kompozīcijas režīmu valodām, kurām nepieciešams kompozīcijas buferis (japāņu, ķīniešu, korejiešu u. c.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Pilnas IME (ievades metodi) Ctrl/Alt īsceļu konfigurācija</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Nav pieejams risinājums.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Neizmantot apiešanas risinājumu</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Neapstrādāti taustiņu nospiedienu notikumi.</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Piespiedu kārtā izmantot ASCII (ieteicams)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Pārvietojieties starp sesijām, izmantojot žestu.</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Fiksēts UDP ports programmai “mosh” (ja norādīts 0, tiks izmantots automātiski izvēlēts ports diapazonā no 60000 līdz 61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Reģionālā iestatījuma nosaukums.</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh sesijas lokalizācija (piemēram, en_US.UTF-8).</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">Atbalsts programmai “Mosh”</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh versija un avotkods</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Tiek sagatavots atbalsts programmai Mosh...</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Atteikties no izmaiņām?</string>
@@ -602,7 +602,7 @@
   <string name="automation_no_session" tools:machine_translated="true">Šai darbībai nepieciešama atvērta termināļa sesija.</string>
   <string name="automation_forward_missing" tools:machine_translated="true">Pāradresācijas iestatījums nav atrasts.</string>
   <string name="automation_forward_unsupported" tools:machine_translated="true">Šis savienojums neatbalsta porta pāradresāciju.</string>
-  <string name="automation_wait_text" tools:machine_translated="true">Gaidīt, līdz tiks apstrādāta virkne.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Gaidīt virkni</string>
   <string name="automation_send_text" tools:machine_translated="true">Nosūtīt tekstu.</string>
   <string name="automation_send_key" tools:machine_translated="true">Nosūtīt īpašu taustiņu.</string>
   <string name="automation_delay" tools:machine_translated="true">Pagaidiet.</string>
@@ -622,7 +622,7 @@
   <string name="automation_regex_help" tools:machine_translated="true">Atbilst ienākošajam tekstam, neizmantojot ANSI formatēšanu. Regulārās izteiksmes atbalsta RE2 sintaksi; netiek atbalstītas “lookaround” un atsauces uz iepriekšējām grupām.</string>
   <string name="automation_duration" tools:machine_translated="true">Ilgums (sekundēs)</string>
   <string name="automation_timeout" tools:machine_translated="true">Laika ierobežojums (sekundēs).</string>
-  <string name="automation_key" tools:machine_translated="true">Atslēga</string>
+  <string name="automation_key" tools:machine_translated="true">Taustiņš</string>
   <string name="automation_forward" tools:machine_translated="true">Pārvirzošanas ports</string>
   <string name="automation_failure" tools:machine_translated="true">Gadījumā, ja darbība neizdodas.</string>
   <string name="automation_stop" tools:machine_translated="true">Apturiet automatizāciju.</string>
@@ -631,16 +631,16 @@
   <string name="automation_progress" tools:machine_translated="true">Automatizācija: %1$d/%2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Darbība nr. %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Atcelt automatizāciju.</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Ievadiet</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Cilne</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Iziet</string>
-  <string name="automation_key_backspace" tools:machine_translated="true">Aizstāt (taustiņš)</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Backspace</string>
   <string name="automation_key_delete" tools:machine_translated="true">Dzēst</string>
   <string name="automation_key_up" tools:machine_translated="true">Uz augšu vērsta bultiņa</string>
   <string name="automation_key_down" tools:machine_translated="true">Lejupejoša bultiņa</string>
   <string name="automation_key_left" tools:machine_translated="true">Kreisā bultiņa</string>
   <string name="automation_key_right" tools:machine_translated="true">Labā bultiņa</string>
-  <string name="automation_key_home" tools:machine_translated="true">Sākumlapa</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">Beigas</string>
   <string name="automation_key_insert" tools:machine_translated="true">Ievietot</string>
   <string name="automation_key_page_up" tools:machine_translated="true">Lapa uz augšu</string>
@@ -649,6 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Pārslēdzēja taustiņš (Shift)</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f sekundes</string>
   <plurals name="automation_count" tools:machine_translated="true">
+    <item quantity="zero">%1$d darbību</item>
     <item quantity="one">%1$d darbība</item>
     <item quantity="other">%1$d darbības</item>
   </plurals>

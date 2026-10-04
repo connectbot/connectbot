@@ -220,7 +220,7 @@
   <string name="pref_volumefont_title" tools:machine_translated="true">Tombol volume mengubah ukuran font</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Ukuran font juga dapat diubah di pengaturan profil</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Tetap terhubung di latar belakang</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Pertahankan sesi Anda tetap aktif meskipun Anda beralih ke aplikasi lain.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Gunakan notifikasi tetap agar sesi tetap terbuka saat Anda beralih aplikasi</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Tombol pengubah tetap aktif</string>
   <string name="only_alt" tools:machine_translated="true">Hanya Alt</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Getarkan saat mengirimkan tombol panah; berguna untuk koneksi yang lambat.</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Izin notifikasi diperlukan</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Untuk menjaga agar koneksi Anda tetap aktif di latar belakang, silakan aktifkan notifikasi untuk ConnectBot di pengaturan sistem.</string>
   <string name="open_settings" tools:machine_translated="true">Buka pengaturan</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Koneksi dapat terputus tanpa izin notifikasi</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Koneksi dapat terputus saat Anda beralih aplikasi</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Koneksi mungkin terputus saat aplikasi berjalan di latar belakang.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Apakah Anda mencoba mengakses host lokal? Berikan izin untuk jaringan lokal.</string>
   <string name="loading_message" tools:machine_translated="true">Memuat…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Tampilkan tombol peralihan IME</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Tambahkan tombol IME ke baris tombol khusus yang berfungsi untuk mengaktifkan atau menonaktifkan mode komposisi untuk bahasa yang memerlukan buffer komposisi (Jepang, Mandarin, Korea, dll.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Pintasan Ctrl/Alt dalam mode IME penuh</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Tidak ada solusi alternatif.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Tanpa solusi alternatif</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Peristiwa penekanan tombol mentah</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Paksa penggunaan ASCII (disarankan)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Geser untuk berpindah antar sesi.</string>
