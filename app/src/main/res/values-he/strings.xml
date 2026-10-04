@@ -221,8 +221,6 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">במקלדות תוכנה, לחיצה על מקשי המספרים בשילוב עם מקש Ctrl שולחת את הפקודות F1 עד F10.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">לחצני עוצמת הקול משנים את גודל הגופן.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">ניתן לשנות גם את גודל הגופן בהגדרות הפרופיל.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">הישאר מחובר ברקע</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">שימוש בהתראה קבועה כדי להשאיר חיבורים פתוחים בעת מעבר בין אפליקציות</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">שינויים קבועים</string>
   <string name="only_alt" tools:machine_translated="true">רק Alt</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">הפעל רטט בעת שליחת פקודות באמצעות מקשי החצים; שימושי במיוחד במקרים של חיבור איטי.</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">ייבא מלוח הגזירים</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">תוכן המפתח הפרטי</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">הדבק מלוח הגזירים</string>
-  <string name="notification_permission_title" tools:machine_translated="true">הישארו מחוברים ברקע</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot זקוק לאישור הודעות כדי לשמור על חיבורי הרשת שלך פעילים כשאתה עובר בין אפליקציות. בלעדיו, ייתכן שהמערכת תנתק את החיבורים שלך כדי לחסוך בסוללה.</string>
   <string name="grant_permission" tools:machine_translated="true">אפשר</string>
   <string name="connect_anyway" tools:machine_translated="true">התחבר בכל מקרה</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">יש צורך באישור להצגת התראות.</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">כדי לשמור על חיבורי הרשת שלך פעילים ברקע, אנא הפעל התראות עבור ConnectBot בהגדרות המערכת.</string>
   <string name="open_settings" tools:machine_translated="true">פתח הגדרות</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">החיבורים עלולים להתנתק בעת מעבר בין אפליקציות</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">ייתכן שהחיבור ינותק בזמן שהאפליקציה פועלת ברקע.</string>
   <string name="terminal_no_route" tools:machine_translated="true">האם אתם מנסים להתחבר למחשב ברשת המקומית? אנא העניקו הרשאות לרשת המקומית.</string>
   <string name="loading_message" tools:machine_translated="true">טוען…</string>
   <string name="migration_checking" tools:machine_translated="true">בדיקת מסד הנתונים…</string>
@@ -663,7 +655,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">החיבור הסתיים.</string>
   <string name="host_status_action_required" tools:machine_translated="true">יש צורך לבדוק את החיבור.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s פתחו את המסוף כדי לראות את הפלט הנותר.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">ייתכן שאנדרואיד תפסיק את הפעולה של ConnectBot ותנתק את החיבורים שלך כאשר תעבור בין אפליקציות.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">זמן קצוב לרשת של Mosh (בשניות)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">משך הזמן שבו השרת ממתין ללא עדכונים מהלקוח לפני שהוא מפסיק לפעול. השאירו את השדה ריק כדי להשתמש בהגדרת השרת או בפרק זמן של שבוע; השתמשו ב-0 כדי לבטל את הגדרת התפוגה.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">הזן מספר שלם בין 0 ל-2147483647, או השאר את השדה ריק.</string>

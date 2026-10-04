@@ -262,8 +262,6 @@
   <string name="pref_theme_system" tools:machine_translated="true">Προεπιλεγμένες ρυθμίσεις συστήματος</string>
   <string name="pref_theme_light" tools:machine_translated="true">Ανοιχτόχρωμο</string>
   <string name="pref_theme_dark" tools:machine_translated="true">Σκοτεινό</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Διατηρήστε τη σύνδεση στο παρασκήνιο</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Χρήση μόνιμης ειδοποίησης για να παραμένουν ανοιχτές οι συνεδρίες όταν αλλάζετε εφαρμογές</string>
   <string name="pref_bell_summary" tools:machine_translated="true">Αναπαραγωγή ήχου κατά την εμφάνιση ειδοποίησης στο τερματικό.</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Δόνηση κατά την εμφάνιση ειδοποίησης τερματικού</string>
   <string name="color_red" tools:machine_translated="true">Κόκκινο</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Εισαγωγή από το πρόχειρο</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Περιεχόμενο του ιδιωτικού κλειδιού</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Επικόλληση από το πρόχειρο</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Διατηρήστε τη σύνδεση στο παρασκήνιο</string>
-  <string name="notification_permission_message" tools:machine_translated="true">Το ConnectBot χρειάζεται άδεια για την αποστολή ειδοποιήσεων, ώστε να διατηρεί τις συνδέσεις σας ενεργές όταν αλλάζετε εφαρμογές. Χωρίς αυτήν, το σύστημα ενδέχεται να διακόψει τις συνδέσεις σας για να εξοικονομήσει μπαταρία.</string>
   <string name="grant_permission" tools:machine_translated="true">Επιτρέψτε</string>
   <string name="connect_anyway" tools:machine_translated="true">Συνδέστε ούτως ή άλλως</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Απαιτείται άδεια για τις ειδοποιήσεις.</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Για να διατηρήσετε τις συνδέσεις σας ενεργές στο παρασκήνιο, ενεργοποιήστε τις ειδοποιήσεις για την εφαρμογή ConnectBot στις ρυθμίσεις του συστήματος.</string>
   <string name="open_settings" tools:machine_translated="true">Άνοιγμα ρυθμίσεων</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Οι συνδέσεις ενδέχεται να διακοπούν όταν αλλάζετε εφαρμογές</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Η σύνδεση ενδέχεται να διακοπεί όταν η εφαρμογή εκτελείται στο παρασκήνιο.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Προσπαθείτε να συνδεθείτε σε έναν τοπικό διακομιστή; Ενεργοποιήστε τις άδειες για το τοπικό δίκτυο.</string>
   <string name="loading_message" tools:machine_translated="true">Φόρτωση…</string>
   <string name="migration_checking" tools:machine_translated="true">Ελέγχεται η βάση δεδομένων…</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Η σύνδεση τερματίστηκε.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Απαιτείται προσοχή στη σύνδεση.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Ανοίξτε την κονσόλα για να δείτε το υπόλοιπο της εξόδου.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Το Android ενδέχεται να τερματίσει το ConnectBot και να διακόψει τις τρέχουσες συνδέσεις σας όταν αλλάζετε εφαρμογές.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Χρονικό όριο σύνδεσης δικτύου Mosh (δευτερόλεπτα)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Χρόνος που μετράει πριν ο διακομιστής τερματιστεί, χωρίς να έχει λάβει ενημερώσεις από τον πελάτη. Αφήστε το πεδίο κενό για να χρησιμοποιηθεί η προεπιλεγμένη ρύθμιση του διακομιστή ή μια εβδομάδα· χρησιμοποιήστε το 0 για να απενεργοποιήσετε την αυτόματη διακοπή λειτουργίας.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Εισαγάγετε έναν ακέραιο αριθμό από 0 έως 2147483647 ή αφήστε το πεδίο κενό.</string>

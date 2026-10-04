@@ -942,23 +942,6 @@ fun ConsoleScreen(
         }
     }
 
-    // Show snackbar on each open when connections won't persist in background
-    val notificationWarningMessage = stringResource(R.string.notification_permission_console_warning)
-    val settingsLabel = stringResource(R.string.list_menu_settings)
-    LaunchedEffect(Unit) {
-        if (viewModel.shouldShowNotificationWarning()) {
-            val result = snackbarHostState.showSnackbar(
-                message = notificationWarningMessage,
-                actionLabel = settingsLabel,
-                withDismissAction = true,
-                duration = SnackbarDuration.Long,
-            )
-            if (result == SnackbarResult.ActionPerformed) {
-                currentOnNavigateToSettings()
-            }
-        }
-    }
-
     // Show snackbar when there's an error
     LaunchedEffect(uiState.error) {
         uiState.error?.let { error ->

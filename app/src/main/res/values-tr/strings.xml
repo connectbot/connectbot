@@ -219,8 +219,6 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Yazılım klavyelerinde sayı tuşlarına Ctrl tuşuyla birlikte basıldığında F1-F10 tuşları gönderilir.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Ses tuşları yazı tipi boyutunu değiştirir.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Yazı tipi boyutu, profil ayarlarından da değiştirilebilir.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Arka planda bağlantıyı sürdür.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Uygulamalar arasında geçiş yaptığınızda oturumları açık tutmak için kalıcı bildirim kullanın</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Sabit değiştiriciler</string>
   <string name="only_alt" tools:machine_translated="true">Yalnızca Alt</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Yön tuşlarına basıldığında titreşim; gecikmeli bağlantılarda kullanışlıdır.</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Panodan aktar</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Özel anahtar içeriği</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Panoya kopyalananı yapıştır</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Arka planda bağlantıda kalın.</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot’un, uygulamalar arasında geçiş yaparken bağlantılarınızın aktif kalması için bildirim iznine ihtiyacı vardır. Bu izin verilmezse, sistem pil ömrünü korumak için bağlantılarınızı kesebilir.</string>
   <string name="grant_permission" tools:machine_translated="true">İzin Ver</string>
   <string name="connect_anyway" tools:machine_translated="true">Yine de bağlanın</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Bildirim izni gerekiyor</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Arka planda bağlantılarınızın aktif kalmasını sağlamak için lütfen sistem ayarlarında ConnectBot için bildirimleri etkinleştirin.</string>
   <string name="open_settings" tools:machine_translated="true">Ayarları aç</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Uygulamalar arasında geçiş yaptığınızda bağlantılar kesilebilir</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Arka planda bağlantı kesilebilir.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Yerel bir sunucuya erişmeye mi çalışıyorsunuz? Yerel ağ izinlerini verin.</string>
   <string name="loading_message" tools:machine_translated="true">Yükleniyor…</string>
   <string name="migration_checking" tools:machine_translated="true">Veritabanı kontrol ediliyor…</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Bağlantı sona erdi.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Bağlantıya müdahale gerekiyor.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Konsolu açarak kalan çıktıları görüntüleyin.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android, uygulama değiştirirken ConnectBot\'u durdurabilir ve oturumlarınızı sonlandırabilir.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh ağ zaman aşımı (saniye)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Sunucunun kapanmasından önce istemci güncellemelerinin yapılmaması için geçen süre. Sunucu ayarını kullanmak veya bir hafta sürmesi için boş bırakın; sürenin devre dışı bırakılması için 0 kullanın.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">0 ile 2147483647 arasında bir tam sayı girin veya boş bırakın.</string>

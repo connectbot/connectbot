@@ -129,8 +129,6 @@
   <string name="pref_volumefont_summary" tools:machine_translated="true">Šrifto dydį taip pat galima pakeisti profilio nustatymuose.</string>
   <string name="pref_memkeys_title" tools:machine_translated="true">Laikyti raktus atmintyje</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Laikykite atrakintus raktus atmintyje, kol bus nutrauktas pagrindinio proceso veikimas.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Palaikykite ryšį, net jei programa veikia fone.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Naudoti nuolatinį pranešimą, kad seansai liktų atviri perjungiant programas</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Spartieji klavišai, skirti aplankams</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Fiksuojami modifikavimo klavišai</string>
   <string name="only_alt" tools:machine_translated="true">Tik „Alt“ klavišas</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Įkelti iš iškarpinės</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Privataus rakto turinys</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Įklijuoti iš iškarpinės</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Išlaikykite ryšį, net jei programa veikia fone.</string>
-  <string name="notification_permission_message" tools:machine_translated="true">„ConnectBot“ reikia pranešimų leidimo, kad jūsų prisijungimai būtų aktyvūs, kai perjungiate programas. Be šio leidimo, sistema gali nutraukti jūsų prisijungimus, kad taupytų baterijos energiją.</string>
   <string name="grant_permission" tools:machine_translated="true">Leisti</string>
   <string name="connect_anyway" tools:machine_translated="true">Vis tiek prijungti</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Reikalingas pranešimų leidimas</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Norėdami, kad jūsų ryšiai veiktų foniniu režimu, įjunkite pranešimus programai „ConnectBot“ sistemos nustatymuose.</string>
   <string name="open_settings" tools:machine_translated="true">Atidaryti nustatymus</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Ryšiai gali nutrūkti perjungiant programas</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Fonas veikiant, ryšys gali nutrūkti.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Ar bandote prisijungti prie vietinio tinklo kompiuterio? Suteikite leidimus vietiniam tinklui.</string>
   <string name="loading_message" tools:machine_translated="true">Įkeliama…</string>
   <string name="migration_checking" tools:machine_translated="true">Tikrinama duomenų bazė…</string>
@@ -664,7 +656,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Ryšys nutrūko.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Reikia patikrinti ryšį.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Atidarykite konsolę, kad peržiūrėtumėte likusį išvesties turinį.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">„Android“ gali sustabdyti „ConnectBot“ ir nutraukti jūsų sesijas, kai perjungiate programas.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">„Mosh“ tinklo laiko limitas (sekundėmis)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Laikas, per kurį negalima atnaujinti kliento duomenų prieš uždarant serverį. Palikite lauką tuščią, kad būtų naudojamas serverio nustatymas arba viena savaitė; naudokite 0, kad išjungtumėte galiojimo terminą.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Įveskite sveikąjį skaičių nuo 0 iki 2147483647 arba palikite lauką tuščią.</string>

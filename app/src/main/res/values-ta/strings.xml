@@ -137,8 +137,6 @@
   <string name="pref_volumefont_summary" tools:machine_translated="true">எழுத்துரு அளவை சுயவிவர அமைப்புகளில் மாற்றலாம்.</string>
   <string name="pref_memkeys_title" tools:machine_translated="true">நினைவகத்தில் உள்ள விசைகளை நினைவில் கொள்க</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">பின்புல சேவை நிறுத்தப்படும் வரை, திறந்த நிலையில் உள்ள சாவிகளை நினைவகத்தில் வைத்திருங்கள்</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">பின்புலத்தில் இணைப்பில் வைத்திருங்கள்</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">செயலிகளை மாற்றும்போது அமர்வுகளைத் திறந்த நிலையில் வைத்திருக்கத் தொடர்ச்சியான அறிவிப்பைப் பயன்படுத்து</string>
   <string name="pref_keymode_title" tools:machine_translated="true">கோப்புறை குறுக்குவழிகள்</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">ஒட்டும் மாற்றிகள்</string>
   <string name="only_alt" tools:machine_translated="true">அல்ட் விசையை மட்டும் பயன்படுத்தவும்</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">கிளிப்போர்டிலிருந்து இறக்குமதி செய்</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">தனிப்பட்ட திறவுகோல் உள்ளடக்கம்</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">கிளிப்போர்டிலிருந்து ஒட்டவும்</string>
-  <string name="notification_permission_title" tools:machine_translated="true">பின்னணியில் இணைப்பில் தொடர்ந்து இருங்கள்</string>
-  <string name="notification_permission_message" tools:machine_translated="true">நீங்கள் பயன்பாடுகளை மாற்றும்போது, உங்கள் இணைப்புகளைச் செயலில் வைத்திருக்க கனெக்ட் போட்-க்கு அறிவிப்பு அனுமதி தேவை. அந்த அனுமதி இல்லையென்றால், பேட்டரியைச் சேமிக்க, கணினி உங்கள் இணைப்புகளைத் துண்டிக்கலாம்.</string>
   <string name="grant_permission" tools:machine_translated="true">அனுமதி</string>
   <string name="connect_anyway" tools:machine_translated="true">அறிவிப்பு அனுமதியை வழங்காமல் இணைக்கவும்</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">அறிவிப்புக்கான அனுமதி தேவை</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">பின்னணியில் உங்கள் இணைப்புகளைச் செயல்பட வைப்பதற்கு, கணினி அமைப்புகளில் ConnectBot-க்கான அறிவிப்புகளை இயக்கவும்.</string>
   <string name="open_settings" tools:machine_translated="true">அமைப்புகளைத் திறக்கவும்</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">செயலிகளை மாற்றும்போது இணைப்புகள் துண்டிக்கப்படலாம்</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">பின்னணியில் இணைப்பு துண்டிக்கப்படலாம்</string>
   <string name="terminal_no_route" tools:machine_translated="true">உள்ளூர் நெட்வொர்க்கில் உள்ள ஒரு சேவையகத்தை அணுக முயற்சிக்கிறீர்களா? உள்ளூர் நெட்வொர்க் அனுமதிகளை வழங்கவும்.</string>
   <string name="loading_message" tools:machine_translated="true">ஏற்றுகிறது…</string>
   <string name="migration_checking" tools:machine_translated="true">தரவுத்தளத்தை சரிபார்க்கிறது…</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">இணைப்பு துண்டிக்கப்பட்டது.</string>
   <string name="host_status_action_required" tools:machine_translated="true">இணைப்பில் கவனம் தேவை.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s மீதமுள்ள வெளியீட்டைப் படிக்க, கன்சோலைத் திறக்கவும்.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">ஆண்ட்ராய்டு, நீங்கள் பயன்பாடுகளை மாற்றும்போது, கனெக்ட் பாட்டை நிறுத்தி, உங்கள் இணைப்புகளைத் துண்டிக்கலாம்.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">மோஷ் நெட்வொர்க் காலக்கெடு (வினாடிகள்)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">சேவையகம் நிறுத்தப்படுவதற்கு முன்பு, வாடிக்கையாளர் புதுப்பிப்புகள் இல்லாமல் எவ்வளவு நேரம் இருக்க வேண்டும். சேவையக அமைப்பைப் பயன்படுத்த அல்லது ஒரு வாரம் என காலியாக விடவும்; காலாவதி நேரத்தை முடக்க 0 ஐப் பயன்படுத்தவும்.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">0 முதல் 2147483647 வரையிலான முழு எண்ணை உள்ளிடவும் அல்லது காலியாக விடவும்.</string>

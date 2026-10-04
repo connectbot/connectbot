@@ -129,8 +129,6 @@
   <string name="pref_volumefont_summary" tools:machine_translated="true">Dimensiunea fontului poate fi modificată și în setările profilului.</string>
   <string name="pref_memkeys_title" tools:machine_translated="true">Păstrează cheile în memorie</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Păstrați cheile deblocate în memorie până la închiderea serviciului de bază.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Menține conexiunea în fundal.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Folosește o notificare permanentă pentru a menține sesiunile deschise când schimbi aplicația</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Comenzi rapide pentru directoare</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Modificatori permanenți</string>
   <string name="only_alt" tools:machine_translated="true">Doar Alt</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importă din clipboard</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Conținutul cheii private</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Copiază din zona de lucru</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Menține conexiunea activă în fundal.</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot are nevoie de permisiunea de a trimite notificări pentru a menține conexiunile active atunci când schimbați aplicațiile. În caz contrar, sistemul poate întrerupe conexiunile pentru a economisi bateria.</string>
   <string name="grant_permission" tools:machine_translated="true">Permite</string>
   <string name="connect_anyway" tools:machine_translated="true">Conectează-te oricum</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Este necesar să acordați permisiunea pentru notificări.</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Pentru a menține conexiunile active în fundal, vă rugăm să activați notificările pentru ConnectBot în setările sistemului.</string>
   <string name="open_settings" tools:machine_translated="true">Deschide setările</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Conexiunile se pot întrerupe când schimbați aplicația</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Conexiunea se poate întrerupe în fundal.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Încercați să accesați un host din rețeaua locală? Acordați permisiunile necesare pentru rețeaua locală.</string>
   <string name="loading_message" tools:machine_translated="true">Se încarcă…</string>
   <string name="migration_checking" tools:machine_translated="true">Se verifică baza de date…</string>
@@ -663,7 +655,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Conexiunea a fost întreruptă.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Conexiunea necesită atenție.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Deschideți consola pentru a vizualiza restul informațiilor.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Este posibil ca Android să oprească ConnectBot și să închidă sesiunile atunci când schimbați aplicațiile.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Timpul maxim de așteptare pentru conexiunea Mosh (în secunde)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Perioada de timp în care nu se primesc actualizări de la client înainte ca serverul să se închidă. Lăsați câmpul gol pentru a utiliza setarea serverului sau o săptămână; utilizați 0 pentru a dezactiva expirarea.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Introduceți un număr întreg cuprins între 0 și 2147483647 sau lăsați câmpul necompletat.</string>

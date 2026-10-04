@@ -179,7 +179,7 @@ fun SettingsScreen(
         highlightItem = highlightItem,
         onAuthOnLaunchChange = viewModel::updateAuthOnLaunch,
         onMemkeysChange = viewModel::updateMemkeys,
-        onConnPersistChange = viewModel::updateConnPersist,
+        onConnectionAlertsChange = viewModel::updateConnectionAlerts,
         onWifilockChange = viewModel::updateWifilock,
         onBackupkeysChange = viewModel::updateBackupkeys,
         onScrollbackChange = viewModel::updateScrollback,
@@ -228,7 +228,7 @@ fun SettingsScreenContent(
     onNavigateBack: () -> Unit,
     onAuthOnLaunchChange: (Boolean) -> Unit,
     onMemkeysChange: (Boolean) -> Unit,
-    onConnPersistChange: (Boolean) -> Unit,
+    onConnectionAlertsChange: (Boolean) -> Unit,
     onWifilockChange: (Boolean) -> Unit,
     onBackupkeysChange: (Boolean) -> Unit,
     onScrollbackChange: (String) -> Unit,
@@ -283,27 +283,27 @@ fun SettingsScreenContent(
         modifier = modifier,
     ) { padding ->
         val listState = rememberLazyListState()
-        var highlightConnPersist by remember { mutableStateOf(false) }
-        val connPersistHighlightColor by animateColorAsState(
-            targetValue = if (highlightConnPersist) {
+        var highlightConnectionAlerts by remember { mutableStateOf(false) }
+        val connectionAlertsHighlightColor by animateColorAsState(
+            targetValue = if (highlightConnectionAlerts) {
                 MaterialTheme.colorScheme.primaryContainer
             } else {
                 Color.Transparent
             },
             animationSpec = tween(durationMillis = 500),
-            label = "connPersistHighlight",
+            label = "connectionAlertsHighlight",
         )
 
         LaunchedEffect(highlightItem) {
-            if (highlightItem == "conn_persist") {
-                // When canAuthenticate: items are [security header, authOnLaunch, memkeys, connPersist]
-                // When !canAuthenticate: items are [memkeys, connPersist]
-                val connPersistIndex = if (uiState.canAuthenticate) 3 else 1
-                listState.animateScrollToItem(connPersistIndex)
+            if (highlightItem == "conn_persist" || highlightItem == "connection_alerts") {
+                // When canAuthenticate: items are [security header, authOnLaunch, memkeys, connectionAlerts]
+                // When !canAuthenticate: items are [memkeys, connectionAlerts]
+                val connectionAlertsIndex = if (uiState.canAuthenticate) 3 else 1
+                listState.animateScrollToItem(connectionAlertsIndex)
                 delay(300)
-                highlightConnPersist = true
+                highlightConnectionAlerts = true
                 delay(1500)
-                highlightConnPersist = false
+                highlightConnectionAlerts = false
             }
         }
 
@@ -334,21 +334,37 @@ fun SettingsScreenContent(
 
             item {
                 SwitchPreference(
-                    title = stringResource(R.string.pref_conn_persist_title),
+                    title = stringResource(R.string.pref_connection_alerts_title),
                     summary = stringResource(
-                        if (uiState.connPersist) R.string.pref_conn_persist_summary else R.string.pref_conn_persist_disabled_summary,
+                        if (uiState.connectionAlerts) R.string.pref_connection_alerts_summary else R.string.pref_connection_alerts_disabled_summary,
                     ),
-                    checked = uiState.connPersist,
-                    onCheckedChange = onConnPersistChange,
-                    highlightColor = connPersistHighlightColor,
+                    checked = uiState.connectionAlerts,
+                    onCheckedChange = onConnectionAlertsChange,
+                    highlightColor = connectionAlertsHighlightColor,
                 )
+            }
+
+            item {
+                ListItem {
+                    Text(stringResource(R.string.pref_service_notification_visibility))
+                }
+            }
+            if (!uiState.notificationsAvailable) {
+                item {
+                    ListItem(
+                        trailingContent = { Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = null) },
+                        modifier = Modifier.clickable(onClick = onNotificationSettingsClick),
+                    ) {
+                        Text(stringResource(R.string.pref_notifications_blocked))
+                    }
+                }
             }
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 item {
                     NotificationChannelsPreference(onClick = onNotificationSettingsClick)
                 }
-            } else if (uiState.connPersist) {
+            } else if (uiState.connectionAlerts) {
                 item {
                     SwitchPreference(
                         title = stringResource(R.string.pref_bell_notification_title),
@@ -1507,7 +1523,7 @@ private fun SettingsScreenPreview() {
                 authOnLaunch = false,
                 canAuthenticate = true,
                 memkeys = true,
-                connPersist = true,
+                connectionAlerts = true,
                 wifilock = false,
                 backupkeys = true,
                 scrollback = "500",
@@ -1543,7 +1559,7 @@ private fun SettingsScreenPreview() {
             onNavigateBack = {},
             onAuthOnLaunchChange = {},
             onMemkeysChange = {},
-            onConnPersistChange = {},
+            onConnectionAlertsChange = {},
             onWifilockChange = {},
             onBackupkeysChange = {},
             onScrollbackChange = {},
@@ -1592,8 +1608,8 @@ private fun NotificationPermissionDeniedDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.notification_permission_denied_title)) },
-        text = { Text(stringResource(R.string.notification_permission_denied_message)) },
+        title = { Text(stringResource(R.string.connection_alert_permission_denied_title)) },
+        text = { Text(stringResource(R.string.connection_alert_permission_denied_message)) },
         confirmButton = {
             TextButton(onClick = onOpenSettings) {
                 Text(stringResource(R.string.open_settings))

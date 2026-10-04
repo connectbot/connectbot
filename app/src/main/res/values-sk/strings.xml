@@ -217,8 +217,6 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Na softvérových klávesniciach tlačidlá čísel posielajú kombinácie kláves F1 až F10 spolu s klávesom Ctrl.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Tlačidlá na ovládanie hlasitosti menia veľkosť písma.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Veľkosť písma sa dá zmeniť aj v nastaveniach profilu.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Zostaňte pripojení aj na pozadí.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Použiť trvalé upozornenie na udržanie otvorených relácií pri prepínaní medzi aplikáciami</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Trvalé modifikátory</string>
   <string name="only_alt" tools:machine_translated="true">Len kláves Alt</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibrujte pri odosielaní príkazov pomocou šípkových kláves; užitočné pri pomalom pripojení.</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importovať z schránky</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Obsah súkromného kľúča</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Vložiť z schránky</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Zostaňte pripojení na pozadí</string>
-  <string name="notification_permission_message" tools:machine_translated="true">Aplikácia ConnectBot potrebuje povolenie na zobrazovanie upozornení, aby udržala vaše pripojenia aktívne, keď prepínate medzi aplikáciami. Bez tohto povolenia môže systém vaše pripojenia prerušiť, aby šetril batériu.</string>
   <string name="grant_permission" tools:machine_translated="true">Povoliť</string>
   <string name="connect_anyway" tools:machine_translated="true">Pripojte sa aj tak</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Potrebné povolenie pre upozornenia</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Ak chcete, aby vaše pripojenia zostali aktívne aj na pozadí, povoľte prosím upozornenia pre aplikáciu ConnectBot v nastaveniach systému.</string>
   <string name="open_settings" tools:machine_translated="true">Otvoriť nastavenia</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Pripojenia sa môžu prerušiť pri prepínaní medzi aplikáciami</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Pripojenie sa môže v pozadí prerušiť.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Pokúšate sa pripojiť k lokálnemu hostiteľovi? Povolenie pre lokálnu sieť musíte udeliť.</string>
   <string name="loading_message" tools:machine_translated="true">Načítava sa…</string>
   <string name="migration_checking" tools:machine_translated="true">Prebieha kontrola databázy…</string>
@@ -664,7 +656,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Spojenie sa ukončilo.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Pripojenie vyžaduje pozornosť.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Otvorte konzolu, aby ste si prečítali zvyšok výstupu.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Systém Android môže ukončiť aplikáciu ConnectBot a odpojiť vaše aktívne relácie, keď prepínate medzi aplikáciami.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Časový limit siete Mosh (sekundy)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Čas, po ktorý server čaká na aktualizácie od klienta, kým sa ukončí. Ak necháte pole prázdne, použije sa nastavenie servera alebo jeden týždeň; ak zadáte 0, funkcia automatického ukončenia sa vypne.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Zadajte celé číslo od 0 do 2147483647, alebo nechajte pole prázdne.</string>

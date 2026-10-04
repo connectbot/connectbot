@@ -262,8 +262,6 @@
   <string name="pref_theme_system" tools:machine_translated="true">ຄ່າເລີ່ມຕົ້ນຂອງລະບົບ</string>
   <string name="pref_theme_light" tools:machine_translated="true">ສີອ່ອນ</string>
   <string name="pref_theme_dark" tools:machine_translated="true">ສີເຂັ້ມ</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">ຮັກສາການເຊື່ອມຕໍ່ໄວ້ໃນພື້ນຫຼັງ</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">ໃຊ້ການແຈ້ງເຕືອນຖາວອນເພື່ອຮັກສາເຊດຊັນໄວ້ເມື່ອທ່ານສະຫຼັບແອັບ</string>
   <string name="pref_bell_summary" tools:machine_translated="true">ຫຼີ້ນສຽງເມື່ອມີການແຈ້ງເຕືອນໃນໜ້າຈໍ</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">ສັ່ນເມື່ອມີການແຈ້ງເຕືອນຈາກອຸປະກອນ</string>
   <string name="color_red" tools:machine_translated="true">ສີແດງ</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">ນຳເຂົ້າຈາກກະເດັນ</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">ເນື້ອໃນຂອງກະແຈສ່ວນຕົວ</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">ຄັດລອກຈາກກະດານ</string>
-  <string name="notification_permission_title" tools:machine_translated="true">ຮັກສາການເຊື່ອມຕໍ່ໄວ້ໃນພື້ນຫຼັງ</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot ຕ້ອງໄດ້ຮັບອະນຸຍາດສົ່ງການແຈ້ງເຕືອນ ເພື່ອຮັກສາການເຊື່ອມຕໍ່ຂອງທ່ານໃຫ້ຢູ່ສະພາບເຄື່ອນໄຫວ ເມື່ອທ່ານປ່ຽນໄປໃຊ້ແອັບຯອື່ນໆ. ຖ້າບໍ່ມີອະນຸຍາດນີ້, ລະບົບອາດຈະຕັດການເຊື່ອມຕໍ່ຂອງທ່ານ ເພື່ອປະຢັດພະລັງງານຂອງແບັດເຕີຣີ.</string>
   <string name="grant_permission" tools:machine_translated="true">ອະນຸຍາດ</string>
   <string name="connect_anyway" tools:machine_translated="true">ເຊື່ອມຕໍ່ຕໍ່ໄປເຖິງແມ່ນວ່າບໍ່ໄດ້ອະນຸຍາດໃຫ້ສົ່ງການແຈ້ງເຕືອນ</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">ຕ້ອງໄດ້ຮັບອະນຸຍາດສຳລັບການແຈ້ງເຕືອນ</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">ເພື່ອຮັກສາການເຊື່ອມຕໍ່ຂອງທ່ານໃຫ້ເຄື່ອນໄຫວຢູ່ເບື້ອງຫຼັງ, ກະລຸນາເປີດການແຈ້ງເຕືອນສໍາລັບ ConnectBot ໃນການຕັ້ງຄ່າຂອງລະບົບ.</string>
   <string name="open_settings" tools:machine_translated="true">ເປີດການຕັ້ງຄ່າ</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">ການເຊື່ອມຕໍ່ອາດຂາດເມື່ອທ່ານສະຫຼັບແອັບ</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">ການເຊື່ອມຕໍ່ອາດຈະຖືກຕັດເມື່ອແອັບພລິເຄຊັນເຮັດວຽກຢູ່ພື້ນຫຼັງ</string>
   <string name="terminal_no_route" tools:machine_translated="true">ທ່ານກໍາລັງພະຍາຍາມເຂົ້າເຖິງເຄື່ອງແມ່ຂ່າຍໃນເຄືອນຂ່າຍທ້ອງຖິ່ນບໍ? ກະລຸນາອະນຸຍາດສິດໃນເຄືອນຂ່າຍທ້ອງຖິ່ນ.</string>
   <string name="loading_message" tools:machine_translated="true">ກຳລັງໂຫຼດ…</string>
   <string name="migration_checking" tools:machine_translated="true">ກຳລັງກວດສອບຖານຂໍ້ມູນ…</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">ການເຊື່ອມຕໍ່ສິ້ນສຸດລົງແລ້ວ.</string>
   <string name="host_status_action_required" tools:machine_translated="true">ການເຊື່ອມຕໍ່ຕ້ອງໄດ້ຮັບການກວດສອບ</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s ເປີດໜ້າຈໍຄອນໂຊລເພື່ອອ່ານຜົນລັບທີ່ຍັງເຫຼືອຢູ່.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">ອັນດຣອຍອາດຈະຢຸດການເຮັດວຽກຂອງ ConnectBot ແລະຕັດການເຊື່ອມຕໍ່ຂອງເຊສຊັນຂອງທ່ານເມື່ອທ່ານປ່ຽນໄປໃຊ້ແອັບຯອື່ນ</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">ເວລາສູນສຸດຂອງເຄືອນຂ່າຍ Mosh (ວິນາທີ)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">ເວລາທີ່ບໍ່ມີການອັບເດດຈາກຜູ້ໃຊ້ກ່ອນທີ່ເຊີເວີຈະຢຸດການເຮັດວຽກ. ຖ້າບໍ່ຕັ້ງຄ່າ, ຈະໃຊ້ຄ່າທີ່ເຊີເວີກຳນົດໄວ້ ຫຼື ຫນຶ່ງອາທິດ; ໃຊ້ 0 ເພື່ອປິດການກຳນົດເວລາ.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">ປ້ອນຕົວເລກເຕັມຕັ້ງແຕ່ 0 ຈົນເຖິງ 2147483647, ຫຼື ປ່ອຍໄວ້ຫວ່າງ.</string>

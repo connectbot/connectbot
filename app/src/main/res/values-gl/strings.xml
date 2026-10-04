@@ -261,8 +261,6 @@
   <string name="pref_theme_system" tools:machine_translated="true">Configuración predeterminada do sistema</string>
   <string name="pref_theme_light" tools:machine_translated="true">Claro</string>
   <string name="pref_theme_dark" tools:machine_translated="true">Escuro</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Mantéñase conectado en segundo plano.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Usar unha notificación permanente para manter as sesións abertas ao cambiar de aplicación</string>
   <string name="pref_bumpyarrows_title" tools:machine_translated="true">Vibración coas frechas</string>
   <string name="pref_bell_summary" tools:machine_translated="true">Reproducir son ao activarse a alerta do terminal</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Vibrar ao recibir unha alerta do terminal.</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importar desde a área de recorte</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Contido da clave privada</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Pegar desde a área de recorte</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Mantéñase conectado en segundo plano.</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot necesita permiso para enviar notificacións para manter as túas conexións activas cando cambias de aplicación. Sen este permiso, o sistema pode interromper as túas conexións para aforrar batería.</string>
   <string name="grant_permission" tools:machine_translated="true">Permitir</string>
   <string name="connect_anyway" tools:machine_translated="true">Conectar de todos xeitos.</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">É necesario conceder o permiso de notificación.</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Para manter as túas conexións activas en segundo plano, activa as notificacións para ConnectBot na configuración do sistema.</string>
   <string name="open_settings" tools:machine_translated="true">Abrir configuración</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">As conexións poden interromperse ao cambiar de aplicación</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">A conexión pode interromperse en segundo plano.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Está intentando acceder a un host local? Conceda os permisos da rede local.</string>
   <string name="loading_message" tools:machine_translated="true">Cargando…</string>
   <string name="migration_checking" tools:machine_translated="true">Comprobando a base de datos…</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">A conexión rematou.</string>
   <string name="host_status_action_required" tools:machine_translated="true">A conexión necesita atención.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Abre a consola para consultar a saída restante.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android pode pechar ConnectBot e desconectar as súas sesións cando cambie de aplicacións.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Tempo máximo de espera da conexión de rede de Mosh (en segundos)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Tempo transcorrido sen actualizacións do cliente antes de que o servidor se desconecte. Deixe o campo en branco para usar a configuración do servidor ou unha semana; use 0 para desactivar o tempo de caducidade.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Introduza un número enteiro entre 0 e 2147483647, ou deixe o campo en branco.</string>

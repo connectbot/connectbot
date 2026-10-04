@@ -17,12 +17,16 @@
 
 package org.connectbot
 
+import android.graphics.Bitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.hasScrollAction
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
@@ -44,6 +48,8 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import java.io.File
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -65,7 +71,7 @@ class SettingsScreenTest {
         var settingsOpened = false
         setSettingsContent(onNotificationSettingsClick = { settingsOpened = true })
 
-        val main = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_conn_persist_title))
+        val main = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_connection_alerts_title))
         val channels = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_notification_channels_title))
         val wifi = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_wifilock_title))
         assertTrue(main.fetchSemanticsNode().boundsInRoot.bottom <= channels.fetchSemanticsNode().boundsInRoot.top)
@@ -78,10 +84,30 @@ class SettingsScreenTest {
     @Test
     @Config(sdk = [26, 34])
     fun notificationSettingsLinkRemainsAvailableWhenMainSettingIsOff() {
-        setSettingsContent(uiState = SettingsUiState(connPersist = false))
+        setSettingsContent(uiState = SettingsUiState(connectionAlerts = false))
 
-        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_conn_persist_disabled_summary)).assertIsDisplayed()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_connection_alerts_disabled_summary)).assertIsDisplayed()
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_notification_channels_title)).assertIsDisplayed()
+    }
+
+    @Test
+    @Config(sdk = [34], qualifiers = "w411dp-h891dp")
+    @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    fun blockedNotificationsExplainBackgroundSupportAndOpenSettings() {
+        var settingsOpened = false
+        setSettingsContent(
+            uiState = SettingsUiState(connectionAlerts = false, notificationsAvailable = false),
+            onNotificationSettingsClick = { settingsOpened = true },
+        )
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_connection_alerts_disabled_summary)).assertIsDisplayed()
+        val notice = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_notifications_blocked))
+        notice.performScrollTo().assertIsDisplayed().performClick()
+        assertTrue(settingsOpened)
+        val screenshot = File("build/reports/connection-alerts-settings.png")
+        screenshot.parentFile!!.mkdirs()
+        screenshot.outputStream().use { output ->
+            composeTestRule.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 100, output)
+        }
     }
 
     @Test
@@ -94,7 +120,7 @@ class SettingsScreenTest {
             onConnectionLostNotificationChange = { lossEnabled = it },
         )
 
-        val main = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_conn_persist_title))
+        val main = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_connection_alerts_title))
         val bells = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_bell_notification_title))
         val losses = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_connection_lost_notification_title))
         val wifi = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_wifilock_title))
@@ -111,9 +137,9 @@ class SettingsScreenTest {
     @Test
     @Config(sdk = [24, 25])
     fun legacyAlertTogglesAreHiddenWhenMainSettingIsOff() {
-        setSettingsContent(uiState = SettingsUiState(connPersist = false))
+        setSettingsContent(uiState = SettingsUiState(connectionAlerts = false))
 
-        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_conn_persist_disabled_summary)).assertIsDisplayed()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_connection_alerts_disabled_summary)).assertIsDisplayed()
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_bell_notification_title)).assertDoesNotExist()
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_connection_lost_notification_title)).assertDoesNotExist()
     }
@@ -152,8 +178,8 @@ class SettingsScreenTest {
     }
 
     @Test
-    fun settingsScreen_displaysConnPersistPreference() {
-        val connPersistTitle = composeTestRule.activity.getString(R.string.pref_conn_persist_title)
+    fun settingsScreen_displaysConnectionAlertsPreference() {
+        val connectionAlertsTitle = composeTestRule.activity.getString(R.string.pref_connection_alerts_title)
 
         composeTestRule.setContent {
             ConnectBotTheme {
@@ -162,13 +188,13 @@ class SettingsScreenTest {
         }
 
         composeTestRule
-            .onNodeWithText(connPersistTitle)
+            .onNodeWithText(connectionAlertsTitle)
             .assertIsDisplayed()
     }
 
     @Test
-    fun settingsScreen_withHighlightConnPersist_scrollsToAndDisplaysConnPersist() {
-        val connPersistTitle = composeTestRule.activity.getString(R.string.pref_conn_persist_title)
+    fun settingsScreen_withHighlightConnectionAlerts_scrollsToAndDisplaysConnectionAlerts() {
+        val connectionAlertsTitle = composeTestRule.activity.getString(R.string.pref_connection_alerts_title)
 
         composeTestRule.setContent {
             ConnectBotTheme {
@@ -180,7 +206,7 @@ class SettingsScreenTest {
         }
 
         composeTestRule
-            .onNodeWithText(connPersistTitle)
+            .onNodeWithText(connectionAlertsTitle)
             .assertIsDisplayed()
     }
 
@@ -340,7 +366,7 @@ class SettingsScreenTest {
         uiState: SettingsUiState = SettingsUiState(),
         onAuthOnLaunchChange: (Boolean) -> Unit = {},
         onMemkeysChange: (Boolean) -> Unit = {},
-        onConnPersistChange: (Boolean) -> Unit = {},
+        onConnectionAlertsChange: (Boolean) -> Unit = {},
         onWifilockChange: (Boolean) -> Unit = {},
         onBackupkeysChange: (Boolean) -> Unit = {},
         onScrollbackChange: (String) -> Unit = {},
@@ -359,7 +385,7 @@ class SettingsScreenTest {
                     onNavigateBack = {},
                     onAuthOnLaunchChange = onAuthOnLaunchChange,
                     onMemkeysChange = onMemkeysChange,
-                    onConnPersistChange = onConnPersistChange,
+                    onConnectionAlertsChange = onConnectionAlertsChange,
                     onWifilockChange = onWifilockChange,
                     onBackupkeysChange = onBackupkeysChange,
                     onScrollbackChange = onScrollbackChange,

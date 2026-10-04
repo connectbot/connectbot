@@ -129,8 +129,6 @@
   <string name="pref_volumefont_title" tools:machine_translated="true">Копчињата за јачина на звукот ја менуваат големината на фонтот.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Големината на фонтот исто така може да се промени во поставките на профилот.</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Зачувајте ги отклучените клучеви во меморијата додека не се прекине работата на позадинската услуга.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Останете поврзани во позадина</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Користи постојано известување за сесиите да останат отворени при префрлање меѓу апликации</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Преки патишта до директориуми</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Постојани модификатори</string>
   <string name="only_alt" tools:machine_translated="true">Само Alt</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Увези од привремениот простор</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Содржина на приватниот клуч</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Вметнете од привремениот простор</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Останете поврзани во позадина</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot има потреба од дозвола за известувања за да ги одржува вашите конекции активни кога префрлате апликации. Без ова, системот може да ги прекине вашите конекции за да заштеди батерија.</string>
   <string name="grant_permission" tools:machine_translated="true">Дозволи</string>
   <string name="connect_anyway" tools:machine_translated="true">Поврзете се и покрај тоа</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Потребно е дозволение за известувања.</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">За да ги одржите вашите конекции активни во позадина, ве молиме, овозможете ги известувањата за ConnectBot во системските поставки.</string>
   <string name="open_settings" tools:machine_translated="true">Отворете ги поставките</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Врските може да се прекинат при префрлање меѓу апликации</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Врската може да прекине додека апликацијата е во позадина.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Дали се обидувате да пристапите до локален хост? Дозволете ги потребните дозволи за локалната мрежа.</string>
   <string name="loading_message" tools:machine_translated="true">Вчитување…</string>
   <string name="migration_checking" tools:machine_translated="true">Се проверува базата на податоци…</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Врската е прекината.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Потребна е интервенција за поврзувањето.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Отворете ја конзолата за да го прочитате остатокот од излезот.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android може да го прекине ConnectBot и да ги прекине вашите сесии кога ќе префрлите апликации.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Временско ограничување на мрежата на Mosh (секунди)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Време без ажурирања од клиентот пред серверот да се исклучи. Оставете го полето празно за да се користи поставката на серверот или една недела; користете 0 за да се деактивира рокот на важност.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Внесете цел број од 0 до 2147483647 или оставете го полето празно.</string>

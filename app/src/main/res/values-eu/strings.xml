@@ -262,8 +262,6 @@
   <string name="pref_theme_system" tools:machine_translated="true">Sistemaren lehenetsitako ezarpena</string>
   <string name="pref_theme_light" tools:machine_translated="true">Argi</string>
   <string name="pref_theme_dark" tools:machine_translated="true">Ilun</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Mantendu konektatuta atzeplanean.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Erabili jakinarazpen iraunkor bat saioak irekita mantentzeko aplikazioz aldatzean</string>
   <string name="pref_bell_summary" tools:machine_translated="true">Erreproduzitu soinu bat terminaleko alertan.</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Bibratu terminaleko alertan</string>
   <string name="color_red" tools:machine_translated="true">Gorria</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Arbelatik inportatu</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Gako pribatuaren edukia</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Itsatsi arbelatik</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Mantendu konektatuta atzeplanean.</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot-ek jakinarazpen-baimena behar du zure konexioak aktibo mantentzeko aplikazioen artean aldatzen zarenean. Baimen hori ez badago, sistemak zure konexioak desaktibatu ditzake bateria aurrezteko.</string>
   <string name="grant_permission" tools:machine_translated="true">Onartu</string>
   <string name="connect_anyway" tools:machine_translated="true">Konektatu hala ere</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Jakinarazpen-baimena behar da.</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Atzeko planoan zure konexioak aktibo mantentzeko, gaitu ConnectBot-en jakinarazpenak sistemaren ezarpenetan.</string>
   <string name="open_settings" tools:machine_translated="true">Ezarpenak ireki</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Konexioak eten daitezke aplikazioz aldatzean</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Konexioa eten egin daiteke atzeplanean.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Sare lokaleko host batera konektatzen saiatzen ari zara? Baimendu sare lokaleko baimenak.</string>
   <string name="loading_message" tools:machine_translated="true">Kargatzen…</string>
   <string name="migration_checking" tools:machine_translated="true">Datu-basea egiaztatzen…</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Konexioa amaitu da.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Konexioak arreta berezia behar du.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Ireki kontsola gainerako informazioa ikusteko.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Androidek ConnectBot itxi eta zure saioak desaktiba ditzake aplikazioen artean aldatzen zarenean.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh sareko denbora-muga (segunduetan)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Zerbitzaria itxi aurretik bezeroaren azken eguneratzearen eta hurrengoaren arteko denbora. Utzi hutsik zerbitzariaren ezarpenari eusteko edo aste bat erabiltzeko; erabili 0 balioa iraungipena desgaitu nahi baduzu.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Sartu 0 eta 2147483647 arteko zenbaki oso bat, edo utzi hutsik.</string>

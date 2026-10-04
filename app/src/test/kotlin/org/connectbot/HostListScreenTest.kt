@@ -156,8 +156,8 @@ class HostListScreenTest {
     }
 
     @Test
-    fun hostListScreen_showsSnackbar_whenShouldShowWarning() {
-        val warning = composeTestRule.activity.getString(R.string.notification_permission_denied_snackbar)
+    fun hostListScreen_doesNotWarnAboutBackgroundConnections() {
+        val warning = "Connections may drop when you switch apps"
 
         composeTestRule.setContent {
             ConnectBotTheme {
@@ -169,62 +169,6 @@ class HostListScreenTest {
                     onNavigateToPortForwards = {},
                     onNavigateToProfiles = {},
                     onNavigateToHelp = {},
-                    shouldShowNotificationWarning = { true },
-                    onNotificationSnackbarFinish = {},
-                )
-            }
-        }
-
-        composeTestRule
-            .onNodeWithText(warning)
-            .assertIsDisplayed()
-    }
-
-    @Test
-    fun hostListScreen_snackbarSettingsAction_navigatesToSettingsHighlight() {
-        var navigatedToSettingsHighlight = false
-        val settings = composeTestRule.activity.getString(R.string.list_menu_settings)
-
-        composeTestRule.setContent {
-            ConnectBotTheme {
-                HostListScreen(
-                    onNavigateToConsole = {},
-                    onNavigateToEditHost = {},
-                    onNavigateToSettings = {},
-                    onNavigateToSettingsHighlightConnPersist = { navigatedToSettingsHighlight = true },
-                    onNavigateToPubkeys = {},
-                    onNavigateToPortForwards = {},
-                    onNavigateToProfiles = {},
-                    onNavigateToHelp = {},
-                    shouldShowNotificationWarning = { true },
-                    onNotificationSnackbarFinish = {},
-                )
-            }
-        }
-
-        composeTestRule
-            .onNodeWithText(settings)
-            .performClick()
-
-        assertTrue(navigatedToSettingsHighlight)
-    }
-
-    @Test
-    fun hostListScreen_noSnackbar_whenShouldNotShowWarning() {
-        val warning = composeTestRule.activity.getString(R.string.notification_permission_denied_snackbar)
-
-        composeTestRule.setContent {
-            ConnectBotTheme {
-                HostListScreen(
-                    onNavigateToConsole = {},
-                    onNavigateToEditHost = {},
-                    onNavigateToSettings = {},
-                    onNavigateToPubkeys = {},
-                    onNavigateToPortForwards = {},
-                    onNavigateToProfiles = {},
-                    onNavigateToHelp = {},
-                    shouldShowNotificationWarning = { false },
-                    onNotificationSnackbarFinish = {},
                 )
             }
         }

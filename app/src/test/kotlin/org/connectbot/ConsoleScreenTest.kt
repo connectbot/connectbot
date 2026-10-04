@@ -253,102 +253,15 @@ class ConsoleScreenTest {
     }
 
     @Test
-    fun consoleScreen_showsNotificationWarningSnackbar_whenConnPersistDisabled() {
-        val warning = composeTestRule.activity.getString(R.string.notification_permission_console_warning)
+    fun consoleScreen_doesNotWarnAboutConnectionsWhenAlertsAreOff() {
         val context = ApplicationProvider.getApplicationContext<Context>()
         PreferenceManager.getDefaultSharedPreferences(context).edit()
-            .putBoolean(PreferenceConstants.CONNECTION_PERSIST, false)
+            .putBoolean(PreferenceConstants.CONNECTION_ALERTS, false)
             .putBoolean(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED, true)
             .commit()
-
         setContent()
         navigateToConsoleScreen()
-
-        composeTestRule
-            .onNodeWithText(warning)
-            .assertIsDisplayed()
-    }
-
-    @Test
-    fun consoleScreen_showsNotificationWarningSnackbar_whenPermissionDeniedOnDevice() {
-        // On API 33+, notification permission is denied by default in Robolectric.
-        // conn_persist defaults to true, so this exercises the permission-revoked-in-settings path.
-        if (android.os.Build.VERSION.SDK_INT < android.os.Build.VERSION_CODES.TIRAMISU) return
-
-        val warning = composeTestRule.activity.getString(R.string.notification_permission_console_warning)
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        // Simulate that the permission flow has run before (key exists) but was then revoked in Settings.
-        PreferenceManager.getDefaultSharedPreferences(context).edit()
-            .putBoolean(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED, false)
-            .commit()
-
-        setContent()
-        navigateToConsoleScreen()
-
-        composeTestRule
-            .onNodeWithText(warning)
-            .assertIsDisplayed()
-    }
-
-    @Test
-    fun consoleScreen_noNotificationWarningSnackbar_whenConnPersistEnabledAndPermissionGranted() {
-        // On API < 33, POST_NOTIFICATIONS doesn't exist so it's considered granted.
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) return
-
-        val warning = composeTestRule.activity.getString(R.string.notification_permission_console_warning)
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        PreferenceManager.getDefaultSharedPreferences(context).edit()
-            .putBoolean(PreferenceConstants.CONNECTION_PERSIST, true)
-            .commit()
-
-        setContent()
-        navigateToConsoleScreen()
-
-        composeTestRule
-            .onAllNodes(androidx.compose.ui.test.hasText(warning))
-            .fetchSemanticsNodes()
-            .let { nodes -> assertEquals("Snackbar should not be shown when both conditions are clear", 0, nodes.size) }
-    }
-
-    @Test
-    fun consoleScreen_notificationWarningSettingsAction_navigatesToSettings() {
-        val context = ApplicationProvider.getApplicationContext<Context>()
-        PreferenceManager.getDefaultSharedPreferences(context).edit()
-            .putBoolean(PreferenceConstants.CONNECTION_PERSIST, false)
-            .putBoolean(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED, true)
-            .commit()
-
-        var navigatedToSettings = false
-
-        composeTestRule.setContent {
-            val ctx = LocalContext.current
-            navController = TestNavHostController(ctx)
-            navController.navigatorProvider.addNavigator(ComposeNavigator())
-            ConnectBotTheme {
-                CompositionLocalProvider(LocalTerminalManager provides null) {
-                    NavHost(navController = navController, startDestination = "start") {
-                        composable("start") {}
-                        composable(
-                            route = "console/{hostId}",
-                            arguments = listOf(navArgument("hostId") { type = NavType.LongType }),
-                        ) {
-                            ConsoleScreen(
-                                onNavigateBack = { navController.popBackStack() },
-                                onNavigateToPortForwards = {},
-                                onNavigateToSettings = { navigatedToSettings = true },
-                            )
-                        }
-                    }
-                }
-            }
-        }
-        navigateToConsoleScreen()
-
-        composeTestRule
-            .onNodeWithText("Settings")
-            .performClick()
-
-        assertTrue(navigatedToSettings)
+        composeTestRule.onNodeWithText("Connection may drop in background").assertDoesNotExist()
     }
 
     @Test
@@ -587,7 +500,6 @@ class ConsoleScreenTest {
 
         `when`(mockViewModel.uiState).thenReturn(uiStateFlow)
         `when`(mockViewModel.networkStatusMessages).thenReturn(networkStatusMessages)
-        `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
 
         setContent(mockConsoleViewModel = mockViewModel)
         navigateToConsoleScreen(hostId = 1L)
@@ -620,7 +532,6 @@ class ConsoleScreenTest {
 
         `when`(mockViewModel.uiState).thenReturn(uiStateFlow)
         `when`(mockViewModel.networkStatusMessages).thenReturn(networkStatusMessages)
-        `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
 
         setContent(mockConsoleViewModel = mockViewModel)
         navigateToConsoleScreen(hostId = 1L)
@@ -653,7 +564,6 @@ class ConsoleScreenTest {
 
         `when`(mockViewModel.uiState).thenReturn(uiStateFlow)
         `when`(mockViewModel.networkStatusMessages).thenReturn(networkStatusMessages)
-        `when`(mockViewModel.shouldShowNotificationWarning()).thenReturn(false)
 
         setContent(mockConsoleViewModel = mockViewModel)
         navigateToConsoleScreen(hostId = 1L)

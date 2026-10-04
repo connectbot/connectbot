@@ -227,8 +227,6 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Na virtualnih tipkovnicah številčne tipke pošljejo signale F1–F10, če je pritisnjena tipka Ctrl.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Gumbi za glasnost spreminjajo velikost pisave.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Velikost pisave lahko spremenite tudi v nastavitvah profila.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Ohranite povezavo v ozadju.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Uporabi stalno obvestilo, da seje ostanejo odprte pri preklapljanju med aplikacijami</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Lepljive modifikacijske tipke</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibriranje ob uporabi tipk za premikanje puščice; uporabno pri počasnih povezavah.</string>
   <string name="pref_bell_summary" tools:machine_translated="true">Predvajaj zvok ob opozorilu v terminalu.</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Uvozi iz odložišča.</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Vsebina zasebnega ključa</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Prilepi vsebino iz odložišča.</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Ohranite povezavo v ozadju.</string>
-  <string name="notification_permission_message" tools:machine_translated="true">Aplikacija ConnectBot potrebuje dovoljenje za pošiljanje obvestil, da bi ohranila aktivne povezave, ko preklapljate med aplikacijami. Brez tega dovoljenja lahko sistem prekine povezave, da bi varčeval z energijo baterije.</string>
   <string name="grant_permission" tools:machine_translated="true">Dovolite</string>
   <string name="connect_anyway" tools:machine_translated="true">Poveži se, tudi če ne želiš dovoliti pošiljanja obvestil.</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Potrebno dovoljenje za obvestila.</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Če želite, da bodo vaše povezave ostale aktivne v ozadju, omogočite obvestila za ConnectBot v nastavitvah sistema.</string>
   <string name="open_settings" tools:machine_translated="true">Odpri nastavitve</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Povezave se lahko prekinejo pri preklapljanju med aplikacijami</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Povezava se lahko prekine, ko je aplikacija v ozadju.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Poskušate se povezati z lokalnim gostiteljem? Dovolite dostop do lokalne mreže.</string>
   <string name="loading_message" tools:machine_translated="true">Poteka nalaganje …</string>
   <string name="migration_checking" tools:machine_translated="true">Preverjanje podatkovne baze …</string>
@@ -664,7 +656,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Povezava je bila prekinjena.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Potrebna je pozornost pri vzpostavljanju povezave.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Odprite konzolo, da si ogledate preostali izpis.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android lahko ustavi program ConnectBot in prekine vaše aktivne povezave, ko preklapljate med aplikacijami.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Čas izteka omrežne povezave Mosh (v sekundah)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Čas, po katerem se povezava prekine, če od odjemalca ne prejmemo nobenih posodobitev. Če želite uporabiti privzeto nastavitev strežnika, pustite polje prazno ali nastavite en teden; uporabite 0, da onemogočite časovno omejitev.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Vnesite celo število od 0 do 2147483647 ali pustite polje prazno.</string>
