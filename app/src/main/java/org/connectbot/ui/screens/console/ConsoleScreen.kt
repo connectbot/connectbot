@@ -113,6 +113,7 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalLayoutDirection
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalWindowInfo
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
@@ -563,7 +564,6 @@ fun ConsoleScreen(
     val coroutineScope = rememberCoroutineScope()
 
     // Capture latest callback for use in effects
-    val currentOnNavigateBack by rememberUpdatedState(onNavigateBack)
     val currentOnNavigateToSettings by rememberUpdatedState(onNavigateToSettings)
 
     LaunchedEffect(terminalManager) {
@@ -596,6 +596,16 @@ fun ConsoleScreen(
     // Keyboard state
     val hasHardwareKeyboard = rememberHasHardwareKeyboard()
     var showSoftwareKeyboard by remember { mutableStateOf(!hasHardwareKeyboard) }
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+    val navigateBack: () -> Unit = {
+        // Hide while the console still owns input; disposal may run after focus
+        // has moved, when the terminal's guarded IME cleanup cannot hide it.
+        showSoftwareKeyboard = false
+        keyboardController?.hide()
+        onNavigateBack()
+    }
+    val currentOnNavigateBack by rememberUpdatedState(navigateBack)
 
     var rotation by remember(hasHardwareKeyboard) {
         val prefValue = prefs.getString(PreferenceConstants.ROTATION, PreferenceConstants.ROTATION_DEFAULT)
@@ -1218,7 +1228,7 @@ fun ConsoleScreen(
                         titleBarHeight = with(density) { it.height.toDp() }
                     },
                 navigationIcon = {
-                    IconButton(onClick = onNavigateBack) {
+                    IconButton(onClick = navigateBack) {
                         Icon(
                             Icons.AutoMirrored.Filled.ArrowBack,
                             stringResource(R.string.button_back),
