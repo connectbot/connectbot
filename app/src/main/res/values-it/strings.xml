@@ -122,7 +122,7 @@
   <string name="pref_shiftfkeys_title">Shift+num sono i tasti funzione</string>
   <string name="pref_shiftfkeys_summary">Con le tastiere hardware, i tasti numerici inviano F1-F10 con shift</string>
   <string name="pref_ctrlfkeys_title">Ctrl+num sono tasti funzione</string>
-  <string name="pref_ctrlfkeys_summary">Con le tastiere hardware, i tasti numerici inviano F1-F10 con ctrl</string>
+  <string name="pref_ctrlfkeys_summary">Con le tastiere virtuali, i tasti numerici inviano F1-F10 con Ctrl</string>
   <string name="pref_volumefont_title">I pulsanti del volume cambiano la dimensione dei caratteri</string>
   <string name="pref_volumefont_summary">La dimensione dei caratteri può essere modificata nelle impostazioni dei singoli host</string>
   <string name="pref_memkeys_title">Mantieni chiavi in memoria</string>

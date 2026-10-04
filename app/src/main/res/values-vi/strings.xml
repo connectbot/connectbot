@@ -352,7 +352,7 @@
   <string name="image_description_right">Mũi tên sáng phải</string>
   <string name="button_key_esc">Esc (thoát)</string>
   <string name="button_key_ctrl">Ctrl (điều khiển)</string>
-  <string name="button_key_home">Màn hình chính</string>
+  <string name="button_key_home">Home</string>
   <string name="button_key_end">Kết thúc</string>
   <string name="button_key_pgup">PgUp (trang trước đó)</string>
   <string name="button_key_pgdn">PgDn (trang tiếp sau)</string>

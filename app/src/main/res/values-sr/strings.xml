@@ -30,7 +30,7 @@
   <string name="prompt_password_can_be_blank">Напомена: лозинка може да буде празна</string>
   <string name="prompt_bits">Бита:</string>
   <string name="prompt_pubkey_password">Лозинка за кључ „%1$s“</string>
-  <string name="prompt_allow_agent_to_use_key">Дозволити удаљеном домаћину да\nкористи тастер „%1$s“?</string>
+  <string name="prompt_allow_agent_to_use_key">Дозволити удаљеном домаћину да\nкористи кључ „%1$s“?</string>
   <string name="host_verification_failure_warning_header">УПОЗОРЕЊЕ: ИДЕНТИФИКАЦИЈА УДАЉЕНОГ ДОМАЋИНА ЈЕ ИЗМЕЊЕНА!</string>
   <string name="host_verification_failure_warning">МОГУЋЕ ЈЕ ДА НЕКО РАДИ НЕШТО ЛОШЕ!\nНеко вас можда управо прислушкује (човек-између напад)!\nТакође је могуће да је кључ домаћина управо измењен.</string>
   <string name="prompt_continue_connecting">Желите ли заиста да\nнаставите повезивање?</string>

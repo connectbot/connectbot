@@ -68,7 +68,7 @@
   <string name="host_verification_failure_warning_header">ALERTA: LA IDENTIFICACIÓ DEL SERVIDOR REMOT HA CANVIAT!</string>
   <string name="host_verification_failure_warning">ES POSSIBLE QUE ALGÚ ESTIGUI FENT ALGUNA COSA LLETGA!\nAlgú pot estar escoltant la teva comunicació (atac home-al-mig)!\nTambé és possible que simplement el servidor hagi canviat la clau.</string>
   <string name="prompt_continue_connecting">Estàs segur que vols\ncontinuar connectant?</string>
-  <string name="host_authenticity_warning">La autenticació amb el servidor \'%1$s\' no es pot establir.</string>
+  <string name="host_authenticity_warning">No es pot verificar l\'autenticitat del servidor \'%1$s\'.</string>
   <string name="host_fingerprint">Servidor %1$s empremta de la clau és %2$s</string>
   <string name="host_key_verification_title">Verificació de la clau de l\'amfitrió</string>
   <string name="fingerprint_format_header">Format de la petjada digital</string>
@@ -103,7 +103,7 @@
   <string name="button_import">Importa</string>
   <string name="font_importing">S\'està carregant el tipus de lletra...</string>
   <string name="pref_backupkeys_title">Còpia de seguretat de claus públiques</string>
-  <string name="pref_backupkeys_summary">Crea una còpia de seguretat de les claus públiques mitjançant el mecanisme de còpia d\'Android</string>
+  <string name="pref_backupkeys_summary">Crea una còpia de seguretat de les claus privades mitjançant el mecanisme de còpia d\'Android</string>
   <string name="pref_ui_category">Interfície d\'usuari</string>
   <string name="pref_language_title">Idioma</string>
   <string name="pref_language_system_default">Configuració per defecte del sistema</string>
