@@ -25,4 +25,5 @@
 	<color name="host_red">#F44336</color>
 	<color name="host_green">#4CAF50</color>
 	<color name="host_blue">#03A9F4</color>
+	<color name="host_amber">#B26A00</color>
 </resources>

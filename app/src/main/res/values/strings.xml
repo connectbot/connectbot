@@ -1580,4 +1580,24 @@
 	<string name="automation_key_shift">Shift</string>
 	<!-- Action summary duration in seconds. -->
 	<string name="automation_seconds">%1$.3f s</string>
+	<!-- Host status badge and explanation dialog title when a disconnected console has unseen output. -->
+	<string name="host_status_unread_output">Unread output</string>
+	<!-- Explanation when tapping a disconnected host badge after a deliberate disconnect. -->
+	<string name="host_status_user_disconnected">You disconnected from this host.</string>
+	<!-- Explanation when the remote shell or command finishes. -->
+	<string name="host_status_session_exit">The remote session ended.</string>
+	<!-- Explanation when the server closes the connection. -->
+	<string name="host_status_remote_closed">The host closed the connection. You can reconnect.</string>
+	<!-- Explanation for a dropped connection that can be retried. -->
+	<string name="host_status_connection_lost">The connection was lost. You can reconnect.</string>
+	<!-- Explanation when a session loses its network connection. -->
+	<string name="host_status_network_lost">The network connection was lost. Reconnect when the network is available.</string>
+	<!-- Red status badge explanation and console message after authentication attempts are exhausted. -->
+	<string name="host_status_auth_failed">Authentication failed. Check your username, password, or key before reconnecting.</string>
+	<!-- Explanation for an ended connection when no specific reason is available. -->
+	<string name="host_status_connection_ended">The connection ended.</string>
+	<!-- Title of the red host status explanation dialog. -->
+	<string name="host_status_action_required">Connection needs attention</string>
+	<!-- Explanation for an amber host badge; the placeholder is the disconnect reason. -->
+	<string name="host_status_unread_explanation">%1$s Open the console to read the remaining output.</string>
 </resources>

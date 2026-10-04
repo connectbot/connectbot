@@ -81,6 +81,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
@@ -139,6 +140,7 @@ import org.connectbot.service.AuthBanner
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.PromptRequest
 import org.connectbot.service.TerminalBridge
+import org.connectbot.service.descriptionResource
 import org.connectbot.terminal.ComposeController
 import org.connectbot.terminal.ImeShortcutInputMode
 import org.connectbot.terminal.ProgressState
@@ -519,7 +521,7 @@ private fun ConsoleTerminalPage(
                         .padding(16.dp),
                 ) {
                     Text(
-                        text = stringResource(R.string.alert_disconnect_msg),
+                        text = stringResource(bridge.disconnectReason.descriptionResource()),
                         style = MaterialTheme.typography.bodyLarge,
                         color = terminalColors.overlayText,
                         modifier = Modifier.padding(bottom = 16.dp),
@@ -649,11 +651,17 @@ fun ConsoleScreen(
     val automationState by currentBridge?.automationState?.collectAsState()
         ?: remember { mutableStateOf(org.connectbot.service.automation.AutomationState()) }
 
+    val consoleOwner = remember(terminalManager, currentBridge) { Any() }
     LifecycleResumeEffect(terminalManager, currentBridge) {
-        val owner = Any()
-        terminalManager?.setVisibleConsole(owner, currentBridge)
+        terminalManager?.setVisibleConsole(consoleOwner, currentBridge)
         onPauseOrDispose {
-            terminalManager?.clearVisibleConsole(owner)
+            terminalManager?.clearVisibleConsole(consoleOwner)
+        }
+    }
+
+    DisposableEffect(terminalManager, currentBridge) {
+        onDispose {
+            currentBridge?.let { terminalManager?.onConsoleClosed(consoleOwner, it) }
         }
     }
 

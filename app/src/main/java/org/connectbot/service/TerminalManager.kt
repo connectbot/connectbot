@@ -99,6 +99,11 @@ class TerminalManager :
     private val _disconnectedFlow = MutableStateFlow<List<Host>>(emptyList())
     val disconnectedFlow: StateFlow<List<Host>> = _disconnectedFlow.asStateFlow()
 
+    private val endedSessionAttention = ConcurrentHashMap<Long, SessionAttention>()
+
+    fun getSessionAttention(hostId: Long): SessionAttentionState? = bridgesFlow.value.find { it.host.id == hostId }?.sessionAttention?.snapshot()
+        ?: endedSessionAttention[hostId]?.snapshot()
+
     private var disconnectListener: BridgeDisconnectedListener? = null
 
     /**
@@ -181,16 +186,29 @@ class TerminalManager :
 
     @MainThread
     fun setVisibleConsole(owner: Any, bridge: TerminalBridge?) {
+        visibleBridge?.sessionAttention?.onHidden()
         visibleConsoleOwner = owner
         visibleBridge = bridge
+        bridge?.sessionAttention?.onOpened()
+        notifyHostStatusChanged()
     }
 
     @MainThread
     fun clearVisibleConsole(owner: Any) {
         if (visibleConsoleOwner === owner) {
+            visibleBridge?.sessionAttention?.onHidden()
             visibleConsoleOwner = null
             visibleBridge = null
         }
+    }
+
+    @MainThread
+    fun onConsoleClosed(owner: Any, bridge: TerminalBridge) {
+        // A departing console must not acknowledge or hide a newer console for the same bridge.
+        if (visibleBridge === bridge && visibleConsoleOwner !== owner) return
+        clearVisibleConsole(owner)
+        bridge.sessionAttention.onConsoleClosed()
+        notifyHostStatusChanged()
     }
 
     /** Route each bell once, using the originating bridge and the visible console. */
@@ -391,6 +409,7 @@ class TerminalManager :
             throw IllegalArgumentException("Connection already open for that nickname")
         }
 
+        endedSessionAttention.remove(host.id)
         val bridge = TerminalBridge(this, host, dispatchers)
         bridge.setOnDisconnectedListener(this)
         bridge.startConnection()
@@ -506,6 +525,7 @@ class TerminalManager :
     override fun onDisconnected(bridge: TerminalBridge) {
         var shouldHideRunningNotification = false
         Timber.d("Bridge Disconnected. Removing it.")
+        endedSessionAttention[bridge.host.id] = bridge.sessionAttention
 
         synchronized(_bridges) {
             // remove this bridge from our list

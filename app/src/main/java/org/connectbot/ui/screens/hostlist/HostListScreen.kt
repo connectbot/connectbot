@@ -42,6 +42,7 @@ import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Key
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LinkOff
@@ -95,6 +96,8 @@ import org.connectbot.data.JsonImportReader
 import org.connectbot.data.JsonImportTooLargeException
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.service.DisconnectReason
+import org.connectbot.service.descriptionResource
 import org.connectbot.ui.LocalTerminalManager
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.components.DisconnectAllDialog
@@ -487,6 +490,7 @@ fun HostListScreenContent(
                             HostListItem(
                                 host = host,
                                 connectionState = uiState.connectionStates[host.id] ?: ConnectionState.UNKNOWN,
+                                disconnectReason = uiState.disconnectReasons[host.id],
                                 onClick = {
                                     if (makingShortcut) {
                                         onSelectShortcut(host)
@@ -533,21 +537,51 @@ private fun HostListItem(
     onDelete: () -> Unit,
     modifier: Modifier = Modifier,
     makingShortcut: Boolean = false,
+    disconnectReason: DisconnectReason? = null,
 ) {
     var showMenu by remember { mutableStateOf(false) }
     var showDeleteDialog by remember { mutableStateOf(false) }
     var showDisconnectDialog by remember { mutableStateOf(false) }
     var showForgetHostKeysDialog by remember { mutableStateOf(false) }
 
-    // Determine border color based on connection state
-    val borderColor = when (connectionState) {
+    var showStatusDialog by remember { mutableStateOf(false) }
+    val statusColor = when (connectionState) {
         ConnectionState.CONNECTED -> colorResource(R.color.host_green)
-
-        // Green
-        ConnectionState.DISCONNECTED -> colorResource(R.color.host_red)
-
-        // Red
+        ConnectionState.DISCONNECTED -> MaterialTheme.colorScheme.onSurfaceVariant
+        ConnectionState.UNREAD_OUTPUT -> colorResource(R.color.host_amber)
+        ConnectionState.ERROR -> MaterialTheme.colorScheme.error
         ConnectionState.UNKNOWN -> Color.Transparent
+    }
+    val statusDescription = when (connectionState) {
+        ConnectionState.CONNECTED -> stringResource(R.string.image_description_connected)
+        ConnectionState.DISCONNECTED -> stringResource(R.string.image_description_disconnected)
+        ConnectionState.UNREAD_OUTPUT -> stringResource(R.string.host_status_unread_output)
+        ConnectionState.ERROR -> stringResource(R.string.host_status_action_required)
+        ConnectionState.UNKNOWN -> ""
+    }
+    val reasonDescription = stringResource(
+        (disconnectReason ?: DisconnectReason.UNKNOWN).descriptionResource(),
+    )
+
+    if (showStatusDialog) {
+        AlertDialog(
+            onDismissRequest = { showStatusDialog = false },
+            title = { Text(statusDescription) },
+            text = {
+                Text(
+                    if (connectionState == ConnectionState.UNREAD_OUTPUT) {
+                        stringResource(R.string.host_status_unread_explanation, reasonDescription)
+                    } else {
+                        reasonDescription
+                    },
+                )
+            },
+            confirmButton = {
+                TextButton(onClick = { showStatusDialog = false }) {
+                    Text(stringResource(R.string.button_ok))
+                }
+            },
+        )
     }
 
     Column(modifier = modifier) {
@@ -557,7 +591,16 @@ private fun HostListItem(
             },
             leadingContent = {
                 Box(
-                    modifier = Modifier.size(40.dp),
+                    modifier = Modifier
+                        .size(48.dp)
+                        .then(
+                            if (!makingShortcut && connectionState != ConnectionState.UNKNOWN && connectionState != ConnectionState.CONNECTED) {
+                                Modifier.clickable(onClickLabel = statusDescription) { showStatusDialog = true }
+                            } else {
+                                Modifier
+                            },
+                        ),
+                    contentAlignment = Alignment.Center,
                 ) {
                     // Main host icon with colored background and border
                     Box(
@@ -569,7 +612,7 @@ private fun HostListItem(
                             )
                             .border(
                                 width = 3.dp,
-                                color = borderColor,
+                                color = statusColor,
                                 shape = CircleShape,
                             ),
                         contentAlignment = Alignment.Center,
@@ -580,11 +623,7 @@ private fun HostListItem(
                                 "telnet" -> Icons.Default.Computer
                                 else -> Icons.Default.Link
                             },
-                            contentDescription = when (connectionState) {
-                                ConnectionState.CONNECTED -> stringResource(R.string.image_description_connected)
-                                ConnectionState.DISCONNECTED -> stringResource(R.string.image_description_disconnected)
-                                ConnectionState.UNKNOWN -> null
-                            },
+                            contentDescription = statusDescription.takeIf { it.isNotEmpty() },
                             tint = Color.White,
                             modifier = Modifier.size(24.dp),
                         )
@@ -604,15 +643,13 @@ private fun HostListItem(
                             Icon(
                                 imageVector = when (connectionState) {
                                     ConnectionState.CONNECTED -> Icons.Default.CheckCircle
-                                    ConnectionState.DISCONNECTED -> Icons.Default.Error
+                                    ConnectionState.DISCONNECTED -> Icons.Default.LinkOff
+                                    ConnectionState.UNREAD_OUTPUT -> Icons.Default.Info
+                                    ConnectionState.ERROR -> Icons.Default.Error
                                     ConnectionState.UNKNOWN -> Icons.Default.Computer // Unreachable
                                 },
                                 contentDescription = null,
-                                tint = when (connectionState) {
-                                    ConnectionState.CONNECTED -> colorResource(R.color.host_green)
-                                    ConnectionState.DISCONNECTED -> colorResource(R.color.host_red)
-                                    ConnectionState.UNKNOWN -> Color.Gray // Unreachable
-                                },
+                                tint = statusColor,
                                 modifier = Modifier.size(16.dp),
                             )
                         }

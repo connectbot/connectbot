@@ -17,6 +17,9 @@
 
 package org.connectbot.service
 
+import androidx.annotation.StringRes
+import org.connectbot.R
+
 enum class DisconnectReason {
     USER_REQUESTED,
     SESSION_EXIT,
@@ -25,4 +28,15 @@ enum class DisconnectReason {
     NETWORK_LOST,
     AUTH_FAIL,
     UNKNOWN,
+}
+
+@StringRes
+fun DisconnectReason.descriptionResource(): Int = when (this) {
+    DisconnectReason.USER_REQUESTED -> R.string.host_status_user_disconnected
+    DisconnectReason.SESSION_EXIT -> R.string.host_status_session_exit
+    DisconnectReason.REMOTE_EOF -> R.string.host_status_remote_closed
+    DisconnectReason.IO_ERROR -> R.string.host_status_connection_lost
+    DisconnectReason.NETWORK_LOST -> R.string.host_status_network_lost
+    DisconnectReason.AUTH_FAIL -> R.string.host_status_auth_failed
+    DisconnectReason.UNKNOWN -> R.string.host_status_connection_ended
 }
