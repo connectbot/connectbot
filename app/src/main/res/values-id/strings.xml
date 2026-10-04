@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc">Sederhana, tangguh, klien SSH dengan kode terbuka.</string>
-  <string name="service_desc">"Mengelola koneksi SSH dan kunci publik  yang terrekam"</string>
+  <string name="service_desc">Menjaga koneksi SSH dan kunci publik yang dimuat</string>
   <string name="title_pubkey_list">Kunci Publik</string>
   <string name="title_help">Bantuan</string>
   <string name="title_color_picker">Pilih warna</string>
@@ -14,16 +14,16 @@
   <string name="increase_font_shortcut">Kontrol dan +</string>
   <string name="decrease_font_size">Kecilkan Ukuran Huruf</string>
   <string name="pubkey_generate">Buat</string>
-  <string name="pubkey_delete">Tombol Hapus</string>
-  <string name="pubkey_gather_entropy">Kumpulkan Entropy</string>
-  <string name="pubkey_touch_prompt">Sentuh boks ini untuk mengumpulkan ke tidak tentuan: %1$d%% selesai</string>
-  <string name="pubkey_touch_hint">Untuk memastikan ketidaktentuan selama pembuatan kunci, gerakkan tangan anda secara acak diatas kotak dibawah ini.</string>
+  <string name="pubkey_delete">Hapus kunci</string>
+  <string name="pubkey_gather_entropy">Mengumpulkan Entropi</string>
+  <string name="pubkey_touch_prompt">Sentuh kotak ini untuk mengumpulkan data acak: %1$d%% selesai</string>
+  <string name="pubkey_touch_hint">Untuk memastikan keacakan selama pembuatan kunci, gerakkan jari Anda secara acak di atas kotak di bawah ini.</string>
   <string name="pubkey_generating">Membuat pasangan kunci…</string>
   <string name="pubkey_copy_private">Salin kunci pribadi</string>
   <string name="pubkey_copy_public">Salin kunci publik</string>
   <string name="pubkey_change_password">Ubah kata sandi</string>
   <string name="pubkey_unlock">Buka kunci</string>
-  <string name="pubkey_load_on_start">Muat kunci pada saat memulai</string>
+  <string name="pubkey_load_on_start">Muat kunci saat aplikasi dimulai</string>
   <string name="pubkey_confirm_use">Konfirmasi sebelum digunakan</string>
   <string name="portforward_edit">Ubah port forward</string>
   <string name="portforward_delete">Hapus port forward</string>
@@ -37,17 +37,17 @@
   <string name="prompt_password_can_be_blank">Catatan: sandi dapat dikosongkan</string>
   <string name="prompt_bits">Jumlah bit:</string>
   <string name="prompt_pubkey_password">Kata sandi untuk kunci \'%1$s\'</string>
-  <string name="prompt_allow_agent_to_use_key">Ijinkan remote host untuk\nmenggunakan kunci \'%1$s\'?</string>
+  <string name="prompt_allow_agent_to_use_key">Izinkan remote host untuk\nmenggunakan kunci \'%1$s\'?</string>
   <string name="host_verification_failure_warning_header">PERINGATAN: IDENTIFIKASI REMOTE HOST TELAH BERUBAH!</string>
   <string name="host_verification_failure_warning">KEMUNGKINAN SESEORANG SEDANG BERBUAT KOTOR!\nSeseorang mungkin tengah menyadap anda saat ini (serangan man-in-the-middle)!\nMungkin juga kunci host baru saja diubah.</string>
   <string name="prompt_continue_connecting">Apakah Anda yakin ingin\nterus mencoba menyambungkan?</string>
-  <string name="host_authenticity_warning">Authentifikasi dari host \'%1$s\' tidak dapat dibuat.</string>
-  <string name="host_fingerprint">Host %1$s tanda tangan kunci adalah %2$s</string>
+  <string name="host_authenticity_warning">Keaslian host \'%1$s\' tidak dapat dipastikan.</string>
+  <string name="host_fingerprint">Sidik jari kunci host (%1$s): %2$s</string>
   <string name="alert_passwords_do_not_match_msg">Kata sandi tidak cocok!</string>
   <string name="alert_wrong_password_msg">Kata sandi salah!</string>
   <string name="button_resize">Ubah ukuran</string>
   <string name="alert_disconnect_msg">Koneksi terputus</string>
-  <string name="pref_emulation_category">Terminal Emulasi</string>
+  <string name="pref_emulation_category">Emulasi Terminal</string>
   <string name="pref_emulation_title">Mode Emulasi</string>
   <string name="pref_scrollback_title">Ukuran Scrollback</string>
   <string name="pref_scrollback_summary">Ukuran penyangga scrollback yang harus tersimpan di memori pada setiap konsol</string>
@@ -56,20 +56,20 @@
   <string name="pref_fullscreen_summary">Sembunyikan bar status ketika dalam konsol</string>
   <string name="pref_keyboard_category">Papan tik</string>
   <string name="pref_memkeys_title">Ingat kunci dalam memori</string>
-  <string name="pref_memkeys_summary">Simpan kunci yang terbuka kedalam memori hingga layanan backend berakhir</string>
+  <string name="pref_memkeys_summary">Simpan kunci yang terbuka ke dalam memori hingga layanan backend berakhir</string>
   <string name="pref_keymode_title">Jalan pintas direktori</string>
   <string name="pref_camera_title">Jalan pintas kamera</string>
-  <string name="pref_keepalive_title">Jaga layar tetap terbuka</string>
+  <string name="pref_keepalive_title">Jaga layar tetap menyala</string>
   <string name="pref_keepalive_summary">Mencegah layar menjadi padam ketika bekerja dalam sebuah konsol</string>
   <string name="pref_wifilock_title">Wi-Fi selalu aktif</string>
   <string name="pref_wifilock_summary">Jaga Wi-Fi agar tidak padam ketika sesi aktif</string>
-  <string name="pref_bumpyarrows_title">Panah belok</string>
+  <string name="pref_bumpyarrows_title">Getaran tombol panah</string>
   <string name="pref_bell_category">Bel terminal</string>
   <string name="pref_bell_title">Bel berdering</string>
   <string name="pref_bell_volume_title">Volume dering</string>
   <string name="pref_bell_vibrate_title">Getarkan saat berdering</string>
   <string name="pref_bell_notification_title">Pemberitahuan di belakang layar</string>
-  <string name="pref_bell_notification_summary">Kirim pemberitahuan ketika sebuah terminal berjalan di belakang dengan membunyikan sebuah nada dering</string>
+  <string name="pref_bell_notification_summary">Kirim notifikasi saat terminal yang berjalan di latar belakang membunyikan bel.</string>
   <string name="list_keymode_right">Gunakan tombol sisi kanan</string>
   <string name="list_keymode_left">Gunakan tombol sisi-kiri</string>
   <string name="list_keymode_none">Tidak aktif</string>
@@ -78,16 +78,16 @@
   <string name="hostpref_nickname_title">Nama panggilan</string>
   <string name="hostpref_color_title">Kategori warna</string>
   <string name="hostpref_fontsize_title">Ukuran huruf (pt)</string>
-  <string name="hostpref_pubkeyid_title">Gunakan otentifikasi pubkey</string>
+  <string name="hostpref_pubkeyid_title">Gunakan autentikasi kunci publik</string>
   <string name="hostpref_authagent_title">Gunakan SSH auth agent</string>
   <string name="hostpref_postlogin_title">otomasi setelah login</string>
   <string name="hostpref_compression_title">Kompresi</string>
   <string name="hostpref_compression_summary">Ini mungkin akan membantu dengan jaringan lambat</string>
   <string name="hostpref_wantsession_title">Jalankan sesi shell</string>
-  <string name="hostpref_wantsession_summary">Non-aktifkan kesukaan ini hanya untuk port forwards</string>
+  <string name="hostpref_wantsession_summary">Nonaktifkan setelan ini jika hanya ingin menggunakan penerusan port</string>
   <string name="hostpref_stayconnected_summary">Coba menyambungkan kembali ke host jika terputus</string>
   <string name="hostpref_delkey_title">Tombol DEL</string>
-  <string name="hostpref_encoding_title">Pengkodean</string>
+  <string name="hostpref_encoding_title">Pengodean</string>
   <string name="hostpref_username_title">Nama pengguna</string>
   <string name="hostpref_hostname_title">Host</string>
   <string name="hostpref_port_title">Port</string>
@@ -117,34 +117,34 @@
   <string name="list_camera_ctrla">Ctrl+A</string>
   <string name="list_camera_esc">Esc</string>
   <string name="list_camera_none">Kosong</string>
-  <string name="delete_message">Apakah anda yakin ingin menghapus %1$s?</string>
+  <string name="delete_message">Apakah Anda yakin ingin menghapus %1$s?</string>
   <string name="delete_pos">Ya, hapus</string>
   <string name="delete_neg">Batal</string>
   <string name="terminal_connecting">Menyambungkan ke %1$s:%2$d melalui %3$s</string>
-  <string name="terminal_sucess">Host terverifikasi \'%1$s\' kunci: %2$s</string>
+  <string name="terminal_sucess">Kunci host (%1$s) terverifikasi: %2$s</string>
   <string name="terminal_failed">Verifikasi kunci host gagal.</string>
   <string name="terminal_using_s2c_algorithm">Algoritma server-ke-klien: %1$s %2$s</string>
   <string name="terminal_using_c2s_algorithm">Algoritma klien-ke-server: %1$s %2$s</string>
   <string name="terminal_using_algorithm">Menggunakan algoritma : %1$s %2$s</string>
-  <string name="terminal_auth">Mencoba untuk mengotentifikasi</string>
-  <string name="terminal_auth_pass">Mencoba otentifikasi \'kata sandi\'</string>
-  <string name="terminal_auth_pass_fail">Metoda otentifikasi \'kata sandi\' gagal</string>
-  <string name="terminal_auth_pubkey_any">Mencoba otentifikasi \'kunci publik\' dengan kunci publik apapun dalam memori</string>
+  <string name="terminal_auth">Mencoba untuk melakukan autentikasi</string>
+  <string name="terminal_auth_pass">Mencoba autentikasi \'kata sandi\'</string>
+  <string name="terminal_auth_pass_fail">Metode autentikasi \'kata sandi\' gagal</string>
+  <string name="terminal_auth_pubkey_any">Mencoba autentikasi \'kunci publik\' dengan kunci publik apapun dalam memori</string>
   <string name="terminal_auth_pubkey_invalid">Kunci publik yang dipilih tidak valid, coba pilih kembali kunci dalam editor host</string>
-  <string name="terminal_auth_pubkey_specific">Mencoba otentifikasi \'kunci publik\' dengan kunci publik spesifik</string>
-  <string name="terminal_auth_pubkey_fail">Metode otentifikasi \'kunci publik\' dengan kunci \'%1$s\' gagal</string>
-  <string name="terminal_auth_ki">Mencoba otentifikasi \'papan ketik interaktif\'</string>
-  <string name="terminal_auth_ki_fail">Metode otentifikasi \'papan ketik interaktif\' gagal</string>
-  <string name="terminal_auth_fail">[Host anda tidak mendukung otentifikasi \'kata sandi\' atau \'papan ketik interaktif\'.]</string>
+  <string name="terminal_auth_pubkey_specific">Mencoba autentikasi \'kunci publik\' dengan kunci publik spesifik</string>
+  <string name="terminal_auth_pubkey_fail">Metode autentikasi \'kunci publik\' dengan kunci \'%1$s\' gagal</string>
+  <string name="terminal_auth_ki">Mencoba autentikasi \'papan ketik interaktif\'</string>
+  <string name="terminal_auth_ki_fail">Metode autentikasi \'papan ketik interaktif\' gagal</string>
+  <string name="terminal_auth_fail">[Host Anda tidak mendukung autentikasi \'kata sandi\' atau \'papan ketik interaktif\'.]</string>
   <string name="terminal_no_session">Sesi tidak akan dimulai karena preferensi host</string>
   <string name="terminal_enable_portfoward">Aktifkan port forward: %1$s</string>
   <string name="local_shell_unavailable">Gagal! Shell lokal tidak tersedia di telepon ini.</string>
-  <string name="notification_text">%1$s memerlukan perhatian anda.</string>
+  <string name="notification_text">%1$s memerlukan perhatian Anda.</string>
   <string name="no">Tidak</string>
   <string name="yes">Ya</string>
   <string name="app_is_running">ConnectBot sedang berjalan</string>
   <string name="image_description_connected">Tersambung.</string>
-  <string name="image_description_toggle_control_character">Ubah-ubah karakter control.</string>
+  <string name="image_description_toggle_control_character">Aktifkan/nonaktifkan karakter kontrol.</string>
   <string name="image_description_send_escape_character">Kirim karakter escape.</string>
   <string name="image_description_show_keyboard">Perlihatkan papan ketik.</string>
   <string name="app_copyright" tools:machine_translated="true">Hak Cipta © Kenny Root</string>
@@ -163,7 +163,7 @@
   <string name="pubkey_export_set_passphrase" tools:machine_translated="true">Tetapkan frasa sandi untuk ekspor.</string>
   <string name="pubkey_export_passphrase_message" tools:machine_translated="true">Masukkan frasa sandi untuk mengenkripsi kunci yang akan diekspor</string>
   <string name="pubkey_export_confirm_passphrase" tools:machine_translated="true">Konfirmasi frasa sandi</string>
-  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Kata sandi tidak cocok</string>
+  <string name="pubkey_export_passphrase_mismatch" tools:machine_translated="true">Frasa sandi tidak cocok</string>
   <string name="pubkey_import_encrypted_title" tools:machine_translated="true">Impor kunci terenkripsi</string>
   <string name="pubkey_import_encrypted_message" tools:machine_translated="true">Masukkan kata sandi untuk mendekripsi kunci \'%1$s\' (%2$s)</string>
   <string name="pubkey_import_button" tools:machine_translated="true">Impor</string>
@@ -211,8 +211,8 @@
   <string name="pref_titlebarhide_title" tools:machine_translated="true">Sembunyikan bilah judul secara otomatis</string>
   <string name="pref_titlebarhide_summary" tools:machine_translated="true">Ketuk konsol untuk menampilkan bilah judul dan mengakses menu</string>
   <string name="pref_alwaysvisible_title" tools:machine_translated="true">Tombol khusus selalu terlihat</string>
-  <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">Gerakan menggulir halaman ke atas/bawah</string>
-  <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">Geser sepertiga bagian kiri layar untuk mengirim perintah naik/turun ke terminal.</string>
+  <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">Gestur Page Up/Down</string>
+  <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">Geser pada sepertiga kiri layar untuk mengirim tombol Page Up/Down ke terminal</string>
   <string name="pref_shiftfkeys_title" tools:machine_translated="true">Shift+angka adalah tombol F</string>
   <string name="pref_shiftfkeys_summary" tools:machine_translated="true">Pada keyboard fisik, tombol angka akan mengirimkan perintah F1-F10 saat tombol Shift ditekan.</string>
   <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl+angka adalah tombol F.</string>
@@ -221,7 +221,7 @@
   <string name="pref_volumefont_summary" tools:machine_translated="true">Ukuran font juga dapat diubah di pengaturan profil</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Tetap terhubung di latar belakang</string>
   <string name="pref_conn_persist_summary" tools:machine_translated="true">Pertahankan sesi Anda tetap aktif meskipun Anda beralih ke aplikasi lain.</string>
-  <string name="pref_stickymodifiers_title" tools:machine_translated="true">Pengaturan preferensi untuk modifikasi yang tetap aktif</string>
+  <string name="pref_stickymodifiers_title" tools:machine_translated="true">Tombol pengubah tetap aktif</string>
   <string name="only_alt" tools:machine_translated="true">Hanya Alt</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Getarkan saat mengirimkan tombol panah; berguna untuk koneksi yang lambat.</string>
   <string name="pref_bell_summary" tools:machine_translated="true">Putar suara saat ada peringatan di terminal</string>
@@ -246,7 +246,7 @@
   <string name="hostpref_colorscheme_title" tools:machine_translated="true">Skema warna terminal</string>
   <string name="hostpref_stayconnected_title" tools:machine_translated="true">Tetap terhubung</string>
   <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Tutup saat terputus.</string>
-  <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Tutup secara otomatis segera setelah koneksi jarak jauh terputus, tanpa menampilkan pesan apa pun.</string>
+  <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Tutup segera tanpa meminta konfirmasi setelah host jarak jauh memutuskan koneksi.</string>
   <string name="hostpref_save_password_summary" tools:machine_translated="true">Simpan kata sandi login dengan aman untuk autentikasi otomatis.</string>
   <string name="hostpref_password_title" tools:machine_translated="true">Kata sandi</string>
   <string name="hostpref_password_unchanged" tools:machine_translated="true">Kata sandi (tidak diubah)</string>
@@ -306,8 +306,8 @@
   <string name="terminal_kex_algorithm" tools:machine_translated="true">Algoritma pertukaran kunci: %s</string>
   <string name="terminal_auth_saved_password" tools:machine_translated="true">Mencoba menggunakan kata sandi yang disimpan…</string>
   <string name="terminal_auth_saved_password_fail" tools:machine_translated="true">Autentikasi kata sandi yang disimpan gagal</string>
-  <string name="terminal_auth_biometric" tools:machine_translated="true">Meminta otentikasi biometrik untuk kunci \'%1$s\'</string>
-  <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">Kunci biometrik \'%1$s\' telah dinonaktifkan. Hal ini dapat terjadi ketika sidik jari baru didaftarkan pada perangkat. Silakan buat kunci baru.</string>
+  <string name="terminal_auth_biometric" tools:machine_translated="true">Meminta autentikasi biometrik untuk kunci \'%1$s\'</string>
+  <string name="terminal_auth_biometric_invalidated" tools:machine_translated="true">Kunci biometrik \'%1$s\' tidak lagi valid. Hal ini dapat terjadi ketika sidik jari baru didaftarkan pada perangkat. Silakan buat kunci baru.</string>
   <string name="title_scheme_manager" tools:machine_translated="true">Kelola Skema Warna</string>
   <string name="button_new_scheme" tools:machine_translated="true">Skema Baru</string>
   <string name="button_duplicate_scheme" tools:machine_translated="true">Duplikasi</string>
@@ -354,10 +354,10 @@
   <string name="image_description_right" tools:machine_translated="true">Panah kanan</string>
   <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
-  <string name="button_key_home" tools:machine_translated="true">Beranda</string>
-  <string name="button_key_end" tools:machine_translated="true">Selesai</string>
-  <string name="button_key_pgup" tools:machine_translated="true">Halaman Atas</string>
-  <string name="button_key_pgdn" tools:machine_translated="true">Halaman Berikutnya</string>
+  <string name="button_key_home" tools:machine_translated="true">Home</string>
+  <string name="button_key_end" tools:machine_translated="true">End</string>
+  <string name="button_key_pgup" tools:machine_translated="true">PgUp</string>
+  <string name="button_key_pgdn" tools:machine_translated="true">PgDn</string>
   <string name="button_key_f1" tools:machine_translated="true">F1</string>
   <string name="button_key_f2" tools:machine_translated="true">F2</string>
   <string name="button_key_f3" tools:machine_translated="true">F3</string>
@@ -382,7 +382,7 @@
   <string name="button_navigate_up" tools:machine_translated="true">Navigasi ke atas</string>
   <string name="button_more_options" tools:machine_translated="true">Opsi lainnya</string>
   <string name="button_host_options" tools:machine_translated="true">Opsi host</string>
-  <string name="button_collapse" tools:machine_translated="true">Tutup</string>
+  <string name="button_collapse" tools:machine_translated="true">Ciutkan</string>
   <string name="error_key_load_failed" tools:machine_translated="true">Gagal memuat kunci \'%1$s\': %2$s</string>
   <string name="error_connection_failed" tools:machine_translated="true">Gagal terhubung ke %1$s (%2$s): %3$s</string>
   <string name="error_port_forward_load_failed" tools:machine_translated="true">Gagal memuat konfigurasi penerusan port untuk %1$s: %2$s</string>
@@ -401,7 +401,7 @@
   <string name="resize_disable_force_size" tools:machine_translated="true">Nonaktifkan ukuran paksa</string>
   <string name="pubkey_editor_key_type_label" tools:machine_translated="true">Jenis kunci</string>
   <string name="pubkey_editor_options_label" tools:machine_translated="true">Pilihan</string>
-  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Kunci terenkripsi tidak dapat dibuka saat sistem dimulai</string>
+  <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Kunci terenkripsi tidak dapat dibuka saat aplikasi dimulai</string>
   <string name="pubkey_type_label" tools:machine_translated="true">Jenis: %s</string>
   <string name="pubkey_encrypted_description" tools:machine_translated="true">Terenkripsi</string>
   <string name="pubkey_not_encrypted_description" tools:machine_translated="true">Tidak terenkripsi</string>
@@ -409,7 +409,7 @@
   <string name="pubkey_biometric_description" tools:machine_translated="true">Lindungi kunci ini dengan sidik jari Anda</string>
   <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Tidak ada sidik jari yang terdaftar. Atur sidik jari di pengaturan perangkat untuk menggunakan fitur ini.</string>
   <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Perlindungan menggunakan sidik jari hanya tersedia untuk kunci RSA dan EC.</string>
-  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Verifikasi untuk menggunakan kunci</string>
+  <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Verifikasi identitas untuk menggunakan kunci</string>
   <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Sentuh sensor sidik jari untuk membuka kunci \'%1$s\'</string>
   <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Dilindungi dengan sidik jari</string>
   <string name="pubkey_biometric_not_available" tools:machine_translated="true">Autentikasi sidik jari tidak tersedia</string>
@@ -429,8 +429,8 @@
   <string name="portforward_type_label" tools:machine_translated="true">Jenis: %s</string>
   <string name="portforward_enable" tools:machine_translated="true">Aktifkan</string>
   <string name="portforward_disable" tools:machine_translated="true">Nonaktifkan</string>
-  <string name="portforward_enabled" tools:machine_translated="true">Pengalihan port diaktifkan</string>
-  <string name="portforward_disabled" tools:machine_translated="true">Pengalihan port dinonaktifkan</string>
+  <string name="portforward_enabled" tools:machine_translated="true">Penerusan port diaktifkan</string>
+  <string name="portforward_disabled" tools:machine_translated="true">Penerusan port dinonaktifkan</string>
   <string name="protocol_spinner_label" tools:machine_translated="true">Protokol</string>
   <string name="expand" tools:machine_translated="true">Perluas</string>
   <string name="hostpref_authagent_with_confirmation" tools:machine_translated="true">memerlukan konfirmasi</string>
@@ -444,7 +444,7 @@
   <string name="notification_permission_title" tools:machine_translated="true">Tetap terhubung di latar belakang</string>
   <string name="notification_permission_message" tools:machine_translated="true">ConnectBot memerlukan izin notifikasi agar koneksi Anda tetap aktif saat Anda beralih aplikasi. Jika tidak, sistem mungkin memutuskan koneksi Anda untuk menghemat baterai.</string>
   <string name="grant_permission" tools:machine_translated="true">Izinkan</string>
-  <string name="connect_anyway" tools:machine_translated="true">Lanjutkan koneksi meskipun tanpa memberikan izin notifikasi</string>
+  <string name="connect_anyway" tools:machine_translated="true">Tetap hubungkan</string>
   <string name="notification_permission_denied_title" tools:machine_translated="true">Izin notifikasi diperlukan</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Untuk menjaga agar koneksi Anda tetap aktif di latar belakang, silakan aktifkan notifikasi untuk ConnectBot di pengaturan sistem.</string>
   <string name="open_settings" tools:machine_translated="true">Buka pengaturan</string>
@@ -458,7 +458,7 @@
   <string name="migration_stats_hosts" tools:machine_translated="true">Jumlah host yang dimigrasikan: %d</string>
   <string name="migration_stats_pubkeys" tools:machine_translated="true">Jumlah kunci SSH yang telah dipindahkan: %d</string>
   <string name="migration_stats_port_forwards" tools:machine_translated="true">Jumlah penerusan port yang telah dipindahkan: %d</string>
-  <string name="migration_stats_known_hosts" tools:machine_translated="true">Jumlah host yang telah dipindahkan: %d</string>
+  <string name="migration_stats_known_hosts" tools:machine_translated="true">Host yang dikenal telah dimigrasikan: %d</string>
   <string name="migration_failed_title" tools:machine_translated="true">Migrasi Gagal</string>
   <string name="migration_failed_message" tools:machine_translated="true">Terjadi kesalahan selama proses migrasi basis data: %s</string>
   <string name="migration_retry" tools:machine_translated="true">Coba lagi</string>
@@ -480,11 +480,11 @@
   <string name="list_jumphost_none" tools:machine_translated="true">Tidak ada (koneksi langsung)</string>
   <string name="terminal_connecting_via_jump" tools:machine_translated="true">Menghubungkan melalui host perantara: %s</string>
   <string name="terminal_jump_connected" tools:machine_translated="true">Terhubung ke host perantara: %s</string>
-  <string name="terminal_jump_authenticated" tools:machine_translated="true">Berhasil melakukan autentikasi ke server perantara: %s</string>
-  <string name="terminal_jump_failed" tools:machine_translated="true">Gagal terhubung ke server penghubung %1$s: %2$s</string>
+  <string name="terminal_jump_authenticated" tools:machine_translated="true">Berhasil melakukan autentikasi ke host perantara: %s</string>
+  <string name="terminal_jump_failed" tools:machine_translated="true">Gagal terhubung ke host perantara %1$s: %2$s</string>
   <string name="terminal_jump_auth_failed" tools:machine_translated="true">Autentikasi gagal untuk host perantara: %s</string>
   <string name="terminal_jump_not_found" tools:machine_translated="true">Host perantara tidak ditemukan dalam daftar host yang disimpan</string>
-  <string name="terminal_jump_password" tools:machine_translated="true">Kata sandi untuk server penghubung %s:</string>
+  <string name="terminal_jump_password" tools:machine_translated="true">Kata sandi untuk host perantara %s:</string>
   <string name="view_logs" tools:machine_translated="true">Lihat Log</string>
   <string name="logs_title" tools:machine_translated="true">Log Aplikasi</string>
   <string name="copy_logs" tools:machine_translated="true">Salin Log</string>
@@ -543,13 +543,13 @@
   <string name="pref_security_category" tools:machine_translated="true">Keamanan</string>
   <string name="auth_screen_title" tools:machine_translated="true">ConnectBot terkunci</string>
   <string name="auth_screen_unlock_button" tools:machine_translated="true">Ketuk untuk membuka kunci</string>
-  <string name="auth_prompt_title" tools:machine_translated="true">Buka ConnectBot</string>
+  <string name="auth_prompt_title" tools:machine_translated="true">Buka kunci ConnectBot</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Verifikasi identitas Anda untuk melanjutkan</string>
   <string name="auth_banner_title" tools:machine_translated="true">Pesan autentikasi dari %1$s</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Pesan autentikasi:</string>
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Tampilkan tombol peralihan IME</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Tambahkan tombol IME ke baris tombol khusus yang berfungsi untuk mengaktifkan atau menonaktifkan mode komposisi untuk bahasa yang memerlukan buffer komposisi (Jepang, Mandarin, Korea, dll.).</string>
-  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Pintasan Ctrl/Alt IME lengkap</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Pintasan Ctrl/Alt dalam mode IME penuh</string>
   <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Tidak ada solusi alternatif.</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Peristiwa penekanan tombol mentah</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Paksa penggunaan ASCII (disarankan)</string>
@@ -566,7 +566,7 @@
   <string name="hostpref_profile_edit" tools:machine_translated="true">Edit profil yang dipilih</string>
   <string name="terminal_mosh_installing" tools:machine_translated="true">Menyiapkan dukungan Mosh…</string>
   <string name="terminal_mosh_starting" tools:machine_translated="true">Memulai koneksi Mosh…</string>
-  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Peringatan: Proses instalasi Mosh mengalami waktu tunggu yang berlebihan.</string>
+  <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Peringatan: Batas waktu instalasi Mosh habis</string>
   <string name="terminal_mosh_launching_server" tools:machine_translated="true">Menjalankan mosh-server pada host jarak jauh…</string>
   <string name="terminal_mosh_server_failed" tools:machine_translated="true">Gagal memulai mosh-server pada host jarak jauh.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">Mosh-client gagal dijalankan.</string>
@@ -575,35 +575,35 @@
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Perintah server Mosh</string>
   <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Jalur atau perintah khusus untuk mosh-server (biarkan kosong untuk menggunakan pengaturan bawaan)</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Port UDP Mosh</string>
-  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Port UDP tetap untuk Mosh (0 untuk rentang otomatis 60000-61000)</string>
+  <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Port UDP tetap untuk Mosh (0 untuk memilih otomatis dalam rentang 60000–61000)</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Lokal</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Pengaturan lokal untuk sesi Mosh (misalnya, en_US.UTF-8)</string>
   <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Rilis Mosh dan kode sumbernya</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Menyiapkan dukungan Mosh…</string>
-  <string name="editor_discard_changes_title" tools:machine_translated="true">Batalkan perubahan?</string>
+  <string name="editor_discard_changes_title" tools:machine_translated="true">Buang perubahan?</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">Perubahan yang Anda buat akan hilang jika Anda keluar tanpa menyimpan.</string>
-  <string name="editor_discard" tools:machine_translated="true">Batalkan</string>
+  <string name="editor_discard" tools:machine_translated="true">Buang</string>
   <string name="editor_save" tools:machine_translated="true">Simpan</string>
   <string name="import_json_file_too_large" tools:machine_translated="true">Ukuran file JSON terlalu besar untuk diimpor (maksimum 8 MB).</string>
   <string name="import_file_unavailable" tools:machine_translated="true">Tidak dapat membuka file yang dipilih.</string>
-  <string name="profile_inline_images" tools:machine_translated="true">Gambar Inline</string>
+  <string name="profile_inline_images" tools:machine_translated="true">Gambar dalam Terminal</string>
   <string name="inline_images_off" tools:machine_translated="true">Mati</string>
   <string name="inline_images_ask" tools:machine_translated="true">Tanyakan</string>
   <string name="inline_images_on" tools:machine_translated="true">Aktif</string>
-  <string name="inline_images_prompt_title" tools:machine_translated="true">Tampilkan gambar sebaris?</string>
-  <string name="inline_images_prompt_message" tools:machine_translated="true">Izinkan host ini untuk menampilkan gambar secara langsung selama sisa sesi ini?</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Tampilkan gambar dalam terminal?</string>
+  <string name="inline_images_prompt_message" tools:machine_translated="true">Izinkan host ini menampilkan gambar dalam terminal selama sisa sesi ini?</string>
   <string name="automation_load_failed" tools:machine_translated="true">Tidak dapat memuat otomatisasi.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Tidak dapat menyimpan otomatisasi.</string>
-  <string name="automation_invalid_action" tools:machine_translated="true">Periksa teks, pola, durasi, atau port penerusan yang dipilih.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Periksa teks, pola, durasi, atau penerusan port yang dipilih</string>
   <string name="automation_action_failed" tools:machine_translated="true">Aksi gagal.</string>
   <string name="automation_timed_out" tools:machine_translated="true">Waktu tunggu untuk teks telah habis.</string>
-  <string name="automation_buffer_overflow" tools:machine_translated="true">Terlalu banyak data yang masuk sebelum sistem otomatisasi dapat memprosesnya.</string>
+  <string name="automation_buffer_overflow" tools:machine_translated="true">Terlalu banyak keluaran yang diterima sebelum otomatisasi dapat memprosesnya</string>
   <string name="automation_no_session" tools:machine_translated="true">Tindakan ini memerlukan sesi terminal yang terbuka.</string>
   <string name="automation_forward_missing" tools:machine_translated="true">Pengaturan penerusan port tidak ditemukan.</string>
   <string name="automation_forward_unsupported" tools:machine_translated="true">Koneksi ini tidak mendukung fitur penerusan port.</string>
-  <string name="automation_wait_text" tools:machine_translated="true">Tunggu hingga string selesai.</string>
-  <string name="automation_send_text" tools:machine_translated="true">Kirim string</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Tunggu teks</string>
+  <string name="automation_send_text" tools:machine_translated="true">Kirim teks</string>
   <string name="automation_send_key" tools:machine_translated="true">Kirim tombol khusus.</string>
   <string name="automation_delay" tools:machine_translated="true">Tunggu</string>
   <string name="automation_disconnect" tools:machine_translated="true">Putuskan sambungan</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Batalkan</string>
   <string name="automation_text" tools:machine_translated="true">Teks</string>
   <string name="automation_regex" tools:machine_translated="true">Ekspresi reguler</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Mencocokkan teks yang masuk tanpa format ANSI. Ekspresi reguler mendukung sintaks RE2; fitur pencarian ke depan dan referensi balik tidak didukung.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Mencocokkan teks yang masuk tanpa format ANSI. Ekspresi reguler mendukung sintaks RE2; lookaround dan backreference tidak didukung.</string>
   <string name="automation_duration" tools:machine_translated="true">Durasi (detik)</string>
   <string name="automation_timeout" tools:machine_translated="true">Batas waktu (detik)</string>
-  <string name="automation_key" tools:machine_translated="true">Kunci</string>
+  <string name="automation_key" tools:machine_translated="true">Tombol</string>
   <string name="automation_forward" tools:machine_translated="true">Pengaturan penerusan port</string>
   <string name="automation_failure" tools:machine_translated="true">Jika terjadi kegagalan</string>
   <string name="automation_stop" tools:machine_translated="true">Hentikan otomatisasi.</string>
@@ -631,20 +631,20 @@
   <string name="automation_progress" tools:machine_translated="true">Otomatisasi: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Aksi %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Batalkan otomatisasi</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Masukkan</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
   <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Keluar</string>
-  <string name="automation_key_backspace" tools:machine_translated="true">Tombol Hapus</string>
-  <string name="automation_key_delete" tools:machine_translated="true">Hapus</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Escape</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Backspace</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Delete</string>
   <string name="automation_key_up" tools:machine_translated="true">Panah atas</string>
   <string name="automation_key_down" tools:machine_translated="true">Panah ke bawah</string>
   <string name="automation_key_left" tools:machine_translated="true">Panah kiri</string>
   <string name="automation_key_right" tools:machine_translated="true">Panah kanan</string>
-  <string name="automation_key_home" tools:machine_translated="true">Beranda</string>
-  <string name="automation_key_end" tools:machine_translated="true">Akhir</string>
-  <string name="automation_key_insert" tools:machine_translated="true">Sisipkan</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">Naik Halaman</string>
-  <string name="automation_key_page_down" tools:machine_translated="true">Gulir ke Bawah</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
+  <string name="automation_key_end" tools:machine_translated="true">End</string>
+  <string name="automation_key_insert" tools:machine_translated="true">Insert</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Page Up</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Page Down</string>
   <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Tombol Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f detik</string>
