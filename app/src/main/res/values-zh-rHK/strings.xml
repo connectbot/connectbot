@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc" tools:machine_translated="true">簡單、強大、開源的 SSH 用戶端。</string>
-  <string name="service_desc" tools:machine_translated="true">維護 SSH 連線，並載入公鑰。</string>
+  <string name="service_desc" tools:machine_translated="true">維持 SSH 連線及已載入的公鑰</string>
   <string name="app_copyright" tools:machine_translated="true">版權所有 © 肯尼·魯特</string>
   <string name="title_pubkey_list" tools:machine_translated="true">公鑰列表</string>
   <string name="title_port_forwards_list" tools:machine_translated="true">端口轉發</string>
@@ -126,11 +126,11 @@
   <string name="pref_ctrlfkeys_title" tools:machine_translated="true">Ctrl 鍵加上數字鍵，相當於功能鍵。</string>
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">在軟體鍵盤上，按下數字鍵時，會配合 Ctrl 鍵發送 F1 到 F10 的指令。</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">音量按鈕可調整字體大小。</string>
-  <string name="pref_volumefont_summary" tools:machine_translated="true">字體大小也可以在個人資料設定中更改。</string>
-  <string name="pref_memkeys_title" tools:machine_translated="true">將按鍵儲存在記憶體中</string>
+  <string name="pref_volumefont_summary" tools:machine_translated="true">字體大小也可以在設定檔中更改</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">將金鑰保留在記憶體中</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">將已解鎖的密鑰儲存在記憶體中，直到後端服務終止為止。</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">保持背景連線。</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">即使切換到其他應用程式，也能讓您的連線保持開啟。</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">使用持續通知，在切換應用程式時保持連線</string>
   <string name="pref_keymode_title" tools:machine_translated="true">目錄快捷鍵</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">固定修改器</string>
   <string name="only_alt" tools:machine_translated="true">僅限 Alt 鍵</string>
@@ -138,7 +138,7 @@
   <string name="pref_keepalive_title" tools:machine_translated="true">保持螢幕開啟</string>
   <string name="pref_keepalive_summary" tools:machine_translated="true">防止螢幕在操作控制台時自動關閉。</string>
   <string name="pref_wifilock_title" tools:machine_translated="true">保持 Wi-Fi 連線狀態</string>
-  <string name="pref_wifilock_summary" tools:machine_translated="true">在進行 Wi-Fi 連線時，防止 Wi-Fi 自動關閉。</string>
+  <string name="pref_wifilock_summary" tools:machine_translated="true">工作階段仍在進行時，防止 Wi-Fi 關閉</string>
   <string name="pref_bumpyarrows_title" tools:machine_translated="true">帶有觸覺回饋的箭頭</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">發送箭頭按鍵時震動；對於連線不穩的情況，這會很有幫助。</string>
   <string name="pref_bell_category" tools:machine_translated="true">終端鈴聲</string>
@@ -148,7 +148,7 @@
   <string name="pref_bell_vibrate_title" tools:machine_translated="true">收到提示時震動</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">當收到終端警報時，手機會震動。</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">背景通知</string>
-  <string name="pref_bell_notification_summary" tools:machine_translated="true">當背景運行的應用程式發出提示音時，發送通知。</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">未查看的工作階段響起鈴聲時，顯示無聲的彈出通知</string>
   <string name="list_keymode_right" tools:machine_translated="true">使用鍵盤右側按鍵</string>
   <string name="list_keymode_left" tools:machine_translated="true">使用鍵盤左側按鍵</string>
   <string name="list_keymode_none" tools:machine_translated="true">停用</string>
@@ -184,7 +184,7 @@
   <string name="hostpref_wantsession_summary" tools:machine_translated="true">停用此設定，僅使用端口轉發。</string>
   <string name="hostpref_stayconnected_title" tools:machine_translated="true">保持連線。</string>
   <string name="hostpref_stayconnected_summary" tools:machine_translated="true">如果與主機斷開連接，請嘗試重新連接。</string>
-  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">斷線後提示關閉。</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">斷線時關閉</string>
   <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">在遠端連線中斷後，控制台會立即關閉，且不會顯示任何提示訊息。</string>
   <string name="hostpref_delkey_title" tools:machine_translated="true">「刪除」鍵</string>
   <string name="hostpref_encoding_title" tools:machine_translated="true">編碼</string>
@@ -203,33 +203,33 @@
   <string name="font_system_default" tools:machine_translated="true">預設（等寬字體）</string>
   <string name="pubkey_unknown" tools:machine_translated="true">未知的金鑰</string>
   <string name="colorscheme_default" tools:machine_translated="true">預設</string>
-  <string name="profile_editor_title_new" tools:machine_translated="true">新增個人檔案</string>
-  <string name="profile_editor_title_edit" tools:machine_translated="true">編輯個人資料</string>
+  <string name="profile_editor_title_new" tools:machine_translated="true">新增設定檔</string>
+  <string name="profile_editor_title_edit" tools:machine_translated="true">編輯設定檔</string>
   <string name="profile_editor_save" tools:machine_translated="true">儲存</string>
-  <string name="profile_editor_name_label" tools:machine_translated="true">個人檔案名稱</string>
+  <string name="profile_editor_name_label" tools:machine_translated="true">設定檔名稱</string>
   <string name="profile_editor_section_icon_color" tools:machine_translated="true">圖示顏色</string>
   <string name="profile_editor_section_color_scheme" tools:machine_translated="true">色彩方案</string>
   <string name="profile_editor_section_font" tools:machine_translated="true">字體</string>
   <string name="profile_editor_section_terminal" tools:machine_translated="true">終端機</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">字體系列</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">字體大小：%d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">力度大小設定</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">強制指定大小</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">強制將終端機調整為特定大小（欄數 x 列數），而不是自動調整以適應螢幕。</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">啟用強制調整大小</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">欄位</string>
   <string name="profile_editor_force_size_rows" tools:machine_translated="true">列數</string>
   <string name="profile_icon_color_none" tools:machine_translated="true">不套用（使用主機顏色）</string>
-  <string name="profile_list_title" tools:machine_translated="true">個人檔案</string>
-  <string name="profile_list_create_profile" tools:machine_translated="true">建立個人檔案</string>
-  <string name="profile_list_empty_message" tools:machine_translated="true">目前沒有任何個人資料。點擊「+」按鈕以建立個人資料。</string>
+  <string name="profile_list_title" tools:machine_translated="true">設定檔</string>
+  <string name="profile_list_create_profile" tools:machine_translated="true">建立設定檔</string>
+  <string name="profile_list_empty_message" tools:machine_translated="true">尚無設定檔。點擊「+」以建立設定檔。</string>
   <string name="profile_list_more_options" tools:machine_translated="true">更多選項</string>
   <string name="profile_list_duplicate" tools:machine_translated="true">複製</string>
   <string name="profile_list_delete" tools:machine_translated="true">刪除</string>
-  <string name="profile_create_dialog_title" tools:machine_translated="true">建立個人檔案</string>
-  <string name="profile_create_name_label" tools:machine_translated="true">個人檔案名稱</string>
+  <string name="profile_create_dialog_title" tools:machine_translated="true">建立設定檔</string>
+  <string name="profile_create_name_label" tools:machine_translated="true">設定檔名稱</string>
   <string name="profile_create_button" tools:machine_translated="true">建立</string>
   <string name="profile_create_cancel" tools:machine_translated="true">取消</string>
-  <string name="profile_delete_dialog_title" tools:machine_translated="true">刪除個人資料</string>
+  <string name="profile_delete_dialog_title" tools:machine_translated="true">刪除設定檔</string>
   <string name="profile_delete_dialog_message" tools:machine_translated="true">你確定要刪除「%s」嗎？</string>
   <string name="profile_delete_button" tools:machine_translated="true">刪除</string>
   <string name="profile_delete_cancel" tools:machine_translated="true">取消</string>
@@ -267,7 +267,7 @@
   <string name="list_camera_ctrlaspace" tools:machine_translated="true">先按 Ctrl+A，然後按空格鍵。</string>
   <string name="list_camera_ctrla" tools:machine_translated="true">Ctrl+A</string>
   <string name="list_camera_esc" tools:machine_translated="true">Esc</string>
-  <string name="list_camera_esc_a" tools:machine_translated="true">按下相機按鈕時，應發送「Esc+A」信號。</string>
+  <string name="list_camera_esc_a" tools:machine_translated="true">Esc+A</string>
   <string name="list_camera_none" tools:machine_translated="true">無</string>
   <string name="list_camera_text_input" tools:machine_translated="true">文字輸入</string>
   <string name="delete_message" tools:machine_translated="true">您確定要刪除「%1$s」嗎？</string>
@@ -352,9 +352,9 @@
   <string name="image_description_down" tools:machine_translated="true">向下箭頭</string>
   <string name="image_description_left" tools:machine_translated="true">向左箭頭</string>
   <string name="image_description_right" tools:machine_translated="true">向右箭頭</string>
-  <string name="button_key_esc" tools:machine_translated="true">退出</string>
+  <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
-  <string name="button_key_home" tools:machine_translated="true">主頁</string>
+  <string name="button_key_home" tools:machine_translated="true">Home</string>
   <string name="button_key_end" tools:machine_translated="true">結束</string>
   <string name="button_key_pgup" tools:machine_translated="true">頁面向上</string>
   <string name="button_key_pgdn" tools:machine_translated="true">向下翻頁</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">需要通知權限。</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">為了讓您的連線在背景中保持啟動狀態，請在系統設定中啟用 ConnectBot 的通知功能。</string>
   <string name="open_settings" tools:machine_translated="true">開啟設定</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">如果未授權通知權限，連接可能會中斷。</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">切換應用程式時，連線可能會中斷</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">應用程式在背景執行時，連接可能會中斷。</string>
   <string name="terminal_no_route" tools:machine_translated="true">您是否正在嘗試連接至本機網路上的主機？請授予本機網路權限。</string>
   <string name="loading_message" tools:machine_translated="true">正在載入中…</string>
@@ -508,7 +508,7 @@
   <string name="colorscheme_gruvbox_dark_description" tools:machine_translated="true">復古風格配色方案</string>
   <string name="colorscheme_monokai_description" tools:machine_translated="true">靈感來自 Sublime Text 的主題。</string>
   <string name="colorscheme_tomorrow_night_description" tools:machine_translated="true">一個簡潔舒適的深色主題。</string>
-  <string name="pref_profiles_category" tools:machine_translated="true">個人檔案</string>
+  <string name="pref_profiles_category" tools:machine_translated="true">設定檔</string>
   <string name="pref_default_profile_title" tools:machine_translated="true">預設設定檔</string>
   <string name="pref_default_profile_none" tools:machine_translated="true">無（使用主機設定）</string>
   <string name="pref_alwaysvisible_summary" tools:machine_translated="true">始終顯示特殊按鍵。</string>
@@ -519,8 +519,8 @@
   <string name="dialog_custom_value_label" tools:machine_translated="true">輸入自訂值</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">先按 Ctrl+A，然後按空格鍵</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
-  <string name="list_camera_esc_description" tools:machine_translated="true">退出</string>
-  <string name="list_camera_esc_a_description" tools:machine_translated="true">按下 Esc 鍵 + A 鍵時的相機按鈕動作。</string>
+  <string name="list_camera_esc_description" tools:machine_translated="true">Esc</string>
+  <string name="list_camera_esc_a_description" tools:machine_translated="true">Esc+A</string>
   <string name="list_camera_none_description" tools:machine_translated="true">無</string>
   <string name="list_camera_text_input_description" tools:machine_translated="true">文字輸入</string>
   <string name="list_menu_export_hosts" tools:machine_translated="true">匯出所有主機</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">顯示輸入法切換按鈕</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">在特殊按鍵列中新增一個輸入法編輯器按鈕，用於切換需要組成緩衝區的語言（例如日語、中文、韓語等）的組成模式。</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">完整輸入法引擎的 Ctrl/Alt 快捷鍵</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">沒有替代方案。</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">不使用替代方案</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">原始鍵盤事件</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">強制使用 ASCII（建議）</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">滑動切換工作階段</string>
@@ -573,12 +573,12 @@
   <string name="terminal_mosh_connected" tools:machine_translated="true">已建立 Mosh 連線。</string>
   <string name="terminal_mosh_error" tools:machine_translated="true">Mosh 出現錯誤：%1$s</string>
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh 伺服器指令</string>
-  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">自訂的 `mosh-server` 路徑或指令（若要使用預設值，請留空）。</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">自訂的 mosh-server 路徑或指令（若要使用預設值，請留空）。</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh UDP 連接埠</string>
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">為 Mosh 設定固定的 UDP 連接埠（若設定為 0，則會自動選擇 60000 到 61000 之間的連接埠）。</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">地區設定</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh 會話的語言設定（例如：en_US.UTF-8）</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">支援 Mosh 的動態功能模組標題。</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh 版本及原始碼。</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">正在準備 Mosh 的支援功能……</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">捨棄變更？</string>
@@ -619,7 +619,7 @@
   <string name="automation_cancel" tools:machine_translated="true">取消</string>
   <string name="automation_text" tools:machine_translated="true">文字</string>
   <string name="automation_regex" tools:machine_translated="true">正規表達式</string>
-  <string name="automation_regex_help" tools:machine_translated="true">匹配輸入文字，但不包含 ANSI 格式。正則表達式支援 RE2 語法；不支援前瞻和後方引用。</string>
+  <string name="automation_regex_help" tools:machine_translated="true">比對移除 ANSI 格式的傳入文字。正則表達式支援 RE2 語法；不支援前瞻、後顧（lookaround）及反向引用。</string>
   <string name="automation_duration" tools:machine_translated="true">持續時間（秒）</string>
   <string name="automation_timeout" tools:machine_translated="true">超時時間（秒）</string>
   <string name="automation_key" tools:machine_translated="true">按鍵</string>
@@ -629,24 +629,24 @@
   <string name="automation_continue" tools:machine_translated="true">繼續。</string>
   <string name="automation_save_host" tools:machine_translated="true">儲存主機以設定自動化。</string>
   <string name="automation_progress" tools:machine_translated="true">自動化：目前步驟：%1$d，總步驟數：%2$d。</string>
-  <string name="automation_failure_step" tools:machine_translated="true">動作：%1$d：％2$s</string>
+  <string name="automation_failure_step" tools:machine_translated="true">動作 %1$d：%2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">取消自動化操作。</string>
-  <string name="automation_key_enter" tools:machine_translated="true">輸入</string>
-  <string name="automation_key_tab" tools:machine_translated="true">分頁標籤。</string>
-  <string name="automation_key_escape" tools:machine_translated="true">退出</string>
-  <string name="automation_key_backspace" tools:machine_translated="true">「刪除」按鍵標籤。</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Backspace</string>
   <string name="automation_key_delete" tools:machine_translated="true">刪除</string>
   <string name="automation_key_up" tools:machine_translated="true">向上箭頭</string>
   <string name="automation_key_down" tools:machine_translated="true">向下箭頭</string>
   <string name="automation_key_left" tools:machine_translated="true">向左箭頭</string>
   <string name="automation_key_right" tools:machine_translated="true">右箭頭</string>
-  <string name="automation_key_home" tools:machine_translated="true">主頁</string>
-  <string name="automation_key_end" tools:machine_translated="true">結束。</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
+  <string name="automation_key_end" tools:machine_translated="true">End</string>
   <string name="automation_key_insert" tools:machine_translated="true">插入</string>
   <string name="automation_key_page_up" tools:machine_translated="true">向上翻頁</string>
   <string name="automation_key_page_down" tools:machine_translated="true">向下翻頁</string>
-  <string name="automation_key_function" tools:machine_translated="true">功能快捷鍵：%1$s</string>
-  <string name="automation_key_shift" tools:machine_translated="true">Shift 鍵切換開關（用於特殊按鈕編輯器和動作摘要中）。</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f 秒</string>
   <plurals name="automation_count" tools:machine_translated="true">
     <item quantity="one">共 %1$d 個動作。</item>
@@ -678,7 +678,7 @@
   <string name="notification_bell" tools:machine_translated="true">終端鈴聲</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s：%2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">已讀</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">標記為已讀</string>
   <string name="notification_mute_bells" tools:machine_translated="true">關閉鈴聲。</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">失去連線通知</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">當您未查看的會話意外中斷連線時，會顯示一個無聲的彈出視窗。</string>

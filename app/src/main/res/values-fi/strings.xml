@@ -247,7 +247,7 @@
   <string name="pref_volumefont_title" tools:machine_translated="true">Äänenvoimakkuuspainikkeilla muutetaan fontin kokoa.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Fonttikokoa voi muuttaa myös profiiliasetuksissa.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Pidä yhteys yllä taustalla</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Pidä istuntosi aktiivisena, vaikka vaihtaisit muihin sovelluksiin.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Pidä istunnot avoinna pysyvän ilmoituksen avulla, kun vaihdat sovellusta</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Kiinteät muokkaimet</string>
   <string name="only_alt" tools:machine_translated="true">Vain Alt-näppäin</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Anna värinää, kun nuolinäppäimiä painetaan; hyödyllinen, jos yhteys on hidas.</string>
@@ -295,7 +295,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Pääte</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Fonttityyppi</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Fonttikoko: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Voimakokoasetukset</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Pakota koko</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Määritä terminaalin koko kiinteäksi (sarakkeet x rivit) sen sijaan, että se mukautuisi automaattisesti näytön kokoon.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">Ota pakotettu koko käyttöön</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Sarakkeet</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Ilmoituslupa vaaditaan</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Jotta yhteytesi pysyisivät aktiivisina taustalla, ota käyttöön ConnectBot-sovelluksen ilmoitukset järjestelmäasetuksissa.</string>
   <string name="open_settings" tools:machine_translated="true">Avaa asetukset</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Yhteydet voivat katkaista ilman ilmoituslupaa.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Yhteydet voivat katketa, kun vaihdat sovellusta</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Yhteys saattaa katketa, kun sovellus on taustalla.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Yritätkö muodostaa yhteyttä paikalliseen palvelimeen? Anna paikallisen verkon käyttöoikeudet.</string>
   <string name="loading_message" tools:machine_translated="true">Ladataan…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Näytä IME-näppäin</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Lisää IME-painike erikoisnäppäinriville, jolla voidaan vaihtaa kirjoitustila päälle ja pois niille kielille, jotka edellyttävät kirjoituspuskuria (esim. japani, kiina, korea).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Koko IME-järjestelmän Ctrl/Alt-pikanäppäimet</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Ratkaisua ei ole.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Älä käytä kiertotapaa</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Raakojen näppäintapahtumien pyyntö</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Pakota ASCII-näppäimistö (suositus)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Pyydä käyttäjää pyyhkäisemään vaihtaa istuntojen välillä.</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Kiinteä UDP-portti mosh-yhteydelle (0 tarkoittaa automaattista porttivalintaa väliltä 60000–61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Alueasetus</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh-yhteyden kieliasetus (esim. en_US.UTF-8)</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">Mosh-tuen tarjoavan dynaamisen moduulin otsikko</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Moshin julkaisu ja lähdekoodi</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Valmistellaan Mosh-tuen käyttöönottoa…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Hylätäänkö muutokset?</string>
@@ -602,7 +602,7 @@
   <string name="automation_no_session" tools:machine_translated="true">Tämä toiminto edellyttää, että terminaali-istunto on avoinna.</string>
   <string name="automation_forward_missing" tools:machine_translated="true">Portin uudelleenohjaus on poistettu tai sitä ei ole määritetty.</string>
   <string name="automation_forward_unsupported" tools:machine_translated="true">Tämä yhteys ei tue porttien uudelleenohjausta.</string>
-  <string name="automation_wait_text" tools:machine_translated="true">Odotetaan, että merkkijono valmistuu.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Odota merkkijonoa</string>
   <string name="automation_send_text" tools:machine_translated="true">Lähetä merkkijono</string>
   <string name="automation_send_key" tools:machine_translated="true">Lähetä erityinen näppäinkomento.</string>
   <string name="automation_delay" tools:machine_translated="true">Odota</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Peruuta</string>
   <string name="automation_text" tools:machine_translated="true">Teksti</string>
   <string name="automation_regex" tools:machine_translated="true">Säännöllinen lauseke</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Vertaa saapuvaa tekstiä ilman ANSI-muotoilua. Regex-syntaksi tukee RE2-syntaksia; eteen- ja taaksepäinviittauksia ei tueta.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Vertaa saapuvaa tekstiä ilman ANSI-muotoilua. Säännölliset lausekkeet tukevat RE2-syntaksia; lookaround-ehtoja ja takaisinviittauksia ei tueta.</string>
   <string name="automation_duration" tools:machine_translated="true">Kesto (sekunteina)</string>
   <string name="automation_timeout" tools:machine_translated="true">Aikaraja (sekunteina)</string>
-  <string name="automation_key" tools:machine_translated="true">Avain</string>
+  <string name="automation_key" tools:machine_translated="true">Näppäin</string>
   <string name="automation_forward" tools:machine_translated="true">Portin uudelleenohjaus</string>
   <string name="automation_failure" tools:machine_translated="true">Virhetilanteessa</string>
   <string name="automation_stop" tools:machine_translated="true">Lopeta automatisointi.</string>
@@ -631,16 +631,16 @@
   <string name="automation_progress" tools:machine_translated="true">Automaatio: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Toiminto %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Peruuta automaatio</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Valitse näppäin</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Välilehti</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Poistu</string>
-  <string name="automation_key_backspace" tools:machine_translated="true">Poista-näppäin</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Backspace</string>
   <string name="automation_key_delete" tools:machine_translated="true">Poista</string>
   <string name="automation_key_up" tools:machine_translated="true">Ylöspäin osoittava nuoli</string>
   <string name="automation_key_down" tools:machine_translated="true">Alaspäin osoittava nuoli</string>
   <string name="automation_key_left" tools:machine_translated="true">Vasemmanpuoleinen nuoli</string>
   <string name="automation_key_right" tools:machine_translated="true">Oikea nuoli</string>
-  <string name="automation_key_home" tools:machine_translated="true">Aloitusnäyttö</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">Loppu</string>
   <string name="automation_key_insert" tools:machine_translated="true">Lisää</string>
   <string name="automation_key_page_up" tools:machine_translated="true">Siirry yhdellä sivulla ylöspäin</string>
@@ -678,7 +678,7 @@
   <string name="notification_bell" tools:machine_translated="true">Terminaalin summeri</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">Merkitty luetuksi</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Merkitse luetuksi</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Mykistä hälytysäänet.</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Ilmoitukset, kun yhteys katkeaa odottamatta</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Näytä äänetön ponnahdusikkuna, kun et aktiivisesti seuraamasi istunto katkeaa odottamatta.</string>

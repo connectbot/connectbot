@@ -218,7 +218,7 @@
   <string name="pref_volumefont_title" tools:machine_translated="true">Volymknapparna ändrar teckenstorleken.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Teckenstorleken kan också ändras i profilinställningarna.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Fortsätt vara ansluten i bakgrunden</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Håll dina sessioner aktiva även när du växlar till andra appar</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Använd en beständig avisering för att hålla sessioner öppna när du byter app</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Modifierare som fastnar</string>
   <string name="only_alt" tools:machine_translated="true">Endast Alt</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibrera när du använder piltangenterna; användbart vid långsamma anslutningar.</string>
@@ -266,7 +266,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Terminal</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Teckensnittsfamilj</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Teckenstorlek: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Storlek på kraftfältet</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Tvinga storlek</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Tvinga terminalen att använda en specifik storlek (antal kolumner x antal rader) istället för att automatiskt anpassa sig till skärmens storlek.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">Aktivera tvångsinställning av storlek.</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Kolumner</string>
@@ -354,8 +354,8 @@
   <string name="image_description_right" tools:machine_translated="true">Pil åt höger</string>
   <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
-  <string name="button_key_home" tools:machine_translated="true">Hem</string>
-  <string name="button_key_end" tools:machine_translated="true">Avsluta</string>
+  <string name="button_key_home" tools:machine_translated="true">Home</string>
+  <string name="button_key_end" tools:machine_translated="true">End</string>
   <string name="button_key_pgup" tools:machine_translated="true">Bläddra uppåt</string>
   <string name="button_key_pgdn" tools:machine_translated="true">Nedåt</string>
   <string name="button_key_f1" tools:machine_translated="true">F1</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Behöver tillstånd för aviseringar</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">För att dina anslutningar ska förbli aktiva i bakgrunden, aktivera notifikationer för ConnectBot i systeminställningarna.</string>
   <string name="open_settings" tools:machine_translated="true">Öppna inställningar</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Anslutningar kan brytas utan att användaren har gett tillstånd för aviseringar.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Anslutningar kan brytas när du byter app</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Anslutningen kan brytas när appen körs i bakgrunden</string>
   <string name="terminal_no_route" tools:machine_translated="true">Försöker du ansluta till en enhet i det lokala nätverket? Ge programmet tillstånd att använda det lokala nätverket.</string>
   <string name="loading_message" tools:machine_translated="true">Laddar…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Visa IME-växlingsknapp</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Lägg till en IME-knapp i raden med specialknappar som växlar mellan läget för teckeninmatning och det läge där sammansatta tecken används för språk som kräver en buffert för sammansatta tecken (japanska, kinesiska, koreanska osv.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Snabbkommandon för fullständig IME-funktion (Ctrl/Alt)</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Ingen tillfällig lösning.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Använd ingen kringgående lösning</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Ofiltrerade tangentbordsavtryck</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Tvinga fram ASCII-läge (rekommenderas)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Svep för att växla mellan sessioner.</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Fast UDP-port för mosh (0 för automatiskt val inom intervallet 60000–61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Språkinställning</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Språkinställning för Mosh-sessionen (t.ex. en_US.UTF-8).</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">Mosh-stöd</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Version av Mosh och källkoden</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Förbereder stöd för Mosh …</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Vill du avbryta ändringarna?</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Avbryt</string>
   <string name="automation_text" tools:machine_translated="true">Text</string>
   <string name="automation_regex" tools:machine_translated="true">Reguljärt uttryck</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Matchar inkommande text utan ANSI-formatering. RegEx stöder RE2-syntaxen, men stödjer inte framåtblick och bakåtreferenser.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Matchar inkommande text utan ANSI-formatering. Reguljära uttryck stöder RE2-syntax; lookaround och bakåtreferenser stöds inte.</string>
   <string name="automation_duration" tools:machine_translated="true">Varaktighet (sekunder)</string>
   <string name="automation_timeout" tools:machine_translated="true">Tidsgräns (sekunder)</string>
-  <string name="automation_key" tools:machine_translated="true">Nyckel</string>
+  <string name="automation_key" tools:machine_translated="true">Tangent</string>
   <string name="automation_forward" tools:machine_translated="true">Vidarebefordra port</string>
   <string name="automation_failure" tools:machine_translated="true">Vid fel</string>
   <string name="automation_stop" tools:machine_translated="true">Avbryt automatiseringen.</string>
@@ -631,16 +631,16 @@
   <string name="automation_progress" tools:machine_translated="true">Automatisering: steg %1$d av %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Åtgärd %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Avbryt automatiseringen</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Ange/Mata in</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Flik</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Avbryt</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Radera tecken (bakåt)</string>
   <string name="automation_key_delete" tools:machine_translated="true">Radera</string>
   <string name="automation_key_up" tools:machine_translated="true">Pil uppåt</string>
   <string name="automation_key_down" tools:machine_translated="true">Nedåtpil</string>
   <string name="automation_key_left" tools:machine_translated="true">Pil åt vänster</string>
   <string name="automation_key_right" tools:machine_translated="true">Pilhöger</string>
-  <string name="automation_key_home" tools:machine_translated="true">Hem</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">Slut</string>
   <string name="automation_key_insert" tools:machine_translated="true">Infoga</string>
   <string name="automation_key_page_up" tools:machine_translated="true">Bläddra uppåt en sida</string>
@@ -649,7 +649,7 @@
   <string name="automation_key_shift" tools:machine_translated="true">Skiftlägesknapp</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f sekunder</string>
   <plurals name="automation_count" tools:machine_translated="true">
-    <item quantity="one">%1$d åtgärder</item>
+    <item quantity="one">%1$d åtgärd</item>
     <item quantity="other">%1$d åtgärder</item>
   </plurals>
   <string name="host_status_unread_output" tools:machine_translated="true">Oläst utdata</string>
@@ -678,7 +678,7 @@
   <string name="notification_bell" tools:machine_translated="true">Terminalsignal</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">Bekräftat att händelsen har mottagits.</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Markera som läst</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Stäng av ljudsignaler</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Aviseringar om förlorad anslutning</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Visa ett ljudlöst popup-fönster när en session som du inte aktivt följer oväntat kopplas bort.</string>

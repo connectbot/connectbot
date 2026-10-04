@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">IME 전환 키 표시</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">조합 버퍼가 필요한 언어(일본어, 중국어, 한국어 등)의 경우, 조합 모드를 전환하는 기능을 하는 IME 버튼을 특수 키 행에 추가합니다.</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">전체 IME Ctrl/Alt 단축키</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">해결 방법이 없습니다.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">우회 방법 사용 안 함</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">처리되지 않은 키 이벤트</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">ASCII 키보드 사용 (권장)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">세션 간 전환 시 스와이프 기능 사용</string>
@@ -560,11 +560,11 @@
   <string name="console_next_session" tools:machine_translated="true">다음 세션</string>
   <string name="button_key_alt" tools:machine_translated="true">Alt</string>
   <string name="image_description_toggle_alt_key" tools:machine_translated="true">Alt 키를 전환합니다.</string>
-  <string name="button_key_ime" tools:machine_translated="true">IME(입력 방법 편집기)</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">IME 입력 방식을 전환하여 글자 조합 모드를 켜거나 끕니다.</string>
-  <string name="console_menu_compose_mode" tools:machine_translated="true">작성 모드(IME)</string>
+  <string name="console_menu_compose_mode" tools:machine_translated="true">조합 모드(IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">선택한 프로필 수정</string>
-  <string name="terminal_mosh_installing" tools:machine_translated="true">Mosh 지원을 준비 중입니다.…</string>
+  <string name="terminal_mosh_installing" tools:machine_translated="true">Mosh 지원 준비 중…</string>
   <string name="terminal_mosh_starting" tools:machine_translated="true">Mosh 연결을 시작합니다...</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">경고: Mosh 설치 시간이 초과되었습니다.</string>
   <string name="terminal_mosh_launching_server" tools:machine_translated="true">원격 호스트에서 mosh 서버를 시작합니다.</string>
@@ -573,14 +573,14 @@
   <string name="terminal_mosh_connected" tools:machine_translated="true">모시 연결이 설정되었습니다.</string>
   <string name="terminal_mosh_error" tools:machine_translated="true">모시 오류: %1$s</string>
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">모시 서버 명령어</string>
-  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">사용자 지정 `mosh-server` 경로 또는 명령(기본값을 사용하려면 비워 두세요).</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">사용자 지정 mosh-server 경로 또는 명령(기본값을 사용하려면 비워 두세요).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">모시(Mosh) UDP 포트</string>
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Mosh에 사용할 고정된 UDP 포트(자동으로 60000~61000 범위 내에서 선택하려면 0을 입력합니다).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">지역 설정</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh 세션에 사용할 로케일 설정(예: en_US.UTF-8)</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">모시(Mosh) 지원 기능 모듈</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh 버전 및 소스 코드</string>
-  <string name="pref_mosh_installing" tools:machine_translated="true">Mosh 지원 준비 중입니다.…</string>
+  <string name="pref_mosh_installing" tools:machine_translated="true">Mosh 지원 준비 중…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">변경 사항을 저장하지 않고 종료하시겠습니까?</string>
   <string name="editor_discard_changes_message" tools:machine_translated="true">저장하지 않고 나가면 변경 사항이 모두 사라집니다.</string>
   <string name="editor_discard" tools:machine_translated="true">변경 내용 저장하지 않고 종료</string>
@@ -619,7 +619,7 @@
   <string name="automation_cancel" tools:machine_translated="true">취소</string>
   <string name="automation_text" tools:machine_translated="true">텍스트</string>
   <string name="automation_regex" tools:machine_translated="true">정규 표현식</string>
-  <string name="automation_regex_help" tools:machine_translated="true">ANSI 서식이 적용되지 않은 입력 텍스트와 일치합니다. 정규 표현식은 RE2 구문을 지원하며, 전방 탐색 및 역참조는 지원하지 않습니다.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">ANSI 서식을 제거한 수신 텍스트와 일치하는지 확인합니다. 정규 표현식은 RE2 구문을 지원하지만 전방·후방 탐색(lookaround)과 역참조는 지원하지 않습니다.</string>
   <string name="automation_duration" tools:machine_translated="true">지속 시간(초)</string>
   <string name="automation_timeout" tools:machine_translated="true">시간 초과(초)</string>
   <string name="automation_key" tools:machine_translated="true">키</string>
@@ -631,9 +631,9 @@
   <string name="automation_progress" tools:machine_translated="true">자동화 진행 상황: 현재 단계 %1$d / 총 단계 %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">작업 %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">자동화 취소</string>
-  <string name="automation_key_enter" tools:machine_translated="true">입력</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
   <string name="automation_key_tab" tools:machine_translated="true">탭</string>
-  <string name="automation_key_escape" tools:machine_translated="true">종료</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">백스페이스</string>
   <string name="automation_key_delete" tools:machine_translated="true">삭제</string>
   <string name="automation_key_up" tools:machine_translated="true">위쪽 화살표</string>
@@ -641,7 +641,7 @@
   <string name="automation_key_left" tools:machine_translated="true">왼쪽 화살표</string>
   <string name="automation_key_right" tools:machine_translated="true">오른쪽 화살표</string>
   <string name="automation_key_home" tools:machine_translated="true">홈</string>
-  <string name="automation_key_end" tools:machine_translated="true">종료</string>
+  <string name="automation_key_end" tools:machine_translated="true">End</string>
   <string name="automation_key_insert" tools:machine_translated="true">삽입</string>
   <string name="automation_key_page_up" tools:machine_translated="true">페이지 위로 이동</string>
   <string name="automation_key_page_down" tools:machine_translated="true">페이지 아래로 이동</string>
@@ -678,7 +678,7 @@
   <string name="notification_bell" tools:machine_translated="true">터미널 벨 소리</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">최신 이벤트 확인됨</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">확인한 것으로 표시</string>
   <string name="notification_mute_bells" tools:machine_translated="true">벨 소리 음소거</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">연결 끊김 알림</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">현재 보고 있지 않은 세션이 예기치 않게 연결이 끊어질 때 소리가 나지 않는 팝업을 표시합니다.</string>
@@ -687,8 +687,8 @@
 		<item quantity="other">현재 연결된 세션 %d개</item>
 	</plurals>
   <plurals name="notification_attention_sessions" tools:machine_translated="true">
-		<item quantity="one">%d개의 알림을 확인해야 합니다.</item>
-		<item quantity="other">%d개의 알림을 확인해야 합니다.</item>
+		<item quantity="one">주의가 필요한 세션 %d개</item>
+		<item quantity="other">주의가 필요한 세션 %d개</item>
 	</plurals>
   <plurals name="notification_more_sessions" tools:machine_translated="true">
 		<item quantity="one">+%d개의 세션 추가</item>

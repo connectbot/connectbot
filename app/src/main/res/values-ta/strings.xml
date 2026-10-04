@@ -122,7 +122,7 @@
   <string name="pref_theme_title" tools:machine_translated="true">வடிவமைப்பு</string>
   <string name="pref_theme_system" tools:machine_translated="true">அமைப்பு இயல்புநிலை</string>
   <string name="pref_theme_light" tools:machine_translated="true">ஒளி</string>
-  <string name="pref_theme_dark" tools:machine_translated="true">கருப்பு</string>
+  <string name="pref_theme_dark" tools:machine_translated="true">இருண்ட</string>
   <string name="pref_titlebarhide_title" tools:machine_translated="true">தானாக மறைக்கும் தலைப்புப் பட்டை</string>
   <string name="pref_titlebarhide_summary" tools:machine_translated="true">தலைப்புப் பட்டியை காண்பிக்கவும், மெனுவை அணுகவும் கன்சோலைத் தட்டவும்.</string>
   <string name="pref_alwaysvisible_title" tools:machine_translated="true">சிறப்பு விசைகள் எப்போதும் தெரியும் வகையில் இருக்க வேண்டும்</string>
@@ -138,7 +138,7 @@
   <string name="pref_memkeys_title" tools:machine_translated="true">நினைவகத்தில் உள்ள விசைகளை நினைவில் கொள்க</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">பின்புல சேவை நிறுத்தப்படும் வரை, திறந்த நிலையில் உள்ள சாவிகளை நினைவகத்தில் வைத்திருங்கள்</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">பின்புலத்தில் இணைப்பில் வைத்திருங்கள்</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">நீங்கள் பிற செயலிகளுக்கு மாறினாலும், உங்கள் அமர்வுகளைத் தொடர்ந்து இயங்க வைக்கவும்.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">செயலிகளை மாற்றும்போது அமர்வுகளைத் திறந்த நிலையில் வைத்திருக்கத் தொடர்ச்சியான அறிவிப்பைப் பயன்படுத்து</string>
   <string name="pref_keymode_title" tools:machine_translated="true">கோப்புறை குறுக்குவழிகள்</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">ஒட்டும் மாற்றிகள்</string>
   <string name="only_alt" tools:machine_translated="true">அல்ட் விசையை மட்டும் பயன்படுத்தவும்</string>
@@ -147,7 +147,7 @@
   <string name="pref_keepalive_summary" tools:machine_translated="true">கன்சோலில் வேலை செய்யும் போது, திரை தானாக அணைவதைத் தடுக்கவும்</string>
   <string name="pref_wifilock_title" tools:machine_translated="true">வைஃபை இணைப்பை எப்போதும் இயங்க வைக்கவும்</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">செயல்பாடு இருக்கும்போது வைஃபை தானாக அணைவதைத் தடுக்கவும்.</string>
-  <string name="pref_bumpyarrows_title" tools:machine_translated="true">மேடு பள்ளமான அம்புகள்</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">அம்பு விசைகளை அழுத்தும்போது அதிர்வு</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">அம்பு விசைகளை அனுப்பும்போது அதிர்வு ஏற்படும்; இது தாமதமான இணைய இணைப்புகளுக்குப் பயனுள்ளதாக இருக்கும்.</string>
   <string name="pref_bell_category" tools:machine_translated="true">டெர்மினல் ஒலிப்பான்</string>
   <string name="pref_bell_title" tools:machine_translated="true">ஒலி எழுப்பும் மணி</string>
@@ -156,10 +156,10 @@
   <string name="pref_bell_vibrate_title" tools:machine_translated="true">ஒலிப்பானில் அதிர்வு</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">சாதன எச்சரிக்கை ஒலிக்கும்போது அதிர்வுறும்</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">பின்புல அறிவிப்புகள்</string>
-  <string name="pref_bell_notification_summary" tools:machine_translated="true">பின்புலத்தில் இயங்கும் ஒரு டெர்மினலில் அலாரம் ஒலிக்கும்போது அறிவிப்பை அனுப்பவும்.</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">நீங்கள் பார்க்காத அமர்வில் மணி ஒலிக்கும்போது ஒலியற்ற பாப்-அப் அறிவிப்பைக் காட்டு</string>
   <string name="list_keymode_right" tools:machine_translated="true">வலது பக்க விசைகளைப் பயன்படுத்தவும்</string>
   <string name="list_keymode_left" tools:machine_translated="true">கீபோர்டின் இடது பக்கத்தில் உள்ள விசைகளைப் பயன்படுத்தவும்</string>
-  <string name="list_pubkeyids_none" tools:machine_translated="true">சாவிளைப் பயன்படுத்த வேண்டாம்</string>
+  <string name="list_pubkeyids_none" tools:machine_translated="true">விசைகளைப் பயன்படுத்த வேண்டாம்</string>
   <string name="list_pubkeyids_any" tools:machine_translated="true">எந்தவொரு திறக்கப்பட்ட விசையையும் பயன்படுத்தவும்</string>
   <string name="hostpref_color_title" tools:machine_translated="true">நிற வகை</string>
   <string name="color_red" tools:machine_translated="true">சிவப்பு</string>
@@ -214,12 +214,12 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">டெர்மினல்</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">எழுத்துரு குடும்பம்</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">எழுத்துரு அளவு: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">விசை அளவு</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">நிலையான அளவு</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">திரையின் அளவுக்கு ஏற்ப தானாகவே அளவை மாற்றாமல், குறிப்பிட்ட அளவுள்ள (நிரல்கள் x வரிசைகள்) ஒரு அளவுக்கு முனையத்தின் அளவை மாற்றியமைக்கவும்.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">அளவை கட்டாயமாகப் பயன்படுத்துவதற்கான விருப்பத்தை இயக்கு</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">நிரல்கள்</string>
   <string name="profile_editor_force_size_rows" tools:machine_translated="true">வரிசைகள்</string>
-  <string name="profile_icon_color_none" tools:machine_translated="true">எதுவுமில்லை (விருப்பமான வண்ணத்தைப் பயன்படுத்த வேண்டாம், இயல்புநிலை வண்ணத்தைப் பயன்படுத்துங்கள்)</string>
+  <string name="profile_icon_color_none" tools:machine_translated="true">ஏதுமில்லை (ஹோஸ்டின் நிறத்தைப் பயன்படுத்து)</string>
   <string name="profile_list_title" tools:machine_translated="true">சுயவிவரங்கள்</string>
   <string name="profile_list_create_profile" tools:machine_translated="true">புதிய சுயவிவரத்தை உருவாக்கு</string>
   <string name="profile_list_empty_message" tools:machine_translated="true">இதுவரை எந்த சுயவிவரமும் இல்லை. ஒரு சுயவிவரத்தை உருவாக்க \"+\" பொத்தானை அழுத்தவும்.</string>
@@ -327,7 +327,7 @@
   <string name="title_palette_editor" tools:machine_translated="true">வண்ணத் தட்டு திருத்தி</string>
   <string name="button_reset_all_colors" tools:machine_translated="true">அனைத்தையும் மீட்டமை</string>
   <string name="section_ansi_colors" tools:machine_translated="true">ANSI வண்ணங்கள் (0–15)</string>
-  <string name="dialog_title_edit_color" tools:machine_translated="true">குறிப்பிட்ட நிறத்தை மாற்றுக</string>
+  <string name="dialog_title_edit_color" tools:machine_translated="true">நிறம் %1$d ஐத் திருத்து</string>
   <string name="dialog_title_reset_all" tools:machine_translated="true">எல்லா வண்ணங்களையும் மீட்டமைக்கவா?</string>
   <string name="dialog_message_reset_all" tools:machine_translated="true">இது, தற்போதுள்ள அனைத்து 256 வண்ணங்களையும் அவற்றின் இயல்புநிலை மதிப்புகளுக்கு மீட்டமைக்கும். இந்தச் செயலைத் திரும்பச் செய்ய முடியாது.</string>
   <string name="app_is_running" tools:machine_translated="true">கனெக்ட் பாட் இயங்குகிறது</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">அறிவிப்புக்கான அனுமதி தேவை</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">பின்னணியில் உங்கள் இணைப்புகளைச் செயல்பட வைப்பதற்கு, கணினி அமைப்புகளில் ConnectBot-க்கான அறிவிப்புகளை இயக்கவும்.</string>
   <string name="open_settings" tools:machine_translated="true">அமைப்புகளைத் திறக்கவும்</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">அறிவிப்பு அனுமதி வழங்கப்படாவிட்டால், இணைப்புகள் துண்டிக்கப்படலாம்.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">செயலிகளை மாற்றும்போது இணைப்புகள் துண்டிக்கப்படலாம்</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">பின்னணியில் இணைப்பு துண்டிக்கப்படலாம்</string>
   <string name="terminal_no_route" tools:machine_translated="true">உள்ளூர் நெட்வொர்க்கில் உள்ள ஒரு சேவையகத்தை அணுக முயற்சிக்கிறீர்களா? உள்ளூர் நெட்வொர்க் அனுமதிகளை வழங்கவும்.</string>
   <string name="loading_message" tools:machine_translated="true">ஏற்றுகிறது…</string>
@@ -487,7 +487,7 @@
   <string name="terminal_jump_password" tools:machine_translated="true">ஜம்ப் ஹோஸ்டுக்கான கடவுச்சொல்: %s:</string>
   <string name="view_logs" tools:machine_translated="true">பதிவுகளைக் காண்க</string>
   <string name="logs_title" tools:machine_translated="true">செயலி பதிவுகள்</string>
-  <string name="copy_logs" tools:machine_translated="true">பிழைக் குறித்து அறிக்கை சமர்ப்பிக்கும்போது, பதிவுகளை நகலெடுத்து, ஒட்டக்கூடிய வகையில் மாற்றவும்.</string>
+  <string name="copy_logs" tools:machine_translated="true">பதிவுகளை நகலெடு</string>
   <string name="logs_copied" tools:machine_translated="true">பதிவுகள் கிளிப்போர்டுக்கு நகலெடுக்கப்பட்டன்</string>
   <string name="logs_bug_report_info" tools:machine_translated="true">பிழையைப் புகாரளிக்க, இந்த பதிவுகளை நகலெடுத்து, https://connectbot.org/bug என்ற முகவரியில் புதிய பிழை அறிக்கையைத் திறக்கவும்.</string>
   <string name="no_logs_available" tools:machine_translated="true">பதிவுகள் எதுவும் கிடைக்கவில்லை</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">மொஷ் பயன்பாட்டிற்கான நிலையான யுடிபி போர்ட் (தானியங்கி முறையில் 60000-61000 வரம்பிற்கு, பூஜ்ஜியம் என குறிப்பிடவும்).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">பிராந்திய அமைப்பு</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">மோஷ் அமர்வுக்கான பிராந்திய அமைப்பு (எடுத்துக்காட்டாக, en_US.UTF-8).</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">மொஷ்</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">மொஷ் வெளியீடு மற்றும் மூலக் குறியீடு</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">மொஷ் ஆதரத்தை தயார் செய்து கொண்டிருக்கிறது...</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">மாற்றங்களை நிராகரிக்கவா?</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">ரத்து செய்</string>
   <string name="automation_text" tools:machine_translated="true">உரை</string>
   <string name="automation_regex" tools:machine_translated="true">வழக்கமான கோவை</string>
-  <string name="automation_regex_help" tools:machine_translated="true">உள்ளே வரும் உரையை, ஏஎன்எஸ்ஐ வடிவமைப்பின்றி ஒப்பிடுகிறது. ரெஜெக்ஸ், ஆர்இ2 தொடரியலை ஆதரிக்கிறது; ஆனால், முன்னோக்கி மற்றும் பின்னோக்கி பார்க்கும் முறைகள் ஆதரிக்கப்படுவதில்லை.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">ANSI வடிவமைப்பை நீக்கிய உள்வரும் உரையுடன் பொருத்திப் பார்க்கிறது. வழக்கமான கோவைகள் RE2 தொடரியலை ஆதரிக்கின்றன; lookaround மற்றும் பின்குறிப்புகள் ஆதரிக்கப்படவில்லை.</string>
   <string name="automation_duration" tools:machine_translated="true">கால அளவு (வினாடிகள்)</string>
   <string name="automation_timeout" tools:machine_translated="true">காலக்கெடு (வினாடிகள்)</string>
-  <string name="automation_key" tools:machine_translated="true">முக்கியம் / சாவி</string>
+  <string name="automation_key" tools:machine_translated="true">விசை</string>
   <string name="automation_forward" tools:machine_translated="true">போர்ட் ஃபார்வர்டு</string>
   <string name="automation_failure" tools:machine_translated="true">தோல்வியுற்றால்</string>
   <string name="automation_stop" tools:machine_translated="true">தானியங்கி செயல்பாட்டை நிறுத்து.</string>
@@ -631,21 +631,21 @@
   <string name="automation_progress" tools:machine_translated="true">தானியங்கி செயல்பாடு: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">செயல் %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">தானியங்கி செயல்பாட்டை ரத்து செய்.</string>
-  <string name="automation_key_enter" tools:machine_translated="true">உள்ளீடு செய்</string>
-  <string name="automation_key_tab" tools:machine_translated="true">தட்டு/ தாவல்</string>
-  <string name="automation_key_escape" tools:machine_translated="true">வெளியேறு</string>
-  <string name="automation_key_backspace" tools:machine_translated="true">பின்புலத்திற்குச் செல் (backspace)</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Backspace</string>
   <string name="automation_key_delete" tools:machine_translated="true">நீக்கு</string>
   <string name="automation_key_up" tools:machine_translated="true">மேல்நோக்கிய அம்பு</string>
   <string name="automation_key_down" tools:machine_translated="true">கீழ்நோக்கிய அம்பு</string>
   <string name="automation_key_left" tools:machine_translated="true">இடதுபுற அம்புக்குறி</string>
   <string name="automation_key_right" tools:machine_translated="true">வலதுபுற அம்புக்குறி</string>
-  <string name="automation_key_home" tools:machine_translated="true">முகப்புப் பக்கம்</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">முடிவு</string>
   <string name="automation_key_insert" tools:machine_translated="true">செருகு</string>
   <string name="automation_key_page_up" tools:machine_translated="true">பக்கத்தை மேலே நகர்த்து</string>
   <string name="automation_key_page_down" tools:machine_translated="true">பக்கத்தைக் கீழே நகர்த்து.</string>
-  <string name="automation_key_function" tools:machine_translated="true">எஃப் %1$எஸ்</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">ஷிஃப்ட்</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f வினாடிகள்</string>
   <plurals name="automation_count" tools:machine_translated="true">

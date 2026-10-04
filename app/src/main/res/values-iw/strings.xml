@@ -550,9 +550,9 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">הצג את מקש ההחלפה של ה-IME.</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">הוסף כפתור IME לשורה של מקשי הקיצור, שיאפשר מעבר למצב הרכב עבור שפות הדורשות מאגר הרכב (יפנית, סינית, קוריאנית וכו\').</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">קיצורי דרך של IME מלא עבור מקשי Ctrl/Alt</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">אין פתרון זמני.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">ללא מעקף</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">אירועי מקלדת גולמיים</string>
-  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">אפשרות המגדירה באופן זמני את המקלדת לפורמט ASCII כאשר לוחצים על מקשי Ctrl או Alt (מומלץ).</string>
+  <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">כפיית ASCII (מומלץ)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">החלק כדי לעבור בין הפעלות</string>
   <string name="pref_swipe_sessions_summary" tools:machine_translated="true">אפשר גלילה אופקית כדי לעבור בין סשנים במסוף. אפשרות זו כבויה כברירת מחדל לצורך שיפור הנגישות.</string>
   <string name="console_switch_session" tools:machine_translated="true">החלף סשן</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">יציאת UDP קבועה עבור mosh (0 מציין שימוש בטווח אוטומטי של 60000-61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">אזור תרבותי/שפה</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">הגדרת אזור עבור סשן Mosh (לדוגמה, en_US.UTF-8).</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">מוש</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">גרסת Mosh וקוד המקור שלה</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">מתבצעת הכנה לתמיכה ב-Mosh…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">לזנוח את השינויים?</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">בטל</string>
   <string name="automation_text" tools:machine_translated="true">טקסט</string>
   <string name="automation_regex" tools:machine_translated="true">ביטוי רגולרי</string>
-  <string name="automation_regex_help" tools:machine_translated="true">מתאים את הטקסט הנכנס ללא עיצוב ANSI. ביטויים רגולריים תומכים בתחביר RE2; לא נתמכים חיפושים מראש והפניות אחוריות.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">מתאים את הטקסט הנכנס ללא עיצוב ANSI. ביטויים רגולריים תומכים בתחביר RE2; אין תמיכה ב־lookaround ובהפניות אחוריות.</string>
   <string name="automation_duration" tools:machine_translated="true">משך זמן (בשניות)</string>
   <string name="automation_timeout" tools:machine_translated="true">זמן המתנה (בשניות)</string>
-  <string name="automation_key" tools:machine_translated="true">מפתח</string>
+  <string name="automation_key" tools:machine_translated="true">מקש</string>
   <string name="automation_forward" tools:machine_translated="true">העברת פורטים</string>
   <string name="automation_failure" tools:machine_translated="true">במקרה של כשל.</string>
   <string name="automation_stop" tools:machine_translated="true">הפסק את האוטומציה.</string>
@@ -631,25 +631,26 @@
   <string name="automation_progress" tools:machine_translated="true">אוטומציה: %1$d מתוך %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">פעולה מספר %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">בטל אוטומציה</string>
-  <string name="automation_key_enter" tools:machine_translated="true">הזן</string>
-  <string name="automation_key_tab" tools:machine_translated="true">לשונית</string>
-  <string name="automation_key_escape" tools:machine_translated="true">יציאה</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">מחק אחורה</string>
   <string name="automation_key_delete" tools:machine_translated="true">מחק</string>
   <string name="automation_key_up" tools:machine_translated="true">חץ למעלה</string>
   <string name="automation_key_down" tools:machine_translated="true">חץ כלפי מטה</string>
   <string name="automation_key_left" tools:machine_translated="true">חץ שמאלה</string>
   <string name="automation_key_right" tools:machine_translated="true">חץ ימינה</string>
-  <string name="automation_key_home" tools:machine_translated="true">בית</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">סוף</string>
   <string name="automation_key_insert" tools:machine_translated="true">הוסף</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">עבור לדף הבא</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Page Up</string>
   <string name="automation_key_page_down" tools:machine_translated="true">דף למטה</string>
   <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f שניות</string>
   <plurals name="automation_count" tools:machine_translated="true">
-    <item quantity="one">%1$d פעולות</item>
+    <item quantity="one">%1$d פעולה</item>
+    <item quantity="two">%1$d פעולות</item>
     <item quantity="other">%1$d פעולות</item>
   </plurals>
   <string name="host_status_unread_output" tools:machine_translated="true">פלט לא נקרא</string>

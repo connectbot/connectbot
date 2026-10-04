@@ -127,19 +127,19 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Programinėje klaviatūroje skaičių klavišai, paspausti kartu su „Ctrl“, siunčia signalus F1–F10.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Garsumo mygtukai keičia šrifto dydį.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Šrifto dydį taip pat galima pakeisti profilio nustatymuose.</string>
-  <string name="pref_memkeys_title" tools:machine_translated="true">Įsiminti klavišus atmintyje</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">Laikyti raktus atmintyje</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Laikykite atrakintus raktus atmintyje, kol bus nutrauktas pagrindinio proceso veikimas.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Palaikykite ryšį, net jei programa veikia fone.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Leiskite, kad jūsų sesijos būtų aktyvios, net kai perjungiate į kitas programas.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Naudoti nuolatinį pranešimą, kad seansai liktų atviri perjungiant programas</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Spartieji klavišai, skirti aplankams</string>
-  <string name="pref_stickymodifiers_title" tools:machine_translated="true">Pavyzdiniai modifikatoriai</string>
+  <string name="pref_stickymodifiers_title" tools:machine_translated="true">Fiksuojami modifikavimo klavišai</string>
   <string name="only_alt" tools:machine_translated="true">Tik „Alt“ klavišas</string>
   <string name="pref_camera_title" tools:machine_translated="true">Fotoaparato spartusis klavišas</string>
   <string name="pref_keepalive_title" tools:machine_translated="true">Įjunkite ekrano palaikymą įjungtos būsenos.</string>
   <string name="pref_keepalive_summary" tools:machine_translated="true">Apsaugokite, kad ekranas neišsijungtų, kai dirbate konsolėje.</string>
   <string name="pref_wifilock_title" tools:machine_translated="true">Palikite „Wi-Fi“ įjungtą.</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">Užtikrinkite, kad „Wi-Fi“ ryšys neatsijungtų, kai vyksta sesija.</string>
-  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Reljefiniai rodyklės ženklai</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Vibracija spaudžiant rodykles</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Įjunkite vibraciją, kai naudojate rodyklės klavišus; tai naudinga, jei ryšys yra nestabilus.</string>
   <string name="pref_bell_category" tools:machine_translated="true">Terminalo garsinis signalas</string>
   <string name="pref_bell_title" tools:machine_translated="true">Girdimas signalas</string>
@@ -148,7 +148,7 @@
   <string name="pref_bell_vibrate_title" tools:machine_translated="true">Įjunkite vibraciją, kai skamba signalas.</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Įjunkite vibraciją, kai įvyksta įvykis, dėl kurio paprastai pasigirstų įspėjamasis signalas.</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">Fono pranešimai</string>
-  <string name="pref_bell_notification_summary" tools:machine_translated="true">Siųskite pranešimą, kai foniniu režimu veikiantis terminalas skleidžia garsą.</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">Rodyti begarsį iššokantį pranešimą, kai suskamba signalas seanse, kurio nežiūrite</string>
   <string name="list_keymode_right" tools:machine_translated="true">Naudokite klaviatūros dešinės pusės klavišus.</string>
   <string name="list_keymode_left" tools:machine_translated="true">Naudokite klaviatūro kairės pusės klavišus.</string>
   <string name="list_keymode_none" tools:machine_translated="true">Išjungti</string>
@@ -164,10 +164,10 @@
   <string name="color_blue" tools:machine_translated="true">Mėlyna</string>
   <string name="color_light_blue" tools:machine_translated="true">Šviesiai mėlyna</string>
   <string name="color_cyan" tools:machine_translated="true">Žydra spalva</string>
-  <string name="color_teal" tools:machine_translated="true">Žaliosios spalvos atspalvis</string>
+  <string name="color_teal" tools:machine_translated="true">Melsvai žalia</string>
   <string name="color_green" tools:machine_translated="true">Žalias</string>
   <string name="color_light_green" tools:machine_translated="true">Šviesiai žalias</string>
-  <string name="color_lime" tools:machine_translated="true">Žalios spalvos atspalvis (žalias, panašus į kalkes)</string>
+  <string name="color_lime" tools:machine_translated="true">Gelsvai žalia</string>
   <string name="color_yellow" tools:machine_translated="true">Geltona</string>
   <string name="color_amber" tools:machine_translated="true">Gintaro spalva</string>
   <string name="color_orange" tools:machine_translated="true">Oranžinė</string>
@@ -344,7 +344,7 @@
   <string name="image_description_connected" tools:machine_translated="true">Prisijungta.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">Atjungtas.</string>
   <string name="image_description_toggle_control_character" tools:machine_translated="true">Perjungti valdymo simbolį.</string>
-  <string name="image_description_send_escape_character" tools:machine_translated="true">Siųsti specialųjį simbolį.</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">Siųsti ESC simbolį.</string>
   <string name="image_description_send_tab_character" tools:machine_translated="true">Siųsti TAB simbolį.</string>
   <string name="image_description_hide_keyboard" tools:machine_translated="true">Paslėpti klaviatūrą.</string>
   <string name="image_description_show_keyboard" tools:machine_translated="true">Rodyti klaviatūrą.</string>
@@ -354,8 +354,8 @@
   <string name="image_description_right" tools:machine_translated="true">Rodyklė į dešinę</string>
   <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
-  <string name="button_key_home" tools:machine_translated="true">Pagrindinis</string>
-  <string name="button_key_end" tools:machine_translated="true">Baigti</string>
+  <string name="button_key_home" tools:machine_translated="true">Home</string>
+  <string name="button_key_end" tools:machine_translated="true">End</string>
   <string name="button_key_pgup" tools:machine_translated="true">Puslapis aukštyn</string>
   <string name="button_key_pgdn" tools:machine_translated="true">Page Down</string>
   <string name="button_key_f1" tools:machine_translated="true">F1</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Reikalingas pranešimų leidimas</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Norėdami, kad jūsų ryšiai veiktų foniniu režimu, įjunkite pranešimus programai „ConnectBot“ sistemos nustatymuose.</string>
   <string name="open_settings" tools:machine_translated="true">Atidaryti nustatymus</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Ryšiai gali nutrūkti, jei nebus suteiktas leidimas gauti pranešimus.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Ryšiai gali nutrūkti perjungiant programas</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Fonas veikiant, ryšys gali nutrūkti.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Ar bandote prisijungti prie vietinio tinklo kompiuterio? Suteikite leidimus vietiniam tinklui.</string>
   <string name="loading_message" tools:machine_translated="true">Įkeliama…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Rodyti IME perjungimo klavišą</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Į specialiųjų klavišų eilutę įterkite IME mygtuką, kuris įjungia arba išjungia simbolių įvedimo režimą kalboms, kurioms reikalingas simbolių įvedimo buferis (pvz., japonų, kinų, korėjiečių ir kt.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Viso IME klavišų kombinacijų „Ctrl“/„Alt“ nustatymai</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Aptariamoje situacijoje nėra jokio sprendimo.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Nenaudoti apėjimo</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Neapdoroti klavišų įvykiai</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Priverstinė ASCII klaviatūra (rekomenduojama)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Perbraukite, kad perjungtumėte sesijas.</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Nustatytas UDP portas, skirtas „mosh“ programai (jei nurodyta 0, naudojamas automatiškai parinktas portas iš intervalo 60000–61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Regionas / Kalbos nustatymai</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">„Mosh“ sesijos lokalė (pvz., „en_US.UTF-8“)</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">„Mosh“ palaikymas</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">„Mosh“ versija ir šaltinio kodas</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Ruošiamasi įdiegti „Mosh“ palaikymą...</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Ar atsisakyti pakeitimų?</string>
@@ -622,7 +622,7 @@
   <string name="automation_regex_help" tools:machine_translated="true">Atitinka gaunamą tekstą be ANSI formatavimo. Reguliariosios išraiškos palaiko RE2 sintaksę; atgalinės nuorodos ir „lookaround“ funkcijos nepalaikomos.</string>
   <string name="automation_duration" tools:machine_translated="true">Trukmė (sekundėmis)</string>
   <string name="automation_timeout" tools:machine_translated="true">Maksimalus laukimo laikas (sekundėmis).</string>
-  <string name="automation_key" tools:machine_translated="true">Raktas</string>
+  <string name="automation_key" tools:machine_translated="true">Klavišas</string>
   <string name="automation_forward" tools:machine_translated="true">Uostų nukreipimas</string>
   <string name="automation_failure" tools:machine_translated="true">Esant gedimui</string>
   <string name="automation_stop" tools:machine_translated="true">Sustabdyti automatizavimą.</string>
@@ -631,16 +631,16 @@
   <string name="automation_progress" tools:machine_translated="true">Automatizavimas: %1$d iš %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Veiksmas Nr. %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Atšaukti automatizavimą.</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Įveskite</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Skirtukas</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Išeiti</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">„Backspace“ klavišas (trinimo klavišas)</string>
   <string name="automation_key_delete" tools:machine_translated="true">Ištrinti</string>
   <string name="automation_key_up" tools:machine_translated="true">Rodyklė į viršų</string>
   <string name="automation_key_down" tools:machine_translated="true">Žemyn nukreipta rodyklė</string>
   <string name="automation_key_left" tools:machine_translated="true">Rodyklė į kairę</string>
   <string name="automation_key_right" tools:machine_translated="true">Dešinioji rodyklė</string>
-  <string name="automation_key_home" tools:machine_translated="true">Pagrindinis puslapis</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">Pabaiga</string>
   <string name="automation_key_insert" tools:machine_translated="true">Įterpti</string>
   <string name="automation_key_page_up" tools:machine_translated="true">Perkelti puslapį aukštyn</string>
@@ -650,7 +650,9 @@
   <string name="automation_seconds" tools:machine_translated="true">%.3f sekundės</string>
   <plurals name="automation_count" tools:machine_translated="true">
     <item quantity="one">%1$d veiksmas</item>
-    <item quantity="other">%1$d veiksmai</item>
+    <item quantity="few">%1$d veiksmai</item>
+    <item quantity="many">%1$d veiksmo</item>
+    <item quantity="other">%1$d veiksmų</item>
   </plurals>
   <string name="host_status_unread_output" tools:machine_translated="true">Neskaitomi pranešimai</string>
   <string name="host_status_user_disconnected" tools:machine_translated="true">Atsijungėte nuo šio įrenginio.</string>

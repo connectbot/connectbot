@@ -65,8 +65,8 @@
   <string name="prompt_bits" tools:machine_translated="true">Bit:</string>
   <string name="prompt_pubkey_password" tools:machine_translated="true">\'%1$s\' açary üçin parol</string>
   <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">Daşky serweri \'%1$s\' açaryny ulanmaga rugsat bering?</string>
-  <string name="host_verification_failure_warning_header" tools:machine_translated="true">ESGERI: DAŞKY SERVERIŇ IDENTIFIKASIÝASY ÜZGÄRDI!</string>
-  <string name="host_verification_failure_warning" tools:machine_translated="true">ŞOL, KIMDIR BIR ZAT EDÝÄR DÜŞÜP BILÝÄR!\nŞahsy maglumatlaryňyz şu wagtda ýapyşyp bilinýär (aralykda duran şahsy hüjüm)!\nŞeýle-de, mümkin, serwer açary täze üýtgedildi.</string>
+  <string name="host_verification_failure_warning_header" tools:machine_translated="true">DUÝDURYŞ: UZAKDAKY HOSTUŇ ŞAHSYÝET MAGLUMATY ÜÝTGEDI!</string>
+  <string name="host_verification_failure_warning" tools:machine_translated="true">KIMDIR BIRI ZYÝANLY HEREKET EDÝÄN BOLUP BILER!\nKimdir biri şu wagt aragatnaşygyňyzy diňleýän bolup biler (ortadaky adam hüjümi)!\nŞeýle hem hostuň açary ýaňy üýtgedilen bolup biler.</string>
   <string name="prompt_continue_connecting" tools:machine_translated="true">Ähli zady ýaly, baglanyşygy dowam etdirjekdigiňize göz ýetirýäňizmi?</string>
   <string name="host_authenticity_warning" tools:machine_translated="true">\'%1$s\' serweriniň dogrulygy anyklap bilinýär.</string>
   <string name="host_fingerprint" tools:machine_translated="true">%1$s host-yň açarynyň unikal sanawy %2$s.</string>
@@ -102,7 +102,7 @@
   <string name="dialog_localfont_hint" tools:machine_translated="true">Şriftiň görnüşiniň ady</string>
   <string name="button_import" tools:machine_translated="true">Import etmek</string>
   <string name="font_importing" tools:machine_translated="true">Şrift yüklenilýär…</string>
-  <string name="pref_backupkeys_title" tools:machine_translated="true">Jemgyýýet açarlaryny saklamak üçin ýardam berýän ýa-da ýardam bermejek ýaly edilýän saýlama</string>
+  <string name="pref_backupkeys_title" tools:machine_translated="true">Açyk açarlaryň ätiýaçlyk nusgasyny saklamak</string>
   <string name="pref_backupkeys_summary" tools:machine_translated="true">Android-iň ýadygörlük ulgamyny ulgalamak arkaly hususy açarlaryň ýadygörlük nusgalaryny saklaň.</string>
   <string name="pref_ui_category" tools:machine_translated="true">Ulanyjyň interfeýsi</string>
   <string name="pref_language_title" tools:machine_translated="true">Dil</string>
@@ -112,7 +112,7 @@
   <string name="pref_theme_title" tools:machine_translated="true">Tema</string>
   <string name="pref_theme_system" tools:machine_translated="true">Sistem tarapyndan bellenen standart görnüş</string>
   <string name="pref_theme_light" tools:machine_translated="true">Ýagty</string>
-  <string name="pref_theme_dark" tools:machine_translated="true">Gara</string>
+  <string name="pref_theme_dark" tools:machine_translated="true">Garaňky</string>
   <string name="pref_titlebarhide_title" tools:machine_translated="true">Awomatik saklanylýan başlyk çyşgyry</string>
   <string name="pref_titlebarhide_summary" tools:machine_translated="true">Baş sarpawyň üstiňe dokunyň, şonuň öňünde baş sarpawy göräzip we menýuga geçiň.</string>
   <string name="pref_alwaysvisible_title" tools:machine_translated="true">Aýratyn düwmeler daş-daşdan görünýär.</string>
@@ -127,10 +127,10 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Programma üsti klawiaturalarda, san düwmeleri Ctrl düwmesi bilen birlikde F1-F10 düwmelerini ugratýar.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Ses ulaldyp/azaldylýan düwmeler şriftiň ululygyny üýtgedýär.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Şriftiň ululygy profiliň sazlama bölümlerinde hem üýtgedilip bilner.</string>
-  <string name="pref_memkeys_title" tools:machine_translated="true">Ýadyňda saklaýan düwmeler</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">Açarlary ýatda sakla</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Açyk galan açarlary, serwer hyzmaty togtadylana çenli, ýadyňyzda saklaň.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Arka planda baglanyşygy saklaň.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Başga programmalara geçseñiz hem, sesýalaryňyzy açyk saklaň.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Programmalaryň arasynda geçeniňizde sessiýalary açyk saklamak üçin hemişelik bildiriş ulanyň</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Kataloga giden gysga ýollar</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Özgerdişli täsir ediji amiller</string>
   <string name="only_alt" tools:machine_translated="true">Diňe Alt</string>
@@ -139,7 +139,7 @@
   <string name="pref_keepalive_summary" tools:machine_translated="true">Konsolda işleýärkä, ekranyň öçülmeginiň öňüni al.</string>
   <string name="pref_wifilock_title" tools:machine_translated="true">Wi-Fi-ni işleýär ýagdaýda saklaň.</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">Wi-Fi ulgamynyň işli sesýa wagtynda awtomatiki öçülmeginiň öňüni al.</string>
-  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Tizgiler bilen görnüşli oklar</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Ok düwmelerinde titreme</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Ugurlary ugratylanda titräň; ulgamda ýuwaş hereket edýän ýagdaýlarda peýdaly.</string>
   <string name="pref_bell_category" tools:machine_translated="true">Terminal ýaňy</string>
   <string name="pref_bell_title" tools:machine_translated="true">Sesli signal</string>
@@ -148,26 +148,26 @@
   <string name="pref_bell_vibrate_title" tools:machine_translated="true">Terminaldaky sesde ýygyryň</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Terminalda ýüze çykanda telefon titräsin.</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">Fona salynan habarlar</string>
-  <string name="pref_bell_notification_summary" tools:machine_translated="true">Terminalda fon reżiminde işleýän wagty ses berilende habarny iberiň.</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">Seretmeýän sessiýaňyzda jaň çalnanda sessiz açylýan bildiriş görkeziň</string>
   <string name="list_keymode_right" tools:machine_translated="true">Sağ tarapdaky düwmeleri ulanýaň.</string>
   <string name="list_keymode_left" tools:machine_translated="true">Klawiaturanyň çep tarapyndaky dükmeleri ulan</string>
   <string name="list_keymode_none" tools:machine_translated="true">Öçürmek</string>
-  <string name="list_pubkeyids_none" tools:machine_translated="true">Açarlary ulgalamagyň.</string>
-  <string name="list_pubkeyids_any" tools:machine_translated="true">Her bir açylan açary ulanýaň.</string>
+  <string name="list_pubkeyids_none" tools:machine_translated="true">Açarlary ulanma</string>
+  <string name="list_pubkeyids_any" tools:machine_translated="true">Islendik gulpy açylan açary ulan</string>
   <string name="hostpref_nickname_title" tools:machine_translated="true">Lakap</string>
   <string name="hostpref_color_title" tools:machine_translated="true">Reňk kategoriýasy</string>
   <string name="color_red" tools:machine_translated="true">Gyrmyzy</string>
   <string name="color_pink" tools:machine_translated="true">Çyryş reňk</string>
   <string name="color_purple" tools:machine_translated="true">Mor reňk</string>
   <string name="color_deep_purple" tools:machine_translated="true">Göýçügül mor reňk</string>
-  <string name="color_indigo" tools:machine_translated="true">Indigo (çeper öwren ýa-da gök reňk)</string>
+  <string name="color_indigo" tools:machine_translated="true">Indigo</string>
   <string name="color_blue" tools:machine_translated="true">Göý</string>
   <string name="color_light_blue" tools:machine_translated="true">Açyk gök</string>
-  <string name="color_cyan" tools:machine_translated="true">Göý reňk</string>
+  <string name="color_cyan" tools:machine_translated="true">Mawy</string>
   <string name="color_teal" tools:machine_translated="true">Ýaşyl-göge bakýan reňk</string>
   <string name="color_green" tools:machine_translated="true">Ýaşyl</string>
   <string name="color_light_green" tools:machine_translated="true">Açyk ýaşyl</string>
-  <string name="color_lime" tools:machine_translated="true">Aşyk reňk</string>
+  <string name="color_lime" tools:machine_translated="true">Açyk ýaşyl</string>
   <string name="color_yellow" tools:machine_translated="true">Sary</string>
   <string name="color_amber" tools:machine_translated="true">Gyzyl-sary reňk</string>
   <string name="color_orange" tools:machine_translated="true">Gyzyl-sary</string>
@@ -213,9 +213,9 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Terminal</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Şrift maşynasy</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Şriftiň ululygy: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Gözegçilik ululygy</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Kesgitlenen ölçeg</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Terminaliň ululygyny kesgitli görnüşde (sütler x hatarlar) düzmek üçin, ekranyň ululygyna laýyk otomatiki ulaldyryp-kiçeldilmegiň ýerine, şol ululyga görä düzmek isleýärsiňiz.</string>
-  <string name="profile_editor_force_size_enable" tools:machine_translated="true">Ölçegleri zorla ulgamak</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">Kesgitlenen ölçegi işjeňleşdir</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Sütunlar</string>
   <string name="profile_editor_force_size_rows" tools:machine_translated="true">Hatlar</string>
   <string name="profile_icon_color_none" tools:machine_translated="true">Hiç biri (serweriň öwüşgini ulan)</string>
@@ -337,14 +337,14 @@
   <string name="label_hex_color" tools:machine_translated="true">On altynjy reňk kody</string>
   <string name="section_fg_bg_colors" tools:machine_translated="true">Öňki plan we arkaplan</string>
   <string name="label_foreground_color" tools:machine_translated="true">Öňki plan</string>
-  <string name="label_background_color" tools:machine_translated="true">Fona öwüşdirilen</string>
+  <string name="label_background_color" tools:machine_translated="true">Yzky fon</string>
   <string name="label_base_scheme" tools:machine_translated="true">Esasy şema:</string>
   <string name="menu_manage_colors" tools:machine_translated="true">Reň şemalaryny dolandyryň.</string>
   <string name="section_color_preview" tools:machine_translated="true">Önüni görmek</string>
   <string name="image_description_connected" tools:machine_translated="true">Baglanyşykda.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">Baglanyşyk kesildi.</string>
   <string name="image_description_toggle_control_character" tools:machine_translated="true">Kontrol simwolyny üýtget.</string>
-  <string name="image_description_send_escape_character" tools:machine_translated="true">Çykarmak üçin ýörite simwol ugrat.</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">ESC nyşanyny iber.</string>
   <string name="image_description_send_tab_character" tools:machine_translated="true">“TAB” belgisi ugrat.</string>
   <string name="image_description_hide_keyboard" tools:machine_translated="true">Klawiaturany gizle.</string>
   <string name="image_description_show_keyboard" tools:machine_translated="true">Klawiaturany göräz.</string>
@@ -352,10 +352,10 @@
   <string name="image_description_down" tools:machine_translated="true">Aşak ok</string>
   <string name="image_description_left" tools:machine_translated="true">Çep tarapa ok</string>
   <string name="image_description_right" tools:machine_translated="true">Sağa tarap ok</string>
-  <string name="button_key_esc" tools:machine_translated="true">Çyk</string>
+  <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
-  <string name="button_key_home" tools:machine_translated="true">Baş sahypa</string>
-  <string name="button_key_end" tools:machine_translated="true">Gutarmak</string>
+  <string name="button_key_home" tools:machine_translated="true">Home</string>
+  <string name="button_key_end" tools:machine_translated="true">End</string>
   <string name="button_key_pgup" tools:machine_translated="true">Sahapany ýokary süýşürmek</string>
   <string name="button_key_pgdn" tools:machine_translated="true">Sahapany aşak süýşürmek</string>
   <string name="button_key_f1" tools:machine_translated="true">F1</string>
@@ -382,7 +382,7 @@
   <string name="button_navigate_up" tools:machine_translated="true">Ýokary tarapa geçiň</string>
   <string name="button_more_options" tools:machine_translated="true">Beýleki mümkinçilikler</string>
   <string name="button_host_options" tools:machine_translated="true">Eýe-hoş ýörite saýarlary</string>
-  <string name="button_collapse" tools:machine_translated="true">Gyçyr</string>
+  <string name="button_collapse" tools:machine_translated="true">Ýygna</string>
   <string name="error_key_load_failed" tools:machine_translated="true">\'%1$s\' açary ýüklemekde ýalňyşlyk ýüze çykdy: %2$s</string>
   <string name="error_connection_failed" tools:machine_translated="true">%1$s-e (%2$s) birikmek başarmady: %3$s</string>
   <string name="error_port_forward_load_failed" tools:machine_translated="true">%1$s üçin port ýöneldirmelerini ýüklemekde ýalňyşlyk ýüze çykdy: %2$s</string>
@@ -398,7 +398,7 @@
   <string name="host_editor_hide_advanced" tools:machine_translated="true">Öňki ýyllyklary gizle</string>
   <string name="resize_width_label" tools:machine_translated="true">Giňlik (sütünler)</string>
   <string name="resize_height_label" tools:machine_translated="true">Beýikligi (setirler)</string>
-  <string name="resize_disable_force_size" tools:machine_translated="true">Ölçegleri öz-özünden ulaldyp ýa-da kiçeldip bilmäni ýatyryň.</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">Kesgitlenen ölçegi öçür</string>
   <string name="pubkey_editor_key_type_label" tools:machine_translated="true">Kiçliň görnüşi</string>
   <string name="pubkey_editor_options_label" tools:machine_translated="true">Saýlap alar ýaly ýagdaýlar</string>
   <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Şifrelenen açarlar başlangyçda açylamaz.</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Bildirişleriň ugrunda rugsat talyp edilýär.</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Arka planda baglanyşyklaryňyzy aktiw saklamak üçin, ulgam tertiblerinde ConnectBot üçin habarnamalary ýörite ýerini açyň.</string>
   <string name="open_settings" tools:machine_translated="true">Sazlamalary açyň</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Baglanşyklar habarlyň berilmegi mümkinçiligi bolmazdan kesilip biler.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Programmalaryň arasynda geçeniňizde birikmeler kesilip biler</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Baglanyşyk fon reżiminde kesilip biler.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Siz ýerli serwere ýa-da ulgama ýetmek isleýäňizmi? Ýerli ulgam üçin rugsat ber.</string>
   <string name="loading_message" tools:machine_translated="true">Yüklenýär…</string>
@@ -541,15 +541,15 @@
   <string name="pref_auth_on_launch_title" tools:machine_translated="true">Gurnama wagtynda awtentifikasiýa.</string>
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Programmany açanda, barmağıň yzyny, ýüzüňi ýa-da enjamyň PIN kodyny girizmegi talep ediň.</string>
   <string name="pref_security_category" tools:machine_translated="true">Howpsuzlyk</string>
-  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot ulgam ýapyk.</string>
-  <string name="auth_screen_unlock_button" tools:machine_translated="true">Kilidi açmak üçin dokuning.</string>
+  <string name="auth_screen_title" tools:machine_translated="true">ConnectBot gulplandy</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">Gulpy açmak üçin degiň</string>
   <string name="auth_prompt_title" tools:machine_translated="true">ConnectBot-y açyň.</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Öňe geçmek üçin özüňizi tassyklaň.</string>
   <string name="auth_banner_title" tools:machine_translated="true">%1$s-den gelen awtentifikasiýa habary</string>
   <string name="terminal_auth_banner_header" tools:machine_translated="true">[%1$s] Täsdiqlama habary:</string>
   <string name="pref_imetogglekey_title" tools:machine_translated="true">IME-iň üýtgediji düwmesi</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Özel düwme sanawyna IME düwmesini goşup, bu düwme arkaly ýazylyşy talep edýän dilleriň (ýapon, hytaý, koreý we beýleki diller) üçin ýazylyş reżimini üýtgetmäge mümkinçilik döredilýär.</string>
-  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Doluly IME-de Ctrl/Alt düwmeçelerini ulanyp, terminaldaky gyzgynç ýollaryň nähili işlemelidigi barada saýlama başlygy.</string>
+  <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Doly IME üçin Ctrl/Alt gysga ýollary</string>
   <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Çözgüli ýol ýok.</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Çig açar wakaýalary</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">ASCII-ni mejbur edýär (maslahat berilýär)</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Mosh üçin gurnama edilen UDP porty (awtomatikiň özi üçin 0, şol birnäçe 60000-61000 aralygy).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Ýerli dil ulgamynyň sazlamalary</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh seansy üçin dil ýerleşişi (mysal, en_US.UTF-8).</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">Mosh (Moshy goldamak üçin niýetlenen dinamiki modul).</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh-yň täze nusgasy we çeşme kody</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Mosh ulgamynyň işläp başlamagy üçin taýarlanylýar...</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Üzgertmeleri saklamadykmy?</string>
@@ -622,7 +622,7 @@
   <string name="automation_regex_help" tools:machine_translated="true">Gelýän teksti ANSI formatlamasyz deňeşdirýär. RegEx, RE2 sintaksyny goldaýar; öňünden barlap geçmek we yza salgy beriş mümkinçilikleri goldanmaýar.</string>
   <string name="automation_duration" tools:machine_translated="true">Dowamlylyk (sekuntlar)</string>
   <string name="automation_timeout" tools:machine_translated="true">Wagt çägi (sekundda).</string>
-  <string name="automation_key" tools:machine_translated="true">Kilidiň nyşany</string>
+  <string name="automation_key" tools:machine_translated="true">Düwme</string>
   <string name="automation_forward" tools:machine_translated="true">Port ýöneldirmek</string>
   <string name="automation_failure" tools:machine_translated="true">Eger ýalňyşlyk bolanda</string>
   <string name="automation_stop" tools:machine_translated="true">Awomatlaşdyrylan işlemeleri bes etmelisiniz.</string>
@@ -632,21 +632,21 @@
   <string name="automation_failure_step" tools:machine_translated="true">Ämalyň %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Awomatlaşdyrylan işlemden ýüz döndürmek</string>
   <string name="automation_key_enter" tools:machine_translated="true">Giriz</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Sesiýa</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Çykyp gitmek</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Geri aýryň düwmesi</string>
   <string name="automation_key_delete" tools:machine_translated="true">Aýyrmak</string>
-  <string name="automation_key_up" tools:machine_translated="true">Ýokary ýönelişli öýke</string>
-  <string name="automation_key_down" tools:machine_translated="true">Aşakky öňe süren ok</string>
-  <string name="automation_key_left" tools:machine_translated="true">Çep tarapky öňe süýşüriji nyşan</string>
-  <string name="automation_key_right" tools:machine_translated="true">Saý ýöňe ok</string>
-  <string name="automation_key_home" tools:machine_translated="true">Öý</string>
+  <string name="automation_key_up" tools:machine_translated="true">Ýokary ok</string>
+  <string name="automation_key_down" tools:machine_translated="true">Aşak ok</string>
+  <string name="automation_key_left" tools:machine_translated="true">Çep ok</string>
+  <string name="automation_key_right" tools:machine_translated="true">Sag ok</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">Ahyrky</string>
   <string name="automation_key_insert" tools:machine_translated="true">Goýmak</string>
   <string name="automation_key_page_up" tools:machine_translated="true">Sahapany ýokary süýşürmek</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Sahapany aşak süýşürmek</string>
   <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
-  <string name="automation_key_shift" tools:machine_translated="true">Üýtgetmek düwmesi</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f sekunt</string>
   <plurals name="automation_count" tools:machine_translated="true">
     <item quantity="one">%1$d işlem</item>
@@ -678,7 +678,7 @@
   <string name="notification_bell" tools:machine_translated="true">Terminal ýaňy</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">Soňky waka anyklanyldy.</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Görüldi diýip belle</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Ses çykarmagy bes et</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Baglanyşyk ýitirilende habarnamalar</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Ses çykarmayan açylýan habarnama, gözeg salýan seansiň gözlenmedik ýagdaýda kesilmegi ýagdaýynda peýda bolsun.</string>

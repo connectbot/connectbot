@@ -550,14 +550,14 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">顯示輸入法切換按鈕</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">在特殊按鍵列中新增一個輸入法引擎 (IME) 按鈕，用於切換需要組成緩衝區的語言（例如日文、中文、韓文等）的組成模式。</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">完整輸入法引擎的 Ctrl/Alt 快捷鍵</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">沒有替代方案。</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">不使用替代方案</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">原始鍵盤事件</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">強制使用 ASCII（建議）</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">滑動切換工作階段</string>
   <string name="pref_swipe_sessions_summary" tools:machine_translated="true">啟用水平滑動手勢來切換終端機工作階段。預設為關閉，以提升無障礙功能。</string>
   <string name="console_switch_session" tools:machine_translated="true">切換工作階段</string>
   <string name="console_previous_session" tools:machine_translated="true">上一個會話</string>
-  <string name="console_next_session" tools:machine_translated="true">切換到下一個活動的終端機工作階段。</string>
+  <string name="console_next_session" tools:machine_translated="true">下一個工作階段</string>
   <string name="button_key_alt" tools:machine_translated="true">Alt</string>
   <string name="image_description_toggle_alt_key" tools:machine_translated="true">切換 Alt 鍵。</string>
   <string name="button_key_ime" tools:machine_translated="true">輸入法編輯器</string>
@@ -573,12 +573,12 @@
   <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh 連線已建立。</string>
   <string name="terminal_mosh_error" tools:machine_translated="true">Mosh 出現錯誤：%1$s</string>
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh 伺服器指令</string>
-  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">自訂的 `mosh-server` 路徑或指令（若要使用預設值，請留空）</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">自訂的 mosh-server 路徑或指令（若要使用預設值，請留空）</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh UDP 連接埠</string>
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">為 Mosh 設定固定的 UDP 連接埠（若設定為 0，則會自動選擇 60000 到 61000 之間的連接埠）。</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">地區設定</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh 連線使用的語言設定（例如：en_US.UTF-8）</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">支援 Mosh 的動態功能模組標題。</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh 版本及原始碼。</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">正在準備 Mosh 的支援功能……</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">捨棄變更？</string>
@@ -629,23 +629,23 @@
   <string name="automation_continue" tools:machine_translated="true">繼續。</string>
   <string name="automation_save_host" tools:machine_translated="true">儲存主機以設定自動化功能。</string>
   <string name="automation_progress" tools:machine_translated="true">自動化：目前步驟：%1$d，總步驟數：%2$d</string>
-  <string name="automation_failure_step" tools:machine_translated="true">動作：%1$d：％2$s</string>
+  <string name="automation_failure_step" tools:machine_translated="true">動作 %1$d：%2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">取消自動化操作。</string>
-  <string name="automation_key_enter" tools:machine_translated="true">輸入</string>
-  <string name="automation_key_tab" tools:machine_translated="true">分頁標籤</string>
-  <string name="automation_key_escape" tools:machine_translated="true">退出</string>
-  <string name="automation_key_backspace" tools:machine_translated="true">刪除鍵</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Backspace</string>
   <string name="automation_key_delete" tools:machine_translated="true">刪除</string>
   <string name="automation_key_up" tools:machine_translated="true">向上箭頭</string>
   <string name="automation_key_down" tools:machine_translated="true">向下箭頭</string>
   <string name="automation_key_left" tools:machine_translated="true">向左箭頭</string>
   <string name="automation_key_right" tools:machine_translated="true">向右箭頭</string>
-  <string name="automation_key_home" tools:machine_translated="true">主頁</string>
-  <string name="automation_key_end" tools:machine_translated="true">結束。</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
+  <string name="automation_key_end" tools:machine_translated="true">End</string>
   <string name="automation_key_insert" tools:machine_translated="true">插入</string>
   <string name="automation_key_page_up" tools:machine_translated="true">向上翻頁</string>
   <string name="automation_key_page_down" tools:machine_translated="true">向下翻頁</string>
-  <string name="automation_key_function" tools:machine_translated="true">功能快捷鍵選擇器標籤：F%1$s</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Shift 鍵。</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f 秒</string>
   <plurals name="automation_count" tools:machine_translated="true">
@@ -678,7 +678,7 @@
   <string name="notification_bell" tools:machine_translated="true">終端鈴聲</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s：%2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">已讀</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">標記為已讀</string>
   <string name="notification_mute_bells" tools:machine_translated="true">關閉鈴聲。</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">連線中斷通知</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">當您未查看的會話意外中斷連線時，會顯示一個無聲的快顯視窗。</string>
@@ -687,8 +687,8 @@
 		<item quantity="other">目前有 %d 個會話已連線。</item>
 	</plurals>
   <plurals name="notification_attention_sessions" tools:machine_translated="true">
-		<item quantity="one">有 %d 筆需要處理的事項。</item>
-		<item quantity="other">有 %d 筆需要處理。</item>
+		<item quantity="one">有 %d 個工作階段需要處理</item>
+		<item quantity="other">有 %d 個工作階段需要處理</item>
 	</plurals>
   <plurals name="notification_more_sessions" tools:machine_translated="true">
 		<item quantity="one">還有 %d 個會話</item>

@@ -227,7 +227,7 @@
   <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">Покрет за прелазак на следећу/претходну страницу</string>
   <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">Превуците прву трећину екрана слева како бисте послали команду за померање курсора нагоре/надоле у терминал.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Ostanite povezani u pozadini</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Održavajte sesije aktivnim čak i kada prelazite na druge aplikacije.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Користи стално обавештење да сесије остану отворене при преласку између апликација</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibrira prilikom slanja komandi pomoću tastera sa strelicama; korisno za sporije internet konekcije.</string>
   <string name="pref_bell_summary" tools:machine_translated="true">Омогући звук приликом добијања обавештења у терминалу</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Вибрација при доласку обавештења са уређаја</string>
@@ -271,7 +271,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Терминал</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Породица фонтова</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Величина фонта: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Величина силе</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Фиксна величина</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Prisilite terminal da ima određenu veličinu (broj kolona x broj redova) umesto da se automatski prilagođava veličini ekrana.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">Omogućite prisilno podešavanje veličine.</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Колумне</string>
@@ -354,9 +354,9 @@
   <string name="image_description_right" tools:machine_translated="true">Стрелица удесно</string>
   <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
-  <string name="button_key_home" tools:machine_translated="true">Почетна</string>
-  <string name="button_key_end" tools:machine_translated="true">Кraj</string>
-  <string name="button_key_pgup" tools:machine_translated="true">Sledeća stranica</string>
+  <string name="button_key_home" tools:machine_translated="true">Home</string>
+  <string name="button_key_end" tools:machine_translated="true">End</string>
+  <string name="button_key_pgup" tools:machine_translated="true">PgUp</string>
   <string name="button_key_pgdn" tools:machine_translated="true">Sledeća stranica</string>
   <string name="button_key_f1" tools:machine_translated="true">F1</string>
   <string name="button_key_f2" tools:machine_translated="true">F2</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Потребно је одобрење за слање обавештења.</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Da biste omogućili da vaše veze budu aktivne u pozadini, molimo vas da uključite obaveštenja za ConnectBot u podešavanjima sistema.</string>
   <string name="open_settings" tools:machine_translated="true">Otvori podešavanja</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Везе могу бити прекинуте ако нисте добили дозволу за примање обавештења.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Везе се могу прекинути при преласку између апликација</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Веза може да се прекине док је апликација у позадини</string>
   <string name="terminal_no_route" tools:machine_translated="true">Да ли покушавате да се повежете са уређајем у локалној мрежи? Дозволите приступ локалној мрежи.</string>
   <string name="loading_message" tools:machine_translated="true">Учитавање…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Прикажи тастер за пребацивање режима уноса (IME)</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Dodajte IME dugme u red sa posebnim tasterima, koje će omogućavati/isključivati režim za unos složenih znakova za jezike kojima je potreban međuskladišni prostor za unos (japanski, kineski, korejski, itd.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Пречице за потпуни ИМЕ са комбинацијама тастера Ctrl/Alt</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Нема решења.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Без заобилазног решења</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Neobrađeni događaji sa tastature</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Prisilno korišćenje ASCII (preporučeno)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Prebacujte se između sesija pomoću gesta klizanja.</string>
@@ -568,7 +568,7 @@
   <string name="terminal_mosh_starting" tools:machine_translated="true">Покрећем Мош везу...</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Упозорење: Инсталација програма Mosh је истекла.</string>
   <string name="terminal_mosh_launching_server" tools:machine_translated="true">Покрећем сервер „mosh“ на удаљеном хосту...</string>
-  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Неуспешно покретање програма `mosh-server` на удаљеном серверу.</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Неуспешно покретање програма mosh-server на удаљеном серверу.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">Неуспешно покретање клијентске апликације Mosh.</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">Успостављена је веза са програмом Mosh.</string>
   <string name="terminal_mosh_error" tools:machine_translated="true">Грешка у програму Mosh: %1$s</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Фиксирани УДП порт за Мош (0 за аутоматски опсег од 60000 до 61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Локација</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Локација за сесију програма „Mosh” (нпр. en_US.UTF-8).</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">Мош</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Izdanje programa Mosh i izvorni kod.</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Priprema podrške za Mosh…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Odbaciti izmene?</string>
@@ -619,37 +619,38 @@
   <string name="automation_cancel" tools:machine_translated="true">Откажи</string>
   <string name="automation_text" tools:machine_translated="true">Текст</string>
   <string name="automation_regex" tools:machine_translated="true">Регуларни израз</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Усклађује улазни текст без АНСИ форматирања. Регуларне изразе подржава синтакса РЕ2; позитивна и негативна претрага, као и повратне референце нису подржани.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Упоређује улазни текст без ANSI форматирања. Регуларни изрази подржавају синтаксу RE2; lookaround и повратне референце нису подржани.</string>
   <string name="automation_duration" tools:machine_translated="true">Trajanje (u sekundama)</string>
   <string name="automation_timeout" tools:machine_translated="true">Време чекања (у секундама).</string>
-  <string name="automation_key" tools:machine_translated="true">Кључ</string>
+  <string name="automation_key" tools:machine_translated="true">Тастер</string>
   <string name="automation_forward" tools:machine_translated="true">Прослеђивање порта</string>
   <string name="automation_failure" tools:machine_translated="true">U slučaju greške.</string>
   <string name="automation_stop" tools:machine_translated="true">Зауставите аутоматизацију.</string>
-  <string name="automation_continue" tools:machine_translated="true">Nastavite.</string>
+  <string name="automation_continue" tools:machine_translated="true">Настави</string>
   <string name="automation_save_host" tools:machine_translated="true">Sačuvajte uređaj da biste podesili automatizaciju.</string>
   <string name="automation_progress" tools:machine_translated="true">Аутоматизација: %1$d од укупно %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Акција број %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Откажи аутоматизацију.</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Унесите</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Картица</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Izlaz</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Тастер за брисање</string>
   <string name="automation_key_delete" tools:machine_translated="true">Избриши</string>
   <string name="automation_key_up" tools:machine_translated="true">Стрелица нагоре.</string>
   <string name="automation_key_down" tools:machine_translated="true">Стрелица надоле</string>
   <string name="automation_key_left" tools:machine_translated="true">Стрелица лево.</string>
   <string name="automation_key_right" tools:machine_translated="true">Стрелица удесно.</string>
-  <string name="automation_key_home" tools:machine_translated="true">Почетна страница</string>
-  <string name="automation_key_end" tools:machine_translated="true">Кraj</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
+  <string name="automation_key_end" tools:machine_translated="true">End</string>
   <string name="automation_key_insert" tools:machine_translated="true">Уметни</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">Sledeća stranica</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Page Up</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Sledeća stranica</string>
-  <string name="automation_key_function" tools:machine_translated="true">Ф%1$с</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Тастер Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f sekundi</string>
   <plurals name="automation_count" tools:machine_translated="true">
     <item quantity="one">%1$d радња</item>
+    <item quantity="few">%1$d радње</item>
     <item quantity="other">%1$d радњи</item>
   </plurals>
   <string name="host_status_unread_output" tools:machine_translated="true">Nepročitana izlazna poruka</string>
@@ -678,7 +679,7 @@
   <string name="notification_bell" tools:machine_translated="true">Звучни сигнал терминала</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">Означено као прочитано.</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Означи као прочитано</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Искључи звучне сигнале.</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Обавештења о прекинутој вези</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Prikaži iskačući prozor bez zvuka kada se sesija koju ne pratite neočekivano prekine.</string>

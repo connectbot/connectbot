@@ -130,7 +130,7 @@
   <string name="pref_volumefont_summary" tools:machine_translated="true">Големината на фонтот исто така може да се промени во поставките на профилот.</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Зачувајте ги отклучените клучеви во меморијата додека не се прекине работата на позадинската услуга.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Останете поврзани во позадина</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Одржувајте ги вашите сесии активни дури и кога префрлувате на други апликации.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Користи постојано известување за сесиите да останат отворени при префрлање меѓу апликации</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Преки патишта до директориуми</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Постојани модификатори</string>
   <string name="only_alt" tools:machine_translated="true">Само Alt</string>
@@ -139,7 +139,7 @@
   <string name="pref_keepalive_summary" tools:machine_translated="true">Спречете го екранот да се исклучува додека работите во конзола.</string>
   <string name="pref_wifilock_title" tools:machine_translated="true">Држете ја Wi-Fi мрежата активна</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">Спречете го исклучувањето на Wi-Fi кога е активна сесија.</string>
-  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Нерамни стрелки</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Вибрации при притискање на стрелките</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Вибрирајте кога ќе испратите команди со стрелките; корисно за спори интернет-врски.</string>
   <string name="pref_bell_category" tools:machine_translated="true">Звук за терминал</string>
   <string name="pref_bell_title" tools:machine_translated="true">Звучен сигнал</string>
@@ -148,7 +148,7 @@
   <string name="pref_bell_vibrate_title" tools:machine_translated="true">Вибрирај при звук.</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Вибрирај при сигнал од терминалот.</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">Известувања во позадина</string>
-  <string name="pref_bell_notification_summary" tools:machine_translated="true">Испратете известување кога терминал што работи во позадина емитува звук.</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">Прикажи тивко скокачко известување кога ќе се огласи ѕвонче во сесија што не ја гледате</string>
   <string name="list_keymode_right" tools:machine_translated="true">Користете ги копчињата од десната страна</string>
   <string name="list_keymode_left" tools:machine_translated="true">Користете ги копчињата на левата страна</string>
   <string name="list_keymode_none" tools:machine_translated="true">Исклучи</string>
@@ -213,7 +213,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Терминал</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Семејство на фонтови</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Големина на фонтот: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Големина на силата</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Фиксна големина</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Натерајте го терминалот да има специфична големина (колони x редови) наместо автоматски да се прилагодува на големината на екранот.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">Овозможи принудителна големина</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Колумни</string>
@@ -344,7 +344,7 @@
   <string name="image_description_connected" tools:machine_translated="true">Поврзан.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">Исклучен.</string>
   <string name="image_description_toggle_control_character" tools:machine_translated="true">Вклучи/исклучи контролен знак.</string>
-  <string name="image_description_send_escape_character" tools:machine_translated="true">Испратете специјален знак.</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">Испрати знак ESC.</string>
   <string name="image_description_send_tab_character" tools:machine_translated="true">Испрати карактер TAB.</string>
   <string name="image_description_hide_keyboard" tools:machine_translated="true">Скриј ја тастатурата.</string>
   <string name="image_description_show_keyboard" tools:machine_translated="true">Прикажи ја виртуелната тастатура.</string>
@@ -356,7 +356,7 @@
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
   <string name="button_key_home" tools:machine_translated="true">Почетна</string>
   <string name="button_key_end" tools:machine_translated="true">Крај</string>
-  <string name="button_key_pgup" tools:machine_translated="true">Следна страница</string>
+  <string name="button_key_pgup" tools:machine_translated="true">PgUp</string>
   <string name="button_key_pgdn" tools:machine_translated="true">Следна страница</string>
   <string name="button_key_f1" tools:machine_translated="true">F1</string>
   <string name="button_key_f2" tools:machine_translated="true">F2</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Потребно е дозволение за известувања.</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">За да ги одржите вашите конекции активни во позадина, ве молиме, овозможете ги известувањата за ConnectBot во системските поставки.</string>
   <string name="open_settings" tools:machine_translated="true">Отворете ги поставките</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Врските може да прекинат без да биде дадена дозвола за известување.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Врските може да се прекинат при префрлање меѓу апликации</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Врската може да прекине додека апликацијата е во позадина.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Дали се обидувате да пристапите до локален хост? Дозволете ги потребните дозволи за локалната мрежа.</string>
   <string name="loading_message" tools:machine_translated="true">Вчитување…</string>
@@ -542,7 +542,7 @@
   <string name="pref_auth_on_launch_summary" tools:machine_translated="true">Задолжително е да се користи отпечаток од прст, препознавање на лице или ПИН-код на уредот при отворање на апликацијата.</string>
   <string name="pref_security_category" tools:machine_translated="true">Безбедност</string>
   <string name="auth_screen_title" tools:machine_translated="true">ConnectBot е заклучен</string>
-  <string name="auth_screen_unlock_button" tools:machine_translated="true">Допрете за да го отклучите уредот</string>
+  <string name="auth_screen_unlock_button" tools:machine_translated="true">Допрете за отклучување</string>
   <string name="auth_prompt_title" tools:machine_translated="true">Отклучете го ConnectBot.</string>
   <string name="auth_prompt_subtitle" tools:machine_translated="true">Потврдете ја вашата идентификација за да продолжите.</string>
   <string name="auth_banner_title" tools:machine_translated="true">Порака за автентикација од %1$s</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Прикажи прекинувач за IME.</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Додадете копче за IME во редот со специјалните тастери, кое ќе го активира/деактивира режимот за составување за јазици кои бараат буфер за составување (јапонски, кинески, корејски итн.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Преки патишта за целосен IME при притискање на Ctrl/Alt</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Нема решение.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Без заобиколно решение</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Необработени настани од тастатурата</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Принудно користење на ASCII (препорачано)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Повлечете за да префрлате меѓу сесиите.</string>
@@ -568,17 +568,17 @@
   <string name="terminal_mosh_starting" tools:machine_translated="true">Почнува поврзувањето со Mosh...</string>
   <string name="terminal_mosh_install_timeout" tools:machine_translated="true">Предупредување: Инсталацијата на Mosh го надмина дозволеното време.</string>
   <string name="terminal_mosh_launching_server" tools:machine_translated="true">Покренување на „mosh-server“ на далечниот хост...</string>
-  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Не успеа да се стартува `mosh-server` на далечниот хост.</string>
+  <string name="terminal_mosh_server_failed" tools:machine_translated="true">Не успеа да се стартува mosh-server на далечниот хост.</string>
   <string name="terminal_mosh_client_failed" tools:machine_translated="true">Не успеа да се стартува клиентот на Mosh.</string>
   <string name="terminal_mosh_connected" tools:machine_translated="true">Воспоставена е врската со Mosh.</string>
   <string name="terminal_mosh_error" tools:machine_translated="true">Грешка во Mosh: %1$s</string>
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Команда за серверот на Мош</string>
-  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Користеничка патека или команда за `mosh-server` (оставете го полето празно за да се користи стандардната вредност).</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">Користеничка патека или команда за mosh-server (оставете го полето празно за да се користи стандардната вредност).</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">UDP порт за Mosh</string>
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Фиксирана UDP порта за „mosh“ (0 за автоматски опсег од 60000 до 61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Локација</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Локација за сесијата на „Mosh“ (на пример, en_US.UTF-8).</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">Мош</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Верзијата на Mosh и изворниот код</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Се подготвува поддршката за Mosh...</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Да се откажат промените?</string>
@@ -591,7 +591,7 @@
   <string name="inline_images_off" tools:machine_translated="true">Исклучено</string>
   <string name="inline_images_ask" tools:machine_translated="true">Прашајте</string>
   <string name="inline_images_on" tools:machine_translated="true">Вклучено</string>
-  <string name="inline_images_prompt_title" tools:machine_translated="true">Прикажи слики во текстов формат?</string>
+  <string name="inline_images_prompt_title" tools:machine_translated="true">Прикажи слики во текстот?</string>
   <string name="inline_images_prompt_message" tools:machine_translated="true">Дозволете на овој хост да прикажува слики во тек за време на остатокот од оваа сесија?</string>
   <string name="automation_load_failed" tools:machine_translated="true">Не можеше да се вчита автоматизацијата.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Не можеше да се зачува автоматизацијата.</string>
@@ -602,7 +602,7 @@
   <string name="automation_no_session" tools:machine_translated="true">Оваа постапка бара отворена терминална сесија.</string>
   <string name="automation_forward_missing" tools:machine_translated="true">Пренасочувањето на портата е избришано или недостапува.</string>
   <string name="automation_forward_unsupported" tools:machine_translated="true">Оваа врска не поддржува пренасочување на порти.</string>
-  <string name="automation_wait_text" tools:machine_translated="true">Почекајте додека низата не заврши.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Чекај низа</string>
   <string name="automation_send_text" tools:machine_translated="true">Испратете низа.</string>
   <string name="automation_send_key" tools:machine_translated="true">Испратете специјален тастер.</string>
   <string name="automation_delay" tools:machine_translated="true">Почекајте.</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Откажи</string>
   <string name="automation_text" tools:machine_translated="true">Текст</string>
   <string name="automation_regex" tools:machine_translated="true">Регуларен израз</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Ускладува со влезниот текст без користење на ANSI форматирање. Регуларните изрази поддржуваат синтаксата на RE2; не се поддржани позитивните и негативните погледи назад (lookaround) и повратните референции (backreferences).</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Го споредува влезниот текст без ANSI форматирање. Регуларните изрази ја поддржуваат синтаксата на RE2; lookaround и повратните референци не се поддржани.</string>
   <string name="automation_duration" tools:machine_translated="true">Времетраење (секунди)</string>
   <string name="automation_timeout" tools:machine_translated="true">Време за чекање (секунди)</string>
-  <string name="automation_key" tools:machine_translated="true">Клуч</string>
+  <string name="automation_key" tools:machine_translated="true">Копче</string>
   <string name="automation_forward" tools:machine_translated="true">Пренасочување на портата</string>
   <string name="automation_failure" tools:machine_translated="true">При неуспех.</string>
   <string name="automation_stop" tools:machine_translated="true">Прекинете ја автоматизацијата.</string>
@@ -631,26 +631,26 @@
   <string name="automation_progress" tools:machine_translated="true">Автоматизација: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Акција број %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Откажи ја автоматизацијата.</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Внеси</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
   <string name="automation_key_tab" tools:machine_translated="true">Таб</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Излез</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Назад едно место</string>
   <string name="automation_key_delete" tools:machine_translated="true">Избриши</string>
   <string name="automation_key_up" tools:machine_translated="true">Стрелка нагоре</string>
   <string name="automation_key_down" tools:machine_translated="true">Стрелка надолу</string>
   <string name="automation_key_left" tools:machine_translated="true">Лева стрелка</string>
   <string name="automation_key_right" tools:machine_translated="true">Стрелка надесно.</string>
-  <string name="automation_key_home" tools:machine_translated="true">Почетна страница</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">Крај</string>
   <string name="automation_key_insert" tools:machine_translated="true">Вметни</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">Следна страница</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Page Up</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Следна страница</string>
   <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Shift (клавиш)</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f секунди</string>
   <plurals name="automation_count" tools:machine_translated="true">
     <item quantity="one">%1$d акција</item>
-    <item quantity="other">%1$d извршени операции</item>
+    <item quantity="other">%1$d акции</item>
   </plurals>
   <string name="host_status_unread_output" tools:machine_translated="true">Непрочитан излез</string>
   <string name="host_status_user_disconnected" tools:machine_translated="true">Ја прекинавте врската со овој хост.</string>
@@ -678,7 +678,7 @@
   <string name="notification_bell" tools:machine_translated="true">Звучен сигнал од терминалот.</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">Прифатено.</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Означи како прочитано</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Исклучете ги звучните сигнали.</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Известувања за прекината врска</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Прикажувајте известување без звук кога се прекинува сесија што не ја следите, а тоа се случува неочекувано.</string>

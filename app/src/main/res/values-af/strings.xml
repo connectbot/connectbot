@@ -23,7 +23,7 @@
   <string name="prompt_type">Tipe:</string>
   <string name="prompt_password_can_be_blank">Nota: wagwoord kan leeg gelos word</string>
   <string name="app_desc" tools:machine_translated="true">Eenvoudige, kragtige, oopbron-SSH-kliënt.</string>
-  <string name="service_desc" tools:machine_translated="true">Onderhou SSH-verbindings en laai publieke sleutels.</string>
+  <string name="service_desc" tools:machine_translated="true">Onderhou SSH-verbindings en gelaaide publieke sleutels</string>
   <string name="app_copyright" tools:machine_translated="true">Kopiereg © Kenny Root</string>
   <string name="title_eula" tools:machine_translated="true">Lisensie</string>
   <string name="title_color_picker" tools:machine_translated="true">Kies ’n kleur</string>
@@ -65,8 +65,8 @@
   <string name="prompt_bits" tools:machine_translated="true">Bite:</string>
   <string name="prompt_pubkey_password" tools:machine_translated="true">Wagwoord vir sleutel \'%1$s\'</string>
   <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">Laat die afgeleë gasheerrekenaar die sleutel \'%1$s\' gebruik?</string>
-  <string name="host_verification_failure_warning_header" tools:machine_translated="true">WAARSKUWING: DIE IDENTIFIKASIE VAN DIE AFGELEË BEDRYWER HET VERANDER!</string>
-  <string name="host_verification_failure_warning" tools:machine_translated="true">DIT IS MOONTLIK DAT IEMAND IETS SLEG AANBEGANG!\nIemand kan dalk nou jou gesprekke afluister (soortgelyk aan ’n “man-in-the-middle”-aanval)!\nDit is ook moontlik dat die gasheersleutel pas verander is.</string>
+  <string name="host_verification_failure_warning_header" tools:machine_translated="true">WAARSKUWING: DIE IDENTIFIKASIE VAN DIE AFGELEË GASHEER HET VERANDER!</string>
+  <string name="host_verification_failure_warning" tools:machine_translated="true">DIT IS MOONTLIK DAT IEMAND IETS KWAADWILLIGS DOEN!\nIemand kan jou dalk nou afluister (’n man-in-the-middle-aanval)!\nDit is ook moontlik dat die gasheersleutel pas verander is.</string>
   <string name="prompt_continue_connecting" tools:machine_translated="true">Is jy seker dat jy wil voortgaan om aan te sluit?</string>
   <string name="host_authenticity_warning" tools:machine_translated="true">Die egtheid van die gasheerrekenaar \'%1$s\' kan nie bevestig word nie.</string>
   <string name="host_fingerprint" tools:machine_translated="true">Die sleutelvingerafdruk van die gasheer %1$s is %2$s.</string>
@@ -98,7 +98,7 @@
   <string name="font_downloading" tools:machine_translated="true">Besig om lettertipe af te laai…</string>
   <string name="pref_localfont_title" tools:machine_translated="true">Plaaslike lettertipe invoer</string>
   <string name="pref_localfont_summary" tools:machine_translated="true">Voer ’n lettertipe-lêer vanaf die berging in (TTF, OTF)</string>
-  <string name="dialog_localfont_title" tools:machine_translated="true">Plaas lettertipe in</string>
+  <string name="dialog_localfont_title" tools:machine_translated="true">Voer lettertipe in</string>
   <string name="dialog_localfont_hint" tools:machine_translated="true">Vertoonnaam vir die lettertipe</string>
   <string name="button_import" tools:machine_translated="true">Invoer</string>
   <string name="font_importing" tools:machine_translated="true">Besig om lettertipe in te voer…</string>
@@ -130,7 +130,7 @@
   <string name="pref_memkeys_title" tools:machine_translated="true">Onthou sleutels in die geheue</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Hou ontgrendelde sleutels in die geheue totdat die agtergronddiens beëindig word.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Bly aan die gang terwyl die program op die agtergrond loop</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Hou jou sessies oop, selfs wanneer jy na ander toepassings oorskakel.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Gebruik ’n aanhoudende kennisgewing om sessies oop te hou wanneer jy tussen toepassings wissel</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Kortpadtoetse vir die lêergids</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Kleefmodifikators</string>
   <string name="only_alt" tools:machine_translated="true">Slegs Alt</string>
@@ -139,7 +139,7 @@
   <string name="pref_keepalive_summary" tools:machine_translated="true">Verhoed dat die skerm afskakel wanneer jy in ’n konsole werk.</string>
   <string name="pref_wifilock_title" tools:machine_translated="true">Hou Wi-Fi aktief</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">Verhoed dat Wi-Fi afskakel wanneer ’n sessie aktief is.</string>
-  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Gerimpelde pyltjies</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Vibreer met pyltjietoetse</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibreer wanneer pyltjiesleutels gestuur word; nuttig vir stadige verbindings</string>
   <string name="pref_bell_category" tools:machine_translated="true">Terminaal-klok</string>
   <string name="pref_bell_title" tools:machine_translated="true">Hoorbare sein</string>
@@ -148,14 +148,14 @@
   <string name="pref_bell_vibrate_title" tools:machine_translated="true">Vibreer wanneer die sein klink</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Laat die foon vibreer wanneer ’n terminalwaarskuwing geaktiveer word.</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">Agtergrondkennisgewings</string>
-  <string name="pref_bell_notification_summary" tools:machine_translated="true">Stuur ’n kennisgewing wanneer ’n terminaal wat op die agtergrond loop, ’n sein toon.</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">Wys ’n klanklose opspringkennisgewing wanneer ’n kloksein ontvang word in ’n sessie wat jy nie bekyk nie</string>
   <string name="list_keymode_right" tools:machine_translated="true">Gebruik die sleutels aan die regterkant.</string>
   <string name="list_keymode_left" tools:machine_translated="true">Gebruik die sleutels aan die linkerkant.</string>
   <string name="list_keymode_none" tools:machine_translated="true">Deaktiveer</string>
   <string name="list_pubkeyids_none" tools:machine_translated="true">Moenie sleutels gebruik nie</string>
   <string name="list_pubkeyids_any" tools:machine_translated="true">Gebruik enige ontgrendelde sleutel.</string>
   <string name="hostpref_nickname_title" tools:machine_translated="true">Bynaam</string>
-  <string name="hostpref_color_title" tools:machine_translated="true">Kleurbeskrywing</string>
+  <string name="hostpref_color_title" tools:machine_translated="true">Kleurkategorie</string>
   <string name="color_red" tools:machine_translated="true">Rooi</string>
   <string name="color_pink" tools:machine_translated="true">Pienk</string>
   <string name="color_purple" tools:machine_translated="true">Pers</string>
@@ -213,7 +213,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Terminaal</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Lettertipefamilie</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Lettergrootte: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Grootte van die krag</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Dwing grootte af</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Dwing die terminaal om ’n spesifieke grootte (kolomme x rye) te hê in plaas daarvan om outomaties aan te pas sodat dit by die skerm pas.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">Aktiveer die opsie om die grootte te bepaal.</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Kolomme</string>
@@ -224,14 +224,14 @@
   <string name="profile_list_empty_message" tools:machine_translated="true">Nog geen profiele nie. Tik op + om een te skep.</string>
   <string name="profile_list_more_options" tools:machine_translated="true">Meer opsies</string>
   <string name="profile_list_duplicate" tools:machine_translated="true">Dupliseer</string>
-  <string name="profile_list_delete" tools:machine_translated="true">Deël</string>
+  <string name="profile_list_delete" tools:machine_translated="true">Verwyder</string>
   <string name="profile_create_dialog_title" tools:machine_translated="true">Skep profiel</string>
   <string name="profile_create_name_label" tools:machine_translated="true">Profielnaam</string>
   <string name="profile_create_button" tools:machine_translated="true">Skep</string>
   <string name="profile_create_cancel" tools:machine_translated="true">Kanselleer</string>
   <string name="profile_delete_dialog_title" tools:machine_translated="true">Profiël uitvee</string>
   <string name="profile_delete_dialog_message" tools:machine_translated="true">Is jy seker dat jy \'%s\' wil uitvee?</string>
-  <string name="profile_delete_button" tools:machine_translated="true">Deël</string>
+  <string name="profile_delete_button" tools:machine_translated="true">Verwyder</string>
   <string name="profile_delete_cancel" tools:machine_translated="true">Kanselleer</string>
   <string name="profile_summary_font" tools:machine_translated="true">Lettertipe: %1$s %2$dpt</string>
   <string name="profile_summary_emulation" tools:machine_translated="true">Emulasie: %s</string>
@@ -248,7 +248,7 @@
   <string name="portforward_local" tools:machine_translated="true">Plaaslik</string>
   <string name="portforward_remote" tools:machine_translated="true">Afgelee</string>
   <string name="portforward_dynamic" tools:machine_translated="true">Dinamies (SOCKS)</string>
-  <string name="portforward_pos" tools:machine_translated="true">Skep poortvoorstelling</string>
+  <string name="portforward_pos" tools:machine_translated="true">Skep poortaanstuur</string>
   <string name="portforward_save" tools:machine_translated="true">Stoor</string>
   <string name="format_username" tools:machine_translated="true">gebruikersnaam</string>
   <string name="format_hostname" tools:machine_translated="true">gasheernaam</string>
@@ -260,7 +260,7 @@
   <string name="list_menu_settings" tools:machine_translated="true">Instellings</string>
   <string name="list_host_disconnect" tools:machine_translated="true">Ontkoppel</string>
   <string name="list_host_edit" tools:machine_translated="true">Wysig gasheer</string>
-  <string name="list_host_portforwards" tools:machine_translated="true">Wysig poortvoorstellinge</string>
+  <string name="list_host_portforwards" tools:machine_translated="true">Wysig poortaansture</string>
   <string name="list_host_delete" tools:machine_translated="true">Verwyder gasheer</string>
   <string name="list_host_duplicate" tools:machine_translated="true">Dupliseer gasheer</string>
   <string name="list_host_forget_keys" tools:machine_translated="true">Vergeet die gasheerse sleutels</string>
@@ -352,7 +352,7 @@
   <string name="image_description_down" tools:machine_translated="true">Pyl na onder</string>
   <string name="image_description_left" tools:machine_translated="true">Pyl na links</string>
   <string name="image_description_right" tools:machine_translated="true">Pyl na regs</string>
-  <string name="button_key_esc" tools:machine_translated="true">Ontsnap</string>
+  <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
   <string name="button_key_home" tools:machine_translated="true">Tuis</string>
   <string name="button_key_end" tools:machine_translated="true">Einde</string>
@@ -382,7 +382,7 @@
   <string name="button_navigate_up" tools:machine_translated="true">Blaai opwaarts</string>
   <string name="button_more_options" tools:machine_translated="true">Meer opsies</string>
   <string name="button_host_options" tools:machine_translated="true">Gasheeropsies</string>
-  <string name="button_collapse" tools:machine_translated="true">Vouw in</string>
+  <string name="button_collapse" tools:machine_translated="true">Vou in</string>
   <string name="error_key_load_failed" tools:machine_translated="true">Kon nie die sleutel \'%1$s\' laai nie: %2$s</string>
   <string name="error_connection_failed" tools:machine_translated="true">Kon nie met %1$s (%2$s) verbind nie: %3$s</string>
   <string name="error_port_forward_load_failed" tools:machine_translated="true">Kon nie die poort-herleiding vir %1$s laai nie: %2$s</string>
@@ -435,7 +435,7 @@
   <string name="expand" tools:machine_translated="true">Vou uit</string>
   <string name="hostpref_authagent_with_confirmation" tools:machine_translated="true">vereis bevestiging</string>
   <string name="hostpref_add_host" tools:machine_translated="true">Voeg gasheer by</string>
-  <string name="hostpref_save_host" tools:machine_translated="true">Bespaar gasheer</string>
+  <string name="hostpref_save_host" tools:machine_translated="true">Stoor gasheer</string>
   <string name="hostpref_setting_title" tools:machine_translated="true">Gasheere se instellings</string>
   <string name="pubkey_import_existing" tools:machine_translated="true">Voer bestaande publieke sleutel in</string>
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Invoer vanaf die knipbord</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Toestemming vir kennisgewings vereis</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Om jou konneksies in die agtergrond aktief te hou, aktiveer asseblief die kennisgewings vir ConnectBot in die stelselinstellings.</string>
   <string name="open_settings" tools:machine_translated="true">Maak instellings oop</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Verbindings kan afgekoppel word sonder toestemming vir kennisgewings.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Verbindings kan onderbreek word wanneer jy tussen toepassings wissel</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Die verbinding kan in die agtergrond onderbreek word.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Probeer jy om toegang tot ’n plaaslike gasheer te verkry? Verleen toestemming vir die plaaslike netwerk.</string>
   <string name="loading_message" tools:machine_translated="true">Besig om te laai…</string>
@@ -457,12 +457,12 @@
   <string name="migration_warning" tools:machine_translated="true">Sluit asseblief nie die toepassing tydens die migrasie nie</string>
   <string name="migration_stats_hosts" tools:machine_translated="true">Aantal gasheere wat oorgedra is: %d</string>
   <string name="migration_stats_pubkeys" tools:machine_translated="true">SSH-sleutels oorgedra: %d</string>
-  <string name="migration_stats_port_forwards" tools:machine_translated="true">Aantal poortvoorwaardings wat oorgedra is: %d</string>
+  <string name="migration_stats_port_forwards" tools:machine_translated="true">Poortaansture oorgedra: %d</string>
   <string name="migration_stats_known_hosts" tools:machine_translated="true">Aantal bekende gasheere wat oorgedra is: %d</string>
   <string name="migration_failed_title" tools:machine_translated="true">Migrasie het misluk.</string>
   <string name="migration_failed_message" tools:machine_translated="true">’n Fout het tydens die migrasie van die databasis voorgekom: %s</string>
   <string name="migration_retry" tools:machine_translated="true">Probeer weer</string>
-  <string name="migration_failed_help" tools:machine_translated="true">Indien die probleem voortduur, meld asseblief hierdie probleem by %1$s en voeg die bo-opgesêde foutopsporinglog by.</string>
+  <string name="migration_failed_help" tools:machine_translated="true">Indien die probleem voortduur, meld dit asseblief by %1$s met die foutopsporingslog wat hierbo gekopieer is</string>
   <string name="migration_warnings_title" tools:machine_translated="true">Waarskuwings oor migrasie</string>
   <string name="migration_copy_warnings" tools:machine_translated="true">Kopieer waarskuwings</string>
   <string name="migration_debug_log_title" tools:machine_translated="true">Foutopsporinglogboek</string>
@@ -484,7 +484,7 @@
   <string name="terminal_jump_failed" tools:machine_translated="true">Kon nie verbind nie met die tussenknooppunt %1$s: %2$s</string>
   <string name="terminal_jump_auth_failed" tools:machine_translated="true">Verifikasie vir die oorskakelingserver het misluk: %s</string>
   <string name="terminal_jump_not_found" tools:machine_translated="true">Springgasheer nie in die gestoorde lys gevind nie</string>
-  <string name="terminal_jump_password" tools:machine_translated="true">Wagwoord vir die toegangspunt %s:</string>
+  <string name="terminal_jump_password" tools:machine_translated="true">Wagwoord vir die springgasheer %s:</string>
   <string name="view_logs" tools:machine_translated="true">Beskou logboeke</string>
   <string name="logs_title" tools:machine_translated="true">Toepassingslogboeke</string>
   <string name="copy_logs" tools:machine_translated="true">Kopieer logboeke</string>
@@ -498,7 +498,7 @@
   <string name="help_github" tools:machine_translated="true">Bronkode</string>
   <string name="help_report_bug" tools:machine_translated="true">Meld ’n fout</string>
   <string name="help_section_donate" tools:machine_translated="true">Ondersteun ontwikkeling</string>
-  <string name="help_donate_github" tools:machine_translated="true">GitHub-borgenators</string>
+  <string name="help_donate_github" tools:machine_translated="true">GitHub Sponsors</string>
   <string name="help_donate_coffee" tools:machine_translated="true">Gee vir my ’n koffie (as donasie)</string>
   <string name="colorscheme_default_description" tools:machine_translated="true">Standaardkleure vir die terminaal</string>
   <string name="colorscheme_solarized_dark_description" tools:machine_translated="true">Presiese kleure vir masjiene en mense</string>
@@ -519,7 +519,7 @@
   <string name="dialog_custom_value_label" tools:machine_translated="true">Voer pasgemaakte waarde in.</string>
   <string name="list_camera_ctrlaspace_description" tools:machine_translated="true">Ctrl+A, en dan die spasiebalk</string>
   <string name="list_camera_ctrla_description" tools:machine_translated="true">Ctrl+A</string>
-  <string name="list_camera_esc_description" tools:machine_translated="true">Ontsnap</string>
+  <string name="list_camera_esc_description" tools:machine_translated="true">Esc</string>
   <string name="list_camera_esc_a_description" tools:machine_translated="true">Esc+A</string>
   <string name="list_camera_none_description" tools:machine_translated="true">Geen</string>
   <string name="list_camera_text_input_description" tools:machine_translated="true">Teksinvoer</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Wys die IME-skakelknop</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Voeg ’n IME-knoppie by die ry met spesiale sleutels wat die samestellingsmodus vir tale wat ’n samestellingsbuffer benodig (soos Japannees, Chinees, Koreaans, ens.) aktiveer of deaktiveer.</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Volledige IME Ctrl/Alt-kortpaaie</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Geen alternatiewe oplossing nie.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Geen omweg gebruik nie</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Ongefilterde sleutelgebeurtenisse</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Dwing ASCII af (aanbeveel)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Veeg om tussen sessies te skakel.</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Kanselleer</string>
   <string name="automation_text" tools:machine_translated="true">Teks</string>
   <string name="automation_regex" tools:machine_translated="true">Reguliere uitdrukking</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Pas by inkomende teks aan sonder ANSI-formatering. Regex ondersteun RE2-sintaks; vooruit- en terugverwysings word nie ondersteun nie.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Vergelyk inkomende teks sonder ANSI-formatering. Regex ondersteun RE2-sintaks; lookaround en terugverwysings word nie ondersteun nie.</string>
   <string name="automation_duration" tools:machine_translated="true">Duur (sekondes)</string>
   <string name="automation_timeout" tools:machine_translated="true">Tydperk (sekondes)</string>
-  <string name="automation_key" tools:machine_translated="true">Sleutel</string>
+  <string name="automation_key" tools:machine_translated="true">Toets</string>
   <string name="automation_forward" tools:machine_translated="true">Poort oordrag</string>
   <string name="automation_failure" tools:machine_translated="true">Indien dit misluk</string>
   <string name="automation_stop" tools:machine_translated="true">Skakel outomatisering af.</string>
@@ -631,11 +631,11 @@
   <string name="automation_progress" tools:machine_translated="true">Outomatisering: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Handeling %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Kanselleer outomatisering.</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Voer in</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Oortjie</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
   <string name="automation_key_escape" tools:machine_translated="true">Ontsnap</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Terugspasie</string>
-  <string name="automation_key_delete" tools:machine_translated="true">Deel</string>
+  <string name="automation_key_delete" tools:machine_translated="true">Delete</string>
   <string name="automation_key_up" tools:machine_translated="true">Pyl na bo</string>
   <string name="automation_key_down" tools:machine_translated="true">Afwaartse pyl</string>
   <string name="automation_key_left" tools:machine_translated="true">Linkerpyl</string>
@@ -646,7 +646,7 @@
   <string name="automation_key_page_up" tools:machine_translated="true">Blaai een bladsy op</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Blaai een bladsy af</string>
   <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
-  <string name="automation_key_shift" tools:machine_translated="true">Verskuiwing</string>
+  <string name="automation_key_shift" tools:machine_translated="true">Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f s</string>
   <plurals name="automation_count" tools:machine_translated="true">
     <item quantity="one">%1$d aksie</item>
@@ -678,13 +678,13 @@
   <string name="notification_bell" tools:machine_translated="true">Terminaal-sein</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">As bevestig</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Merk as gelees</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Deaktiveer die klokgeluid.</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Kennisgewings oor onderbroke verbinding</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Wys ’n stille pop-up wanneer ’n sessie wat jy nie besig is om te sien nie, onverwags ontkoppel.</string>
   <plurals name="notification_connected_sessions" tools:machine_translated="true">
 		<item quantity="one">%d sessie aanlyn</item>
-		<item quantity="other">%d sessies is aan die gang.</item>
+		<item quantity="other">%d sessies verbind</item>
 	</plurals>
   <plurals name="notification_attention_sessions" tools:machine_translated="true">
 		<item quantity="one">%d vereis aandag.</item>

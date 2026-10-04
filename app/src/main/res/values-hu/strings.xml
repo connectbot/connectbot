@@ -222,7 +222,7 @@
   <string name="pref_volumefont_title" tools:machine_translated="true">A hangerőszabályzó gombokkal megváltoztatható a betűméret.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">A betűméret a profilbeállításokban is módosítható.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Maradjon kapcsolódva a háttérben</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Tartsa nyitva a munkameneteit még akkor is, ha más alkalmazásokra vált.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Állandó értesítés használata a munkamenetek nyitva tartásához az alkalmazások közötti váltáskor</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Rögzített módosítók</string>
   <string name="only_alt" tools:machine_translated="true">Csak az Alt billentyű</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">A nyílbillentyűk használatakor vibráljon a készülék; hasznos lehet, ha a kapcsolat lassú.</string>
@@ -246,7 +246,7 @@
   <string name="color_gray" tools:machine_translated="true">Szürke</string>
   <string name="hostpref_fontfamily_title" tools:machine_translated="true">Betűtípus</string>
   <string name="hostpref_colorscheme_title" tools:machine_translated="true">A terminál színvilága</string>
-  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Zárja le a programot a kapcsolat megszakadása után.</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Bezárás a kapcsolat bontásakor</string>
   <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">A távoli kapcsolat megszakadása után azonnal, figyelmeztetés nélkül zárja be a konzolt.</string>
   <string name="hostpref_save_password_summary" tools:machine_translated="true">Tárolja biztonságosan a bejelentkezési jelszót az automatikus hitelesítéshez.</string>
   <string name="hostpref_password_title" tools:machine_translated="true">Jelszó</string>
@@ -270,9 +270,9 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Terminál</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Betűtípus-család</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Betűméret: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Erő nagysága</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Rögzített méret</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Állítsa be a terminál méretét egy konkrét értékre (oszlopok x sorok), ahelyett, hogy automatikusan a képernyő méretéhez igazítaná.</string>
-  <string name="profile_editor_force_size_enable" tools:machine_translated="true">Azonos méret beállítása (erőltetve)</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">Rögzített méret engedélyezése</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Oszlopok</string>
   <string name="profile_editor_force_size_rows" tools:machine_translated="true">Sorok</string>
   <string name="profile_icon_color_none" tools:machine_translated="true">Nincs (a rendszer színe használva)</string>
@@ -354,10 +354,10 @@
   <string name="image_description_right" tools:machine_translated="true">Jobbra mutató nyíl</string>
   <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
-  <string name="button_key_home" tools:machine_translated="true">Kezdőlap</string>
-  <string name="button_key_end" tools:machine_translated="true">Befejezés</string>
+  <string name="button_key_home" tools:machine_translated="true">Home</string>
+  <string name="button_key_end" tools:machine_translated="true">End</string>
   <string name="button_key_pgup" tools:machine_translated="true">Lapozzon felfelé</string>
-  <string name="button_key_pgdn" tools:machine_translated="true">Lap aljára</string>
+  <string name="button_key_pgdn" tools:machine_translated="true">PgDn</string>
   <string name="button_key_f1" tools:machine_translated="true">F1</string>
   <string name="button_key_f2" tools:machine_translated="true">F2</string>
   <string name="button_key_f3" tools:machine_translated="true">F3</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Szükséges a push-értesítések engedélyezése.</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Ahhoz, hogy a ConnectBot alkalmazás a háttérben is fenntarthassa a kapcsolatot, kérjük, engedélyezze az értesítéseket a rendszerbeállításokban.</string>
   <string name="open_settings" tools:machine_translated="true">Nyissa meg a beállításokat</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">A kapcsolatok megszakadhatnak, ha nem adod meg az értesítési engedélyt.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">A kapcsolatok megszakadhatnak az alkalmazások közötti váltáskor</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">A kapcsolat megszakadhat, ha az alkalmazás háttérben fut.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Szeretne hozzáférni egy helyi hálózaton lévő számítógéphez? Engedélyezze a helyi hálózati jogosultságokat.</string>
   <string name="loading_message" tools:machine_translated="true">Betöltés…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Mutassa a beviteli mód váltó billentyűt.</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Adjon hozzá egy IME gombot a speciális billentyűk sorához, amely be- és kikapcsolja az összetett karakterek bevitelére szolgáló módot azoknál a nyelveknél, amelyekhez összetevő pufferre van szükség (pl. japán, kínai, koreai).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">A teljes IME-hez tartozó Ctrl/Alt gyorsbillentyűk.</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Nincs megoldás.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Kerülő megoldás nélkül</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Nyers billentyűesemények</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Kényszerített ASCII (ajánlott)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Húzza balra vagy jobbra a különböző munkamenetek között való váltáshoz.</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Rögzített UDP port a mosh-hoz (0 esetén automatikusan a 60000–61000 tartományban kerül kiválasztásra).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Nyelvi beállítás</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">A Mosh-munkamenet helyi beállítása (pl. en_US.UTF-8).</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">Mosh-támogatás (dinamikus funkciómodul címe)</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">A Mosh verziója és a forráskódja</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">A Mosh támogatás előkészítése folyamatban…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">A módosítások elvetése?</string>
@@ -622,7 +622,7 @@
   <string name="automation_regex_help" tools:machine_translated="true">A beérkező szöveget ANSI-formázás nélkül egyezteti. A reguláris kifejezések támogatják az RE2 szintaxist; a „lookaround” és a visszahivatkozások nem támogatottak.</string>
   <string name="automation_duration" tools:machine_translated="true">Időtartam (másodpercben)</string>
   <string name="automation_timeout" tools:machine_translated="true">Időtúllépés (másodpercben)</string>
-  <string name="automation_key" tools:machine_translated="true">Kulcs</string>
+  <string name="automation_key" tools:machine_translated="true">Billentyű</string>
   <string name="automation_forward" tools:machine_translated="true">Porttovábbítás</string>
   <string name="automation_failure" tools:machine_translated="true">Hiba esetén</string>
   <string name="automation_stop" tools:machine_translated="true">Állítsa le az automatizálást!</string>
@@ -632,19 +632,19 @@
   <string name="automation_failure_step" tools:machine_translated="true">Művelet %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Állítsa le az automatizálást.</string>
   <string name="automation_key_enter" tools:machine_translated="true">Enter (billentyű)</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Lap</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Kilépés</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Visszatörlés gomb</string>
   <string name="automation_key_delete" tools:machine_translated="true">Törlés</string>
   <string name="automation_key_up" tools:machine_translated="true">Felfelé mutató nyíl</string>
   <string name="automation_key_down" tools:machine_translated="true">Le nyíl</string>
   <string name="automation_key_left" tools:machine_translated="true">Balra mutató nyíl</string>
   <string name="automation_key_right" tools:machine_translated="true">Jobbra mutató nyíl</string>
-  <string name="automation_key_home" tools:machine_translated="true">Kezdőlap</string>
-  <string name="automation_key_end" tools:machine_translated="true">Befejezés</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
+  <string name="automation_key_end" tools:machine_translated="true">End</string>
   <string name="automation_key_insert" tools:machine_translated="true">Beszúrás</string>
   <string name="automation_key_page_up" tools:machine_translated="true">Lapozzon felfelé</string>
-  <string name="automation_key_page_down" tools:machine_translated="true">Lap aljára ugrás</string>
+  <string name="automation_key_page_down" tools:machine_translated="true">Page Down</string>
   <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Shift billentyű</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f másodperc</string>

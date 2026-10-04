@@ -263,7 +263,7 @@
   <string name="pref_theme_light" tools:machine_translated="true">Ανοιχτόχρωμο</string>
   <string name="pref_theme_dark" tools:machine_translated="true">Σκοτεινό</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Διατηρήστε τη σύνδεση στο παρασκήνιο</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Διατηρήστε τις συνεδρίες σας ενεργές, ακόμη και όταν μεταβαίνετε σε άλλες εφαρμογές.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Χρήση μόνιμης ειδοποίησης για να παραμένουν ανοιχτές οι συνεδρίες όταν αλλάζετε εφαρμογές</string>
   <string name="pref_bell_summary" tools:machine_translated="true">Αναπαραγωγή ήχου κατά την εμφάνιση ειδοποίησης στο τερματικό.</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Δόνηση κατά την εμφάνιση ειδοποίησης τερματικού</string>
   <string name="color_red" tools:machine_translated="true">Κόκκινο</string>
@@ -306,9 +306,9 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Τερματικό</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Οικογένεια γραμματοσειρών</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Μέγεθος γραμματοσειράς: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Μέγεθος Δύναμης</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Επιβολή μεγέθους</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Ορίστε χειροκίνητα το μέγεθος του τερματικού (αριθμός στηλών x αριθμός γραμμών) αντί να το αφήσετε να προσαρμόζεται αυτόματα στο μέγεθος της οθόνης.</string>
-  <string name="profile_editor_force_size_enable" tools:machine_translated="true">Ενεργοποίηση αυτόματης προσαρμογής μεγέθους</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">Ενεργοποίηση σταθερού μεγέθους</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Στήλες</string>
   <string name="profile_editor_force_size_rows" tools:machine_translated="true">Γραμμές</string>
   <string name="profile_icon_color_none" tools:machine_translated="true">Καμία (χρήση του χρώματος του κεντρικού συστήματος)</string>
@@ -404,7 +404,7 @@
   <string name="host_editor_hide_advanced" tools:machine_translated="true">Απόκρυψη προηγμένων επιλογών</string>
   <string name="resize_width_label" tools:machine_translated="true">Πλάτος (στήλες)</string>
   <string name="resize_height_label" tools:machine_translated="true">Ύψος (γραμμές)</string>
-  <string name="resize_disable_force_size" tools:machine_translated="true">Απενεργοποίηση της αυτόματης προσαρμογής μεγέθους</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">Απενεργοποίηση σταθερού μεγέθους</string>
   <string name="pubkey_editor_key_type_label" tools:machine_translated="true">Τύπος κλειδιού</string>
   <string name="pubkey_editor_options_label" tools:machine_translated="true">Επιλογές</string>
   <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">Τα κρυπτογραφημένα κλειδιά δεν μπορούν να ξεκλειδωθούν κατά την εκκίνηση.</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Απαιτείται άδεια για τις ειδοποιήσεις.</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Για να διατηρήσετε τις συνδέσεις σας ενεργές στο παρασκήνιο, ενεργοποιήστε τις ειδοποιήσεις για την εφαρμογή ConnectBot στις ρυθμίσεις του συστήματος.</string>
   <string name="open_settings" tools:machine_translated="true">Άνοιγμα ρυθμίσεων</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Οι συνδέσεις ενδέχεται να διακοπούν χωρίς την απαραίτητη άδεια για αποστολή ειδοποιήσεων.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Οι συνδέσεις ενδέχεται να διακοπούν όταν αλλάζετε εφαρμογές</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Η σύνδεση ενδέχεται να διακοπεί όταν η εφαρμογή εκτελείται στο παρασκήνιο.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Προσπαθείτε να συνδεθείτε σε έναν τοπικό διακομιστή; Ενεργοποιήστε τις άδειες για το τοπικό δίκτυο.</string>
   <string name="loading_message" tools:machine_translated="true">Φόρτωση…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Εμφάνιση πλήκτρου εναλλαγής IME</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Προσθέστε ένα κουμπί IME στη σειρά των ειδικών πλήκτρων, το οποίο θα ενεργοποιεί/απενεργοποιεί τη λειτουργία σύνθεσης για γλώσσες που απαιτούν προσωρινή αποθήκευση σύνθεσης (ιαπωνική, κινεζική, κορεατική κ.λπ.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Συντομεύσεις πλήρους IME για τα πλήκτρα Ctrl/Alt</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Δεν υπάρχει προσωρινή λύση.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Χωρίς παράκαμψη</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Ακατέργαστα γεγονότα πληκτρολόγησης</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Επιβολή διάταξης πληκτρολογίου ASCII (συνιστάται)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Μετακινηθείτε μεταξύ των συνεδριών με σάρωση.</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Ακύρωση</string>
   <string name="automation_text" tools:machine_translated="true">Κείμενο</string>
   <string name="automation_regex" tools:machine_translated="true">Κανονική έκφραση</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Αντιστοιχεί στο εισερχόμενο κείμενο χωρίς μορφοποίηση ANSI. Οι κανονικές εκφράσεις υποστηρίζουν τη σύνταξη RE2· δεν υποστηρίζονται οι αναζητήσεις και οι αναφορές προς τα πίσω.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Αντιστοιχίζει εισερχόμενο κείμενο χωρίς μορφοποίηση ANSI. Οι κανονικές εκφράσεις υποστηρίζουν τη σύνταξη RE2· δεν υποστηρίζονται τα lookaround και οι οπισθοαναφορές.</string>
   <string name="automation_duration" tools:machine_translated="true">Διάρκεια (δευτερόλεπτα)</string>
   <string name="automation_timeout" tools:machine_translated="true">Χρονικό όριο (δευτερόλεπτα)</string>
-  <string name="automation_key" tools:machine_translated="true">Κλειδί</string>
+  <string name="automation_key" tools:machine_translated="true">Πλήκτρο</string>
   <string name="automation_forward" tools:machine_translated="true">Επιλογή προώθησης θύρας.</string>
   <string name="automation_failure" tools:machine_translated="true">Σε περίπτωση αποτυχίας.</string>
   <string name="automation_stop" tools:machine_translated="true">Διακόψτε την αυτοματοποίηση.</string>
@@ -631,21 +631,21 @@
   <string name="automation_progress" tools:machine_translated="true">Αυτοματοποίηση: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Ενέργεια %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Ακύρωση αυτοματοποίησης</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Εισαγωγή</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Καρτέλα</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Έξοδος</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Πλήκτρο διαγραφής (Backspace)</string>
   <string name="automation_key_delete" tools:machine_translated="true">Διαγραφή</string>
   <string name="automation_key_up" tools:machine_translated="true">Βέλος προς τα πάνω</string>
   <string name="automation_key_down" tools:machine_translated="true">Βέλος προς τα κάτω</string>
   <string name="automation_key_left" tools:machine_translated="true">Βέλος προς τα αριστερά</string>
   <string name="automation_key_right" tools:machine_translated="true">Βέλος προς τα δεξιά</string>
-  <string name="automation_key_home" tools:machine_translated="true">Αρχική σελίδα</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">Τέλος</string>
   <string name="automation_key_insert" tools:machine_translated="true">Εισαγωγή</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">Μετάβαση στην επόμενη σελίδα</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Page Up</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Μετάβαση στην επόμενη σελίδα.</string>
-  <string name="automation_key_function" tools:machine_translated="true">Α%1$s</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Shift (πλήκτρο μετατόπισης)</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f δευτ.</string>
   <plurals name="automation_count" tools:machine_translated="true">
@@ -678,7 +678,7 @@
   <string name="notification_bell" tools:machine_translated="true">Ηχητικό σήμα τερματικού</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">Έγινε καταγραφή της τελευταίας δραστηριότητας.</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Σήμανση ως αναγνωσμένο</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Απενεργοποίηση ηχητικών σημάτων.</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Ειδοποιήσεις για απώλεια σύνδεσης</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Εμφάνισε ένα αναδυόμενο παράθυρο χωρίς ήχο όταν μια συνεδρία που δεν παρακολουθείς διακόπτεται απροσδόκητα.</string>

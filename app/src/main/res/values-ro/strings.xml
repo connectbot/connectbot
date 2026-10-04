@@ -127,10 +127,10 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Pe tastaturile virtuale, apăsarea tastelor numerice trimite comenzile F1-F10, împreună cu tasta Ctrl.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Butoanele de volum modifică dimensiunea fontului.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Dimensiunea fontului poate fi modificată și în setările profilului.</string>
-  <string name="pref_memkeys_title" tools:machine_translated="true">Salvează tastele în memorie</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">Păstrează cheile în memorie</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Păstrați cheile deblocate în memorie până la închiderea serviciului de bază.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Menține conexiunea în fundal.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Menține sesiunile active chiar și atunci când treci la alte aplicații.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Folosește o notificare permanentă pentru a menține sesiunile deschise când schimbi aplicația</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Comenzi rapide pentru directoare</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Modificatori permanenți</string>
   <string name="only_alt" tools:machine_translated="true">Doar Alt</string>
@@ -139,7 +139,7 @@
   <string name="pref_keepalive_summary" tools:machine_translated="true">Împiedicați ecranul să se oprească atunci când lucrați într-o consolă.</string>
   <string name="pref_wifilock_title" tools:machine_translated="true">Menține Wi-Fi-ul activ</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">Împiedicați dezactivarea Wi-Fi-ului în timpul unei sesiuni active.</string>
-  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Săgeți cu textură</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Vibrații la apăsarea săgeților</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Activează vibrația la apăsarea tastelor săgeată; util în cazul conexiunilor instabile.</string>
   <string name="pref_bell_category" tools:machine_translated="true">Semnal sonor al terminalului</string>
   <string name="pref_bell_title" tools:machine_translated="true">Semnal sonor</string>
@@ -148,7 +148,7 @@
   <string name="pref_bell_vibrate_title" tools:machine_translated="true">Activează vibrația la sunetul de alertă.</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Vibrație la primirea unei alerte de la terminal.</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">Notificări în fundal</string>
-  <string name="pref_bell_notification_summary" tools:machine_translated="true">Trimite o notificare când un terminal care rulează în fundal emite un semnal sonor.</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">Afișează o notificare pop-up fără sunet când se aude un semnal într-o sesiune pe care nu o vizualizezi</string>
   <string name="list_keymode_right" tools:machine_translated="true">Utilizați tastele din partea dreaptă.</string>
   <string name="list_keymode_left" tools:machine_translated="true">Utilizați tastele din partea stângă.</string>
   <string name="list_keymode_none" tools:machine_translated="true">Dezactivează</string>
@@ -213,7 +213,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Terminal</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Familie de fonturi</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Dimensiunea fontului: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Dimensiunea forței</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Dimensiune fixă</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Forțează terminalul să aibă o dimensiune specifică (număr de coloane x număr de rânduri) în loc să se adapteze automat la dimensiunea ecranului.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">Activează opțiunea de forțare a dimensiunii.</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Coloane</string>
@@ -354,9 +354,9 @@
   <string name="image_description_right" tools:machine_translated="true">Săgeată spre dreapta</string>
   <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
-  <string name="button_key_home" tools:machine_translated="true">Acasă</string>
-  <string name="button_key_end" tools:machine_translated="true">Terminare</string>
-  <string name="button_key_pgup" tools:machine_translated="true">Pag. următoare</string>
+  <string name="button_key_home" tools:machine_translated="true">Home</string>
+  <string name="button_key_end" tools:machine_translated="true">End</string>
+  <string name="button_key_pgup" tools:machine_translated="true">PgUp</string>
   <string name="button_key_pgdn" tools:machine_translated="true">Pagina următoare</string>
   <string name="button_key_f1" tools:machine_translated="true">F1</string>
   <string name="button_key_f2" tools:machine_translated="true">F2</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Este necesar să acordați permisiunea pentru notificări.</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Pentru a menține conexiunile active în fundal, vă rugăm să activați notificările pentru ConnectBot în setările sistemului.</string>
   <string name="open_settings" tools:machine_translated="true">Deschide setările</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Conexiunile pot fi întrerupte dacă nu se acordă permisiunea pentru notificări.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Conexiunile se pot întrerupe când schimbați aplicația</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Conexiunea se poate întrerupe în fundal.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Încercați să accesați un host din rețeaua locală? Acordați permisiunile necesare pentru rețeaua locală.</string>
   <string name="loading_message" tools:machine_translated="true">Se încarcă…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Afișează tasta de comutare IME.</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Adăugați un buton IME în rândul cu taste speciale, care să permită activarea/dezactivarea modului de compunere pentru limbile care necesită un buffer de compunere (japoneză, chineză, coreeană etc.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Comenzi rapide Ctrl/Alt pentru IME (metoda de introducere a textului)</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Nu există o soluție alternativă.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Fără soluție alternativă</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Evenimente brute ale tastelor</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Activează tastatura ASCII (recomandat)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Glisați pentru a comuta între sesiuni.</string>
@@ -602,7 +602,7 @@
   <string name="automation_no_session" tools:machine_translated="true">Această acțiune necesită o sesiune de terminal activă.</string>
   <string name="automation_forward_missing" tools:machine_translated="true">Redirecționarea portului lipsește.</string>
   <string name="automation_forward_unsupported" tools:machine_translated="true">Această conexiune nu acceptă redirecționarea de porturi.</string>
-  <string name="automation_wait_text" tools:machine_translated="true">Așteaptă până când șirul de caractere este gata.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Așteaptă un șir de caractere</string>
   <string name="automation_send_text" tools:machine_translated="true">Trimite șirul de caractere.</string>
   <string name="automation_send_key" tools:machine_translated="true">Trimite o comandă specifică.</string>
   <string name="automation_delay" tools:machine_translated="true">Așteaptă</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Anulează</string>
   <string name="automation_text" tools:machine_translated="true">Text</string>
   <string name="automation_regex" tools:machine_translated="true">Expresie regulată</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Potrivește textul de intrare fără formatare ANSI. Expresiile regulate acceptă sintaxa RE2; căutările înainte și referințele inverse nu sunt acceptate.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Potrivește textul primit fără formatare ANSI. Expresiile regulate acceptă sintaxa RE2; lookaround și referințele inverse nu sunt acceptate.</string>
   <string name="automation_duration" tools:machine_translated="true">Durată (în secunde)</string>
   <string name="automation_timeout" tools:machine_translated="true">Timp maxim de așteptare (în secunde).</string>
-  <string name="automation_key" tools:machine_translated="true">Cheie</string>
+  <string name="automation_key" tools:machine_translated="true">Tastă</string>
   <string name="automation_forward" tools:machine_translated="true">Redirecționare port</string>
   <string name="automation_failure" tools:machine_translated="true">În caz de eșec.</string>
   <string name="automation_stop" tools:machine_translated="true">Oprește automatizarea.</string>
@@ -632,25 +632,26 @@
   <string name="automation_failure_step" tools:machine_translated="true">Acțiune nr. %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Anulează automatizarea.</string>
   <string name="automation_key_enter" tools:machine_translated="true">Introducere</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Filă</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Ieșire</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Ștergere (caracter)</string>
   <string name="automation_key_delete" tools:machine_translated="true">Șterge</string>
   <string name="automation_key_up" tools:machine_translated="true">Săgeată în sus.</string>
   <string name="automation_key_down" tools:machine_translated="true">Săgeată în jos</string>
   <string name="automation_key_left" tools:machine_translated="true">Săgeată spre stânga</string>
   <string name="automation_key_right" tools:machine_translated="true">Săgeată spre dreapta.</string>
-  <string name="automation_key_home" tools:machine_translated="true">Acasă</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">Sfârșit</string>
   <string name="automation_key_insert" tools:machine_translated="true">Inserare</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">Pagina următoare</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Page Up</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Pagina următoare</string>
   <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Modificator Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f secunde</string>
   <plurals name="automation_count" tools:machine_translated="true">
     <item quantity="one">%1$d acțiune</item>
-    <item quantity="other">%1$d acțiuni</item>
+    <item quantity="few">%1$d acțiuni</item>
+    <item quantity="other">%1$d de acțiuni</item>
   </plurals>
   <string name="host_status_unread_output" tools:machine_translated="true">Date de ieșire necitite.</string>
   <string name="host_status_user_disconnected" tools:machine_translated="true">V-ați deconectat de la acest server.</string>
@@ -678,7 +679,7 @@
   <string name="notification_bell" tools:machine_translated="true">Semnal sonor al terminalului</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">A fost marcat ca fiind vizualizat.</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Marchează ca văzut</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Dezactivează sunetele de alertă.</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Notificări privind pierderea conexiunii</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Afișează o notificare temporară fără sunet atunci când o sesiune pe care nu o urmărești se deconectează neașteptat.</string>

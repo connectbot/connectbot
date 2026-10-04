@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Mostrar tecla de alternância do IME</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Adicione um botão IME à linha de teclas especiais que ativa/desativa o modo de composição para idiomas que exigem um buffer de composição (japonês, chinês, coreano, etc.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Atalhos Ctrl/Alt do IME completo</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Sem solução alternativa.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Não usar solução alternativa</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Eventos de teclado brutos.</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Forçar o uso de ASCII (recomendado)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Deslize para alternar entre as sessões.</string>
@@ -595,14 +595,14 @@
   <string name="inline_images_prompt_message" tools:machine_translated="true">Permitir que este computador exiba imagens diretamente no texto durante o restante desta sessão?</string>
   <string name="automation_load_failed" tools:machine_translated="true">Não foi possível carregar a automação.</string>
   <string name="automation_save_failed" tools:machine_translated="true">Não foi possível salvar a automação.</string>
-  <string name="automation_invalid_action" tools:machine_translated="true">Verifique o texto, o padrão, a duração ou a porta de encaminhamento selecionada.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">Verifique o texto, o padrão, a duração ou o encaminhamento de porta selecionado</string>
   <string name="automation_action_failed" tools:machine_translated="true">Ação falhou.</string>
   <string name="automation_timed_out" tools:machine_translated="true">Tempo limite excedido ao aguardar o texto.</string>
   <string name="automation_buffer_overflow" tools:machine_translated="true">Uma quantidade excessiva de dados chegou antes que a automação pudesse processá-los.</string>
   <string name="automation_no_session" tools:machine_translated="true">Esta ação exige uma sessão de terminal ativa.</string>
   <string name="automation_forward_missing" tools:machine_translated="true">O redirecionamento de porta está ausente.</string>
   <string name="automation_forward_unsupported" tools:machine_translated="true">Esta conexão não oferece suporte ao redirecionamento de portas.</string>
-  <string name="automation_wait_text" tools:machine_translated="true">Aguardar pela sequência de caracteres.</string>
+  <string name="automation_wait_text" tools:machine_translated="true">Aguardar texto</string>
   <string name="automation_send_text" tools:machine_translated="true">Enviar cadeia de caracteres.</string>
   <string name="automation_send_key" tools:machine_translated="true">Enviar tecla especial</string>
   <string name="automation_delay" tools:machine_translated="true">Aguardar</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Cancelar</string>
   <string name="automation_text" tools:machine_translated="true">Texto</string>
   <string name="automation_regex" tools:machine_translated="true">Expressão regular</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Compara o texto recebido, ignorando a formatação ANSI. A expressão regular suporta a sintaxe RE2; não são suportados os recursos de pesquisa antecipada e referências retroativas.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Compara o texto recebido sem formatação ANSI. As expressões regulares suportam a sintaxe RE2; as asserções lookaround e as referências retroativas não são suportadas.</string>
   <string name="automation_duration" tools:machine_translated="true">Duração (segundos)</string>
   <string name="automation_timeout" tools:machine_translated="true">Tempo limite (em segundos)</string>
-  <string name="automation_key" tools:machine_translated="true">Chave</string>
+  <string name="automation_key" tools:machine_translated="true">Tecla</string>
   <string name="automation_forward" tools:machine_translated="true">Redirecionamento de porta</string>
   <string name="automation_failure" tools:machine_translated="true">Em caso de falha.</string>
   <string name="automation_stop" tools:machine_translated="true">Interromper a automação.</string>
@@ -631,17 +631,17 @@
   <string name="automation_progress" tools:machine_translated="true">Automação: %1$d de %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Ação nº %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Cancelar automação</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Inserir</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Guia/Aba</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Sair</string>
-  <string name="automation_key_backspace" tools:machine_translated="true">Apagar (tecla)</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Backspace</string>
   <string name="automation_key_delete" tools:machine_translated="true">Excluir</string>
   <string name="automation_key_up" tools:machine_translated="true">Seta para cima</string>
   <string name="automation_key_down" tools:machine_translated="true">Seta para baixo</string>
   <string name="automation_key_left" tools:machine_translated="true">Seta para a esquerda</string>
   <string name="automation_key_right" tools:machine_translated="true">Seta para a direita</string>
   <string name="automation_key_home" tools:machine_translated="true">Início</string>
-  <string name="automation_key_end" tools:machine_translated="true">Finalizar</string>
+  <string name="automation_key_end" tools:machine_translated="true">Fim</string>
   <string name="automation_key_insert" tools:machine_translated="true">Inserir</string>
   <string name="automation_key_page_up" tools:machine_translated="true">Página Anterior</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Página para baixo</string>
@@ -650,6 +650,7 @@
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f segundos</string>
   <plurals name="automation_count" tools:machine_translated="true">
     <item quantity="one">%1$d ação</item>
+    <item quantity="many">%1$d ações</item>
     <item quantity="other">%1$d ações</item>
   </plurals>
   <string name="host_status_unread_output" tools:machine_translated="true">Dados não lidos</string>
@@ -693,7 +694,7 @@
     <item quantity="many">%d precisam de atenção.</item>
   </plurals>
   <plurals name="notification_more_sessions" tools:machine_translated="true">
-    <item quantity="one">Mais %d sessão(ões)</item>
+    <item quantity="one">+%d sessão adicional</item>
     <item quantity="other">+%d sessões adicionais</item>
     <item quantity="many">+%d sessões adicionais</item>
   </plurals>

@@ -66,7 +66,7 @@
   <string name="prompt_pubkey_password" tools:machine_translated="true">Пароль для ключа «%1$s»</string>
   <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">Дазволіць аддаленаму хосту выкарыстоўваць ключ «%1$s»?</string>
   <string name="host_verification_failure_warning_header" tools:machine_translated="true">УВАГА: ІДЭНТЫФІКАЦЫЯ ВЫДАЛЕНАГА ХОСТА ЗМЕНІЛАСЯ!</string>
-  <string name="host_verification_failure_warning" tools:machine_translated="true">МАГЧЫМА, ХТОСЦІ РОБІЦЬ НЕЧЫЯ ЗЛЫЯ!\nХтосьці, магчыма, зараз перахоплівае вашы даныя (тып атакі «чалавек пасярэдзіне»)!\nТаксама магчыма, што ключ хоста быў нядаўна зменены.</string>
+  <string name="host_verification_failure_warning" tools:machine_translated="true">МАГЧЫМА, ХТОСЬЦІ РОБІЦЬ НЕШТА ЗЛАМЫСНАЕ!\nХтосьці можа зараз перахопліваць вашы даныя (атака «чалавек пасярэдзіне»)!\nТаксама магчыма, што ключ хоста быў нядаўна зменены.</string>
   <string name="prompt_continue_connecting" tools:machine_translated="true">Ці ўпэўнены вы, што хочаце працягваць падключэнне?</string>
   <string name="host_authenticity_warning" tools:machine_translated="true">Не ўдалося пацвердзіць сапраўднасць хоста «%1$s».</string>
   <string name="host_fingerprint" tools:machine_translated="true">Адбіткі ключа хоста %1$s: %2$s</string>
@@ -127,10 +127,10 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">На віртуальных клавіятурах пры націсканні клавіш з лічбамі адпраўляюцца сігналы F1–F10 у спалучэнні з клавішай Ctrl.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Кнопкі рэгулявання гучнасці змяняюць памер шрыфта</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Памер шрыфта таксама можна змяніць у наладках профілю</string>
-  <string name="pref_memkeys_title" tools:machine_translated="true">Запамінаць клавішы ў памяці</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">Захоўваць ключы ў памяці</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Захоўвайце разблакаваныя ключы ў памяці да спынення працы бэкэнд-сэрвіса</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">Забяспечце пастаяннае злучэнне ў фонавым рэжыме</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Захоўвайце актыўныя сесіі, нават калі пераключаецеся на іншыя праграмы.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">Выкарыстоўваць пастаяннае апавяшчэнне, каб захоўваць сесіі адкрытымі пры пераключэнні паміж праграмамі</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Кароткія клавішныя камбінацыі для каталогаў</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Замацаваныя мадыфікатары</string>
   <string name="only_alt" tools:machine_translated="true">Толькі Alt</string>
@@ -139,7 +139,7 @@
   <string name="pref_keepalive_summary" tools:machine_translated="true">Запавольце выключэнне экрана падчас працы ў кансолі</string>
   <string name="pref_wifilock_title" tools:machine_translated="true">Захоўвайце Wi-Fi у актыўным стане.</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">Запавольце адключэнне Wi-Fi падчас актыўнай сесіі</string>
-  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Стрылкападобныя элементы тактыльнай зваротнай сувязі</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">Вібрацыя пры націсканні стрэлак</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Вібрацыя пры адпраўцы клавіш са стрэлкамі; карысна пры нестабільным злучэнні</string>
   <string name="pref_bell_category" tools:machine_translated="true">Званок тэрмінала</string>
   <string name="pref_bell_title" tools:machine_translated="true">Гукавы сігнал</string>
@@ -148,12 +148,12 @@
   <string name="pref_bell_vibrate_title" tools:machine_translated="true">Вібрацыя пры гукавым сігнале</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Вібрацыя пры атрыманні сігналу ад тэрмінала</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">Фанавыя апавяшчэнні</string>
-  <string name="pref_bell_notification_summary" tools:machine_translated="true">Адпраўляць апавяшчэнне, калі тэрмінал, які працуе ў фонавым рэжыме, выдае гукавы сігнал.</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">Паказваць усплывальнае апавяшчэнне без гуку, калі гучыць сігнал у сесіі, якую вы не праглядаеце</string>
   <string name="list_keymode_right" tools:machine_translated="true">Выкарыстоўвайце клавішы з правага боку клавіятуры</string>
   <string name="list_keymode_left" tools:machine_translated="true">Выкарыстоўвайце клавішы з левага боку клавіятуры.</string>
   <string name="list_keymode_none" tools:machine_translated="true">Адключыць</string>
   <string name="list_pubkeyids_none" tools:machine_translated="true">Не выкарыстоўвайце ключы</string>
-  <string name="list_pubkeyids_any" tools:machine_translated="true">Выкарыстоўвайце любы даступны ключ</string>
+  <string name="list_pubkeyids_any" tools:machine_translated="true">Выкарыстоўваць любы разблакіраваны ключ</string>
   <string name="hostpref_nickname_title" tools:machine_translated="true">Нікнейм</string>
   <string name="hostpref_color_title" tools:machine_translated="true">Катэгорыя колераў</string>
   <string name="color_red" tools:machine_translated="true">Чырвоны</string>
@@ -164,7 +164,7 @@
   <string name="color_blue" tools:machine_translated="true">Сіні</string>
   <string name="color_light_blue" tools:machine_translated="true">Светла-блакітны</string>
   <string name="color_cyan" tools:machine_translated="true">Цыяновы</string>
-  <string name="color_teal" tools:machine_translated="true">Цёмна-зялёны (колер)</string>
+  <string name="color_teal" tools:machine_translated="true">Сіне-зялёны</string>
   <string name="color_green" tools:machine_translated="true">Зялёны</string>
   <string name="color_light_green" tools:machine_translated="true">Светла-зялёны</string>
   <string name="color_lime" tools:machine_translated="true">Лаймавы колер</string>
@@ -184,7 +184,7 @@
   <string name="hostpref_wantsession_summary" tools:machine_translated="true">Адключыце гэтую опцыю, каб выкарыстоўваць толькі пераадрасацыю портаў</string>
   <string name="hostpref_stayconnected_title" tools:machine_translated="true">Заставайцеся на сувязі</string>
   <string name="hostpref_stayconnected_summary" tools:machine_translated="true">Паспрабуйце паўторна падключыцца да хоста, калі адбылося адключэнне</string>
-  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Запытваць зачыненне пасля адключэння</string>
+  <string name="hostpref_quickdisconnect_title" tools:machine_translated="true">Закрываць пры адключэнні</string>
   <string name="hostpref_quickdisconnect_summary" tools:machine_translated="true">Неадкладна закрыць пасля адключэння ад выдаленага сервера без паведамлення.</string>
   <string name="hostpref_delkey_title" tools:machine_translated="true">Клавіша DEL</string>
   <string name="hostpref_encoding_title" tools:machine_translated="true">Кадзіраванне</string>
@@ -213,7 +213,7 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">Тэрмінал</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">Стыль шрыфта</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">Памер шрыфта: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">Памер сілы</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">Фіксаваны памер</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">Прымусьце тэрмінал адлюстроўвацца ў пэўным памеры (колькасць слупкоў x колькасць радкоў), а не аўтаматычна падлаштоўвацца пад памер экрана.</string>
   <string name="profile_editor_force_size_enable" tools:machine_translated="true">Уключыць прымусовае заданне памеру</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">Калонкі</string>
@@ -344,7 +344,7 @@
   <string name="image_description_connected" tools:machine_translated="true">Падлучаны.</string>
   <string name="image_description_disconnected" tools:machine_translated="true">Адключаны.</string>
   <string name="image_description_toggle_control_character" tools:machine_translated="true">Пераключыць кіравальны сімвал.</string>
-  <string name="image_description_send_escape_character" tools:machine_translated="true">Адправіць сімвал кіравання.</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">Адправіць сімвал ESC.</string>
   <string name="image_description_send_tab_character" tools:machine_translated="true">Адправіць сімвал TAB.</string>
   <string name="image_description_hide_keyboard" tools:machine_translated="true">Схаваць клавіятуру.</string>
   <string name="image_description_show_keyboard" tools:machine_translated="true">Паказаць клавіятуру.</string>
@@ -354,10 +354,10 @@
   <string name="image_description_right" tools:machine_translated="true">Стрэлка ўправа</string>
   <string name="button_key_esc" tools:machine_translated="true">Esc</string>
   <string name="button_key_ctrl" tools:machine_translated="true">Ctrl</string>
-  <string name="button_key_home" tools:machine_translated="true">Галоўная</string>
-  <string name="button_key_end" tools:machine_translated="true">Завяршыць</string>
+  <string name="button_key_home" tools:machine_translated="true">Home</string>
+  <string name="button_key_end" tools:machine_translated="true">End</string>
   <string name="button_key_pgup" tools:machine_translated="true">Старонка ўверх</string>
-  <string name="button_key_pgdn" tools:machine_translated="true">Перадзіць старонку</string>
+  <string name="button_key_pgdn" tools:machine_translated="true">PgDn</string>
   <string name="button_key_f1" tools:machine_translated="true">F1</string>
   <string name="button_key_f2" tools:machine_translated="true">F2</string>
   <string name="button_key_f3" tools:machine_translated="true">F3</string>
@@ -408,7 +408,7 @@
   <string name="pubkey_biometric_protection" tools:machine_translated="true">Захист з дапамогай адбіткаў пальцаў</string>
   <string name="pubkey_biometric_description" tools:machine_translated="true">Абараніце гэты ключ з дапамогай вашага адбітка пальца</string>
   <string name="pubkey_biometric_not_enrolled" tools:machine_translated="true">Не зарэгістраваны адбіткі пальцаў. Наладзьце распознаванне адбіткаў пальцаў у наладках прылады, каб выкарыстоўваць гэтую функцыю.</string>
-  <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Захист з дапамогай адбіткаў пальцаў даступны толькі для ключоў RSA і EC.</string>
+  <string name="pubkey_biometric_key_type_warning" tools:machine_translated="true">Абарона адбіткам пальца даступная толькі для ключоў RSA і EC</string>
   <string name="pubkey_biometric_prompt_title" tools:machine_translated="true">Пацвердзіце, каб выкарыстоўваць ключ</string>
   <string name="pubkey_biometric_prompt_subtitle" tools:machine_translated="true">Дакраніцеся да датчыка адбіткаў пальцаў, каб разблакіраваць \"%1$s\"</string>
   <string name="pubkey_biometric_description_icon" tools:machine_translated="true">Захішчаны з дапамогай адбітка пальца</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">Неабходна даць дазвол на адпраўку апавяшчэнняў</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">Каб забяспечыць працу злучэнняў у фонавым рэжыме, уключыце атрыманне апавяшчэнняў для ConnectBot у наладках сістэмы.</string>
   <string name="open_settings" tools:machine_translated="true">Адкрыць налады</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Злучэнні могуць разрывацца без атрымання дазволу на адпраўку апавяшчэнняў</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Злучэнні могуць разрывацца пры пераключэнні паміж праграмамі</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">Злучэнне можа перарвацца ў фонавым рэжыме</string>
   <string name="terminal_no_route" tools:machine_translated="true">Вы спрабуеце падключыцца да хоста ў лакальнай сетцы? Дайце дазвол на доступ да лакальнай сеткі.</string>
   <string name="loading_message" tools:machine_translated="true">Загрузка…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Паказаць клавішу для пераключэння рэжыму ўводу IME.</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Дадайце кнопку IME у рад спецыяльных клавіш, якая пераключае рэжым набору для моў, якія патрабуюць буфер для складання сімвалаў (японская, кітайская, карэйская і іншыя).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Поўныя клавішныя камбінацыі IME для Ctrl/Alt.</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Рашэння не знойдзена.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Не выкарыстоўваць абыходны спосаб</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Неапрацаваныя падзеі клавіш.</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Прымусова выкарыстоўваць раскладку ASCII (рэкамендуецца)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Правядзіце пальцам, каб пераключацца паміж сесіямі.</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Скасаваць</string>
   <string name="automation_text" tools:machine_translated="true">Тэкст</string>
   <string name="automation_regex" tools:machine_translated="true">Звычайны выраз</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Супастаўляе ўваходны тэкст без выкарыстання ANSI-фарматавання. Сінтэксis RE2 падтрымліваецца ў рэгулярных выразах; функцыі «lookaround» і зваротныя спасылкі не падтрымліваюцца.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Супастаўляе ўваходны тэкст без ANSI-фарматавання. Рэгулярныя выразы падтрымліваюць сінтаксіс RE2; lookaround і зваротныя спасылкі не падтрымліваюцца.</string>
   <string name="automation_duration" tools:machine_translated="true">Працягласць (секунды)</string>
   <string name="automation_timeout" tools:machine_translated="true">Тайм-аут (секунды)</string>
-  <string name="automation_key" tools:machine_translated="true">Ключ</string>
+  <string name="automation_key" tools:machine_translated="true">Клавіша</string>
   <string name="automation_forward" tools:machine_translated="true">Наладка пераадрасацыі порта.</string>
   <string name="automation_failure" tools:machine_translated="true">У выпадку збою.</string>
   <string name="automation_stop" tools:machine_translated="true">Спыніць аўтаматызацыю.</string>
@@ -631,26 +631,28 @@
   <string name="automation_progress" tools:machine_translated="true">Аўтаматызацыя: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Дзеянне №%1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Адмяніць аўтаматызацыю.</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Увесці</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Укладка</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Выйсці</string>
-  <string name="automation_key_backspace" tools:machine_translated="true">Клавіша «Назад»</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Backspace</string>
   <string name="automation_key_delete" tools:machine_translated="true">Выдаліць</string>
   <string name="automation_key_up" tools:machine_translated="true">Стрэлка ўверх</string>
   <string name="automation_key_down" tools:machine_translated="true">Стрэлка ўніз</string>
   <string name="automation_key_left" tools:machine_translated="true">Стрэлка ўлева</string>
   <string name="automation_key_right" tools:machine_translated="true">Стрэлка ўправа</string>
-  <string name="automation_key_home" tools:machine_translated="true">Галоўная старонка</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">Канец</string>
   <string name="automation_key_insert" tools:machine_translated="true">Уставіць</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">Наперад на старонку</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Page Up</string>
   <string name="automation_key_page_down" tools:machine_translated="true">Наступная старонка</string>
   <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">Shift</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f с</string>
   <plurals name="automation_count" tools:machine_translated="true">
-    <item quantity="one">%1$d дзеянняў</item>
-    <item quantity="other">%1$d дзеянняў</item>
+    <item quantity="one">%1$d дзеянне</item>
+    <item quantity="few">%1$d дзеянні</item>
+    <item quantity="many">%1$d дзеянняў</item>
+    <item quantity="other">%1$d дзеяння</item>
   </plurals>
   <string name="host_status_unread_output" tools:machine_translated="true">Непрачытаныя даныя</string>
   <string name="host_status_user_disconnected" tools:machine_translated="true">Вы адключыліся ад гэтага хоста.</string>
@@ -678,7 +680,7 @@
   <string name="notification_bell" tools:machine_translated="true">Звукавы сігнал тэрмінала.</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">Пазначана як прачытана.</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Пазначыць як прачытанае</string>
   <string name="notification_mute_bells" tools:machine_translated="true">Адключыць гукавыя сігналы.</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Апавяшчэнні аб страчанай сувязі.</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Паказвайце бясшумнае ўсплывальнае акно, калі сесія, якую вы не праглядаеце, нечакана разрываецца.</string>

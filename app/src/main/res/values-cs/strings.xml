@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">Zobrazit klávesu pro přepínání IME</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">Přidejte tlačítko pro IME do řady speciálních kláves, které bude přepínat režim pro vkládání znaků pro jazyky, které vyžadují vyrovnávací paměť (japonština, čínština, korejština atd.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">Klávesové zkratky pro plnou verzi IME (Ctrl/Alt)</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Neexistuje žádné řešení.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">Nepoužívat náhradní řešení</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">Nezpracované události stisku kláves</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">Vynutit použití ASCII (doporučeno)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">Přejeďte prstem pro přepnutí mezi relacemi.</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">Pevně nastavený port UDP pro Mosh (0 pro automatické použití rozsahu 60000–61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">Nastavení jazykové verze</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Nastavení jazykové verze pro relaci Mosh (např. en_US.UTF-8)</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">Mosh (podpora)</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Verze Mosh a zdrojový kód</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">Probíhá příprava podpory pro Mosh…</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">Zrušit změny?</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">Zrušit</string>
   <string name="automation_text" tools:machine_translated="true">Text</string>
   <string name="automation_regex" tools:machine_translated="true">Regulární výraz</string>
-  <string name="automation_regex_help" tools:machine_translated="true">Porovnává příchozí text bez formátování ANSI. Regulární výraz podporuje syntaxi RE2; vyhledávání dopředu a zpětné odkazy nejsou podporovány.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">Porovnává příchozí text bez formátování ANSI. Regulární výrazy podporují syntaxi RE2; lookaround a zpětné odkazy nejsou podporovány.</string>
   <string name="automation_duration" tools:machine_translated="true">Doba trvání (v sekundách)</string>
   <string name="automation_timeout" tools:machine_translated="true">Časový limit (v sekundách)</string>
-  <string name="automation_key" tools:machine_translated="true">Klíč</string>
+  <string name="automation_key" tools:machine_translated="true">Klávesa</string>
   <string name="automation_forward" tools:machine_translated="true">Přesměrování portu</string>
   <string name="automation_failure" tools:machine_translated="true">V případě selhání.</string>
   <string name="automation_stop" tools:machine_translated="true">Zastavit automatizaci.</string>
@@ -631,9 +631,9 @@
   <string name="automation_progress" tools:machine_translated="true">Automatizace: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">Akce č. %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">Zrušit automatizaci</string>
-  <string name="automation_key_enter" tools:machine_translated="true">Zadejte</string>
-  <string name="automation_key_tab" tools:machine_translated="true">Záložka</string>
-  <string name="automation_key_escape" tools:machine_translated="true">Ukončit</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">Zpětná mezera</string>
   <string name="automation_key_delete" tools:machine_translated="true">Smazat</string>
   <string name="automation_key_up" tools:machine_translated="true">Šipka nahoru</string>
@@ -650,9 +650,11 @@
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f s</string>
   <plurals name="automation_count" tools:machine_translated="true">
     <item quantity="one">%1$d akce</item>
+    <item quantity="few">%1$d akce</item>
+    <item quantity="many">%1$d akce</item>
     <item quantity="other">%1$d akcí</item>
   </plurals>
-  <string name="host_status_unread_output" tools:machine_translated="true">Nezpracovaný výstup</string>
+  <string name="host_status_unread_output" tools:machine_translated="true">Nepřečtený výstup</string>
   <string name="host_status_user_disconnected" tools:machine_translated="true">Odpojili jste se od tohoto hostitele.</string>
   <string name="host_status_session_exit" tools:machine_translated="true">Vzdálená relace byla ukončena.</string>
   <string name="host_status_remote_closed" tools:machine_translated="true">Server ukončil připojení. Můžete se znovu připojit.</string>

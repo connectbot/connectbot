@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <string name="app_desc" tools:machine_translated="true">सरल, शक्तिशाली, खुला स्रोतको SSH क्लाइन्ट।</string>
-  <string name="service_desc" tools:machine_translated="true">एसएसएच जडानहरू कायम राख्छ र सार्वजनिक कुञ्जीहरू लोड गर्छ।</string>
+  <string name="service_desc" tools:machine_translated="true">SSH जडानहरू र लोड गरिएका सार्वजनिक कुञ्जीहरू कायम राख्छ</string>
   <string name="app_copyright" tools:machine_translated="true">प्रतिलिपि अधिकार © केनी रूट</string>
   <string name="title_pubkey_list" tools:machine_translated="true">सार्वजनिक कुञ्जीहरू</string>
   <string name="title_port_forwards_list" tools:machine_translated="true">पोर्ट फार्वर्डहरू</string>
@@ -65,8 +65,8 @@
   <string name="prompt_bits" tools:machine_translated="true">बिट्स:</string>
   <string name="prompt_pubkey_password" tools:machine_translated="true">कुनै विशेष सार्वजनिक कुञ्जी खोल्नका लागि पासवर्ड: \'%1$s\'</string>
   <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">दूरस्थ होस्टलाई \'%1$s\' कुञ्जी प्रयोग गर्न अनुमति दिने?</string>
-  <string name="host_verification_failure_warning_header" tools:machine_translated="true">चेतावनी: टाँसको होस्ट पहिचान परिवर्तन भएको छ!</string>
-  <string name="host_verification_failure_warning" tools:machine_translated="true">यो सम्भव छ कि कसैले केही नराम्रो काम गरिरहेको छ!\nकसैले अहिले नै तपाईंको कुराकानी सुनि रहनुपर्छ (मध्यस्थ आक्रमण)!\nत्यसैले, होस्ट कुञ्जी हालै परिवर्तन गरिएको पनि हुन सक्छ।</string>
+  <string name="host_verification_failure_warning_header" tools:machine_translated="true">चेतावनी: टाढाको होस्टको पहिचान परिवर्तन भएको छ!</string>
+  <string name="host_verification_failure_warning" tools:machine_translated="true">कसैले दुर्भावनापूर्ण काम गरिरहेको हुन सक्छ!\nकसैले अहिले तपाईंको सञ्चार चोरीछिपी सुनिरहेको हुन सक्छ (म्यान-इन-द-मिडल आक्रमण)!\nहोस्टको कुञ्जी भर्खरै परिवर्तन भएको पनि हुन सक्छ।</string>
   <string name="prompt_continue_connecting" tools:machine_translated="true">के तपाईं निश्चित हुनुहुन्छ कि तपाईं जडान जारी राख्न चाहनुहुन्छ?</string>
   <string name="host_authenticity_warning" tools:machine_translated="true">होस्ट \'%1$s\' को प्रामाणिकता स्थापित गर्न सकिँदैन।</string>
   <string name="host_fingerprint" tools:machine_translated="true">होस्ट %1$s को कुञ्जीको फिंगरप्रिन्ट %2$s हो।</string>
@@ -130,7 +130,7 @@
   <string name="pref_memkeys_title" tools:machine_translated="true">स्मृतिमा कुञ्जीहरू सम्झनुहोस्।</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">ब्याकएन्ड सेवा बन्द नभएसम्म अनलक गरिएका कुञ्जीहरू मेमोरीमा राख्नुहोस्।</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">पृष्ठभूमिमा जडान कायम राख्नुहोस्।</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">अन्य एपहरूमा स्विच गर्दा पनि आफ्नो सत्रहरू खुला राख्नुहोस्।</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">एपहरू बदल्दा सत्रहरू खुला राख्न स्थायी सूचना प्रयोग गर्नुहोस्</string>
   <string name="pref_keymode_title" tools:machine_translated="true">फोल्डरका सर्टकटहरू</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">स्थायी रूपमा लागू हुने परिवर्तनहरू</string>
   <string name="only_alt" tools:machine_translated="true">केबल Alt कुञ्जी</string>
@@ -139,7 +139,7 @@
   <string name="pref_keepalive_summary" tools:machine_translated="true">कन्सोलमा काम गर्दा स्क्रिन बन्द हुनबाट रोक्नुहोस्।</string>
   <string name="pref_wifilock_title" tools:machine_translated="true">वाई-फाई सक्रिय राख्नुहोस्।</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">जब कुनै सत्र सक्रिय हुन्छ, त्यतिबेला वाइ-फाई बन्द हुनबाट रोक्नुहोस्।</string>
-  <string name="pref_bumpyarrows_title" tools:machine_translated="true">उबड-खुबड तीरहरू</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">तीर कुञ्जी थिच्दा कम्पन</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">तीर कुञ्जीहरू पठाउँदा कम्पन गराउनुहोस्; ढिलो जडान भएका अवस्थामा उपयोगी।</string>
   <string name="pref_bell_category" tools:machine_translated="true">टर्मिनल घण्टी</string>
   <string name="pref_bell_title" tools:machine_translated="true">श्रव्य घण्टी</string>
@@ -148,7 +148,7 @@
   <string name="pref_bell_vibrate_title" tools:machine_translated="true">बेल बज्दा कम्पन गराउने विकल्प</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">टर्मिनल अलर्ट हुँदा फोन कम्पन गरोस्।</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">पृष्ठभूमि सूचनाहरू</string>
-  <string name="pref_bell_notification_summary" tools:machine_translated="true">पृष्ठभूमिमा चलिरहेको टर्मिनलले घण्टी बजाउँदा सूचना पठाउनुहोस्।</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">तपाईंले नहेरिरहेको सत्रमा घण्टी बज्दा ध्वनिरहित पप-अप देखाउनुहोस्</string>
   <string name="list_keymode_right" tools:machine_translated="true">दायाँ पक्षका कुञ्जीहरू प्रयोग गर्नुहोस्।</string>
   <string name="list_keymode_left" tools:machine_translated="true">बायाँ पक्षका कुञ्जीहरू प्रयोग गर्नुहोस्।</string>
   <string name="list_keymode_none" tools:machine_translated="true">निष्क्रिय गर्नुहोस्</string>
@@ -213,9 +213,9 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">टर्मिनल</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">फॉन्ट परिवार</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">अक्षरको आकार: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">बलको आकार</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">निश्चित आकार</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">टर्मिनललाई स्वचालित रूपमा आकार परिवर्तन गरेर स्क्रिनमा फिट गर्ने सट्टा, यसलाई निश्चित आकार (स्तम्भ × पङ्क्ति) मा राख्नुहोस्।</string>
-  <string name="profile_editor_force_size_enable" tools:machine_translated="true">आकार परिवर्तन गर्ने सुविधा सक्रिय गर्नुहोस्।</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">निश्चित आकार सक्षम गर्नुहोस्</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">स्तम्भहरू</string>
   <string name="profile_editor_force_size_rows" tools:machine_translated="true">पंक्तिहरू</string>
   <string name="profile_icon_color_none" tools:machine_translated="true">कुनै पनि छैन (होस्टको रङ प्रयोग गर्नुहोस्)</string>
@@ -354,8 +354,8 @@
   <string name="image_description_right" tools:machine_translated="true">दायाँ तीर</string>
   <string name="button_key_esc" tools:machine_translated="true">एस्केप</string>
   <string name="button_key_ctrl" tools:machine_translated="true">कन्ट्रोल</string>
-  <string name="button_key_home" tools:machine_translated="true">मुख्य पृष्ठ</string>
-  <string name="button_key_end" tools:machine_translated="true">समाप्त गर्नुहोस्</string>
+  <string name="button_key_home" tools:machine_translated="true">Home</string>
+  <string name="button_key_end" tools:machine_translated="true">End</string>
   <string name="button_key_pgup" tools:machine_translated="true">पृष्ठ माथि</string>
   <string name="button_key_pgdn" tools:machine_translated="true">पृष्ठ तल</string>
   <string name="button_key_f1" tools:machine_translated="true">एफ १</string>
@@ -415,7 +415,7 @@
   <string name="pubkey_biometric_not_available" tools:machine_translated="true">औँठाको छापबाट प्रमाणीकरण उपलब्ध छैन।</string>
   <string name="portforward_nickname_placeholder" tools:machine_translated="true">आन्तरिक वेब सर्भर</string>
   <string name="portforward_port_range_error" tools:machine_translated="true">पोर्टको मान १ र ६५५३५ बीच हुनुपर्छ।</string>
-  <string name="portforward_destination_placeholder" tools:machine_translated="true">लोकलहोस्ट:८०</string>
+  <string name="portforward_destination_placeholder" tools:machine_translated="true">localhost:80</string>
   <string name="portforward_destination_format_error" tools:machine_translated="true">ढाँचा यस्तो हुनुपर्छ: होस्ट:पोर्ट (उदाहरणका लागि, localhost:80)</string>
   <string name="portforward_host_address" tools:machine_translated="true">होस्ट ठेगाना</string>
   <string name="portforward_source_addr_localhost" tools:machine_translated="true">लोकलहोस्ट</string>
@@ -425,7 +425,7 @@
   <string name="portforward_source_addr_all_ipv4" tools:machine_translated="true">सबै IPv4 ठेगानाहरू</string>
   <string name="portforward_source_addr_all_ipv6" tools:machine_translated="true">सबै IPv6 ठेगानाहरू</string>
   <string name="portforward_source_addr_specific" tools:machine_translated="true">विशेष ठेगाना</string>
-  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">१९२.१६८.१.१</string>
+  <string name="portforward_source_addr_specific_placeholder" tools:machine_translated="true">192.168.1.1</string>
   <string name="portforward_type_label" tools:machine_translated="true">प्रकार: %s</string>
   <string name="portforward_enable" tools:machine_translated="true">सक्रिय गर्नुहोस्</string>
   <string name="portforward_disable" tools:machine_translated="true">निष्क्रिय गर्नुहोस्</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">सूचना अनुमति आवश्यक छ।</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">पृष्ठभूमिमा तपाईंको जडानहरू सक्रिय राख्न, कृपया प्रणाली सेटिङहरूमा कनेक्टबटको लागि सूचनाहरू सक्रिय गर्नुहोस्।</string>
   <string name="open_settings" tools:machine_translated="true">सेटिंग्स खोल्नुहोस्</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">सूचना अनुमति नदिइएमा जडानहरू विच्छेद हुन सक्छ।</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">एपहरू बदल्दा जडानहरू विच्छेद हुन सक्छन्</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">पृष्ठभूमिमा हुँदा जडान विच्छेद हुन सक्छ।</string>
   <string name="terminal_no_route" tools:machine_translated="true">के तपाईं स्थानीय नेटवर्कमा रहेको कुनै उपकरणमा पहुँच गर्न खोज्दै हुनुहुन्छ? कृपया स्थानीय नेटवर्कको अनुमति दिनुहोस्।</string>
   <string name="loading_message" tools:machine_translated="true">लोड भइरहेको छ…</string>
@@ -578,7 +578,7 @@
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">मोशका लागि निश्चित यूडीपी पोर्ट (स्वचालित रूपमा ६००००-६१००० दायराको लागि ०)।</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">क्षेत्रीय सेटिङ</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">मोश सत्रको लागि स्थानीय भाषा सेटिङ (उदाहरणका लागि, en_US.UTF-8)।</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">मोश</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">मोशको जारी गरिएको संस्करण र स्रोत कोड।</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">मोश समर्थनको लागि तयारी भइरहेको छ...</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">परिवर्तनहरू रद्द गर्नुहुन्छ?</string>
@@ -631,25 +631,25 @@
   <string name="automation_progress" tools:machine_translated="true">स्वचालित प्रक्रिया: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">कार्य %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">स्वचालित प्रक्रिया रद्द गर्नुहोस्।</string>
-  <string name="automation_key_enter" tools:machine_translated="true">प्रवेश गर्नुहोस्।</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
   <string name="automation_key_tab" tools:machine_translated="true">ट्याब</string>
-  <string name="automation_key_escape" tools:machine_translated="true">बाहिर निस्कनुहोस्।</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
   <string name="automation_key_backspace" tools:machine_translated="true">ब्याकस्पेस</string>
   <string name="automation_key_delete" tools:machine_translated="true">मेट्नुहोस्</string>
   <string name="automation_key_up" tools:machine_translated="true">माथिल्लो तीर</string>
   <string name="automation_key_down" tools:machine_translated="true">तलतिर तीर</string>
   <string name="automation_key_left" tools:machine_translated="true">बायाँ तीर।</string>
   <string name="automation_key_right" tools:machine_translated="true">दायाँ तीर</string>
-  <string name="automation_key_home" tools:machine_translated="true">घर</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">अन्तिम।</string>
   <string name="automation_key_insert" tools:machine_translated="true">प्रविष्ट गर्नुहोस्।</string>
   <string name="automation_key_page_up" tools:machine_translated="true">पृष्ठ माथि</string>
   <string name="automation_key_page_down" tools:machine_translated="true">पृष्ठ तल</string>
-  <string name="automation_key_function" tools:machine_translated="true">एफ %१$एस</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">शिफ्ट</string>
   <string name="automation_seconds" tools:machine_translated="true">%.3f सेकेन्ड</string>
   <plurals name="automation_count" tools:machine_translated="true">
-    <item quantity="one">%1$d कार्यहरू</item>
+    <item quantity="one">%1$d कार्य</item>
     <item quantity="other">%1$d कार्यहरू</item>
   </plurals>
   <string name="host_status_unread_output" tools:machine_translated="true">नहेरेको आउटपुट</string>

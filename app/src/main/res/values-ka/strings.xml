@@ -151,7 +151,7 @@
   <string name="prompt_pubkey_password" tools:machine_translated="true">პაროლი გასაღებისათვის \'%1$s\'</string>
   <string name="prompt_allow_agent_to_use_key" tools:machine_translated="true">დაუშვით, რომ დისტანციურმა სერვერმა გამოიყენოს გასაღები „%1$s“?</string>
   <string name="host_verification_failure_warning_header" tools:machine_translated="true">გაფრთხილება: დისტანციური სერვერის იდენტიფიკაცია შეიცვალა!</string>
-  <string name="host_verification_failure_warning" tools:machine_translated="true">სავარაუდოდ, ვინმე ცუდი რამ აკეთებს!\nშესაძლოა, ამჟამად თქვენს შესახებ ინფორმაციას იკ gatheringებს (მესამე მხარის შეტევა)!\nასევე შესაძლებელია, რომ მასპინძელი კლუჩი ახლახან შეიცვალა.</string>
+  <string name="host_verification_failure_warning" tools:machine_translated="true">შესაძლოა, ვინმე მავნე ქმედებას ახორციელებს!\nვინმე შეიძლება ახლა თქვენს კავშირს უსმენდეს (შუამავლის შეტევა)!\nასევე შესაძლებელია, რომ ჰოსტის გასაღები ახლახან შეიცვალა.</string>
   <string name="prompt_continue_connecting" tools:machine_translated="true">დარწმუნებული ხართ, რომ კავშირს განაგრძობთ?</string>
   <string name="host_authenticity_warning" tools:machine_translated="true">ვერ შეგვიძლია დავწმუნდოთ, რომ \'%1$s\'-ის ავთენტურობა დადასტურებულია.</string>
   <string name="host_fingerprint" tools:machine_translated="true">ჰოსტის %1$s-ის გასაღების ციფრული თითბეჭდა არის %2$s.</string>
@@ -180,7 +180,7 @@
   <string name="pref_localfont_summary" tools:machine_translated="true">შექმნით შრიფტის ფაილი (TTF, OTF) და დატვირთეთ იგი.</string>
   <string name="dialog_localfont_title" tools:machine_translated="true">შრიფტის იმპორტირება</string>
   <string name="dialog_localfont_hint" tools:machine_translated="true">შრიფტის ჩვენების სახელი</string>
-  <string name="button_import" tools:machine_translated="true">შემომტანა</string>
+  <string name="button_import" tools:machine_translated="true">იმპორტირება</string>
   <string name="font_importing" tools:machine_translated="true">შრიფტის იმპორტირება…</string>
   <string name="pref_backupkeys_title" tools:machine_translated="true">საჯარო გასაღების სარეზერვო ასლის შექმნა</string>
   <string name="pref_backupkeys_summary" tools:machine_translated="true">შეინახეთ პირადი გასაღებების ასლები Android-ის სარეზერვო სისტემის გამოყენებით.</string>
@@ -190,7 +190,7 @@
   <string name="pref_language_download_failed" tools:machine_translated="true">ჩამოტვირთვა ვერ მოხერხდა, ხელახლა გასაკეთებლად დააწკაპეთ.</string>
   <string name="pref_theme_title" tools:machine_translated="true">თემა</string>
   <string name="pref_theme_system" tools:machine_translated="true">სისტემის სტანდარტული პარამეტრი</string>
-  <string name="pref_theme_light" tools:machine_translated="true">მსუბუქი</string>
+  <string name="pref_theme_light" tools:machine_translated="true">ღია</string>
   <string name="pref_theme_dark" tools:machine_translated="true">მუქი</string>
   <string name="pref_titlebarhide_title" tools:machine_translated="true">ტიტულის ზოლის ავტომატური დამალვა</string>
   <string name="pref_titlebarhide_summary" tools:machine_translated="true">დააკლიკეთ კონსოლზე, რათა გამოჩენილიყო ტიტულის ზოლი და გახსნილიყო მენიუ.</string>
@@ -202,10 +202,10 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">სოფტმობილურ კლავიატურებზე, ციფრული კლავიშები Ctrl-თან ერთად F1-F10 ფუნქციებს ააქტივებს.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">ხმის დაგაზრდის/დაკლების ღილაკები ფონტის ზომას ცვლის</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">შრიფტის ზომას ასევე შეგიძლიათ შეცვალოთ პროფილის პარამეტრებში.</string>
-  <string name="pref_memkeys_title" tools:machine_translated="true">შენახული კლავიშები</string>
+  <string name="pref_memkeys_title" tools:machine_translated="true">გასაღებების მეხსიერებაში შენახვა</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">შენახული გასაღებები შეინახეთ მეხსიერებაში, სანამ ბექენდ-სერვისი არ დაიხურება.</string>
   <string name="pref_conn_persist_title" tools:machine_translated="true">დარჩით კავშირზე ფონურ რეჟიმში</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">დარჩით შეერთებულს, მაშინაც კი, როდესაც სხვა პროგრამებზე გადაერთვებით.</string>
+  <string name="pref_conn_persist_summary" tools:machine_translated="true">მუდმივი შეტყობინების გამოყენება სესიების ღიად შესანარჩუნებლად აპებს შორის გადართვისას</string>
   <string name="pref_keymode_title" tools:machine_translated="true">დირექტორიის მალსახელები</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">მუდმივი მოდიფიკატორები</string>
   <string name="only_alt" tools:machine_translated="true">მხოლოდ Alt</string>
@@ -213,13 +213,13 @@
   <string name="pref_keepalive_summary" tools:machine_translated="true">დარგული რეჟიმში მუშაობის დროს, ეკრანის გამორთვა აეცილეთ.</string>
   <string name="pref_wifilock_title" tools:machine_translated="true">დატოვეთ Wi-Fi ჩართული</string>
   <string name="pref_wifilock_summary" tools:machine_translated="true">დარწმუნდით, რომ Wi-Fi არ ითიშება აქტიური სესიის დროს.</string>
-  <string name="pref_bumpyarrows_title" tools:machine_translated="true">ხაზგარეული ისრები</string>
+  <string name="pref_bumpyarrows_title" tools:machine_translated="true">ვიბრაცია ისრის ღილაკებზე</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">გამოიყენეთ ვიბრაცია, როდესაც მიმღებს მიგზავნით; ეს სასარგებლოა, თუ კავშირი არასტაბილურია.</string>
   <string name="pref_bell_summary" tools:machine_translated="true">გამოიყვითე ხმა, როდესაც ტერმინალში გააქტიურდება სიგნალი</string>
   <string name="pref_bell_vibrate_title" tools:machine_translated="true">ხმის სიგნალზე ვიბრაცია</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">გააქტიურდეს ვიბრაცია, როდესაც ტერმინალში გაჩნდება სიგნალი.</string>
   <string name="pref_bell_notification_title" tools:machine_translated="true">ფონის შეტყობინებები</string>
-  <string name="pref_bell_notification_summary" tools:machine_translated="true">გამოიგზავნეთ შეტყობინება, როდესაც ფონზე მუშავებ ტერმინალს და ის სიგნალს გამოსცემს.</string>
+  <string name="pref_bell_notification_summary" tools:machine_translated="true">უხმო ამომხტარი შეტყობინების ჩვენება, როცა სიგნალი ისმის სესიაში, რომელსაც არ უყურებთ</string>
   <string name="list_keymode_right" tools:machine_translated="true">გამოიყენეთ კლავიატურის მარჯვენა მხარეს მდებარე ღილაკები.</string>
   <string name="list_keymode_left" tools:machine_translated="true">გამოიყენეთ კლავიატურის მარცხენა მხარის ღილაკები.</string>
   <string name="list_pubkeyids_none" tools:machine_translated="true">არ გამოიყენოთ გასაღებები</string>
@@ -232,12 +232,12 @@
   <string name="color_blue" tools:machine_translated="true">ლურჯი</string>
   <string name="color_light_blue" tools:machine_translated="true">სветლად ლურჯი</string>
   <string name="color_cyan" tools:machine_translated="true">ციანისფერი</string>
-  <string name="color_teal" tools:machine_translated="true">ზურმუხტისფერი</string>
+  <string name="color_teal" tools:machine_translated="true">მომწვანო-ლურჯი</string>
   <string name="color_green" tools:machine_translated="true">მწვანე</string>
   <string name="color_light_green" tools:machine_translated="true">მუქი მწვანე</string>
   <string name="color_lime" tools:machine_translated="true">მწვანე (ლაიმი)</string>
   <string name="color_yellow" tools:machine_translated="true">ყვითელი</string>
-  <string name="color_amber" tools:machine_translated="true">ყვითელი (ფერი)</string>
+  <string name="color_amber" tools:machine_translated="true">ქარვისფერი</string>
   <string name="color_orange" tools:machine_translated="true">ფორთოხლისფერი</string>
   <string name="color_gray" tools:machine_translated="true">ნაცრისფერი</string>
   <string name="hostpref_fontfamily_title" tools:machine_translated="true">შრიფტი</string>
@@ -274,9 +274,9 @@
   <string name="profile_editor_section_terminal" tools:machine_translated="true">ტერმინალი</string>
   <string name="profile_editor_font_family_title" tools:machine_translated="true">შრიფტის ოჯახი</string>
   <string name="profile_editor_font_size_title" tools:machine_translated="true">შრიფტის ზომა: %d</string>
-  <string name="profile_editor_force_size_title" tools:machine_translated="true">ძალის ზომა</string>
+  <string name="profile_editor_force_size_title" tools:machine_translated="true">ფიქსირებული ზომა</string>
   <string name="profile_editor_force_size_summary" tools:machine_translated="true">ტერმინალის ზომა ავტომატურად არ უნდა იცვლებოდეს ეკრანთან ადაპტაციის მიზნით, არამედ უნდა დაინიშნოს კონკრეტული ზომა (სვეტების რაოდენობა x რიგების რაოდენობა).</string>
-  <string name="profile_editor_force_size_enable" tools:machine_translated="true">აქტივირებულია ზომის ავტომატური რეგულირება</string>
+  <string name="profile_editor_force_size_enable" tools:machine_translated="true">ფიქსირებული ზომის ჩართვა</string>
   <string name="profile_editor_force_size_columns" tools:machine_translated="true">სვეტები</string>
   <string name="profile_editor_force_size_rows" tools:machine_translated="true">რიგები</string>
   <string name="profile_icon_color_none" tools:machine_translated="true">არცერთი (გამოიყენეთ მასპინძლის ფერი)</string>
@@ -374,7 +374,7 @@
   <string name="menu_manage_colors" tools:machine_translated="true">ფერთა სქემების მართვა</string>
   <string name="section_color_preview" tools:machine_translated="true">წინასწარი ჩვენება</string>
   <string name="image_description_toggle_control_character" tools:machine_translated="true">მართვის სიმბოლოს ჩართვა/გამორთვა.</string>
-  <string name="image_description_send_escape_character" tools:machine_translated="true">გადასვით სპეციალური სიმბოლო.</string>
+  <string name="image_description_send_escape_character" tools:machine_translated="true">ESC სიმბოლოს გაგზავნა.</string>
   <string name="image_description_send_tab_character" tools:machine_translated="true">გაგზავნეთ TAB სიმბოლო.</string>
   <string name="terminal_keyboard_text_input_button" tools:machine_translated="true">ტექსტის შეყვანა</string>
   <string name="terminal_text_input_dialog_title" tools:machine_translated="true">ტექსტის შეყვანა</string>
@@ -404,7 +404,7 @@
   <string name="host_editor_hide_advanced" tools:machine_translated="true">დამალეთ დამატებითი პარამეტრები</string>
   <string name="resize_width_label" tools:machine_translated="true">სიგანე (სვეტები)</string>
   <string name="resize_height_label" tools:machine_translated="true">სიმაღლე (ხაზები)</string>
-  <string name="resize_disable_force_size" tools:machine_translated="true">გაუქმეთ ზომის ავტომატურად რეგულირების ფუნქცია</string>
+  <string name="resize_disable_force_size" tools:machine_translated="true">ფიქსირებული ზომის გამორთვა</string>
   <string name="pubkey_editor_key_type_label" tools:machine_translated="true">კლუჩის ტიპი</string>
   <string name="pubkey_editor_options_label" tools:machine_translated="true">პარამეტრები</string>
   <string name="pubkey_editor_encrypted_startup_warning" tools:machine_translated="true">დაშიფრული გასაღებები ვერ გაიხსნება სისტემის ჩატვირთვის დროს.</string>
@@ -448,7 +448,7 @@
   <string name="notification_permission_denied_title" tools:machine_translated="true">გაუქმებული შეტყობინებების ნებართვის აღდგენა აუცილებელია</string>
   <string name="notification_permission_denied_message" tools:machine_translated="true">იმისათვის, რომ თქვენი კავშირები ფონზე აქტიური იყოს, გთხოვთ, სისტემის პარამეტრებში ჩართოთ ConnectBot-ის შეტყობინებების მიღება.</string>
   <string name="open_settings" tools:machine_translated="true">პარამეტრების გახსნა</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">შეიძლება კავშირები გაწყდეს, თუ არ იქნება ნებართვა შეტყობინებების მისაღებად.</string>
+  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">აპებს შორის გადართვისას კავშირები შეიძლება გაწყდეს</string>
   <string name="notification_permission_console_warning" tools:machine_translated="true">კავშირი შეიძლება ფონზე გაწყდეს.</string>
   <string name="terminal_no_route" tools:machine_translated="true">სურავთ, ადგილობრივ სერვერთან დაკავშირება? მოგვცეთ უფლება ადგილობრივი ქსელის გამოყენებისთვის.</string>
   <string name="loading_message" tools:machine_translated="true">ტვირთვა…</string>
@@ -550,7 +550,7 @@
   <string name="pref_imetogglekey_title" tools:machine_translated="true">აჩვენე IME-ის გადამრთველის კლავიში.</string>
   <string name="pref_imetogglekey_summary" tools:machine_translated="true">დამატეთ IME ღილაკი სპეციალურ ღილაკების რიგში, რომელიც ჩართავს/გამორთავს კომპოზიციის რეჟიმს ენებისთვის, რომლებსაც კომპოზიციის ბუფერი ესაჭიროებათ (იაპონური, ჩინური, კორეული და ა.შ.).</string>
   <string name="pref_ime_shortcut_mode_title" tools:machine_translated="true">IME-ის სრული ვერსიის Ctrl/Alt კომბინაციები.</string>
-  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">არ არსებობს გამოსავალი.</string>
+  <string name="pref_ime_shortcut_mode_disabled" tools:machine_translated="true">შემოვლითი გზის გარეშე</string>
   <string name="pref_ime_shortcut_mode_type_null" tools:machine_translated="true">ხელური კლავიატურის პირდაპირი სიგნალები</string>
   <string name="pref_ime_shortcut_mode_force_ascii" tools:machine_translated="true">ASCII-ის რეჟიმის იძულებითი ჩართვა (რეკომენდებულია)</string>
   <string name="pref_swipe_sessions_title" tools:machine_translated="true">გაუსვი თითი და გადართეთ სესიებს შორის</string>
@@ -560,7 +560,7 @@
   <string name="console_next_session" tools:machine_translated="true">შემდეგი სესიա</string>
   <string name="button_key_alt" tools:machine_translated="true">Alt</string>
   <string name="image_description_toggle_alt_key" tools:machine_translated="true">Alt კლავიშის ჩართვა/გამორთვა.</string>
-  <string name="button_key_ime" tools:machine_translated="true">IME (ვირტუალური კლავიატურის ღილაკი, რომელიც ჩასაწერ მოწყობილობის რეჟიმს ააქტივებს, მაგალითად, იაპონური ენისთვის).</string>
+  <string name="button_key_ime" tools:machine_translated="true">IME</string>
   <string name="image_description_toggle_compose_mode" tools:machine_translated="true">გააქტივეთ/გაუქმეთ IME-ის შეყვანის რეჟიმი.</string>
   <string name="console_menu_compose_mode" tools:machine_translated="true">შემადგენლობის რეჟიმი (IME)</string>
   <string name="hostpref_profile_edit" tools:machine_translated="true">შერჩეული პროფილის რედაქტირება</string>
@@ -573,12 +573,12 @@
   <string name="terminal_mosh_connected" tools:machine_translated="true">Mosh-თან კავშირი დაწესდა.</string>
   <string name="terminal_mosh_error" tools:machine_translated="true">Mosh-ის შეცდომა: %1$s</string>
   <string name="hostpref_mosh_server_title" tools:machine_translated="true">Mosh სერვერის ბრძანება</string>
-  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">მორგებული Mosh სერვერის გზა ან ბრძანება (დატოვეთ ცარიeli, თუ სტანდარტული პარამეტრები გსურთ).</string>
+  <string name="hostpref_mosh_server_summary" tools:machine_translated="true">mosh-server-ის მორგებული გზა ან ბრძანება (ნაგულისხმევისთვის დატოვეთ ცარიელი)</string>
   <string name="hostpref_mosh_port_title" tools:machine_translated="true">Mosh-ის UDP პორტი</string>
   <string name="hostpref_mosh_port_summary" tools:machine_translated="true">მუდმივი UDP პორტი პროგრამა Mosh-ისთვის (0 ავტომატური დიაპაზონის მისამართად, 60000-61000).</string>
   <string name="hostpref_locale_title" tools:machine_translated="true">ადგილმდებარეობა</string>
   <string name="hostpref_locale_summary" tools:machine_translated="true">Mosh სესიისთვის დაყენებული ლოკალი (მაგ., en_US.UTF-8).</string>
-  <string name="mosh_feature_title" tools:machine_translated="true">მოშის მხარდაჭერა</string>
+  <string name="mosh_feature_title" tools:machine_translated="true">Mosh</string>
   <string name="pref_mosh_release_title" tools:machine_translated="true">Mosh-ის ვერსია და პროგრამული კოდი</string>
   <string name="pref_mosh_installing" tools:machine_translated="true">მზადდება Mosh-ის მხარდაჭერა...</string>
   <string name="editor_discard_changes_title" tools:machine_translated="true">შეინახოთ ცვლილებები?</string>
@@ -595,7 +595,7 @@
   <string name="inline_images_prompt_message" tools:machine_translated="true">დავუშვათ, ამ სესიის განმავლობაში, ეს ჰოსტი იყენებს ინლაინ გამოსახულებებს?</string>
   <string name="automation_load_failed" tools:machine_translated="true">ავტომატიზაციის მოდულის ჩატვირთვა ვერ მოხერხდა.</string>
   <string name="automation_save_failed" tools:machine_translated="true">ავტომატიზაციის შენახვა ვერ მოხერხდა.</string>
-  <string name="automation_invalid_action" tools:machine_translated="true">გაამოწმეთ ტექსტი, შაბლონი, ხანგრძლივობა ან არჩეული პორტის გადას redirection.</string>
+  <string name="automation_invalid_action" tools:machine_translated="true">შეამოწმეთ ტექსტი, შაბლონი, ხანგრძლივობა ან არჩეული პორტის გადამისამართება</string>
   <string name="automation_action_failed" tools:machine_translated="true">მოქმედება წარუმატებლად დასრულდა.</string>
   <string name="automation_timed_out" tools:machine_translated="true">ტექსტის ჩატვირთვამდე დანიშნული დრო ამოწურულია.</string>
   <string name="automation_buffer_overflow" tools:machine_translated="true">ავტომატიზაციის სისტემამ საჭირო მოცულობაზე მეტი ინფორმაცია მიიღო, სანამ მას შეძლებოდა ამ მონაცემების დამუშავება.</string>
@@ -619,10 +619,10 @@
   <string name="automation_cancel" tools:machine_translated="true">გაუქმება</string>
   <string name="automation_text" tools:machine_translated="true">ტექსტი</string>
   <string name="automation_regex" tools:machine_translated="true">რეგულარული გამოსახულება</string>
-  <string name="automation_regex_help" tools:machine_translated="true">მოიძევს შესული ტექსტის იმ ნაწილებს, რომლებიც არ შეიცავს ANSI ფორმატირებას. რეგულარული გამოსახულება მხარს უჭერს RE2 სინტაქსს; წინასწარი და უკანა მითითებები არ არის მხარდაჭერილი.</string>
+  <string name="automation_regex_help" tools:machine_translated="true">ადარებს შემომავალ ტექსტს ANSI ფორმატირების გარეშე. რეგულარული გამოსახულებები მხარს უჭერს RE2 სინტაქსს; lookaround და უკუმითითებები მხარდაჭერილი არ არის.</string>
   <string name="automation_duration" tools:machine_translated="true">ხანგრძლივობა (წამი)</string>
   <string name="automation_timeout" tools:machine_translated="true">მაქსიმალური დრო (წამებში).</string>
-  <string name="automation_key" tools:machine_translated="true">კლავიში/მთავარი სიტყვა</string>
+  <string name="automation_key" tools:machine_translated="true">კლავიში</string>
   <string name="automation_forward" tools:machine_translated="true">პორტის გადაგზავნა</string>
   <string name="automation_failure" tools:machine_translated="true">შეცდომის შემთხვევაში</string>
   <string name="automation_stop" tools:machine_translated="true">ავტომატიზაციის შეწყვეტა</string>
@@ -631,21 +631,21 @@
   <string name="automation_progress" tools:machine_translated="true">ავტომატიზაცია: %1$d / %2$d</string>
   <string name="automation_failure_step" tools:machine_translated="true">ქმედება %1$d: %2$s</string>
   <string name="automation_cancel_run" tools:machine_translated="true">ავტომატიზაციის გაუქმება</string>
-  <string name="automation_key_enter" tools:machine_translated="true">შეიყვანეთ</string>
-  <string name="automation_key_tab" tools:machine_translated="true">ფურცელი</string>
-  <string name="automation_key_escape" tools:machine_translated="true">გაუქმება</string>
-  <string name="automation_key_backspace" tools:machine_translated="true">უკანა გასაღები (ტერმინალის კლავიატურაზე).</string>
+  <string name="automation_key_enter" tools:machine_translated="true">Enter</string>
+  <string name="automation_key_tab" tools:machine_translated="true">Tab</string>
+  <string name="automation_key_escape" tools:machine_translated="true">Esc</string>
+  <string name="automation_key_backspace" tools:machine_translated="true">Backspace</string>
   <string name="automation_key_delete" tools:machine_translated="true">წაშლა</string>
   <string name="automation_key_up" tools:machine_translated="true">ზემო მიმართულების ისარი</string>
   <string name="automation_key_down" tools:machine_translated="true">ქვემოთ მიმავალი ისარი</string>
   <string name="automation_key_left" tools:machine_translated="true">მარცხნივ მიმავალი ისარი</string>
   <string name="automation_key_right" tools:machine_translated="true">მარჯვენა ისარი</string>
-  <string name="automation_key_home" tools:machine_translated="true">მთავარი გვერდი</string>
+  <string name="automation_key_home" tools:machine_translated="true">Home</string>
   <string name="automation_key_end" tools:machine_translated="true">დასასრული</string>
   <string name="automation_key_insert" tools:machine_translated="true">ჩასმა</string>
-  <string name="automation_key_page_up" tools:machine_translated="true">გვერდის წინ გადასვლა</string>
+  <string name="automation_key_page_up" tools:machine_translated="true">Page Up</string>
   <string name="automation_key_page_down" tools:machine_translated="true">გვერდის გადახვევა ქვემოთ</string>
-  <string name="automation_key_function" tools:machine_translated="true">ფ%1$ს</string>
+  <string name="automation_key_function" tools:machine_translated="true">F%1$s</string>
   <string name="automation_key_shift" tools:machine_translated="true">შეფტი</string>
   <string name="automation_seconds" tools:machine_translated="true">%1$.3f წმ.</string>
   <plurals name="automation_count" tools:machine_translated="true">
@@ -658,14 +658,14 @@
   <string name="host_status_remote_closed" tools:machine_translated="true">სერვერმა დახურა კავშირი. შეგიძლიათ კვლავ დაუკავშირდეთ.</string>
   <string name="host_status_connection_lost" tools:machine_translated="true">კავშირი გაწყდა. შეგიძლიათ კვლავ დაუკავშირდეთ.</string>
   <string name="host_status_network_lost" tools:machine_translated="true">ქსელთან კავშირი დაიკარგა. კავშირი აღადგინეთ, როდესაც ქსელი ხელმისაწვდომი გახდება.</string>
-  <string name="host_status_auth_failed" tools:machine_translated="true">ავტორიზაცია წარუმატებელი აღმოჩნდა. ხელახალი კავშირის და establishment-ის წინ, გადაამოწმეთ თქვენი მომხმარებლის სახელი, პაროლი ან გასაღები.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">ავთენტიფიკაცია ვერ მოხერხდა. ხელახლა დაკავშირებამდე შეამოწმეთ მომხმარებლის სახელი, პაროლი ან გასაღები.</string>
   <string name="host_status_connection_ended" tools:machine_translated="true">დაკავშირება გაწყვეტილია.</string>
   <string name="host_status_action_required" tools:machine_translated="true">დაკავშირებაზე ყურადღება უნდა გამახვილდეს.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s გახსენით კონსოლი, რათა ნახოთ დანარჩენი ინფორმაცია.</string>
   <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android-მა შესაძლოა ConnectBot გააჩეროს და თქვენი სესიები გაუქმოს, როდესაც სხვა აპლიკაციაზე გადაერთვებით.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh-ის ქსელის დროის ლიმიტი (წამი)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">პერიოდი, რომლის განმავლობაშიც სერვერი კლიენტისგან განახლებების გარეშე იმუშავებს, სანამ სერვერი გაითიშება. დატოვეთ ცარიელი, რათა გამოიყენოთ სერვერის პარამეტრი ან ერთი კვირა; გამოიყენეთ 0, რათა გაუქმათ ვადა.</string>
-  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">შეიყვანეთ მთელი რიცხვი 0-დან 2147483647-მდე, ან დატოვეთ ცარიeli.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">შეიყვანეთ მთელი რიცხვი 0-დან 2147483647-მდე, ან დატოვეთ ცარიელი.</string>
   <string name="notification_channel_sessions" tools:machine_translated="true">აქტიური სესიები</string>
   <string name="notification_channel_attention" tools:machine_translated="true">სესიები, რომლებსაც ყურადღება სჭირდება.</string>
   <string name="notification_channel_bells" tools:machine_translated="true">ტერმინალის სიგნალები</string>
@@ -678,7 +678,7 @@
   <string name="notification_bell" tools:machine_translated="true">ტერმინალის სიგნალი</string>
   <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
   <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
-  <string name="notification_mark_seen" tools:machine_translated="true">ნახულია</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">ნანახად მონიშვნა</string>
   <string name="notification_mute_bells" tools:machine_translated="true">ხმების გამორთვა</string>
   <string name="pref_connection_lost_notification_title" tools:machine_translated="true">მომხმარებელს ატყობინებს, რომ კავშირი გაწყვეტილია.</string>
   <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">გამოიჩინეთ ხმამახვილობითი გამოტყუპული შეტყობინება, როდესაც თქვენ მიერ არხედ ყურებადი სესიონია მოულოდელად გაწყვეტილი.</string>
