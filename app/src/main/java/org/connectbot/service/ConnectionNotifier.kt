@@ -176,8 +176,20 @@ class ConnectionNotifier @Inject constructor(dispatchers: CoroutineDispatchers) 
     } ?: context.getString(R.string.notification_bell)
 
     private fun summary(context: Context): Notification {
-        val text = summaryText(context)
-        val style = NotificationCompat.InboxStyle().setBigContentTitle(text)
+        val title = summaryText(context)
+        val connected = sessions.filter { it.connected }.sortedBy { it.host.nickname }
+        val serverNames = connected.take(3).joinToString(", ") { it.host.nickname }
+        val text = if (connected.size > 3) {
+            val remaining = connected.size - 3
+            context.getString(
+                R.string.notification_summary,
+                serverNames,
+                context.resources.getQuantityString(R.plurals.notification_more_sessions, remaining, remaining),
+            )
+        } else {
+            serverNames.takeIf { it.isNotEmpty() }
+        }
+        val style = NotificationCompat.InboxStyle().setBigContentTitle(title)
         val rows = sessions.associateBy { it.id }.toMutableMap()
         notices.values.forEach { rows.putIfAbsent(it.session.id, it.session) }
         rows.values.sortedWith(
@@ -209,7 +221,7 @@ class ConnectionNotifier @Inject constructor(dispatchers: CoroutineDispatchers) 
             style.setSummaryText(context.resources.getQuantityString(R.plurals.notification_more_sessions, remaining, remaining))
         }
         val result = builder(context, if (notices.isEmpty()) SESSION_CHANNEL else ATTENTION_CHANNEL)
-            .setContentTitle(text)
+            .setContentTitle(title)
             .setContentText(text)
             .setStyle(style)
             .setOngoing(foreground)

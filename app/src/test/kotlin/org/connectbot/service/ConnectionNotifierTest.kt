@@ -68,19 +68,47 @@ class ConnectionNotifierTest {
 
     private fun text(notification: Notification): String = notification.extras.getCharSequence(Notification.EXTRA_TEXT).toString()
 
+    private fun title(notification: Notification): String = notification.extras.getCharSequence(Notification.EXTRA_TITLE).toString()
+
     @Test
     fun summaryCountsOnlyLiveSessionsAndExpandsWithConnectionStates() = runTest(dispatcher) {
         notifier.showRunningNotification(service, listOf(first, second.copy(connected = false, connecting = true)))
         advanceUntilIdle()
 
         val notification = summary()
-        assertEquals("1 session connected", text(notification))
+        assertEquals("1 session connected", title(notification))
+        assertEquals("1 session connected", notification.extras.getCharSequence(Notification.EXTRA_TITLE_BIG).toString())
+        assertEquals("production", text(notification))
         assertTrue(notification.flags and Notification.FLAG_ONGOING_EVENT != 0)
         assertTrue(notification.flags and Notification.FLAG_GROUP_SUMMARY != 0)
         val rows = notification.extras.getCharSequenceArray(Notification.EXTRA_TEXT_LINES)!!.map { it.toString() }
         assertEquals(listOf("production: Connected", "staging: Connecting…"), rows)
         assertEquals("1 session connected", text(notification.publicVersion))
         assertFalse(notification.publicVersion.extras.toString().contains("production"))
+    }
+
+    @Test
+    fun collapsedSummaryLimitsConnectedServerNamesAndKeepsPublicVersionPrivate() = runTest(dispatcher) {
+        val sessions = listOf("delta", "charlie", "bravo", "alpha", "echo").mapIndexed { index, nickname ->
+            NotificationSession("session-$index", Host(id = index.toLong(), nickname = nickname), connected = true)
+        }
+        notifier.showRunningNotification(service, sessions)
+        advanceUntilIdle()
+
+        val notification = summary()
+        assertEquals("5 sessions connected", title(notification))
+        assertEquals("alpha, bravo, charlie · +2 more sessions", text(notification))
+        assertEquals("5 sessions connected", text(notification.publicVersion))
+        sessions.forEach { assertFalse(notification.publicVersion.extras.toString().contains(it.host.nickname)) }
+    }
+
+    @Test
+    fun collapsedSummaryOmitsServerNamesWhenNoSessionsAreConnected() = runTest(dispatcher) {
+        notifier.showRunningNotification(service, listOf(first.copy(connected = false, connecting = true)))
+        advanceUntilIdle()
+
+        assertEquals("0 sessions connected", title(summary()))
+        assertNull(summary().extras.getCharSequence(Notification.EXTRA_TEXT))
     }
 
     @Test
@@ -91,7 +119,8 @@ class ConnectionNotifierTest {
         advanceUntilIdle()
 
         assertEquals(3, manager.activeNotifications.size)
-        assertEquals("2 sessions connected · 2 need attention", text(summary()))
+        assertEquals("2 sessions connected · 2 need attention", title(summary()))
+        assertEquals("production, staging", text(summary()))
         assertEquals("Terminal bell", text(alert(first.id)))
         assertEquals(alert(first.id).group, summary().group)
         assertNotEquals(alert(first.id).contentIntent, alert(second.id).contentIntent)
@@ -115,7 +144,7 @@ class ConnectionNotifierTest {
         notifier.showActivityNotification(service, first)
         advanceUntilIdle()
         assertEquals(2, manager.activeNotifications.size)
-        assertEquals("1 session connected · 1 needs attention", text(summary()))
+        assertEquals("1 session connected · 1 needs attention", title(summary()))
         assertTrue(alert(first.id).`when` >= originalTime)
     }
 
@@ -130,7 +159,7 @@ class ConnectionNotifierTest {
         notifier.handleAction(service, swipe.action, swipe.getStringExtra(ConnectionNotifier.EXTRA_SESSION_ID)!!)
         advanceUntilIdle()
         assertEquals(2, manager.activeNotifications.size)
-        assertEquals("2 sessions connected · 1 needs attention", text(summary()))
+        assertEquals("2 sessions connected · 1 needs attention", title(summary()))
         assertNotNull(alert(second.id))
     }
 
@@ -169,7 +198,7 @@ class ConnectionNotifierTest {
         notifier.showActivityNotification(service, newSession)
         advanceUntilIdle()
         assertEquals("Terminal bell", text(alert(newSession.id)))
-        assertEquals("1 session connected · 1 needs attention", text(summary()))
+        assertEquals("1 session connected · 1 needs attention", title(summary()))
     }
 
     @Test
@@ -179,7 +208,7 @@ class ConnectionNotifierTest {
         notifier.updateSessions(service, emptyList())
         notifier.hideRunningNotification(service)
         advanceUntilIdle()
-        assertEquals("0 sessions connected · 1 needs attention", text(summary()))
+        assertEquals("0 sessions connected · 1 needs attention", title(summary()))
         assertFalse(summary().flags and Notification.FLAG_ONGOING_EVENT != 0)
         notifier.handleAction(service, ConnectionNotifier.ACTION_SEEN, first.id)
         advanceUntilIdle()
@@ -249,7 +278,7 @@ class ConnectionNotifierTest {
         val afterRestart = ConnectionNotifier(CoroutineDispatchers(dispatcher, dispatcher, dispatcher))
         afterRestart.handleAction(service, ConnectionNotifier.ACTION_SEEN, first.id)
         advanceUntilIdle()
-        assertEquals("0 sessions connected · 1 needs attention", text(summary()))
+        assertEquals("0 sessions connected · 1 needs attention", title(summary()))
         assertEquals(second.host.getUri(), shadowOf(alert(second.id).contentIntent).savedIntent.data)
         afterRestart.handleAction(service, ConnectionNotifier.ACTION_SEEN, second.id)
         advanceUntilIdle()
@@ -274,7 +303,7 @@ class ConnectionNotifierTest {
         notifier.showActivityNotification(service, first)
         advanceUntilIdle()
         assertEquals(NotificationCompat.PRIORITY_HIGH, alert(first.id).priority)
-        assertEquals("1 session connected · 1 needs attention", text(summary()))
+        assertEquals("1 session connected · 1 needs attention", title(summary()))
         assertEquals(alert(first.id).group, summary().group)
     }
 }
