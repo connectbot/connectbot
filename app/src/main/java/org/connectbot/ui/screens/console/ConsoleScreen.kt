@@ -480,7 +480,6 @@ private fun ConsoleTerminalPage(
                     onShowIme = {
                         onShowSoftwareKeyboardChange(true)
                     },
-                    onOpenTextInput = onTextInputRequest,
                     onScrollInProgressChange = onKeyboardScrollInProgressChange,
                     imeVisible = imeVisible,
                     playAnimation = !hasPlayedKeyboardAnimation,
