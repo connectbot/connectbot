@@ -127,8 +127,6 @@
   <string name="pref_volumefont_summary">La dimensione dei caratteri può essere modificata nelle impostazioni dei singoli host</string>
   <string name="pref_memkeys_title">Mantieni chiavi in memoria</string>
   <string name="pref_memkeys_summary">Mantiene le chiavi in memoria finché il servizio non viene terminato</string>
-  <string name="pref_conn_persist_title">Rimani connesso in background</string>
-  <string name="pref_conn_persist_summary">Mantieni le sessioni aperte anche quando passi ad altre app</string>
   <string name="pref_keymode_title">Scorciatoie directory</string>
   <string name="pref_stickymodifiers_title">Tasti modificatori adesivi</string>
   <string name="only_alt">Solo alt</string>
@@ -427,15 +425,9 @@
   <string name="hostpref_save_host">Salva host</string>
   <string name="hostpref_setting_title">Impostazione host</string>
   <string name="pubkey_import_existing">Importa chiave pubblica</string>
-  <string name="notification_permission_title">Rimani connesso in background</string>
-  <string name="notification_permission_message">ConnectBot richiede il permesso di inviare notifiche per mantenere attive le connessioni quando si passa da un\'app all\'altra. In caso contrario, il sistema potrebbe interrompere le connessioni per risparmiare batteria.</string>
   <string name="grant_permission">Consenti</string>
   <string name="connect_anyway">Connettiti comunque</string>
-  <string name="notification_permission_denied_title">È necessario il permesso per le notifiche</string>
-  <string name="notification_permission_denied_message">Per mantenere attive le connessioni in background, abilita le notifiche per ConnectBot nelle impostazioni di sistema.</string>
   <string name="open_settings">Apri le impostazioni</string>
-  <string name="notification_permission_denied_snackbar">Le connessioni potrebbero interrompersi senza preavviso</string>
-  <string name="notification_permission_console_warning">La connessione potrebbe interrompersi in background</string>
   <string name="terminal_no_route">Stai cercando di accedere a un host locale? Grantisci le autorizzazioni alla rete locale.</string>
   <string name="loading_message">Caricamento…</string>
   <string name="migration_checking">Controllo del database…</string>
@@ -663,7 +655,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">La connessione è terminata.</string>
   <string name="host_status_action_required" tools:machine_translated="true">La connessione richiede attenzione.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Apri la console per visualizzare l’output rimanente.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Quando si passa da un’app all’altra, Android potrebbe interrompere ConnectBot e disconnettere le sessioni.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Timeout di rete di Mosh (in secondi)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Tempo massimo di inattività prima che il server si chiuda, in assenza di aggiornamenti da parte del client. Lasciare il campo vuoto per utilizzare l’impostazione predefinita del server o un periodo di una settimana; utilizzare 0 per disattivare la scadenza.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Inserire un numero intero compreso tra 0 e 2147483647, oppure lasciare il campo vuoto.</string>

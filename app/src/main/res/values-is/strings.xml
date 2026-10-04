@@ -195,8 +195,6 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Á birtu- og snertitöflum senda tölutakkarnir F1-F10 táknin þegar þeir eru notuð með Ctrl-takkanum.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Með því að nota hnappana til að stýra hljóðstyrknum er hægt að breyta leturstærð.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Hægt er einnig að breyta leturstærð í stillingum fyrir notendaperfil.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Haltu tengingunni við áfram í bakgrunninum</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Nota viðvarandi tilkynningu til að halda tengingum opnum þegar skipt er á milli forrita</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Stillt breytir</string>
   <string name="only_alt" tools:machine_translated="true">Aðeins Alt-takinn</string>
   <string name="pref_bumpyarrows_title" tools:machine_translated="true">Titringur við örvatakka</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Flytja inn úr klippiborðinu</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Innihald einkalýkilsins</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Límdu inn úr klippiborðinu</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Haldtu tengingunni virka í bakgrunninum</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot þarfnast leyfis til að senda tilkynningar til þess að viðhalda virkum tengingum þínum þegar þú skiptir um forrit. Ef þú veitir ekki þetta leyfi gæti kerfið aftur tengt þig til að spara rafhlögu.</string>
   <string name="grant_permission" tools:machine_translated="true">Leyfa</string>
   <string name="connect_anyway" tools:machine_translated="true">Hafðu samt sem áður samband</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Þarf að veita leyfi fyrir tilkynningum.</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Til þess að viðhalda virkum tengingum þínum þegar þú ert ekki að nota appið, vinsamlegast virkjaðu tilkynningar fyrir ConnectBot í stillingum kerfisins.</string>
   <string name="open_settings" tools:machine_translated="true">Opnaðu stillingar</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Tengingar geta rofnað þegar skipt er á milli forrita</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Tengingin gæti rofnað þegar forritið er í bakgrunni.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Ertu að reyna að tengjast tæki á staðarnetinu? Gefðu leyfi fyrir aðgang að staðarnetinu.</string>
   <string name="loading_message" tools:machine_translated="true">Er verið að hlaða…</string>
   <string name="migration_checking" tools:machine_translated="true">Er verið að athuga gagnagrunninn…</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Tengingin var rofin.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Þarf að athuga tenginguna.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Opnaðu stjórnborðið til að skoða eftirstandandi útprentan.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android-kerfið gæti hætt ConnectBot og aftengt tengslin þegar þú skiptir um forrit.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Tímamörk tengingar Mosh (sekúndur)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Tími sem líður án uppfærslna frá notanda áður en þjónninn hættir. Láttu reitinn auðan til að nota stillingar þjónsins eða stilla tímamark á einni viku; notaðu 0 til að slökkva á tímamörkunum.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Sláðu inn heiltölu á bilinu 0 til 2147483647, eða skildu reitinn auðan.</string>

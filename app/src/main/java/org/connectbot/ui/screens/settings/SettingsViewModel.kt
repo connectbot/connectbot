@@ -27,6 +27,7 @@ import android.provider.Settings
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.edit
 import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.ViewModel
@@ -53,6 +54,7 @@ import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.TerminalFontProvider
 import org.connectbot.util.ThemeMode
+import org.connectbot.util.isNotificationPermissionGranted
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -60,7 +62,8 @@ data class SettingsUiState(
     val authOnLaunch: Boolean = false,
     val canAuthenticate: Boolean = false,
     val memkeys: Boolean = true,
-    val connPersist: Boolean = true,
+    val connectionAlerts: Boolean = true,
+    val notificationsAvailable: Boolean = true,
     val wifilock: Boolean = true,
     val backupkeys: Boolean = false,
     val scrollback: String = "140",
@@ -134,6 +137,7 @@ class SettingsViewModel @Inject constructor(
     init {
         loadProfiles()
         refreshInstalledLanguages()
+        refreshNotificationAvailability()
     }
 
     private fun loadProfiles() {
@@ -204,7 +208,7 @@ class SettingsViewModel @Inject constructor(
             authOnLaunch = prefs.getBoolean(PreferenceConstants.AUTH_ON_LAUNCH, false),
             canAuthenticate = canAuthenticate,
             memkeys = prefs.getBoolean(PreferenceConstants.MEMKEYS, true),
-            connPersist = prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true),
+            connectionAlerts = prefs.getBoolean(PreferenceConstants.CONNECTION_ALERTS, true),
             wifilock = prefs.getBoolean(PreferenceConstants.WIFI_LOCK, true),
             backupkeys = prefs.getBoolean(PreferenceConstants.BACKUP_KEYS, false),
             scrollback = prefs.getString(PreferenceConstants.SCROLLBACK, "140") ?: "140",
@@ -255,51 +259,43 @@ class SettingsViewModel @Inject constructor(
         updateBooleanPref("memkeys", value) { copy(memkeys = value) }
     }
 
-    fun updateConnPersist(value: Boolean) {
-        // If turning ON (from OFF), request notification permission
-        val currentValue = _uiState.value.connPersist
-        if (!currentValue && value) {
-            // Turning ON - check if permission was previously denied
-            if (wasPermissionDenied) {
-                // Permission was denied before, show dialog to go to settings
-                viewModelScope.launch {
-                    _showPermissionDeniedDialog.send(Unit)
-                }
-            } else {
-                // First time or permission not denied yet - optimistically update to ON
-                // and request permission. If denied, onNotificationPermissionResult will revert to OFF.
-                updateBooleanPref(PreferenceConstants.CONNECTION_PERSIST, true) { copy(connPersist = true) }
-                viewModelScope.launch {
-                    _requestNotificationPermission.send(Unit)
+    fun updateConnectionAlerts(value: Boolean) {
+        val wasEnabled = _uiState.value.connectionAlerts
+        updateBooleanPref(PreferenceConstants.CONNECTION_ALERTS, value) { copy(connectionAlerts = value) }
+        if (!wasEnabled && value && Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            viewModelScope.launch {
+                val granted = withContext(dispatchers.io) { isNotificationPermissionGranted(context) }
+                if (!granted) {
+                    if (wasPermissionDenied) {
+                        _showPermissionDeniedDialog.send(Unit)
+                    } else {
+                        prefs.edit { putBoolean(PreferenceConstants.NOTIFICATION_PERMISSION_REQUESTED, true) }
+                        _requestNotificationPermission.send(Unit)
+                    }
                 }
             }
-        } else {
-            // Turning OFF or already ON - just update the preference
-            updateBooleanPref(PreferenceConstants.CONNECTION_PERSIST, value) { copy(connPersist = value) }
         }
     }
 
-    /**
-     * Called with the result of the notification permission request.
-     * If permission is granted, enable connPersist. If denied, keep it OFF.
-     */
+    /** Permission affects notification visibility, never the user's alert preference. */
     fun onNotificationPermissionResult(isGranted: Boolean) {
-        if (isGranted) {
-            Timber.d("Notification permission granted, enabling connPersist")
-            wasPermissionDenied = false
-            updateBooleanPref(PreferenceConstants.CONNECTION_PERSIST, true) { copy(connPersist = true) }
-        } else {
-            // Permission denied - keep it OFF and mark as denied
-            Timber.d("Notification permission denied, keeping connPersist OFF")
-            wasPermissionDenied = true
-            updateBooleanPref(PreferenceConstants.CONNECTION_PERSIST, false) { copy(connPersist = false) }
-        }
+        prefs.edit { putBoolean(PreferenceConstants.NOTIFICATION_PERMISSION_REQUESTED, true) }
+        wasPermissionDenied = !isGranted
+        refreshNotificationAvailability()
     }
 
     fun onNotificationPermissionChanged(isGranted: Boolean) {
-        // Returning from channel settings must not undo an explicit opt-out.
-        if (!isGranted || wasPermissionDenied) {
-            onNotificationPermissionResult(isGranted)
+        // Observing permission on resume is not a permission request or an alert opt-in.
+        refreshNotificationAvailability(isGranted)
+    }
+
+    private fun refreshNotificationAvailability(isGranted: Boolean? = null) {
+        viewModelScope.launch {
+            val available = withContext(dispatchers.io) {
+                (isGranted ?: isNotificationPermissionGranted(context)) &&
+                    NotificationManagerCompat.from(context).areNotificationsEnabled()
+            }
+            _uiState.update { it.copy(notificationsAvailable = available) }
         }
     }
 
@@ -332,16 +328,16 @@ class SettingsViewModel @Inject constructor(
     }
 
     fun openNotificationSettings() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
         viewModelScope.launch {
-            withContext(dispatchers.io) {
-                ConnectionNotifier.createNotificationChannels(context)
-            }
-            _openNotificationChannelSettings.send(
+            val intent = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                withContext(dispatchers.io) { ConnectionNotifier.createNotificationChannels(context) }
                 Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
                     putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
-                },
-            )
+                }
+            } else {
+                Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", context.packageName, null))
+            }
+            _openNotificationChannelSettings.send(intent)
         }
     }
 

@@ -205,7 +205,7 @@ class TerminalManagerBellTest {
     @Config(sdk = [24, 25, 26, 34])
     fun disablingMainNotificationSettingSuppressesBothAlerts() = runTest(dispatcher) {
         manager.prefs.edit()
-            .putBoolean(PreferenceConstants.CONNECTION_PERSIST, false)
+            .putBoolean(PreferenceConstants.CONNECTION_ALERTS, false)
             .putBoolean(PreferenceConstants.BELL_NOTIFICATION, true)
             .putBoolean(PreferenceConstants.CONNECTION_LOST_NOTIFICATION, true)
             .apply()

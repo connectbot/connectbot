@@ -17,12 +17,9 @@
 
 package org.connectbot.ui
 
-import android.content.Context
 import android.content.SharedPreferences
-import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import androidx.core.content.ContextCompat
 import androidx.core.content.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -81,9 +78,6 @@ class AppViewModel @Inject constructor(
 
     private val _requestPermission = Channel<Unit>(Channel.CONFLATED)
     val requestPermission = _requestPermission.receiveAsFlow()
-
-    var hostListSnackbarShownThisLaunch: Boolean = false
-        private set
 
     private val _isAuthenticated = MutableStateFlow(false)
     val isAuthenticated: StateFlow<Boolean> = _isAuthenticated.asStateFlow()
@@ -262,94 +256,46 @@ class AppViewModel @Inject constructor(
      * Returns true if the connection can proceed, false if permission needs to be requested.
      */
     fun checkAndRequestNotificationPermission(
-        context: Context,
         uri: Uri,
         shouldShowRationale: Boolean,
     ): Boolean {
-        Timber.d("checkAndRequestNotificationPermission: uri=$uri, SDK=${Build.VERSION.SDK_INT}")
-
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
-            Timber.d("SDK < TIRAMISU, allowing without permission")
-            return true
-        }
-
-        val hasPermission = ContextCompat.checkSelfPermission(
-            context,
-            android.Manifest.permission.POST_NOTIFICATIONS,
-        ) == PackageManager.PERMISSION_GRANTED
-
-        Timber.d("Permission check: hasPermission=$hasPermission, shouldShowRationale=$shouldShowRationale")
-
-        return when {
-            hasPermission -> {
-                Timber.d("Permission already granted, proceeding")
-                true
-            }
-
-            shouldShowRationale -> {
-                Timber.d("Showing rationale dialog")
-                _pendingConnectionUri.value = uri
-                viewModelScope.launch {
-                    _showPermissionRationale.send(Unit)
-                }
-                false
-            }
-
-            else -> {
-                Timber.d("Requesting permission")
-                _pendingConnectionUri.value = uri
-                viewModelScope.launch {
-                    _requestPermission.send(Unit)
-                }
-                false
-            }
-        }
+        if (!shouldRequestNotificationPermission()) return true
+        _pendingConnectionUri.value = uri
+        requestNotificationPermission(shouldShowRationale)
+        return false
     }
 
-    /**
-     * Request notification permission, showing rationale if needed.
-     */
+    fun shouldRequestNotificationPermission(): Boolean = Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+        prefs.getBoolean(PreferenceConstants.CONNECTION_ALERTS, true) &&
+        !notificationPermissionHelper.isGranted() &&
+        !prefs.getBoolean(
+            PreferenceConstants.NOTIFICATION_PERMISSION_REQUESTED,
+            prefs.contains(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED),
+        )
+
+    /** Request once automatically; Settings can explicitly request again. */
     fun requestNotificationPermission(shouldShowRationale: Boolean) {
+        prefs.edit { putBoolean(PreferenceConstants.NOTIFICATION_PERMISSION_REQUESTED, true) }
         viewModelScope.launch {
             if (shouldShowRationale) {
-                Timber.d("Showing permission rationale")
                 _showPermissionRationale.send(Unit)
             } else {
-                Timber.d("Requesting permission")
                 _requestPermission.send(Unit)
             }
         }
-    }
-
-    fun shouldShowNotificationWarning(): Boolean {
-        if (!prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)) return true
-        if (!prefs.contains(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED)) return false
-        return !notificationPermissionHelper.isGranted()
-    }
-
-    fun markHostListSnackbarShown() {
-        hostListSnackbarShownThisLaunch = true
     }
 
     /**
      * Handle the result of a notification permission request.
      * Returns the pending URI regardless of permission result, so navigation can proceed.
      * The app works fine without notification permission - connections just won't show notifications.
-     * If permission is denied, also disables the persist connections setting.
      */
     fun onNotificationPermissionResult(isGranted: Boolean): Uri? {
-        if (isGranted) {
-            Timber.d("Notification permission granted")
-            prefs.edit {
-                putBoolean(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED, false)
-            }
-        } else {
-            Timber.d("Notification permission denied - connections will work but without notifications")
-            prefs.edit {
-                putBoolean(PreferenceConstants.CONNECTION_PERSIST, false)
-                putBoolean(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED, true)
-            }
-            Timber.d("Disabled persist connections setting due to permission denial")
+        // POST_NOTIFICATIONS controls visibility, not foreground service eligibility.
+        // https://developer.android.com/develop/ui/compose/notifications/notification-permission
+        prefs.edit {
+            putBoolean(PreferenceConstants.NOTIFICATION_PERMISSION_REQUESTED, true)
+            putBoolean(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED, !isGranted)
         }
 
         // Return and clear pending URI so navigation can proceed

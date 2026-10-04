@@ -246,8 +246,6 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Ohjelmistopohjaisissa näppäimistöissä numeronäppäimet lähettävät yhdessä Ctrl-näppäimen kanssa F1–F10-näppäinkomentoja.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Äänenvoimakkuuspainikkeilla muutetaan fontin kokoa.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Fonttikokoa voi muuttaa myös profiiliasetuksissa.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Pidä yhteys yllä taustalla</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Pidä istunnot avoinna pysyvän ilmoituksen avulla, kun vaihdat sovellusta</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Kiinteät muokkaimet</string>
   <string name="only_alt" tools:machine_translated="true">Vain Alt-näppäin</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Anna värinää, kun nuolinäppäimiä painetaan; hyödyllinen, jos yhteys on hidas.</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Tuo leikepöydältä</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Yksityisen avaimen sisältö</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Liitä leikepöydältä</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Yhteys säilytetään taustalla</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot tarvitsee ilmoitusluvan, jotta yhteytesi pysyvät aktiivisina, kun vaihdat sovelluksia. Ilman tätä järjestelmä saattaa katkaista yhteytesi säästääkseen akkua.</string>
   <string name="grant_permission" tools:machine_translated="true">Salli</string>
   <string name="connect_anyway" tools:machine_translated="true">Jatka yhdistämistä, vaikka ilmoitusoikeutta ei myönnetä.</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Ilmoituslupa vaaditaan</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Jotta yhteytesi pysyisivät aktiivisina taustalla, ota käyttöön ConnectBot-sovelluksen ilmoitukset järjestelmäasetuksissa.</string>
   <string name="open_settings" tools:machine_translated="true">Avaa asetukset</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Yhteydet voivat katketa, kun vaihdat sovellusta</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Yhteys saattaa katketa, kun sovellus on taustalla.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Yritätkö muodostaa yhteyttä paikalliseen palvelimeen? Anna paikallisen verkon käyttöoikeudet.</string>
   <string name="loading_message" tools:machine_translated="true">Ladataan…</string>
   <string name="migration_checking" tools:machine_translated="true">Tarkistetaan tietokantaa…</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Yhteys katkesi.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Yhteyteen on kiinnitettävä huomiota.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Avaa konsoli, jotta voit lukea jäljellä olevan tulosteen.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android saattaa sulkea ConnectBot-sovelluksen ja katkaista yhteytesi, kun vaihdat sovellusta.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh-yhteyden aikakatkaisu (sekunteina)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Aika, jonka jälkeen palvelin sulkeutuu, jos asiakas ei ole lähettänyt päivityksiä. Jätä tyhjäksi, jolloin käytetään palvelimen oletusasetusta tai yhtä viikkoa; käytä arvoa 0, jos haluat poistaa vanhenemisen käytöstä.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Syötä kokonaisluku väliltä 0–2 147 483 647 tai jätä kenttä tyhjäksi.</string>

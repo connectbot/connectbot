@@ -129,8 +129,6 @@
   <string name="pref_volumefont_summary" tools:machine_translated="true">Şriftiň ululygy profiliň sazlama bölümlerinde hem üýtgedilip bilner.</string>
   <string name="pref_memkeys_title" tools:machine_translated="true">Açarlary ýatda sakla</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Açyk galan açarlary, serwer hyzmaty togtadylana çenli, ýadyňyzda saklaň.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Arka planda baglanyşygy saklaň.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Programmalaryň arasynda geçeniňizde sessiýalary açyk saklamak üçin hemişelik bildiriş ulanyň</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Kataloga giden gysga ýollar</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Özgerdişli täsir ediji amiller</string>
   <string name="only_alt" tools:machine_translated="true">Diňe Alt</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Klippbordan import etmek</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Şahsy açar maglumatlary</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Kesip alnan maglumatdan göçürmek</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Arka planda baglanyşykda gal.</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot-a, programlar arasynda geçiş edýärkä, baglanyşygyňyzy aktiw saklamak üçin habarnama rugsatlygy gerekdir. Rugsat berilmedik ýagdaýda, ulgam batareýany tygışly ulanmak üçin baglanyşygyňyzy kesip biler.</string>
   <string name="grant_permission" tools:machine_translated="true">Rugsat ber</string>
   <string name="connect_anyway" tools:machine_translated="true">Şeýle-de birleşiň.</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Bildirişleriň ugrunda rugsat talyp edilýär.</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Arka planda baglanyşyklaryňyzy aktiw saklamak üçin, ulgam tertiblerinde ConnectBot üçin habarnamalary ýörite ýerini açyň.</string>
   <string name="open_settings" tools:machine_translated="true">Sazlamalary açyň</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Programmalaryň arasynda geçeniňizde birikmeler kesilip biler</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Baglanyşyk fon reżiminde kesilip biler.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Siz ýerli serwere ýa-da ulgama ýetmek isleýäňizmi? Ýerli ulgam üçin rugsat ber.</string>
   <string name="loading_message" tools:machine_translated="true">Yüklenýär…</string>
   <string name="migration_checking" tools:machine_translated="true">Maglumat bazasy barlanýar…</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Baglanyşyk kesildi.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Baglanyşyk gözden geçirilmeli.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Galan maglumatlary okamak üçin konsoly açyň.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android, ulgam geçişi edilen wagty ConnectBot-yň işleýşini bes edip biler we ulgamdaky baglanyşyklaryňyzy kesip biler.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh serwer ulgamynyň baglanşyk wagty (sekund)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Serwer işden çykarylançä, klientleriň täzelenmän galan wagty. Serweriň sazlamalaryny ýa-da bir hepdelik wagty saklamak üçin boş goýuň; möhletli işlemäni ýatyrmak üçin 0-y ulanýň.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">0-dan 2147483647-ä çenli butin san giriziň ýa-da boş goýuň.</string>

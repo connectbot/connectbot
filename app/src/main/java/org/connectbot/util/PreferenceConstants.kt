@@ -71,7 +71,9 @@ object PreferenceConstants {
     const val CONNECTION_LOST_NOTIFICATION: String = "connectionLostNotification"
     const val DEFAULT_BELL_VOLUME: Float = 0.25f
 
-    const val CONNECTION_PERSIST: String = "connPersist"
+    // Retain the historical key so saved notification opt-outs remain alert opt-outs.
+    const val CONNECTION_ALERTS: String = "connPersist"
+    const val NOTIFICATION_PERMISSION_REQUESTED: String = "notificationPermissionRequested"
     const val NOTIFICATION_PERMISSION_DENIED: String = "notificationPermissionDenied"
 
     const val MOSH_RELEASE_TAG: String = "moshReleaseTag"

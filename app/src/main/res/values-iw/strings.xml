@@ -127,8 +127,6 @@
   <string name="pref_volumefont_summary">ניתן לשנות גם את גודל הגופן בהגדרות הפרופיל.</string>
   <string name="pref_memkeys_title">לשמור את המפתחות בזיכרון</string>
   <string name="pref_memkeys_summary">להשאיר את המפתחות לאחר השחרור בזיכרון עד ששירות המנגנון מושבת</string>
-  <string name="pref_conn_persist_title">הישארו מחוברים ברקע</string>
-  <string name="pref_conn_persist_summary">שמרו על החיבורים שלכם פתוחים גם כשאתם עוברים לאפליקציות אחרות</string>
   <string name="pref_keymode_title">קיצורי ספריות</string>
   <string name="pref_stickymodifiers_title">שינויים קבועים</string>
   <string name="only_alt">רק Alt</string>
@@ -427,15 +425,9 @@
   <string name="hostpref_save_host">שמור מארח</string>
   <string name="hostpref_setting_title">הגדרת מארח</string>
   <string name="pubkey_import_existing">ייבא מפתח ציבורי קיים</string>
-  <string name="notification_permission_title">הישארו מחוברים ברקע</string>
-  <string name="notification_permission_message">אפליקציית ConnectBot זקוקה להרשאת התראות כדי לשמור על החיבורים שלך פעילים בעת מעבר בין אפליקציות. בלעדיה, המערכת עלולה לנתק את החיבורים שלך כדי לחסוך בסוללה.</string>
   <string name="grant_permission">אפשר</string>
   <string name="connect_anyway">התחבר בכל מקרה</string>
-  <string name="notification_permission_denied_title">נדרשת הרשאת התראות</string>
-  <string name="notification_permission_denied_message">כדי לשמור על פעילות החיבורים שלך ברקע, אנא הפעל התראות עבור ConnectBot בהגדרות המערכת.</string>
   <string name="open_settings">פתח הגדרות</string>
-  <string name="notification_permission_denied_snackbar">ייתכן שהחיבורים ינותקו ללא הודעה או בקשת אישור</string>
-  <string name="notification_permission_console_warning">ייתכן שהחיבור ינותק בזמן שהוא פועל ברקע</string>
   <string name="terminal_no_route">האם אתה מנסה לגשת למחשב מקומי? הענק הרשאות לרשת המקומית.</string>
   <string name="loading_message">טוען...</string>
   <string name="migration_checking">בדיקת מסד הנתונים...</string>
@@ -663,7 +655,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">החיבור הסתיים.</string>
   <string name="host_status_action_required" tools:machine_translated="true">יש צורך לבדוק את החיבור.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s פתחו את המסוף כדי לראות את הפלט הנותר.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">ייתכן שאנדרואיד תפסיק את הפעולה של ConnectBot ותנתק את החיבורים שלך כאשר תעבור בין אפליקציות.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">זמן קצוב לרשת של Mosh (בשניות)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">משך הזמן שבו השרת ממתין ללא עדכונים מהלקוח לפני שהוא מפסיק לפעול. השאירו את השדה ריק כדי להשתמש בהגדרת השרת או בפרק זמן של שבוע; השתמשו ב-0 כדי לבטל את הגדרת התפוגה.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">הזן מספר שלם בין 0 ל-2147483647, או השאר את השדה ריק.</string>

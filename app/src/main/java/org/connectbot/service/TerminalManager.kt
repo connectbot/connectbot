@@ -435,9 +435,11 @@ class TerminalManager :
             connectivityMonitor.incRef()
         }
 
-        if (prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)) {
-            connectionNotifier.showRunningNotification(this, notificationSessions())
-        }
+        // Foreground state is independent of alert preferences and notification permission.
+        // Android 8 and 16 ActiveServices.setServiceForegroundInnerLocked establishes it
+        // before posting the notification; Android controls whether that notification is visible.
+        // https://android.googlesource.com/platform/frameworks/base/+/refs/heads/android16-release/services/core/java/com/android/server/am/ActiveServices.java
+        connectionNotifier.showRunningNotification(this, notificationSessions())
 
         // also update database with new connected time
         touchHost(host)
@@ -959,7 +961,7 @@ class TerminalManager :
         }
     }
 
-    private fun isNotificationEnabled(preference: String): Boolean = prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true) &&
+    private fun isNotificationEnabled(preference: String): Boolean = prefs.getBoolean(PreferenceConstants.CONNECTION_ALERTS, true) &&
         // Android 8+ uses system channels; legacy preferences must not silently override them.
         (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O || prefs.getBoolean(preference, true))
 

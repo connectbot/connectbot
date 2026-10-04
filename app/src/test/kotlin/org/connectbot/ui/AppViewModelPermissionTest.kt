@@ -129,7 +129,7 @@ class AppViewModelPermissionTest {
 
         assertEquals("Should return pending URI even when denied", uri, result)
         assertNull("Should clear pending URI", viewModel.pendingConnectionUri.value)
-        verify(prefsEditor).putBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), eq(false))
+        verify(prefsEditor, never()).putBoolean(eq(PreferenceConstants.CONNECTION_ALERTS), any())
         verify(prefsEditor).putBoolean(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED), eq(true))
         verify(prefsEditor).apply()
     }
@@ -139,7 +139,7 @@ class AppViewModelPermissionTest {
         val result = viewModel.onNotificationPermissionResult(isGranted = false)
 
         assertNull("Should return null when no pending URI", result)
-        verify(prefsEditor).putBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), eq(false))
+        verify(prefsEditor, never()).putBoolean(eq(PreferenceConstants.CONNECTION_ALERTS), any())
         verify(prefsEditor).putBoolean(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED), eq(true))
         verify(prefsEditor).apply()
     }
@@ -156,66 +156,6 @@ class AppViewModelPermissionTest {
         viewModel.onNotificationPermissionResult(isGranted = true)
 
         verify(prefsEditor).putBoolean(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED), eq(false))
-    }
-
-    // endregion
-
-    // region shouldShowNotificationWarning / hostListSnackbarShownThisLaunch tests
-
-    @Test
-    fun shouldShowNotificationWarning_PermissionNeverRequested_ReturnsFalse() = runTest {
-        `when`(prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)).thenReturn(true)
-        whenever(prefs.contains(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(false)
-
-        assertFalse("Should not show warning before permission has ever been requested", viewModel.shouldShowNotificationWarning())
-    }
-
-    @Test
-    fun shouldShowNotificationWarning_ManuallyDisabledWithoutPermissionDecision_ReturnsTrue() = runTest {
-        `when`(prefs.contains(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED)).thenReturn(false)
-        `when`(prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)).thenReturn(false)
-        `when`(notificationPermissionHelper.isGranted()).thenReturn(true)
-
-        assertTrue(viewModel.shouldShowNotificationWarning())
-    }
-
-    @Test
-    fun shouldShowNotificationWarning_ConnPersistFalse_ReturnsTrue() = runTest {
-        whenever(prefs.contains(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(true)
-        whenever(prefs.getBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), any())).thenReturn(false)
-        whenever(notificationPermissionHelper.isGranted()).thenReturn(true)
-
-        assertTrue("Should show warning when connPersist is false", viewModel.shouldShowNotificationWarning())
-    }
-
-    @Test
-    fun shouldShowNotificationWarning_PermissionDenied_ReturnsTrue() = runTest {
-        whenever(prefs.contains(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(true)
-        whenever(prefs.getBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), any())).thenReturn(true)
-        whenever(notificationPermissionHelper.isGranted()).thenReturn(false)
-
-        assertTrue("Should show warning when permission denied", viewModel.shouldShowNotificationWarning())
-    }
-
-    @Test
-    fun shouldShowNotificationWarning_ConnPersistTrueAndPermissionGranted_ReturnsFalse() = runTest {
-        whenever(prefs.contains(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(true)
-        whenever(prefs.getBoolean(eq(PreferenceConstants.CONNECTION_PERSIST), any())).thenReturn(true)
-        whenever(notificationPermissionHelper.isGranted()).thenReturn(true)
-
-        assertFalse("Should not show warning when connPersist is true and permission granted", viewModel.shouldShowNotificationWarning())
-    }
-
-    @Test
-    fun hostListSnackbarShown_FalseByDefault() = runTest {
-        assertFalse("Flag should be false on fresh launch", viewModel.hostListSnackbarShownThisLaunch)
-    }
-
-    @Test
-    fun markHostListSnackbarShown_SetsFlag() = runTest {
-        viewModel.markHostListSnackbarShown()
-
-        assertTrue("Flag should be true after marking shown", viewModel.hostListSnackbarShownThisLaunch)
     }
 
     // endregion

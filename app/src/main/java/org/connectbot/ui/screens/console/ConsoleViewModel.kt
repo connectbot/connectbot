@@ -17,7 +17,6 @@
 
 package org.connectbot.ui.screens.console
 
-import android.content.SharedPreferences
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -36,8 +35,6 @@ import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.terminal.ProgressState
-import org.connectbot.util.NotificationPermissionHelper
-import org.connectbot.util.PreferenceConstants
 import javax.inject.Inject
 
 data class ConsoleUiState(
@@ -56,8 +53,6 @@ data class ConsoleUiState(
 class ConsoleViewModel @Inject constructor(
     private val savedStateHandle: SavedStateHandle,
     private val dispatchers: CoroutineDispatchers,
-    private val prefs: SharedPreferences,
-    private val notificationPermissionHelper: NotificationPermissionHelper,
 ) : ViewModel() {
     private val hostId: Long = savedStateHandle.get<Long>("hostId") ?: -1L
     private var terminalManager: TerminalManager? = null
@@ -72,12 +67,6 @@ class ConsoleViewModel @Inject constructor(
 
     private val _networkStatusMessages = MutableSharedFlow<String>(extraBufferCapacity = 8)
     val networkStatusMessages: SharedFlow<String> = _networkStatusMessages.asSharedFlow()
-
-    fun shouldShowNotificationWarning(): Boolean {
-        if (!prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)) return true
-        if (!prefs.contains(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED)) return false
-        return !notificationPermissionHelper.isGranted()
-    }
 
     fun setTerminalManager(manager: TerminalManager) {
         if (terminalManager != manager) {

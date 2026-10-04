@@ -221,8 +221,6 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">A szoftveres billentyűzeteken a számbillentyűk a Ctrl billentyűvel együtt az F1–F10 funkcióbillentyűket aktiválják.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">A hangerőszabályzó gombokkal megváltoztatható a betűméret.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">A betűméret a profilbeállításokban is módosítható.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Maradjon kapcsolódva a háttérben</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Állandó értesítés használata a munkamenetek nyitva tartásához az alkalmazások közötti váltáskor</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Rögzített módosítók</string>
   <string name="only_alt" tools:machine_translated="true">Csak az Alt billentyű</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">A nyílbillentyűk használatakor vibráljon a készülék; hasznos lehet, ha a kapcsolat lassú.</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Másolás a vágólapról</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Privát kulcs tartalma</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Másolás a vágólapról</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Maradjon kapcsolódva a háttérben</string>
-  <string name="notification_permission_message" tools:machine_translated="true">A ConnectBot alkalmazásnak értesítési engedélyre van szüksége ahhoz, hogy a kapcsolatok aktívak maradjanak, amikor alkalmazásokat váltasz. Enélkül a rendszer leállíthatja a kapcsolatokat az akkumulátor élettartamának megőrzése érdekében.</string>
   <string name="grant_permission" tools:machine_translated="true">Engedélyezem</string>
   <string name="connect_anyway" tools:machine_translated="true">Csatlakozzon így is</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Szükséges a push-értesítések engedélyezése.</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Ahhoz, hogy a ConnectBot alkalmazás a háttérben is fenntarthassa a kapcsolatot, kérjük, engedélyezze az értesítéseket a rendszerbeállításokban.</string>
   <string name="open_settings" tools:machine_translated="true">Nyissa meg a beállításokat</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">A kapcsolatok megszakadhatnak az alkalmazások közötti váltáskor</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">A kapcsolat megszakadhat, ha az alkalmazás háttérben fut.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Szeretne hozzáférni egy helyi hálózaton lévő számítógéphez? Engedélyezze a helyi hálózati jogosultságokat.</string>
   <string name="loading_message" tools:machine_translated="true">Betöltés…</string>
   <string name="migration_checking" tools:machine_translated="true">Az adatbázis ellenőrzése folyamatban…</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">A kapcsolat megszakadt.</string>
   <string name="host_status_action_required" tools:machine_translated="true">A kapcsolat figyelmet igényel.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Nyissa meg a konzolt, hogy megtekinthesse a fennmaradó kimenetet.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Az Android leállíthatja a ConnectBot alkalmazást, és megszakíthatja a meglévő kapcsolatokat, amikor másik alkalmazásra vált.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh hálózati időtúllépés (másodpercben)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Idő, amíg a szerver nem kap frissítéseket az ügyféltől, mielőtt leáll. Ha üresen hagyja, a szerver beállításai vagy egy hét lesz az alapértelmezett érték; a 0 érték letiltja a lejárati időt.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Adjon meg egy 0 és 2147483647 közötti egész számot, vagy hagyja üresen.</string>

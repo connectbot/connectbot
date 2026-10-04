@@ -129,8 +129,6 @@
   <string name="pref_volumefont_summary" tools:machine_translated="true">นอกจากนี้ คุณยังสามารถปรับขนาดตัวอักษรได้ในการตั้งค่าโปรไฟล์</string>
   <string name="pref_memkeys_title" tools:machine_translated="true">เก็บคีย์ไว้ในหน่วยความจำ</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">เก็บรักษาคีย์ที่ไม่ได้ล็อกไว้ในหน่วยความจำ จนกว่าบริการส่วนหลัง (backend service) จะหยุดทำงาน</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">คงการเชื่อมต่อไว้ในเบื้องหลัง</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">ใช้การแจ้งเตือนแบบถาวรเพื่อให้เซสชันยังเปิดอยู่เมื่อคุณสลับแอป</string>
   <string name="pref_keymode_title" tools:machine_translated="true">ทางลัดสำหรับโฟลเดอร์</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">ตัวปรับแต่งแบบคงที่</string>
   <string name="only_alt" tools:machine_translated="true">เฉพาะปุ่ม Alt</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">นำเข้าจากคลิปบอร์ด</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">เนื้อหาของคีย์ส่วนตัว</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">วางเนื้อหาจากคลิปบอร์ด</string>
-  <string name="notification_permission_title" tools:machine_translated="true">เชื่อมต่อในเบื้องหลังต่อไป</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot จำเป็นต้องได้รับสิทธิ์ในการส่งการแจ้งเตือน เพื่อให้การเชื่อมต่อของคุณยังคงทำงานอยู่เมื่อคุณสลับไปใช้แอปอื่น หากไม่มีสิทธิ์นี้ ระบบอาจตัดการเชื่อมต่อของคุณเพื่อประหยัดพลังงานแบตเตอรี่.</string>
   <string name="grant_permission" tools:machine_translated="true">อนุญาต</string>
   <string name="connect_anyway" tools:machine_translated="true">เชื่อมต่อโดยไม่ให้สิทธิ์การแจ้งเตือน</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">จำเป็นต้องให้สิทธิ์การแจ้งเตือน</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">เพื่อให้การเชื่อมต่อของคุณยังคงทำงานอยู่เบื้องหลัง โปรดเปิดการแจ้งเตือนสำหรับ ConnectBot ในการตั้งค่าของระบบ.</string>
   <string name="open_settings" tools:machine_translated="true">เปิดการตั้งค่า</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">การเชื่อมต่ออาจหลุดเมื่อคุณสลับแอป</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">การเชื่อมต่ออาจถูกตัดเมื่อแอปทำงานอยู่เบื้องหลัง</string>
   <string name="terminal_no_route" tools:machine_translated="true">คุณกำลังพยายามเข้าถึงเครื่องในเครือข่ายท้องถิ่นใช่หรือไม่ โปรดอนุญาตสิทธิ์การเข้าถึงเครือข่ายท้องถิ่น.</string>
   <string name="loading_message" tools:machine_translated="true">กำลังโหลด…</string>
   <string name="migration_checking" tools:machine_translated="true">กำลังตรวจสอบฐานข้อมูล…</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">การเชื่อมต่อสิ้นสุดลงแล้ว</string>
   <string name="host_status_action_required" tools:machine_translated="true">จำเป็นต้องตรวจสอบการเชื่อมต่อ</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s เปิดคอนโซลเพื่อดูผลลัพธ์ที่เหลือ</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android อาจหยุดการทำงานของ ConnectBot และตัดการเชื่อมต่อเซสชันของคุณเมื่อคุณเปลี่ยนไปใช้แอปอื่น</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">ระยะหมดเวลาเชื่อมต่อเครือข่ายของ Mosh (วินาที)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">ระยะเวลาที่เซิร์ฟเวอร์จะรอโดยไม่มีการอัปเดตจากไคลเอนต์ ก่อนที่จะปิดการทำงาน หากปล่อยว่างไว้ เซิร์ฟเวอร์จะใช้ค่าที่ตั้งไว้ หรือหนึ่งสัปดาห์ หากใส่ 0 จะปิดการตั้งค่าระยะเวลาหมดอายุ</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">ป้อนตัวเลขจำนวนเต็มตั้งแต่ 0 ถึง 2147483647 หรือเว้นว่างไว้</string>

@@ -217,8 +217,6 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">På virtuelle tastaturer sender tal-tasterne F1-F10, når Ctrl-tasten holdes nede.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Lydstyrke-knapperne ændrer skriftstørrelsen.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Skriftstørrelsen kan også ændres i profilindstillingerne.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Oprethold forbindelsen i baggrunden</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Brug en vedvarende notifikation til at holde sessioner åbne, når du skifter app</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Faste modifikatorer</string>
   <string name="only_alt" tools:machine_translated="true">Kun Alt</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibrer, når der sendes kommandoer via piletasterne; nyttigt ved forbindelser med høj forsinkelse.</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importer fra udklipsholder</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Indhold af privat nøgle</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Indsæt fra udklipsholder</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Oprethold forbindelsen i baggrunden</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot har brug for tilladelse til at sende notifikationer for at opretholde dine forbindelser, når du skifter mellem apps. Uden denne tilladelse kan systemet afbryde dine forbindelser for at spare batteri.</string>
   <string name="grant_permission" tools:machine_translated="true">Tillad</string>
   <string name="connect_anyway" tools:machine_translated="true">Fortsæt alligevel</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Tilladelse til notifikationer påkrævet</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">For at opretholde dine forbindelser, selv når appen kører i baggrunden, skal du aktivere notifikationer for ConnectBot i systemindstillingerne.</string>
   <string name="open_settings" tools:machine_translated="true">Åbn indstillinger</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Forbindelser kan afbrydes, når du skifter app</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Forbindelsen kan afbrydes, når appen kører i baggrunden</string>
   <string name="terminal_no_route" tools:machine_translated="true">Forsøger du at få adgang til en enhed på det lokale netværk? Giv tilladelse til adgang på det lokale netværk.</string>
   <string name="loading_message" tools:machine_translated="true">Indlæser…</string>
   <string name="migration_checking" tools:machine_translated="true">Kontrollerer database …</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Forbindelsen er blevet afbrudt.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Forbindelsen kræver opmærksomhed.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Åbn konsollen for at se resten af outputtet.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android kan lukke ConnectBot og afbryde dine forbindelser, når du skifter mellem apps.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh-netværkets timeout (sekunder)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Tid, hvor der ikke modtages opdateringer fra klienten, før serveren lukker ned. Lad feltet være tomt for at bruge serverens standardindstilling eller en uge; brug 0 for at deaktivere udløbstiden.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Indtast et heltal mellem 0 og 2147483647, eller lad feltet være tomt.</string>

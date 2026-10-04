@@ -129,8 +129,6 @@
   <string name="pref_volumefont_summary" tools:machine_translated="true">Die lettergrootte kan ook in die profielinstellings verander word.</string>
   <string name="pref_memkeys_title" tools:machine_translated="true">Onthou sleutels in die geheue</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Hou ontgrendelde sleutels in die geheue totdat die agtergronddiens beëindig word.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Bly aan die gang terwyl die program op die agtergrond loop</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Gebruik ’n aanhoudende kennisgewing om sessies oop te hou wanneer jy tussen toepassings wissel</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Kortpadtoetse vir die lêergids</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Kleefmodifikators</string>
   <string name="only_alt" tools:machine_translated="true">Slegs Alt</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Invoer vanaf die knipbord</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Inhoud van die private sleutel</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Plak vanaf die knipbord</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Bly in die agtergrond verbind</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot benodig toestemming vir kennisgewings om jou verbindings aktief te hou wanneer jy tussen toepassings oorskakel. Sonder dit, kan die stelsel jou verbindings verbreek om battery te spaar.</string>
   <string name="grant_permission" tools:machine_translated="true">Toelaat</string>
   <string name="connect_anyway" tools:machine_translated="true">Verbind tog</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Toestemming vir kennisgewings vereis</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Om jou konneksies in die agtergrond aktief te hou, aktiveer asseblief die kennisgewings vir ConnectBot in die stelselinstellings.</string>
   <string name="open_settings" tools:machine_translated="true">Maak instellings oop</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Verbindings kan onderbreek word wanneer jy tussen toepassings wissel</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Die verbinding kan in die agtergrond onderbreek word.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Probeer jy om toegang tot ’n plaaslike gasheer te verkry? Verleen toestemming vir die plaaslike netwerk.</string>
   <string name="loading_message" tools:machine_translated="true">Besig om te laai…</string>
   <string name="migration_checking" tools:machine_translated="true">Databasis word nagesien…</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Die verbinding is beëindig.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Verbinding vereis aandag.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Maak die konsole oop om die res van die uitvoer te lees.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android kan ConnectBot stop en jou sessies ontkoppel wanneer jy van programme verwissel.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh-netwerktydperk (sekondes)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Tydperk waarna geen opdaterings van die kliënt ontvang word nie, voordat die bediener afsluit. Laat leeg om die bediener se instelling of een week te gebruik; gebruik 0 om die verstryking te deaktiveer.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Voer ’n heelgetal tussen 0 en 2147483647 in, of laat die veld leeg.</string>

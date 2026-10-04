@@ -226,8 +226,6 @@
   <string name="pref_alwaysvisible_title" tools:machine_translated="true">Специјални тастери увек видљиви</string>
   <string name="pref_pg_updn_gesture_title" tools:machine_translated="true">Покрет за прелазак на следећу/претходну страницу</string>
   <string name="pref_pg_updn_gesture_summary" tools:machine_translated="true">Превуците прву трећину екрана слева како бисте послали команду за померање курсора нагоре/надоле у терминал.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Ostanite povezani u pozadini</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Користи стално обавештење да сесије остану отворене при преласку између апликација</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibrira prilikom slanja komandi pomoću tastera sa strelicama; korisno za sporije internet konekcije.</string>
   <string name="pref_bell_summary" tools:machine_translated="true">Омогући звук приликом добијања обавештења у терминалу</string>
   <string name="pref_bell_vibrate_summary" tools:machine_translated="true">Вибрација при доласку обавештења са уређаја</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Увези из припремљеног текста</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Садржај приватног кључа</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Налепи садржај из припремљеног подручја</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Ostanite povezani u pozadini</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot-у је потребno dozvola za slanje obaveštenja kako bi vaše veze ostale aktivne kada prelazite između aplikacija. Bez ove dozvole, sistem može prekinuti vaše veze radi štednje baterije.</string>
   <string name="grant_permission" tools:machine_translated="true">Дозволи</string>
   <string name="connect_anyway" tools:machine_translated="true">Poveži se svakako</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Потребно је одобрење за слање обавештења.</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Da biste omogućili da vaše veze budu aktivne u pozadini, molimo vas da uključite obaveštenja za ConnectBot u podešavanjima sistema.</string>
   <string name="open_settings" tools:machine_translated="true">Otvori podešavanja</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Везе се могу прекинути при преласку између апликација</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Веза може да се прекине док је апликација у позадини</string>
   <string name="terminal_no_route" tools:machine_translated="true">Да ли покушавате да се повежете са уређајем у локалној мрежи? Дозволите приступ локалној мрежи.</string>
   <string name="loading_message" tools:machine_translated="true">Учитавање…</string>
   <string name="migration_checking" tools:machine_translated="true">Провера базе података…</string>
@@ -663,7 +655,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Веза је прекинута.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Потребна је интервенција у вези са повезаношћу.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Otvorite konzolu da biste pročitali preostali izlaz.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Андроид може да заустави ConnectBot и прекине везу са вашим сесијама када прелазите на друге апликације.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Временски лимит мреже за Mosh (у секундама)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Vreme za koje server čeka na ažuriranja od strane klijenta pre nego što se isključi. Ostavite polje prazno da bi se koristila serverova konfiguracija ili jedan nedelja; koristite 0 da biste onemogućili postavljanje roka važenja.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Unesite ceo broj između 0 i 2147483647, ili ostavite polje prazno.</string>

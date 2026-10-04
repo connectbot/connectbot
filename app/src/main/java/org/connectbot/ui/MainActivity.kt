@@ -101,7 +101,7 @@ class MainActivity : AppCompatActivity() {
             requestedUri = uri
         }
         // Prefs are now written; move the waiting host into pendingHostConnection so
-        // the LaunchedEffect that watches it triggers navigation after the warning state is set.
+        // the LaunchedEffect that watches it triggers navigation after the permission decision is recorded.
         hostAwaitingPermission?.let { host ->
             Timber.d("Permission result received; proceeding to console for ${host.nickname}")
             pendingHostConnection = host
@@ -194,7 +194,7 @@ class MainActivity : AppCompatActivity() {
                             }
 
                             Timber.d("shouldShowRationale=$shouldShowRationale")
-                            if (appViewModel.checkAndRequestNotificationPermission(context, uri, shouldShowRationale)) {
+                            if (appViewModel.checkAndRequestNotificationPermission(uri, shouldShowRationale)) {
                                 Timber.d("Permission check passed, handling connection")
                                 handleConnectionUri(uri, controller)
                                 requestedUri = null
@@ -288,15 +288,9 @@ class MainActivity : AppCompatActivity() {
             val onNavigateToConsole: (Host) -> Unit = { host ->
                 Timber.d("onNavigateToConsole called for host: ${host.nickname}")
 
-                // Check if connection persistence is enabled
-                val prefs = PreferenceManager.getDefaultSharedPreferences(context)
-                val persistConnections = prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)
-
-                if (!persistConnections || isNotificationPermissionGranted(context)) {
-                    // Either persistence is disabled (no permission needed) or permission granted, navigate immediately
+                if (!appViewModel.shouldRequestNotificationPermission()) {
                     navController.navigate("${NavDestinations.CONSOLE}/${host.id}")
                 } else {
-                    // Persistence is enabled but no permission - need to request permission.
                     // Store in hostAwaitingPermission (not compose state) so we don't navigate
                     // until after the permission result is written to prefs.
                     Timber.d("Requesting notification permission before connection")
@@ -323,10 +317,6 @@ class MainActivity : AppCompatActivity() {
                     createShortcutAndFinish(host, color, iconStyle)
                 },
                 onNavigateToConsole = onNavigateToConsole,
-                shouldShowNotificationWarning = {
-                    !appViewModel.hostListSnackbarShownThisLaunch && appViewModel.shouldShowNotificationWarning()
-                },
-                onNotificationSnackbarFinish = { appViewModel.markHostListSnackbarShown() },
             )
         }
     }
@@ -436,8 +426,8 @@ private fun NotificationPermissionRationaleDialog(
 ) {
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.notification_permission_title)) },
-        text = { Text(stringResource(R.string.notification_permission_message)) },
+        title = { Text(stringResource(R.string.connection_alert_permission_title)) },
+        text = { Text(stringResource(R.string.connection_alert_permission_message)) },
         confirmButton = {
             TextButton(onClick = onAllow) {
                 Text(stringResource(R.string.grant_permission))

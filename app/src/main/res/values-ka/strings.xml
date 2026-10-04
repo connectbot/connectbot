@@ -204,8 +204,6 @@
   <string name="pref_volumefont_summary" tools:machine_translated="true">შრიფტის ზომას ასევე შეგიძლიათ შეცვალოთ პროფილის პარამეტრებში.</string>
   <string name="pref_memkeys_title" tools:machine_translated="true">გასაღებების მეხსიერებაში შენახვა</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">შენახული გასაღებები შეინახეთ მეხსიერებაში, სანამ ბექენდ-სერვისი არ დაიხურება.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">დარჩით კავშირზე ფონურ რეჟიმში</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">მუდმივი შეტყობინების გამოყენება სესიების ღიად შესანარჩუნებლად აპებს შორის გადართვისას</string>
   <string name="pref_keymode_title" tools:machine_translated="true">დირექტორიის მალსახელები</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">მუდმივი მოდიფიკატორები</string>
   <string name="only_alt" tools:machine_translated="true">მხოლოდ Alt</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">კოპირებული ტექსტიდან იმპორტირება</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">პირადი გასაღების შინაარსი</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">გააკეთეთ ჩასწორება კლიპბორდიდან</string>
-  <string name="notification_permission_title" tools:machine_translated="true">დარჩით კავშირზე ფონურ რეჟიმში</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot-ს აუცილებელი აქვს შეტყობინებების ნებართვა, რათა თქვენი კავშირები აქტიური იყოს, როდესაც სხვა აპლიკაციებზე გადაერთვებით. სხვაგვარად, სისტემას შეიძლება მოუწიოს თქვენი კავშირების გაუქმება, რათა ენერგია დაზოგოს.</string>
   <string name="grant_permission" tools:machine_translated="true">ნება დართეთ</string>
   <string name="connect_anyway" tools:machine_translated="true">დაკავშირდით, მიუხედავად იმისა, რომ არ დართეთ შეტყობინებების გაგზავნის უფლება.</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">გაუქმებული შეტყობინებების ნებართვის აღდგენა აუცილებელია</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">იმისათვის, რომ თქვენი კავშირები ფონზე აქტიური იყოს, გთხოვთ, სისტემის პარამეტრებში ჩართოთ ConnectBot-ის შეტყობინებების მიღება.</string>
   <string name="open_settings" tools:machine_translated="true">პარამეტრების გახსნა</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">აპებს შორის გადართვისას კავშირები შეიძლება გაწყდეს</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">კავშირი შეიძლება ფონზე გაწყდეს.</string>
   <string name="terminal_no_route" tools:machine_translated="true">სურავთ, ადგილობრივ სერვერთან დაკავშირება? მოგვცეთ უფლება ადგილობრივი ქსელის გამოყენებისთვის.</string>
   <string name="loading_message" tools:machine_translated="true">ტვირთვა…</string>
   <string name="migration_checking" tools:machine_translated="true">ვამოწმებთ ბაზას…</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">დაკავშირება გაწყვეტილია.</string>
   <string name="host_status_action_required" tools:machine_translated="true">დაკავშირებაზე ყურადღება უნდა გამახვილდეს.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s გახსენით კონსოლი, რათა ნახოთ დანარჩენი ინფორმაცია.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android-მა შესაძლოა ConnectBot გააჩეროს და თქვენი სესიები გაუქმოს, როდესაც სხვა აპლიკაციაზე გადაერთვებით.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh-ის ქსელის დროის ლიმიტი (წამი)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">პერიოდი, რომლის განმავლობაშიც სერვერი კლიენტისგან განახლებების გარეშე იმუშავებს, სანამ სერვერი გაითიშება. დატოვეთ ცარიელი, რათა გამოიყენოთ სერვერის პარამეტრი ან ერთი კვირა; გამოიყენეთ 0, რათა გაუქმათ ვადა.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">შეიყვანეთ მთელი რიცხვი 0-დან 2147483647-მდე, ან დატოვეთ ცარიელი.</string>

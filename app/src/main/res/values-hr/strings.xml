@@ -135,8 +135,6 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Na virtualnim tipkovnicama, brojne tipke šalju F1-F10 s Ctrl</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Tipke za podešavanje glasnoće mijenjaju veličinu fonta.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Veličina fonta može se promijeniti i u postavkama profila.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Ostanite povezani u pozadini</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Koristi stalnu obavijest za održavanje sesija otvorenima pri prebacivanju između aplikacija</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Trajni modificatori</string>
   <string name="only_alt" tools:machine_translated="true">Samo Alt</string>
   <string name="pref_bumpyarrows_title" tools:machine_translated="true">Strelice s taktilnom povratnom informacijom</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Uvezi iz međuspremnika</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Sadržaj privatnog ključa</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Ulijepi iz međuspremnika</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Ostanite povezani u pozadini</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot-u je potrebno dopuštenje za slanje obavijesti kako bi vaše veze ostale aktivne kada prelazite s jedne aplikacije na drugu. Bez tog dopuštenja, sustav može prekinuti vaše veze kako bi uštedio energiju baterije.</string>
   <string name="grant_permission" tools:machine_translated="true">Dopusti</string>
   <string name="connect_anyway" tools:machine_translated="true">Nastavite povezivanje</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Potrebno je odobriti dopuštenje za obavijesti</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Kako biste omogućili da se vaše veze održavaju aktivnima u pozadini, omogućite obavijesti za ConnectBot u postavkama sustava.</string>
   <string name="open_settings" tools:machine_translated="true">Otvorite postavke</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Veze se mogu prekinuti pri prebacivanju između aplikacija</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Veza se može prekinuti u pozadini.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Pokušavate li pristupiti lokalnom računalu? Odobrite dopuštenja za lokalnu mrežu.</string>
   <string name="loading_message" tools:machine_translated="true">Učitavanje…</string>
   <string name="migration_checking" tools:machine_translated="true">Provjeravam bazu podataka…</string>
@@ -663,7 +655,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Veza je prekinuta.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Potrebna je intervencija na vezi.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Otvorite konzolu da biste pročitali ostatak izlaznih podataka.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android može zaustaviti ConnectBot i prekinuti vaše sesije kada prelazite s jedne aplikacije na drugu.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Vremensko ograničenje mreže za Mosh (u sekundama)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Vrijeme tijekom kojeg se ne primaju ažuriranja od klijenta prije isključivanja poslužitelja. Ostavite prazno za korištenje postavke poslužitelja ili jedan tjedan; upotrijebite 0 za isključivanje isteka valjanosti.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Unesite cijeli broj u rasponu od 0 do 2147483647 ili ostavite polje prazno.</string>

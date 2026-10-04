@@ -171,8 +171,6 @@
   <string name="pref_volumefont_summary" tools:machine_translated="true">Varat mainīt arī fonta izmēru profila iestatījumos.</string>
   <string name="pref_memkeys_title" tools:machine_translated="true">Saglabāt atslēgas atmiņā</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Saglabājiet atslēgas atmiņā, kamēr darbību nav pārtraucis fona pakalpojums.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Uzturiet savienojumu fonrežīmā.</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Izmantot pastāvīgu paziņojumu, lai sesijas paliktu atvērtas, pārslēdzoties starp lietotnēm</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Saīsinājumtaustiņi direktorijām</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Fiksētie modifikatori</string>
   <string name="only_alt" tools:machine_translated="true">Tikai Alt</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importēt no starpspraudes</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Privātās atslēgas saturs</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Ielīmēt no starpspraudes</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Uzturiet savienojumu fonrežīmā.</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot nepieciešama atļauja nosūtīt paziņojumus, lai uzturētu savienojumus aktīvus, kad pārslēdzaties starp lietotnēm. Ja šī atļauja nav piešķirta, sistēma var atvienot savienojumus, lai taupītu akumulatora enerģiju.</string>
   <string name="grant_permission" tools:machine_translated="true">Atļaut</string>
   <string name="connect_anyway" tools:machine_translated="true">Turpināt savienojumu</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Nepieciešama atļauja saņemt paziņojumus.</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Lai nodrošinātu, ka jūsu savienojumi darbojas fonā, lūdzu, aktivizējiet paziņojumus lietotnei ConnectBot sistēmas iestatījumos.</string>
   <string name="open_settings" tools:machine_translated="true">Atvērt iestatījumus</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Savienojumi var pārtrūkt, pārslēdzoties starp lietotnēm</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Savienojums var tikt pārtraukts, kad lietotne darbojas fonā.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Vai mēģināt piekļūt lokālajam serverim? Piešķiriet atļaujas lokālajam tīklam.</string>
   <string name="loading_message" tools:machine_translated="true">Ielādē…</string>
   <string name="migration_checking" tools:machine_translated="true">Notiek datubāzes pārbaude…</string>
@@ -663,7 +655,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Savienojums tika pārtraukts.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Savienojumam nepieciešama uzmanība.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Atveriet konsoli, lai apskatītu atlikušo izvadi.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android var pārtraukt ConnectBot darbību un atvienot jūsu sesijas, kad pārslēdzaties starp lietotnēm.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh tīkla savienojuma taimauts (sekundēs)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Laiks, pēc kura serveris pārtrauks darbību, ja no klienta nav saņemtas atjauninājuma ziņas. Atstājiet lauku tukšu, lai izmantotu servera iestatījumu vai vienu nedēļu; izmantojiet 0, lai atspējotu termiņa noteikšanu.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Ievadiet veselu skaitli no 0 līdz 2147483647, vai atstājiet lauku tukšu.</string>

@@ -17,6 +17,7 @@
 
 package org.connectbot.ui.screens.settings
 
+import android.Manifest
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
@@ -49,6 +50,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
+import org.robolectric.Shadows.shadowOf
 import org.robolectric.annotation.Config
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -94,28 +96,41 @@ class SettingsViewModelNotificationTest {
     @Test
     @Config(sdk = [24, 25, 26, 34])
     fun resumingWithPermissionPreservesMainSettingOptOut() = runTest(dispatcher) {
-        prefs.edit().putBoolean(PreferenceConstants.CONNECTION_PERSIST, false).apply()
+        prefs.edit().putBoolean(PreferenceConstants.CONNECTION_ALERTS, false).apply()
         val viewModel = viewModel()
 
         viewModel.onNotificationPermissionChanged(true)
         advanceUntilIdle()
 
-        assertFalse(viewModel.uiState.value.connPersist)
-        assertFalse(prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true))
+        assertFalse(viewModel.uiState.value.connectionAlerts)
+        assertFalse(prefs.getBoolean(PreferenceConstants.CONNECTION_ALERTS, true))
     }
 
     @Test
-    fun resumingAfterPermissionIsGrantedEnablesNotifications() = runTest(dispatcher) {
+    fun resumingAfterPermissionChangesPreservesAlertPreference() = runTest(dispatcher) {
         val viewModel = viewModel()
         viewModel.onNotificationPermissionChanged(false)
         advanceUntilIdle()
-        assertFalse(viewModel.uiState.value.connPersist)
+        assertTrue(viewModel.uiState.value.connectionAlerts)
+        assertFalse(viewModel.uiState.value.notificationsAvailable)
 
         viewModel.onNotificationPermissionChanged(true)
         advanceUntilIdle()
 
-        assertTrue(viewModel.uiState.value.connPersist)
-        assertFalse(prefs.getBoolean(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED, true))
+        assertTrue(viewModel.uiState.value.connectionAlerts)
+        assertFalse(prefs.contains(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))
+    }
+
+    @Test
+    @Config(sdk = [24, 26, 34])
+    fun systemNotificationBlockingDoesNotChangeAlertPreference() = runTest(dispatcher) {
+        shadowOf(RuntimeEnvironment.getApplication()).grantPermissions(Manifest.permission.POST_NOTIFICATIONS)
+        shadowOf(context.getSystemService(NotificationManager::class.java)).setNotificationsEnabled(false)
+        val viewModel = viewModel()
+        advanceUntilIdle()
+        assertFalse(viewModel.uiState.value.notificationsAvailable)
+        assertTrue(viewModel.uiState.value.connectionAlerts)
+        assertFalse(prefs.contains(PreferenceConstants.NOTIFICATION_PERMISSION_REQUESTED))
     }
 
     @Test
@@ -176,7 +191,7 @@ class SettingsViewModelNotificationTest {
 
     @Test
     @Config(sdk = [24, 25])
-    fun legacyAndroidDoesNotOpenChannelSettings() = runTest(dispatcher) {
+    fun legacyAndroidOpensApplicationSettings() = runTest(dispatcher) {
         val viewModel = viewModel()
         val intents = mutableListOf<Intent>()
         val collector = backgroundScope.launch(UnconfinedTestDispatcher(testScheduler)) {
@@ -186,7 +201,7 @@ class SettingsViewModelNotificationTest {
         viewModel.openNotificationSettings()
         advanceUntilIdle()
 
-        assertTrue(intents.isEmpty())
+        assertEquals(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, intents.single().action)
         collector.cancel()
     }
 }

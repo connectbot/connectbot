@@ -217,8 +217,6 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">På programvarubaserade tangentbord skickar siffertangenterna F1–F10 när Ctrl-tangenten hålls nedtryckt.</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Volymknapparna ändrar teckenstorleken.</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Teckenstorleken kan också ändras i profilinställningarna.</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Fortsätt vara ansluten i bakgrunden</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Använd en beständig avisering för att hålla sessioner öppna när du byter app</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Modifierare som fastnar</string>
   <string name="only_alt" tools:machine_translated="true">Endast Alt</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Vibrera när du använder piltangenterna; användbart vid långsamma anslutningar.</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Importera från urklipp</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Innehåll i den privata nyckeln</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Klistra in från urklipp</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Håll anslutningen aktiv i bakgrunden</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot behöver tillåtelse att skicka aviseringar för att hålla dina anslutningar aktiva när du byter app. Utan den tillåtelsen kan systemet bryta anslutningarna för att spara batteri.</string>
   <string name="grant_permission" tools:machine_translated="true">Tillåt</string>
   <string name="connect_anyway" tools:machine_translated="true">Anslut ändå</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Behöver tillstånd för aviseringar</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">För att dina anslutningar ska förbli aktiva i bakgrunden, aktivera notifikationer för ConnectBot i systeminställningarna.</string>
   <string name="open_settings" tools:machine_translated="true">Öppna inställningar</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Anslutningar kan brytas när du byter app</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Anslutningen kan brytas när appen körs i bakgrunden</string>
   <string name="terminal_no_route" tools:machine_translated="true">Försöker du ansluta till en enhet i det lokala nätverket? Ge programmet tillstånd att använda det lokala nätverket.</string>
   <string name="loading_message" tools:machine_translated="true">Laddar…</string>
   <string name="migration_checking" tools:machine_translated="true">Kontrollerar databasen …</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Anslutningen avbröts.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Anslutningen kräver åtgärd.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Öppna konsolen för att läsa resten av utdata.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android kan avsluta ConnectBot och koppla bort dina aktiva sessioner när du byter app.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh-nätverkets tidsgräns (sekunder)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Tid utan klientuppdateringar innan servern avslutas. Lämna fältet tomt för att använda serverns standardinställning eller en vecka; använd 0 för att inaktivera utgångsdatum.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Ange ett heltal mellan 0 och 2147483647, eller lämna fältet tomt.</string>

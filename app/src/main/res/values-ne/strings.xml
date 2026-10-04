@@ -129,8 +129,6 @@
   <string name="pref_volumefont_summary" tools:machine_translated="true">प्रोफाइल सेटिङहरूमा फन्टको आकार पनि परिवर्तन गर्न सकिन्छ।</string>
   <string name="pref_memkeys_title" tools:machine_translated="true">स्मृतिमा कुञ्जीहरू सम्झनुहोस्।</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">ब्याकएन्ड सेवा बन्द नभएसम्म अनलक गरिएका कुञ्जीहरू मेमोरीमा राख्नुहोस्।</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">पृष्ठभूमिमा जडान कायम राख्नुहोस्।</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">एपहरू बदल्दा सत्रहरू खुला राख्न स्थायी सूचना प्रयोग गर्नुहोस्</string>
   <string name="pref_keymode_title" tools:machine_translated="true">फोल्डरका सर्टकटहरू</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">स्थायी रूपमा लागू हुने परिवर्तनहरू</string>
   <string name="only_alt" tools:machine_translated="true">केबल Alt कुञ्जी</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">क्लिपबोर्डबाट आयात गर्नुहोस्</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">निजी कुञ्जी सामग्री</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">क्लिपबोर्डबाट टाँस्नुहोस्</string>
-  <string name="notification_permission_title" tools:machine_translated="true">पृष्ठभूमिमा जडान कायम राख्नुहोस्।</string>
-  <string name="notification_permission_message" tools:machine_translated="true">कनेक्टबोटलाई तपाईंले एपहरू बीच स्विच गर्दा तपाईंको जडानहरू सक्रिय राख्न सूचना अनुमति चाहिन्छ। यदि अनुमति दिइएन भने, प्रणालीले ब्याट्री बचत गर्न तपाईंको जडानहरू विच्छेद गर्न सक्छ।</string>
   <string name="grant_permission" tools:machine_translated="true">अनुमति दिनुहोस्</string>
   <string name="connect_anyway" tools:machine_translated="true">यसैसँग जोड्नुहोस्</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">सूचना अनुमति आवश्यक छ।</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">पृष्ठभूमिमा तपाईंको जडानहरू सक्रिय राख्न, कृपया प्रणाली सेटिङहरूमा कनेक्टबटको लागि सूचनाहरू सक्रिय गर्नुहोस्।</string>
   <string name="open_settings" tools:machine_translated="true">सेटिंग्स खोल्नुहोस्</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">एपहरू बदल्दा जडानहरू विच्छेद हुन सक्छन्</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">पृष्ठभूमिमा हुँदा जडान विच्छेद हुन सक्छ।</string>
   <string name="terminal_no_route" tools:machine_translated="true">के तपाईं स्थानीय नेटवर्कमा रहेको कुनै उपकरणमा पहुँच गर्न खोज्दै हुनुहुन्छ? कृपया स्थानीय नेटवर्कको अनुमति दिनुहोस्।</string>
   <string name="loading_message" tools:machine_translated="true">लोड भइरहेको छ…</string>
   <string name="migration_checking" tools:machine_translated="true">डेटाबेस जाँच भइरहेको छ…</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">जडान समाप्त भयो।</string>
   <string name="host_status_action_required" tools:machine_translated="true">जडानमा ध्यान दिन आवश्यक छ।</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s बाँकी जानकारी पढ्न कन्सोल खोल्नुहोस्।</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">एन्ड्रोइडले कनेक्टबटलाई रोक्न सक्छ र तपाईंले एपहरू स्विच गर्दा तपाईंको सत्रहरूलाई विच्छेद गर्न सक्छ।</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">मोश नेटवर्क टाइमआउट (सेकेन्ड)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">सर्भर बन्द हुनु अघि क्लाइन्टबाट अपडेट नआएको समय। सर्भरको सेटिङ वा एक हप्ताको लागि खाली छाडिदिनुहोस्; समयसीमा निष्क्रिय गर्न 0 प्रयोग गर्नुहोस्।</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">० देखि २१४७४८३६४७ सम्मको पूर्ण संख्या प्रविष्ट गर्नुहोस्, वा खाली छाडिदिनुहोस्।</string>

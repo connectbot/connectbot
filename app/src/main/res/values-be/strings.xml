@@ -129,8 +129,6 @@
   <string name="pref_volumefont_summary" tools:machine_translated="true">Памер шрыфта таксама можна змяніць у наладках профілю</string>
   <string name="pref_memkeys_title" tools:machine_translated="true">Захоўваць ключы ў памяці</string>
   <string name="pref_memkeys_summary" tools:machine_translated="true">Захоўвайце разблакаваныя ключы ў памяці да спынення працы бэкэнд-сэрвіса</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Забяспечце пастаяннае злучэнне ў фонавым рэжыме</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Выкарыстоўваць пастаяннае апавяшчэнне, каб захоўваць сесіі адкрытымі пры пераключэнні паміж праграмамі</string>
   <string name="pref_keymode_title" tools:machine_translated="true">Кароткія клавішныя камбінацыі для каталогаў</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Замацаваныя мадыфікатары</string>
   <string name="only_alt" tools:machine_translated="true">Толькі Alt</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Імпартаваць з буфера абмену</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Змест прыватнага ключа</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Уставіць з буфера абмену</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Заставайцеся на сувязі ў фонавым рэжыме</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot патрабуе дазволу на адпраўку апавяшчэнняў, каб падтрымліваць актыўнасць вашых злучэнняў пры пераключэнні паміж праграмамі. Без гэтага дазволу сістэма можа адключыць вашы злучэнні, каб эканоміць зарад батарэі.</string>
   <string name="grant_permission" tools:machine_translated="true">Дазволіць</string>
   <string name="connect_anyway" tools:machine_translated="true">Усё роўна падключыцца</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Неабходна даць дазвол на адпраўку апавяшчэнняў</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Каб забяспечыць працу злучэнняў у фонавым рэжыме, уключыце атрыманне апавяшчэнняў для ConnectBot у наладках сістэмы.</string>
   <string name="open_settings" tools:machine_translated="true">Адкрыць налады</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Злучэнні могуць разрывацца пры пераключэнні паміж праграмамі</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Злучэнне можа перарвацца ў фонавым рэжыме</string>
   <string name="terminal_no_route" tools:machine_translated="true">Вы спрабуеце падключыцца да хоста ў лакальнай сетцы? Дайце дазвол на доступ да лакальнай сеткі.</string>
   <string name="loading_message" tools:machine_translated="true">Загрузка…</string>
   <string name="migration_checking" tools:machine_translated="true">Праверка базы даных…</string>
@@ -664,7 +656,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Злучэнне завершана.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Неабходна праверыць злучэнне.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Адкрыйце кансоль, каб прагледзець астатнюю інфармацыю.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android можа спыніць працу ConnectBot і адключыць вашыя сесіі, калі вы пераключаецеся паміж праграмамі.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Тайм-аут сеткі Mosh (у секундах)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Час, на працягу якога сервер будзе чакаць абнаўленняў ад кліента перад выхадам. Пакіньце пустым, каб выкарыстоўваць налады сервера або адзін тыдзень; выкарыстоўвайце 0, каб адключыць усталяванне тэрміну дзеяння.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Увядзіце цэлае лік ад 0 да 2147483647, або пакіньце поле пустым.</string>

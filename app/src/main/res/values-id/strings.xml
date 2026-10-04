@@ -219,8 +219,6 @@
   <string name="pref_ctrlfkeys_summary" tools:machine_translated="true">Pada keyboard virtual, tombol angka mengirimkan perintah F1-F10 dengan tombol Ctrl</string>
   <string name="pref_volumefont_title" tools:machine_translated="true">Tombol volume mengubah ukuran font</string>
   <string name="pref_volumefont_summary" tools:machine_translated="true">Ukuran font juga dapat diubah di pengaturan profil</string>
-  <string name="pref_conn_persist_title" tools:machine_translated="true">Tetap terhubung di latar belakang</string>
-  <string name="pref_conn_persist_summary" tools:machine_translated="true">Gunakan notifikasi tetap agar sesi tetap terbuka saat Anda beralih aplikasi</string>
   <string name="pref_stickymodifiers_title" tools:machine_translated="true">Tombol pengubah tetap aktif</string>
   <string name="only_alt" tools:machine_translated="true">Hanya Alt</string>
   <string name="pref_bumpyarrows_summary" tools:machine_translated="true">Getarkan saat mengirimkan tombol panah; berguna untuk koneksi yang lambat.</string>
@@ -441,15 +439,9 @@
   <string name="pubkey_import_from_clipboard" tools:machine_translated="true">Impor dari papan klip</string>
   <string name="pubkey_import_clipboard_key_label" tools:machine_translated="true">Isi kunci pribadi</string>
   <string name="pubkey_paste_from_clipboard" tools:machine_translated="true">Tempel dari papan klip</string>
-  <string name="notification_permission_title" tools:machine_translated="true">Tetap terhubung di latar belakang</string>
-  <string name="notification_permission_message" tools:machine_translated="true">ConnectBot memerlukan izin notifikasi agar koneksi Anda tetap aktif saat Anda beralih aplikasi. Jika tidak, sistem mungkin memutuskan koneksi Anda untuk menghemat baterai.</string>
   <string name="grant_permission" tools:machine_translated="true">Izinkan</string>
   <string name="connect_anyway" tools:machine_translated="true">Tetap hubungkan</string>
-  <string name="notification_permission_denied_title" tools:machine_translated="true">Izin notifikasi diperlukan</string>
-  <string name="notification_permission_denied_message" tools:machine_translated="true">Untuk menjaga agar koneksi Anda tetap aktif di latar belakang, silakan aktifkan notifikasi untuk ConnectBot di pengaturan sistem.</string>
   <string name="open_settings" tools:machine_translated="true">Buka pengaturan</string>
-  <string name="notification_permission_denied_snackbar" tools:machine_translated="true">Koneksi dapat terputus saat Anda beralih aplikasi</string>
-  <string name="notification_permission_console_warning" tools:machine_translated="true">Koneksi mungkin terputus saat aplikasi berjalan di latar belakang.</string>
   <string name="terminal_no_route" tools:machine_translated="true">Apakah Anda mencoba mengakses host lokal? Berikan izin untuk jaringan lokal.</string>
   <string name="loading_message" tools:machine_translated="true">Memuat…</string>
   <string name="migration_checking" tools:machine_translated="true">Memeriksa basis data…</string>
@@ -662,7 +654,6 @@
   <string name="host_status_connection_ended" tools:machine_translated="true">Koneksi terputus.</string>
   <string name="host_status_action_required" tools:machine_translated="true">Koneksi memerlukan perhatian.</string>
   <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Buka konsol untuk melihat sisa outputnya.</string>
-  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android mungkin akan menghentikan ConnectBot dan memutuskan sesi Anda saat Anda beralih aplikasi.</string>
   <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Batas waktu jaringan Mosh (detik)</string>
   <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Waktu tanpa pembaruan dari klien sebelum server berhenti. Biarkan kosong untuk menggunakan pengaturan server atau satu minggu; gunakan 0 untuk menonaktifkan batas waktu.</string>
   <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Masukkan angka bulat antara 0 hingga 2147483647, atau biarkan kosong.</string>
