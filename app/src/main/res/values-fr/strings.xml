@@ -689,4 +689,13 @@
     <item quantity="other">%d sessions supplémentaires</item>
     <item quantity="many">%d sessions supplémentaires</item>
   </plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Alertes de connexion</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Afficher les alertes de sonnerie du terminal et de perte de connexion</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Les alertes de connexion sont désactivées. Le support de la connexion en arrière-plan reste activé.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android gère l’affichage de la notification concernant la connexion en cours, indépendamment des alertes de connexion.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android a bloqué les notifications pour ConnectBot. La prise en charge des connexions en arrière-plan reste activée.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Notifications de connexion</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Autorisez les notifications pour afficher les hôtes connectés et recevoir des alertes concernant les signaux sonores du terminal et les pertes de connexion. Les connexions peuvent toujours fonctionner en arrière-plan, même sans cette autorisation.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Activer les notifications</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Activez les notifications pour ConnectBot dans les paramètres Android afin de voir les hôtes connectés et de recevoir des alertes concernant les signaux sonores du terminal et les pertes de connexion. La prise en charge des connexions en arrière-plan reste activée.</string>
 </resources>

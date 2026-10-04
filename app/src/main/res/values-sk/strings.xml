@@ -693,4 +693,13 @@
     <item quantity="many">+%d ďalšej relácie</item>
     <item quantity="other">+%d ďalších relácií</item>
   </plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Upozornenia na stratu pripojenia</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Zobraziť zvukové upozornenie a upozornenia na prerušenie pripojenia.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Upozornenia na pripojenie sú vypnuté. Podpora pripojenia na pozadí zostáva zapnutá.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Systém Android samostatne riadi zobrazovanie upozornenia o prebiehajúcom pripojení, bez ohľadu na upozornenia týkajúce sa pripojenia.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Systém Android zablokoval upozornenia pre aplikáciu ConnectBot. Podpora pripojenia na pozadí zostáva zapnutá.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Upozornenia pri pripojení</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Povolenie upozornení umožňuje zobraziť pripojené zariadenia a prijímať zvukové signály a upozornenia o prerušení pripojenia. Aj bez tohto povolenia môžu pripojenia fungovať na pozadí.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Povoliť upozornenia</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Zapnite upozornenia pre ConnectBot v nastaveniach systému Android, aby ste mohli vidieť pripojené zariadenia a dostávať upozornenia na zvukový signál terminálu a na prerušenie pripojenia. Podpora pripojenia na pozadí zostáva zapnutá.</string>
 </resources>

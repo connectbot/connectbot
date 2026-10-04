@@ -685,4 +685,13 @@
 		<item quantity="one">还有 %d 个会话。</item>
 		<item quantity="other">还有 %d 个会话。</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">连接提醒</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">显示终端提示音和连接中断提醒。</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">已关闭连接提醒。后台连接支持仍然启用。</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android 系统控制当前连接通知的显示方式，与连接提醒功能无关。</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android 已阻止 ConnectBot 的通知。后台连接功能仍然启用。</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">连接通知</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">允许接收通知，以便查看已连接的主机，并接收终端提示音和连接中断提醒。即使没有此权限，连接仍然可以在后台运行。</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">启用通知</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">在 Android 设置中启用 ConnectBot 的通知，以便查看已连接的主机，并接收终端提示音和连接中断提醒。后台连接支持将继续启用。</string>
 </resources>

@@ -689,4 +689,13 @@
     <item quantity="few">+%d sesiuni suplimentare</item>
     <item quantity="other">+%d de sesiuni suplimentare</item>
   </plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Alerte privind conexiunea</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Afișează semnalele sonore și alertele privind pierderea conexiunii.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Alertele privind conexiunea sunt dezactivate. Suportul pentru conexiunea în fundal rămâne activat.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android controlează vizibilitatea notificării privind conexiunea activă, independent de alertele de conexiune.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android a blocat notificările pentru ConnectBot. Suportul pentru conexiunile în fundal rămâne activat.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Notificări privind conexiunea</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Permiteți notificările pentru a vedea dispozitivele conectate și pentru a primi alerte privind sunetul de semnal și pierderea conexiunii. Conexiunile pot continua să funcționeze în fundal chiar și fără această permisiune.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Activează notificările.</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Activați notificările pentru ConnectBot în setările Android pentru a vedea dispozitivele conectate și pentru a primi alerte privind sunetul terminalului și pierderea conexiunii. Suportul pentru conexiunile în fundal rămâne activat.</string>
 </resources>

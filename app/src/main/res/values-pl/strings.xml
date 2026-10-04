@@ -693,4 +693,13 @@
     <item quantity="many">+%d dodatkowych sesji</item>
     <item quantity="other">+%d dodatkowych sesji</item>
   </plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Powiadomienia o połączeniu</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Wyświetl powiadomienia o dźwięku terminala i utracie połączenia.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Wyłączono powiadomienia o połączeniu. Obsługa połączenia w tle pozostaje włączona.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">System Android samodzielnie zarządza wyświetlaniem powiadomienia o aktywnym połączeniu, niezależnie od powiadomień o zmianach w połączeniu.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android zablokował powiadomienia dla ConnectBot. Obsługa połączeń w tle pozostaje włączona.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Powiadomienia o połączeniu</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Zezwól na wyświetlanie powiadomień, aby widzieć podłączone urządzenia i otrzymywać alerty o dźwiękach terminala oraz utracie połączenia. Nawet bez tej zgody połączenia mogą nadal działać w tle.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Włącz powiadomienia</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Włącz powiadomienia dla ConnectBot w ustawieniach Androida, aby wyświetlać listę połączonych hostów i otrzymywać alerty o dźwiękach terminala oraz utracie połączenia. Obsługa połączeń w tle pozostaje włączona.</string>
 </resources>

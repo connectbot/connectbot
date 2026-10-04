@@ -689,4 +689,13 @@
     <item quantity="few">+%d додатне сесије</item>
     <item quantity="other">+%d додатних сесија</item>
   </plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Обавештења о прекиду везе</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Прикажи звучни сигнал терминала и обавештења о прекиду везе.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Обавештења о повезивању су искључена. Подршка за повезивање у позадини остаје укључена.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Андроид контролише приказ обавештења о активnoj vezi, nezavisno od upozorenja o vezi.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Андроид је блокирао обавештења за апликацију ConnectBot. Подршка за позадинску везу остаје укључена.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Obaveštenja o povezivanju</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Omogućite primanje obaveštenja kako biste videli povezana uređaja i primali upozorenja o zvuku terminala i prekidu veze. Povezani uređaji i dalje mogu da rade u pozadini, čak i bez ove dozvole.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Omogući obaveštenja</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Omogućite obaveštenja za ConnectBot u podešavanjima na Android uređaju kako biste videli povezane hostove i primali upozorenja o zvuku terminala i prekidu veze. Podrška za pozadinsku vezu ostaje omogućena.</string>
 </resources>

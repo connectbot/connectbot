@@ -685,4 +685,13 @@
 		<item quantity="one">+%d flere økter</item>
 		<item quantity="other">+%d flere økter</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Varsler om tilkoblingsproblemer</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Vis varsler for terminalsignal og tap av tilkobling.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Varsler for tilkobling er slått av. Støtte for bakgrunnstilkobling er fortsatt aktivert.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android styrer synligheten til varslingen om den aktive tilkoblingen, uavhengig av tilkoblingsvarsler.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android har blokkert varsler for ConnectBot. Støtte for bakgrunnstilkobling er fortsatt aktivert.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Varsler om tilkobling</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Tillat varsler for å se tilkoblede enheter og motta varsler om terminalsignaler og tap av tilkobling. Tilkoblinger kan fortsatt kjøre i bakgrunnen selv uten denne tillatelsen.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Aktiver varsler</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Aktiver varsler for ConnectBot i Android-innstillingene for å se tilkoblede enheter og motta varsler om terminalsignaler og tap av tilkobling. Støtte for bakgrunnstilkobling forblir aktivert.</string>
 </resources>

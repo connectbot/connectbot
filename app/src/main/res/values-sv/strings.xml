@@ -685,4 +685,13 @@
 		<item quantity="one">+%d sessioner till</item>
 		<item quantity="other">+%d ytterligare sessioner</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Aviseringar om anslutningsstatus</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Visa varningar för terminalsignaler och förlorad anslutning.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Aviseringar om anslutningar är inaktiverade. Stödet för bakgrundsanslutningar är fortfarande aktiverat.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android styr synligheten för den pågående anslutningsaviseringen, oberoende av anslutningsvarningar.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android har blockerat aviseringar för ConnectBot. Funktionen för bakgrundsanslutning är fortfarande aktiverad.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Aviseringar om anslutningar</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Tillåt aviseringar för att se anslutna enheter och få varningar om ljudsignaler från terminalen och förlorade anslutningar. Anslutningar kan fortfarande köras i bakgrunden även utan detta tillstånd.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Aktivera aviseringar</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Aktivera aviseringar för ConnectBot i Androids inställningar för att se anslutna enheter och få varningar om terminalsignaler och förlorad anslutning. Bakgrundsanslutningsfunktionen förblir aktiverad.</string>
 </resources>

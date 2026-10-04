@@ -685,4 +685,13 @@
 		<item quantity="one">Még %d további ülés</item>
 		<item quantity="other">Még %d további ülés van.</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Kapcsolati értesítések</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Mutassa a terminál hangjelzését és a kapcsolatvesztés figyelmeztetéseit.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">A kapcsolatértesítések ki vannak kapcsolva. A háttérkapcsolat-támogatás továbbra is engedélyezve van.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Az Android a folyamatban lévő kapcsolat értesítésének megjelenítését függetlenül a kapcsolati figyelmeztetésektől szabályozza.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Az Android letiltotta a ConnectBot értesítéseit. A háttérkapcsolat továbbra is engedélyezve van.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Csatlakozási értesítések</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Engedélyezze az értesítéseket, hogy láthassa a csatlakoztatott eszközöket, és fogadhassa a hangjelzéseket és a kapcsolatkimaradásra vonatkozó figyelmeztetéseket. A kapcsolatok még ezen engedély nélkül is futhatnak a háttérben.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Engedélyezze az értesítéseket.</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">A ConnectBot alkalmazáshoz kapcsolódó értesítések engedélyezéséhez nyissa meg az Android beállításokat, hogy láthassa a csatlakoztatott eszközöket, és értesítéseket kapjon a terminál hangjelzéseiről és a kapcsolat megszakadásáról. A háttérkapcsolat-támogatás továbbra is engedélyezve marad.</string>
 </resources>

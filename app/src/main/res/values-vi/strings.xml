@@ -685,4 +685,13 @@
 		<item quantity="one">Còn %d phiên khác</item>
 		<item quantity="other">Còn %d phiên khác</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Thông báo về kết nối</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Hiển thị thông báo âm thanh và mất kết nối.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Thông báo về kết nối đã tắt. Hỗ trợ kết nối nền vẫn được bật.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Trên Android, việc hiển thị thông báo về kết nối đang hoạt động được kiểm soát độc lập với các thông báo về kết nối.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android đã chặn thông báo của ConnectBot. Tính năng hỗ trợ kết nối nền vẫn được bật.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Thông báo kết nối</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Cho phép hiển thị thông báo để xem các máy chủ đã kết nối và nhận thông báo về âm báo và tình trạng mất kết nối. Các kết nối vẫn có thể hoạt động trong nền ngay cả khi không cấp quyền này.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Bật thông báo</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Bật thông báo cho ConnectBot trong phần cài đặt của Android để xem các máy chủ đã kết nối và nhận thông báo về âm báo hiệu và tình trạng mất kết nối. Chức năng hỗ trợ kết nối nền vẫn được bật.</string>
 </resources>

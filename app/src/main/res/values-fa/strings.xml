@@ -685,4 +685,13 @@
 		<item quantity="one">+%d جلسه دیگر</item>
 		<item quantity="other">+%d جلسه دیگر</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">اعلان‌های مربوط به قطع و وصل ارتباط</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">نمایش هشدارهای مربوط به صدای پایان اتصال و قطع ارتباط</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">اعلان‌های مربوط به اتصال غیرفعال شده‌اند. پشتیبانی از اتصال پس‌زمینه همچنان فعال است.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">در سیستم‌عامل اندروید، نمایش اعلان مربوط به اتصال فعال، به‌طور مستقل از هشدارهای مربوط به اتصال انجام می‌شود.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">اندروید، دریافت اعلان‌ها را برای ConnectBot مسدود کرده است. با این حال، پشتیبانی از اتصال پس‌زمینه همچنان فعال است.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">اعلان‌های مربوط به اتصال</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">به برنامه اجازه دهید اعلان‌ها را نمایش دهد تا بتوانید دستگاه‌های متصل را ببینید و هشدارهای مربوط به صدای پایان و قطع ارتباط را دریافت کنید. حتی بدون این مجوز، ارتباطات همچنان می‌توانند در پس‌زمینه اجرا شوند.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">فعال‌سازی اعلان‌ها</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">برای مشاهده دستگاه‌های متصل و دریافت هشدارهای مربوط به صدای پایان اتصال و قطع ارتباط، اعلان‌های مربوط به ConnectBot را در تنظیمات اندروید فعال کنید. پشتیبانی از اتصال در پس‌زمینه همچنان فعال خواهد بود.</string>
 </resources>

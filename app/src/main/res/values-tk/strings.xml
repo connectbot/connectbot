@@ -685,4 +685,13 @@
 		<item quantity="one">+%d köp oturum</item>
 		<item quantity="other">+%d köp oturym</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Baglanyşyk bozulanda berilýän habarlar</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Terminal ýa-da baglanyşyk bozulanda habarly ýüze çykarsyn.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Baglanyşyk habarnamalary öçürildi. Arka plandaky baglanyşyk goldawy aktiw saklanýar.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android ulgam, şahsy bildirişlerden ýa-da esasy bildirişlerden ýarymsyr bolman, şu ýagdaýdaky baglanyşygyň görnüşini doly dolandyrýar.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android ulgam ConnectBot üçin bildirişleriň gelmegini togtady. Arka plandaky baglanyşyk hyzmaty işläp durýar.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Birinji birikme wagtynda görkezilýän esasy habarnama rugsatynyň düşündirişiniň başlygy.</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Bildirişleri ýolaýlamak, ulanylan serwerleri görmek we terminaldaky ses we baglanyşyk bozulmagy barada habarlar almak üçin serişdäni ber. Bu serişde berilmedik hem bolsa, baglanyşyklar fon reżiminde işleýär.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Bildirişleri ýolaý</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Android-iň sazlamalarynda ConnectBot üçin habarnamalary işe girizip, ulanylan serwerleri göräň we terminaldaky ses we baglanyşyk bozulmagy barada habarlar alyň. Arka plandaky baglanyşyk goldawy işläp durýar.</string>
 </resources>

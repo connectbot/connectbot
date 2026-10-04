@@ -685,4 +685,13 @@
 		<item quantity="one">มีเซสชันเพิ่มเติมอีก %d เซสชัน</item>
 		<item quantity="other">มีเซสชันเพิ่มเติมอีก %d เซสชัน</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">การแจ้งเตือนเมื่อมีการเชื่อมต่อขาดหายไป</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">แสดงการแจ้งเตือนเมื่อมีการเชื่อมต่อขาดหายไป และแสดงสัญญาณเสียงเมื่อมีข้อความแจ้งเตือน</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">ปิดการแจ้งเตือนเกี่ยวกับการเชื่อมต่อแล้ว แต่การรองรับการเชื่อมต่อในเบื้องหลังยังคงเปิดใช้งานอยู่</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">ระบบปฏิบัติการ Android จะควบคุมการแสดงผลของการแจ้งเตือนเกี่ยวกับการเชื่อมต่อที่ใช้งานอยู่ โดยไม่ขึ้นอยู่กับการแจ้งเตือนเกี่ยวกับการเชื่อมต่อแบบอื่น</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android ได้ปิดกั้นการแจ้งเตือนสำหรับ ConnectBot แต่การเชื่อมต่อแบบเบื้องหลังยังคงเปิดใช้งานอยู่</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">การแจ้งเตือนเมื่อมีการเชื่อมต่อ</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">อนุญาตให้มีการส่งการแจ้งเตือน เพื่อให้คุณสามารถดูอุปกรณ์ที่เชื่อมต่อ และรับการแจ้งเตือนเมื่อมีการส่งสัญญาณเสียงหรือเมื่อการเชื่อมต่อขาดหายไป แม้ว่าจะไม่ได้อนุญาตนี้ การเชื่อมต่อก็ยังสามารถทำงานในเบื้องหลังได้</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">เปิดการแจ้งเตือน</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">เปิดใช้งานการแจ้งเตือนสำหรับ ConnectBot ในการตั้งค่า Android เพื่อดูรายการอุปกรณ์ที่เชื่อมต่อ และรับการแจ้งเตือนเมื่อมีการเชื่อมต่อหรือตัดการเชื่อมต่อ รวมถึงเสียงแจ้งเตือนจากเทอร์มินัล การรองรับการเชื่อมต่อในเบื้องหลังยังคงเปิดใช้งานอยู่</string>
 </resources>

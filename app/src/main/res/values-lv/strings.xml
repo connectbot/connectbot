@@ -689,4 +689,13 @@
     <item quantity="one">Vēl %d sesija</item>
     <item quantity="other">Vēl %d sesijas</item>
   </plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Savienojuma brīdinājumi</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Rādīt termināļa signālu un paziņojumus par savienojuma pārtraukumu.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Savienojuma brīdinājumi ir atspējoti. Fona savienojuma atbalsts joprojām ir iespējots.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android operētājsistēma patstāvīgi kontrolē pašreizējā savienojuma paziņojuma redzamību, neatkarīgi no savienojuma brīdinājumiem.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android ir bloķējis ConnectBot paziņojumus. Fona savienojuma atbalsts joprojām ir aktivizēts.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Paziņojumi par savienojumu</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Atļaujiet paziņojumus, lai redzētu savienotos resursus un saņemtu brīdinājumus par termināļa signālu un savienojuma pārtraukumu. Pat bez šīs atļaujas savienojumi joprojām var darboties fonā.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Ieslēgt paziņojumus</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Ieslēdziet paziņojumus lietotnei ConnectBot Android iestatījumos, lai redzētu savienotos serverus un saņemtu brīdinājumus par termināļa signālu un savienojuma pārtraukumu. Fona savienojuma atbalsts paliek ieslēgts.</string>
 </resources>

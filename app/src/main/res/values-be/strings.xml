@@ -693,4 +693,13 @@
     <item quantity="many">Яшчэ %d сесій</item>
     <item quantity="other">Яшчэ %d сесіі</item>
   </plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Апавяшчэнні аб адключэнні злучэння</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Паказваць гукавы сігнал тэрмінала і паведамленні аб адключэнні злучэння.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Апавяшчэнні аб падключэнні адключаны. Падтрымка фонавага падключэння застаецца ўключанай.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">У Android кіруецца адлюстраванне апавяшчэння аб актыўным злучэнні незалежна ад апавяшчэнняў аб падключэнні.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">У Android заблакаваныя апавяшчэнні для ConnectBot. Падтрымка фону для злучэння застаецца ўключанай.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Апавяшчэнні аб падключэнні.</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Дазвольце атрыманне апавяшчэнняў, каб бачыць падлучаныя хосты і атрымліваць сігналы аб падключэнні і апавяшчэнні аб адключэнні. Нават без гэтай згоды падключэнні могуць працягваць працаваць у фонавым рэжыме.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Уключыць апавяшчэнні</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Уключыце апавяшчэнні для ConnectBot у наладках Android, каб бачыць спіс падлучаных хостаў і атрымліваць сігналы аб падключэнні і адключэнні. Падтрымка фонавага злучэння застаецца ўключанай.</string>
 </resources>

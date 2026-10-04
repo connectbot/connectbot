@@ -689,4 +689,13 @@
     <item quantity="other">+%d sessões adicionais</item>
     <item quantity="many">+%d sessões adicionais</item>
   </plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Alertas de conexão</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Mostrar alertas de sinal sonoro do terminal e de perda de conexão.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Os alertas de conexão estão desativados. O suporte para conexão em segundo plano permanece ativado.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">O Android controla a exibição da notificação da conexão ativa, independentemente dos alertas de conexão.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">O Android bloqueou as notificações do ConnectBot. O suporte para conexão em segundo plano permanece ativado.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Notificações de conexão</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Permita que as notificações sejam exibidas para que você possa ver os dispositivos conectados e receber alertas sobre o sinal sonoro do terminal e a perda de conexão. As conexões ainda podem ser executadas em segundo plano mesmo sem essa permissão.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Ativar notificações</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Ative as notificações para o ConnectBot nas configurações do Android para visualizar os hosts conectados e receber alertas de sinal sonoro do terminal e de perda de conexão. O suporte para conexão em segundo plano permanece ativado.</string>
 </resources>

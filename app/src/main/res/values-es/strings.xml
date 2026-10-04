@@ -689,4 +689,13 @@
     <item quantity="other">+%d sesiones más</item>
     <item quantity="many">+%d sesiones más</item>
   </plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Alertas de conexión</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Mostrar alertas de sonido de terminal y de pérdida de conexión.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Las alertas de conexión están desactivadas. El soporte para la conexión en segundo plano permanece habilitado.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android controla la visibilidad de la notificación de la conexión activa, independientemente de las alertas de conexión.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android ha bloqueado las notificaciones de ConnectBot. La función de conexión en segundo plano sigue activada.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Notificaciones de conexión</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Permite recibir notificaciones para ver los dispositivos conectados y recibir alertas sobre el sonido de la terminal y la pérdida de conexión. Las conexiones aún pueden ejecutarse en segundo plano sin este permiso.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Activar las notificaciones</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Activa las notificaciones para ConnectBot en la configuración de Android para ver los dispositivos conectados y recibir alertas sobre el sonido de la terminal y la pérdida de conexión. El soporte para la conexión en segundo plano permanece activado.</string>
 </resources>

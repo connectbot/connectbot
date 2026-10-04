@@ -685,4 +685,13 @@
 		<item quantity="one">+%d επιπλέον συνεδρίες</item>
 		<item quantity="other">+%d επιπλέον συνεδρίες</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Ειδοποιήσεις σύνδεσης</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Εμφάνιση ηχητικού σήματος τερματικού και ειδοποιήσεων για απώλεια σύνδεσης.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Οι ειδοποιήσεις για τη σύνδεση είναι απενεργοποιημένες. Η υποστήριξη για τη σύνδεση στο παρασκήνιο παραμένει ενεργοποιημένη.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Το Android διαχειρίζεται την εμφάνιση της ειδοποίησης για την τρέχουσα σύνδεση, ανεξάρτητα από τις ειδοποιήσεις που σχετίζονται με τη σύνδεση.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Το Android έχει αποκλείσει τις ειδοποιήσεις για το ConnectBot. Η υποστήριξη για συνδέσεις στο παρασκήνιο παραμένει ενεργοποιημένη.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Ειδοποιήσεις σύνδεσης</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Επιτρέψτε τις ειδοποιήσεις για να βλέπετε τις συνδεδεμένες συσκευές και να λαμβάνετε ειδοποιήσεις για ηχητικά σήματα και διακοπές σύνδεσης. Οι συνδέσεις μπορούν να συνεχίσουν να λειτουργούν στο παρασκήνιο ακόμη και χωρίς αυτήν την άδεια.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Ενεργοποίηση ειδοποιήσεων</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Ενεργοποιήστε τις ειδοποιήσεις για το ConnectBot στις ρυθμίσεις του Android, ώστε να βλέπετε τις συνδεδεμένες συσκευές και να λαμβάνετε ειδοποιήσεις για ηχητικά σήματα τερματικού και για διακοπή σύνδεσης. Η υποστήριξη για συνδέσεις στο παρασκήνιο παραμένει ενεργοποιημένη.</string>
 </resources>

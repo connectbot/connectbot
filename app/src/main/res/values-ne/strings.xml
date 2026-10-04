@@ -685,4 +685,13 @@
 		<item quantity="one">अझ +%d थप सत्रहरू</item>
 		<item quantity="other">अझ +%d थप सत्रहरू</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">कनेक्शनको बारेमा चेतावनीहरू</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">टर्मिनल घण्टी र जडान विच्छेदको चेतावनी देखाउनुहोस्।</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">कनेक्शनको चेतावनीहरू बन्द गरिएको छ। पृष्ठभूमि कनेक्शन समर्थन सक्रिय नै रहनेछ।</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">एन्ड्रोइडले सक्रिय जडानको सूचनालाई जडानको चेतावनीहरूबाट अलग राख्दै, यसको दृश्यमानतालाई नियन्त्रण गर्दछ।</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">एन्ड्रोइडले कनेक्टबोटका लागि सूचनाहरू अवरुद्ध गरेको छ। पृष्ठभूमि जडान समर्थन भने सक्रिय नै रहनेछ।</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">कनेक्शन सूचनाहरू</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">सम्बन्धित होस्टहरू हेर्न र टर्मिनल घण्टी र जडान विच्छेदको सूचना प्राप्त गर्न सूचनाहरूलाई अनुमति दिनुहोस्। यो अनुमति नदिँदा पनि जडानहरू पृष्ठभूमिमा सञ्चालन गर्न सक्छन्।</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">सूचनाहरू सक्रिय गर्नुहोस्।</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">एन्ड्रोइड सेटिङहरूमा कनेक्टबटको लागि सूचनाहरू सक्रिय गर्नुहोस्, जसले गर्दा जोडिएका होस्टहरू देख्न सकिन्छ र टर्मिनल घण्टी र जडान विच्छेदको बारेमा सूचना प्राप्त गर्न सकिन्छ। पृष्ठभूमि जडान समर्थन सक्रिय नै रहनेछ।</string>
 </resources>

@@ -685,4 +685,13 @@
 		<item quantity="one">ມີອີກ %d ເຊສຊັນ</item>
 		<item quantity="other">ມີອີກ %d ໄລ່ສັງເກດ</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">ການແຈ້ງເຕືອນກ່ຽວກັບການເຊື່ອມຕໍ່</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">ສະແດງສັນຍານເຕືອນເມື່ອການເຊື່ອມຕໍ່ສູນເສຍ ແລະ ສັນຍານເຕືອນຂອງເຄື່ອງ.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">ການແຈ້ງເຕືອນກ່ຽວກັບການເຊື່ອມຕໍ່ຖືກປິດ. ການຮອງຮັບການເຊື່ອມຕໍ່ໃນພື້ນຫຼັງຍັງຄົງເປີດໃຊ້ຢູ່.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">ລະບົບ Android ຈະຄຸ້ມຄອງການສະແດງຂອງການແຈ້ງເຕືອນກ່ຽວກັບການເຊື່ອມຕໍ່ທີ່ກຳລັງດຳເນີນຢູ່ ໂດຍບໍ່ຂຶ້ນກັບການແຈ້ງເຕືອນກ່ຽວກັບການເຊື່ອມຕໍ່.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android ໄດ້ກີດກັ້ນການແຈ້ງເຕືອນສໍາລັບ ConnectBot. ການເຊື່ອມຕໍ່ໃນພື້ນຫຼັງຍັງຄົງເປີດໃຊ້ຢູ່.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">ການແຈ້ງເຕືອນເມື່ອເຊື່ອມຕໍ່</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">ອະນຸຍາດໃຫ້ສົ່ງການແຈ້ງເຕືອນເພື່ອເບິ່ງບັນຊີລາຍຊື່ຂອງອຸປະກອນທີ່ເຊື່ອມຕໍ່ ແລະຮັບການແຈ້ງເຕືອນກ່ຽວກັບສັນຍານເຕືອນ ແລະການສູນເສຍການເຊື່ອມຕໍ່. ການເຊື່ອມຕໍ່ຍັງສາມາດເຮັດວຽກຢູ່ພື້ນຫຼັງໄດ້ເຖິງແມ່ນວ່າບໍ່ໄດ້ອະນຸຍາດສິດນີ້.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">ເປີດການແຈ້ງເຕືອນ</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">ເປີດໃຊ້ການແຈ້ງເຕືອນສໍາລັບ ConnectBot ໃນການຕັ້ງຄ່າ Android ເພື່ອເບິ່ງບັນຊີລາຍຊື່ຂອງອຸປະກອນທີ່ເຊື່ອມຕໍ່ ແລະຮັບການແຈ້ງເຕືອນກ່ຽວກັບສັນຍານເຕືອນ ແລະການເຊື່ອມຕໍ່ທີ່ຂາດຫາຍ. ການຮອງຮັບການເຊື່ອມຕໍ່ໃນພື້ນຫຼັງຍັງຄົງເປີດໃຊ້ຢູ່.</string>
 </resources>

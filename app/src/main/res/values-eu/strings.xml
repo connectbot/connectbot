@@ -685,4 +685,13 @@
 		<item quantity="one">%+d saio gehiago</item>
 		<item quantity="other">%+d saio gehiago</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Konexio-abisuak</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Erakutsi terminaleko soinu-abisuak eta konexio-galera-abisuak.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Konexio-oharrarak desaktibatuta daude. Atzeko planoko konexioaren funtzionalitatea aktibatuta mantentzen da.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android-ek kontrolatzen du unean aktibo dagoen konexioaren jakinarazpena ikusgai egon behar duen, konexio-alertetatik independente.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android-ek ConnectBot-en jakinarazpenak blokeatu ditu. Atzeko planoko konexioaren funtzioa gaituta mantentzen da.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Konexio-jakinarazpenak</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Baimendu jakinarazpenak, horrela konektatutako gailuak ikusi eta terminaleko soinu-alertak eta konexio-galera-alertak jaso ahal izango dituzu. Konexioek atzeplanean ere funtziona dezakete, baimen hau ez badago.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Jasoaldiak gaitu</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Gaitu ConnectBot-en jakinarazpenak Android-en ezarpenetan, konektatutako gailuak ikusteko eta terminaleko soinu-alertak eta konexio-galera-alertak jasotzeko. Atzeko planoko konexioaren funtzioa gaituta mantentzen da.</string>
 </resources>

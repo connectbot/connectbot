@@ -685,4 +685,13 @@
 		<item quantity="one">+%d lisäsessiota</item>
 		<item quantity="other">+%d lisäsessiota</item>
 	</plurals>
+  <string name="pref_connection_alerts_title" tools:machine_translated="true">Yhteyshälytykset</string>
+  <string name="pref_connection_alerts_summary" tools:machine_translated="true">Näytä äänimerkki ja ilmoitukset yhteyden katkeamisesta.</string>
+  <string name="pref_connection_alerts_disabled_summary" tools:machine_translated="true">Yhteyshälytykset ovat pois päältä. Taustayhteyden tuki on edelleen käytössä.</string>
+  <string name="pref_service_notification_visibility" tools:machine_translated="true">Android hallitsee aktiivisen yhteyden ilmoituksen näkyvyyttä erillään yhteyshälytyksistä.</string>
+  <string name="pref_notifications_blocked" tools:machine_translated="true">Android on estänyt ConnectBot-sovelluksen ilmoitukset. Taustayhteyden tuki on edelleen käytössä.</string>
+  <string name="connection_alert_permission_title" tools:machine_translated="true">Yhteyden ilmoitukset</string>
+  <string name="connection_alert_permission_message" tools:machine_translated="true">Salli ilmoitusten näyttäminen, jotta voit nähdä yhdistetyt laitteet ja saada hälytyksiä terminaalin äänimerkeistä ja yhteyden katkeamisesta. Yhteydet voivat edelleen toimia taustalla, vaikka tätä lupaa ei myönnettäisi.</string>
+  <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Ota ilmoitukset käyttöön</string>
+  <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Ota käyttöön ConnectBot-sovelluksen ilmoitukset Android-asetuksissa, jotta näet yhdistetyt laitteet ja saat ilmoituksia terminaalin äänimerkeistä ja yhteyden katkeamisesta. Taustayhteyden tuki pysyy käytössä.</string>
 </resources>
