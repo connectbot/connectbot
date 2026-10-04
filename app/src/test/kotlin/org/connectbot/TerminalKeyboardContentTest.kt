@@ -60,7 +60,6 @@ class TerminalKeyboardContentTest {
         var escapePressed = false
         var tabPressed = false
         var interactionCount = 0
-        var textInputOpened = false
         var showImeCalled = false
 
         setKeyboardContent(
@@ -69,7 +68,6 @@ class TerminalKeyboardContentTest {
             onEscPress = { escapePressed = true },
             onTabPress = { tabPressed = true },
             onInteraction = { interactionCount++ },
-            onOpenTextInput = { textInputOpened = true },
             onShowIme = { showImeCalled = true },
         )
 
@@ -90,9 +88,6 @@ class TerminalKeyboardContentTest {
             .assertIsDisplayed()
             .performClick()
         composeTestRule
-            .onNodeWithContentDescription(composeTestRule.activity.getString(R.string.terminal_keyboard_text_input_button))
-            .performClick()
-        composeTestRule
             .onNodeWithContentDescription(composeTestRule.activity.getString(R.string.image_description_show_keyboard))
             .performClick()
 
@@ -100,9 +95,8 @@ class TerminalKeyboardContentTest {
         assertTrue(altPressed)
         assertTrue(escapePressed)
         assertTrue(tabPressed)
-        assertTrue(textInputOpened)
         assertTrue(showImeCalled)
-        assertEquals(2, interactionCount)
+        assertEquals(1, interactionCount)
     }
 
     @Test
@@ -188,12 +182,12 @@ class TerminalKeyboardContentTest {
     }
 
     @Test
-    fun imeToggleCanBeHiddenWithoutRemovingTextInput() {
+    fun imeToggleCanBeHiddenWithoutRemovingKeyboardToggle() {
         setKeyboardContent(showImeToggleKey = false)
 
         composeTestRule.onNodeWithText("IME").assertDoesNotExist()
         composeTestRule.onNodeWithContentDescription(
-            composeTestRule.activity.getString(R.string.terminal_keyboard_text_input_button),
+            composeTestRule.activity.getString(R.string.image_description_show_keyboard),
         ).assertIsDisplayed()
     }
 
@@ -211,7 +205,6 @@ class TerminalKeyboardContentTest {
         onInteraction: () -> Unit = {},
         onHideIme: () -> Unit = {},
         onShowIme: () -> Unit = {},
-        onOpenTextInput: () -> Unit = {},
         onScrollInProgressChange: (Boolean) -> Unit = {},
         imeVisible: Boolean = false,
         bumpyArrows: Boolean = false,
@@ -230,7 +223,6 @@ class TerminalKeyboardContentTest {
                     onInteraction = onInteraction,
                     onHideIme = onHideIme,
                     onShowIme = onShowIme,
-                    onOpenTextInput = onOpenTextInput,
                     onScrollInProgressChange = onScrollInProgressChange,
                     imeVisible = imeVisible,
                     playAnimation = false,

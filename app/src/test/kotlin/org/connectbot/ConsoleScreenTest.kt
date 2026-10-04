@@ -366,12 +366,12 @@ class ConsoleScreenTest {
     }
 
     @Test
-    fun consoleScreen_displaysTextInputButton() {
+    fun consoleScreen_displaysTitleBarTextInputButton() {
         setContent()
         navigateToConsoleScreen()
 
         composeTestRule
-            .onNodeWithContentDescription("Text input")
+            .onNodeWithTag("title_bar_text_input")
             .assertIsDisplayed()
     }
 

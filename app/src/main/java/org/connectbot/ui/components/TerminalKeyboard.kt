@@ -32,7 +32,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Keyboard
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowLeft
@@ -105,7 +104,6 @@ fun TerminalKeyboard(
     modifier: Modifier = Modifier,
     onHideIme: () -> Unit = {},
     onShowIme: () -> Unit = {},
-    onOpenTextInput: () -> Unit = {},
     onScrollInProgressChange: (Boolean) -> Unit = {},
     imeVisible: Boolean = false,
     playAnimation: Boolean = false,
@@ -149,7 +147,6 @@ fun TerminalKeyboard(
         onInteraction = onInteraction,
         onHideIme = onHideIme,
         onShowIme = onShowIme,
-        onOpenTextInput = onOpenTextInput,
         onScrollInProgressChange = onScrollInProgressChange,
         imeVisible = imeVisible,
         playAnimation = playAnimation,
@@ -176,7 +173,6 @@ internal fun TerminalKeyboardContent(
     onInteraction: () -> Unit,
     onHideIme: () -> Unit,
     onShowIme: () -> Unit,
-    onOpenTextInput: () -> Unit,
     onScrollInProgressChange: (Boolean) -> Unit,
     imeVisible: Boolean,
     playAnimation: Boolean,
@@ -422,33 +418,7 @@ internal fun TerminalKeyboardContent(
                 )
             }
 
-            // Text input button (always visible on right)
-            Surface(
-                onClick = {
-                    onOpenTextInput()
-                    onInteraction()
-                },
-                modifier = Modifier.size(
-                    width = TERMINAL_KEYBOARD_WIDTH_DP.dp,
-                    height = TERMINAL_KEYBOARD_HEIGHT_DP.dp,
-                ),
-                shape = RectangleShape,
-                border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-                color = MaterialTheme.colorScheme.surface.copy(alpha = UI_OPACITY),
-            ) {
-                Box(
-                    contentAlignment = Alignment.Center,
-                    modifier = Modifier.fillMaxSize(),
-                ) {
-                    Icon(
-                        Icons.Default.Edit,
-                        contentDescription = stringResource(R.string.terminal_keyboard_text_input_button),
-                        modifier = Modifier.height(TERMINAL_KEYBOARD_CONTENT_SIZE_DP.dp),
-                    )
-                }
-            }
-
-            // IME toggle key (sits next to the input field key, optional via setting)
+            // IME toggle key (optional via setting)
             if (showImeToggleKey) {
                 val imeBackgroundColor = if (isComposeModeActive) {
                     MaterialTheme.colorScheme.primary.copy(alpha = 0.8f)
@@ -696,7 +666,6 @@ private fun TerminalKeyboardPreview() {
             onInteraction = {},
             onHideIme = {},
             onShowIme = {},
-            onOpenTextInput = {},
             onScrollInProgressChange = {},
             imeVisible = false,
             playAnimation = false,
@@ -723,7 +692,6 @@ private fun TerminalKeyboardCtrlPressedPreview() {
             onInteraction = {},
             onHideIme = {},
             onShowIme = {},
-            onOpenTextInput = {},
             onScrollInProgressChange = {},
             imeVisible = false,
             playAnimation = false,
@@ -750,7 +718,6 @@ private fun TerminalKeyboardCtrlLockedPreview() {
             onInteraction = {},
             onHideIme = {},
             onShowIme = {},
-            onOpenTextInput = {},
             onScrollInProgressChange = {},
             imeVisible = false,
             playAnimation = false,
@@ -777,7 +744,6 @@ private fun TerminalKeyboardImeVisiblePreview() {
             onInteraction = {},
             onHideIme = {},
             onShowIme = {},
-            onOpenTextInput = {},
             onScrollInProgressChange = {},
             imeVisible = true,
             playAnimation = false,
