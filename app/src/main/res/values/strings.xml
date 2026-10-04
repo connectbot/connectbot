@@ -783,6 +783,12 @@
 	<string name="hostpref_mosh_port_title">"Mosh UDP port"</string>
 	<!-- Summary for the Mosh UDP port setting -->
 	<string name="hostpref_mosh_port_summary">"Fixed UDP port for mosh (0 for automatic 60000-61000 range)"</string>
+	<!-- Label for the server network timeout field in a Mosh host's advanced settings. -->
+	<string name="hostpref_mosh_network_timeout_title">Mosh network timeout (seconds)</string>
+	<!-- Help for Mosh timeout: blank respects the server setting or uses one week; zero disables expiry. -->
+	<string name="hostpref_mosh_network_timeout_summary">Time without client updates before the server exits. Leave blank for the server setting or one week; use 0 to disable expiry.</string>
+	<!-- Inline validation error for an invalid Mosh timeout in advanced host settings. -->
+	<string name="hostpref_mosh_network_timeout_error">Enter a whole number from 0 to 2147483647, or leave blank.</string>
 	<!-- Title for the Mosh locale setting -->
 	<string name="hostpref_locale_title">"Locale"</string>
 	<!-- Summary for the Mosh locale setting -->

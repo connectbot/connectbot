@@ -71,11 +71,16 @@ data class HostEditorUiState(
     // Mosh-specific fields
     val moshPort: String = "0",
     val moshServer: String = "",
+    val moshNetworkTimeout: String = "",
     val locale: String = "en_US.UTF-8",
     val isMoshInstalling: Boolean = false,
     val isLoading: Boolean = false,
     val error: String? = null,
-)
+) {
+    val isMoshNetworkTimeoutValid: Boolean
+        get() = moshNetworkTimeout.isBlank() ||
+            (moshNetworkTimeout.all { it in '0'..'9' } && moshNetworkTimeout.toIntOrNull() != null)
+}
 
 @HiltViewModel
 class HostEditorViewModel @Inject constructor(
@@ -184,6 +189,7 @@ class HostEditorViewModel @Inject constructor(
                             // Mosh-specific fields
                             moshPort = host.moshPort.toString(),
                             moshServer = host.moshServer ?: "",
+                            moshNetworkTimeout = host.moshNetworkTimeout?.toString() ?: "",
                             locale = host.locale,
                             isLoading = false,
                         )
@@ -355,6 +361,10 @@ class HostEditorViewModel @Inject constructor(
         }
     }
 
+    fun updateMoshNetworkTimeout(value: String) {
+        _uiState.update { it.copy(moshNetworkTimeout = value, hasUnsavedChanges = true) }
+    }
+
     fun updateMoshServer(value: String) {
         _uiState.update { it.copy(moshServer = value, hasUnsavedChanges = true) }
     }
@@ -365,6 +375,7 @@ class HostEditorViewModel @Inject constructor(
 
     suspend fun saveHost(): Boolean {
         if (_uiState.value.isSaving) return false
+        if (_uiState.value.protocol == "mosh" && !_uiState.value.isMoshNetworkTimeoutValid) return false
         _uiState.update { it.copy(isSaving = true, error = null) }
         try {
             val state = _uiState.value
@@ -402,6 +413,7 @@ class HostEditorViewModel @Inject constructor(
                 ipVersion = state.ipVersion,
                 moshPort = state.moshPort.toIntOrNull() ?: 0,
                 moshServer = state.moshServer.ifBlank { null },
+                moshNetworkTimeout = state.moshNetworkTimeout.toIntOrNull(),
                 locale = state.locale.ifBlank { "en_US.UTF-8" },
             )
 

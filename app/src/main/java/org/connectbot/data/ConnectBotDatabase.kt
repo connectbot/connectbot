@@ -64,6 +64,7 @@ import java.util.UUID
  * - Version 9: Added inline_images to profiles, defaulting to Ask (AutoMigration)
  * - Version 10: Added mosh_port, mosh_server, and locale columns to hosts for Mosh support (AutoMigration)
  * - Version 11: UUID automation actions and port-forward startup preference (manual migration)
+ * - Version 12: Added optional Mosh network timeout to hosts (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -81,7 +82,7 @@ import java.util.UUID
         Profile::class,
         AutomationAction::class,
     ],
-    version = 11,
+    version = 12,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -92,6 +93,7 @@ import java.util.UUID
         AutoMigration(from = 7, to = 8),
         AutoMigration(from = 8, to = 9),
         AutoMigration(from = 9, to = 10),
+        AutoMigration(from = 11, to = 12),
     ],
 )
 @TypeConverters(Converters::class)

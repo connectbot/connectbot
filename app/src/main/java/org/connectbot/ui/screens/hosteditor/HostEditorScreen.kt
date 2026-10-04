@@ -124,6 +124,7 @@ fun HostEditorScreen(
         onPasswordChange = viewModel::updatePassword,
         onClearPassword = viewModel::clearSavedPassword,
         onMoshPortChange = viewModel::updateMoshPort,
+        onMoshNetworkTimeoutChange = viewModel::updateMoshNetworkTimeout,
         onMoshServerChange = viewModel::updateMoshServer,
         onLocaleChange = viewModel::updateLocale,
         onSaveHost = viewModel::saveHost,
@@ -159,6 +160,7 @@ fun HostEditorScreenContent(
     onPasswordChange: (String) -> Unit,
     onClearPassword: () -> Unit,
     onMoshPortChange: (String) -> Unit = {},
+    onMoshNetworkTimeoutChange: (String) -> Unit = {},
     onMoshServerChange: (String) -> Unit = {},
     onLocaleChange: (String) -> Unit = {},
     onSaveHost: suspend () -> Boolean,
@@ -172,7 +174,8 @@ fun HostEditorScreenContent(
     var showProtocolMenu by remember { mutableStateOf(false) }
     var showAdvancedOptions by rememberSaveable(hostId) { mutableStateOf(false) }
     val protocols = listOf("ssh", "mosh", "telnet", "local")
-    val canSave = uiState.protocol == "local" || uiState.hostname.isNotBlank()
+    val canSave = (uiState.protocol == "local" || uiState.hostname.isNotBlank()) &&
+        (uiState.protocol != "mosh" || uiState.isMoshNetworkTimeoutValid)
 
     EditorScaffold(
         title = stringResource(if (hostId == -1L) R.string.hostpref_add_host else R.string.hostpref_setting_title),
@@ -339,6 +342,27 @@ fun HostEditorScreenContent(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(top = 8.dp),
+                            singleLine = true,
+                        )
+
+                        OutlinedTextField(
+                            value = uiState.moshNetworkTimeout,
+                            onValueChange = onMoshNetworkTimeoutChange,
+                            label = { Text(stringResource(R.string.hostpref_mosh_network_timeout_title)) },
+                            isError = !uiState.isMoshNetworkTimeoutValid,
+                            supportingText = {
+                                Text(
+                                    stringResource(
+                                        if (uiState.isMoshNetworkTimeoutValid) {
+                                            R.string.hostpref_mosh_network_timeout_summary
+                                        } else {
+                                            R.string.hostpref_mosh_network_timeout_error
+                                        },
+                                    ),
+                                )
+                            },
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
                             singleLine = true,
                         )
 

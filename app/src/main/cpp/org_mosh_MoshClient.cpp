@@ -181,6 +181,9 @@ static int create_mosh_subprocess(
     setenv("LC_ALL", locale, 1);
     setenv("LANG", locale, 1);
     setenv("TERM", "xterm-256color", 1);
+    // ConnectBot owns session controls and identifies the transport in its UI.
+    setenv("MOSH_ESCAPE_KEY", "", 1);
+    setenv("MOSH_TITLE_NOPREFIX", "1", 1);
 
     // Execute mosh-client
     // mosh-client expects: mosh-client <ip> <port>

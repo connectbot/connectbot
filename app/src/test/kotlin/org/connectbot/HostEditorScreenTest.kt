@@ -264,6 +264,7 @@ class HostEditorScreenTest {
                     hostname = "example.com",
                     port = 22,
                     moshPort = 60001,
+                    moshNetworkTimeout = 86400,
                     moshServer = "custom-mosh-server",
                     locale = "de_DE.UTF-8",
                 ),
@@ -276,20 +277,28 @@ class HostEditorScreenTest {
 
         val commandLabel = composeTestRule.activity.getString(R.string.hostpref_mosh_server_title)
         val moshPortLabel = composeTestRule.activity.getString(R.string.hostpref_mosh_port_title)
+        val timeoutLabel = composeTestRule.activity.getString(R.string.hostpref_mosh_network_timeout_title)
         val localeLabel = composeTestRule.activity.getString(R.string.hostpref_locale_title)
         composeTestRule.onNodeWithText("Username").performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithText(commandLabel).assertDoesNotExist()
         composeTestRule.onNodeWithText(moshPortLabel).assertDoesNotExist()
         composeTestRule.onNodeWithText(localeLabel).assertDoesNotExist()
+        composeTestRule.onNodeWithText(timeoutLabel).assertDoesNotExist()
         composeTestRule.onNodeWithText("Show advanced options").performScrollTo().performClick()
 
         composeTestRule.onNodeWithText(commandLabel).performScrollTo().assert(hasText("custom-mosh-server"))
         composeTestRule.onNodeWithText(moshPortLabel).performScrollTo().assert(hasText("60001"))
+        composeTestRule.onNodeWithText(timeoutLabel).performScrollTo().assert(hasText("86400"))
+        composeTestRule.onNodeWithText(timeoutLabel).performTextReplacement("-1")
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.hostpref_mosh_network_timeout_error))
+            .performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText(timeoutLabel).performTextReplacement("0")
         composeTestRule.onNodeWithText(localeLabel).performScrollTo().assert(hasText("de_DE.UTF-8"))
         composeTestRule.onNodeWithText("Hide advanced options").performScrollTo().performClick()
         composeTestRule.onNodeWithText(commandLabel).assertDoesNotExist()
         composeTestRule.onNodeWithText("Show advanced options").performScrollTo().performClick()
         composeTestRule.onNodeWithText(commandLabel).performScrollTo().assert(hasText("custom-mosh-server"))
+        composeTestRule.onNodeWithText(timeoutLabel).performScrollTo().assert(hasText("0"))
     }
 
     @Test
