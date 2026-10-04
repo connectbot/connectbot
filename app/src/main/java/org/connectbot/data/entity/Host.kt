@@ -113,6 +113,10 @@ data class Host(
     @ColumnInfo(name = "mosh_port", defaultValue = "0")
     val moshPort: Int = 0,
 
+    /** Network timeout in seconds; null uses the server default, and 0 disables expiry. */
+    @ColumnInfo(name = "mosh_network_timeout")
+    val moshNetworkTimeout: Int? = null,
+
     /**
      * Custom mosh-server command. null means use standard "mosh-server".
      * Can specify full path or custom arguments.

@@ -26,7 +26,7 @@ class MoshServerCommandTest {
     fun defaultServerAdvertises256Colors() {
         assertEquals(
             "sh -c '[ -n \"\$SSH_CONNECTION\" ] && printf \"\\nMOSH SSH_CONNECTION %s\\n\" \"\$SSH_CONNECTION\"; " +
-                "exec env LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 mosh-server new -c 256'",
+                "exec env LANG=en_US.UTF-8 LC_ALL=en_US.UTF-8 MOSH_SERVER_NETWORK_TMOUT=\${MOSH_SERVER_NETWORK_TMOUT:-604800} mosh-server new -c 256'",
             Mosh().buildMoshServerCommand(Host()),
         )
     }
@@ -37,8 +37,33 @@ class MoshServerCommandTest {
             Host(moshServer = "/usr/local/bin/mosh-server", moshPort = 60042, locale = "de_DE.UTF-8"),
         )
         assertEquals(
-            "exec env LANG=de_DE.UTF-8 LC_ALL=de_DE.UTF-8 /usr/local/bin/mosh-server new -c 256 -p 60042'",
+            "exec env LANG=de_DE.UTF-8 LC_ALL=de_DE.UTF-8 MOSH_SERVER_NETWORK_TMOUT=\${MOSH_SERVER_NETWORK_TMOUT:-604800} /usr/local/bin/mosh-server new -c 256 -p 60042'",
             command.substringAfter("; "),
         )
+    }
+
+    @Test
+    fun hostTimeoutOverridesServerSettingIncludingZero() {
+        for (timeout in listOf(0, 86400, Int.MAX_VALUE)) {
+            val command = Mosh().buildMoshServerCommand(Host(moshNetworkTimeout = timeout))
+            org.junit.Assert.assertTrue(command.contains("MOSH_SERVER_NETWORK_TMOUT=$timeout "))
+        }
+    }
+
+    @Test
+    fun defaultTimeoutPreservesRemoteSetting() {
+        val command = Mosh().buildMoshServerCommand(Host())
+        for ((remote, expected) in listOf(null to "604800", "" to "604800", "0" to "0", "86400" to "86400")) {
+            val builder = ProcessBuilder("sh", "-c", command.removePrefix("sh -c '").removeSuffix("'"))
+            builder.environment().remove("MOSH_SERVER_NETWORK_TMOUT")
+            if (remote != null) builder.environment()["MOSH_SERVER_NETWORK_TMOUT"] = remote
+            // Replace the actual server with a command that prints the expanded environment.
+            val script = builder.command()[2].substringBefore("mosh-server new") + "sh -c 'printf %s \"\$MOSH_SERVER_NETWORK_TMOUT\"'"
+            builder.command("sh", "-c", script)
+            builder.environment().remove("SSH_CONNECTION")
+            val process = builder.start()
+            assertEquals(expected, process.inputStream.bufferedReader().readText())
+            assertEquals(0, process.waitFor())
+        }
     }
 }

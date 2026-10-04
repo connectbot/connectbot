@@ -644,4 +644,36 @@ class HostEditorViewModelTest {
         assertEquals("telnet", viewModel.uiState.value.protocol)
         assertFalse(viewModel.uiState.value.isMoshInstalling)
     }
+
+    @Test
+    fun moshTimeoutValidationAndUnsavedChanges() = runTest(testDispatcher) {
+        val viewModel = createViewModel()
+        advanceUntilIdle()
+        for (value in listOf("", "0", "604800", Int.MAX_VALUE.toString())) {
+            viewModel.updateMoshNetworkTimeout(value)
+            assertTrue(viewModel.uiState.value.isMoshNetworkTimeoutValid)
+            assertTrue(viewModel.uiState.value.hasUnsavedChanges)
+        }
+        viewModel.updateProtocol("mosh")
+        for (value in listOf("-1", "1.5", "abc", "2147483648")) {
+            viewModel.updateMoshNetworkTimeout(value)
+            assertFalse(viewModel.uiState.value.isMoshNetworkTimeoutValid)
+            assertFalse(viewModel.saveHost())
+        }
+    }
+
+    @Test
+    fun moshTimeoutLoadsAndSavesHostOverride() = runTest(testDispatcher) {
+        val host = Host(id = 42, hostname = "example.com", protocol = "mosh", moshNetworkTimeout = 86400)
+        `when`(repository.findHostById(42)).thenReturn(host)
+        `when`(repository.saveHost(any(Host::class.java) ?: Host())).thenAnswer { it.arguments[0] as Host }
+        val viewModel = createViewModel(42)
+        advanceUntilIdle()
+        assertEquals("86400", viewModel.uiState.value.moshNetworkTimeout)
+        viewModel.updateMoshNetworkTimeout("0")
+        assertTrue(viewModel.saveHost())
+        val captor = ArgumentCaptor.forClass(Host::class.java)
+        verify(repository).saveHost(captor.capture() ?: Host())
+        assertEquals(0, captor.value.moshNetworkTimeout)
+    }
 }

@@ -37,6 +37,8 @@ import org.mosh.MoshClient
 import java.io.File
 import java.io.FileDescriptor
 import java.io.IOException
+import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 /**
  * On-device integration test verifying that the bundled mosh-client binary
@@ -133,15 +135,32 @@ class MoshExecutionIntegrationTest {
         val childPid = pidArray[0]
         assertTrue("Child PID must be positive (got $childPid)", childPid > 0)
 
+        var reaped = false
         try {
             // Confirm the forked subprocess is running
             assertTrue("Child process with PID $childPid should be alive", File("/proc/$childPid").exists())
 
+            val environment = File("/proc/$childPid/environ").readText().split('\u0000')
+            assertTrue("Native launch must disable Mosh escape commands", environment.contains("MOSH_ESCAPE_KEY="))
+            assertTrue("Native launch must disable the Mosh title prefix", environment.contains("MOSH_TITLE_NOPREFIX=1"))
+
             // Confirm PTY window resizing via JNI works
             MoshClient.setPtyWindowSize(ptyFd, 40, 100, 0, 0)
+
+            val process = MoshProcess { pid, signal -> MoshClient.kill(pid, signal) }
+            process.attach(childPid)
+            process.pause()
+            process.terminate()
+            val executor = Executors.newSingleThreadExecutor()
+            try {
+                executor.submit<Int> { MoshClient.waitFor(childPid) }.get(15, TimeUnit.SECONDS)
+                reaped = true
+            } finally {
+                executor.shutdownNow()
+            }
         } finally {
             // Clean up child process and file descriptor
-            MoshClient.kill(childPid, 9)
+            if (!reaped) MoshClient.kill(childPid, 9)
             try {
                 ParcelFileDescriptor.dup(ptyFd).close()
             } catch (ignored: Exception) {

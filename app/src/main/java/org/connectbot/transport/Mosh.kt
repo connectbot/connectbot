@@ -63,7 +63,7 @@ class Mosh : SSH {
     private val moshPtyWindow = MoshPtyWindow { fd, size ->
         MoshClient.setPtyWindowSize(fd, size.rows, size.columns, size.width, size.height)
     }
-    private var moshProcessId: Long = 0
+    private val moshProcess = MoshProcess { pid, signal -> MoshClient.kill(pid, signal) }
 
     private var moshInputStream: FileInputStream? = null
     private var moshOutputStream: FileOutputStream? = null
@@ -236,13 +236,15 @@ class Mosh : SSH {
         }
 
         val locale = currentHost.locale.takeIf { it.isNotBlank() } ?: "en_US.UTF-8"
+        val networkTimeout = currentHost.moshNetworkTimeout?.also { require(it >= 0) }?.toString()
+            ?: "\${MOSH_SERVER_NETWORK_TMOUT:-604800}"
 
         // Ask for SSH_CONNECTION as a fallback. We do not pass mosh-server -s,
         // so the server keeps its default bind behavior instead of being pinned
         // to the SSH-facing interface.
         return "sh -c '[ -n \"\$SSH_CONNECTION\" ] && printf \"\\nMOSH SSH_CONNECTION %s\\n\" \"\$SSH_CONNECTION\"; " +
             // Match the xterm-256color environment used by the native client.
-            "exec env LANG=$locale LC_ALL=$locale $serverCmd new -c 256$portArg'"
+            "exec env LANG=$locale LC_ALL=$locale MOSH_SERVER_NETWORK_TMOUT=$networkTimeout $serverCmd new -c 256$portArg'"
     }
 
     private fun parseExplicitIp(output: String): String? {
@@ -364,16 +366,17 @@ class Mosh : SSH {
                 return false
             }
 
-            moshProcessId = processIdArray[0]
+            val processId = processIdArray[0]
+            moshProcess.attach(processId)
             moshPtyWindow.attach(moshClientFd!!)
-            Timber.d("Mosh-client started with PID: $moshProcessId")
+            Timber.d("Mosh-client started with PID: $processId")
 
             // Set up I/O streams
             moshInputStream = FileInputStream(moshClientFd)
             moshOutputStream = FileOutputStream(moshClientFd)
 
             // Start exit watcher thread
-            startExitWatcher()
+            startExitWatcher(processId)
 
             return true
         } catch (e: Exception) {
@@ -385,9 +388,10 @@ class Mosh : SSH {
     /**
      * Start a thread to watch for mosh-client process exit.
      */
-    private fun startExitWatcher() {
+    private fun startExitWatcher(processId: Long) {
         Thread {
-            val exitCode = MoshClient.waitFor(moshProcessId)
+            val exitCode = MoshClient.waitFor(processId)
+            moshProcess.exited(processId)
             Timber.d("Mosh-client exited with code: $exitCode")
             if (moshConnected) {
                 moshConnected = false
@@ -428,6 +432,9 @@ class Mosh : SSH {
         initialSshDetached = false
         moshPtyWindow.detach()
 
+        // Resume a suspended client before asking it to send the shutdown handshake.
+        moshProcess.terminate()
+
         // Close mosh client streams
         try {
             moshOutputStream?.close()
@@ -442,12 +449,6 @@ class Mosh : SSH {
             Timber.d(e, "Error closing mosh input stream")
         }
         moshInputStream = null
-
-        // Kill mosh-client process
-        if (moshProcessId > 0) {
-            MoshClient.kill(moshProcessId, SIGTERM)
-            moshProcessId = 0
-        }
 
         moshClientFd = null
 
@@ -522,17 +523,11 @@ class Mosh : SSH {
     // Lifecycle methods for mosh-client process management
 
     override fun onBackground() {
-        if (moshProcessId > 0 && moshConnected) {
-            Timber.d("Sending SIGSTOP to mosh-client")
-            MoshClient.kill(moshProcessId, SIGSTOP)
-        }
+        if (moshConnected) moshProcess.pause()
     }
 
     override fun onForeground() {
-        if (moshProcessId > 0 && moshConnected) {
-            Timber.d("Sending SIGCONT to mosh-client")
-            MoshClient.kill(moshProcessId, SIGCONT)
-        }
+        if (moshConnected) moshProcess.resume()
     }
 
     override fun onScreenOff() {
@@ -563,10 +558,6 @@ class Mosh : SSH {
         private const val PROTOCOL = "mosh"
         private const val DEFAULT_PORT = 22 // SSH port for initial connection
 
-        // Signal constants
-        private const val SIGSTOP = 19
-        private const val SIGCONT = 18
-        private const val SIGTERM = 15
         private const val IPV6_ADDRESS_LENGTH = 16
         private const val IPV6_UNIQUE_LOCAL_MASK = 0xfe
         private const val IPV6_UNIQUE_LOCAL_PREFIX = 0xfc
