@@ -66,6 +66,7 @@ import org.connectbot.terminal.TerminalDimensions
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.TerminalEmulatorFactory
 import org.connectbot.ui.LocalTerminalManager
+import org.connectbot.ui.navigation.navigateToConsole
 import org.connectbot.ui.navigation.safePopBackStack
 import org.connectbot.ui.screens.console.ConsoleScreen
 import org.connectbot.ui.screens.console.ConsoleUiState
@@ -158,6 +159,34 @@ class ConsoleScreenTest {
     private fun navigateToConsoleScreen(hostId: Long = -1L) {
         composeTestRule.runOnUiThread {
             navController.navigate("console/$hostId")
+        }
+    }
+
+    @Test
+    fun notificationNavigation_switchesSessionsWithoutReusingTheirViewModelEntry() {
+        composeTestRule.setContent {
+            val context = LocalContext.current
+            navController = remember {
+                TestNavHostController(context).apply {
+                    navigatorProvider.addNavigator(ComposeNavigator())
+                }
+            }
+            NavHost(navController, startDestination = "start") {
+                composable("start") {}
+                composable("console/{hostId}", arguments = listOf(navArgument("hostId") { type = NavType.LongType })) {}
+            }
+        }
+        composeTestRule.runOnIdle {
+            navController.navigateToConsole(-1L)
+            val firstEntry = navController.currentBackStackEntry!!.id
+            navController.navigateToConsole(-2L)
+            val secondEntry = navController.currentBackStackEntry!!.id
+            assertFalse(firstEntry == secondEntry)
+            assertEquals(-2L, navController.currentBackStackEntry!!.arguments!!.getLong("hostId"))
+            navController.navigateToConsole(-2L)
+            assertEquals(secondEntry, navController.currentBackStackEntry!!.id)
+            navController.popBackStack()
+            assertEquals(firstEntry, navController.currentBackStackEntry!!.id)
         }
     }
 

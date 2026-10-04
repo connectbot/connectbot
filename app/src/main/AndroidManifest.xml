@@ -92,6 +92,10 @@
 			</intent-filter>
 		</activity>
 
+		<receiver
+			android:name=".service.NotificationActionReceiver"
+			android:exported="false" />
+
 		<service
 			android:name="org.connectbot.service.TerminalManager"
 			android:configChanges="keyboardHidden|orientation|screenSize|screenLayout"

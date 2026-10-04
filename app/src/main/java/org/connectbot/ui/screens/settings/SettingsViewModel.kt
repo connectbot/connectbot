@@ -18,9 +18,12 @@
 package org.connectbot.ui.screens.settings
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.net.Uri
+import android.os.Build
+import android.provider.Settings
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.biometric.BiometricManager
 import androidx.biometric.BiometricManager.Authenticators
@@ -42,6 +45,7 @@ import org.connectbot.BuildConfig
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.service.ConnectionNotifier
 import org.connectbot.terminal.ImeShortcutInputMode
 import org.connectbot.util.LanguageDownloadState
 import org.connectbot.util.LanguagePackManager
@@ -79,7 +83,8 @@ data class SettingsUiState(
     val bell: Boolean = true,
     val bellVolume: Float = 0.5f,
     val bellVibrate: Boolean = true,
-    val bellNotification: Boolean = false,
+    val bellNotification: Boolean = true,
+    val connectionLostNotification: Boolean = true,
     val fontFamily: String = "SYSTEM_DEFAULT",
     val customFonts: List<String> = emptyList(),
     val customTerminalTypes: List<String> = emptyList(),
@@ -115,6 +120,9 @@ class SettingsViewModel @Inject constructor(
 
     private val _showPermissionDeniedDialog = Channel<Unit>(Channel.CONFLATED)
     val showPermissionDeniedDialog = _showPermissionDeniedDialog.receiveAsFlow()
+
+    private val _openNotificationChannelSettings = Channel<Intent>(Channel.CONFLATED)
+    val openNotificationChannelSettings = _openNotificationChannelSettings.receiveAsFlow()
 
     // Persist permission denial state in SharedPreferences
     private var wasPermissionDenied: Boolean
@@ -219,7 +227,8 @@ class SettingsViewModel @Inject constructor(
             bell = prefs.getBoolean(PreferenceConstants.BELL, true),
             bellVolume = prefs.getFloat(PreferenceConstants.BELL_VOLUME, 0.5f),
             bellVibrate = prefs.getBoolean(PreferenceConstants.BELL_VIBRATE, true),
-            bellNotification = prefs.getBoolean(PreferenceConstants.BELL_NOTIFICATION, false),
+            bellNotification = prefs.getBoolean(PreferenceConstants.BELL_NOTIFICATION, true),
+            connectionLostNotification = prefs.getBoolean(PreferenceConstants.CONNECTION_LOST_NOTIFICATION, true),
             fontFamily = prefs.getString(PreferenceConstants.FONT_FAMILY, "SYSTEM_DEFAULT") ?: "SYSTEM_DEFAULT",
             customFonts = customFonts,
             customTerminalTypes = customTerminalTypes,
@@ -287,6 +296,13 @@ class SettingsViewModel @Inject constructor(
         }
     }
 
+    fun onNotificationPermissionChanged(isGranted: Boolean) {
+        // Returning from channel settings must not undo an explicit opt-out.
+        if (!isGranted || wasPermissionDenied) {
+            onNotificationPermissionResult(isGranted)
+        }
+    }
+
     fun updateWifilock(value: Boolean) {
         updateBooleanPref(PreferenceConstants.WIFI_LOCK, value) { copy(wifilock = value) }
     }
@@ -313,6 +329,24 @@ class SettingsViewModel @Inject constructor(
 
     fun updateBellNotification(value: Boolean) {
         updateBooleanPref(PreferenceConstants.BELL_NOTIFICATION, value) { copy(bellNotification = value) }
+    }
+
+    fun openNotificationSettings() {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) return
+        viewModelScope.launch {
+            withContext(dispatchers.io) {
+                ConnectionNotifier.createNotificationChannels(context)
+            }
+            _openNotificationChannelSettings.send(
+                Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS).apply {
+                    putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                },
+            )
+        }
+    }
+
+    fun updateConnectionLostNotification(value: Boolean) {
+        updateBooleanPref(PreferenceConstants.CONNECTION_LOST_NOTIFICATION, value) { copy(connectionLostNotification = value) }
     }
 
     fun updateTitleBarHide(value: Boolean) {

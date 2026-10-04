@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -322,9 +322,9 @@ class AppViewModel @Inject constructor(
     }
 
     fun shouldShowNotificationWarning(): Boolean {
+        if (!prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)) return true
         if (!prefs.contains(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED)) return false
-        val connPersist = prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)
-        return !connPersist || !notificationPermissionHelper.isGranted()
+        return !notificationPermissionHelper.isGranted()
     }
 
     fun markHostListSnackbarShown() {

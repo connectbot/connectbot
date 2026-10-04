@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -46,6 +46,7 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
@@ -163,9 +164,19 @@ class AppViewModelPermissionTest {
 
     @Test
     fun shouldShowNotificationWarning_PermissionNeverRequested_ReturnsFalse() = runTest {
+        `when`(prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)).thenReturn(true)
         whenever(prefs.contains(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(false)
 
         assertFalse("Should not show warning before permission has ever been requested", viewModel.shouldShowNotificationWarning())
+    }
+
+    @Test
+    fun shouldShowNotificationWarning_ManuallyDisabledWithoutPermissionDecision_ReturnsTrue() = runTest {
+        `when`(prefs.contains(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED)).thenReturn(false)
+        `when`(prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)).thenReturn(false)
+        `when`(notificationPermissionHelper.isGranted()).thenReturn(true)
+
+        assertTrue(viewModel.shouldShowNotificationWarning())
     }
 
     @Test

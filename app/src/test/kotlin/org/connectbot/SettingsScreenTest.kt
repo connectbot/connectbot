@@ -37,11 +37,13 @@ import org.connectbot.ui.screens.settings.SettingsScreen
 import org.connectbot.ui.screens.settings.SettingsScreenContent
 import org.connectbot.ui.screens.settings.SettingsUiState
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
 
 @HiltAndroidTest
 @RunWith(AndroidJUnit4::class)
@@ -55,6 +57,65 @@ class SettingsScreenTest {
     @Before
     fun setUp() {
         hiltRule.inject()
+    }
+
+    @Test
+    @Config(sdk = [26, 34])
+    fun notificationSettingsLinkAppearsBelowMainSettingAndOpensSettings() {
+        var settingsOpened = false
+        setSettingsContent(onNotificationSettingsClick = { settingsOpened = true })
+
+        val main = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_conn_persist_title))
+        val channels = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_notification_channels_title))
+        val wifi = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_wifilock_title))
+        assertTrue(main.fetchSemanticsNode().boundsInRoot.bottom <= channels.fetchSemanticsNode().boundsInRoot.top)
+        assertTrue(channels.fetchSemanticsNode().boundsInRoot.bottom <= wifi.fetchSemanticsNode().boundsInRoot.top)
+
+        channels.performClick()
+        assertTrue(settingsOpened)
+    }
+
+    @Test
+    @Config(sdk = [26, 34])
+    fun notificationSettingsLinkRemainsAvailableWhenMainSettingIsOff() {
+        setSettingsContent(uiState = SettingsUiState(connPersist = false))
+
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_conn_persist_disabled_summary)).assertIsDisplayed()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_notification_channels_title)).assertIsDisplayed()
+    }
+
+    @Test
+    @Config(sdk = [24, 25])
+    fun legacyAlertTogglesAppearBelowMainSettingAndDefaultToOn() {
+        var bellEnabled: Boolean? = null
+        var lossEnabled: Boolean? = null
+        setSettingsContent(
+            onBellNotificationChange = { bellEnabled = it },
+            onConnectionLostNotificationChange = { lossEnabled = it },
+        )
+
+        val main = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_conn_persist_title))
+        val bells = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_bell_notification_title))
+        val losses = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_connection_lost_notification_title))
+        val wifi = composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_wifilock_title))
+        assertTrue(main.fetchSemanticsNode().boundsInRoot.bottom <= bells.fetchSemanticsNode().boundsInRoot.top)
+        assertTrue(bells.fetchSemanticsNode().boundsInRoot.bottom <= losses.fetchSemanticsNode().boundsInRoot.top)
+        assertTrue(losses.fetchSemanticsNode().boundsInRoot.bottom <= wifi.fetchSemanticsNode().boundsInRoot.top)
+
+        bells.performClick()
+        losses.performClick()
+        assertEquals(false, bellEnabled)
+        assertEquals(false, lossEnabled)
+    }
+
+    @Test
+    @Config(sdk = [24, 25])
+    fun legacyAlertTogglesAreHiddenWhenMainSettingIsOff() {
+        setSettingsContent(uiState = SettingsUiState(connPersist = false))
+
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_conn_persist_disabled_summary)).assertIsDisplayed()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_bell_notification_title)).assertDoesNotExist()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_connection_lost_notification_title)).assertDoesNotExist()
     }
 
     @Test
@@ -287,6 +348,9 @@ class SettingsScreenTest {
         onRemoveCustomTerminalType: (String) -> Unit = {},
         onDefaultProfileChange: (Long) -> Unit = {},
         onImeShortcutInputModeChange: (ImeShortcutInputMode) -> Unit = {},
+        onBellNotificationChange: (Boolean) -> Unit = {},
+        onConnectionLostNotificationChange: (Boolean) -> Unit = {},
+        onNotificationSettingsClick: () -> Unit = {},
     ) {
         composeTestRule.setContent {
             ConnectBotTheme {
@@ -330,7 +394,9 @@ class SettingsScreenTest {
                     onBellChange = {},
                     onBellVolumeChange = {},
                     onBellVibrateChange = {},
-                    onBellNotificationChange = {},
+                    onBellNotificationChange = onBellNotificationChange,
+                    onConnectionLostNotificationChange = onConnectionLostNotificationChange,
+                    onNotificationSettingsClick = onNotificationSettingsClick,
                 )
             }
         }

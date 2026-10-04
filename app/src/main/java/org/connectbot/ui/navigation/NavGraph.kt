@@ -343,3 +343,12 @@ fun NavController.navigateSafely(
         navigate(route, navOptions)
     }
 }
+
+/** Opens the requested session with its own ViewModel when switching consoles. */
+fun NavController.navigateToConsole(hostId: Long) {
+    val sameConsole = currentDestination?.route == "${NavDestinations.CONSOLE}/{${NavArgs.HOST_ID}}" &&
+        currentBackStackEntry?.arguments?.getLong(NavArgs.HOST_ID) == hostId
+    navigate("${NavDestinations.CONSOLE}/$hostId") {
+        launchSingleTop = sameConsole
+    }
+}

@@ -313,6 +313,10 @@ class TerminalBridge {
 
     val sessionAttention = SessionAttention()
 
+    @Volatile
+    var notificationSessionId: String = java.util.UUID.randomUUID().toString()
+        private set
+
     var disconnected = false
         private set
     var connecting = false
@@ -637,7 +641,9 @@ class TerminalBridge {
             Timber.w("No transport found for ${host.protocol}")
             return
         }
+        notificationSessionId = java.util.UUID.randomUUID().toString()
         connecting = true
+        manager.notifyBridgeStateChanged()
 
         transport = newTransport
         newTransport.bridge = this
@@ -883,6 +889,7 @@ class TerminalBridge {
         }
 
         sessionAttention.onEnded(reason)
+        manager.onSessionEnded(this, reason)
 
         // Cancel any pending prompts
         promptManager.cancelPrompt()

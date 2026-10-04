@@ -38,6 +38,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Error
@@ -144,9 +145,15 @@ fun SettingsScreen(
         }
     }
 
+    LaunchedEffect(Unit) {
+        viewModel.openNotificationChannelSettings.collect { intent ->
+            context.startActivity(intent)
+        }
+    }
+
     // Re-check permission status when screen resumes (e.g., user grants/revokes in Settings)
     ObservePermissionOnResume { isGranted ->
-        viewModel.onNotificationPermissionResult(isGranted)
+        viewModel.onNotificationPermissionChanged(isGranted)
     }
 
     // Show permission denied dialog if needed
@@ -208,6 +215,8 @@ fun SettingsScreen(
         onBellVolumeChange = viewModel::updateBellVolume,
         onBellVibrateChange = viewModel::updateBellVibrate,
         onBellNotificationChange = viewModel::updateBellNotification,
+        onConnectionLostNotificationChange = viewModel::updateConnectionLostNotification,
+        onNotificationSettingsClick = viewModel::openNotificationSettings,
         modifier = modifier,
     )
 }
@@ -255,6 +264,8 @@ fun SettingsScreenContent(
     onBellVolumeChange: (Float) -> Unit,
     onBellVibrateChange: (Boolean) -> Unit,
     onBellNotificationChange: (Boolean) -> Unit,
+    onConnectionLostNotificationChange: (Boolean) -> Unit,
+    onNotificationSettingsClick: () -> Unit,
     modifier: Modifier = Modifier,
     highlightItem: String? = null,
 ) {
@@ -324,11 +335,36 @@ fun SettingsScreenContent(
             item {
                 SwitchPreference(
                     title = stringResource(R.string.pref_conn_persist_title),
-                    summary = stringResource(R.string.pref_conn_persist_summary),
+                    summary = stringResource(
+                        if (uiState.connPersist) R.string.pref_conn_persist_summary else R.string.pref_conn_persist_disabled_summary,
+                    ),
                     checked = uiState.connPersist,
                     onCheckedChange = onConnPersistChange,
                     highlightColor = connPersistHighlightColor,
                 )
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                item {
+                    NotificationChannelsPreference(onClick = onNotificationSettingsClick)
+                }
+            } else if (uiState.connPersist) {
+                item {
+                    SwitchPreference(
+                        title = stringResource(R.string.pref_bell_notification_title),
+                        summary = stringResource(R.string.pref_bell_notification_summary),
+                        checked = uiState.bellNotification,
+                        onCheckedChange = onBellNotificationChange,
+                    )
+                }
+                item {
+                    SwitchPreference(
+                        title = stringResource(R.string.pref_connection_lost_notification_title),
+                        summary = stringResource(R.string.pref_connection_lost_notification_summary),
+                        checked = uiState.connectionLostNotification,
+                        onCheckedChange = onConnectionLostNotificationChange,
+                    )
+                }
             }
 
             item {
@@ -728,15 +764,6 @@ fun SettingsScreenContent(
                     onCheckedChange = onBellVibrateChange,
                 )
             }
-
-            item {
-                SwitchPreference(
-                    title = stringResource(R.string.pref_bell_notification_title),
-                    summary = stringResource(R.string.pref_bell_notification_summary),
-                    checked = uiState.bellNotification,
-                    onCheckedChange = onBellNotificationChange,
-                )
-            }
         }
     }
 
@@ -810,6 +837,20 @@ private fun SwitchPreference(
             ),
             modifier = Modifier.clickable { onCheckedChange(!checked) },
         ) { Text(title) }
+        HorizontalDivider()
+    }
+}
+
+@Composable
+private fun NotificationChannelsPreference(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Column(modifier = modifier) {
+        ListItem(
+            trailingContent = { Icon(Icons.AutoMirrored.Filled.OpenInNew, contentDescription = null) },
+            modifier = Modifier.clickable(onClick = onClick),
+        ) { Text(stringResource(R.string.pref_notification_channels_title)) }
         HorizontalDivider()
     }
 }
@@ -1538,6 +1579,8 @@ private fun SettingsScreenPreview() {
             onBellVolumeChange = {},
             onBellVibrateChange = {},
             onBellNotificationChange = {},
+            onConnectionLostNotificationChange = {},
+            onNotificationSettingsClick = {},
         )
     }
 }

@@ -42,6 +42,7 @@ import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
+import org.mockito.Mockito.`when`
 import org.mockito.kotlin.any
 import org.mockito.kotlin.eq
 import org.mockito.kotlin.mock
@@ -564,12 +565,24 @@ class ConsoleViewModelTest {
 
     @Test
     fun shouldShowNotificationWarning_PermissionNeverRequested_ReturnsFalse() = runTest {
+        `when`(prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)).thenReturn(true)
         whenever(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
         whenever(prefs.contains(eq(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED))).thenReturn(false)
 
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, notificationPermissionHelper)
 
         assertFalse("Should not show warning before permission has ever been requested", viewModel.shouldShowNotificationWarning())
+    }
+
+    @Test
+    fun shouldShowNotificationWarning_ManuallyDisabledWithoutPermissionDecision_ReturnsTrue() = runTest {
+        `when`(savedStateHandle.get<Long>("hostId")).thenReturn(-1L)
+        `when`(prefs.contains(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED)).thenReturn(false)
+        `when`(prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)).thenReturn(false)
+        `when`(notificationPermissionHelper.isGranted()).thenReturn(true)
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers, prefs, notificationPermissionHelper)
+
+        assertTrue(viewModel.shouldShowNotificationWarning())
     }
 
     @Test

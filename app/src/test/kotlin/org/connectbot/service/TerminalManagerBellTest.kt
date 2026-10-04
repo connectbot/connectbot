@@ -17,17 +17,20 @@
 
 package org.connectbot.service
 
+import android.content.Context
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.util.PreferenceConstants
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.doCallRealMethod
 import org.mockito.Mockito.doNothing
 import org.mockito.Mockito.doReturn
 import org.mockito.Mockito.mock
@@ -36,6 +39,8 @@ import org.mockito.Mockito.spy
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.RuntimeEnvironment
+import org.robolectric.annotation.Config
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
@@ -51,12 +56,14 @@ class TerminalManagerBellTest {
     fun setUp() {
         manager = spy(TerminalManager())
         manager.dispatchers = CoroutineDispatchers(default = dispatcher, io = dispatcher, main = dispatcher)
+        manager.prefs = RuntimeEnvironment.getApplication().getSharedPreferences("notifications", Context.MODE_PRIVATE)
+        manager.connectionNotifier = mock(ConnectionNotifier::class.java)
         doReturn(true).`when`(manager).isUiVisible
         doNothing().`when`(manager).playBeep()
         bridgeA = bridge(hostA)
         bridgeB = bridge(hostB)
-        doNothing().`when`(manager).sendActivityNotification(hostA)
-        doNothing().`when`(manager).sendActivityNotification(hostB)
+        doNothing().`when`(manager).sendActivityNotification(bridgeA)
+        doNothing().`when`(manager).sendActivityNotification(bridgeB)
     }
 
     @Test
@@ -71,7 +78,7 @@ class TerminalManagerBellTest {
         advanceUntilIdle()
 
         verify(manager).playBeep()
-        verify(manager, never()).sendActivityNotification(hostB)
+        verify(manager, never()).sendActivityNotification(bridgeB)
     }
 
     @Test
@@ -81,8 +88,8 @@ class TerminalManagerBellTest {
         manager.onBell(bridgeA)
         advanceUntilIdle()
 
-        verify(manager).sendActivityNotification(hostA)
-        verify(manager, never()).sendActivityNotification(hostB)
+        verify(manager).sendActivityNotification(bridgeA)
+        verify(manager, never()).sendActivityNotification(bridgeB)
         verify(manager, never()).playBeep()
     }
 
@@ -95,7 +102,7 @@ class TerminalManagerBellTest {
         manager.onBell(bridgeA)
         advanceUntilIdle()
 
-        verify(manager).sendActivityNotification(hostA)
+        verify(manager).sendActivityNotification(bridgeA)
         verify(manager, never()).playBeep()
     }
 
@@ -107,7 +114,7 @@ class TerminalManagerBellTest {
         manager.onBell(bridgeA)
         advanceUntilIdle()
 
-        verify(manager).sendActivityNotification(hostA)
+        verify(manager).sendActivityNotification(bridgeA)
         verify(manager, never()).playBeep()
     }
 
@@ -121,8 +128,8 @@ class TerminalManagerBellTest {
         manager.onBell(bridgeB)
         advanceUntilIdle()
 
-        verify(manager).sendActivityNotification(hostA)
-        verify(manager, never()).sendActivityNotification(hostB)
+        verify(manager).sendActivityNotification(bridgeA)
+        verify(manager, never()).sendActivityNotification(bridgeB)
         verify(manager).playBeep()
     }
 
@@ -147,9 +154,120 @@ class TerminalManagerBellTest {
         assertTrue(attention.snapshot().acknowledged)
     }
 
+    @Test
+    fun lostConnectionInVisibleSessionDoesNotCreateSystemAlert() = runTest(dispatcher) {
+        manager.setVisibleConsole(Any(), bridgeA)
+        manager.onSessionEnded(bridgeA, DisconnectReason.NETWORK_LOST)
+        advanceUntilIdle()
+        verify(manager.connectionNotifier).sessionEnded(manager, NotificationSession("session-1", hostA, connected = true), DisconnectReason.NETWORK_LOST, false)
+    }
+
+    @Test
+    fun lostConnectionInOtherSessionCreatesSystemAlert() = runTest(dispatcher) {
+        manager.setVisibleConsole(Any(), bridgeB)
+        manager.onSessionEnded(bridgeA, DisconnectReason.IO_ERROR)
+        advanceUntilIdle()
+        verify(manager.connectionNotifier).sessionEnded(manager, NotificationSession("session-1", hostA, connected = true), DisconnectReason.IO_ERROR, true)
+    }
+
+    @Test
+    fun backgroundLossAlertsEvenBeforeConsoleCleanup() = runTest(dispatcher) {
+        manager.setVisibleConsole(Any(), bridgeA)
+        doReturn(false).`when`(manager).isUiVisible
+        manager.onSessionEnded(bridgeA, DisconnectReason.NETWORK_LOST)
+        advanceUntilIdle()
+        verify(manager.connectionNotifier).sessionEnded(manager, NotificationSession("session-1", hostA, connected = true), DisconnectReason.NETWORK_LOST, true)
+    }
+
+    @Test
+    @Config(sdk = [24, 25])
+    fun lostConnectionPreferenceIsRespected() = runTest(dispatcher) {
+        manager.prefs.edit().putBoolean(PreferenceConstants.CONNECTION_LOST_NOTIFICATION, false).apply()
+        manager.onSessionEnded(bridgeA, DisconnectReason.IO_ERROR)
+        advanceUntilIdle()
+        verify(manager.connectionNotifier).sessionEnded(manager, NotificationSession("session-1", hostA, connected = true), DisconnectReason.IO_ERROR, false)
+    }
+
+    @Test
+    @Config(sdk = [24, 25, 26, 34])
+    fun notificationsAreEnabledByDefault() = runTest(dispatcher) {
+        doCallRealMethod().`when`(manager).sendActivityNotification(bridgeA)
+        manager.sendActivityNotification(bridgeA)
+        manager.onSessionEnded(bridgeA, DisconnectReason.IO_ERROR)
+        advanceUntilIdle()
+
+        val session = NotificationSession("session-1", hostA, connected = true)
+        verify(manager.connectionNotifier).showActivityNotification(manager, session)
+        verify(manager.connectionNotifier).sessionEnded(manager, session, DisconnectReason.IO_ERROR, true)
+    }
+
+    @Test
+    @Config(sdk = [24, 25, 26, 34])
+    fun disablingMainNotificationSettingSuppressesBothAlerts() = runTest(dispatcher) {
+        manager.prefs.edit()
+            .putBoolean(PreferenceConstants.CONNECTION_PERSIST, false)
+            .putBoolean(PreferenceConstants.BELL_NOTIFICATION, true)
+            .putBoolean(PreferenceConstants.CONNECTION_LOST_NOTIFICATION, true)
+            .apply()
+        doCallRealMethod().`when`(manager).sendActivityNotification(bridgeA)
+        manager.sendActivityNotification(bridgeA)
+        manager.onSessionEnded(bridgeA, DisconnectReason.IO_ERROR)
+        advanceUntilIdle()
+
+        val session = NotificationSession("session-1", hostA, connected = true)
+        verify(manager.connectionNotifier, never()).showActivityNotification(manager, session)
+        verify(manager.connectionNotifier).sessionEnded(manager, session, DisconnectReason.IO_ERROR, false)
+    }
+
+    @Test
+    @Config(sdk = [24, 25])
+    fun legacyBellOptOutIsRespected() {
+        manager.prefs.edit().putBoolean(PreferenceConstants.BELL_NOTIFICATION, false).apply()
+        doCallRealMethod().`when`(manager).sendActivityNotification(bridgeA)
+        manager.sendActivityNotification(bridgeA)
+
+        verify(manager.connectionNotifier, never()).showActivityNotification(manager, NotificationSession("session-1", hostA, connected = true))
+    }
+
+    @Test
+    @Config(sdk = [26, 34])
+    fun systemChannelsAreNotOverriddenByLegacyPreferences() = runTest(dispatcher) {
+        manager.prefs.edit()
+            .putBoolean(PreferenceConstants.BELL_NOTIFICATION, false)
+            .putBoolean(PreferenceConstants.CONNECTION_LOST_NOTIFICATION, false)
+            .apply()
+        doCallRealMethod().`when`(manager).sendActivityNotification(bridgeA)
+        manager.sendActivityNotification(bridgeA)
+        manager.onSessionEnded(bridgeA, DisconnectReason.IO_ERROR)
+        advanceUntilIdle()
+
+        val session = NotificationSession("session-1", hostA, connected = true)
+        verify(manager.connectionNotifier).showActivityNotification(manager, session)
+        verify(manager.connectionNotifier).sessionEnded(manager, session, DisconnectReason.IO_ERROR, true)
+    }
+
+    @Test
+    fun staleReconnectActionDoesNotRestartANewerSession() = runTest(dispatcher) {
+        doReturn(true).`when`(bridgeA).isDisconnected
+        doNothing().`when`(manager).requestReconnect(bridgeA)
+        manager.reconnectFromNotification(bridgeA, "previous-session")
+        advanceUntilIdle()
+        verify(manager, never()).requestReconnect(bridgeA)
+    }
+
+    @Test
+    fun reconnectActionRestartsOnlyItsDisconnectedSession() = runTest(dispatcher) {
+        doReturn(true).`when`(bridgeA).isDisconnected
+        doNothing().`when`(manager).requestReconnect(bridgeA)
+        manager.reconnectFromNotification(bridgeA, "session-1")
+        advanceUntilIdle()
+        verify(manager).requestReconnect(bridgeA)
+    }
+
     private fun bridge(host: Host): TerminalBridge {
         val bridge = mock(TerminalBridge::class.java)
         `when`(bridge.host).thenReturn(host)
+        `when`(bridge.notificationSessionId).thenReturn("session-${host.id}")
         return bridge
     }
 }
