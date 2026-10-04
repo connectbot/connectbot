@@ -339,7 +339,9 @@
 	<!-- Title for the preference that keeps the background service running to prevent connection drops. -->
 	<string name="pref_conn_persist_title">"Stay connected in the background"</string>
 	<!-- Summary for the preference that keeps the background service running to prevent connection drops. -->
-	<string name="pref_conn_persist_summary">"Keep your sessions open even when you switch to other apps"</string>
+	<string name="pref_conn_persist_summary">"Use an ongoing notification to keep sessions open when you switch apps"</string>
+	<!-- Warning shown below the background connection switch while it is off. -->
+	<string name="pref_conn_persist_disabled_summary">"Android may stop ConnectBot and disconnect your sessions when you switch apps"</string>
 
 	<!-- Name for the keyboard shortcuts preference -->
 	<string name="pref_keymode_title">"Directory shortcuts"</string>
@@ -386,8 +388,8 @@
 
 	<!-- Checkbox preference title for the receive notifications on terminal bell feature -->
 	<string name="pref_bell_notification_title">"Background notifications"</string>
-	<!-- Brief summary of the feature that is enabled when the checkbox preference for the receive notifications on terminal bell feature is checked -->
-	<string name="pref_bell_notification_summary">"Send notification when a terminal running in the background sounds a bell."</string>
+	<!-- Explains that bell notifications pop up without sound for any console other than the one being viewed. -->
+	<string name="pref_bell_notification_summary">"Show a soundless pop-up when a bell rings in a session you are not viewing."</string>
 
 	<!-- Preference selection to indicate use of right side of keyboard for special shortcuts. -->
 	<string name="list_keymode_right">"Use right-side keys"</string>
@@ -1220,11 +1222,11 @@
 	<!-- Button text to open ConnectBot app settings page where user can grant notification permission. -->
 	<string name="open_settings">"Open settings"</string>
 
-	<!-- Snackbar shown on host list when notification permission was denied.
-	     Informs user that connections will drop when app is backgrounded. -->
-	<string name="notification_permission_denied_snackbar">"Connections may drop without notification permission"</string>
+	<!-- Snackbar shown on the host list when background connections are disabled or notification permission was denied.
+	     Its Settings action opens the background connection preference. -->
+	<string name="notification_permission_denied_snackbar">"Connections may drop when you switch apps"</string>
 
-	<!-- Snackbar shown on console screen when notification permission is denied and persist connections is enabled. -->
+	<!-- Snackbar shown on the console when background connections are disabled or notification permission was denied. -->
 	<string name="notification_permission_console_warning">"Connection may drop in background"</string>
 
 	<!-- Message shown to user when they're trying to connect to a host on a local network but
@@ -1606,4 +1608,52 @@
 	<string name="host_status_action_required">Connection needs attention</string>
 	<!-- Explanation for an amber host badge; the placeholder is the disconnect reason. -->
 	<string name="host_status_unread_explanation">%1$s Open the console to read the remaining output.</string>
+
+	<!-- Notification channel name for the quiet ongoing connection summary. -->
+	<string name="notification_channel_sessions">Active sessions</string>
+	<!-- Notification channel name for the normal-priority summary when sessions have pending alerts. -->
+	<string name="notification_channel_attention">Sessions needing attention</string>
+	<!-- Notification channel name for background terminal bell alerts. -->
+	<string name="notification_channel_bells">Terminal bells</string>
+	<!-- Notification channel name for unexpected connection failures. -->
+	<string name="notification_channel_connections">Lost connections</string>
+	<!-- Settings row below the background connection switch that opens ConnectBot's notification channels in Android settings. -->
+	<string name="pref_notification_channels_title">Manage notification channels in settings</string>
+	<!-- Ongoing notification count of live sessions, excluding connecting and disconnected sessions. -->
+	<plurals name="notification_connected_sessions">
+		<item quantity="one">%d session connected</item>
+		<item quantity="other">%d sessions connected</item>
+	</plurals>
+	<!-- Notification count of sessions with an unacknowledged bell or connection failure. -->
+	<plurals name="notification_attention_sessions">
+		<item quantity="one">%d needs attention</item>
+		<item quantity="other">%d need attention</item>
+	</plurals>
+	<!-- Combines two notification details: connected and attention counts (also on the lock screen), or a connection state and event in an expanded row. -->
+	<string name="notification_summary">%1$s · %2$s</string>
+	<!-- Status of a live session in the expanded notification summary. -->
+	<string name="notification_connected">Connected</string>
+	<!-- Status of a session still establishing its connection in the expanded notification. -->
+	<string name="notification_connecting">Connecting…</string>
+	<!-- Status of a disconnected session retained in the expanded notification. -->
+	<string name="notification_disconnected">Disconnected</string>
+	<!-- Description of a terminal bell event in a background session notification. -->
+	<string name="notification_bell">Terminal bell</string>
+	<!-- Expanded notification row: session nickname followed by its connection state or latest unseen event. -->
+	<string name="notification_session_detail">%1$s: %2$s</string>
+	<!-- Latest unseen event description followed by its local time in an expanded notification row. -->
+	<string name="notification_event_time">%1$s · %2$s</string>
+	<!-- Overflow count when more sessions exist than fit in an expanded notification. -->
+	<plurals name="notification_more_sessions">
+		<item quantity="one">+%d more session</item>
+		<item quantity="other">+%d more sessions</item>
+	</plurals>
+	<!-- Notification action acknowledging the latest event in a session. -->
+	<string name="notification_mark_seen">Mark seen</string>
+	<!-- Notification action suppressing further bell alerts until this connection ends. -->
+	<string name="notification_mute_bells">Mute bells</string>
+	<!-- Settings switch title for unexpected background disconnection alerts. -->
+	<string name="pref_connection_lost_notification_title">Lost connection notifications</string>
+	<!-- Settings switch summary explaining when connection failure alerts appear. -->
+	<string name="pref_connection_lost_notification_summary">Show a soundless pop-up when a session you are not viewing unexpectedly disconnects.</string>
 </resources>

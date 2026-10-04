@@ -190,6 +190,9 @@ class TerminalManager :
         visibleConsoleOwner = owner
         visibleBridge = bridge
         bridge?.sessionAttention?.onOpened()
+        if (::connectionNotifier.isInitialized && bridge != null) {
+            connectionNotifier.handleAction(this, ConnectionNotifier.ACTION_SEEN, bridge.notificationSessionId)
+        }
         notifyHostStatusChanged()
     }
 
@@ -213,13 +216,13 @@ class TerminalManager :
 
     /** Route each bell once, using the originating bridge and the visible console. */
     fun onBell(bridge: TerminalBridge) {
+        val sessionId = bridge.notificationSessionId
         scope.launch(dispatchers.main) {
+            if (bridge.notificationSessionId != sessionId) return@launch
             if (isUiVisible && visibleBridge === bridge) {
                 playBeep()
             } else {
-                withContext(dispatchers.io) {
-                    sendActivityNotification(bridge.host)
-                }
+                sendActivityNotification(bridge)
             }
         }
     }
@@ -343,6 +346,7 @@ class TerminalManager :
 
         disconnectAll(excludeLocal = false)
 
+        connectionNotifier.updateSessions(this, emptyList())
         connectionNotifier.hideRunningNotification(this)
 
         disableMediaPlayer()
@@ -432,7 +436,7 @@ class TerminalManager :
         }
 
         if (prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)) {
-            connectionNotifier.showRunningNotification(this)
+            connectionNotifier.showRunningNotification(this, notificationSessions())
         }
 
         // also update database with new connected time
@@ -937,13 +941,46 @@ class TerminalManager :
      * being shown. When user selects the notification, it will bring them
      * directly to the console displaying the host.
      *
-     * @param host
+     * @param bridge the session that emitted the bell
      */
-    fun sendActivityNotification(host: Host) {
-        if (prefs.getBoolean(PreferenceConstants.BELL_NOTIFICATION, false)) {
-            connectionNotifier.showActivityNotification(this, host)
+    fun sendActivityNotification(bridge: TerminalBridge) {
+        if (isNotificationEnabled(PreferenceConstants.BELL_NOTIFICATION)) {
+            connectionNotifier.showActivityNotification(this, bridge.notificationSession())
         }
     }
+
+    fun onSessionEnded(bridge: TerminalBridge, reason: DisconnectReason) {
+        val session = bridge.notificationSession()
+        scope.launch(dispatchers.main) {
+            if (bridge.notificationSessionId != session.id) return@launch
+            val alert = isNotificationEnabled(PreferenceConstants.CONNECTION_LOST_NOTIFICATION) &&
+                !(isUiVisible && visibleBridge === bridge)
+            connectionNotifier.sessionEnded(this@TerminalManager, session, reason, alert)
+        }
+    }
+
+    private fun isNotificationEnabled(preference: String): Boolean = prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true) &&
+        // Android 8+ uses system channels; legacy preferences must not silently override them.
+        (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O || prefs.getBoolean(preference, true))
+
+    fun acknowledgeNotification(sessionId: String) {
+        connectionNotifier.handleAction(this, ConnectionNotifier.ACTION_SEEN, sessionId)
+    }
+
+    suspend fun reconnectFromNotification(bridge: TerminalBridge, sessionId: String) = withContext(dispatchers.io) {
+        if (bridge.notificationSessionId == sessionId && bridge.isDisconnected && !bridge.connecting) {
+            requestReconnect(bridge)
+        }
+    }
+
+    private fun TerminalBridge.notificationSession() = NotificationSession(
+        id = notificationSessionId,
+        host = host,
+        connected = !connecting && !isDisconnected,
+        connecting = connecting,
+    )
+
+    private fun notificationSessions() = bridgesFlow.value.map { it.notificationSession() }
 
     override fun onSharedPreferenceChanged(
         sharedPreferences: SharedPreferences,
@@ -1085,6 +1122,9 @@ class TerminalManager :
     }
 
     private fun notifyHostStatusChanged() {
+        if (::connectionNotifier.isInitialized) {
+            connectionNotifier.updateSessions(this, notificationSessions())
+        }
         scope.launch {
             _hostStatusChanged.emit(Unit)
         }

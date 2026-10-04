@@ -74,9 +74,9 @@ class ConsoleViewModel @Inject constructor(
     val networkStatusMessages: SharedFlow<String> = _networkStatusMessages.asSharedFlow()
 
     fun shouldShowNotificationWarning(): Boolean {
+        if (!prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)) return true
         if (!prefs.contains(PreferenceConstants.NOTIFICATION_PERMISSION_DENIED)) return false
-        val connPersist = prefs.getBoolean(PreferenceConstants.CONNECTION_PERSIST, true)
-        return !connPersist || !notificationPermissionHelper.isGranted()
+        return !notificationPermissionHelper.isGranted()
     }
 
     fun setTerminalManager(manager: TerminalManager) {

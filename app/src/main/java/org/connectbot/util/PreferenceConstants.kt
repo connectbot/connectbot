@@ -68,6 +68,7 @@ object PreferenceConstants {
     const val BELL_VOLUME: String = "bellVolume"
     const val BELL_VIBRATE: String = "bellVibrate"
     const val BELL_NOTIFICATION: String = "bellNotification"
+    const val CONNECTION_LOST_NOTIFICATION: String = "connectionLostNotification"
     const val DEFAULT_BELL_VOLUME: Float = 0.25f
 
     const val CONNECTION_PERSIST: String = "connPersist"

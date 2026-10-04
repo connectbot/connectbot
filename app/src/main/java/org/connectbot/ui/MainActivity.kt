@@ -55,9 +55,11 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.service.ConnectionNotifier
 import org.connectbot.service.TerminalManager
 import org.connectbot.ui.components.DisconnectAllDialog
 import org.connectbot.ui.navigation.NavDestinations
+import org.connectbot.ui.navigation.navigateToConsole
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.IconStyle
 import org.connectbot.util.PreferenceConstants
@@ -78,6 +80,8 @@ class MainActivity : AppCompatActivity() {
     internal lateinit var appViewModel: AppViewModel
     private var bound = false
     private var requestedUri: Uri? by mutableStateOf(null)
+    private var notificationSessionId: String? = null
+    private var notificationReconnect = false
     private var pendingHostConnection: Host? by mutableStateOf(null)
 
     // Holds the host waiting for permission result; not compose state so it doesn't trigger navigation.
@@ -139,6 +143,8 @@ class MainActivity : AppCompatActivity() {
             Timber.d("onCreate: requestedUri=$requestedUri, makingShortcut=$makingShortcut")
             handleIntent(intent)
         } else {
+            notificationSessionId = savedInstanceState.getString(ConnectionNotifier.EXTRA_SESSION_ID)
+            notificationReconnect = savedInstanceState.getBoolean(ConnectionNotifier.EXTRA_RECONNECT)
             savedInstanceState.getString(STATE_SELECTED_URI)?.let {
                 requestedUri = it.toUri()
             }
@@ -175,9 +181,9 @@ class MainActivity : AppCompatActivity() {
                 }
             }
 
-            LaunchedEffect(requestedUri, navController, appUiState) {
+            LaunchedEffect(requestedUri, navController, appUiState, isAuthenticated) {
                 Timber.d("LaunchedEffect: requestedUri=$requestedUri, appUiState=$appUiState")
-                if (appUiState is AppUiState.Ready) {
+                if (appUiState is AppUiState.Ready && (!authOnLaunchEnabled || isAuthenticated)) {
                     requestedUri?.let { uri ->
                         Timber.d("Processing URI: $uri")
                         navController.let { controller ->
@@ -337,6 +343,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleIntent(intent: Intent?) {
+        notificationSessionId = intent?.getStringExtra(ConnectionNotifier.EXTRA_SESSION_ID)
+        notificationReconnect = intent?.getBooleanExtra(ConnectionNotifier.EXTRA_RECONNECT, false) == true
         if (intent?.action == DISCONNECT_ACTION) {
             Timber.d("handleIntent: DISCONNECT_ACTION, showing disconnect dialog")
             showDisconnectAllDialog = true
@@ -345,6 +353,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
+        outState.putString(ConnectionNotifier.EXTRA_SESSION_ID, notificationSessionId)
+        outState.putBoolean(ConnectionNotifier.EXTRA_RECONNECT, notificationReconnect)
         requestedUri?.let {
             outState.putString(STATE_SELECTED_URI, it.toString())
         }
@@ -369,20 +379,29 @@ class MainActivity : AppCompatActivity() {
 
         val manager = state.terminalManager
 
+        val sessionId = notificationSessionId
+        val reconnect = notificationReconnect
+        notificationSessionId = null
+        notificationReconnect = false
+
         lifecycleScope.launch {
             try {
                 val nickname = uri.fragment ?: uri.authority
                 Timber.d("handleConnectionUri: nickname=$nickname")
-                var bridge = manager.getConnectedBridge(nickname)
+                var bridge = manager.bridgesFlow.value.find { it.notificationSessionId == sessionId }
+                    ?: manager.getConnectedBridge(nickname)
 
                 if (bridge == null) {
                     Timber.d("Creating new connection for URI: $uri with nickname: $nickname")
                     bridge = manager.openConnection(uri)
                 }
 
-                controller.navigate("${NavDestinations.CONSOLE}/${bridge.host.id}") {
-                    launchSingleTop = true
+                if (sessionId != null) {
+                    manager.acknowledgeNotification(sessionId)
+                    if (reconnect) manager.reconnectFromNotification(bridge, sessionId)
                 }
+
+                controller.navigateToConsole(bridge.host.id)
             } catch (e: Exception) {
                 Timber.e(e, "Error handling connection URI: $uri")
             }
