@@ -652,4 +652,46 @@
     <item quantity="one">%1$d toiminto</item>
     <item quantity="other">%1$d toimintoa</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Lukemattomia tulosteita</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Olet katkaissut yhteyden tähän laitteeseen.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Etäyhteys on päättynyt.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Palvelin katkaisi yhteyden. Voit muodostaa yhteyden uudelleen.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Yhteys katkesi. Voit yrittää muodostaa yhteyden uudelleen.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Yhteys verkkoon katkesi. Yritä muodostaa yhteys uudelleen, kun verkko on käytettävissä.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Todentaminen epäonnistui. Tarkista käyttäjänimesi, salasanasi tai avain ennen uudelleenyritystä.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Yhteys katkesi.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Yhteyteen on kiinnitettävä huomiota.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Avaa konsoli, jotta voit lukea jäljellä olevan tulosteen.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android saattaa sulkea ConnectBot-sovelluksen ja katkaista yhteytesi, kun vaihdat sovellusta.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh-yhteyden aikakatkaisu (sekunteina)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Aika, jonka jälkeen palvelin sulkeutuu, jos asiakas ei ole lähettänyt päivityksiä. Jätä tyhjäksi, jolloin käytetään palvelimen oletusasetusta tai yhtä viikkoa; käytä arvoa 0, jos haluat poistaa vanhenemisen käytöstä.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Syötä kokonaisluku väliltä 0–2 147 483 647 tai jätä kenttä tyhjäksi.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Käynnissä olevat istunnot</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Istunnot, jotka vaativat huomiota</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Taustalla soivat äänimerkit</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Yhteydet katkesivat</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Hallitse ilmoituskanavia asetuksissa.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Yhdistetty</string>
+  <string name="notification_connecting" tools:machine_translated="true">Yhdistetään…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Katkaistu yhteys</string>
+  <string name="notification_bell" tools:machine_translated="true">Terminaalin summeri</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Merkitty luetuksi</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Mykistä hälytysäänet.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Ilmoitukset, kun yhteys katkeaa odottamatta</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Näytä äänetön ponnahdusikkuna, kun et aktiivisesti seuraamasi istunto katkeaa odottamatta.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">%d istunto on yhdistetty</item>
+		<item quantity="other">%d aktiivista istuntoa</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">%d vaatii huomiota</item>
+		<item quantity="other">%d vaatii huomiota</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">+%d lisäsessiota</item>
+		<item quantity="other">+%d lisäsessiota</item>
+	</plurals>
 </resources>

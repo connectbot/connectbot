@@ -652,4 +652,52 @@
     <item quantity="one">%1$d dejanje</item>
     <item quantity="other">%1$d dejanj</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Neprebrano izpisano besedilo</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Odklopili ste se od te naprave.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Oddaljena seja se je končala.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Stran je prekinila povezavo. Lahko se ponovno povežete.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Povezava je bila prekinjena. Lahko jo ponovno vzpostavite.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Omrežna povezava je bila prekinjena. Ponovno se povežite, ko bo omrežje spet na voljo.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Potrditev identitete ni uspela. Pred ponovno povezavo preverite svoje uporabniško ime, geslo ali ključ.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Povezava je bila prekinjena.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Potrebna je pozornost pri vzpostavljanju povezave.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Odprite konzolo, da si ogledate preostali izpis.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android lahko ustavi program ConnectBot in prekine vaše aktivne povezave, ko preklapljate med aplikacijami.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Čas izteka omrežne povezave Mosh (v sekundah)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Čas, po katerem se povezava prekine, če od odjemalca ne prejmemo nobenih posodobitev. Če želite uporabiti privzeto nastavitev strežnika, pustite polje prazno ali nastavite en teden; uporabite 0, da onemogočite časovno omejitev.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Vnesite celo število od 0 do 2147483647 ali pustite polje prazno.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Aktivne seje</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Seje, ki zahtevajo pozornost.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Zvočni signali terminala</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Prekinjene povezave</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Upravljajte kanale za obvestila v nastavitvah.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Povezano.</string>
+  <string name="notification_connecting" tools:machine_translated="true">Povezovanje …</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Prekinjena povezava</string>
+  <string name="notification_bell" tools:machine_translated="true">Zvočni signal terminala</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Označeno kot prebrano.</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Izklop zvoka opozoril.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Obvestila o izgubi povezave.</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Prikažite obvestilo brez zvoka, ko se seja, ki jo ne spremljate, nepričakovano prekine.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+    <item quantity="one">%d seja povezana</item>
+    <item quantity="two">%d seji povezani</item>
+    <item quantity="few">%d seje povezane</item>
+    <item quantity="other">%d sej povezanih</item>
+  </plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+    <item quantity="one">%d zahteva pozornost</item>
+    <item quantity="two">%d zahtevata pozornost</item>
+    <item quantity="few">%d zahtevajo pozornost</item>
+    <item quantity="other">%d zahteva pozornost</item>
+  </plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+    <item quantity="one">Še %d seja</item>
+    <item quantity="two">Še %d seji</item>
+    <item quantity="few">Še %d seje</item>
+    <item quantity="other">Še %d sej</item>
+  </plurals>
 </resources>

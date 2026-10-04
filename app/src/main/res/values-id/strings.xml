@@ -652,4 +652,46 @@
     <item quantity="one">%1$d tindakan</item>
     <item quantity="other">%1$d tindakan</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Output yang belum dibaca</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Anda telah memutuskan sambungan dari host ini.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Sesi jarak jauh telah berakhir.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Host menutup koneksi. Anda dapat mencoba terhubung kembali.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Koneksi terputus. Anda dapat mencoba menghubungkan kembali.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Koneksi jaringan terputus. Sambungkan kembali saat jaringan tersedia.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Autentikasi gagal. Periksa nama pengguna, kata sandi, atau kunci Anda sebelum mencoba menghubungkan kembali.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Koneksi terputus.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Koneksi memerlukan perhatian.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Buka konsol untuk melihat sisa outputnya.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android mungkin akan menghentikan ConnectBot dan memutuskan sesi Anda saat Anda beralih aplikasi.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Batas waktu jaringan Mosh (detik)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Waktu tanpa pembaruan dari klien sebelum server berhenti. Biarkan kosong untuk menggunakan pengaturan server atau satu minggu; gunakan 0 untuk menonaktifkan batas waktu.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Masukkan angka bulat antara 0 hingga 2147483647, atau biarkan kosong.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Sesi yang sedang berlangsung</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Sesi yang memerlukan perhatian</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Bel terminal</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Koneksi terputus.</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Kelola saluran notifikasi di pengaturan.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Terhubung</string>
+  <string name="notification_connecting" tools:machine_translated="true">Sedang terhubung…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Sesi terputus</string>
+  <string name="notification_bell" tools:machine_translated="true">Bel terminal</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Tandai sebagai sudah dibaca.</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Matikan suara dering</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Notifikasi koneksi terputus</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Tampilkan notifikasi pop-up tanpa suara saat sesi yang tidak sedang Anda lihat terputus secara tiba-tiba.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">%d sesi terhubung</item>
+		<item quantity="other">%d sesi terhubung</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">%d memerlukan perhatian.</item>
+		<item quantity="other">%d memerlukan perhatian</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">+%d sesi lagi</item>
+		<item quantity="other">+%d sesi lagi</item>
+	</plurals>
 </resources>

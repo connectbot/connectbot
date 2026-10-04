@@ -652,4 +652,49 @@
     <item quantity="one">%1$d acción</item>
     <item quantity="other">%1$d acciones</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Salida no leída.</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Se ha desconectado de este dispositivo.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">La sesión remota ha finalizado.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">El servidor cerró la conexión. Puede volver a conectarse.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Se perdió la conexión. Puede volver a conectarse.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Se perdió la conexión de red. Vuelva a conectarse cuando la red esté disponible.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">La autenticación falló. Compruebe su nombre de usuario, contraseña o clave antes de volver a conectarse.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">La conexión se ha terminado.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Se requiere atención para la conexión.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Abra la consola para ver el resto de la información.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Es posible que Android cierre ConnectBot y desconecte tus sesiones cuando cambies de aplicación.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Tiempo de espera de la conexión de Mosh (en segundos)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Tiempo que debe transcurrir sin actualizaciones del cliente antes de que el servidor se cierre. Dejar en blanco para usar la configuración del servidor o una semana; usar 0 para desactivar el tiempo de espera.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Ingrese un número entero entre 0 y 2147483647, o deje el campo en blanco.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Sesiones activas</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Sesiones que requieren atención.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Sonidos de alerta de la terminal.</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Conexiones interrumpidas.</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Administra los canales de notificación en la configuración.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Conectado.</string>
+  <string name="notification_connecting" tools:machine_translated="true">Estableciendo la conexión…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Sesión desconectada.</string>
+  <string name="notification_bell" tools:machine_translated="true">Sonido de alerta del terminal.</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Se ha confirmado la recepción.</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Silenciar las alertas sonoras.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Notificaciones de pérdida de conexión.</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Muestra una ventana emergente sin sonido cuando una sesión que no estás visualizando se desconecta inesperadamente.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+    <item quantity="one">%d sesión conectada</item>
+    <item quantity="other">%d sesiones activas.</item>
+    <item quantity="many">%d sesiones activas.</item>
+  </plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+    <item quantity="one">%d requiere atención.</item>
+    <item quantity="other">%d requieren atención.</item>
+    <item quantity="many">%d requieren atención.</item>
+  </plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+    <item quantity="one">+%d sesiones más</item>
+    <item quantity="other">+%d sesiones más</item>
+    <item quantity="many">+%d sesiones más</item>
+  </plurals>
 </resources>

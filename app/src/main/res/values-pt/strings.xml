@@ -652,4 +652,49 @@
     <item quantity="one">%1$d ação</item>
     <item quantity="other">%1$d ações</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Dados não lidos</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Você se desconectou deste host.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">A sessão remota foi encerrada.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">O servidor encerrou a conexão. Você pode tentar reconectar.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">A conexão foi interrompida. Você pode tentar reconectar.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">A conexão de rede foi interrompida. Reconecte-se quando a rede estiver disponível.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Autenticação falhou. Verifique o seu nome de utilizador, palavra-passe ou chave antes de tentar reconectar.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">A conexão foi encerrada.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">A conexão requer atenção.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Abra o console para ver o restante da saída.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">O Android pode interromper o ConnectBot e desconectar suas sessões quando você mudar de aplicativo.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Tempo limite da rede Mosh (segundos)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Tempo máximo sem atualizações do cliente antes do servidor ser encerrado. Deixe em branco para usar a configuração do servidor ou um período de uma semana; use 0 para desativar o tempo limite.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Insira um número inteiro entre 0 e 2147483647, ou deixe o campo em branco.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Sessões ativas</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Sessões que precisam de atenção.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Sinais sonoros do terminal</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Conexões perdidas</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Gerenciar os canais de notificação nas configurações.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Conectado</string>
+  <string name="notification_connecting" tools:machine_translated="true">A conectar…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Sessão desconectada</string>
+  <string name="notification_bell" tools:machine_translated="true">Sinal sonoro do terminal</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Confirmar leitura</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Desativar alertas sonoros.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Notificações de perda de conexão.</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Exibe uma notificação silenciosa quando uma sessão que você não está visualizando é desconectada inesperadamente.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+    <item quantity="one">%d sessão conectada</item>
+    <item quantity="other">%d sessões ativas</item>
+    <item quantity="many">%d sessões ativas</item>
+  </plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+    <item quantity="one">%d requer atenção.</item>
+    <item quantity="other">%d precisam de atenção.</item>
+    <item quantity="many">%d precisam de atenção.</item>
+  </plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+    <item quantity="one">Mais %d sessão(ões)</item>
+    <item quantity="other">+%d sessões adicionais</item>
+    <item quantity="many">+%d sessões adicionais</item>
+  </plurals>
 </resources>

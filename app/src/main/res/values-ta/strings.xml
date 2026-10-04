@@ -652,4 +652,46 @@
     <item quantity="one">%1$d செயல்</item>
     <item quantity="other">%1$d செயல்கள்</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">படிக்காத வெளியீடு</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">நீங்கள் இந்த சேவையகத்திலிருந்து துண்டிக்கப்பட்டீர்கள்.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">தொலைநிலை அமர்வு முடிந்தது.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">சேவையகம் இணைப்பைத் துண்டித்தது. நீங்கள் மீண்டும் இணைக்கலாம்.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">இணைப்பு துண்டிக்கப்பட்டது. நீங்கள் மீண்டும் இணைக்கலாம்.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">நெட்வொர்க் இணைப்பு துண்டிக்கப்பட்டது. நெட்வொர்க் கிடைக்கும்போது மீண்டும் இணைக்கவும்.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">உள்நுழைவு தோல்வியடைந்தது. மீண்டும் இணைப்பதற்கு முன், உங்கள் பயனர் பெயர், கடவுச்சொல் அல்லது விசையைச் சரிபார்க்கவும்.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">இணைப்பு துண்டிக்கப்பட்டது.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">இணைப்பில் கவனம் தேவை.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s மீதமுள்ள வெளியீட்டைப் படிக்க, கன்சோலைத் திறக்கவும்.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">ஆண்ட்ராய்டு, நீங்கள் பயன்பாடுகளை மாற்றும்போது, கனெக்ட் பாட்டை நிறுத்தி, உங்கள் இணைப்புகளைத் துண்டிக்கலாம்.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">மோஷ் நெட்வொர்க் காலக்கெடு (வினாடிகள்)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">சேவையகம் நிறுத்தப்படுவதற்கு முன்பு, வாடிக்கையாளர் புதுப்பிப்புகள் இல்லாமல் எவ்வளவு நேரம் இருக்க வேண்டும். சேவையக அமைப்பைப் பயன்படுத்த அல்லது ஒரு வாரம் என காலியாக விடவும்; காலாவதி நேரத்தை முடக்க 0 ஐப் பயன்படுத்தவும்.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">0 முதல் 2147483647 வரையிலான முழு எண்ணை உள்ளிடவும் அல்லது காலியாக விடவும்.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">தற்போதைய செயல்பாடுகள்</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">கவனிக்கப்பட வேண்டிய அமர்வுகள்.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">டெர்மினல் ஒலிப்பான்கள்</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">இணைப்பு துண்டிக்கப்பட்டது.</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">அமைப்புகளில் அறிவிப்பு சேனல்களை நிர்வகிக்கவும்.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">இணைக்கப்பட்டுள்ளது</string>
+  <string name="notification_connecting" tools:machine_translated="true">இணைக்கப்படுகிறது…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">துண்டிக்கப்பட்டது.</string>
+  <string name="notification_bell" tools:machine_translated="true">டெர்மினல் ஒலிப்பான்</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">பார்த்ததாகக் குறிக்கவும்.</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">அலார ஒலியை முடக்கு.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">இணைப்பு துண்டிக்கப்பட்டதற்கான அறிவிப்புகள்</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">நீங்கள் பார்க்காத ஒரு அமர்வு எதிர்பாராத விதமாக துண்டிக்கப்படும்போது, ஒலியற்ற ஒரு சிறு சாளரம் தோன்றும்.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">%d அமர்வு இணைக்கப்பட்டது</item>
+		<item quantity="other">%d நேரலை அமர்வுகள் இணைக்கப்பட்டுள்ளன.</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">%d கவனிக்கப்பட வேண்டியுள்ளது.</item>
+		<item quantity="other">%d கவனிக்கப்பட வேண்டியவை.</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">மேலும் %d அமர்வுகள் உள்ளன.</item>
+		<item quantity="other">+%d கூடுதல் அமர்வுகள்</item>
+	</plurals>
 </resources>

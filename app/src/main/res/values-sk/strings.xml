@@ -652,4 +652,52 @@
     <item quantity="one">%1$d akcií</item>
     <item quantity="other">%1$d akcií</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Nezpracovaný výstup</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Odpojili ste sa od tohto zariadenia.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Vzdialená relácia sa ukončila.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Server ukončil pripojenie. Môžete sa pripojiť znova.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Spojenie sa prerušilo. Môžete sa opätovne pripojiť.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Stratilo sa sieťové pripojenie. Pripojte sa znova, keď bude sieť dostupná.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Overenie zlyhalo. Pred opätovným pripojením skontrolujte svoje používateľské meno, heslo alebo kľúč.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Spojenie sa ukončilo.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Pripojenie vyžaduje pozornosť.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Otvorte konzolu, aby ste si prečítali zvyšok výstupu.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Systém Android môže ukončiť aplikáciu ConnectBot a odpojiť vaše aktívne relácie, keď prepínate medzi aplikáciami.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Časový limit siete Mosh (sekundy)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Čas, po ktorý server čaká na aktualizácie od klienta, kým sa ukončí. Ak necháte pole prázdne, použije sa nastavenie servera alebo jeden týždeň; ak zadáte 0, funkcia automatického ukončenia sa vypne.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Zadajte celé číslo od 0 do 2147483647, alebo nechajte pole prázdne.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Aktívne relácie</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Aktívne relácie, ktoré vyžadujú pozornosť.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Zvukové signály terminálu</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Stratené pripojenia</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Spravujte kanály upozornení v nastaveniach.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Pripojené</string>
+  <string name="notification_connecting" tools:machine_translated="true">Prebieha pripájanie…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Odpojené</string>
+  <string name="notification_bell" tools:machine_translated="true">Zvukový signál terminálu</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Označte ako prečítané.</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Vypnúť zvukové upozornenia.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Upozornenia o prerušení pripojenia</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Zobrazí sa hlásenie bez zvukového signálu, keď sa neočakávane preruší spojenie so session, ktorú práve nepozorujete.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+    <item quantity="one">%d relácia pripojená</item>
+    <item quantity="few">%d relácie pripojené</item>
+    <item quantity="many">%d relácie pripojených</item>
+    <item quantity="other">%d relácií pripojených</item>
+  </plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+    <item quantity="one">%d vyžaduje pozornosť</item>
+    <item quantity="few">%d vyžadujú pozornosť</item>
+    <item quantity="many">%d vyžaduje pozornosť</item>
+    <item quantity="other">%d vyžaduje pozornosť</item>
+  </plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+    <item quantity="one">+%d ďalšia relácia</item>
+    <item quantity="few">+%d ďalšie relácie</item>
+    <item quantity="many">+%d ďalšej relácie</item>
+    <item quantity="other">+%d ďalších relácií</item>
+  </plurals>
 </resources>

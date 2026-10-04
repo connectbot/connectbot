@@ -652,4 +652,49 @@
     <item quantity="one">%1$d darbība</item>
     <item quantity="other">%1$d darbības</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Nelasīta izvade</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Jūs esat atvienojies no šī resursa.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Attālā sesija ir beigusies.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Serveris pārtrauca savienojumu. Jūs varat izveidot savienojumu vēlreiz.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Savienojums tika pārtraukts. Jūs varat atjaunot savienojumu.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Tīkla savienojums tika pārtraukts. Atjaunojiet savienojumu, kad tīkls būs pieejams.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Autorizācija neizdevās. Pirms atkārtotas pieslēgšanās pārbaudiet savu lietotājvārdu, paroli vai atslēgu.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Savienojums tika pārtraukts.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Savienojumam nepieciešama uzmanība.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Atveriet konsoli, lai apskatītu atlikušo izvadi.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android var pārtraukt ConnectBot darbību un atvienot jūsu sesijas, kad pārslēdzaties starp lietotnēm.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh tīkla savienojuma taimauts (sekundēs)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Laiks, pēc kura serveris pārtrauks darbību, ja no klienta nav saņemtas atjauninājuma ziņas. Atstājiet lauku tukšu, lai izmantotu servera iestatījumu vai vienu nedēļu; izmantojiet 0, lai atspējotu termiņa noteikšanu.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Ievadiet veselu skaitli no 0 līdz 2147483647, vai atstājiet lauku tukšu.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Aktīvās sesijas</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Sesijas, kurām nepieciešama uzmanība.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Termināļa zvani</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Pārtraukti savienojumi.</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Pārvaldiet paziņojumu kanālus iestatījumos.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Izveidots savienojums.</string>
+  <string name="notification_connecting" tools:machine_translated="true">Izveido savienojumu…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Atvienots</string>
+  <string name="notification_bell" tools:machine_translated="true">Termināļa signāls</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Atzīmēt kā redzētu</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Atslēgt skaņas signālus.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Paziņojumi par zaudētu savienojumu</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Rādiet bezskaņas uznirstošu ziņojumu, kad sesija, kuru jūs neskatāties, negaidīti tiek pārtraukta.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+    <item quantity="zero">%d sesiju savienotas</item>
+    <item quantity="one">%d sesija savienota</item>
+    <item quantity="other">%d sesijas savienotas</item>
+  </plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+    <item quantity="zero">%d prasa uzmanību</item>
+    <item quantity="one">%d prasa uzmanību</item>
+    <item quantity="other">%d prasa uzmanību</item>
+  </plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+    <item quantity="zero">Vēl %d sesiju</item>
+    <item quantity="one">Vēl %d sesija</item>
+    <item quantity="other">Vēl %d sesijas</item>
+  </plurals>
 </resources>

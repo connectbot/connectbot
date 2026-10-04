@@ -652,4 +652,46 @@
     <item quantity="one">%1$d åtgärder</item>
     <item quantity="other">%1$d åtgärder</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Oläst utdata</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Du har kopplat bort dig från den här värden.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Fjärrsessionen avslutades.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Servern avslutade anslutningen. Du kan ansluta igen.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Anslutningen bröts. Du kan försöka ansluta igen.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Nätverksanslutningen förlorades. Anslut igen när nätverket är tillgängligt.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Autentiseringen misslyckades. Kontrollera ditt användarnamn, lösenord eller nyckel innan du försöker ansluta igen.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Anslutningen avbröts.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Anslutningen kräver åtgärd.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Öppna konsolen för att läsa resten av utdata.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android kan avsluta ConnectBot och koppla bort dina aktiva sessioner när du byter app.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh-nätverkets tidsgräns (sekunder)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Tid utan klientuppdateringar innan servern avslutas. Lämna fältet tomt för att använda serverns standardinställning eller en vecka; använd 0 för att inaktivera utgångsdatum.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Ange ett heltal mellan 0 och 2147483647, eller lämna fältet tomt.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Aktiva sessioner</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Sessioner som kräver åtgärd</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Terminalsignaler</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Förlorade anslutningar</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Hantera aviseringar i inställningarna.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Ansluten</string>
+  <string name="notification_connecting" tools:machine_translated="true">Ansluter …</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Avbruten</string>
+  <string name="notification_bell" tools:machine_translated="true">Terminalsignal</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Bekräftat att händelsen har mottagits.</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Stäng av ljudsignaler</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Aviseringar om förlorad anslutning</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Visa ett ljudlöst popup-fönster när en session som du inte aktivt följer oväntat kopplas bort.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">%d aktiva sessioner</item>
+		<item quantity="other">%d aktiva sessioner</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">%d kräver åtgärd.</item>
+		<item quantity="other">%d kräver åtgärd</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">+%d sessioner till</item>
+		<item quantity="other">+%d ytterligare sessioner</item>
+	</plurals>
 </resources>

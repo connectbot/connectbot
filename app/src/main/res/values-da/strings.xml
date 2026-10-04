@@ -652,4 +652,46 @@
     <item quantity="one">%1$d handling</item>
     <item quantity="other">%1$d handling(er)</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Ulæst output</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Du har afbrudt forbindelsen til denne vært.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Den eksterne session er afsluttet.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Serveren har lukket forbindelsen. Du kan oprette forbindelse igen.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Forbindelsen blev afbrudt. Du kan forsøge at oprette forbindelse igen.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Netværksforbindelsen er blevet afbrudt. Genopret forbindelsen, når netværket er tilgængeligt.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Godkendelsen mislykkedes. Kontroller dit brugernavn, din adgangskode eller din nøgle, før du forsøger at oprette forbindelse igen.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Forbindelsen er blevet afbrudt.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Forbindelsen kræver opmærksomhed.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Åbn konsollen for at se resten af outputtet.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android kan lukke ConnectBot og afbryde dine forbindelser, når du skifter mellem apps.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh-netværkets timeout (sekunder)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Tid, hvor der ikke modtages opdateringer fra klienten, før serveren lukker ned. Lad feltet være tomt for at bruge serverens standardindstilling eller en uge; brug 0 for at deaktivere udløbstiden.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Indtast et heltal mellem 0 og 2147483647, eller lad feltet være tomt.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Aktive sessioner</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Sessioner, der kræver opmærksomhed</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Terminalsignaler</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Tabte forbindelser</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Administrer notifikationskanaler i indstillingerne.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Forbundet</string>
+  <string name="notification_connecting" tools:machine_translated="true">Forbinder …</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Afbrudt</string>
+  <string name="notification_bell" tools:machine_translated="true">Terminalsignal</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Bekræftet læst</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Slå lyden fra for ringesignalerne</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Notifikationer om mistet forbindelse</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Vis en lydløs pop-up-besked, når en session, som du ikke aktivt følger, uventet afbrydes.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">%d session(er) er tilsluttet</item>
+		<item quantity="other">%d aktive sessioner</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">%d kræver opmærksomhed.</item>
+		<item quantity="other">%d kræver opmærksomhed</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">+%d flere sessioner</item>
+		<item quantity="other">+%d flere sessioner</item>
+	</plurals>
 </resources>

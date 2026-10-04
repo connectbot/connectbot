@@ -652,4 +652,46 @@
     <item quantity="one">총 %1$d개의 작업</item>
     <item quantity="other">총 %1$d개의 작업</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">읽지 않은 출력</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">사용자가 이 호스트와의 연결을 끊었습니다.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">원격 세션이 종료되었습니다.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">호스트가 연결을 끊었습니다. 다시 연결할 수 있습니다.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">연결이 끊어졌습니다. 다시 연결해 보세요.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">네트워크 연결이 끊어졌습니다. 네트워크가 다시 연결되면 다시 연결하세요.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">인증에 실패했습니다. 다시 연결하기 전에 사용자 이름, 비밀번호 또는 키를 확인하세요.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">연결이 종료되었습니다.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">연결 상태를 확인해주세요.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s 콘솔을 열어 남은 출력을 확인하세요.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Android 기기에서 앱을 전환하면 ConnectBot이 중지되고 연결이 끊어질 수 있습니다.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh 네트워크 연결 시간 초과(초)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">서버가 종료되기 전에 클라이언트 업데이트가 없는 시간입니다. 값을 비워두면 서버 설정을 따르거나 1주일로 설정됩니다. 0을 입력하면 만료 기능을 비활성화합니다.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">0부터 2147483647까지의 정수를 입력하거나 비워 두세요.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">현재 연결된 세션</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">주의가 필요한 세션</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">터미널 벨 소리</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">연결 끊김</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">설정에서 알림 채널을 관리합니다.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">연결됨</string>
+  <string name="notification_connecting" tools:machine_translated="true">연결 중…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">연결이 끊김</string>
+  <string name="notification_bell" tools:machine_translated="true">터미널 벨 소리</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">최신 이벤트 확인됨</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">벨 소리 음소거</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">연결 끊김 알림</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">현재 보고 있지 않은 세션이 예기치 않게 연결이 끊어질 때 소리가 나지 않는 팝업을 표시합니다.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">%d개의 세션이 연결되었습니다.</item>
+		<item quantity="other">현재 연결된 세션 %d개</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">%d개의 알림을 확인해야 합니다.</item>
+		<item quantity="other">%d개의 알림을 확인해야 합니다.</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">+%d개의 세션 추가</item>
+		<item quantity="other">+%d개의 세션 추가</item>
+	</plurals>
 </resources>

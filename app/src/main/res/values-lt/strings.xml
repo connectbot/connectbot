@@ -652,4 +652,52 @@
     <item quantity="one">%1$d veiksmas</item>
     <item quantity="other">%1$d veiksmai</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Neskaitomi pranešimai</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Atsijungėte nuo šio įrenginio.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">Nuotolinė sesija baigėsi.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Serveris nutraukė ryšį. Galite vėl prisijungti.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">Ryšys nutrūko. Galite bandyti prisijungti iš naujo.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">Prarastas ryšys su tinklu. Kai tinklas vėl bus prieinamas, atkurkite ryšį.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Autentifikacija nepavyko. Prieš vėl prisijungdami, patikrinkite savo vartotojo vardą, slaptažodį arba raktą.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">Ryšys nutrūko.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">Reikia patikrinti ryšį.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Atidarykite konsolę, kad peržiūrėtumėte likusį išvesties turinį.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">„Android“ gali sustabdyti „ConnectBot“ ir nutraukti jūsų sesijas, kai perjungiate programas.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">„Mosh“ tinklo laiko limitas (sekundėmis)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Laikas, per kurį negalima atnaujinti kliento duomenų prieš uždarant serverį. Palikite lauką tuščią, kad būtų naudojamas serverio nustatymas arba viena savaitė; naudokite 0, kad išjungtumėte galiojimo terminą.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Įveskite sveikąjį skaičių nuo 0 iki 2147483647 arba palikite lauką tuščią.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Aktyvios sesijos</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Sesijos, kurioms reikia skirti dėmesio.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Terminalo garsiniai signalai</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Dingę ryšiai</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Tvarkykite pranešimų kanalus nustatymų meniu.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Prisijungta</string>
+  <string name="notification_connecting" tools:machine_translated="true">Pradedama užmegzti ryšį…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Atsijungta</string>
+  <string name="notification_bell" tools:machine_translated="true">Terminalo garsinis signalas</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Žymėti kaip peržiūrėtą</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Išjungti garsinius signalus.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Pranešimai apie prarastą ryšį</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Rodykite be garso pranešimą, kai neaktyvus seansas netikėtai nutrūksta.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+    <item quantity="one">%d seansas prijungtas</item>
+    <item quantity="few">%d seansai prijungti</item>
+    <item quantity="many">%d seanso prijungta</item>
+    <item quantity="other">%d seansų prijungta</item>
+  </plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+    <item quantity="one">%d reikalauja dėmesio</item>
+    <item quantity="few">%d reikalauja dėmesio</item>
+    <item quantity="many">%d reikalauja dėmesio</item>
+    <item quantity="other">%d reikalauja dėmesio</item>
+  </plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+    <item quantity="one">Dar %d seansas</item>
+    <item quantity="few">Dar %d seansai</item>
+    <item quantity="many">Dar %d seanso</item>
+    <item quantity="other">Dar %d seansų</item>
+  </plurals>
 </resources>

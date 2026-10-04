@@ -652,4 +652,46 @@
     <item quantity="one">%1$d 个操作</item>
     <item quantity="other">共 %1$d 个操作。</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">未读输出</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">您已与此主机断开连接。</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">远程会话已结束。</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">服务器已关闭连接。您可以重新连接。</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">连接已中断。您可以重新连接。</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">网络连接中断。网络恢复后，请重新连接。</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">身份验证失败。请检查您的用户名、密码或密钥，然后再重新连接。</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">连接已断开。</string>
+  <string name="host_status_action_required" tools:machine_translated="true">连接需要注意。</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s 打开控制台以查看剩余输出。</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">当您切换应用程序时，Android 可能会停止 ConnectBot 并断开您的会话。</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Mosh 网络超时时间（秒）</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">服务器未收到客户端更新后等待退出的时间。留空则使用服务器设置或一周；使用 0 可禁用超时。</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">输入一个 0 到 2147483647 之间的整数，或者留空。</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">活跃会话。</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">需要关注的会话。</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">终端提示音</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">连接中断。</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">在设置中管理通知渠道。</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">已连接。</string>
+  <string name="notification_connecting" tools:machine_translated="true">正在连接……</string>
+  <string name="notification_disconnected" tools:machine_translated="true">已断开连接</string>
+  <string name="notification_bell" tools:machine_translated="true">终端提示音</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s：%2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">已读</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">静音提示音</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">连接中断通知</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">当您未查看的会话意外断开连接时，会显示一个无声音的弹出窗口。</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+		<item quantity="one">已连接 %d 个会话。</item>
+		<item quantity="other">已连接 %d 个会话。</item>
+	</plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+		<item quantity="one">有 %d 个会话需要关注。</item>
+		<item quantity="other">有 %d 个会话需要您关注。</item>
+	</plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+		<item quantity="one">还有 %d 个会话。</item>
+		<item quantity="other">还有 %d 个会话。</item>
+	</plurals>
 </resources>

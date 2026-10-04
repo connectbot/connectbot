@@ -652,4 +652,49 @@
     <item quantity="one">%1$d azione</item>
     <item quantity="other">%1$d azioni</item>
   </plurals>
+  <string name="host_status_unread_output" tools:machine_translated="true">Output non ancora visualizzato.</string>
+  <string name="host_status_user_disconnected" tools:machine_translated="true">Hai interrotto la connessione con questo host.</string>
+  <string name="host_status_session_exit" tools:machine_translated="true">La sessione remota è terminata.</string>
+  <string name="host_status_remote_closed" tools:machine_translated="true">Il server ha chiuso la connessione. È possibile ristabilirla.</string>
+  <string name="host_status_connection_lost" tools:machine_translated="true">La connessione è stata interrotta. È possibile ristabilirla.</string>
+  <string name="host_status_network_lost" tools:machine_translated="true">La connessione di rete è stata interrotta. Riconnettiti quando la rete sarà di nuovo disponibile.</string>
+  <string name="host_status_auth_failed" tools:machine_translated="true">Autenticazione non riuscita. Prima di riprovare a connettersi, verifichi il nome utente, la password o la chiave.</string>
+  <string name="host_status_connection_ended" tools:machine_translated="true">La connessione è terminata.</string>
+  <string name="host_status_action_required" tools:machine_translated="true">La connessione richiede attenzione.</string>
+  <string name="host_status_unread_explanation" tools:machine_translated="true">%1$s Apri la console per visualizzare l’output rimanente.</string>
+  <string name="pref_conn_persist_disabled_summary" tools:machine_translated="true">Quando si passa da un’app all’altra, Android potrebbe interrompere ConnectBot e disconnettere le sessioni.</string>
+  <string name="hostpref_mosh_network_timeout_title" tools:machine_translated="true">Timeout di rete di Mosh (in secondi)</string>
+  <string name="hostpref_mosh_network_timeout_summary" tools:machine_translated="true">Tempo massimo di inattività prima che il server si chiuda, in assenza di aggiornamenti da parte del client. Lasciare il campo vuoto per utilizzare l’impostazione predefinita del server o un periodo di una settimana; utilizzare 0 per disattivare la scadenza.</string>
+  <string name="hostpref_mosh_network_timeout_error" tools:machine_translated="true">Inserire un numero intero compreso tra 0 e 2147483647, oppure lasciare il campo vuoto.</string>
+  <string name="notification_channel_sessions" tools:machine_translated="true">Sessioni attive</string>
+  <string name="notification_channel_attention" tools:machine_translated="true">Session che richiedono attenzione.</string>
+  <string name="notification_channel_bells" tools:machine_translated="true">Segnali acustici del terminale</string>
+  <string name="notification_channel_connections" tools:machine_translated="true">Connessioni interrotte.</string>
+  <string name="pref_notification_channels_title" tools:machine_translated="true">Gestisci i canali di notifica nelle impostazioni.</string>
+  <string name="notification_summary" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_connected" tools:machine_translated="true">Connesso</string>
+  <string name="notification_connecting" tools:machine_translated="true">In corso di connessione…</string>
+  <string name="notification_disconnected" tools:machine_translated="true">Sessione disconnessa</string>
+  <string name="notification_bell" tools:machine_translated="true">Segnale acustico del terminale</string>
+  <string name="notification_session_detail" tools:machine_translated="true">%1$s: %2$s</string>
+  <string name="notification_event_time" tools:machine_translated="true">%1$s · %2$s</string>
+  <string name="notification_mark_seen" tools:machine_translated="true">Messaggio letto</string>
+  <string name="notification_mute_bells" tools:machine_translated="true">Disattiva gli avvisi sonori.</string>
+  <string name="pref_connection_lost_notification_title" tools:machine_translated="true">Notifiche di disconnessione inattesa</string>
+  <string name="pref_connection_lost_notification_summary" tools:machine_translated="true">Visualizza una notifica a comparsa senza audio quando una sessione che non stai visualizzando si interrompe inaspettatamente.</string>
+  <plurals name="notification_connected_sessions" tools:machine_translated="true">
+    <item quantity="one">%d sessione attiva</item>
+    <item quantity="other">%d sessioni attive</item>
+    <item quantity="many">%d sessioni attive</item>
+  </plurals>
+  <plurals name="notification_attention_sessions" tools:machine_translated="true">
+    <item quantity="one">%d richiede attenzione.</item>
+    <item quantity="other">%d elementi richiedono attenzione.</item>
+    <item quantity="many">%d elementi richiedono attenzione.</item>
+  </plurals>
+  <plurals name="notification_more_sessions" tools:machine_translated="true">
+    <item quantity="one">+%d session aggiuntive</item>
+    <item quantity="other">+%d sessioni in più</item>
+    <item quantity="many">+%d sessioni in più</item>
+  </plurals>
 </resources>
