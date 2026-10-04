@@ -38,7 +38,9 @@ import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.service.DisconnectReason
 import org.connectbot.service.ServiceError
+import org.connectbot.service.SessionAttentionState
 import org.connectbot.service.TerminalManager
 import org.connectbot.util.PreferenceConstants
 import javax.inject.Inject
@@ -47,11 +49,14 @@ enum class ConnectionState {
     UNKNOWN,
     CONNECTED,
     DISCONNECTED,
+    UNREAD_OUTPUT,
+    ERROR,
 }
 
 data class HostListUiState(
     val hosts: List<Host> = emptyList(),
     val connectionStates: Map<Long, ConnectionState> = emptyMap(),
+    val disconnectReasons: Map<Long, DisconnectReason> = emptyMap(),
     val isLoading: Boolean = false,
     val error: String? = null,
     val sortedByColor: Boolean = false,
@@ -186,28 +191,32 @@ class HostListViewModel @Inject constructor(
         val states = hosts.associate { host ->
             host.id to getConnectionState(host)
         }
-        _uiState.update { it.copy(connectionStates = states) }
+        val reasons = hosts.mapNotNull { host ->
+            val bridge = terminalManager?.bridgesFlow?.value?.find { it.host.id == host.id }
+            val reason = if (bridge?.isInGracePeriod() == true) {
+                DisconnectReason.NETWORK_LOST
+            } else {
+                terminalManager?.getSessionAttention(host.id)?.reason
+            }
+            reason?.let { host.id to it }
+        }.toMap()
+        _uiState.update { it.copy(connectionStates = states, disconnectReasons = reasons) }
     }
 
     private fun getConnectionState(host: Host): ConnectionState {
         val manager = terminalManager ?: return ConnectionState.UNKNOWN
 
-        // Check if host has an active bridge
         val bridge = manager.bridgesFlow.value.find { it.host.id == host.id }
+        val attention = manager.getSessionAttention(host.id)
         if (bridge != null) {
-            // Bridge exists but may be disconnected or in grace period
-            return if (bridge.disconnected || bridge.isInGracePeriod()) {
-                ConnectionState.DISCONNECTED
-            } else {
-                ConnectionState.CONNECTED
-            }
+            if (bridge.isInGracePeriod()) return ConnectionState.DISCONNECTED
+            if (!bridge.disconnected) return ConnectionState.CONNECTED
+            return attention?.connectionState() ?: ConnectionState.DISCONNECTED
         }
-
-        // Check if in disconnected list by comparing ID
+        if (attention != null) return attention.connectionState()
         if (manager.disconnectedFlow.value.any { it.id == host.id }) {
             return ConnectionState.DISCONNECTED
         }
-
         return ConnectionState.UNKNOWN
     }
 
@@ -359,4 +368,13 @@ class HostListViewModel @Inject constructor(
         val pubkey = _uiState.value.startupKeyPrompt ?: return
         manager.dismissPendingStartupKey(pubkey)
     }
+}
+
+internal fun SessionAttentionState.connectionState(): ConnectionState = when {
+    reason == DisconnectReason.AUTH_FAIL -> ConnectionState.ERROR
+    reason == null -> ConnectionState.UNKNOWN
+    reason == DisconnectReason.USER_REQUESTED -> ConnectionState.DISCONNECTED
+    unreadOutput -> ConnectionState.UNREAD_OUTPUT
+    acknowledged -> ConnectionState.UNKNOWN
+    else -> ConnectionState.DISCONNECTED
 }

@@ -22,9 +22,16 @@ object DisconnectPolicy {
         reason: DisconnectReason,
         quickDisconnect: Boolean,
         stayConnected: Boolean,
+        hasUnreadOutput: Boolean = false,
     ): DisconnectAction {
         if (reason == DisconnectReason.USER_REQUESTED) return DisconnectAction.CloseImmediately
-        if (reason == DisconnectReason.SESSION_EXIT) return DisconnectAction.CloseImmediately
+        if (reason == DisconnectReason.SESSION_EXIT) {
+            return if (hasUnreadOutput && !quickDisconnect) {
+                DisconnectAction.ShowReconnectOverlay
+            } else {
+                DisconnectAction.CloseImmediately
+            }
+        }
         if (quickDisconnect) return DisconnectAction.CloseImmediately
         // Never auto-reconnect on auth failures — looping would lock accounts
         if (reason == DisconnectReason.AUTH_FAIL) return DisconnectAction.ShowReconnectOverlay

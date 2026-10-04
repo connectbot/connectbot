@@ -311,6 +311,8 @@ class TerminalBridge {
     private val _progressState = MutableStateFlow<ProgressInfo?>(null)
     val progressState: StateFlow<ProgressInfo?> = _progressState.asStateFlow()
 
+    val sessionAttention = SessionAttention()
+
     var disconnected = false
         private set
     var connecting = false
@@ -708,6 +710,11 @@ class TerminalBridge {
         relay?.setCharset(encoding)
     }
 
+    /** Track output that arrives offscreen, including late data after a disconnect. */
+    fun onOutputReceived() {
+        if (sessionAttention.onOutput()) manager.notifyBridgeStateChanged()
+    }
+
     /**
      * Convenience method for writing text into the underlying terminal buffer.
      * Should never be called once the session is established.
@@ -722,6 +729,7 @@ class TerminalBridge {
             )
         }
 
+        onOutputReceived()
         synchronized(localOutput) {
             for (line in output.split("\n".toRegex())) {
                 var processedLine = line
@@ -795,6 +803,8 @@ class TerminalBridge {
         disconnected = false
         connecting = false
         transportFailure = null
+        disconnectReason = DisconnectReason.UNKNOWN
+        sessionAttention.onReconnected()
         startAutomation()
 
         // We no longer need our local output.
@@ -872,6 +882,8 @@ class TerminalBridge {
             }
         }
 
+        sessionAttention.onEnded(reason)
+
         // Cancel any pending prompts
         promptManager.cancelPrompt()
 
@@ -885,8 +897,16 @@ class TerminalBridge {
             }
         }
 
-        when (DisconnectPolicy.decide(reason, host.quickDisconnect, host.stayConnected)) {
+        when (
+            DisconnectPolicy.decide(
+                reason,
+                host.quickDisconnect,
+                host.stayConnected,
+                sessionAttention.snapshot().unreadOutput,
+            )
+        ) {
             is DisconnectAction.CloseImmediately -> {
+                sessionAttention.onOutputDiscarded()
                 awaitingClose = true
                 triggerDisconnectListener()
             }
@@ -1207,6 +1227,7 @@ class TerminalBridge {
         networkGracePeriodJob?.cancel()
 
         inGracePeriod = true
+        manager.notifyBridgeStateChanged()
 
         // Show status message to user
         scope.launch { _networkStatusMessages.emit(manager.res.getString(R.string.network_lost_grace_period)) }
@@ -1236,6 +1257,7 @@ class TerminalBridge {
         // Cancel grace period timer
         networkGracePeriodJob?.cancel()
         inGracePeriod = false
+        manager.notifyBridgeStateChanged()
 
         val oldState = lastKnownNetworkState
 

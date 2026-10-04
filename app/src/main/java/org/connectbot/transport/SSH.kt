@@ -1038,6 +1038,10 @@ open class SSH :
                 // sleep to make sure we dont kill system
                 Thread.sleep(1000)
             }
+            if (connected && connection?.isAuthenticationComplete != true) {
+                onDisconnect(DisconnectReason.AUTH_FAIL)
+                close()
+            }
         } catch (e: Exception) {
             Timber.e(e, "Problem in SSH connection thread during authentication")
         }

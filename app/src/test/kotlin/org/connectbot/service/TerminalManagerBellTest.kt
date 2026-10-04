@@ -23,6 +23,8 @@ import kotlinx.coroutines.test.advanceUntilIdle
 import kotlinx.coroutines.test.runTest
 import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -122,6 +124,27 @@ class TerminalManagerBellTest {
         verify(manager).sendActivityNotification(hostA)
         verify(manager, never()).sendActivityNotification(hostB)
         verify(manager).playBeep()
+    }
+
+    @Test
+    fun departingConsoleDoesNotClearNewerConsoleAttention() = runTest(dispatcher) {
+        val attention = SessionAttention()
+        doReturn(attention).`when`(bridgeA).sessionAttention
+        attention.onEnded(DisconnectReason.NETWORK_LOST)
+        val oldOwner = Any()
+        val newOwner = Any()
+        manager.setVisibleConsole(oldOwner, bridgeA)
+        manager.setVisibleConsole(newOwner, bridgeA)
+        manager.clearVisibleConsole(oldOwner)
+        manager.onConsoleClosed(oldOwner, bridgeA)
+
+        attention.onOutput()
+        assertFalse(attention.snapshot().unreadOutput)
+        assertFalse(attention.snapshot().acknowledged)
+
+        manager.clearVisibleConsole(newOwner)
+        manager.onConsoleClosed(newOwner, bridgeA)
+        assertTrue(attention.snapshot().acknowledged)
     }
 
     private fun bridge(host: Host): TerminalBridge {

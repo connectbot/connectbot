@@ -137,6 +137,7 @@ class Relay(
                     destBuffer.flip()
 
                     if (destBuffer.hasRemaining()) {
+                        bridge.onOutputReceived()
                         bridge.terminalEmulator.writeInput(destBuffer.array(), 0, destBuffer.limit())
                     }
                     destBuffer.clear()
@@ -148,6 +149,7 @@ class Relay(
                                 val flushResult = encoder.flush(destBuffer)
                                 destBuffer.flip()
                                 if (destBuffer.hasRemaining()) {
+                                    bridge.onOutputReceived()
                                     bridge.terminalEmulator.writeInput(
                                         destBuffer.array(),
                                         0,

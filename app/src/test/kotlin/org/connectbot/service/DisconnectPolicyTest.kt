@@ -55,6 +55,30 @@ class DisconnectPolicyTest {
         assertTrue(decide(DisconnectReason.SESSION_EXIT, stayConnected = true) is DisconnectAction.CloseImmediately)
     }
 
+    @Test
+    fun sessionExit_withUnreadOutput_keepsConsoleAvailable() {
+        assertTrue(
+            DisconnectPolicy.decide(DisconnectReason.SESSION_EXIT, false, false, hasUnreadOutput = true)
+                is DisconnectAction.ShowReconnectOverlay,
+        )
+    }
+
+    @Test
+    fun sessionExit_quickDisconnect_discardsUnreadOutput() {
+        assertTrue(
+            DisconnectPolicy.decide(DisconnectReason.SESSION_EXIT, true, false, hasUnreadOutput = true)
+                is DisconnectAction.CloseImmediately,
+        )
+    }
+
+    @Test
+    fun userDisconnect_withUnreadOutput_stillClosesImmediately() {
+        assertTrue(
+            DisconnectPolicy.decide(DisconnectReason.USER_REQUESTED, false, false, hasUnreadOutput = true)
+                is DisconnectAction.CloseImmediately,
+        )
+    }
+
     // quickDisconnect=true closes immediately for all non-user reasons
 
     @Test

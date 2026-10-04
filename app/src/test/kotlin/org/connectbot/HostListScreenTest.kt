@@ -28,6 +28,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.connectbot.data.entity.Host
+import org.connectbot.service.DisconnectReason
 import org.connectbot.ui.screens.hostlist.ConnectionState
 import org.connectbot.ui.screens.hostlist.HostListScreen
 import org.connectbot.ui.screens.hostlist.HostListScreenContent
@@ -422,6 +423,48 @@ class HostListScreenTest {
         composeTestRule
             .onNodeWithText(composeTestRule.activity.getString(R.string.list_host_disconnect))
             .assertIsNotEnabled()
+    }
+
+    @Test
+    fun unreadStatusExplainsReasonWithoutOpeningConsole() {
+        val host = testHost(id = 5L, nickname = "dropped", protocol = "ssh", color = null)
+        var navigated = false
+        setHostListContent(
+            uiState = HostListUiState(
+                hosts = listOf(host),
+                connectionStates = mapOf(host.id to ConnectionState.UNREAD_OUTPUT),
+                disconnectReasons = mapOf(host.id to DisconnectReason.NETWORK_LOST),
+            ),
+            onNavigateToConsole = { navigated = true },
+        )
+        composeTestRule.onNodeWithContentDescription(
+            composeTestRule.activity.getString(R.string.host_status_unread_output),
+        ).performClick()
+        composeTestRule.onNodeWithText(
+            composeTestRule.activity.getString(
+                R.string.host_status_unread_explanation,
+                composeTestRule.activity.getString(R.string.host_status_network_lost),
+            ),
+        ).assertIsDisplayed()
+        assertTrue(!navigated)
+    }
+
+    @Test
+    fun disconnectedStatusExplainsIntentionalDisconnect() {
+        val host = testHost(id = 6L, nickname = "closed", protocol = "ssh", color = null)
+        setHostListContent(
+            uiState = HostListUiState(
+                hosts = listOf(host),
+                connectionStates = mapOf(host.id to ConnectionState.DISCONNECTED),
+                disconnectReasons = mapOf(host.id to DisconnectReason.USER_REQUESTED),
+            ),
+        )
+        composeTestRule.onNodeWithContentDescription(
+            composeTestRule.activity.getString(R.string.image_description_disconnected),
+        ).performClick()
+        composeTestRule.onNodeWithText(
+            composeTestRule.activity.getString(R.string.host_status_user_disconnected),
+        ).assertIsDisplayed()
     }
 
     private fun openTopMenu() {
