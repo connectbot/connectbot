@@ -109,7 +109,7 @@
   <string name="pref_language_system_default">Systemstandard</string>
   <string name="pref_theme_title">Design</string>
   <string name="pref_theme_system">Systemstandard</string>
-  <string name="pref_theme_light">Leicht</string>
+  <string name="pref_theme_light">Hell</string>
   <string name="pref_theme_dark">Dunkel</string>
   <string name="pref_titlebarhide_title">Titelleiste ausblenden</string>
   <string name="pref_titlebarhide_summary">Tippe in die Konsole um die Titelleiste und das Menu einzublenden</string>
@@ -122,7 +122,7 @@
   <string name="pref_shiftfkeys_title">Shift+Nummer sind F-Tasten</string>
   <string name="pref_shiftfkeys_summary">Hardware Tastaturen schicken F1-F10 durch Shift+Nummer</string>
   <string name="pref_ctrlfkeys_title">Strg+Nummer sind F-Tasten</string>
-  <string name="pref_ctrlfkeys_summary">Software Tastaturen schicken F1-F10 durch Shift+Nummer</string>
+  <string name="pref_ctrlfkeys_summary">Auf Bildschirmtastaturen senden Strg+Ziffer die Tasten F1–F10</string>
   <string name="pref_volumefont_title">Lautstärketasten ändern die Schriftgröße</string>
   <string name="pref_volumefont_summary">Die Schriftgröße kann auch in den Einstellungen pro Host geändert werden</string>
   <string name="pref_memkeys_title">Schlüssel im Speicher behalten</string>

@@ -109,7 +109,7 @@
   <string name="pref_language_system_default">系統預設值</string>
   <string name="pref_theme_title">主題</string>
   <string name="pref_theme_system">系統預設值</string>
-  <string name="pref_theme_light">輕巧</string>
+  <string name="pref_theme_light">淺色</string>
   <string name="pref_theme_dark">深色</string>
   <string name="pref_titlebarhide_title">自動隱藏標題列</string>
   <string name="pref_titlebarhide_summary">輕觸終端機來顯示標題列並存取選單</string>
@@ -174,7 +174,7 @@
   <string name="hostpref_fontfamily_title">字體</string>
   <string name="hostpref_colorscheme_title">終端機配色方案</string>
   <string name="hostpref_pubkeyid_title">使用公鑰驗證</string>
-  <string name="hostpref_authagent_title">使用 SSH 認證</string>
+  <string name="hostpref_authagent_title">使用 SSH 認證代理</string>
   <string name="hostpref_postlogin_title">登入後自動執行</string>
   <string name="hostpref_compression_title">壓縮</string>
   <string name="hostpref_compression_summary">此選項對低速網路會有幫助</string>

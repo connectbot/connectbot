@@ -109,7 +109,7 @@
   <string name="pref_language_system_default">Domyślne ustawienia systemu</string>
   <string name="pref_theme_title">Motyw</string>
   <string name="pref_theme_system">Domyślne ustawienia systemu</string>
-  <string name="pref_theme_light">Lekki</string>
+  <string name="pref_theme_light">Jasny</string>
   <string name="pref_theme_dark">Ciemny</string>
   <string name="pref_titlebarhide_title">Automatycznie chowaj pasek tytułowy</string>
   <string name="pref_titlebarhide_summary">Naciśnij konsolę aby wyświetlić pasek tytułowy i uzyskać dostęp do menu</string>
@@ -352,7 +352,7 @@
   <string name="image_description_right">Strzałka w prawo</string>
   <string name="button_key_esc">Esc</string>
   <string name="button_key_ctrl">Ctrl</string>
-  <string name="button_key_home">Dom</string>
+  <string name="button_key_home">Home</string>
   <string name="button_key_end">End</string>
   <string name="button_key_pgup">PgUp</string>
   <string name="button_key_pgdn">PgDn</string>

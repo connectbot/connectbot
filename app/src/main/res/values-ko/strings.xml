@@ -182,7 +182,7 @@
   <string name="hostpref_wantsession_summary">포트 포워드만 사용할 경우 이 설정을 해제 하세요</string>
   <string name="hostpref_stayconnected_title">연결 유지</string>
   <string name="hostpref_stayconnected_summary">연결이 끊기면 다시 연결을 시도</string>
-  <string name="hostpref_quickdisconnect_title">닫을 때 연결 해제</string>
+  <string name="hostpref_quickdisconnect_title">연결 해제 시 닫기</string>
   <string name="hostpref_quickdisconnect_summary">원격 연결 해제 후 메시지 없이 즉시 닫습니다.</string>
   <string name="hostpref_delkey_title">삭제 키</string>
   <string name="hostpref_encoding_title">인코딩</string>

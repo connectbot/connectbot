@@ -4,7 +4,7 @@
   <string name="service_desc">Mantiene las conexiones SSH y las claves públicas cargadas</string>
   <string name="app_copyright">Derechos de autor © Kenny Root</string>
   <string name="title_pubkey_list">Claves Publicas</string>
-  <string name="title_port_forwards_list">Traducciones de puerto</string>
+  <string name="title_port_forwards_list">Reenvíos de puertos</string>
   <string name="title_help">Ayuda</string>
   <string name="title_eula">Licencia</string>
   <string name="title_color_picker">Escoger un color</string>
@@ -109,7 +109,7 @@
   <string name="pref_language_system_default">Configuración predeterminada del sistema</string>
   <string name="pref_theme_title">Tema</string>
   <string name="pref_theme_system">Configuración predeterminada del sistema</string>
-  <string name="pref_theme_light">Ligero</string>
+  <string name="pref_theme_light">Claro</string>
   <string name="pref_theme_dark">Oscuro</string>
   <string name="pref_titlebarhide_title">Ocultar automáticamente la barra de título</string>
   <string name="pref_titlebarhide_summary">Tocar la pantalla para que se muestre la barra de título y el menú de acceso</string>
@@ -122,7 +122,7 @@
   <string name="pref_shiftfkeys_title">Mayús+num son las teclas de función F1 a F10</string>
   <string name="pref_shiftfkeys_summary">En teclados hardware, las teclas de los números + la tecla Mayús son las teclas de función F1 a F10</string>
   <string name="pref_ctrlfkeys_title">Ctrl+num son las teclas de función F1 a F10</string>
-  <string name="pref_ctrlfkeys_summary">En teclados hardware, las teclas de los números + la tecla Ctrl son las teclas de función F1 a F10</string>
+  <string name="pref_ctrlfkeys_summary">En teclados virtuales, Ctrl más las teclas numéricas envía F1-F10</string>
   <string name="pref_volumefont_title">Las teclas de volumen cambian el tamaño de letra</string>
   <string name="pref_volumefont_summary">El tamaño de letra puede cambiarse en la configuración de la conexión al host</string>
   <string name="pref_memkeys_title">Recordar claves en memoria</string>
@@ -130,7 +130,7 @@
   <string name="pref_conn_persist_title">Manténgase conectado en segundo plano</string>
   <string name="pref_conn_persist_summary">Mantén tus sesiones abiertas incluso cuando cambies a otras aplicaciones</string>
   <string name="pref_keymode_title">Secuencia de teclas para directorios</string>
-  <string name="pref_stickymodifiers_title">Corrección de errores al teclear</string>
+  <string name="pref_stickymodifiers_title">Teclas modificadoras persistentes</string>
   <string name="only_alt">Detener solamente</string>
   <string name="pref_camera_title">Boton de la Cámara</string>
   <string name="pref_keepalive_title">Mantener pantalla activa</string>
