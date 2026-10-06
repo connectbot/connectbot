@@ -23,6 +23,7 @@ navigationCompose = "2.10.2"
 navigationEvent = "1.2.0"
 activityCompose = "1.13.0"
 
+telnetlib = "0.1.0"
 sshlib = "0.6.0"
 termlib = "0.3.13"
 playServicesBasement = "18.12.0"
@@ -59,6 +60,8 @@ biometric = "1.4.0-alpha02"
 core = "1.19.1"
 
 [libraries]
+telnetlib = { module = "org.connectbot.telnetlib:telnetlib", version.ref = "telnetlib" }
+telnetlib-ktor = { module = "org.connectbot.telnetlib:telnetlib-ktor", version.ref = "telnetlib" }
 sshlib = { module = "org.connectbot.sshlib:sshlib", version.ref = "sshlib" }
 termlib = { module = "org.connectbot:termlib", version.ref = "termlib" }
 play-services-basement = { module = "com.google.android.gms:play-services-basement", version.ref = "playServicesBasement" }

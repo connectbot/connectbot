@@ -19,9 +19,12 @@ package org.connectbot.transport
 
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.connectbot.data.HostRepository
 import org.connectbot.data.entity.Host
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
@@ -86,7 +89,7 @@ class SSHJumpHostTest {
             }
         }.use { clients ->
             val ssh = SSH(target, bridge, manager)
-            ssh.connect()
+            ssh.connect(this, dispatchers(), "UTF-8")
             val opened = clients.constructed()
             assertEquals(3, opened.size)
             val order = inOrder(*opened.toTypedArray())
@@ -122,11 +125,15 @@ class SSHJumpHostTest {
                     .thenReturn(tunnel)
             }
         }.use { clients ->
-            SSH(Host(id = 1, jumpHostId = 2), bridge, manager).connect()
+            SSH(Host(id = 1, jumpHostId = 2), bridge, manager).connect(this, dispatchers(), "UTF-8")
             assertEquals(2, clients.constructed().size)
             clients.constructed().forEach { verify(it).disconnect() }
             verify(bridge).dispatchDisconnect(DisconnectReason.IO_ERROR)
         }
+    }
+
+    private fun TestScope.dispatchers(): CoroutineDispatchers = StandardTestDispatcher(testScheduler).let {
+        CoroutineDispatchers(it, it, it)
     }
 
     private fun stubHosts(vararg hosts: Host) {
@@ -134,11 +141,11 @@ class SSHJumpHostTest {
         hosts.forEach { `when`(repository.findHostByIdBlocking(it.id)).thenReturn(it) }
     }
 
-    private suspend fun connectInvalidChain(vararg jumps: Host) {
+    private suspend fun TestScope.connectInvalidChain(vararg jumps: Host) {
         val target = Host(id = 1, nickname = "target", jumpHostId = 2)
         stubHosts(*(jumps.toList() + target).toTypedArray())
         mockConstruction(SshClient::class.java).use { connections ->
-            SSH(target, bridge, manager).connect()
+            SSH(target, bridge, manager).connect(this, dispatchers(), "UTF-8")
             assertTrue(connections.constructed().isEmpty())
         }
         verify(bridge).dispatchDisconnect(DisconnectReason.IO_ERROR)

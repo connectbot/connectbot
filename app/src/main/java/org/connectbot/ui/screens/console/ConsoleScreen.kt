@@ -406,6 +406,10 @@ private fun ConsoleTerminalPage(
         val fontSize by bridge.fontSizeFlow.collectAsState()
         val delKeyMode by bridge.delKeyModeFlow.collectAsState()
 
+        LaunchedEffect(bridge, isActive) {
+            if (isActive) bridge.transportMessages.collect { snackbarHostState.showSnackbar(it) }
+        }
+
         LaunchedEffect(fontResult.loadFailed, fontResult.isLoading) {
             if (fontResult.loadFailed && !fontResult.isLoading) {
                 coroutineScope.launch {

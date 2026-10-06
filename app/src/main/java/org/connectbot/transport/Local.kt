@@ -22,8 +22,10 @@ import android.net.Uri
 import androidx.annotation.VisibleForTesting
 import androidx.core.net.toUri
 import com.google.ase.Exec
+import kotlinx.coroutines.CoroutineScope
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.DisconnectReason
 import timber.log.Timber
 import java.io.FileDescriptor
@@ -50,13 +52,16 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
             os = null
             `is`?.close()
             `is` = null
-            killer.killProcess(shellPid)
+            val processId = shellPid
+            shellPid = 0
+            shellFd = null
+            if (processId > 0) killer.killProcess(processId)
         } catch (e: IOException) {
             Timber.e(e, "Couldn't close shell")
         }
     }
 
-    override suspend fun connect() {
+    override suspend fun connect(scope: CoroutineScope, dispatchers: CoroutineDispatchers, encoding: String) {
         val pids = IntArray(1)
 
         try {
@@ -72,8 +77,9 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
         }
 
         shellPid = pids[0]
+        val processId = shellPid
         val exitWatcher = Runnable {
-            Exec.waitFor(shellPid)
+            Exec.waitFor(processId)
             bridge?.dispatchDisconnect(DisconnectReason.REMOTE_EOF)
         }
 
@@ -110,7 +116,7 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
         return inputStream.read(buffer, offset, length)
     }
 
-    override suspend fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) {
+    override suspend fun resize(columns: Int, rows: Int, width: Int, height: Int) {
         // We are not connected yet.
         val fd = shellFd ?: return
 
@@ -124,11 +130,6 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
     @Throws(IOException::class)
     override suspend fun write(buffer: ByteArray) {
         os?.write(buffer)
-    }
-
-    @Throws(IOException::class)
-    override suspend fun write(c: Int) {
-        os?.write(c)
     }
 
     override fun createHost(uri: Uri): Host {

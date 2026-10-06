@@ -40,6 +40,7 @@ import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KeyStorageType
 import org.connectbot.data.entity.PortForward
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
@@ -861,7 +862,7 @@ open class SSH : AbsTransport {
         }
     }
 
-    override suspend fun connect() {
+    override suspend fun connect(scope: CoroutineScope, dispatchers: CoroutineDispatchers, encoding: String) {
         locallyClosed = false
         lastConnectionInfo = null
         connectionLossCause = null
@@ -941,7 +942,7 @@ open class SSH : AbsTransport {
         }
         connected = true
 
-        scope.launch(start = CoroutineStart.UNDISPATCHED) {
+        this.scope.launch(start = CoroutineStart.UNDISPATCHED) {
             client?.disconnectedFlow?.collect { reason ->
                 handleConnectionLost(reason)
             }
@@ -1166,11 +1167,6 @@ open class SSH : AbsTransport {
         session?.write(buffer)
     }
 
-    @Throws(IOException::class)
-    override suspend fun write(c: Int) {
-        session?.write(byteArrayOf(c.toByte()))
-    }
-
     override fun getOptions(): Map<String, String> = mapOf("compression" to compressionEnabled.toString())
 
     override fun setOptions(options: Map<String, String>) {
@@ -1261,11 +1257,15 @@ open class SSH : AbsTransport {
         return true
     }
 
-    override suspend fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) {
+    override fun setInitialDimensions(columns: Int, rows: Int, width: Int, height: Int) {
         this.columns = columns
         this.rows = rows
         this.width = width
         this.height = height
+    }
+
+    override suspend fun resize(columns: Int, rows: Int, width: Int, height: Int) {
+        setInitialDimensions(columns, rows, width, height)
 
         if (sessionOpen) {
             try {
