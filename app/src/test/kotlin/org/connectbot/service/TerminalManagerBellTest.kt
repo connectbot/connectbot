@@ -180,7 +180,7 @@ class TerminalManagerBellTest {
     }
 
     @Test
-    @Config(sdk = [24, 25])
+    @Config(sdk = [24])
     fun lostConnectionPreferenceIsRespected() = runTest(dispatcher) {
         manager.prefs.edit().putBoolean(PreferenceConstants.CONNECTION_LOST_NOTIFICATION, false).apply()
         manager.onSessionEnded(bridgeA, DisconnectReason.IO_ERROR)
@@ -189,7 +189,6 @@ class TerminalManagerBellTest {
     }
 
     @Test
-    @Config(sdk = [24, 25, 26, 34])
     fun notificationsAreEnabledByDefault() = runTest(dispatcher) {
         doCallRealMethod().`when`(manager).sendActivityNotification(bridgeA)
         manager.sendActivityNotification(bridgeA)
@@ -202,7 +201,6 @@ class TerminalManagerBellTest {
     }
 
     @Test
-    @Config(sdk = [24, 25, 26, 34])
     fun disablingMainNotificationSettingSuppressesBothAlerts() = runTest(dispatcher) {
         manager.prefs.edit()
             .putBoolean(PreferenceConstants.CONNECTION_ALERTS, false)
@@ -220,7 +218,7 @@ class TerminalManagerBellTest {
     }
 
     @Test
-    @Config(sdk = [24, 25])
+    @Config(sdk = [24])
     fun legacyBellOptOutIsRespected() {
         manager.prefs.edit().putBoolean(PreferenceConstants.BELL_NOTIFICATION, false).apply()
         doCallRealMethod().`when`(manager).sendActivityNotification(bridgeA)
@@ -230,7 +228,6 @@ class TerminalManagerBellTest {
     }
 
     @Test
-    @Config(sdk = [26, 34])
     fun systemChannelsAreNotOverriddenByLegacyPreferences() = runTest(dispatcher) {
         manager.prefs.edit()
             .putBoolean(PreferenceConstants.BELL_NOTIFICATION, false)

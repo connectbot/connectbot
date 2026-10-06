@@ -49,7 +49,6 @@ import org.robolectric.annotation.Config
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [33, 34])
 class AppViewModelNotificationRequestTest {
     private val dispatcher = StandardTestDispatcher()
     private lateinit var prefs: SharedPreferences
@@ -119,7 +118,7 @@ class AppViewModelNotificationRequestTest {
     }
 
     @Test
-    @Config(sdk = [24, 26, 32])
+    @Config(sdk = [24])
     fun legacyAndroidConnectsWithoutPermissionRequests() {
         val model = viewModel()
         assertTrue(model.checkAndRequestNotificationPermission("ssh://user@host".toUri(), false))

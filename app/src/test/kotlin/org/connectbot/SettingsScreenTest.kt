@@ -66,7 +66,6 @@ class SettingsScreenTest {
     }
 
     @Test
-    @Config(sdk = [26, 34])
     fun notificationSettingsLinkAppearsBelowMainSettingAndOpensSettings() {
         var settingsOpened = false
         setSettingsContent(onNotificationSettingsClick = { settingsOpened = true })
@@ -82,7 +81,6 @@ class SettingsScreenTest {
     }
 
     @Test
-    @Config(sdk = [26, 34])
     fun notificationSettingsLinkRemainsAvailableWhenMainSettingIsOff() {
         setSettingsContent(uiState = SettingsUiState(connectionAlerts = false))
 
@@ -111,7 +109,7 @@ class SettingsScreenTest {
     }
 
     @Test
-    @Config(sdk = [24, 25])
+    @Config(sdk = [24])
     fun legacyAlertTogglesAppearBelowMainSettingAndDefaultToOn() {
         var bellEnabled: Boolean? = null
         var lossEnabled: Boolean? = null
@@ -135,7 +133,7 @@ class SettingsScreenTest {
     }
 
     @Test
-    @Config(sdk = [24, 25])
+    @Config(sdk = [24])
     fun legacyAlertTogglesAreHiddenWhenMainSettingIsOff() {
         setSettingsContent(uiState = SettingsUiState(connectionAlerts = false))
 

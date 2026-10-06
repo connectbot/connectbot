@@ -5,6 +5,7 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.testing.Test
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.net.URI
 import java.util.zip.ZipInputStream
@@ -410,6 +411,9 @@ kotlin {
 
 tasks.withType<Test>().configureEach {
     jvmArgs("--add-opens", "java.base/java.lang=ALL-UNNAMED")
+    // Robolectric's cached Android resources use a heap separate from the Gradle daemon.
+    maxHeapSize = "2g"
+    maxParallelForks = 1
 }
 
 // Generate filtered export schema from Room schema

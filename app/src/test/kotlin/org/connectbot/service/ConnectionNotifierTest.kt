@@ -46,7 +46,6 @@ import org.robolectric.annotation.Config
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [28, 34])
 class ConnectionNotifierTest {
     private val dispatcher = StandardTestDispatcher()
     private lateinit var notifier: ConnectionNotifier

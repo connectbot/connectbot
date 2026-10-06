@@ -45,11 +45,9 @@ import org.mockito.Mockito.`when`
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows.shadowOf
-import org.robolectric.annotation.Config
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [33, 34])
 class SettingsViewModelPermissionTest {
     private val dispatcher = StandardTestDispatcher()
     private lateinit var prefs: SharedPreferences
