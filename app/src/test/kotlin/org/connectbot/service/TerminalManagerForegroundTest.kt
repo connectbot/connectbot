@@ -41,12 +41,10 @@ import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows.shadowOf
-import org.robolectric.annotation.Config
 import java.lang.ref.WeakReference
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @RunWith(RobolectricTestRunner::class)
-@Config(sdk = [24, 26, 32, 34])
 class TerminalManagerForegroundTest {
     private val dispatcher = StandardTestDispatcher()
     private lateinit var manager: TerminalManager
