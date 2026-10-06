@@ -27,6 +27,19 @@ import java.util.concurrent.TimeUnit
 
 class MoshPtyWindowTest {
     @Test
+    fun cachingDimensionsDoesNotResizeAttachedDescriptor() {
+        val applied = mutableListOf<MoshPtyWindow.Size>()
+        val window = MoshPtyWindow { _, size -> applied.add(size) }
+        window.attach(FileDescriptor())
+        applied.clear()
+        window.setSize(100, 40, 1000, 800)
+        assertEquals(emptyList<MoshPtyWindow.Size>(), applied)
+        assertEquals(MoshPtyWindow.Size(100, 40, 1000, 800), window.snapshot())
+        window.update(100, 40, 1000, 800)
+        assertEquals(listOf(MoshPtyWindow.Size(100, 40, 1000, 800)), applied)
+    }
+
+    @Test
     fun resizeDuringForkIsAppliedWhenDescriptorIsAttached() {
         val applied = mutableListOf<MoshPtyWindow.Size>()
         val window = MoshPtyWindow { _, size -> applied.add(size) }

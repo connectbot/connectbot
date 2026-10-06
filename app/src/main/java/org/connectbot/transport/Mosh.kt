@@ -21,6 +21,7 @@ import android.content.Context
 import android.net.Uri
 import android.os.Process
 import androidx.core.net.toUri
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.currentCoroutineContext
@@ -29,6 +30,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.DisconnectReason
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
@@ -92,7 +94,7 @@ class Mosh : SSH {
         authenticated = true
     }
 
-    override suspend fun connect() {
+    override suspend fun connect(scope: CoroutineScope, dispatchers: CoroutineDispatchers, encoding: String) {
         val currentHost = host ?: return
         val terminalManager = manager ?: return
 
@@ -112,7 +114,7 @@ class Mosh : SSH {
         bridge?.outputLine(manager?.res?.getString(R.string.terminal_mosh_starting))
 
         // First, establish SSH connection
-        super.connect()
+        super.connect(scope, dispatchers, encoding)
 
         // Check if SSH authentication succeeded
         if (!authenticated) {
@@ -422,10 +424,6 @@ class Mosh : SSH {
         moshOutputStream?.write(buffer)
     }
 
-    override suspend fun write(c: Int) {
-        moshOutputStream?.write(c)
-    }
-
     override suspend fun flush() {
         moshOutputStream?.flush()
     }
@@ -472,11 +470,17 @@ class Mosh : SSH {
         super.onDisconnect(reason)
     }
 
-    override suspend fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) {
+    override fun setInitialDimensions(columns: Int, rows: Int, width: Int, height: Int) {
         this.columns = columns
         this.rows = rows
         this.width = width
         this.height = height
+
+        moshPtyWindow.setSize(columns, rows, width, height)
+    }
+
+    override suspend fun resize(columns: Int, rows: Int, width: Int, height: Int) {
+        setInitialDimensions(columns, rows, width, height)
 
         try {
             moshPtyWindow.update(columns, rows, width, height)

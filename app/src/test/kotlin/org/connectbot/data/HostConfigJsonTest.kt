@@ -23,6 +23,11 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import kotlinx.coroutines.test.runTest
 import org.assertj.core.api.Assertions.assertThat
+import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.TelnetEchoMode
+import org.connectbot.data.entity.TelnetNegotiationMode
+import org.connectbot.data.entity.TelnetNewlinePolicy
+import org.connectbot.data.entity.TelnetNonBinaryPolicy
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -119,9 +124,37 @@ class HostConfigJsonTest {
 
         val host = database.hostDao().getAll().single()
         assertThat(host.nickname).isEqualTo("branch-host")
+        assertThat(host.telnetEchoMode).isEqualTo(TelnetEchoMode.AUTO)
+        assertThat(host.telnetNegotiationMode).isEqualTo(TelnetNegotiationMode.INTERACTIVE)
+        assertThat(host.telnetNonBinaryPolicy).isEqualTo(TelnetNonBinaryPolicy.EIGHT_BIT_COMPATIBILITY)
+        assertThat(host.telnetNewlinePolicy).isEqualTo(TelnetNewlinePolicy.LF_TO_CRLF)
 
         val portForward = database.portForwardDao().getByHost(host.id).single()
         assertThat(portForward.sourceAddr).isEqualTo("0.0.0.0")
         assertThat(portForward.sourcePort).isEqualTo(8080)
+    }
+
+    @Test
+    fun telnetOptionsSurviveJsonRoundTrip() = runTest {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val original = Host(
+            nickname = "Console",
+            protocol = "telnet",
+            hostname = "example.com",
+            port = 23,
+            telnetEchoMode = TelnetEchoMode.ON,
+            telnetNegotiationMode = TelnetNegotiationMode.PASSIVE,
+            telnetNonBinaryPolicy = TelnetNonBinaryPolicy.STRICT_ASCII,
+            telnetNewlinePolicy = TelnetNewlinePolicy.PRESERVE_LF,
+        )
+        database.hostDao().insert(original)
+        val json = HostConfigJson.exportToJson(context, database).first
+        database.clearAllTables()
+        HostConfigJson.importFromJson(context, database, json)
+        val restored = database.hostDao().getAll().single()
+        assertThat(restored.telnetEchoMode).isEqualTo(original.telnetEchoMode)
+        assertThat(restored.telnetNegotiationMode).isEqualTo(original.telnetNegotiationMode)
+        assertThat(restored.telnetNonBinaryPolicy).isEqualTo(original.telnetNonBinaryPolicy)
+        assertThat(restored.telnetNewlinePolicy).isEqualTo(original.telnetNewlinePolicy)
     }
 }

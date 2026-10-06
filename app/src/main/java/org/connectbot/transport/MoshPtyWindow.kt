@@ -30,9 +30,15 @@ internal class MoshPtyWindow(private val resize: (FileDescriptor, Size) -> Unit)
     fun snapshot(): Size = size
 
     @Synchronized
-    fun update(columns: Int, rows: Int, width: Int, height: Int) {
+    fun setSize(columns: Int, rows: Int, width: Int, height: Int) {
         if (columns <= 0 || rows <= 0) return
         size = Size(columns, rows, width.coerceAtLeast(0), height.coerceAtLeast(0))
+    }
+
+    @Synchronized
+    fun update(columns: Int, rows: Int, width: Int, height: Int) {
+        if (columns <= 0 || rows <= 0) return
+        setSize(columns, rows, width, height)
         descriptor?.let { resize(it, size) }
     }
 

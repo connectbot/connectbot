@@ -19,15 +19,19 @@ package org.connectbot.transport
 
 import android.content.Context
 import android.net.Uri
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.ReceiveChannel
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.PortForward
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
 import org.connectbot.sshlib.ConnectionInfo
 import java.io.IOException
 
 /**
+ * Connection and stream operations are called on the injected IO dispatcher.
+ *
  * @author Kenny Root
  */
 abstract class AbsTransport {
@@ -55,7 +59,30 @@ abstract class AbsTransport {
      * session is started, must call back to [TerminalBridge.onConnected].
      * After that call a session may be opened.
      */
-    abstract suspend fun connect()
+    abstract suspend fun connect(scope: CoroutineScope, dispatchers: CoroutineDispatchers, encoding: String)
+
+    /** Separate SSH streams retain independent character decoders in the relay. */
+    open fun getOutputStreams(): List<ReceiveChannel<ByteArray>>? = null
+
+    open suspend fun onOutputComplete() = Unit
+
+    open fun onOutputFailure(cause: Exception) = Unit
+
+    /** Write UTF-8 emulator input, applying any transport-specific encoding or input discipline. */
+    open suspend fun writeKeyboardInput(buffer: ByteArray) = write(buffer)
+
+    /** Handle unsuccessful connection setup. */
+    open fun onConnectionFailure(error: Exception) = Unit
+
+    open fun onReadFailure(error: IOException) = Unit
+
+    /** Called after the relay flushes its decoder at drained EOF. */
+    open fun onReadEof() = Unit
+
+    /** Optional resource for a recoverable operation rejection, displayed by the console. */
+    open fun userMessageForError(error: IOException): Int? = null
+
+    open suspend fun carriageReturn() = write(byteArrayOf(13))
 
     /**
      * Reads from the transport. Transport must support reading into a the byte array
@@ -65,18 +92,11 @@ abstract class AbsTransport {
      * @param buffer byte buffer to store read bytes into
      * @param offset where to start writing in the buffer
      * @param length maximum number of bytes to read
-     * @return number of bytes read
+     * @return number of bytes read, or -1 after all input is drained
      * @throws IOException when remote host disconnects
      */
     @Throws(IOException::class)
     abstract suspend fun read(buffer: ByteArray, offset: Int, length: Int): Int
-
-    /** Separate streams keep their own character decoder in the relay. */
-    open fun getOutputStreams(): List<ReceiveChannel<ByteArray>>? = null
-
-    open suspend fun onOutputComplete() = Unit
-
-    open fun onOutputFailure(cause: Exception) = Unit
 
     /**
      * Writes to the transport. If the host is not yet connected, simply return without
@@ -89,14 +109,6 @@ abstract class AbsTransport {
     abstract suspend fun write(buffer: ByteArray)
 
     /**
-     * Writes to the transport. See [write] for behavior details.
-     * @param c character to write to the transport
-     * @throws IOException when there is a problem writing after connection
-     */
-    @Throws(IOException::class)
-    abstract suspend fun write(c: Int)
-
-    /**
      * Flushes the write commands to the transport.
      * @throws IOException when there is a problem writing after connection
      */
@@ -104,10 +116,13 @@ abstract class AbsTransport {
     abstract suspend fun flush()
 
     /**
-     * Closes the connection to the terminal. Note that the resulting failure to read
-     * should call [TerminalBridge.dispatchDisconnect].
+     * Release the connection and any resources allocated during setup.
+     * Safe to call before connecting or after closing.
      */
     abstract suspend fun close()
+
+    /** Cache character and pixel dimensions for connection setup without performing I/O. */
+    open fun setInitialDimensions(columns: Int, rows: Int, width: Int, height: Int) = Unit
 
     /**
      * Tells the transport what dimensions the display is currently
@@ -116,7 +131,7 @@ abstract class AbsTransport {
      * @param width width in pixels
      * @param height height in pixels
      */
-    abstract suspend fun setDimensions(columns: Int, rows: Int, width: Int, height: Int)
+    abstract suspend fun resize(columns: Int, rows: Int, width: Int, height: Int)
 
     open fun setOptions(options: Map<String, String>) {
         // do nothing
@@ -231,7 +246,7 @@ abstract class AbsTransport {
      */
     abstract fun getLocalIpAddress(): String?
 
-    /** Negotiated SSH details, retained for inspection after disconnect or Mosh handoff. */
+    /** Negotiated SSH details, retained after disconnect or Mosh handoff. */
     open fun getSshConnectionInfo(): ConnectionInfo? = null
 
     /**

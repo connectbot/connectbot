@@ -77,6 +77,10 @@ import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.data.entity.TelnetEchoMode
+import org.connectbot.data.entity.TelnetNegotiationMode
+import org.connectbot.data.entity.TelnetNewlinePolicy
+import org.connectbot.data.entity.TelnetNonBinaryPolicy
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.common.getIconColors
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
@@ -124,6 +128,10 @@ fun HostEditorScreen(
         onEditAutomation = { onNavigateToAutomation(uiState.hostId) },
         onJumpHostChange = viewModel::updateJumpHostId,
         onIpVersionChange = viewModel::updateIpVersion,
+        onTelnetEchoModeChange = viewModel::updateTelnetEchoMode,
+        onTelnetNegotiationModeChange = viewModel::updateTelnetNegotiationMode,
+        onTelnetNonBinaryPolicyChange = viewModel::updateTelnetNonBinaryPolicy,
+        onTelnetNewlinePolicyChange = viewModel::updateTelnetNewlinePolicy,
         onPasswordChange = viewModel::updatePassword,
         onClearPassword = viewModel::clearSavedPassword,
         onMoshPortChange = viewModel::updateMoshPort,
@@ -164,6 +172,10 @@ fun HostEditorScreenContent(
     onSaveHost: suspend () -> Boolean,
     modifier: Modifier = Modifier,
     onCancelMoshInstall: () -> Unit = {},
+    onTelnetEchoModeChange: (TelnetEchoMode) -> Unit = {},
+    onTelnetNegotiationModeChange: (TelnetNegotiationMode) -> Unit = {},
+    onTelnetNonBinaryPolicyChange: (TelnetNonBinaryPolicy) -> Unit = {},
+    onTelnetNewlinePolicyChange: (TelnetNewlinePolicy) -> Unit = {},
     onMoshPortChange: (String) -> Unit = {},
     onMoshNetworkTimeoutChange: (String) -> Unit = {},
     onMoshServerChange: (String) -> Unit = {},
@@ -323,6 +335,50 @@ fun HostEditorScreenContent(
                         onIpVersionSelect = onIpVersionChange,
                         modifier = Modifier.padding(top = 8.dp),
                     )
+
+                    if (uiState.protocol == "telnet") {
+                        TelnetOptionSelector(
+                            label = stringResource(R.string.telnet_echo_title),
+                            summary = stringResource(R.string.telnet_echo_summary),
+                            value = uiState.telnetEchoMode,
+                            options = listOf(
+                                TelnetEchoMode.AUTO to stringResource(R.string.telnet_echo_auto),
+                                TelnetEchoMode.ON to stringResource(R.string.telnet_echo_on),
+                                TelnetEchoMode.OFF to stringResource(R.string.telnet_echo_off),
+                            ),
+                            onSelect = onTelnetEchoModeChange,
+                        )
+                        TelnetOptionSelector(
+                            label = stringResource(R.string.telnet_negotiation_title),
+                            summary = stringResource(R.string.telnet_negotiation_summary),
+                            value = uiState.telnetNegotiationMode,
+                            options = listOf(
+                                TelnetNegotiationMode.INTERACTIVE to stringResource(R.string.telnet_negotiation_interactive),
+                                TelnetNegotiationMode.PASSIVE to stringResource(R.string.telnet_negotiation_passive),
+                            ),
+                            onSelect = onTelnetNegotiationModeChange,
+                        )
+                        TelnetOptionSelector(
+                            label = stringResource(R.string.telnet_nonbinary_title),
+                            summary = stringResource(R.string.telnet_nonbinary_summary),
+                            value = uiState.telnetNonBinaryPolicy,
+                            options = listOf(
+                                TelnetNonBinaryPolicy.EIGHT_BIT_COMPATIBILITY to stringResource(R.string.telnet_nonbinary_legacy),
+                                TelnetNonBinaryPolicy.STRICT_ASCII to stringResource(R.string.telnet_nonbinary_ascii),
+                            ),
+                            onSelect = onTelnetNonBinaryPolicyChange,
+                        )
+                        TelnetOptionSelector(
+                            label = stringResource(R.string.telnet_newline_title),
+                            summary = stringResource(R.string.telnet_newline_summary),
+                            value = uiState.telnetNewlinePolicy,
+                            options = listOf(
+                                TelnetNewlinePolicy.LF_TO_CRLF to stringResource(R.string.telnet_newline_crlf),
+                                TelnetNewlinePolicy.PRESERVE_LF to stringResource(R.string.telnet_newline_lf),
+                            ),
+                            onSelect = onTelnetNewlinePolicyChange,
+                        )
+                    }
 
                     // Mosh-specific fields
                     if (uiState.protocol == "mosh") {
@@ -1372,5 +1428,44 @@ private fun HostEditorScreenPreview() {
             onClearPassword = {},
             onSaveHost = { true },
         )
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun <T> TelnetOptionSelector(
+    label: String,
+    summary: String,
+    value: T,
+    options: List<Pair<T, String>>,
+    onSelect: (T) -> Unit,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = it },
+        modifier = Modifier.fillMaxWidth().padding(top = 8.dp),
+    ) {
+        OutlinedTextField(
+            value = options.first { it.first == value }.second,
+            onValueChange = {},
+            label = { Text(label) },
+            supportingText = { Text(summary) },
+            readOnly = true,
+            singleLine = true,
+            trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded) },
+            modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable).fillMaxWidth(),
+        )
+        ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            options.forEach { (option, text) ->
+                DropdownMenuItem(
+                    text = { Text(text) },
+                    onClick = {
+                        onSelect(option)
+                        expanded = false
+                    },
+                )
+            }
+        }
     }
 }
