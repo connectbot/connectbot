@@ -130,6 +130,18 @@ data class Host(
      */
     @ColumnInfo(name = "locale", defaultValue = "en_US.UTF-8")
     val locale: String = "en_US.UTF-8",
+
+    @ColumnInfo(name = "telnet_echo_mode", defaultValue = "'AUTO'")
+    val telnetEchoMode: TelnetEchoMode = TelnetEchoMode.AUTO,
+
+    @ColumnInfo(name = "telnet_negotiation_mode", defaultValue = "'INTERACTIVE'")
+    val telnetNegotiationMode: TelnetNegotiationMode = TelnetNegotiationMode.INTERACTIVE,
+
+    @ColumnInfo(name = "telnet_nonbinary_policy", defaultValue = "'EIGHT_BIT_COMPATIBILITY'")
+    val telnetNonBinaryPolicy: TelnetNonBinaryPolicy = TelnetNonBinaryPolicy.EIGHT_BIT_COMPATIBILITY,
+
+    @ColumnInfo(name = "telnet_newline_policy", defaultValue = "'LF_TO_CRLF'")
+    val telnetNewlinePolicy: TelnetNewlinePolicy = TelnetNewlinePolicy.LF_TO_CRLF,
 ) {
     /**
      * Check if this host is temporary (not saved to database).

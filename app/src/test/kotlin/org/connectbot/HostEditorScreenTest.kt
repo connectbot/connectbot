@@ -17,17 +17,22 @@
 
 package org.connectbot
 
+import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
+import androidx.compose.ui.test.captureToImage
 import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithText
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onRoot
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
@@ -52,6 +57,9 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.robolectric.annotation.Config
+import org.robolectric.annotation.GraphicsMode
+import java.io.File
 import javax.inject.Inject
 
 @HiltAndroidTest
@@ -395,5 +403,32 @@ class HostEditorScreenTest {
         composeTestRule
             .onNodeWithTag("add_host_button")
             .assertIsDisplayed()
+    }
+
+    @Test
+    @Config(sdk = [34], qualifiers = "w411dp-h891dp")
+    @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    @SuppressLint("NewApi") // The native screenshot runs under Robolectric SDK 34.
+    fun telnetAdvancedOptionsAreSelectableAndHiddenForSsh() {
+        navigateToHostEditorScreen(-1L)
+        composeTestRule.onNodeWithText("ssh").performClick()
+        composeTestRule.onNodeWithText("telnet").performClick()
+        val advanced = composeTestRule.activity.getString(R.string.host_editor_show_advanced)
+        composeTestRule.onNodeWithText(advanced).performScrollTo().performClick()
+        val echoTitle = composeTestRule.activity.getString(R.string.telnet_echo_title)
+        composeTestRule.onNodeWithText(echoTitle).performScrollTo().performClick()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.telnet_echo_off)).performClick()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.telnet_echo_off)).assertExists()
+        for (title in listOf(R.string.telnet_negotiation_title, R.string.telnet_nonbinary_title, R.string.telnet_newline_title)) {
+            composeTestRule.onNodeWithText(composeTestRule.activity.getString(title)).performScrollTo().assertIsDisplayed()
+        }
+        val screenshot = File("build/reports/telnet-settings.png")
+        screenshot.parentFile!!.mkdirs()
+        screenshot.outputStream().use { output ->
+            composeTestRule.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 100, output)
+        }
+        composeTestRule.onNodeWithText("telnet").performScrollTo().performClick()
+        composeTestRule.onNodeWithText("ssh").performClick()
+        composeTestRule.onNodeWithText(echoTitle).assertDoesNotExist()
     }
 }

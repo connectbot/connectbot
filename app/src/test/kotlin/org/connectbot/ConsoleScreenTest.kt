@@ -226,6 +226,7 @@ class ConsoleScreenTest {
     @Test
     fun consoleScreen_remoteDisconnect_showsReconnectAfterBridgeStateChanges() {
         val bridge = mock(TerminalBridge::class.java)
+        `when`(bridge.transportMessages).thenReturn(MutableSharedFlow())
         val host = Host(id = 1L, nickname = "test-host")
         val emulator = TerminalEmulatorFactory.create()
         `when`(bridge.host).thenReturn(host)
@@ -653,6 +654,7 @@ class ConsoleScreenTest {
     @Test
     fun consoleScreen_connectionInfoMenu_opensAndDismissesPanel() {
         val bridge = mock(TerminalBridge::class.java)
+        `when`(bridge.transportMessages).thenReturn(MutableSharedFlow())
         val host = Host(id = 1L, nickname = "test-host", hostname = "server.example")
         val emulator = TerminalEmulatorFactory.create()
         `when`(bridge.host).thenReturn(host)

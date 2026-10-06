@@ -27,6 +27,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.rule.GrantPermissionRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
@@ -38,17 +39,26 @@ import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withTimeout
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.TelnetEchoMode
+import org.connectbot.data.entity.TelnetNegotiationMode
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.terminal.VTermKey
 import org.connectbot.transport.AbsTransport
 import org.connectbot.transport.SSH
 import org.connectbot.ui.MainActivity
 import org.connectbot.util.waitUntilServiceBound
+import org.junit.Assert.assertArrayEquals
 import org.junit.Assert.assertEquals
+import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
 import org.junit.runner.RunWith
+import java.net.InetAddress
+import java.net.ServerSocket
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 
 /**
@@ -108,7 +118,7 @@ class TerminalBridgeWriteSerializationTest {
      * window so the bug manifests deterministically instead of
      * intermittently.
      */
-    private class LossyNonThreadSafeTransport : AbsTransport() {
+    private open class LossyNonThreadSafeTransport : AbsTransport() {
         val attemptedBytes = AtomicInteger(0)
 
         // Intentionally NOT volatile / NOT synchronized — the whole point is
@@ -117,7 +127,7 @@ class TerminalBridgeWriteSerializationTest {
 
         fun receivedBytes(): Int = data.size
 
-        override suspend fun connect() = Unit
+        override suspend fun connect(scope: CoroutineScope, dispatchers: CoroutineDispatchers, encoding: String) = Unit
         override suspend fun read(buffer: ByteArray, offset: Int, length: Int) = 0
 
         override suspend fun write(buffer: ByteArray) {
@@ -133,13 +143,9 @@ class TerminalBridgeWriteSerializationTest {
             data = next
         }
 
-        override suspend fun write(c: Int) {
-            write(byteArrayOf(c.toByte()))
-        }
-
         override suspend fun flush() = Unit
         override suspend fun close() = Unit
-        override suspend fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) = Unit
+        override suspend fun resize(columns: Int, rows: Int, width: Int, height: Int) = Unit
         override fun isConnected() = true
         override fun isSessionOpen() = true
         override fun getDefaultPort() = 22
@@ -292,6 +298,101 @@ class TerminalBridgeWriteSerializationTest {
                     transport.receivedBytes(),
                 )
             } finally {
+                bridge.cleanup()
+            }
+        }
+    }
+
+    @Test
+    fun telnetBridgeQueuesEnterAndPasteAndDrainsRemoteOutput() {
+        ActivityScenario.launch<MainActivity>(Intent(context, MainActivity::class.java)).use { scenario ->
+            var activity: MainActivity? = null
+            scenario.onActivity { activity = it }
+            val manager = runBlocking { requireNotNull(activity).waitUntilServiceBound() }.terminalManager
+            ServerSocket(0, 1, InetAddress.getByName("127.0.0.1")).use { server ->
+                val text = "https://local.example/"
+                val expected = (text + "\r\n").toByteArray() + byteArrayOf(13, 0)
+                val wire = CompletableFuture.supplyAsync {
+                    server.accept().use { peer ->
+                        peer.soTimeout = 10000
+                        peer.getOutputStream().write("https://remote.example/\r\n".toByteArray())
+                        peer.getOutputStream().flush()
+                        val received = ByteArray(expected.size)
+                        java.io.DataInputStream(peer.getInputStream()).readFully(received)
+                        peer.getOutputStream().write("https://eof.example/\r\n".toByteArray())
+                        peer.getOutputStream().flush()
+                        received
+                    }
+                }
+                val host = Host(
+                    id = 0, nickname = "Telnet bridge test", protocol = "telnet", hostname = "127.0.0.1", port = server.localPort,
+                    telnetEchoMode = TelnetEchoMode.ON, telnetNegotiationMode = TelnetNegotiationMode.PASSIVE,
+                    quickDisconnect = false, stayConnected = false,
+                )
+                val bridge = TerminalBridge(manager, host, CoroutineDispatchers(Dispatchers.Default, Dispatchers.IO, Dispatchers.Main))
+                try {
+                    bridge.startConnection()
+                    runBlocking {
+                        withTimeout(10000) {
+                            while (!bridge.isSessionOpen || "https://remote.example/" !in bridge.scanForURLs()) delay(20)
+                        }
+                    }
+                    bridge.injectString(text + "\n")
+                    // Verify echo before Enter releases the peer's final response and EOF.
+                    runBlocking {
+                        withTimeout(10000) {
+                            while (text !in bridge.scanForURLs()) delay(20)
+                        }
+                    }
+                    bridge.keyHandler.sendPressedKey(VTermKey.ENTER)
+                    assertArrayEquals(expected, wire.get(10, TimeUnit.SECONDS))
+                    runBlocking {
+                        withTimeout(10000) {
+                            while (!bridge.disconnected || "https://eof.example/" !in bridge.scanForURLs()) delay(20)
+                        }
+                    }
+                    assertEquals(DisconnectReason.REMOTE_EOF, bridge.disconnectReason)
+                } finally {
+                    bridge.cleanup()
+                }
+            }
+        }
+    }
+
+    @Test
+    fun queuedInputDoesNotMoveToReplacementTransport() {
+        ActivityScenario.launch<MainActivity>(Intent(context, MainActivity::class.java)).use { scenario ->
+            var activity: MainActivity? = null
+            scenario.onActivity { activity = it }
+            val manager = runBlocking { requireNotNull(activity).waitUntilServiceBound() }.terminalManager
+            val bridge = TerminalBridge(
+                manager,
+                Host(nickname = "Queue test", protocol = "local"),
+                CoroutineDispatchers(Dispatchers.Default, Dispatchers.IO, Dispatchers.Main),
+            )
+            val entered = kotlinx.coroutines.CompletableDeferred<Unit>()
+            val release = kotlinx.coroutines.CompletableDeferred<Unit>()
+            val original = object : LossyNonThreadSafeTransport() {
+                override suspend fun write(buffer: ByteArray) {
+                    entered.complete(Unit)
+                    release.await()
+                    super.write(buffer)
+                }
+            }
+            val replacement = LossyNonThreadSafeTransport()
+            try {
+                bridge.transport = original
+                bridge.sendByte(1)
+                bridge.sendByte(2)
+                runBlocking { withTimeout(5000) { entered.await() } }
+                bridge.transport = replacement
+                bridge.sendByte(3)
+                release.complete(Unit)
+                runBlocking { withTimeout(5000) { while (replacement.receivedBytes() == 0) delay(20) } }
+                assertEquals(1, original.receivedBytes())
+                assertEquals(1, replacement.receivedBytes())
+            } finally {
+                release.complete(Unit)
                 bridge.cleanup()
             }
         }

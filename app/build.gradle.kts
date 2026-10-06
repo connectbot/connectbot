@@ -558,6 +558,8 @@ tasks
 dependencies {
     implementation(libs.sshlib)
     implementation(libs.termlib)
+    implementation(libs.telnetlib)
+    implementation(libs.telnetlib.ktor)
     implementation(libs.androidx.media3.common.ktx)
     implementation(libs.androidx.navigation.testing)
     implementation(libs.androidx.ui)

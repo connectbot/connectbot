@@ -53,6 +53,7 @@ class RelayStreamsTest {
     private val stderr = Channel<ByteArray>(Channel.UNLIMITED)
 
     private fun relay(dispatcher: kotlinx.coroutines.CoroutineDispatcher): Relay {
+        `when`(bridge.transport).thenReturn(transport)
         `when`(bridge.terminalEmulator).thenReturn(terminal)
         `when`(transport.getOutputStreams()).thenReturn(listOf(stdout, stderr))
         doAnswer { call ->
