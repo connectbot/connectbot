@@ -2,22 +2,24 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
-## [Unreleased][Unreleased]
+## [1.11.0][1.11.0]
 
 ### Added
-- Restore in-console session switching and add an optional swipe gesture for switching between terminal sessions
+- Restore in-console session switching with preserved keyboard state and an optional swipe gesture
 - Add controls for full IME mode and for choosing whether Ctrl and Alt shortcuts use direct terminal input or the IME
 - Add profile-level support for iTerm2 and Kitty inline images, with off, per-session consent, and always-on policies
 - Add font shaping and fallback for Arabic and other complex scripts
 - Add improved rendering for combining characters, emoji sequences, box-drawing characters, and block characters
-- Add Mosh transport support, delivered via Play Feature Delivery on Google builds and included directly in open-source builds
+- Add Mosh transport support with configurable per-host server network timeouts
 - Add action-based post-login automation to run sequence of prompts, inputs, delays, and port forward triggers
 - Add direct navigation to edit a host's profile from the host editor screen
+- Restore the optional Page Up and Page Down gesture in the console
+- Add host list indicators for unread output and connections needing attention, including disconnect reasons
+- Add richer session notifications, connection loss alerts, and per-session terminal bell muting
 
 ### Fixed
 - Show bell notifications only while ConnectBot is not visible, and route bells through the currently visible console
 - Keep the console visible when the network drops and correctly detect VPN connectivity while reconnecting
-- Preserve the keyboard state while switching sessions and prevent swipes from conflicting with text selection or special keys
 - Correctly copy terminal selections, including selections that cross the scrollback boundary
 - Improve IME input handling for Hangul, backspaces, wide characters, cursor context, and paste actions
 - Require bare domains detected as URLs to end at a token boundary
@@ -27,7 +29,11 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Fix biometric RSA key authentication with Android Keystore by preferring RSA-SHA2 when servers omit signature algorithm advertisements
 - Accept any MIME type when importing JSON configurations to support various document providers, and enforce a safe file size limit
 - Reopen the software keyboard reliably when tapping the terminal
-- Prevent keyboard input conflicts while the session picker dialog is visible
+- Preserve terminal dimensions when reconnecting SSH sessions
+- Keep background connection support enabled when notification permission is denied or connection alerts are disabled
+- Hide the software keyboard before navigating away from the console
+- Keep the title bar visible while the overflow menu is open without extending its timer when using terminal keys
+- Limit nickname autofill to initial host creation so editing connection details does not overwrite existing nicknames
 
 ### Changed
 - Improve terminal rendering performance with frame-aware updates and less work on the UI thread
@@ -35,12 +41,15 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Convert the port forward editor from a dialog to a full-screen editor
 - Send terminal pixel dimensions in addition to rows and columns on resize
 - Reduce network queries during startup by querying only the active network
+- Show terminal keys by default and remove their text input button; text input remains available from the title bar
+- Keep protocol selection and connection details visible in the host editor, with advanced options limited to IP version, password, and Mosh settings
 
 ### Translations
 - Update translations
+- Correct Indonesian SSH terminology and other machine and human translation errors
 
 ### Dependencies
-- Update ConnectBot termlib from 0.1.0 to 0.3.7
+- Update ConnectBot termlib from 0.1.0 to 0.3.11
 
 ## [1.10.9][1.10.9]
 
@@ -378,7 +387,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Color picker color numbers are now localized
 
 
-[Unreleased]: https://github.com/connectbot/connectbot/compare/v1.10.9...HEAD
+[1.11.0]: https://github.com/connectbot/connectbot/compare/v1.10.9...v1.11.0
 [1.10.9]: https://github.com/connectbot/connectbot/compare/v1.10.8...v1.10.9
 [1.10.8]: https://github.com/connectbot/connectbot/compare/v1.10.7...v1.10.8
 [1.10.7]: https://github.com/connectbot/connectbot/compare/v1.10.6...v1.10.7
