@@ -105,6 +105,8 @@ jobs:
     needs: [check-inputs]
     permissions:
       contents: read
+      id-token: write
+      attestations: write
     strategy:
       matrix:
         include:
@@ -164,16 +166,28 @@ jobs:
           if-no-files-found: warn
           retention-days: 14
 
+      - name: Attest unsigned Android artifacts
+        if: ${{ inputs.is_push }}
+        id: provenance
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: |
+            app/build/outputs/apk/${{ matrix.flavor }}/release/app-${{ matrix.flavor }}-release-unsigned.apk
+            app/build/outputs/bundle/${{ matrix.flavor }}Release/app-${{ matrix.flavor }}-release.aab
+
       - name: Package release outputs
         if: ${{ inputs.is_push }}
         env:
           FLAVOR: ${{ matrix.flavor }}
+          PROVENANCE_BUNDLE: ${{ steps.provenance.outputs.bundle-path }}
         run: |
+          cp "$PROVENANCE_BUNDLE" "provenance-${FLAVOR}.json"
           outputs=(
             "app/build/outputs/apk/${FLAVOR}/release/app-${FLAVOR}-release-unsigned.apk"
             "app/build/outputs/bundle/${FLAVOR}Release/app-${FLAVOR}-release.aab"
             "app/build/outputs/native-debug-symbols/${FLAVOR}Release/native-debug-symbols.zip"
             "app/build/outputs/mapping/${FLAVOR}Release/mapping.txt"
+            "provenance-${FLAVOR}.json"
           )
           if [[ "$FLAVOR" == 'google' ]]; then
             outputs+=("app/build/outputs/app_versioning/googleRelease/version_code.txt")
@@ -421,6 +435,8 @@ jobs:
             release-title.txt
             tag.txt
             version_code.txt
+            provenance-oss.json
+            provenance-google.json
             ConnectBot-*-unsigned.apk
             ConnectBot-*-unsigned.aab
             ConnectBot-*.native-debug-symbols.zip
@@ -447,6 +463,8 @@ jobs:
             ConnectBot-*.native-debug-symbols.zip
             ConnectBot-*.mapping.txt.zst
             version_code.txt
+            provenance-oss.json
+            provenance-google.json
 
   signing:
     name: Trigger remote signing
@@ -462,14 +480,36 @@ jobs:
         with:
           name: apk
 
-      - name: Set release name
-        id: name
+      - name: Prepare signing request
+        id: request
+        env:
+          SOURCE_REPO: ${{ github.repository }}
+          SOURCE_DIGEST: ${{ github.sha }}
+          SOURCE_REF: ${{ github.ref }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        # The reusable build workflow is the attestation signer. SOURCE_REF is
+        # the original build ref, which can differ from the generated release tag.
+        # The server must verify each unsigned APK/AAB before signing it.
         run: |
-          echo "GITHUB_TAG=$(cat tag.txt)" >> "$GITHUB_OUTPUT"
-          echo "VERSION_CODE=$(cat version_code.txt)" >> "$GITHUB_OUTPUT"
+          data="$(jq -cn \
+            --arg tag_id "$(cat tag.txt)" \
+            --arg version_code "$(cat version_code.txt)" \
+            --arg repo "$SOURCE_REPO" \
+            --arg signer_workflow "${SOURCE_REPO}/.github/workflows/ci-build.yml" \
+            --arg source_digest "$SOURCE_DIGEST" \
+            --arg source_ref "$SOURCE_REF" \
+            --arg run_id "$RUN_ID" \
+            --arg run_attempt "$RUN_ATTEMPT" \
+            '{tag_id: $tag_id, version_code: $version_code,
+              repo: $repo, signer_workflow: $signer_workflow,
+              source_digest: $source_digest, source_ref: $source_ref,
+              run_id: $run_id, run_attempt: $run_attempt,
+              provenance_bundles: {oss: "provenance-oss.json", google: "provenance-google.json"}}')"
+          echo "data=$data" >> "$GITHUB_OUTPUT"
 
       - name: Call remote signer
         uses: distributhor/workflow-webhook@2381f0e9c7b6bf061fb1405bd0804b8706116369 # v3.0.8
         with:
           webhook_url: ${{ secrets.SIGNER_WEBHOOK_URL }}
-          data: '{"tag_id": "${{ steps.name.outputs.GITHUB_TAG }}", "version_code": "${{ steps.name.outputs.VERSION_CODE }}"}'
+          data: ${{ steps.request.outputs.data }}
