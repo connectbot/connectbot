@@ -26,6 +26,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentActivity
 import org.connectbot.R
@@ -46,7 +47,11 @@ fun BiometricPromptHandler(
     val activity = remember(context) { context.findFragmentActivity() }
     val currentOnResponse by rememberUpdatedState(onResponse)
 
-    LaunchedEffect(prompt) {
+    val title = stringResource(R.string.pubkey_biometric_prompt_title)
+    val subtitle = stringResource(R.string.pubkey_biometric_prompt_subtitle, prompt.keyNickname)
+    val negativeButtonText = stringResource(R.string.delete_neg)
+
+    LaunchedEffect(prompt, title, subtitle, negativeButtonText) {
         if (activity == null) {
             Timber.e("Cannot show BiometricPrompt: FragmentActivity not found")
             currentOnResponse(PromptResponse.BiometricResponse(false))
@@ -75,9 +80,9 @@ fun BiometricPromptHandler(
         val biometricPrompt = BiometricPrompt(activity, executor, callback)
 
         val promptInfo = BiometricPrompt.PromptInfo.Builder()
-            .setTitle(context.getString(R.string.pubkey_biometric_prompt_title))
-            .setSubtitle(context.getString(R.string.pubkey_biometric_prompt_subtitle, prompt.keyNickname))
-            .setNegativeButtonText(context.getString(R.string.delete_neg))
+            .setTitle(title)
+            .setSubtitle(subtitle)
+            .setNegativeButtonText(negativeButtonText)
             .build()
 
         biometricPrompt.authenticate(promptInfo)
