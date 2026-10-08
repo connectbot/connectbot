@@ -20,7 +20,10 @@ package org.connectbot.ui.screens.help
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.os.Build
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -50,6 +53,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -60,6 +64,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import kotlinx.coroutines.launch
 import org.connectbot.BuildConfig
 import org.connectbot.R
 import org.connectbot.ui.PreviewScreen
@@ -276,6 +281,27 @@ private fun LogViewerDialog(
     val context = LocalContext.current
     val uiState by viewModel.uiState.collectAsState()
     val logs = uiState.logs
+    val scope = rememberCoroutineScope()
+    var savingTombstone by remember { mutableStateOf(false) }
+    val saveTombstone = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.CreateDocument("application/octet-stream"),
+    ) { uri ->
+        if (uri != null) {
+            scope.launch {
+                savingTombstone = true
+                try {
+                    val message = when (viewModel.saveTombstone(uri)) {
+                        TombstoneSaveResult.SAVED -> R.string.tombstone_saved
+                        TombstoneSaveResult.UNAVAILABLE -> R.string.tombstone_unavailable
+                        TombstoneSaveResult.FAILED -> R.string.tombstone_save_failed
+                    }
+                    Toast.makeText(context, message, Toast.LENGTH_LONG).show()
+                } finally {
+                    savingTombstone = false
+                }
+            }
+        }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.loadLogs()
@@ -307,6 +333,19 @@ private fun LogViewerDialog(
                         .horizontalScroll(rememberScrollState())
                         .padding(8.dp),
                 )
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                    Text(
+                        text = stringResource(R.string.tombstone_save_info),
+                        style = MaterialTheme.typography.bodySmall,
+                        modifier = Modifier.padding(top = 16.dp),
+                    )
+                    TextButton(
+                        onClick = { saveTombstone.launch("connectbot-tombstone.pb") },
+                        enabled = !savingTombstone,
+                    ) {
+                        Text(stringResource(R.string.save_tombstone))
+                    }
+                }
             }
         },
         confirmButton = {
