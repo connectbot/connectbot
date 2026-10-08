@@ -17,6 +17,7 @@
 
 package org.connectbot.service
 
+import android.annotation.TargetApi
 import android.content.Context
 import android.net.ConnectivityManager
 import android.net.LinkAddress
@@ -99,6 +100,7 @@ class ConnectivityMonitorTest {
     }
 
     @Test
+    @TargetApi(28)
     fun `monitor includes VPN networks`() {
         `when`(connectivityManager.allNetworks).thenReturn(emptyArray())
         connectivityMonitor.init()
@@ -109,6 +111,7 @@ class ConnectivityMonitorTest {
     }
 
     @Test
+    @TargetApi(29)
     fun `default VPN validation update releases queued reconnects`() {
         val network = mock(Network::class.java)
         val initial = mock(NetworkCapabilities::class.java)
@@ -133,6 +136,7 @@ class ConnectivityMonitorTest {
     }
 
     @Test
+    @TargetApi(29)
     fun `default VPN link update records tunnel addresses`() {
         val network = mock(Network::class.java)
         val capabilities = mock(NetworkCapabilities::class.java)

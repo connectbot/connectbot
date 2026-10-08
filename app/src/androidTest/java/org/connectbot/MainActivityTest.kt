@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.os.Build
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
+import androidx.core.content.IntentCompat
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -125,7 +126,7 @@ class MainActivityTest {
             }
 
             if (resultIntent != null && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                val shortcutInfo = resultIntent?.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT, ShortcutInfo::class.java)
+                val shortcutInfo = resultIntent?.let { IntentCompat.getParcelableExtra(it, Intent.EXTRA_SHORTCUT_INTENT, ShortcutInfo::class.java) }
                 assertNotNull("Result should contain ShortcutInfo for modern Android versions", shortcutInfo)
             }
         }

@@ -17,6 +17,7 @@
 
 package org.connectbot
 
+import android.annotation.TargetApi
 import android.graphics.Bitmap
 import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.test.assertIsDisplayed
@@ -91,6 +92,7 @@ class SettingsScreenTest {
     @Test
     @Config(sdk = [34], qualifiers = "w411dp-h891dp")
     @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    @TargetApi(26)
     fun blockedNotificationsExplainBackgroundSupportAndOpenSettings() {
         var settingsOpened = false
         setSettingsContent(
