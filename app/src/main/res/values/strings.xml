@@ -1313,6 +1313,26 @@
 	<string name="logs_bug_report_info">To report a bug, copy these logs and open a new issue at https://connectbot.org/bug</string>
 	<!-- Message shown when no logs are available -->
 	<string name="no_logs_available">No logs available</string>
+	<!-- Heading in View Logs for up to ten retained process exit records, newest first. -->
+	<string name="logs_exit_history">Recent process exits</string>
+	<!-- Message in View Logs when Android retains no process exit records. -->
+	<string name="logs_exit_history_empty">No process exit records available</string>
+	<!-- Message in View Logs when Android cannot provide the process exit history. -->
+	<string name="logs_exit_history_unavailable">Process exit history unavailable</string>
+	<!-- Fallback description for a process exit record with no system explanation. -->
+	<string name="logs_exit_description_unavailable">No description available</string>
+	<!-- Process exit diagnostic block: UTC time, process name, PID, Android reason name and code, exit status or signal, system description, and last sampled PSS/RSS memory in kB. Reason names are Android identifiers. -->
+	<string name="logs_exit_details">Time: %1$s\nProcess: %2$s (PID %3$d)\nReason: %4$s (%5$d)\nStatus/signal: %6$d\nDescription: %7$s\nLast sampled memory: PSS %8$d kB, RSS %9$d kB</string>
+	<!-- Button in View Logs opening the system file picker to save a native crash report. -->
+	<string name="save_tombstone">Save Tombstone</string>
+	<!-- Explanation of the optional native crash report export in View Logs. -->
+	<string name="tombstone_save_info">Save the most recent available native crash report to a location you choose.</string>
+	<!-- Confirmation after saving the raw native crash report to the chosen file. -->
+	<string name="tombstone_saved">Tombstone saved</string>
+	<!-- Message when Android no longer retains a native crash report for this app. -->
+	<string name="tombstone_unavailable">No native crash report is available. Android may have already removed it.</string>
+	<!-- Message when reading or saving the native crash report fails. -->
+	<string name="tombstone_save_failed">Could not save tombstone</string>
 
 	<!-- Section title for the "Help" screen showing information about the program itself. -->
 	<string name="help_section_about">About</string>
