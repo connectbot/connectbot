@@ -230,7 +230,7 @@
   <string name="profile_delete_button">Excluir</string>
   <string name="profile_delete_cancel">Cancelar</string>
   <string name="profile_summary_font">Fonte %1$s %2$dpontos</string>
-  <string name="profile_summary_emulation">Emulação</string>
+  <string name="profile_summary_emulation">Emulação: %s</string>
   <string name="console_menu_reconnect">Reconectar</string>
   <string name="console_menu_close">Fechar</string>
   <string name="console_menu_paste">Colar</string>
