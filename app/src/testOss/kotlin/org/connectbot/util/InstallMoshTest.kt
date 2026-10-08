@@ -28,14 +28,18 @@ import org.junit.Assert.assertNotNull
 import org.junit.Assert.assertNull
 import org.junit.Assert.assertTrue
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TemporaryFolder
 import org.junit.runner.RunWith
 import org.robolectric.RobolectricTestRunner
 import java.io.File
-import java.nio.file.Files
 
 @RunWith(RobolectricTestRunner::class)
 class InstallMoshTest {
+    @get:Rule
+    val temporaryFolder = TemporaryFolder()
+
     private lateinit var context: Context
     private lateinit var nativeDir: File
     private var originalNativeDir: String? = null
@@ -44,7 +48,7 @@ class InstallMoshTest {
     @Before
     fun setUp() {
         context = ApplicationProvider.getApplicationContext<Context>()
-        nativeDir = Files.createTempDirectory("mosh-oss-native").toFile()
+        nativeDir = temporaryFolder.newFolder("mosh-oss-native")
         originalNativeDir = context.applicationInfo.nativeLibraryDir
         terminfoDir = File(context.filesDir, "terminfo")
         terminfoDir.deleteRecursively()
