@@ -68,7 +68,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalHapticFeedback
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.CustomAccessibilityAction
@@ -149,10 +148,10 @@ fun AutomationEditorScreen(
         it.copy(disabledContainerColor = it.containerColor, disabledContentColor = it.contentColor)
     }
     val snackbarHostState = remember { SnackbarHostState() }
-    val context = LocalContext.current
-    LaunchedEffect(state.error) {
-        state.error?.let {
-            snackbarHostState.showSnackbar(context.getString(it), withDismissAction = true)
+    val errorMessage = state.error?.let { stringResource(it) }
+    LaunchedEffect(errorMessage) {
+        errorMessage?.let {
+            snackbarHostState.showSnackbar(it, withDismissAction = true)
         }
     }
     var showAdd by rememberSaveable { mutableStateOf(false) }

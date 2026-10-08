@@ -78,6 +78,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
@@ -125,6 +126,7 @@ fun HostListScreen(
     viewModel: HostListViewModel = hiltViewModel(),
 ) {
     val context = LocalContext.current
+    val resources = LocalResources.current
     val terminalManager = LocalTerminalManager.current
 
     LaunchedEffect(terminalManager) {
@@ -148,7 +150,7 @@ fun HostListScreen(
                     if (exportResult != null) {
                         Toast.makeText(
                             context,
-                            context.getString(
+                            resources.getString(
                                 R.string.export_hosts_success,
                                 exportResult.hostCount,
                                 exportResult.profileCount,
@@ -159,7 +161,7 @@ fun HostListScreen(
                 } catch (e: Exception) {
                     Toast.makeText(
                         context,
-                        context.getString(R.string.export_hosts_failed, e.message),
+                        resources.getString(R.string.export_hosts_failed, e.message),
                         Toast.LENGTH_LONG,
                     ).show()
                 }
@@ -179,7 +181,7 @@ fun HostListScreen(
                 try {
                     val jsonString = withContext(Dispatchers.IO) {
                         context.contentResolver.openInputStream(uri)?.use(JsonImportReader::read)
-                            ?: throw IOException(context.getString(R.string.import_file_unavailable))
+                            ?: throw IOException(resources.getString(R.string.import_file_unavailable))
                     }
                     viewModel.importHosts(jsonString)
                 } catch (e: JsonImportTooLargeException) {
@@ -187,7 +189,7 @@ fun HostListScreen(
                 } catch (e: Exception) {
                     Toast.makeText(
                         context,
-                        context.getString(R.string.import_hosts_failed, e.message),
+                        resources.getString(R.string.import_hosts_failed, e.message),
                         Toast.LENGTH_LONG,
                     ).show()
                 }
@@ -206,7 +208,7 @@ fun HostListScreen(
     // Handle export result - launch file picker when JSON is ready
     LaunchedEffect(uiState.exportedJson) {
         if (uiState.exportedJson != null) {
-            exportLauncher.launch(context.getString(R.string.export_hosts_filename))
+            exportLauncher.launch(resources.getString(R.string.export_hosts_filename))
         }
     }
 
@@ -215,7 +217,7 @@ fun HostListScreen(
         uiState.importResult?.let { result ->
             Toast.makeText(
                 context,
-                context.getString(
+                resources.getString(
                     R.string.import_hosts_success,
                     result.hostsImported,
                     result.hostsSkipped,
