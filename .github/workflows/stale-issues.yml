@@ -1,0 +1,27 @@
+name: Close reviewed stale issues
+
+on:
+  schedule:
+    - cron: '17 4 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Preview decisions without changing issues'
+        type: boolean
+        default: true
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: stale-issues
+  cancel-in-progress: false
+
+jobs:
+  stale:
+    name: Process reviewed issues
+    if: github.repository == 'connectbot/connectbot'
+    uses: connectbot/actions/.github/workflows/stale-issues.yml@main
+    with:
+      dry_run: ${{ github.event_name == 'workflow_dispatch' && inputs.dry_run || false }}
