@@ -19,8 +19,6 @@ package org.connectbot.transport
 
 import android.content.Context
 import android.net.Uri
-import android.security.keystore.KeyPermanentlyInvalidatedException
-import android.security.keystore.UserNotAuthenticatedException
 import androidx.annotation.VisibleForTesting
 import androidx.core.net.toUri
 import com.trilead.ssh2.AuthAgentCallback
@@ -70,7 +68,6 @@ import java.net.NoRouteToHostException
 import java.nio.charset.StandardCharsets
 import java.security.KeyPair
 import java.security.KeyStore
-import java.security.NoSuchAlgorithmException
 import java.security.PrivateKey
 import java.security.PublicKey
 import java.security.interfaces.DSAPrivateKey
@@ -79,7 +76,6 @@ import java.security.interfaces.ECPrivateKey
 import java.security.interfaces.ECPublicKey
 import java.security.interfaces.RSAPrivateKey
 import java.security.interfaces.RSAPublicKey
-import java.security.spec.InvalidKeySpecException
 import java.util.Locale
 import java.util.regex.Pattern
 
@@ -103,10 +99,6 @@ open class SSH :
 
     @Volatile
     protected var sessionOpen = false
-
-    private var pubkeysExhausted = false
-    private var interactiveCanContinue = true
-    private var savedPasswordTried = false
 
     protected var connection: Connection? = null
     private val jumpConnections: MutableList<Connection> = mutableListOf()
@@ -373,147 +365,139 @@ open class SSH :
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun authenticate() {
-        // Prompt for username if not configured
+    internal fun authenticate(): AuthenticationOutcome {
         if (host?.username.isNullOrEmpty()) {
-            val username = bridge?.requestStringPrompt(
-                null,
-                manager?.res?.getString(R.string.prompt_username),
-                false,
-            )
-            if (username.isNullOrEmpty()) {
-                bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_fail))
-                return
-            }
+            val username = bridge?.requestStringPrompt(null, manager?.res?.getString(R.string.prompt_username), false)
+            if (username.isNullOrEmpty()) return AuthenticationOutcome.Cancelled
             host = host?.copy(username = username)
         }
-
-        val currentHost = host ?: return
-        val authBannerSourceName = currentHost.authBannerSourceName()
-        try {
-            if (connection?.authenticateWithNone(currentHost.username) == true) {
-                finishConnection()
-                return
-            }
-        } catch (e: Exception) {
-            Timber.d("Host does not support 'none' authentication.")
-        } finally {
-            bridge?.dismissAuthBannersFrom(authBannerSourceName)
+        val currentHost = host ?: return AuthenticationOutcome.Cancelled
+        val currentConnection = connection ?: return AuthenticationOutcome.ConnectionFailed
+        val outcome = authenticateConnection(currentConnection, currentHost, false)
+        if (outcome == AuthenticationOutcome.Authenticated) {
+            finishConnection()
+        } else if (outcome == AuthenticationOutcome.Exhausted) {
+            bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_fail))
         }
+        return outcome
+    }
 
-        bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth))
-
+    private fun authenticateConnection(jc: Connection, authHost: Host, isJump: Boolean): AuthenticationOutcome {
+        val sourceName = authHost.authBannerSourceName()
+        // Freeze the unlocked identities at the start of this connection's authentication.
+        val loadedKeys = manager?.loadedKeypairs?.entries?.mapNotNull { entry ->
+            val pair = entry.value.pair ?: return@mapNotNull null
+            Triple(entry.key, entry.value, pair)
+        }?.sortedBy { it.first }.orEmpty()
         try {
-            val currentHost = host ?: return
-            val pubkeyId = currentHost.pubkeyId
+            return SshAuthenticationRunner(
+                connection = jc,
+                username = authHost.username,
+                identities = {
+                    when (authHost.pubkeyId) {
+                        HostConstants.PUBKEYID_NEVER -> emptyList()
 
-            if (!pubkeysExhausted &&
-                pubkeyId != HostConstants.PUBKEYID_NEVER &&
-                connection?.isAuthMethodAvailable(currentHost.username, AUTH_PUBLICKEY) == true
-            ) {
-                // if explicit pubkey defined for this host, then prompt for password as needed
-                // otherwise just try all in-memory keys held in terminalmanager
-
-                if (pubkeyId == HostConstants.PUBKEYID_ANY) {
-                    // try each of the in-memory keys
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_any))
-                    manager?.loadedKeypairs?.entries?.forEach { entry ->
-                        if (entry.value.pubkey?.confirmation == true && !promptForPubkeyUse(entry.key)) {
-                            return@forEach
-                        }
-
-                        val keyPair = entry.value.pair ?: return@forEach
-
-                        if (
-                            tryPublicKey(
-                                currentHost.username,
-                                entry.key,
-                                keyPair,
-                                entry.value.pubkey?.storageType,
+                        HostConstants.PUBKEYID_ANY -> loadedKeys.mapNotNull { (nickname, holder, pair) ->
+                            createAuthenticationIdentity(
+                                jc,
+                                nickname,
+                                pair,
+                                holder.pubkey,
+                                isAvailable = { manager?.loadedKeypairs?.get(nickname) === holder },
                             )
-                        ) {
-                            finishConnection()
-                            return
+                        }
+
+                        else -> {
+                            val pubkey = manager?.pubkeyRepository?.getByIdBlocking(authHost.pubkeyId)
+                            if (pubkey == null) {
+                                bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_invalid))
+                                emptyList()
+                            } else {
+                                val pair = getAuthenticationKey(pubkey)
+                                if (pair == null) {
+                                    emptyList()
+                                } else {
+                                    val holder = manager?.loadedKeypairs?.get(pubkey.nickname)
+                                    listOfNotNull(
+                                        createAuthenticationIdentity(jc, pubkey.nickname, pair, pubkey) {
+                                            holder == null || manager?.loadedKeypairs?.get(pubkey.nickname) === holder
+                                        },
+                                    )
+                                }
+                            }
                         }
                     }
-                } else {
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_specific))
-                    // use a specific key for this host, as requested
-                    val pubkey = manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)
-
-                    if (pubkey == null) {
-                        bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_invalid))
-                    } else if (tryPublicKey(pubkey)) {
-                        finishConnection()
+                },
+                savedPassword = {
+                    manager?.securePasswordStorage?.getPassword(authHost.id)?.also {
+                        bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_saved_password))
                     }
-                }
-
-                pubkeysExhausted = true
-            } else if (interactiveCanContinue &&
-                connection?.isAuthMethodAvailable(currentHost.username, AUTH_KEYBOARDINTERACTIVE) == true
-            ) {
-                // this auth method will talk with us using InteractiveCallback interface
-                // it blocks until authentication finishes
-                bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_ki))
-                interactiveCanContinue = false
-                if (connection?.authenticateWithKeyboardInteractive(currentHost.username, this) == true) {
-                    finishConnection()
-                } else {
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_ki_fail))
-                }
-            } else if (connection?.isAuthMethodAvailable(currentHost.username, AUTH_PASSWORD) == true) {
-                // Try saved password first
-                val savedPassword = manager?.securePasswordStorage?.getPassword(currentHost.id)
-                if (savedPassword != null) {
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_saved_password))
-                    if (connection?.authenticateWithPassword(currentHost.username, savedPassword) == true) {
-                        finishConnection()
-                        return
+                },
+                passwordPrompt = {
+                    val message = if (isJump) {
+                        manager?.res?.getString(R.string.terminal_jump_password, authHost.nickname)
+                    } else {
+                        manager?.res?.getString(R.string.prompt_password)
                     }
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_saved_password_fail))
-                }
-
-                // Fall back to password prompt
-                bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pass))
-                val password = bridge?.requestStringPrompt(
-                    null,
-                    manager?.res?.getString(R.string.prompt_password),
-                    true,
-                )
-                if (password != null && connection?.authenticateWithPassword(currentHost.username, password) == true) {
-                    finishConnection()
-                } else {
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pass_fail))
-                }
-            } else {
-                bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_fail))
-            }
-        } catch (e: IllegalStateException) {
-            Timber.e(e, "Connection went away while we were trying to authenticate")
-        } catch (e: Exception) {
-            Timber.e(e, "Problem during handleAuthentication()")
+                    bridge?.requestStringPrompt(null, message, true)
+                },
+                interactive = InteractiveCallback { _, instruction, count, prompts, echo ->
+                    Array(count) { index ->
+                        val prefix = if (isJump) manager?.res?.getString(R.string.terminal_jump_prompt, authHost.nickname).orEmpty() + " " else ""
+                        bridge?.requestStringPrompt(instruction, prefix + prompts[index], index < echo.size && !echo[index])
+                            ?: throw AuthenticationCancelledException()
+                    }
+                },
+                onNoneComplete = {
+                    if (!isJump) bridge?.dismissAuthBannersFrom(sourceName)
+                },
+                onMethod = { method ->
+                    val message = when (method) {
+                        AUTH_PUBLICKEY -> if (authHost.pubkeyId == HostConstants.PUBKEYID_ANY) R.string.terminal_auth_pubkey_any else R.string.terminal_auth_pubkey_specific
+                        AUTH_KEYBOARDINTERACTIVE -> R.string.terminal_auth_ki
+                        else -> R.string.terminal_auth_pass
+                    }
+                    bridge?.outputLine(manager?.res?.getString(message))
+                },
+                onKeyRejected = { nickname -> bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, nickname)) },
+                onMethodRejected = { method ->
+                    val message = if (method == AUTH_KEYBOARDINTERACTIVE) R.string.terminal_auth_ki_fail else R.string.terminal_auth_pass_fail
+                    bridge?.outputLine(manager?.res?.getString(message))
+                },
+                onFailure = { e -> Timber.e(e, "Connection failed during authentication for %s", sourceName) },
+            ).authenticate()
+        } finally {
+            bridge?.dismissAuthBannersFrom(sourceName)
         }
     }
 
-    /**
-     * Attempt connection with given [pubkey].
-     * @return `true` for successful authentication
-     * @throws NoSuchAlgorithmException
-     * @throws InvalidKeySpecException
-     * @throws IOException
-     */
-    @Throws(NoSuchAlgorithmException::class, InvalidKeySpecException::class, IOException::class)
-    private fun tryPublicKey(pubkey: Pubkey): Boolean {
-        if (pubkey.confirmation && manager?.isKeyLoaded(pubkey.nickname) == true) {
-            if (!promptForPubkeyUse(pubkey.nickname)) {
-                return false
-            }
-        }
+    private fun getAuthenticationKey(pubkey: Pubkey): KeyPair? = try {
+        getOrUnlockKey(pubkey)
+    } catch (e: AuthenticationCancelledException) {
+        throw e
+    } catch (e: Exception) {
+        Timber.w(e, "Unable to unlock public key '%s'", pubkey.nickname)
+        bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, pubkey.nickname))
+        null
+    }
 
-        val pair = getOrUnlockKey(pubkey) ?: return false
-
-        val currentHost = host ?: return false
-        return tryPublicKey(currentHost.username, pubkey.nickname, pair, pubkey.storageType)
+    private fun createAuthenticationIdentity(
+        jc: Connection,
+        nickname: String,
+        pair: KeyPair,
+        pubkey: Pubkey?,
+        isAvailable: () -> Boolean = { true },
+    ): AuthenticationIdentity? = try {
+        AuthenticationIdentity(
+            nickname,
+            pair,
+            isAvailable,
+            confirm = { pubkey?.confirmation != true || promptForPubkeyUse(nickname) },
+            prepare = { preparePublicKeyAuthentication(jc, pair, pubkey?.storageType) },
+        )
+    } catch (e: IOException) {
+        Timber.w(e, "Unable to encode public key '%s'", nickname)
+        null
     }
 
     /**
@@ -607,7 +591,7 @@ open class SSH :
 
             // Something must have interrupted the prompt.
             if (password == null) {
-                return null
+                throw AuthenticationCancelledException()
             }
         }
 
@@ -648,42 +632,6 @@ open class SSH :
         manager?.addKey(pubkey, pair)
 
         return pair
-    }
-
-    @Throws(IOException::class)
-    private fun tryPublicKey(
-        username: String,
-        keyNickname: String,
-        pair: KeyPair,
-        storageType: KeyStorageType? = null,
-    ): Boolean = try {
-        if (!preparePublicKeyAuthentication(connection, pair, storageType)) {
-            bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, keyNickname))
-            return false
-        }
-
-        val success = connection?.authenticateWithPublicKey(username, pair) == true
-        if (!success) {
-            bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, keyNickname))
-        }
-        success
-    } catch (e: Exception) {
-        // Check if this is a biometric key error (may be wrapped in IOException)
-        val cause = e.cause ?: e
-        val isKeyInvalidated = cause is KeyPermanentlyInvalidatedException ||
-            cause is UserNotAuthenticatedException ||
-            e is KeyPermanentlyInvalidatedException ||
-            e is UserNotAuthenticatedException
-        if (isKeyInvalidated) {
-            val message = manager?.res?.getString(R.string.terminal_auth_biometric_invalidated, keyNickname)
-                ?: String.format("Biometric key '%s' has been invalidated. Please generate a new key.", keyNickname)
-            Timber.e(e, message)
-            bridge?.outputLine(message)
-        } else {
-            Timber.e(e, "Public key authentication failed for '%s'", keyNickname)
-            bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_pubkey_fail, keyNickname))
-        }
-        false
     }
 
     private fun preparePublicKeyAuthentication(
@@ -822,117 +770,7 @@ open class SSH :
      * @return true if authentication succeeded
      */
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    internal fun authenticateJumpHost(jc: Connection, jumpHost: Host): Boolean {
-        val authBannerSourceName = jumpHost.authBannerSourceName()
-        try {
-            // Try 'none' authentication first
-            if (jc.authenticateWithNone(jumpHost.username)) {
-                return true
-            }
-
-            val pubkeyId = jumpHost.pubkeyId
-
-            // Try public key authentication
-            if (pubkeyId != HostConstants.PUBKEYID_NEVER &&
-                jc.isAuthMethodAvailable(jumpHost.username, AUTH_PUBLICKEY)
-            ) {
-                if (pubkeyId == HostConstants.PUBKEYID_ANY) {
-                    // Try all in-memory keys
-                    manager?.loadedKeypairs?.entries?.forEach { entry ->
-                        try {
-                            val pair = entry.value.pair ?: return@forEach
-                            if (
-                                preparePublicKeyAuthentication(jc, pair, entry.value.pubkey?.storageType) &&
-                                jc.authenticateWithPublicKey(jumpHost.username, pair)
-                            ) {
-                                return true
-                            }
-                        } catch (_: Exception) {
-                            Timber.d("Jump host pubkey auth failed with key: ${entry.key}")
-                        }
-                    }
-                } else {
-                    // Try specific key (with unlock prompt if needed)
-                    val pubkey = manager?.pubkeyRepository?.getByIdBlocking(pubkeyId)
-                    if (pubkey != null) {
-                        val pair = getOrUnlockKey(pubkey)
-                        if (pair != null) {
-                            try {
-                                if (
-                                    preparePublicKeyAuthentication(jc, pair, pubkey.storageType) &&
-                                    jc.authenticateWithPublicKey(jumpHost.username, pair)
-                                ) {
-                                    return true
-                                }
-                            } catch (_: Exception) {
-                                Timber.d("Jump host specific pubkey auth failed")
-                            }
-                        }
-                    }
-                }
-            }
-
-            // Try keyboard-interactive authentication
-            if (jc.isAuthMethodAvailable(jumpHost.username, AUTH_KEYBOARDINTERACTIVE)) {
-                try {
-                    if (jc.authenticateWithKeyboardInteractive(
-                            jumpHost.username,
-                        ) { name, instruction, numPrompts, prompt, echo ->
-                            val responses = Array(numPrompts) { i ->
-                                val isPassword = echo != null && i < echo.size && !echo[i]
-                                val promptPrefix = manager?.res?.getString(R.string.terminal_jump_prompt, jumpHost.nickname) ?: ""
-                                bridge?.requestStringPrompt(
-                                    instruction,
-                                    "$promptPrefix ${prompt[i]}",
-                                    isPassword,
-                                ) ?: ""
-                            }
-                            responses
-                        }
-                    ) {
-                        return true
-                    }
-                } catch (e: Exception) {
-                    Timber.d(e, "Jump host keyboard-interactive auth failed")
-                }
-            }
-
-            // Try password authentication
-            if (jc.isAuthMethodAvailable(jumpHost.username, AUTH_PASSWORD)) {
-                // Try saved password first
-                val savedPassword = manager?.securePasswordStorage?.getPassword(jumpHost.id)
-                if (savedPassword != null) {
-                    try {
-                        if (jc.authenticateWithPassword(jumpHost.username, savedPassword)) {
-                            return true
-                        }
-                    } catch (e: Exception) {
-                        Timber.d(e, "Jump host saved password auth failed")
-                    }
-                }
-
-                // Fall back to prompting
-                val passwordPrompt = manager?.res?.getString(R.string.terminal_jump_password, jumpHost.nickname)
-                val password = bridge?.requestStringPrompt(null, passwordPrompt, true)
-                if (password != null) {
-                    try {
-                        if (jc.authenticateWithPassword(jumpHost.username, password)) {
-                            return true
-                        }
-                    } catch (e: Exception) {
-                        Timber.d(e, "Jump host password auth failed")
-                    }
-                }
-            }
-
-            return jc.isAuthenticationComplete
-        } catch (e: Exception) {
-            Timber.e(e, "Error during jump host authentication")
-            return false
-        } finally {
-            bridge?.dismissAuthBannersFrom(authBannerSourceName)
-        }
-    }
+    internal fun authenticateJumpHost(jc: Connection, jumpHost: Host): Boolean = authenticateConnection(jc, jumpHost, true) == AuthenticationOutcome.Authenticated
 
     override fun connect() {
         val currentHost = host ?: return
@@ -1030,20 +868,15 @@ open class SSH :
         }
 
         try {
-            // enter a loop to keep trying until authentication
-            var tries = 0
-            while (connected && connection?.isAuthenticationComplete != true && tries++ < AUTH_TRIES) {
-                authenticate()
-
-                // sleep to make sure we dont kill system
-                Thread.sleep(1000)
-            }
-            if (connected && connection?.isAuthenticationComplete != true) {
-                onDisconnect(DisconnectReason.AUTH_FAIL)
+            val outcome = authenticate()
+            if (connected && outcome != AuthenticationOutcome.Authenticated) {
+                onDisconnect(if (outcome == AuthenticationOutcome.ConnectionFailed) DisconnectReason.IO_ERROR else DisconnectReason.AUTH_FAIL)
                 close()
             }
         } catch (e: Exception) {
             Timber.e(e, "Problem in SSH connection thread during authentication")
+            onDisconnect()
+            close()
         }
     }
 
@@ -1350,28 +1183,9 @@ open class SSH :
         numPrompts: Int,
         prompt: Array<String>,
         echo: BooleanArray,
-    ): Array<String> {
-        interactiveCanContinue = true
-        val responses = Array(numPrompts) { i ->
-            // request response from user for each prompt
-            val isPassword = i < echo.size && !echo[i]
-
-            // Try saved password for password prompts (only on first attempt)
-            if (isPassword && !savedPasswordTried) {
-                val currentHost = host
-                if (currentHost != null) {
-                    val savedPassword = manager?.securePasswordStorage?.getPassword(currentHost.id)
-                    if (savedPassword != null) {
-                        savedPasswordTried = true
-                        bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_saved_password))
-                        return@Array savedPassword
-                    }
-                }
-            }
-
-            bridge?.requestStringPrompt(instruction, prompt[i], isPassword) ?: ""
-        }
-        return responses
+    ): Array<String> = Array(numPrompts) { i ->
+        bridge?.requestStringPrompt(instruction, prompt[i], i < echo.size && !echo[i])
+            ?: throw AuthenticationCancelledException()
     }
 
     override fun createHost(uri: Uri): Host {
@@ -1557,7 +1371,6 @@ open class SSH :
         protected const val AUTH_PASSWORD = "password"
         protected const val AUTH_KEYBOARDINTERACTIVE = "keyboard-interactive"
 
-        protected const val AUTH_TRIES = 20
         private const val EXIT_STATUS_WAIT_MS = 250L
 
         protected val hostmask = Pattern.compile(
