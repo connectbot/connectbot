@@ -22,6 +22,8 @@ import org.connectbot.data.entity.Host
 import org.connectbot.service.TerminalBridge
 import org.connectbot.util.HostConstants
 import org.junit.Test
+import org.mockito.Mockito.atLeastOnce
+import org.mockito.Mockito.inOrder
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.never
 import org.mockito.Mockito.verify
@@ -39,7 +41,7 @@ class SSHAuthBannerTest {
 
         ssh.authenticate()
 
-        verify(bridge).dismissAuthBannersFrom("target")
+        verify(bridge, atLeastOnce()).dismissAuthBannersFrom("target")
     }
 
     @Test
@@ -47,11 +49,15 @@ class SSHAuthBannerTest {
         val bridge = mock(TerminalBridge::class.java)
         val connection = mock(Connection::class.java)
         `when`(connection.authenticateWithNone("alice")).thenReturn(false)
+        `when`(connection.getRemainingAuthMethods("alice")).thenReturn(emptyArray())
         val ssh = sshWithConnection(bridge, connection)
 
         ssh.authenticate()
 
-        verify(bridge).dismissAuthBannersFrom("target")
+        val order = inOrder(connection, bridge)
+        order.verify(connection).authenticateWithNone("alice")
+        order.verify(bridge).dismissAuthBannersFrom("target")
+        order.verify(connection).getRemainingAuthMethods("alice")
     }
 
     @Test
@@ -63,7 +69,7 @@ class SSHAuthBannerTest {
 
         ssh.authenticate()
 
-        verify(bridge).dismissAuthBannersFrom("target")
+        verify(bridge, atLeastOnce()).dismissAuthBannersFrom("target")
     }
 
     @Test
