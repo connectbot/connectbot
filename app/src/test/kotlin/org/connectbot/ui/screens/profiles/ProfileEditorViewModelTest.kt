@@ -86,6 +86,34 @@ class ProfileEditorViewModelTest {
     )
 
     @Test
+    fun boldAsBrightDefaultsToEnabledAndSavesDisabledSelection() = runTest {
+        val viewModel = createViewModel()
+        assertTrue(viewModel.uiState.value.boldAsBright)
+        assertTrue(Profile.createDefault().boldAsBright)
+        viewModel.updateName("Colors")
+        viewModel.updateBoldAsBright(false)
+        assertTrue(viewModel.uiState.value.hasUnsavedChanges)
+        `when`(profileRepository.nameExists("Colors", null)).thenReturn(false)
+        `when`(profileRepository.save(Profile(name = "Colors", boldAsBright = false))).thenReturn(1L)
+        viewModel.save {}
+        verify(profileRepository).save(Profile(name = "Colors", boldAsBright = false))
+    }
+
+    @Test
+    fun boldAsBrightLoadsSavedSelection() = runTest {
+        `when`(profileRepository.getById(2L)).thenReturn(Profile(id = 2L, name = "Colors", boldAsBright = false))
+        val viewModel = ProfileEditorViewModel(
+            SavedStateHandle(mapOf("profileId" to 2L)),
+            profileRepository,
+            colorSchemeRepository,
+            sharedPreferences,
+            context,
+            dispatchers,
+        )
+        assertEquals(false, viewModel.uiState.value.boldAsBright)
+    }
+
+    @Test
     fun inlineImagesDefaultsToAskAndSavesSelection() = runTest {
         val viewModel = createViewModel()
         assertEquals("ask", viewModel.uiState.value.inlineImages)

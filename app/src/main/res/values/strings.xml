@@ -543,6 +543,10 @@
 	<string name="profile_editor_section_icon_color">Icon Color</string>
 	<!-- Section header for color scheme selection area -->
 	<string name="profile_editor_section_color_scheme">Color Scheme</string>
+	<!-- Profile editor switch for promoting bold low-intensity ANSI colors to the bright palette. -->
+	<string name="profile_bold_as_bright">Bold as bright</string>
+	<!-- Explanation below the bold-as-bright switch, including when changes take effect. -->
+	<string name="profile_bold_as_bright_summary">Use bright ANSI colors for bold text. Applies to new terminal sessions.</string>
 	<!-- Section header for font configuration area -->
 	<string name="profile_editor_section_font">Font</string>
 	<!-- Section header for terminal emulation settings area -->

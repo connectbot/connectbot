@@ -32,6 +32,7 @@ import androidx.room.PrimaryKey
  * @property name Display name of the profile
  * @property iconColor Icon color for visual identification (e.g., "blue", "#4CAF50")
  * @property colorSchemeId Reference to the color scheme
+ * @property boldAsBright Whether bold text promotes low-intensity ANSI colors to bright colors
  * @property fontFamily Font family name (null uses system default)
  * @property fontSize Terminal font size
  * @property delKey DEL key behavior ("del" or "backspace")
@@ -60,6 +61,9 @@ data class Profile(
 
     @ColumnInfo(name = "color_scheme_id", defaultValue = "-1")
     val colorSchemeId: Long = -1L,
+
+    @ColumnInfo(name = "bold_as_bright", defaultValue = "1")
+    val boldAsBright: Boolean = true,
 
     @ColumnInfo(name = "font_family")
     val fontFamily: String? = null,

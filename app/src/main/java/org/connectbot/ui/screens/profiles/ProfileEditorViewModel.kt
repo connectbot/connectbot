@@ -49,6 +49,7 @@ data class ProfileEditorUiState(
     val availableColorSchemes: List<ColorScheme> = emptyList(),
     val fontFamily: String? = null,
     val fontSize: Int = 10,
+    val boldAsBright: Boolean = true,
     val delKey: String = "del",
     val inlineImages: String = "ask",
     val encoding: String = "UTF-8",
@@ -154,6 +155,7 @@ class ProfileEditorViewModel @Inject constructor(
                         colorSchemeId = profile.colorSchemeId,
                         fontFamily = profile.fontFamily,
                         fontSize = profile.fontSize,
+                        boldAsBright = profile.boldAsBright,
                         delKey = profile.delKey,
                         inlineImages = profile.inlineImages,
                         encoding = profile.encoding,
@@ -204,6 +206,10 @@ class ProfileEditorViewModel @Inject constructor(
 
     fun updateFontSize(value: Int) {
         _uiState.update { it.copy(fontSize = value, hasUnsavedChanges = true) }
+    }
+
+    fun updateBoldAsBright(value: Boolean) {
+        _uiState.update { it.copy(boldAsBright = value, hasUnsavedChanges = true) }
     }
 
     fun updateDelKey(value: String) {
@@ -264,6 +270,7 @@ class ProfileEditorViewModel @Inject constructor(
                 colorSchemeId = state.colorSchemeId,
                 fontFamily = state.fontFamily,
                 fontSize = state.fontSize,
+                boldAsBright = state.boldAsBright,
                 delKey = state.delKey,
                 inlineImages = state.inlineImages,
                 encoding = state.encoding,

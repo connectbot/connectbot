@@ -425,6 +425,7 @@ class TerminalBridge {
         inlineImagesSetting = profile.inlineImages
         terminalEmulator = TerminalEmulatorFactory.create(
             inlineImages = sessionInlineImages.policy(inlineImagesSetting),
+            boldAsBright = profile.boldAsBright,
             initialRows = 24, // Will be resized when view is attached
             initialCols = 80,
             defaultForeground = Color(defaultFgColor),
@@ -636,7 +637,7 @@ class TerminalBridge {
         // Update DEL key mode from profile
         _delKeyModeFlow.value = delKeyModeFromProfile(profile)
 
-        // Note: encoding and fontFamily changes require reconnection to take effect
+        // Note: encoding, fontFamily, and boldAsBright changes require a new terminal session
         // as they are deeply integrated into the terminal initialization
     }
 
