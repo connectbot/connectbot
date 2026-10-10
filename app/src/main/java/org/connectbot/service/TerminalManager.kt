@@ -827,7 +827,13 @@ class TerminalManager :
      */
     private fun keepServiceAlive() {
         stopIdleTimer()
-        startService(Intent(this, TerminalManager::class.java))
+        try {
+            startService(Intent(this, TerminalManager::class.java))
+        } catch (e: IllegalStateException) {
+            // A background bind/rebind may not promote a bound service to a started service.
+            // Active sessions already maintain a foreground service; keep the binder and keys.
+            Timber.w(e, "Android denied starting TerminalManager while binding")
+        }
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
