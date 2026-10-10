@@ -20,6 +20,7 @@ composeBom = "2026.09.00"
 material3 = "1.5.0-beta01"
 lifecycleViewModel = "2.11.0"
 navigationCompose = "2.10.2"
+navigationEvent = "1.2.0"
 activityCompose = "1.13.0"
 
 sshlib = "2.2.50"
@@ -102,6 +103,8 @@ androidx-compose-material-icons-extended = { module = "androidx.compose.material
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycleViewModel" }
 androidx-lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycleViewModel" }
 androidx-lifecycle-process = { module = "androidx.lifecycle:lifecycle-process", version.ref = "lifecycleViewModel" }
+androidx-navigationevent-core = { module = "androidx.navigationevent:navigationevent", version.ref = "navigationEvent" }
+androidx-navigationevent-compose = { module = "androidx.navigationevent:navigationevent-compose", version.ref = "navigationEvent" }
 androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 
