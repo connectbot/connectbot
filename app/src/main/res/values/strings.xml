@@ -1705,4 +1705,8 @@
 	<string name="pubkey_import_save_failed">Could not save the key. Try another nickname or try again.</string>
 	<!-- Error shown when the launcher shortcut could not be created. -->
 	<string name="shortcut_create_failed">Could not create the shortcut. Please try again.</string>
+	<!-- Terminal error when a jump host chain points back to a host already in the chain. -->
+	<string name="terminal_jump_cycle">Jump host chain contains a cycle. Check the jump host settings.</string>
+	<!-- Terminal error when a connection requires more than 32 jump hosts. -->
+	<string name="terminal_jump_too_deep">Jump host chain exceeds the limit of 32 hosts.</string>
 </resources>
