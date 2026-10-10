@@ -61,6 +61,10 @@ class Local @VisibleForTesting constructor(private val killer: Killer) : AbsTran
 
         try {
             shellFd = Exec.createSubprocess("/system/bin/sh", "-", null, pids)
+        } catch (e: LinkageError) {
+            bridge?.outputLine(manager?.res?.getString(R.string.local_shell_unavailable))
+            Timber.e(e, "Cannot load local shell native library")
+            throw IOException("Local shell native library unavailable", e)
         } catch (e: Exception) {
             bridge?.outputLine(manager?.res?.getString(R.string.local_shell_unavailable))
             Timber.e(e, "Cannot start local shell")
