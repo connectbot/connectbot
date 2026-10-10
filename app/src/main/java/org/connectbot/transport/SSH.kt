@@ -718,7 +718,7 @@ open class SSH :
             jc.connect(HostKeyVerifier(jumpHost), parseIpVersion(jumpHost.ipVersion, jumpHost.hostname))
 
             // Track this connection for cleanup
-            jumpConnections.add(jc)
+            synchronized(jumpConnections) { jumpConnections.add(jc) }
 
             bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_connected, jumpHost.nickname))
 
@@ -727,7 +727,7 @@ open class SSH :
                 bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_auth_failed, jumpHost.nickname))
                 unregisterUserAuthBanner(jc)
                 jc.close()
-                jumpConnections.remove(jc)
+                synchronized(jumpConnections) { jumpConnections.remove(jc) }
                 return null
             }
 
@@ -739,7 +739,7 @@ open class SSH :
             try {
                 unregisterUserAuthBanner(jc)
                 jc.close()
-                jumpConnections.remove(jc)
+                synchronized(jumpConnections) { jumpConnections.remove(jc) }
             } catch (ignored: Exception) {
             }
             return null
@@ -873,22 +873,25 @@ open class SSH :
 
         connected = false
 
-        session?.close()
-        session = null
+        // Detach ownership before invoking close: connection callbacks can re-enter here.
+        val (closingSession, closingConnection, closingJumps) = synchronized(jumpConnections) {
+            Triple(session, connection, jumpConnections.asReversed().toList()).also {
+                session = null
+                connection = null
+                jumpConnections.clear()
+            }
+        }
+        closingSession?.close()
+        closingConnection?.let { unregisterUserAuthBanner(it) }
+        closingConnection?.close()
 
-        connection?.let { unregisterUserAuthBanner(it) }
-        connection?.close()
-        connection = null
-
-        // Close all jump host connections (in reverse order)
-        jumpConnections.asReversed().forEach { jc ->
+        closingJumps.forEach { jc ->
             try {
                 unregisterUserAuthBanner(jc)
                 jc.close()
             } catch (ignored: Exception) {
             }
         }
-        jumpConnections.clear()
         synchronized(userAuthBannerCallbacks) {
             userAuthBannerCallbacks.clear()
         }
