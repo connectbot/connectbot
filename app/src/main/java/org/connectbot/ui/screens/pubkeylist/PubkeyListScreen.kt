@@ -246,6 +246,8 @@ fun PubkeyListScreen(
     if (pendingNicknameConfirmation != null) {
         NicknameConfirmationDialog(
             initialNickname = pendingNicknameConfirmation.nickname,
+            isSaving = uiState.isSavingImportNickname,
+            error = uiState.importNicknameError,
             onDismiss = { viewModel.cancelImportNickname() },
             onConfirm = { nickname -> viewModel.confirmImportNickname(nickname) },
         )
@@ -857,6 +859,8 @@ private fun PubkeyDeleteDialog(
 @Composable
 private fun NicknameConfirmationDialog(
     initialNickname: String,
+    isSaving: Boolean,
+    error: String?,
     onDismiss: () -> Unit,
     onConfirm: (String) -> Unit,
 ) {
@@ -867,7 +871,11 @@ private fun NicknameConfirmationDialog(
         onConfirm = { onConfirm(nickname) },
         value = nickname,
         onValueChange = { nickname = it },
-        confirmEnabled = nickname.isNotBlank(),
+        confirmEnabled = nickname.isNotBlank() && !isSaving,
+        dismissEnabled = !isSaving,
+        enabled = !isSaving,
+        isError = error != null,
+        supportingText = error?.let { message -> { Text(message) } },
         confirmButtonText = stringResource(R.string.portforward_save),
         title = { Text(stringResource(R.string.pubkey_import_button)) },
         label = { Text(stringResource(R.string.prompt_nickname)) },

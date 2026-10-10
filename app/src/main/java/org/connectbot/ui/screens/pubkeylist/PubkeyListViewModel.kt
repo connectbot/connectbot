@@ -31,12 +31,14 @@ import com.trilead.ssh2.crypto.PEMEncoder
 import com.trilead.ssh2.crypto.PublicKeyUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.connectbot.R
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
@@ -97,6 +99,8 @@ data class PubkeyListUiState(
     val pendingImport: PendingImport? = null,
     // Successfully parsed key awaiting nickname confirmation before saving
     val pendingNicknameConfirmation: Pubkey? = null,
+    val isSavingImportNickname: Boolean = false,
+    val importNicknameError: String? = null,
 )
 
 @HiltViewModel
@@ -773,14 +777,27 @@ class PubkeyListViewModel @Inject constructor(
 
     fun confirmImportNickname(nickname: String) {
         val pubkey = _uiState.value.pendingNicknameConfirmation ?: return
+        if (_uiState.value.isSavingImportNickname) return
+        _uiState.update { it.copy(isSavingImportNickname = true, importNicknameError = null, error = null) }
         viewModelScope.launch {
-            repository.save(pubkey.copy(nickname = nickname))
-            _uiState.update { it.copy(pendingNicknameConfirmation = null) }
+            try {
+                withContext(dispatchers.io) { repository.save(pubkey.copy(nickname = nickname)) }
+                _uiState.update { it.copy(pendingNicknameConfirmation = null) }
+            } catch (e: CancellationException) {
+                throw e
+            } catch (e: Exception) {
+                Timber.e(e, "Failed to save imported key")
+                val message = context.getString(R.string.pubkey_import_save_failed)
+                _uiState.update { it.copy(error = message, importNicknameError = message) }
+            } finally {
+                _uiState.update { it.copy(isSavingImportNickname = false) }
+            }
         }
     }
 
     fun cancelImportNickname() {
-        _uiState.update { it.copy(pendingNicknameConfirmation = null) }
+        if (_uiState.value.isSavingImportNickname) return
+        _uiState.update { it.copy(pendingNicknameConfirmation = null, importNicknameError = null) }
     }
 
     /**
