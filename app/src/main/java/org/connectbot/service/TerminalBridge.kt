@@ -27,7 +27,6 @@ import androidx.compose.ui.graphics.Color
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.async
@@ -135,7 +134,7 @@ internal class AuthBannerQueue {
  */
 @Suppress("DEPRECATION") // for ClipboardManager
 class TerminalBridge {
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
+    private val scope: CoroutineScope
 
     private sealed class TransportOperation {
         data class WriteData(val data: ByteArray, val completion: CompletableDeferred<Unit>? = null) : TransportOperation()
@@ -272,6 +271,8 @@ class TerminalBridge {
     val defaultPaint: Paint
 
     private var relay: Relay? = null
+    private var relayJob: Job? = null
+    private var relayTransport: AbsTransport? = null
 
     private val emulation: String?
     private val scrollback: Int
@@ -371,6 +372,7 @@ class TerminalBridge {
         this.manager = manager
         this.host = host
         this.dispatchers = dispatchers
+        scope = CoroutineScope(SupervisorJob() + dispatchers.default)
 
         // Load profile for this host (always returns a profile, defaulting to Default profile)
         val profile = manager.profileRepository.getByIdOrDefaultBlocking(host.profileId)
@@ -811,7 +813,6 @@ class TerminalBridge {
         transportFailure = null
         disconnectReason = DisconnectReason.UNKNOWN
         sessionAttention.onReconnected()
-        startAutomation()
 
         // We no longer need our local output.
         localOutput.clear()
@@ -830,9 +831,19 @@ class TerminalBridge {
         if (isSessionOpen) {
             // create thread to relay incoming connection data to buffer
             transport?.let { t ->
-                relay = Relay(this, t, dispatchers, encoding)
-                scope.launch {
-                    relay?.start()
+                synchronized(this) {
+                    if (relayTransport !== t || relayJob?.isActive != true) {
+                        val previousJob = relayJob
+                        previousJob?.cancel()
+                        val newRelay = Relay(this, t, dispatchers, encoding)
+                        relay = newRelay
+                        relayTransport = t
+                        relayJob = scope.launch {
+                            previousJob?.join()
+                            startAutomation()
+                            newRelay.start()
+                        }
+                    }
                 }
             }
         }
