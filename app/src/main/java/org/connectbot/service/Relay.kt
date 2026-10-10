@@ -29,6 +29,7 @@ import java.nio.CharBuffer
 import java.nio.charset.Charset
 import java.nio.charset.CharsetDecoder
 import java.nio.charset.CharsetEncoder
+import java.nio.charset.CoderMalfunctionError
 import java.nio.charset.CodingErrorAction
 import java.nio.charset.StandardCharsets
 import java.util.concurrent.atomic.AtomicBoolean
@@ -182,6 +183,9 @@ class Relay(
             }
         } catch (e: IOException) {
             Timber.e(e, "Problem while handling incoming data in relay")
+        } catch (e: CoderMalfunctionError) {
+            Timber.e(e, "Charset decoder failed while handling incoming data")
+            bridge.dispatchDisconnect(DisconnectReason.IO_ERROR)
         } finally {
             bridge.cancelAutomation()
             running.set(false)
