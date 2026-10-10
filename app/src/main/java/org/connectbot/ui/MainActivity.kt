@@ -26,6 +26,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.widget.Toast
 import androidx.activity.SystemBarStyle
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -399,22 +400,28 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun createShortcutAndFinish(host: Host, color: String?, iconStyle: IconStyle) {
-        val uri = host.getUri()
-        val intent = Intent(Intent.ACTION_VIEW, uri).apply {
-            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        try {
+            val label = host.nickname.takeUnless { it.isBlank() }
+                ?: host.hostname.takeUnless { it.isBlank() }
+                ?: getString(R.string.app_name)
+            val intent = Intent(Intent.ACTION_VIEW, host.getUri()).apply {
+                flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+            }
+            val icon = ShortcutIconGenerator.generateShortcutIcon(this, color, iconStyle)
+            val shortcut = ShortcutInfoCompat.Builder(this, "host-${host.id}")
+                .setShortLabel(label)
+                .setLongLabel(label)
+                .setIcon(icon)
+                .setIntent(intent)
+                .build()
+
+            val result = ShortcutManagerCompat.createShortcutResultIntent(this, shortcut)
+            setResult(RESULT_OK, result)
+        } catch (e: RuntimeException) {
+            Timber.e(e, "Failed to create host shortcut")
+            Toast.makeText(this, R.string.shortcut_create_failed, Toast.LENGTH_LONG).show()
+            setResult(RESULT_CANCELED)
         }
-
-        val icon = ShortcutIconGenerator.generateShortcutIcon(this, color, iconStyle)
-
-        val shortcut = ShortcutInfoCompat.Builder(this, "host-${host.id}")
-            .setShortLabel(host.nickname)
-            .setLongLabel(host.nickname)
-            .setIcon(icon)
-            .setIntent(intent)
-            .build()
-
-        val result = ShortcutManagerCompat.createShortcutResultIntent(this, shortcut)
-        setResult(RESULT_OK, result)
         finish()
     }
 }
