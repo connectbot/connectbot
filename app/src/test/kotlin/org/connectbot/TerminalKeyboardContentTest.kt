@@ -17,6 +17,12 @@
 
 package org.connectbot
 
+import android.view.HapticFeedbackConstants
+import android.view.View
+import android.view.ViewGroup
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -135,7 +141,7 @@ class TerminalKeyboardContentTest {
                 shiftState = ModifierLevel.OFF,
             ),
             onKeyPress = { pressedKeys += it },
-            bumpyArrows = true,
+            bumpyArrows = { true },
         )
 
         composeTestRule
@@ -191,6 +197,65 @@ class TerminalKeyboardContentTest {
         ).assertIsDisplayed()
     }
 
+    @Test
+    fun keyboardKeysVibrateWhenBumpyKeysEnabled() {
+        assertKeyHapticFeedback(enabled = true)
+    }
+
+    @Test
+    fun keyboardKeysDoNotVibrateWhenBumpyKeysDisabled() {
+        assertKeyHapticFeedback(enabled = false)
+    }
+
+    private fun assertKeyHapticFeedback(enabled: Boolean) {
+        val feedback = mutableListOf<Int>()
+        val view = object : View(composeTestRule.activity) {
+            override fun performHapticFeedback(feedbackConstant: Int): Boolean {
+                feedback += feedbackConstant
+                return true
+            }
+        }
+        composeTestRule.runOnUiThread {
+            (composeTestRule.activity.window.decorView as ViewGroup).addView(view)
+        }
+        val bumpyKeys = mutableStateOf(enabled)
+        setKeyboardContent(bumpyArrows = { bumpyKeys.value }, hapticView = view)
+
+        for (label in listOf(
+            R.string.button_key_ctrl,
+            R.string.button_key_alt,
+            R.string.button_key_esc,
+            R.string.button_key_home,
+            R.string.button_key_f1,
+        )) {
+            composeTestRule.onNodeWithText(composeTestRule.activity.getString(label)).performClick()
+        }
+        composeTestRule.onNodeWithText("⇥").performClick()
+        composeTestRule.onNodeWithContentDescription(
+            composeTestRule.activity.getString(R.string.image_description_up),
+        ).performTouchInput {
+            down(center)
+            up()
+        }
+        composeTestRule.onNodeWithText("IME").performClick()
+        composeTestRule.onNodeWithContentDescription(
+            composeTestRule.activity.getString(R.string.image_description_show_keyboard),
+        ).performClick()
+
+        assertEquals(if (enabled) List(9) { HapticFeedbackConstants.KEYBOARD_TAP } else emptyList(), feedback)
+
+        // Both ordinary and repeating keys must use the updated preference after recomposition.
+        composeTestRule.runOnIdle { bumpyKeys.value = !enabled }
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.button_key_ctrl)).performClick()
+        composeTestRule.onNodeWithContentDescription(
+            composeTestRule.activity.getString(R.string.image_description_up),
+        ).performTouchInput {
+            down(center)
+            up()
+        }
+        assertEquals(List(if (enabled) 9 else 2) { HapticFeedbackConstants.KEYBOARD_TAP }, feedback)
+    }
+
     private fun setKeyboardContent(
         modifierState: ModifierState = ModifierState(
             ctrlState = ModifierLevel.OFF,
@@ -207,29 +272,32 @@ class TerminalKeyboardContentTest {
         onShowIme: () -> Unit = {},
         onScrollInProgressChange: (Boolean) -> Unit = {},
         imeVisible: Boolean = false,
-        bumpyArrows: Boolean = false,
+        bumpyArrows: () -> Boolean = { false },
+        hapticView: View? = null,
         showImeToggleKey: Boolean = true,
         onToggleComposeMode: () -> Unit = {},
     ) {
         composeTestRule.setContent {
-            ConnectBotTheme {
-                TerminalKeyboardContent(
-                    modifierState = modifierState,
-                    onCtrlPress = onCtrlPress,
-                    onAltPress = onAltPress,
-                    onEscPress = onEscPress,
-                    onTabPress = onTabPress,
-                    onKeyPress = onKeyPress,
-                    onInteraction = onInteraction,
-                    onHideIme = onHideIme,
-                    onShowIme = onShowIme,
-                    onScrollInProgressChange = onScrollInProgressChange,
-                    imeVisible = imeVisible,
-                    playAnimation = false,
-                    bumpyArrows = bumpyArrows,
-                    showImeToggleKey = showImeToggleKey,
-                    onToggleComposeMode = onToggleComposeMode,
-                )
+            CompositionLocalProvider(LocalView provides (hapticView ?: LocalView.current)) {
+                ConnectBotTheme {
+                    TerminalKeyboardContent(
+                        modifierState = modifierState,
+                        onCtrlPress = onCtrlPress,
+                        onAltPress = onAltPress,
+                        onEscPress = onEscPress,
+                        onTabPress = onTabPress,
+                        onKeyPress = onKeyPress,
+                        onInteraction = onInteraction,
+                        onHideIme = onHideIme,
+                        onShowIme = onShowIme,
+                        onScrollInProgressChange = onScrollInProgressChange,
+                        imeVisible = imeVisible,
+                        playAnimation = false,
+                        bumpyArrows = bumpyArrows(),
+                        showImeToggleKey = showImeToggleKey,
+                        onToggleComposeMode = onToggleComposeMode,
+                    )
+                }
             }
         }
     }

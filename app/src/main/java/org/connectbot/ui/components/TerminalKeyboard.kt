@@ -17,6 +17,7 @@
 
 package org.connectbot.ui.components
 
+import android.content.SharedPreferences
 import android.view.HapticFeedbackConstants
 import android.view.ViewConfiguration
 import androidx.compose.animation.core.tween
@@ -116,8 +117,17 @@ fun TerminalKeyboard(
     val prefs = remember { PreferenceManager.getDefaultSharedPreferences(context) }
     val keyHandler = bridge.keyHandler
     val modifierState by keyHandler.modifierState.collectAsState()
-    val bumpyArrows by remember {
-        mutableStateOf(prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, false))
+    var bumpyArrows by remember(prefs) {
+        mutableStateOf(prefs.getBoolean(PreferenceConstants.BUMPY_ARROWS, true))
+    }
+    DisposableEffect(prefs) {
+        val listener = SharedPreferences.OnSharedPreferenceChangeListener { preferences, key ->
+            if (key == PreferenceConstants.BUMPY_ARROWS || key == null) {
+                bumpyArrows = preferences.getBoolean(PreferenceConstants.BUMPY_ARROWS, true)
+            }
+        }
+        prefs.registerOnSharedPreferenceChangeListener(listener)
+        onDispose { prefs.unregisterOnSharedPreferenceChangeListener(listener) }
     }
 
     TerminalKeyboardContent(
@@ -186,8 +196,11 @@ internal fun TerminalKeyboardContent(
     val currentOnScrollInProgressChange by rememberUpdatedState(onScrollInProgressChange)
     val view = LocalView.current
 
-    if (bumpyArrows) {
-        view.isHapticFeedbackEnabled = true
+    fun withHapticFeedback(action: () -> Unit): () -> Unit = {
+        if (bumpyArrows) {
+            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+        }
+        action()
     }
 
     // Notify parent when scroll state changes
@@ -248,7 +261,7 @@ internal fun TerminalKeyboardContent(
                     text = stringResource(R.string.button_key_ctrl),
                     contentDescription = stringResource(R.string.image_description_toggle_control_character),
                     modifierLevel = modifierState.ctrlState,
-                    onClick = onCtrlPress,
+                    onClick = withHapticFeedback(onCtrlPress),
                 )
 
                 // Alt key (sticky modifier)
@@ -256,165 +269,145 @@ internal fun TerminalKeyboardContent(
                     text = stringResource(R.string.button_key_alt),
                     contentDescription = stringResource(R.string.image_description_toggle_alt_key),
                     modifierLevel = modifierState.altState,
-                    onClick = onAltPress,
+                    onClick = withHapticFeedback(onAltPress),
                 )
 
                 // Esc key
                 KeyButton(
                     text = stringResource(R.string.button_key_esc),
                     contentDescription = stringResource(R.string.image_description_send_escape_character),
-                    onClick = onEscPress,
+                    onClick = withHapticFeedback(onEscPress),
                 )
 
                 // Tab key
                 KeyButton(
                     text = "⇥", // Tab symbol
                     contentDescription = stringResource(R.string.image_description_send_tab_character),
-                    onClick = onTabPress,
+                    onClick = withHapticFeedback(onTabPress),
                 )
 
                 // Arrow keys (repeatable)
                 RepeatableKeyButton(
                     icon = Icons.Default.KeyboardArrowUp,
                     contentDescription = stringResource(R.string.image_description_up),
-                    onPress = {
-                        onKeyPress(VTermKey.UP)
-                        if (bumpyArrows) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                        }
-                    },
+                    onPress = withHapticFeedback { onKeyPress(VTermKey.UP) },
                 )
 
                 RepeatableKeyButton(
                     icon = Icons.Default.KeyboardArrowDown,
                     contentDescription = stringResource(R.string.image_description_down),
-                    onPress = {
-                        onKeyPress(VTermKey.DOWN)
-                        if (bumpyArrows) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                        }
-                    },
+                    onPress = withHapticFeedback { onKeyPress(VTermKey.DOWN) },
                 )
 
                 RepeatableKeyButton(
                     icon = Icons.Default.KeyboardArrowLeft,
                     contentDescription = stringResource(R.string.image_description_left),
-                    onPress = {
-                        onKeyPress(VTermKey.LEFT)
-                        if (bumpyArrows) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                        }
-                    },
+                    onPress = withHapticFeedback { onKeyPress(VTermKey.LEFT) },
                 )
 
                 RepeatableKeyButton(
                     icon = Icons.Default.KeyboardArrowRight,
                     contentDescription = stringResource(R.string.image_description_right),
-                    onPress = {
-                        onKeyPress(VTermKey.RIGHT)
-                        if (bumpyArrows) {
-                            view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
-                        }
-                    },
+                    onPress = withHapticFeedback { onKeyPress(VTermKey.RIGHT) },
                 )
 
                 // Home/End
                 KeyButton(
                     text = stringResource(R.string.button_key_home),
                     contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.HOME) },
+                    onClick = withHapticFeedback { onKeyPress(VTermKey.HOME) },
                 )
 
                 KeyButton(
                     text = stringResource(R.string.button_key_end),
                     contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.END) },
+                    onClick = withHapticFeedback { onKeyPress(VTermKey.END) },
                 )
 
                 // Page Up/Down
                 KeyButton(
                     text = stringResource(R.string.button_key_pgup),
                     contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.PAGEUP) },
+                    onClick = withHapticFeedback { onKeyPress(VTermKey.PAGEUP) },
                 )
 
                 KeyButton(
                     text = stringResource(R.string.button_key_pgdn),
                     contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.PAGEDOWN) },
+                    onClick = withHapticFeedback { onKeyPress(VTermKey.PAGEDOWN) },
                 )
 
                 // Function keys F1-F12
                 KeyButton(
                     text = stringResource(R.string.button_key_f1),
                     contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_1) },
+                    onClick = withHapticFeedback { onKeyPress(VTermKey.FUNCTION_1) },
                 )
 
                 KeyButton(
                     text = stringResource(R.string.button_key_f2),
                     contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_2) },
+                    onClick = withHapticFeedback { onKeyPress(VTermKey.FUNCTION_2) },
                 )
 
                 KeyButton(
                     text = stringResource(R.string.button_key_f3),
                     contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_3) },
+                    onClick = withHapticFeedback { onKeyPress(VTermKey.FUNCTION_3) },
                 )
 
                 KeyButton(
                     text = stringResource(R.string.button_key_f4),
                     contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_4) },
+                    onClick = withHapticFeedback { onKeyPress(VTermKey.FUNCTION_4) },
                 )
 
                 KeyButton(
                     text = stringResource(R.string.button_key_f5),
                     contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_5) },
+                    onClick = withHapticFeedback { onKeyPress(VTermKey.FUNCTION_5) },
                 )
 
                 KeyButton(
                     text = stringResource(R.string.button_key_f6),
                     contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_6) },
+                    onClick = withHapticFeedback { onKeyPress(VTermKey.FUNCTION_6) },
                 )
 
                 KeyButton(
                     text = stringResource(R.string.button_key_f7),
                     contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_7) },
+                    onClick = withHapticFeedback { onKeyPress(VTermKey.FUNCTION_7) },
                 )
 
                 KeyButton(
                     text = stringResource(R.string.button_key_f8),
                     contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_8) },
+                    onClick = withHapticFeedback { onKeyPress(VTermKey.FUNCTION_8) },
                 )
 
                 KeyButton(
                     text = stringResource(R.string.button_key_f9),
                     contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_9) },
+                    onClick = withHapticFeedback { onKeyPress(VTermKey.FUNCTION_9) },
                 )
 
                 KeyButton(
                     text = stringResource(R.string.button_key_f10),
                     contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_10) },
+                    onClick = withHapticFeedback { onKeyPress(VTermKey.FUNCTION_10) },
                 )
 
                 KeyButton(
                     text = stringResource(R.string.button_key_f11),
                     contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_11) },
+                    onClick = withHapticFeedback { onKeyPress(VTermKey.FUNCTION_11) },
                 )
 
                 KeyButton(
                     text = stringResource(R.string.button_key_f12),
                     contentDescription = null,
-                    onClick = { onKeyPress(VTermKey.FUNCTION_12) },
+                    onClick = withHapticFeedback { onKeyPress(VTermKey.FUNCTION_12) },
                 )
             }
 
@@ -433,7 +426,7 @@ internal fun TerminalKeyboardContent(
                 KeyButton(
                     text = stringResource(R.string.button_key_ime),
                     contentDescription = stringResource(R.string.image_description_toggle_compose_mode),
-                    onClick = {
+                    onClick = withHapticFeedback {
                         onToggleComposeMode()
                         onInteraction()
                     },
@@ -444,7 +437,7 @@ internal fun TerminalKeyboardContent(
 
             // Keyboard toggle button (always visible on right)
             Surface(
-                onClick = {
+                onClick = withHapticFeedback {
                     if (imeVisible) {
                         onHideIme()
                     } else {
@@ -552,6 +545,7 @@ private fun RepeatableKeyButton(
     onPress: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val currentOnPress by rememberUpdatedState(onPress)
     val coroutineScope = rememberCoroutineScope()
     var isPressed by remember { mutableStateOf(false) }
     var repeatJob by remember { mutableStateOf<Job?>(null) }
@@ -589,13 +583,13 @@ private fun RepeatableKeyButton(
 
                         // First press after initial tap delay
                         sentPress = true
-                        onPress()
+                        currentOnPress()
 
                         // Wait before starting repeat
                         delay(500 - tapTimeout)
                         while (isPressed) {
                             sentPress = true
-                            onPress()
+                            currentOnPress()
                             delay(50) // Repeat interval
                         }
                     }
@@ -607,7 +601,7 @@ private fun RepeatableKeyButton(
                     if (released && !sentPress) {
                         // User released but key hasn't been sent yet (quick tap) - send it now
                         repeatJob?.cancel()
-                        onPress()
+                        currentOnPress()
                     } else {
                         repeatJob?.cancel()
                     }
