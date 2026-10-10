@@ -18,9 +18,12 @@
 package org.connectbot.service
 
 import android.Manifest
+import android.annotation.TargetApi
+import android.app.BackgroundServiceStartNotAllowedException
 import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -34,13 +37,16 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import org.mockito.Mockito.doThrow
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.mockConstruction
+import org.mockito.Mockito.spy
 import org.mockito.Mockito.`when`
 import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.RuntimeEnvironment
 import org.robolectric.Shadows.shadowOf
+import org.robolectric.annotation.Config
 import java.lang.ref.WeakReference
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -67,6 +73,44 @@ class TerminalManagerForegroundTest {
         `when`(bridge.notificationSessionId).thenReturn("session-${host.id}")
         `when`(bridge.isSessionOpen).thenReturn(true)
         `when`(bridge.sessionAttention).thenReturn(SessionAttention())
+    }
+
+    @Test
+    fun backgroundBindingReturnsBinderWhenServiceStartIsDenied() {
+        val service = spy(manager)
+        doThrow(IllegalStateException("Not allowed to start service in background"))
+            .`when`(service).startService(org.mockito.ArgumentMatchers.any(Intent::class.java))
+        service.loadedKeypairs["cached"] = TerminalManager.KeyHolder()
+
+        assertTrue(service.onBind(Intent()) is TerminalManager.TerminalBinder)
+        assertTrue(service.loadedKeypairs.containsKey("cached"))
+    }
+
+    @Test
+    fun backgroundRebindingDoesNotCrashWhenServiceStartIsDenied() {
+        val service = spy(manager)
+        doThrow(IllegalStateException("Not allowed to start service in background"))
+            .`when`(service).startService(org.mockito.ArgumentMatchers.any(Intent::class.java))
+
+        service.onRebind(Intent())
+    }
+
+    @Test
+    @TargetApi(31)
+    @Config(sdk = [31])
+    fun android12BackgroundBindingDoesNotCrash() {
+        val service = spy(manager)
+        doThrow(BackgroundServiceStartNotAllowedException("Background service start denied"))
+            .`when`(service).startService(org.mockito.ArgumentMatchers.any(Intent::class.java))
+
+        assertTrue(service.onBind(Intent()) is TerminalManager.TerminalBinder)
+    }
+
+    @Test
+    fun bindingStartsServiceWhenAllowed() {
+        manager.onBind(Intent())
+
+        assertTrue(shadowOf(RuntimeEnvironment.getApplication()).nextStartedService.component?.className == TerminalManager::class.java.name)
     }
 
     @Test
