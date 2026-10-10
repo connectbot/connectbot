@@ -1701,4 +1701,6 @@
 	<string name="pref_connection_lost_notification_title">Lost connection notifications</string>
 	<!-- Settings switch summary explaining when connection failure alerts appear. -->
 	<string name="pref_connection_lost_notification_summary">Show a soundless pop-up when a session you are not viewing unexpectedly disconnects.</string>
+	<!-- Error below the imported key nickname field when saving fails; the key is kept so the user can retry. -->
+	<string name="pubkey_import_save_failed">Could not save the key. Try another nickname or try again.</string>
 </resources>
