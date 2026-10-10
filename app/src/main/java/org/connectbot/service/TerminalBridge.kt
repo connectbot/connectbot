@@ -446,8 +446,14 @@ class TerminalBridge {
             onClipboardCopy = { text ->
                 // OSC 52 clipboard support - copy remote text to local clipboard
                 Timber.i("OSC 52 clipboard copy: ${text.length} chars")
-                val clipboard = manager.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
-                clipboard?.setPrimaryClip(ClipData.newPlainText("terminal", text))
+                scope.launch(dispatchers.io) {
+                    try {
+                        val clipboard = manager.getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+                        clipboard?.setPrimaryClip(ClipData.newPlainText("terminal", text))
+                    } catch (e: RuntimeException) {
+                        Timber.w(e, "Cannot copy terminal text to clipboard")
+                    }
+                }
             },
             onProgressChange = { state, progress ->
                 // OSC 9;4 progress reporting - update progress state
