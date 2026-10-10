@@ -695,36 +695,20 @@ open class SSH :
     /**
      * Establish and authenticate a connection to the jump host.
      * This is called before connecting to the target host when ProxyJump is configured.
-     * Supports chained jump hosts (jump host that requires another jump host).
+     * The chain is resolved and validated by connect() before any connections are opened.
      *
      * @param jumpHost The jump host configuration
+     * @param proxyConnection The already authenticated outer hop, if any
      * @return The authenticated Connection, or null if connection/authentication failed
      */
-    private fun connectToJumpHost(jumpHost: Host): Connection? {
+    private fun connectToJumpHost(jumpHost: Host, proxyConnection: Connection?): Connection? {
         bridge?.outputLine(manager?.res?.getString(R.string.terminal_connecting_via_jump, jumpHost.nickname))
 
         val jc = Connection(jumpHost.hostname, jumpHost.port)
         registerUserAuthBanner(jc, jumpHost.authBannerSourceName())
 
         try {
-            // Check if this jump host itself requires a jump host (chained ProxyJump)
-            val nestedJumpHostId = jumpHost.jumpHostId
-            if (nestedJumpHostId != null && nestedJumpHostId > 0) {
-                val nestedJumpHost = manager?.hostRepository?.findHostByIdBlocking(nestedJumpHostId)
-                if (nestedJumpHost != null) {
-                    val nestedConnection = connectToJumpHost(nestedJumpHost)
-                    if (nestedConnection == null) {
-                        unregisterUserAuthBanner(jc)
-                        return null
-                    }
-                    // Use the nested jump host connection as proxy for this jump host
-                    jc.setProxyData(JumpHostProxyData(nestedConnection))
-                } else {
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_not_found))
-                    unregisterUserAuthBanner(jc)
-                    return null
-                }
-            }
+            proxyConnection?.let { jc.setProxyData(JumpHostProxyData(it)) }
 
             if (jumpHost.compression) {
                 jc.setCompression(true)
@@ -775,19 +759,19 @@ open class SSH :
     override fun connect() {
         val currentHost = host ?: return
 
-        // Check if we need to connect through a jump host
-        val jumpHostId = currentHost.jumpHostId
+        val jumpHosts = try {
+            resolveJumpHostChain(currentHost) { manager?.hostRepository?.findHostByIdBlocking(it) }
+        } catch (e: JumpHostChainException) {
+            bridge?.outputLine(manager?.res?.getString(e.messageResId))
+            onDisconnect()
+            return
+        }
+
         var directJumpConnection: Connection? = null
-        if (jumpHostId != null && jumpHostId > 0) {
-            val jumpHost = manager?.hostRepository?.findHostByIdBlocking(jumpHostId)
-            if (jumpHost != null) {
-                directJumpConnection = connectToJumpHost(jumpHost)
-                if (directJumpConnection == null) {
-                    onDisconnect()
-                    return
-                }
-            } else {
-                bridge?.outputLine(manager?.res?.getString(R.string.terminal_jump_not_found))
+        for (jumpHost in jumpHosts.asReversed()) {
+            directJumpConnection = connectToJumpHost(jumpHost, directJumpConnection)
+            if (directJumpConnection == null) {
+                close()
                 onDisconnect()
                 return
             }
