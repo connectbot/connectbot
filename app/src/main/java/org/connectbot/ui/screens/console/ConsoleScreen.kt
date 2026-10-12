@@ -1496,7 +1496,7 @@ private fun HostDisconnectDialog(
 }
 
 @Composable
-private fun SessionPickerDialog(
+internal fun SessionPickerDialog(
     bridges: List<TerminalBridge>,
     currentBridgeIndex: Int,
     onDismiss: () -> Unit,
@@ -1515,7 +1515,6 @@ private fun SessionPickerDialog(
             ) {
                 items(
                     count = bridges.size,
-                    key = { index -> bridges[index].host.id },
                 ) { index ->
                     val bridge = bridges[index]
                     TextButton(

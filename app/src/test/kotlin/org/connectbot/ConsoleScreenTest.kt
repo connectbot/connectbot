@@ -73,6 +73,7 @@ import org.connectbot.ui.navigation.safePopBackStack
 import org.connectbot.ui.screens.console.ConsoleScreen
 import org.connectbot.ui.screens.console.ConsoleUiState
 import org.connectbot.ui.screens.console.ConsoleViewModel
+import org.connectbot.ui.screens.console.SessionPickerDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.PreferenceConstants
 import org.junit.After
@@ -164,6 +165,32 @@ class ConsoleScreenTest {
         composeTestRule.runOnUiThread {
             navController.navigate("console/$hostId")
         }
+    }
+
+    @Test
+    fun sessionPicker_sameHostInTwoSessions_rendersAndSelectsEachSession() {
+        val first = mock(TerminalBridge::class.java)
+        val second = mock(TerminalBridge::class.java)
+        val host = Host(id = 1L, nickname = "Original session")
+        `when`(first.host).thenReturn(host)
+        `when`(second.host).thenReturn(host.copy(nickname = "Updated session"))
+        var selectedIndex = -1
+
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                SessionPickerDialog(
+                    bridges = listOf(first, second),
+                    currentBridgeIndex = 0,
+                    onDismiss = {},
+                    onSelectBridge = { selectedIndex = it },
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithText("\u2022 Original session").assertIsDisplayed().performClick()
+        composeTestRule.runOnIdle { assertEquals(0, selectedIndex) }
+        composeTestRule.onNodeWithText("Updated session").assertIsDisplayed().performClick()
+        composeTestRule.runOnIdle { assertEquals(1, selectedIndex) }
     }
 
     @Test
