@@ -702,4 +702,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Omogočite prejem obvestil, da boste videli povezane naprave in prejeli opozorila o zvoku terminala ter prekinitvi povezave. Povezave lahko še vedno delujejo v ozadju, tudi če ne omogočite te možnosti.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Omogoči obvestila.</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Omogočite obvestila za ConnectBot v nastavitvah sistema Android, da boste videli povezane gostitelje in prejeli opozorila o zvoku terminala ter prekinitvi povezave. Podpora za povezavo v ozadju ostaja omogočena.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Krepko kot svetlo.</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Uporabite žive barve ANSI za krepko oblikovano besedilo. Velja za nove seje terminala.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Zaupanja vredni gostitelji</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Znani ključi gostitelja.</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Oglejte si, uvozite ali odstranite zaupanja vredne ključe za tega gostitelja.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">Ni znanih gostiteljev.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Algoritem: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Izbriši znani gostiteljski ključ.</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Izbriši</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Želite izbrisati shranjenega gostitelja?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">Ključ za %1$s bo treba ponovno preveriti, ko se boste naslednjič povezali.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Ni bilo mogoče posodobiti seznama znanih gostiteljev.</string>
+  <string name="known_host_import" tools:machine_translated="true">Uvoz ključa gostitelja.</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Uvoz ključa gostitelja.</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">Javni ključ OpenSSH</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Prilepite celoten javni ključ, na primer »ssh-ed25519 AAAA…«. Sam odtis (fingerprint) ni dovolj za uvoz.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Vnesite veljaven javni ključ OpenSSH. Algoritem in kodirani ključ morata biti skladna.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">Uvozi</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Nedavni zaključki procesov</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">Ni na voljo nobenih zapisov o končanih procesih.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">Zgodovina končanja procesa ni na voljo.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">Ni na voljo opisa.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Čas: %1$s\nProces: %2$s (PID %3$d)\nRazlog: %4$s (%5$d)\nStatus/signal: %6$d\nOpis: %7$s\nZadnji vzorec pomnilnika: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">Shrani zapis o napaki</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Shranite najnovejše razpoložljivo poročilo o sesutju izvorne kode na izbrano mesto.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Podatki o napaki so bili shranjeni.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">Ni na voljo nobenega izvornega poročila o napaki. Android ga je morda že odstranil.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Ni bilo mogoče shraniti datoteke z informacijami o napaki.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Shranjevanje ključa ni uspelo. Poskusite z drugim vzdevkom ali poskusite znova.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Ni bilo mogoče ustvariti bližnjice. Poskusite znova.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">Veriga vmesnih strežnikov vsebuje zanko. Preverite nastavitve vmesnih strežnikov.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">Veriga vmesnih strežnikov presega omejitev 32 strežnikov.</string>
 </resources>

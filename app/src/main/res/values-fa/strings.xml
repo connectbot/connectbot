@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">به برنامه اجازه دهید اعلان‌ها را نمایش دهد تا بتوانید دستگاه‌های متصل را ببینید و هشدارهای مربوط به صدای پایان و قطع ارتباط را دریافت کنید. حتی بدون این مجوز، ارتباطات همچنان می‌توانند در پس‌زمینه اجرا شوند.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">فعال‌سازی اعلان‌ها</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">برای مشاهده دستگاه‌های متصل و دریافت هشدارهای مربوط به صدای پایان اتصال و قطع ارتباط، اعلان‌های مربوط به ConnectBot را در تنظیمات اندروید فعال کنید. پشتیبانی از اتصال در پس‌زمینه همچنان فعال خواهد بود.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">پررنگ به عنوان روشن</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">از رنگ‌های روشن ANSI برای متن پررنگ استفاده کنید. این تنظیمات بر جلسات ترمینال جدید اعمال می‌شود.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">میزبان‌های معتبر</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">کلیدهای شناخته‌شده‌ی میزبان</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">مشاهده، وارد کردن یا حذف کلیدهای معتبر برای این میزبان</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">هیچ هاست معتبری یافت نشد.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">الگوریتم: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">حذف هاست معتبر</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">حذف</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">آیا می‌خواهید کلید میزبان شناخته‌شده را حذف کنید؟</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">کلید مربوط به %1$s باید دفعه بعد که اتصال برقرار می‌کنید، دوباره تأیید شود.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">امکان به‌روزرسانی لیست میزبان‌های شناخته‌شده وجود ندارد.</string>
+  <string name="known_host_import" tools:machine_translated="true">کلید میزبان را وارد کنید</string>
+  <string name="known_host_import_title" tools:machine_translated="true">کلید میزبان را وارد کنید</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">کلید عمومی OpenSSH</string>
+  <string name="known_host_import_help" tools:machine_translated="true">کلید عمومی را، مانند «ssh-ed25519 AAAA…»، کپی و جای‌گذاری کنید. فقط استفاده از اثر انگشت برای وارد کردن کلید کافی نیست.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">یک کلید عمومی معتبر OpenSSH وارد کنید. الگوریتم و کلید کدگذاری‌شده باید با هم مطابقت داشته باشند.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">وارد کردن</string>
+  <string name="logs_exit_history" tools:machine_translated="true">آخرین خروج‌های فرآیند</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">هیچ سابقه خروج فرآیندی در دسترس نیست.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">اطلاعات مربوط به پایان فرآیند در دسترس نیست.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">توضیحات در دسترس نیست.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">زمان: %1$s\nفرایند: %2$s (شناسه فرایند: %3$d)\nدلیل: %4$s (%5$d)\nوضعیت/سیگنال: %6$d\nتوضیحات: %7$s\nآخرین مقدار حافظه نمونه‌برداری‌شده: PSS %8$d کیلوبایت، RSS %9$d کیلوبایت</string>
+  <string name="save_tombstone" tools:machine_translated="true">ذخیره گزارش خطا</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">آخرین گزارش موجود مربوط به خطای سیستمی را در مکانی که انتخاب می‌کنید، ذخیره کنید.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">اطلاعات مربوط به گزارش خرابی ذخیره شد.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">گزارش خطای داخلی در دسترس نیست. احتمالاً اندروید قبلاً آن را حذف کرده است.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">ذخیره فایل گزارش خطا با مشکل مواجه شد.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">ذخیره کلید انجام نشد. نام مستعار دیگری را امتحان کنید یا دوباره تلاش کنید.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">ایجاد میانبر امکان‌پذیر نبود. لطفاً دوباره امتحان کنید.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">زنجیره سرورهای واسط، یک حلقه دارد. تنظیمات سرورهای واسط را بررسی کنید.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">تعداد هاست‌های واسط در زنجیره از حد مجاز (۳۲ هاست) فراتر رفته است.</string>
 </resources>

@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">อนุญาตให้มีการส่งการแจ้งเตือน เพื่อให้คุณสามารถดูอุปกรณ์ที่เชื่อมต่อ และรับการแจ้งเตือนเมื่อมีการส่งสัญญาณเสียงหรือเมื่อการเชื่อมต่อขาดหายไป แม้ว่าจะไม่ได้อนุญาตนี้ การเชื่อมต่อก็ยังสามารถทำงานในเบื้องหลังได้</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">เปิดการแจ้งเตือน</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">เปิดใช้งานการแจ้งเตือนสำหรับ ConnectBot ในการตั้งค่า Android เพื่อดูรายการอุปกรณ์ที่เชื่อมต่อ และรับการแจ้งเตือนเมื่อมีการเชื่อมต่อหรือตัดการเชื่อมต่อ รวมถึงเสียงแจ้งเตือนจากเทอร์มินัล การรองรับการเชื่อมต่อในเบื้องหลังยังคงเปิดใช้งานอยู่</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">ใช้สีสว่างสำหรับข้อความตัวหนา</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">ใช้สี ANSI แบบสว่างสำหรับข้อความตัวหนา มีผลกับเซสชันเทอร์มินัลใหม่</string>
+  <string name="known_hosts_title" tools:machine_translated="true">โฮสต์ที่รู้จัก</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">คีย์สำหรับโฮสต์ที่รู้จัก</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">ดู นำเข้า หรือลบกุญแจที่เชื่อถือได้สำหรับโฮสต์นี้</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">ไม่พบโฮสต์ที่รู้จัก</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">อัลกอริทึม: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">ลบโฮสต์ที่รู้จัก</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">ลบ</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">ต้องการลบโฮสต์ที่รู้จักหรือไม่</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">คีย์สำหรับ %1$s จะต้องได้รับการตรวจสอบอีกครั้งในการเชื่อมต่อครั้งถัดไป</string>
+  <string name="known_hosts_error" tools:machine_translated="true">ไม่สามารถอัปเดตรายการโฮสต์ที่รู้จักได้</string>
+  <string name="known_host_import" tools:machine_translated="true">นำเข้าคีย์โฮสต์</string>
+  <string name="known_host_import_title" tools:machine_translated="true">นำเข้าคีย์โฮสต์</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">คีย์สาธารณะของ OpenSSH</string>
+  <string name="known_host_import_help" tools:machine_translated="true">วางคีย์สาธารณะทั้งหมด เช่น “ssh-ed25519 AAAA…” การนำเข้าโดยใช้เพียงค่าแฮช (fingerprint) อย่างเดียวจะไม่สำเร็จ</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">กรุณากรอกคีย์สาธารณะ OpenSSH ที่ถูกต้อง อัลกอริทึมและคีย์ที่เข้ารหัสจะต้องตรงกัน</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">นำเข้า</string>
+  <string name="logs_exit_history" tools:machine_translated="true">บันทึกการสิ้นสุดกระบวนการล่าสุด</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">ไม่มีข้อมูลการสิ้นสุดกระบวนการให้ใช้งาน</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">ไม่สามารถแสดงประวัติการสิ้นสุดการทำงานของโปรแกรมได้</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">ไม่มีคำอธิบาย</string>
+  <string name="logs_exit_details" tools:machine_translated="true">เวลา: %1$s\nกระบวนการ: %2$s (PID %3$d)\nสาเหตุ: %4$s (%5$d)\nสถานะ/สัญญาณ: %6$d\nคำอธิบาย: %7$s\nหน่วยความจำที่บันทึกครั้งล่าสุด: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">บันทึกข้อมูลการเกิดข้อผิดพลาด</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">บันทึกรายงานข้อผิดพลาดล่าสุดไปยังตำแหน่งที่คุณต้องการ</string>
+  <string name="tombstone_saved" tools:machine_translated="true">บันทึกข้อมูลการเกิดข้อผิดพลาดแล้ว</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">ไม่มีรายงานการขัดข้องของโค้ดเนทีฟให้ใช้งาน Android อาจลบรายงานนี้ไปแล้ว</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">ไม่สามารถบันทึกข้อมูลการเกิดข้อผิดพลาดได้</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">ไม่สามารถบันทึกคีย์ได้ โปรดลองใช้ชื่อเล่นอื่น หรือลองใหม่อีกครั้ง</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">ไม่สามารถสร้างทางลัดได้ โปรดลองใหม่อีกครั้ง</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">เกิดข้อผิดพลาดเนื่องจากมีการวนซ้ำในลำดับการเชื่อมต่อผ่านโฮสต์ หากเกิดปัญหานี้ โปรดตรวจสอบการตั้งค่าโฮสต์ที่ใช้ในการเชื่อมต่อ</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">จำนวนโฮสต์ที่ใช้เชื่อมต่อกันเกินขีดจำกัดที่กำหนดไว้ (32 โฮสต์)</string>
 </resources>

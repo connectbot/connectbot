@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">დაუშვით შეტყობინებების მიღება, რათა ნახოთ დატვირთული მოწყობილობები და მიიღოთ სიგნალი და შეტყობინებები კავშირის გაწყვეტის შესახებ. ამ ნებართვის გარეშეც შესაძლებელია კავშირის გაგრძელება ფონურ რეჟიმში.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">ჩართეთ შეტყობინებები</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">აირჩიეთ ConnectBot-ისთვის შეტყობინებების ჩართვა Android-ის პარამეტრებში, რათა ნახოთ დატანებული მოწყობილობები და მიიღოთ შეტყობინებები ტერმინალის სიგნალისა და კავშირის გაწყვეტის შესახებ. ფონის კავშირის მხარდაჭერა რჩება ჩართულ მდგომარეობაში.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">ნათელი ფერები მუქი ტექსტისთვის</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">გამოიყენეთ ნათელი ANSI ფერები მუქი ტექსტისთვის. ვრცელდება ახალ ტერმინალურ სესიებზე.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">ცნობილი ჰოსტები</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">ჰოსტის ცნობილი გასაღებები</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">გაიხილეთ, დაამატეთ ან წაშალეთ ამ ჰოსტისთვის სანდო გასაღებები.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">ჯერჯერობით არცერთი მასპინძელი არ არის დამატებული.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">ალგორითმი: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">ცნობილი მასპინძლის წაშლა</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">წაშლა</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">გსურთ, წაშალოთ ცნობილი მასპინძელი?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">%1$s-ის გასაღები მომავალ შეერთების დროს ხელახლა უნდა გადამოწმებული იყოს.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">ცნობილი ჰოსტების სიის განახლება ვერ მოხერხდა.</string>
+  <string name="known_host_import" tools:machine_translated="true">ჰოსტის გასაღების იმპორტირება</string>
+  <string name="known_host_import_title" tools:machine_translated="true">ჰოსტის გასაღების იმპორტირება</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">OpenSSH-ის საჯარო გასაღები</string>
+  <string name="known_host_import_help" tools:machine_translated="true">ჩასვით სრული საჯარო გასაღები, მაგალითად, „ssh-ed25519 AAAA…“. მხოლოდ ანაბეჭდის იმპორტირება შეუძლებელია.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">შეიყვანეთ ვალიდური OpenSSH-ის საჯარო გასაღები. ალგორითმი და კოდირებული გასაღები უნდა შეესაბამებოდეს ერთმანეთს.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">იმპორტირება</string>
+  <string name="logs_exit_history" tools:machine_translated="true">ბოლო პროცესების დახურვის ჩანაწერები</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">პროცესის შეწყვეტის შესახებ ინფორმაცია არ არის ხელმისაწვდომი.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">პროცესის დახურვის ისტორია არ არის ხელმისაწვდომი.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">აღწერა არ არის ხელმისაწვდომი.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">დრო: %1$s\nპროცესი: %2$s (PID %3$d)\nმიზეზი: %4$s (%5$d)\nსტატუსი/სიგნალი: %6$d\nაღწერა: %7$s\nბოლო გაზომვადი მეხსიერება: PSS %8$d კბ, RSS %9$d კბ</string>
+  <string name="save_tombstone" tools:machine_translated="true">ავარიული მოხსენების შენახვა</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">შენახეთ ყველაზე ახლანდელი ხელმისაწვდომი სისტემური შეცდომის შესახებ მოხსენება თქვენთვის სასურველ ადგილას.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">ავარიული მოხსენება შენახულია.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">ნატიური კოდის ავარიული მოხსენება ხელმისაწვდომი არ არის. შესაძლოა, Android-მა უკვე წაშალა იგი.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">ავარიული მოხსენების შენახვა ვერ მოხერხდა.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">გასაღების შენახვა ვერ მოხერხდა. სცადეთ სხვა მეტსახელი ან სცადეთ ხელახლა.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">მალსახმობის შექმნა ვერ მოხერხდა. გთხოვთ, სცადეთ ხელახლა.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">ჯამპ-ჰოსტის სერიაში არის ციკლი. გადაამოწმეთ ჯამპ-ჰოსტის პარამეტრები.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">შუალედური ჰოსტების ჯაჭვი აჭარბებს 32 ჰოსტის ლიმიტს.</string>
 </resources>

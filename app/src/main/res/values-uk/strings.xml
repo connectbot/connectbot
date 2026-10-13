@@ -702,4 +702,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Дозвольте надсилати сповіщення, щоб бачити під’єднані пристрої та отримувати повідомлення про звуковий сигнал і втрату з’єднання. З’єднання все ще можуть працювати у фоновому режимі без цієї дозволу.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Увімкнути сповіщення</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Увімкніть сповіщення для ConnectBot у налаштуваннях Android, щоб бачити під’єднані пристрої та отримувати сповіщення про звуковий сигнал термінала та втрату з’єднання. Підтримка фонових з’єднань залишається ввімкненою.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Яскраві кольори для жирного тексту</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Використовуйте яскраві кольори ANSI для жирного тексту. Застосовується до нових сеансів терміналу.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Надійні хости</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Відомі ключі хоста.</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Перегляньте, імпортуйте або видаліть ключі, яким довіряють для цього хоста.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">Не знайдено жодного відомого хоста.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Алгоритм: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Видалити відомого хоста</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Видалити</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Видалити відомого хоста?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">Ключ для %1$s потрібно буде знову підтвердити під час наступного підключення.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Не вдалося оновити список відомих хостів.</string>
+  <string name="known_host_import" tools:machine_translated="true">Імпортувати ключ хоста.</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Імпортувати ключ хоста</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">Відкритий ключ OpenSSH</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Вставте повний відкритий ключ, наприклад, «ssh-ed25519 AAAA…». Не можна імпортувати лише відбиток ключа.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Введіть дійсний відкритий ключ OpenSSH. Алгоритм і кодований ключ повинні збігатися.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">Імпортувати</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Останні завершення процесів</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">Немає доступних записів про завершення процесів.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">Інформація про завершення процесів недоступна.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">Опис відсутній.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Час: %1$s\nПроцес: %2$s (PID %3$d)\nПричина: %4$s (%5$d)\nСтатус/сигнал: %6$d\nОпис: %7$s\nОстанній знімок даних про пам’ять: PSS %8$d КБ, RSS %9$d КБ</string>
+  <string name="save_tombstone" tools:machine_translated="true">Зберегти звіт про збій</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Збережіть найновіший доступний звіт про збій у вибране вами місце.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Збережено інформацію про збій.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">Наразі немає доступних звітів про збої, створених системою. Можливо, Android уже видалив їх.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Не вдалося зберегти файл з інформацією про збій.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Не вдалося зберегти ключ. Спробуйте інше ім’я або повторіть спробу.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Не вдалося створити ярлик. Будь ласка, спробуйте ще раз.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">У ланцюжку проміжних хостів виявлено цикл. Перевірте налаштування проміжних хостів.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">Кількість проміжних серверів у ланцюжку перевищує ліміт у 32 сервери.</string>
 </resources>

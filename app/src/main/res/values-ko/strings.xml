@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">알림을 허용하면 연결된 호스트를 확인하고 터미널 벨 소리와 연결 끊김 알림을 받을 수 있습니다. 이 권한을 허용하지 않아도 연결은 백그라운드에서 계속 실행될 수 있습니다.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">알림 사용</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Android 설정에서 ConnectBot의 알림을 활성화하여 연결된 호스트를 확인하고 터미널 벨 소리와 연결 끊김 알림을 받으세요. 백그라운드 연결 지원은 계속 활성화됩니다.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">굵게 표시된 색상을 밝은 색상으로</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">굵게 표시된 텍스트에는 밝은 ANSI 색상을 사용합니다. 새 터미널 세션에 적용됩니다.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">신뢰할 수 있는 호스트</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">등록된 호스트 키</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">이 호스트에 대해 신뢰할 수 있는 키를 확인, 가져오거나 삭제합니다.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">알려진 호스트가 없습니다.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">알고리즘: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">신뢰할 수 있는 호스트 삭제</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">삭제</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">신뢰할 수 있는 호스트 키를 삭제하시겠습니까?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">다음 번에 연결할 때 %1$s에 대한 키를 다시 확인해야 합니다.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">알려진 호스트 목록을 업데이트할 수 없습니다.</string>
+  <string name="known_host_import" tools:machine_translated="true">호스트 키 가져오기</string>
+  <string name="known_host_import_title" tools:machine_translated="true">호스트 키 가져오기</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">OpenSSH 공개 키</string>
+  <string name="known_host_import_help" tools:machine_translated="true">전체 공개 키(예: “ssh-ed25519 AAAA…”)를 붙여넣으세요. 지문만으로는 가져올 수 없습니다.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">유효한 OpenSSH 공개 키를 입력하세요. 알고리즘과 인코딩된 키가 일치해야 합니다.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">가져오기</string>
+  <string name="logs_exit_history" tools:machine_translated="true">최근 프로세스 종료 기록</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">프로세스 종료 기록을 찾을 수 없습니다.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">프로세스 종료 기록을 사용할 수 없습니다.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">설명 없음</string>
+  <string name="logs_exit_details" tools:machine_translated="true">시간: %1$s\n프로세스: %2$s (PID %3$d)\n사유: %4$s (%5$d)\n상태/신호: %6$d\n설명: %7$s\n최근 샘플링된 메모리: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">충돌 보고서 저장</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">가장 최근에 생성된 네이티브 충돌 보고서를 원하는 위치에 저장합니다.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">크래시 보고서가 저장되었습니다.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">네이티브 충돌 보고서를 사용할 수 없습니다. Android에서 이미 해당 보고서를 삭제했을 수 있습니다.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">오류 보고서를 저장할 수 없습니다.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">키를 저장할 수 없습니다. 다른 별칭을 사용하거나 다시 시도해 보세요.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">바로 가기를 생성할 수 없습니다. 다시 시도해 주세요.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">점프 호스트 체인에 순환이 존재합니다. 점프 호스트 설정을 확인하세요.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">점프 호스트 연결 수가 32개를 초과했습니다.</string>
 </resources>

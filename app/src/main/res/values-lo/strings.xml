@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">ອະນຸຍາດໃຫ້ສົ່ງການແຈ້ງເຕືອນເພື່ອເບິ່ງບັນຊີລາຍຊື່ຂອງອຸປະກອນທີ່ເຊື່ອມຕໍ່ ແລະຮັບການແຈ້ງເຕືອນກ່ຽວກັບສັນຍານເຕືອນ ແລະການສູນເສຍການເຊື່ອມຕໍ່. ການເຊື່ອມຕໍ່ຍັງສາມາດເຮັດວຽກຢູ່ພື້ນຫຼັງໄດ້ເຖິງແມ່ນວ່າບໍ່ໄດ້ອະນຸຍາດສິດນີ້.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">ເປີດການແຈ້ງເຕືອນ</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">ເປີດໃຊ້ການແຈ້ງເຕືອນສໍາລັບ ConnectBot ໃນການຕັ້ງຄ່າ Android ເພື່ອເບິ່ງບັນຊີລາຍຊື່ຂອງອຸປະກອນທີ່ເຊື່ອມຕໍ່ ແລະຮັບການແຈ້ງເຕືອນກ່ຽວກັບສັນຍານເຕືອນ ແລະການເຊື່ອມຕໍ່ທີ່ຂາດຫາຍ. ການຮອງຮັບການເຊື່ອມຕໍ່ໃນພື້ນຫຼັງຍັງຄົງເປີດໃຊ້ຢູ່.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">ເນັ້ນໃຫ້ໂດດເດັ່ນ ແລະ ສົດໃສ</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">ໃຊ້ສີ ANSI ສົດໃສເພື່ອເນັ້ນຕົວອັກສອນ. ນຳໃຊ້ກັບເຊສຊັນໃໝ່ຂອງ terminal.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">ບັນຊີລາຍຊື່ຂອງເຈົ້າພາບທີ່ໄດ້ຮັບການອະນຸຍາດ</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">ກະແຈທີ່ຮູ້ຈັກຂອງເຈົ້າພາບ</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">ເບິ່ງ, ນຳເຂົ້າ ຫຼື ລຶບຄີທີ່ເຊື່ອຖືສຳລັບໂຮສນີ້</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">ບໍ່ພົບເຈົ້າພາບທີ່ຮູ້ຈັກ.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Algorithm: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">ລຶບໂຮສທີ່ຮູ້ຈັກ</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">ລຶບ</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">ຕ້ອງການລຶບຄີຂອງເຈົ້າພາບທີ່ຖືກບັນທຶກໄວ້ບໍ?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">ຄັ້ງຕໍ່ໄປທີ່ເຈົ້າເຊື່ອມຕໍ່, ຕ້ອງກວດສອບຄີຂອງ %1$s ອີກເທື່ອໜຶ່ງ.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">ບໍ່ສາມາດອັບເດດບັນຊີລາຍຊື່ເຈົ້າພາບທີ່ຮູ້ຈັກໄດ້</string>
+  <string name="known_host_import" tools:machine_translated="true">ນຳເຂົ້າຄີຂອງໂຮສ</string>
+  <string name="known_host_import_title" tools:machine_translated="true">ນຳເຂົ້າຄີຂອງເຄື່ອງແມ່ຂ່າຍ</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">ກະແຈສາທາລະນະຂອງ OpenSSH</string>
+  <string name="known_host_import_help" tools:machine_translated="true">ວາງຄີສາທາລະນະທັງໝົດ, ເຊັ່ນ “ssh-ed25519 AAAA…”. ບໍ່ສາມາດນຳເຂົ້າພຽງແຕ່ລາຍນິ້ວມືຂອງຄີ (fingerprint) ໄດ້.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">ປ້ອນຄີສາທາລະນະ OpenSSH ທີ່ຖືກຕ້ອງ. ວິທີການ ແລະ ຄີທີ່ຖືກເຂົ້າລະຫັດຕ້ອງສອດຄ່ອງກັນ.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">ນຳເຂົ້າ</string>
+  <string name="logs_exit_history" tools:machine_translated="true">ບັນທຶກການສິ້ນສຸດຂອງກະບວນການຫຼ້າສຸດ</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">ບໍ່ມີຂໍ້ມູນການສິ້ນສຸດຂອງໂປຣແກຣມ</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">ບໍ່ສາມາດສະໜອງຂໍ້ມູນກ່ຽວກັບປະຫວັດການຢຸດການເຮັດວຽກຂອງໂປຣແກຣມໄດ້</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">ບໍ່ມີຄຳອະທິບາຍ</string>
+  <string name="logs_exit_details" tools:machine_translated="true">ເວລາ: %1$s\nໂປຣແກຣມ: %2$s (PID %3$d)\nເຫດຜົນ: %4$s (%5$d)\nສະຖານະ/ສັນຍານ: %6$d\nຄຳອະທິບາຍ: %7$s\nຄວາມຈຳສຸດທ້າຍທີ່ເກັບກຳ: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">ບັນທຶກຂໍ້ມູນການເກີດຂໍ້ຜິດພາດ</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">ບັນທຶກບົດລາຍງານການເກີດຂໍ້ຜິດພາດຫຼ້າສຸດທີ່ສາມາດເຂົ້າເຖິງໄດ້ ໄປສູ່ສະຖານທີ່ທີ່ເຈົ້າເລືອກ.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">ບັນທຶກຂໍ້ມູນການເກີດຂໍ້ຜິດພາດແລ້ວ</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">ບໍ່ມີບົດລາຍງານການຂັດຂ້ອງຂອງ native code. Android ອາດໄດ້ລຶບມັນໄປແລ້ວ.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">ບໍ່ສາມາດບັນທຶກຂໍ້ມູນການເກີດຂໍ້ຜິດພາດໄດ້</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">ບໍ່ສາມາດບັນທຶກຂໍ້ມູນກຸນແຈໄດ້. ກະລຸນາລອງໃຊ້ຊື່ຫຼິ້ນອື່ນ ຫຼື ລອງອີກເທື່ອໜຶ່ງ.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">ບໍ່ສາມາດສ້າງທາງລັດໄດ້. ກະລຸນາລອງອີກເທື່ອ.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">ສາຍເຊື່ອມຕໍ່ຂອງ jump host ມີການວົນຊ້ຳ. ກະລຸນາກວດສອບການຕັ້ງຄ່າຂອງ jump host.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">ຈຳນວນເຄື່ອງແມ່ຂ່າຍທີ່ໃຊ້ໃນການເຊື່ອມຕໍ່ເກີນຈຳນວນທີ່ກຳນົດໄວ້, ເຊິ່ງຄື 32 ເຄື່ອງ.</string>
 </resources>

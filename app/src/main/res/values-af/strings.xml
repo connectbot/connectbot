@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Laat toe dat kennisgewings vertoon word om gekoppelde gasheere te sien en waarskuwings vir terminale sein en verbindingsverlies te ontvang. Verbindings kan steeds op die agtergrond werk, selfs sonder hierdie toestemming.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Skakel kennisgewings in.</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Aktiveer kennisgewings vir ConnectBot in die Android-instellings om gekoppelde gasheere te sien en waarskuwings vir terminale-klanke en verbindingsverlies te ontvang. Agtergrondverbindingondersteuning bly geaktiveer.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Vet as helder</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Gebruik helder ANSI-kleure vir vetgedrukte teks. Dit geld vir nuwe terminaalsessies.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Bekende gasheere</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Bekende gasheerse sleutels</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Beskou, voer in of verwyder sleutels wat vir hierdie gasheerrekenaar as betroubaar beskou word.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">Geen bekende gasheere nie.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Algoritme: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Verwyder bekende gasheer</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Verwyder</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Wil jy die bekende gasheer verwyder?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">Die sleutel vir %1$s sal die volgende keer as jy aanmeld, weer geverifieer moet word.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Kon nie die lys van bekende gasheere opdateer nie.</string>
+  <string name="known_host_import" tools:machine_translated="true">Voer die gasheersleutel in.</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Voer gasheersleutel in</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">OpenSSH publieke sleutel</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Plak die volledige publieke sleutel, soos “ssh-ed25519 AAAA…”. Net die vingerafdruk kan nie geïmporteer word nie.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Voer ’n geldige OpenSSH-publieksleutel in. Die algoritme en die gekodeerde sleutel moet ooreenstem.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">Invoer</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Onlangse prosesbeëindigings</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">Geen rekords van prosesbeëindiging beskikbaar nie.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">Inligting oor die beëindiging van die proses is nie beskikbaar nie.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">Geen beskrywing beskikbaar.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Tyd: %1$s\nProses: %2$s (PID %3$d)\nRede: %4$s (%5$d)\nStatus/sein: %6$d\nBeskrywing: %7$s\nLaaste gemete geheue: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">Stoor die foutverslag.</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Stoor die mees onlangse beskikbare verslag van ’n ineenstorting in native kode op ’n plek wat jy kies.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Foutverslag gestoor.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">Geen verslag van ’n ineenstorting in native kode is beskikbaar nie. Android het dit dalk reeds verwyder.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Kon nie die foutverslag stoor nie.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Kon nie die sleutel stoor nie. Probeer ’n ander bynaam of probeer weer.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Kon nie die snelkoppeling skep nie. Probeer asseblief weer.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">Die ketting van spronggasheerbedieners bevat ’n lus. Gaan die instellings van die spronggasheerbedieners na.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">Die ketting van tussenliggende bedieners oorskry die limiet van 32 bedieners.</string>
 </resources>

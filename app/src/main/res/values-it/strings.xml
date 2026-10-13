@@ -698,4 +698,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Consenti le notifiche per visualizzare gli host connessi e ricevere avvisi relativi al segnale acustico del terminale e alla perdita di connessione. Anche senza questa autorizzazione, le connessioni possono comunque essere eseguite in background.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Abilita le notifiche</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Abilita le notifiche per ConnectBot nelle impostazioni di Android per visualizzare gli host connessi e ricevere avvisi relativi al segnale acustico del terminale e alla perdita di connessione. Il supporto per le connessioni in background rimane attivo.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Colori vivaci per il testo in grassetto</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Utilizza colori ANSI vivaci per il testo in grassetto. Questa impostazione si applica alle nuove sessioni del terminale.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Host attendibili</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Chiavi host note</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Visualizza, importa o rimuovi le chiavi considerate attendibili per questo host.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">Nessun host conosciuto.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Algoritmo: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Elimina host attendibile</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Elimina</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Eliminare l’host conosciuto?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">La prossima volta che ti connetterai, dovrai verificare nuovamente la chiave per %1$s.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Impossibile aggiornare l’elenco degli host attendibili.</string>
+  <string name="known_host_import" tools:machine_translated="true">Importa la chiave dell’host.</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Importa la chiave dell’host.</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">Chiave pubblica OpenSSH</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Incolla la chiave pubblica completa, ad esempio “ssh-ed25519 AAAA…”. Non è possibile importare solo l’impronta digitale.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Inserisci una chiave pubblica OpenSSH valida. L’algoritmo e la chiave codificata devono corrispondere.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">Importa</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Uscite recenti dei processi</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">Nessun dato disponibile relativo alla chiusura dei processi.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">Cronologia di uscita del processo non disponibile.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">Nessuna descrizione disponibile.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Ora: %1$s\nProcesso: %2$s (PID %3$d)\nMotivo: %4$s (%5$d)\nStato/segnale: %6$d\nDescrizione: %7$s\nUltima memoria rilevata: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">Salva rapporto sull\'errore</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Salva il rapporto di arresto anomalo del codice nativo più recente disponibile nella posizione che preferisci.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Dati di errore salvati.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">Non è disponibile alcun rapporto sugli errori nativo. È possibile che Android lo abbia già eliminato.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Impossibile salvare il file di registro.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Impossibile salvare la chiave. Prova un altro nome o riprova.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Impossibile creare il collegamento. Riprova.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">La catena di host di salto contiene un ciclo. Verificare le impostazioni degli host di salto.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">La catena di host intermedi supera il limite di 32 host.</string>
 </resources>

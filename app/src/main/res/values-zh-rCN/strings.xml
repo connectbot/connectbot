@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">允许接收通知，以便查看已连接的主机，并接收终端提示音和连接中断提醒。即使没有此权限，连接仍然可以在后台运行。</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">启用通知</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">在 Android 设置中启用 ConnectBot 的通知，以便查看已连接的主机，并接收终端提示音和连接中断提醒。后台连接支持将继续启用。</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">将粗体颜色设置为高亮颜色</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">对粗体文本使用鲜艳的 ANSI 颜色。此设置将应用于新的终端会话。</string>
+  <string name="known_hosts_title" tools:machine_translated="true">已知的服务器</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">已知的 SSH 主机密钥</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">查看、导入或删除此主机的受信任密钥。</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">未找到任何已信任的主机。</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">算法：%1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">删除已知的 SSH 主机。</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">删除</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">删除已知的 SSH 主机密钥？</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">下次连接时，需要再次验证 %1$s 的密钥。</string>
+  <string name="known_hosts_error" tools:machine_translated="true">无法更新已知主机列表。</string>
+  <string name="known_host_import" tools:machine_translated="true">导入主机密钥。</string>
+  <string name="known_host_import_title" tools:machine_translated="true">导入主机密钥</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">OpenSSH 公钥</string>
+  <string name="known_host_import_help" tools:machine_translated="true">粘贴完整的公钥，例如“ssh-ed25519 AAAA…”。仅凭指纹无法导入。</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">请输入有效的 OpenSSH 公钥。算法和编码后的密钥必须匹配。</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">导入</string>
+  <string name="logs_exit_history" tools:machine_translated="true">最近的进程退出记录</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">没有可用的进程退出记录。</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">无法提供进程退出历史记录。</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">没有可用的描述。</string>
+  <string name="logs_exit_details" tools:machine_translated="true">时间：%1$s\n进程：%2$s（进程 ID：%3$d）\n原因：%4$s（代码：%5$d）\n状态/信号：%6$d\n描述：%7$s\n上次采样时的内存：PSS：%8$d KB，RSS：%9$d KB</string>
+  <string name="save_tombstone" tools:machine_translated="true">保存崩溃日志。</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">将最新的可用原生代码崩溃报告保存到您选择的位置。</string>
+  <string name="tombstone_saved" tools:machine_translated="true">已保存崩溃报告。</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">没有可用的原生代码崩溃报告。Android 可能已经将其删除。</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">无法保存崩溃报告。</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">无法保存密钥。请尝试使用其他昵称或再次尝试。</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">无法创建快捷方式。请重试。</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">跳板主机链中存在循环。请检查跳板主机设置。</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">跳板主机链超过了 32 个主机的限制。</string>
 </resources>

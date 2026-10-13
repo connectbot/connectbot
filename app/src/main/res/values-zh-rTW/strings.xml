@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">允許接收通知，以便查看已連線的主機，並接收終端警報和連線中斷提醒。即使未授予此權限，連線仍可在背景執行。</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">啟用通知功能</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">在 Android 設定中啟用 ConnectBot 的通知功能，以便查看已連線的主機，並接收終端警報和連線中斷提醒。背景連線功能將繼續啟用。</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">將粗體字樣調整為亮色</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">為粗體文字使用鮮明的 ANSI 顏色。適用於新的終端機工作階段。</string>
+  <string name="known_hosts_title" tools:machine_translated="true">已知的伺服器主機</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">已知的 SSH 主機金鑰</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">檢視、匯入或移除此主機的受信任 SSH 金鑰。</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">目前沒有已知的 SSH 主機。</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">演算法：%1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">刪除已知的受信任主機。</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">刪除</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">刪除已知的 SSH 主機？</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">下次您連線時，系統需要再次驗證 %1$s 的金鑰。</string>
+  <string name="known_hosts_error" tools:machine_translated="true">無法更新已知的伺服器清單。</string>
+  <string name="known_host_import" tools:machine_translated="true">匯入主機金鑰</string>
+  <string name="known_host_import_title" tools:machine_translated="true">匯入主機金鑰</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">OpenSSH 公開金鑰</string>
+  <string name="known_host_import_help" tools:machine_translated="true">請貼上完整的公開金鑰，例如「ssh-ed25519 AAAA…」。僅貼上指紋無法匯入。</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">請輸入有效的 OpenSSH 公鑰。演算法和編碼後的金鑰必須相符。</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">匯入</string>
+  <string name="logs_exit_history" tools:machine_translated="true">最近的程序結束記錄</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">沒有可用的程序結束記錄。</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">無法取得程序結束記錄。</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">目前沒有提供說明。</string>
+  <string name="logs_exit_details" tools:machine_translated="true">時間：%1$s\n程序：%2$s（PID：%3$d）\n原因：%4$s（%5$d）\n狀態/訊號：%6$d\n說明：%7$s\n上次採樣的記憶體：PSS：%8$d KB，RSS：%9$d KB</string>
+  <string name="save_tombstone" tools:machine_translated="true">儲存崩潰記錄</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">將最新的可用原生崩潰報告儲存到您選擇的位置。</string>
+  <string name="tombstone_saved" tools:machine_translated="true">已儲存崩潰記錄。</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">目前沒有可用的原生錯誤報告。Android 可能已經將其刪除了。</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">無法儲存崩潰記錄。</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">無法儲存金鑰。請嘗試使用另一個名稱，或再次嘗試。</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">無法建立捷徑。請再次嘗試。</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">跳板主機鏈中存在迴圈。請檢查跳板主機的設定。</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">連線所需的跳板主機鏈長度已超過 32 個主機的限制。</string>
 </resources>

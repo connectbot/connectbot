@@ -702,4 +702,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Povolte notifikace, abyste viděli připojená zařízení a dostávali upozornění na zvukový signál a přerušení připojení. I bez tohoto oprávnění mohou připojení fungovat na pozadí.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Povolit oznámení</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Povolte v nastavení systému Android upozornění pro aplikaci ConnectBot, abyste viděli seznam připojených zařízení a dostávali upozornění na zvukový signál terminálu a přerušení připojení. Podpora pro připojení na pozadí zůstává aktivní.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Tučné jako světlé</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Používat světlé barvy ANSI pro tučný text. Platí pro nové relace terminálu.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Známí hostitelé</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Známé klíče hostitele</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Zobrazit, importovat nebo odstranit důvěryhodné klíče pro tohoto hostitele.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">Nenalezeny žádné známé hostitelské systémy.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Algoritmus: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Smazat známého hostitele</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Smazat</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Smazat známého hostitele?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">Příště, až se připojíte, bude nutné znovu ověřit klíč pro %1$s.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Nepodařilo se aktualizovat seznam známých hostitelů.</string>
+  <string name="known_host_import" tools:machine_translated="true">Importovat klíč hostitele.</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Importovat klíč hostitele</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">Veřejný klíč OpenSSH</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Vložte celý veřejný klíč, například „ssh-ed25519 AAAA…“. Samotný otisk nelze importovat.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Zadejte platný veřejný klíč OpenSSH. Algoritmus a zakódovaný klíč musí odpovídat.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">Importovat</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Nedávné ukončení procesů.</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">Není k dispozici žádný záznam o ukončení procesů.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">Historie ukončení procesů není k dispozici.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">Žádný popis není k dispozici.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Čas: %1$s\nProces: %2$s (PID %3$d)\nDůvod: %4$s (%5$d)\nStav/signál: %6$d\nPopis: %7$s\nPoslední naměřená paměť: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">Uložit záznam o chybě</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Uložte nejnovější dostupný nativní soubor s informacemi o chybovém hlášení do vámi zvolené složky.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Záznam o chybě uložen.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">Není k dispozici žádný nativní záznam o chybovém hlášení. Android jej mohl již odstranit.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Nepodařilo se uložit záznam o chybě.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Nepodařilo se uložit klíč. Zkuste jiný název nebo to zkuste znovu.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Nepodařilo se vytvořit zástupce. Zkuste to prosím znovu.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">Řetězec skokových hostitelů obsahuje smyčku. Zkontrolujte nastavení skokových hostitelů.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">Řetězec přechodových hostitelů překročil limit 32 hostitelů.</string>
 </resources>

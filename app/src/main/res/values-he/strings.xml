@@ -698,4 +698,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">אפשר הודעות כדי לראות את המכשירים המחוברים ולקבל התראות על צליל התראה ואובדן חיבור. גם בלי הרשאה זו, חיבורים עדיין יכולים לפעול ברקע.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">אפשר התראות</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">הפעל התראות עבור ConnectBot בהגדרות האנדרואיד כדי לראות את המכשירים המחוברים ולקבל התראות על צליל התראה וניתוק חיבור. תמיכה בחיבור ברקע נשארת פעילה.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">צבעים בהירים לטקסט מודגש</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">השתמשו בצבעי ANSI בהירים עבור טקסט מודגש. החל על סשנים חדשים של הטרמינל.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">מארחים מוכרים</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">מפתחות מארח מוכרים.</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">צפה, ייבא או הסר מפתחות שאושרו עבור המארח הזה.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">לא נמצאו מארחים מוכרים.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">אלגוריתם: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">מחק מארח מוכר</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">מחק</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">למחוק את המארח המוכר?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">יהיה צורך לאמת שוב את המפתח עבור %1$s בפעם הבאה שתתחבר.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">לא ניתן לעדכן את רשימת המארחים המוכרים.</string>
+  <string name="known_host_import" tools:machine_translated="true">ייבא מפתח מארח</string>
+  <string name="known_host_import_title" tools:machine_translated="true">ייבא מפתח מארח</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">מפתח ציבורי של OpenSSH</string>
+  <string name="known_host_import_help" tools:machine_translated="true">הדבק את המפתח הציבורי המלא, לדוגמה: \"ssh-ed25519 AAAA…\". לא ניתן לייבא רק את טביעת האצבע.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">הזן מפתח ציבורי חוקי של OpenSSH. האלגוריתם והמפתח המקודד חייבים להיות תואמים.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">ייבא</string>
+  <string name="logs_exit_history" tools:machine_translated="true">יציאות תהליך אחרונות</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">אין רשומות זמינות על סיום תהליכים.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">לא ניתן לגשת להיסטוריית סיום התהליך.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">תיאור לא זמין.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">שעה: %1$s\nתהליך: %2$s (מזהה תהליך %3$d)\nסיבה: %4$s (%5$d)\nסטטוס/אות: %6$d\nתיאור: %7$s\nזיכרון אחרון שנמדד: PSS %8$d ק\"ב, RSS %9$d ק\"ב</string>
+  <string name="save_tombstone" tools:machine_translated="true">שמור את קובץ הדיווח על התקלה</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">שמרו את דוח התקלה המקומי העדכני ביותר במיקום שתבחרו.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">המידע על התקלה נשמר.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">אין דוח קריסה מקומי זמין. ייתכן שאנדרואיד כבר מחק אותו.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">לא ניתן לשמור את קובץ הדיווח על התקלה.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">לא ניתן לשמור את המפתח. נסו כינוי אחר או נסו שוב.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">לא ניתן ליצור את קיצור הדרך. אנא נסה שוב.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">שרשרת שרתי ביניים מכילה לולאה. בדוק את הגדרות שרתי הביניים.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">שרשרת שרתי ביניים חורגת מהמגבלה של 32 שרתים.</string>
 </resources>

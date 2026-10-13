@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">அறிவிப்புகளை அனுமதிப்பதன் மூலம், இணைக்கப்பட்ட சாதனங்களைக் காணவும், டெர்மினல் ஒலி மற்றும் இணைப்பு துண்டிக்கப்பட்டதற்கான எச்சரிக்கைகளைப் பெறவும் முடியும். இந்த அனுமதியை வழங்காவிட்டாலும், இணைப்புகள் பின்னணியில் தொடர்ந்து இயங்கும்.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">அறிவிப்புகளை இயக்கவும்</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">ஆண்ட்ராய்டு அமைப்புகளில், கனெக்ட் போட் பயன்பாட்டிற்கான அறிவிப்புகளை இயக்கவும். இதன் மூலம், இணைக்கப்பட்ட சாதனங்கள் மற்றும் டெர்மினல் ஒலி, இணைப்பு துண்டிக்கப்பட்டதற்கான எச்சரிக்கைகள் போன்றவற்றை நீங்கள் பார்க்கலாம். பின்னணியில் இணைப்புக்கான ஆதரவு தொடர்ந்து இயங்கும்.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">தடித்த எழுத்துக்களை பிரகாசமாக்கு</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">தடித்த எழுத்துக்களுக்கு பிரகாசமான ANSI வண்ணங்களைப் பயன்படுத்தவும். இது புதிய டெர்மினல் அமர்வுகளுக்குப் பொருந்தும்.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">நம்பகமான சேவையகங்கள்</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">அறியப்பட்ட ஹோஸ்ட் விசைகள்</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">காண்க, இறக்குமதி செய்க அல்லது இந்த ஹோஸ்ட்டிற்காக நம்பகமானதாகக் கருதப்படும் விசைகளை நீக்குக.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">இதுவரை எந்தவொரு SSH ஹோஸ்ட் விசையும் அங்கீகரிக்கப்படவில்லை.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">அல்காரிதம்: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">நம்பகமான ஹோஸ்டை நீக்கு.</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">நீக்கு</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">நம்பகமான ஹோஸ்ட் விசையை நீக்கவா?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">அடுத்த முறை நீங்கள் இணைக்கும்போது, %1$s-க்கான சாவி மீண்டும் சரிபார்க்கப்பட வேண்டும்.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">அறியப்பட்ட ஹோஸ்ட்களின் பட்டியலைப் புதுப்பிக்க முடியவில்லை.</string>
+  <string name="known_host_import" tools:machine_translated="true">நம்பகமான SSH ஹோஸ்டின் பொது விசையை இறக்குமதி செய்க.</string>
+  <string name="known_host_import_title" tools:machine_translated="true">நம்பகமான SSH ஹோஸ்டின் பொது விசையை இறக்குமதி செய்க</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">ஓப்பன்எஸ்எஸ்ஹெச் பொது விசை</string>
+  <string name="known_host_import_help" tools:machine_translated="true">முழுமையான பொது விசையை (“ssh-ed25519 AAAA…”) ஒட்டவும். கைரேகை மட்டும் இறக்குமதி செய்யப்படாது.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">செல்லுபடியாகும் OpenSSH பொது விசையை உள்ளிடவும். பயன்படுத்தப்படும் வழிமுறை மற்றும் குறியாக்கம் செய்யப்பட்ட விசை இரண்டும் பொருந்த வேண்டும்.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">இறக்குமதி செய்</string>
+  <string name="logs_exit_history" tools:machine_translated="true">சமீபத்திய செயல்முறை முடிவுகள்</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">செயல்முறை முடிவடைந்ததற்கான பதிவுகள் எதுவும் கிடைக்கவில்லை.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">செயல்முறை முடிவடைந்ததற்கான வரலாறு கிடைக்கவில்லை.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">விளக்கம் எதுவும் கிடைக்கவில்லை.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">நேரம்: %1$s\nசெயல்முறை: %2$s (செயல்முறை அடையாள எண் %3$d)\nகாரணம்: %4$s (%5$d)\nநிலை/சிக்னல்: %6$d\nவிளக்கம்: %7$s\nகடைசியாக அளவிடப்பட்ட நினைவகம்: பிஎஸ்எஸ் %8$d KB, ஆர்எஸ்எஸ் %9$d KB</string>
+  <string name="save_tombstone" tools:machine_translated="true">தவறு அறிக்கையைச் சேமிக்கவும்</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">சமீபத்திய, கிடைக்கக்கூடிய சொந்த செயலிழப்பு அறிக்கையை நீங்கள் விரும்பும் இடத்தில் சேமிக்கவும்.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">தகவல் சேமிக்கப்பட்டது.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">இந்த பயன்பாட்டிற்கான இயல்பான செயலிழப்பு அறிக்கை தற்போது கிடைக்கவில்லை. ஆண்ட்ராய்டு அதை ஏற்கனவே நீக்கியிருக்கலாம்.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">தவறு ஏற்பட்டதால், பிழை அறிக்கையைச் சேமிக்க முடியவில்லை.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">சாவியைச் சேமிக்க முடியவில்லை. வேறு ஒரு பெயரை முயற்சிக்கவும் அல்லது மீண்டும் முயற்சிக்கவும்.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">குறுக்குவழியை உருவாக்க முடியவில்லை. மீண்டும் முயற்சிக்கவும்.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">ஜம்ப் ஹோஸ்ட் சங்கிலியில் ஒரு சுழற்சி உள்ளது. ஜம்ப் ஹோஸ்ட் அமைப்புகளைச் சரிபார்க்கவும்.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">ஜம்ப் ஹோஸ்ட் சங்கிலி 32 ஹோஸ்ட்கள் என்ற வரம்பை மீறுகிறது.</string>
 </resources>

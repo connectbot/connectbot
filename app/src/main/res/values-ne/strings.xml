@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">सम्बन्धित होस्टहरू हेर्न र टर्मिनल घण्टी र जडान विच्छेदको सूचना प्राप्त गर्न सूचनाहरूलाई अनुमति दिनुहोस्। यो अनुमति नदिँदा पनि जडानहरू पृष्ठभूमिमा सञ्चालन गर्न सक्छन्।</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">सूचनाहरू सक्रिय गर्नुहोस्।</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">एन्ड्रोइड सेटिङहरूमा कनेक्टबटको लागि सूचनाहरू सक्रिय गर्नुहोस्, जसले गर्दा जोडिएका होस्टहरू देख्न सकिन्छ र टर्मिनल घण्टी र जडान विच्छेदको बारेमा सूचना प्राप्त गर्न सकिन्छ। पृष्ठभूमि जडान समर्थन सक्रिय नै रहनेछ।</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">बोल्डलाई उज्यालो बनाउनुहोस्।</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">बोल्ड गरिएको पाठका लागि उज्यालो एएनएसआई रङहरू प्रयोग गर्नुहोस्। यो नयाँ टर्मिनल सत्रहरूमा लागू हुन्छ।</string>
+  <string name="known_hosts_title" tools:machine_translated="true">विश्वसनीय होस्टहरू</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">पहिले नै ज्ञात होस्ट कुञ्जीहरू</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">हेर्नुहोस्, आयात गर्नुहोस्, वा यो होस्टका लागि विश्वसनीय मानिएका कुञ्जीहरू हटाउनुहोस्।</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">कुनै पनि होस्ट पहिचान गरिएको छैन।</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">एल्गोरिदम: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">ज्ञात होस्ट हटाउनुहोस्</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">हटाउनुहोस्</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">ज्ञात होस्ट हटाउने?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">आगामी पटक तपाईं जडान गर्नुहुँदा %1$s का लागि राखिएको कुञ्जी फेरि एकपटक जाँच गर्नुपर्नेछ।</string>
+  <string name="known_hosts_error" tools:machine_translated="true">पहिले नै ज्ञात होस्टहरू अद्यावधिक गर्न असमर्थ।</string>
+  <string name="known_host_import" tools:machine_translated="true">होस्ट कुञ्जी आयात गर्नुहोस्।</string>
+  <string name="known_host_import_title" tools:machine_translated="true">होस्ट कुञ्जी आयात गर्नुहोस्।</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">ओपनएसएसएच सार्वजनिक कुञ्जी</string>
+  <string name="known_host_import_help" tools:machine_translated="true">पूर्ण सार्वजनिक कुञ्जी टाँस्नुहोस्, जस्तै “ssh-ed25519 AAAA…”। केवल औंठाछाप मात्र आयात गर्न मिल्दैन।</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">मान्य OpenSSH सार्वजनिक कुञ्जी प्रविष्ट गर्नुहोस्। एल्गोरिदम र एन्कोड गरिएको कुञ्जी मिल्नुपर्छ।</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">आयात गर्नुहोस्</string>
+  <string name="logs_exit_history" tools:machine_translated="true">हालैका प्रक्रियाहरूबाट निस्किएका घटनाहरू</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">कुनै पनि प्रक्रिया समाप्त भएको रेकर्ड उपलब्ध छैन।</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">प्रक्रिया समाप्त हुने इतिहास उपलब्ध छैन।</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">कुनै विवरण उपलब्ध छैन।</string>
+  <string name="logs_exit_details" tools:machine_translated="true">समय: %1$s\nप्रक्रिया: %2$s (पीआईडी %3$d)\nकारण: %4$s (%5$d)\nस्थिति/सिग्नल: %6$d\nविवरण: %7$s\nअन्तिम नमुना गरिएको मेमोरी: पीएसएस %8$d केबी, आरएसएस %9$d केबी</string>
+  <string name="save_tombstone" tools:machine_translated="true">टम्बस्टोन बचत गर्नुहोस्</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">हालैको उपलब्ध नेटिभ क्र्यास रिपोर्टलाई तपाईंले रोजेको स्थानमा बचत गर्नुहोस्।</string>
+  <string name="tombstone_saved" tools:machine_translated="true">सेभ गरिएको।</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">अब यो एपका लागि कुनै पनि मूल क्र्यास रिपोर्ट उपलब्ध छैन। एन्ड्रोइडले पहिले नै यो हटाएको हुन सक्छ।</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">टम्बस्टोन बचत गर्न सकिएन।</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">कुञ्जी बचत गर्न सकिएन। अर्को उपनाम प्रयोग गर्नुहोस् वा फेरि प्रयास गर्नुहोस्।</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">सर्टकट बनाउन सकिएन। कृपया फेरि प्रयास गर्नुहोस्।</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">जम्प होस्ट चेनमा एक चक्र समावेश छ। जम्प होस्ट सेटिङहरू जाँच गर्नुहोस्।</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">जम्प होस्ट शृङ्खलाले ३२ होस्टको अधिकतम सीमा नाघ्यो।</string>
 </resources>

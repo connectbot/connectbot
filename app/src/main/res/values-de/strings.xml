@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Erlaube Benachrichtigungen, um verbundene Hosts anzuzeigen und Warnmeldungen für Terminalsignale und Verbindungsverluste zu erhalten. Auch ohne diese Berechtigung können Verbindungen weiterhin im Hintergrund ausgeführt werden.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Benachrichtigungen aktivieren</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Aktivieren Sie Benachrichtigungen für ConnectBot in den Android-Einstellungen, um eine Liste der verbundenen Hosts anzuzeigen und Benachrichtigungen über Terminalsignale und Verbindungsverluste zu erhalten. Die Unterstützung für Verbindungen im Hintergrund bleibt aktiviert.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Fett als hell</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Verwenden Sie leuchtende ANSI-Farben für fett gedruckten Text. Dies gilt für neue Terminal-Sitzungen.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Bekannte Hosts</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Bekannte Host-Schlüssel</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Für diesen Host vertrauenswürdige Schlüssel anzeigen, importieren oder entfernen.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">Keine bekannten Hosts.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Algorithmus: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Bekannten Host entfernen</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Löschen</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Soll der bekannte Host gelöscht werden?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">Der Schlüssel für %1$s muss beim nächsten Verbindungsaufbau erneut überprüft werden.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Bekannte Hosts konnten nicht aktualisiert werden.</string>
+  <string name="known_host_import" tools:machine_translated="true">Hostschlüssel importieren</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Hostschlüssel importieren</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">OpenSSH-Öffentlichschlüssel</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Fügen Sie den vollständigen öffentlichen Schlüssel ein, z. B. „ssh-ed25519 AAAA…“. Allein ein Fingerabdruck kann nicht importiert werden.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Geben Sie einen gültigen OpenSSH-Public-Key ein. Der verwendete Algorithmus und der codierte Schlüssel müssen übereinstimmen.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">Importieren</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Letzte Prozessbeendigungen</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">Keine Prozessbeendigungsdaten verfügbar.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">Protokoll der Prozessbeendigungen nicht verfügbar.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">Keine Beschreibung verfügbar.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Zeit: %1$s\nProzess: %2$s (PID %3$d)\nGrund: %4$s (%5$d)\nStatus/Signal: %6$d\nBeschreibung: %7$s\nLetzter gemessener Speicher: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">Speichern Sie die Absturzprotokolldatei.</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Speichern Sie den aktuellsten verfügbaren nativen Fehlerbericht an einem von Ihnen gewählten Speicherort.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Die Crash-Datei wurde gespeichert.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">Es ist kein nativer Fehlerbericht verfügbar. Android hat ihn möglicherweise bereits gelöscht.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Das Speichern der Absturzinformationen ist fehlgeschlagen.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Die Schlüsseldaten konnten nicht gespeichert werden. Versuchen Sie es mit einem anderen Alias oder wiederholen Sie den Vorgang.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Die Verknüpfung konnte nicht erstellt werden. Bitte versuchen Sie es erneut.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">Die Kette der Jump-Hosts enthält eine Schleife. Überprüfen Sie die Einstellungen der Jump-Hosts.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">Die Kette von Jump-Hosts überschreitet das Limit von 32 Hosts.</string>
 </resources>

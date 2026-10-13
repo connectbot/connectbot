@@ -698,4 +698,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Dopustite obavijesti kako biste vidjeli povezane uređaje i primali upozorenja o zvuku terminala i prekidu veze. Povezivanje i dalje može funkcionirati u pozadini bez ove dozvole.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Omogući obavijesti</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Uključite obavijesti za ConnectBot u postavkama sustava Android kako biste vidjeli povezane uređaje i primali obavijesti o zvuku terminala i prekidu veze. Podrška za pozadinsku vezu ostaje uključena.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Podebljano kao svijetlo.</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Koristite jarke ANSI boje za podebljani tekst. Primjenjuje se na nove sesije terminala.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Poznati hostovi</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Poznati ključevi za poslužitelj.</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Pregledajte, uvezite ili uklonite ključeve kojima se vjeruje za ovaj poslužitelj.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">Nema poznatih hostova.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Algoritam: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Izbriši poznati host.</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Izbriši</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Brisanje poznatog hosta?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">Ključ za %1$s bit će potrebno ponovno potvrditi sljedeći put kada se povežete.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Nije moguće ažurirati popis poznatih hostova.</string>
+  <string name="known_host_import" tools:machine_translated="true">Uvezi ključ poslužitelja</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Uvezi ključ poslužitelja.</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">OpenSSH javni ključ</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Zalijepite cijeli javni ključ, na primjer „ssh-ed25519 AAAA…”. Sam otisak ključa ne može se uvesti.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Unesite valjani javni ključ za OpenSSH. Algoritam i kodirani ključ moraju se podudarati.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">Uvezi</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Nedavni završeci procesa</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">Nema dostupnih zapisa o završetku procesa.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">Povijest završavanja procesa nije dostupna.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">Nema dostupnog opisa.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Vrijeme: %1$s\nProces: %2$s (PID %3$d)\nRazlog: %4$s (%5$d)\nStatus/signal: %6$d\nOpis: %7$s\nPosljednja uzorkovana memorija: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">Spremi izvješće o rušenju sustava.</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Spremite najnoviji dostupni izvještaj o izvornoj pogrešci na lokaciju koju odaberete.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Podaci o pogrešci pohranjeni.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">Nema dostupnog izvješća o izvornoj pogrešci. Moguće je da ga je Android već uklonio.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Nije bilo moguće spremiti podatke o rušenju.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Nije bilo moguće spremiti ključ. Pokušajte s drugim nadimkom ili ponovite postupak.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Nije bilo moguće izraditi prečac. Pokušajte ponovno.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">Lanac posredničkih računala sadrži ciklus. Provjerite postavke posredničkih računala.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">Lanac posredničkih računala premašuje ograničenje od 32 računala.</string>
 </resources>

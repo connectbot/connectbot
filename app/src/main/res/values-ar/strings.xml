@@ -710,4 +710,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">السماح بالإشعارات لعرض الأجهزة المتصلة وتلقي تنبيهات حول إشارات الصوت وفقدان الاتصال. يمكن أن تستمر الاتصالات في العمل في الخلفية حتى بدون هذا الإذن.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">تفعيل الإشعارات</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">فعِّل الإشعارات لتطبيق ConnectBot في إعدادات نظام Android لعرض الأجهزة المتصلة وتلقي تنبيهات حول صوت الجرس وفقدان الاتصال. سيظل دعم الاتصال في الخلفية مفعّلاً.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">ألوان زاهية للنص الغامق</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">استخدم ألوان ANSI الزاهية للنص الغامق. يتم تطبيق هذا على جلسات المحطة الطرفية الجديدة.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">المضيفون الموثوق بهم</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">مفاتيح المضيف المعروفة</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">عرض أو استيراد أو إزالة المفاتيح الموثوقة لهذا المضيف.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">لا توجد أي أجهزة مضيفة معروفة.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">الخوارزمية: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">حذف المضيف الموثوق به</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">حذف</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">هل تريد حذف المضيف المعروف؟</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">سيحتاج مفتاح %1$s إلى التحقق مرة أخرى في المرة القادمة التي تتصل فيها.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">تعذر تحديث قائمة المضيفين المعروفين.</string>
+  <string name="known_host_import" tools:machine_translated="true">استيراد مفتاح المضيف</string>
+  <string name="known_host_import_title" tools:machine_translated="true">استيراد مفتاح المضيف</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">مفتاح OpenSSH العام</string>
+  <string name="known_host_import_help" tools:machine_translated="true">الصق المفتاح العام الكامل، مثل \"ssh-ed25519 AAAA...\". لا يمكن استيراد بصمة المفتاح وحدها.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">أدخل مفتاح OpenSSH عامًا صالحًا. يجب أن تتطابق الخوارزمية مع المفتاح المُرمَّز.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">استيراد</string>
+  <string name="logs_exit_history" tools:machine_translated="true">أحدث عمليات إنهاء العمليات</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">لا توجد سجلات متاحة لإنهاء العمليات.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">لا يمكن عرض سجل إنهاء العمليات.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">لا يوجد وصف متاح.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">التوقيت: %1$s\nالعملية: %2$s (معرّف العملية %3$d)\nالسبب: %4$s (%5$d)\nالحالة/الإشارة: %6$d\nالوصف: %7$s\nآخر قيمة للذاكرة المسجلة: الذاكرة المخصصة للعملية (PSS) %8$d كيلوبايت، الذاكرة المقيمة (RSS) %9$d كيلوبايت</string>
+  <string name="save_tombstone" tools:machine_translated="true">حفظ تقرير الانهيار</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">احفظ أحدث تقرير متاح عن انهيار الشيفرة الأصلية (Native) في الموقع الذي تختاره.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">تم حفظ سجل الأعطال.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">لا يتوفر تقرير عن انهيار الشيفرة الأصلية (Native). ربما يكون Android قد حذفه بالفعل.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">لم يتمكن النظام من حفظ ملف تقرير الأعطال.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">لم يتم حفظ المفتاح. حاول استخدام اسم مستعار آخر أو حاول مرة أخرى.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">لم يتم إنشاء الاختصار. يرجى المحاولة مرة أخرى.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">يحتوي تسلسل الخوادم الوسيطة على حلقة. يرجى التحقق من إعدادات الخوادم الوسيطة.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">تجاوزت سلسلة الخوادم الوسيطة الحد الأقصى المسموح به، وهو 32 خادمًا.</string>
 </resources>

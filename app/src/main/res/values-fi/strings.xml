@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Salli ilmoitusten näyttäminen, jotta voit nähdä yhdistetyt laitteet ja saada hälytyksiä terminaalin äänimerkeistä ja yhteyden katkeamisesta. Yhteydet voivat edelleen toimia taustalla, vaikka tätä lupaa ei myönnettäisi.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Ota ilmoitukset käyttöön</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Ota käyttöön ConnectBot-sovelluksen ilmoitukset Android-asetuksissa, jotta näet yhdistetyt laitteet ja saat ilmoituksia terminaalin äänimerkeistä ja yhteyden katkeamisesta. Taustayhteyden tuki pysyy käytössä.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Lihavoitu versio kirkkaana</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Käytä kirkkaita ANSI-värejä lihavoituun tekstiin. Koskee uusia pääteistuntoja.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Luotetut isäntäkoneet</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Tunnetut isäntäavaimet</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Näytä, tuo tai poista tämän palvelimen luotetut avaimet.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">Tunnettuja isäntäkoneita ei ole.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Algoritmi: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Poista luotettu isäntä</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Poista</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Poistetaanko luotettu isäntäavain?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">%1$s-palvelimen avain on vahvistettava uudelleen, kun seuraavan kerran muodostat yhteyden.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Tunnistettujen isäntien päivitys epäonnistui.</string>
+  <string name="known_host_import" tools:machine_translated="true">Tuo isäntäavain</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Tuo isäntäavain</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">OpenSSH:n julkinen avain</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Liitä koko julkinen avain, esimerkiksi ”ssh-ed25519 AAAA…”. Pelkkää avaimen tunnistetietoa ei voi tuoda.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Syötä kelvollinen OpenSSH-julkisavain. Käytetyn algoritmin ja avaimen koodauksen on oltava yhteensopivia.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">Tuo sisään</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Viimeisimmät suoritettujen prosessien lopetustiedot</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">Prosessin päättymistietoja ei ole saatavilla.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">Prosessin päättymishistoriaa ei ole saatavilla.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">Kuvausta ei ole saatavilla.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Aika: %1$s\nProsessi: %2$s (PID %3$d)\nSyy: %4$s (%5$d)\nTila/signaali: %6$d\nKuvaus: %7$s\nViimeksi mitattu muistin käyttö: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">Tallenna kaatumistiedot</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Tallenna uusin käytettävissä oleva natiivi virheraportti valitsemaasi sijaintiin.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Virheraportti tallennettu.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">Sovelluksen järjestelmän sisäistä kaatumisraporttia ei ole saatavilla. Android on mahdollisesti jo poistanut sen.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Virhetiedoston tallentaminen epäonnistui.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Avaimen tallentaminen epäonnistui. Kokeile toista tunnusta tai yritä uudelleen.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Pikakuvakkeen luominen epäonnistui. Yritä uudelleen.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">Hyppyhostiketjussa on silmukka. Tarkista hyppyhostin asetukset.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">Yhteyden vaatima välipalvelinverkko ylittää 32 palvelimen rajan.</string>
 </resources>

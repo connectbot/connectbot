@@ -702,4 +702,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Разрешите получение уведомлений, чтобы видеть список подключенных устройств и получать оповещения о звуковом сигнале терминала и разрыве соединения. Даже без этого разрешения подключения могут продолжать работать в фоновом режиме.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Разрешить уведомления</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Включите уведомления для ConnectBot в настройках Android, чтобы видеть список подключенных устройств и получать оповещения о звуковом сигнале терминала и разрыве соединения. Поддержка фонового подключения остается включенной.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Жирный шрифт как яркий</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Использовать яркие цвета ANSI для жирного текста. Применяется к новым сеансам терминала.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Доверенные хосты</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Известные ключи хоста.</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Просмотреть, импортировать или удалить доверенные ключи для данного хоста.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">Известные хосты отсутствуют.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Алгоритм: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Удалить известный хост.</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Удалить</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Удалить известный хост?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">При следующем подключении потребуется повторная проверка ключа для %1$s.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Не удалось обновить список известных хостов.</string>
+  <string name="known_host_import" tools:machine_translated="true">Импортировать ключ хоста.</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Импортировать ключ хоста.</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">Открытый ключ OpenSSH</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Вставьте полный открытый ключ, например, «ssh-ed25519 AAAA…». Импортировать можно только полный ключ, а не только его отпечаток.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Введите корректный открытый ключ OpenSSH. Алгоритм и закодированный ключ должны соответствовать друг другу.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">Импортировать</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Недавние завершения процессов.</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">Нет доступных записей о завершении процессов.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">История завершения процессов недоступна.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">Описание отсутствует.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Время: %1$s\nПроцесс: %2$s (PID %3$d)\nПричина: %4$s (%5$d)\nСтатус/сигнал: %6$d\nОписание: %7$s\nПоследний измеренный объем памяти: PSS %8$d КБ, RSS %9$d КБ</string>
+  <string name="save_tombstone" tools:machine_translated="true">Сохранить отчёт о сбое</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Сохраните последний доступный отчёт о сбое в выбранном вами месте.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Данные об аварийном завершении работы сохранены.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">Доступный отчёт об ошибке в системе Android отсутствует. Возможно, Android уже удалил его.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Не удалось сохранить файл с данными об ошибке.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Не удалось сохранить ключ. Попробуйте использовать другое имя или повторите попытку.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Не удалось создать ярлык. Пожалуйста, повторите попытку.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">В цепочке промежуточных серверов обнаружена циклическая зависимость. Проверьте настройки промежуточных серверов.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">Превышен лимит в 32 промежуточных сервера в цепочке подключения.</string>
 </resources>

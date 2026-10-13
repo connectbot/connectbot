@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Izinkan notifikasi agar Anda dapat melihat perangkat yang terhubung dan menerima peringatan tentang suara terminal serta terputusnya koneksi. Koneksi tetap dapat berjalan di latar belakang meskipun izin ini tidak diberikan.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Aktifkan notifikasi</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Aktifkan notifikasi untuk ConnectBot di pengaturan Android untuk melihat perangkat yang terhubung dan menerima peringatan tentang suara terminal serta terputusnya koneksi. Dukungan untuk koneksi latar belakang tetap aktif.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Tampilkan tebal sebagai terang.</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Gunakan warna ANSI yang cerah untuk teks tebal. Berlaku untuk sesi terminal baru.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Host yang terpercaya</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Kunci host yang dikenal</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Lihat, impor, atau hapus kunci yang dipercaya untuk host ini.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">Tidak ada host yang dikenal.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Algoritma: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Hapus host yang terpercaya</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Hapus</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Hapus host yang sudah dikenal?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">Kunci untuk %1$s perlu diverifikasi kembali saat Anda terhubung berikutnya.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Tidak dapat memperbarui daftar host yang dikenal.</string>
+  <string name="known_host_import" tools:machine_translated="true">Impor kunci host.</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Impor kunci host</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">Kunci publik OpenSSH</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Tempelkan kunci publik lengkap, misalnya “ssh-ed25519 AAAA…”. Hanya menempelkan sidik jari saja tidak akan memungkinkan proses impor.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Masukkan kunci publik OpenSSH yang valid. Algoritma dan kunci yang dikodekan harus sesuai.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">Impor</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Catatan keluar proses terbaru</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">Tidak ada catatan keluar proses yang tersedia.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">Riwayat penghentian proses tidak tersedia.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">Tidak ada deskripsi yang tersedia.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Waktu: %1$s\nProses: %2$s (PID %3$d)\nAlasan: %4$s (%5$d)\nStatus/sinyal: %6$d\nDeskripsi: %7$s\nMemori terakhir yang diambil sampelnya: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">Simpan Laporan Kesalahan</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Simpan laporan crash kode native terbaru yang tersedia ke lokasi yang Anda pilih.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Laporan crash tersimpan.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">Tidak ada laporan crash kode native yang tersedia. Android mungkin sudah menghapusnya.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Tidak dapat menyimpan data laporan kerusakan.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Tidak dapat menyimpan kunci. Coba nama panggilan lain atau coba lagi.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Tidak dapat membuat pintasan. Silakan coba lagi.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">Rantai host perantara mengandung siklus. Periksa pengaturan host perantara.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">Rantai host perantara melebihi batas maksimum 32 host.</string>
 </resources>

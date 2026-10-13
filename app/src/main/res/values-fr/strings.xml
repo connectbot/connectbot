@@ -698,4 +698,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Autorisez les notifications pour afficher les hôtes connectés et recevoir des alertes concernant les signaux sonores du terminal et les pertes de connexion. Les connexions peuvent toujours fonctionner en arrière-plan, même sans cette autorisation.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Activer les notifications</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Activez les notifications pour ConnectBot dans les paramètres Android afin de voir les hôtes connectés et de recevoir des alertes concernant les signaux sonores du terminal et les pertes de connexion. La prise en charge des connexions en arrière-plan reste activée.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Couleurs vives pour le texte en gras</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Utilisez des couleurs vives conformes à la norme ANSI pour le texte en gras. Cette option s’applique aux nouvelles sessions de terminal.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Hôtes de confiance</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Clés d’hôte connues</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Afficher, importer ou supprimer les clés de confiance associées à cet hôte.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">Aucun hôte connu.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Algorithme : %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Supprimer l’hôte connu</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Supprimer</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Supprimer l’hôte connu ?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">La clé pour %1$s devra être vérifiée à nouveau lors de votre prochaine connexion.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Impossible de mettre à jour la liste des hôtes connus.</string>
+  <string name="known_host_import" tools:machine_translated="true">Importer la clé de l’hôte</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Importer la clé de l’hôte</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">Clé publique OpenSSH</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Collez la clé publique complète, par exemple « ssh-ed25519 AAAA… ». Il n’est pas possible d’importer uniquement l’empreinte.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Veuillez saisir une clé publique OpenSSH valide. L’algorithme et la clé encodée doivent correspondre.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">Importer</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Dernières sorties de processus</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">Aucun enregistrement de fin de processus disponible.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">L’historique des processus terminés n’est pas disponible.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">Aucune description disponible.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Heure : %1$s\nProcessus : %2$s (PID %3$d)\nMotif : %4$s (%5$d)\nÉtat/signal : %6$d\nDescription : %7$s\nDernière valeur de mémoire enregistrée : PSS %8$d ko, RSS %9$d ko</string>
+  <string name="save_tombstone" tools:machine_translated="true">Enregistrer le rapport de plantage</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Enregistrez le rapport de plantage natif le plus récent disponible à l’emplacement de votre choix.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Fichier d’informations sur le plantage enregistré.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">Aucun rapport d’incident natif n’est disponible. Android l’a peut-être déjà supprimé.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Impossible d’enregistrer le fichier de rapport d’erreur.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Impossible d’enregistrer la clé. Essayez un autre nom ou réessayez.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Impossible de créer le raccourci. Veuillez réessayer.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">La chaîne de serveurs intermédiaires contient une boucle. Vérifiez les paramètres des serveurs intermédiaires.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">La chaîne de serveurs intermédiaires dépasse la limite de 32 serveurs.</string>
 </resources>

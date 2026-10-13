@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Permite as notificacións para ver os dispositivos conectados e recibir alertas de son e de perda de conexión. As conexións aínda poden funcionar en segundo plano sen este permiso.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Activar as notificacións</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Activa as notificacións para ConnectBot na configuración de Android para ver os dispositivos conectados e recibir alertas de son e desconexión. O soporte para a conexión en segundo plano permanece activado.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Cores brillantes para o texto en negra</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Utilice cores ANSI brillantes para o texto en negra. Aplícase a novas sesións de terminal.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Hosts coñecidos</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Chaves de host coñecidas.</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Visualizar, importar ou eliminar as claves de confianza deste servidor.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">Non se atoparon hosts coñecidos.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Algoritmo: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Eliminar host coñecido</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Eliminar</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Eliminar o host coñecido?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">A clave para %1$s deberá ser verificada de novo a próxima vez que se conecte.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Non foi posible actualizar a lista de hosts coñecidos.</string>
+  <string name="known_host_import" tools:machine_translated="true">Importar a clave do host.</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Importar a clave do host.</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">Chave pública de OpenSSH</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Pegue a clave pública completa, como «ssh-ed25519 AAAA…». Non se pode importar só a pegada.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Introduza unha clave pública OpenSSH válida. O algoritmo e a clave codificada deben coincidir.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">Importar</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Saídas recentes do proceso</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">Non hai rexistros de finalización de procesos dispoñibles.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">Non está dispoñible o historial de finalización do proceso.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">Non hai dispoñible ningunha descrición.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Hora: %1$s\nProceso: %2$s (PID %3$d)\nMotivo: %4$s (%5$d)\nEstado/sinal: %6$d\nDescrición: %7$s\nÚltima mostra de memoria: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">Gardar informe de fallo</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Garda o informe de erros nativo máis recente dispoñible nunha localización que elixas.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Informe de fallo gardado.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">Non hai dispoñible ningún informe nativo de erros. É posible que Android xa o eliminase.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Non foi posible gardar o rexistro de erros.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Non foi posible gardar a clave. Probe con outro nome ou tenteo de novo.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Non foi posible crear o acceso directo. Por favor, inténtao de novo.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">A cadea de hosts de salto contén un ciclo. Comprobe a configuración dos hosts de salto.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">A cadea de servidores intermedios supera o límite de 32 servidores.</string>
 </resources>

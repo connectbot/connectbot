@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Leyfðu tilkynningum að sýna tengda tæki og senda tilkynningar um hljóð og tengisrof. Tengingar geta samt virkað í bakgrunni, jafnvel þó þessi leyfi sé ekki veitt.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Virkaðu fyrir tilkynningum</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Virktu valkostinn um tilkynningar fyrir ConnectBot í stillingum Android til að sjá tengda tæki og fá tilkynningar um hljóð og tengisrof. Stuðningur við tengingu í bakgrunni er enn virkur.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Bjartir litir fyrir feitletraðan texta</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Notaðu bjarta ANSI-liti fyrir feitletraðan texta. Gildir fyrir nýjar terminal-lotur.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Þekktir þjónar</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Þekktir SSH-lyklar fyrir þennan tækjabúnað</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Skoðaðu, flyttu inn eða fjarlægðu lykla sem eru taldir áreiðanlegir fyrir þennan þjón.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">Engar þekktar tölvur.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Algoritmur: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Eyða þekktu tækinu</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Eyða</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Eyða þessu þekkta tæki?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">Það verður þörf á að staðfesta lykilinn fyrir %1$s aftur næst þegar þú tengist.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Ekki tókst að uppfæra lista yfir þekktar tölvur.</string>
+  <string name="known_host_import" tools:machine_translated="true">Flytja inn lykil fyrir þjón.</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Flytja inn lykil fyrir þjón.</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">Opinber OpenSSH-lykill</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Límdu inn heildaropinbera SSH-lykilinn, til dæmis „ssh-ed25519 AAAA…“. Einungis að hafa lykilinn í formi „fingerprint“ (stafræns auðkennis) er ekki nóg til að flytja hann inn.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Sláðu inn gildan opinberan OpenSSH-lykil. Reikniritið og kóðaði lykillinn verða að passa saman.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">Flytja inn</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Nýlegar lokanir ferla</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">Engar upplýsingar um lokun ferla eru tiltækar.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">Ekki er hægt að fá aðgang að upplýsingum um lokun ferla.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">Engin lýsing í boði.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Tími: %1$s\nForrit: %2$s (PID %3$d)\nÁstæða: %4$s (%5$d)\nStaða/merki: %6$d\nLýsing: %7$s\nSíðasta minnisnotkun: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">Vista hrunskýrslu</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Vistaðu nýjustu tiltæku hrunskýrsluna fyrir native-kóða á stað sem þú velur.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Hrunskýrsla vistuð.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">Engin hrunskýrsla fyrir native-kóða er tiltæk. Android kann að hafa þegar eytt henni.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Tókst ekki að vista hrunskýrslu.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Tókst ekki að vista lykilinn. Reyndu annað nafn eða reyndu aftur.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Tókst ekki að búa til flýtileiðina. Vinsamlegast reyndu aftur.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">Keðjan af millistýriþjónum inniheldur hringrás. Athugaðu stillingar millistýriþjónanna.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">Keðja milliþjóna fer yfir hámarkið, sem er 32 þjónar.</string>
 </resources>

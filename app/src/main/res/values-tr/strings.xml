@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Bağlı cihazları görmek ve terminal uyarı sesi ile bağlantı kesilmesi uyarılarını almak için bildirimlere izin verin. Bu izne gerek olmasa bile bağlantılar arka planda çalışmaya devam edebilir.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Bildirimleri etkinleştir</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Android ayarlarında ConnectBot için bildirimleri etkinleştirerek bağlı cihazları görüntüleyebilir ve terminal zil sesi ile bağlantı kesilmesi uyarılarını alabilirsiniz. Arka plan bağlantı desteği etkin kalır.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Kalın metin için parlak renkler</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Kalın yazı için parlak ANSI renklerini kullanın. Bu ayar, yeni terminal oturumları için geçerlidir.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Güvenilir ana bilgisayarlar</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Bilinen ana bilgisayar anahtarları</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Bu ana bilgisayar için güvenilir olarak tanımlanan anahtarları görüntüleyin, içe aktarın veya kaldırın.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">Şu anda güvenilir olarak tanımlanmış hiçbir ana bilgisayar bulunmuyor.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Algoritma: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Güvenilir ana bilgisayarı sil</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Sil</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Güvenilir ana bilgisayarı sil?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">Bir sonraki bağlantınızda %1$s için geçerli olan anahtarın tekrar doğrulanması gerekecektir.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Tanınan ana bilgisayarlar güncellenemedi.</string>
+  <string name="known_host_import" tools:machine_translated="true">Ana bilgisayar anahtarını içe aktar</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Güvenilir SSH ana bilgisayarının genel anahtarını içe aktar</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">OpenSSH genel anahtarı</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Tamamlanmış genel anahtarı, örneğin “ssh-ed25519 AAAA…” şeklinde yapıştırın. Yalnızca parmak izi kullanılarak anahtar içe aktarılamaz.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Geçerli bir OpenSSH genel anahtarı girin. Algoritma ve kodlanmış anahtarın eşleşmesi gerekir.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">İçe Aktar</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Son süreç sonlandırmaları</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">Herhangi bir işlem sonlandırma kaydı bulunamadı.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">İşlem çıkış geçmişi kullanılamıyor.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">Açıklama bulunmuyor.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Saat: %1$s\nİşlem: %2$s (PID %3$d)\nNeden: %4$s (%5$d)\nDurum/sinyal: %6$d\nAçıklama: %7$s\nSon örneklenen bellek: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">Çökme Raporunu Kaydet</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Kullanılabilir en son yerel kod çökme raporunu seçtiğiniz konuma kaydedin.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Kayıt başarıyla oluşturuldu.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">Kullanılabilir bir yerel kod çökme raporu yok. Android bu raporu zaten silmiş olabilir.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Hata raporu kaydedilemedi.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Anahtar kaydedilemedi. Farklı bir takma ad deneyin veya yeniden deneyin.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Kısayol oluşturulamadı. Lütfen tekrar deneyin.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">Atlama ana bilgisayar zincirinde bir döngü var. Atlama ana bilgisayar ayarlarını kontrol edin.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">Bağlantı için gereken ara sunucu sayısı 32\'yi aştı.</string>
 </resources>

@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Cho phép hiển thị thông báo để xem các máy chủ đã kết nối và nhận thông báo về âm báo và tình trạng mất kết nối. Các kết nối vẫn có thể hoạt động trong nền ngay cả khi không cấp quyền này.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Bật thông báo</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Bật thông báo cho ConnectBot trong phần cài đặt của Android để xem các máy chủ đã kết nối và nhận thông báo về âm báo hiệu và tình trạng mất kết nối. Chức năng hỗ trợ kết nối nền vẫn được bật.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Màu sáng cho văn bản in đậm</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Sử dụng màu ANSI sáng cho văn bản được in đậm. Áp dụng cho các phiên lệnh mới.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Các máy chủ đáng tin cậy</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Danh sách các khóa SSH đáng tin cậy đã biết.</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Xem, nhập hoặc xóa các khóa được tin cậy cho máy chủ này.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">Không có máy chủ đã biết nào.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Thuật toán: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Xóa máy chủ đã biết</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Xóa</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Xóa máy chủ đã biết?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">Lần kết nối tiếp theo, bạn cần xác minh lại khóa cho %1$s.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Không thể cập nhật danh sách các máy chủ đã biết.</string>
+  <string name="known_host_import" tools:machine_translated="true">Nhập khóa máy chủ.</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Nhập khóa máy chủ.</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">Khóa công khai OpenSSH</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Dán toàn bộ khóa công khai, ví dụ: “ssh-ed25519 AAAA…”. Chỉ riêng dấu vân tay thì không thể nhập được.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Nhập khóa công khai OpenSSH hợp lệ. Thuật toán và khóa đã mã hóa theo định dạng phải khớp nhau.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">Nhập</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Các kết quả thoát của tiến trình gần đây.</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">Không có bản ghi nào về việc kết thúc tiến trình.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">Không thể truy cập lịch sử kết thúc tiến trình.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">Không có mô tả nào.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Thời gian: %1$s\nTiến trình: %2$s (PID %3$d)\nNguyên nhân: %4$s (%5$d)\nTrạng thái/tín hiệu: %6$d\nMô tả: %7$s\nBộ nhớ được ghi lại gần nhất: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">Lưu thông tin lỗi hệ thống</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Lưu báo cáo sự cố mã gốc mới nhất hiện có vào vị trí bạn chọn.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Đã lưu thông tin chi tiết về sự cố.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">Không có báo cáo sự cố mã gốc nào. Có thể Android đã xóa báo cáo này.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Không thể lưu thông tin lỗi.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Không thể lưu khóa. Hãy thử một tên khác hoặc thử lại.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Không thể tạo lối tắt. Vui lòng thử lại.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">Chuỗi máy chủ trung gian chứa một vòng lặp. Vui lòng kiểm tra cài đặt của máy chủ trung gian.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">Chuỗi máy chủ trung gian vượt quá giới hạn 32 máy chủ.</string>
 </resources>

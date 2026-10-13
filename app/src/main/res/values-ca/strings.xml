@@ -698,4 +698,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Permetre les notificacions per veure els hostes connectats i rebre alertes sobre el so del terminal i la pèrdua de connexió. Les connexions encara poden funcionar en segon pla sense aquest permís.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Activa les notificacions</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Activeu les notificacions per a ConnectBot a la configuració d\'Android per veure els hostes connectats i rebre alertes sobre el so del terminal i la pèrdua de connexió. El suport per a la connexió en segon pla continua activat.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Colors brillants per al text en negreta</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Utilitzeu colors ANSI vius per al text en negreta. S’aplica a les noves sessions de terminal.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Hosts coneguts</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Claus públiques dels hosts coneguts.</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Visualitza, importa o elimina les claus de confiança per a aquest servidor.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">No s\'han trobat amfitrions coneguts.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Algoritme: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Elimina l’amfitrió conegut.</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Elimina</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Eliminar l’amfitrió conegut?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">La clau per a %1$s haurà de ser verificada de nou la pròxima vegada que us connecteu.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">No s’ha pogut actualitzar la llista d’hosts coneguts.</string>
+  <string name="known_host_import" tools:machine_translated="true">Importa la clau de l\'amfitrió.</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Importa la clau de l\'amfitrió.</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">Clau pública d\'OpenSSH</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Enganxeu la clau pública completa, per exemple, «ssh-ed25519 AAAA…». No es pot importar només l’empremta.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Introduïu una clau pública OpenSSH vàlida. L’algoritme i la clau codificada han de coincidir.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">Importa</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Sortides de procés recents</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">No hi ha registres disponibles sobre la finalització de processos.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">Historial de sortida del procés no disponible.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">No hi ha cap descripció disponible.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Hora: %1$s\nProcés: %2$s (PID %3$d)\nMotiu: %4$s (%5$d)\nEstat/senyal: %6$d\nDescripció: %7$s\nÚltima memòria mostrejada: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">Desa l’informe de fallada.</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Guarda l’informe més recent disponible sobre errors natius en la ubicació que triïs.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">S’ha desat el registre de l’error.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">No hi ha disponible cap informe d’error natiu. És possible que Android ja l’hagi eliminat.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">No s’ha pogut desar el registre d’errors.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">No s’ha pogut desar la clau. Proveu amb un altre sobrenom o torneu-ho a intentar.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">No s’ha pogut crear l’enllaç ràpid. Si us plau, torneu-ho a provar.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">La cadena d’hosts intermedis conté un cicle. Reviseu la configuració dels hosts intermedis.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">La cadena d’amfitrions intermedis supera el límit de 32 amfitrions.</string>
 </resources>

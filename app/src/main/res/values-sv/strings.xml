@@ -694,4 +694,36 @@
   <string name="connection_alert_permission_message" tools:machine_translated="true">Tillåt aviseringar för att se anslutna enheter och få varningar om ljudsignaler från terminalen och förlorade anslutningar. Anslutningar kan fortfarande köras i bakgrunden även utan detta tillstånd.</string>
   <string name="connection_alert_permission_denied_title" tools:machine_translated="true">Aktivera aviseringar</string>
   <string name="connection_alert_permission_denied_message" tools:machine_translated="true">Aktivera aviseringar för ConnectBot i Androids inställningar för att se anslutna enheter och få varningar om terminalsignaler och förlorad anslutning. Bakgrundsanslutningsfunktionen förblir aktiverad.</string>
+  <string name="profile_bold_as_bright" tools:machine_translated="true">Fetstil som ljus</string>
+  <string name="profile_bold_as_bright_summary" tools:machine_translated="true">Använd starka ANSI-färger för fetstil. Gäller för nya terminalsessioner.</string>
+  <string name="known_hosts_title" tools:machine_translated="true">Kända värdar</string>
+  <string name="hostpref_known_hosts_title" tools:machine_translated="true">Kända värdnycklar</string>
+  <string name="hostpref_known_hosts_summary" tools:machine_translated="true">Visa, importera eller ta bort betrodda SSH-nycklar för den här värden.</string>
+  <string name="known_hosts_empty" tools:machine_translated="true">Inga kända värdar.</string>
+  <string name="known_host_algorithm" tools:machine_translated="true">Algoritm: %1$s</string>
+  <string name="known_host_delete" tools:machine_translated="true">Ta bort betrodd värd</string>
+  <string name="known_host_delete_confirm" tools:machine_translated="true">Ta bort</string>
+  <string name="known_host_delete_title" tools:machine_translated="true">Vill du ta bort den kända värden?</string>
+  <string name="known_host_delete_message" tools:machine_translated="true">Nyckeln för %1$s måste verifieras igen nästa gång du ansluter.</string>
+  <string name="known_hosts_error" tools:machine_translated="true">Kunde inte uppdatera listan över kända värdar.</string>
+  <string name="known_host_import" tools:machine_translated="true">Importera värdnyckel</string>
+  <string name="known_host_import_title" tools:machine_translated="true">Importera värdnyckel</string>
+  <string name="known_host_import_key_label" tools:machine_translated="true">OpenSSH-nyckel (offentlig)</string>
+  <string name="known_host_import_help" tools:machine_translated="true">Klistra in hela den publika nyckeln, till exempel ”ssh-ed25519 AAAA…”. Enbart ett fingeravtryck kan inte importeras.</string>
+  <string name="known_host_import_invalid" tools:machine_translated="true">Ange en giltig OpenSSH-nyckel. Algoritmen och den kodade nyckeln måste stämma överens.</string>
+  <string name="known_host_import_confirm" tools:machine_translated="true">Importera</string>
+  <string name="logs_exit_history" tools:machine_translated="true">Senaste avslutade processer</string>
+  <string name="logs_exit_history_empty" tools:machine_translated="true">Inga tillgängliga loggar över avslutade processer.</string>
+  <string name="logs_exit_history_unavailable" tools:machine_translated="true">Information om processens avslutning är inte tillgänglig.</string>
+  <string name="logs_exit_description_unavailable" tools:machine_translated="true">Ingen beskrivning tillgänglig.</string>
+  <string name="logs_exit_details" tools:machine_translated="true">Tid: %1$s\nProcess: %2$s (PID %3$d)\nOrsak: %4$s (%5$d)\nStatus/signal: %6$d\nBeskrivning: %7$s\nSenast uppmätt minne: PSS %8$d kB, RSS %9$d kB</string>
+  <string name="save_tombstone" tools:machine_translated="true">Spara kraschrapport</string>
+  <string name="tombstone_save_info" tools:machine_translated="true">Spara den senaste tillgängliga rapporten om en krasch i nativ kod på en plats du väljer.</string>
+  <string name="tombstone_saved" tools:machine_translated="true">Felrapporten har sparats.</string>
+  <string name="tombstone_unavailable" tools:machine_translated="true">Ingen kraschrapport för nativ kod finns tillgänglig. Android kan redan ha tagit bort den.</string>
+  <string name="tombstone_save_failed" tools:machine_translated="true">Kunde inte spara felrapporten.</string>
+  <string name="pubkey_import_save_failed" tools:machine_translated="true">Det gick inte att spara nyckeln. Försök med ett annat alias eller försök igen.</string>
+  <string name="shortcut_create_failed" tools:machine_translated="true">Det gick inte att skapa genvägen. Försök igen.</string>
+  <string name="terminal_jump_cycle" tools:machine_translated="true">Kedjan av mellanliggande värdservrar innehåller en loop. Kontrollera inställningarna för mellanliggande värdservrar.</string>
+  <string name="terminal_jump_too_deep" tools:machine_translated="true">Antalet mellanliggande värdservrar i kedjan har överskridit gränsen på 32 servrar.</string>
 </resources>
