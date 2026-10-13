@@ -2,6 +2,44 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.11.1][1.11.1]
+
+### Added
+- Add a known hosts management screen to view, import, and remove trusted keys from the host editor
+- Show recent app exit reasons in View Logs and allow saving the most recent available native crash report
+- Add a profile setting to choose whether bold text uses bright ANSI colors
+- Support ECDSA keys when forwarding the SSH authentication agent
+
+### Fixed
+- Fix a session picker crash when multiple connections use the same saved host
+- Apply the terminal keyboard vibration preference to all keys and immediately reflect preference changes
+- Prevent crashes and duplicate closes during SSH connection teardown
+- Reject cyclic, missing, or excessively long SSH jump host chains and clean up connections when a hop fails
+- Handle blank host shortcut labels and report shortcut creation failures
+- Keep imported keys available for retry when saving fails and prevent duplicate saves
+- Handle Android rejecting background service startup while keeping service binding usable
+- Report local shell native library loading failures as connection errors
+- Ignore back events from detached inputs
+- Handle terminal clipboard service failures without ending the session and move clipboard operations off the UI thread
+- Disconnect gracefully when character decoding fails
+- Prevent duplicate terminal relay readers and buffer corruption during connection startup
+- Fix dropdown positioning crashes in short windows
+- Apply language changes using the correct localized context
+- Report Curve25519 and ML-KEM hybrid key generation or agreement failures as connection errors instead of crashing
+- Prevent terminal accessibility crashes from stale or overlapping semantic ranges and correctly handle wide and combining characters
+- Fix bidirectional text rendering crashes when Unicode paragraph separators occur within a terminal row
+
+### Changed
+- Probe whether SSH public keys are accepted before attempting authentication to reduce rejected login attempts, and report when no authentication methods remain
+- Speed up rendering of shaded block characters by batching stipple drawing
+
+### Translations
+- Correct Arabic and Portuguese string formats that could cause crashes
+
+### Dependencies
+- Update ConnectBot sshlib (trilead-ssh2) from 2.2.48 to 2.2.50
+- Update ConnectBot termlib from 0.3.11 to 0.3.13
+
 ## [1.11.0][1.11.0]
 
 ### Added
@@ -387,6 +425,7 @@ This project adheres to [Semantic Versioning](https://semver.org/).
 - Color picker color numbers are now localized
 
 
+[1.11.1]: https://github.com/connectbot/connectbot/compare/v1.11.0...v1.11.1
 [1.11.0]: https://github.com/connectbot/connectbot/compare/v1.10.9...v1.11.0
 [1.10.9]: https://github.com/connectbot/connectbot/compare/v1.10.8...v1.10.9
 [1.10.8]: https://github.com/connectbot/connectbot/compare/v1.10.7...v1.10.8
