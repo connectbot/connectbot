@@ -73,12 +73,11 @@ jobs:
     if: needs.changes.outputs.needs_ci == 'true'
     uses: ./.github/workflows/ci-build.yml
     permissions:
+      actions: read
       contents: write
       pull-requests: write
       id-token: write
       attestations: write
-    with:
-      is_push: false
     secrets: inherit
 
   required:
