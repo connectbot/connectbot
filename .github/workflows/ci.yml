@@ -22,10 +22,9 @@ jobs:
     name: CI
     uses: ./.github/workflows/ci-build.yml
     permissions:
+      actions: read
       contents: write
       pull-requests: write
       id-token: write
       attestations: write
-    with:
-      is_push: ${{ github.event_name == 'push' }}
     secrets: inherit
