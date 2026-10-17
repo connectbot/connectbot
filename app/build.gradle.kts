@@ -133,7 +133,7 @@ appVersioning {
     }
     overrideVersionName { gitTag, _, _ ->
         if (gitTag.commitsSinceLatestTag != 0) {
-            "git-${gitTag.rawTagName}-${gitTag.commitsSinceLatestTag}-g${gitTag.commitHash}"
+            "git-${gitTag.rawTagName}-${gitTag.commitsSinceLatestTag}"
         } else {
             gitTag.rawTagName
         }
