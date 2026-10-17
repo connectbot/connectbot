@@ -598,6 +598,7 @@ dependencies {
     ksp(libs.hilt.android.compiler)
 
     androidTestImplementation(libs.hilt.android.testing)
+    androidTestImplementation(libs.kotlinx.coroutines.test)
     kspAndroidTest(libs.hilt.android.compiler)
 
     testImplementation(libs.hilt.android.testing)
