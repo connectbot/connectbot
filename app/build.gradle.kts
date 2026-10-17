@@ -1,4 +1,3 @@
-import io.github.reactivecircus.appversioning.toSemVer
 import org.gradle.api.DefaultTask
 import org.gradle.api.file.DirectoryProperty
 import org.gradle.api.provider.Property
@@ -99,11 +98,39 @@ val prepareOssMoshArtifacts = tasks.register<PrepareOssMoshArtifacts>("prepareOs
     assetsDirectory.set(generatedOssMosh.map { it.dir("assets") })
 }
 
+// Stable patch slots occupy the lower half of each minor version's range.
+// The upper half is reserved for the following minor version's alpha builds.
+object AndroidVersions {
+    fun code(tag: String, commits: Int): Int {
+        val match = Regex("""v([0-9]+)\.([0-9]+)\.([0-9]+)(-alpha)?""").matchEntire(tag)
+        requireNotNull(match) { "Unsupported version anchor: $tag" }
+        val (majorText, minorText, patchText, prerelease) = match.destructured
+        val major = majorText.toInt()
+        val minor = minorText.toInt()
+        val patch = patchText.toInt()
+        require(major in 0..209 && minor in 0..99 && patch in 0..49) {
+            "Version components exceed allocated ranges: $tag (patch must be <= 49)"
+        }
+        val alpha = prerelease.isNotEmpty()
+        if (alpha) {
+            require(patch == 0 && minor > 0) { "Alpha anchors require a new minor version: $tag" }
+        }
+        val capacity = if (alpha) 50_000 else 1_000
+        require(commits in 0 until capacity) {
+            "Version range exhausted for $tag: $commits commits (limit $capacity); create the next stable release"
+        }
+        val base = major * 10_000_000L + minor * 100_000L + patch * 1_000L
+        val code = base - (if (alpha) 50_000 else 0) + commits
+        require(code in 1..2_100_000_000L) { "Android version code out of range: $code" }
+        return code.toInt()
+    }
+}
+
 appVersioning {
-    tagFilter.set("v[0-9].*")
+    tagFilter.set("v1.11.*")
     overrideVersionCode { gitTag, _, _ ->
-        val semVer = gitTag.toSemVer()
-        semVer.major * 10000000 + semVer.minor * 100000 + semVer.patch * 1000 + gitTag.commitsSinceLatestTag
+        require(!gitTag.rawTagName.contains("-")) { "Maintenance releases require stable version anchors" }
+        AndroidVersions.code(gitTag.rawTagName, gitTag.commitsSinceLatestTag)
     }
     overrideVersionName { gitTag, _, _ ->
         if (gitTag.commitsSinceLatestTag != 0) {
@@ -113,6 +140,45 @@ appVersioning {
         }
     }
 }
+
+val checkAppVersioning = tasks.register("checkAppVersioning") {
+    group = "verification"
+    description = "Verify Android release and prerelease version allocation boundaries."
+    doLast {
+        val examples = listOf(
+            Triple("v1.11.1", 0, 11_101_000),
+            Triple("v1.11.2", 0, 11_102_000),
+            Triple("v1.11.49", 0, 11_149_000),
+            Triple("v1.11.49", 999, 11_149_999),
+            Triple("v1.12.0-alpha", 0, 11_150_000),
+            Triple("v1.12.0-alpha", 125, 11_150_125),
+            Triple("v1.12.0-alpha", 49_999, 11_199_999),
+            Triple("v1.12.0", 0, 11_200_000),
+            Triple("v1.12.0", 999, 11_200_999),
+            Triple("v1.12.1", 0, 11_201_000),
+        )
+        examples.forEach { (tag, commits, expected) ->
+            check(AndroidVersions.code(tag, commits) == expected) { "$tag + $commits must be $expected" }
+        }
+        val invalid = listOf(
+            "v1.11.50" to 0,
+            "v1.11.2" to 1_000,
+            "v1.12.0-alpha" to 50_000,
+            "v1.12.0-alpha" to -1,
+            "v1.12.0-alpha.2" to 0,
+            "v1.12.0-beta" to 0,
+            "v1.12.0-rc.1" to 0,
+            "v1.12.1-alpha" to 0,
+            "v1.0.0-alpha" to 0,
+            "v1.100.0" to 0,
+            "v210.0.0" to 0,
+        )
+        invalid.forEach { (tag, commits) ->
+            check(runCatching { AndroidVersions.code(tag, commits) }.isFailure) { "$tag + $commits must fail" }
+        }
+    }
+}
+tasks.named("check") { dependsOn(checkAppVersioning) }
 
 android {
     namespace = "org.connectbot"

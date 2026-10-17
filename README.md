@@ -82,3 +82,40 @@ To run the main CI workflow (`ci.yml`):
 ```sh
 act -W .github/workflows/ci.yml
 ```
+
+## Parallel release lines
+
+`main` develops 1.12 and publishes to Play alpha. `branch/1.11` receives
+maintenance fixes; exact `v1.11.x` tags publish to Play beta for testing before
+manual promotion to production in Play Console. Branch pushes on maintenance
+are not published. Cherry-pick applicable fixes forward without replacing the
+version tag filter on either branch.
+
+Stable Android codes remain `major * 10000000 + minor * 100000 + patch * 1000`
+plus commits since the version tag. Patch numbers are limited to 0–49 and the
+commit distance to 0–999. The fixed, annotated `v1.12.0-alpha` anchor starts at
+11150000 and allows 0–49999 subsequent commits. `v1.12.0` starts at 11200000.
+The Gradle build fails if a range is exhausted or an unsupported anchor is used.
+Do not move the alpha anchor or create alpha.2/beta/RC anchors: those would reset
+the commit counter. Published histories must not be rewritten.
+
+For example, `v1.11.2` is 11102000, alpha plus 125 commits is 11150125,
+and `v1.12.1` is 11201000. The app's existing Git-derived version names and
+flavor suffixes are retained. Alpha installations cannot downgrade to 1.11;
+test maintenance on an installation that has not upgraded to 1.12.
+
+Run `./gradlew :app:checkAppVersioning` for allocation boundary checks. Generate
+version files under `app/build/outputs/app_versioning/` for both flavors with:
+
+```sh
+./gradlew :app:generateAppVersionInfoForGoogleRelease :app:generateAppVersionInfoForOssRelease
+```
+
+Before pushing the cutover, deploy the shared publisher's beta routing, configure
+`play-beta` for main-only deployments, run the signer's OIDC setup with
+`--enable-beta --apply`, and enable `PLAY_BETA_ENABLED`. Inspect current Play
+track codes first: maintenance must remain below 11150000 and existing alpha
+codes must be below the first new alpha build. Both tracks retain testing-only
+permissions; production promotion stays manual. Push main and the annotated
+alpha anchor together after the publisher is ready. When both main and a tag
+build the same commit, the exact version tag owns publication.
