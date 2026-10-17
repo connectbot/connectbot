@@ -28,10 +28,14 @@ import androidx.test.rule.GrantPermissionRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.test.StandardTestDispatcher
+import kotlinx.coroutines.test.runCurrent
+import kotlinx.coroutines.test.runTest
 import kotlinx.coroutines.withTimeout
 import org.connectbot.data.entity.Host
 import org.connectbot.di.CoroutineDispatchers
@@ -146,8 +150,9 @@ class TerminalBridgeWriteSerializationTest {
         override fun getLocalIpAddress(): String = "127.0.0.1"
     }
 
+    @OptIn(ExperimentalCoroutinesApi::class)
     @Test
-    fun newSshTransportUsesExistingTerminalDimensions() {
+    fun newSshTransportUsesExistingTerminalDimensions() = runTest {
         val intent = Intent(context, MainActivity::class.java)
         ActivityScenario.launch<MainActivity>(intent).use { scenario ->
             var capturedActivity: MainActivity? = null
@@ -162,17 +167,23 @@ class TerminalBridgeWriteSerializationTest {
                 port = 1,
                 profileId = 1L,
             )
+            val testDispatcher = StandardTestDispatcher(testScheduler)
             val dispatchers = CoroutineDispatchers(
-                default = Dispatchers.Default,
-                io = Dispatchers.IO,
+                default = testDispatcher,
+                io = testDispatcher,
                 main = Dispatchers.Main,
             )
             val bridge = TerminalBridge(manager, host, dispatchers)
             try {
+                runCurrent()
                 bridge.terminalEmulator.resize(42, 100)
+                // Drain the resize before connecting so only the initial size seed can reach SSH.
+                runCurrent()
                 val dimensions = bridge.terminalEmulator.dimensions
 
                 bridge.startConnection()
+                // startConnection seeds dimensions on the injected IO dispatcher.
+                runCurrent()
 
                 val transport = bridge.transport as SSH
                 fun dimension(name: String): Int = SSH::class.java.getDeclaredField(name).let { field ->
