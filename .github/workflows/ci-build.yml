@@ -185,12 +185,13 @@ jobs:
 
       - name: Record release metadata
         if: ${{ github.event_name == 'push' }}
-        uses: connectbot/actions/android-signer@48fc115604ee7428bcd7daf0858e2eabbbfc4e22 # build metadata
+        uses: connectbot/actions/android-signer@9ed4fe3cf37503852d43515d2d987e4294686438 # build metadata
         with:
           command: build-info
           out: support
           profile: ${{ matrix.flavor }}
           version-code-file: app/build/outputs/app_versioning/${{ matrix.flavor }}Release/version_code.txt
+          version-name-file: app/build/outputs/app_versioning/${{ matrix.flavor }}Release/version_name.txt
 
       - name: Store immutable release support files
         if: ${{ github.event_name == 'push' }}
