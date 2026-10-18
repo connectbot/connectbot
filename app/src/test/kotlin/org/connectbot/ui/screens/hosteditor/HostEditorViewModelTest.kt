@@ -33,6 +33,10 @@ import org.connectbot.data.HostRepository
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.TelnetEchoMode
+import org.connectbot.data.entity.TelnetNegotiationMode
+import org.connectbot.data.entity.TelnetNewlinePolicy
+import org.connectbot.data.entity.TelnetNonBinaryPolicy
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.SecurePasswordStorage
 import org.junit.After
@@ -675,5 +679,39 @@ class HostEditorViewModelTest {
         val captor = ArgumentCaptor.forClass(Host::class.java)
         verify(repository).saveHost(captor.capture() ?: Host())
         assertEquals(0, captor.value.moshNetworkTimeout)
+    }
+
+    @Test
+    fun telnetOptionsLoadAndSaveAcrossProtocolSwitches() = runTest {
+        val existing = Host(
+            id = 42, nickname = "Telnet", protocol = "telnet", hostname = "example.com", port = 23,
+            telnetEchoMode = TelnetEchoMode.OFF,
+            telnetNegotiationMode = TelnetNegotiationMode.PASSIVE,
+            telnetNonBinaryPolicy = TelnetNonBinaryPolicy.STRICT_ASCII,
+            telnetNewlinePolicy = TelnetNewlinePolicy.PRESERVE_LF,
+        )
+        `when`(repository.findHostById(42)).thenReturn(existing)
+        `when`(repository.saveHost(any(Host::class.java) ?: Host())).thenAnswer { it.arguments[0] as Host }
+        val viewModel = createViewModel(42)
+        advanceUntilIdle()
+        assertEquals(TelnetEchoMode.OFF, viewModel.uiState.value.telnetEchoMode)
+        assertEquals(TelnetNegotiationMode.PASSIVE, viewModel.uiState.value.telnetNegotiationMode)
+        assertEquals(TelnetNonBinaryPolicy.STRICT_ASCII, viewModel.uiState.value.telnetNonBinaryPolicy)
+        assertEquals(TelnetNewlinePolicy.PRESERVE_LF, viewModel.uiState.value.telnetNewlinePolicy)
+        viewModel.updateTelnetEchoMode(TelnetEchoMode.ON)
+        viewModel.updateTelnetNegotiationMode(TelnetNegotiationMode.INTERACTIVE)
+        viewModel.updateTelnetNonBinaryPolicy(TelnetNonBinaryPolicy.EIGHT_BIT_COMPATIBILITY)
+        viewModel.updateTelnetNewlinePolicy(TelnetNewlinePolicy.LF_TO_CRLF)
+        viewModel.updateProtocol("ssh")
+        viewModel.updateProtocol("telnet")
+        assertTrue(viewModel.uiState.value.hasUnsavedChanges)
+        assertTrue(viewModel.saveHost())
+        val captor = ArgumentCaptor.forClass(Host::class.java)
+        verify(repository).saveHost(captor.capture() ?: Host())
+        val saved = captor.value
+        assertEquals(TelnetEchoMode.ON, saved.telnetEchoMode)
+        assertEquals(TelnetNegotiationMode.INTERACTIVE, saved.telnetNegotiationMode)
+        assertEquals(TelnetNonBinaryPolicy.EIGHT_BIT_COMPATIBILITY, saved.telnetNonBinaryPolicy)
+        assertEquals(TelnetNewlinePolicy.LF_TO_CRLF, saved.telnetNewlinePolicy)
     }
 }

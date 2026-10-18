@@ -37,6 +37,10 @@ import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
+import org.connectbot.data.entity.TelnetEchoMode
+import org.connectbot.data.entity.TelnetNegotiationMode
+import org.connectbot.data.entity.TelnetNewlinePolicy
+import org.connectbot.data.entity.TelnetNonBinaryPolicy
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.transport.Transport
 import org.connectbot.util.InstallMosh
@@ -64,6 +68,10 @@ data class HostEditorUiState(
     val jumpHostId: Long? = null,
     val availableJumpHosts: List<Host> = emptyList(),
     val ipVersion: String = "IPV4_AND_IPV6",
+    val telnetEchoMode: TelnetEchoMode = TelnetEchoMode.AUTO,
+    val telnetNegotiationMode: TelnetNegotiationMode = TelnetNegotiationMode.INTERACTIVE,
+    val telnetNonBinaryPolicy: TelnetNonBinaryPolicy = TelnetNonBinaryPolicy.EIGHT_BIT_COMPATIBILITY,
+    val telnetNewlinePolicy: TelnetNewlinePolicy = TelnetNewlinePolicy.LF_TO_CRLF,
     val password: String = "",
     val hasExistingPassword: Boolean = false,
     val hasUnsavedChanges: Boolean = false,
@@ -184,6 +192,10 @@ class HostEditorViewModel @Inject constructor(
                             quickDisconnect = host.quickDisconnect,
                             jumpHostId = host.jumpHostId,
                             ipVersion = host.ipVersion,
+                            telnetEchoMode = host.telnetEchoMode,
+                            telnetNegotiationMode = host.telnetNegotiationMode,
+                            telnetNonBinaryPolicy = host.telnetNonBinaryPolicy,
+                            telnetNewlinePolicy = host.telnetNewlinePolicy,
                             hasExistingPassword = hasPassword,
                             hasUnsavedChanges = false,
                             // Mosh-specific fields
@@ -343,6 +355,22 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(jumpHostId = value, hasUnsavedChanges = true) }
     }
 
+    fun updateTelnetEchoMode(value: TelnetEchoMode) {
+        _uiState.update { it.copy(telnetEchoMode = value, hasUnsavedChanges = true) }
+    }
+
+    fun updateTelnetNegotiationMode(value: TelnetNegotiationMode) {
+        _uiState.update { it.copy(telnetNegotiationMode = value, hasUnsavedChanges = true) }
+    }
+
+    fun updateTelnetNonBinaryPolicy(value: TelnetNonBinaryPolicy) {
+        _uiState.update { it.copy(telnetNonBinaryPolicy = value, hasUnsavedChanges = true) }
+    }
+
+    fun updateTelnetNewlinePolicy(value: TelnetNewlinePolicy) {
+        _uiState.update { it.copy(telnetNewlinePolicy = value, hasUnsavedChanges = true) }
+    }
+
     fun updateIpVersion(value: String) {
         _uiState.update { it.copy(ipVersion = value, hasUnsavedChanges = true) }
     }
@@ -411,6 +439,10 @@ class HostEditorViewModel @Inject constructor(
                 useCtrlAltAsMetaKey = existingHost?.useCtrlAltAsMetaKey ?: false,
                 jumpHostId = jumpHostId,
                 ipVersion = state.ipVersion,
+                telnetEchoMode = state.telnetEchoMode,
+                telnetNegotiationMode = state.telnetNegotiationMode,
+                telnetNonBinaryPolicy = state.telnetNonBinaryPolicy,
+                telnetNewlinePolicy = state.telnetNewlinePolicy,
                 moshPort = state.moshPort.toIntOrNull() ?: 0,
                 moshServer = state.moshServer.ifBlank { null },
                 moshNetworkTimeout = state.moshNetworkTimeout.toIntOrNull(),

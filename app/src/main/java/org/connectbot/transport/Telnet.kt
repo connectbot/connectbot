@@ -21,199 +21,211 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.net.Uri
 import androidx.core.net.toUri
-import de.mud.telnet.TelnetProtocolHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.ensureActive
+import kotlinx.coroutines.sync.Mutex
+import kotlinx.coroutines.sync.withLock
+import kotlinx.coroutines.withContext
 import org.connectbot.R
 import org.connectbot.data.entity.Host
+import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.DisconnectReason
+import org.connectbot.service.TelnetInputDiscipline
+import org.connectbot.service.TelnetKeyboardInput
 import org.connectbot.service.TerminalBridge
 import org.connectbot.service.TerminalManager
+import org.connectbot.service.terminalCharset
+import org.connectbot.telnetlib.TelnetConfig
+import org.connectbot.telnetlib.TelnetFailure
+import org.connectbot.telnetlib.TelnetFailureCode
+import org.connectbot.telnetlib.TelnetInput
+import org.connectbot.telnetlib.TelnetOutcome
+import org.connectbot.telnetlib.TelnetSession
+import org.connectbot.telnetlib.TelnetStatus
+import org.connectbot.telnetlib.ktor.connectTelnet
 import org.connectbot.util.HostConstants
 import timber.log.Timber
 import java.io.IOException
-import java.io.InputStream
-import java.io.OutputStream
 import java.net.Inet4Address
 import java.net.Inet6Address
 import java.net.InetAddress
-import java.net.InetSocketAddress
-import java.net.Socket
-import java.net.SocketException
-import java.net.SocketTimeoutException
-import java.net.UnknownHostException
 import java.util.regex.Pattern
 
-/**
- * Telnet transport implementation.
- * Original idea from the JTA telnet package (de.mud.telnet)
- *
- * @author Kenny Root
- */
+/** Telnet metadata and suspend adapter. Exactly one Relay owns [receive]. */
 class Telnet : AbsTransport {
+    @Volatile private var session: TelnetSession? = null
 
-    private val handler: TelnetProtocolHandler
-    private var socket: Socket? = null
+    @Volatile private var sessionScope: CoroutineScope? = null
 
-    private var `is`: InputStream? = null
-    private var os: OutputStream? = null
-    private var width: Int = 0
-    private var height: Int = 0
+    @Volatile private var closed = false
 
-    private var connected = false
+    @Volatile private var connected = false
 
-    constructor() {
-        handler = object : TelnetProtocolHandler() {
-            /** get the current terminal type */
-            override fun getTerminalType(): String? = getEmulation()
+    @Volatile private var dimensions = 0 to 0
+    private val sessionMutex = Mutex()
+    private var inputReader: TelnetInputReader? = null
+    private var inputDiscipline: TelnetInputDiscipline? = null
+    private var keyboardInput: TelnetKeyboardInput? = null
 
-            /** get the current window size */
-            override fun getWindowSize(): IntArray = intArrayOf(width, height)
-
-            /** notify about local echo */
-            override fun setLocalEcho(echo: Boolean) {
-                /* EMPTY */
-            }
-
-            /** write data to our back end */
-            @Throws(IOException::class)
-            override fun write(b: ByteArray) {
-                os?.write(b)
-            }
-
-            /** sent on IAC EOR (prompt terminator for remote access systems). */
-            override fun notifyEndOfRecord() {
-            }
-
-            override fun getCharsetName(): String {
-                val charset = bridge?.charset
-                return charset?.name() ?: ""
-            }
+    internal var connector: suspend (CoroutineScope, String, Int, TelnetConfig, CoroutineDispatchers) -> TelnetOutcome<TelnetSession> =
+        { scope, hostname, port, config, dispatchers ->
+            connectTelnet(scope, hostname, port, config, dispatchers.io)
         }
-    }
 
-    /**
-     * @param host
-     * @param bridge
-     * @param manager
-     */
-    constructor(host: Host?, bridge: TerminalBridge?, manager: TerminalManager?) : super(host, bridge, manager) {
-        handler = object : TelnetProtocolHandler() {
-            override fun getTerminalType(): String? = getEmulation()
-            override fun getWindowSize(): IntArray = intArrayOf(width, height)
-            override fun setLocalEcho(echo: Boolean) {}
+    internal var resolveAddresses: (String) -> List<InetAddress> = { InetAddress.getAllByName(it).toList() }
 
-            @Throws(IOException::class)
-            override fun write(b: ByteArray) {
-                os?.write(b)
-            }
-            override fun notifyEndOfRecord() {}
-            override fun getCharsetName(): String {
-                val charset = this@Telnet.bridge?.charset
-                return charset?.name() ?: ""
-            }
-        }
-    }
+    constructor()
 
-    override suspend fun connect() {
+    constructor(host: Host?, bridge: TerminalBridge?, manager: TerminalManager?) : super(host, bridge, manager)
+
+    override suspend fun connect(scope: CoroutineScope, dispatchers: CoroutineDispatchers, encoding: String) {
+        val currentHost = requireNotNull(host)
+        val charset = terminalCharset(encoding)
+        val echo = TelnetInputDiscipline(currentHost.telnetEchoMode, encoding) { bytes -> bridge?.displayLocalEcho(this, bytes) }
+        inputDiscipline = echo
+        keyboardInput = TelnetKeyboardInput(encoding)
+        inputReader = TelnetInputReader(charset, this::receive, echo::negotiatedEcho) { Timber.d("Telnet: %s", it) }
+        val owner = CoroutineScope(SupervisorJob(scope.coroutineContext[Job]) + dispatchers.io)
+        sessionScope = owner
+        if (closed) owner.cancel()
         try {
-            socket = Socket()
+            owner.ensureActive()
+            val addresses = withContext(dispatchers.io) {
+                resolveAddresses(currentHost.hostname).filter { address ->
+                    HostConstants.isIpAddress(currentHost.hostname) || when (currentHost.ipVersion) {
+                        HostConstants.IPVERSION_IPV4_ONLY -> address is Inet4Address
+                        HostConstants.IPVERSION_IPV6_ONLY -> address is Inet6Address
+                        else -> true
+                    }
+                }
+            }
+            val initialDimensions = dimensions
+            val config = telnetConfig(currentHost, getEmulation(), initialDimensions.first, initialDimensions.second)
+            var failure = TelnetFailure(TelnetFailureCode.TRANSPORT_ERROR, "No eligible address for ${currentHost.hostname}")
+            for (address in addresses) {
+                owner.ensureActive()
+                when (val result = connector(owner, address.hostAddress!!, currentHost.port, config, dispatchers)) {
+                    is TelnetOutcome.Success -> {
+                        owner.ensureActive()
+                        sessionMutex.withLock {
+                            val latestDimensions = dimensions
+                            if (latestDimensions != initialDimensions) {
+                                result.value.resize(latestDimensions.first, latestDimensions.second).checked()
+                            }
+                            owner.ensureActive()
+                            session = result.value
+                            connected = true
+                        }
+                        owner.ensureActive()
+                        bridge?.onTransportConnected(this)
+                        return
+                    }
 
-            val currentHost = host ?: return
-            tryAllAddresses(socket!!, currentHost.hostname, currentHost.port, currentHost.ipVersion)
-
-            connected = true
-
-            `is` = socket?.getInputStream()
-            os = socket?.getOutputStream()
-
-            bridge?.onConnected()
-        } catch (e: UnknownHostException) {
-            Timber.d(e, "IO Exception connecting to host")
+                    is TelnetOutcome.Failure -> failure = result.error
+                }
+            }
+            throw TelnetOperationException(failure)
+        } catch (e: Exception) {
+            connected = false
+            owner.cancel()
             throw e
-        } catch (e: IOException) {
-            Timber.d(e, "IO Exception connecting to host")
-            throw e
+        }
+    }
+
+    suspend fun receive(): TelnetOutcome<TelnetInput?> = session?.receive()
+        ?: if (closed) {
+            TelnetOutcome.Failure(TelnetFailure(TelnetFailureCode.CLOSED, "Telnet session closed"))
+        } else {
+            error("Telnet session has not connected")
+        }
+
+    override suspend fun write(buffer: ByteArray) {
+        val current = operationSession() ?: return
+        current.write(buffer).checked()
+        inputDiscipline?.echo(buffer)
+    }
+
+    override suspend fun writeKeyboardInput(buffer: ByteArray) {
+        if (operationSession() == null) return
+        requireNotNull(keyboardInput).write(buffer, this::write, this::carriageReturn)
+    }
+
+    override suspend fun read(buffer: ByteArray, offset: Int, length: Int): Int = requireNotNull(inputReader).read(buffer, offset, length)
+
+    override fun userMessageForError(error: IOException): Int? = when ((error as? TelnetOperationException)?.failure?.code) {
+        TelnetFailureCode.NON_ASCII_DATA -> R.string.telnet_ascii_input_rejected
+        TelnetFailureCode.UNSUPPORTED_OPERATION -> R.string.telnet_input_rejected
+        else -> null
+    }
+
+    override fun onConnectionFailure(error: Exception) = disconnect(DisconnectReason.IO_ERROR)
+
+    override fun onReadFailure(error: IOException) = disconnect(DisconnectReason.IO_ERROR)
+
+    override fun onReadEof() = disconnect(DisconnectReason.REMOTE_EOF)
+
+    private fun disconnect(reason: DisconnectReason) {
+        if (bridge?.transport === this) bridge?.dispatchDisconnect(reason)
+    }
+
+    override suspend fun carriageReturn() {
+        val current = operationSession() ?: return
+        current.carriageReturn().checked()
+        inputDiscipline?.carriageReturn()
+    }
+
+    override suspend fun flush() {
+        operationSession()?.flush()?.checked()
+    }
+
+    override fun setInitialDimensions(columns: Int, rows: Int, width: Int, height: Int) {
+        dimensions = columns to rows
+    }
+
+    override suspend fun resize(columns: Int, rows: Int, width: Int, height: Int) {
+        setInitialDimensions(columns, rows, width, height)
+        sessionMutex.withLock {
+            val latestDimensions = dimensions
+            operationSession()?.resize(latestDimensions.first, latestDimensions.second)?.checked()
         }
     }
 
     override suspend fun close() {
+        closed = true
         connected = false
-        socket?.let {
-            try {
-                it.close()
-                socket = null
-            } catch (e: IOException) {
-                Timber.d(e, "Error closing telnet socket.")
+        try {
+            when (val result = session?.close()) {
+                is TelnetOutcome.Failure -> Timber.d("Telnet close: %s: %s", result.error.code, result.error.message)
+                else -> Unit
             }
+        } finally {
+            session = null
+            sessionScope?.cancel()
         }
     }
 
-    @Throws(IOException::class)
-    override suspend fun flush() {
-        os?.flush()
+    private fun operationSession(): TelnetSession? {
+        if (closed) throw TelnetOperationException(TelnetFailure(TelnetFailureCode.CLOSED, "Telnet session closed"))
+        return session
+    }
+
+    private fun TelnetOutcome<Unit>.checked() {
+        if (this is TelnetOutcome.Failure) {
+            if (error.isTerminal() && !closed && session?.state?.value?.status != TelnetStatus.PEER_EOF) {
+                if (bridge?.transport === this@Telnet) bridge?.dispatchDisconnect(DisconnectReason.IO_ERROR)
+            }
+            throw TelnetOperationException(error)
+        }
     }
 
     override fun getDefaultPort(): Int = DEFAULT_PORT
-
     override fun isConnected(): Boolean = connected
 
+    // Retain the session until Relay has drained preceding input, even after the socket reaches EOF.
     override fun isSessionOpen(): Boolean = connected
-
-    @Throws(IOException::class)
-    override suspend fun read(buffer: ByteArray, offset: Int, length: Int): Int {
-        /* process all already read bytes */
-        var n: Int
-
-        do {
-            n = handler.negotiate(buffer, offset)
-            if (n > 0) {
-                return n
-            }
-        } while (n == 0)
-
-        while (n <= 0) {
-            do {
-                n = handler.negotiate(buffer, offset)
-                if (n > 0) {
-                    return n
-                }
-            } while (n == 0)
-            n = `is`!!.read(buffer, offset, length)
-            if (n < 0) {
-                bridge?.dispatchDisconnect(DisconnectReason.REMOTE_EOF)
-                throw IOException("Remote end closed connection.")
-            }
-
-            handler.inputfeed(buffer, offset, n)
-            n = handler.negotiate(buffer, offset)
-        }
-        return n
-    }
-
-    @Throws(IOException::class)
-    override suspend fun write(buffer: ByteArray) {
-        try {
-            os?.write(buffer)
-        } catch (_: SocketException) {
-            bridge?.dispatchDisconnect(DisconnectReason.IO_ERROR)
-        }
-    }
-
-    @Throws(IOException::class)
-    override suspend fun write(c: Int) {
-        try {
-            os?.write(c)
-        } catch (_: SocketException) {
-            bridge?.dispatchDisconnect(DisconnectReason.IO_ERROR)
-        }
-    }
-
-    override suspend fun setDimensions(columns: Int, rows: Int, width: Int, height: Int) {
-        try {
-            handler.setWindowSize(columns, rows)
-        } catch (e: IOException) {
-            Timber.e(e, "Couldn't resize remote terminal")
-        }
-    }
 
     @SuppressLint("DefaultLocale")
     override fun getDefaultNickname(username: String?, hostname: String?, port: Int): String = if (port == DEFAULT_PORT) {
@@ -252,7 +264,7 @@ class Telnet : AbsTransport {
 
     override fun usesNetwork(): Boolean = true
 
-    override fun getLocalIpAddress(): String? = socket?.localAddress?.hostAddress
+    override fun getLocalIpAddress(): String? = session?.getLocalSocketAddress()?.address?.hostAddress
 
     companion object {
         private const val PROTOCOL = "telnet"
@@ -265,29 +277,6 @@ class Telnet : AbsTransport {
 
         @JvmStatic
         fun getProtocolName(): String = PROTOCOL
-
-        @JvmStatic
-        private fun tryAllAddresses(sock: Socket, host: String, port: Int, ipVersion: String) {
-            val allAddresses = InetAddress.getAllByName(host)
-            // Filter addresses based on IP version preference (unless hostname is a literal IP)
-            val addresses = if (HostConstants.isIpAddress(host)) {
-                allAddresses.toList()
-            } else {
-                when (ipVersion) {
-                    HostConstants.IPVERSION_IPV4_ONLY -> allAddresses.filter { it is Inet4Address }
-                    HostConstants.IPVERSION_IPV6_ONLY -> allAddresses.filter { it is Inet6Address }
-                    else -> allAddresses.toList()
-                }
-            }
-            for (addr in addresses) {
-                try {
-                    sock.connect(InetSocketAddress(addr, port))
-                    return
-                } catch (ignored: SocketTimeoutException) {
-                }
-            }
-            throw SocketTimeoutException("Could not connect; socket timed out")
-        }
 
         @JvmStatic
         fun getUri(input: String): Uri? {

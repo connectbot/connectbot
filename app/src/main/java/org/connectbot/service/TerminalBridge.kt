@@ -62,7 +62,6 @@ import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.TerminalEmulatorFactory
 import org.connectbot.terminal.UrlScanScope
 import org.connectbot.transport.AbsTransport
-import org.connectbot.transport.SSH
 import org.connectbot.transport.TransportFactory
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PreferenceConstants
@@ -135,12 +134,14 @@ internal class AuthBannerQueue {
 @Suppress("DEPRECATION") // for ClipboardManager
 class TerminalBridge {
     private val scope: CoroutineScope
+    private var connectionJob: Job? = null
 
     private sealed class TransportOperation {
-        data class WriteData(val data: ByteArray, val completion: CompletableDeferred<Unit>? = null) : TransportOperation()
+        var target: AbsTransport? = null
+        data class WriteData(val data: ByteArray, val completion: CompletableDeferred<Unit>? = null, val keyboard: Boolean = false) : TransportOperation()
         data class Barrier(val completion: CompletableDeferred<Unit>) : TransportOperation()
         data class SetDimensions(val columns: Int, val rows: Int, val width: Int, val height: Int) : TransportOperation()
-        data object Flush : TransportOperation()
+        class Flush : TransportOperation()
     }
 
     private val transportOperations = Channel<TransportOperation>(Channel.UNLIMITED)
@@ -165,9 +166,9 @@ class TerminalBridge {
     private suspend fun awaitAutomationWrite(data: ByteArray? = null) {
         val completion = CompletableDeferred<Unit>()
         try {
-            transportOperations.send(
-                if (data != null) TransportOperation.WriteData(data, completion) else TransportOperation.Barrier(completion),
-            )
+            val operation = if (data != null) TransportOperation.WriteData(data, completion) else TransportOperation.Barrier(completion)
+            operation.target = transport
+            transportOperations.send(operation)
             completion.await()
         } catch (e: CancellationException) {
             completion.cancel()
@@ -266,7 +267,7 @@ class TerminalBridge {
     private val dispatchers: CoroutineDispatchers
 
     /* package */
-    var transport: AbsTransport? = null
+    @Volatile var transport: AbsTransport? = null
 
     val defaultPaint: Paint
 
@@ -300,6 +301,9 @@ class TerminalBridge {
      * Callback invoked to request the text input dialog (e.g., from camera button)
      */
     var onTextInputRequest: (() -> Unit)? = null
+
+    private val _transportMessages = MutableSharedFlow<String>(extraBufferCapacity = 1)
+    val transportMessages: SharedFlow<String> = _transportMessages.asSharedFlow()
 
     private val _networkStatusMessages = MutableSharedFlow<String>(replay = 0, extraBufferCapacity = 10)
     val networkStatusMessages: SharedFlow<String> = _networkStatusMessages.asSharedFlow()
@@ -431,13 +435,13 @@ class TerminalBridge {
             defaultForeground = Color(defaultFgColor),
             defaultBackground = Color(defaultBgColor),
             onKeyboardInput = { data ->
-                transportOperations.trySend(TransportOperation.WriteData(data))
+                enqueueTransportOperation(TransportOperation.WriteData(data, keyboard = true))
             },
             onBell = {
                 manager.onBell(this)
             },
             onResize = {
-                transportOperations.trySend(
+                enqueueTransportOperation(
                     TransportOperation.SetDimensions(
                         it.columns,
                         it.rows,
@@ -492,12 +496,18 @@ class TerminalBridge {
     private fun startTransportOperationProcessor() {
         scope.launch(dispatchers.io) {
             for (operation in transportOperations) {
+                val operationTransport = operation.target
                 try {
+                    if (operationTransport !== transport) throw IOException("Transport replaced")
                     when (operation) {
                         is TransportOperation.WriteData -> {
                             if (operation.completion?.isCancelled == true) continue
-                            val t = transport ?: throw IOException("Transport unavailable")
-                            t.write(operation.data)
+                            val t = operationTransport ?: throw IOException("Transport unavailable")
+                            if (operation.keyboard) {
+                                t.writeKeyboardInput(operation.data)
+                            } else {
+                                t.write(operation.data)
+                            }
                             operation.completion?.complete(Unit)
                         }
 
@@ -506,13 +516,13 @@ class TerminalBridge {
                             val failure = transportFailure
                             transportFailure = null
                             failure?.let { throw it }
-                            val t = transport ?: throw IOException("Transport unavailable")
+                            val t = operationTransport ?: throw IOException("Transport unavailable")
                             t.flush()
                             operation.completion.complete(Unit)
                         }
 
                         is TransportOperation.SetDimensions -> {
-                            transport?.setDimensions(
+                            operationTransport?.resize(
                                 operation.columns,
                                 operation.rows,
                                 operation.width,
@@ -521,11 +531,18 @@ class TerminalBridge {
                         }
 
                         is TransportOperation.Flush -> {
-                            transport?.flush()
+                            operationTransport?.flush()
                         }
                     }
+                } catch (e: CancellationException) {
+                    throw e
                 } catch (e: IOException) {
-                    transportFailure = if (operation is TransportOperation.WriteData && operation.completion == null) e else null
+                    if (transport === operationTransport) {
+                        transportFailure = if (operation is TransportOperation.WriteData && operation.completion == null) e else null
+                        operationTransport?.userMessageForError(e)?.let { message ->
+                            _transportMessages.tryEmit(manager.res.getString(message))
+                        }
+                    }
                     when (operation) {
                         is TransportOperation.WriteData -> operation.completion?.completeExceptionally(e)
                         is TransportOperation.Barrier -> operation.completion.completeExceptionally(e)
@@ -533,7 +550,9 @@ class TerminalBridge {
                     }
                     Timber.e(e, "Error processing transport operation")
                 } catch (e: Exception) {
-                    transportFailure = if (operation is TransportOperation.WriteData && operation.completion == null) e else null
+                    if (transport === operationTransport) {
+                        transportFailure = if (operation is TransportOperation.WriteData && operation.completion == null) e else null
+                    }
                     when (operation) {
                         is TransportOperation.WriteData -> operation.completion?.completeExceptionally(e)
                         is TransportOperation.Barrier -> operation.completion.completeExceptionally(e)
@@ -543,6 +562,15 @@ class TerminalBridge {
                 }
             }
         }
+    }
+
+    private fun enqueueTransportOperation(operation: TransportOperation) {
+        operation.target = transport
+        transportOperations.trySend(operation)
+    }
+
+    internal fun displayLocalEcho(source: AbsTransport, bytes: ByteArray) {
+        if (transport === source) terminalEmulator.writeInput(bytes)
     }
 
     /**
@@ -650,6 +678,15 @@ class TerminalBridge {
             Timber.w("No transport found for ${host.protocol}")
             return
         }
+        connectionJob?.cancel()
+        relayJob?.cancel()
+        relay = null
+        val previousTransport = transport
+        if (previousTransport != null) {
+            scope.launch(dispatchers.io) {
+                previousTransport.close()
+            }
+        }
         notificationSessionId = java.util.UUID.randomUUID().toString()
         connecting = true
         manager.notifyBridgeStateChanged()
@@ -659,27 +696,24 @@ class TerminalBridge {
         newTransport.manager = manager
         newTransport.host = host
 
-        // TODO make this more abstract so we don't litter on AbsTransport
-        if (newTransport is SSH) {
-            newTransport.setCompression(host.compression)
-            host.useAuthAgent?.let { newTransport.setUseAuthAgent(it) }
-        }
+        newTransport.setCompression(host.compression)
+        host.useAuthAgent?.let { newTransport.setUseAuthAgent(it) }
         newTransport.setEmulation(emulation)
+        // A retained terminal may not emit another resize when reconnecting.
+        // Seed the new transport before SSH requests its PTY.
+        terminalEmulator.dimensions.let { dimensions ->
+            newTransport.setInitialDimensions(
+                dimensions.columns,
+                dimensions.rows,
+                dimensions.widthPixels,
+                dimensions.heightPixels,
+            )
+        }
 
         outputLine(manager.res.getString(R.string.terminal_connecting, host.hostname, host.port, host.protocol))
 
-        scope.launch(dispatchers.io) {
+        connectionJob = scope.launch(dispatchers.io) {
             try {
-                // A retained terminal may not emit another resize when reconnecting.
-                // Seed the new transport before SSH requests its PTY.
-                terminalEmulator.dimensions.let { dimensions ->
-                    newTransport.setDimensions(
-                        dimensions.columns,
-                        dimensions.rows,
-                        dimensions.widthPixels,
-                        dimensions.heightPixels,
-                    )
-                }
                 if (newTransport.canForwardPorts()) {
                     try {
                         for (portForward in manager.hostRepository.getPortForwardsForHost(host.id)) {
@@ -696,8 +730,12 @@ class TerminalBridge {
                     }
                 }
                 Timber.i("Starting connection to ${host.nickname}")
-                newTransport.connect()
+                newTransport.connect(scope, dispatchers, encoding)
+            } catch (e: CancellationException) {
+                throw e
             } catch (e: Exception) {
+                if (transport !== newTransport) return@launch
+                newTransport.onConnectionFailure(e)
                 Timber.e(e, "Connection failed for ${host.nickname}")
                 manager.reportError(
                     ServiceError.ConnectionFailed(
@@ -770,17 +808,17 @@ class TerminalBridge {
             return
         }
 
-        transportOperations.trySend(
+        enqueueTransportOperation(
             TransportOperation.WriteData(string.toByteArray(charset(encoding))),
         )
     }
 
     fun writeToTransport(data: ByteArray) {
-        transportOperations.trySend(TransportOperation.WriteData(data))
+        enqueueTransportOperation(TransportOperation.WriteData(data))
     }
 
     fun writeToTransport(c: Int) {
-        transportOperations.trySend(TransportOperation.WriteData(byteArrayOf(c.toByte())))
+        enqueueTransportOperation(TransportOperation.WriteData(byteArrayOf(c.toByte())))
     }
 
     /**
@@ -788,7 +826,7 @@ class TerminalBridge {
      * channel as [injectString] so keyboard input cannot interleave with paste data.
      */
     fun sendByte(c: Int) {
-        transportOperations.trySend(
+        enqueueTransportOperation(
             TransportOperation.WriteData(byteArrayOf(c.toByte())),
         )
     }
@@ -799,7 +837,7 @@ class TerminalBridge {
      */
     fun sendBytes(data: ByteArray) {
         if (data.isEmpty()) return
-        transportOperations.trySend(TransportOperation.WriteData(data))
+        enqueueTransportOperation(TransportOperation.WriteData(data))
     }
 
     /**
@@ -807,7 +845,7 @@ class TerminalBridge {
      * flush happens only after preceding bytes have been sent to the transport.
      */
     fun requestFlush() {
-        transportOperations.trySend(TransportOperation.Flush)
+        enqueueTransportOperation(TransportOperation.Flush())
     }
 
     /**
@@ -822,6 +860,13 @@ class TerminalBridge {
      * Internal method to request actual PTY terminal once we've finished
      * authentication. If called before authenticated, it will just fail.
      */
+    internal fun onTransportConnected(t: AbsTransport) {
+        synchronized(this) {
+            if (transport !== t || !connecting) return
+            onConnected()
+        }
+    }
+
     fun onConnected() {
         disconnected = false
         connecting = false
@@ -920,14 +965,12 @@ class TerminalBridge {
         // Cancel any pending prompts
         promptManager.cancelPrompt()
 
+        connectionJob?.cancel()
+        val endingTransport = transport
         // disconnection request hangs if we havent really connected to a host yet
         // temporary fix is to just spawn disconnection into a thread
         scope.launch(dispatchers.io) {
-            transport?.let {
-                if (it.isConnected()) {
-                    it.close()
-                }
-            }
+            endingTransport?.close()
         }
 
         when (
@@ -1083,7 +1126,7 @@ class TerminalBridge {
 //        }
 //
 //        try {
-//            transport?.setDimensions(columns, rows, width, height)
+//            transport?.setInitialDimensions(columns, rows, width, height)
 //        } catch (e: Exception) {
 //            Timber.e(e, "Problem while trying to resize screen or PTY")
 //        }
