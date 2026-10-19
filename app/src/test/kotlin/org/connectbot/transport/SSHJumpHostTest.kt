@@ -32,6 +32,7 @@ import org.connectbot.sshlib.AuthHandler
 import org.connectbot.sshlib.AuthResult
 import org.connectbot.sshlib.ConnectResult
 import org.connectbot.sshlib.SshClient
+import org.connectbot.sshlib.SshClientConfig
 import org.connectbot.sshlib.transport.TransportFactory
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertTrue
@@ -75,8 +76,13 @@ class SSHJumpHostTest {
         val inner = Host(id = 2, nickname = "inner", hostname = "inner.example", username = "alice", jumpHostId = 3)
         val target = Host(id = 1, nickname = "target", hostname = "target.example", username = "alice", jumpHostId = 2, wantSession = false)
         stubHosts(inner, outer)
+        `when`(repository.getHostKeyAlgorithmsForHostBlocking(outer.id)).thenReturn(listOf("rsa-sha2-512"))
+        `when`(repository.getHostKeyAlgorithmsForHostBlocking(inner.id)).thenReturn(listOf("ecdsa-sha2-nistp256"))
+        `when`(repository.getHostKeyAlgorithmsForHostBlocking(target.id)).thenReturn(listOf("ssh-ed25519"))
+        val configs = mutableListOf<SshClientConfig>()
         val tunnels = mutableListOf<TransportFactory>()
-        mockConstruction(SshClient::class.java) { client, _ ->
+        mockConstruction(SshClient::class.java) { client, context ->
+            configs.add(context.arguments()[0] as SshClientConfig)
             runBlocking {
                 `when`(client.connect()).thenReturn(ConnectResult.Success)
                 `when`(client.authenticate(anyString() ?: "", any(AuthHandler::class.java) ?: fallbackHandler))
@@ -92,6 +98,10 @@ class SSHJumpHostTest {
             ssh.connect(this, dispatchers(), "UTF-8")
             val opened = clients.constructed()
             assertEquals(3, opened.size)
+            assertEquals(
+                listOf("rsa-sha2-512", "ecdsa-sha2-nistp256", "ssh-ed25519"),
+                configs.map { it.hostKeyAlgorithms.substringBefore(',') },
+            )
             val order = inOrder(*opened.toTypedArray())
             order.verify(opened[0]).connect()
             order.verify(opened[0]).authenticate(anyString() ?: "", any(AuthHandler::class.java) ?: fallbackHandler)

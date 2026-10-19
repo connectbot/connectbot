@@ -189,6 +189,13 @@ open class SSH : AbsTransport {
         }
     }
 
+    internal fun preferredHostKeyAlgorithms(currentHost: Host, supported: String): String {
+        val known = manager?.hostRepository?.getHostKeyAlgorithmsForHostBlocking(currentHost.id).orEmpty().toSet()
+        // Keep the library's security policy and relative preference within each group.
+        // Other algorithms must remain enabled so authenticated host key updates can learn them.
+        return supported.split(',').sortedBy { it !in known }.joinToString(",")
+    }
+
     inner class ConnectBotHostKeyVerifier(private val verifyHost: Host? = host) : HostKeyVerifier {
         override suspend fun verify(key: org.connectbot.sshlib.PublicKey): Boolean {
             val hostId = verifyHost?.id ?: return false
@@ -706,6 +713,7 @@ open class SSH : AbsTransport {
                 this.host = jumpHost.hostname
                 this.port = jumpHost.port
             }
+            this.hostKeyAlgorithms = preferredHostKeyAlgorithms(jumpHost, this.hostKeyAlgorithms)
             this.hostKeyVerifier = ConnectBotHostKeyVerifier(jumpHost)
             this.enableCompression = jumpHost.compression
             this.ipVersion = parseIpVersion(jumpHost.ipVersion, jumpHost.hostname)
@@ -897,6 +905,7 @@ open class SSH : AbsTransport {
                 this.host = currentHost.hostname
                 this.port = currentHost.port
             }
+            this.hostKeyAlgorithms = preferredHostKeyAlgorithms(currentHost, this.hostKeyAlgorithms)
             this.hostKeyVerifier = ConnectBotHostKeyVerifier(currentHost)
             this.enableCompression = compressionEnabled
             this.ipVersion = parseIpVersion(currentHost.ipVersion, currentHost.hostname)
