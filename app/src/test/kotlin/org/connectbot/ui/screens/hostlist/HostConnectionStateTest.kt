@@ -51,7 +51,7 @@ class HostConnectionStateTest {
         val dispatcher = UnconfinedTestDispatcher(testScheduler)
         Dispatchers.setMain(dispatcher)
         try {
-            val host = Host(id = 1L, nickname = "dropped")
+            val host = Host(nickname = "dropped")
             val attention = SessionAttention()
             attention.onOutput()
             attention.onEnded(DisconnectReason.NETWORK_LOST)
