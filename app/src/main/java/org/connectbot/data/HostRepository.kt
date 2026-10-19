@@ -72,7 +72,7 @@ class HostRepository @Inject constructor(
             savedHost.id,
             getAutomation(sourceId).map { action ->
                 action.copy(
-                    id = UUID.randomUUID().toString(),
+                    id = UUID.randomUUID(),
                     hostId = savedHost.id,
                     forwardId = action.forwardId?.let { forwardIds[it] },
                 )

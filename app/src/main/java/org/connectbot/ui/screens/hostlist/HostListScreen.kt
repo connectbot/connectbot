@@ -90,9 +90,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.connectbot.R
+import org.connectbot.data.EntityIds
 import org.connectbot.data.JsonImportReader
 import org.connectbot.data.JsonImportTooLargeException
-import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.service.DisconnectReason

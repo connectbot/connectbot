@@ -41,7 +41,7 @@ interface AutomationActionDao {
 
     @Transaction
     suspend fun replace(hostId: UUID, actions: List<AutomationAction>) {
-        require(actions.all { it.hostId == hostId && UUID.fromString(it.id).toString() == it.id })
+        require(actions.all { it.hostId == hostId })
         require(actions.map { it.id }.distinct().size == actions.size)
         deleteByHost(hostId)
         insert(actions.mapIndexed { position, action -> action.copy(position = position) })

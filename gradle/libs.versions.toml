@@ -7,6 +7,7 @@ easylauncher = "6.4.1"
 pythonUv = "0.4.31"
 appVersioning = "1.6.0"
 room = "2.8.5"
+asm = "9.10.1"
 ksp = "2.3.12"
 hilt = "2.60.1"
 hiltNavigationCompose = "1.4.0"
@@ -60,6 +61,7 @@ biometric = "1.4.0-alpha02"
 core = "1.19.1"
 
 [libraries]
+asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
 telnetlib = { module = "org.connectbot.telnetlib:telnetlib", version.ref = "telnetlib" }
 telnetlib-ktor = { module = "org.connectbot.telnetlib:telnetlib-ktor", version.ref = "telnetlib" }
 sshlib = { module = "org.connectbot.sshlib:sshlib", version.ref = "sshlib" }

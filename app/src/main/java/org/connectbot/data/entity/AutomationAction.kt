@@ -52,7 +52,7 @@ enum class AutomationFailurePolicy { STOP, CONTINUE }
     indices = [Index("host_id")],
 )
 data class AutomationAction(
-    @PrimaryKey val id: String = UUID.randomUUID().toString(),
+    @PrimaryKey val id: UUID = UUID.randomUUID(),
     @ColumnInfo(name = "host_id") val hostId: UUID,
     val position: Int = 0,
     val type: AutomationActionType = AutomationActionType.SEND_TEXT,

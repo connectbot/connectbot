@@ -111,7 +111,7 @@ class UuidMigrationTest {
                 val forward = room.portForwardDao().getByHost(target.id).single()
                 assertFalse(forward.startEnabled)
                 val action = room.automationActionDao().getByHost(target.id).single()
-                assertEquals("00000000-0000-0000-0000-000000000007", action.id)
+                assertEquals(UUID.fromString("00000000-0000-0000-0000-000000000007"), action.id)
                 assertEquals(forward.id, action.forwardId)
             }
             assertEquals(jump.id, target.jumpHostId)

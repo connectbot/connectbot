@@ -318,6 +318,7 @@ android {
         }
         getByName("androidTest") {
             kotlin.directories.add("src/sharedTest/kotlin")
+            assets.directories.add("schemas")
         }
     }
 
@@ -673,6 +674,7 @@ dependencies {
     androidTestUtil(libs.androidx.test.orchestrator)
 
     testImplementation(libs.junit)
+    testImplementation(libs.asm)
     testImplementation(libs.androidx.test.core)
     testImplementation(libs.androidx.test.ext.junit)
     testImplementation(libs.mockito.core)

@@ -91,6 +91,7 @@ import org.connectbot.ui.components.SpecialCharVisualTransformation
 import org.connectbot.util.TerminalKeyModifiers
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
+import java.util.UUID
 
 @StringRes
 internal fun AutomationActionType.title(): Int = when (this) {
@@ -158,7 +159,7 @@ fun AutomationEditorScreen(
     val list = rememberLazyListState()
     val reorderableState = rememberReorderableLazyListState(list) { from, to ->
         if (!state.saving && to.index in state.actions.indices) {
-            viewModel.move(from.key as String, to.index)
+            viewModel.move(from.key as UUID, to.index)
             haptic.performHapticFeedback(HapticFeedbackType.SegmentFrequentTick)
         }
     }
