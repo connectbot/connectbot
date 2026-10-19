@@ -109,13 +109,17 @@ class HostEditorScreenTest {
     }
 
     @Test
+    @Config(qualifiers = "w411dp-h200dp")
     fun automationRowAlignsWithPreferencesAndRequiresSavedHost() {
         navigateToHostEditorScreen(-1L)
         val automationTitle = composeTestRule.activity.getString(R.string.hostpref_postlogin_title)
         val precedingTitle = composeTestRule.activity.getString(R.string.hostpref_quickdisconnect_title)
+        // Measure each label while visible: boundsInRoot is clipped to the viewport.
+        val preceding = composeTestRule.onNodeWithText(precedingTitle, useUnmergedTree = true)
+            .performScrollTo().assertIsDisplayed().fetchSemanticsNode().boundsInRoot
         composeTestRule.onNodeWithText(automationTitle).performScrollTo().assertIsNotEnabled()
-        val automation = composeTestRule.onNodeWithText(automationTitle, useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
-        val preceding = composeTestRule.onNodeWithText(precedingTitle, useUnmergedTree = true).fetchSemanticsNode().boundsInRoot
+        val automation = composeTestRule.onNodeWithText(automationTitle, useUnmergedTree = true)
+            .assertIsDisplayed().fetchSemanticsNode().boundsInRoot
         assertEquals(preceding.left, automation.left, 0.5f)
     }
 
