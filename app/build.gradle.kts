@@ -4,9 +4,12 @@ import org.gradle.api.provider.Property
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.OutputDirectory
 import org.gradle.api.tasks.TaskAction
+import org.gradle.api.tasks.compile.JavaCompile
 import org.gradle.api.tasks.testing.Test
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.net.URI
+import java.util.UUID
 import java.util.zip.ZipInputStream
 
 abstract class PrepareOssMoshArtifacts : DefaultTask() {
@@ -344,6 +347,46 @@ android {
 
 ksp {
     arg("room.schemaLocation", "$projectDir/schemas")
+}
+
+// Use compiler outputs rather than AGP's optional instrumentation intermediates.
+tasks.register<Sync>("stageSonarClasses") {
+    group = "verification"
+    description = "Stages compiled classes for isolated SonarCloud analysis"
+    into(layout.buildDirectory.dir("sonar-classes"))
+    for (variant in listOf("OssDebug", "GoogleDebug")) {
+        for ((kind, suffix) in listOf("main" to "", "test" to "UnitTest")) {
+            val variantPath = variant.replaceFirstChar { it.lowercaseChar() }
+            from(tasks.named<KotlinCompile>("compile${variant}${suffix}Kotlin").flatMap { it.destinationDirectory }) {
+                include("**/*.class")
+                into("$kind/$variantPath/kotlin")
+            }
+            from(tasks.named<JavaCompile>("compile${variant}${suffix}JavaWithJavac").flatMap { it.destinationDirectory }) {
+                include("**/*.class")
+                into("$kind/$variantPath/java")
+            }
+        }
+    }
+}
+
+// Export dependency data without sharing Gradle caches with the authenticated scanner.
+tasks.register<Sync>("stageSonarLibraries") {
+    group = "verification"
+    description = "Stages dependency JARs for isolated SonarCloud analysis"
+    into(layout.buildDirectory.dir("sonar-libraries"))
+    for (variant in listOf("OssDebug", "GoogleDebug")) {
+        from(tasks.named<JavaCompile>("compile${variant}JavaWithJavac").map { it.classpath }) {
+            include("*.jar")
+            // Android dependencies can share the filename classes.jar.
+            eachFile {
+                name = "${UUID.nameUUIDFromBytes(file.absolutePath.toByteArray())}-$name"
+            }
+            into(variant)
+        }
+    }
+    from(androidComponents.sdkComponents.bootClasspath) {
+        into("android")
+    }
 }
 
 val sonarJavaBinaries = mutableListOf<Provider<String>>()

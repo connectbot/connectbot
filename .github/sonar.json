@@ -1,0 +1,32 @@
+{
+  "project_key": "connectbot_connectbot",
+  "organization": "connectbot",
+  "properties": {
+    "sonar.projectName": "ConnectBot",
+    "sonar.sources": "app/src/main/java,app/src/main/res,app/src/debug/java,app/src/oss/java,app/src/google/java",
+    "sonar.tests": "app/src/test,app/src/androidTest,app/src/sharedTest,app/src/testOss,app/src/testGoogle,app/src/androidTestOss",
+    "sonar.exclusions": "app/src/main/java/com/google/ase/**,app/src/main/java/de/mud/**,app/src/main/java/org/apache/**,app/src/main/java/org/keyczar/**,app/src/main/java/org/openintents/**",
+    "sonar.sourceEncoding": "UTF-8",
+    "sonar.java.source": "17"
+  },
+  "artifact_paths": {
+    "sonar.java.binaries": [
+      "classes/main/*/*"
+    ],
+    "sonar.java.test.binaries": [
+      "classes/test/*/*"
+    ],
+    "sonar.coverage.jacoco.xmlReportPaths": [
+      "reports/kover/reportOssDebug.xml",
+      "reports/kover/reportGoogleDebug.xml",
+      "reports/androidTest/oss/report.xml",
+      "reports/androidTest/google/report.xml"
+    ],
+    "sonar.java.libraries": [
+      "libraries/*/*.jar"
+    ],
+    "sonar.java.test.libraries": [
+      "libraries/*/*.jar"
+    ]
+  }
+}

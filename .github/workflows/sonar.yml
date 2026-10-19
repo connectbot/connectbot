@@ -1,0 +1,50 @@
+name: SonarCloud
+
+on:
+  workflow_run:
+    workflows: [PR Checks, Continuous Integration]
+    types: [completed]
+
+permissions:
+  contents: read
+  actions: read
+  pull-requests: read
+
+jobs:
+  inputs:
+    name: Check analysis inputs
+    if: >-
+      github.event.workflow_run.conclusion == 'success' &&
+      (github.event.workflow_run.event == 'pull_request' ||
+       github.event.workflow_run.event == 'push' ||
+       github.event.workflow_run.event == 'schedule')
+    runs-on: ubuntu-latest
+    outputs:
+      available: ${{ steps.artifact.outputs.available }}
+    steps:
+      # Documentation-only PRs have no analysis artifact.
+      - name: Check for analysis artifact
+        id: artifact
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.event.workflow_run.id }}
+          ARTIFACT_NAME: sonar-inputs-${{ github.event.workflow_run.run_attempt }}
+        run: |
+          available=$(gh api --paginate "repos/${GH_REPO}/actions/runs/${RUN_ID}/artifacts" | \
+            jq -r --arg name "$ARTIFACT_NAME" \
+              '.artifacts[] | select(.name == $name and .expired == false) | .id')
+          if [[ -n "$available" ]]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+          fi
+
+  sonar:
+    needs: inputs
+    if: needs.inputs.outputs.available == 'true'
+    uses: connectbot/actions/.github/workflows/sonar-analysis.yml@1fb083321b9e15f94a05f50e4e8ac812cab09d84
+    with:
+      producer_workflow: ${{ github.event.workflow_run.name == 'PR Checks' && '.github/workflows/pr-checks.yml' || '.github/workflows/ci.yml' }}
+      artifact_prefix: sonar-inputs
+      config_path: .github/sonar.json
+    secrets:
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
