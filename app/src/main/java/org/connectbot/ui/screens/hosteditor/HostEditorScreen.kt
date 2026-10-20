@@ -76,12 +76,14 @@ import org.connectbot.R
 import org.connectbot.data.EntityIds
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.HostCryptoConfig
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.data.entity.TelnetEchoMode
 import org.connectbot.data.entity.TelnetNegotiationMode
 import org.connectbot.data.entity.TelnetNewlinePolicy
 import org.connectbot.data.entity.TelnetNonBinaryPolicy
+import org.connectbot.sshlib.SshCryptoPolicy
 import org.connectbot.ui.PreviewScreen
 import org.connectbot.ui.common.getIconColors
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
@@ -105,9 +107,15 @@ fun HostEditorScreen(
     onNavigateToKnownHosts: (UUID) -> Unit = {},
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    androidx.lifecycle.compose.LifecycleResumeEffect(viewModel) {
+        viewModel.refreshAlgorithms()
+        onPauseOrDispose { }
+    }
 
     HostEditorScreenContent(
         hostId = uiState.hostId,
+        onCryptoChange = viewModel::updateCrypto,
+        onResolveCrypto = viewModel::resolveCrypto,
         uiState = uiState,
         onNavigateBack = onNavigateBack,
         onNavigateToKnownHosts = onNavigateToKnownHosts,
@@ -173,6 +181,8 @@ fun HostEditorScreenContent(
     onClearPassword: () -> Unit,
     onSaveHost: suspend () -> Boolean,
     modifier: Modifier = Modifier,
+    onCryptoChange: (HostCryptoConfig) -> Unit = {},
+    onResolveCrypto: suspend (HostCryptoConfig) -> SshCryptoPolicy? = { null },
     onCancelMoshInstall: () -> Unit = {},
     onTelnetEchoModeChange: (TelnetEchoMode) -> Unit = {},
     onTelnetNegotiationModeChange: (TelnetNegotiationMode) -> Unit = {},
@@ -305,7 +315,34 @@ fun HostEditorScreenContent(
                         .padding(top = 8.dp),
                     singleLine = true,
                 )
+            }
 
+            // Color selector
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+            ColorSelector(
+                selectedColor = uiState.color,
+                onColorSelect = onColorChange,
+            )
+
+            // Profile selector
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+            ProfileSelector(
+                profileId = uiState.profileId,
+                availableProfiles = uiState.availableProfiles,
+                onProfileSelect = onProfileChange,
+                onEditProfile = onNavigateToProfile,
+            )
+
+            // Pubkey selector
+            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+            PubkeySelector(
+                pubkeyId = uiState.pubkeyId,
+                availablePubkeys = uiState.availablePubkeys,
+                onPubkeySelect = onPubkeyChange,
+            )
+
+            if (uiState.protocol != "local") {
+                HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -330,15 +367,14 @@ fun HostEditorScreenContent(
                 }
 
                 if (showAdvancedOptions) {
-                    // IP version selector (disabled for literal IP addresses)
-                    IpVersionSelector(
-                        ipVersion = uiState.ipVersion,
-                        hostname = uiState.hostname,
-                        onIpVersionSelect = onIpVersionChange,
-                        modifier = Modifier.padding(top = 8.dp),
-                    )
-
                     if (uiState.protocol == "telnet") {
+                        // IP version selector (disabled for literal IP addresses)
+                        IpVersionSelector(
+                            ipVersion = uiState.ipVersion,
+                            hostname = uiState.hostname,
+                            onIpVersionSelect = onIpVersionChange,
+                            modifier = Modifier.padding(top = 8.dp),
+                        )
                         TelnetOptionSelector(
                             label = stringResource(R.string.telnet_echo_title),
                             summary = stringResource(R.string.telnet_echo_summary),
@@ -473,60 +509,42 @@ fun HostEditorScreenContent(
                                 Text(stringResource(R.string.hostpref_clear_password))
                             }
                         }
-
-                        if (hostId != EntityIds.NONE) {
-                            Row(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .clickable { onNavigateToKnownHosts(hostId) }
-                                    .padding(vertical = 8.dp)
-                                    .testTag("known_host_keys_preference"),
-                                verticalAlignment = Alignment.CenterVertically,
-                            ) {
-                                Column(modifier = Modifier.weight(1f)) {
-                                    Text(
-                                        text = stringResource(R.string.hostpref_known_hosts_title),
-                                        style = MaterialTheme.typography.bodyLarge,
-                                    )
-                                    Text(
-                                        text = stringResource(R.string.hostpref_known_hosts_summary),
-                                        style = MaterialTheme.typography.bodyMedium,
-                                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                    )
-                                }
-                                Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null)
-                            }
-                        }
                     }
                 }
             }
 
-            // Color selector
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-            ColorSelector(
-                selectedColor = uiState.color,
-                onColorSelect = onColorChange,
-            )
+            // SSH policy and host identity follow the authentication key selection.
+            if (showAdvancedOptions && (uiState.protocol == "ssh" || uiState.protocol == "mosh")) {
+                HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+                CryptoPolicyEditor(uiState.crypto, uiState.algorithmCatalog, uiState.algorithmDefaults, onCryptoChange, onResolveCrypto, uiState.defaultMinimumRsaBits, uiState.defaultMinimumDhBits)
+                if (hostId != EntityIds.NONE) {
+                    HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable { onNavigateToKnownHosts(hostId) }
+                            .padding(vertical = 8.dp)
+                            .testTag("known_host_keys_preference"),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = stringResource(R.string.hostpref_known_hosts_title),
+                                style = MaterialTheme.typography.bodyLarge,
+                            )
+                            Text(
+                                text = stringResource(R.string.hostpref_known_hosts_summary),
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                            )
+                        }
+                        Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null)
+                    }
+                }
+            }
 
-            // Pubkey selector
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-            PubkeySelector(
-                pubkeyId = uiState.pubkeyId,
-                availablePubkeys = uiState.availablePubkeys,
-                onPubkeySelect = onPubkeyChange,
-            )
-
-            // Profile selector
-            HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
-            ProfileSelector(
-                profileId = uiState.profileId,
-                availableProfiles = uiState.availableProfiles,
-                onProfileSelect = onProfileChange,
-                onEditProfile = onNavigateToProfile,
-            )
-
-            // Jump host selector (for SSH and Mosh protocols)
-            if (uiState.protocol == "ssh" || uiState.protocol == "mosh") {
+            // Jump host selector (advanced SSH and Mosh settings)
+            if (showAdvancedOptions && (uiState.protocol == "ssh" || uiState.protocol == "mosh")) {
                 HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))
                 JumpHostSelector(
                     jumpHostId = uiState.jumpHostId,
@@ -563,6 +581,17 @@ fun HostEditorScreenContent(
                 checked = uiState.compression,
                 onCheckedChange = onCompressionChange,
             )
+
+            // Address-family overrides are less common than authentication and routing settings.
+            if (showAdvancedOptions && (uiState.protocol == "ssh" || uiState.protocol == "mosh")) {
+                // IP version selector (disabled for literal IP addresses)
+                IpVersionSelector(
+                    ipVersion = uiState.ipVersion,
+                    hostname = uiState.hostname,
+                    onIpVersionSelect = onIpVersionChange,
+                    modifier = Modifier.padding(top = 8.dp),
+                )
+            }
 
             // Want session
             HorizontalDivider(modifier = Modifier.padding(vertical = 16.dp))

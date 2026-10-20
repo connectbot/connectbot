@@ -36,6 +36,8 @@ import org.connectbot.R
 import org.connectbot.ui.screens.console.ConnectionDetails
 import org.connectbot.ui.screens.console.ConnectionStatus
 import org.connectbot.util.HostConstants
+import org.connectbot.util.cryptoPolicyTitleRes
+import org.connectbot.util.titleRes
 import java.util.Locale
 
 @Composable
@@ -71,6 +73,16 @@ fun ConnectionInfoDialog(details: ConnectionDetails, onDismiss: () -> Unit) {
                         item { ConnectionInfoField(stringResource(R.string.connection_info_local_address), address) }
                     }
                     if (details.host.protocol == "ssh" || details.host.protocol == "mosh") {
+                        details.cryptoPolicies.forEach { policy ->
+                            item { ConnectionInfoField(stringResource(R.string.crypto_policy_host, policy.host), cryptoPolicyTitleRes(policy.preset)?.let { stringResource(it) } ?: policy.preset) }
+                            if (policy.minimumRsaBits != null && policy.minimumDhBits != null) {
+                                item { ConnectionInfoField(stringResource(R.string.crypto_minimums), stringResource(R.string.crypto_minimum_values, policy.minimumRsaBits, policy.minimumDhBits)) }
+                            }
+                            policy.warnings.forEach { warning ->
+                                item { Text(stringResource(R.string.crypto_connection_warning, policy.host, stringResource(warning.category.titleRes()), warning.algorithm, stringResource(warning.reason.titleRes()))) }
+                            }
+                            policy.error?.let { error -> item { Text(error) } }
+                        }
                         if (details.portForwards.isNotEmpty()) {
                             item { Text(stringResource(R.string.connection_info_port_forwards), style = MaterialTheme.typography.titleSmall) }
                             details.portForwards.forEach { forward ->

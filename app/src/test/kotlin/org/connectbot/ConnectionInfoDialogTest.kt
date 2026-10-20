@@ -17,6 +17,7 @@
 
 package org.connectbot
 
+import android.content.Context
 import androidx.activity.ComponentActivity
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.ui.test.assertIsDisplayed
@@ -26,8 +27,13 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
 import androidx.compose.ui.test.performScrollToNode
+import androidx.test.core.app.ApplicationProvider
 import org.connectbot.data.entity.Host
+import org.connectbot.sshlib.AlgorithmCategory
+import org.connectbot.sshlib.AlgorithmPolicyWarning
+import org.connectbot.sshlib.AlgorithmPolicyWarningReason
 import org.connectbot.sshlib.ConnectionInfo
+import org.connectbot.transport.SshPolicyDetails
 import org.connectbot.ui.components.ConnectionInfoDialog
 import org.connectbot.ui.screens.console.ConnectionDetails
 import org.connectbot.ui.screens.console.ConnectionStatus
@@ -126,5 +132,52 @@ class ConnectionInfoDialogTest {
         scrollTo("Not bound")
         scrollTo("Inactive")
         compose.onNodeWithText("Destination").assertDoesNotExist()
+    }
+
+    @Test
+    fun moshRetainsPolicyWarningsAfterSshBootstrap() {
+        val warning = AlgorithmPolicyWarning(AlgorithmCategory.KEX, "future@example.com", AlgorithmPolicyWarningReason.UNSUPPORTED)
+        val policy = SshPolicyDetails("jump", "CUSTOM", 3072, 2048, listOf(warning))
+        show(details.copy(host = details.host.copy(protocol = "mosh"), cryptoPolicies = listOf(policy)))
+        scrollTo("Cryptographic policy — jump")
+        scrollTo("RSA: 3072 bits; finite-field DH: 2048 bits")
+        scrollTo("Warning — jump: Key exchange algorithms: future@example.com skipped (not implemented by this library).")
+    }
+
+    @Test
+    fun unknownPolicyAndMissingLimitsStillShowFailureDetails() {
+        val policy = SshPolicyDetails("destination", "NEW-POLICY", error = "No usable host keys")
+        show(details.copy(cryptoPolicies = listOf(policy)))
+        scrollTo("NEW-POLICY")
+        scrollTo("No usable host keys")
+        compose.onNodeWithText("Minimum key sizes").assertDoesNotExist()
+    }
+
+    @Test
+    fun partiallyAvailableLimitsAreNotDisplayedAsCompleteRequirements() {
+        val policy = SshPolicyDetails("destination", "DEFAULT", minimumRsaBits = 3072)
+        show(details.copy(cryptoPolicies = listOf(policy)))
+        scrollTo("Cryptographic policy — destination")
+        compose.onNodeWithText("Minimum key sizes").assertDoesNotExist()
+    }
+
+    @Test
+    fun diagnosticWarningsExplainAllRuntimeFilteringReasons() {
+        val warnings = listOf(
+            AlgorithmPolicyWarning(AlgorithmCategory.CIPHER, "cipher", AlgorithmPolicyWarningReason.UNAVAILABLE),
+            AlgorithmPolicyWarning(AlgorithmCategory.MAC, "mac", AlgorithmPolicyWarningReason.DH_TOO_SMALL),
+            AlgorithmPolicyWarning(AlgorithmCategory.PUBKEY, "key", AlgorithmPolicyWarningReason.RSA_TOO_SMALL),
+        )
+        val policy = SshPolicyDetails("destination", "LEGACY", warnings = warnings)
+        show(details.copy(cryptoPolicies = listOf(policy)))
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val messages = listOf(
+            R.string.crypto_category_cipher to R.string.crypto_reason_unavailable,
+            R.string.crypto_category_mac to R.string.crypto_reason_dh_small,
+            R.string.crypto_category_pubkey to R.string.crypto_reason_rsa_small,
+        )
+        warnings.zip(messages).forEach { (warning, resources) ->
+            scrollTo(context.getString(R.string.crypto_connection_warning, "destination", context.getString(resources.first), warning.algorithm, context.getString(resources.second)))
+        }
     }
 }

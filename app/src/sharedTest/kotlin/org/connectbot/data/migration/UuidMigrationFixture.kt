@@ -31,6 +31,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import androidx.sqlite.db.SupportSQLiteOpenHelper
 import androidx.sqlite.db.framework.FrameworkSQLiteOpenHelperFactory
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.DatabaseSchema
 import org.connectbot.data.EntityIds
 import org.connectbot.di.DatabaseModule
 import org.connectbot.util.HostConstants
@@ -197,7 +198,8 @@ class UuidMigrationFixture(base: Context, private val readSchema: (Int) -> Strin
 
     fun verifyPreservation(database: ConnectBotDatabase) {
         val db = database.openHelper.writableDatabase
-        assertEquals(15, db.version)
+        val currentVersion = DatabaseSchema.load(context).version
+        assertEquals(currentVersion, db.version)
         assertHealthy(db)
         val after = snapshot(db::query)
         val mappings = mappings(db)
@@ -232,7 +234,7 @@ class UuidMigrationFixture(base: Context, private val readSchema: (Int) -> Strin
                 assertEquals(rows.map { it.getValue("id") }.toSet(), mappings.keys.filter { it.first == table }.map { it.second }.toSet())
             }
         }
-        val currentSchema = JSONObject(readSchema(15)).getJSONObject("database").getJSONArray("entities")
+        val currentSchema = JSONObject(readSchema(currentVersion)).getJSONObject("database").getJSONArray("entities")
         for (i in 0 until currentSchema.length()) {
             val entity = currentSchema.getJSONObject(i)
             val table = entity.getString("tableName")

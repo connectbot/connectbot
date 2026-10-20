@@ -30,7 +30,7 @@ import java.io.File
 class UuidHistoricalMigrationTest(private val version: Int) {
     companion object {
         @JvmStatic
-        @Parameters(name = "v{0} to v15")
+        @Parameters(name = "v{0} to current")
         fun versions(): List<Array<Int>> = (1..14).map { arrayOf(it) }
     }
 

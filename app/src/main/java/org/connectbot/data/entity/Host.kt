@@ -19,6 +19,7 @@ package org.connectbot.data.entity
 
 import android.net.Uri
 import androidx.room.ColumnInfo
+import androidx.room.Embedded
 import androidx.room.Entity
 import androidx.room.Index
 import androidx.room.PrimaryKey
@@ -45,6 +46,9 @@ data class Host(
 
     @ColumnInfo(name = "temporary", defaultValue = "0")
     val isTemporary: Boolean = false,
+
+    @Embedded
+    val crypto: HostCryptoConfig = HostCryptoConfig(),
 
     val nickname: String = "",
 

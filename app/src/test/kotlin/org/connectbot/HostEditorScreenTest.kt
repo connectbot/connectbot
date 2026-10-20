@@ -213,7 +213,7 @@ class HostEditorScreenTest {
         composeTestRule.onNodeWithText("Port").performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.hostpref_ipversion_title)).assertDoesNotExist()
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.hostpref_password_title)).assertDoesNotExist()
-        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.hostpref_jumphost_title)).performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.hostpref_jumphost_title)).assertDoesNotExist()
         composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.hostpref_postlogin_title)).performScrollTo().assertIsDisplayed()
     }
 
@@ -254,12 +254,15 @@ class HostEditorScreenTest {
 
         val passwordLabel = composeTestRule.activity.getString(R.string.hostpref_password_title)
         val ipVersionLabel = composeTestRule.activity.getString(R.string.hostpref_ipversion_title)
+        val jumpHostLabel = composeTestRule.activity.getString(R.string.hostpref_jumphost_title)
+        composeTestRule.onNodeWithText(jumpHostLabel).performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithText(ipVersionLabel).performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithText(passwordLabel).performScrollTo().performTextInput("secret")
         composeTestRule.onNodeWithText("Hide advanced options").performScrollTo().performClick()
 
         composeTestRule.onNodeWithText(ipVersionLabel).assertDoesNotExist()
         composeTestRule.onNodeWithText(passwordLabel).assertDoesNotExist()
+        composeTestRule.onNodeWithText(jumpHostLabel).assertDoesNotExist()
         composeTestRule.onNodeWithText("My Server").performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithText("example.com").performScrollTo().assertIsDisplayed()
         composeTestRule.onNodeWithTag("add_host_button").assertIsDisplayed()
@@ -332,7 +335,13 @@ class HostEditorScreenTest {
 
     @Test
     fun hostEditorScreen_existingSshHost_opensKnownHostKeys() {
-        navigateToHostEditorScreen(UUID(0, 42))
+        val host = runBlocking {
+            repository.saveHost(Host(id = UUID(0, 42), nickname = "SSH Server", username = "user", hostname = "example.com"))
+        }
+        navigateToHostEditorScreen(host.id)
+        composeTestRule.waitUntil(timeoutMillis = 5_000) {
+            composeTestRule.onAllNodesWithText("SSH Server").fetchSemanticsNodes().isNotEmpty()
+        }
 
         composeTestRule.onNodeWithText("Show advanced options").performScrollTo().performClick()
         composeTestRule.onNodeWithTag("known_host_keys_preference").performScrollTo().performClick()

@@ -84,6 +84,7 @@ class ConsoleViewModel @Inject constructor(
             },
             localAddress = transport?.getLocalIpAddress(),
             ssh = transport?.getSshConnectionInfo(),
+            cryptoPolicies = transport?.getSshPolicyDetails().orEmpty(),
             portForwards = transport?.getPortForwards().orEmpty().map { forward ->
                 val forwarder = forward.getIdentifier() as? PortForwarder
                 PortForwardDetails(

@@ -24,6 +24,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.currentCoroutineContext
+import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -36,6 +38,7 @@ import org.connectbot.data.HostRepository
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.PubkeyRepository
 import org.connectbot.data.entity.Host
+import org.connectbot.data.entity.HostCryptoConfig
 import org.connectbot.data.entity.Profile
 import org.connectbot.data.entity.Pubkey
 import org.connectbot.data.entity.TelnetEchoMode
@@ -43,7 +46,11 @@ import org.connectbot.data.entity.TelnetNegotiationMode
 import org.connectbot.data.entity.TelnetNewlinePolicy
 import org.connectbot.data.entity.TelnetNonBinaryPolicy
 import org.connectbot.di.CoroutineDispatchers
+import org.connectbot.sshlib.AlgorithmCategory
+import org.connectbot.sshlib.SshAlgorithm
+import org.connectbot.sshlib.SshCryptoPolicy
 import org.connectbot.transport.Transport
+import org.connectbot.util.CryptoProviderState
 import org.connectbot.util.HostConstants
 import org.connectbot.util.InstallMosh
 import org.connectbot.util.SecurePasswordStorage
@@ -51,6 +58,11 @@ import java.util.UUID
 import javax.inject.Inject
 
 data class HostEditorUiState(
+    val crypto: HostCryptoConfig = HostCryptoConfig(),
+    val algorithmCatalog: Map<AlgorithmCategory, List<SshAlgorithm>> = emptyMap(),
+    val algorithmDefaults: Map<AlgorithmCategory, List<String>> = emptyMap(),
+    val defaultMinimumRsaBits: Int? = null,
+    val defaultMinimumDhBits: Int? = null,
     val hostId: UUID = EntityIds.NONE,
     val nickname: String = "",
     val protocol: String = "ssh",
@@ -178,6 +190,7 @@ class HostEditorViewModel @Inject constructor(
                     val hasPassword = securePasswordStorage.hasPassword(hostId)
                     _uiState.update {
                         it.copy(
+                            crypto = host.crypto,
                             nickname = host.nickname,
                             protocol = host.protocol,
                             username = host.username,
@@ -239,6 +252,30 @@ class HostEditorViewModel @Inject constructor(
         // Only the first nickname entry for a new host can populate connection fields.
         if (!isFocused && hasEnteredNickname) {
             nicknameAutofillEnabled = false
+        }
+    }
+
+    fun updateCrypto(value: HostCryptoConfig) {
+        _uiState.update { it.copy(crypto = value, hasUnsavedChanges = true) }
+    }
+
+    suspend fun resolveCrypto(value: HostCryptoConfig): SshCryptoPolicy {
+        CryptoProviderState.ensureLoaded(context, dispatchers)
+        return withContext(dispatchers.default) { value.resolve() }
+    }
+
+    fun refreshAlgorithms() {
+        viewModelScope.launch {
+            try {
+                CryptoProviderState.ensureLoaded(context, dispatchers)
+                val (catalog, defaults) = withContext(dispatchers.default) {
+                    SshCryptoPolicy.catalog() to SshCryptoPolicy.resolve()
+                }
+                _uiState.update { it.copy(algorithmCatalog = catalog, algorithmDefaults = defaults.algorithms, defaultMinimumRsaBits = defaults.minimumRsaBits, defaultMinimumDhBits = defaults.minimumDhBits) }
+            } catch (e: Exception) {
+                currentCoroutineContext().ensureActive()
+                _uiState.update { it.copy(error = e.message) }
+            }
         }
     }
 
@@ -408,6 +445,9 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(isSaving = true, error = null) }
         try {
             val state = _uiState.value
+            if (state.protocol == "ssh" || state.protocol == "mosh") {
+                withContext(dispatchers.default) { state.crypto.resolve() }
+            }
             val existingHost = if (hostId != EntityIds.NONE) {
                 repository.findHostById(hostId)
             } else {
@@ -420,6 +460,7 @@ class HostEditorViewModel @Inject constructor(
             val host = Host(
                 id = existingHost?.id ?: UUID.randomUUID(),
                 repositoryId = existingHost?.repositoryId ?: EntityIds.LOCAL,
+                crypto = state.crypto,
                 nickname = state.nickname,
                 protocol = state.protocol,
                 username = state.username,

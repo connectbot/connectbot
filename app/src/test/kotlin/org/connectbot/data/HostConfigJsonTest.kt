@@ -124,6 +124,7 @@ class HostConfigJsonTest {
 
         val host = database.hostDao().getAll().single()
         assertThat(host.nickname).isEqualTo("branch-host")
+        assertThat(host.crypto).isEqualTo(org.connectbot.data.entity.HostCryptoConfig())
         assertThat(host.telnetEchoMode).isEqualTo(TelnetEchoMode.AUTO)
         assertThat(host.telnetNegotiationMode).isEqualTo(TelnetNegotiationMode.INTERACTIVE)
         assertThat(host.telnetNonBinaryPolicy).isEqualTo(TelnetNonBinaryPolicy.EIGHT_BIT_COMPATIBILITY)
