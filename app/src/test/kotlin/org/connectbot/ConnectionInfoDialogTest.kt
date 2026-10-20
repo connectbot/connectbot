@@ -165,7 +165,7 @@ class ConnectionInfoDialogTest {
     fun diagnosticWarningsExplainAllRuntimeFilteringReasons() {
         val warnings = listOf(
             AlgorithmPolicyWarning(AlgorithmCategory.CIPHER, "cipher", AlgorithmPolicyWarningReason.UNAVAILABLE),
-            AlgorithmPolicyWarning(AlgorithmCategory.MAC, "mac", AlgorithmPolicyWarningReason.DH_TOO_SMALL),
+            AlgorithmPolicyWarning(AlgorithmCategory.KEX, "diffie-hellman-group14-sha256", AlgorithmPolicyWarningReason.DH_TOO_SMALL),
             AlgorithmPolicyWarning(AlgorithmCategory.PUBKEY, "key", AlgorithmPolicyWarningReason.RSA_TOO_SMALL),
         )
         val policy = SshPolicyDetails("destination", "LEGACY", warnings = warnings)
@@ -173,7 +173,7 @@ class ConnectionInfoDialogTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val messages = listOf(
             R.string.crypto_category_cipher to R.string.crypto_reason_unavailable,
-            R.string.crypto_category_mac to R.string.crypto_reason_dh_small,
+            R.string.crypto_category_kex to R.string.crypto_reason_dh_small,
             R.string.crypto_category_pubkey to R.string.crypto_reason_rsa_small,
         )
         warnings.zip(messages).forEach { (warning, resources) ->
