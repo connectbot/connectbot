@@ -34,6 +34,7 @@ import kotlinx.coroutines.currentCoroutineContext
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.ensureActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import org.connectbot.R
 import org.connectbot.data.entity.Host
@@ -52,6 +53,8 @@ import org.connectbot.sshlib.AgentProvider
 import org.connectbot.sshlib.AgentResult
 import org.connectbot.sshlib.AgentSignatureFlags
 import org.connectbot.sshlib.AgentSigningContext
+import org.connectbot.sshlib.AlgorithmCategory
+import org.connectbot.sshlib.AlgorithmPolicyWarning
 import org.connectbot.sshlib.AuthHandler
 import org.connectbot.sshlib.AuthPublicKey
 import org.connectbot.sshlib.AuthResult
@@ -64,15 +67,18 @@ import org.connectbot.sshlib.PortForwarder
 import org.connectbot.sshlib.SessionExit
 import org.connectbot.sshlib.SshClient
 import org.connectbot.sshlib.SshClientConfig
+import org.connectbot.sshlib.SshCryptoPolicy
 import org.connectbot.sshlib.SshKeys
 import org.connectbot.sshlib.SshSession
 import org.connectbot.sshlib.SshSigning
 import org.connectbot.sshlib.transport.IpVersion
 import org.connectbot.sshlib.transport.TransportFactory
+import org.connectbot.util.CryptoProviderState
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PubkeyUtils
 import org.connectbot.util.SshKeyType
 import org.connectbot.util.UrlUtils
+import org.connectbot.util.titleRes
 import timber.log.Timber
 import java.io.IOException
 import java.math.BigInteger
@@ -85,6 +91,7 @@ import java.security.PrivateKey
 import java.security.interfaces.RSAPublicKey
 import java.util.Locale
 import java.util.UUID
+import java.util.concurrent.ConcurrentHashMap
 import java.util.regex.Pattern
 
 /**
@@ -109,6 +116,64 @@ open class SSH : AbsTransport {
 
     @Volatile
     private var lastConnectionInfo: ConnectionInfo? = null
+    private val policyDetails = ConcurrentHashMap<UUID, SshPolicyDetails>()
+    private val policyClients = ConcurrentHashMap<SshClient, Host>()
+
+    override fun getSshPolicyDetails(): List<SshPolicyDetails> = policyDetails.values.toList()
+
+    private fun outputPolicyWarnings(currentHost: Host, warnings: List<AlgorithmPolicyWarning>) {
+        warnings.forEach { warning ->
+            val res = manager?.res ?: return@forEach
+            bridge?.outputLine(res.getString(R.string.crypto_connection_warning, currentHost.nickname.ifBlank { currentHost.hostname }, res.getString(warning.category.titleRes()), warning.algorithm, res.getString(warning.reason.titleRes())))
+        }
+    }
+
+    private fun capturePolicyWarnings(sshClient: SshClient, currentHost: Host) {
+        recordPolicyWarnings(currentHost, sshClient.policyWarnings)
+    }
+
+    private fun recordPolicyWarnings(currentHost: Host, warnings: List<AlgorithmPolicyWarning>) {
+        var additional = emptyList<AlgorithmPolicyWarning>()
+        policyDetails.computeIfPresent(currentHost.id) { _, existing ->
+            additional = warnings.distinct().filterNot { it in existing.warnings }
+            existing.copy(warnings = existing.warnings + additional)
+        }
+        outputPolicyWarnings(currentHost, additional)
+    }
+
+    internal suspend fun resolveCryptoPolicy(currentHost: Host, dispatchers: CoroutineDispatchers): SshCryptoPolicy? = try {
+        val policy = withContext(dispatchers.default) { currentHost.crypto.resolve() }
+        val emptyCategory = policy.algorithms.entries.firstOrNull { it.value.isEmpty() }?.key
+        val error = emptyCategory?.let { manager?.res?.getString(R.string.crypto_no_algorithms, manager?.res?.getString(it.titleRes())) ?: "No usable algorithms: $it" }
+        policyDetails[currentHost.id] = SshPolicyDetails(currentHost.nickname.ifBlank { currentHost.hostname }, currentHost.crypto.preset, policy.minimumRsaBits, policy.minimumDhBits, policy.warnings, error)
+        outputPolicyWarnings(currentHost, policy.warnings)
+        if (error != null) {
+            bridge?.outputLine(error)
+            null
+        } else {
+            policy
+        }
+    } catch (e: Exception) {
+        currentCoroutineContext().ensureActive()
+        val error = manager?.res?.getString(R.string.crypto_policy_failed, currentHost.nickname.ifBlank { currentHost.hostname }, e.message.orEmpty()) ?: e.message.orEmpty()
+        policyDetails[currentHost.id] = SshPolicyDetails(currentHost.hostname, currentHost.crypto.preset, error = error)
+        bridge?.outputLine(error)
+        null
+    }
+
+    private fun policyHostKeyOrder(currentHost: Host, policy: SshCryptoPolicy): String {
+        val names = policy.algorithms.getValue(AlgorithmCategory.HOST_KEY)
+        val expression = currentHost.crypto.takeIf { it.preset == "CUSTOM" }?.hostKey
+        if (expression.isNullOrBlank()) return preferredHostKeyAlgorithms(currentHost, names.joinToString(","))
+        val rules = expression.split(',').map { it.trim() }
+        if (rules.first().first() !in "^+-") return names.joinToString(",")
+        val explicit = rules.map { it.drop(1) }.toSet()
+        val inherited = names.filter { it !in explicit }
+        val reordered = preferredHostKeyAlgorithms(currentHost, inherited.joinToString(",")).split(',').filter { it.isNotEmpty() }
+        val prepend = rules.filter { it.startsWith('^') }.map { it.drop(1) }.filter { it in names }
+        val append = rules.filter { it.startsWith('+') }.map { it.drop(1) }.filter { it in names }
+        return (prepend + reordered + append).joinToString(",")
+    }
 
     protected var client: SshClient? = null
     private var session: SshSession? = null
@@ -704,17 +769,20 @@ open class SSH : AbsTransport {
         }
     }
 
-    private suspend fun connectToJumpHost(jumpHost: Host, destination: Host, jumpTransportFactory: TransportFactory?): TransportFactory? {
+    private suspend fun connectToJumpHost(jumpHost: Host, destination: Host, jumpTransportFactory: TransportFactory?, dispatchers: CoroutineDispatchers): TransportFactory? {
         bridge?.outputLine(manager?.res?.getString(R.string.terminal_connecting_via_jump, jumpHost.nickname))
 
+        val policy = resolveCryptoPolicy(jumpHost, dispatchers) ?: return null
         val config = SshClientConfig {
+            cryptoPolicy(policy)
+            algorithmWarningHandler = { recordPolicyWarnings(jumpHost, listOf(it)) }
             if (jumpTransportFactory != null) {
                 this.transportFactory = jumpTransportFactory
             } else {
                 this.host = jumpHost.hostname
                 this.port = jumpHost.port
             }
-            this.hostKeyAlgorithms = preferredHostKeyAlgorithms(jumpHost, this.hostKeyAlgorithms)
+            this.hostKeyAlgorithms = policyHostKeyOrder(jumpHost, policy)
             this.hostKeyVerifier = ConnectBotHostKeyVerifier(jumpHost)
             this.enableCompression = jumpHost.compression
             this.ipVersion = parseIpVersion(jumpHost.ipVersion, jumpHost.hostname)
@@ -722,6 +790,7 @@ open class SSH : AbsTransport {
 
         jumpFailureReason = DisconnectReason.IO_ERROR
         val jumpClient = SshClient(config)
+        policyClients[jumpClient] = jumpHost
         synchronized(jumpClients) { jumpClients.add(jumpClient) }
         val connectResult = jumpClient.connect()
         if (connectResult !is ConnectResult.Success) {
@@ -849,6 +918,7 @@ open class SSH : AbsTransport {
                     },
                 )
 
+                capturePolicyWarnings(jumpClient, jumpHost)
                 currentCoroutineContext().ensureActive()
                 if (loginCancelled) throw LoginCancelled()
                 jumpFailureReason = if (result is AuthResult.Failure) DisconnectReason.AUTH_FAIL else DisconnectReason.IO_ERROR
@@ -873,6 +943,9 @@ open class SSH : AbsTransport {
 
     override suspend fun connect(scope: CoroutineScope, dispatchers: CoroutineDispatchers, encoding: String) {
         locallyClosed = false
+        policyDetails.clear()
+        policyClients.clear()
+        manager?.let { CryptoProviderState.ensureLoaded(it, dispatchers) }
         lastConnectionInfo = null
         connectionLossCause = null
         outputDrained = null
@@ -892,21 +965,28 @@ open class SSH : AbsTransport {
         var transportFactory: TransportFactory? = null
         for (index in jumpHosts.indices.reversed()) {
             val destination = if (index == 0) currentHost else jumpHosts[index - 1]
-            transportFactory = connectToJumpHost(jumpHosts[index], destination, transportFactory) ?: run {
+            transportFactory = connectToJumpHost(jumpHosts[index], destination, transportFactory, dispatchers) ?: run {
                 close()
                 if (bridge?.isDisconnected != true) onDisconnect(jumpFailureReason)
                 return
             }
         }
 
+        val policy = resolveCryptoPolicy(currentHost, dispatchers) ?: run {
+            close()
+            onDisconnect()
+            return
+        }
         val config = SshClientConfig {
+            cryptoPolicy(policy)
+            algorithmWarningHandler = { recordPolicyWarnings(currentHost, listOf(it)) }
             if (transportFactory != null) {
                 this.transportFactory = transportFactory
             } else {
                 this.host = currentHost.hostname
                 this.port = currentHost.port
             }
-            this.hostKeyAlgorithms = preferredHostKeyAlgorithms(currentHost, this.hostKeyAlgorithms)
+            this.hostKeyAlgorithms = policyHostKeyOrder(currentHost, policy)
             this.hostKeyVerifier = ConnectBotHostKeyVerifier(currentHost)
             this.enableCompression = compressionEnabled
             this.ipVersion = parseIpVersion(currentHost.ipVersion, currentHost.hostname)
@@ -916,6 +996,7 @@ open class SSH : AbsTransport {
         }
 
         client = SshClient(config)
+        client?.let { policyClients[it] = currentHost }
 
         try {
             when (val connectResult = client?.connect()) {
@@ -965,7 +1046,9 @@ open class SSH : AbsTransport {
         try {
             repeat(AUTH_TRIES) { attempt ->
                 if (!connected) return
+                val authenticatingClient = client
                 val result = authenticate()
+                authenticatingClient?.let { sshClient -> host?.let { capturePolicyWarnings(sshClient, it) } }
                 currentCoroutineContext().ensureActive()
                 when (result) {
                     is AuthResult.Success -> {
@@ -1023,6 +1106,8 @@ open class SSH : AbsTransport {
         }
 
         getSshConnectionInfo()
+        policyClients.forEach { (sshClient, currentHost) -> capturePolicyWarnings(sshClient, currentHost) }
+        policyClients.clear()
         locallyClosed = true
         connected = false
         sessionOpen = false

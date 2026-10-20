@@ -1829,4 +1829,119 @@
 	<string name="connection_info_forward_inactive">Inactive</string>
 	<!-- Destination address and port of a local or remote forward. -->
 	<string name="connection_info_forward_destination">Destination</string>
+
+    <!-- Cryptographic policy editor: policy title. -->
+    <string name="crypto_policy_title">Cryptographic policy</string>
+    <!-- Name of the standard SSH cryptographic policy in the host editor and connection details. -->
+    <string name="crypto_policy_default">Default</string>
+    <!-- Name of the stronger SSH cryptographic policy in the host editor and connection details. -->
+    <string name="crypto_policy_future">Future</string>
+    <!-- Name of the compatibility SSH cryptographic policy in the host editor and connection details. -->
+    <string name="crypto_policy_legacy">Legacy</string>
+    <!-- Cryptographic policy editor: policy fips. -->
+    <string name="crypto_policy_fips">FIPS algorithms</string>
+    <!-- Cryptographic policy editor: policy custom. -->
+    <string name="crypto_policy_custom">Custom</string>
+    <!-- Subtitle beneath Default in the cryptographic policy picker. -->
+    <string name="crypto_policy_default_subtitle">Recommended algorithms and key sizes</string>
+    <!-- Subtitle beneath Future in the cryptographic policy picker. -->
+    <string name="crypto_policy_future_subtitle">Require post-quantum key exchange</string>
+    <!-- Subtitle beneath FIPS algorithms in the cryptographic policy picker; this is not a validation claim. -->
+    <string name="crypto_policy_fips_subtitle">Restrict algorithms; not FIPS validated</string>
+    <!-- Subtitle beneath Legacy in the cryptographic policy picker. -->
+    <string name="crypto_policy_legacy_subtitle">Allow older algorithms for compatibility</string>
+    <!-- Subtitle beneath Custom in the cryptographic policy picker. -->
+    <string name="crypto_policy_custom_subtitle">Choose algorithms and minimum key sizes</string>
+    <!-- Cryptographic policy editor: policy default summary. -->
+    <string name="crypto_policy_default_summary">Modern algorithms and key-size requirements maintained by the SSH library.</string>
+    <!-- Cryptographic policy editor: policy future summary. -->
+    <string name="crypto_policy_future_summary">Requires post-quantum hybrid key exchange, 256-bit encryption keys, and stronger RSA keys.</string>
+    <!-- Cryptographic policy editor: policy fips summary. -->
+    <string name="crypto_policy_fips_summary">Restricts algorithm choices; does not establish FIPS validation.</string>
+    <!-- Cryptographic policy editor: policy legacy summary. -->
+    <string name="crypto_policy_legacy_summary">Allows older algorithms and smaller RSA and DH keys for compatibility. Modern algorithms remain preferred.</string>
+    <!-- Cryptographic policy editor: policy custom summary. -->
+    <string name="crypto_policy_custom_summary">Customize Default. Algorithm selections and key-size minimums are independent.</string>
+    <!-- Cryptographic policy editor: minimum rsa. -->
+    <string name="crypto_minimum_rsa">Minimum RSA bits</string>
+    <!-- Cryptographic policy editor: minimum dh. -->
+    <string name="crypto_minimum_dh">Minimum DH bits</string>
+    <!-- Cryptographic policy editor: inherit bits. -->
+    <string name="crypto_inherit_bits">Inherit Default (%1$d bits)</string>
+    <!-- Cryptographic policy editor: minimum summary. -->
+    <string name="crypto_minimum_summary">Leave empty to follow Default. Applies even to explicitly enabled algorithms.</string>
+    <!-- Cryptographic policy editor: minimum invalid. -->
+    <string name="crypto_minimum_invalid">Enter at least 1024 bits. DH must not exceed 8192 bits.</string>
+    <!-- Cryptographic policy editor: category kex. -->
+    <string name="crypto_category_kex">Key exchange algorithms</string>
+    <!-- Cryptographic policy editor: category cipher. -->
+    <string name="crypto_category_cipher">Cipher algorithms</string>
+    <!-- Cryptographic policy editor: category mac. -->
+    <string name="crypto_category_mac">Message authentication algorithms</string>
+    <!-- Cryptographic policy editor: category hostkey. -->
+    <string name="crypto_category_hostkey">Host key algorithms</string>
+    <!-- Cryptographic policy editor: category pubkey. -->
+    <string name="crypto_category_pubkey">Public-key authentication algorithms</string>
+    <!-- Cryptographic policy editor: mode title. -->
+    <string name="crypto_mode_title">Selection mode</string>
+    <!-- Cryptographic policy editor: mode default. -->
+    <string name="crypto_mode_default">Inherit Default</string>
+    <!-- Cryptographic policy editor: mode delta. -->
+    <string name="crypto_mode_delta">Modify Default</string>
+    <!-- Cryptographic policy editor: mode exact. -->
+    <string name="crypto_mode_exact">Use only these</string>
+    <!-- Cryptographic policy editor: apply. -->
+    <string name="crypto_apply">Apply</string>
+    <!-- Cryptographic policy editor: expression. -->
+    <string name="crypto_expression">Algorithm expression</string>
+    <!-- Cryptographic policy editor: expression help. -->
+    <string name="crypto_expression_help">Comma-separated names. In Modify Default, prefix every name with ^ (first), + (append), or - (exclude).</string>
+    <!-- Cryptographic policy editor: expression invalid. -->
+    <string name="crypto_expression_invalid">Use unique SSH names and one selection mode. Exact lists must not be empty.</string>
+    <!-- Cryptographic policy editor: effective order. -->
+    <string name="crypto_effective_order">Effective preference order</string>
+    <!-- Cryptographic policy editor: algorithm unavailable. -->
+    <string name="crypto_algorithm_unavailable">Unavailable on this device; retained in your configuration</string>
+    <!-- Cryptographic policy editor: algorithm filtered. -->
+    <string name="crypto_algorithm_filtered">Excluded by the key-size minimum</string>
+    <!-- Cryptographic policy editor: algorithm default. -->
+    <string name="crypto_algorithm_default">Enabled in Default</string>
+    <!-- Cryptographic policy editor: algorithm optional. -->
+    <string name="crypto_algorithm_optional">Available; not enabled in Default</string>
+    <!-- Cryptographic policy editor: prepend. -->
+    <string name="crypto_prepend">Prefer first</string>
+    <!-- Cryptographic policy editor: append. -->
+    <string name="crypto_append">Append</string>
+    <!-- Cryptographic policy editor: exclude. -->
+    <string name="crypto_exclude">Exclude</string>
+    <!-- Cryptographic policy editor: inherit. -->
+    <string name="crypto_inherit">Follow Default</string>
+    <!-- Cryptographic policy editor: reason unsupported. -->
+    <string name="crypto_reason_unsupported">not implemented by this library</string>
+    <!-- Cryptographic policy editor: reason unavailable. -->
+    <string name="crypto_reason_unavailable">unavailable with the installed crypto providers</string>
+    <!-- Cryptographic policy editor: reason dh small. -->
+    <string name="crypto_reason_dh_small">DH group is smaller than the configured minimum</string>
+    <!-- Cryptographic policy editor: reason rsa small. -->
+    <string name="crypto_reason_rsa_small">key or certificate does not satisfy the RSA or certificate policy</string>
+    <!-- Connection output and Connection Info warning. Arguments: host or hop name, algorithm category, algorithm name, localized reason. -->
+    <string name="crypto_connection_warning">Warning — %1$s: %2$s: %3$s skipped (%4$s).</string>
+    <!-- Cryptographic policy editor: no algorithms. -->
+    <string name="crypto_no_algorithms">Cryptographic policy leaves no usable %1$s.</string>
+    <!-- Cryptographic policy editor: policy failed. -->
+    <string name="crypto_policy_failed">Cryptographic policy failed for %1$s: %2$s</string>
+    <!-- Cryptographic policy editor: policy host. -->
+    <string name="crypto_policy_host">Cryptographic policy — %1$s</string>
+    <!-- Cryptographic policy editor: minimums. -->
+    <string name="crypto_minimums">Minimum key sizes</string>
+    <!-- Cryptographic policy editor: minimum values. -->
+    <string name="crypto_minimum_values">RSA: %1$d bits; finite-field DH: %2$d bits</string>
+    <!-- Button above the algorithm list that reveals the resolved algorithm preference order. -->
+    <string name="crypto_show_effective_order">Show effective preference order</string>
+    <!-- Button above the algorithm list that collapses the resolved algorithm preference order. -->
+    <string name="crypto_hide_effective_order">Hide effective preference order</string>
+    <!-- Accessibility label for the square that expands an algorithm row’s state choices. -->
+    <string name="crypto_change_algorithm_state">Change state for %1$s</string>
+    <!-- Legend for the four algorithm override buttons, shown in the custom delta editor. -->
+    <string name="crypto_states_help">^ Prefer first · + Append · ✓ Follow Default · − Exclude</string>
 </resources>

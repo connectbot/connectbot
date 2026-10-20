@@ -19,6 +19,7 @@ package org.connectbot.ui.screens.console
 
 import org.connectbot.data.entity.Host
 import org.connectbot.sshlib.ConnectionInfo
+import org.connectbot.transport.SshPolicyDetails
 
 /** A snapshot of the selected connection for display in the console. */
 data class ConnectionDetails(
@@ -27,6 +28,7 @@ data class ConnectionDetails(
     val localAddress: String?,
     val ssh: ConnectionInfo?,
     val portForwards: List<PortForwardDetails> = emptyList(),
+    val cryptoPolicies: List<SshPolicyDetails> = emptyList(),
 )
 
 enum class ConnectionStatus {

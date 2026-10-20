@@ -64,9 +64,8 @@ import org.connectbot.data.entity.Pubkey
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.sshlib.SshSigning
 import org.connectbot.transport.TransportFactory
+import org.connectbot.util.CryptoProviderState
 import org.connectbot.util.PreferenceConstants
-import org.connectbot.util.ProviderLoader
-import org.connectbot.util.ProviderLoaderListener
 import org.connectbot.util.PubkeyUtils
 import timber.log.Timber
 import java.io.IOException
@@ -85,8 +84,7 @@ import javax.inject.Inject
 class TerminalManager :
     Service(),
     BridgeDisconnectedListener,
-    OnSharedPreferenceChangeListener,
-    ProviderLoaderListener {
+    OnSharedPreferenceChangeListener {
 
     private val _bridges = ArrayList<TerminalBridge>()
     private val _bridgesFlow = MutableStateFlow<List<TerminalBridge>>(emptyList())
@@ -326,7 +324,7 @@ class TerminalManager :
         connectivityMonitor = ConnectivityMonitor(this, lockingWifi)
         connectivityMonitor.init()
 
-        ProviderLoader.load(this, this)
+        scope.launch(dispatchers.main) { CryptoProviderState.ensureLoaded(this@TerminalManager, dispatchers) }
     }
 
     private fun updateSavingKeys() {
@@ -793,14 +791,6 @@ class TerminalManager :
     private fun stopIdleTimer() {
         idleJob?.cancel()
         idleJob = null
-    }
-
-    override fun onProviderLoaderSuccess() {
-        Timber.d("Installed crypto provider successfully")
-    }
-
-    override fun onProviderLoaderError() {
-        Timber.e("Failure while installing crypto provider")
     }
 
     inner class TerminalBinder : Binder() {

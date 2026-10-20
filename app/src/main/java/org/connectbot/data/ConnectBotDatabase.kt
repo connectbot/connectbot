@@ -21,6 +21,7 @@ import androidx.room.AutoMigration
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.AutoMigrationSpec
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import org.connectbot.data.dao.AutomationActionDao
@@ -69,6 +70,7 @@ import java.util.UUID
  * - Version 13: Added bold_as_bright to profiles, defaulting to enabled (AutoMigration)
  * - Version 14: Added per-host Telnet compatibility preferences (AutoMigration)
  * - Version 15: UUID repository identities and legacy identity mappings (manual migration)
+ * - Version 16: Added per-host cryptographic policies (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -86,7 +88,7 @@ import java.util.UUID
         Profile::class,
         AutomationAction::class,
     ],
-    version = 15,
+    version = 16,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -100,6 +102,7 @@ import java.util.UUID
         AutoMigration(from = 11, to = 12),
         AutoMigration(from = 12, to = 13),
         AutoMigration(from = 13, to = 14),
+        AutoMigration(from = 15, to = 16, spec = CryptoPolicyMigration::class),
     ],
 )
 @TypeConverters(Converters::class)
@@ -284,5 +287,12 @@ abstract class ConnectBotDatabase : RoomDatabase() {
                 db.execSQL("CREATE INDEX IF NOT EXISTS `index_hosts_protocol_username_hostname_port` ON `hosts` (`protocol`, `username`, `hostname`, `port`)")
             }
         }
+    }
+}
+
+/** Rebuild the portable-column update predicate after adding host configuration columns. */
+class CryptoPolicyMigration : AutoMigrationSpec {
+    override fun onPostMigrate(db: SupportSQLiteDatabase) {
+        db.execSQL("DROP TRIGGER IF EXISTS sync_hosts_update")
     }
 }

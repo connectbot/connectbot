@@ -252,6 +252,8 @@ abstract class AbsTransport {
     /** Negotiated SSH details, retained after disconnect or Mosh handoff. */
     open fun getSshConnectionInfo(): ConnectionInfo? = null
 
+    open fun getSshPolicyDetails(): List<SshPolicyDetails> = emptyList()
+
     /**
      * Called when the application goes to background.
      * Used by Mosh to signal SIGSTOP to the mosh-client process.
