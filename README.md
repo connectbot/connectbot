@@ -38,13 +38,15 @@ two versions:
 
 ### Major dependencies
 
-The ConnectBot app that uses two other libraries to provide its functionality:
+The ConnectBot app uses these libraries to provide its functionality:
 * [ConnectBot Terminal](https://github.com/connectbot/termlib) &mdash; the
   terminal emulator used by the app is also created and maintained by the
   ConnectBot author, Kenny Root.
-* [ConnectBot fork of Trilead SSH-2](https://github.com/connectbot/sshlib)
-  &mdash; a heavily modified fork of the original Trilead SSH-2 Java library
-  written by Christian Plattner.
+* [ConnectBot SSH (cbssh)](https://github.com/connectbot/cbssh) &mdash; a
+  Kotlin SSH client library for authentication, interactive shells, SFTP,
+  and port forwarding.
+* [ConnectBot Telnet (cbtelnet)](https://github.com/connectbot/cbtelnet)
+  &mdash; a Kotlin Telnet client library with coroutine-based sessions.
 
 ## Compiling
 
