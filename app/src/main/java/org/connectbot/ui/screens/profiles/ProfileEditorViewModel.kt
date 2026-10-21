@@ -41,6 +41,7 @@ import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
 import org.connectbot.util.TerminalFontProvider
+import org.connectbot.util.TerminalFontWeight
 import java.nio.charset.Charset
 import java.util.UUID
 import javax.inject.Inject
@@ -53,6 +54,7 @@ data class ProfileEditorUiState(
     val availableColorSchemes: List<ColorScheme> = emptyList(),
     val fontFamily: String? = null,
     val fontSize: Int = 10,
+    val fontWeight: Int = TerminalFontWeight.NORMAL,
     val boldAsBright: Boolean = true,
     val keyboardLayoutId: UUID? = null,
     val delKey: String = "del",
@@ -175,6 +177,7 @@ class ProfileEditorViewModel @Inject constructor(
                         colorSchemeId = profile.colorSchemeId,
                         fontFamily = profile.fontFamily,
                         fontSize = profile.fontSize,
+                        fontWeight = profile.fontWeight,
                         boldAsBright = profile.boldAsBright,
                         delKey = profile.delKey,
                         inlineImages = profile.inlineImages,
@@ -230,6 +233,11 @@ class ProfileEditorViewModel @Inject constructor(
 
     fun updateFontSize(value: Int) {
         _uiState.update { it.copy(fontSize = value, hasUnsavedChanges = true) }
+    }
+
+    fun updateFontWeight(value: Int) {
+        if (value !in TerminalFontWeight.availableWeights()) return
+        _uiState.update { it.copy(fontWeight = value, hasUnsavedChanges = true) }
     }
 
     fun updateBoldAsBright(value: Boolean) {
@@ -297,6 +305,7 @@ class ProfileEditorViewModel @Inject constructor(
                 colorSchemeId = state.colorSchemeId,
                 fontFamily = state.fontFamily,
                 fontSize = state.fontSize,
+                fontWeight = state.fontWeight,
                 boldAsBright = state.boldAsBright,
                 delKey = state.delKey,
                 inlineImages = state.inlineImages,

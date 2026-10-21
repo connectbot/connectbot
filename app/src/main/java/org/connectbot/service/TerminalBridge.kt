@@ -75,6 +75,7 @@ import org.connectbot.transport.AbsTransport
 import org.connectbot.transport.TransportFactory
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.TerminalFontWeight
 import org.connectbot.util.TerminalKeyModifiers
 import timber.log.Timber
 import java.io.IOException
@@ -342,6 +343,9 @@ class TerminalBridge {
     /** Font family from profile for terminal display */
     val fontFamily: String?
 
+    private val _fontWeightFlow = MutableStateFlow(TerminalFontWeight.NORMAL)
+    val fontWeightFlow: StateFlow<Int> = _fontWeightFlow.asStateFlow()
+
     /** Force size rows from profile (null = auto-size) */
     var profileForceSizeRows: Int? = null
         private set
@@ -458,6 +462,7 @@ class TerminalBridge {
         // Store encoding and font family from profile for later use
         encoding = profile.encoding
         fontFamily = profile.fontFamily
+        _fontWeightFlow.value = profile.fontWeight
 
         // Store force size from profile
         profileForceSizeRows = profile.forceSizeRows
@@ -695,6 +700,7 @@ class TerminalBridge {
      * Apply profile settings to the terminal.
      */
     private fun applyProfileSettings(profile: Profile) {
+        _fontWeightFlow.value = profile.fontWeight
         if (inlineImagesSetting != profile.inlineImages) {
             inlineImagesSetting = profile.inlineImages
             terminalEmulator.setInlineImages(sessionInlineImages.policy(inlineImagesSetting))

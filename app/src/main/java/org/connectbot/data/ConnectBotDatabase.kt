@@ -80,6 +80,7 @@ import java.util.UUID
  * - Version 17: UUID keyboard layouts, buttons, macros, and host/profile layout selection (AutoMigration)
  *   Includes fit-to-width sizing, preset template keys, five keyboard layers, shared automation macros,
  *   and per-button colors, background opacity, outlines, hold repeat, haptic feedback, and a fixed trailing-edge pinned region.
+ * - Version 18: Added base font weight to profiles, defaulting to normal (AutoMigration)
  * - Future versions: Use Room AutoMigration when possible for simple schema changes
  *
  * Security Considerations:
@@ -101,7 +102,7 @@ import java.util.UUID
         KeyboardMacro::class,
         KeyboardSettings::class,
     ],
-    version = 17,
+    version = 18,
     exportSchema = true,
     autoMigrations = [
         AutoMigration(from = 1, to = 2),
@@ -117,10 +118,18 @@ import java.util.UUID
         AutoMigration(from = 13, to = 14),
         AutoMigration(from = 15, to = 16, spec = CryptoPolicyMigration::class),
         AutoMigration(from = 16, to = 17, spec = ConnectBotDatabase.KeyboardMigration::class),
+        AutoMigration(from = 17, to = 18, spec = ConnectBotDatabase.FontWeightMigration::class),
     ],
 )
 @TypeConverters(Converters::class)
 abstract class ConnectBotDatabase : RoomDatabase() {
+    class FontWeightMigration : AutoMigrationSpec {
+        override fun onPostMigrate(db: SupportSQLiteDatabase) {
+            // Recreated on open so font weight edits participate in profile sync.
+            db.execSQL("DROP TRIGGER IF EXISTS sync_profiles_update")
+        }
+    }
+
     abstract fun automationActionDao(): AutomationActionDao
     class KeyboardMigration : AutoMigrationSpec {
         override fun onPostMigrate(db: SupportSQLiteDatabase) {

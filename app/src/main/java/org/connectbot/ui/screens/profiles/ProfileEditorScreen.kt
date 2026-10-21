@@ -69,11 +69,13 @@ import org.connectbot.data.entity.ColorScheme
 import org.connectbot.ui.common.getIconColors
 import org.connectbot.ui.common.getLocalizedColorSchemeDescription
 import org.connectbot.ui.common.getLocalizedFontDisplayName
+import org.connectbot.ui.common.getLocalizedFontWeightName
 import org.connectbot.ui.components.EditorScaffold
 import org.connectbot.ui.components.FontDownloadProgressDialog
 import org.connectbot.ui.screens.keyboard.KeyboardLayoutSelector
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
+import org.connectbot.util.TerminalFontWeight
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -234,6 +236,14 @@ fun ProfileEditorScreen(
 
                 Spacer(modifier = Modifier.height(16.dp))
 
+                FontWeightSelector(
+                    fontWeight = uiState.fontWeight,
+                    onSelectFontWeight = viewModel::updateFontWeight,
+                    modifier = Modifier.fillMaxWidth(),
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
                 FontSizeSelector(
                     fontSize = uiState.fontSize,
                     onFontSizeChange = { viewModel.updateFontSize(it) },
@@ -329,12 +339,6 @@ private fun FontFamilySelector(
     val allOptions = presetOptions + customOptions + localOptions
 
     Column(modifier = modifier) {
-        Text(
-            text = stringResource(R.string.profile_editor_font_family_title),
-            style = MaterialTheme.typography.titleMedium,
-            modifier = Modifier.padding(bottom = 8.dp),
-        )
-
         ExposedDropdownMenuBox(
             expanded = expanded,
             onExpandedChange = { expanded = it },
@@ -342,6 +346,7 @@ private fun FontFamilySelector(
             OutlinedTextField(
                 value = getLocalizedFontDisplayName(fontFamily),
                 onValueChange = {},
+                label = { Text(stringResource(R.string.profile_editor_font_family_title)) },
                 readOnly = true,
                 singleLine = true,
                 trailingIcon = {
@@ -369,6 +374,49 @@ private fun FontFamilySelector(
                 }
             }
         }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun FontWeightSelector(
+    fontWeight: Int,
+    onSelectFontWeight: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    var expanded by remember { mutableStateOf(false) }
+    val options = TerminalFontWeight.availableWeights().map { weight ->
+        weight to getLocalizedFontWeightName(weight)
+    }
+    val effectiveWeight = TerminalFontWeight.effectiveWeight(fontWeight)
+    Column(modifier = modifier) {
+        ExposedDropdownMenuBox(expanded = expanded, onExpandedChange = { expanded = it }) {
+            OutlinedTextField(
+                value = options.firstOrNull { it.first == effectiveWeight }?.second ?: options.first().second,
+                onValueChange = {},
+                label = { Text(stringResource(R.string.profile_font_weight)) },
+                readOnly = true,
+                singleLine = true,
+                trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded) },
+                modifier = Modifier.menuAnchor(ExposedDropdownMenuAnchorType.PrimaryNotEditable).fillMaxWidth(),
+            )
+            ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+                options.forEach { (weight, label) ->
+                    DropdownMenuItem(
+                        text = { Text(label) },
+                        onClick = {
+                            onSelectFontWeight(weight)
+                            expanded = false
+                        },
+                    )
+                }
+            }
+        }
+        Text(
+            text = stringResource(R.string.profile_font_weight_summary),
+            style = MaterialTheme.typography.bodySmall,
+            modifier = Modifier.padding(top = 4.dp),
+        )
     }
 }
 

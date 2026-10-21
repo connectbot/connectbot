@@ -34,6 +34,7 @@ import org.connectbot.data.ProfileRepository
 import org.connectbot.data.entity.Profile
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.HostConstants
+import org.connectbot.util.TerminalFontWeight
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -46,6 +47,7 @@ import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.`when`
 import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 import java.util.UUID
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -88,6 +90,7 @@ class ProfileEditorViewModelTest {
         val vm = ProfileEditorViewModel(handle, profileRepository, colorSchemeRepository, sharedPreferences, context, dispatchers, keyboard)
         vm.updateName("Development")
         vm.updateEncoding("UTF-8")
+        vm.updateFontWeight(TerminalFontWeight.MEDIUM)
         val layout = org.connectbot.data.keyboard.KeyboardLayout(name = "Custom")
         val draft = org.connectbot.data.keyboard.KeyboardDraft(layout, org.connectbot.data.keyboard.KeyboardDefaults.items(layout.id))
         vm.updateKeyboardDraft(draft)
@@ -97,6 +100,7 @@ class ProfileEditorViewModelTest {
         val restoredSnapshot = java.io.ObjectInputStream(java.io.ByteArrayInputStream(bytes)).use { it.readObject() as ProfileEditorUiState }
         val restored = ProfileEditorViewModel(SavedStateHandle(mapOf("formDraft" to restoredSnapshot, "pendingKeyboard" to draft)), profileRepository, colorSchemeRepository, sharedPreferences, context, dispatchers, keyboard)
         assertEquals("Development", restored.uiState.value.name)
+        assertEquals(TerminalFontWeight.MEDIUM, restored.uiState.value.fontWeight)
         assertEquals(layout.id, restored.uiState.value.keyboardLayoutId)
         assertEquals(draft, restored.keyboardDraft.value)
         assertTrue(restored.uiState.value.hasUnsavedChanges)
@@ -158,6 +162,62 @@ class ProfileEditorViewModelTest {
         assertTrue(viewModel.uiState.value.saveError != null)
         viewModel.updateKeyboardLayoutId(UUID.randomUUID())
         assertEquals(null, viewModel.uiState.value.saveError)
+    }
+
+    @Test
+    fun fontWeightDefaultsToNormalAndSavesSelection() = runTest {
+        val viewModel = createViewModel()
+        assertEquals(TerminalFontWeight.NORMAL, viewModel.uiState.value.fontWeight)
+        assertEquals(TerminalFontWeight.NORMAL, Profile.createDefault().fontWeight)
+        viewModel.updateName("Heavy")
+        `when`(profileRepository.nameExists("Heavy", null)).thenReturn(false)
+        viewModel.updateFontWeight(TerminalFontWeight.SEMIBOLD)
+        assertTrue(viewModel.uiState.value.hasUnsavedChanges)
+        viewModel.save {}
+        val captured = ArgumentCaptor.forClass(Profile::class.java)
+        verify(profileRepository).save(captured.capture() ?: Profile(name = "unused"))
+        assertEquals(TerminalFontWeight.SEMIBOLD, captured.value.fontWeight)
+        assertTrue(captured.value.boldAsBright)
+    }
+
+    @Test
+    @Config(sdk = [27])
+    fun fontWeightLoadsSavedSelection() = runTest {
+        `when`(profileRepository.getById(UUID(0, 2))).thenReturn(Profile(id = UUID(0, 2), name = "Heavy", fontWeight = TerminalFontWeight.SEMIBOLD))
+        val viewModel = ProfileEditorViewModel(
+            SavedStateHandle(mapOf("profileId" to UUID(0, 2).toString())),
+            profileRepository,
+            colorSchemeRepository,
+            sharedPreferences,
+            context,
+            dispatchers,
+            org.mockito.Mockito.mock(org.connectbot.data.keyboard.KeyboardRepository::class.java),
+        )
+        assertEquals(TerminalFontWeight.SEMIBOLD, viewModel.uiState.value.fontWeight)
+        assertFalse(viewModel.uiState.value.hasUnsavedChanges)
+    }
+
+    @Test
+    @Config(sdk = [27])
+    fun olderAndroidOnlyAcceptsRegularAndBold() {
+        val viewModel = createViewModel()
+        viewModel.updateFontWeight(TerminalFontWeight.MEDIUM)
+        viewModel.updateFontWeight(TerminalFontWeight.SEMIBOLD)
+        assertEquals(TerminalFontWeight.NORMAL, viewModel.uiState.value.fontWeight)
+        assertFalse(viewModel.uiState.value.hasUnsavedChanges)
+
+        viewModel.updateFontWeight(TerminalFontWeight.BOLD)
+        assertEquals(TerminalFontWeight.BOLD, viewModel.uiState.value.fontWeight)
+        viewModel.updateFontWeight(TerminalFontWeight.NORMAL)
+        assertEquals(TerminalFontWeight.NORMAL, viewModel.uiState.value.fontWeight)
+    }
+
+    @Test
+    fun unsupportedFontWeightDoesNotChangeProfile() {
+        val viewModel = createViewModel()
+        viewModel.updateFontWeight(-1)
+        assertEquals(TerminalFontWeight.NORMAL, viewModel.uiState.value.fontWeight)
+        assertFalse(viewModel.uiState.value.hasUnsavedChanges)
     }
 
     @Test

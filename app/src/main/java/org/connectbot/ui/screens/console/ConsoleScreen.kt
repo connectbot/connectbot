@@ -165,6 +165,7 @@ import org.connectbot.ui.theme.terminal
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.UrlUtils
 import org.connectbot.util.rememberTerminalTypefaceResultFromStoredValue
+import org.connectbot.util.terminalTypefaceWithWeight
 import timber.log.Timber
 import java.util.UUID
 import kotlin.math.abs
@@ -411,6 +412,10 @@ private fun ConsoleTerminalPage(
         val fontResult = rememberTerminalTypefaceResultFromStoredValue(bridge.fontFamily)
         val coroutineScope = rememberCoroutineScope()
         val fontSize by bridge.fontSizeFlow.collectAsState()
+        val fontWeight by bridge.fontWeightFlow.collectAsState()
+        val terminalTypeface = remember(fontResult.typeface, fontWeight) {
+            terminalTypefaceWithWeight(fontResult.typeface, fontWeight)
+        }
         val delKeyMode by bridge.delKeyModeFlow.collectAsState()
 
         LaunchedEffect(bridge, isActive) {
@@ -436,7 +441,7 @@ private fun ConsoleTerminalPage(
                 )
                 .then(terminalModifier)
                 .testTag("terminal"),
-            typeface = fontResult.typeface,
+            typeface = terminalTypeface,
             initialFontSize = fontSize.sp,
             keyboardEnabled = true,
             showSoftKeyboard = showSoftwareKeyboard && isActive,

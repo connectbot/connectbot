@@ -85,14 +85,11 @@ import org.connectbot.data.EntityIds
 import org.connectbot.terminal.ImeShortcutInputMode
 import org.connectbot.ui.ObservePermissionOnResume
 import org.connectbot.ui.PreviewScreen
-import org.connectbot.ui.common.getLocalizedFontDisplayName
 import org.connectbot.ui.components.FontDownloadProgressDialog
 import org.connectbot.ui.components.TextInputAlertDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.LanguageDownloadState
-import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.PreferenceConstants
-import org.connectbot.util.TerminalFont
 import org.connectbot.util.ThemeMode
 import org.connectbot.util.isNotificationPermissionGranted
 import org.xmlpull.v1.XmlPullParser
@@ -191,7 +188,6 @@ fun SettingsScreen(
         onScrollbackChange = viewModel::updateScrollback,
         onAddCustomTerminalType = viewModel::addCustomTerminalType,
         onRemoveCustomTerminalType = viewModel::removeCustomTerminalType,
-        onFontFamilyChange = viewModel::updateFontFamily,
         onAddCustomFont = viewModel::addCustomFont,
         onRemoveCustomFont = viewModel::removeCustomFont,
         onClearFontError = viewModel::clearFontValidationError,
@@ -240,7 +236,6 @@ fun SettingsScreenContent(
     onScrollbackChange: (String) -> Unit,
     onAddCustomTerminalType: (String) -> Unit,
     onRemoveCustomTerminalType: (String) -> Unit,
-    onFontFamilyChange: (String) -> Unit,
     onAddCustomFont: (String) -> Unit,
     onRemoveCustomFont: (String) -> Unit,
     onClearFontError: () -> Unit,
@@ -430,31 +425,11 @@ fun SettingsScreenContent(
             }
 
             item {
-                // Build combined font list: presets + custom fonts + local fonts
-                // Only show downloadable preset fonts if Google Play Services is available
-                val presetEntries = if (BuildConfig.HAS_DOWNLOADABLE_FONTS) {
-                    TerminalFont.entries.map { it.displayName to it.name }
-                } else {
-                    // In OSS builds, only show System Default (which doesn't require download)
-                    listOf(TerminalFont.SYSTEM_DEFAULT.displayName to TerminalFont.SYSTEM_DEFAULT.name)
-                }
-                val customEntries = if (BuildConfig.HAS_DOWNLOADABLE_FONTS) {
-                    uiState.customFonts.map { it to TerminalFont.createCustomFontValue(it) }
-                } else {
-                    emptyList()
-                }
-                val localEntries = uiState.localFonts.map { (displayName, fileName) ->
-                    displayName to LocalFontProvider.createLocalFontValue(fileName)
-                }
-                val allEntries = presetEntries + customEntries + localEntries
+                PreferenceCategory(title = stringResource(R.string.pref_fonts_category))
+            }
 
-                ListPreference(
-                    title = stringResource(R.string.pref_fontfamily_title),
-                    summary = getLocalizedFontDisplayName(uiState.fontFamily),
-                    value = uiState.fontFamily,
-                    entries = allEntries,
-                    onValueChange = onFontFamilyChange,
-                )
+            item {
+                ListItem { Text(stringResource(R.string.pref_fonts_profile_guidance)) }
             }
 
             // Only show downloadable fonts UI if Google Play Services is available
@@ -1572,7 +1547,6 @@ private fun SettingsScreenPreview() {
             onScrollbackChange = {},
             onAddCustomTerminalType = {},
             onRemoveCustomTerminalType = {},
-            onFontFamilyChange = {},
             onAddCustomFont = {},
             onRemoveCustomFont = {},
             onClearFontError = {},

@@ -18,6 +18,7 @@
 package org.connectbot.util
 
 import android.graphics.Typeface
+import android.os.Build
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -221,4 +222,21 @@ fun rememberTerminalTypefaceFromStoredValue(
 fun rememberTerminalFontProvider(): TerminalFontProvider {
     val context = LocalContext.current
     return remember { TerminalFontProvider(context) }
+}
+
+/** Apply the profile's base weight without changing the selected font family. */
+internal fun terminalTypefaceWithWeight(typeface: Typeface, weight: Int): Typeface {
+    val normalizedWeight = TerminalFontWeight.effectiveWeight(weight)
+    return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+        Typeface.create(typeface, normalizedWeight, typeface.isItalic)
+    } else {
+        // Older Android releases expose only normal and bold styles.
+        val style = when {
+            normalizedWeight == TerminalFontWeight.BOLD && typeface.isItalic -> Typeface.BOLD_ITALIC
+            normalizedWeight == TerminalFontWeight.BOLD -> Typeface.BOLD
+            typeface.isItalic -> Typeface.ITALIC
+            else -> Typeface.NORMAL
+        }
+        Typeface.create(typeface, style)
+    }
 }
