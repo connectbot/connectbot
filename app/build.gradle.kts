@@ -618,6 +618,7 @@ dependencies {
     implementation(libs.androidx.preference)
     implementation(libs.material)
     implementation(libs.timber)
+    implementation(libs.slf4j.api)
     implementation(libs.re2j)
     implementation(libs.reorderable)
 

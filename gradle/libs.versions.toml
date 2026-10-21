@@ -33,6 +33,7 @@ conscrypt = "2.7.0"
 conscryptOpenJdk = "2.7.0"
 coroutines = "1.11.0"
 timber = "5.0.1"
+slf4j = "2.0.20"
 re2j = "1.8"
 reorderable = "3.1.0"
 
@@ -61,6 +62,7 @@ biometric = "1.4.0-alpha02"
 core = "1.19.1"
 
 [libraries]
+slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
 asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
 telnetlib = { module = "org.connectbot.telnetlib:telnetlib", version.ref = "telnetlib" }
 telnetlib-ktor = { module = "org.connectbot.telnetlib:telnetlib-ktor", version.ref = "telnetlib" }
