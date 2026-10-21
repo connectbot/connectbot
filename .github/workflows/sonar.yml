@@ -41,7 +41,7 @@ jobs:
   sonar:
     needs: inputs
     if: needs.inputs.outputs.available == 'true'
-    uses: connectbot/actions/.github/workflows/sonar-analysis.yml@1fb083321b9e15f94a05f50e4e8ac812cab09d84
+    uses: connectbot/actions/.github/workflows/sonar-analysis.yml@bb6d53fb13aad44fd82cedbd401cb455f5ca05b6
     with:
       producer_workflow: ${{ github.event.workflow_run.name == 'PR Checks' && '.github/workflows/pr-checks.yml' || '.github/workflows/ci.yml' }}
       artifact_prefix: sonar-inputs
