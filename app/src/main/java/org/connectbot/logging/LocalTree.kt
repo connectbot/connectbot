@@ -41,7 +41,7 @@ class LocalTree : Timber.Tree() {
             return
         }
 
-        val timestamp = dateFormat.format(Date())
+        val timestamp = synchronized(dateFormat) { dateFormat.format(Date()) }
         val finalMessage = buildString {
             append(timestamp)
             append(" ")
