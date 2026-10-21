@@ -138,6 +138,39 @@ class ProfileDaoTest {
     }
 
     @Test
+    fun updateFontSizePreservesOtherFieldsAndChecksHostAssignment() = runTest {
+        val profile = createTestProfile(name = "Shared", fontSize = 10, encoding = "UTF-8")
+        val other = createTestProfile(name = "Other", fontSize = 12)
+        profileDao.insert(profile)
+        profileDao.insert(other)
+        val host = createTestHost(nickname = "shared-host", profileId = profile.id)
+        hostDao.insert(host)
+
+        // An unrelated concurrent edit must survive the size-only update.
+        profileDao.update(profile.copy(encoding = "ISO-8859-1"))
+        assertThat(profileDao.updateFontSize(profile.id, host.id, profile.id, 18)).isEqualTo(1)
+        assertThat(profileDao.getById(profile.id)).isEqualTo(profile.copy(fontSize = 18, encoding = "ISO-8859-1"))
+
+        hostDao.update(host.copy(profileId = other.id))
+        assertThat(profileDao.updateFontSize(profile.id, host.id, profile.id, 20)).isEqualTo(0)
+        assertThat(profileDao.getById(profile.id)?.fontSize).isEqualTo(18)
+        assertThat(profileDao.getById(other.id)?.fontSize).isEqualTo(12)
+    }
+
+    @Test
+    fun updateFontSizeHandlesDefaultAssignmentTemporaryHostAndMissingProfile() = runTest {
+        val profile = Profile.createDefault()
+        profileDao.insert(profile)
+        val host = createTestHost(nickname = "default-host", profileId = null)
+        hostDao.insert(host)
+
+        assertThat(profileDao.updateFontSize(profile.id, host.id, null, 14)).isEqualTo(1)
+        assertThat(profileDao.updateFontSize(profile.id, null, null, 16)).isEqualTo(1)
+        assertThat(profileDao.getById(profile.id)?.fontSize).isEqualTo(16)
+        assertThat(profileDao.updateFontSize(UUID.randomUUID(), null, null, 20)).isEqualTo(0)
+    }
+
+    @Test
     fun insertOrUpdateInsertsNewProfile() = runTest {
         val profile = createTestProfile(name = "NewProfile")
         val id = profileDao.insertOrUpdate(profile)

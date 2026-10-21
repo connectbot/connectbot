@@ -81,6 +81,25 @@ interface ProfileDao {
     @Update
     suspend fun update(profile: Profile)
 
+    /** Update only the size, provided a saved host still has the captured profile assignment. */
+    @Query(
+        """
+        UPDATE profiles SET font_size = :fontSize
+        WHERE id = :profileId AND (
+            :hostId IS NULL OR EXISTS (
+                SELECT 1 FROM hosts WHERE id = :hostId AND
+                (profile_id = :assignedProfileId OR (profile_id IS NULL AND :assignedProfileId IS NULL))
+            )
+        )
+    """,
+    )
+    suspend fun updateFontSize(
+        profileId: UUID,
+        hostId: UUID?,
+        assignedProfileId: UUID?,
+        fontSize: Int,
+    ): Int
+
     /**
      * Insert or update a profile.
      * @return The ID of the inserted/updated profile

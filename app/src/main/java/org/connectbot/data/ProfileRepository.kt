@@ -100,6 +100,12 @@ class ProfileRepository @Inject constructor(
         profileDao.update(profile)
     }
 
+    /** Save a terminal size without replacing other profile fields. */
+    suspend fun updateFontSize(profileId: UUID, hostId: UUID?, assignedProfileId: UUID?, fontSize: Int): Boolean = withContext(dispatchers.io) {
+        require(fontSize > 0)
+        profileDao.updateFontSize(profileId, hostId, assignedProfileId, fontSize) == 1
+    }
+
     /**
      * Save a profile (insert or update).
      *
