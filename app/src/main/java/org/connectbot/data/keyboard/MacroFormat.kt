@@ -22,7 +22,7 @@ import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
 
-sealed interface MacroAction {
+sealed interface MacroAction : java.io.Serializable {
     data class Text(val text: String) : MacroAction
     data class Key(val key: String? = null, val character: String? = null, val modifiers: List<String> = emptyList()) : MacroAction
     data class Bytes(val hex: String) : MacroAction

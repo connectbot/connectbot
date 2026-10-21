@@ -85,6 +85,7 @@ fun ProfileEditorScreen(
     viewModel: ProfileEditorViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsState()
+    val keyboardDraft by viewModel.keyboardDraft.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
     LaunchedEffect(uiState.saveError) {
@@ -125,10 +126,6 @@ fun ProfileEditorScreen(
                     .verticalScroll(rememberScrollState())
                     .padding(start = 16.dp, top = 16.dp, end = 16.dp, bottom = 88.dp),
             ) {
-                KeyboardLayoutSelector(
-                    selected = uiState.keyboardLayoutId,
-                    onSelect = viewModel::updateKeyboardLayoutId,
-                )
                 // Profile Name
                 OutlinedTextField(
                     value = uiState.name,
@@ -137,6 +134,16 @@ fun ProfileEditorScreen(
                     singleLine = true,
                     isError = uiState.saveError != null,
                     modifier = Modifier.fillMaxWidth(),
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                KeyboardLayoutSelector(
+                    selected = uiState.keyboardLayoutId,
+                    onSelect = viewModel::updateKeyboardLayoutId,
+                    ownerName = uiState.name,
+                    pendingDraft = keyboardDraft,
+                    onDraft = viewModel::updateKeyboardDraft,
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))

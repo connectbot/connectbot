@@ -18,6 +18,7 @@
 package org.connectbot.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.navigation.NavBackStackEntry
@@ -40,7 +41,9 @@ import org.connectbot.ui.screens.help.HelpScreen
 import org.connectbot.ui.screens.hints.HintsScreen
 import org.connectbot.ui.screens.hosteditor.HostEditorScreen
 import org.connectbot.ui.screens.hostlist.HostListScreen
+import org.connectbot.ui.screens.keyboard.KeyboardLayoutRoute
 import org.connectbot.ui.screens.keyboard.KeyboardSettingsScreen
+import org.connectbot.ui.screens.keyboard.LocalKeyboardUsageNavigator
 import org.connectbot.ui.screens.knownhostlist.KnownHostListScreen
 import org.connectbot.ui.screens.portforwardlist.PortForwardEditorScreen
 import org.connectbot.ui.screens.portforwardlist.PortForwardListScreen
@@ -62,258 +65,273 @@ fun ConnectBotNavHost(
     makingShortcut: Boolean = false,
     onSelectShortcut: (Host, String?, IconStyle) -> Unit = { _, _, _ -> },
 ) {
-    NavHost(
-        navController = navController,
-        startDestination = startDestination,
-        modifier = modifier,
+    CompositionLocalProvider(
+        LocalKeyboardUsageNavigator provides { usage ->
+            val route = when (usage.kind) {
+                "key" -> "keyboard_layout/${usage.ownerId}"
+                "automation" -> "${NavDestinations.AUTOMATION_EDITOR}/${usage.ownerId}"
+                "profile" -> "${NavDestinations.PROFILE_EDITOR}/${usage.ownerId}"
+                else -> "${NavDestinations.HOST_EDITOR}?${NavArgs.HOST_ID}=${usage.ownerId}"
+            }
+            navController.navigateSafely(route)
+        },
     ) {
-        composable(NavDestinations.HOST_LIST) {
-            HostListScreen(
-                makingShortcut = makingShortcut,
-                onNavigateToConsole = onNavigateToConsole,
-                onSelectShortcut = onSelectShortcut,
-                onNavigateToEditHost = { host ->
-                    if (host != null) {
-                        navController.navigateSafely("${NavDestinations.HOST_EDITOR}?${NavArgs.HOST_ID}=${host.id}")
-                    } else {
-                        navController.navigateSafely(NavDestinations.HOST_EDITOR)
-                    }
-                },
-                onNavigateToSettings = {
-                    navController.navigateSafely(NavDestinations.SETTINGS)
-                },
-                onNavigateToPubkeys = {
-                    navController.navigateSafely(NavDestinations.PUBKEY_LIST)
-                },
-                onNavigateToPortForwards = { host ->
-                    navController.navigateSafely("${NavDestinations.PORT_FORWARD_LIST}/${host.id}")
-                },
-                onNavigateToProfiles = {
-                    navController.navigateSafely(NavDestinations.PROFILES)
-                },
-                onNavigateToHelp = {
-                    navController.navigateSafely(NavDestinations.HELP)
-                },
-            )
-        }
-
-        composable(
-            route = "${NavDestinations.CONSOLE}/{${NavArgs.HOST_ID}}",
-            arguments = listOf(
-                navArgument(NavArgs.HOST_ID) { type = NavType.StringType },
-            ),
+        NavHost(
+            navController = navController,
+            startDestination = startDestination,
+            modifier = modifier,
         ) {
-            ConsoleScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-                onNavigateToPortForwards = { hostIdForPortForwards ->
-                    navController.navigateSafely("${NavDestinations.PORT_FORWARD_LIST}/$hostIdForPortForwards")
-                },
-                onNavigateToSettings = {
-                    navController.navigateSafely(NavDestinations.SETTINGS_HIGHLIGHT_CONN_PERSIST)
-                },
-            )
-        }
+            composable(NavDestinations.HOST_LIST) {
+                HostListScreen(
+                    makingShortcut = makingShortcut,
+                    onNavigateToConsole = onNavigateToConsole,
+                    onSelectShortcut = onSelectShortcut,
+                    onNavigateToEditHost = { host ->
+                        if (host != null) {
+                            navController.navigateSafely("${NavDestinations.HOST_EDITOR}?${NavArgs.HOST_ID}=${host.id}")
+                        } else {
+                            navController.navigateSafely(NavDestinations.HOST_EDITOR)
+                        }
+                    },
+                    onNavigateToSettings = {
+                        navController.navigateSafely(NavDestinations.SETTINGS)
+                    },
+                    onNavigateToPubkeys = {
+                        navController.navigateSafely(NavDestinations.PUBKEY_LIST)
+                    },
+                    onNavigateToPortForwards = { host ->
+                        navController.navigateSafely("${NavDestinations.PORT_FORWARD_LIST}/${host.id}")
+                    },
+                    onNavigateToProfiles = {
+                        navController.navigateSafely(NavDestinations.PROFILES)
+                    },
+                    onNavigateToHelp = {
+                        navController.navigateSafely(NavDestinations.HELP)
+                    },
+                )
+            }
 
-        composable(
-            route = "${NavDestinations.HOST_EDITOR}?${NavArgs.HOST_ID}={${NavArgs.HOST_ID}}",
-            arguments = listOf(
-                navArgument(NavArgs.HOST_ID) {
-                    type = NavType.StringType
-                    defaultValue = ""
-                },
-            ),
-        ) {
-            HostEditorScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-                onNavigateToProfile = { profileId ->
-                    navController.navigateSafely("${NavDestinations.PROFILE_EDITOR}/$profileId")
-                },
-                onNavigateToAutomation = { hostId ->
-                    navController.navigateSafely("${NavDestinations.AUTOMATION_EDITOR}/$hostId")
-                },
-                onNavigateToKnownHosts = { hostId ->
-                    navController.navigateSafely("${NavDestinations.KNOWN_HOST_LIST}/$hostId")
-                },
-            )
-        }
+            composable(
+                route = "${NavDestinations.CONSOLE}/{${NavArgs.HOST_ID}}",
+                arguments = listOf(
+                    navArgument(NavArgs.HOST_ID) { type = NavType.StringType },
+                ),
+            ) {
+                ConsoleScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                    onNavigateToPortForwards = { hostIdForPortForwards ->
+                        navController.navigateSafely("${NavDestinations.PORT_FORWARD_LIST}/$hostIdForPortForwards")
+                    },
+                    onNavigateToSettings = {
+                        navController.navigateSafely(NavDestinations.SETTINGS_HIGHLIGHT_CONN_PERSIST)
+                    },
+                )
+            }
 
-        composable(
-            route = "${NavDestinations.AUTOMATION_EDITOR}/{${NavArgs.HOST_ID}}",
-            arguments = listOf(navArgument(NavArgs.HOST_ID) { type = NavType.StringType }),
-        ) {
-            org.connectbot.ui.screens.automation.AutomationEditorScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-            )
-        }
+            composable(
+                route = "${NavDestinations.HOST_EDITOR}?${NavArgs.HOST_ID}={${NavArgs.HOST_ID}}",
+                arguments = listOf(
+                    navArgument(NavArgs.HOST_ID) {
+                        type = NavType.StringType
+                        defaultValue = ""
+                    },
+                ),
+            ) {
+                HostEditorScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                    onNavigateToProfile = { profileId ->
+                        navController.navigateSafely("${NavDestinations.PROFILE_EDITOR}/$profileId")
+                    },
+                    onNavigateToAutomation = { hostId ->
+                        navController.navigateSafely("${NavDestinations.AUTOMATION_EDITOR}/$hostId")
+                    },
+                    onNavigateToKnownHosts = { hostId ->
+                        navController.navigateSafely("${NavDestinations.KNOWN_HOST_LIST}/$hostId")
+                    },
+                )
+            }
 
-        composable(NavDestinations.PUBKEY_LIST) {
-            PubkeyListScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-                onNavigateToGenerate = { navController.navigateSafely(NavDestinations.GENERATE_PUBKEY) },
-                onNavigateToEdit = { pubkey ->
-                    navController.navigateSafely("${NavDestinations.PUBKEY_EDITOR}/${pubkey.id}")
-                },
-            )
-        }
+            composable(
+                route = "${NavDestinations.AUTOMATION_EDITOR}/{${NavArgs.HOST_ID}}",
+                arguments = listOf(navArgument(NavArgs.HOST_ID) { type = NavType.StringType }),
+            ) {
+                org.connectbot.ui.screens.automation.AutomationEditorScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                )
+            }
 
-        composable(
-            route = "${NavDestinations.KNOWN_HOST_LIST}/{${NavArgs.HOST_ID}}",
-            arguments = listOf(
-                navArgument(NavArgs.HOST_ID) { type = NavType.StringType },
-            ),
-        ) {
-            KnownHostListScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-            )
-        }
+            composable(NavDestinations.PUBKEY_LIST) {
+                PubkeyListScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                    onNavigateToGenerate = { navController.navigateSafely(NavDestinations.GENERATE_PUBKEY) },
+                    onNavigateToEdit = { pubkey ->
+                        navController.navigateSafely("${NavDestinations.PUBKEY_EDITOR}/${pubkey.id}")
+                    },
+                )
+            }
 
-        composable(NavDestinations.GENERATE_PUBKEY) {
-            GeneratePubkeyScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-            )
-        }
+            composable(
+                route = "${NavDestinations.KNOWN_HOST_LIST}/{${NavArgs.HOST_ID}}",
+                arguments = listOf(
+                    navArgument(NavArgs.HOST_ID) { type = NavType.StringType },
+                ),
+            ) {
+                KnownHostListScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                )
+            }
 
-        composable(
-            route = "${NavDestinations.PUBKEY_EDITOR}/{${NavArgs.PUBKEY_ID}}",
-            arguments = listOf(
-                navArgument(NavArgs.PUBKEY_ID) { type = NavType.StringType },
-            ),
-        ) {
-            PubkeyEditorScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-            )
-        }
+            composable(NavDestinations.GENERATE_PUBKEY) {
+                GeneratePubkeyScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                )
+            }
 
-        composable(
-            route = "${NavDestinations.PORT_FORWARD_LIST}/{${NavArgs.HOST_ID}}",
-            arguments = listOf(
-                navArgument(NavArgs.HOST_ID) { type = NavType.StringType },
-            ),
-        ) { entry ->
-            PortForwardListScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-                onNavigateToEditor = { forwardId ->
-                    entry.arguments?.getString(NavArgs.HOST_ID)?.let { hostId ->
-                        navController.navigateSafely("${NavDestinations.PORT_FORWARD_EDITOR}/$hostId/${forwardId ?: EntityIds.NONE}")
-                    }
-                },
-            )
-        }
+            composable(
+                route = "${NavDestinations.PUBKEY_EDITOR}/{${NavArgs.PUBKEY_ID}}",
+                arguments = listOf(
+                    navArgument(NavArgs.PUBKEY_ID) { type = NavType.StringType },
+                ),
+            ) {
+                PubkeyEditorScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                )
+            }
 
-        composable(
-            route = "${NavDestinations.PORT_FORWARD_EDITOR}/{${NavArgs.HOST_ID}}/{${NavArgs.FORWARD_ID}}",
-            arguments = listOf(
-                navArgument(NavArgs.HOST_ID) { type = NavType.StringType },
-                navArgument(NavArgs.FORWARD_ID) { type = NavType.StringType },
-            ),
-        ) {
-            PortForwardEditorScreen(onNavigateBack = { navController.safePopBackStack() })
-        }
+            composable(
+                route = "${NavDestinations.PORT_FORWARD_LIST}/{${NavArgs.HOST_ID}}",
+                arguments = listOf(
+                    navArgument(NavArgs.HOST_ID) { type = NavType.StringType },
+                ),
+            ) { entry ->
+                PortForwardListScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                    onNavigateToEditor = { forwardId ->
+                        entry.arguments?.getString(NavArgs.HOST_ID)?.let { hostId ->
+                            navController.navigateSafely("${NavDestinations.PORT_FORWARD_EDITOR}/$hostId/${forwardId ?: EntityIds.NONE}")
+                        }
+                    },
+                )
+            }
 
-        composable(
-            route = "${NavDestinations.SETTINGS}?highlight={highlight}",
-            arguments = listOf(
-                navArgument("highlight") {
-                    type = NavType.StringType
-                    nullable = true
-                    defaultValue = null
-                },
-            ),
-        ) {
-            val highlight = it.arguments?.getString("highlight")
-            SettingsScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-                highlightItem = highlight,
-                onNavigateToKeyboard = { navController.navigateSafely("keyboard_settings") },
-            )
-        }
+            composable(
+                route = "${NavDestinations.PORT_FORWARD_EDITOR}/{${NavArgs.HOST_ID}}/{${NavArgs.FORWARD_ID}}",
+                arguments = listOf(
+                    navArgument(NavArgs.HOST_ID) { type = NavType.StringType },
+                    navArgument(NavArgs.FORWARD_ID) { type = NavType.StringType },
+                ),
+            ) {
+                PortForwardEditorScreen(onNavigateBack = { navController.safePopBackStack() })
+            }
 
-        composable("keyboard_settings") {
-            KeyboardSettingsScreen(onNavigateBack = { navController.safePopBackStack() })
-        }
+            composable(
+                route = "${NavDestinations.SETTINGS}?highlight={highlight}",
+                arguments = listOf(
+                    navArgument("highlight") {
+                        type = NavType.StringType
+                        nullable = true
+                        defaultValue = null
+                    },
+                ),
+            ) {
+                val highlight = it.arguments?.getString("highlight")
+                SettingsScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                    highlightItem = highlight,
+                    onNavigateToKeyboard = { navController.navigateSafely("keyboard_settings") },
+                )
+            }
 
-        composable(NavDestinations.COLORS) {
-            ColorsScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-                onNavigateToPaletteEditor = { schemeId ->
-                    navController.navigateSafely("${NavDestinations.PALETTE_EDITOR}/$schemeId")
-                },
-            )
-        }
+            composable("keyboard_layout/{layoutId}", arguments = listOf(navArgument("layoutId") { type = NavType.StringType })) { entry ->
+                KeyboardLayoutRoute(java.util.UUID.fromString(entry.arguments?.getString("layoutId")), onNavigateBack = { navController.safePopBackStack() })
+            }
+            composable("keyboard_settings") {
+                KeyboardSettingsScreen(onNavigateBack = { navController.safePopBackStack() })
+            }
 
-        composable(
-            route = "${NavDestinations.PALETTE_EDITOR}/{${NavArgs.SCHEME_ID}}",
-            arguments = listOf(
-                navArgument(NavArgs.SCHEME_ID) { type = NavType.StringType },
-            ),
-        ) {
-            PaletteEditorScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-                onNavigateToDuplicate = { newSchemeId ->
-                    navController.navigate(
-                        route = "${NavDestinations.PALETTE_EDITOR}/$newSchemeId",
-                        navOptions = NavOptions.Builder()
-                            .setPopUpTo(
-                                route = "${NavDestinations.PALETTE_EDITOR}/{${NavArgs.SCHEME_ID}}",
-                                inclusive = true,
-                            )
-                            .build(),
-                    )
-                },
-            )
-        }
+            composable(NavDestinations.COLORS) {
+                ColorsScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                    onNavigateToPaletteEditor = { schemeId ->
+                        navController.navigateSafely("${NavDestinations.PALETTE_EDITOR}/$schemeId")
+                    },
+                )
+            }
 
-        composable(NavDestinations.PROFILES) {
-            ProfileListScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-                onNavigateToEdit = { profile ->
-                    navController.navigateSafely("${NavDestinations.PROFILE_EDITOR}/${profile.id}")
-                },
-                onNavigateToColors = {
-                    navController.navigateSafely(NavDestinations.COLORS)
-                },
-            )
-        }
+            composable(
+                route = "${NavDestinations.PALETTE_EDITOR}/{${NavArgs.SCHEME_ID}}",
+                arguments = listOf(
+                    navArgument(NavArgs.SCHEME_ID) { type = NavType.StringType },
+                ),
+            ) {
+                PaletteEditorScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                    onNavigateToDuplicate = { newSchemeId ->
+                        navController.navigate(
+                            route = "${NavDestinations.PALETTE_EDITOR}/$newSchemeId",
+                            navOptions = NavOptions.Builder()
+                                .setPopUpTo(
+                                    route = "${NavDestinations.PALETTE_EDITOR}/{${NavArgs.SCHEME_ID}}",
+                                    inclusive = true,
+                                )
+                                .build(),
+                        )
+                    },
+                )
+            }
 
-        composable(
-            route = "${NavDestinations.PROFILE_EDITOR}/{${NavArgs.PROFILE_ID}}",
-            arguments = listOf(
-                navArgument(NavArgs.PROFILE_ID) { type = NavType.StringType },
-            ),
-        ) {
-            ProfileEditorScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-                onNavigateToColors = {
-                    navController.navigateSafely(NavDestinations.COLORS)
-                },
-            )
-        }
+            composable(NavDestinations.PROFILES) {
+                ProfileListScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                    onNavigateToEdit = { profile ->
+                        navController.navigateSafely("${NavDestinations.PROFILE_EDITOR}/${profile.id}")
+                    },
+                    onNavigateToColors = {
+                        navController.navigateSafely(NavDestinations.COLORS)
+                    },
+                )
+            }
 
-        composable(NavDestinations.HELP) {
-            HelpScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-                onNavigateToHints = { navController.navigateSafely(NavDestinations.HINTS) },
-                onNavigateToEula = { navController.navigateSafely(NavDestinations.EULA) },
-                onNavigateToContact = { navController.navigateSafely(NavDestinations.CONTACT) },
-            )
-        }
+            composable(
+                route = "${NavDestinations.PROFILE_EDITOR}/{${NavArgs.PROFILE_ID}}",
+                arguments = listOf(
+                    navArgument(NavArgs.PROFILE_ID) { type = NavType.StringType },
+                ),
+            ) {
+                ProfileEditorScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                    onNavigateToColors = {
+                        navController.navigateSafely(NavDestinations.COLORS)
+                    },
+                )
+            }
 
-        composable(NavDestinations.CONTACT) {
-            ContactScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-            )
-        }
+            composable(NavDestinations.HELP) {
+                HelpScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                    onNavigateToHints = { navController.navigateSafely(NavDestinations.HINTS) },
+                    onNavigateToEula = { navController.navigateSafely(NavDestinations.EULA) },
+                    onNavigateToContact = { navController.navigateSafely(NavDestinations.CONTACT) },
+                )
+            }
 
-        composable(NavDestinations.EULA) {
-            EulaScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-            )
-        }
+            composable(NavDestinations.CONTACT) {
+                ContactScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                )
+            }
 
-        composable(NavDestinations.HINTS) {
-            HintsScreen(
-                onNavigateBack = { navController.safePopBackStack() },
-            )
+            composable(NavDestinations.EULA) {
+                EulaScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                )
+            }
+
+            composable(NavDestinations.HINTS) {
+                HintsScreen(
+                    onNavigateBack = { navController.safePopBackStack() },
+                )
+            }
         }
     }
 }

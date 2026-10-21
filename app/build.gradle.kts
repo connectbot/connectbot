@@ -437,6 +437,8 @@ androidComponents {
 }
 
 kover {
+    // Filter compiler-generated Compose branches while retaining application logic coverage.
+    useJacoco(libs.versions.jacoco.get())
     reports {
         filters {
             excludes {

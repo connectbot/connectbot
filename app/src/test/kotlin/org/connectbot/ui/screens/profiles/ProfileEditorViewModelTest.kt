@@ -82,12 +82,33 @@ class ProfileEditorViewModelTest {
     }
 
     @Test
+    fun profileFormAndPendingKeyboardRestoreTogether() = runTest {
+        val handle = SavedStateHandle()
+        val keyboard = org.mockito.Mockito.mock(org.connectbot.data.keyboard.KeyboardRepository::class.java)
+        val vm = ProfileEditorViewModel(handle, profileRepository, colorSchemeRepository, sharedPreferences, context, dispatchers, keyboard)
+        vm.updateName("Development")
+        vm.updateEncoding("UTF-8")
+        val layout = org.connectbot.data.keyboard.KeyboardLayout(name = "Custom")
+        val draft = org.connectbot.data.keyboard.KeyboardDraft(layout, org.connectbot.data.keyboard.KeyboardDefaults.items(layout.id))
+        vm.updateKeyboardDraft(draft)
+        vm.updateKeyboardLayoutId(layout.id)
+        val snapshot = handle.get<ProfileEditorUiState>("formDraft")!!
+        val bytes = java.io.ByteArrayOutputStream().also { buffer -> java.io.ObjectOutputStream(buffer).use { it.writeObject(snapshot) } }.toByteArray()
+        val restoredSnapshot = java.io.ObjectInputStream(java.io.ByteArrayInputStream(bytes)).use { it.readObject() as ProfileEditorUiState }
+        val restored = ProfileEditorViewModel(SavedStateHandle(mapOf("formDraft" to restoredSnapshot, "pendingKeyboard" to draft)), profileRepository, colorSchemeRepository, sharedPreferences, context, dispatchers, keyboard)
+        assertEquals("Development", restored.uiState.value.name)
+        assertEquals(layout.id, restored.uiState.value.keyboardLayoutId)
+        assertEquals(draft, restored.keyboardDraft.value)
+        assertTrue(restored.uiState.value.hasUnsavedChanges)
+    }
+
+    @Test
     fun rejectedSharedProfileSaveIsShownWithoutClosingEditor() = runTest {
         val profile = Profile(name = "Shared", repositoryId = UUID.randomUUID())
         `when`(profileRepository.getById(profile.id)).thenReturn(profile)
         `when`(profileRepository.nameExists("Shared", profile.id)).thenReturn(false)
         `when`(profileRepository.save(profile)).thenThrow(IllegalStateException("Repository is read-only"))
-        val viewModel = ProfileEditorViewModel(SavedStateHandle(mapOf("profileId" to profile.id.toString())), profileRepository, colorSchemeRepository, sharedPreferences, context, dispatchers)
+        val viewModel = ProfileEditorViewModel(SavedStateHandle(mapOf("profileId" to profile.id.toString())), profileRepository, colorSchemeRepository, sharedPreferences, context, dispatchers, org.mockito.Mockito.mock(org.connectbot.data.keyboard.KeyboardRepository::class.java))
         var closed = false
         viewModel.updateName("Shared")
         viewModel.save { closed = true }
@@ -106,6 +127,7 @@ class ProfileEditorViewModelTest {
         prefs = sharedPreferences,
         context = context,
         dispatchers = dispatchers,
+        keyboardRepository = org.mockito.Mockito.mock(org.connectbot.data.keyboard.KeyboardRepository::class.java),
     )
 
     @Test
@@ -115,7 +137,7 @@ class ProfileEditorViewModelTest {
         `when`(profileRepository.getById(profile.id)).thenReturn(profile)
         `when`(profileRepository.nameExists(profile.name, profile.id)).thenReturn(false)
         for (layoutId in listOf(UUID.randomUUID(), null)) {
-            val viewModel = ProfileEditorViewModel(SavedStateHandle(mapOf("profileId" to profile.id.toString())), profileRepository, colorSchemeRepository, sharedPreferences, context, dispatchers)
+            val viewModel = ProfileEditorViewModel(SavedStateHandle(mapOf("profileId" to profile.id.toString())), profileRepository, colorSchemeRepository, sharedPreferences, context, dispatchers, org.mockito.Mockito.mock(org.connectbot.data.keyboard.KeyboardRepository::class.java))
             assertFalse(viewModel.uiState.value.hasUnsavedChanges)
             viewModel.updateKeyboardLayoutId(layoutId)
             assertTrue(viewModel.uiState.value.hasUnsavedChanges)
@@ -164,6 +186,7 @@ class ProfileEditorViewModelTest {
             sharedPreferences,
             context,
             dispatchers,
+            org.mockito.Mockito.mock(org.connectbot.data.keyboard.KeyboardRepository::class.java),
         )
         assertEquals(false, viewModel.uiState.value.boldAsBright)
     }
@@ -193,6 +216,7 @@ class ProfileEditorViewModelTest {
             sharedPreferences,
             context,
             dispatchers,
+            org.mockito.Mockito.mock(org.connectbot.data.keyboard.KeyboardRepository::class.java),
         )
         assertEquals("off", viewModel.uiState.value.inlineImages)
     }

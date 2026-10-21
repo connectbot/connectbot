@@ -36,18 +36,23 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.semantics.SemanticsActions
 import androidx.compose.ui.test.assertHeightIsEqualTo
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertWidthIsEqualTo
 import androidx.compose.ui.test.captureToImage
+import androidx.compose.ui.test.getUnclippedBoundsInRoot
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeLeft
 import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.connectbot.data.keyboard.KeyboardDefaults
 import org.connectbot.data.keyboard.KeyboardItem
 import org.connectbot.data.keyboard.KeyboardLayout
 import org.connectbot.data.keyboard.KeyboardMacro
@@ -78,6 +83,21 @@ class TerminalKeyboardContentTest {
 
     @Before fun setUp() {
         hiltRule.inject()
+    }
+
+    @Test fun defaultUtilityKeysStayOnTheRightWhenTheKeyRegionScrolls() {
+        val layout = KeyboardLayout(name = "Default")
+        val items = KeyboardDefaults.items(layout.id)
+        rule.setContent { ConnectBotTheme { KeyboardGrid(layout, items, emptyList(), onPress = {}, modifier = Modifier.width(240.dp)) } }
+        val pinned = items.filter { it.pinned }
+        assertEquals(setOf("toggle_compose", "toggle_ime"), pinned.map { it.target }.toSet())
+        val bounds = pinned.associate { it.id to rule.onNodeWithTag("keyboard_button_${it.id}").getUnclippedBoundsInRoot() }
+        rule.onNodeWithTag("keyboard_scrolling_region").performTouchInput { swipeLeft(durationMillis = 400) }
+        pinned.forEach { item ->
+            rule.onNodeWithTag("keyboard_button_${item.id}").assertIsDisplayed()
+            assertEquals(bounds.getValue(item.id), rule.onNodeWithTag("keyboard_button_${item.id}").getUnclippedBoundsInRoot())
+        }
+        rule.onNodeWithTag("keyboard_button_${items.first().id}").assertIsNotDisplayed()
     }
 
     @Test fun allButtonKindsResizeTogetherAndSpansStayProportional() {

@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.test.assert
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotDisplayed
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.captureToImage
@@ -113,14 +114,18 @@ class HostEditorScreenTest {
     }
 
     @Test
-    fun automationRowAlignsWithPreferencesAndRequiresSavedHost() {
+    fun automationRowAlignsWithPreferencesAndOpensANewHostDraft() {
         navigateToHostEditorScreen(EntityIds.NONE)
         val automationTitle = composeTestRule.activity.getString(R.string.hostpref_postlogin_title)
         val precedingTitle = composeTestRule.activity.getString(R.string.hostpref_quickdisconnect_title)
-        composeTestRule.onNodeWithText(automationTitle).performScrollTo().assertIsNotEnabled()
+        composeTestRule.onNodeWithText(automationTitle).performScrollTo().assertIsEnabled()
         val automation = composeTestRule.onNodeWithText(automationTitle, useUnmergedTree = true).getUnclippedBoundsInRoot()
         val preceding = composeTestRule.onNodeWithText(precedingTitle, useUnmergedTree = true).getUnclippedBoundsInRoot()
         assertEquals(preceding.left.value, automation.left.value, 0.5f)
+        composeTestRule.onNodeWithText(automationTitle).performClick()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.automation_add)).assertIsDisplayed()
+        composeTestRule.runOnUiThread { org.robolectric.shadows.ShadowDialog.getLatestDialog().onBackPressed() }
+        composeTestRule.onNodeWithText("Nickname").performScrollTo().assertIsDisplayed()
     }
 
     @Test

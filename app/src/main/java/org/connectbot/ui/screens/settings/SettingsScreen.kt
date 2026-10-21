@@ -39,6 +39,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material.icons.automirrored.filled.OpenInNew
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Download
@@ -625,9 +626,12 @@ fun SettingsScreenContent(
 
             item {
                 PreferenceCategory(title = stringResource(R.string.pref_keyboard_category))
-                TextButton(onClick = onNavigateToKeyboard) {
-                    Text(stringResource(R.string.keyboard_settings_title))
-                }
+                ListItem(
+                    supportingContent = { Text(stringResource(R.string.keyboard_navigation_summary)) },
+                    trailingContent = { Icon(Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = null) },
+                    modifier = Modifier.clickable(onClick = onNavigateToKeyboard),
+                ) { Text(stringResource(R.string.keyboard_settings_title)) }
+                HorizontalDivider()
             }
 
             item {

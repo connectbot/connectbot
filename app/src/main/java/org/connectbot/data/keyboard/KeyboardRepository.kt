@@ -19,6 +19,7 @@ package org.connectbot.data.keyboard
 
 import android.content.SharedPreferences
 import androidx.room.withTransaction
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
@@ -27,6 +28,7 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.EntityIds
 import org.connectbot.data.JsonImportReader
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.PreferenceConstants
@@ -40,6 +42,38 @@ import javax.inject.Singleton
 class KeyboardRepository @Inject constructor(private val database: ConnectBotDatabase, private val dispatchers: CoroutineDispatchers, private val preferences: SharedPreferences) {
     private val dao get() = database.keyboardDao()
     private val legacyMigrationMutex = Mutex()
+    private val sessionSelections = java.util.WeakHashMap<Any, MutableStateFlow<UUID?>>()
+
+    @Synchronized
+    fun sessionSelection(session: Any): MutableStateFlow<UUID?> = sessionSelections.getOrPut(session) { MutableStateFlow(null) }
+
+    fun macroUsage(id: UUID) = dao.observeMacroUsage(id)
+    fun layoutUsage(id: UUID) = dao.observeLayoutUsage(id)
+
+    suspend fun canEditHost(id: UUID): Boolean = withContext(dispatchers.io) {
+        val host = database.hostDao().getById(id) ?: return@withContext false
+        if (host.repositoryId == EntityIds.LOCAL) return@withContext true
+        database.openHelper.readableDatabase.query("SELECT role FROM sync_repositories WHERE id=?", arrayOf(host.repositoryId.toString())).use {
+            it.moveToFirst() && it.getString(0) != "reader"
+        }
+    }
+
+    suspend fun setHostLayout(hostId: UUID, layoutId: UUID?, draft: KeyboardDraft? = null) = withContext(dispatchers.io) {
+        database.withTransaction {
+            require(canEditHost(hostId)) { "This host is read-only" }
+            require(draft == null || draft.layout.id == layoutId)
+            draft?.let { saveDraft(it) }
+            check(dao.setHostLayout(hostId, layoutId) == 1) { "Host no longer exists" }
+        }
+    }
+
+    suspend fun <T> commitDrafts(drafts: List<KeyboardDraft>, macros: List<KeyboardMacro> = emptyList(), commit: suspend () -> T): T = withContext(dispatchers.io) {
+        database.withTransaction {
+            macros.forEach { saveMacro(it) }
+            drafts.forEach { saveDraft(it) }
+            commit()
+        }
+    }
     val configuration = combine(dao.observeLayouts(), dao.observeItems(), dao.observeMacros(), dao.observeSettings()) { layouts, items, macros, settings ->
         KeyboardConfiguration(layouts, items, macros, settings)
     }.map { configuration ->
@@ -73,6 +107,8 @@ class KeyboardRepository @Inject constructor(private val database: ConnectBotDat
         }
     }
 
+    suspend fun saveDraft(draft: KeyboardDraft) = save(draft.layout, draft.items, draft.macros.filter { macro -> draft.items.any { it.macroId == macro.id } })
+
     suspend fun create(name: String): UUID {
         val layout = KeyboardLayout(name = name)
         save(layout, KeyboardDefaults.items(layout.id))
@@ -103,14 +139,23 @@ class KeyboardRepository @Inject constructor(private val database: ConnectBotDat
 
     suspend fun saveMacro(macro: KeyboardMacro) = withContext(dispatchers.io) {
         require(macro.name.isNotBlank()) { "A macro needs a name" }
-        MacroFormat.decode(macro.document)
-        dao.saveMacro(macro)
+        val shortcut = MacroFormat.decode(macro.document).singleOrNull() as? MacroAction.Key
+        database.withTransaction {
+            dao.saveMacro(macro)
+            // Labelled shortcuts also reference this library. If a shared edit changes
+            // their action, run the edited macro rather than the obsolete key target.
+            val changed = dao.items().filter { it.macroId == macro.id && it.kind == "key" && it.target != shortcut?.key }
+            if (changed.isNotEmpty()) dao.saveItems(changed.map { it.copy(kind = "macro", target = "") })
+        }
     }
 
-    suspend fun importMacro(open: () -> InputStream?) = withContext(dispatchers.io) {
+    suspend fun readMacro(open: () -> InputStream?): KeyboardMacro = withContext(dispatchers.io) {
         val source = requireNotNull(open()) { "Unable to open macro file" }.use(JsonImportReader::read)
-        val macro = MacroFileFormat.decode(source)
-        saveMacro(macro)
+        MacroFileFormat.decode(source)
+    }
+
+    suspend fun importMacro(open: () -> InputStream?) {
+        saveMacro(readMacro(open))
     }
 
     suspend fun exportMacro(id: UUID, open: () -> OutputStream?) = withContext(dispatchers.io) {

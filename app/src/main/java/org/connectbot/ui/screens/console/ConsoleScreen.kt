@@ -93,6 +93,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameNanos
 import androidx.compose.ui.Alignment
@@ -158,6 +159,8 @@ import org.connectbot.ui.components.InlinePrompt
 import org.connectbot.ui.components.ResizeDialog
 import org.connectbot.ui.components.TerminalKeyboard
 import org.connectbot.ui.components.UrlScanDialog
+import org.connectbot.ui.screens.keyboard.ConsoleKeyboardSettings
+import org.connectbot.ui.screens.keyboard.KeyboardWorkflowDialog
 import org.connectbot.ui.theme.terminal
 import org.connectbot.util.PreferenceConstants
 import org.connectbot.util.UrlUtils
@@ -672,6 +675,7 @@ fun ConsoleScreen(
     val currentBridge = uiState.bridges
         .getOrNull(uiState.currentBridgeIndex)
     val currentBridgeId = currentBridge?.host?.id
+    var showKeyboardSettings by rememberSaveable(currentBridgeId) { mutableStateOf(false) }
     var showConnectionInfoDialog by remember(currentBridgeId) { mutableStateOf(false) }
     val automationState by currentBridge?.automationState?.collectAsState()
         ?: remember { mutableStateOf(org.connectbot.service.automation.AutomationState()) }
@@ -700,7 +704,7 @@ fun ConsoleScreen(
     val isBiometricPromptActive = promptState is PromptRequest.BiometricPrompt
 
     // Check if any modal (menu or dialog) is currently active
-    val anyModalActive = showMenu || showUrlScanDialog || showResizeDialog ||
+    val anyModalActive = showKeyboardSettings || showMenu || showUrlScanDialog || showResizeDialog ||
         showDisconnectDialog || showSessionPickerDialog || showTextInputDialog || showConnectionInfoDialog ||
         isBiometricPromptActive || currentAuthBanner != null
 
@@ -1138,6 +1142,11 @@ fun ConsoleScreen(
             }
         }
 
+        if (showKeyboardSettings && currentBridge != null) {
+            KeyboardWorkflowDialog(onDismiss = { showKeyboardSettings = false }) {
+                ConsoleKeyboardSettings(currentBridge, onNavigateBack = { showKeyboardSettings = false })
+            }
+        }
         if (showConnectionInfoDialog) {
             var details by remember(currentBridgeId) { mutableStateOf(viewModel.connectionDetails()) }
             LaunchedEffect(currentBridgeId, viewModel) {
@@ -1407,6 +1416,15 @@ fun ConsoleScreen(
                                     showResizeDialog = true
                                 },
                                 enabled = sessionOpen,
+                            )
+
+                            DropdownMenuItem(
+                                text = { Text(stringResource(R.string.keyboard_settings_title)) },
+                                onClick = {
+                                    showMenu = false
+                                    showKeyboardSettings = true
+                                },
+                                enabled = currentBridge != null,
                             )
 
                             // Compose mode (IME) toggle — persistent entry so users can always

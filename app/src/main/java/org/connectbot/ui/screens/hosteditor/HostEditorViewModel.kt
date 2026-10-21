@@ -37,6 +37,7 @@ import org.connectbot.data.EntityIds
 import org.connectbot.data.HostRepository
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.PubkeyRepository
+import org.connectbot.data.entity.AutomationAction
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.HostCryptoConfig
 import org.connectbot.data.entity.Profile
@@ -45,11 +46,15 @@ import org.connectbot.data.entity.TelnetEchoMode
 import org.connectbot.data.entity.TelnetNegotiationMode
 import org.connectbot.data.entity.TelnetNewlinePolicy
 import org.connectbot.data.entity.TelnetNonBinaryPolicy
+import org.connectbot.data.keyboard.KeyboardDraft
+import org.connectbot.data.keyboard.KeyboardMacro
+import org.connectbot.data.keyboard.KeyboardRepository
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.sshlib.AlgorithmCategory
 import org.connectbot.sshlib.SshAlgorithm
 import org.connectbot.sshlib.SshCryptoPolicy
 import org.connectbot.transport.Transport
+import org.connectbot.ui.screens.automation.AutomationDraftCodec
 import org.connectbot.util.CryptoProviderState
 import org.connectbot.util.HostConstants
 import org.connectbot.util.InstallMosh
@@ -73,6 +78,7 @@ data class HostEditorUiState(
     val pubkeyId: UUID = HostConstants.PUBKEYID_ANY,
     val availablePubkeys: List<Pubkey> = emptyList(),
     val profileId: UUID? = EntityIds.DEFAULT_PROFILE,
+    val keyboardLayoutId: UUID? = null,
     val availableProfiles: List<Profile> = emptyList(),
     val useAuthAgent: String = "no",
     val compression: Boolean = false,
@@ -99,7 +105,7 @@ data class HostEditorUiState(
     val isMoshInstalling: Boolean = false,
     val isLoading: Boolean = false,
     val error: String? = null,
-) {
+) : java.io.Serializable {
     val isMoshNetworkTimeoutValid: Boolean
         get() = moshNetworkTimeout.isBlank() ||
             (moshNetworkTimeout.all { it in '0'..'9' } && moshNetworkTimeout.toIntOrNull() != null)
@@ -115,11 +121,33 @@ class HostEditorViewModel @Inject constructor(
     private val securePasswordStorage: SecurePasswordStorage,
     @ApplicationContext private val context: Context,
     private val dispatchers: CoroutineDispatchers,
+    private val keyboardRepository: KeyboardRepository,
 ) : ViewModel() {
 
     private val hostId: UUID = EntityIds.parse(savedStateHandle.get<String>("hostId"))
-    private val _uiState = MutableStateFlow(HostEditorUiState(hostId = hostId))
+    private val restoredForm = savedStateHandle.get<HostEditorUiState>("formDraft")
+    private val _uiState = MutableStateFlow(restoredForm ?: HostEditorUiState(hostId = hostId, isLoading = hostId != EntityIds.NONE))
     val uiState: StateFlow<HostEditorUiState> = _uiState.asStateFlow()
+    val keyboardDraft = savedStateHandle.getStateFlow<KeyboardDraft?>("pendingKeyboard", null)
+
+    fun updateKeyboardDraft(value: KeyboardDraft?) {
+        savedStateHandle["pendingKeyboard"] = value
+        _uiState.update { it.copy(hasUnsavedChanges = true) }
+    }
+
+    val draftHostId: UUID = savedStateHandle.get<String>("newHostId")?.let(UUID::fromString) ?: UUID.randomUUID().also { savedStateHandle["newHostId"] = it.toString() }
+    val automationDraft = savedStateHandle.getStateFlow<String?>("pendingAutomation", null)
+    val automationMacros = savedStateHandle.getStateFlow("pendingAutomationMacros", arrayListOf<KeyboardMacro>())
+
+    fun updateKeyboardLayoutId(value: UUID?) {
+        _uiState.update { it.copy(keyboardLayoutId = value, hasUnsavedChanges = true) }
+    }
+
+    fun updateAutomationDraft(actions: List<AutomationAction>, macros: List<KeyboardMacro>) {
+        savedStateHandle["pendingAutomation"] = AutomationDraftCodec.encode(actions)
+        savedStateHandle["pendingAutomationMacros"] = ArrayList(macros)
+        _uiState.update { it.copy(automationCount = actions.size, hasUnsavedChanges = true) }
+    }
 
     private var moshInstallJob: Job? = null
     private var preMoshProtocol: String = "ssh"
@@ -127,11 +155,16 @@ class HostEditorViewModel @Inject constructor(
     private var hasEnteredNickname = false
 
     init {
+        viewModelScope.launch {
+            uiState.collect { state ->
+                if (!state.isLoading) savedStateHandle["formDraft"] = state.copy(password = "", availablePubkeys = emptyList(), availableProfiles = emptyList(), availableJumpHosts = emptyList(), algorithmCatalog = emptyMap(), algorithmDefaults = emptyMap(), isLoading = false, isSaving = false, isMoshInstalling = false)
+            }
+        }
         observePubkeys()
         observeJumpHosts()
         observeProfiles()
         if (hostId != EntityIds.NONE) {
-            loadHost()
+            if (restoredForm == null || !restoredForm.hasUnsavedChanges) loadHost()
             viewModelScope.launch {
                 repository.observeAutomation(hostId)
                     .catch { emit(emptyList()) }
@@ -140,7 +173,7 @@ class HostEditorViewModel @Inject constructor(
         } else {
             // For new hosts, apply the default profile from settings
             val defaultProfileId = EntityIds.parse(prefs.getString("defaultProfileId", null))
-            if (defaultProfileId != EntityIds.NONE) {
+            if (restoredForm == null && defaultProfileId != EntityIds.NONE) {
                 _uiState.update { it.copy(profileId = defaultProfileId) }
             }
         }
@@ -199,6 +232,7 @@ class HostEditorViewModel @Inject constructor(
                             color = host.color ?: "gray",
                             pubkeyId = host.pubkeyId,
                             profileId = host.profileId,
+                            keyboardLayoutId = host.keyboardLayoutId,
                             useAuthAgent = host.useAuthAgent ?: "no",
                             compression = host.compression,
                             wantSession = host.wantSession,
@@ -445,6 +479,9 @@ class HostEditorViewModel @Inject constructor(
         _uiState.update { it.copy(isSaving = true, error = null) }
         try {
             val state = _uiState.value
+            val pendingKeyboard = keyboardDraft.value
+            val pendingAutomation = automationDraft.value?.let(AutomationDraftCodec::decode)
+            val pendingMacros = automationMacros.value.filter { macro -> pendingAutomation.orEmpty().any { it.macroId == macro.id } }
             if (state.protocol == "ssh" || state.protocol == "mosh") {
                 withContext(dispatchers.default) { state.crypto.resolve() }
             }
@@ -458,7 +495,7 @@ class HostEditorViewModel @Inject constructor(
             val jumpHostId = if (state.protocol == "ssh" || state.protocol == "mosh") state.jumpHostId else null
 
             val host = Host(
-                id = existingHost?.id ?: UUID.randomUUID(),
+                id = existingHost?.id ?: draftHostId,
                 repositoryId = existingHost?.repositoryId ?: EntityIds.LOCAL,
                 crypto = state.crypto,
                 nickname = state.nickname,
@@ -469,6 +506,7 @@ class HostEditorViewModel @Inject constructor(
                 color = state.color.takeIf { it != "gray" },
                 pubkeyId = state.pubkeyId,
                 profileId = state.profileId,
+                keyboardLayoutId = state.keyboardLayoutId,
                 useAuthAgent = state.useAuthAgent.takeIf { it != "no" },
                 compression = state.compression,
                 wantSession = state.wantSession,
@@ -492,7 +530,17 @@ class HostEditorViewModel @Inject constructor(
                 locale = state.locale.ifBlank { "en_US.UTF-8" },
             )
 
-            val savedHost = repository.saveHost(host)
+            val savedHost = withContext(dispatchers.io) {
+                if (pendingKeyboard == null && pendingAutomation == null && pendingMacros.isEmpty()) {
+                    repository.saveHost(host)
+                } else {
+                    keyboardRepository.commitDrafts(listOfNotNull(pendingKeyboard), pendingMacros) {
+                        val saved = repository.saveHost(host)
+                        pendingAutomation?.let { actions -> repository.saveAutomation(saved.id, actions.map { it.copy(hostId = saved.id) }) }
+                        saved
+                    }
+                }
+            }
 
             // Handle password storage for SSH and Mosh
             if (state.protocol == "ssh" || state.protocol == "mosh") {

@@ -56,6 +56,7 @@ mockitoKotlin = "6.4.0"
 assertj = "3.27.7"
 robolectric = "4.17"
 kover = "0.9.11"
+jacoco = "0.8.14"
 
 media3CommonKtx = "1.11.1"
 navigationTesting = "2.10.2"

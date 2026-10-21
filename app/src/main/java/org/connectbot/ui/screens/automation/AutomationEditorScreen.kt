@@ -17,6 +17,7 @@
 
 package org.connectbot.ui.screens.automation
 
+import androidx.activity.compose.BackHandler
 import androidx.annotation.StringRes
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
@@ -93,6 +94,7 @@ import org.connectbot.ui.components.SpecialCharVisualTransformation
 import org.connectbot.ui.components.TerminalKeyPicker
 import org.connectbot.ui.components.displayName
 import org.connectbot.ui.screens.keyboard.KeyboardSettingsScreen
+import org.connectbot.ui.screens.keyboard.KeyboardWorkflowDialog
 import org.connectbot.util.TerminalKeyModifiers
 import sh.calvin.reorderable.ReorderableItem
 import sh.calvin.reorderable.rememberReorderableLazyListState
@@ -116,9 +118,15 @@ fun AutomationEditorScreen(
     onNavigateBack: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: AutomationEditorViewModel = hiltViewModel(),
+    draftHostId: UUID? = null,
+    initialActions: List<AutomationAction> = emptyList(),
+    initialMacros: List<KeyboardMacro> = emptyList(),
+    onApplyDraft: ((List<AutomationAction>, List<KeyboardMacro>) -> Unit)? = null,
 ) {
     val state by viewModel.state.collectAsState()
-    var showMacroLibrary by remember { mutableStateOf(false) }
+    LaunchedEffect(draftHostId) { draftHostId?.let { viewModel.initializeDraft(it, initialActions, initialMacros) } }
+    val macros = (state.macros + state.pendingMacros).associateBy { it.id }.values.toList()
+    var showMacroLibrary by rememberSaveable { mutableStateOf(false) }
     val scope = rememberCoroutineScope()
     val haptic = LocalHapticFeedback.current
     // Saving disables interaction and accessibility actions without flashing disabled colors.
@@ -149,14 +157,28 @@ fun AutomationEditorScreen(
         }
     }
 
+    BackHandler(enabled = onApplyDraft != null && !state.dirty && !state.saving) {
+        viewModel.finishDraftSession()
+        onNavigateBack()
+    }
     EditorScaffold(
         title = stringResource(R.string.hostpref_postlogin_title),
-        saveContentDescription = stringResource(R.string.automation_save),
+        saveContentDescription = stringResource(if (onApplyDraft != null) R.string.keyboard_done else R.string.automation_save),
         saveVisible = state.dirty && !state.loading && state.hostExists,
         confirmDiscard = state.dirty,
         isSaving = state.saving,
-        onNavigateBack = onNavigateBack,
-        onSave = { scope.launch { if (viewModel.save()) onNavigateBack() } },
+        onNavigateBack = {
+            if (onApplyDraft != null) viewModel.finishDraftSession()
+            onNavigateBack()
+        },
+        onSave = {
+            if (onApplyDraft != null) {
+                onApplyDraft(state.actions, state.pendingMacros)
+                viewModel.finishDraftSession()
+            } else {
+                scope.launch { if (viewModel.save()) onNavigateBack() }
+            }
+        },
         snackbarHostState = snackbarHostState,
         modifier = modifier,
     ) { padding ->
@@ -175,6 +197,7 @@ fun AutomationEditorScreen(
                     .fillMaxSize()
                     .padding(padding),
             ) {
+                if (onApplyDraft != null) Text(stringResource(R.string.automation_draft_host), modifier = Modifier.padding(16.dp))
                 state.error?.let {
                     Text(
                         stringResource(it),
@@ -222,7 +245,7 @@ fun AutomationEditorScreen(
                                             stringResource(action.type.title()),
                                             style = MaterialTheme.typography.titleMedium,
                                         )
-                                        ActionSummary(action, state.forwards, state.macros)
+                                        ActionSummary(action, state.forwards, macros)
                                         Row {
                                             TextButton(
                                                 onClick = { viewModel.edit(action) },
@@ -285,8 +308,17 @@ fun AutomationEditorScreen(
     }
 
     if (showMacroLibrary) {
-        Dialog(onDismissRequest = { showMacroLibrary = false }, properties = DialogProperties(usePlatformDefaultWidth = false)) {
-            KeyboardSettingsScreen(onNavigateBack = { showMacroLibrary = false }, macrosOnly = true)
+        KeyboardWorkflowDialog(onDismiss = { showMacroLibrary = false }) {
+            KeyboardSettingsScreen(
+                onNavigateBack = { showMacroLibrary = false },
+                macrosOnly = true,
+                pendingMacros = macros,
+                currentReferenceId = state.editing?.id,
+                onSelectMacro = {
+                    viewModel.selectMacro(it)
+                    showMacroLibrary = false
+                },
+            )
         }
     }
     if (showAdd) {
@@ -295,8 +327,10 @@ fun AutomationEditorScreen(
             title = { Text(stringResource(R.string.automation_add)) },
             text = {
                 Column(Modifier.verticalScroll(rememberScrollState())) {
+                    if (draftHostId != null) Text(stringResource(R.string.automation_no_forwards_new_host))
                     AutomationActionType.entries.forEach { type ->
                         TextButton(
+                            enabled = state.supportsForwarding || (type != AutomationActionType.ENABLE_FORWARD && type != AutomationActionType.DISABLE_FORWARD),
                             onClick = {
                                 showAdd = false
                                 viewModel.add(type)
@@ -309,8 +343,11 @@ fun AutomationEditorScreen(
             confirmButton = {},
         )
     }
-    state.editing?.let {
-        ActionEditorDialog(it, state.forwards, state.macros, state.editError, viewModel::dismissEdit, viewModel::applyEdit, onManageMacros = { showMacroLibrary = true })
+    state.editing?.takeUnless { showMacroLibrary }?.let {
+        ActionEditorDialog(it, state.forwards, macros, state.editError, viewModel::dismissEdit, viewModel::applyEdit, onManageMacros = { draft ->
+            viewModel.edit(draft)
+            showMacroLibrary = true
+        })
     }
 }
 
@@ -366,7 +403,7 @@ private fun ActionEditorDialog(
     error: Int?,
     onDismiss: () -> Unit,
     onSave: (AutomationAction) -> Unit,
-    onManageMacros: () -> Unit,
+    onManageMacros: (AutomationAction) -> Unit,
 ) {
     val saver = remember {
         Saver<AutomationAction, String>(
@@ -374,7 +411,7 @@ private fun ActionEditorDialog(
             restore = { AutomationDraftCodec.decode(it).single() },
         )
     }
-    var draft by rememberSaveable(action.id, stateSaver = saver) { mutableStateOf(action) }
+    var draft by rememberSaveable(action.id, action.macroId, stateSaver = saver) { mutableStateOf(action) }
     var seconds by rememberSaveable(action.id) { mutableStateOf((action.durationMs / 1000.0).toString()) }
     var macroMenu by remember { mutableStateOf(false) }
     var forwardMenu by remember { mutableStateOf(false) }
@@ -409,19 +446,8 @@ private fun ActionEditorDialog(
                     )
                 }
                 if (action.type == AutomationActionType.RUN_MACRO) {
-                    Box {
-                        TextButton(onClick = { macroMenu = true }) { Text(macros.find { it.id == draft.macroId }?.name ?: stringResource(R.string.macro_choose)) }
-                        DropdownMenu(expanded = macroMenu, onDismissRequest = { macroMenu = false }) {
-                            macros.forEach { macro ->
-                                DropdownMenuItem(text = { Text(macro.name) }, enabled = runCatching { MacroFormat.decode(macro.document) }.isSuccess, onClick = {
-                                    draft = draft.copy(macroId = macro.id)
-                                    macroMenu = false
-                                })
-                            }
-                            if (macros.isEmpty()) DropdownMenuItem(text = { Text(stringResource(R.string.macro_none)) }, enabled = false, onClick = {})
-                        }
-                    }
-                    TextButton(onClick = onManageMacros) { Text(stringResource(R.string.macro_manage)) }
+                    Text(macros.find { it.id == draft.macroId }?.name ?: stringResource(R.string.macro_none))
+                    TextButton(onClick = { onManageMacros(draft) }) { Text(stringResource(R.string.macro_choose)) }
                 }
                 if (action.type == AutomationActionType.SEND_KEY) {
                     TerminalKeyPicker(

@@ -32,14 +32,14 @@ data class KeyboardLayout(
     @ColumnInfo(name = "button_height", defaultValue = "30") val buttonHeight: Float = 30f,
     @ColumnInfo(name = "fit_to_width", defaultValue = "0") val fitToWidth: Boolean = false,
     @ColumnInfo(name = "preset_key") val presetKey: String? = null,
-)
+) : java.io.Serializable
 
 @Entity(tableName = "keyboard_macros")
 data class KeyboardMacro(
     @PrimaryKey val id: UUID = UUID.randomUUID(),
     val name: String,
     val document: String,
-)
+) : java.io.Serializable
 
 @Entity(
     tableName = "keyboard_items",
@@ -75,7 +75,7 @@ data class KeyboardItem(
     @ColumnInfo(name = "haptic_feedback") val hapticFeedback: Boolean? = null,
     /** Key buttons can reuse a single-key macro for their label and preset modifiers. */
     @ColumnInfo(name = "macro_id") val macroId: UUID? = null,
-)
+) : java.io.Serializable
 
 @Entity(
     tableName = "keyboard_settings",
@@ -98,3 +98,9 @@ data class KeyboardConfiguration(
         ?: layouts.find { it.id == settings?.defaultLayoutId }
         ?: layouts.firstOrNull()
 }
+
+/** Only terminal actions repeat; toggles and navigation controls always fire once. */
+fun KeyboardItem.repeatsOnHold(): Boolean = (kind == "key" || kind == "macro") &&
+    (repeatOnHold ?: (kind == "key" && target.startsWith("arrow_")))
+
+fun KeyboardItem.usesHapticFeedback(appSetting: Boolean): Boolean = hapticFeedback ?: appSetting

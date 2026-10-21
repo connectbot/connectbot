@@ -35,6 +35,8 @@ import org.connectbot.data.EntityIds
 import org.connectbot.data.ProfileRepository
 import org.connectbot.data.entity.ColorScheme
 import org.connectbot.data.entity.Profile
+import org.connectbot.data.keyboard.KeyboardDraft
+import org.connectbot.data.keyboard.KeyboardRepository
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.LocalFontProvider
 import org.connectbot.util.TerminalFont
@@ -68,16 +70,17 @@ data class ProfileEditorUiState(
     val hasUnsavedChanges: Boolean = false,
     val saveError: String? = null,
     val fontDownloadInProgress: Boolean = false,
-)
+) : java.io.Serializable
 
 @HiltViewModel
 class ProfileEditorViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle,
+    private val savedStateHandle: SavedStateHandle,
     private val profileRepository: ProfileRepository,
     private val colorSchemeRepository: ColorSchemeRepository,
     private val prefs: SharedPreferences,
     @ApplicationContext private val context: Context,
     private val dispatchers: CoroutineDispatchers,
+    private val keyboardRepository: KeyboardRepository,
 ) : ViewModel() {
 
     val commonEncodings: List<String> = listOf(
@@ -98,16 +101,28 @@ class ProfileEditorViewModel @Inject constructor(
     private val localFontProvider = LocalFontProvider(context)
     private val fontProvider = TerminalFontProvider(context, dispatchers.io)
 
-    private val _uiState = MutableStateFlow(ProfileEditorUiState(profileId = profileId))
+    private val restoredForm = savedStateHandle.get<ProfileEditorUiState>("formDraft")
+    private val _uiState = MutableStateFlow(restoredForm ?: ProfileEditorUiState(profileId = profileId))
     val uiState: StateFlow<ProfileEditorUiState> = _uiState.asStateFlow()
+    val keyboardDraft = savedStateHandle.getStateFlow<KeyboardDraft?>("pendingKeyboard", null)
+
+    fun updateKeyboardDraft(value: KeyboardDraft?) {
+        savedStateHandle["pendingKeyboard"] = value
+        _uiState.update { it.copy(hasUnsavedChanges = true) }
+    }
 
     init {
+        viewModelScope.launch {
+            uiState.collect { state ->
+                if (!state.isLoading) savedStateHandle["formDraft"] = state.copy(availableColorSchemes = emptyList(), localFonts = emptyList(), isLoading = false, isSaving = false, fontDownloadInProgress = false)
+            }
+        }
         loadCustomFonts()
         loadLocalFonts()
         loadCustomTerminalTypes()
         observeColorSchemes()
         if (profileId != EntityIds.NONE) {
-            loadProfile()
+            if (restoredForm == null || !restoredForm.hasUnsavedChanges) loadProfile()
         } else {
             _uiState.update { it.copy(isLoading = false) }
         }
@@ -251,6 +266,7 @@ class ProfileEditorViewModel @Inject constructor(
 
     fun save(onSuccess: () -> Unit) {
         val state = _uiState.value
+        val pendingKeyboard = keyboardDraft.value
         if (state.isSaving || !state.hasUnsavedChanges) return
         _uiState.update { it.copy(isSaving = true, saveError = null) }
         viewModelScope.launch {
@@ -291,7 +307,13 @@ class ProfileEditorViewModel @Inject constructor(
             )
 
             try {
-                withContext(dispatchers.io) { profileRepository.save(profile) }
+                withContext(dispatchers.io) {
+                    if (pendingKeyboard == null) {
+                        profileRepository.save(profile)
+                    } else {
+                        keyboardRepository.commitDrafts(listOfNotNull(pendingKeyboard)) { profileRepository.save(profile) }
+                    }
+                }
                 _uiState.update { it.copy(isSaving = false, hasUnsavedChanges = false) }
                 onSuccess()
             } catch (e: Exception) {

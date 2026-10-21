@@ -43,6 +43,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
@@ -58,6 +59,7 @@ import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.Layout
 import androidx.compose.ui.platform.LocalContext
@@ -92,6 +94,8 @@ import org.connectbot.data.keyboard.KeyboardLayout
 import org.connectbot.data.keyboard.KeyboardMacro
 import org.connectbot.data.keyboard.MacroAction
 import org.connectbot.data.keyboard.MacroFormat
+import org.connectbot.data.keyboard.repeatsOnHold
+import org.connectbot.data.keyboard.usesHapticFeedback
 import org.connectbot.service.KeyboardActions
 import org.connectbot.service.ModifierLevel
 import org.connectbot.service.ModifierState
@@ -168,6 +172,7 @@ internal fun ConfigurableTerminalKeyboard(
 ) {
     val config by viewModel.configuration.collectAsState()
     val selection by remember(bridge) { viewModel.layoutSelection(bridge.host) }.collectAsState(null)
+    val sessionSelection by remember(bridge) { viewModel.repository.sessionSelection(bridge) }.collectAsState()
     val modifiers by bridge.keyHandler.modifierState.collectAsState()
     val context = LocalContext.current
     val view = LocalView.current
@@ -186,7 +191,7 @@ internal fun ConfigurableTerminalKeyboard(
     LaunchedEffect(bridge) {
         bridge.keyboardErrors.collect { Toast.makeText(context, "$errorLabel: $it", Toast.LENGTH_LONG).show() }
     }
-    val layout = config.layout(selection) ?: return
+    val layout = config.layout(sessionSelection ?: selection) ?: return
     val items = config.items.filter { it.layoutId == layout.id }
     if (runCatching { KeyboardDefaults.validate(layout, items) }.isFailure) {
         Text(stringResource(R.string.keyboard_unsupported), modifier = modifier)
@@ -199,7 +204,7 @@ internal fun ConfigurableTerminalKeyboard(
         modifier = modifier, playAnimation = playAnimation, onScrollInProgressChange = onScrollInProgressChange,
         onPress = { item ->
             onInteraction()
-            if (bumpy) view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
+            if (item.usesHapticFeedback(bumpy)) view.performHapticFeedback(HapticFeedbackConstants.KEYBOARD_TAP)
             when (item.kind) {
                 "key" -> {
                     bridge.sendConfiguredKey(item.target, config.macros.find { it.id == item.macroId }?.document)
@@ -241,6 +246,7 @@ internal fun KeyboardGrid(
     onMove: ((KeyboardItem, Int, Int) -> Unit)? = null,
     playAnimation: Boolean = false,
     onScrollInProgressChange: (Boolean) -> Unit = {},
+    interactive: Boolean = true,
 ) {
     var selectedLayer by remember(layout.id, sessionKey) { mutableIntStateOf(KeyboardLayers.initial(items)) }
     val populated = KeyboardLayers.populated(items)
@@ -252,6 +258,37 @@ internal fun KeyboardGrid(
         }
         onPress(item)
     }
+    KeyboardRegions(layout, items, modifier) { regionLayout, regionItems, regionModifier ->
+        KeyboardGridRegion(
+            layout = regionLayout, items = regionItems, navigationItems = items, macros = macros,
+            layer = layer, press = press, editing = editing, unsupportedMacroIds = unsupportedMacroIds,
+            modifierState = modifierState, imeVisible = imeVisible, composeActive = composeActive,
+            onMove = onMove, playAnimation = playAnimation,
+            onScrollInProgressChange = if (regionItems.firstOrNull()?.pinned == true) ({}) else onScrollInProgressChange,
+            modifier = regionModifier, interactive = interactive,
+        )
+    }
+}
+
+@Composable
+private fun KeyboardGridRegion(
+    layout: KeyboardLayout,
+    items: List<KeyboardItem>,
+    navigationItems: List<KeyboardItem>,
+    macros: List<KeyboardMacro>,
+    layer: Int,
+    press: (KeyboardItem) -> Unit,
+    editing: Boolean,
+    unsupportedMacroIds: Set<UUID>,
+    modifierState: ModifierState?,
+    imeVisible: Boolean,
+    composeActive: Boolean,
+    onMove: ((KeyboardItem, Int, Int) -> Unit)?,
+    playAnimation: Boolean,
+    onScrollInProgressChange: (Boolean) -> Unit,
+    interactive: Boolean,
+    modifier: Modifier = Modifier,
+) {
     val horizontal = rememberScrollState()
     val vertical = rememberScrollState()
     val scrolling by rememberUpdatedState(onScrollInProgressChange)
@@ -272,11 +309,11 @@ internal fun KeyboardGrid(
     val rows = (items.maxOfOrNull { it.row + it.rowSpan } ?: 0).coerceIn(0, 1000)
     val width = layout.buttonWidth.takeIf { it.isFinite() && it > 0 }?.coerceAtMost(1000f) ?: 45f
     val height = layout.buttonHeight.takeIf { it.isFinite() && it > 0 }?.coerceAtMost(1000f) ?: 30f
-    Box(modifier = modifier.then(if (layout.fitToWidth) Modifier else Modifier.horizontalScroll(horizontal).verticalScroll(vertical))) {
+    Box(modifier = modifier.then(if (layout.fitToWidth) Modifier else Modifier.horizontalScroll(horizontal, enabled = interactive).verticalScroll(vertical, enabled = interactive))) {
         Layout(content = {
             visible.forEach { item ->
                 key(item.id) {
-                    KeyboardGridButton(layout, item, macros, layer, press, items = items, editing = editing, unsupportedMacroIds = unsupportedMacroIds, modifierState = modifierState, imeVisible = imeVisible, composeActive = composeActive, onMove = onMove)
+                    KeyboardGridButton(layout, item, macros, layer, press, items = navigationItems, editing = editing, unsupportedMacroIds = unsupportedMacroIds, modifierState = modifierState, imeVisible = imeVisible, composeActive = composeActive, onMove = onMove, interactive = interactive)
                 }
             }
         }) { measurables, constraints ->
@@ -312,6 +349,7 @@ internal fun KeyboardGridButton(
     items: List<KeyboardItem>,
     modifier: Modifier = Modifier,
     editing: Boolean = false,
+    interactive: Boolean = true,
     unsupportedMacroIds: Set<UUID> = emptySet(),
     modifierState: ModifierState? = null,
     imeVisible: Boolean = false,
@@ -355,7 +393,7 @@ internal fun KeyboardGridButton(
         }
     }
     val description = combination?.let { stringResource(R.string.keyboard_shortcut_description, fullShortcutLabel(label, shortcut), it) }
-    GridButton(item, label, active, editing || supported, editing, onPress, onMove, modifier = modifier, shortcutDescription = description, layerNumber = layer)
+    GridButton(item, label, active, editing || supported, editing, onPress, onMove, modifier = modifier, shortcutDescription = description, layerNumber = layer, interactive = interactive)
 }
 
 @Composable
@@ -370,11 +408,13 @@ private fun GridButton(
     modifier: Modifier = Modifier,
     shortcutDescription: String? = null,
     layerNumber: Int = 0,
+    interactive: Boolean = true,
 ) {
     val currentPress by rememberUpdatedState(onPress)
+    val currentItem by rememberUpdatedState(item)
     val currentMove by rememberUpdatedState(onMove)
     val scope = rememberCoroutineScope()
-    val repeat = !editing && item.kind == "key" && item.target.startsWith("arrow_")
+    val repeat = !editing && item.repeatsOnHold()
     val moveUp = stringResource(R.string.keyboard_move_up)
     val moveDown = stringResource(R.string.keyboard_move_down)
     val moveLeft = stringResource(R.string.keyboard_move_left)
@@ -407,7 +447,7 @@ private fun GridButton(
         if (!enabled) stateDescription = unsupported
         if (enabled) {
             onClick {
-                currentPress(item)
+                currentPress(currentItem)
                 true
             }
         } else {
@@ -434,25 +474,24 @@ private fun GridButton(
             )
         }
     }
-    if (enabled) {
-        gestures = gestures.pointerInput(item.id, repeat) {
-            detectTapGestures(onPress = {
-                if (!repeat) {
-                    if (tryAwaitRelease()) currentPress(item)
-                } else {
+    if (!interactive) gestures = modifier
+    if (enabled && interactive) {
+        gestures = gestures.pointerInput(item.id, item.kind, item.target, item.macroId, repeat) {
+            detectTapGestures(onTap = if (repeat) null else { _ -> currentPress(currentItem) }, onPress = {
+                if (repeat) {
                     var sent = false
                     val job = scope.launch {
                         delay(ViewConfiguration.getTapTimeout().toLong())
                         sent = true
-                        currentPress(item)
+                        currentPress(currentItem)
                         delay(400)
                         while (true) {
-                            currentPress(item)
+                            currentPress(currentItem)
                             delay(50)
                         }
                     }
                     try {
-                        if (tryAwaitRelease() && !sent) currentPress(item)
+                        if (tryAwaitRelease() && !sent) currentPress(currentItem)
                     } finally {
                         job.cancel()
                     }
@@ -460,14 +499,20 @@ private fun GridButton(
             })
         }
     }
+    val background = when (active) {
+        ModifierLevel.OFF -> (item.backgroundColor?.let { Color(it) } ?: MaterialTheme.colorScheme.surface)
+            .copy(alpha = (item.backgroundOpacity ?: 0.85f) * if (enabled && item.visible) 1f else 0.35f / 0.85f)
+
+        ModifierLevel.TRANSIENT -> MaterialTheme.colorScheme.primaryContainer
+
+        ModifierLevel.LOCKED -> MaterialTheme.colorScheme.primary
+    }
+    val outlineWidth = item.outlineWidth ?: 1f
     Surface(
         modifier = gestures,
-        border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
-        color = when (active) {
-            ModifierLevel.OFF -> MaterialTheme.colorScheme.surface.copy(alpha = if (enabled && item.visible) 0.85f else 0.35f)
-            ModifierLevel.TRANSIENT -> MaterialTheme.colorScheme.primaryContainer
-            ModifierLevel.LOCKED -> MaterialTheme.colorScheme.primary
-        },
+        border = if (outlineWidth > 0f) BorderStroke(outlineWidth.dp, item.outlineColor?.let { Color(it) } ?: MaterialTheme.colorScheme.outline) else null,
+        color = background,
+        contentColor = item.textColor?.let { Color(it) } ?: contentColorFor(background),
     ) {
         Box(contentAlignment = Alignment.Center) {
             val icon = when (item.target.takeIf { item.kind != "macro" }) {

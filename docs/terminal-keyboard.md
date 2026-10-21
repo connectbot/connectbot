@@ -4,7 +4,34 @@ Keyboard layouts, buttons, macros, and the singleton keyboard settings record us
 UUID primary keys. Kotlin UUIDs are stored as canonical lowercase TEXT, never as
 SQLite rowids. Layout duplication creates new layout and button identities but
 retains shared macro references. Host and profile identifiers also use UUIDs;
-a profile's nullable keyboard_layout_id is a UUID foreign key.
+both hosts and profiles have a nullable keyboard_layout_id UUID foreign key.
+
+## Selecting and customizing
+
+Profiles select a layout or inherit the app default. Hosts can override the
+profile selection; clearing the override restores inheritance. The effective
+order is host override, profile selection, then app default. The selector shows
+the effective name, source, preset description, and keyboard preview.
+
+Change opens the shared picker. Customize creates a new layout and button IDs,
+retaining shared macro references. In a host or profile form, Done returns the
+copy to the parent draft; only the parent Save commits it. Discarding the parent
+leaves no unused copy. New-host automation follows the same draft/save boundary.
+
+The terminal menu also offers Terminal keyboard. Saved-host changes persist
+immediately and update open sessions. Temporary connections keep their choice
+only for that connection. Customizing from the terminal saves a new library
+layout; temporary connections do not become saved hosts.
+
+Layouts and macros have separate library tabs. Macro selection from a key or an
+automation action supports creation and import without leaving the workflow.
+Editing a macro used elsewhere offers a copy for only the current key/action or
+an explicitly shared edit. Shared edits save globally even if a parent draft is
+later discarded. Usage entries include keyboard layouts and host automation;
+referenced macros cannot be deleted.
+
+Editors retain drafts across navigation and recreation, and ask before discarding
+changes. Host password entry is excluded from persisted form state.
 
 ## Layouts
 
