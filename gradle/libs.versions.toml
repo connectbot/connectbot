@@ -26,7 +26,7 @@ navigationCompose = "2.10.2"
 navigationEvent = "1.2.0"
 activityCompose = "1.13.0"
 
-telnetlib = "0.1.0"
+telnetlib = "0.1.1"
 sshlib = "0.6.2"
 termlib = "0.3.13"
 playServicesBasement = "18.12.0"
