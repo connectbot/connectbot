@@ -70,6 +70,7 @@ class AutomationEditorScreenTest {
     val compose = createAndroidComposeRule<HiltComponentActivity>()
     private lateinit var viewModel: AutomationEditorViewModel
     private lateinit var repository: HostRepository
+    private val macros = MutableStateFlow<List<org.connectbot.data.keyboard.KeyboardMacro>>(emptyList())
     private var navigatedBack = false
     private val hapticEvents = mutableListOf<HapticFeedbackType>()
     private val haptic = object : HapticFeedback {
@@ -87,6 +88,7 @@ class AutomationEditorScreenTest {
         }
         Mockito.`when`(repository.observeAutomation(UUID(0, 1))).thenReturn(MutableStateFlow<List<AutomationAction>>(emptyList()))
         Mockito.`when`(repository.observePortForwardsForHost(UUID(0, 1))).thenReturn(MutableStateFlow(emptyList()))
+        Mockito.`when`(repository.observeSharedMacros()).thenReturn(macros)
         compose.runOnUiThread {
             val dispatcher = Dispatchers.Main.immediate
             viewModel = AutomationEditorViewModel(SavedStateHandle(mapOf("hostId" to UUID(0, 1).toString())), repository, CoroutineDispatchers(dispatcher, dispatcher, dispatcher))
@@ -108,6 +110,17 @@ class AutomationEditorScreenTest {
         compose.onNodeWithText(text(R.string.automation_text)).performTextInput("echo test\n")
         compose.onNodeWithText(text(R.string.automation_save)).performClick()
         compose.waitForIdle()
+    }
+
+    @Test
+    fun runMacroChoosesFromTheSharedLibrary() {
+        val macro = org.connectbot.data.keyboard.KeyboardMacro(name = "Shared build", document = org.connectbot.data.keyboard.MacroFormat.encode(listOf(org.connectbot.data.keyboard.MacroAction.Text("make"))))
+        macros.value = listOf(macro)
+        compose.runOnUiThread { viewModel.add(AutomationActionType.RUN_MACRO) }
+        compose.onNodeWithText(compose.activity.getString(R.string.macro_choose)).performClick()
+        compose.onNodeWithText("Shared build").performClick()
+        compose.onNodeWithText(compose.activity.getString(R.string.automation_save)).performClick()
+        compose.runOnIdle { assertEquals(macro.id, viewModel.state.value.actions.single().macroId) }
     }
 
     @Test

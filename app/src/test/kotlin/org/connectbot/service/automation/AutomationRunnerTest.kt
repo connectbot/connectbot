@@ -46,6 +46,9 @@ class AutomationRunnerTest {
             events.add(text)
             reply?.invoke(text)
         }
+        override suspend fun runMacro(id: UUID) {
+            events.add("macro:$id")
+        }
         override suspend fun sendKey(key: Int, modifiers: Int) {
             events.add("key:$key:$modifiers")
         }
@@ -55,6 +58,17 @@ class AutomationRunnerTest {
         override fun disconnect() {
             events.add("disconnect")
         }
+    }
+
+    @Test fun sharedMacroRunsInSequenceAndMissingReferenceFails() = runTest {
+        val session = Session()
+        val id = UUID.randomUUID()
+        val runner = AutomationRunner(session)
+        runner.run(listOf(action(AutomationActionType.SEND_TEXT, "before"), action(AutomationActionType.RUN_MACRO).copy(macroId = id), action(AutomationActionType.SEND_TEXT, "after")))
+        assertEquals(listOf("before", "macro:$id", "after"), session.events)
+        val missing = AutomationRunner(session)
+        missing.run(listOf(action(AutomationActionType.RUN_MACRO)))
+        assertEquals(R.string.keyboard_missing_macro, missing.state.value.error)
     }
 
     private fun action(type: AutomationActionType, text: String = "", duration: Long = 1000) = AutomationAction(hostId = UUID(0, 1), type = type, text = text, durationMs = duration)

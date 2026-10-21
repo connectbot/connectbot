@@ -2073,7 +2073,7 @@
 	<!-- Terminal keyboard configuration: height. -->
 	<string name="keyboard_height">Button height (dp, all buttons)</string>
 	<!-- Terminal keyboard configuration: grid help. -->
-	<string name="keyboard_grid_help">Tap a button to edit it. Drag a handle in the list below to reorder buttons; use row and column fields for exact placement. Width and height apply to all buttons in this layout; spans are multiples of that size.</string>
+	<string name="keyboard_grid_help">Tap a button to edit it. Touch and hold a button, then drag to reorder it; use row and column fields for exact placement. Width and height apply to all buttons in this layout. Keys are one row tall; column spans multiply the button width.</string>
 	<!-- Terminal keyboard configuration: drag handle for a button in the layout editor. -->
 	<string name="keyboard_drag_button">Drag to reorder button</string>
 	<!-- Terminal keyboard configuration: add button. -->
@@ -2190,4 +2190,18 @@
 	<string name="keyboard_action_edit_full">Open external editor</string>
 	<!-- Full accessible action name for the abbreviated copy keyboard shortcut. -->
 	<string name="keyboard_action_copy_full">Copy response</string>
+    <!-- Action in a key editor to choose an existing shared macro. -->
+    <string name="macro_assign">Assign macro</string>
+    <!-- Button to import a shared macro from a JSON or JSON5 file. -->
+    <string name="macro_import">Import macro</string>
+    <!-- Button to export one shared macro as a JSON file. -->
+    <string name="macro_export">Export macro</string>
+    <!-- Empty shared macro picker. -->
+    <string name="macro_none">No saved macros</string>
+    <!-- Post-login action that executes a macro from the shared library. -->
+    <string name="automation_run_macro">Run macro</string>
+    <!-- Shared macro picker placeholder. -->
+    <string name="macro_choose">Choose macro</string>
+    <!-- Opens the shared macro library from post-login automation. -->
+    <string name="macro_manage">Manage macros</string>
 </resources>

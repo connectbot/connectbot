@@ -30,6 +30,7 @@ enum class AutomationActionType {
     WAIT_FOR_TEXT,
     SEND_TEXT,
     SEND_KEY,
+    RUN_MACRO,
     DELAY,
     DISCONNECT,
     ENABLE_FORWARD,

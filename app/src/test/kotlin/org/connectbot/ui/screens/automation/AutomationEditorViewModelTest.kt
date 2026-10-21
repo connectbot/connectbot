@@ -56,10 +56,28 @@ class AutomationEditorViewModelTest {
         Mockito.`when`(repository.findHostById(UUID(0, 1))).thenReturn(Host(id = UUID(0, 1), nickname = "test", protocol = "ssh", username = "user", hostname = "host", port = 22))
         Mockito.`when`(repository.observeAutomation(UUID(0, 1))).thenReturn(actions)
         Mockito.`when`(repository.observePortForwardsForHost(UUID(0, 1))).thenReturn(MutableStateFlow(emptyList()))
+        Mockito.`when`(repository.observeSharedMacros()).thenReturn(MutableStateFlow(emptyList()))
     }
 
     @After fun tearDown() {
         Dispatchers.resetMain()
+    }
+
+    @Test fun runMacroReferencesSharedLibraryAndRestoresDraftIdentity() = runTest(dispatcher) {
+        val macro = org.connectbot.data.keyboard.KeyboardMacro(name = "Build", document = org.connectbot.data.keyboard.MacroFormat.encode(listOf(org.connectbot.data.keyboard.MacroAction.Text("make"))))
+        Mockito.`when`(repository.observeSharedMacros()).thenReturn(MutableStateFlow(listOf(macro)))
+        val handle = SavedStateHandle(mapOf("hostId" to UUID(0, 1).toString()))
+        val vm = AutomationEditorViewModel(handle, repository, dispatchers)
+        advanceUntilIdle()
+        val action = AutomationAction(hostId = UUID(0, 1), type = AutomationActionType.RUN_MACRO, macroId = macro.id)
+        vm.applyEdit(action)
+        advanceUntilIdle()
+        assertEquals(listOf(action), vm.state.value.actions)
+        assertEquals(listOf(action), AutomationDraftCodec.decode(handle.get<String>("draft")!!))
+        vm.applyEdit(action.copy(macroId = UUID.randomUUID()))
+        advanceUntilIdle()
+        assertNotNull(vm.state.value.editError)
+        assertEquals(listOf(action), vm.state.value.actions)
     }
 
     @Test fun editReorderUndoAndSavePreserveIds() = runTest(dispatcher) {

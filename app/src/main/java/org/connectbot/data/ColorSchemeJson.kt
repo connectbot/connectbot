@@ -45,7 +45,7 @@ data class ColorSchemeJson(
          * @throws IllegalArgumentException if schema is invalid
          */
         fun fromJson(jsonString: String): ColorSchemeJson {
-            val json = JSONObject(jsonString)
+            val json = ConfigurationJson.objectFrom(jsonString)
 
             // Parse metadata
             val name = json.getString("name")
