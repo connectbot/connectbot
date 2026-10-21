@@ -24,6 +24,7 @@ import androidx.room.Index
 import androidx.room.PrimaryKey
 import org.connectbot.data.EntityIds
 import org.connectbot.data.keyboard.KeyboardLayout
+import org.connectbot.util.TerminalFontWeight
 import java.util.UUID
 
 /**
@@ -38,6 +39,7 @@ import java.util.UUID
  * @property colorSchemeId Reference to the color scheme
  * @property boldAsBright Whether bold text promotes low-intensity ANSI colors to bright colors
  * @property fontFamily Font family name (null uses system default)
+ * @property fontWeight Base terminal font weight from [TerminalFontWeight]
  * @property fontSize Terminal font size
  * @property delKey DEL key behavior ("del" or "backspace")
  * @property encoding Character encoding (e.g., "UTF-8")
@@ -75,6 +77,9 @@ data class Profile(
 
     @ColumnInfo(name = "font_family")
     val fontFamily: String? = null,
+
+    @ColumnInfo(name = "font_weight", defaultValue = "${TerminalFontWeight.NORMAL}")
+    val fontWeight: Int = TerminalFontWeight.NORMAL,
 
     @ColumnInfo(name = "font_size", defaultValue = "10")
     val fontSize: Int = 10,

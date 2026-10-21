@@ -88,6 +88,15 @@ class SettingsScreenTest {
     }
 
     @Test
+    fun fontManagementExplainsThatFontSelectionIsInProfiles() {
+        setSettingsContent()
+        val guidance = composeTestRule.activity.getString(R.string.pref_fonts_profile_guidance)
+        composeTestRule.onNode(hasScrollAction()).performScrollToNode(hasText(guidance))
+        composeTestRule.onNodeWithText(guidance).assertIsDisplayed()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.pref_fontfamily_title)).assertDoesNotExist()
+    }
+
+    @Test
     fun notificationSettingsLinkAppearsBelowMainSettingAndOpensSettings() {
         var settingsOpened = false
         setSettingsContent(onNotificationSettingsClick = { settingsOpened = true })
@@ -412,7 +421,6 @@ class SettingsScreenTest {
                     onScrollbackChange = onScrollbackChange,
                     onAddCustomTerminalType = onAddCustomTerminalType,
                     onRemoveCustomTerminalType = onRemoveCustomTerminalType,
-                    onFontFamilyChange = {},
                     onAddCustomFont = {},
                     onRemoveCustomFont = {},
                     onClearFontError = {},

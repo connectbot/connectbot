@@ -1,6 +1,6 @@
 /*
  * ConnectBot: simple, powerful, open-source SSH client for Android
- * Copyright 2025 Kenny Root
+ * Copyright 2025-2026 Kenny Root
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import org.connectbot.R
 import org.connectbot.util.TerminalFont
+import org.connectbot.util.TerminalFontWeight
 
 /**
  * Get the localized display name for a font family value.
@@ -42,3 +43,14 @@ fun getLocalizedFontDisplayName(fontFamily: String?): String {
         displayName
     }
 }
+
+/** Get the localized name of a supported terminal font weight. */
+@Composable
+fun getLocalizedFontWeightName(weight: Int): String = stringResource(
+    when (weight) {
+        TerminalFontWeight.MEDIUM -> R.string.profile_font_weight_medium
+        TerminalFontWeight.SEMIBOLD -> R.string.profile_font_weight_semibold
+        TerminalFontWeight.BOLD -> R.string.profile_font_weight_bold
+        else -> R.string.profile_font_weight_normal
+    },
+)

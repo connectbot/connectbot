@@ -17,6 +17,7 @@
 
 package org.connectbot
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
@@ -25,8 +26,11 @@ import androidx.compose.ui.test.performClick
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import org.connectbot.data.entity.Profile
 import org.connectbot.ui.screens.profiles.ProfileListScreen
+import org.connectbot.ui.screens.profiles.ProfileSummaryText
 import org.connectbot.ui.theme.ConnectBotTheme
+import org.connectbot.util.TerminalFontWeight
 import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Rule
@@ -45,6 +49,32 @@ class ProfileListScreenTest {
     @Before
     fun setUp() {
         hiltRule.inject()
+    }
+
+    @Test
+    fun profileSummariesShowOnlyNonDefaultWeight() {
+        val regular = Profile(name = "Regular", fontWeight = TerminalFontWeight.NORMAL)
+        val semibold = Profile(name = "Semibold", fontWeight = TerminalFontWeight.SEMIBOLD)
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                Column {
+                    ProfileSummaryText(regular)
+                    ProfileSummaryText(semibold)
+                }
+            }
+        }
+
+        val fontName = composeTestRule.activity.getString(R.string.font_system_default)
+        val emulation = composeTestRule.activity.getString(R.string.profile_summary_emulation, regular.emulation)
+        val regularFont = composeTestRule.activity.getString(R.string.profile_summary_font, fontName, regular.fontSize)
+        val semiboldFont = composeTestRule.activity.getString(
+            R.string.profile_summary_font_with_weight,
+            fontName,
+            semibold.fontSize,
+            composeTestRule.activity.getString(R.string.profile_font_weight_semibold),
+        )
+        composeTestRule.onNodeWithText("$regularFont | $emulation").assertIsDisplayed()
+        composeTestRule.onNodeWithText("$semiboldFont | $emulation").assertIsDisplayed()
     }
 
     @Test

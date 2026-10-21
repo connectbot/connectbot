@@ -66,7 +66,9 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
 import org.connectbot.data.entity.Profile
 import org.connectbot.ui.common.getLocalizedFontDisplayName
+import org.connectbot.ui.common.getLocalizedFontWeightName
 import org.connectbot.ui.components.TextInputAlertDialog
+import org.connectbot.util.TerminalFontWeight
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -283,12 +285,23 @@ private fun CreateProfileDialog(
 }
 
 @Composable
-private fun ProfileSummaryText(profile: Profile) {
+internal fun ProfileSummaryText(profile: Profile) {
     val parts = mutableListOf<String>()
 
     // Font
     val fontName = getLocalizedFontDisplayName(profile.fontFamily)
-    parts.add(stringResource(R.string.profile_summary_font, fontName, profile.fontSize))
+    val effectiveWeight = TerminalFontWeight.effectiveWeight(profile.fontWeight)
+    val fontSummary = if (effectiveWeight == TerminalFontWeight.NORMAL) {
+        stringResource(R.string.profile_summary_font, fontName, profile.fontSize)
+    } else {
+        stringResource(
+            R.string.profile_summary_font_with_weight,
+            fontName,
+            profile.fontSize,
+            getLocalizedFontWeightName(effectiveWeight),
+        )
+    }
+    parts.add(fontSummary)
 
     // Emulation
     parts.add(stringResource(R.string.profile_summary_emulation, profile.emulation))

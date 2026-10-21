@@ -18,10 +18,13 @@
 package org.connectbot
 
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.hasClickAction
+import androidx.compose.ui.test.hasText
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performTextInput
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
@@ -46,6 +49,21 @@ class ProfileEditorScreenTest {
     @Before
     fun setUp() {
         hiltRule.inject()
+    }
+
+    @Test
+    fun fontDropdownsHaveAccessibleLabels() {
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                ProfileEditorScreen(onNavigateBack = {})
+            }
+        }
+
+        for (label in listOf(R.string.profile_editor_font_family_title, R.string.profile_font_weight)) {
+            composeTestRule.onNode(hasText(composeTestRule.activity.getString(label)) and hasClickAction())
+                .performScrollTo()
+                .assertIsDisplayed()
+        }
     }
 
     @Test
