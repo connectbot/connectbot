@@ -2451,4 +2451,22 @@
     <string name="profile_font_weight_bold">Bold</string>
     <!-- Profile editor: explanation beneath the font weight dropdown. -->
     <string name="profile_font_weight_summary">Sets the default thickness of terminal text.</string>
+    <!-- Console overlay: compact font size, terminal columns, and terminal rows. -->
+    <string name="console_font_size_dimensions">Size %1$d · %2$d × %3$d</string>
+    <!-- Screen reader description of the font size and terminal columns and rows. -->
+    <string name="console_font_size_dimensions_description">Font size %1$d; %2$d columns by %3$d rows</string>
+    <!-- Console overlay: compact font size when terminal dimensions are unavailable. -->
+    <string name="console_font_size_current">Size %1$d</string>
+    <!-- Screen reader description of the current terminal font size. -->
+    <string name="console_font_size_current_description">Font size %1$d</string>
+    <!-- Console: the size is temporary, and saving affects hosts using the profile. -->
+    <string name="console_font_size_shared_profile">Session only · save for profile hosts</string>
+    <!-- Console: shown when the session's profile is temporarily unavailable. -->
+    <string name="console_font_size_profile_unavailable">Session only; profile unavailable.</string>
+    <!-- Console overlay: compact button that saves the current font size. -->
+    <string name="console_font_size_save">Save</string>
+    <!-- Screen reader description of the console overlay save button and its shared-profile effect. -->
+    <string name="console_font_size_save_description">Save font size to profile; affects all hosts using it</string>
+    <!-- Console: shown when the font size could not be saved to the profile. -->
+    <string name="console_font_size_save_error">Could not save font size to the profile.</string>
 </resources>

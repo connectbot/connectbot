@@ -82,6 +82,24 @@ class ConsoleViewModelTest {
     }
 
     @Test
+    fun savingFontSizeUsesOnlyTheCapturedActiveSession() = runTest {
+        val first = createMockBridge(UUID(0, 1), "first")
+        val second = createMockBridge(UUID(0, 2), "second")
+        val profile = TerminalBridge.ActiveProfile(UUID(0, 3), UUID(0, 3))
+        bridgesFlow.value = listOf(first, second)
+        whenever(savedStateHandle.get<String>("hostId")).thenReturn(EntityIds.NONE.toString())
+        org.mockito.Mockito.`when`(first.saveFontSize(profile, 16)).thenReturn(true)
+        val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)
+        viewModel.setTerminalManager(terminalManager)
+        advanceUntilIdle()
+
+        assertTrue(viewModel.saveFontSize(first, profile, 16))
+        viewModel.selectBridge(1)
+        assertFalse(viewModel.saveFontSize(first, profile, 16))
+        org.mockito.Mockito.verify(first, org.mockito.Mockito.times(1)).saveFontSize(profile, 16)
+    }
+
+    @Test
     fun initialState_IsLoading() {
         whenever(savedStateHandle.get<String>("hostId")).thenReturn(UUID(0, 1).toString())
         val viewModel = ConsoleViewModel(savedStateHandle, dispatchers)

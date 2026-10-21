@@ -26,19 +26,23 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material3.Text
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.assertIsNotDisplayed
+import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.junit4.v2.createAndroidComposeRule
 import androidx.compose.ui.test.onAllNodesWithTag
 import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.performKeyInput
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LifecycleRegistry
@@ -82,10 +86,12 @@ import org.connectbot.ui.navigation.safePopBackStack
 import org.connectbot.ui.screens.console.ConsoleScreen
 import org.connectbot.ui.screens.console.ConsoleUiState
 import org.connectbot.ui.screens.console.ConsoleViewModel
+import org.connectbot.ui.screens.console.FontSizeNotice
 import org.connectbot.ui.screens.console.SessionPickerDialog
 import org.connectbot.ui.theme.ConnectBotTheme
 import org.connectbot.util.HostConstants
 import org.connectbot.util.PreferenceConstants
+import org.connectbot.util.TerminalFontWeight
 import org.junit.After
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
@@ -179,6 +185,147 @@ class ConsoleScreenTest {
         composeTestRule.runOnUiThread {
             navController.navigate("console/$hostId")
         }
+    }
+
+    @Test
+    fun fontSizeShortcutRefreshesNoticeAndSavesCapturedProfile() {
+        val profile = TerminalBridge.ActiveProfile(EntityIds.DEFAULT_PROFILE, EntityIds.DEFAULT_PROFILE)
+        val size = MutableStateFlow(14f)
+        val activeProfile = MutableStateFlow<TerminalBridge.ActiveProfile?>(profile)
+        val emulator = TerminalEmulatorFactory.create()
+        val dimensions = MutableStateFlow<TerminalDimensions?>(emulator.dimensions)
+        val bridge = mock(TerminalBridge::class.java)
+        `when`(bridge.host).thenReturn(Host(id = UUID(0, 1), nickname = "first"))
+        `when`(bridge.terminalEmulator).thenReturn(emulator)
+        `when`(bridge.fontSizeFlow).thenReturn(size)
+        `when`(bridge.fontWeightFlow).thenReturn(MutableStateFlow(TerminalFontWeight.NORMAL))
+        `when`(bridge.activeProfile).thenReturn(activeProfile)
+        `when`(bridge.terminalDimensions).thenReturn(dimensions)
+        `when`(bridge.delKeyModeFlow).thenReturn(MutableStateFlow(DelKeyMode.Delete))
+        `when`(bridge.transportMessages).thenReturn(MutableSharedFlow())
+        `when`(bridge.keyboardErrors).thenReturn(MutableSharedFlow())
+        `when`(bridge.promptManager).thenReturn(PromptManager())
+        `when`(bridge.keyHandler).thenReturn(TerminalKeyListener(TerminalEmulatorKeyDispatcher(emulator)))
+        org.mockito.Mockito.doAnswer {
+            size.value += 2f
+            null
+        }.`when`(bridge).increaseFontSize()
+
+        val state = MutableStateFlow(ConsoleUiState(bridges = listOf(bridge), isLoading = false))
+        val viewModel = mock(ConsoleViewModel::class.java)
+        `when`(viewModel.uiState).thenReturn(state)
+        `when`(viewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+        runBlocking { `when`(viewModel.saveFontSize(bridge, profile, 18)).thenReturn(true) }
+        setContent(mockConsoleViewModel = viewModel)
+        navigateToConsoleScreen(bridge.host.id)
+        composeTestRule.onNodeWithTag("terminal").assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.console_font_size_save_description)).assertDoesNotExist()
+        composeTestRule.mainClock.autoAdvance = false
+        try {
+            composeTestRule.onNodeWithTag("terminal").performKeyInput {
+                keyDown(Key.VolumeUp)
+                keyUp(Key.VolumeUp)
+            }
+            composeTestRule.mainClock.advanceTimeBy(100)
+            composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.console_font_size_save_description)).assertIsDisplayed()
+            composeTestRule.mainClock.advanceTimeBy(4_000)
+            composeTestRule.onNodeWithTag("terminal").performKeyInput {
+                keyDown(Key.VolumeUp)
+                keyUp(Key.VolumeUp)
+            }
+            composeTestRule.mainClock.advanceTimeBy(2_000)
+            val resized = emulator.dimensions.copy(rows = 30, columns = 100)
+            composeTestRule.runOnIdle { dimensions.value = resized }
+            composeTestRule.mainClock.advanceTimeBy(100)
+            composeTestRule.onNodeWithText(
+                composeTestRule.activity.getString(R.string.console_font_size_dimensions, 18, 100, 30),
+            ).assertIsDisplayed()
+            composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.console_font_size_save_description)).performClick()
+            composeTestRule.waitForIdle()
+            runBlocking { org.mockito.Mockito.verify(viewModel).saveFontSize(bridge, profile, 18) }
+
+            composeTestRule.onNodeWithTag("terminal").performKeyInput {
+                keyDown(Key.VolumeUp)
+                keyUp(Key.VolumeUp)
+            }
+            composeTestRule.mainClock.advanceTimeBy(5_200)
+            composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.console_font_size_save_description)).assertDoesNotExist()
+
+            composeTestRule.onNodeWithTag("terminal").performKeyInput {
+                keyDown(Key.VolumeUp)
+                keyUp(Key.VolumeUp)
+            }
+            composeTestRule.mainClock.advanceTimeBy(100)
+            composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.console_font_size_save_description)).assertIsDisplayed()
+            composeTestRule.runOnIdle { activeProfile.value = TerminalBridge.ActiveProfile(UUID(0, 2), UUID(0, 2)) }
+            composeTestRule.mainClock.advanceTimeBy(100)
+            composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.console_font_size_save_description)).assertDoesNotExist()
+
+            composeTestRule.onNodeWithTag("terminal").performKeyInput {
+                keyDown(Key.VolumeUp)
+                keyUp(Key.VolumeUp)
+            }
+            composeTestRule.mainClock.advanceTimeBy(100)
+            composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.console_font_size_save_description)).assertIsDisplayed()
+            val other = mock(TerminalBridge::class.java)
+            `when`(other.host).thenReturn(Host(id = UUID(0, 2), nickname = "second"))
+            `when`(other.terminalEmulator).thenReturn(emulator)
+            `when`(other.fontSizeFlow).thenReturn(MutableStateFlow(10f))
+            `when`(other.fontWeightFlow).thenReturn(MutableStateFlow(TerminalFontWeight.NORMAL))
+            `when`(other.activeProfile).thenReturn(MutableStateFlow(profile))
+            `when`(other.delKeyModeFlow).thenReturn(MutableStateFlow(DelKeyMode.Delete))
+            `when`(other.transportMessages).thenReturn(MutableSharedFlow())
+            `when`(other.keyboardErrors).thenReturn(MutableSharedFlow())
+            `when`(other.promptManager).thenReturn(PromptManager())
+            `when`(other.keyHandler).thenReturn(TerminalKeyListener(TerminalEmulatorKeyDispatcher(emulator)))
+            composeTestRule.runOnIdle {
+                state.value = ConsoleUiState(bridges = listOf(bridge, other), currentBridgeIndex = 1, isLoading = false)
+            }
+            composeTestRule.mainClock.advanceTimeBy(100)
+            composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.console_font_size_save_description)).assertDoesNotExist()
+        } finally {
+            composeTestRule.mainClock.autoAdvance = true
+        }
+    }
+
+    @Test
+    fun fontSizeNoticeShowsDimensionsAndSavesOnlyOnAction() {
+        val dimensions = TerminalEmulatorFactory.create().dimensions
+        val currentDimensions = mutableStateOf(dimensions)
+        var saved = false
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                FontSizeNotice(size = 14, dimensions = currentDimensions.value, canSave = true, onSave = { saved = true })
+            }
+        }
+
+        val message = composeTestRule.activity.getString(
+            R.string.console_font_size_dimensions,
+            14,
+            dimensions.columns,
+            dimensions.rows,
+        )
+        composeTestRule.onNodeWithText(message).assertIsDisplayed()
+        val resized = dimensions.copy(rows = 30, columns = 100)
+        composeTestRule.runOnIdle { currentDimensions.value = resized }
+        composeTestRule.onNodeWithText(
+            composeTestRule.activity.getString(R.string.console_font_size_dimensions, 14, 100, 30),
+        ).assertIsDisplayed()
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.console_font_size_shared_profile)).assertIsDisplayed()
+        assertFalse(saved)
+        composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.console_font_size_save_description)).performClick()
+        assertTrue(saved)
+    }
+
+    @Test
+    fun fontSizeNoticeCannotSaveWithoutAProfile() {
+        composeTestRule.setContent {
+            ConnectBotTheme {
+                FontSizeNotice(size = 14, dimensions = null, canSave = false, onSave = {})
+            }
+        }
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.console_font_size_current, 14)).assertIsDisplayed()
+        composeTestRule.onNodeWithContentDescription(composeTestRule.activity.getString(R.string.console_font_size_save_description)).assertIsNotEnabled()
     }
 
     @Test

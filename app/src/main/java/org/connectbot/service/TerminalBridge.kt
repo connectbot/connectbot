@@ -68,6 +68,7 @@ import org.connectbot.service.automation.AutomationSession
 import org.connectbot.service.automation.AutomationState
 import org.connectbot.terminal.DelKeyMode
 import org.connectbot.terminal.ProgressState
+import org.connectbot.terminal.TerminalDimensions
 import org.connectbot.terminal.TerminalEmulator
 import org.connectbot.terminal.TerminalEmulatorFactory
 import org.connectbot.terminal.UrlScanScope
@@ -309,6 +310,23 @@ class TerminalBridge {
 
     // Profile observation
     private var currentProfileId: UUID? = null
+
+    data class ActiveProfile(val id: UUID, val assignedId: UUID?)
+
+    private val _activeProfile = MutableStateFlow<ActiveProfile?>(null)
+    val activeProfile: StateFlow<ActiveProfile?> = _activeProfile.asStateFlow()
+    private val _terminalDimensions = MutableStateFlow<TerminalDimensions?>(null)
+    val terminalDimensions: StateFlow<TerminalDimensions?> = _terminalDimensions.asStateFlow()
+
+    suspend fun saveFontSize(profile: ActiveProfile, size: Int): Boolean {
+        if (_activeProfile.value != profile) return false
+        return manager.profileRepository.updateFontSize(
+            profile.id,
+            host.id.takeUnless { host.isTemporary },
+            profile.assignedId,
+            size,
+        )
+    }
     private var inlineImagesSetting = "ask"
     private val sessionInlineImages = SessionInlineImages {
         scope.async(dispatchers.main) {
@@ -445,6 +463,7 @@ class TerminalBridge {
         // Load profile for this host (always returns a profile, defaulting to Default profile)
         val profile = manager.profileRepository.getByIdOrDefaultBlocking(host.profileId)
         currentProfileId = host.profileId
+        _activeProfile.value = ActiveProfile(profile.id, host.profileId)
 
         emulation = profile.emulation
         scrollback = manager.getScrollback()
@@ -506,6 +525,7 @@ class TerminalBridge {
                 manager.onBell(this)
             },
             onResize = {
+                _terminalDimensions.value = it
                 enqueueTransportOperation(
                     TransportOperation.SetDimensions(
                         it.columns,
@@ -533,6 +553,8 @@ class TerminalBridge {
                 _progressState.value = ProgressInfo(state, progress)
             },
         )
+
+        _terminalDimensions.value = terminalEmulator.dimensions
 
         // Apply color scheme to terminal emulator
         val ansiColors = fullColorPalette.sliceArray(0 until 16)
@@ -669,6 +691,7 @@ class TerminalBridge {
                     if (newProfileId != currentProfileId) {
                         Timber.d("Host profile changed from $currentProfileId to $newProfileId")
                         currentProfileId = newProfileId
+                        _activeProfile.value = null
                     }
 
                     // Observe the current profile for attribute changes
@@ -700,6 +723,7 @@ class TerminalBridge {
      * Apply profile settings to the terminal.
      */
     private fun applyProfileSettings(profile: Profile) {
+        _activeProfile.value = ActiveProfile(profile.id, currentProfileId)
         _fontWeightFlow.value = profile.fontWeight
         if (inlineImagesSetting != profile.inlineImages) {
             inlineImagesSetting = profile.inlineImages

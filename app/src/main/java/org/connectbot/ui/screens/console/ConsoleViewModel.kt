@@ -71,6 +71,13 @@ class ConsoleViewModel @Inject constructor(
     private val _networkStatusMessages = MutableSharedFlow<String>(extraBufferCapacity = 8)
     val networkStatusMessages: SharedFlow<String> = _networkStatusMessages.asSharedFlow()
 
+    /** Save the captured session's font size only while that session and profile remain active. */
+    suspend fun saveFontSize(bridge: TerminalBridge, profile: TerminalBridge.ActiveProfile, size: Int): Boolean {
+        val state = _uiState.value
+        if (state.bridges.getOrNull(state.currentBridgeIndex) !== bridge) return false
+        return bridge.saveFontSize(profile, size)
+    }
+
     fun connectionDetails(): ConnectionDetails? {
         val state = _uiState.value
         val bridge = state.bridges.getOrNull(state.currentBridgeIndex) ?: return null
