@@ -62,6 +62,48 @@ class KeyboardRepositoryTest {
         db.close()
     }
 
+    @Test fun sharedMacroReferencesAndJson5BackupSurviveRestore() = runTest {
+        val context = ApplicationProvider.getApplicationContext<Context>()
+        val macro = KeyboardMacro(name = "Shared", document = MacroFormat.encode(listOf(MacroAction.Text("run"))))
+        repository.saveMacro(macro)
+        val layout = KeyboardLayout(name = "Shared")
+        val button = KeyboardItem(layoutId = layout.id, kind = "macro", macroId = macro.id)
+        repository.save(layout, listOf(button))
+        val host = org.connectbot.data.entity.Host(nickname = "Shared", hostname = "host", protocol = "ssh")
+        db.hostDao().insert(host)
+        val action = org.connectbot.data.entity.AutomationAction(hostId = host.id, type = org.connectbot.data.entity.AutomationActionType.RUN_MACRO, macroId = macro.id)
+        db.automationActionDao().replace(host.id, listOf(action))
+        assertTrue(runCatching { repository.deleteMacro(macro.id) }.isFailure)
+        val json = HostConfigJson.exportToJson(context, db).first
+        val target = Room.inMemoryDatabaseBuilder(context, ConnectBotDatabase::class.java).allowMainThreadQueries().build()
+        try {
+            HostConfigJson.importFromJson(context, target, "/* JSON5 backup */" + json.dropLast(1) + ",}")
+            val restoredHost = target.hostDao().getAll().single()
+            assertEquals(macro.id, target.keyboardDao().items().single().macroId)
+            assertEquals(macro, target.keyboardDao().macros().single())
+            assertEquals(macro.id, target.automationActionDao().getByHost(restoredHost.id).single().macroId)
+        } finally {
+            target.close()
+        }
+        db.keyboardDao().deleteItems(layout.id)
+        assertTrue(runCatching { repository.deleteMacro(macro.id) }.isFailure)
+        db.automationActionDao().deleteByHost(host.id)
+        repository.deleteMacro(macro.id)
+        assertTrue(db.keyboardDao().macros().isEmpty())
+    }
+
+    @Test fun individualMacroImportExportDoesNotOverwriteExistingIdentity() = runTest {
+        val original = KeyboardMacro(name = "Portable", document = MacroFormat.encode(listOf(MacroAction.Text("hello"))))
+        repository.saveMacro(original)
+        val output = java.io.ByteArrayOutputStream()
+        repository.exportMacro(original.id) { output }
+        repository.importMacro { java.io.ByteArrayInputStream(output.toByteArray()) }
+        val macros = db.keyboardDao().macros()
+        assertEquals(2, macros.size)
+        assertEquals(2, macros.map { it.id }.distinct().size)
+        assertTrue(macros.all { it.name == original.name && it.document == original.document })
+    }
+
     @Test fun labelledKeyCombinationIsSavedWithLayout() = runTest {
         val layout = KeyboardLayout(name = "Shortcuts")
         val action = MacroAction.Key(key = "character_97", modifiers = listOf("ctrl"))

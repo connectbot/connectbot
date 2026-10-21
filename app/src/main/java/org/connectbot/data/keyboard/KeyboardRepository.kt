@@ -27,8 +27,11 @@ import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import kotlinx.coroutines.withContext
 import org.connectbot.data.ConnectBotDatabase
+import org.connectbot.data.JsonImportReader
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.PreferenceConstants
+import java.io.InputStream
+import java.io.OutputStream
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -104,9 +107,22 @@ class KeyboardRepository @Inject constructor(private val database: ConnectBotDat
         dao.saveMacro(macro)
     }
 
+    suspend fun importMacro(open: () -> InputStream?) = withContext(dispatchers.io) {
+        val source = requireNotNull(open()) { "Unable to open macro file" }.use(JsonImportReader::read)
+        val macro = MacroFileFormat.decode(source)
+        saveMacro(macro)
+    }
+
+    suspend fun exportMacro(id: UUID, open: () -> OutputStream?) = withContext(dispatchers.io) {
+        val macro = requireNotNull(dao.macros().find { it.id == id }) { "Macro no longer exists" }
+        val source = MacroFileFormat.encode(macro)
+        requireNotNull(open()) { "Unable to create macro file" }.use { it.write(source.toByteArray(Charsets.UTF_8)) }
+    }
+
     suspend fun deleteMacro(id: UUID) = withContext(dispatchers.io) {
         database.withTransaction {
             require(dao.items().none { it.macroId == id }) { "Remove or reassign buttons using this macro first" }
+            require(database.automationActionDao().macroUsageCount(id) == 0) { "Remove or reassign post-login actions using this macro first" }
             dao.deleteMacro(id)
         }
     }

@@ -13,6 +13,13 @@ default to 45 × 30 dp. All buttons, including modifiers, macro buttons, and app
 controls, use those dimensions. A button's column_span and row_span multiply the
 base dimensions. Changing dimensions never rewrites button coordinates or spans.
 
+The editor uses Reorderable's LazyVerticalGrid with the same key faces as the
+console. Tap a key to open its properties, or touch and hold it to drag. There is
+no separate reorder list or visible drag handle. Editor keys are one row tall;
+column spans and gaps remain supported. Opening an older layout for editing
+reduces any multi-row keys to one row in the draft; saving persists that change.
+The stored/exported row_span field remains readable for older layouts.
+
 Positions are zero-based physical rows and columns, shared by portrait and
 landscape. Each item has a layer number from 0 through 4 (default 0). Rectangles may overlap
 only on different layers. Hidden buttons retain their reserved cells. Positions
@@ -147,3 +154,24 @@ Matching UUIDs retain their local contents even if the imported record differs;
 equal contents with distinct UUIDs remain distinct records.
 Full Android backup restores that selection. Host/profile UUIDs retain their
 existing import remapping behavior. Older exports without keyboard tables work.
+
+## Shared macros and portable files
+
+Keyboard keys and post-login automation use the same UUID macro library. A key's
+Assign macro menu selects a saved macro; the post-login Run macro action selects
+that same identity. Manage macros in post-login automation opens the shared
+library, including its editor and individual import/export controls. A macro
+cannot be deleted while referenced by a key or post-login action.
+
+Individual files use the macro document's version and actions plus a name:
+
+```json
+{"version":1,"name":"Build","actions":[{"type":"text","text":"make\n"}]}
+```
+
+Imports allocate a fresh macro UUID. Exports are standard JSON; individual macro,
+full configuration backup, and color scheme imports accept JSON5 syntax, including
+comments, single quotes, unquoted property names, and trailing commas. Existing
+JSON files remain supported. Full exports and Android backups retain shared
+macro identities and references from both keys and post-login automation. The
+optional automation macro_id column is part of unreleased schema 17.

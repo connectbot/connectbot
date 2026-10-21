@@ -251,6 +251,10 @@ class TerminalBridge {
             override val sessionOpen: Boolean get() = isSessionOpen
             override suspend fun sendText(text: String) = awaitTransportWrite(text.toByteArray(charset(encoding)), connection)
             override suspend fun sendKey(key: Int, modifiers: Int) = dispatchTerminalKey(key, modifiers, connection)
+            override suspend fun runMacro(id: UUID) {
+                val macro = manager.hostRepository.getSharedMacro(id) ?: throw AutomationFailure(R.string.keyboard_missing_macro)
+                executeConfiguredInput(ConfiguredInput(connection, macro = macro.document), consumeModifiers = false)
+            }
             override suspend fun setForward(id: UUID, enabled: Boolean) {
                 checkInputConnection(connection)
                 val t = connection.transport ?: throw AutomationFailure(R.string.automation_action_failed)
@@ -922,7 +926,7 @@ class TerminalBridge {
         }
     }
 
-    private suspend fun executeConfiguredInput(input: ConfiguredInput) {
+    private suspend fun executeConfiguredInput(input: ConfiguredInput, consumeModifiers: Boolean = true) {
         val connection = input.connection
         checkInputConnection(connection)
         if (input.key != null) {
@@ -935,6 +939,7 @@ class TerminalBridge {
             object : MacroOutput {
                 override suspend fun checkConnected() = checkInputConnection(connection)
                 override suspend fun accepted() {
+                    if (!consumeModifiers) return
                     withContext(dispatchers.main) {
                         checkInputConnection(connection)
                         keyHandler.clearTransients()

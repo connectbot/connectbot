@@ -276,44 +276,7 @@ internal fun KeyboardGrid(
         Layout(content = {
             visible.forEach { item ->
                 key(item.id) {
-                    val label = keyboardLabel(item, macros)
-                    val active = if (item.kind == "layer" && (item.target == layer.toString() || (item.target == "next" && layer != KeyboardLayers.initial(items)))) {
-                        ModifierLevel.LOCKED
-                    } else {
-                        when (item.target) {
-                            "ctrl" -> modifierState?.ctrlState ?: ModifierLevel.OFF
-                            "alt" -> modifierState?.altState ?: ModifierLevel.OFF
-                            "shift" -> modifierState?.shiftState ?: ModifierLevel.OFF
-                            "toggle_compose" -> if (composeActive) ModifierLevel.LOCKED else ModifierLevel.OFF
-                            "toggle_ime" -> if (imeVisible) ModifierLevel.TRANSIENT else ModifierLevel.OFF
-                            else -> ModifierLevel.OFF
-                        }
-                    }
-                    val supported = when (item.kind) {
-                        "key" ->
-                            item.target in KeyboardDefaults.keys &&
-                                (item.macroId == null || (item.macroId !in unsupportedMacroIds && macros.any { it.id == item.macroId }))
-
-                        "modifier" -> item.target in KeyboardDefaults.modifiers
-
-                        "app" -> item.target in KeyboardDefaults.controls
-
-                        "layer" -> KeyboardLayers.destination(items, layer, item.target) != null
-
-                        "macro" -> item.macroId !in unsupportedMacroIds && macros.any { it.id == item.macroId }
-
-                        else -> false
-                    }
-                    val shortcut = macros.find { it.id == item.macroId }?.let { macro ->
-                        runCatching { MacroFormat.decode(macro.document).singleOrNull() as? MacroAction.Key }.getOrNull()
-                    }
-                    val combination = shortcut?.key?.let { target ->
-                        TerminalKeyCatalog.byTarget(target)?.let { key ->
-                            (shortcut.modifiers.map { shortcutModifier -> keyboardLabel(KeyboardItem(layoutId = layout.id, kind = "modifier", target = shortcutModifier), emptyList()) } + key.displayName()).joinToString("+")
-                        }
-                    }
-                    val description = combination?.let { stringResource(R.string.keyboard_shortcut_description, fullShortcutLabel(label, shortcut), it) }
-                    GridButton(item, label, active, editing || supported, editing, press, onMove, shortcutDescription = description, layerNumber = layer)
+                    KeyboardGridButton(layout, item, macros, layer, press, items = items, editing = editing, unsupportedMacroIds = unsupportedMacroIds, modifierState = modifierState, imeVisible = imeVisible, composeActive = composeActive, onMove = onMove)
                 }
             }
         }) { measurables, constraints ->
@@ -336,6 +299,63 @@ internal fun KeyboardGrid(
             }
         }
     }
+}
+
+/** Shared key face and accessibility semantics for the console and the drag editor. */
+@Composable
+internal fun KeyboardGridButton(
+    layout: KeyboardLayout,
+    item: KeyboardItem,
+    macros: List<KeyboardMacro>,
+    layer: Int,
+    onPress: (KeyboardItem) -> Unit,
+    items: List<KeyboardItem>,
+    modifier: Modifier = Modifier,
+    editing: Boolean = false,
+    unsupportedMacroIds: Set<UUID> = emptySet(),
+    modifierState: ModifierState? = null,
+    imeVisible: Boolean = false,
+    composeActive: Boolean = false,
+    onMove: ((KeyboardItem, Int, Int) -> Unit)? = null,
+) {
+    val label = keyboardLabel(item, macros)
+    val active = if (item.kind == "layer" && (item.target == layer.toString() || (item.target == "next" && layer != KeyboardLayers.initial(items)))) {
+        ModifierLevel.LOCKED
+    } else {
+        when (item.target) {
+            "ctrl" -> modifierState?.ctrlState ?: ModifierLevel.OFF
+            "alt" -> modifierState?.altState ?: ModifierLevel.OFF
+            "shift" -> modifierState?.shiftState ?: ModifierLevel.OFF
+            "toggle_compose" -> if (composeActive) ModifierLevel.LOCKED else ModifierLevel.OFF
+            "toggle_ime" -> if (imeVisible) ModifierLevel.TRANSIENT else ModifierLevel.OFF
+            else -> ModifierLevel.OFF
+        }
+    }
+    val supported = when (item.kind) {
+        "key" ->
+            item.target in KeyboardDefaults.keys &&
+                (item.macroId == null || (item.macroId !in unsupportedMacroIds && macros.any { it.id == item.macroId }))
+
+        "modifier" -> item.target in KeyboardDefaults.modifiers
+
+        "app" -> item.target in KeyboardDefaults.controls
+
+        "layer" -> KeyboardLayers.destination(items, layer, item.target) != null
+
+        "macro" -> item.macroId !in unsupportedMacroIds && macros.any { it.id == item.macroId }
+
+        else -> false
+    }
+    val shortcut = macros.find { it.id == item.macroId }?.let { macro ->
+        runCatching { MacroFormat.decode(macro.document).singleOrNull() as? MacroAction.Key }.getOrNull()
+    }
+    val combination = shortcut?.key?.let { target ->
+        TerminalKeyCatalog.byTarget(target)?.let { key ->
+            (shortcut.modifiers.map { shortcutModifier -> keyboardLabel(KeyboardItem(layoutId = layout.id, kind = "modifier", target = shortcutModifier), emptyList()) } + key.displayName()).joinToString("+")
+        }
+    }
+    val description = combination?.let { stringResource(R.string.keyboard_shortcut_description, fullShortcutLabel(label, shortcut), it) }
+    GridButton(item, label, active, editing || supported, editing, onPress, onMove, modifier = modifier, shortcutDescription = description, layerNumber = layer)
 }
 
 @Composable

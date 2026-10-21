@@ -18,6 +18,8 @@
 package org.connectbot.ui.screens.keyboard
 
 import androidx.activity.compose.BackHandler
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,13 +28,10 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.DragHandle
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
@@ -59,15 +58,12 @@ import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.hapticfeedback.HapticFeedbackType
-import androidx.compose.ui.platform.LocalHapticFeedback
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalResources
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.semantics.CustomAccessibilityAction
-import androidx.compose.ui.semantics.customActions
-import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.unit.dp
 import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import org.connectbot.R
@@ -82,17 +78,25 @@ import org.connectbot.data.keyboard.KeyboardPresets
 import org.connectbot.data.keyboard.MacroAction
 import org.connectbot.data.keyboard.MacroFormat
 import org.connectbot.terminal.TerminalKeyCatalog
-import org.connectbot.ui.components.KeyboardGrid
+import org.connectbot.ui.components.ReorderableKeyboardGrid
 import org.connectbot.ui.components.TerminalKeyButtonDialog
 import org.connectbot.ui.components.keyboardLabel
 import org.connectbot.util.TerminalKeyModifiers
-import sh.calvin.reorderable.ReorderableItem
-import sh.calvin.reorderable.rememberReorderableLazyListState
 import java.util.UUID
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun KeyboardSettingsScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifier, viewModel: KeyboardViewModel = hiltViewModel()) {
+fun KeyboardSettingsScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modifier, macrosOnly: Boolean = false, viewModel: KeyboardViewModel = hiltViewModel()) {
+    val context = LocalContext.current
+    var exportingMacro by rememberSaveable { mutableStateOf<String?>(null) }
+    val exportMacro = rememberLauncherForActivityResult(ActivityResultContracts.CreateDocument("application/json")) { uri ->
+        val id = exportingMacro?.let(UUID::fromString)
+        if (uri != null && id != null) viewModel.perform { viewModel.repository.exportMacro(id) { context.contentResolver.openOutputStream(uri) } }
+        exportingMacro = null
+    }
+    val importMacro = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
+        if (uri != null) viewModel.perform { viewModel.repository.importMacro { context.contentResolver.openInputStream(uri) } }
+    }
     val config by viewModel.configuration.collectAsState()
     val error by viewModel.error.collectAsState()
     var layout by remember { mutableStateOf<KeyboardLayout?>(null) }
@@ -115,8 +119,8 @@ fun KeyboardSettingsScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modi
     }
     BackHandler(layout != null || macro != null) { back() }
     Scaffold(modifier = modifier, topBar = {
-        TopAppBar(title = { Text(stringResource(R.string.keyboard_settings_title)) }, navigationIcon = {
-            TextButton(onClick = back) { Text(stringResource(R.string.keyboard_back)) }
+        TopAppBar(title = { Text(stringResource(if (macrosOnly) R.string.keyboard_macros else R.string.keyboard_settings_title)) }, navigationIcon = {
+            IconButton(onClick = back) { Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = stringResource(R.string.button_navigate_up)) }
         })
     }) { padding ->
         Column(Modifier.padding(padding).padding(12.dp).fillMaxSize().verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -160,35 +164,38 @@ fun KeyboardSettingsScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modi
                 )
 
                 else -> {
-                    Text(stringResource(R.string.keyboard_layouts), style = MaterialTheme.typography.titleLarge)
-                    Button(onClick = { choosingPreset = true }) { Text(stringResource(R.string.keyboard_add_layout)) }
-                    config.layouts.forEach { value ->
-                        Card {
-                            Column(Modifier.padding(8.dp)) {
-                                Text(value.name, style = MaterialTheme.typography.titleMedium)
-                                KeyboardPresets.find(value.presetKey)?.let { Text(stringResource(it.subtitleRes), style = MaterialTheme.typography.bodySmall) }
-                                Row {
-                                    TextButton(onClick = {
-                                        draftMacros = emptyList()
-                                        layout = value
-                                        items = config.items.filter { it.layoutId == value.id }
-                                    }) { Text(stringResource(R.string.keyboard_edit)) }
-                                    TextButton(onClick = {
-                                        draftMacros = emptyList()
-                                        layout = value.copy(id = UUID.randomUUID(), name = value.name + copySuffix)
-                                        items = config.items.filter { it.layoutId == value.id }.map { it.copy(id = UUID.randomUUID(), layoutId = layout!!.id) }
-                                    }) { Text(stringResource(R.string.keyboard_duplicate)) }
-                                    TextButton(onClick = { confirmation = { viewModel.perform { viewModel.repository.deleteLayout(value.id) } } }) { Text(stringResource(R.string.keyboard_delete)) }
-                                }
-                                Row {
-                                    RadioButton(selected = config.layout(null)?.id == value.id, onClick = { viewModel.perform { viewModel.repository.setDefault(value.id) } })
-                                    TextButton(onClick = { viewModel.perform { viewModel.repository.setDefault(value.id) } }) { Text(stringResource(R.string.keyboard_default)) }
+                    if (!macrosOnly) {
+                        Text(stringResource(R.string.keyboard_layouts), style = MaterialTheme.typography.titleLarge)
+                        Button(onClick = { choosingPreset = true }) { Text(stringResource(R.string.keyboard_add_layout)) }
+                        config.layouts.forEach { value ->
+                            Card {
+                                Column(Modifier.padding(8.dp)) {
+                                    Text(value.name, style = MaterialTheme.typography.titleMedium)
+                                    KeyboardPresets.find(value.presetKey)?.let { Text(stringResource(it.subtitleRes), style = MaterialTheme.typography.bodySmall) }
+                                    Row {
+                                        TextButton(onClick = {
+                                            draftMacros = emptyList()
+                                            layout = value
+                                            items = config.items.filter { it.layoutId == value.id }.map { it.copy(rowSpan = 1) }
+                                        }) { Text(stringResource(R.string.keyboard_edit)) }
+                                        TextButton(onClick = {
+                                            draftMacros = emptyList()
+                                            layout = value.copy(id = UUID.randomUUID(), name = value.name + copySuffix)
+                                            items = config.items.filter { it.layoutId == value.id }.map { it.copy(id = UUID.randomUUID(), layoutId = layout!!.id, rowSpan = 1) }
+                                        }) { Text(stringResource(R.string.keyboard_duplicate)) }
+                                        TextButton(onClick = { confirmation = { viewModel.perform { viewModel.repository.deleteLayout(value.id) } } }) { Text(stringResource(R.string.keyboard_delete)) }
+                                    }
+                                    Row {
+                                        RadioButton(selected = config.layout(null)?.id == value.id, onClick = { viewModel.perform { viewModel.repository.setDefault(value.id) } })
+                                        TextButton(onClick = { viewModel.perform { viewModel.repository.setDefault(value.id) } }) { Text(stringResource(R.string.keyboard_default)) }
+                                    }
                                 }
                             }
                         }
                     }
                     Text(stringResource(R.string.keyboard_macros), style = MaterialTheme.typography.titleLarge)
                     Button(onClick = { macro = KeyboardMacro(name = newMacroName, document = MacroFormat.encode(listOf(MacroAction.Key(key = "enter")))) }) { Text(stringResource(R.string.keyboard_add_macro)) }
+                    TextButton(onClick = { importMacro.launch(arrayOf("*/*")) }) { Text(stringResource(R.string.macro_import)) }
                     config.macros.forEach { value ->
                         Card {
                             Column(Modifier.padding(8.dp)) {
@@ -196,6 +203,10 @@ fun KeyboardSettingsScreen(onNavigateBack: () -> Unit, modifier: Modifier = Modi
                                 val users = config.items.filter { it.macroId == value.id }.mapNotNull { item -> config.layouts.find { it.id == item.layoutId }?.name }.distinct()
                                 if (users.isNotEmpty()) Text(stringResource(R.string.keyboard_used_by, users.joinToString(", ")))
                                 Row {
+                                    TextButton(onClick = {
+                                        exportingMacro = value.id.toString()
+                                        exportMacro.launch("macro.json")
+                                    }) { Text(stringResource(R.string.macro_export)) }
                                     TextButton(onClick = { macro = value }) { Text(stringResource(R.string.keyboard_edit)) }
                                     TextButton(enabled = users.isEmpty(), onClick = { confirmation = { viewModel.perform { viewModel.repository.deleteMacro(value.id) } } }) { Text(stringResource(R.string.keyboard_delete)) }
                                 }
@@ -280,21 +291,6 @@ private fun LayoutEditor(
     val updateItem: (KeyboardItem) -> Unit = { replacement ->
         onItemsChange(items.map { if (it.id == replacement.id) replacement else it })
     }
-    val ordered = layerItems.sortedWith(compareBy<KeyboardItem> { it.row }.thenBy { it.column }.thenBy { it.id })
-    val listState = rememberLazyListState()
-    val haptic = LocalHapticFeedback.current
-    val moveItem: (UUID, UUID) -> Unit = { from, to ->
-        runCatching { reorderKeyboardItems(layout, items, from, to) }
-            .onSuccess {
-                onItemsChange(it)
-                onError(null)
-                haptic.performHapticFeedback(HapticFeedbackType.SegmentFrequentTick)
-            }
-            .onFailure { onError(it.message) }
-    }
-    val reorderState = rememberReorderableLazyListState(listState) { from, to ->
-        moveItem(from.key as UUID, to.key as UUID)
-    }
     Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         OutlinedTextField(value = layout.name, onValueChange = { onLayoutChange(layout.copy(name = it)) }, label = { Text(stringResource(R.string.keyboard_name)) })
         Row {
@@ -312,13 +308,20 @@ private fun LayoutEditor(
             }
         }
         Text(stringResource(R.string.keyboard_grid_help))
-        KeyboardGrid(
+        ReorderableKeyboardGrid(
             layout,
             items.filter { it.row >= 0 && it.column >= 0 && it.rowSpan > 0 && it.columnSpan > 0 },
             config.macros,
             onPress = { selected = it.id },
-            editing = true,
             activeLayer = activeLayer,
+            onReorder = { from, to ->
+                runCatching { reorderKeyboardItems(layout, items, from, to) }
+                    .onSuccess {
+                        onItemsChange(it)
+                        onError(null)
+                    }
+                    .onFailure { onError(it.message) }
+            },
             onMove = { item, row, column ->
                 val moved = item.copy(row = row, column = column)
                 val proposed = items.map { if (it.id == item.id) moved else it }
@@ -332,39 +335,6 @@ private fun LayoutEditor(
             },
             modifier = Modifier.fillMaxWidth().heightIn(max = 240.dp),
         )
-        val moveUp = stringResource(R.string.keyboard_move_up)
-        val moveDown = stringResource(R.string.keyboard_move_down)
-        val dragLabel = stringResource(R.string.keyboard_drag_button)
-        LazyColumn(state = listState, modifier = Modifier.fillMaxWidth().heightIn(max = 240.dp)) {
-            items(ordered, key = { it.id }) { button ->
-                ReorderableItem(reorderState, key = button.id) { _ ->
-                    val index = ordered.indexOfFirst { it.id == button.id }
-                    Card(
-                        modifier = Modifier.fillMaxWidth().semantics {
-                            customActions = listOf(
-                                CustomAccessibilityAction(moveUp) {
-                                    ordered.getOrNull(index - 1)?.let { moveItem(button.id, it.id) }
-                                    true
-                                },
-                                CustomAccessibilityAction(moveDown) {
-                                    ordered.getOrNull(index + 1)?.let { moveItem(button.id, it.id) }
-                                    true
-                                },
-                            )
-                        },
-                    ) {
-                        Row {
-                            TextButton(onClick = { selected = button.id }, modifier = Modifier.weight(1f)) {
-                                Text(keyboardLabel(button, config.macros))
-                            }
-                            IconButton(onClick = {}, modifier = Modifier.draggableHandle()) {
-                                Icon(Icons.Default.DragHandle, contentDescription = dragLabel)
-                            }
-                        }
-                    }
-                }
-            }
-        }
         val catalog = KeyboardDefaults.modifiers.map { KeyboardItem(layoutId = layout.id, kind = "modifier", target = it) } +
             KeyboardDefaults.controls.map { KeyboardItem(layoutId = layout.id, kind = "app", target = it) } +
             config.macros.map { KeyboardItem(layoutId = layout.id, kind = "macro", target = "", macroId = it.id) }
@@ -396,62 +366,84 @@ private fun LayoutEditor(
         }
         val item = items.find { it.id == selected }
         if (item != null) {
-            key(item.id) {
-                Text(keyboardLabel(item, config.macros), style = MaterialTheme.typography.titleMedium)
-                if (item.kind == "layer") {
-                    TextButton(onClick = { choosingDestination = true }) {
-                        Text(stringResource(R.string.keyboard_layer_destination))
-                    }
-                    if (choosingDestination) {
-                        AlertDialog(
-                            onDismissRequest = { choosingDestination = false },
-                            title = { Text(stringResource(R.string.keyboard_layer_destination)) },
-                            text = {
-                                Column {
-                                    (listOf("next") + (0 until KeyboardLayers.count).map(Int::toString)).forEach { target ->
-                                        Row {
-                                            RadioButton(selected = item.target == target, onClick = {
-                                                updateItem(item.copy(target = target))
-                                                choosingDestination = false
-                                            })
-                                            TextButton(onClick = {
-                                                updateItem(item.copy(target = target))
-                                                choosingDestination = false
-                                            }) {
-                                                Text(if (target == "next") stringResource(R.string.keyboard_layer_next) else stringResource(R.string.keyboard_layer, target.toInt()))
-                                            }
-                                        }
+            AlertDialog(
+                onDismissRequest = { selected = null },
+                title = { Text(keyboardLabel(item, config.macros)) },
+                confirmButton = { TextButton(onClick = { selected = null }) { Text(stringResource(R.string.button_close)) } },
+                text = {
+                    Column(Modifier.heightIn(max = 440.dp).verticalScroll(rememberScrollState()), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                        key(item.id) {
+                            var macroMenu by remember { mutableStateOf(false) }
+                            Box {
+                                TextButton(onClick = { macroMenu = true }) { Text(stringResource(R.string.macro_assign)) }
+                                DropdownMenu(expanded = macroMenu, onDismissRequest = { macroMenu = false }) {
+                                    config.macros.forEach { value ->
+                                        DropdownMenuItem(text = { Text(value.name) }, enabled = value.id !in config.unsupportedMacroIds, onClick = {
+                                            updateItem(item.copy(kind = "macro", target = "", macroId = value.id))
+                                            macroMenu = false
+                                        })
                                     }
+                                    if (config.macros.isEmpty()) DropdownMenuItem(text = { Text(stringResource(R.string.macro_none)) }, enabled = false, onClick = {})
                                 }
-                            },
-                            confirmButton = {},
-                            dismissButton = { TextButton(onClick = { choosingDestination = false }) { Text(stringResource(R.string.keyboard_cancel)) } },
-                        )
+                            }
+
+                            if (item.kind == "layer") {
+                                TextButton(onClick = { choosingDestination = true }) {
+                                    Text(stringResource(R.string.keyboard_layer_destination))
+                                }
+                                if (choosingDestination) {
+                                    AlertDialog(
+                                        onDismissRequest = { choosingDestination = false },
+                                        title = { Text(stringResource(R.string.keyboard_layer_destination)) },
+                                        text = {
+                                            Column {
+                                                (listOf("next") + (0 until KeyboardLayers.count).map(Int::toString)).forEach { target ->
+                                                    Row {
+                                                        RadioButton(selected = item.target == target, onClick = {
+                                                            updateItem(item.copy(target = target))
+                                                            choosingDestination = false
+                                                        })
+                                                        TextButton(onClick = {
+                                                            updateItem(item.copy(target = target))
+                                                            choosingDestination = false
+                                                        }) {
+                                                            Text(if (target == "next") stringResource(R.string.keyboard_layer_next) else stringResource(R.string.keyboard_layer, target.toInt()))
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        confirmButton = {},
+                                        dismissButton = { TextButton(onClick = { choosingDestination = false }) { Text(stringResource(R.string.keyboard_cancel)) } },
+                                    )
+                                }
+                            }
+                            val macro = config.macros.find { it.id == item.macroId }
+                            val macroKey = macro?.let { runCatching { MacroFormat.decode(it.document).singleOrNull() as? MacroAction.Key }.getOrNull() }
+                            val target = if (item.kind == "key") item.target else macroKey?.key
+                            if (target != null && TerminalKeyCatalog.byTarget(target) != null) {
+                                TextButton(onClick = {
+                                    editingKey = item
+                                    showKeyDialog = true
+                                }) { Text(stringResource(R.string.keyboard_edit)) }
+                            }
+                            Row {
+                                Checkbox(checked = item.visible, onCheckedChange = { updateItem(item.copy(visible = it)) })
+                                Text(stringResource(R.string.keyboard_visible))
+                            }
+                            IntegerField(stringResource(R.string.keyboard_row), item.row, onChange = { updateItem(item.copy(row = it)) })
+                            IntegerField(stringResource(R.string.keyboard_column), item.column, onChange = { updateItem(item.copy(column = it)) })
+                            IntegerField(stringResource(R.string.keyboard_column_span), item.columnSpan, onChange = { updateItem(item.copy(columnSpan = it)) })
+                            TextButton(onClick = {
+                                onItemsChange(items.filterNot { it.id == item.id })
+                                selected = null
+                            }) { Text(stringResource(R.string.keyboard_remove_button)) }
+                        }
                     }
-                }
-                val macro = config.macros.find { it.id == item.macroId }
-                val macroKey = macro?.let { runCatching { MacroFormat.decode(it.document).singleOrNull() as? MacroAction.Key }.getOrNull() }
-                val target = if (item.kind == "key") item.target else macroKey?.key
-                if (target != null && TerminalKeyCatalog.byTarget(target) != null) {
-                    TextButton(onClick = {
-                        editingKey = item
-                        showKeyDialog = true
-                    }) { Text(stringResource(R.string.keyboard_edit)) }
-                }
-                Row {
-                    Checkbox(checked = item.visible, onCheckedChange = { updateItem(item.copy(visible = it)) })
-                    Text(stringResource(R.string.keyboard_visible))
-                }
-                IntegerField(stringResource(R.string.keyboard_row), item.row, onChange = { updateItem(item.copy(row = it)) })
-                IntegerField(stringResource(R.string.keyboard_column), item.column, onChange = { updateItem(item.copy(column = it)) })
-                IntegerField(stringResource(R.string.keyboard_row_span), item.rowSpan, onChange = { updateItem(item.copy(rowSpan = it)) })
-                IntegerField(stringResource(R.string.keyboard_column_span), item.columnSpan, onChange = { updateItem(item.copy(columnSpan = it)) })
-                TextButton(onClick = {
-                    onItemsChange(items.filterNot { it.id == item.id })
-                    selected = null
-                }) { Text(stringResource(R.string.keyboard_remove_button)) }
-            }
+                },
+            )
         }
+
         if (showKeyDialog) {
             val existing = editingKey
             val macro = config.macros.find { it.id == existing?.macroId }
@@ -534,7 +526,7 @@ private fun IntegerField(label: String, value: Int, onChange: (Int) -> Unit, mod
 }
 
 @Composable
-fun KeyboardLayoutSelector(selected: UUID?, onSelect: (UUID?) -> Unit, modifier: Modifier = Modifier, viewModel: KeyboardViewModel = hiltViewModel()) {
+fun KeyboardLayoutSelector(selected: UUID?, onSelect: (UUID?) -> Unit, modifier: Modifier = Modifier, macrosOnly: Boolean = false, viewModel: KeyboardViewModel = hiltViewModel()) {
     val config by viewModel.configuration.collectAsState()
     var expanded by remember { mutableStateOf(false) }
     Column(modifier) {

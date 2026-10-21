@@ -56,6 +56,10 @@ class HostRepository @Inject constructor(
     private val securePasswordStorage: SecurePasswordStorage,
     private val dispatchers: CoroutineDispatchers,
 ) {
+    fun observeSharedMacros() = database.keyboardDao().observeMacros()
+
+    suspend fun getSharedMacro(id: UUID) = database.keyboardDao().macros().find { it.id == id }
+
     fun observeAutomation(hostId: UUID) = database.automationActionDao().observeByHost(hostId)
 
     suspend fun getAutomation(hostId: UUID) = database.automationActionDao().getByHost(hostId)

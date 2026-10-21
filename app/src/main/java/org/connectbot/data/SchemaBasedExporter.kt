@@ -99,7 +99,7 @@ class SchemaBasedExporter(
      * @return Map of table name to Pair of (inserted count, skipped count)
      */
     fun importFromJson(jsonString: String, tableNames: List<String>): Map<String, Pair<Int, Int>> {
-        val json = JSONObject(jsonString)
+        val json = ConfigurationJson.objectFrom(jsonString)
 
         val db = database.openHelper.writableDatabase
         val results = mutableMapOf<String, Pair<Int, Int>>()

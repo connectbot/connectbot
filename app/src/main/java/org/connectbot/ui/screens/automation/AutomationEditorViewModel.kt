@@ -33,6 +33,8 @@ import org.connectbot.data.entity.AutomationAction
 import org.connectbot.data.entity.AutomationActionType
 import org.connectbot.data.entity.AutomationFailurePolicy
 import org.connectbot.data.entity.PortForward
+import org.connectbot.data.keyboard.KeyboardMacro
+import org.connectbot.data.keyboard.MacroFormat
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.service.automation.AutomationKeySupport
 import org.connectbot.service.automation.AutomationRegex
@@ -43,6 +45,7 @@ import javax.inject.Inject
 
 data class AutomationEditorState(
     val actions: List<AutomationAction> = emptyList(),
+    val macros: List<KeyboardMacro> = emptyList(),
     val saved: List<AutomationAction> = emptyList(),
     val forwards: List<PortForward> = emptyList(),
     val loading: Boolean = true,
@@ -70,6 +73,7 @@ internal object AutomationDraftCodec {
                     put("key", a.key)
                     put("modifiers", a.modifiers)
                     put("forward", a.forwardId ?: JSONObject.NULL)
+                    put("macro", a.macroId ?: JSONObject.NULL)
                     put("failure", a.failurePolicy.name)
                 },
             )
@@ -85,6 +89,7 @@ internal object AutomationDraftCodec {
                 type = AutomationActionType.valueOf(a.getString("type")),
                 text = a.getString("text"), regex = a.getBoolean("regex"),
                 durationMs = a.getLong("duration"), key = a.getInt("key"), modifiers = a.getInt("modifiers"),
+                macroId = if (a.isNull("macro")) null else UUID.fromString(a.getString("macro")),
                 forwardId = if (a.isNull("forward")) null else UUID.fromString(a.getString("forward")),
                 failurePolicy = AutomationFailurePolicy.valueOf(a.getString("failure")),
             )
@@ -106,6 +111,10 @@ class AutomationEditorViewModel @Inject constructor(
     private var initialized = false
 
     init {
+        viewModelScope.launch {
+            repository.observeSharedMacros().collect { macros -> mutableState.update { it.copy(macros = macros) } }
+        }
+
         viewModelScope.launch {
             try {
                 val host = withContext(dispatchers.io) { repository.findHostById(hostId) }
@@ -176,6 +185,11 @@ class AutomationEditorViewModel @Inject constructor(
                         AutomationActionType.SEND_TEXT -> require(action.text.isNotEmpty())
 
                         AutomationActionType.DELAY -> require(action.durationMs > 0)
+
+                        AutomationActionType.RUN_MACRO -> {
+                            val macro = requireNotNull(mutableState.value.macros.find { it.id == action.macroId })
+                            MacroFormat.decode(macro.document)
+                        }
 
                         AutomationActionType.SEND_KEY -> require(AutomationKeySupport.isSupported(action.key, action.modifiers))
 

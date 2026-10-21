@@ -341,6 +341,7 @@ android {
     }
 
     compileOptions {
+        isCoreLibraryDesugaringEnabled = true
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
@@ -600,6 +601,8 @@ tasks
     }
 
 dependencies {
+    coreLibraryDesugaring(libs.desugar)
+    implementation(libs.json5)
     implementation(libs.sshlib)
     implementation(libs.termlib)
     implementation(libs.telnetlib)

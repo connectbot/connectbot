@@ -17,6 +17,7 @@
 
 package org.connectbot.data.keyboard
 
+import org.connectbot.data.ConfigurationJson
 import org.json.JSONArray
 import org.json.JSONObject
 import org.json.JSONTokener
@@ -64,7 +65,7 @@ object MacroFormat {
 
     fun decode(document: String): List<MacroAction> {
         require(document.length <= MAX_DOCUMENT_LENGTH) { "Macro is too large" }
-        val root = JSONObject(document)
+        val root = ConfigurationJson.objectFrom(document)
         require(root.get("version") == 1) { "Unsupported macro version" }
         require(root.keys().asSequence().toSet() == setOf("version", "actions")) { "Unsupported macro fields" }
         val array = root.getJSONArray("actions")

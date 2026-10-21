@@ -1,4 +1,6 @@
 [versions]
+json5 = "3.0.0"
+desugar = "2.1.5"
 androidGradlePlugin = "9.4.1"
 
 kotlin = "2.4.21"
@@ -63,6 +65,8 @@ core = "1.19.1"
 
 [libraries]
 slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j" }
+desugar = { module = "com.android.tools:desugar_jdk_libs", version.ref = "desugar" }
+json5 = { module = "de.marhali:json5-java", version.ref = "json5" }
 asm = { module = "org.ow2.asm:asm", version.ref = "asm" }
 telnetlib = { module = "org.connectbot.telnetlib:telnetlib", version.ref = "telnetlib" }
 telnetlib-ktor = { module = "org.connectbot.telnetlib:telnetlib-ktor", version.ref = "telnetlib" }

@@ -48,6 +48,7 @@ interface AutomationSession {
     val sessionOpen: Boolean
     suspend fun sendText(text: String)
     suspend fun sendKey(key: Int, modifiers: Int)
+    suspend fun runMacro(id: UUID)
     suspend fun setForward(id: UUID, enabled: Boolean)
     fun disconnect()
 }
@@ -128,6 +129,12 @@ class AutomationRunner(
                         require(AutomationKeySupport.isSupported(action.key, action.modifiers))
                         output.clear()
                         session.sendKey(action.key, action.modifiers)
+                    }
+
+                    AutomationActionType.RUN_MACRO -> {
+                        requireSession()
+                        output.clear()
+                        session.runMacro(action.macroId ?: throw AutomationFailure(R.string.keyboard_missing_macro))
                     }
 
                     AutomationActionType.DELAY -> {
