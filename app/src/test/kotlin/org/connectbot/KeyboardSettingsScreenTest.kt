@@ -30,6 +30,7 @@ import androidx.compose.ui.graphics.asAndroidBitmap
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.test.assertCountEquals
 import androidx.compose.ui.test.assertIsDisplayed
+import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.assertIsNotEnabled
 import androidx.compose.ui.test.assertIsOff
 import androidx.compose.ui.test.assertIsOn
@@ -152,6 +153,8 @@ class KeyboardSettingsScreenTest {
         val nodes = rule.onAllNodes(hasText(rule.activity.getString(resource)) or hasContentDescription(rule.activity.getString(resource)))
         val node = nodes[nodes.fetchSemanticsNodes().lastIndex]
         if (runCatching { node.assertIsDisplayed() }.isFailure) node.performScrollTo()
+        // Room-backed usage checks can keep actions disabled after Compose becomes idle.
+        rule.waitUntil(5000) { runCatching { node.assertIsEnabled() }.isSuccess }
         node.performClick()
     }
 
