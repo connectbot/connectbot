@@ -33,6 +33,9 @@ interface AutomationActionDao {
     @Query("SELECT * FROM automation_actions WHERE host_id = :hostId ORDER BY position, id")
     suspend fun getByHost(hostId: UUID): List<AutomationAction>
 
+    @Query("SELECT * FROM automation_actions ORDER BY host_id, position")
+    fun observeAll(): Flow<List<AutomationAction>>
+
     @Query("SELECT COUNT(*) FROM automation_actions WHERE macro_id = :id")
     suspend fun macroUsageCount(id: UUID): Int
 

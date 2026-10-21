@@ -27,6 +27,15 @@ import java.util.UUID
 
 @Dao
 interface KeyboardDao {
+    @Query("SELECT 'key' AS kind, i.id AS referenceId, l.id AS ownerId, l.name AS name FROM keyboard_items i JOIN keyboard_layouts l ON l.id = i.layout_id WHERE i.macro_id = :id UNION ALL SELECT 'automation' AS kind, a.id AS referenceId, h.id AS ownerId, CASE WHEN h.nickname = '' THEN h.hostname ELSE h.nickname END AS name FROM automation_actions a JOIN hosts h ON h.id = a.host_id WHERE a.macro_id = :id")
+    fun observeMacroUsage(id: UUID): Flow<List<KeyboardUsage>>
+
+    @Query("SELECT 'profile' AS kind, p.id AS referenceId, p.id AS ownerId, p.name AS name FROM profiles p WHERE p.keyboard_layout_id = :id UNION ALL SELECT 'host' AS kind, h.id AS referenceId, h.id AS ownerId, CASE WHEN h.nickname = '' THEN h.hostname ELSE h.nickname END AS name FROM hosts h WHERE h.keyboard_layout_id = :id")
+    fun observeLayoutUsage(id: UUID): Flow<List<KeyboardUsage>>
+
+    @Query("UPDATE hosts SET keyboard_layout_id = :layoutId WHERE id = :hostId")
+    suspend fun setHostLayout(hostId: UUID, layoutId: UUID?): Int
+
     @Query("SELECT * FROM keyboard_layouts ORDER BY name, id")
     fun observeLayouts(): Flow<List<KeyboardLayout>>
 

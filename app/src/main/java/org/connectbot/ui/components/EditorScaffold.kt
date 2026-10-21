@@ -39,7 +39,7 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -60,7 +60,7 @@ fun EditorScaffold(
     saveModifier: Modifier = Modifier,
     content: @Composable (PaddingValues) -> Unit,
 ) {
-    var showDiscardDialog by remember { mutableStateOf(false) }
+    var showDiscardDialog by rememberSaveable { mutableStateOf(false) }
     val requestBack = {
         if (!isSaving) {
             if (confirmDiscard) showDiscardDialog = true else onNavigateBack()
@@ -99,34 +99,33 @@ fun EditorScaffold(
     )
 
     if (showDiscardDialog) {
-        AlertDialog(
-            onDismissRequest = { showDiscardDialog = false },
-            title = { Text(stringResource(R.string.editor_discard_changes_title)) },
-            text = { Text(stringResource(R.string.editor_discard_changes_message)) },
-            confirmButton = {
-                Row {
-                    TextButton(onClick = { showDiscardDialog = false }) {
-                        Text(stringResource(R.string.button_cancel))
-                    }
-                    TextButton(
-                        onClick = {
-                            showDiscardDialog = false
-                            onSave()
-                        },
-                        enabled = saveVisible && !isSaving,
-                    ) {
-                        Text(stringResource(R.string.editor_save))
-                    }
-                }
+        EditorUnsavedChangesDialog(
+            canSave = saveVisible && !isSaving,
+            onCancel = { showDiscardDialog = false },
+            onDiscard = {
+                showDiscardDialog = false
+                onNavigateBack()
             },
-            dismissButton = {
-                TextButton(onClick = {
-                    showDiscardDialog = false
-                    onNavigateBack()
-                }) {
-                    Text(stringResource(R.string.editor_discard))
-                }
+            onSave = {
+                showDiscardDialog = false
+                onSave()
             },
         )
     }
+}
+
+@Composable
+fun EditorUnsavedChangesDialog(canSave: Boolean, onCancel: () -> Unit, onDiscard: () -> Unit, onSave: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onCancel,
+        title = { Text(stringResource(R.string.editor_discard_changes_title)) },
+        text = { Text(stringResource(R.string.editor_discard_changes_message)) },
+        confirmButton = {
+            Row {
+                TextButton(onClick = onCancel) { Text(stringResource(R.string.button_cancel)) }
+                TextButton(onClick = onSave, enabled = canSave) { Text(stringResource(R.string.editor_save)) }
+            }
+        },
+        dismissButton = { TextButton(onClick = onDiscard) { Text(stringResource(R.string.editor_discard)) } },
+    )
 }

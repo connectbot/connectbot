@@ -86,6 +86,9 @@ interface HostDao {
     @Update
     suspend fun update(host: Host)
 
+    @Query("UPDATE hosts SET last_connect = :connectedAt WHERE id = :id")
+    suspend fun updateLastConnect(id: UUID, connectedAt: Long)
+
     /**
      * Delete a host.
      * Also cascades to delete associated port forwards and known hosts.

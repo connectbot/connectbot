@@ -33,6 +33,8 @@ import androidx.compose.ui.test.performScrollTo
 import androidx.compose.ui.test.performScrollToNode
 import androidx.compose.ui.test.performTextInput
 import androidx.compose.ui.test.performTextReplacement
+import androidx.compose.ui.test.performTouchInput
+import androidx.compose.ui.test.swipeUp
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
@@ -67,6 +69,22 @@ class SettingsScreenTest {
     @Before
     fun setUp() {
         hiltRule.inject()
+    }
+
+    @Test
+    @Config(sdk = [34], qualifiers = "w411dp-h891dp")
+    @GraphicsMode(GraphicsMode.Mode.NATIVE)
+    @TargetApi(26)
+    fun captureTerminalKeyboardSettingsRow() {
+        setSettingsContent()
+        composeTestRule.onNode(hasScrollAction()).performScrollToNode(hasText(composeTestRule.activity.getString(R.string.pref_keyboard_category)))
+        composeTestRule.onNodeWithText(composeTestRule.activity.getString(R.string.keyboard_settings_title)).performScrollTo().assertIsDisplayed()
+        composeTestRule.onNode(hasScrollAction()).performTouchInput { swipeUp(startY = height * 0.8f, endY = height * 0.4f, durationMillis = 1000) }
+        val screenshot = File("build/reports/keyboard-redesign/settings-keyboard-row.png")
+        screenshot.parentFile!!.mkdirs()
+        screenshot.outputStream().use { output ->
+            composeTestRule.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 100, output)
+        }
     }
 
     @Test

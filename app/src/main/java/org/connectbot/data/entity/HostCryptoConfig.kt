@@ -40,7 +40,7 @@ data class HostCryptoConfig(
     val minimumRsaBits: Int? = null,
     @ColumnInfo(name = "minimum_dh_bits")
     val minimumDhBits: Int? = null,
-) {
+) : java.io.Serializable {
     fun expression(category: AlgorithmCategory): String? = when (category) {
         AlgorithmCategory.KEX -> kex
         AlgorithmCategory.CIPHER -> cipher

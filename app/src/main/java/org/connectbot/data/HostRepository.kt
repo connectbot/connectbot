@@ -27,9 +27,12 @@ import org.connectbot.data.dao.HostDao
 import org.connectbot.data.dao.KnownHostDao
 import org.connectbot.data.dao.PortForwardDao
 import org.connectbot.data.entity.AutomationAction
+import org.connectbot.data.entity.AutomationActionType
 import org.connectbot.data.entity.Host
 import org.connectbot.data.entity.KnownHost
 import org.connectbot.data.entity.PortForward
+import org.connectbot.data.keyboard.KeyboardMacro
+import org.connectbot.data.keyboard.MacroFormat
 import org.connectbot.di.CoroutineDispatchers
 import org.connectbot.util.SecurePasswordStorage
 import java.util.UUID
@@ -64,7 +67,26 @@ class HostRepository @Inject constructor(
 
     suspend fun getAutomation(hostId: UUID) = database.automationActionDao().getByHost(hostId)
 
-    suspend fun saveAutomation(hostId: UUID, actions: List<AutomationAction>) = database.automationActionDao().replace(hostId, actions)
+    suspend fun saveAutomation(hostId: UUID, actions: List<AutomationAction>) = withContext(dispatchers.io) {
+        database.withTransaction {
+            actions.filter { it.type == AutomationActionType.RUN_MACRO }.forEach { action ->
+                val macro = requireNotNull(database.keyboardDao().macros().find { it.id == action.macroId }) { "The selected macro no longer exists" }
+                MacroFormat.decode(macro.document)
+            }
+            database.automationActionDao().replace(hostId, actions)
+        }
+    }
+
+    suspend fun saveAutomationWithMacros(hostId: UUID, actions: List<AutomationAction>, macros: List<KeyboardMacro>) = withContext(dispatchers.io) {
+        database.withTransaction {
+            macros.filter { macro -> actions.any { it.macroId == macro.id } }.forEach {
+                require(it.name.isNotBlank())
+                MacroFormat.decode(it.document)
+                database.keyboardDao().saveMacro(it)
+            }
+            saveAutomation(hostId, actions)
+        }
+    }
 
     /** Duplicate settings atomically, allocating fresh action identities and remapping forwards. */
     suspend fun duplicateHostSettings(sourceId: UUID, newHost: Host): Host = database.withTransaction {
@@ -201,8 +223,7 @@ class HostRepository @Inject constructor(
             // Temporary sessions do not have a persisted record
             return
         }
-        val updatedHost = host.copy(lastConnect = System.currentTimeMillis())
-        hostDao.update(updatedHost)
+        hostDao.updateLastConnect(host.id, System.currentTimeMillis())
     }
 
     // ============================================================================

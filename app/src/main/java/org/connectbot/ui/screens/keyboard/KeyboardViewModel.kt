@@ -44,9 +44,15 @@ class KeyboardViewModel @Inject constructor(val repository: KeyboardRepository, 
     val error = MutableStateFlow<String?>(null)
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    fun layoutSelection(host: Host): Flow<UUID?> = (
+    fun hostContext(host: Host): Flow<KeyboardHostContext> = (
         if (host.isTemporary) flowOf(host) else database.hostDao().observeById(host.id)
-        ).flatMapLatest { database.profileDao().observeById(it?.profileId ?: EntityIds.DEFAULT_PROFILE) }.map { it?.keyboardLayoutId }
+        ).flatMapLatest { current ->
+        database.profileDao().observeById(current?.profileId ?: EntityIds.DEFAULT_PROFILE).map { profile ->
+            KeyboardHostContext(current?.keyboardLayoutId, profile?.keyboardLayoutId, profile?.name)
+        }
+    }
+
+    fun layoutSelection(host: Host): Flow<UUID?> = hostContext(host).map { it.hostLayoutId ?: it.profileLayoutId }
 
     fun perform(action: suspend () -> Unit) {
         viewModelScope.launch {
@@ -61,3 +67,5 @@ class KeyboardViewModel @Inject constructor(val repository: KeyboardRepository, 
         }
     }
 }
+
+data class KeyboardHostContext(val hostLayoutId: UUID? = null, val profileLayoutId: UUID? = null, val profileName: String? = null)

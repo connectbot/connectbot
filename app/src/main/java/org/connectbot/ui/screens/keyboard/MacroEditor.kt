@@ -33,10 +33,14 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -51,15 +55,26 @@ import org.connectbot.ui.components.keyboardLabel
 import java.util.Collections
 
 @Composable
-internal fun MacroEditor(macro: KeyboardMacro, onSave: (KeyboardMacro) -> Unit, onCancel: () -> Unit, modifier: Modifier = Modifier) {
+internal fun MacroEditor(macro: KeyboardMacro, onSave: (KeyboardMacro) -> Unit, onCancel: () -> Unit, modifier: Modifier = Modifier, onDirtyChange: (Boolean) -> Unit = {}, onDraftChange: (KeyboardMacro) -> Unit = {}, onCanSaveChange: (Boolean) -> Unit = {}, done: Boolean = false) {
     val decoded = remember(macro.id) { runCatching { MacroFormat.decode(macro.document) } }
-    var name by remember(macro.id) { mutableStateOf(macro.name) }
-    var actions by remember(macro.id) { mutableStateOf(decoded.getOrDefault(emptyList())) }
-    var source by remember(macro.id) { mutableStateOf(MacroFormat.format(actions)) }
-    var textMode by remember(macro.id) { mutableStateOf(false) }
+    var name by rememberSaveable(macro.id) { mutableStateOf(macro.name) }
+    val actionSaver = remember { Saver<List<MacroAction>, ArrayList<MacroAction>>(save = { ArrayList(it) }, restore = { it }) }
+    var actions by rememberSaveable(macro.id, stateSaver = actionSaver) { mutableStateOf(decoded.getOrDefault(emptyList())) }
+    val originalMacro = rememberSaveable(macro.id) { macro }
+    var source by rememberSaveable(macro.id) { mutableStateOf(MacroFormat.format(actions)) }
+    var textMode by rememberSaveable(macro.id) { mutableStateOf(false) }
     var error by remember(macro.id) { mutableStateOf(decoded.exceptionOrNull()?.message) }
     val validation = remember(actions, source, textMode) {
         runCatching { if (textMode) MacroFormat.encode(MacroFormat.parse(source)) else MacroFormat.encode(actions) }
+    }
+    val reportDirty by rememberUpdatedState(onDirtyChange)
+    val reportDraft by rememberUpdatedState(onDraftChange)
+    val reportCanSave by rememberUpdatedState(onCanSaveChange)
+    LaunchedEffect(name, actions, source, textMode) {
+        val document = runCatching { if (textMode) MacroFormat.encode(MacroFormat.parse(source)) else MacroFormat.encode(actions) }.getOrNull()
+        reportDirty(name != originalMacro.name || document != originalMacro.document)
+        reportCanSave(name.isNotBlank() && document != null)
+        if (document != null) reportDraft(macro.copy(name = name, document = document))
     }
     Column(modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text(stringResource(R.string.keyboard_name)) })
@@ -114,7 +129,7 @@ internal fun MacroEditor(macro: KeyboardMacro, onSave: (KeyboardMacro) -> Unit, 
                 } catch (e: Exception) {
                     error = e.message
                 }
-            }) { Text(stringResource(R.string.keyboard_save)) }
+            }) { Text(stringResource(if (done) R.string.keyboard_done else R.string.keyboard_save)) }
         }
         TextButton(onClick = onCancel) { Text(stringResource(R.string.keyboard_cancel)) }
     }

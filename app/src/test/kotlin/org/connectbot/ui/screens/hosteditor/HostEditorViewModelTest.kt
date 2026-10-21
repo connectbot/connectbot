@@ -115,7 +115,36 @@ class HostEditorViewModelTest {
             prefs = prefs,
             securePasswordStorage = securePasswordStorage,
             dispatchers = dispatchers,
+            keyboardRepository = org.mockito.Mockito.mock(org.connectbot.data.keyboard.KeyboardRepository::class.java),
         )
+    }
+
+    @Test
+    fun keyboardAndAutomationDraftsRestoreWithoutPersistingPassword() = runTest {
+        val vm = createViewModel()
+        advanceUntilIdle()
+        vm.updateHostname("draft.example")
+        vm.updateNickname("Production")
+        vm.updatePassword("do not persist")
+        val layout = org.connectbot.data.keyboard.KeyboardLayout(name = "Production keys")
+        val draft = org.connectbot.data.keyboard.KeyboardDraft(layout, org.connectbot.data.keyboard.KeyboardDefaults.items(layout.id))
+        vm.updateKeyboardDraft(draft)
+        vm.updateKeyboardLayoutId(layout.id)
+        val action = org.connectbot.data.entity.AutomationAction(hostId = vm.draftHostId, text = "echo ready")
+        vm.updateAutomationDraft(listOf(action), emptyList())
+        advanceUntilIdle()
+        val snapshot = savedStateHandle.get<HostEditorUiState>("formDraft")!!
+        assertEquals("", snapshot.password)
+        val restored = createViewModel()
+        advanceUntilIdle()
+        assertEquals("Production", restored.uiState.value.nickname)
+        assertEquals("draft.example", restored.uiState.value.hostname)
+        assertEquals(layout.id, restored.uiState.value.keyboardLayoutId)
+        assertEquals(draft, restored.keyboardDraft.value)
+        assertEquals(vm.draftHostId, restored.draftHostId)
+        assertEquals(listOf(action), org.connectbot.ui.screens.automation.AutomationDraftCodec.decode(restored.automationDraft.value!!))
+        assertEquals("", restored.uiState.value.password)
+        assertTrue(restored.uiState.value.hasUnsavedChanges)
     }
 
     @Test

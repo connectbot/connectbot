@@ -46,6 +46,8 @@ import javax.inject.Inject
 data class AutomationEditorState(
     val actions: List<AutomationAction> = emptyList(),
     val macros: List<KeyboardMacro> = emptyList(),
+    val pendingMacros: List<KeyboardMacro> = emptyList(),
+    val savedMacros: List<KeyboardMacro> = emptyList(),
     val saved: List<AutomationAction> = emptyList(),
     val forwards: List<PortForward> = emptyList(),
     val loading: Boolean = true,
@@ -56,7 +58,7 @@ data class AutomationEditorState(
     val hostExists: Boolean = true,
     val supportsForwarding: Boolean = true,
 ) {
-    val dirty: Boolean get() = actions != saved
+    val dirty: Boolean get() = actions != saved || pendingMacros != savedMacros
 }
 
 internal object AutomationDraftCodec {
@@ -103,9 +105,35 @@ class AutomationEditorViewModel @Inject constructor(
     private val repository: HostRepository,
     private val dispatchers: CoroutineDispatchers,
 ) : ViewModel() {
-    private val hostId = UUID.fromString(checkNotNull(savedStateHandle.get<String>("hostId")))
+    private var hostId = org.connectbot.data.EntityIds.parse(savedStateHandle.get<String>("hostId"))
+    private val draftMode = hostId == org.connectbot.data.EntityIds.NONE
+    private var draftInitialized = false
+
+    fun initializeDraft(id: UUID, actions: List<AutomationAction>, macros: List<KeyboardMacro>) {
+        if (draftInitialized) return
+        draftInitialized = true
+        hostId = id
+        val restored = savedStateHandle.get<String>("draft")?.let(AutomationDraftCodec::decode) ?: actions
+        mutableState.update { it.copy(actions = restored, saved = actions, savedMacros = macros, pendingMacros = (macros + mutableState.value.pendingMacros).associateBy { it.id }.values.toList(), loading = false, hostExists = true, supportsForwarding = false) }
+    }
+
+    fun finishDraftSession() {
+        draftInitialized = false
+        savedStateHandle.remove<String>("draft")
+        savedStateHandle.remove<String>("editing")
+        savedStateHandle.remove<ArrayList<KeyboardMacro>>("pendingMacros")
+        mutableState.update { it.copy(actions = emptyList(), saved = emptyList(), pendingMacros = emptyList(), savedMacros = emptyList(), editing = null) }
+    }
+
+    fun selectMacro(macro: KeyboardMacro) {
+        val current = mutableState.value
+        val pending = current.pendingMacros.filterNot { it.id == macro.id } + if (current.macros.none { it == macro }) listOf(macro) else emptyList()
+        savedStateHandle["pendingMacros"] = ArrayList(pending)
+        savedStateHandle["editing"] = current.editing?.copy(macroId = macro.id)?.let { AutomationDraftCodec.encode(listOf(it)) }
+        mutableState.update { it.copy(pendingMacros = pending, editing = it.editing?.copy(macroId = macro.id)) }
+    }
     private val mutableState = MutableStateFlow(
-        AutomationEditorState(editing = savedStateHandle.get<String>("editing")?.let { AutomationDraftCodec.decode(it).single() }),
+        AutomationEditorState(editing = savedStateHandle.get<String>("editing")?.let { AutomationDraftCodec.decode(it).single() }, pendingMacros = savedStateHandle.get<ArrayList<KeyboardMacro>>("pendingMacros").orEmpty()),
     )
     val state = mutableState.asStateFlow()
     private var initialized = false
@@ -115,30 +143,34 @@ class AutomationEditorViewModel @Inject constructor(
             repository.observeSharedMacros().collect { macros -> mutableState.update { it.copy(macros = macros) } }
         }
 
-        viewModelScope.launch {
-            try {
-                val host = withContext(dispatchers.io) { repository.findHostById(hostId) }
-                mutableState.update { it.copy(hostExists = host != null, supportsForwarding = host?.protocol == "ssh") }
-                repository.observeAutomation(hostId).collect { actions ->
-                    val draft = if (!initialized) {
-                        savedStateHandle.get<String>("draft")?.let(AutomationDraftCodec::decode) ?: actions
-                    } else if (mutableState.value.dirty) {
-                        mutableState.value.actions
-                    } else {
-                        actions
+        if (!draftMode) {
+            viewModelScope.launch {
+                try {
+                    val host = withContext(dispatchers.io) { repository.findHostById(hostId) }
+                    mutableState.update { it.copy(hostExists = host != null, supportsForwarding = host?.protocol == "ssh") }
+                    repository.observeAutomation(hostId).collect { actions ->
+                        val draft = if (!initialized) {
+                            savedStateHandle.get<String>("draft")?.let(AutomationDraftCodec::decode) ?: actions
+                        } else if (mutableState.value.dirty) {
+                            mutableState.value.actions
+                        } else {
+                            actions
+                        }
+                        initialized = true
+                        mutableState.update { it.copy(actions = draft, saved = actions, loading = false) }
                     }
-                    initialized = true
-                    mutableState.update { it.copy(actions = draft, saved = actions, loading = false) }
+                } catch (e: CancellationException) {
+                    throw e
+                } catch (e: Exception) {
+                    mutableState.update { it.copy(loading = false, error = R.string.automation_load_failed, hostExists = false) }
                 }
-            } catch (e: CancellationException) {
-                throw e
-            } catch (e: Exception) {
-                mutableState.update { it.copy(loading = false, error = R.string.automation_load_failed, hostExists = false) }
             }
         }
-        viewModelScope.launch {
-            repository.observePortForwardsForHost(hostId).collect { forwards ->
-                mutableState.update { it.copy(forwards = forwards) }
+        if (!draftMode) {
+            viewModelScope.launch {
+                repository.observePortForwardsForHost(hostId).collect { forwards ->
+                    mutableState.update { it.copy(forwards = forwards) }
+                }
             }
         }
     }
@@ -147,7 +179,9 @@ class AutomationEditorViewModel @Inject constructor(
         if (mutableState.value.saving) return
         val ordered = actions.mapIndexed { index, action -> action.copy(position = index) }
         savedStateHandle["draft"] = AutomationDraftCodec.encode(ordered)
-        mutableState.update { it.copy(actions = ordered, error = null) }
+        val pending = mutableState.value.pendingMacros.filter { macro -> ordered.any { it.macroId == macro.id } }
+        savedStateHandle["pendingMacros"] = ArrayList(pending)
+        mutableState.update { it.copy(actions = ordered, pendingMacros = pending, error = null) }
     }
 
     fun add(type: AutomationActionType) {
@@ -160,7 +194,9 @@ class AutomationEditorViewModel @Inject constructor(
     }
     fun dismissEdit() {
         savedStateHandle.remove<String>("editing")
-        mutableState.update { it.copy(editing = null, editError = null) }
+        val pending = mutableState.value.pendingMacros.filter { macro -> mutableState.value.actions.any { it.macroId == macro.id } }
+        savedStateHandle["pendingMacros"] = ArrayList(pending)
+        mutableState.update { it.copy(editing = null, editError = null, pendingMacros = pending) }
     }
     fun delete(id: UUID) = change(mutableState.value.actions.filterNot { it.id == id })
 
@@ -187,7 +223,7 @@ class AutomationEditorViewModel @Inject constructor(
                         AutomationActionType.DELAY -> require(action.durationMs > 0)
 
                         AutomationActionType.RUN_MACRO -> {
-                            val macro = requireNotNull(mutableState.value.macros.find { it.id == action.macroId })
+                            val macro = requireNotNull((mutableState.value.macros + mutableState.value.pendingMacros).lastOrNull { it.id == action.macroId })
                             MacroFormat.decode(macro.document)
                         }
 
@@ -217,9 +253,10 @@ class AutomationEditorViewModel @Inject constructor(
         if (current.saving || current.loading || !current.hostExists) return false
         mutableState.update { it.copy(saving = true, error = null) }
         return try {
-            withContext(dispatchers.io) { repository.saveAutomation(hostId, current.actions) }
+            withContext(dispatchers.io) { if (current.pendingMacros.isEmpty()) repository.saveAutomation(hostId, current.actions) else repository.saveAutomationWithMacros(hostId, current.actions, current.pendingMacros) }
             savedStateHandle.remove<String>("draft")
-            mutableState.update { it.copy(saved = current.actions, saving = false) }
+            savedStateHandle.remove<ArrayList<KeyboardMacro>>("pendingMacros")
+            mutableState.update { it.copy(saved = current.actions, saving = false, pendingMacros = emptyList(), savedMacros = emptyList()) }
             true
         } catch (e: CancellationException) {
             mutableState.update { it.copy(saving = false) }

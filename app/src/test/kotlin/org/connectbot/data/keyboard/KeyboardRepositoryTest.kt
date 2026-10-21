@@ -62,6 +62,86 @@ class KeyboardRepositoryTest {
         db.close()
     }
 
+    @Test fun sharedMacroEditsUpdateLabelledShortcutButtonsAsWell() = runTest {
+        val layout = KeyboardLayout(name = "Shortcuts")
+        val macro = KeyboardMacro(name = "Enter", document = MacroFormat.encode(listOf(MacroAction.Key(key = "enter"))))
+        val button = KeyboardItem(layoutId = layout.id, target = "enter", macroId = macro.id)
+        repository.save(layout, listOf(button), listOf(macro))
+        val modified = macro.copy(document = MacroFormat.encode(listOf(MacroAction.Key(key = "enter", modifiers = listOf("ctrl")))))
+        repository.saveMacro(modified)
+        assertEquals("key", db.keyboardDao().items().single().kind)
+        val general = macro.copy(name = "Deploy", document = MacroFormat.encode(listOf(MacroAction.Text("deploy"), MacroAction.Key(key = "enter"))))
+        repository.saveMacro(general)
+        val updated = db.keyboardDao().items().single()
+        assertEquals(button.id, updated.id)
+        assertEquals("macro", updated.kind)
+        assertEquals("", updated.target)
+        assertEquals(macro.id, updated.macroId)
+        assertEquals(general, db.keyboardDao().macros().single())
+    }
+
+    @Test fun hostOverrideCommitsWithDraftAndRejectsMissingHostWithoutOrphans() = runTest {
+        val host = org.connectbot.data.entity.Host(nickname = "Override", hostname = "host")
+        db.hostDao().insert(host)
+        val layout = KeyboardLayout(name = "Private")
+        val draft = KeyboardDraft(layout, KeyboardDefaults.items(layout.id))
+        repository.setHostLayout(host.id, layout.id, draft)
+        assertEquals(layout.id, db.hostDao().getById(host.id)!!.keyboardLayoutId)
+        assertEquals(layout, db.keyboardDao().layouts().single())
+        val orphan = draft.duplicate("Must not remain")
+        assertTrue(runCatching { repository.setHostLayout(UUID.randomUUID(), orphan.layout.id, orphan) }.isFailure)
+        assertEquals(listOf(layout), db.keyboardDao().layouts())
+        repository.deleteLayout(layout.id)
+        assertNull(db.hostDao().getById(host.id)!!.keyboardLayoutId)
+    }
+
+    @Test fun parentFailureRollsBackLayoutMacroHostAndAutomationTogether() = runTest {
+        val layout = KeyboardLayout(name = "Pending")
+        val macro = KeyboardMacro(name = "Pending", document = MacroFormat.encode(listOf(MacroAction.Text("run"))))
+        val draft = KeyboardDraft(layout, listOf(KeyboardItem(layoutId = layout.id, macroId = macro.id)), listOf(macro))
+        assertTrue(
+            runCatching {
+                repository.commitDrafts(listOf(draft)) {
+                    val host = org.connectbot.data.entity.Host(nickname = "Pending", keyboardLayoutId = layout.id)
+                    db.hostDao().insert(host)
+                    db.automationActionDao().replace(host.id, listOf(org.connectbot.data.entity.AutomationAction(hostId = host.id, macroId = macro.id)))
+                    error("Parent save failed")
+                }
+            }.isFailure,
+        )
+        assertTrue(db.keyboardDao().layouts().isEmpty())
+        assertTrue(db.keyboardDao().macros().isEmpty())
+        assertTrue(db.hostDao().getAll().isEmpty())
+    }
+
+    @Test fun copyRetainsSharedMacrosAndReportsBothKindsOfUsage() = runTest {
+        val macro = KeyboardMacro(name = "Shared", document = MacroFormat.encode(listOf(MacroAction.Text("run"))))
+        repository.saveMacro(macro)
+        val layout = KeyboardLayout(name = "Base")
+        val item = KeyboardItem(layoutId = layout.id, kind = "macro", macroId = macro.id)
+        repository.save(layout, listOf(item))
+        val copy = KeyboardDraft(layout, listOf(item)).duplicate("Custom")
+        assertNotEquals(layout.id, copy.layout.id)
+        assertNotEquals(item.id, copy.items.single().id)
+        assertEquals(macro.id, copy.items.single().macroId)
+        assertTrue(copy.macros.isEmpty())
+        val host = org.connectbot.data.entity.Host(nickname = "Automation")
+        db.hostDao().insert(host)
+        db.automationActionDao().replace(host.id, listOf(org.connectbot.data.entity.AutomationAction(hostId = host.id, macroId = macro.id)))
+        assertEquals(setOf("key", "automation"), repository.macroUsage(macro.id).first().map { it.kind }.toSet())
+    }
+
+    @Test fun sessionSelectionIsIndependentForEveryConnection() {
+        val first = Any()
+        val second = Any()
+        val id = UUID.randomUUID()
+        repository.sessionSelection(first).value = id
+        assertEquals(id, repository.sessionSelection(first).value)
+        assertNull(repository.sessionSelection(second).value)
+        repository.sessionSelection(first).value = null
+        assertNull(repository.sessionSelection(first).value)
+    }
+
     @Test fun sharedMacroReferencesAndJson5BackupSurviveRestore() = runTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val macro = KeyboardMacro(name = "Shared", document = MacroFormat.encode(listOf(MacroAction.Text("run"))))
@@ -69,7 +149,7 @@ class KeyboardRepositoryTest {
         val layout = KeyboardLayout(name = "Shared")
         val button = KeyboardItem(layoutId = layout.id, kind = "macro", macroId = macro.id)
         repository.save(layout, listOf(button))
-        val host = org.connectbot.data.entity.Host(nickname = "Shared", hostname = "host", protocol = "ssh")
+        val host = org.connectbot.data.entity.Host(nickname = "Shared", hostname = "host", protocol = "ssh", keyboardLayoutId = layout.id)
         db.hostDao().insert(host)
         val action = org.connectbot.data.entity.AutomationAction(hostId = host.id, type = org.connectbot.data.entity.AutomationActionType.RUN_MACRO, macroId = macro.id)
         db.automationActionDao().replace(host.id, listOf(action))
@@ -79,6 +159,7 @@ class KeyboardRepositoryTest {
         try {
             HostConfigJson.importFromJson(context, target, "/* JSON5 backup */" + json.dropLast(1) + ",}")
             val restoredHost = target.hostDao().getAll().single()
+            assertEquals(layout.id, restoredHost.keyboardLayoutId)
             assertEquals(macro.id, target.keyboardDao().items().single().macroId)
             assertEquals(macro, target.keyboardDao().macros().single())
             assertEquals(macro.id, target.automationActionDao().getByHost(restoredHost.id).single().macroId)
@@ -342,7 +423,10 @@ class KeyboardRepositoryTest {
     @Test fun fittedLayeredPresetSurvivesSaveDuplicationAndExport() = runTest {
         val context = ApplicationProvider.getApplicationContext<Context>()
         val draft = KeyboardPresets.create(KeyboardPreset.SCRIBE, "My Scribe", context::getString)
-        val items = draft.items.map { if (it.kind == "layer") it.copy(target = if (it.layer == 0) "1" else "0") else it }
+        val items = draft.items.map { item ->
+            val styled = item.copy(backgroundColor = 0xFF123456.toInt(), backgroundOpacity = 0.4f, textColor = 0xFFFFFFFF.toInt(), outlineColor = 0xFF00FF00.toInt(), outlineWidth = 0f, repeatOnHold = false, hapticFeedback = true, pinned = item.target == "escape")
+            if (styled.kind == "layer") styled.copy(target = if (styled.layer == 0) "1" else "0") else styled
+        }
         repository.save(draft.layout, items, draft.macros)
         repository.setDefault(draft.layout.id)
         val copyId = repository.duplicate(draft.layout, items)
@@ -364,12 +448,16 @@ class KeyboardRepositoryTest {
                 layouts.getJSONObject(index).remove("presetKey")
             }
             val buttons = older.getJSONArray("keyboard_items")
-            for (index in 0 until buttons.length()) buttons.getJSONObject(index).remove("layer")
+            for (index in 0 until buttons.length()) {
+                val button = buttons.getJSONObject(index)
+                button.remove("layer")
+                listOf("backgroundColor", "backgroundOpacity", "textColor", "outlineColor", "outlineWidth", "repeatOnHold", "hapticFeedback", "pinned").forEach { button.remove(it) }
+            }
             // Older exports can omit these fields; SQLite column defaults preserve compatibility.
             target.clearAllTables()
             HostConfigJson.importFromJson(context, target, older.toString())
             assertTrue(target.keyboardDao().layouts().all { !it.fitToWidth && it.presetKey == null })
-            assertTrue(target.keyboardDao().items().all { it.layer == 0 })
+            assertTrue(target.keyboardDao().items().all { it.layer == 0 && it.backgroundColor == null && it.backgroundOpacity == null && it.textColor == null && it.outlineColor == null && it.outlineWidth == null && it.repeatOnHold == null && it.hapticFeedback == null && !it.pinned })
         } finally {
             target.close()
         }

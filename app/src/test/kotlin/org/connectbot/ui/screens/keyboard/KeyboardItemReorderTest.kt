@@ -56,4 +56,41 @@ class KeyboardItemReorderTest {
         assertEquals(1, reordered.single { it.id == first.id }.column)
         org.junit.Assert.assertTrue(runCatching { reorderKeyboardItems(layout, items, first.id, other.id) }.isFailure)
     }
+
+    @Test fun crossSectionMovesPreserveIdentityAndCloseTheOldGap() {
+        val layout = KeyboardLayout(name = "Pinned")
+        val first = KeyboardItem(layoutId = layout.id)
+        val second = KeyboardItem(layoutId = layout.id, column = 1)
+        val dock = KeyboardItem(layoutId = layout.id, pinned = true)
+        val items = listOf(first, second, dock)
+        KeyboardDefaults.validate(layout, items)
+        val moved = moveKeyboardItem(layout, items, first.id, dock.id)
+        assertEquals(true, moved.single { it.id == first.id }.pinned)
+        assertEquals(0, moved.single { it.id == first.id }.column)
+        assertEquals(1, moved.single { it.id == dock.id }.column)
+        assertEquals(0, moved.single { it.id == second.id }.column)
+        val unpinned = pinKeyboardItem(layout, moved, first.id, false)
+        assertEquals(false, unpinned.single { it.id == first.id }.pinned)
+        assertEquals(1, unpinned.single { it.id == first.id }.column)
+        assertEquals(0, unpinned.single { it.id == dock.id }.column)
+        KeyboardDefaults.validate(layout, unpinned)
+    }
+
+    @Test fun canPinIntoAnEmptyRegionAndPinAnyAction() {
+        val layout = KeyboardLayout(name = "Any action")
+        listOf("key", "modifier", "app", "macro", "layer").forEach { kind ->
+            val item = KeyboardItem(layoutId = layout.id, kind = kind, target = if (kind == "layer") "0" else "escape")
+            val moved = pinKeyboardItem(layout, listOf(item), item.id, true).single()
+            assertEquals(item.copy(pinned = true), moved)
+        }
+    }
+
+    @Test fun draggingIntoAnotherRegionUsesTheDestinationRow() {
+        val layout = KeyboardLayout(name = "Rows")
+        val source = KeyboardItem(layoutId = layout.id, row = 4)
+        val destination = KeyboardItem(layoutId = layout.id, pinned = true)
+        val moved = moveKeyboardItem(layout, listOf(source, destination), source.id, destination.id)
+        assertEquals(listOf(0, 0), moved.map { it.row })
+        assertEquals(listOf(0, 1), moved.map { it.column })
+    }
 }

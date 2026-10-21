@@ -370,9 +370,9 @@
 	<string name="pref_wifilock_summary">"Prevent Wi-Fi from turning off when a session is active"</string>
 
 	<!-- Name for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_title">"Bumpy arrows"</string>
+	<string name="pref_bumpyarrows_title">"Keyboard haptics"</string>
 	<!-- Summary for the haptic feedback (bumpy arrow) preference -->
-	<string name="pref_bumpyarrows_summary">"Vibrate when sending arrow keys; useful for laggy connections"</string>
+	<string name="pref_bumpyarrows_summary">"Vibrate when pressing terminal keys. Individual keys can override this setting."</string>
 
 	<!-- Category title for the Terminal Bell preferences -->
 	<string name="pref_bell_category">"Terminal bell"</string>
@@ -2073,11 +2073,11 @@
 	<!-- Terminal keyboard configuration: height. -->
 	<string name="keyboard_height">Button height (dp, all buttons)</string>
 	<!-- Terminal keyboard configuration: grid help. -->
-	<string name="keyboard_grid_help">Tap a button to edit it. Touch and hold a button, then drag to reorder it; use row and column fields for exact placement. Width and height apply to all buttons in this layout. Keys are one row tall; column spans multiply the button width.</string>
+	<string name="keyboard_grid_help">Tap a key to edit it. Touch and hold, then drag to move it. Drag between sections to pin or unpin. Button size applies to every key.</string>
 	<!-- Terminal keyboard configuration: drag handle for a button in the layout editor. -->
 	<string name="keyboard_drag_button">Drag to reorder button</string>
 	<!-- Terminal keyboard configuration: add button. -->
-	<string name="keyboard_add_button">Add button</string>
+	<string name="keyboard_add_button">Add key</string>
 	<!-- Terminal keyboard configuration: visible. -->
 	<string name="keyboard_visible">Visible</string>
 	<!-- Terminal keyboard configuration: row. -->
@@ -2089,7 +2089,7 @@
 	<!-- Terminal keyboard configuration: column span. -->
 	<string name="keyboard_column_span">Column span</string>
 	<!-- Terminal keyboard configuration: remove button. -->
-	<string name="keyboard_remove_button">Remove button</string>
+	<string name="keyboard_remove_button">Remove key</string>
 	<!-- Terminal keyboard configuration: save. -->
 	<string name="keyboard_save">Save</string>
 	<!-- Terminal keyboard configuration: reset. -->
@@ -2204,4 +2204,232 @@
     <string name="macro_choose">Choose macro</string>
     <!-- Opens the shared macro library from post-login automation. -->
     <string name="macro_manage">Manage macros</string>
+    <!-- Terminal keyboard and automation workflow: keyboard selected. -->
+    <string name="keyboard_selected">Selected</string>
+    <!-- Terminal keyboard and automation workflow: keyboard app default. -->
+    <string name="keyboard_app_default">App default</string>
+    <!-- Terminal keyboard and automation workflow: keyboard select. -->
+    <string name="keyboard_select">Use this</string>
+    <!-- Terminal keyboard and automation workflow: keyboard change. -->
+    <string name="keyboard_change">Change layout</string>
+    <!-- Terminal keyboard and automation workflow: keyboard customize. -->
+    <string name="keyboard_customize">Customize</string>
+    <!-- Terminal keyboard and automation workflow: keyboard edit shared. -->
+    <string name="keyboard_edit_shared">Edit shared layout</string>
+    <!-- Terminal keyboard and automation workflow: keyboard make default. -->
+    <string name="keyboard_make_default">Make app default</string>
+    <!-- Terminal keyboard and automation workflow: keyboard saving. -->
+    <string name="keyboard_saving">Saving…</string>
+    <!-- Terminal keyboard and automation workflow: keyboard context name. -->
+    <string name="keyboard_context_name">%1$s — %2$s</string>
+    <!-- Terminal keyboard and automation workflow: keyboard copy name. -->
+    <string name="keyboard_copy_name">Custom</string>
+    <!-- Terminal keyboard and automation workflow: keyboard reset inherited. -->
+    <string name="keyboard_reset_inherited">Use inherited keyboard</string>
+    <!-- Terminal keyboard and automation workflow: keyboard inherit named. -->
+    <string name="keyboard_inherit_named">%1$s — %2$s</string>
+    <!-- Terminal keyboard and automation workflow: keyboard from profile. -->
+    <string name="keyboard_from_profile">From profile “%1$s”</string>
+    <!-- Terminal keyboard and automation workflow: keyboard advanced. -->
+    <string name="keyboard_advanced">Advanced</string>
+    <!-- Terminal keyboard and automation workflow: keyboard usage layout. -->
+    <string name="keyboard_usage_layout">Keyboard: %1$s</string>
+    <!-- Terminal keyboard and automation workflow: keyboard usage automation. -->
+    <string name="keyboard_usage_automation">Post-login automation: %1$s</string>
+    <!-- Terminal keyboard and automation workflow: keyboard usage profile. -->
+    <string name="keyboard_usage_profile">Profile: %1$s</string>
+    <!-- Terminal keyboard and automation workflow: keyboard usage host. -->
+    <string name="keyboard_usage_host">Host: %1$s</string>
+    <!-- Terminal keyboard and automation workflow: keyboard delete layout title. -->
+    <string name="keyboard_delete_layout_title">Delete layout “%1$s”?</string>
+    <!-- Terminal keyboard and automation workflow: keyboard delete macro title. -->
+    <string name="keyboard_delete_macro_title">Delete macro “%1$s”?</string>
+    <!-- Terminal keyboard and automation workflow: keyboard delete layout message. -->
+    <string name="keyboard_delete_layout_message">Hosts and profiles using this layout will use their inherited keyboard instead. If this is the app default, another layout becomes the default.</string>
+    <!-- Terminal keyboard and automation workflow: keyboard delete macro message. -->
+    <string name="keyboard_delete_macro_message">This removes the macro from the shared library.</string>
+    <!-- Terminal keyboard and automation workflow: keyboard reset message. -->
+    <string name="keyboard_reset_message">Restore this layout’s original keys and dimensions? Changes apply when you save. Shared macros are kept.</string>
+    <!-- Terminal keyboard and automation workflow: macro shared title. -->
+    <string name="macro_shared_title">Edit a shared macro?</string>
+    <!-- Terminal keyboard and automation workflow: macro shared message. -->
+    <string name="macro_shared_message">This macro is used elsewhere. Make a separate copy, or edit the shared version for all its users.</string>
+    <!-- Terminal keyboard and automation workflow: macro make copy. -->
+    <string name="macro_make_copy">Make a copy</string>
+    <!-- Terminal keyboard and automation workflow: macro edit shared. -->
+    <string name="macro_edit_shared">Edit shared macro</string>
+    <!-- Terminal keyboard and automation workflow: macro global save notice. -->
+    <string name="macro_global_save_notice">Saving updates this macro everywhere it is used, even if you later discard the surrounding editor.</string>
+    <!-- Terminal keyboard and automation workflow: macro remove uses first. -->
+    <string name="macro_remove_uses_first">Remove or reassign these uses before deleting this macro.</string>
+    <!-- Terminal keyboard and automation workflow: keyboard session only. -->
+    <string name="keyboard_session_only">This session</string>
+    <!-- Terminal keyboard and automation workflow: keyboard read only. -->
+    <string name="keyboard_read_only">This host is read-only. Its keyboard cannot be changed.</string>
+    <!-- Terminal keyboard and automation workflow: keyboard manage layouts. -->
+    <string name="keyboard_manage_layouts">Manage layouts</string>
+    <!-- Terminal keyboard and automation workflow: keyboard done. -->
+    <string name="keyboard_done">Done</string>
+    <!-- Terminal keyboard and automation workflow: automation draft host. -->
+    <string name="automation_draft_host">These steps will be saved with the new host.</string>
+    <!-- Terminal keyboard and automation workflow: automation no forwards new host. -->
+    <string name="automation_no_forwards_new_host">Save this host and add port forwards before using forwarding actions.</string>
+    <!-- Terminal keyboard and automation workflow: keyboard action type. -->
+    <string name="keyboard_action_type">Action</string>
+    <!-- Terminal keyboard and automation workflow: keyboard action key. -->
+    <string name="keyboard_action_key">Key</string>
+    <!-- Terminal keyboard and automation workflow: keyboard action macro. -->
+    <string name="keyboard_action_macro">Macro</string>
+    <!-- Terminal keyboard and automation workflow: keyboard action modifier. -->
+    <string name="keyboard_action_modifier">Modifier</string>
+    <!-- Terminal keyboard and automation workflow: keyboard action app. -->
+    <string name="keyboard_action_app">App action</string>
+    <!-- Terminal keyboard and automation workflow: keyboard action layer. -->
+    <string name="keyboard_action_layer">Switch layer</string>
+    <!-- Terminal keyboard and automation workflow: keyboard usage shared layout. -->
+    <string name="keyboard_usage_shared_layout">Shared layout: saving updates everyone using it.</string>
+    <!-- A linked keyboard layout is loading or has been deleted. -->
+    <string name="keyboard_layout_unavailable">This keyboard layout is unavailable.</string>
+    <!-- Help above exact-placement fields in the expanded Advanced section of a keyboard key editor. -->
+    <string name="keyboard_grid_advanced_help">Rows and columns start at 0 within each section. Keys are one row tall. Column span sets how many cells a key occupies.</string>
+    <!-- Expandable appearance section in keyboard key editor. -->
+    <string name="keyboard_appearance">Appearance</string>
+    <!-- Key appearance RGB picker label. -->
+    <string name="keyboard_background_color">Background color</string>
+    <!-- Key appearance text and icon color picker label. -->
+    <string name="keyboard_text_color">Text color</string>
+    <!-- Key appearance border color picker label. -->
+    <string name="keyboard_outline_color">Outline color</string>
+    <!-- Color selector label with color name and hex value or theme default. -->
+    <string name="keyboard_color_value">%1$s: %2$s</string>
+    <!-- Color follows the current application theme. -->
+    <string name="keyboard_theme_color">Theme default</string>
+    <!-- Keyboard key background opacity percentage. -->
+    <string name="keyboard_background_opacity">Background opacity: %1$d%%</string>
+    <!-- Checkbox to enable a keyboard key outline. -->
+    <string name="keyboard_outlined">Outlined</string>
+    <!-- Keyboard key outline thickness in density independent pixels. -->
+    <string name="keyboard_outline_thickness">Outline thickness: %1$.1f dp</string>
+    <!-- Restore all appearance overrides on one keyboard key. -->
+    <string name="keyboard_reset_appearance">Reset appearance</string>
+    <!-- Explain why an active key uses a state highlight. -->
+    <string name="keyboard_appearance_state_help">Active modifiers and layer switches use the theme highlight.</string>
+    <!-- Expandable behavior section in the keyboard key editor. -->
+    <string name="keyboard_behavior">Behavior</string>
+    <!-- Checkbox for repeating a terminal key or macro while it is held down. -->
+    <string name="keyboard_repeat_on_hold">Repeat while held</string>
+    <!-- Restore default hold behavior: arrows repeat and other keys do not. -->
+    <string name="keyboard_repeat_default">Use default repeat behavior</string>
+    <!-- Per-key haptics selection follows the application setting. -->
+    <string name="keyboard_haptics_app_setting">App setting</string>
+    <!-- Always enable haptics for this terminal key, subject to Android settings. -->
+    <string name="keyboard_haptics_on">On</string>
+    <!-- Disable haptics for this terminal key. -->
+    <string name="keyboard_haptics_off">Off</string>
+    <!-- Per-key haptics selector with the current app setting, on, or off choice. -->
+    <string name="keyboard_haptics_value">Haptic feedback: %1$s</string>
+    <!-- Header above the pinned section of the single reorderable keyboard editor grid. -->
+    <string name="keyboard_pinned_section">Pinned keys</string>
+    <!-- Header above the scrolling section of the single reorderable keyboard editor grid. -->
+    <string name="keyboard_scrolling_section">Scrollable keys</string>
+    <!-- Empty drop target for transferring a key into a keyboard editor section. -->
+    <string name="keyboard_drop_section">Drag keys here</string>
+    <!-- Key editor checkbox to keep a key fixed to the right of the scrolling region. -->
+    <string name="keyboard_pin_to_right">Pin to right</string>
+    <!-- Terminal keyboard redesign: navigation summary. -->
+    <string name="keyboard_navigation_summary">Choose layouts, customize keys, and manage macros</string>
+    <!-- Terminal keyboard redesign: edit layout title. -->
+    <string name="keyboard_edit_layout_title">Edit layout</string>
+    <!-- Terminal keyboard redesign: edit key title. -->
+    <string name="keyboard_edit_key_title">Edit key</string>
+    <!-- Terminal keyboard redesign: layout settings. -->
+    <string name="keyboard_layout_settings">Layout settings</string>
+    <!-- Terminal keyboard redesign: mode scrollable. -->
+    <string name="keyboard_mode_scrollable">Scrollable</string>
+    <!-- Terminal keyboard redesign: mode fit. -->
+    <string name="keyboard_mode_fit">Fit to width</string>
+    <!-- Terminal keyboard redesign: dimensions summary. -->
+    <string name="keyboard_dimensions_summary">%1$s · %2$s × %3$s dp</string>
+    <!-- Terminal keyboard redesign: canvas title. -->
+    <string name="keyboard_canvas_title">Keyboard</string>
+    <!-- Terminal keyboard redesign: canvas hint. -->
+    <string name="keyboard_canvas_hint">Tap to edit · Hold and drag to move</string>
+    <!-- Terminal keyboard redesign: pinned hint. -->
+    <string name="keyboard_pinned_hint">Pinned keys stay at the end of the keyboard (left in right-to-left interfaces).</string>
+    <!-- Terminal keyboard redesign: scrolling hint. -->
+    <string name="keyboard_scrolling_hint">Drag a key into Pinned keys to keep it at the end of the keyboard. Drag it back into Scrollable keys to unpin it.</string>
+    <!-- Terminal keyboard redesign: group expanded. -->
+    <string name="keyboard_group_expanded">Expanded</string>
+    <!-- Terminal keyboard redesign: group collapsed. -->
+    <string name="keyboard_group_collapsed">Collapsed</string>
+    <!-- Terminal keyboard redesign: edit copy. -->
+    <string name="keyboard_edit_copy">Edit a copy</string>
+    <!-- Terminal keyboard redesign: continue editing. -->
+    <string name="keyboard_continue_editing">Continue editing</string>
+    <!-- Terminal keyboard redesign: copy help. -->
+    <string name="keyboard_copy_help">Creates a layout for %1$s. Other users keep their current layout.</string>
+    <!-- Terminal keyboard redesign: parent save hint. -->
+    <string name="keyboard_parent_save_hint">Changes apply when you save this host or profile.</string>
+    <!-- Terminal keyboard redesign: key save hint. -->
+    <string name="keyboard_key_save_hint">Saving this key updates the layout draft. Save the layout to keep your changes.</string>
+    <!-- Terminal keyboard redesign: placement. -->
+    <string name="keyboard_placement">Placement</string>
+    <!-- Terminal keyboard redesign: show key. -->
+    <string name="keyboard_show_key">Show key</string>
+    <!-- Terminal keyboard redesign: pin choice. -->
+    <string name="keyboard_pin_choice">Pinned at end</string>
+    <!-- Terminal keyboard redesign: change shortcut. -->
+    <string name="keyboard_change_shortcut">Change shortcut</string>
+    <!-- Terminal keyboard redesign: action help. -->
+    <string name="keyboard_action_help">Choose what this key does when pressed.</string>
+    <!-- Terminal keyboard redesign: appearance summary. -->
+    <string name="keyboard_appearance_summary">Background, text, and outline</string>
+    <!-- Terminal keyboard redesign: behavior summary. -->
+    <string name="keyboard_behavior_summary">%1$s · Haptics: %2$s</string>
+    <!-- Terminal keyboard redesign: repeat off. -->
+    <string name="keyboard_repeat_off">Press once</string>
+    <!-- Terminal keyboard redesign: repeat on. -->
+    <string name="keyboard_repeat_on">Repeats while held</string>
+    <!-- Terminal keyboard redesign: advanced summary. -->
+    <string name="keyboard_advanced_summary">Row, column, and key width</string>
+    <!-- Terminal keyboard redesign: used by. -->
+    <string name="keyboard_usage_count">Used by %1$d</string>
+    <!-- Terminal keyboard redesign: remove key message. -->
+    <string name="keyboard_remove_key_message">Remove this key from the layout draft?</string>
+    <!-- Terminal keyboard redesign: key discard title. -->
+    <string name="keyboard_key_discard_title">Apply key changes?</string>
+    <!-- Terminal keyboard redesign: key discard message. -->
+    <string name="keyboard_key_discard_message">Apply these changes to the layout, or discard them.</string>
+    <!-- Terminal keyboard redesign: apply key. -->
+    <string name="keyboard_apply_key">Apply changes</string>
+    <!-- Terminal keyboard redesign: library edit. -->
+    <string name="keyboard_library_edit">Edit layout</string>
+    <!-- Terminal keyboard redesign: key type. -->
+    <string name="keyboard_key_type">Key or shortcut</string>
+    <!-- Terminal keyboard redesign: preview label. -->
+    <string name="keyboard_preview_label">Preview</string>
+    <!-- Terminal keyboard redesign: own layout. -->
+    <string name="keyboard_own_layout">Custom selection</string>
+    <!-- Terminal keyboard redesign: inherited selection. -->
+    <string name="keyboard_inherited_selection">Use inherited layout</string>
+    <!-- Terminal keyboard redesign: more layout actions. -->
+    <string name="keyboard_more_layout_actions">Layout actions</string>
+    <!-- Terminal keyboard redesign: outline preview. -->
+    <string name="keyboard_outline_preview">Color preview</string>
+    <!-- Terminal keyboard redesign: empty layer. -->
+    <string name="keyboard_empty_layer">Add a key to start this layer.</string>
+    <!-- Contextual keyboard editor: console selections apply immediately. -->
+    <string name="keyboard_immediate_hint">Changes apply to this terminal when you save the layout.</string>
+    <!-- Explanation before editing a shared keyboard layout. -->
+    <string name="keyboard_shared_confirm">Saving this layout updates all its users. You can edit a copy instead.</string>
+    <!-- Title of confirmation before changing a shared terminal keyboard layout. -->
+    <string name="keyboard_shared_title">Edit shared layout?</string>
+    <!-- Fallback owner description for a contextual keyboard copy. -->
+    <string name="keyboard_this_configuration">this configuration</string>
+    <!-- Heading for built-in templates shown alongside saved keyboard layouts. -->
+    <string name="keyboard_builtin_presets">Built-in presets</string>
+    <!-- Explain that editing a built-in keyboard template creates a private copy. -->
+    <string name="keyboard_builtin_presets_help">Built-in presets stay unchanged. Editing creates your own copy.</string>
+    <!-- Badge distinguishing an immutable keyboard template from a saved layout. -->
+    <string name="keyboard_builtin_preset">Built-in preset</string>
 </resources>
