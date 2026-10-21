@@ -183,7 +183,7 @@ jobs:
 
       - name: Record release metadata
         if: ${{ github.event_name == 'push' }}
-        uses: connectbot/actions/android-signer@9ed4fe3cf37503852d43515d2d987e4294686438 # build metadata
+        uses: connectbot/actions/android-signer@bb6d53fb13aad44fd82cedbd401cb455f5ca05b6 # build metadata
         with:
           command: build-info
           out: support
