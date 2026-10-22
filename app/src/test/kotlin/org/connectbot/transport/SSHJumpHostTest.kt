@@ -99,6 +99,7 @@ class SSHJumpHostTest {
             ssh.connect(this, dispatchers(), "UTF-8")
             val opened = clients.constructed()
             assertEquals(3, opened.size)
+            assertEquals(listOf(0L, 0L, 0L), configs.map { it.handshakeTimeoutMs })
             assertEquals(
                 listOf("rsa-sha2-512", "ecdsa-sha2-nistp256", "ssh-ed25519"),
                 configs.map { it.hostKeyAlgorithms.substringBefore(',') },

@@ -780,6 +780,8 @@ open class SSH : AbsTransport {
 
         val policy = resolveCryptoPolicy(jumpHost, dispatchers) ?: return null
         val config = SshClientConfig {
+            // Interactive host-key approval and slow servers must not have a fixed deadline.
+            handshakeTimeoutMs = 0L
             cryptoPolicy(policy)
             algorithmWarningHandler = { recordPolicyWarnings(jumpHost, listOf(it)) }
             if (jumpTransportFactory != null) {
@@ -987,6 +989,8 @@ open class SSH : AbsTransport {
             return
         }
         val config = SshClientConfig {
+            // Interactive host-key approval and slow servers must not have a fixed deadline.
+            handshakeTimeoutMs = 0L
             cryptoPolicy(policy)
             algorithmWarningHandler = { recordPolicyWarnings(currentHost, listOf(it)) }
             if (transportFactory != null) {
