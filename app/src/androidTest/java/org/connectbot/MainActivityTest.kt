@@ -21,7 +21,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.os.Build
-import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.core.content.IntentCompat
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
@@ -30,6 +29,7 @@ import androidx.test.rule.GrantPermissionRule
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import kotlinx.coroutines.runBlocking
+import org.connectbot.service.TerminalManager
 import org.connectbot.ui.MainActivity
 import org.connectbot.util.TestUriBuilder
 import org.connectbot.util.waitForBridgeByNickname
@@ -72,12 +72,7 @@ class MainActivityTest {
         }
 
         ActivityScenario.launch<MainActivity>(disconnectIntent).use { scenario ->
-            scenario.onActivity { activity ->
-                val state = runBlocking {
-                    activity.waitUntilServiceBound()
-                }
-                val manager = state.terminalManager
-            }
+            scenario.awaitTerminalManager()
         }
     }
 
@@ -91,18 +86,13 @@ class MainActivityTest {
         }
 
         ActivityScenario.launch<MainActivity>(shortcutIntent).use { scenario ->
-            scenario.onActivity { activity ->
-                val state = runBlocking {
-                    activity.waitUntilServiceBound()
-                }
-                val manager = state.terminalManager
-                val bridge = runBlocking {
-                    manager.waitForBridgeByNickname("LocalShortcut")
-                }
-
-                assertNotNull("Shortcut should create connection", bridge)
-                assertTrue("Shortcut host should be temporary", bridge.host.isTemporary)
+            val manager = scenario.awaitTerminalManager()
+            val bridge = runBlocking {
+                manager.waitForBridgeByNickname("LocalShortcut")
             }
+
+            assertNotNull("Shortcut should create connection", bridge)
+            assertTrue("Shortcut host should be temporary", bridge.host.isTemporary)
         }
     }
 
@@ -115,11 +105,9 @@ class MainActivityTest {
         }
 
         ActivityScenario.launch<MainActivity>(createShortcutIntent).use { scenario ->
+            scenario.awaitTerminalManager()
             var resultIntent: Intent? = null
             scenario.onActivity { activity ->
-                runBlocking {
-                    activity.waitUntilServiceBound()
-                }
                 if (activity.isFinishing) {
                     resultIntent = activity.intent
                 }
@@ -130,5 +118,12 @@ class MainActivityTest {
                 assertNotNull("Result should contain ShortcutInfo for modern Android versions", shortcutInfo)
             }
         }
+    }
+
+    private fun ActivityScenario<MainActivity>.awaitTerminalManager(): TerminalManager {
+        lateinit var activity: MainActivity
+        onActivity { activity = it }
+        // Service binding and shortcut handling need the main thread to remain free.
+        return runBlocking { activity.waitUntilServiceBound().terminalManager }
     }
 }
