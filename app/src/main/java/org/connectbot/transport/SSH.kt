@@ -180,6 +180,9 @@ open class SSH : AbsTransport {
     private val jumpClients = mutableListOf<SshClient>()
 
     private val savedPasswordsTried = mutableSetOf<UUID>()
+
+    // Advertised methods alone do not mean the server will accept credentials for them.
+    private val credentialMethods = mutableSetOf<String>()
     private val keyUseDecisions = mutableMapOf<Pair<SshClient, TerminalManager.KeyHolder>, Boolean>()
     private var loginCancelled = false
     private var jumpFailureReason = DisconnectReason.IO_ERROR
@@ -380,6 +383,7 @@ open class SSH : AbsTransport {
     }
 
     internal open suspend fun authenticate(): AuthResult? {
+        credentialMethods.clear()
         if (host?.username.isNullOrEmpty()) {
             val username = requestLoginPrompt(
                 null,
@@ -480,6 +484,7 @@ open class SSH : AbsTransport {
                             bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_ki))
                         }
                         return prompts.map { prompt ->
+                            credentialMethods.add("keyboard-interactive")
                             val isPassword = !prompt.echo
 
                             if (isPassword && currentHost.id !in savedPasswordsTried) {
@@ -496,6 +501,7 @@ open class SSH : AbsTransport {
                     }
 
                     override suspend fun onPasswordNeeded(): String? {
+                        credentialMethods.add("password")
                         val savedPassword = manager?.securePasswordStorage?.getPassword(currentHost.id)
                         if (savedPassword != null && currentHost.id !in savedPasswordsTried) {
                             savedPasswordsTried.add(currentHost.id)
@@ -832,6 +838,7 @@ open class SSH : AbsTransport {
                 requestLoginPrompt(null, manager?.res?.getString(R.string.prompt_username), false)
             }
             repeat(AUTH_TRIES) { attempt ->
+                val credentialMethods = mutableSetOf<String>()
                 val result = jumpClient.authenticate(
                     username,
                     object : AuthHandler {
@@ -884,6 +891,7 @@ open class SSH : AbsTransport {
                             instruction: String,
                             prompts: List<KeyboardInteractiveCallback.Prompt>,
                         ): List<String>? = prompts.map { prompt ->
+                            credentialMethods.add("keyboard-interactive")
                             val isPassword = !prompt.echo
                             if (isPassword && jumpHost.id !in savedPasswordsTried) {
                                 val savedPassword = manager?.securePasswordStorage?.getPassword(jumpHost.id)
@@ -902,6 +910,7 @@ open class SSH : AbsTransport {
                         }
 
                         override suspend fun onPasswordNeeded(): String? {
+                            credentialMethods.add("password")
                             val savedPassword = manager?.securePasswordStorage?.getPassword(jumpHost.id)
                             if (savedPassword != null && jumpHost.id !in savedPasswordsTried) {
                                 savedPasswordsTried.add(jumpHost.id)
@@ -926,7 +935,7 @@ open class SSH : AbsTransport {
                 when (result) {
                     is AuthResult.Success -> return true
                     is AuthResult.Error -> return false
-                    is AuthResult.Failure -> if (result.allowedMethods.none { it == "password" || it == "keyboard-interactive" }) return false
+                    is AuthResult.Failure -> if (result.allowedMethods.none { it in credentialMethods }) return false
                 }
                 if (attempt < AUTH_TRIES - 1) delay(1000)
             }
@@ -1062,7 +1071,7 @@ open class SSH : AbsTransport {
                     }
 
                     is AuthResult.Failure -> {
-                        if (result.allowedMethods.none { it == "password" || it == "keyboard-interactive" }) {
+                        if (result.allowedMethods.none { it in credentialMethods }) {
                             disconnectAuthentication(DisconnectReason.AUTH_FAIL)
                             return
                         }

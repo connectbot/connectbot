@@ -20,9 +20,11 @@ package org.connectbot.transport
 import android.content.res.Resources
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitCancellation
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runCurrent
 import kotlinx.coroutines.test.runTest
 import org.connectbot.R
@@ -58,6 +60,27 @@ class SSHMigrationTest {
     private val fallbackHandler = mock(AuthHandler::class.java)
 
     private fun matchingHandler(): AuthHandler = any(AuthHandler::class.java) ?: fallbackHandler
+
+    private suspend fun rejectCredentials(method: String, thenSucceed: Boolean = false) {
+        val prompts = PromptManager()
+        `when`(bridge.promptManager).thenReturn(prompts)
+        val rejection = `when`(client.authenticate(eq("user") ?: "user", matchingHandler())).thenAnswer { invocation ->
+            val handler = invocation.getArgument<AuthHandler>(1)
+            runBlocking {
+                val response = async(start = CoroutineStart.UNDISPATCHED) {
+                    if (method == "password") {
+                        handler.onPasswordNeeded()
+                    } else {
+                        handler.onKeyboardInteractivePrompt("", "", listOf(KeyboardInteractiveCallback.Prompt("Password", false)))
+                    }
+                }
+                prompts.respond(PromptResponse.StringResponse("incorrect"))
+                response.await()
+            }
+            AuthResult.Failure(setOf(method))
+        }
+        if (thenSucceed) rejection.thenReturn(AuthResult.Success)
+    }
 
     private val client = mock(SshClient::class.java)
     private val session = mock(SshSession::class.java)
@@ -162,7 +185,7 @@ class SSHMigrationTest {
 
     @Test
     fun authentication_passwordFailure_retriesThenSucceeds() = runTest {
-        `when`(client.authenticate(eq("user") ?: "user", matchingHandler())).thenReturn(AuthResult.Failure(setOf("password")), AuthResult.Success)
+        rejectCredentials("password", thenSucceed = true)
         val ssh = TestSSH()
         ssh.authenticateConnection()
         verify(client, times(2)).authenticate(eq("user") ?: "user", matchingHandler())
@@ -172,11 +195,62 @@ class SSHMigrationTest {
 
     @Test
     fun authentication_repeatedRejection_stopsAtLimit() = runTest {
-        `when`(client.authenticate(eq("user") ?: "user", matchingHandler())).thenReturn(AuthResult.Failure(setOf("keyboard-interactive")))
+        rejectCredentials("keyboard-interactive")
         TestSSH().authenticateConnection()
         verify(client, times(20)).authenticate(eq("user") ?: "user", matchingHandler())
         verify(bridge).dispatchDisconnect(DisconnectReason.AUTH_FAIL)
         assertEquals(19000, testScheduler.currentTime)
+    }
+
+    @Test
+    fun authentication_advertisedMethodsWithoutChallenge_stopsImmediately() = runTest {
+        `when`(client.authenticate(eq("user") ?: "user", matchingHandler())).thenReturn(
+            AuthResult.Failure(setOf("publickey", "password", "keyboard-interactive")),
+        )
+        TestSSH().authenticateConnection()
+        verify(client).authenticate(eq("user") ?: "user", matchingHandler())
+        verify(bridge).dispatchDisconnect(DisconnectReason.AUTH_FAIL)
+        assertEquals(0, testScheduler.currentTime)
+    }
+
+    @Test
+    fun authentication_emptyInteractiveChallenge_stopsImmediately() = runTest {
+        `when`(client.authenticate(eq("user") ?: "user", matchingHandler())).thenAnswer {
+            runBlocking { it.getArgument<AuthHandler>(1).onKeyboardInteractivePrompt("", "", emptyList()) }
+            AuthResult.Failure(setOf("keyboard-interactive"))
+        }
+        TestSSH().authenticateConnection()
+        verify(client).authenticate(eq("user") ?: "user", matchingHandler())
+        verify(bridge).dispatchDisconnect(DisconnectReason.AUTH_FAIL)
+        assertEquals(0, testScheduler.currentTime)
+    }
+
+    @Test
+    fun authentication_noChallengeAfterRejectedPassword_stopsRetrying() = runTest {
+        val prompts = PromptManager()
+        `when`(bridge.promptManager).thenReturn(prompts)
+        `when`(client.authenticate(eq("user") ?: "user", matchingHandler())).thenAnswer {
+            runBlocking {
+                val response = async(start = CoroutineStart.UNDISPATCHED) { it.getArgument<AuthHandler>(1).onPasswordNeeded() }
+                prompts.respond(PromptResponse.StringResponse("incorrect"))
+                response.await()
+            }
+            AuthResult.Failure(setOf("password", "keyboard-interactive"))
+        }.thenReturn(AuthResult.Failure(setOf("password", "keyboard-interactive")))
+        TestSSH().authenticateConnection()
+        verify(client, times(2)).authenticate(eq("user") ?: "user", matchingHandler())
+        verify(bridge).dispatchDisconnect(DisconnectReason.AUTH_FAIL)
+        assertEquals(1000, testScheduler.currentTime)
+    }
+
+    @Test
+    fun jumpAuthentication_keyboardInteractiveWithoutChallenge_stopsImmediately() = runTest {
+        `when`(client.authenticate(eq("user") ?: "user", matchingHandler())).thenReturn(
+            AuthResult.Failure(setOf("publickey", "password", "keyboard-interactive")),
+        )
+        assertFalse(TestSSH().authenticateJumpHost(client, Host(username = "user")))
+        verify(client).authenticate(eq("user") ?: "user", matchingHandler())
+        assertEquals(0, testScheduler.currentTime)
     }
 
     @Test
@@ -237,7 +311,7 @@ class SSHMigrationTest {
 
     @Test
     fun jumpAuthentication_passwordFailure_retries() = runTest {
-        `when`(client.authenticate(eq("user") ?: "user", matchingHandler())).thenReturn(AuthResult.Failure(setOf("password")), AuthResult.Success)
+        rejectCredentials("password", thenSucceed = true)
         assertTrue(TestSSH().authenticateJumpHost(client, Host(username = "user")))
         verify(client, times(2)).authenticate(eq("user") ?: "user", matchingHandler())
     }
