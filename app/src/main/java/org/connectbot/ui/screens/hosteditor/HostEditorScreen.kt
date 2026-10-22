@@ -689,10 +689,10 @@ private fun ColorSelector(
                         modifier = Modifier.size(26.dp),
                         shape = RoundedCornerShape(64.dp),
                         colors = CardDefaults.cardColors(
-                            containerColor = parseColor(selectedColor)
-                        )
+                            containerColor = parseColor(selectedColor),
+                        ),
                     ) { }
-                }
+                },
             )
 
             ExposedDropdownMenu(
