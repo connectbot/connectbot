@@ -173,7 +173,7 @@ class KeyboardSettingsScreenTest {
         click(R.string.keyboard_save)
         rule.waitUntil(5000) { runBlocking { db.hostDao().getById(host.id)?.keyboardLayoutId != null } }
         val id = db.hostDao().getById(host.id)!!.keyboardLayoutId!!
-        assertEquals("Default — Production", db.keyboardDao().layouts().first { it.id == id }.name)
+        assertEquals(rule.activity.getString(R.string.keyboard_context_name, rule.activity.getString(R.string.keyboard_original_layout), "Production"), db.keyboardDao().layouts().first { it.id == id }.name)
         val directory = File("build/reports/keyboard-editor").apply { mkdirs() }
         File(directory, "terminal-keyboard-selection.png").outputStream().use { rule.onRoot().captureToImage().asAndroidBitmap().compress(Bitmap.CompressFormat.PNG, 100, it) }
         click(R.string.keyboard_reset_inherited)
@@ -263,7 +263,7 @@ class KeyboardSettingsScreenTest {
         click(R.string.keyboard_edit_copy)
         click(R.string.keyboard_save)
         rule.waitUntil(5000) { pending.value != null }
-        assertEquals("Default — Production", pending.value!!.layout.name)
+        assertEquals(rule.activity.getString(R.string.keyboard_context_name, rule.activity.getString(R.string.keyboard_original_layout), "Production"), pending.value!!.layout.name)
         assertEquals(pending.value!!.layout.id, selected.value)
         assertEquals(listOf(KeyboardDefaults.layoutId), db.keyboardDao().layouts().map { it.id })
         val directory = File("build/reports/keyboard-editor").apply { mkdirs() }

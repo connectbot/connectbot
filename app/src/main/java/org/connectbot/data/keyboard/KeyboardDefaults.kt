@@ -50,7 +50,7 @@ object KeyboardDefaults {
     }
 
     fun seed(db: SupportSQLiteDatabase) {
-        db.execSQL("INSERT OR IGNORE INTO keyboard_layouts (id, name, button_width, button_height) VALUES (?, 'Default', 45, 30)", arrayOf(layoutId.toString()))
+        db.execSQL("INSERT OR IGNORE INTO keyboard_layouts (id, name, button_width, button_height) VALUES (?, 'Classic CB', 45, 30)", arrayOf(layoutId.toString()))
         items(layoutId).forEach { item ->
             db.execSQL(
                 "INSERT OR IGNORE INTO keyboard_items (id, layout_id, row, column, row_span, column_span, visible, kind, target, macro_id, pinned) VALUES (?, ?, 0, ?, 1, 1, 1, ?, ?, NULL, ?)",
