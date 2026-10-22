@@ -56,7 +56,7 @@ fun TerminalKeyboard(
 @Preview
 @Composable
 private fun TerminalKeyboardPreview() {
-    val layout = KeyboardLayout(id = KeyboardDefaults.layoutId, name = "Default")
+    val layout = KeyboardLayout(id = KeyboardDefaults.layoutId, name = "Classic CB")
     ConnectBotTheme {
         KeyboardGrid(layout = layout, items = KeyboardDefaults.items(layout.id), macros = emptyList(), onPress = {})
     }

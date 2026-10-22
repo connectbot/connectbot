@@ -128,7 +128,7 @@ class KeyboardRepository @Inject constructor(private val database: ConnectBotDat
             dao.deleteLayout(id)
             var remaining = dao.layouts()
             if (remaining.isEmpty()) {
-                val layout = KeyboardLayout(id = KeyboardDefaults.layoutId, name = "Default")
+                val layout = KeyboardLayout(id = KeyboardDefaults.layoutId, name = "Classic CB")
                 dao.saveLayout(layout)
                 dao.saveItems(KeyboardDefaults.items(layout.id))
                 remaining = listOf(layout)

@@ -2140,8 +2140,8 @@
 	<string name="keyboard_preset_scribe_subtitle">Optimized for Codex CLI</string>
 	<!-- Title of the preset picker opened when adding a layout. -->
 	<string name="keyboard_choose_preset">Choose a keyboard preset</string>
-	<!-- Option that creates the original keyboard layout. -->
-	<string name="keyboard_original_layout">Default</string>
+	<!-- Name of the original ConnectBot keyboard layout in the preset picker. -->
+	<string name="keyboard_original_layout">Classic CB</string>
 	<!-- Checkbox to fit all keyboard columns within the screen without scrolling. -->
 	<string name="keyboard_fit_to_width">Fit to width</string>
 	<!-- Layer tab or destination name, numbered from zero to four. -->
