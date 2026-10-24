@@ -407,6 +407,8 @@ open class SSH : AbsTransport {
             client?.authenticate(
                 currentHost.username,
                 object : AuthHandler {
+                    private var uncachedKey: UncachedAuthenticationKey? = null
+
                     override suspend fun onAuthMethodsAvailable(methods: Set<String>) {
                         bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth))
                     }
@@ -437,6 +439,7 @@ open class SSH : AbsTransport {
                             } else {
                                 val pair = getAuthenticationKey(pubkey)
                                 if (pair != null) {
+                                    uncachedKey = uncachedAuthenticationKey(pubkey, pair)
                                     try {
                                         if (preparePublicKeyAuthentication(client, pair)) {
                                             keys.add(SshSigning.encodePublicKey(pair))
@@ -452,7 +455,7 @@ open class SSH : AbsTransport {
                     }
 
                     override suspend fun onSignatureRequest(key: AuthPublicKey, dataToSign: ByteArray): ByteArray? {
-                        val keyPair = confirmedAuthenticationKey(client, key) ?: return null
+                        val keyPair = confirmedAuthenticationKey(client, key, uncachedKey) ?: return null
                         return try {
                             SshSigning.signWithKeyPair(key.algorithmName, keyPair, dataToSign)
                         } catch (e: Exception) {
@@ -540,36 +543,60 @@ open class SSH : AbsTransport {
             is AuthResult.Error -> bridge?.outputLine(result.message)
 
             is AuthResult.Failure -> {
-                if (result.allowedMethods.isEmpty()) {
-                    bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_fail))
-                } else {
-                    Timber.d("Authentication failed; allowed methods: ${result.allowedMethods}")
-                }
+                bridge?.outputLine(manager?.res?.getString(R.string.terminal_auth_fail))
+                Timber.d("Authentication failed; allowed methods: ${result.allowedMethods}")
             }
 
             else -> Unit
         }
     }
 
-    private suspend fun confirmedAuthenticationKey(authClient: SshClient?, key: AuthPublicKey): KeyPair? {
+    private class UncachedAuthenticationKey(val holder: TerminalManager.KeyHolder) {
+        var approved: Boolean? = null
+    }
+
+    private fun uncachedAuthenticationKey(pubkey: Pubkey, pair: KeyPair): UncachedAuthenticationKey? {
+        if (manager?.loadedKeypairs?.get(pubkey.nickname)?.pair === pair) return null
+        // Remember-unlocked-keys can be disabled. Keep this key only in the auth handler.
+        return UncachedAuthenticationKey(
+            TerminalManager.KeyHolder().apply {
+                this.pubkey = pubkey
+                this.pair = pair
+            },
+        )
+    }
+
+    private suspend fun confirmedAuthenticationKey(
+        authClient: SshClient?,
+        key: AuthPublicKey,
+        uncachedKey: UncachedAuthenticationKey? = null,
+    ): KeyPair? {
         authClient ?: return null
-        val entry = manager?.loadedKeypairs?.entries?.firstOrNull { entry ->
-            val pair = entry.value.pair ?: return@firstOrNull false
-            runCatching { SshSigning.encodePublicKey(pair).publicKeyBlob.contentEquals(key.publicKeyBlob) }
+        fun matches(holder: TerminalManager.KeyHolder): Boolean {
+            val pair = holder.pair ?: return false
+            return runCatching { SshSigning.encodePublicKey(pair).publicKeyBlob.contentEquals(key.publicKeyBlob) }
                 .getOrDefault(false)
-        } ?: return null
-        val holder = entry.value
+        }
+        val entry = manager?.loadedKeypairs?.entries?.firstOrNull { matches(it.value) }
+        val holder = entry?.value ?: uncachedKey?.holder?.takeIf(::matches)
+        if (holder == null) {
+            Timber.w("Cannot sign public-key authentication request: offered key is no longer available")
+            return null
+        }
         if (holder.pubkey?.confirmation == true) {
-            val approved = keyUseDecisions.getOrPut(authClient to holder) {
-                bridge?.promptManager?.requestBooleanPrompt(
-                    null,
-                    manager?.res?.getString(R.string.prompt_allow_agent_to_use_key, entry.key).orEmpty(),
-                ) ?: false
+            suspend fun requestApproval(): Boolean = bridge?.promptManager?.requestBooleanPrompt(
+                null,
+                manager?.res?.getString(R.string.prompt_allow_agent_to_use_key, holder.pubkey?.nickname).orEmpty(),
+            ) ?: false
+            val approved = if (entry == null) {
+                uncachedKey?.approved ?: requestApproval().also { uncachedKey?.approved = it }
+            } else {
+                keyUseDecisions.getOrPut(authClient to holder) { requestApproval() }
             }
             if (!approved) return null
         }
         // A key can be unloaded while the user is deciding whether to use it.
-        if (manager?.loadedKeypairs?.get(entry.key) !== holder) return null
+        if (entry != null && manager?.loadedKeypairs?.get(entry.key) !== holder) return null
         return holder.pair
     }
 
@@ -844,6 +871,8 @@ open class SSH : AbsTransport {
                 val result = jumpClient.authenticate(
                     username,
                     object : AuthHandler {
+                        private var uncachedKey: UncachedAuthenticationKey? = null
+
                         override suspend fun onPublicKeysNeeded(): List<AuthPublicKey> {
                             val pubkeyId = jumpHost.pubkeyId
                             if (pubkeyId == HostConstants.PUBKEYID_NEVER) return emptyList()
@@ -865,6 +894,7 @@ open class SSH : AbsTransport {
                                 if (pubkey != null) {
                                     val pair = getAuthenticationKey(pubkey)
                                     if (pair != null) {
+                                        uncachedKey = uncachedAuthenticationKey(pubkey, pair)
                                         try {
                                             if (preparePublicKeyAuthentication(jumpClient, pair)) {
                                                 keys.add(SshSigning.encodePublicKey(pair))
@@ -879,7 +909,7 @@ open class SSH : AbsTransport {
                         }
 
                         override suspend fun onSignatureRequest(key: AuthPublicKey, dataToSign: ByteArray): ByteArray? {
-                            val keyPair = confirmedAuthenticationKey(jumpClient, key) ?: return null
+                            val keyPair = confirmedAuthenticationKey(jumpClient, key, uncachedKey) ?: return null
                             return try {
                                 SshSigning.signWithKeyPair(key.algorithmName, keyPair, dataToSign)
                             } catch (e: Exception) {
