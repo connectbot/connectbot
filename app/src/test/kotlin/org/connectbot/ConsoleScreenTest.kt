@@ -449,6 +449,56 @@ class ConsoleScreenTest {
     }
 
     @Test
+    fun autoHiddenKeyboardStaysHiddenAfterScrollRegionDisposal() {
+        PreferenceManager.getDefaultSharedPreferences(composeTestRule.activity)
+            .edit().putBoolean(PreferenceConstants.KEY_ALWAYS_VISIBLE, false).commit()
+        val layout = KeyboardLayout(name = "Auto-hide test", fitToWidth = true)
+        val item = KeyboardItem(layoutId = layout.id, target = "escape")
+        val previousDefault = runBlocking {
+            val original = keyboardRepository.configuration.first { it.layouts.isNotEmpty() }.settings?.defaultLayoutId
+            keyboardRepository.save(layout, listOf(item))
+            keyboardRepository.setDefault(layout.id)
+            original
+        }
+        val bridge = mock(TerminalBridge::class.java)
+        val emulator = TerminalEmulatorFactory.create()
+        `when`(bridge.host).thenReturn(Host(isTemporary = true, nickname = "Text input"))
+        `when`(bridge.terminalEmulator).thenReturn(emulator)
+        `when`(bridge.transportMessages).thenReturn(MutableSharedFlow())
+        `when`(bridge.keyboardErrors).thenReturn(MutableSharedFlow())
+        `when`(bridge.fontSizeFlow).thenReturn(MutableStateFlow(14f))
+        `when`(bridge.delKeyModeFlow).thenReturn(MutableStateFlow(DelKeyMode.Backspace))
+        `when`(bridge.promptManager).thenReturn(PromptManager())
+        `when`(bridge.keyHandler).thenReturn(TerminalKeyListener(TerminalEmulatorKeyDispatcher(emulator)))
+        val viewModel = mock(ConsoleViewModel::class.java)
+        `when`(viewModel.uiState).thenReturn(MutableStateFlow(ConsoleUiState(bridges = listOf(bridge), isLoading = false)))
+        `when`(viewModel.networkStatusMessages).thenReturn(MutableSharedFlow())
+        try {
+            setContent(mockConsoleViewModel = viewModel)
+            composeTestRule.mainClock.autoAdvance = false
+            navigateToConsoleScreen(bridge.host.id)
+            composeTestRule.waitUntil(5000) {
+                composeTestRule.mainClock.advanceTimeByFrame()
+                composeTestRule.onAllNodesWithTag("keyboard_button_${item.id}").fetchSemanticsNodes().isNotEmpty()
+            }
+            composeTestRule.mainClock.advanceTimeBy(500)
+            composeTestRule.onNodeWithTag("keyboard_button_${item.id}").assertIsDisplayed()
+            // Include the timeout and exit transition, then check another timeout period.
+            repeat(2) {
+                composeTestRule.mainClock.advanceTimeBy(6000)
+                composeTestRule.waitForIdle()
+                composeTestRule.onNodeWithTag("keyboard_button_${item.id}").assertDoesNotExist()
+            }
+        } finally {
+            composeTestRule.mainClock.autoAdvance = true
+            runBlocking {
+                if (previousDefault != null) keyboardRepository.setDefault(previousDefault)
+                keyboardRepository.deleteLayout(layout.id)
+            }
+        }
+    }
+
+    @Test
     fun customKeyboardTextInputButtonOpensExistingDialog() {
         val layout = KeyboardLayout(name = "Optional text input")
         val item = KeyboardItem(layoutId = layout.id, kind = "app", target = "text_input")
