@@ -1,7 +1,7 @@
 [versions]
 json5 = "3.0.0"
 desugar = "2.1.5"
-androidGradlePlugin = "9.4.1"
+androidGradlePlugin = "9.5.0"
 
 kotlin = "2.4.21"
 spotless = "8.10.4"
