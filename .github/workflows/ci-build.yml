@@ -183,7 +183,7 @@ jobs:
 
       - name: Record release metadata
         if: ${{ github.event_name == 'push' }}
-        uses: kruton/bathysign/bathysign@v0.2.2 # build metadata
+        uses: kruton/bathysign/bathysign@86904a7c76bdc1dfd96f43dc7abd1d545e9232c3 # v0.2.2; build metadata
         with:
           command: build-info
           out: support
