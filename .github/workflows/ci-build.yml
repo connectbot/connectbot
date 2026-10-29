@@ -183,7 +183,7 @@ jobs:
 
       - name: Record release metadata
         if: ${{ github.event_name == 'push' }}
-        uses: connectbot/actions/android-signer@9ed4fe3cf37503852d43515d2d987e4294686438 # build metadata
+        uses: kruton/bathysign/bathysign@86904a7c76bdc1dfd96f43dc7abd1d545e9232c3 # v0.2.2; build metadata
         with:
           command: build-info
           out: support
@@ -206,7 +206,7 @@ jobs:
     strategy:
       matrix:
         flavor: [oss, google]
-    uses: connectbot/actions/.github/workflows/android-attest.yml@android-signer-v1
+    uses: kruton/bathysign/.github/workflows/bathysign-attest.yml@v0.2.2
     permissions:
       contents: read
       actions: read
