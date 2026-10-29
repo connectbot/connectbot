@@ -104,7 +104,7 @@
   <string name="font_importing">Schrift importieren…</string>
   <string name="pref_backupkeys_title">Sicherung Öffentliche Schlüssel</string>
   <string name="pref_backupkeys_summary">Bewahren Sie Backups der privaten Schlüssel mit dem Backup-Mechanismus von Android auf</string>
-  <string name="pref_ui_category">Benutzungsschnittstelle</string>
+  <string name="pref_ui_category">Benutzeroberfläche</string>
   <string name="pref_language_title">Sprache</string>
   <string name="pref_language_system_default">Systemstandard</string>
   <string name="pref_theme_title">Design</string>
@@ -255,10 +255,10 @@
   <string name="list_menu_disconnect">Alle trennen</string>
   <string name="list_menu_settings">Einstellungen</string>
   <string name="list_host_disconnect">Verbindung trennen</string>
-  <string name="list_host_edit">Host editieren</string>
+  <string name="list_host_edit">Host bearbeiten</string>
   <string name="list_host_portforwards">Port-Weiterleitungen editieren</string>
   <string name="list_host_delete">Host löschen</string>
-  <string name="list_host_duplicate">Doppelter Host</string>
+  <string name="list_host_duplicate">Host duplizieren</string>
   <string name="list_host_forget_keys">Hostschlüssel vergessen</string>
   <string name="list_camera_ctrlaspace">Strg+A dann Space</string>
   <string name="list_camera_ctrla">Strg+A</string>
@@ -384,7 +384,7 @@
   <string name="error_port_forward_load_failed">Fehler beim Laden der Portweiterleitungen für %1$s %2$s</string>
   <string name="error_host_save_failed">Konnte Host %1$s nicht speichern %2$s</string>
   <string name="error_color_scheme_load_failed">Fehler beim Laden des Farbschemas %s</string>
-  <string name="host_duplicate_nickname">%1$s (kopieren)</string>
+  <string name="host_duplicate_nickname">%1$s (Kopie)</string>
   <string name="empty_hosts_message">Keine Hosts konfiguriert</string>
   <string name="empty_pubkeys_message">Keine Schlüssel gefunden</string>
   <string name="empty_port_forwards_message">Keine Portweiterleitungen konfiguriert</string>
