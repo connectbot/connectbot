@@ -192,7 +192,7 @@ abstract class AbsTransport {
     /**
      * Disables a port forward member. After calling this method, the port forward should
      * be non-functioning iff it could be disabled by the transport.
-     * @param portForward member of our current port forwards list to enable
+     * @param portForward member of our current port forwards list to disable
      * @return true on successful port forward tear-down
      */
     open suspend fun disablePortForward(portForward: PortForward): Boolean = false
