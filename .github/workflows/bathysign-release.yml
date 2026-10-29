@@ -38,10 +38,10 @@ jobs:
           body = {"ref": os.environ["DEFAULT_BRANCH"], "inputs": {"source_run": str(int(os.environ["SOURCE_RUN"])), "source_attempt": str(int(os.environ["SOURCE_ATTEMPT"]))}}
           pathlib.Path(os.environ["RUNNER_TEMP"], "finalize.json").write_text(json.dumps(body))
           PY
-          gh api --hostname github.com --method POST "repos/$GH_REPO/actions/workflows/signed-release.yml/dispatches" --input "$RUNNER_TEMP/finalize.json"
+          gh api --hostname github.com --method POST "repos/$GH_REPO/actions/workflows/bathysign-release.yml/dispatches" --input "$RUNNER_TEMP/finalize.json"
   finalize:
     if: ${{ vars.BATHYSIGN_ENABLED == 'true' && github.event_name == 'workflow_dispatch' && github.ref == format('refs/heads/{0}', github.event.repository.default_branch) }}
-    uses: kruton/bathysign/.github/workflows/bathysign-finalize.yml@v0.2.0
+    uses: kruton/bathysign/.github/workflows/bathysign-finalize.yml@v0.2.2
     permissions:
       contents: write
       actions: read
@@ -52,7 +52,7 @@ jobs:
       source_attempt: ${{ fromJSON(inputs.source_attempt) }}
   publish:
     needs: finalize
-    uses: kruton/bathysign/.github/workflows/bathysign-publish.yml@v0.2.0
+    uses: kruton/bathysign/.github/workflows/bathysign-publish.yml@v0.2.2
     permissions:
       contents: write
       actions: read
